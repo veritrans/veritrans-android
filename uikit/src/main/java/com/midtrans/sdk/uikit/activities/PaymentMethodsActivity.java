@@ -657,7 +657,6 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     private void initialiseAdapterData(List<EnabledPayment> enabledPayments) {
         data.clear();
         bankTransfers.clear();
-
         for (EnabledPayment enabledPayment : enabledPayments) {
             if ((enabledPayment.getCategory() != null && enabledPayment.getCategory().equals(getString(R.string.enabled_payment_category_banktransfer)))
                     || enabledPayment.getType().equalsIgnoreCase(getString(R.string.payment_mandiri_bill_payment))) {

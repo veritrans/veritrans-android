@@ -150,6 +150,10 @@ public class CallbackImplementSample implements TransactionCallback, CheckoutCal
         snapTransactionManager.paymentUsingBankTransferPermata(token, request, this);
     }
 
+    public void paymentUsingSnapBankTransferBni(String token, BankTransferPaymentRequest request) {
+        snapTransactionManager.paymentUsingBankTransferBni(token, request, this);
+    }
+
     public void paymentUsingKlikBCA(String token, KlikBCAPaymentRequest request) {
         snapTransactionManager.paymentUsingKlikBCA(token, request, this);
     }

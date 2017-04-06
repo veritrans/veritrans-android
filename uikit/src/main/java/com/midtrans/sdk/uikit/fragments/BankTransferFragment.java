@@ -28,6 +28,7 @@ public class BankTransferFragment extends Fragment {
     public static final String DOWNLOAD_URL = "url";
     public static final String BANK = "bank";
     public static final String TYPE_BCA = "bank.bca";
+    public static final String TYPE_BNI = "bank.bni";
     public static final String TYPE_PERMATA = "bank.permata";
     public static final String TYPE_MANDIRI = "bank.mandiri";
     public static final String TYPE_MANDIRI_BILL = "bank.mandiri.bill";
@@ -154,6 +155,12 @@ public class BankTransferFragment extends Fragment {
                 break;
             case TYPE_MANDIRI:
                 pageNumber = 2;
+                break;
+            case TYPE_BNI:
+                pageNumber = 3;
+
+                //track page permata va overview
+                MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_BNI_VA_OVERVIEW);
                 break;
             case TYPE_MANDIRI_BILL:
                 pageNumber = 2;

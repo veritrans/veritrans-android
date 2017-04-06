@@ -21,9 +21,12 @@ import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.InstructionATMBersamaFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionAltoFragment;
+import com.midtrans.sdk.uikit.fragments.InstructionAtmBniFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionBCAFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionBCAKlikFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionBCAMobileFragment;
+import com.midtrans.sdk.uikit.fragments.InstructionBniInternetFragment;
+import com.midtrans.sdk.uikit.fragments.InstructionBniMobileFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionMandiriFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionMandiriInternetFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionPermataFragment;
@@ -76,7 +79,7 @@ public class BankTransferInstructionActivity extends BaseActivity {
         if (item.getItemId() == android.R.id.home) {
             //close activity on click of cross button.
             finish();
-            if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+            if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                     && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                 overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
             }
@@ -154,10 +157,10 @@ public class BankTransferInstructionActivity extends BaseActivity {
                 pageNumber = 3;
                 POSITION = getIntent().getIntExtra(PAGE, -1);
 
-                if(POSITION == KLIKBCA_PAGE){
+                if (POSITION == KLIKBCA_PAGE) {
                     //track page bca va overview
                     midtransSDK.trackEvent(AnalyticsEventName.PAGE_BCA_KLIKBCA_OVERVIEW);
-                }else{
+                } else {
                     //track page bca va overview
                     midtransSDK.trackEvent(AnalyticsEventName.PAGE_BCA_VA_OVERVIEW);
                 }
@@ -167,6 +170,12 @@ public class BankTransferInstructionActivity extends BaseActivity {
 
                 //track page permata va overview
                 midtransSDK.trackEvent(AnalyticsEventName.PAGE_PERMATA_VA_OVERVIEW);
+                break;
+            case TYPE_BNI:
+                pageNumber = 3;
+
+                //track page permata va overview
+                midtransSDK.trackEvent(AnalyticsEventName.PAGE_BNI_VA_OVERVIEW);
                 break;
             case TYPE_MANDIRI:
                 pageNumber = 2;
@@ -234,6 +243,14 @@ public class BankTransferInstructionActivity extends BaseActivity {
                 } else {
                     fragment = new InstructionMandiriInternetFragment();
                 }
+            } else if (getIntent().getStringExtra(BANK).equals(TYPE_BNI)) {
+                if (position == 0) {
+                    fragment = new InstructionAtmBniFragment();
+                } else if (position == 1) {
+                    fragment = new InstructionBniMobileFragment();
+                } else {
+                    fragment = new InstructionBniInternetFragment();
+                }
             } else {
                 if (position == 0) {
                     fragment = new InstructionATMBersamaFragment();
@@ -277,6 +294,14 @@ public class BankTransferInstructionActivity extends BaseActivity {
                     return getString(R.string.tab_mandiri_atm);
                 } else {
                     return getString(R.string.tab_mandiri_internet);
+                }
+            } else if (getIntent().getStringExtra(BANK).equals(TYPE_BNI)) {
+                if (position == 0) {
+                    return getString(R.string.tab_atm_bni);
+                } else if (position == 1) {
+                    return getString(R.string.tab_bni_mobile);
+                } else {
+                    return getString(R.string.tab_bni_internet);
                 }
             } else {
                 if (position == 0) {
