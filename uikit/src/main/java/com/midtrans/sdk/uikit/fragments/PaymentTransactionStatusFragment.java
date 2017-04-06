@@ -68,7 +68,6 @@ public class PaymentTransactionStatusFragment extends Fragment {
     private TextView paymentMessageTv = null;
     private TextView amountTextView = null;
     private TextView orderIdTextView = null;
-    private TextView transactionTimeTextView = null;
     private TextView paymentTypeTextView = null;
     private TextView textBank;
     private TextView textInstallmentTerm;
@@ -77,7 +76,7 @@ public class PaymentTransactionStatusFragment extends Fragment {
     private int count = 1;
     private LinearLayout detailsTable;
     private FrameLayout layoutMain;
-    private RelativeLayout layoutDueTotalAmount, layoutInstallment, layoutTransactionTime, layoutBank, layoutPaymentType, layoutRedeemedPoint;
+    private RelativeLayout layoutDueTotalAmount, layoutInstallment, layoutBank, layoutPaymentType, layoutRedeemedPoint;
     private int mPaymentType = -1;
     private FancyButton buttonInstruction;
 
@@ -132,7 +131,6 @@ public class PaymentTransactionStatusFragment extends Fragment {
     private void initializeViews(View view) {
         amountTextView = (TextView) view.findViewById(R.id.text_status_amount);
         orderIdTextView = (TextView) view.findViewById(R.id.text_order_id);
-        transactionTimeTextView = (TextView) view.findViewById(R.id.text_status_transaction_time);
         paymentTypeTextView = (TextView) view.findViewById(R.id.text_payment_type);
         actionBt = (FancyButton) view.findViewById(R.id.btn_action);
         actionBt.setCustomTextFont(MidtransSDK.getInstance().getSemiBoldText());
@@ -143,7 +141,6 @@ public class PaymentTransactionStatusFragment extends Fragment {
         layoutInstallment = (RelativeLayout) view.findViewById(R.id.layout_status_due_installment);
         layoutDueTotalAmount = (RelativeLayout) view.findViewById(R.id.layout_status_due_amount);
         layoutInstallment = (RelativeLayout) view.findViewById(R.id.layout_status_due_installment);
-        layoutTransactionTime = (RelativeLayout) view.findViewById(R.id.layout_status_payment_time);
         layoutPaymentType = (RelativeLayout) view.findViewById(R.id.layout_status_payment_type);
         layoutBank = (RelativeLayout) view.findViewById(R.id.layout_status_bank);
         textBank = (TextView) view.findViewById(R.id.text_status_bank);
@@ -222,14 +219,6 @@ public class PaymentTransactionStatusFragment extends Fragment {
         } catch (NullPointerException e) {
             e.printStackTrace();
 
-        }
-
-        // set transaction time
-        if (!TextUtils.isEmpty(transactionResponse.getTransactionTime())) {
-            transactionTimeTextView.setText(transactionResponse.getTransactionTime());
-            layoutTransactionTime.setVisibility(View.VISIBLE);
-        } else {
-            layoutTransactionTime.setVisibility(View.GONE);
         }
 
         // setbank
@@ -534,7 +523,7 @@ public class PaymentTransactionStatusFragment extends Fragment {
                 }
             }
             getActivity().startActivity(intent);
-            if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+            if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                     && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                 getActivity().overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
