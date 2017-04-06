@@ -30,6 +30,7 @@ public class Constants {
 
     public static final int BANK_TRANSFER_BCA = 1001;
     public static final int BANK_TRANSFER_PERMATA = 1003;
+    public static final int BANK_TRANSFER_BNI = 1004;
 
     public static final String TAG = "MidtransSDK";
 

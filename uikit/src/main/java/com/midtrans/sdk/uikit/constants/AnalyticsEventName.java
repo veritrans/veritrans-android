@@ -14,8 +14,10 @@ public class AnalyticsEventName {
     public static final String PAGE_MANDIRI_BILL_OVERVIEW = "pg mandiri bill overview";
     public static final String PAGE_PERMATA_VA = "pg permata va";
     public static final String PAGE_PERMATA_VA_OVERVIEW = "pg permata va overview";
-    public static final String PAGE_OTHER_BANK_VA = "pg permata va";
+    public static final String PAGE_OTHER_BANK_VA = "pg other bank va";
     public static final String PAGE_OTHER_BANK_VA_OVERVIEW = "pg other bank va overview";
+    public static final String PAGE_BNI_VA = "pg bni va";
+    public static final String PAGE_BNI_VA_OVERVIEW = "pg bni va overview";
 
     public static final String PAGE_CREDIT_CARD_DETAILS = "pg cc card details";
     public static final String CREDIT_CARD_3DS_ERROR = "cc 3ds error";

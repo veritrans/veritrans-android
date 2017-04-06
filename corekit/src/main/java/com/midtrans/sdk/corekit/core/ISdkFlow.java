@@ -17,6 +17,8 @@ public interface ISdkFlow {
 
     void runMandiriBankTransfer(Context context);
 
+    void runBniBankTransfer(Context context);
+
     void runBCABankTransfer(Context context);
 
     void runOtherBankTransfer(Context context);

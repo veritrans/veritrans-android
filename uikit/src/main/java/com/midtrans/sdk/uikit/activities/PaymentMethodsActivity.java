@@ -375,6 +375,13 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                         showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
                         return;
                     }
+                } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_BNI, false)) {
+                    if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_bni_va))) {
+                        startBankPayment.putExtra(UserDetailsActivity.BANK_TRANSFER_BNI, true);
+                    } else {
+                        showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
+                        return;
+                    }
                 } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_OTHER, false)) {
                     if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_all_va))) {
                         startBankPayment.putExtra(UserDetailsActivity.BANK_TRANSFER_OTHER, true);
@@ -650,7 +657,6 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     private void initialiseAdapterData(List<EnabledPayment> enabledPayments) {
         data.clear();
         bankTransfers.clear();
-
         for (EnabledPayment enabledPayment : enabledPayments) {
             if ((enabledPayment.getCategory() != null && enabledPayment.getCategory().equals(getString(R.string.enabled_payment_category_banktransfer)))
                     || enabledPayment.getType().equalsIgnoreCase(getString(R.string.payment_mandiri_bill_payment))) {

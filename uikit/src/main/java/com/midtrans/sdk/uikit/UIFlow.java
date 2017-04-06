@@ -64,6 +64,17 @@ public class UIFlow implements ISdkFlow {
     }
 
     @Override
+    public void runBniBankTransfer(Context context) {
+        MidtransSDK sdk = MidtransSDK.getInstance();
+        if (sdk != null) {
+            Intent intent = new Intent(context, UserDetailsActivity.class);
+            intent.putExtra(UserDetailsActivity.BANK_TRANSFER_ONLY, true);
+            intent.putExtra(UserDetailsActivity.BANK_TRANSFER_BNI, true);
+            context.startActivity(intent);
+        }
+    }
+
+    @Override
     public void runBCABankTransfer(Context context) {
         MidtransSDK sdk = MidtransSDK.getInstance();
         if (sdk != null) {
