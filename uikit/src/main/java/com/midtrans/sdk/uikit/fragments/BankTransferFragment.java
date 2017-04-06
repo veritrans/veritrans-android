@@ -159,7 +159,7 @@ public class BankTransferFragment extends Fragment {
             case TYPE_BNI:
                 pageNumber = 3;
 
-                //track page permata va overview
+                //track page BNI va overview
                 MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_BNI_VA_OVERVIEW);
                 break;
             case TYPE_MANDIRI_BILL:
