@@ -290,5 +290,7 @@ public class TransactionActivity
         MidtransUi.getInstance().clearTransaction();
         presenter.sendPaymentResult(new PaymentResult(true));
         finish();
+
+        overrideBackAnimation();
     }
 }
