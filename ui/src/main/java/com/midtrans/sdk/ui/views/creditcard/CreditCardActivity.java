@@ -23,7 +23,7 @@ import com.midtrans.sdk.ui.thirdparty.ScannerModel;
 import com.midtrans.sdk.ui.utils.Logger;
 import com.midtrans.sdk.ui.utils.UiUtils;
 import com.midtrans.sdk.ui.utils.Utils;
-import com.midtrans.sdk.ui.views.PaymentStatusFragment;
+import com.midtrans.sdk.ui.views.status.PaymentStatusFragment;
 import com.midtrans.sdk.ui.widgets.DefaultTextView;
 
 /**

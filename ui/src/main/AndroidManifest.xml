@@ -19,7 +19,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".views.PaymentStatusActivity"
+            android:name=".views.status.PaymentStatusActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.banktransfer.list.BankTransferListActivity"

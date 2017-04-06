@@ -1,4 +1,4 @@
-package com.midtrans.sdk.ui.views;
+package com.midtrans.sdk.ui.views.status;
 
 import android.os.Build;
 import android.os.Bundle;

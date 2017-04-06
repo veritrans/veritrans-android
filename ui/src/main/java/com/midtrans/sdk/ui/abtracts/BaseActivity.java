@@ -34,7 +34,7 @@ import com.midtrans.sdk.ui.constants.Theme;
 import com.midtrans.sdk.ui.models.PaymentResult;
 import com.midtrans.sdk.ui.themes.BaseColorTheme;
 import com.midtrans.sdk.ui.utils.Logger;
-import com.midtrans.sdk.ui.views.PaymentStatusFragment;
+import com.midtrans.sdk.ui.views.status.PaymentStatusFragment;
 import com.midtrans.sdk.ui.widgets.FancyButton;
 
 import java.lang.reflect.Field;
