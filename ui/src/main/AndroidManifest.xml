@@ -38,6 +38,15 @@
         <activity
             android:name=".views.cstore.indomaret.IndomaretStatusActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.cstore.kioson.KiosonActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.cstore.kioson.KiosonStatusActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.cstore.kioson.KiosonInstructionActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

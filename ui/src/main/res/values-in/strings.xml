@@ -116,7 +116,7 @@
     <string name="tab_mandiri">Mandiri/ATM Bersama</string>
     <string name="tab_bca_prima">BCA/Prima</string>
     <string name="tab_permata_alto">Permata/Alto</string>
-    <string name="payment_instrution">Instruksi Pembayaran</string>
+    <string name="payment_instruction">Instruksi Pembayaran</string>
     <string name="payment_code">Payment Code</string>
     
      <!-- Mandiri bank transfer Instruction-->

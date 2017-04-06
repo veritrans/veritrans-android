@@ -75,7 +75,7 @@ public class BankTransferInstructionActivity extends BaseActivity {
             downloadInstruction.setVisibility(View.GONE);
         }
 
-        textHeaderTitle.setText(getResources().getString(R.string.payment_instrution));
+        textHeaderTitle.setText(getResources().getString(R.string.payment_instruction));
         setUpViewPager();
         setUpTabLayout();
     }

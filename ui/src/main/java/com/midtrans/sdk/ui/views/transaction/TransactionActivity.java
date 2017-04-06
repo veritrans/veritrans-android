@@ -28,6 +28,7 @@ import com.midtrans.sdk.ui.views.banktransfer.list.BankTransferListActivity;
 import com.midtrans.sdk.ui.views.creditcard.details.CreditCardDetailsActivity;
 import com.midtrans.sdk.ui.views.creditcard.saved.SavedCardActivity;
 import com.midtrans.sdk.ui.views.cstore.indomaret.IndomaretActivity;
+import com.midtrans.sdk.ui.views.cstore.kioson.KiosonActivity;
 import com.midtrans.sdk.ui.widgets.DefaultTextView;
 import com.midtrans.sdk.ui.widgets.FancyButton;
 import com.squareup.picasso.Callback;
@@ -205,6 +206,9 @@ public class TransactionActivity
             case PaymentType.INDOMARET:
                 startIndomaretPaymentFlow();
                 break;
+            case PaymentType.KIOSON:
+                startKiosonPaymentFlow();
+                break;
             default:
                 break;
         }
@@ -225,6 +229,11 @@ public class TransactionActivity
 
     private void startIndomaretPaymentFlow() {
         Intent intent = new Intent(this, IndomaretActivity.class);
+        startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
+    }
+
+    private void startKiosonPaymentFlow() {
+        Intent intent = new Intent(this, KiosonActivity.class);
         startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
     }
 
