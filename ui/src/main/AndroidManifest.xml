@@ -9,9 +9,6 @@
             android:name=".views.transaction.TransactionActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".views.creditcard.CreditCardActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".views.creditcard.saved.SavedCardActivity"
             android:screenOrientation="portrait" />
         <activity
