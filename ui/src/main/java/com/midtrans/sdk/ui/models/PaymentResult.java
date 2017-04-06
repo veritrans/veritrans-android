@@ -38,8 +38,9 @@ public class PaymentResult<T extends BaseTransactionResponse> implements Seriali
             paymentStatus = PaymentStatus.SUCCESS;
         } else if (transactionResponse.statusCode.equals(PaymentStatus.CODE_201)
                 || (!TextUtils.isEmpty(transactionResponse.transactionStatus)
-                && transactionResponse.transactionStatus.equalsIgnoreCase(PaymentStatus.PENDING))) {
-            if (transactionResponse.fraudStatus.equalsIgnoreCase(PaymentStatus.CHALLENGE)) {
+                && (transactionResponse.transactionStatus.equalsIgnoreCase(PaymentStatus.PENDING)))) {
+            if (!TextUtils.isEmpty(transactionResponse.fraudStatus)
+                    && transactionResponse.fraudStatus.equalsIgnoreCase(PaymentStatus.CHALLENGE)) {
                 paymentStatus = PaymentStatus.CHALLENGE;
             } else {
                 paymentStatus = PaymentStatus.PENDING;

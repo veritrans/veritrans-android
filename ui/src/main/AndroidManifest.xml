@@ -35,6 +35,9 @@
         <activity
             android:name=".views.cstore.indomaret.IndomaretActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.cstore.indomaret.IndomaretStatusActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
