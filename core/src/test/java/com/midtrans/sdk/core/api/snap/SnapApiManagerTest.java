@@ -92,8 +92,8 @@ public class SnapApiManagerTest {
                 new SnapMerchantData(
                         new SnapMerchantPreference("test-merchant", null, null, null, null, null, null, null),
                         "clientkey",
-                        enabledPrinciples
-                )
+                        enabledPrinciples,
+                        null)
         );
         MockRetrofit mockRetrofit = MockSnapRetrofit.getSnapMockRetrofit();
         snapApi = mockRetrofit.create(SnapApi.class);

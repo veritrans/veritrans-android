@@ -14,6 +14,7 @@ import com.midtrans.sdk.core.models.snap.bank.mandiri.MandiriBankTransferPayment
 import com.midtrans.sdk.core.models.snap.bank.other.OtherBankTransferPaymentResponse;
 import com.midtrans.sdk.core.models.snap.bank.permata.PermataBankTransferPaymentResponse;
 import com.midtrans.sdk.core.models.snap.bins.BankBinsResponse;
+import com.midtrans.sdk.core.models.snap.card.BankPointResponse;
 import com.midtrans.sdk.core.models.snap.card.CreditCardPaymentParams;
 import com.midtrans.sdk.core.models.snap.card.CreditCardPaymentResponse;
 import com.midtrans.sdk.core.models.snap.conveniencestore.indomaret.IndomaretPaymentResponse;
@@ -398,6 +399,17 @@ public class MidtransCore {
      */
     public void getBankBins(MidtransCoreCallback<List<BankBinsResponse>> callback) {
         snapApiManager.getBankBins(callback);
+    }
+
+    /**
+     * Start getting bank point from Snap.
+     *
+     * @param checkoutToken checkout token.
+     * @param cardToken     card token.
+     * @param callback      callback to be called after API call was finished.
+     */
+    public void getBankPoint(String checkoutToken, String cardToken, MidtransCoreCallback<BankPointResponse> callback) {
+        snapApiManager.getBankPoint(checkoutToken, cardToken, callback);
     }
 
     public Environment getEnvironment() {

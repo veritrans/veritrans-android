@@ -25,6 +25,7 @@ public interface MidtransApi {
      * @param installment     true if installment was enabled.
      * @param installmentTerm installment term.
      * @param channel channel.
+     * @param point  point enabled.
      * @return token response.
      */
     @GET("token")
@@ -38,7 +39,8 @@ public interface MidtransApi {
             @Query("bank") String bank,
             @Query("installment") boolean installment,
             @Query("installment_term") int installmentTerm,
-            @Query("channel") String channel
+            @Query("channel") String channel,
+            @Query("point") boolean point
     );
 
     /**
@@ -56,6 +58,7 @@ public interface MidtransApi {
      * @param installment     true if installment was enabled.
      * @param installmentTerm installment term.
      * @param channel channel.
+     * @param point  point enabled.
      * @return token response.
      */
     @GET("token")
@@ -71,7 +74,8 @@ public interface MidtransApi {
             @Query("bank") String bank,
             @Query("installment") boolean installment,
             @Query("installment_term") int installmentTerm,
-            @Query("channel") String channel
+            @Query("channel") String channel,
+            @Query("point") boolean point
     );
 
     /**
@@ -88,6 +92,7 @@ public interface MidtransApi {
      * @param installment     true if installment was enabled.
      * @param installmentTerm installment term.
      * @param channel channel.
+     * @param point  point enabled.
      * @return token response.
      */
     @GET("token")
@@ -102,6 +107,7 @@ public interface MidtransApi {
             @Query("bank") String bank,
             @Query("installment") boolean installment,
             @Query("installment_term") int installmentTerm,
-            @Query("channel") String channel
+            @Query("channel") String channel,
+            @Query("point") boolean point
     );
 }

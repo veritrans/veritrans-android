@@ -685,7 +685,7 @@
     <string name="klik_bca_continue">Please continue the payment process via KlikBCA by opening <b>www.klikbca.com</b> on your browser.\n\nTransaction will be cancelled if payment is not completed within 2 hours.</string>
     <string name="error_paid_order_id">Order ID has been paid, please use another order ID</string>
     <string name="layout_save_card_dialog">We will securely save your card details so you can reuse them later.</string>
-    <string name="redeem_bni_reward">Redeem BNI Reward Point</string>
+    <string name="redeem_point_reward">Redeem Reward Point</string>
     <string name="delete_this_card">delete this card</string>
     <string name="error_delete_message">Failed to delete card</string>
     <string name="error_message_failed_checkout">Checkout failed.\nPlease try again or cancel the payment.</string>
@@ -694,4 +694,19 @@
     <string name="tab_atm_bersama">ATM Bersama</string>
     <string name="tab_prima">Prima</string>
     <string name="error_invalid_payment_form">Invalid Form Payment</string>
+
+    <string name="how_much_point">How much points you want to redeem?</string>
+    <string name="total_bank_point">Your total points</string>
+    <string name="bank_bni">BNI</string>
+    <string name="bank_mandiri">Mandiri</string>
+    <string name="status_redeemed_point">POINT DISCOUNT</string>
+
+    <string name="amount_after_discount">Amount to pay after discount</string>
+    <string name="will_be_used_point_here">Will be used point</string>
+    <string name="total_point_here">total point here</string>
+    <string name="redeem_point">Redeem Point</string>
+    <string name="redeem_bank_point_title">Redeem %1$s Point</string>
+    <string name="total_point">Your total %1$s Reward Point is %2$s</string>
+    <string name="redeem_bni_title">Redeem BNI Reward Point</string>
+    <string name="redeem_bni_details">You can pay partly through the redemption of BNI Reward Point through your Credit Card.</string>
 </resources>

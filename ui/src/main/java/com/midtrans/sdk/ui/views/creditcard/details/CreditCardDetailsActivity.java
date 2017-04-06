@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.midtrans.sdk.core.models.BankType;
 import com.midtrans.sdk.core.models.papi.CardTokenResponse;
 import com.midtrans.sdk.core.models.snap.SavedToken;
+import com.midtrans.sdk.core.models.snap.card.BankPointResponse;
 import com.midtrans.sdk.core.models.snap.card.CreditCardPaymentResponse;
 import com.midtrans.sdk.core.utils.CardUtilities;
 import com.midtrans.sdk.ui.CustomSetting;
@@ -43,6 +44,7 @@ import com.midtrans.sdk.ui.utils.CreditCardUtils;
 import com.midtrans.sdk.ui.utils.Logger;
 import com.midtrans.sdk.ui.utils.UiUtils;
 import com.midtrans.sdk.ui.views.PaymentStatusActivity;
+import com.midtrans.sdk.ui.views.creditcard.points.BankPointsActivity;
 import com.midtrans.sdk.ui.views.webpayment.PaymentWebActivity;
 import com.midtrans.sdk.ui.widgets.FancyButton;
 import com.squareup.picasso.Picasso;
@@ -61,6 +63,8 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
     public static final String EXTRA_CARD_DETAILS = "card.details";
     public static final String EXTRA_DELETED_CARD_DETAILS = "card.deleted.details";
     public static final int STATUS_REQUEST_CODE = 1015;
+
+    private static final int BANK_POINT_REQUEST_CODE = 1025;
 
     private MidtransUi midtransUi;
     private CreditCardDetailsPresenter presenter;
@@ -155,7 +159,7 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
 
         cvvHelpButton = (ImageButton) findViewById(R.id.help_cvv_button);
         saveCardHelpButton = (ImageButton) findViewById(R.id.help_save_card);
-        pointHelpButton = (ImageButton) findViewById(R.id.help_bni_point);
+        pointHelpButton = (ImageButton) findViewById(R.id.help_bank_point);
 
         scanCardButton = (FancyButton) findViewById(R.id.button_scan_card);
         deleteCardButton = (FancyButton) findViewById(R.id.button_delete);
@@ -381,6 +385,7 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
                     checkCardNumberValidity();
                     checkBinLockingValidity();
                     checkInstallment();
+                    checkBankPoint();
                 }
             }
         });
@@ -446,6 +451,7 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
                         String cvv = cardCvvField.getText().toString();
                         showProgressDialog(getString(R.string.processing_payment));
                         if (isOneClickMode()) {
+
                             presenter.startPayment();
                         } else {
                             if (isTwoClickMode()) {
@@ -455,12 +461,22 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
                                 String expiry = cardExpiryField.getText().toString();
                                 // Start payment
                                 presenter.setSaveCard(checkboxSaveCard.isChecked());
-                                presenter.startTokenize(
-                                        cardNumber.replace(" ", ""),
-                                        expiry.split(" / ")[0],
-                                        expiry.split(" / ")[1],
-                                        cvv
-                                );
+                                if (containerPoint.getVisibility() == View.VISIBLE) {
+                                    presenter.startTokenize(
+                                            cardNumber.replace(" ", ""),
+                                            expiry.split(" / ")[0],
+                                            expiry.split(" / ")[1],
+                                            cvv,
+                                            checkboxPointEnabled.isChecked()
+                                    );
+                                } else {
+                                    presenter.startTokenize(
+                                            cardNumber.replace(" ", ""),
+                                            expiry.split(" / ")[0],
+                                            expiry.split(" / ")[1],
+                                            cvv
+                                    );
+                                }
                             }
                         }
                     }
@@ -883,6 +899,17 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
             UiUtils.hideKeyboard(cardCvvField, this);
             start3DSecurePage(response.redirectUrl);
         } else {
+            startPreCreditCardPayment();
+        }
+    }
+
+    private void startPreCreditCardPayment() {
+        String cardNumber = cardNumberField.getText().toString().trim().replace(" ", "");
+        if (presenter.isBankPointAvailable(cardNumber)
+                && checkboxPointEnabled.isChecked()) {
+            presenter.startGettingBankPoint();
+        } else {
+            showProgressDialog(getString(R.string.processing_payment));
             presenter.startPayment();
         }
     }
@@ -940,6 +967,18 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
     }
 
     @Override
+    public void onGetBankPointSuccess(BankPointResponse bankPointResponse) {
+        dismissProgressDialog();
+        startBankPoint(bankPointResponse);
+    }
+
+    @Override
+    public void onGetBankPointFailure(String message) {
+        dismissProgressDialog();
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     public String getMaskedCardNumber() {
         return null;
     }
@@ -976,12 +1015,17 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
         Logger.d(TAG, "reqCode:" + requestCode + " | res:" + resultCode);
         if (resultCode == RESULT_OK) {
             if (requestCode == Constants.INTENT_CODE_WEB_PAYMENT) {
-                showProgressDialog(getString(R.string.processing_payment));
-                presenter.startPayment();
+                startPreCreditCardPayment();
             }
 
             if (requestCode == STATUS_REQUEST_CODE) {
                 finishPayment(resultCode, presenter.getPaymentResult());
+            }
+
+            if (requestCode == BANK_POINT_REQUEST_CODE) {
+                float redeemedPoint = data.getFloatExtra(BankPointsActivity.EXTRA_DATA_POINT, 0f);
+                showProgressDialog(getString(R.string.processing_payment));
+                presenter.startPayment(redeemedPoint);
             }
 
         } else if (resultCode == RESULT_CANCELED) {
@@ -1015,6 +1059,7 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
             setCardTitle(savedToken);
             if (savedToken.tokenType.equals(SavedToken.TWO_CLICKS)) {
                 checkInstallment();
+                checkBankPoint();
             }
             containerSaveCard.setVisibility(View.GONE);
             scanCardButton.setVisibility(View.GONE);
@@ -1118,5 +1163,23 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
 
     private void hideInstallmentContainer() {
         containerInstallment.setVisibility(View.GONE);
+    }
+
+    private void checkBankPoint() {
+        String cardNumber = cardNumberField.getText().toString().trim().replace(" ", "");
+        if (presenter.isBankPointAvailable(cardNumber)) {
+            containerPoint.setVisibility(View.VISIBLE);
+        } else {
+            containerPoint.setVisibility(View.GONE);
+        }
+    }
+
+    private void startBankPoint(BankPointResponse bankPointResponse) {
+        Intent intent = new Intent(this, BankPointsActivity.class);
+        float point = Float.parseFloat(bankPointResponse.pointBalanceAmount);
+        intent.putExtra(BankPointsActivity.EXTRA_POINT, point);
+        String cardNumber = cardNumberField.getText().toString().trim().replace(" ", "");
+        intent.putExtra(BankPointsActivity.EXTRA_BANK, CreditCardUtils.getBankByBin(presenter.getBankBins(), presenter.getCardBinForBankChecking(cardNumber)));
+        startActivityForResult(intent, BANK_POINT_REQUEST_CODE);
     }
 }

@@ -9,6 +9,7 @@ public class CreditCardPaymentParams {
     private String installment;
     private boolean saveCard;
     private String maskedCard;
+    private float point;
 
 
     /**
@@ -40,11 +41,27 @@ public class CreditCardPaymentParams {
     /**
      * Create credit card payment param
      *
+     * @param maskedCardNumber masked card number.
+     *
      * @return credit card payment params.
      */
     public static CreditCardPaymentParams newOneClickPaymentParams(String maskedCardNumber) {
         CreditCardPaymentParams creditCardPaymentParams = new CreditCardPaymentParams();
         creditCardPaymentParams.setMaskedCard(maskedCardNumber);
+        return creditCardPaymentParams;
+    }
+
+    /**
+     * Create credit card payment param.
+     *
+     * @param cardToken card token.
+     * @param point     redeemed point.
+     * @return credit card payment param.
+     */
+    public static CreditCardPaymentParams newBankPointPaymentParams(String cardToken, float point) {
+        CreditCardPaymentParams creditCardPaymentParams = new CreditCardPaymentParams();
+        creditCardPaymentParams.setCardToken(cardToken);
+        creditCardPaymentParams.setPoint(point);
         return creditCardPaymentParams;
     }
 
@@ -70,6 +87,18 @@ public class CreditCardPaymentParams {
 
     public void setSaveCard(boolean saveCard) {
         this.saveCard = saveCard;
+    }
+
+    public float getPoint() {
+        return point;
+    }
+
+    public void setPoint(float point) {
+        this.point = point;
+    }
+
+    public String getMaskedCard() {
+        return maskedCard;
     }
 
     public void setMaskedCard(String maskedCard) {

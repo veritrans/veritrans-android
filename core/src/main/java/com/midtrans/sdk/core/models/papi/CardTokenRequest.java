@@ -23,6 +23,7 @@ public class CardTokenRequest {
     private String type;
     private String bank;
     private String channel;
+    private boolean point;
 
     public CardTokenRequest() {
 
@@ -857,5 +858,13 @@ public class CardTokenRequest {
 
     public void setChannel(String channel) {
         this.channel = channel;
+    }
+
+    public boolean isPoint() {
+        return point;
+    }
+
+    public void setPoint(boolean point) {
+        this.point = point;
     }
 }

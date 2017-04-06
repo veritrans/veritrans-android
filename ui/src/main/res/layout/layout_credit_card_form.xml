@@ -242,11 +242,11 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/four_dp"
             android:layout_marginTop="@dimen/four_dp"
-            android:text="@string/redeem_bni_reward"
+            android:text="@string/redeem_point_reward"
             android:visibility="visible" />
 
         <ImageButton
-            android:id="@+id/help_bni_point"
+            android:id="@+id/help_bank_point"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -254,7 +254,6 @@
             android:layout_centerVertical="true"
             android:background="?selectableItemBackground"
             android:src="@drawable/ic_hints"
-            android:text="@string/what_is_cvv"
             android:textColor="?colorAccent" />
     </RelativeLayout>
 
