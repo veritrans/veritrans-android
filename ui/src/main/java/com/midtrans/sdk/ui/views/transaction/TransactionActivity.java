@@ -98,8 +98,6 @@ public class TransactionActivity
     }
 
     private void bindViews() {
-        setSupportActionBar(toolbar);
-
         paymentMethodsContainer.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         paymentMethodsContainer.setAdapter(paymentMethodsAdapter);
 
