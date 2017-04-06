@@ -20,15 +20,15 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/btn_redeem_point"
+            android:layout_above="@+id/btn_pay_now"
             android:layout_below="@id/container_item_details">
 
-            <include layout="@layout/layout_bank_points" />
+            <include layout="@layout/layout_form_indomaret" />
 
         </ScrollView>
 
         <com.midtrans.sdk.ui.widgets.FancyButton
-            android:id="@+id/btn_redeem_point"
+            android:id="@+id/btn_pay_now"
             android:layout_width="match_parent"
             android:layout_height="@dimen/button_size"
             android:layout_alignParentBottom="true"
@@ -37,7 +37,7 @@
             android:textColor="@color/white"
             app:fb_defaultColor="@color/navy_blue.primary"
             app:fb_focusColor="@color/colorAccentLight"
-            app:fb_text="@string/redeem_point"
+            app:fb_text="@string/pay_now"
             app:fb_textGravity="center_vertical"
             app:fb_textSize="16sp" />
 

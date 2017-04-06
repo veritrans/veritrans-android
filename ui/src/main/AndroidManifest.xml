@@ -4,7 +4,6 @@
     <application
         android:allowBackup="true"
         android:theme="@style/MidtransSdkTheme">
-
         <activity
             android:name=".views.transaction.TransactionActivity"
             android:screenOrientation="portrait" />
@@ -33,7 +32,9 @@
         <activity
             android:name="com.midtrans.sdk.ui.views.webpayment.PaymentWebActivity"
             android:screenOrientation="portrait" />
-
+        <activity
+            android:name=".views.cstore.indomaret.IndomaretActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
