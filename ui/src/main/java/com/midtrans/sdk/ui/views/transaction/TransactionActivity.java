@@ -24,6 +24,7 @@ import com.midtrans.sdk.ui.constants.PaymentType;
 import com.midtrans.sdk.ui.models.PaymentMethodModel;
 import com.midtrans.sdk.ui.models.PaymentResult;
 import com.midtrans.sdk.ui.utils.Logger;
+import com.midtrans.sdk.ui.views.banktransfer.list.BankTransferListActivity;
 import com.midtrans.sdk.ui.views.creditcard.details.CreditCardDetailsActivity;
 import com.midtrans.sdk.ui.views.creditcard.saved.SavedCardActivity;
 import com.midtrans.sdk.ui.widgets.DefaultTextView;
@@ -31,6 +32,7 @@ import com.midtrans.sdk.ui.widgets.FancyButton;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -197,6 +199,9 @@ public class TransactionActivity
                 startCreditCardFlow();
                 break;
             case PaymentType.BANK_TRANSFER:
+                Intent bankTransferIntent = new Intent(this, BankTransferListActivity.class);
+                bankTransferIntent.putStringArrayListExtra(BankTransferListActivity.ARGS_BANK_LIST, new ArrayList<>(presenter.getBankList()));
+                startActivityForResult(bankTransferIntent, Constants.INTENT_CODE_PAYMENT);
                 break;
             default:
                 break;
@@ -218,6 +223,7 @@ public class TransactionActivity
 
     @Override
     public void onItemShown() {
+
     }
 
     @Override

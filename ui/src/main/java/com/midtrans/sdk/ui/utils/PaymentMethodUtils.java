@@ -4,7 +4,11 @@ import android.content.Context;
 
 import com.midtrans.sdk.core.models.CreditCardType;
 import com.midtrans.sdk.ui.R;
+import com.midtrans.sdk.ui.constants.PaymentType;
 import com.midtrans.sdk.ui.models.PaymentMethodModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.midtrans.sdk.ui.constants.PaymentType.BANK_TRANSFER;
 import static com.midtrans.sdk.ui.constants.PaymentType.BCA_KLIKPAY;
@@ -95,21 +99,47 @@ public class PaymentMethodUtils {
         return paymentMethodModel;
     }
 
-    public static PaymentMethodModel createBankTransferPaymentMethod(Context context, String type) {
+    private static PaymentMethodModel createBankTransferPaymentMethod(Context context, String type) {
         PaymentMethodModel paymentMethodModel = null;
         switch (type) {
             case PERMATA_VA:
+                paymentMethodModel = new PaymentMethodModel(context.getString(R.string.permata_bank_transfer), context.getString(R.string.payment_bank_description_permata), type, R.drawable.ic_permata);
                 break;
             case BCA_VA:
-
+                paymentMethodModel = new PaymentMethodModel(context.getString(R.string.bca_bank_transfer), context.getString(R.string.payment_bank_description_bca), type, R.drawable.ic_bca);
                 break;
             case E_CHANNEL:
-
+                paymentMethodModel = new PaymentMethodModel(context.getString(R.string.mandiri_bank_transfer), context.getString(R.string.payment_bank_description_mandiri), type, R.drawable.ic_mandiri_bill);
                 break;
             case OTHER_VA:
-
+                paymentMethodModel = new PaymentMethodModel(context.getString(R.string.other_bank_transfer), context.getString(R.string.payment_bank_description_other), type, R.drawable.ic_atm);
                 break;
         }
-        return null;
+        return paymentMethodModel;
+    }
+
+    public static boolean isCreditCardExist(List<PaymentMethodModel> paymentMethods) {
+        for (PaymentMethodModel paymentMethodModel : paymentMethods) {
+            if (paymentMethodModel.getPaymentType().equals(PaymentType.CREDIT_CARD)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * create bank payment method models by payment type
+     * @param context
+     * @param bankList banks type
+     * @return bank payment method models
+     */
+    public static List<PaymentMethodModel> createBankPaymentMethods(Context context, List<String> bankList) {
+        List<PaymentMethodModel> paymentMethodList = new ArrayList<>();
+        if (bankList != null && !bankList.isEmpty()) {
+            for (String paymentType : bankList) {
+                paymentMethodList.add(createBankTransferPaymentMethod(context, paymentType));
+            }
+        }
+        return paymentMethodList;
     }
 }

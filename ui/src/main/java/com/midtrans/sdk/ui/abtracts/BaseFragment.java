@@ -1,7 +1,9 @@
 package com.midtrans.sdk.ui.abtracts;
 
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatCheckBox;
+import android.support.v7.widget.AppCompatEditText;
 import android.view.View;
 
 import com.midtrans.sdk.ui.widgets.FancyButton;
@@ -74,5 +76,17 @@ public class BaseFragment extends Fragment {
             return ((BaseActivity) getActivity()).getPrimaryDarkColor();
         }
         return 0;
+    }
+
+    public void setTextInputColorFilter(TextInputLayout textInputLayout) {
+        if (getActivity() instanceof BaseActivity) {
+            ((BaseActivity) getActivity()).setTextInputLayoutColorFilter(textInputLayout);
+        }
+    }
+
+    public void setEditTextCompatBackgroundTintColor(AppCompatEditText appCompatEditText) {
+        if (getActivity() instanceof BaseActivity) {
+            ((BaseActivity) getActivity()).setEditTextCompatBackgroundTintColor(appCompatEditText);
+        }
     }
 }

@@ -691,4 +691,7 @@
     <string name="error_message_failed_checkout">Checkout failed.\nPlease try again or cancel the payment.</string>
     <string name="mandiri_debit_card">Mandiri Debit Card</string>
     <string name="bni_debit_online_card">BNI Debit Online Card</string>
+    <string name="tab_atm_bersama">ATM Bersama</string>
+    <string name="tab_prima">Prima</string>
+    <string name="error_invalid_payment_form">Invalid Form Payment</string>
 </resources>

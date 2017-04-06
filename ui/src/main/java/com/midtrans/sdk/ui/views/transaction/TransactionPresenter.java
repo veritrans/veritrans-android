@@ -35,7 +35,7 @@ import static com.midtrans.sdk.ui.constants.PaymentType.E_CHANNEL;
 public class TransactionPresenter extends BasePresenter implements TransactionContract.Presenter {
     private Context context;
     private List<PaymentMethodModel> paymentMethodList = new ArrayList<>();
-    private List<PaymentMethodModel> bankTranferList = new ArrayList<>();
+    private List<String> bankTranferList = new ArrayList<>();
     private TransactionContract.View view;
 
     public TransactionPresenter(Context context, TransactionContract.View view) {
@@ -61,23 +61,23 @@ public class TransactionPresenter extends BasePresenter implements TransactionCo
                 midtransUiSdk.getCheckoutUrl(),
                 midtransUiSdk.getCheckoutTokenRequest(),
                 new MidtransCoreCallback<CheckoutTokenResponse>() {
-            @Override
-            public void onSuccess(CheckoutTokenResponse checkoutTokenResponse) {
-                getTransactionDetails(checkoutTokenResponse.token);
-            }
+                    @Override
+                    public void onSuccess(CheckoutTokenResponse checkoutTokenResponse) {
+                        getTransactionDetails(checkoutTokenResponse.token);
+                    }
 
-            @Override
-            public void onFailure(CheckoutTokenResponse object) {
-                view.showProgressContainer(false);
-                view.showErrorContainer(createCheckoutErrorMessage(object), isErrorNeedRetry(object));
-            }
+                    @Override
+                    public void onFailure(CheckoutTokenResponse object) {
+                        view.showProgressContainer(false);
+                        view.showErrorContainer(createCheckoutErrorMessage(object), isErrorNeedRetry(object));
+                    }
 
-            @Override
-            public void onError(Throwable throwable) {
-                view.showProgressContainer(false);
-                view.showErrorContainer();
-            }
-        });
+                    @Override
+                    public void onError(Throwable throwable) {
+                        view.showProgressContainer(false);
+                        view.showErrorContainer();
+                    }
+                });
     }
 
     private String createCheckoutErrorMessage(CheckoutTokenResponse checkoutTokenResponse) {
@@ -166,16 +166,13 @@ public class TransactionPresenter extends BasePresenter implements TransactionCo
     }
 
     private List<PaymentMethodModel> createPaymentMethodsModel(List<SnapEnabledPayment> enabledPayments) {
+        paymentMethodList.clear();
         bankTranferList.clear();
 
         for (SnapEnabledPayment enabledPayment : enabledPayments) {
             if ((enabledPayment.category != null && enabledPayment.category.equals(PaymentCategory.BANK_TRANSFER))
                     || enabledPayment.type.equalsIgnoreCase(E_CHANNEL)) {
-
-                PaymentMethodModel bankTransferPaymentMethod = PaymentMethodUtils.createBankTransferPaymentMethod(context, enabledPayment.type);
-                if (bankTransferPaymentMethod != null) {
-                    bankTranferList.add(bankTransferPaymentMethod);
-                }
+                bankTranferList.add(enabledPayment.type);
             } else {
                 PaymentMethodModel model = PaymentMethodUtils.createPaymentMethodModel(context, enabledPayment.type);
                 if (model != null) {
@@ -185,7 +182,11 @@ public class TransactionPresenter extends BasePresenter implements TransactionCo
         }
 
         if (!bankTranferList.isEmpty()) {
-            paymentMethodList.add(PaymentMethodUtils.createPaymentMethodModel(context, PaymentType.BANK_TRANSFER));
+            if (PaymentMethodUtils.isCreditCardExist(paymentMethodList)) {
+                paymentMethodList.add(1, PaymentMethodUtils.createPaymentMethodModel(context, PaymentType.BANK_TRANSFER));
+            } else {
+                paymentMethodList.add(0, PaymentMethodUtils.createPaymentMethodModel(context, PaymentType.BANK_TRANSFER));
+            }
         }
 
         return paymentMethodList;
@@ -197,5 +198,9 @@ public class TransactionPresenter extends BasePresenter implements TransactionCo
 
     public int getPrimaryColor() {
         return midtransUiSdk.getColorTheme().getPrimaryColor();
+    }
+
+    public List<String> getBankList() {
+        return bankTranferList;
     }
 }

@@ -8,12 +8,14 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatCheckBox;
+import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -35,12 +37,16 @@ import com.midtrans.sdk.ui.utils.Logger;
 import com.midtrans.sdk.ui.views.PaymentStatusFragment;
 import com.midtrans.sdk.ui.widgets.FancyButton;
 
+import java.lang.reflect.Field;
+
 /**
  * Created by ziahaqi on 2/19/17.
  */
 
 public abstract class BaseActivity extends AppCompatActivity {
 
+    private static final String DEFAULT_TEXT_COLOR = "mDefaultTextColor";
+    private static final String FOCUSED_TEXT_COLOR = "mFocusedTextColor";
     protected String currentFragmentName;
     protected Fragment currentFragment = null;
     protected boolean saveCurrentFragment = false;
@@ -115,7 +121,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void completePayment(PaymentResult result) {
         Intent data = new Intent();
         data.putExtra(Constants.PAYMENT_RESULT, result);
-        setResult(this.resultCode, data);
+        setResult(resultCode, data);
         finish();
     }
 
@@ -256,6 +262,29 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
+    public void setTextInputLayoutColorFilter(TextInputLayout textInputLayout) {
+        try {
+            Field fDefaultTextColor = TextInputLayout.class.getDeclaredField(DEFAULT_TEXT_COLOR);
+            fDefaultTextColor.setAccessible(true);
+            fDefaultTextColor.set(textInputLayout, new ColorStateList(new int[][]{{0}}, new int[]{getSecondaryColor()}));
+
+            Field fFocusedTextColor = TextInputLayout.class.getDeclaredField(FOCUSED_TEXT_COLOR);
+            fFocusedTextColor.setAccessible(true);
+            fFocusedTextColor.set(textInputLayout, new ColorStateList(new int[][]{{0}}, new int[]{getSecondaryColor()}));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setEditTextCompatBackgroundTintColor(AppCompatEditText editText) {
+        try {
+            editText.setSupportBackgroundTintList(new ColorStateList(new int[][]{{0}}, new int[]{getSecondaryColor()}));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void initToolbarBackButton() {
         // Set toolbar back icon
         if (primaryDarkColor != 0) {
@@ -333,5 +362,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (MidtransUi.getInstance().getCustomSetting().isAnimationEnabled()) {
             overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
         }
+    }
+
+    @Override
+    public void setSupportActionBar(@Nullable Toolbar toolbar) {
+        Drawable backButton = ContextCompat.getDrawable(this, R.drawable.ic_back);
+        backButton.setColorFilter(getPrimaryDarkColor(), PorterDuff.Mode.SRC_ATOP);
+        toolbar.setNavigationIcon(backButton);
+        super.setSupportActionBar(toolbar);
     }
 }

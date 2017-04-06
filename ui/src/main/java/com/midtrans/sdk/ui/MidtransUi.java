@@ -284,6 +284,9 @@ public class MidtransUi {
         this.transaction = null;
     }
 
+    public void trackEvent(String eventName) {
+    }
+
     /**
      * MidtransUi builder class.
      */

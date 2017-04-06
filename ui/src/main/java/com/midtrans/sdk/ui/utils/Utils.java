@@ -20,7 +20,6 @@ import java.util.Locale;
 public class Utils {
 
     /**
-     *
      * @param amount
      * @return formatted  amount
      */
@@ -65,10 +64,15 @@ public class Utils {
         return false;
     }
 
-    public static SnapCustomerDetails createSnapCustomerDetails() {
+    public static SnapCustomerDetails createSnapCustomerDetails(String newEmail) {
         SnapTransaction transaction = MidtransUi.getInstance().getTransaction();
         String fullName = TextUtils.isEmpty(transaction.customerDetails.lastName) ? transaction.customerDetails.firstName : getFullName(transaction.customerDetails.firstName, transaction.customerDetails.lastName);
-        return new SnapCustomerDetails(fullName, transaction.customerDetails.email, transaction.customerDetails.phone);
+        String userEmail = newEmail;
+
+        if (TextUtils.isEmpty(userEmail)) {
+            userEmail = transaction.customerDetails.email;
+        }
+        return new SnapCustomerDetails(fullName, userEmail, transaction.customerDetails.phone);
     }
 
     public static String getFullName(String firstName, String lastName) {

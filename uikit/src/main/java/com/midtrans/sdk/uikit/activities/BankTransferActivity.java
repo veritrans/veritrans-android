@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -104,7 +103,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
         // setup home fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+        if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                 && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
             fragmentTransaction.setCustomAnimations(R.anim.slide_in, R.anim.slide_out, R.anim.slide_in_back, R.anim.slide_out_back);
         }
@@ -167,7 +166,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
 
     private void prepareToolbar() {
         Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_back);
-        MidtransSDK midtransSDK =MidtransSDK.getInstance();
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
         if (midtransSDK.getColorTheme() != null && midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
             drawable.setColorFilter(
                     midtransSDK.getColorTheme().getPrimaryDarkColor(),
@@ -274,7 +273,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
             FragmentManager fragmentManager = getSupportFragmentManager();
 
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+            if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                     && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                 fragmentTransaction.setCustomAnimations(R.anim.slide_in, R.anim.slide_out, R.anim.slide_in_back, R.anim.slide_out_back);
             }
@@ -328,7 +327,6 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
                 return;
             }
         }
-
 
         final MidtransSDK midtransSDK = MidtransSDK.getInstance();
 
