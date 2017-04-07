@@ -47,6 +47,9 @@
         <activity
             android:name=".views.cstore.kioson.KiosonInstructionActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.gci.GiftCardIndonesiaActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

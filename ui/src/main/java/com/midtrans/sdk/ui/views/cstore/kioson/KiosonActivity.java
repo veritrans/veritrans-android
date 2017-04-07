@@ -157,7 +157,12 @@ public class KiosonActivity extends BaseActivity implements KiosonView {
     @Override
     public void onKiosonPaymentSuccess(KiosonPaymentResponse response) {
         dismissProgressDialog();
-        startKiosonStatus(response);
+        if (midtransUi.getCustomSetting().isShowPaymentStatus()) {
+            startKiosonStatus(response);
+        } else {
+            finishPayment(RESULT_OK, presenter.getPaymentResult());
+        }
+
     }
 
     @Override
