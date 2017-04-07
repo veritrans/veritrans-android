@@ -9,6 +9,7 @@ import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -98,7 +99,10 @@ public class BankPointsActivity extends BaseActivity {
         containerAmount.setAlpha(0.5f);
         setBackgroundColor(containerTotalPoint, Theme.SECONDARY_COLOR);
         containerTotalPoint.setAlpha(0.5f);
-
+        // Set font into pay now button
+        if (!TextUtils.isEmpty(midtransUi.getSemiBoldFontPath())) {
+            redeemPointButton.setCustomTextFont(midtransUi.getSemiBoldFontPath());
+        }
         initThemeColor();
     }
 
@@ -225,5 +229,7 @@ public class BankPointsActivity extends BaseActivity {
     public void onBackPressed() {
         setResult(RESULT_CANCELED);
         finish();
+
+        overrideBackAnimation();
     }
 }

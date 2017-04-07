@@ -8,8 +8,10 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.abtracts.BaseActivity;
 import com.midtrans.sdk.ui.adapters.ItemDetailsAdapter;
@@ -19,6 +21,7 @@ import com.midtrans.sdk.ui.models.PaymentResult;
 import com.midtrans.sdk.ui.utils.UiUtils;
 import com.midtrans.sdk.ui.widgets.DefaultTextView;
 import com.midtrans.sdk.ui.widgets.FancyButton;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by ziahaqi on 4/3/17.
@@ -29,6 +32,7 @@ public class BankTransferPaymentActivity extends BaseActivity {
     public static final String STATUS_FRAGMENT = "status";
     public static final String SOMETHING_WENT_WRONG = "Something went wrong";
     public static final String ARGS_PAYMENT_TYPE = "payment.type";
+
     public String currentFragment = PAYMENT_FRAGMENT;
 
     private FancyButton buttonSeeAccountNumber;
@@ -36,6 +40,7 @@ public class BankTransferPaymentActivity extends BaseActivity {
     private RecyclerView rvItemDetails;
     private BankTransferPresenter presenter;
     private BankTransferPaymentFragment paymentFragment;
+    private ImageView merchantLogo;
 
     private String paymentType;
     private ItemDetailsAdapter itemDetailsAdapter;
@@ -83,12 +88,15 @@ public class BankTransferPaymentActivity extends BaseActivity {
         buttonSeeAccountNumber = (FancyButton) findViewById(R.id.btn_confirm_payment);
         tvTitle = (DefaultTextView) findViewById(R.id.page_title);
         rvItemDetails = (RecyclerView)findViewById(R.id.container_item_details);
+        merchantLogo = (ImageView) findViewById(R.id.merchant_logo);
     }
 
     private void setupViews() {
         setBackgroundColor(buttonSeeAccountNumber, Theme.PRIMARY_COLOR);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Picasso.with(this)
+                .load(MidtransUi.getInstance().getTransaction().merchant.preference.logoUrl)
+                .into(merchantLogo);
         tvTitle.setText(getString(R.string.bank_transfer));
         rvItemDetails.setLayoutManager(new LinearLayoutManager(this));
         rvItemDetails.setAdapter(itemDetailsAdapter);
@@ -99,6 +107,10 @@ public class BankTransferPaymentActivity extends BaseActivity {
                 onBackPressed();
             }
         });
+
+        if (!TextUtils.isEmpty(MidtransUi.getInstance().getSemiBoldFontPath())) {
+            buttonSeeAccountNumber.setCustomTextFont(MidtransUi.getInstance().getSemiBoldFontPath());
+        }
         buttonSeeAccountNumber.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -149,6 +161,7 @@ public class BankTransferPaymentActivity extends BaseActivity {
             replaceFragment(statusFragment, R.id.fragment_container, false, false);
         }
 
+        buttonSeeAccountNumber.setText(getString(R.string.complete_payment_at_atm));
         currentFragment = STATUS_FRAGMENT;
     }
 

@@ -85,6 +85,14 @@ public class BankTransferMandiriStatusFragment extends BaseFragment {
     }
 
     private void setupView() {
+        // Set color themes
+        setBorderColor(buttonSeeInstruction);
+        setTextColor(buttonSeeInstruction);
+        setBorderColor(buttonCopyCompanyCode);
+        setTextColor(buttonCopyCompanyCode);
+        setBorderColor(buttonBillPayCode);
+        setTextColor(buttonBillPayCode);
+
         buttonSeeInstruction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -111,7 +119,7 @@ public class BankTransferMandiriStatusFragment extends BaseFragment {
     private void showInstruction() {
         Intent intent = new Intent(getActivity(), BankTransferInstructionActivity.class);
         intent.putExtra(BankTransferInstructionActivity.BANK, paymentType);
-        ((BankTransferPaymentActivity) getActivity()).startActivity(intent);
+        startActivity(intent);
     }
 
     /**
@@ -121,7 +129,7 @@ public class BankTransferMandiriStatusFragment extends BaseFragment {
         Intent intent = new Intent(getActivity(), BankTransferInstructionActivity.class);
         intent.putExtra(BankTransferInstructionActivity.BANK, paymentType);
         intent.putExtra(BankTransferInstructionActivity.DOWNLOAD_URL, downloadUrl);
-        ((BankTransferPaymentActivity) getActivity()).startActivity(intent);
+        startActivity(intent);
     }
 
     @Override

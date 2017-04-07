@@ -1,6 +1,7 @@
 package com.midtrans.sdk.ui.views.instructions;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -13,20 +14,14 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
+import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.abtracts.BaseActivity;
 import com.midtrans.sdk.ui.constants.PaymentType;
-import com.midtrans.sdk.ui.views.instructions.InstructionATMBersamaFragment;
-import com.midtrans.sdk.ui.views.instructions.InstructionAltoFragment;
-import com.midtrans.sdk.ui.views.instructions.InstructionBCAFragment;
-import com.midtrans.sdk.ui.views.instructions.InstructionBCAKlikFragment;
-import com.midtrans.sdk.ui.views.instructions.InstructionBCAMobileFragment;
-import com.midtrans.sdk.ui.views.instructions.InstructionMandiriFragment;
-import com.midtrans.sdk.ui.views.instructions.InstructionMandiriInternetFragment;
-import com.midtrans.sdk.ui.views.instructions.InstructionPermataFragment;
-import com.midtrans.sdk.ui.views.instructions.InstructionPrimaFragment;
 import com.midtrans.sdk.ui.widgets.DefaultTextView;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by ziahaqi on 4/4/17.
@@ -46,6 +41,7 @@ public class BankTransferInstructionActivity extends BaseActivity {
     private TabLayout tabLayout;
     private Button downloadInstruction;
     private DefaultTextView textHeaderTitle;
+    private ImageView merchantLogo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,16 +102,31 @@ public class BankTransferInstructionActivity extends BaseActivity {
      * set up action bar, view pager and tabs.
      */
     private void initializeViews() {
-
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         textHeaderTitle = (DefaultTextView) findViewById(R.id.title_header);
         tabLayout = (TabLayout) findViewById(R.id.instruction_tabs);
         viewPager = (ViewPager) findViewById(R.id.pager_bank_instruction);
         downloadInstruction = (Button) findViewById(R.id.btn_download_instruction);
+        merchantLogo = (ImageView) findViewById(R.id.merchant_logo);
     }
 
 
     private void setUpTabLayout() {
+        if (MidtransUi.getInstance().getColorTheme().getPrimaryColor() != 0) {
+            tabLayout.setSelectedTabIndicatorColor(MidtransUi.getInstance().getColorTheme().getPrimaryColor());
+        }
+
+        if (MidtransUi.getInstance().getColorTheme().getPrimaryDarkColor() != 0) {
+            downloadInstruction.setTextColor(MidtransUi.getInstance().getColorTheme().getPrimaryDarkColor());
+        }
+        if (!TextUtils.isEmpty(MidtransUi.getInstance().getSemiBoldFontPath())) {
+            downloadInstruction.setTypeface(
+                    Typeface.createFromAsset(
+                            getAssets(),
+                            MidtransUi.getInstance().getSemiBoldFontPath()
+                    )
+            );
+        }
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -138,6 +149,10 @@ public class BankTransferInstructionActivity extends BaseActivity {
      * set adapter to view pager and also adds page margin between view pages.
      */
     private void setUpViewPager() {
+        Picasso.with(this)
+                .load(MidtransUi.getInstance().getTransaction().merchant.preference.logoUrl)
+                .into(merchantLogo);
+
         viewPager.setPageMargin(PAGE_MARGIN);
         int pageNumber;
         switch (getIntent().getStringExtra(BANK)) {

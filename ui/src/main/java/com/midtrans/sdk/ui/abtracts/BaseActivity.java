@@ -34,7 +34,7 @@ import com.midtrans.sdk.ui.constants.Theme;
 import com.midtrans.sdk.ui.models.PaymentResult;
 import com.midtrans.sdk.ui.themes.BaseColorTheme;
 import com.midtrans.sdk.ui.utils.Logger;
-import com.midtrans.sdk.ui.views.PaymentStatusFragment;
+import com.midtrans.sdk.ui.views.status.PaymentStatusFragment;
 import com.midtrans.sdk.ui.widgets.FancyButton;
 
 import java.lang.reflect.Field;
@@ -44,6 +44,7 @@ import java.lang.reflect.Field;
  */
 
 public abstract class BaseActivity extends AppCompatActivity {
+    public static final int STATUS_REQUEST_CODE = 1015;
 
     private static final String DEFAULT_TEXT_COLOR = "mDefaultTextColor";
     private static final String FOCUSED_TEXT_COLOR = "mFocusedTextColor";
@@ -359,6 +360,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        overrideBackAnimation();
+    }
+
+    protected void overrideBackAnimation() {
         if (MidtransUi.getInstance().getCustomSetting().isAnimationEnabled()) {
             overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
         }

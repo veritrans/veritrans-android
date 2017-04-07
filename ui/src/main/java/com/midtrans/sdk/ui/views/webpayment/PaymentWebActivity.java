@@ -6,27 +6,33 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.abtracts.BaseActivity;
 import com.midtrans.sdk.ui.constants.Constants;
 import com.midtrans.sdk.ui.utils.Logger;
+import com.squareup.picasso.Picasso;
 
 
 public class PaymentWebActivity extends BaseActivity {
     private String webUrl;
     private String type;
+    private TextView titleText;
+    private PaymentWebPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_web);
+        initPresenter();
         initDefaultProperties();
         initViews();
-        setupViews();
+        initToolbar();
 
         MidtransWebviewFragment midtransWebviewFragment;
         if (type != null && !TextUtils.isEmpty(type)) {
@@ -37,14 +43,33 @@ public class PaymentWebActivity extends BaseActivity {
         replaceFragment(midtransWebviewFragment, R.id.webview_container, true, false);
     }
 
-    private void setupViews() {
-        toolbar.setTitle(R.string.processing_payment);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    private void initPresenter() {
+        presenter = new PaymentWebPresenter();
     }
 
     private void initViews() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        titleText = (TextView) findViewById(R.id.page_title);
+    }
+
+    private void initToolbar() {
+        // Set title
+        setHeaderTitle(getString(R.string.processing_payment));
+
+        // Set merchant logo
+        ImageView merchantLogo = (ImageView) findViewById(R.id.merchant_logo);
+        Picasso.with(this)
+                .load(MidtransUi.getInstance().getTransaction().merchant.preference.logoUrl)
+                .into(merchantLogo);
+
+        initToolbarBackButton();
+        // Set back button click listener
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
     }
 
     private void initDefaultProperties() {
@@ -55,17 +80,8 @@ public class PaymentWebActivity extends BaseActivity {
         Logger.d(TAG, "type:" + type);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        if (item.getItemId() == android.R.id.home) {
-            showCancelConfirmationDialog();
-            return true;
-        } else if (item.getItemId() == R.id.action_close) {
-            showCancelConfirmationDialog();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+    private void setHeaderTitle(String title) {
+        titleText.setText(title);
     }
 
     @Override

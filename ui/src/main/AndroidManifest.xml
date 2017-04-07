@@ -4,12 +4,8 @@
     <application
         android:allowBackup="true"
         android:theme="@style/MidtransSdkTheme">
-
         <activity
             android:name=".views.transaction.TransactionActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".views.creditcard.CreditCardActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.creditcard.saved.SavedCardActivity"
@@ -19,7 +15,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".views.PaymentStatusActivity"
+            android:name=".views.status.PaymentStatusActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.banktransfer.list.BankTransferListActivity"
@@ -32,11 +28,16 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.creditcard.points.BankPointsActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.midtrans.sdk.ui.views.webpayment.PaymentWebActivity"
             android:screenOrientation="portrait" />
-
+        <activity
+            android:name=".views.cstore.indomaret.IndomaretActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.cstore.indomaret.IndomaretStatusActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

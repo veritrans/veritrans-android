@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.abtracts.BaseFragment;
 import com.midtrans.sdk.ui.adapters.InstructionFragmentPagerAdapter;
@@ -137,6 +138,9 @@ public class BankTransferPaymentFragment extends BaseFragment implements BankTra
 
 
     private void setUpTabLayout() {
+        if (MidtransUi.getInstance().getColorTheme().getPrimaryColor() != 0) {
+            tabLayout.setSelectedTabIndicatorColor(MidtransUi.getInstance().getColorTheme().getPrimaryColor());
+        }
         tabLayout.setupWithViewPager(pagerInstruction);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override

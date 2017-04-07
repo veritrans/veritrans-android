@@ -1,4 +1,4 @@
-package com.midtrans.sdk.ui.views;
+package com.midtrans.sdk.ui.views.status;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -177,6 +177,10 @@ public class PaymentStatusActivity extends BaseActivity {
         if (MidtransUi.getInstance().getColorTheme() != null
                 && MidtransUi.getInstance().getColorTheme().getPrimaryColor() != 0) {
             buttonFinish.setBackgroundColor(MidtransUi.getInstance().getColorTheme().getPrimaryColor());
+            // Set font into pay now button
+            if (!TextUtils.isEmpty(MidtransUi.getInstance().getSemiBoldFontPath())) {
+                buttonFinish.setCustomTextFont(MidtransUi.getInstance().getSemiBoldFontPath());
+            }
         }
     }
 

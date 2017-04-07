@@ -43,8 +43,8 @@ import com.midtrans.sdk.ui.models.PaymentResult;
 import com.midtrans.sdk.ui.utils.CreditCardUtils;
 import com.midtrans.sdk.ui.utils.Logger;
 import com.midtrans.sdk.ui.utils.UiUtils;
-import com.midtrans.sdk.ui.views.PaymentStatusActivity;
 import com.midtrans.sdk.ui.views.creditcard.points.BankPointsActivity;
+import com.midtrans.sdk.ui.views.status.PaymentStatusActivity;
 import com.midtrans.sdk.ui.views.webpayment.PaymentWebActivity;
 import com.midtrans.sdk.ui.widgets.FancyButton;
 import com.squareup.picasso.Picasso;
@@ -62,7 +62,6 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
 
     public static final String EXTRA_CARD_DETAILS = "card.details";
     public static final String EXTRA_DELETED_CARD_DETAILS = "card.deleted.details";
-    public static final int STATUS_REQUEST_CODE = 1015;
 
     private static final int BANK_POINT_REQUEST_CODE = 1025;
 
@@ -194,7 +193,10 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
         filterEditTextColor(cardNumberField);
         filterEditTextColor(cardExpiryField);
         filterEditTextColor(cardCvvField);
-
+        // Set font into pay now button
+        if (!TextUtils.isEmpty(midtransUi.getSemiBoldFontPath())) {
+            payNowButton.setCustomTextFont(midtransUi.getSemiBoldFontPath());
+        }
         initInstallmentColorTheme();
         initThemeColor();
     }

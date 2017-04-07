@@ -6,7 +6,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.widget.ImageView;
 
+import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.abtracts.BaseActivity;
 import com.midtrans.sdk.ui.adapters.BankTransferListAdapter;
@@ -17,6 +19,7 @@ import com.midtrans.sdk.ui.models.PaymentMethodModel;
 import com.midtrans.sdk.ui.utils.PaymentMethodUtils;
 import com.midtrans.sdk.ui.views.banktransfer.payment.BankTransferPaymentActivity;
 import com.midtrans.sdk.ui.widgets.DefaultTextView;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -29,6 +32,7 @@ public class BankTransferListActivity extends BaseActivity implements BankTransf
 
     private RecyclerView rvBankList, rvItemDetails;
     private DefaultTextView tvTitle;
+    private ImageView merchantLogo;
 
     private BankTransferListAdapter bankTransferListAdapter;
     private ItemDetailsAdapter itemDetailsAdapter;
@@ -61,7 +65,6 @@ public class BankTransferListActivity extends BaseActivity implements BankTransf
 
     private void setupView() {
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(new android.view.View.OnClickListener() {
             @Override
             public void onClick(android.view.View view) {
@@ -75,6 +78,9 @@ public class BankTransferListActivity extends BaseActivity implements BankTransf
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         rvBankList.setAdapter(bankTransferListAdapter);
         tvTitle.setText(getString(R.string.activity_select_bank));
+        Picasso.with(this)
+                .load(MidtransUi.getInstance().getTransaction().merchant.preference.logoUrl)
+                .into(merchantLogo);
         setBackgroundColor(rvItemDetails, Theme.PRIMARY_COLOR);
     }
 
@@ -83,6 +89,7 @@ public class BankTransferListActivity extends BaseActivity implements BankTransf
         rvItemDetails = (RecyclerView) findViewById(R.id.container_item_details);
         tvTitle = (DefaultTextView) findViewById(R.id.page_title);
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        merchantLogo = (ImageView) findViewById(R.id.merchant_logo);
     }
 
     @Override

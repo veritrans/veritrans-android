@@ -103,6 +103,12 @@ public class BankTransferStatusFragment extends BaseFragment {
     }
 
     private void setupView() {
+        // set color themes
+        setBorderColor(buttonSeeInstruction);
+        setTextColor(buttonSeeInstruction);
+        setBorderColor(buttonCopy);
+        setTextColor(buttonCopy);
+
         buttonSeeInstruction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -129,7 +135,7 @@ public class BankTransferStatusFragment extends BaseFragment {
     private void showInstruction() {
         Intent intent = new Intent(getActivity(), BankTransferInstructionActivity.class);
         intent.putExtra(BankTransferInstructionActivity.BANK, paymentType);
-        ((BankTransferPaymentActivity) getActivity()).startActivity(intent);
+        getActivity().startActivity(intent);
     }
 
     /**
@@ -139,7 +145,7 @@ public class BankTransferStatusFragment extends BaseFragment {
         Intent intent = new Intent(getActivity(), BankTransferInstructionActivity.class);
         intent.putExtra(BankTransferInstructionActivity.BANK, paymentType);
         intent.putExtra(BankTransferInstructionActivity.DOWNLOAD_URL, downloadUrl);
-        ((BankTransferPaymentActivity) getActivity()).startActivity(intent);
+        getActivity().startActivity(intent);
     }
 
     @Override

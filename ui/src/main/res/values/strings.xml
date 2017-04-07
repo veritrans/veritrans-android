@@ -694,7 +694,6 @@
     <string name="tab_atm_bersama">ATM Bersama</string>
     <string name="tab_prima">Prima</string>
     <string name="error_invalid_payment_form">Invalid Form Payment</string>
-
     <string name="how_much_point">How much points you want to redeem?</string>
     <string name="total_bank_point">Your total points</string>
     <string name="bank_bni">BNI</string>

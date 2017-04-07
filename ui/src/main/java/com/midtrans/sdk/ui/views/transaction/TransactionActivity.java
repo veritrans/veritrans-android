@@ -27,6 +27,7 @@ import com.midtrans.sdk.ui.utils.Logger;
 import com.midtrans.sdk.ui.views.banktransfer.list.BankTransferListActivity;
 import com.midtrans.sdk.ui.views.creditcard.details.CreditCardDetailsActivity;
 import com.midtrans.sdk.ui.views.creditcard.saved.SavedCardActivity;
+import com.midtrans.sdk.ui.views.cstore.indomaret.IndomaretActivity;
 import com.midtrans.sdk.ui.widgets.DefaultTextView;
 import com.midtrans.sdk.ui.widgets.FancyButton;
 import com.squareup.picasso.Callback;
@@ -97,8 +98,6 @@ public class TransactionActivity
     }
 
     private void bindViews() {
-        setSupportActionBar(toolbar);
-
         paymentMethodsContainer.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         paymentMethodsContainer.setAdapter(paymentMethodsAdapter);
 
@@ -203,6 +202,9 @@ public class TransactionActivity
                 bankTransferIntent.putStringArrayListExtra(BankTransferListActivity.ARGS_BANK_LIST, new ArrayList<>(presenter.getBankList()));
                 startActivityForResult(bankTransferIntent, Constants.INTENT_CODE_PAYMENT);
                 break;
+            case PaymentType.INDOMARET:
+                startIndomaretPaymentFlow();
+                break;
             default:
                 break;
         }
@@ -219,6 +221,11 @@ public class TransactionActivity
             Intent intent = new Intent(this, CreditCardDetailsActivity.class);
             startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
         }
+    }
+
+    private void startIndomaretPaymentFlow() {
+        Intent intent = new Intent(this, IndomaretActivity.class);
+        startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
     }
 
     @Override
@@ -283,5 +290,7 @@ public class TransactionActivity
         MidtransUi.getInstance().clearTransaction();
         presenter.sendPaymentResult(new PaymentResult(true));
         finish();
+
+        overrideBackAnimation();
     }
 }
