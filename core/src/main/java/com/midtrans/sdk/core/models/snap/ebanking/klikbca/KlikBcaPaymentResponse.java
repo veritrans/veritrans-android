@@ -9,7 +9,7 @@ import com.midtrans.sdk.core.models.snap.ebanking.EbankingPaymentResponse;
 public class KlikBcaPaymentResponse extends EbankingPaymentResponse {
 
     public final String approvalCode;
-    public final String bcaKlikBcaExpireTime;
+    public final String bcaKlikbcaExpireTime;
 
     public KlikBcaPaymentResponse(String statusCode,
                                   String statusMessage,
@@ -23,7 +23,7 @@ public class KlikBcaPaymentResponse extends EbankingPaymentResponse {
                                   String finishRedirectUrl,
                                   String redirectUrl,
                                   String approvalCode,
-                                  String bcaKlikBcaExpireTime) {
+                                  String bcaKlikbcaExpireTime) {
         super(statusCode,
                 statusMessage,
                 transactionId,
@@ -35,6 +35,6 @@ public class KlikBcaPaymentResponse extends EbankingPaymentResponse {
                 finishRedirectUrl,
                 redirectUrl);
         this.approvalCode = approvalCode;
-        this.bcaKlikBcaExpireTime = bcaKlikBcaExpireTime;
+        this.bcaKlikbcaExpireTime = bcaKlikbcaExpireTime;
     }
 }
