@@ -29,6 +29,7 @@ import com.midtrans.sdk.ui.views.creditcard.details.CreditCardDetailsActivity;
 import com.midtrans.sdk.ui.views.creditcard.saved.SavedCardActivity;
 import com.midtrans.sdk.ui.views.cstore.indomaret.IndomaretActivity;
 import com.midtrans.sdk.ui.views.cstore.kioson.KiosonActivity;
+import com.midtrans.sdk.ui.views.ebanking.klikbca.KlikBcaActivity;
 import com.midtrans.sdk.ui.views.gci.GiftCardIndonesiaActivity;
 import com.midtrans.sdk.ui.widgets.DefaultTextView;
 import com.midtrans.sdk.ui.widgets.FancyButton;
@@ -200,9 +201,10 @@ public class TransactionActivity
                 startCreditCardFlow();
                 break;
             case PaymentType.BANK_TRANSFER:
-                Intent bankTransferIntent = new Intent(this, BankTransferListActivity.class);
-                bankTransferIntent.putStringArrayListExtra(BankTransferListActivity.ARGS_BANK_LIST, new ArrayList<>(presenter.getBankList()));
-                startActivityForResult(bankTransferIntent, Constants.INTENT_CODE_PAYMENT);
+                startBankTransferPaymentFlow();
+                break;
+            case PaymentType.KLIK_BCA:
+                startKlikBca();
                 break;
             case PaymentType.INDOMARET:
                 startIndomaretPaymentFlow();
@@ -229,6 +231,17 @@ public class TransactionActivity
             Intent intent = new Intent(this, CreditCardDetailsActivity.class);
             startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
         }
+    }
+
+    private void startBankTransferPaymentFlow() {
+        Intent intent = new Intent(this, BankTransferListActivity.class);
+        intent.putStringArrayListExtra(BankTransferListActivity.ARGS_BANK_LIST, new ArrayList<>(presenter.getBankList()));
+        startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
+    }
+
+    private void startKlikBca() {
+        Intent intent = new Intent(this, KlikBcaActivity.class);
+        startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
     }
 
     private void startIndomaretPaymentFlow() {
