@@ -74,7 +74,7 @@
                     android:gravity="end"
                     android:paddingEnd="@dimen/activity_horizontal_margin"
                     android:paddingRight="@dimen/activity_horizontal_margin"
-                    android:text="@string/payment_instrution"
+                    android:text="@string/payment_instruction"
                     android:textColor="@color/dark_gray"
                     android:textSize="@dimen/tool_bar_title_size"
                     android:visibility="visible" />
