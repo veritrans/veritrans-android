@@ -36,7 +36,6 @@ public class PaymentStatusActivity extends BaseActivity {
     private SemiBoldTextView statusErrorMessage;
     private DefaultTextView totalAmount;
     private DefaultTextView orderId;
-    private DefaultTextView transactionTime;
     private DefaultTextView paymentType;
     private DefaultTextView bank;
     private DefaultTextView installmentTerm;
@@ -49,7 +48,6 @@ public class PaymentStatusActivity extends BaseActivity {
     private LinearLayout layoutBank;
     private LinearLayout layoutOrderId;
     private LinearLayout layoutPaymentType;
-    private LinearLayout layoutPaymentTime;
 
     private LinearLayout layoutDetails;
     private FrameLayout layoutMain;
@@ -78,7 +76,6 @@ public class PaymentStatusActivity extends BaseActivity {
         bank = (DefaultTextView) findViewById(R.id.text_status_bank);
         orderId = (DefaultTextView) findViewById(R.id.text_order_id);
         paymentType = (DefaultTextView) findViewById(R.id.text_payment_type);
-        transactionTime = (DefaultTextView) findViewById(R.id.text_status_transaction_time);
         layoutTotalAmount = (LinearLayout) findViewById(R.id.layout_status_total_amount);
         layoutTotalDueAmount = (LinearLayout) findViewById(R.id.layout_status_due_amount);
         layoutInstallmentTerm = (LinearLayout) findViewById(R.id.layout_status_due_installment);
@@ -86,7 +83,6 @@ public class PaymentStatusActivity extends BaseActivity {
         layoutOrderId = (LinearLayout) findViewById(R.id.layout_status_order);
         layoutInstallmentTerm = (LinearLayout) findViewById(R.id.layout_status_due_installment);
         layoutPaymentType = (LinearLayout) findViewById(R.id.layout_status_payment_type);
-        layoutPaymentTime = (LinearLayout) findViewById(R.id.layout_status_payment_time);
         layoutDetails = (LinearLayout) findViewById(R.id.layout_status_details);
         buttonFinish = (FancyButton) findViewById(R.id.btn_finish);
         buttonInstruction = (FancyButton) findViewById(R.id.btn_see_instruction);
@@ -103,7 +99,13 @@ public class PaymentStatusActivity extends BaseActivity {
             // Set payment type
             switch (paymentResult.getTransactionResponse().paymentType) {
                 case PaymentType.CREDIT_CARD:
-                    paymentType.setText(getString(R.string.payment_method_credit_card));
+                    paymentType.setText(R.string.payment_method_credit_card);
+                    break;
+                case PaymentType.MANDIRI_CLICKPAY:
+                    paymentType.setText(R.string.payment_method_mandiri_clickpay);
+                    break;
+                case PaymentType.GCI:
+                    paymentType.setText(R.string.payment_method_gci);
                     break;
             }
 
@@ -115,14 +117,6 @@ public class PaymentStatusActivity extends BaseActivity {
             if (!TextUtils.isEmpty(amount)) {
                 String formattedAmount = amount.split(Pattern.quote(".")).length == 2 ? amount.split(Pattern.quote("."))[0] : amount;
                 totalAmount.setText(formattedAmount);
-            }
-
-            // Set transaction time
-            if (!TextUtils.isEmpty(paymentResult.getTransactionResponse().transactionTime)) {
-                transactionTime.setText(paymentResult.getTransactionResponse().transactionTime);
-                layoutPaymentTime.setVisibility(View.VISIBLE);
-            } else {
-                layoutPaymentTime.setVisibility(View.GONE);
             }
 
             // Set credit card properties
@@ -141,6 +135,8 @@ public class PaymentStatusActivity extends BaseActivity {
                     layoutInstallmentTerm.setVisibility(View.VISIBLE);
                     installmentTerm.setText(creditCardPaymentResponse.getTransactionResponse().installmentTerm);
                 }
+            } else {
+                layoutBank.setVisibility(View.GONE);
             }
         }
 
