@@ -29,7 +29,12 @@ import com.midtrans.sdk.ui.views.creditcard.details.CreditCardDetailsActivity;
 import com.midtrans.sdk.ui.views.creditcard.saved.SavedCardActivity;
 import com.midtrans.sdk.ui.views.cstore.indomaret.IndomaretActivity;
 import com.midtrans.sdk.ui.views.cstore.kioson.KiosonActivity;
+import com.midtrans.sdk.ui.views.ebanking.bca_klikpay.BcaKlikpayActivity;
+import com.midtrans.sdk.ui.views.ebanking.cimb_clicks.CimbClicksActivity;
+import com.midtrans.sdk.ui.views.ebanking.epay_bri.EpayBriActivity;
 import com.midtrans.sdk.ui.views.ebanking.klikbca.KlikBcaActivity;
+import com.midtrans.sdk.ui.views.ebanking.mandiri_clickpay.MandiriClickpayActivity;
+import com.midtrans.sdk.ui.views.ebanking.mandiri_ecash.MandiriEcashActivity;
 import com.midtrans.sdk.ui.views.gci.GiftCardIndonesiaActivity;
 import com.midtrans.sdk.ui.widgets.DefaultTextView;
 import com.midtrans.sdk.ui.widgets.FancyButton;
@@ -206,6 +211,21 @@ public class TransactionActivity
             case PaymentType.KLIK_BCA:
                 startKlikBca();
                 break;
+            case PaymentType.BCA_KLIKPAY:
+                startBcaKlikpayPaymentFlow();
+                break;
+            case PaymentType.MANDIRI_CLICKPAY:
+                startMandiriClickpayPaymentFlow();
+                break;
+            case PaymentType.CIMB_CLICKS:
+                startCimbClicksPaymentFlow();
+                break;
+            case PaymentType.MANDIRI_ECASH:
+                startMandiriEcashPaymentFlow();
+                break;
+            case PaymentType.BRI_EPAY:
+                startEpayBriPaymentFlow();
+                break;
             case PaymentType.INDOMARET:
                 startIndomaretPaymentFlow();
                 break;
@@ -241,6 +261,31 @@ public class TransactionActivity
 
     private void startKlikBca() {
         Intent intent = new Intent(this, KlikBcaActivity.class);
+        startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
+    }
+
+    private void startBcaKlikpayPaymentFlow() {
+        Intent intent = new Intent(this, BcaKlikpayActivity.class);
+        startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
+    }
+
+    private void startMandiriClickpayPaymentFlow() {
+        Intent intent = new Intent(this, MandiriClickpayActivity.class);
+        startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
+    }
+
+    private void startCimbClicksPaymentFlow() {
+        Intent intent = new Intent(this, CimbClicksActivity.class);
+        startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
+    }
+
+    private void startEpayBriPaymentFlow() {
+        Intent intent = new Intent(this, EpayBriActivity.class);
+        startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
+    }
+
+    private void startMandiriEcashPaymentFlow() {
+        Intent intent = new Intent(this, MandiriEcashActivity.class);
         startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
     }
 

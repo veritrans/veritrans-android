@@ -315,43 +315,6 @@
                         android:background="@color/material_grey" />
 
                 </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/layout_status_payment_time"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <com.midtrans.sdk.ui.widgets.DefaultTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/text_payment_time"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/small_text_size"
-                            android:textStyle="bold" />
-
-                        <com.midtrans.sdk.ui.widgets.DefaultTextView
-                            android:id="@+id/text_status_transaction_time"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="right"
-                            android:text="@string/text_payment_time_here"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/primary_text_size" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginBottom="@dimen/two_dp"
-                        android:layout_marginTop="@dimen/two_dp"
-                        android:background="@color/material_grey" />
-                </LinearLayout>
-
                 <com.midtrans.sdk.ui.widgets.FancyButton
                     android:id="@+id/btn_see_instruction"
                     android:layout_width="wrap_content"
