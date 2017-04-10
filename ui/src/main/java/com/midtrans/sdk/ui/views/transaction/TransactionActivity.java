@@ -30,6 +30,7 @@ import com.midtrans.sdk.ui.views.creditcard.saved.SavedCardActivity;
 import com.midtrans.sdk.ui.views.cstore.indomaret.IndomaretActivity;
 import com.midtrans.sdk.ui.views.cstore.kioson.KiosonActivity;
 import com.midtrans.sdk.ui.views.ebanking.bca_klikpay.BcaKlikpayActivity;
+import com.midtrans.sdk.ui.views.ebanking.cimb_clicks.CimbClicksActivity;
 import com.midtrans.sdk.ui.views.ebanking.klikbca.KlikBcaActivity;
 import com.midtrans.sdk.ui.views.ebanking.mandiri_clickpay.MandiriClickpayActivity;
 import com.midtrans.sdk.ui.views.gci.GiftCardIndonesiaActivity;
@@ -223,6 +224,9 @@ public class TransactionActivity
             case PaymentType.GCI:
                 startGiftCardPaymentFlow();
                 break;
+            case PaymentType.CIMB_CLICKS:
+                startCimbClicks();
+                break;
             default:
                 break;
         }
@@ -254,6 +258,11 @@ public class TransactionActivity
 
     private void startBcaKlikpayPaymentFlow() {
         Intent intent = new Intent(this, BcaKlikpayActivity.class);
+        startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
+    }
+
+    private void startCimbClicks() {
+        Intent intent = new Intent(this, CimbClicksActivity.class);
         startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
     }
 
