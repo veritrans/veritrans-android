@@ -60,6 +60,9 @@
         <activity
             android:name=".views.ebanking.mandiri_clickpay.MandiriClickpayActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.ebanking.bca_klikpay.BcaKlikpayActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
