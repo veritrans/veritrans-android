@@ -66,6 +66,9 @@
         <activity
             android:name=".views.ebanking.cimb_clicks.CimbClicksActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.ebanking.epay_bri.EpayBriActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

@@ -31,6 +31,7 @@ import com.midtrans.sdk.ui.views.cstore.indomaret.IndomaretActivity;
 import com.midtrans.sdk.ui.views.cstore.kioson.KiosonActivity;
 import com.midtrans.sdk.ui.views.ebanking.bca_klikpay.BcaKlikpayActivity;
 import com.midtrans.sdk.ui.views.ebanking.cimb_clicks.CimbClicksActivity;
+import com.midtrans.sdk.ui.views.ebanking.epay_bri.EpayBriActivity;
 import com.midtrans.sdk.ui.views.ebanking.klikbca.KlikBcaActivity;
 import com.midtrans.sdk.ui.views.ebanking.mandiri_clickpay.MandiriClickpayActivity;
 import com.midtrans.sdk.ui.views.gci.GiftCardIndonesiaActivity;
@@ -215,6 +216,12 @@ public class TransactionActivity
             case PaymentType.MANDIRI_CLICKPAY:
                 startMandiriClickpayPaymentFlow();
                 break;
+            case PaymentType.CIMB_CLICKS:
+                startCimbClicksPaymentFlow();
+                break;
+            case PaymentType.BRI_EPAY:
+                startEpayBriPaymentFlow();
+                break;
             case PaymentType.INDOMARET:
                 startIndomaretPaymentFlow();
                 break;
@@ -223,9 +230,6 @@ public class TransactionActivity
                 break;
             case PaymentType.GCI:
                 startGiftCardPaymentFlow();
-                break;
-            case PaymentType.CIMB_CLICKS:
-                startCimbClicks();
                 break;
             default:
                 break;
@@ -261,8 +265,13 @@ public class TransactionActivity
         startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
     }
 
-    private void startCimbClicks() {
+    private void startCimbClicksPaymentFlow() {
         Intent intent = new Intent(this, CimbClicksActivity.class);
+        startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
+    }
+
+    private void startEpayBriPaymentFlow() {
+        Intent intent = new Intent(this, EpayBriActivity.class);
         startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
     }
 
