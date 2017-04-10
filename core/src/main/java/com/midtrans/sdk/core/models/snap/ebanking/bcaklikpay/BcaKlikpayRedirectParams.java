@@ -2,11 +2,13 @@ package com.midtrans.sdk.core.models.snap.ebanking.bcaklikpay;
 
 import com.google.gson.annotations.Expose;
 
+import java.io.Serializable;
+
 /**
  * Created by rakawm on 1/24/17.
  */
 
-public class BcaKlikpayRedirectParams {
+public class BcaKlikpayRedirectParams implements Serializable {
 
     // Some fields is not using underscore :(
     @Expose

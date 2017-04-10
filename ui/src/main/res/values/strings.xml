@@ -222,7 +222,7 @@
     <!--KLIK BCA INTENT_CODE_PAYMENT-->
     <string name="bca_klik_pay_instruction_step1">You will be redirected to BCA KlikPay once you tap \'Confirm Payment\' button.</string>
     <string name="bca_klik_pay_instruction_step2">For payment, you can choose to use KlikBCA Individu Account or BCA card.</string>
-    <string name="bca_klik_pay_instruction_step3">For more information about BCA KlikPay please contact Halo BCA at (021) 1500888 or visit www.bca.co.id.</string>
+    <string name="bca_klik_pay_instruction_step3">For more information about BCA KlikPay please contact Halo BCA at (021) 1500888 or visit www.klikbca.com/klikpay.</string>
 
     <!--m-BCA-->
     <string name="bca_mbanking_instruction_step1">1.\tChoose \'m-transfer\'.</string>
