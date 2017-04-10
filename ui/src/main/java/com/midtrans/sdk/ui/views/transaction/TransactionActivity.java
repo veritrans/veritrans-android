@@ -34,6 +34,7 @@ import com.midtrans.sdk.ui.views.ebanking.cimb_clicks.CimbClicksActivity;
 import com.midtrans.sdk.ui.views.ebanking.epay_bri.EpayBriActivity;
 import com.midtrans.sdk.ui.views.ebanking.klikbca.KlikBcaActivity;
 import com.midtrans.sdk.ui.views.ebanking.mandiri_clickpay.MandiriClickpayActivity;
+import com.midtrans.sdk.ui.views.ebanking.mandiri_ecash.MandiriEcashActivity;
 import com.midtrans.sdk.ui.views.gci.GiftCardIndonesiaActivity;
 import com.midtrans.sdk.ui.widgets.DefaultTextView;
 import com.midtrans.sdk.ui.widgets.FancyButton;
@@ -219,6 +220,9 @@ public class TransactionActivity
             case PaymentType.CIMB_CLICKS:
                 startCimbClicksPaymentFlow();
                 break;
+            case PaymentType.MANDIRI_ECASH:
+                startMandiriEcashPaymentFlow();
+                break;
             case PaymentType.BRI_EPAY:
                 startEpayBriPaymentFlow();
                 break;
@@ -265,6 +269,11 @@ public class TransactionActivity
         startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
     }
 
+    private void startMandiriClickpayPaymentFlow() {
+        Intent intent = new Intent(this, MandiriClickpayActivity.class);
+        startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
+    }
+
     private void startCimbClicksPaymentFlow() {
         Intent intent = new Intent(this, CimbClicksActivity.class);
         startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
@@ -275,8 +284,8 @@ public class TransactionActivity
         startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
     }
 
-    private void startMandiriClickpayPaymentFlow() {
-        Intent intent = new Intent(this, MandiriClickpayActivity.class);
+    private void startMandiriEcashPaymentFlow() {
+        Intent intent = new Intent(this, MandiriEcashActivity.class);
         startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
     }
 

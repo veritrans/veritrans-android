@@ -69,6 +69,9 @@
         <activity
             android:name=".views.ebanking.epay_bri.EpayBriActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.ebanking.mandiri_ecash.MandiriEcashActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
