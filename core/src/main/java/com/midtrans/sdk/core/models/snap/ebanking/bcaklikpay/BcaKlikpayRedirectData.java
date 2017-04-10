@@ -1,10 +1,12 @@
 package com.midtrans.sdk.core.models.snap.ebanking.bcaklikpay;
 
+import java.io.Serializable;
+
 /**
  * Created by rakawm on 1/24/17.
  */
 
-public class BcaKlikpayRedirectData {
+public class BcaKlikpayRedirectData implements Serializable {
     public final String url;
     public final String method;
     public final BcaKlikpayRedirectParams params;

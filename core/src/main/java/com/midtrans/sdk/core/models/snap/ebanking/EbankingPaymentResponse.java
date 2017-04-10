@@ -2,11 +2,13 @@ package com.midtrans.sdk.core.models.snap.ebanking;
 
 import com.midtrans.sdk.core.models.snap.BaseTransactionResponse;
 
+import java.io.Serializable;
+
 /**
  * Created by rakawm on 1/24/17.
  */
 
-public class EbankingPaymentResponse extends BaseTransactionResponse {
+public class EbankingPaymentResponse extends BaseTransactionResponse implements Serializable {
     public final String redirectUrl;
 
     public EbankingPaymentResponse(String statusCode,
