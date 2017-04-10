@@ -63,6 +63,9 @@
         <activity
             android:name=".views.ebanking.bca_klikpay.BcaKlikpayActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.ebanking.cimb_clicks.CimbClicksActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
