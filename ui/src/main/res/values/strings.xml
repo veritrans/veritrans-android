@@ -708,4 +708,6 @@
     <string name="total_point">Your total %1$s Reward Point is %2$s</string>
     <string name="redeem_bni_title">Redeem BNI Reward Point</string>
     <string name="redeem_bni_details">You can pay partly through the redemption of BNI Reward Point through your Credit Card.</string>
+    <string name="error_tcash_token_empty">Please fill T-Cash Token</string>
+    <string name="status_code_400">400</string>
 </resources>

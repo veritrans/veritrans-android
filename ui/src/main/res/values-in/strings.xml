@@ -496,4 +496,5 @@
     <string name="how_much_point">Berapa poin yang ingin anda tukarkan?</string>
     <string name="total_bank_point">Total poin anda</string>
     <string name="status_redeemed_point">DISKON POIN</string>
+    <string name="error_tcash_token_empty">Please fill T-Cash Token</string>
 </resources>

@@ -29,6 +29,7 @@ import com.midtrans.sdk.ui.views.creditcard.details.CreditCardDetailsActivity;
 import com.midtrans.sdk.ui.views.creditcard.saved.SavedCardActivity;
 import com.midtrans.sdk.ui.views.cstore.indomaret.IndomaretActivity;
 import com.midtrans.sdk.ui.views.cstore.kioson.KiosonActivity;
+import com.midtrans.sdk.ui.views.ewallet.tcash.TelkomselCashActivity;
 import com.midtrans.sdk.ui.views.gci.GiftCardIndonesiaActivity;
 import com.midtrans.sdk.ui.widgets.DefaultTextView;
 import com.midtrans.sdk.ui.widgets.FancyButton;
@@ -200,9 +201,7 @@ public class TransactionActivity
                 startCreditCardFlow();
                 break;
             case PaymentType.BANK_TRANSFER:
-                Intent bankTransferIntent = new Intent(this, BankTransferListActivity.class);
-                bankTransferIntent.putStringArrayListExtra(BankTransferListActivity.ARGS_BANK_LIST, new ArrayList<>(presenter.getBankList()));
-                startActivityForResult(bankTransferIntent, Constants.INTENT_CODE_PAYMENT);
+                startBankTransferPaymentFlow();
                 break;
             case PaymentType.INDOMARET:
                 startIndomaretPaymentFlow();
@@ -213,9 +212,23 @@ public class TransactionActivity
             case PaymentType.GCI:
                 startGiftCardPaymentFlow();
                 break;
+            case PaymentType.TELKOMSEL_CASH:
+                startTelkomselCashFlow();
+                break;
             default:
                 break;
         }
+    }
+
+    private void startBankTransferPaymentFlow() {
+        Intent bankTransferIntent = new Intent(this, BankTransferListActivity.class);
+        bankTransferIntent.putStringArrayListExtra(BankTransferListActivity.ARGS_BANK_LIST, new ArrayList<>(presenter.getBankList()));
+        startActivityForResult(bankTransferIntent, Constants.INTENT_CODE_PAYMENT);
+    }
+
+    private void startTelkomselCashFlow() {
+        Intent intent = new Intent(this, TelkomselCashActivity.class);
+        startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
     }
 
     private void startCreditCardFlow() {

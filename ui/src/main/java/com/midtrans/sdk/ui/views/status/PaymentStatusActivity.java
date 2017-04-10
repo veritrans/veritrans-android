@@ -105,6 +105,11 @@ public class PaymentStatusActivity extends BaseActivity {
                 case PaymentType.CREDIT_CARD:
                     paymentType.setText(getString(R.string.payment_method_credit_card));
                     break;
+
+                case PaymentType.TELKOMSEL_CASH:
+                    paymentType.setText(getString(R.string.payment_method_telkomsel_cash));
+                    layoutBank.setVisibility(View.GONE);
+                    break;
             }
 
             // Set order id
@@ -116,6 +121,7 @@ public class PaymentStatusActivity extends BaseActivity {
                 String formattedAmount = amount.split(Pattern.quote(".")).length == 2 ? amount.split(Pattern.quote("."))[0] : amount;
                 totalAmount.setText(formattedAmount);
             }
+
 
             // Set transaction time
             if (!TextUtils.isEmpty(paymentResult.getTransactionResponse().transactionTime)) {
