@@ -81,7 +81,6 @@ public class PaymentStatusActivity extends BaseActivity {
         layoutInstallmentTerm = (LinearLayout) findViewById(R.id.layout_status_due_installment);
         layoutBank = (LinearLayout) findViewById(R.id.layout_status_bank);
         layoutOrderId = (LinearLayout) findViewById(R.id.layout_status_order);
-        layoutInstallmentTerm = (LinearLayout) findViewById(R.id.layout_status_due_installment);
         layoutPaymentType = (LinearLayout) findViewById(R.id.layout_status_payment_type);
         layoutDetails = (LinearLayout) findViewById(R.id.layout_status_details);
         buttonFinish = (FancyButton) findViewById(R.id.btn_finish);
@@ -110,6 +109,10 @@ public class PaymentStatusActivity extends BaseActivity {
 
                 case PaymentType.TELKOMSEL_CASH:
                     paymentType.setText(getString(R.string.payment_method_telkomsel_cash));
+                    layoutBank.setVisibility(View.GONE);
+                    break;
+                case PaymentType.INDOSAT_DOMPETKU:
+                    paymentType.setText(getString(R.string.payment_method_indosat_dompetku));
                     layoutBank.setVisibility(View.GONE);
                     break;
             }

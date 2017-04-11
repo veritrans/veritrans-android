@@ -101,6 +101,8 @@ public class TelkomselCashActivity extends BaseActivity implements TelkomselCash
         initThemeColor();
         setBackgroundColor(buttonPayment, Theme.PRIMARY_COLOR);
         setBackgroundColor(recyclerItemDetails, Theme.PRIMARY_COLOR);
+        setTextInputLayoutColorFilter(layoutTcashToken);
+        setEditTextCompatBackgroundTintColor(editTcashToken);
     }
 
 

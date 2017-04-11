@@ -81,7 +81,9 @@
         <activity
             android:name=".views.ewallet.tcash.TelkomselCashActivity"
             android:screenOrientation="portrait" />
-
+        <activity
+            android:name=".views.ewallet.indosatdompetku.IndosatDompetkuActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

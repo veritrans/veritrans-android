@@ -35,6 +35,7 @@ import com.midtrans.sdk.ui.views.ebanking.epay_bri.EpayBriActivity;
 import com.midtrans.sdk.ui.views.ebanking.klikbca.KlikBcaActivity;
 import com.midtrans.sdk.ui.views.ebanking.mandiri_clickpay.MandiriClickpayActivity;
 import com.midtrans.sdk.ui.views.ebanking.mandiri_ecash.MandiriEcashActivity;
+import com.midtrans.sdk.ui.views.ewallet.indosatdompetku.IndosatDompetkuActivity;
 import com.midtrans.sdk.ui.views.ewallet.tcash.TelkomselCashActivity;
 import com.midtrans.sdk.ui.views.ewallet.xltunai.XlTunaiPaymentActivity;
 import com.midtrans.sdk.ui.views.gci.GiftCardIndonesiaActivity;
@@ -244,9 +245,17 @@ public class TransactionActivity
             case PaymentType.XL_TUNAI:
                 startXlTunaiFlow();
                 break;
+            case PaymentType.INDOSAT_DOMPETKU:
+                startIndosatDompetkuFlow();
+                break;
             default:
                 break;
         }
+    }
+
+    private void startIndosatDompetkuFlow() {
+        Intent intent = new Intent(this, IndosatDompetkuActivity.class);
+        startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
     }
 
     private void startXlTunaiFlow() {
@@ -276,12 +285,6 @@ public class TransactionActivity
             Intent intent = new Intent(this, CreditCardDetailsActivity.class);
             startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
         }
-    }
-
-    private void startBankTransferPaymentFlow() {
-        Intent intent = new Intent(this, BankTransferListActivity.class);
-        intent.putStringArrayListExtra(BankTransferListActivity.ARGS_BANK_LIST, new ArrayList<>(presenter.getBankList()));
-        startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
     }
 
     private void startKlikBca() {
