@@ -65,7 +65,7 @@ public class CreditCardFlowActivity extends BaseActivity {
     public static final int SCAN_REQUEST_CODE = 101;
     private static final String TAG = CreditCardFlowActivity.class.getSimpleName();
     private static final int PAYMENT_WEB_INTENT = 100;
-    private static final int MAX_ATTEMPT = 3;
+    private static final int MAX_ATTEMPT = 2;
     private TransactionResponse transactionResponse;
     private String errorMessage;
 
