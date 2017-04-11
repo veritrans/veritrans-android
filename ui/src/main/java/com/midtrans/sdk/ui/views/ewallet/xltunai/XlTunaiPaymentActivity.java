@@ -171,4 +171,12 @@ public class XlTunaiPaymentActivity extends BaseActivity implements XLTunaiPayme
         setResult(resultCode, data);
         finish();
     }
+
+    @Override
+    public void onBackPressed() {
+        setResult(RESULT_CANCELED);
+        finish();
+
+        overrideBackAnimation();
+    }
 }

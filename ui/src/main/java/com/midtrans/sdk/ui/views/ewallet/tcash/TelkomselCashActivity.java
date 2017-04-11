@@ -198,4 +198,12 @@ public class TelkomselCashActivity extends BaseActivity implements TelkomselCash
             }
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        setResult(RESULT_CANCELED);
+        finish();
+
+        overrideBackAnimation();
+    }
 }

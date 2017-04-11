@@ -23,7 +23,7 @@
             android:layout_above="@+id/btn_pay_now"
             android:layout_below="@id/container_item_details">
 
-            <include layout="@layout/layout_xltunai_status" />
+            <include layout="@layout/layout_xl_tunai_status" />
 
         </ScrollView>
 

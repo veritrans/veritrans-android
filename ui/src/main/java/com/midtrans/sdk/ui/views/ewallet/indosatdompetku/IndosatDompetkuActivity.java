@@ -196,4 +196,12 @@ public class IndosatDompetkuActivity extends BaseActivity implements IndosatDomp
             }
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        setResult(RESULT_CANCELED);
+        finish();
+
+        overrideBackAnimation();
+    }
 }
