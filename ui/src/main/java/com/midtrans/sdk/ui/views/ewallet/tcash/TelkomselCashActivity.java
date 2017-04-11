@@ -46,20 +46,28 @@ public class TelkomselCashActivity extends BaseActivity implements TelkomselCash
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_telkomselcash);
+        setContentView(R.layout.activity_telkomsel_cash);
+        initPresenter();
         initProperties();
         initViews();
+        initToolbar();
         initThemes();
-        setupViews();
+        initpaymentButton();
+        bindValues();
     }
 
-    private void setupViews() {
+    private void initpaymentButton() {
+        buttonPayment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                performPayment();
+            }
+        });
+    }
+
+    private void initToolbar() {
         // Set title
         textTitle.setText(getString(R.string.telkomsel_cash));
-
-        // set item details
-        recyclerItemDetails.setLayoutManager(new LinearLayoutManager(this));
-        recyclerItemDetails.setAdapter(itemDetailsAdapter);
 
         // Set merchant logo
         ImageView merchantLogo = (ImageView) findViewById(R.id.merchant_logo);
@@ -76,13 +84,16 @@ public class TelkomselCashActivity extends BaseActivity implements TelkomselCash
                 onBackPressed();
             }
         });
+    }
 
-        buttonPayment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                performPayment();
-            }
-        });
+    private void initPresenter() {
+        presenter = new TelkomselCashPresenter(this);
+    }
+
+    private void bindValues() {
+        // set item details
+        recyclerItemDetails.setLayoutManager(new LinearLayoutManager(this));
+        recyclerItemDetails.setAdapter(itemDetailsAdapter);
     }
 
     private void performPayment() {
@@ -117,7 +128,6 @@ public class TelkomselCashActivity extends BaseActivity implements TelkomselCash
     }
 
     private void initProperties() {
-        presenter = new TelkomselCashPresenter(this);
         itemDetailsAdapter = new ItemDetailsAdapter(new ItemDetailsAdapter.ItemDetailListener() {
             @Override
             public void onItemShown() {

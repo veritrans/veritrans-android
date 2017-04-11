@@ -34,8 +34,11 @@ public class XlTunaiStatusActivity extends BaseActivity {
     private static final String LABEL_ORDER_ID = "Order ID";
     private static final String LABEL_MERCHANT_CODE = "Merchant Code";
 
-    private DefaultTextView textOrderId, textMerchantCode, textValidUntil;
-    private FancyButton buttonCopyOrderId, buttonCopyMerchantCode;
+    private DefaultTextView textOrderId;
+    private DefaultTextView textMerchantCode;
+    private DefaultTextView textValidUntil;
+    private FancyButton buttonCopyOrderId;
+    private FancyButton buttonCopyMerchantCode;
     private DefaultTextView textTitle;
     private RecyclerView recyclerItemDetails;
     private FancyButton buttonFinish;
@@ -43,50 +46,28 @@ public class XlTunaiStatusActivity extends BaseActivity {
     private BasePaymentPresenter presenter;
     private ItemDetailsAdapter itemDetailsAdapter;
 
-    private String orderId, expirationTime, merchantCode;
+    private String orderId;
+    private String expirationTime;
+    private String merchantCode;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_xltunai_status);
-        initProperties();
+        initPresenter();
         initViews();
+        initItemDetails();
+        initProperties();
+        initToolbar();
         initThemes();
-        setupViews();
+        initCopyButton();
+        initFinishButton();
+        bindValues();
     }
 
-    private void initThemes() {
-        initThemeColor();
-        setBackgroundColor(buttonFinish, Theme.PRIMARY_COLOR);
-        setBackgroundColor(recyclerItemDetails, Theme.PRIMARY_COLOR);
-    }
-
-    private void initProperties() {
-        orderId = getIntent().getStringExtra(EXTRA_ORDER_ID);
-        merchantCode = getIntent().getStringExtra(EXTRA_MERCHANT_CODE);
-        expirationTime = getIntent().getStringExtra(EXTRA_EXPIRATION);
-        presenter = new BasePaymentPresenter();
-        itemDetailsAdapter = new ItemDetailsAdapter(new ItemDetailsAdapter.ItemDetailListener() {
-            @Override
-            public void onItemShown() {
-                // do nothing
-            }
-        }, presenter.createItemDetails(this));
-    }
-
-
-    private void setupViews() {
+    private void initToolbar() {
         // Set title
         textTitle.setText(getString(R.string.xl_tunai));
-
-        //set merchant data
-        textMerchantCode.setText(merchantCode);
-        textOrderId.setText(orderId);
-        textValidUntil.setText(expirationTime);
-
-        // set item details
-        recyclerItemDetails.setLayoutManager(new LinearLayoutManager(this));
-        recyclerItemDetails.setAdapter(itemDetailsAdapter);
 
         // Set merchant logo
         ImageView merchantLogo = (ImageView) findViewById(R.id.merchant_logo);
@@ -103,27 +84,44 @@ public class XlTunaiStatusActivity extends BaseActivity {
                 onBackPressed();
             }
         });
+    }
 
-        buttonCopyOrderId.setOnClickListener(new View.OnClickListener() {
+    private void initItemDetails() {
+        itemDetailsAdapter = new ItemDetailsAdapter(new ItemDetailsAdapter.ItemDetailListener() {
             @Override
-            public void onClick(View view) {
-                copyOrderId();
+            public void onItemShown() {
+                // do nothing
             }
-        });
+        }, presenter.createItemDetails(this));
+    }
 
-        buttonCopyMerchantCode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                copyMerchantCode();
-            }
-        });
+    private void initPresenter() {
+        presenter = new BasePaymentPresenter();
+    }
 
-        buttonFinish.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+    private void initThemes() {
+        initThemeColor();
+        setBackgroundColor(buttonFinish, Theme.PRIMARY_COLOR);
+        setBackgroundColor(recyclerItemDetails, Theme.PRIMARY_COLOR);
+    }
+
+    private void initProperties() {
+        orderId = getIntent().getStringExtra(EXTRA_ORDER_ID);
+        merchantCode = getIntent().getStringExtra(EXTRA_MERCHANT_CODE);
+        expirationTime = getIntent().getStringExtra(EXTRA_EXPIRATION);
+    }
+
+
+    private void bindValues() {
+        //set merchant data
+        textMerchantCode.setText(merchantCode);
+        textOrderId.setText(orderId);
+        textValidUntil.setText(expirationTime);
+
+        // set item details
+        recyclerItemDetails.setLayoutManager(new LinearLayoutManager(this));
+        recyclerItemDetails.setAdapter(itemDetailsAdapter);
+
     }
 
     private void initViews() {
@@ -133,7 +131,7 @@ public class XlTunaiStatusActivity extends BaseActivity {
         textMerchantCode = (DefaultTextView) findViewById(R.id.text_merchant_code);
         textValidUntil = (DefaultTextView) findViewById(R.id.text_validaty);
         buttonCopyOrderId = (FancyButton) findViewById(R.id.btn_copy_order_id);
-        buttonCopyMerchantCode = (FancyButton) findViewById(R.id.btn_copy_order_id);
+        buttonCopyMerchantCode = (FancyButton) findViewById(R.id.btn_copy_merchant_code);
         buttonFinish = (FancyButton) findViewById(R.id.btn_finish);
         recyclerItemDetails = (RecyclerView) findViewById(R.id.container_item_details);
     }
@@ -164,5 +162,30 @@ public class XlTunaiStatusActivity extends BaseActivity {
     private void finishXlTunaiPayment() {
         setResult(RESULT_OK);
         finish();
+    }
+
+    private void initCopyButton() {
+        buttonCopyOrderId.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                copyOrderId();
+            }
+        });
+
+        buttonCopyMerchantCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                copyMerchantCode();
+            }
+        });
+    }
+
+    private void initFinishButton() {
+        buttonFinish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
     }
 }

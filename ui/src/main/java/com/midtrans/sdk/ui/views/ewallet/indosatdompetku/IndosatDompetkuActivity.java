@@ -46,20 +46,27 @@ public class IndosatDompetkuActivity extends BaseActivity implements IndosatDomp
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_indosat_dompetku);
+        initPresenter();
         initProperties();
         initViews();
+        initToolbar();
+        initPaymentButton();
         initThemes();
-        setupViews();
+        bindValues();
     }
 
+    private void initPaymentButton() {
+        buttonPayment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                performPayment();
+            }
+        });
+    }
 
-    private void setupViews() {
+    private void initToolbar() {
         // Set title
         textTitle.setText(getString(R.string.indosat_dompetku));
-
-        // set item details
-        recyclerItemDetails.setLayoutManager(new LinearLayoutManager(this));
-        recyclerItemDetails.setAdapter(itemDetailsAdapter);
 
         // Set merchant logo
         ImageView merchantLogo = (ImageView) findViewById(R.id.merchant_logo);
@@ -76,13 +83,17 @@ public class IndosatDompetkuActivity extends BaseActivity implements IndosatDomp
                 onBackPressed();
             }
         });
+    }
 
-        buttonPayment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                performPayment();
-            }
-        });
+    private void initPresenter() {
+        presenter = new IndosatDompetkuPresenter(this);
+    }
+
+
+    private void bindValues() {
+        // set item details
+        recyclerItemDetails.setLayoutManager(new LinearLayoutManager(this));
+        recyclerItemDetails.setAdapter(itemDetailsAdapter);
     }
 
     private void performPayment() {
@@ -125,7 +136,6 @@ public class IndosatDompetkuActivity extends BaseActivity implements IndosatDomp
     }
 
     private void initProperties() {
-        presenter = new IndosatDompetkuPresenter(this);
         itemDetailsAdapter = new ItemDetailsAdapter(new ItemDetailsAdapter.ItemDetailListener() {
             @Override
             public void onItemShown() {

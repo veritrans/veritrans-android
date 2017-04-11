@@ -38,26 +38,29 @@ public class XlTunaiPaymentActivity extends BaseActivity implements XLTunaiPayme
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_xltunai);
-        initProperties();
+        setContentView(R.layout.activity_xl_tunai);
+        initPresenter();
         iniViews();
+        initItemDetails();
+        initToolbar();
+        initProperties();
+        initPaymentButton();
         initThemes();
-        setupViews();
+        bindValues();
     }
 
-    private void initThemes() {
-        initThemeColor();
-        setBackgroundColor(buttonPayment, Theme.PRIMARY_COLOR);
-        setBackgroundColor(recyclerItemDetails, Theme.PRIMARY_COLOR);
+    private void initPaymentButton() {
+        buttonPayment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                performPayment();
+            }
+        });
     }
 
-    private void setupViews() {
+    private void initToolbar() {
         // Set title
         textTitle.setText(getString(R.string.xl_tunai));
-
-        // set item details
-        recyclerItemDetails.setLayoutManager(new LinearLayoutManager(this));
-        recyclerItemDetails.setAdapter(itemDetailsAdapter);
 
         // Set merchant logo
         ImageView merchantLogo = (ImageView) findViewById(R.id.merchant_logo);
@@ -74,12 +77,31 @@ public class XlTunaiPaymentActivity extends BaseActivity implements XLTunaiPayme
                 onBackPressed();
             }
         });
-        buttonPayment.setOnClickListener(new View.OnClickListener() {
+    }
+
+    private void initItemDetails() {
+        itemDetailsAdapter = new ItemDetailsAdapter(new ItemDetailsAdapter.ItemDetailListener() {
             @Override
-            public void onClick(View view) {
-                performPayment();
+            public void onItemShown() {
+                // do nothing
             }
-        });
+        }, presenter.createItemDetails(this));
+    }
+
+    private void initPresenter() {
+        presenter = new XlTunaiPresenter(this);
+    }
+
+    private void initThemes() {
+        initThemeColor();
+        setBackgroundColor(buttonPayment, Theme.PRIMARY_COLOR);
+        setBackgroundColor(recyclerItemDetails, Theme.PRIMARY_COLOR);
+    }
+
+    private void bindValues() {
+        // set item details
+        recyclerItemDetails.setLayoutManager(new LinearLayoutManager(this));
+        recyclerItemDetails.setAdapter(itemDetailsAdapter);
     }
 
     private void performPayment() {
@@ -104,14 +126,6 @@ public class XlTunaiPaymentActivity extends BaseActivity implements XLTunaiPayme
     }
 
     private void initProperties() {
-        presenter = new XlTunaiPresenter(this);
-        itemDetailsAdapter = new ItemDetailsAdapter(new ItemDetailsAdapter.ItemDetailListener() {
-            @Override
-            public void onItemShown() {
-                // do nothing
-            }
-        }, presenter.createItemDetails(this));
-
         progressDialog = new ProgressDialog(this);
         progressDialog.setIndeterminate(true);
     }

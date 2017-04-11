@@ -228,7 +228,6 @@ public class TransactionActivity
                 break;
             case PaymentType.BRI_EPAY:
                 startEpayBriPaymentFlow();
-                startBankTransferPaymentFlow();
                 break;
             case PaymentType.INDOMARET:
                 startIndomaretPaymentFlow();
@@ -240,25 +239,25 @@ public class TransactionActivity
                 startGiftCardPaymentFlow();
                 break;
             case PaymentType.TELKOMSEL_CASH:
-                startTelkomselCashFlow();
+                startTelkomselCashPaymentFlow();
                 break;
             case PaymentType.XL_TUNAI:
-                startXlTunaiFlow();
+                startXlTunaiPaymentFlow();
                 break;
             case PaymentType.INDOSAT_DOMPETKU:
-                startIndosatDompetkuFlow();
+                startIndosatDompetkuPaymentFlow();
                 break;
             default:
                 break;
         }
     }
 
-    private void startIndosatDompetkuFlow() {
+    private void startIndosatDompetkuPaymentFlow() {
         Intent intent = new Intent(this, IndosatDompetkuActivity.class);
         startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
     }
 
-    private void startXlTunaiFlow() {
+    private void startXlTunaiPaymentFlow() {
         Intent intent = new Intent(this, XlTunaiPaymentActivity.class);
         startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
     }
@@ -269,7 +268,7 @@ public class TransactionActivity
         startActivityForResult(bankTransferIntent, Constants.INTENT_CODE_PAYMENT);
     }
 
-    private void startTelkomselCashFlow() {
+    private void startTelkomselCashPaymentFlow() {
         Intent intent = new Intent(this, TelkomselCashActivity.class);
         startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
     }

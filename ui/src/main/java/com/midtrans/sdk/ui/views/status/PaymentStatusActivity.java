@@ -109,11 +109,9 @@ public class PaymentStatusActivity extends BaseActivity {
 
                 case PaymentType.TELKOMSEL_CASH:
                     paymentType.setText(getString(R.string.payment_method_telkomsel_cash));
-                    layoutBank.setVisibility(View.GONE);
                     break;
                 case PaymentType.INDOSAT_DOMPETKU:
                     paymentType.setText(getString(R.string.payment_method_indosat_dompetku));
-                    layoutBank.setVisibility(View.GONE);
                     break;
             }
 
