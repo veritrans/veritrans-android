@@ -1,9 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.midtrans.sdk.ui">
 
-    <application
-        android:allowBackup="true"
-        android:theme="@style/MidtransSdkTheme">
+    <application>
         <activity
             android:name=".views.transaction.TransactionActivity"
             android:screenOrientation="portrait" />
@@ -49,6 +47,30 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.gci.GiftCardIndonesiaActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.ebanking.klikbca.KlikBcaActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.ebanking.klikbca.KlikBcaStatusActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.ebanking.klikbca.KlikBcaInstructionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.ebanking.mandiri_clickpay.MandiriClickpayActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.ebanking.bca_klikpay.BcaKlikpayActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.ebanking.cimb_clicks.CimbClicksActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.ebanking.epay_bri.EpayBriActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.ebanking.mandiri_ecash.MandiriEcashActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.ewallet.xltunai.XlTunaiPaymentActivity"

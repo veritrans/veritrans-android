@@ -172,7 +172,7 @@
     <string name="copied_bill_code">Billpay code was copied to clipboard</string>
     <string name="copied_company_code">Company code was copied to clipboard</string>
     <string name="complete_payment_at_atm">Complete Payment At ATM</string>
-    <string name="complete_payment_at_klik_bca">Finish</string>
+    <string name="complete_payment_at_klik_bca">Complete Payment at KlikBCA</string>
     <string name="done">Finish</string>
     <string name="virtual_account_number">Virtual Account Number</string>
     <string name="payment_pending">Payment Pending</string>
@@ -222,7 +222,7 @@
     <!--KLIK BCA INTENT_CODE_PAYMENT-->
     <string name="bca_klik_pay_instruction_step1">You will be redirected to BCA KlikPay once you tap \'Confirm Payment\' button.</string>
     <string name="bca_klik_pay_instruction_step2">For payment, you can choose to use KlikBCA Individu Account or BCA card.</string>
-    <string name="bca_klik_pay_instruction_step3">For more information about BCA KlikPay please contact Halo BCA at (021) 1500888 or visit www.bca.co.id.</string>
+    <string name="bca_klik_pay_instruction_step3">For more information about BCA KlikPay please contact Halo BCA at (021) 1500888 or visit www.klikbca.com/klikpay.</string>
 
     <!--m-BCA-->
     <string name="bca_mbanking_instruction_step1">1.\tChoose \'m-transfer\'.</string>
@@ -682,7 +682,7 @@
     <string name="promo_dialog_title">Congratulations</string>
     <string name="promo_dialog_message">With this card, you will get Rp. %1$s discount from %2$s.</string>
     <string name="error_obtain_promo">Failed to obtain promo.</string>
-    <string name="klik_bca_continue">Please continue the payment process via KlikBCA by opening <b>www.klikbca.com</b> on your browser.\n\nTransaction will be cancelled if payment is not completed within 2 hours.</string>
+    <string name="klik_bca_continue">Please continue the payment process via KlikBCA by opening <b>www.klikbca.com</b> on your browser.</string>
     <string name="error_paid_order_id">Order ID has been paid, please use another order ID</string>
     <string name="layout_save_card_dialog">We will securely save your card details so you can reuse them later.</string>
     <string name="redeem_point_reward">Redeem Reward Point</string>

@@ -30,8 +30,6 @@ import java.util.regex.Pattern;
  */
 
 public class PaymentStatusFragment extends BaseFragment {
-
-
     private static final String PARAM_PAYMENT_TYPE = "payment_type";
     private static final String PARAM_PAYMENT_RESULT = "payment_result";
 
@@ -46,14 +44,13 @@ public class PaymentStatusFragment extends BaseFragment {
     private SemiBoldTextView tvStatusErrorMessage;
     private DefaultTextView tvTotalAmount;
     private DefaultTextView tvOrderId;
-    private DefaultTextView tvTransactionTime;
     private DefaultTextView tvPaymentType;
     private DefaultTextView tvBank;
     private DefaultTextView tvInstallmentTerm;
     private DefaultTextView tvStatusTitle;
     private DefaultTextView tvTotalDueAmount;
     private LinearLayout layoutTotalAmount, layoutTotalDueAmount, layoutInstallmentTerm, layoutBank,
-            layoutOrderId, layoutPaymentType, layoutPaymentTime;
+            layoutOrderId, layoutPaymentType;
 
     private LinearLayout layoutDetails;
     private FrameLayout layoutMain;
@@ -124,14 +121,6 @@ public class PaymentStatusFragment extends BaseFragment {
             if (!TextUtils.isEmpty(amount)) {
                 String formattedAmount = amount.split(Pattern.quote(".")).length == 2 ? amount.split(Pattern.quote("."))[0] : amount;
                 tvTotalAmount.setText(formattedAmount);
-            }
-
-            //transaction time
-            if (!TextUtils.isEmpty(paymentResult.getTransactionResponse().transactionTime)) {
-                tvTransactionTime.setText(paymentResult.getTransactionResponse().transactionTime);
-                layoutPaymentTime.setVisibility(View.VISIBLE);
-            } else {
-                layoutPaymentTime.setVisibility(View.GONE);
             }
 
             // bank
@@ -240,7 +229,6 @@ public class PaymentStatusFragment extends BaseFragment {
         tvBank = (DefaultTextView) view.findViewById(R.id.text_status_bank);
         tvOrderId = (DefaultTextView) view.findViewById(R.id.text_order_id);
         tvPaymentType = (DefaultTextView) view.findViewById(R.id.text_payment_type);
-        tvTransactionTime = (DefaultTextView) view.findViewById(R.id.text_status_transaction_time);
 
         layoutTotalAmount = (LinearLayout) view.findViewById(R.id.layout_status_total_amount);
         layoutTotalDueAmount = (LinearLayout) view.findViewById(R.id.layout_status_due_amount);
@@ -249,7 +237,6 @@ public class PaymentStatusFragment extends BaseFragment {
         layoutOrderId = (LinearLayout) view.findViewById(R.id.layout_status_order);
         layoutInstallmentTerm = (LinearLayout) view.findViewById(R.id.layout_status_due_installment);
         layoutPaymentType = (LinearLayout) view.findViewById(R.id.layout_status_payment_type);
-        layoutPaymentTime = (LinearLayout) view.findViewById(R.id.layout_status_payment_time);
         layoutDetails = (LinearLayout) view.findViewById(R.id.layout_status_details);
 
         buttonFinish = (FancyButton) view.findViewById(R.id.btn_finish);

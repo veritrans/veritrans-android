@@ -2,11 +2,13 @@ package com.midtrans.sdk.core.models.snap.ebanking.bcaklikpay;
 
 import com.midtrans.sdk.core.models.snap.ebanking.EbankingPaymentResponse;
 
+import java.io.Serializable;
+
 /**
  * Created by rakawm on 1/24/17.
  */
 
-public class BcaKlikpayPaymentResponse extends EbankingPaymentResponse {
+public class BcaKlikpayPaymentResponse extends EbankingPaymentResponse implements Serializable {
 
     public final BcaKlikpayRedirectData redirectData;
 
