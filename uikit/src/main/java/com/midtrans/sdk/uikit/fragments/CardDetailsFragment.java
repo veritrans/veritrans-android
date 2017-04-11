@@ -400,6 +400,9 @@ public class CardDetailsFragment extends Fragment {
                     //track page cc two clicks
                     midtransSDK.trackEvent(AnalyticsEventName.PAGE_CREDIT_CARD_DETAILS, MixpanelAnalyticsManager.CARD_MODE_TWO_CLICK);
                 }
+
+                setBankType();
+                setCardType();
             } else {
                 //track page cc detail
                 midtransSDK.trackEvent(AnalyticsEventName.PAGE_CREDIT_CARD_DETAILS, MixpanelAnalyticsManager.CARD_MODE_NORMAL);
