@@ -1,27 +1,22 @@
-package com.midtrans.sdk.ui.views.ewallet.tcash;
+package com.midtrans.sdk.ui.views.ewallet.xltunai;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.midtrans.sdk.core.models.snap.ewallet.tcash.TelkomselCashPaymentResponse;
+import com.midtrans.sdk.core.models.snap.ewallet.xltunai.XlTunaiPaymentResponse;
 import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.abtracts.BaseActivity;
 import com.midtrans.sdk.ui.adapters.ItemDetailsAdapter;
 import com.midtrans.sdk.ui.constants.Constants;
 import com.midtrans.sdk.ui.constants.Theme;
 import com.midtrans.sdk.ui.models.PaymentResult;
-import com.midtrans.sdk.ui.utils.UiUtils;
-import com.midtrans.sdk.ui.views.status.PaymentStatusActivity;
 import com.midtrans.sdk.ui.widgets.DefaultTextView;
 import com.midtrans.sdk.ui.widgets.FancyButton;
 import com.squareup.picasso.Picasso;
@@ -30,32 +25,35 @@ import com.squareup.picasso.Picasso;
  * Created by ziahaqi on 4/7/17.
  */
 
-public class TelkomselCashActivity extends BaseActivity implements TelkomselCashView {
+public class XlTunaiPaymentActivity extends BaseActivity implements XLTunaiPaymentView {
 
-    private TextInputLayout layoutTcashToken;
-    private AppCompatEditText editTcashToken;
-    private FancyButton buttonPayment;
-    private RecyclerView recyclerItemDetails;
-    private DefaultTextView textTitle;
-    private ProgressDialog progressDialog;
-
-
-    private TelkomselCashPresenter presenter;
     private ItemDetailsAdapter itemDetailsAdapter;
+
+    private FancyButton buttonPayment;
+    private XlTunaiPresenter presenter;
+    private DefaultTextView textTitle;
+    private RecyclerView recyclerItemDetails;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_telkomselcash);
+        setContentView(R.layout.activity_xltunai);
         initProperties();
-        initViews();
+        iniViews();
         initThemes();
         setupViews();
     }
 
+    private void initThemes() {
+        initThemeColor();
+        setBackgroundColor(buttonPayment, Theme.PRIMARY_COLOR);
+        setBackgroundColor(recyclerItemDetails, Theme.PRIMARY_COLOR);
+    }
+
     private void setupViews() {
         // Set title
-        textTitle.setText(getString(R.string.telkomsel_cash));
+        textTitle.setText(getString(R.string.xl_tunai));
 
         // set item details
         recyclerItemDetails.setLayoutManager(new LinearLayoutManager(this));
@@ -76,7 +74,6 @@ public class TelkomselCashActivity extends BaseActivity implements TelkomselCash
                 onBackPressed();
             }
         });
-
         buttonPayment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,79 +83,8 @@ public class TelkomselCashActivity extends BaseActivity implements TelkomselCash
     }
 
     private void performPayment() {
-        // for sending instruction on email only if email-Id is entered.
-        String tcashToken = editTcashToken.getText().toString().trim();
-        if (TextUtils.isEmpty(tcashToken)) {
-            layoutTcashToken.setError(getString(R.string.error_tcash_token_empty));
-            return;
-        }
-
         showProgressDialog(getString(R.string.processing_payment));
-        presenter.startPayment(tcashToken);
-    }
-
-    private void initThemes() {
-        initThemeColor();
-        setBackgroundColor(buttonPayment, Theme.PRIMARY_COLOR);
-        setBackgroundColor(recyclerItemDetails, Theme.PRIMARY_COLOR);
-    }
-
-
-    private void initViews() {
-        layoutTcashToken = (TextInputLayout) findViewById(R.id.til_tcash_token);
-        editTcashToken = (AppCompatEditText) findViewById(R.id.edit_tcash_token);
-        buttonPayment = (FancyButton) findViewById(R.id.btn_pay_now);
-        recyclerItemDetails = (RecyclerView) findViewById(R.id.container_item_details);
-        textTitle = (DefaultTextView) findViewById(R.id.page_title);
-        toolbar = (Toolbar) findViewById(R.id.main_toolbar);
-
-    }
-
-    private void initProperties() {
-        presenter = new TelkomselCashPresenter(this);
-        itemDetailsAdapter = new ItemDetailsAdapter(new ItemDetailsAdapter.ItemDetailListener() {
-            @Override
-            public void onItemShown() {
-                // do nothing
-            }
-        }, presenter.createItemDetails(this));
-
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-    }
-
-
-    @Override
-    public void onTelkomselCashPaymentSuccess(TelkomselCashPaymentResponse response) {
-        dismissProgressDialog();
-        if (presenter.isShowPaymentStatus()) {
-            startTelkomselCashStatus(response);
-        } else {
-            finishPayment(RESULT_OK, presenter.getPaymentResult());
-        }
-    }
-
-    private void startTelkomselCashStatus(TelkomselCashPaymentResponse response) {
-        Intent intent = new Intent(this, PaymentStatusActivity.class);
-        intent.putExtra(Constants.PAYMENT_RESULT, new PaymentResult<>(response));
-        startActivityForResult(intent, STATUS_REQUEST_CODE);
-    }
-
-    @Override
-    public void onTelkomselCashPaymentFailure(TelkomselCashPaymentResponse response) {
-        dismissProgressDialog();
-
-        if (response != null && response.statusCode.equals(getString(R.string.status_code_400))) {
-            UiUtils.showToast(this, getString(R.string.message_payment_cannot_proccessed));
-        } else {
-            UiUtils.showToast(this, getString(R.string.error_message_invalid_input_telkomsel));
-        }
-    }
-
-    @Override
-    public void onTelkomselCashPaymentError(String message) {
-        dismissProgressDialog();
-        UiUtils.showToast(this, getString(R.string.message_payment_cannot_proccessed));
+        presenter.startPayment();
     }
 
     private void showProgressDialog(String message) {
@@ -170,11 +96,49 @@ public class TelkomselCashActivity extends BaseActivity implements TelkomselCash
         progressDialog.dismiss();
     }
 
-    private void finishPayment(int resultCode, PaymentResult<TelkomselCashPaymentResponse> paymentResult) {
-        Intent data = new Intent();
-        data.putExtra(Constants.PAYMENT_RESULT, paymentResult);
-        setResult(resultCode, data);
-        finish();
+    private void iniViews() {
+        buttonPayment = (FancyButton) findViewById(R.id.btn_pay_now);
+        recyclerItemDetails = (RecyclerView) findViewById(R.id.container_item_details);
+        textTitle = (DefaultTextView) findViewById(R.id.page_title);
+        toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+    }
+
+    private void initProperties() {
+        presenter = new XlTunaiPresenter(this);
+        itemDetailsAdapter = new ItemDetailsAdapter(new ItemDetailsAdapter.ItemDetailListener() {
+            @Override
+            public void onItemShown() {
+                // do nothing
+            }
+        }, presenter.createItemDetails(this));
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setIndeterminate(true);
+    }
+
+    @Override
+    public void onPaymentError(String message) {
+        dismissProgressDialog();
+    }
+
+    @Override
+    public void onPaymentFailure(XlTunaiPaymentResponse response) {
+        dismissProgressDialog();
+        showPaymentStatus(response);
+    }
+
+    @Override
+    public void onPaymentSuccess(XlTunaiPaymentResponse response) {
+        dismissProgressDialog();
+        showPaymentStatus(response);
+    }
+
+    private void showPaymentStatus(XlTunaiPaymentResponse response) {
+        Intent intent = new Intent(this, XlTunaiStatusActivity.class);
+        intent.putExtra(XlTunaiStatusActivity.EXTRA_ORDER_ID, response.xlTunaiOrderId);
+        intent.putExtra(XlTunaiStatusActivity.EXTRA_MERCHANT_CODE, response.xlTunaiMerchantId);
+        intent.putExtra(XlTunaiStatusActivity.EXTRA_EXPIRATION, response.xlExpiration);
+        startActivityForResult(intent, STATUS_REQUEST_CODE);
     }
 
     @Override
@@ -185,5 +149,12 @@ public class TelkomselCashActivity extends BaseActivity implements TelkomselCash
                 finishPayment(resultCode, presenter.getPaymentResult());
             }
         }
+    }
+
+    private void finishPayment(int resultCode, PaymentResult<XlTunaiPaymentResponse> paymentResult) {
+        Intent data = new Intent();
+        data.putExtra(Constants.PAYMENT_RESULT, paymentResult);
+        setResult(resultCode, data);
+        finish();
     }
 }

@@ -30,6 +30,7 @@ import com.midtrans.sdk.ui.views.creditcard.saved.SavedCardActivity;
 import com.midtrans.sdk.ui.views.cstore.indomaret.IndomaretActivity;
 import com.midtrans.sdk.ui.views.cstore.kioson.KiosonActivity;
 import com.midtrans.sdk.ui.views.ewallet.tcash.TelkomselCashActivity;
+import com.midtrans.sdk.ui.views.ewallet.xltunai.XlTunaiPaymentActivity;
 import com.midtrans.sdk.ui.views.gci.GiftCardIndonesiaActivity;
 import com.midtrans.sdk.ui.widgets.DefaultTextView;
 import com.midtrans.sdk.ui.widgets.FancyButton;
@@ -215,9 +216,17 @@ public class TransactionActivity
             case PaymentType.TELKOMSEL_CASH:
                 startTelkomselCashFlow();
                 break;
+            case PaymentType.XL_TUNAI:
+                startXlTunaiFlow();
+                break;
             default:
                 break;
         }
+    }
+
+    private void startXlTunaiFlow() {
+        Intent intent = new Intent(this, XlTunaiPaymentActivity.class);
+        startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
     }
 
     private void startBankTransferPaymentFlow() {

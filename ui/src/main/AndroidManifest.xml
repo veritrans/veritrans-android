@@ -51,11 +51,15 @@
             android:name=".views.gci.GiftCardIndonesiaActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".views.ewallet.xltunai.XlTunaiActivity"
+            android:name=".views.ewallet.xltunai.XlTunaiPaymentActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.ewallet.xltunai.XlTunaiStatusActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.ewallet.tcash.TelkomselCashActivity"
             android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>

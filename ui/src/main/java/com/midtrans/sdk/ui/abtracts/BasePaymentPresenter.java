@@ -18,6 +18,10 @@ import java.util.List;
 
 public class BasePaymentPresenter extends BasePresenter {
 
+    public BasePaymentPresenter() {
+        midtransUiSdk = MidtransUi.getInstance();
+    }
+
     public List<ItemDetail> createItemDetails(Context context) {
         List<ItemDetail> itemViewDetails = new ArrayList<>();
 
@@ -47,5 +51,9 @@ public class BasePaymentPresenter extends BasePresenter {
         } else {
             return null;
         }
+    }
+
+    public String getMerchantLogo() {
+        return midtransUiSdk.getTransaction().merchant.preference.logoUrl;
     }
 }
