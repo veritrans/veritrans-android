@@ -1,11 +1,15 @@
 package com.midtrans.sdk.uikit.fragments;
 
+import android.annotation.TargetApi;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -18,12 +22,29 @@ import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.activities.BankTransferInstructionActivity;
+import com.midtrans.sdk.uikit.adapters.InstructionFragmentPagerAdapter;
+import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
+import com.midtrans.sdk.uikit.widgets.MagicViewPager;
 
 /**
  * Displays status information about mandiri bill pay's api call . Created by shivam on 10/28/15.
  */
 public class MandiriBillPayFragment extends Fragment {
+
+    public static final String KEY_ARG = "args";
+    private static final String LABEL_VA_NUMBER = "Virtual Account Number";
+
+    private static final int PAGE_MARGIN = 20;
+
+    public static final String TYPE_BCA = "bank.bca";
+    public static final String TYPE_BNI = "bank.bni";
+    public static final String TYPE_PERMATA = "bank.permata";
+    public static final String TYPE_MANDIRI = "bank.mandiri";
+    public static final String TYPE_MANDIRI_BILL = "bank.mandiri.bill";
+    public static final String TYPE_ALL_BANK = "bank.others";
+
+    private int POSITION = -1;
 
     private static final String DATA = "data";
     private static final String LABEL_BILL_CODE = "Bill Code Number";
@@ -34,10 +55,12 @@ public class MandiriBillPayFragment extends Fragment {
     //views
     private TextView mTextViewCompanyCode = null;
     private TextView mTextViewBillpayCode = null;
-    private FancyButton btnSeeInstruction = null;
     private TextView mTextViewValidity = null;
     private FancyButton btnCopyBillCode = null;
     private FancyButton btnCopyCompany = null;
+    private FancyButton downloadInstructionButton;
+    private TabLayout instructionTabs;
+    private MagicViewPager instructionViewPager;
 
 
     /**
@@ -80,10 +103,18 @@ public class MandiriBillPayFragment extends Fragment {
     private void initializeViews(View view) {
         mTextViewCompanyCode = (TextView) view.findViewById(R.id.text_company_code);
         mTextViewBillpayCode = (TextView) view.findViewById(R.id.text_bill_pay_code);
-        btnSeeInstruction = (FancyButton) view.findViewById(R.id.btn_see_instruction);
+
         mTextViewValidity = (TextView) view.findViewById(R.id.text_validity);
         btnCopyBillCode = (FancyButton) view.findViewById(R.id.btn_copy_va);
         btnCopyCompany = (FancyButton) view.findViewById(R.id.btn_copy_company_code);
+
+        downloadInstructionButton = (FancyButton) view.findViewById(R.id.btn_download_instruction);
+        instructionTabs = (TabLayout) view.findViewById(R.id.instruction_tabs);
+        instructionViewPager = (MagicViewPager) view.findViewById(R.id.instruction_view_pager);
+
+        setUpViewPager();
+        setUpTabLayout();
+
         MidtransSDK midtransSDK = MidtransSDK.getInstance();
         if (midtransSDK != null && midtransSDK.getColorTheme() != null) {
             if (midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
@@ -91,8 +122,12 @@ public class MandiriBillPayFragment extends Fragment {
                 btnCopyBillCode.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
                 btnCopyCompany.setBorderColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
                 btnCopyCompany.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
-                btnSeeInstruction.setBorderColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
-                btnSeeInstruction.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+                downloadInstructionButton.setBorderColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+                downloadInstructionButton.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+            }
+
+            if (midtransSDK.getColorTheme().getPrimaryColor() !=0) {
+                instructionTabs.setSelectedTabIndicatorColor(midtransSDK.getColorTheme().getPrimaryColor());
             }
         }
 
@@ -106,16 +141,24 @@ public class MandiriBillPayFragment extends Fragment {
 
             mTextViewBillpayCode.setText(mTransactionResponse.getPaymentCode());
 
-            mTextViewValidity.setText(mTransactionResponse.getMandiriBillExpiration());
+            mTextViewValidity.setText(getString(R.string.text_format_valid_until, mTransactionResponse.getMandiriBillExpiration()));
         }
 
-        btnSeeInstruction.setOnClickListener(new View.OnClickListener() {
+        downloadInstructionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(mTransactionResponse.getPdfUrl())) {
-                    showInstruction(mTransactionResponse.getPdfUrl());
+                    downloadInstructionButton.setVisibility(View.VISIBLE);
+                    downloadInstructionButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent webIntent = new Intent(Intent.ACTION_VIEW);
+                            webIntent.setData(Uri.parse(mTransactionResponse.getPdfUrl()));
+                            startActivity(webIntent);
+                        }
+                    });
                 } else {
-                    showInstruction();
+                    downloadInstructionButton.setVisibility(View.GONE);
                 }
             }
         });
@@ -134,37 +177,9 @@ public class MandiriBillPayFragment extends Fragment {
     }
 
     /**
-     * starts {@link BankTransferInstructionActivity} to show payment instruction.
-     */
-    private void showInstruction() {
-        Intent intent = new Intent(getActivity(),
-                BankTransferInstructionActivity.class);
-        intent.putExtra(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_MANDIRI_BILL);
-        getActivity().startActivity(intent);
-        if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
-                && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
-            getActivity().overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
-        }
-    }
-
-    /**
-     * starts {@link BankTransferInstructionActivity} to show payment instruction.
-     */
-    private void showInstruction(String downloadUrl) {
-        Intent intent = new Intent(getActivity(),
-                BankTransferInstructionActivity.class);
-        intent.putExtra(BankTransferInstructionActivity.BANK, BankTransferInstructionActivity.TYPE_MANDIRI_BILL);
-        intent.putExtra(BankTransferInstructionActivity.DOWNLOAD_URL, downloadUrl);
-        getActivity().startActivity(intent);
-        if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
-                && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
-            getActivity().overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
-        }
-    }
-
-    /**
      * Copy generated Bill Code Number to clipboard.
      */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void copyBillCode() {
         ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText(LABEL_BILL_CODE, mTextViewBillpayCode.getText().toString());
@@ -176,11 +191,46 @@ public class MandiriBillPayFragment extends Fragment {
     /**
      * Copy generated Company Code Number to clipboard.
      */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void copyCompanyCode() {
         ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText(LABEL_COMPANY_CODE, mTextViewCompanyCode.getText().toString());
         clipboard.setPrimaryClip(clip);
         // Show toast
         Toast.makeText(getContext(), R.string.copied_company_code, Toast.LENGTH_SHORT).show();
+    }
+
+    private void setUpTabLayout() {
+        instructionTabs.setupWithViewPager(instructionViewPager);
+        instructionTabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                instructionViewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
+        });
+    }
+
+    /**
+     * set adapter to view pager and also adds page margin between view pages.
+     */
+    private void setUpViewPager() {
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
+        instructionViewPager.setPageMargin(PAGE_MARGIN);
+        //track page mandiri bill overview
+        midtransSDK.trackEvent(AnalyticsEventName.PAGE_MANDIRI_BILL_OVERVIEW);
+
+        InstructionFragmentPagerAdapter adapter = new InstructionFragmentPagerAdapter(getContext(), TYPE_MANDIRI_BILL, getChildFragmentManager(), 2);
+        instructionViewPager.setAdapter(adapter);
+        if (POSITION > -1) {
+            instructionViewPager.setCurrentItem(POSITION);
+        }
     }
 }
