@@ -16,9 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/sixteen_dp"
-            android:paddingLeft="@dimen/sixteen_dp"
-            android:paddingRight="@dimen/sixteen_dp"
-            android:text="@string/instruction"
+            android:text="@string/title_instruction_klikbca"
             android:textColor="@color/dark_gray"
             android:textSize="@dimen/primary_text_size"/>
 
@@ -28,25 +26,23 @@
             android:layout_marginTop="@dimen/sixteen_dp"
             android:background="@color/light_gray"
             android:paddingBottom="@dimen/five_dp"
-            android:paddingLeft="@dimen/sixteen_dp"
-            android:paddingRight="@dimen/sixteen_dp"
+            android:paddingLeft="@dimen/eight_dp"
+            android:paddingRight="@dimen/eight_dp"
             android:paddingTop="@dimen/five_dp"
             android:text="@string/bca_klik_instruction_step1"
             android:textColor="@color/black"
-            android:textSize="@dimen/secondary_text_size"
-              />
+            android:textSize="@dimen/secondary_text_size" />
 
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
             android:lineSpacingExtra="2dp"
-            android:paddingLeft="@dimen/sixteen_dp"
-            android:paddingRight="@dimen/sixteen_dp"
+            android:paddingLeft="@dimen/eight_dp"
+            android:paddingRight="@dimen/eight_dp"
             android:text="@string/bca_klik_instruction_step2"
             android:textColor="@color/black"
-            android:textSize="@dimen/secondary_text_size"
-              />
+            android:textSize="@dimen/secondary_text_size" />
 
 
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
@@ -56,13 +52,12 @@
             android:background="@color/light_gray"
             android:lineSpacingExtra="2dp"
             android:paddingBottom="@dimen/five_dp"
-            android:paddingLeft="@dimen/sixteen_dp"
-            android:paddingRight="@dimen/sixteen_dp"
+            android:paddingLeft="@dimen/eight_dp"
+            android:paddingRight="@dimen/eight_dp"
             android:paddingTop="@dimen/five_dp"
             android:text="@string/bca_klik_instruction_step3"
             android:textColor="@color/black"
-            android:textSize="@dimen/secondary_text_size"
-              />
+            android:textSize="@dimen/secondary_text_size" />
 
 
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
@@ -70,12 +65,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
             android:lineSpacingExtra="2dp"
-            android:paddingLeft="@dimen/sixteen_dp"
-            android:paddingRight="@dimen/sixteen_dp"
+            android:paddingLeft="@dimen/eight_dp"
+            android:paddingRight="@dimen/eight_dp"
             android:text="@string/bca_klik_instruction_step4"
             android:textColor="@color/black"
-            android:textSize="@dimen/secondary_text_size"
-              />
+            android:textSize="@dimen/secondary_text_size" />
 
 
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
@@ -85,13 +79,12 @@
             android:background="@color/light_gray"
             android:lineSpacingExtra="2dp"
             android:paddingBottom="@dimen/five_dp"
-            android:paddingLeft="@dimen/sixteen_dp"
-            android:paddingRight="@dimen/sixteen_dp"
+            android:paddingLeft="@dimen/eight_dp"
+            android:paddingRight="@dimen/eight_dp"
             android:paddingTop="@dimen/five_dp"
             android:text="@string/bca_klik_instruction_step5"
             android:textColor="@color/black"
-            android:textSize="@dimen/secondary_text_size"
-              />
+            android:textSize="@dimen/secondary_text_size" />
 
 
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
@@ -99,11 +92,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
             android:lineSpacingExtra="2dp"
-            android:paddingLeft="@dimen/sixteen_dp"
-            android:paddingRight="@dimen/sixteen_dp"
+            android:paddingLeft="@dimen/eight_dp"
+            android:paddingRight="@dimen/eight_dp"
             android:text="@string/bca_klik_instruction_step6"
             android:textColor="@color/black"
-            android:textSize="@dimen/secondary_text_size"
-              />
+            android:textSize="@dimen/secondary_text_size" />
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

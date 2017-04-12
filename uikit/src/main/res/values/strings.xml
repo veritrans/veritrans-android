@@ -724,4 +724,18 @@
     <string name="one_click_confirmation_message">You are about to make a payment of %2$s with credit card %1$s</string>
     <string name="text_confirm">Confirm</string>
     <string name="text_cancel">Cancel</string>
+
+    <string name="title_instruction_klikbca">KlikBCA Step by Step</string>
+    <string name="title_instruction_alto">Alto Step by Step</string>
+    <string name="title_instruction_atm_bersama">ATM Bersama Step by Step</string>
+    <string name="title_instruction_bca">BCA Bank Transfer Step by Step</string>
+    <string name="title_instruction_bca_mbca">BCA Mobile Step by Step</string>
+    <string name="title_instruction_bni_atm">BNI Bank Transfer Step by Step</string>
+    <string name="title_instruction_bni_internet">BNI Internet Step by Step</string>
+    <string name="title_instruction_bni_mobile">BNI Mobile Step by Step</string>
+    <string name="title_instruction_mandiri">Mandiri Bank Transfer Step by Step</string>
+    <string name="title_instruction_mandiri_internet">Mandiri Internet Step by Step</string>
+    <string name="title_instruction_permata">Permata Bank Transfer Step by Step</string>
+    <string name="title_instruction_prima">Prima Step by Step</string>
+
 </resources>

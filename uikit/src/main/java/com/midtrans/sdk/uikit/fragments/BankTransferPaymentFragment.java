@@ -5,7 +5,6 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,7 +15,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,7 +50,6 @@ public class BankTransferPaymentFragment extends Fragment {
     private MagicViewPager instructionViewPager;
     private FancyButton downloadInstructionButton;
     private TabLayout instructionTabs;
-    private LinearLayout containerInstruction;
 
     //views
     private TextView mTextViewVirtualAccountNumber = null;
@@ -104,7 +101,6 @@ public class BankTransferPaymentFragment extends Fragment {
         instructionViewPager = (MagicViewPager) view.findViewById(R.id.instruction_view_pager);
         downloadInstructionButton = (FancyButton) view.findViewById(R.id.btn_download_instruction);
         instructionTabs = (TabLayout) view.findViewById(R.id.instruction_tabs);
-        containerInstruction = (LinearLayout) view.findViewById(R.id.container_instruction);
 
         setUpViewPager();
         setUpTabLayout();
@@ -116,11 +112,6 @@ public class BankTransferPaymentFragment extends Fragment {
                 downloadInstructionButton.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
                 btnCopyToClipboard.setBorderColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
                 btnCopyToClipboard.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
-                // Set background of instruction
-                GradientDrawable gradientDrawable = new GradientDrawable();
-                gradientDrawable.setCornerRadius(getResources().getDimensionPixelSize(R.dimen.five_dp));
-                gradientDrawable.setStroke(getResources().getDimensionPixelSize(R.dimen.one_dp), midtransSDK.getColorTheme().getPrimaryDarkColor());
-                containerInstruction.setBackgroundDrawable(gradientDrawable);
             }
 
             if (midtransSDK.getColorTheme().getPrimaryColor() !=0) {

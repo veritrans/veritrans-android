@@ -60,6 +60,8 @@
                 android:id="@+id/tab_view_pager"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/sixteen_dp"
+                android:layout_marginRight="@dimen/sixteen_dp"
                 android:paddingBottom="@dimen/fifty_six_dp" />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
