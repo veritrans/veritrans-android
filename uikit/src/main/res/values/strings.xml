@@ -719,4 +719,5 @@
     <string name="tab_atm_bni">ATM BNI</string>
     <string name="tab_bni_mobile">Mobile Banking</string>
     <string name="tab_bni_internet">Internet Banking</string>
+    <string name="number_instruction_10">10.</string>
 </resources>
