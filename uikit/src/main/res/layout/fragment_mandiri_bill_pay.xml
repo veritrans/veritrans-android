@@ -4,6 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/instruction_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:tabGravity="fill"
+        app:tabIndicatorColor="@color/gray.primary"
+        app:tabIndicatorHeight="3dp"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/dark_gray"
+        app:tabTextColor="@color/faint_gray" />
+
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,7 +34,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/sixteen_dp"
                 android:layout_marginRight="@dimen/sixteen_dp"
-                android:layout_marginTop="@dimen/sixteen_dp"
                 android:text="@string/company_code"
                 android:textColor="@color/dark_gray"
                 android:textSize="@dimen/secondary_text_size" />
@@ -113,7 +125,6 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/sixteen_dp"
                 android:layout_marginLeft="@dimen/sixteen_dp"
                 android:layout_marginRight="@dimen/sixteen_dp"
                 android:layout_marginTop="@dimen/sixteen_dp"
@@ -134,53 +145,33 @@
                     android:textSize="@dimen/secondary_text_size" />
             </RelativeLayout>
 
-            <LinearLayout
-                android:id="@+id/container_instruction"
+            <com.midtrans.sdk.uikit.widgets.MagicViewPager
+                android:id="@+id/instruction_view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/sixteen_dp"
+                android:layout_marginRight="@dimen/sixteen_dp" />
+
+            <com.midtrans.sdk.uikit.widgets.FancyButton
+                android:id="@+id/btn_download_instruction"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/sixteen_dp"
                 android:layout_marginRight="@dimen/sixteen_dp"
-                android:orientation="vertical"
-                android:padding="@dimen/eight_dp">
-
-                <android.support.design.widget.TabLayout
-                    android:id="@+id/instruction_tabs"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    app:tabGravity="fill"
-                    app:tabIndicatorColor="@color/gray.primary"
-                    app:tabIndicatorHeight="3dp"
-                    app:tabMode="fixed"
-                    app:tabSelectedTextColor="@color/dark_gray"
-                    app:tabTextColor="@color/faint_gray" />
-
-                <com.midtrans.sdk.uikit.widgets.MagicViewPager
-                    android:id="@+id/instruction_view_pager"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <com.midtrans.sdk.uikit.widgets.FancyButton
-                    android:id="@+id/btn_download_instruction"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/sixteen_dp"
-                    android:layout_marginRight="@dimen/sixteen_dp"
-                    android:layout_marginTop="@dimen/sixteen_dp"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="10dp"
-                    android:paddingTop="8dp"
-                    android:visibility="visible"
-                    app:fb_borderColor="@color/gray.primary_dark"
-                    app:fb_borderWidth="1.25dp"
-                    app:fb_defaultColor="@android:color/white"
-                    app:fb_focusColor="@color/colorAccentLight"
-                    app:fb_radius="5dp"
-                    app:fb_text="@string/download_instruction"
-                    app:fb_textColor="@color/gray.primary_dark"
-                    app:fb_textSize="12sp" />
-            </LinearLayout>
+                android:layout_marginTop="@dimen/sixteen_dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="10dp"
+                android:paddingTop="8dp"
+                android:visibility="visible"
+                app:fb_borderColor="@color/gray.primary_dark"
+                app:fb_borderWidth="1.25dp"
+                app:fb_defaultColor="@android:color/white"
+                app:fb_focusColor="@color/colorAccentLight"
+                app:fb_radius="5dp"
+                app:fb_text="@string/download_instruction"
+                app:fb_textColor="@color/gray.primary_dark"
+                app:fb_textSize="12sp" />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </LinearLayout>
