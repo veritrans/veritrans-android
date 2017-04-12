@@ -1,16 +1,14 @@
 package com.midtrans.sdk.uikit.widgets;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.os.Build;
+import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
 /**
  * @author rakawm
  */
-public class CreditCardTextView extends TextView {
+public class CreditCardTextView extends AppCompatTextView {
 
     public CreditCardTextView(Context context) {
         super(context);
@@ -24,12 +22,6 @@ public class CreditCardTextView extends TextView {
 
     public CreditCardTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public CreditCardTextView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
         init();
     }
 
