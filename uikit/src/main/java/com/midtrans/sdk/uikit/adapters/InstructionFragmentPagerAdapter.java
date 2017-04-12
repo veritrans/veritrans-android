@@ -15,9 +15,12 @@ import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.fragments.BankTransferFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionATMBersamaFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionAltoFragment;
+import com.midtrans.sdk.uikit.fragments.InstructionAtmBniFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionBCAFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionBCAKlikFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionBCAMobileFragment;
+import com.midtrans.sdk.uikit.fragments.InstructionBniInternetFragment;
+import com.midtrans.sdk.uikit.fragments.InstructionBniMobileFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionMandiriFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionMandiriInternetFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionPermataFragment;
@@ -63,6 +66,14 @@ public class InstructionFragmentPagerAdapter extends FragmentStatePagerAdapter {
             } else {
                 fragment = new InstructionMandiriInternetFragment();
             }
+        } else if (bank.equals(BankTransferFragment.TYPE_BNI)) {
+            if (position == 0) {
+                fragment = new InstructionAtmBniFragment();
+            } else if (position == 1) {
+                fragment = new InstructionBniMobileFragment();
+            }else{
+                fragment = new InstructionBniInternetFragment();
+            }
         } else {
             if (position == 0) {
                 fragment = new InstructionATMBersamaFragment();
@@ -106,6 +117,14 @@ public class InstructionFragmentPagerAdapter extends FragmentStatePagerAdapter {
                 return context.getString(R.string.tab_mandiri_atm);
             } else {
                 return context.getString(R.string.tab_mandiri_internet);
+            }
+        } else if (bank.equals(BankTransferFragment.TYPE_BNI)) {
+            if (position == 0) {
+                return context.getString(R.string.tab_atm_bni);
+            } else if (position == 1) {
+                return context.getString(R.string.tab_bni_mobile);
+            } else {
+                return context.getString(R.string.tab_bni_internet);
             }
         } else {
             if (position == 0) {

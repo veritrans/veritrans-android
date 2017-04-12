@@ -122,6 +122,11 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
 
             //track page bank bca
             mMidtransSDK.trackEvent(AnalyticsEventName.PAGE_BCA_VA);
+        } else if (position == Constants.BANK_TRANSFER_BNI) {
+            bankTransferFragment = BankTransferFragment.newInstance(BankTransferInstructionActivity.TYPE_BNI, 0);
+
+            //track page bank bni
+            mMidtransSDK.trackEvent(AnalyticsEventName.PAGE_BNI_VA);
         } else if (position == Constants.PAYMENT_METHOD_BANK_TRANSFER_ALL_BANK) {
             bankTransferFragment = BankTransferFragment.newInstance(BankTransferInstructionActivity.TYPE_ALL_BANK, 0);
 
@@ -202,6 +207,8 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
                 mTextViewTitle.setText(getString(R.string.bank_permata_transfer));
             } else if (position == Constants.PAYMENT_METHOD_BANK_TRANSFER_ALL_BANK) {
                 mTextViewTitle.setText(getString(R.string.other_bank_transfer));
+            } else if (position == Constants.BANK_TRANSFER_BNI) {
+                mTextViewTitle.setText(getString(R.string.bank_bni_transfer));
             }
 
         } else {
@@ -340,6 +347,8 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
                 bcaBankTransferTransaction(midtransSDK);
             } else if (position == Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT) {
                 mandiriBillPayTransaction(midtransSDK);
+            } else if (position == Constants.BANK_TRANSFER_BNI) {
+                bniBankTransferTransaction(midtransSDK);
             } else {
                 otherBankTransaction(midtransSDK);
             }
@@ -432,6 +441,32 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
     private void otherBankTransaction(MidtransSDK midtransSDK) {
         midtransSDK.paymentUsingBankTransferAllBank(midtransSDK.readAuthenticationToken(),
                 SdkUtil.getEmailAddress(midtransSDK.getTransactionRequest()), new TransactionCallback() {
+                    @Override
+                    public void onSuccess(TransactionResponse response) {
+                        actionPaymentSuccess(response);
+                    }
+
+                    @Override
+                    public void onFailure(TransactionResponse response, String reason) {
+                        actionPaymentFailure(response, reason);
+                    }
+
+                    @Override
+                    public void onError(Throwable error) {
+                        actionPaymentError(error);
+                    }
+                });
+    }
+
+    /**
+     * it performs BNI bank transfer and in onSuccess() of callback method it will call {@link
+     * #setUpTransactionFragment(TransactionResponse)} to set appropriate fragment.
+     *
+     * @param midtransSDK Veritrans SDK instance
+     */
+    private void bniBankTransferTransaction(MidtransSDK midtransSDK) {
+        midtransSDK.paymentUsingBankTransferBni(midtransSDK.readAuthenticationToken(),
+                midtransSDK.getTransactionRequest().getCustomerDetails().getEmail(), new TransactionCallback() {
                     @Override
                     public void onSuccess(TransactionResponse response) {
                         actionPaymentSuccess(response);

@@ -237,7 +237,6 @@ public class MidtransSDK {
     }
 
 
-
     public String getMerchantToken() {
         UserDetail userDetail = null;
         try {
@@ -369,6 +368,8 @@ public class MidtransSDK {
             startPermataBankTransferUIFlow(context);
         } else if (paymentMethod.equals(PaymentMethod.BANK_TRANSFER_MANDIRI)) {
             startMandiriBankTransferUIFlow(context);
+        } else if (paymentMethod.equals(PaymentMethod.BANK_TRANSFER_BNI)) {
+            startBniBankTransferUIFlow(context);
         } else if (paymentMethod.equals(PaymentMethod.BANK_TRANSFER_OTHER)) {
             startOtherBankTransferUIFlow(context);
         } else if (paymentMethod.equals(PaymentMethod.BCA_KLIKPAY)) {
@@ -484,6 +485,30 @@ public class MidtransSDK {
                 transactionRequest.enableUi(true);
                 if (uiflow != null) {
                     uiflow.runMandiriBankTransfer(context);
+                }
+            }
+
+        } else {
+            if (transactionRequest == null) {
+                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
+            } else {
+                Logger.e(TAG, context.getString(R.string.error_already_running));
+            }
+        }
+    }
+
+    /**
+     * This will start actual execution of Bank Transfer UI flow using BNI.
+     *
+     * @param context activity context.
+     */
+    private void startBniBankTransferUIFlow(@NonNull Context context) {
+        if (transactionRequest != null && !isRunning) {
+
+            if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
+                transactionRequest.enableUi(true);
+                if (uiflow != null) {
+                    uiflow.runBniBankTransfer(context);
                 }
             }
 
@@ -1011,6 +1036,35 @@ public class MidtransSDK {
                 mSnapTransactionManager.paymentUsingBankTransferBCA(authenticationToken,
                         SdkUtil.getBankTransferPaymentRequest(email,
                                 PaymentType.BCA_VA), callback);
+            } else {
+                isRunning = false;
+                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+            }
+        } else {
+            isRunning = false;
+            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+        }
+    }
+
+    /**
+     * It will run backround task to charge payment using Bank Transfer BNI
+     *
+     * @param authenticationToken authentication token
+     * @param callback            transaction callback
+     */
+    public void paymentUsingBankTransferBni(@NonNull String authenticationToken, @NonNull String email,
+                                            @NonNull TransactionCallback callback) {
+        if (callback == null) {
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
+
+        if (transactionRequest != null) {
+            if (Utils.isNetworkAvailable(context)) {
+                isRunning = true;
+                mSnapTransactionManager.paymentUsingBankTransferBni(authenticationToken,
+                        SdkUtil.getBankTransferPaymentRequest(email,
+                                PaymentType.BNI_VA), callback);
             } else {
                 isRunning = false;
                 callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
@@ -1560,6 +1614,7 @@ public class MidtransSDK {
             callback.onError(new RuntimeException(context.getString(R.string.error_unable_to_connect)));
         }
     }
+
     /**
      * it will change SDK configuration
      *

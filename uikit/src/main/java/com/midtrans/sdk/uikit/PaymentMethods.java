@@ -134,9 +134,11 @@ public class PaymentMethods {
         } else if (name.equals(context.getString(R.string.payment_permata_va))) {
             return new BankTransferModel(context.getString(R.string.permata_bank_transfer), R.drawable.ic_permata, true, 3, context.getString(R.string.payment_bank_description_permata));
         } else if (name.equals(context.getString(R.string.payment_all_va))) {
-            return new BankTransferModel(context.getString(R.string.all_bank_transfer), R.drawable.ic_atm, true, 4, context.getString(R.string.payment_bank_description_other));
+            return new BankTransferModel(context.getString(R.string.all_bank_transfer), R.drawable.ic_atm, true, 5, context.getString(R.string.payment_bank_description_other));
         } else if (name.equals(context.getString(R.string.payment_mandiri_bill_payment))) {
             return new BankTransferModel(context.getString(R.string.mandiri_bank_transfer), R.drawable.ic_mandiri_bill_payment2, true, 2, context.getString(R.string.payment_bank_description_mandiri));
+        } else if (name.equals(context.getString(R.string.payment_bni_va))) {
+            return new BankTransferModel(context.getString(R.string.bni_bank_transfer), R.drawable.ic_bni, true, 4, context.getString(R.string.payment_bank_description_bni));
         } else {
             return null;
         }

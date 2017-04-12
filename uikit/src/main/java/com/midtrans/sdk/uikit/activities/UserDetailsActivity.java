@@ -10,7 +10,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.MenuItem;
 import android.view.View;
 
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
@@ -29,6 +28,7 @@ public class UserDetailsActivity extends BaseActivity {
     public static final String BANK_TRANSFER_MANDIRI = "bt_mandiri";
     public static final String BANK_TRANSFER_BCA = "bt_bca";
     public static final String BANK_TRANSFER_PERMATA = "bt_permata";
+    public static final String BANK_TRANSFER_BNI = "bt_bni";
     public static final String BANK_TRANSFER_OTHER = "bt_other";
     public static final String BCA_KLIKPAY = "bcaklikpay";
     public static final String KLIK_BCA = "klikbca";
@@ -72,6 +72,8 @@ public class UserDetailsActivity extends BaseActivity {
                             paymentOptionIntent.putExtra(BANK_TRANSFER_BCA, true);
                         } else if (getIntent().getBooleanExtra(BANK_TRANSFER_OTHER, false)) {
                             paymentOptionIntent.putExtra(BANK_TRANSFER_OTHER, true);
+                        } else if (getIntent().getBooleanExtra(BANK_TRANSFER_BNI, false)) {
+                            paymentOptionIntent.putExtra(BANK_TRANSFER_BNI, true);
                         }
                     } else if (getIntent().getBooleanExtra(BCA_KLIKPAY, false)) {
                         paymentOptionIntent.putExtra(BCA_KLIKPAY, true);

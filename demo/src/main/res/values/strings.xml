@@ -95,4 +95,6 @@
     <string name="btn_launch_demo">Launch Demo App</string>
     <string name="btn_buy">Buy</string>
     <string name="btn_pay_20000">Pay Rp 20,000</string>
+    <string name="sample_user_id">midtrans.android@yopmail.com</string>
+    <string name="sample_user_id2">midtrans.android2@yopmail.com</string>
 </resources>

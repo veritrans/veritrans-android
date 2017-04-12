@@ -388,7 +388,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         coreCardRegistration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, CardRegistrationActivity.class);
+                Intent intent = new Intent(MainActivity.this, ExampleRegisterActivity.class);
                 startActivity(intent);
             }
         });

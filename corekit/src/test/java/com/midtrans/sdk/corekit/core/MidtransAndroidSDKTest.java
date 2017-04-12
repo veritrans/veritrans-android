@@ -497,6 +497,32 @@ public class MidtransAndroidSDKTest {
         Mockito.verify(callbackCollaborator).onError();
     }
 
+
+    @Test
+    public void snapPaymentUsingBankTransferBni() {
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
+        midtransSDKSSpy.paymentUsingBankTransferBni(email, token, transactionCallbackMock);
+        Assert.assertEquals(true, midtransSDKSSpy.isRunning());
+    }
+
+    @Test
+    public void snapPaymentUsingBankTransferBni_whenNetworkUnavailable() {
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
+        midtransSDKSSpy.paymentUsingBankTransferBni(email, token, transactionCallbackMock);
+        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
+        Mockito.verify(callbackCollaborator).onError();
+    }
+
+    @Test
+    public void snapPaymentUsingBankTransferBni_whenTransactionRequestNull() {
+        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
+        midtransSDKSSpy.paymentUsingBankTransferBni(email, token, transactionCallbackMock);
+        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
+        Mockito.verify(callbackCollaborator).onError();
+    }
+
     @Test
     public void snapPaymentUsingKlikBCA() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
