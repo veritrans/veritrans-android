@@ -17,7 +17,6 @@ public class IndosatDompetkuPresenter extends BasePaymentPresenter {
     private PaymentResult<IndosatDompetkuPaymentResponse> paymentResult;
 
     public IndosatDompetkuPresenter(IndosatDompetkuView view) {
-        midtransUiSdk = MidtransUi.getInstance();
         this.view = view;
     }
 

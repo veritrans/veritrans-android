@@ -22,10 +22,6 @@ public class BankTransferPresenter extends BasePaymentPresenter implements BankT
     private BankTransferPaymentContract.BankTransferPaymentView paymentView;
     private PaymentResult paymentResult;
 
-    public BankTransferPresenter() {
-        midtransUiSdk = MidtransUi.getInstance();
-    }
-
     /**
      * Track Mixpanel Event
      *

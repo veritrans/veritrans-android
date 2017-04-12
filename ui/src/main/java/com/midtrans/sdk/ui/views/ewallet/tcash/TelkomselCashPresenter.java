@@ -17,7 +17,6 @@ public class TelkomselCashPresenter extends BasePaymentPresenter {
 
     public TelkomselCashPresenter(TelkomselCashView view) {
         this.view = view;
-        midtransUiSdk = MidtransUi.getInstance();
     }
 
     public String getMerchantLogo() {

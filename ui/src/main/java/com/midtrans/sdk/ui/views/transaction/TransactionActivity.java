@@ -252,27 +252,6 @@ public class TransactionActivity
         }
     }
 
-    private void startIndosatDompetkuPaymentFlow() {
-        Intent intent = new Intent(this, IndosatDompetkuActivity.class);
-        startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
-    }
-
-    private void startXlTunaiPaymentFlow() {
-        Intent intent = new Intent(this, XlTunaiPaymentActivity.class);
-        startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
-    }
-
-    private void startBankTransferPaymentFlow() {
-        Intent bankTransferIntent = new Intent(this, BankTransferListActivity.class);
-        bankTransferIntent.putStringArrayListExtra(BankTransferListActivity.ARGS_BANK_LIST, new ArrayList<>(presenter.getBankList()));
-        startActivityForResult(bankTransferIntent, Constants.INTENT_CODE_PAYMENT);
-    }
-
-    private void startTelkomselCashPaymentFlow() {
-        Intent intent = new Intent(this, TelkomselCashActivity.class);
-        startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
-    }
-
     private void startCreditCardFlow() {
         if (MidtransUi.getInstance().getTransaction().creditCard != null
                 && MidtransUi.getInstance().getTransaction().creditCard.saveCard
@@ -284,6 +263,12 @@ public class TransactionActivity
             Intent intent = new Intent(this, CreditCardDetailsActivity.class);
             startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
         }
+    }
+
+    private void startBankTransferPaymentFlow() {
+        Intent bankTransferIntent = new Intent(this, BankTransferListActivity.class);
+        bankTransferIntent.putStringArrayListExtra(BankTransferListActivity.ARGS_BANK_LIST, new ArrayList<>(presenter.getBankList()));
+        startActivityForResult(bankTransferIntent, Constants.INTENT_CODE_PAYMENT);
     }
 
     private void startKlikBca() {
@@ -328,6 +313,21 @@ public class TransactionActivity
 
     private void startGiftCardPaymentFlow() {
         Intent intent = new Intent(this, GiftCardIndonesiaActivity.class);
+        startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
+    }
+
+    private void startTelkomselCashPaymentFlow() {
+        Intent intent = new Intent(this, TelkomselCashActivity.class);
+        startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
+    }
+
+    private void startXlTunaiPaymentFlow() {
+        Intent intent = new Intent(this, XlTunaiPaymentActivity.class);
+        startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
+    }
+
+    private void startIndosatDompetkuPaymentFlow() {
+        Intent intent = new Intent(this, IndosatDompetkuActivity.class);
         startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
     }
 

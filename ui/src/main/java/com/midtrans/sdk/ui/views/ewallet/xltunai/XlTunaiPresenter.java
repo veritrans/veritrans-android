@@ -3,7 +3,6 @@ package com.midtrans.sdk.ui.views.ewallet.xltunai;
 import com.midtrans.sdk.core.MidtransCore;
 import com.midtrans.sdk.core.MidtransCoreCallback;
 import com.midtrans.sdk.core.models.snap.ewallet.xltunai.XlTunaiPaymentResponse;
-import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.abtracts.BasePaymentPresenter;
 import com.midtrans.sdk.ui.models.PaymentResult;
 
@@ -18,7 +17,6 @@ public class XlTunaiPresenter extends BasePaymentPresenter {
 
     public XlTunaiPresenter(XLTunaiPaymentView view) {
         this.view = view;
-        midtransUiSdk = MidtransUi.getInstance();
     }
 
 

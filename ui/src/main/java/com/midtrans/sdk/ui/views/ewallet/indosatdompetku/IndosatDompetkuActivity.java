@@ -100,11 +100,11 @@ public class IndosatDompetkuActivity extends BaseActivity implements IndosatDomp
         String phoneNumber = editIndosatNumber.getText().toString().trim();
         if (TextUtils.isEmpty(phoneNumber)) {
             layoutIndosatNumber.setError(getString(R.string.validation_phone_no_empty));
-            return;
+        } else {
+            layoutIndosatNumber.setError(null);
+            showProgressDialog(getString(R.string.processing_payment));
+            presenter.startPayment(phoneNumber);
         }
-
-        showProgressDialog(getString(R.string.processing_payment));
-        presenter.startPayment(phoneNumber);
     }
 
     private void initThemes() {

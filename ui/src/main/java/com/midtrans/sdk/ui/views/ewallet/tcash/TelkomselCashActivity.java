@@ -97,15 +97,15 @@ public class TelkomselCashActivity extends BaseActivity implements TelkomselCash
     }
 
     private void performPayment() {
-        // for sending instruction on email only if email-Id is entered.
+        // start payment with Telkomsel Cash
         String tcashToken = editTcashToken.getText().toString().trim();
         if (TextUtils.isEmpty(tcashToken)) {
             layoutTcashToken.setError(getString(R.string.error_tcash_token_empty));
-            return;
+        } else {
+            layoutTcashToken.setError(null);
+            showProgressDialog(getString(R.string.processing_payment));
+            presenter.startPayment(tcashToken);
         }
-
-        showProgressDialog(getString(R.string.processing_payment));
-        presenter.startPayment(tcashToken);
     }
 
     private void initThemes() {
