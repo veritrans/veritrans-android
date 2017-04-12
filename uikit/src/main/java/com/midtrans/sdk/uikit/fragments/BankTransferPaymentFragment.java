@@ -5,18 +5,18 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,10 +37,6 @@ import com.midtrans.sdk.uikit.widgets.MagicViewPager;
 public class BankTransferPaymentFragment extends Fragment {
 
     public static final String KEY_ARG = "args";
-    private static final String LABEL_VA_NUMBER = "Virtual Account Number";
-
-    private static final int PAGE_MARGIN = 20;
-
     public static final String TYPE_BCA = "bank.bca";
     public static final String TYPE_BNI = "bank.bni";
     public static final String TYPE_PERMATA = "bank.permata";
@@ -48,13 +44,15 @@ public class BankTransferPaymentFragment extends Fragment {
     public static final String TYPE_MANDIRI_BILL = "bank.mandiri.bill";
     public static final String TYPE_ALL_BANK = "bank.others";
     public static final String PAGE = "page";
-
+    private static final String LABEL_VA_NUMBER = "Virtual Account Number";
+    private static final int PAGE_MARGIN = 20;
     private int POSITION = -1;
 
     private TransactionResponse transactionResponse;
     private MagicViewPager instructionViewPager;
     private FancyButton downloadInstructionButton;
     private TabLayout instructionTabs;
+    private LinearLayout containerInstruction;
 
     //views
     private TextView mTextViewVirtualAccountNumber = null;
@@ -106,6 +104,7 @@ public class BankTransferPaymentFragment extends Fragment {
         instructionViewPager = (MagicViewPager) view.findViewById(R.id.instruction_view_pager);
         downloadInstructionButton = (FancyButton) view.findViewById(R.id.btn_download_instruction);
         instructionTabs = (TabLayout) view.findViewById(R.id.instruction_tabs);
+        containerInstruction = (LinearLayout) view.findViewById(R.id.container_instruction);
 
         setUpViewPager();
         setUpTabLayout();
@@ -117,6 +116,11 @@ public class BankTransferPaymentFragment extends Fragment {
                 downloadInstructionButton.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
                 btnCopyToClipboard.setBorderColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
                 btnCopyToClipboard.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+                // Set background of instruction
+                GradientDrawable gradientDrawable = new GradientDrawable();
+                gradientDrawable.setCornerRadius(getResources().getDimensionPixelSize(R.dimen.five_dp));
+                gradientDrawable.setStroke(getResources().getDimensionPixelSize(R.dimen.one_dp), midtransSDK.getColorTheme().getPrimaryDarkColor());
+                containerInstruction.setBackgroundDrawable(gradientDrawable);
             }
 
             if (midtransSDK.getColorTheme().getPrimaryColor() !=0) {

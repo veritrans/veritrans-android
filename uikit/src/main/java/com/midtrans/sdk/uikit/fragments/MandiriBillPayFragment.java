@@ -5,6 +5,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,13 +16,13 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.activities.BankTransferInstructionActivity;
 import com.midtrans.sdk.uikit.adapters.InstructionFragmentPagerAdapter;
 import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
@@ -33,23 +34,13 @@ import com.midtrans.sdk.uikit.widgets.MagicViewPager;
 public class MandiriBillPayFragment extends Fragment {
 
     public static final String KEY_ARG = "args";
-    private static final String LABEL_VA_NUMBER = "Virtual Account Number";
-
-    private static final int PAGE_MARGIN = 20;
-
-    public static final String TYPE_BCA = "bank.bca";
-    public static final String TYPE_BNI = "bank.bni";
-    public static final String TYPE_PERMATA = "bank.permata";
-    public static final String TYPE_MANDIRI = "bank.mandiri";
     public static final String TYPE_MANDIRI_BILL = "bank.mandiri.bill";
-    public static final String TYPE_ALL_BANK = "bank.others";
-
-    private int POSITION = -1;
-
+    private static final String LABEL_VA_NUMBER = "Virtual Account Number";
+    private static final int PAGE_MARGIN = 20;
     private static final String DATA = "data";
     private static final String LABEL_BILL_CODE = "Bill Code Number";
     private static final String LABEL_COMPANY_CODE = "Company Code Number";
-
+    private int POSITION = -1;
     private TransactionResponse mTransactionResponse = null;
 
     //views
@@ -61,6 +52,7 @@ public class MandiriBillPayFragment extends Fragment {
     private FancyButton downloadInstructionButton;
     private TabLayout instructionTabs;
     private MagicViewPager instructionViewPager;
+    private LinearLayout containerInstruction;
 
 
     /**
@@ -111,6 +103,7 @@ public class MandiriBillPayFragment extends Fragment {
         downloadInstructionButton = (FancyButton) view.findViewById(R.id.btn_download_instruction);
         instructionTabs = (TabLayout) view.findViewById(R.id.instruction_tabs);
         instructionViewPager = (MagicViewPager) view.findViewById(R.id.instruction_view_pager);
+        containerInstruction = (LinearLayout) view.findViewById(R.id.container_instruction);
 
         setUpViewPager();
         setUpTabLayout();
@@ -124,6 +117,11 @@ public class MandiriBillPayFragment extends Fragment {
                 btnCopyCompany.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
                 downloadInstructionButton.setBorderColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
                 downloadInstructionButton.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+                // Set background of instruction
+                GradientDrawable gradientDrawable = new GradientDrawable();
+                gradientDrawable.setCornerRadius(getResources().getDimensionPixelSize(R.dimen.five_dp));
+                gradientDrawable.setStroke(getResources().getDimensionPixelSize(R.dimen.one_dp), midtransSDK.getColorTheme().getPrimaryDarkColor());
+                containerInstruction.setBackgroundDrawable(gradientDrawable);
             }
 
             if (midtransSDK.getColorTheme().getPrimaryColor() !=0) {
