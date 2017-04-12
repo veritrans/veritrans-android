@@ -67,7 +67,7 @@ public class XLTunaiPaymentFragment extends Fragment {
     private void initializeViews(View view) {
         mTextViewOrderId = (TextView) view.findViewById(R.id.text_order_id);
         mTextViewMerchantCode = (TextView) view.findViewById(R.id.text_merchant_code);
-        mTextViewValidity = (TextView) view.findViewById(R.id.text_validaty);
+        mTextViewValidity = (TextView) view.findViewById(R.id.text_validity);
         btnCopyOrderId = (FancyButton) view.findViewById(R.id.btn_copy_order_id);
         btnCopyMerchantCode = (FancyButton) view.findViewById(R.id.btn_copy_merchant_code);
 

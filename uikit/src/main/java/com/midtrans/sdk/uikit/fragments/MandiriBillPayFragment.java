@@ -81,7 +81,7 @@ public class MandiriBillPayFragment extends Fragment {
         mTextViewCompanyCode = (TextView) view.findViewById(R.id.text_company_code);
         mTextViewBillpayCode = (TextView) view.findViewById(R.id.text_bill_pay_code);
         btnSeeInstruction = (FancyButton) view.findViewById(R.id.btn_see_instruction);
-        mTextViewValidity = (TextView) view.findViewById(R.id.text_validaty);
+        mTextViewValidity = (TextView) view.findViewById(R.id.text_validity);
         btnCopyBillCode = (FancyButton) view.findViewById(R.id.btn_copy_va);
         btnCopyCompany = (FancyButton) view.findViewById(R.id.btn_copy_company_code);
         MidtransSDK midtransSDK = MidtransSDK.getInstance();

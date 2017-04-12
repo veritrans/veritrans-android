@@ -70,7 +70,7 @@ public class IndomaretPaymentFragment extends Fragment {
      * @param view view that needed to be initialized
      */
     private void initializeViews(View view) {
-        mTextViewValidity = (TextView) view.findViewById(R.id.text_validaty);
+        mTextViewValidity = (TextView) view.findViewById(R.id.text_validity);
         mTextViewPaymentCode = (TextView) view.findViewById(R.id.text_payment_code);
         btnCopyToClipboard = (FancyButton) view.findViewById(R.id.btn_copy_va);
 

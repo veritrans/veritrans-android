@@ -375,7 +375,7 @@
     <string name="copied_order_id">Kode pemesanan telah disalin ke clipboard</string>
     <string name="copied_merchant_code">Kode penjual telah disalin ke clipboard</string>
 
-    <string name="text_format_valid_until">Valid Sampai : %1$s</string>
+    <string name="text_format_valid_until">Silakan menyelesaikan pembayaran sebelum : %1$s</string>
     <string name="klik_bca_complete_payment">Selesaikan pembayaran di www.klikbca.com sebelum:</string>
     <string name="instruction_atm_bersama1">Di menu utama, pilih Others.</string>
     <string name="instruction_atm_bersama2">Pilih Transfer.</string>

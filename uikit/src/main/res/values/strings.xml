@@ -522,7 +522,7 @@
     <string name="copied_order_id">Order ID was copied to clipboard</string>
     <string name="copied_merchant_code">Merchant code was copied to clipboard</string>
 
-    <string name="text_format_valid_until">Valid Until : %1$s</string>
+    <string name="text_format_valid_until">Please complete your payment before : %1$s</string>
     <string name="instruction_atm_bersama1">On the main menu, choose Others.</string>
     <string name="instruction_atm_bersama2">Choose Transfer.</string>
     <string name="instruction_atm_bersama3">Choose Online Transfer.</string>
