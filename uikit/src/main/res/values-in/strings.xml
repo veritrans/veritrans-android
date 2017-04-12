@@ -542,4 +542,7 @@
     <string name="tab_atm_bni">ATM BNI</string>
     <string name="tab_bni_mobile">Mobile Banking</string>
     <string name="tab_bni_internet">Internet Banking</string>
+    <string name="one_click_confirmation_message">Anda akan melakukan pembayaran senilai %2$s dengan kartu kredit %1$s</string>
+    <string name="text_confirm">Konfirmasi</string>
+    <string name="text_cancel">Batal</string>
 </resources>
