@@ -35,6 +35,9 @@ import com.midtrans.sdk.ui.views.ebanking.epay_bri.EpayBriActivity;
 import com.midtrans.sdk.ui.views.ebanking.klikbca.KlikBcaActivity;
 import com.midtrans.sdk.ui.views.ebanking.mandiri_clickpay.MandiriClickpayActivity;
 import com.midtrans.sdk.ui.views.ebanking.mandiri_ecash.MandiriEcashActivity;
+import com.midtrans.sdk.ui.views.ewallet.indosatdompetku.IndosatDompetkuActivity;
+import com.midtrans.sdk.ui.views.ewallet.tcash.TelkomselCashActivity;
+import com.midtrans.sdk.ui.views.ewallet.xltunai.XlTunaiPaymentActivity;
 import com.midtrans.sdk.ui.views.gci.GiftCardIndonesiaActivity;
 import com.midtrans.sdk.ui.widgets.DefaultTextView;
 import com.midtrans.sdk.ui.widgets.FancyButton;
@@ -235,6 +238,15 @@ public class TransactionActivity
             case PaymentType.GCI:
                 startGiftCardPaymentFlow();
                 break;
+            case PaymentType.TELKOMSEL_CASH:
+                startTelkomselCashPaymentFlow();
+                break;
+            case PaymentType.XL_TUNAI:
+                startXlTunaiPaymentFlow();
+                break;
+            case PaymentType.INDOSAT_DOMPETKU:
+                startIndosatDompetkuPaymentFlow();
+                break;
             default:
                 break;
         }
@@ -254,9 +266,9 @@ public class TransactionActivity
     }
 
     private void startBankTransferPaymentFlow() {
-        Intent intent = new Intent(this, BankTransferListActivity.class);
-        intent.putStringArrayListExtra(BankTransferListActivity.ARGS_BANK_LIST, new ArrayList<>(presenter.getBankList()));
-        startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
+        Intent bankTransferIntent = new Intent(this, BankTransferListActivity.class);
+        bankTransferIntent.putStringArrayListExtra(BankTransferListActivity.ARGS_BANK_LIST, new ArrayList<>(presenter.getBankList()));
+        startActivityForResult(bankTransferIntent, Constants.INTENT_CODE_PAYMENT);
     }
 
     private void startKlikBca() {
@@ -301,6 +313,21 @@ public class TransactionActivity
 
     private void startGiftCardPaymentFlow() {
         Intent intent = new Intent(this, GiftCardIndonesiaActivity.class);
+        startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
+    }
+
+    private void startTelkomselCashPaymentFlow() {
+        Intent intent = new Intent(this, TelkomselCashActivity.class);
+        startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
+    }
+
+    private void startXlTunaiPaymentFlow() {
+        Intent intent = new Intent(this, XlTunaiPaymentActivity.class);
+        startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
+    }
+
+    private void startIndosatDompetkuPaymentFlow() {
+        Intent intent = new Intent(this, IndosatDompetkuActivity.class);
         startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
     }
 
