@@ -16,7 +16,6 @@ import com.midtrans.sdk.ui.adapters.ItemDetailsAdapter;
 import com.midtrans.sdk.ui.constants.Constants;
 import com.midtrans.sdk.ui.constants.Theme;
 import com.midtrans.sdk.ui.models.PaymentMethodModel;
-import com.midtrans.sdk.ui.utils.PaymentMethodUtils;
 import com.midtrans.sdk.ui.views.banktransfer.payment.BankTransferPaymentActivity;
 import com.midtrans.sdk.ui.widgets.DefaultTextView;
 import com.squareup.picasso.Picasso;
@@ -30,37 +29,58 @@ import java.util.List;
 public class BankTransferListActivity extends BaseActivity implements BankTransferListAdapter.BankTransferListener {
     public static final String ARGS_BANK_LIST = "args.banks";
 
-    private RecyclerView rvBankList, rvItemDetails;
-    private DefaultTextView tvTitle;
+    private RecyclerView bankListContainer;
+    private RecyclerView itemDetails;
+    private DefaultTextView pageTitle;
     private ImageView merchantLogo;
 
     private BankTransferListAdapter bankTransferListAdapter;
-    private ItemDetailsAdapter itemDetailsAdapter;
+
     private BankTransferListPresenter presenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_banktransfer_list);
-        initProperties();
-        bindView();
+        initPresenter();
+        initViews();
+        initItemDetails();
+        initValues();
         setupView();
         initThemeColor();
     }
 
-    private void initProperties() {
-        presenter = new BankTransferListPresenter();
-        bankTransferListAdapter = new BankTransferListAdapter(this);
-        itemDetailsAdapter = new ItemDetailsAdapter(new ItemDetailsAdapter.ItemDetailListener() {
+    private void initPresenter() {
+        List<String> bankList = getIntent().getStringArrayListExtra(ARGS_BANK_LIST);
+        presenter = new BankTransferListPresenter(this, bankList);
+    }
+
+    private void initViews() {
+        bankListContainer = (RecyclerView) findViewById(R.id.rv_bank_list);
+        itemDetails = (RecyclerView) findViewById(R.id.container_item_details);
+        pageTitle = (DefaultTextView) findViewById(R.id.page_title);
+        toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        merchantLogo = (ImageView) findViewById(R.id.merchant_logo);
+    }
+
+    private void initItemDetails() {
+        ItemDetailsAdapter itemDetailsAdapter = new ItemDetailsAdapter(new ItemDetailsAdapter.ItemDetailListener() {
             @Override
             public void onItemShown() {
-
+                // Do nothing
             }
         }, presenter.createItemDetails(this));
+        itemDetails.setLayoutManager(new LinearLayoutManager(this));
+        itemDetails.setAdapter(itemDetailsAdapter);
+    }
 
-        List<String> bankList = getIntent().getStringArrayListExtra(ARGS_BANK_LIST);
-        List<PaymentMethodModel> bankPaymentMethods = PaymentMethodUtils.createBankPaymentMethods(this, bankList);
-        bankTransferListAdapter.setData(bankPaymentMethods);
+    private void initValues() {
+        bankTransferListAdapter = new BankTransferListAdapter(this);
+        bankTransferListAdapter.setData(presenter.getBankList());
+
+        bankListContainer.setLayoutManager(new LinearLayoutManager(this));
+        bankListContainer.setHasFixedSize(true);
+        bankListContainer.setAdapter(bankTransferListAdapter);
     }
 
     private void setupView() {
@@ -71,33 +91,20 @@ public class BankTransferListActivity extends BaseActivity implements BankTransf
                 onBackPressed();
             }
         });
-        rvItemDetails.setLayoutManager(new LinearLayoutManager(this));
-        rvItemDetails.setAdapter(itemDetailsAdapter);
-        rvBankList.setHasFixedSize(true);
-        rvBankList.setLayoutManager(
-                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        rvBankList.setAdapter(bankTransferListAdapter);
-        tvTitle.setText(getString(R.string.activity_select_bank));
+
+        pageTitle.setText(getString(R.string.activity_select_bank));
         Picasso.with(this)
                 .load(MidtransUi.getInstance().getTransaction().merchant.preference.logoUrl)
                 .into(merchantLogo);
-        setBackgroundColor(rvItemDetails, Theme.PRIMARY_COLOR);
+        setBackgroundColor(itemDetails, Theme.PRIMARY_COLOR);
     }
 
-    private void bindView() {
-        rvBankList = (RecyclerView) findViewById(R.id.rv_bank_list);
-        rvItemDetails = (RecyclerView) findViewById(R.id.container_item_details);
-        tvTitle = (DefaultTextView) findViewById(R.id.page_title);
-        toolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        merchantLogo = (ImageView) findViewById(R.id.merchant_logo);
-    }
+
 
     @Override
     public void onItemClick(int position) {
         PaymentMethodModel bankPaymentMethod = bankTransferListAdapter.getItem(position);
-        Intent intent = new Intent(this, BankTransferPaymentActivity.class);
-        intent.putExtra(BankTransferPaymentActivity.ARGS_PAYMENT_TYPE, bankPaymentMethod.getPaymentType());
-        startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
+        startBankTransferPayment(bankPaymentMethod);
     }
 
     @Override
@@ -105,14 +112,30 @@ public class BankTransferListActivity extends BaseActivity implements BankTransf
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.INTENT_CODE_PAYMENT) {
             if (resultCode == RESULT_OK) {
-                setResult(RESULT_OK, data);
-                finish();
+                finishPayment(RESULT_OK, data);
             } else if (resultCode == RESULT_CANCELED) {
                 if (data != null) {
-                    setResult(RESULT_CANCELED, data);
-                    finish();
+                    finishPayment(RESULT_CANCELED, data);
+                } else {
+                    finishPayment(RESULT_CANCELED);
                 }
             }
         }
+    }
+
+    private void startBankTransferPayment(PaymentMethodModel bankPaymentMethod) {
+        Intent intent = new Intent(this, BankTransferPaymentActivity.class);
+        intent.putExtra(BankTransferPaymentActivity.ARGS_PAYMENT_TYPE, bankPaymentMethod.getPaymentType());
+        startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
+    }
+
+    private void finishPayment(int resultCode, Intent data) {
+        setResult(resultCode, data);
+        finish();
+    }
+
+    private void finishPayment(int resultCode) {
+        setResult(resultCode);
+        finish();
     }
 }

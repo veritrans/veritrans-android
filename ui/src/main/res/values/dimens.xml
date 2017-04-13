@@ -5,6 +5,7 @@
 
 
     <!-- dimensions-->
+    <dimen name="three_dp">3dp</dimen>
     <dimen name="four_dp">4dp</dimen>
     <dimen name="five_dp">5dp</dimen>
     <dimen name="eight_dp">8dp</dimen>

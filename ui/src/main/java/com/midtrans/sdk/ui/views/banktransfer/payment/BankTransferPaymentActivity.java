@@ -156,9 +156,13 @@ public class BankTransferPaymentActivity extends BaseActivity {
         if(paymentType.equals(PaymentType.E_CHANNEL)){
             BankTransferMandiriStatusFragment statusFragment = BankTransferMandiriStatusFragment.newInstance(response, paymentType);
             replaceFragment(statusFragment, R.id.fragment_container, false, false);
-        }else{
-            BankTransferStatusFragment statusFragment = BankTransferStatusFragment.newInstance(response, paymentType);
-            replaceFragment(statusFragment, R.id.fragment_container, false, false);
+        } else {
+            //BankTransferStatusFragment statusFragment = BankTransferStatusFragment.newInstance(response, paymentType);
+            //replaceFragment(statusFragment, R.id.fragment_container, false, false);
+            Intent intent = new Intent(this, BankTransferPaymentStatusActivity.class);
+            intent.putExtra(BankTransferPaymentStatusActivity.EXTRA_RESPONSE, response.getTransactionResponse());
+            intent.putExtra(BankTransferPaymentStatusActivity.EXTRA_BANK, paymentType);
+            startActivityForResult(intent, STATUS_REQUEST_CODE);
         }
 
         buttonSeeAccountNumber.setText(getString(R.string.complete_payment_at_atm));
@@ -175,4 +179,13 @@ public class BankTransferPaymentActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == STATUS_REQUEST_CODE) {
+                completePayment(presenter.getPaymentResult());
+            }
+        }
+    }
 }
