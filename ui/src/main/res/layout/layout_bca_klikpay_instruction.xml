@@ -75,7 +75,7 @@
             android:layout_height="wrap_content"
             android:text="@string/number_instruction3" />
 
-        <com.midtrans.sdk.ui.widgets.DefaultTextView
+        <com.midtrans.sdk.ui.widgets.InstructionTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/light_gray"

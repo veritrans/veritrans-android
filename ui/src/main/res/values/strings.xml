@@ -196,7 +196,7 @@
     <string name="mandiri_instruction_step5">Enter your Payment code and press \'Correct\'.</string>
     <string name="mandiri_instruction_step6">Your payment details will appear on the payment confirmation page. If the information is correct press \'Yes\'.</string>
 
-    <string name="mandiri_internet_instruction_step1">1.\tLogin to Mandiri Internet Banking (ib.bankmandiri.co.id).</string>
+    <string name="mandiri_internet_instruction_step1">1.\tLogin to Mandiri Internet Banking (https://ib.bankmandiri.co.id).</string>
     <string name="mandiri_internet_instruction_step2">2.\tFrom the main menu choose \'Payment\', then choose \'Multi Payment\'.</string>
     <string name="mandiri_internet_instruction_step3">3.\tSelect your account in \'From Account\', then \'Billing Name\' select \'Midtrans\'.</string>
     <string name="mandiri_internet_instruction_step4">4.\tEnter the \'Payment Code\' and you will receive your payment details.</string>
@@ -221,8 +221,8 @@
 
     <!--KLIK BCA INTENT_CODE_PAYMENT-->
     <string name="bca_klik_pay_instruction_step1">You will be redirected to BCA KlikPay once you tap \'Confirm Payment\' button.</string>
-    <string name="bca_klik_pay_instruction_step2">For payment, you can choose to use KlikBCA Individu Account or BCA card.</string>
-    <string name="bca_klik_pay_instruction_step3">For more information about BCA KlikPay please contact Halo BCA at (021) 1500888 or visit www.klikbca.com/klikpay.</string>
+    <string name="bca_klik_pay_instruction_step2">For payment, you can choose to use KlikBCA Individu Account or BCA credit card.</string>
+    <string name="bca_klik_pay_instruction_step3">For more information about BCA KlikPay please contact Halo BCA at (021) 1500888 or visit http://klikbca.com/KlikPay/klikpay.html.</string>
 
     <!--m-BCA-->
     <string name="bca_mbanking_instruction_step1">1.\tChoose \'m-transfer\'.</string>
@@ -493,7 +493,7 @@
 
     <!--KlikBCA Payment Instructions-->
     <string name="klikbca_instruction_1">Please make sure that the UserID is active and registered at BCA.</string>
-    <string name="klikbca_instruction_2">Please continue the payment through KlikBCA by opening www.klikbca.com on your browser, using the same User ID that you entered above.</string>
+    <string name="klikbca_instruction_2">Please continue the payment through KlikBCA by opening http://klikbca.com on your browser, using the same User ID that you entered above.</string>
     <string name="klikbca_instruction_3">Transaction will be cancelled if payment is not completed within 2 hours.</string>
 
     <string name="error_user_id">Please fill user ID.</string>
@@ -615,7 +615,7 @@
     <string name="other_bank_transfer">Other Bank</string>
     <string name="copy">Copy</string>
     <string name="valid_until">Please complete payment before</string>
-    <string name="klik_bca_complete_payment">Complete payment at www.klikbca.com before</string>
+    <string name="klik_bca_complete_payment">Complete payment at http://klikbca.com before</string>
     <string name="valid_date">10 September 2015, 16:00</string>
     <string name="mandir_bill_instruction">how can i pay with mandiri bill payment ?</string>
     <string name="thank_you">Thank you!</string>
@@ -682,7 +682,7 @@
     <string name="promo_dialog_title">Congratulations</string>
     <string name="promo_dialog_message">With this card, you will get Rp. %1$s discount from %2$s.</string>
     <string name="error_obtain_promo">Failed to obtain promo.</string>
-    <string name="klik_bca_continue">Please continue the payment process via KlikBCA by opening <b>www.klikbca.com</b> on your browser.</string>
+    <string name="klik_bca_continue">Please continue the payment process via KlikBCA by opening http://klikbca.com on your browser.</string>
     <string name="error_paid_order_id">Order ID has been paid, please use another order ID</string>
     <string name="layout_save_card_dialog">We will securely save your card details so you can reuse them later.</string>
     <string name="redeem_point_reward">Redeem Reward Point</string>

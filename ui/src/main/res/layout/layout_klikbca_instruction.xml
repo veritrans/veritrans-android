@@ -50,10 +50,9 @@
             android:layout_height="wrap_content"
             android:text="@string/number_instruction2" />
 
-        <com.midtrans.sdk.ui.widgets.DefaultTextView
+        <com.midtrans.sdk.ui.widgets.InstructionTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:text="@string/klikbca_instruction_2"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size" />
