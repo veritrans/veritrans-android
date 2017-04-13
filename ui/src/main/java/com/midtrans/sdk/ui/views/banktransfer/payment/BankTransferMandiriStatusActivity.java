@@ -12,10 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.midtrans.sdk.core.models.snap.bank.BankTransferPaymentResponse;
-import com.midtrans.sdk.core.models.snap.bank.bca.BcaBankTransferPaymentResponse;
-import com.midtrans.sdk.core.models.snap.bank.other.OtherBankTransferPaymentResponse;
-import com.midtrans.sdk.core.models.snap.bank.permata.PermataBankTransferPaymentResponse;
+import com.midtrans.sdk.core.models.snap.bank.mandiri.MandiriBankTransferPaymentResponse;
 import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.abtracts.BaseActivity;
@@ -32,13 +29,9 @@ import com.squareup.picasso.Picasso;
  * Created by rakawm on 4/13/17.
  */
 
-public class BankTransferPaymentStatusActivity extends BaseActivity {
+public class BankTransferMandiriStatusActivity extends BaseActivity {
     public static final String EXTRA_RESPONSE = "extra.response";
-    public static final String EXTRA_BANK = "extra.bank";
-
-    private static final int BCA_INSTRUCTION_TABS = 3;
-    private static final int PERMATA_INSTRUCTION_TABS = 2;
-    private static final int OTHER_INSTRUCTION_TABS = 3;
+    private static final int TABS = 2;
 
     private MidtransUi midtransUi;
 
@@ -50,16 +43,19 @@ public class BankTransferPaymentStatusActivity extends BaseActivity {
     private TabLayout instructionTabs;
     private MagicViewPager instructionViewPager;
     private FancyButton downloadInstructionButton;
-    private TextView virtualAccountNumberText;
-    private TextView validityText;
-    private FancyButton copyButton;
 
-    private BankTransferPaymentStatusPresenter presenter;
+    private TextView companyCodeText;
+    private TextView paymentCodeText;
+    private TextView validityText;
+    private FancyButton copyCompanyCodeButton;
+    private FancyButton copyPaymentCodeButton;
+
+    private BankTransferMandiriStatusPresenter presenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bank_transfer_payment_status);
+        setContentView(R.layout.activity_bank_transfer_mandiri_status);
         initMidtransUi();
         initPresenter();
         initViews();
@@ -77,25 +73,8 @@ public class BankTransferPaymentStatusActivity extends BaseActivity {
     }
 
     private void initPresenter() {
-        BankTransferPaymentResponse response = (BankTransferPaymentResponse) getIntent().getSerializableExtra(EXTRA_RESPONSE);
-        String bank = getIntent().getStringExtra(EXTRA_BANK);
-        switch (bank) {
-            case PaymentType.BCA_VA:
-                BcaBankTransferPaymentResponse bcaResponse = (BcaBankTransferPaymentResponse) response;
-                presenter = new BankTransferPaymentStatusPresenter(bcaResponse, bank);
-                break;
-            case PaymentType.PERMATA_VA:
-                PermataBankTransferPaymentResponse permataResponse = (PermataBankTransferPaymentResponse) response;
-                presenter = new BankTransferPaymentStatusPresenter(permataResponse, bank);
-                break;
-            case PaymentType.OTHER_VA:
-                OtherBankTransferPaymentResponse otherResponse = (OtherBankTransferPaymentResponse) response;
-                presenter = new BankTransferPaymentStatusPresenter(otherResponse, bank);
-                break;
-            case PaymentType.BNI_VA:
-                // TODO: BNI VA implementation
-                break;
-        }
+        MandiriBankTransferPaymentResponse response = (MandiriBankTransferPaymentResponse) getIntent().getSerializableExtra(EXTRA_RESPONSE);
+        presenter = new BankTransferMandiriStatusPresenter(response);
     }
 
     private void initViews() {
@@ -105,10 +84,12 @@ public class BankTransferPaymentStatusActivity extends BaseActivity {
         instructionTabs = (TabLayout) findViewById(R.id.instruction_tabs);
         instructionViewPager = (MagicViewPager) findViewById(R.id.instruction_view_pager);
         downloadInstructionButton = (FancyButton) findViewById(R.id.btn_download_instruction);
-        virtualAccountNumberText = (TextView) findViewById(R.id.virtual_account_number_text);
+        companyCodeText = (TextView) findViewById(R.id.company_code_text);
+        paymentCodeText = (TextView) findViewById(R.id.payment_code_text);
         validityText = (TextView) findViewById(R.id.validity_text);
         titleText = (TextView) findViewById(R.id.page_title);
-        copyButton = (FancyButton) findViewById(R.id.btn_copy_va);
+        copyCompanyCodeButton = (FancyButton) findViewById(R.id.btn_copy_company_code);
+        copyPaymentCodeButton = (FancyButton) findViewById(R.id.btn_copy_payment_code);
     }
 
     private void initThemes() {
@@ -116,8 +97,10 @@ public class BankTransferPaymentStatusActivity extends BaseActivity {
         setBackgroundColor(itemDetails, Theme.PRIMARY_COLOR);
         setBackgroundColor(finishButton, Theme.PRIMARY_COLOR);
         // Set secondary button
-        setBorderColor(copyButton);
-        setTextColor(copyButton);
+        setBorderColor(copyCompanyCodeButton);
+        setTextColor(copyCompanyCodeButton);
+        setBorderColor(copyPaymentCodeButton);
+        setTextColor(copyPaymentCodeButton);
         setBorderColor(downloadInstructionButton);
         setTextColor(downloadInstructionButton);
         instructionTabs.setSelectedTabIndicatorColor(getPrimaryColor());
@@ -130,20 +113,7 @@ public class BankTransferPaymentStatusActivity extends BaseActivity {
 
     private void initToolbar() {
         // Set title
-        switch (presenter.getBank()) {
-            case PaymentType.BCA_VA:
-                setHeaderTitle(getString(R.string.bank_bca_transfer));
-                break;
-            case PaymentType.PERMATA_VA:
-                setHeaderTitle(getString(R.string.bank_permata_transfer));
-                break;
-            case PaymentType.OTHER_VA:
-                setHeaderTitle(getString(R.string.other_bank_transfer));
-                break;
-            case PaymentType.BNI_VA:
-                // TODO: set BNI VA title
-                break;
-        }
+        setHeaderTitle(getString(R.string.mandiri_bill_transfer));
 
 
         // Set merchant logo
@@ -188,18 +158,29 @@ public class BankTransferPaymentStatusActivity extends BaseActivity {
     }
 
     private void initValues() {
-        virtualAccountNumberText.setText(presenter.getVirtualAccountNumber());
-        validityText.setText(getString(R.string.text_format_valid_until, presenter.getExpirationText()));
+        paymentCodeText.setText(presenter.getPaymentCode());
+        companyCodeText.setText(presenter.getCompanyCode());
+        validityText.setText(getString(R.string.text_format_valid_until, presenter.getExpiration()));
         initCopyButton();
     }
 
     private void initCopyButton() {
-        copyButton.setOnClickListener(new View.OnClickListener() {
+        copyCompanyCodeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 UiUtils.copyTextIntoClipboard(
-                        BankTransferPaymentStatusActivity.this,
-                        virtualAccountNumberText.getText().toString()
+                        BankTransferMandiriStatusActivity.this,
+                        companyCodeText.getText().toString()
+                );
+            }
+        });
+
+        copyPaymentCodeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                UiUtils.copyTextIntoClipboard(
+                        BankTransferMandiriStatusActivity.this,
+                        paymentCodeText.getText().toString()
                 );
             }
         });
@@ -213,23 +194,7 @@ public class BankTransferPaymentStatusActivity extends BaseActivity {
 
     private void initViewPager() {
         instructionViewPager.setPageMargin(getResources().getDimensionPixelSize(R.dimen.twenty_dp));
-        int pages = 0;
-        switch (presenter.getBank()) {
-            case PaymentType.BCA_VA:
-                pages = BCA_INSTRUCTION_TABS;
-                break;
-            case PaymentType.PERMATA_VA:
-                pages = PERMATA_INSTRUCTION_TABS;
-                break;
-            case PaymentType.OTHER_VA:
-                pages = OTHER_INSTRUCTION_TABS;
-                break;
-            case PaymentType.BNI_VA:
-                // TODO: set BNI tab counts
-                break;
-        }
-
-        InstructionFragmentPagerAdapter instructionFragmentPagerAdapter = new InstructionFragmentPagerAdapter(this, presenter.getBank(), getSupportFragmentManager(), pages);
+        InstructionFragmentPagerAdapter instructionFragmentPagerAdapter = new InstructionFragmentPagerAdapter(this, PaymentType.E_CHANNEL, getSupportFragmentManager(), TABS);
         instructionViewPager.setAdapter(instructionFragmentPagerAdapter);
     }
 
@@ -255,7 +220,7 @@ public class BankTransferPaymentStatusActivity extends BaseActivity {
         downloadInstructionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                UiUtils.startWebIntent(BankTransferPaymentStatusActivity.this, presenter.getDownloadUrl());
+                UiUtils.startWebIntent(BankTransferMandiriStatusActivity.this, presenter.getDownloadUrl());
             }
         });
     }

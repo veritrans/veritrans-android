@@ -64,4 +64,8 @@ public class BankTransferPaymentStatusPresenter extends BasePaymentPresenter {
                 return null;
         }
     }
+
+    public String getDownloadUrl() {
+        return response.pdfUrl;
+    }
 }

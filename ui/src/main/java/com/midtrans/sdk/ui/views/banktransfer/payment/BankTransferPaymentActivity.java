@@ -154,11 +154,10 @@ public class BankTransferPaymentActivity extends BaseActivity {
 
     public void showPaymentStatus(PaymentResult response) {
         if(paymentType.equals(PaymentType.E_CHANNEL)){
-            BankTransferMandiriStatusFragment statusFragment = BankTransferMandiriStatusFragment.newInstance(response, paymentType);
-            replaceFragment(statusFragment, R.id.fragment_container, false, false);
+            Intent intent = new Intent(this, BankTransferMandiriStatusActivity.class);
+            intent.putExtra(BankTransferPaymentStatusActivity.EXTRA_RESPONSE, response.getTransactionResponse());
+            startActivityForResult(intent, STATUS_REQUEST_CODE);
         } else {
-            //BankTransferStatusFragment statusFragment = BankTransferStatusFragment.newInstance(response, paymentType);
-            //replaceFragment(statusFragment, R.id.fragment_container, false, false);
             Intent intent = new Intent(this, BankTransferPaymentStatusActivity.class);
             intent.putExtra(BankTransferPaymentStatusActivity.EXTRA_RESPONSE, response.getTransactionResponse());
             intent.putExtra(BankTransferPaymentStatusActivity.EXTRA_BANK, paymentType);
