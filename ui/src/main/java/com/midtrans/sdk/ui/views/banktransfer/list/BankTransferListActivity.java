@@ -41,7 +41,7 @@ public class BankTransferListActivity extends BaseActivity implements BankTransf
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_banktransfer_list);
+        setContentView(R.layout.activity_bank_transfer_list);
         initPresenter();
         initViews();
         initItemDetails();
@@ -113,12 +113,6 @@ public class BankTransferListActivity extends BaseActivity implements BankTransf
         if (requestCode == Constants.INTENT_CODE_PAYMENT) {
             if (resultCode == RESULT_OK) {
                 finishPayment(RESULT_OK, data);
-            } else if (resultCode == RESULT_CANCELED) {
-                if (data != null) {
-                    finishPayment(RESULT_CANCELED, data);
-                } else {
-                    finishPayment(RESULT_CANCELED);
-                }
             }
         }
     }

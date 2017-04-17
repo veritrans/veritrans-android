@@ -7,7 +7,6 @@ import com.midtrans.sdk.core.models.snap.bank.bca.BcaBankTransferPaymentResponse
 import com.midtrans.sdk.core.models.snap.bank.mandiri.MandiriBankTransferPaymentResponse;
 import com.midtrans.sdk.core.models.snap.bank.other.OtherBankTransferPaymentResponse;
 import com.midtrans.sdk.core.models.snap.bank.permata.PermataBankTransferPaymentResponse;
-import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.abtracts.BasePaymentPresenter;
 import com.midtrans.sdk.ui.constants.PaymentType;
 import com.midtrans.sdk.ui.models.PaymentResult;
@@ -17,29 +16,22 @@ import com.midtrans.sdk.ui.utils.Utils;
  * Created by ziahaqi on 4/3/17.
  */
 
-public class BankTransferPresenter extends BasePaymentPresenter implements BankTransferPaymentContract.Presenter {
+public class BankTransferPresenter extends BasePaymentPresenter {
 
-    private BankTransferPaymentContract.BankTransferPaymentView paymentView;
+    private final BankTransferPaymentView paymentView;
     private PaymentResult paymentResult;
+
+    public BankTransferPresenter(BankTransferPaymentView paymentView) {
+        this.paymentView = paymentView;
+    }
 
     /**
      * Track Mixpanel Event
      *
      * @param eventName
      */
-    @Override
     public void trackEvent(String eventName) {
-        midtransUiSdk.trackEvent(eventName);
-    }
-
-    /**
-     * Set presenter to payment fragment
-     *
-     * @param paymentView
-     */
-    public void setPaymentView(BankTransferPaymentFragment paymentView) {
-        this.paymentView = paymentView;
-        this.paymentView.setPresenter(this);
+        midtransUi.trackEvent(eventName);
     }
 
     public void performPayment(String userEmail, String bankType) {
@@ -62,7 +54,7 @@ public class BankTransferPresenter extends BasePaymentPresenter implements BankT
     }
 
     private void performOtherBankPayment(SnapCustomerDetails customerDetails) {
-        MidtransCore.getInstance().paymentUsingOtherBankTransfer(midtransUiSdk.getTransaction().token,
+        MidtransCore.getInstance().paymentUsingOtherBankTransfer(midtransUi.getTransaction().token,
                 customerDetails, new MidtransCoreCallback<OtherBankTransferPaymentResponse>() {
                     @Override
                     public void onSuccess(OtherBankTransferPaymentResponse response) {
@@ -86,7 +78,7 @@ public class BankTransferPresenter extends BasePaymentPresenter implements BankT
     }
 
     private void performPermataBankTransferPayment(SnapCustomerDetails customerDetails) {
-        MidtransCore.getInstance().paymentUsingPermataBankTransfer(midtransUiSdk.getTransaction().token,
+        MidtransCore.getInstance().paymentUsingPermataBankTransfer(midtransUi.getTransaction().token,
                 customerDetails, new MidtransCoreCallback<PermataBankTransferPaymentResponse>() {
                     @Override
                     public void onSuccess(PermataBankTransferPaymentResponse response) {
@@ -109,7 +101,7 @@ public class BankTransferPresenter extends BasePaymentPresenter implements BankT
     }
 
     private void performMandiriBillPayment(SnapCustomerDetails customerDetails) {
-        MidtransCore.getInstance().paymentUsingMandiriBankTransfer(midtransUiSdk.getTransaction().token,
+        MidtransCore.getInstance().paymentUsingMandiriBankTransfer(midtransUi.getTransaction().token,
                 customerDetails, new MidtransCoreCallback<MandiriBankTransferPaymentResponse>() {
                     @Override
                     public void onSuccess(MandiriBankTransferPaymentResponse response) {
@@ -132,7 +124,7 @@ public class BankTransferPresenter extends BasePaymentPresenter implements BankT
     }
 
     private void performBcaBankTransferPayment(SnapCustomerDetails customerDetails) {
-        MidtransCore.getInstance().paymentUsingBcaBankTransfer(midtransUiSdk.getTransaction().token,
+        MidtransCore.getInstance().paymentUsingBcaBankTransfer(midtransUi.getTransaction().token,
                 customerDetails, new MidtransCoreCallback<BcaBankTransferPaymentResponse>() {
                     @Override
                     public void onSuccess(BcaBankTransferPaymentResponse response) {

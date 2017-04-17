@@ -18,7 +18,6 @@ import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,7 +25,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.midtrans.sdk.ui.CustomSetting;
 import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.constants.Constants;
@@ -34,7 +32,6 @@ import com.midtrans.sdk.ui.constants.Theme;
 import com.midtrans.sdk.ui.models.PaymentResult;
 import com.midtrans.sdk.ui.themes.BaseColorTheme;
 import com.midtrans.sdk.ui.utils.Logger;
-import com.midtrans.sdk.ui.views.status.PaymentStatusFragment;
 import com.midtrans.sdk.ui.widgets.FancyButton;
 
 import java.lang.reflect.Field;
@@ -106,23 +103,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         return null;
     }
 
-
-    public void initPaymentResult(PaymentResult result, String paymentType) {
-        CustomSetting settings = MidtransUi.getInstance().getCustomSetting();
-        Log.d(TAG, "show:" + settings.isShowPaymentStatus());
-        if (settings.isShowPaymentStatus()) {
-            PaymentStatusFragment fragment = PaymentStatusFragment.newInstance(result, paymentType);
-            replaceFragment(fragment, R.id.main_layout, true, false);
-        } else {
-            setResultCode(RESULT_OK);
-            completePayment(result);
-        }
-    }
-
     public void completePayment(PaymentResult result) {
         Intent data = new Intent();
         data.putExtra(Constants.PAYMENT_RESULT, result);
-        setResult(resultCode, data);
+        setResult(RESULT_OK, data);
         finish();
     }
 

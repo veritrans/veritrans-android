@@ -46,7 +46,7 @@ public class BankTransferInstructionActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_banktransfer_instruction);
+        setContentView(R.layout.activity_bank_transfer_instruction);
         initializeViews();
         setupViews();
     }

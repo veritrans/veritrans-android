@@ -18,7 +18,7 @@ public class BankTransferListPresenter extends BasePaymentPresenter {
     private final List<String> bankList;
 
     public BankTransferListPresenter(Context context, List<String> bankList) {
-        midtransUiSdk = MidtransUi.getInstance();
+        midtransUi = MidtransUi.getInstance();
         this.bankList = bankList;
         this.context = context;
     }

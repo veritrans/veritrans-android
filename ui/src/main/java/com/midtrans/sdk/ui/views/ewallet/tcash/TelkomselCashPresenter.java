@@ -3,7 +3,6 @@ package com.midtrans.sdk.ui.views.ewallet.tcash;
 import com.midtrans.sdk.core.MidtransCore;
 import com.midtrans.sdk.core.MidtransCoreCallback;
 import com.midtrans.sdk.core.models.snap.ewallet.tcash.TelkomselCashPaymentResponse;
-import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.abtracts.BasePaymentPresenter;
 import com.midtrans.sdk.ui.models.PaymentResult;
 
@@ -20,11 +19,11 @@ public class TelkomselCashPresenter extends BasePaymentPresenter {
     }
 
     public String getMerchantLogo() {
-        return midtransUiSdk.getTransaction().merchant.preference.logoUrl;
+        return midtransUi.getTransaction().merchant.preference.logoUrl;
     }
 
     public void startPayment(String telkomselCashToken) {
-        MidtransCore.getInstance().paymentUsingTelkomselCash(midtransUiSdk.getCheckoutToken(), telkomselCashToken,
+        MidtransCore.getInstance().paymentUsingTelkomselCash(midtransUi.getCheckoutToken(), telkomselCashToken,
                 new MidtransCoreCallback<TelkomselCashPaymentResponse>() {
                     @Override
                     public void onSuccess(TelkomselCashPaymentResponse response) {
@@ -47,7 +46,7 @@ public class TelkomselCashPresenter extends BasePaymentPresenter {
     }
 
     public boolean isShowPaymentStatus() {
-        return midtransUiSdk.getCustomSetting().isShowPaymentStatus();
+        return midtransUi.getCustomSetting().isShowPaymentStatus();
     }
 
     public PaymentResult<TelkomselCashPaymentResponse> getPaymentResult() {

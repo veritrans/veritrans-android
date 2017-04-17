@@ -57,7 +57,7 @@ public class PaymentStatusActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_payment_status);
+        setContentView(R.layout.activity_payment_status);
         initViews();
         initResponse();
         initLayoutColor();
