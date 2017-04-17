@@ -302,10 +302,6 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
             fragmentTransaction.commit();
 
             currentFragment = PAYMENT_FRAGMENT;
-            ImageView merchantLogo = (ImageView) findViewById(R.id.merchant_logo);
-            if (merchantLogo != null) {
-                merchantLogo.setVisibility(View.INVISIBLE);
-            }
             mButtonConfirmPayment.setText(getString(R.string.complete_payment_at_atm));
 
         } else {

@@ -120,7 +120,7 @@
                 android:textColor="@color/black"
                 android:layout_height="wrap_content" />
             <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                android:id="@+id/text_validaty"
+                android:id="@+id/text_validity"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"

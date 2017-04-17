@@ -20,7 +20,7 @@
             android:orientation="vertical"
             android:padding="@dimen/sixteen_dp">
 
-            <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            <com.midtrans.sdk.uikit.widgets.DefaultTextViewWithLink
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/klik_bca_complete_payment"
@@ -39,7 +39,7 @@
         </LinearLayout>
 
 
-        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+        <com.midtrans.sdk.uikit.widgets.DefaultTextViewWithLink
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

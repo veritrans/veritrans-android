@@ -83,6 +83,7 @@
     <string name="bca_bank_transfer">BCA</string>
     <string name="permata_bank_transfer">Permata</string>
     <string name="bni_bank_transfer">BNI</string>
+    <string name="all_bank_transfer">Bank Lainnya</string>
 
     <string name="orderId">Order ID</string>
     <string name="amount">Jumlah</string>

@@ -23,7 +23,7 @@
             android:textSize="@dimen/primary_text_size"
               />
 
-        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+        <com.midtrans.sdk.uikit.widgets.DefaultTextViewWithLink
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/sixteen_dp"

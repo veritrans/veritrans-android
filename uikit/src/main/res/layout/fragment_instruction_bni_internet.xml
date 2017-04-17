@@ -25,24 +25,25 @@
             />
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/four_dp"
+            android:background="@color/light_gray"
+            android:orientation="horizontal"
             android:paddingBottom="@dimen/five_dp"
             android:paddingLeft="@dimen/sixteen_dp"
             android:paddingRight="@dimen/sixteen_dp"
-            android:paddingTop="@dimen/five_dp"
-            android:background="@color/light_gray"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:paddingTop="@dimen/five_dp">
             <TextView
-                android:text="1."
                 android:layout_width="@dimen/twenty_four_dp"
-                android:layout_height="wrap_content" />
-            <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                android:layout_height="wrap_content"
+                android:text="@string/instruction_1" />
+
+            <com.midtrans.sdk.uikit.widgets.DefaultTextViewWithLink
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:lineSpacingExtra="2dp"
                 android:background="@color/light_gray"
+                android:lineSpacingExtra="2dp"
                 android:text="@string/bni_internet_instruction_1"
                 android:textColor="@color/black"
                 android:textSize="@dimen/secondary_text_size"
@@ -50,18 +51,18 @@
         </LinearLayout>
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
+            android:orientation="horizontal"
             android:paddingBottom="@dimen/five_dp"
             android:paddingLeft="@dimen/sixteen_dp"
             android:paddingRight="@dimen/sixteen_dp"
-            android:paddingTop="@dimen/five_dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:paddingTop="@dimen/five_dp">
             <TextView
-                android:text="2."
                 android:layout_width="@dimen/twenty_four_dp"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="@string/instruction_2" />
             <com.midtrans.sdk.uikit.widgets.DefaultTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -73,19 +74,19 @@
         </LinearLayout>
 
         <LinearLayout
-            android:background="@color/light_gray"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
+            android:background="@color/light_gray"
+            android:orientation="horizontal"
             android:paddingBottom="@dimen/five_dp"
             android:paddingLeft="@dimen/sixteen_dp"
             android:paddingRight="@dimen/sixteen_dp"
-            android:paddingTop="@dimen/five_dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:paddingTop="@dimen/five_dp">
             <TextView
-                android:text="3."
                 android:layout_width="@dimen/twenty_four_dp"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="@string/instruction_3" />
             <com.midtrans.sdk.uikit.widgets.DefaultTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -98,18 +99,18 @@
         </LinearLayout>
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
+            android:orientation="horizontal"
             android:paddingBottom="@dimen/five_dp"
             android:paddingLeft="@dimen/sixteen_dp"
             android:paddingRight="@dimen/sixteen_dp"
-            android:paddingTop="@dimen/five_dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:paddingTop="@dimen/five_dp">
             <TextView
-                android:text="4."
                 android:layout_width="@dimen/twenty_four_dp"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="@string/instruction_4" />
             <com.midtrans.sdk.uikit.widgets.DefaultTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -121,19 +122,19 @@
         </LinearLayout>
 
         <LinearLayout
-            android:background="@color/light_gray"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
+            android:background="@color/light_gray"
+            android:orientation="horizontal"
             android:paddingBottom="@dimen/five_dp"
             android:paddingLeft="@dimen/sixteen_dp"
             android:paddingRight="@dimen/sixteen_dp"
-            android:paddingTop="@dimen/five_dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:paddingTop="@dimen/five_dp">
             <TextView
-                android:text="3."
                 android:layout_width="@dimen/twenty_four_dp"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="@string/instruction_5" />
             <com.midtrans.sdk.uikit.widgets.DefaultTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -145,18 +146,18 @@
         </LinearLayout>
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
+            android:orientation="horizontal"
             android:paddingBottom="@dimen/five_dp"
             android:paddingLeft="@dimen/sixteen_dp"
             android:paddingRight="@dimen/sixteen_dp"
-            android:paddingTop="@dimen/five_dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:paddingTop="@dimen/five_dp">
             <TextView
-                android:text="6."
                 android:layout_width="@dimen/twenty_four_dp"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="@string/instruction_6" />
             <com.midtrans.sdk.uikit.widgets.DefaultTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -168,19 +169,19 @@
         </LinearLayout>
 
         <LinearLayout
-            android:background="@color/light_gray"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
+            android:background="@color/light_gray"
+            android:orientation="horizontal"
             android:paddingBottom="@dimen/five_dp"
             android:paddingLeft="@dimen/sixteen_dp"
             android:paddingRight="@dimen/sixteen_dp"
-            android:paddingTop="@dimen/five_dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:paddingTop="@dimen/five_dp">
             <TextView
-                android:text="7."
                 android:layout_width="@dimen/twenty_four_dp"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="@string/instruction_7" />
             <com.midtrans.sdk.uikit.widgets.DefaultTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -191,18 +192,18 @@
                 />
         </LinearLayout>
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
+            android:orientation="horizontal"
             android:paddingBottom="@dimen/five_dp"
             android:paddingLeft="@dimen/sixteen_dp"
             android:paddingRight="@dimen/sixteen_dp"
-            android:paddingTop="@dimen/five_dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:paddingTop="@dimen/five_dp">
             <TextView
-                android:text="8."
                 android:layout_width="@dimen/twenty_four_dp"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="@string/number_instruction8" />
             <com.midtrans.sdk.uikit.widgets.DefaultTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -214,19 +215,19 @@
         </LinearLayout>
 
         <LinearLayout
-            android:background="@color/light_gray"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
+            android:background="@color/light_gray"
+            android:orientation="horizontal"
             android:paddingBottom="@dimen/five_dp"
             android:paddingLeft="@dimen/sixteen_dp"
             android:paddingRight="@dimen/sixteen_dp"
-            android:paddingTop="@dimen/five_dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:paddingTop="@dimen/five_dp">
             <TextView
-                android:text="9."
                 android:layout_width="@dimen/twenty_four_dp"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="@string/number_instruction9" />
             <com.midtrans.sdk.uikit.widgets.DefaultTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -237,18 +238,18 @@
                 />
         </LinearLayout>
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/eight_dp"
+            android:orientation="horizontal"
             android:paddingBottom="@dimen/five_dp"
             android:paddingLeft="@dimen/sixteen_dp"
             android:paddingRight="@dimen/sixteen_dp"
-            android:paddingTop="@dimen/five_dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:paddingTop="@dimen/five_dp">
             <TextView
-                android:text="10."
                 android:layout_width="@dimen/twenty_four_dp"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="@string/number_instruction_10" />
             <com.midtrans.sdk.uikit.widgets.DefaultTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
