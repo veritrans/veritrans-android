@@ -542,4 +542,20 @@
     <string name="tab_atm_bni">ATM BNI</string>
     <string name="tab_bni_mobile">Mobile Banking</string>
     <string name="tab_bni_internet">Internet Banking</string>
+    <string name="one_click_confirmation_message">Anda akan melakukan pembayaran senilai %2$s dengan kartu kredit %1$s</string>
+    <string name="text_confirm">Konfirmasi</string>
+    <string name="text_cancel">Batal</string>
+
+    <string name="title_instruction_klikbca">Langkah-Langkah Pembayaran KlikBCA</string>
+    <string name="title_instruction_alto">Langkah-Langkah Pembayaran Alto</string>
+    <string name="title_instruction_atm_bersama">Langkah-Langkah Pembayaran ATM Bersama</string>
+    <string name="title_instruction_bca">Langkah-Langkah Pembayaran Bank Transfer BCA</string>
+    <string name="title_instruction_bca_mbca">Langkah-Langkah Pembayaran BCA Mobile</string>
+    <string name="title_instruction_bni_atm">Langkah-Langkah Pembayaran Bank Transfer BNI</string>
+    <string name="title_instruction_bni_internet">Langkah-Langkah Pembayaran BNI Internet</string>
+    <string name="title_instruction_bni_mobile">Langkah-Langkah Pembayaran BNI Mobile</string>
+    <string name="title_instruction_mandiri">Langkah-Langkah Pembayaran Bank Transfer Mandiri</string>
+    <string name="title_instruction_mandiri_internet">Langkah-Langkah Pembayaran Mandiri Internet</string>
+    <string name="title_instruction_permata">Langkah-Langkah Pembayaran Bank Transfer Permata</string>
+    <string name="title_instruction_prima">Langkah-Langkah Pembayaran Prima</string>
 </resources>

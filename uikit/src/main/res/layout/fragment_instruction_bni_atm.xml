@@ -14,10 +14,9 @@
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/sixteen_dp"
             android:layout_marginTop="@dimen/sixteen_dp"
-            android:paddingLeft="@dimen/sixteen_dp"
-            android:paddingRight="@dimen/sixteen_dp"
-            android:text="@string/instruction"
+            android:text="@string/title_instruction_bni_atm"
             android:textColor="@color/dark_gray"
             android:textSize="@dimen/primary_text_size" />
 
