@@ -1,12 +1,16 @@
 package com.midtrans.sdk.ui.views.webpayment;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.View;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,38 +20,29 @@ import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.abtracts.BaseActivity;
 import com.midtrans.sdk.ui.constants.Constants;
 import com.midtrans.sdk.ui.utils.Logger;
+import com.midtrans.sdk.ui.utils.UiUtils;
 import com.squareup.picasso.Picasso;
 
 
-public class PaymentWebActivity extends BaseActivity {
+public class PaymentWebActivity extends BaseActivity implements MidtransWebViewClient.WebViewClientCallback {
+    private WebView webView;
     private String webUrl;
     private String type;
     private TextView titleText;
-    private PaymentWebPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_web);
-        initPresenter();
         initDefaultProperties();
         initViews();
         initToolbar();
-
-        MidtransWebviewFragment midtransWebviewFragment;
-        if (type != null && !TextUtils.isEmpty(type)) {
-            midtransWebviewFragment = MidtransWebviewFragment.newInstance(webUrl, type);
-        } else {
-            midtransWebviewFragment = MidtransWebviewFragment.newInstance(webUrl);
-        }
-        replaceFragment(midtransWebviewFragment, R.id.webview_container, true, false);
-    }
-
-    private void initPresenter() {
-        presenter = new PaymentWebPresenter();
+        initWebView();
+        initValues();
     }
 
     private void initViews() {
+        webView = (WebView) findViewById(R.id.webview);
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         titleText = (TextView) findViewById(R.id.page_title);
     }
@@ -78,6 +73,25 @@ public class PaymentWebActivity extends BaseActivity {
         type = getIntent().getStringExtra(Constants.WEB_VIEW_PARAM_TYPE);
         Logger.d(TAG, "weburl:" + webUrl);
         Logger.d(TAG, "type:" + type);
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    private void initWebView() {
+        UiUtils.showProgressDialog(this, true);
+        webView.getSettings().setAllowFileAccess(false);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.setInitialScale(1);
+        webView.getSettings().setLoadWithOverviewMode(true);
+        webView.getSettings().setUseWideViewPort(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
+        webView.setWebViewClient(new MidtransWebViewClient(this, type));
+        webView.setWebChromeClient(new WebChromeClient());
+    }
+
+    private void initValues() {
+        webView.loadUrl(webUrl);
     }
 
     private void setHeaderTitle(String title) {
@@ -124,5 +138,12 @@ public class PaymentWebActivity extends BaseActivity {
             positiveButton.setTextColor(MidtransUi.getInstance().getColorTheme().getPrimaryDarkColor());
             negativeButton.setTextColor(MidtransUi.getInstance().getColorTheme().getPrimaryDarkColor());
         }
+    }
+
+
+    @Override
+    public void onCompleted() {
+        setResult(RESULT_OK);
+        finish();
     }
 }
