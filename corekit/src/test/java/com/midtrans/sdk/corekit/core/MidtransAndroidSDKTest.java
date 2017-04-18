@@ -62,8 +62,6 @@ import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
-import org.powermock.api.support.membermodification.MemberMatcher;
-import org.powermock.api.support.membermodification.MemberModifier;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -233,7 +231,7 @@ public class MidtransAndroidSDKTest {
     private String sampleExpMonth = "01";
     private String sampleExpYear = "2020";
     private DeleteCardCallback deleteCardCallbackMock;
-    private int sampleTimeOut= 1000;
+    private int sampleTimeOut = 1000;
     private String sampleClientKey = "client_key";
     private String sampleBaseUrl = "base_url";
     private String sampleMerchantBaseUrl = "merchant_url";
@@ -1013,7 +1011,7 @@ public class MidtransAndroidSDKTest {
     }
 
     /**
-     * test direct payment Xl Tunai
+     * test direct payment Indomaret
      */
 
     @Test
@@ -1042,16 +1040,594 @@ public class MidtransAndroidSDKTest {
         PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startGiftCardUIFlow", contextMock);
     }
 
-    @Test
-    public void startCreditCardUIFlow() throws Exception {
-        midtransSDKSSpy.setTransactionRequest(null);
-//        MemberModifier.stub(MemberMatcher.method(MidtransSDK.class, "startCreditCardUIFlow", Context.class)).(null);
+    /**
+     * test startBankTransferUIFlow method
+     */
 
-        Whitebox.invokeMethod(midtransSDKSSpy, "startCreditCardUIFlow", contextMock);
-        verifyStatic();
+    @Test
+    public void startBankTransferUIFlow_whenPaymentMethodAlreadySelected() throws Exception {
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
+        midtransSDKSSpy.uiflow = uiflowMock;
+        Whitebox.invokeMethod(midtransSDKSSpy, "startBankTransferUIFlow", contextMock);
+        Mockito.verify(midtransSDKSSpy.uiflow).runBankTransfer(contextMock);
+    }
+
+
+    @Test
+    public void startBankTransferUIFlow_whenTransactionRequestNull() throws Exception {
+        midtransSDKSSpy.setTransactionRequest(null);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startBankTransferUIFlow", contextMock);
+        verifyStatic(Mockito.times(2));
         Logger.e(Matchers.anyString(), Matchers.anyString());
-//        midtransSDKSSpy.startPaymentUiFlow(contextMock, PaymentMethod.CREDIT_CARD);
-//        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startCreditCardUIFlow", contextMock);
+    }
+
+    @Test
+    public void startBankTransferUIFlow_whenSdkIsrunning() throws Exception {
+        when(midtransSDKSSpy.isRunning()).thenReturn(true);
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startBankTransferUIFlow", contextMock);
+        verifyStatic(Mockito.times(1));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+
+    /**
+     * test startPermataBankTransferUIFlow method
+     */
+
+    @Test
+    public void startPermataBankTransferUIFlow_whenPaymentMethodAlreadySelected() throws Exception {
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
+        midtransSDKSSpy.uiflow = uiflowMock;
+        Whitebox.invokeMethod(midtransSDKSSpy, "startPermataBankTransferUIFlow", contextMock);
+        Mockito.verify(midtransSDKSSpy.uiflow).runPermataBankTransfer(contextMock);
+    }
+
+
+    @Test
+    public void startPermataBankTransferUIFlow_whenTransactionRequestNull() throws Exception {
+        midtransSDKSSpy.setTransactionRequest(null);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startPermataBankTransferUIFlow", contextMock);
+        verifyStatic(Mockito.times(2));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    @Test
+    public void startPermataBankTransferUIFlow_whenSdkIsrunning() throws Exception {
+        when(midtransSDKSSpy.isRunning()).thenReturn(true);
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startPermataBankTransferUIFlow", contextMock);
+        verifyStatic(Mockito.times(1));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    /**
+     * test startMandiriBankTransferUIFlow method
+     */
+
+    @Test
+    public void startMandiriBankTransferUIFlow_whenPaymentMethodAlreadySelected() throws Exception {
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
+        midtransSDKSSpy.uiflow = uiflowMock;
+        Whitebox.invokeMethod(midtransSDKSSpy, "startMandiriBankTransferUIFlow", contextMock);
+        Mockito.verify(midtransSDKSSpy.uiflow).runMandiriBankTransfer(contextMock);
+    }
+
+
+    @Test
+    public void startMandiriBankTransferUIFlow_whenTransactionRequestNull() throws Exception {
+        midtransSDKSSpy.setTransactionRequest(null);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startMandiriBankTransferUIFlow", contextMock);
+        verifyStatic(Mockito.times(2));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    @Test
+    public void startMandiriBankTransferUIFlow_whenSdkIsrunning() throws Exception {
+        when(midtransSDKSSpy.isRunning()).thenReturn(true);
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startMandiriBankTransferUIFlow", contextMock);
+        verifyStatic(Mockito.times(1));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    /**
+     * test startBniBankTransferUIFlow method
+     */
+
+    @Test
+    public void startBniBankTransferUIFlow_whenPaymentMethodAlreadySelected() throws Exception {
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
+        midtransSDKSSpy.uiflow = uiflowMock;
+        Whitebox.invokeMethod(midtransSDKSSpy, "startBniBankTransferUIFlow", contextMock);
+        Mockito.verify(midtransSDKSSpy.uiflow).runBniBankTransfer(contextMock);
+    }
+
+
+    @Test
+    public void startBniBankTransferUIFlow_whenTransactionRequestNull() throws Exception {
+        midtransSDKSSpy.setTransactionRequest(null);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startBniBankTransferUIFlow", contextMock);
+        verifyStatic(Mockito.times(2));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    @Test
+    public void startBniBankTransferUIFlow_whenSdkIsrunning() throws Exception {
+        when(midtransSDKSSpy.isRunning()).thenReturn(true);
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startBniBankTransferUIFlow", contextMock);
+        verifyStatic(Mockito.times(1));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    /**
+     * test startBCABankTransferUIFlow method
+     */
+
+    @Test
+    public void startBCABankTransferUIFlow_whenPaymentMethodAlreadySelected() throws Exception {
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
+        midtransSDKSSpy.uiflow = uiflowMock;
+        Whitebox.invokeMethod(midtransSDKSSpy, "startBCABankTransferUIFlow", contextMock);
+        Mockito.verify(midtransSDKSSpy.uiflow).runBCABankTransfer(contextMock);
+    }
+
+
+    @Test
+    public void startBCABankTransferUIFlow_whenTransactionRequestNull() throws Exception {
+        midtransSDKSSpy.setTransactionRequest(null);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startBCABankTransferUIFlow", contextMock);
+        verifyStatic(Mockito.times(2));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    @Test
+    public void startBCABankTransferUIFlow_whenSdkIsrunning() throws Exception {
+        when(midtransSDKSSpy.isRunning()).thenReturn(true);
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startBCABankTransferUIFlow", contextMock);
+        verifyStatic(Mockito.times(1));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    /**
+     * test startBCAKlikPayUIFlow method
+     */
+
+    @Test
+    public void startBCAKlikPayUIFlow_whenPaymentMethodAlreadySelected() throws Exception {
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
+        midtransSDKSSpy.uiflow = uiflowMock;
+        Whitebox.invokeMethod(midtransSDKSSpy, "startBCAKlikPayUIFlow", contextMock);
+        Mockito.verify(midtransSDKSSpy.uiflow).runBCAKlikPay(contextMock);
+    }
+
+
+    @Test
+    public void startBCAKlikPayUIFlow_whenTransactionRequestNull() throws Exception {
+        midtransSDKSSpy.setTransactionRequest(null);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startBCAKlikPayUIFlow", contextMock);
+        verifyStatic(Mockito.times(2));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    @Test
+    public void startBCAKlikPayUIFlow_whenSdkIsrunning() throws Exception {
+        when(midtransSDKSSpy.isRunning()).thenReturn(true);
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startBCAKlikPayUIFlow", contextMock);
+        verifyStatic(Mockito.times(1));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    /**
+     * test startKlikBCAUIFlow method
+     */
+
+    @Test
+    public void startKlikBCAUIFlow_whenPaymentMethodAlreadySelected() throws Exception {
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
+        midtransSDKSSpy.uiflow = uiflowMock;
+        Whitebox.invokeMethod(midtransSDKSSpy, "startKlikBCAUIFlow", contextMock);
+        Mockito.verify(midtransSDKSSpy.uiflow).runKlikBCA(contextMock);
+    }
+
+
+    @Test
+    public void startKlikBCAUIFlow_whenTransactionRequestNull() throws Exception {
+        midtransSDKSSpy.setTransactionRequest(null);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startKlikBCAUIFlow", contextMock);
+        verifyStatic(Mockito.times(2));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    @Test
+    public void startKlikBCAUIFlow_whenSdkIsrunning() throws Exception {
+        when(midtransSDKSSpy.isRunning()).thenReturn(true);
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startKlikBCAUIFlow", contextMock);
+        verifyStatic(Mockito.times(1));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    /**
+     * test startMandiriClickpayUIFlow method
+     */
+
+    @Test
+    public void startMandiriClickpayUIFlow_whenPaymentMethodAlreadySelected() throws Exception {
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
+        midtransSDKSSpy.uiflow = uiflowMock;
+        Whitebox.invokeMethod(midtransSDKSSpy, "startMandiriClickpayUIFlow", contextMock);
+        Mockito.verify(midtransSDKSSpy.uiflow).runMandiriClickpay(contextMock);
+    }
+
+
+    @Test
+    public void startMandiriClickpayUIFlow_whenTransactionRequestNull() throws Exception {
+        midtransSDKSSpy.setTransactionRequest(null);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startMandiriClickpayUIFlow", contextMock);
+        verifyStatic(Mockito.times(2));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    @Test
+    public void startMandiriClickpayUIFlow_whenSdkIsrunning() throws Exception {
+        when(midtransSDKSSpy.isRunning()).thenReturn(true);
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startMandiriClickpayUIFlow", contextMock);
+        verifyStatic(Mockito.times(1));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    /**
+     * test startMandiriECashUIFlow method
+     */
+
+    @Test
+    public void startMandiriECashUIFlow_whenPaymentMethodAlreadySelected() throws Exception {
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
+        midtransSDKSSpy.uiflow = uiflowMock;
+        Whitebox.invokeMethod(midtransSDKSSpy, "startMandiriECashUIFlow", contextMock);
+        Mockito.verify(midtransSDKSSpy.uiflow).runMandiriECash(contextMock);
+    }
+
+
+    @Test
+    public void startMandiriECashUIFlow_whenTransactionRequestNull() throws Exception {
+        midtransSDKSSpy.setTransactionRequest(null);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startMandiriECashUIFlow", contextMock);
+        verifyStatic(Mockito.times(2));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    @Test
+    public void startMandiriECashUIFlow_whenSdkIsrunning() throws Exception {
+        when(midtransSDKSSpy.isRunning()).thenReturn(true);
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startMandiriECashUIFlow", contextMock);
+        verifyStatic(Mockito.times(1));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    /**
+     * test startCIMBClicksUIFlow method
+     */
+
+    @Test
+    public void startCIMBClicksUIFlow_whenPaymentMethodAlreadySelected() throws Exception {
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
+        midtransSDKSSpy.uiflow = uiflowMock;
+        Whitebox.invokeMethod(midtransSDKSSpy, "startCIMBClicksUIFlow", contextMock);
+        Mockito.verify(midtransSDKSSpy.uiflow).runCIMBClicks(contextMock);
+    }
+
+
+    @Test
+    public void startCIMBClicksUIFlow_whenTransactionRequestNull() throws Exception {
+        midtransSDKSSpy.setTransactionRequest(null);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startCIMBClicksUIFlow", contextMock);
+        verifyStatic(Mockito.times(2));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    @Test
+    public void startCIMBClicksUIFlow_whenSdkIsrunning() throws Exception {
+        when(midtransSDKSSpy.isRunning()).thenReturn(true);
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startCIMBClicksUIFlow", contextMock);
+        verifyStatic(Mockito.times(1));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    /**
+     * test startTelkomselCashUIFlow method
+     */
+
+    @Test
+    public void startTelkomselCashUIFlow_whenPaymentMethodAlreadySelected() throws Exception {
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
+        midtransSDKSSpy.uiflow = uiflowMock;
+        Whitebox.invokeMethod(midtransSDKSSpy, "startTelkomselCashUIFlow", contextMock);
+        Mockito.verify(midtransSDKSSpy.uiflow).runTelkomselCash(contextMock);
+    }
+
+
+    @Test
+    public void startTelkomselCashUIFlow_whenTransactionRequestNull() throws Exception {
+        midtransSDKSSpy.setTransactionRequest(null);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startTelkomselCashUIFlow", contextMock);
+        verifyStatic(Mockito.times(2));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    @Test
+    public void startTelkomselCashUIFlow_whenSdkIsrunning() throws Exception {
+        when(midtransSDKSSpy.isRunning()).thenReturn(true);
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startTelkomselCashUIFlow", contextMock);
+        verifyStatic(Mockito.times(1));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    /**
+     * test startIndosatDompetkuUIFlow method
+     */
+
+    @Test
+    public void startIndosatDompetkuUIFlow_whenPaymentMethodAlreadySelected() throws Exception {
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
+        midtransSDKSSpy.uiflow = uiflowMock;
+        Whitebox.invokeMethod(midtransSDKSSpy, "startIndosatDompetkuUIFlow", contextMock);
+        Mockito.verify(midtransSDKSSpy.uiflow).runIndosatDompetku(contextMock);
+    }
+
+
+    @Test
+    public void startIndosatDompetkuUIFlow_whenTransactionRequestNull() throws Exception {
+        midtransSDKSSpy.setTransactionRequest(null);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startIndosatDompetkuUIFlow", contextMock);
+        verifyStatic(Mockito.times(2));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    @Test
+    public void startIndosatDompetkuUIFlow_whenSdkIsrunning() throws Exception {
+        when(midtransSDKSSpy.isRunning()).thenReturn(true);
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startIndosatDompetkuUIFlow", contextMock);
+        verifyStatic(Mockito.times(1));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    /**
+     * test startIndomaretUIFlow method
+     */
+
+    @Test
+    public void startIndomaretUIFlow_whenPaymentMethodAlreadySelected() throws Exception {
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
+        midtransSDKSSpy.uiflow = uiflowMock;
+        Whitebox.invokeMethod(midtransSDKSSpy, "startIndomaretUIFlow", contextMock);
+        Mockito.verify(midtransSDKSSpy.uiflow).runIndomaret(contextMock);
+    }
+
+
+    @Test
+    public void startIndomaretUIFlow_whenTransactionRequestNull() throws Exception {
+        midtransSDKSSpy.setTransactionRequest(null);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startIndomaretUIFlow", contextMock);
+        verifyStatic(Mockito.times(2));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    @Test
+    public void startIndomaretUIFlow_whenSdkIsrunning() throws Exception {
+        when(midtransSDKSSpy.isRunning()).thenReturn(true);
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startIndomaretUIFlow", contextMock);
+        verifyStatic(Mockito.times(1));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    /**
+     * test startKiosonUIFlow method
+     */
+
+    @Test
+    public void startKiosonUIFlow_whenPaymentMethodAlreadySelected() throws Exception {
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
+        midtransSDKSSpy.uiflow = uiflowMock;
+        Whitebox.invokeMethod(midtransSDKSSpy, "startKiosonUIFlow", contextMock);
+        Mockito.verify(midtransSDKSSpy.uiflow).runKioson(contextMock);
+    }
+
+
+    @Test
+    public void startKiosonUIFlow_whenTransactionRequestNull() throws Exception {
+        midtransSDKSSpy.setTransactionRequest(null);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startKiosonUIFlow", contextMock);
+        verifyStatic(Mockito.times(2));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    @Test
+    public void startKiosonUIFlow_whenSdkIsrunning() throws Exception {
+        when(midtransSDKSSpy.isRunning()).thenReturn(true);
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startKiosonUIFlow", contextMock);
+        verifyStatic(Mockito.times(1));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    /**
+     * test startXlTunaiUIFlow method
+     */
+
+    @Test
+    public void startXlTunaiUIFlow_whenPaymentMethodAlreadySelected() throws Exception {
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
+        midtransSDKSSpy.uiflow = uiflowMock;
+        Whitebox.invokeMethod(midtransSDKSSpy, "startXlTunaiUIFlow", contextMock);
+        Mockito.verify(midtransSDKSSpy.uiflow).runXlTunai(contextMock);
+    }
+
+
+    @Test
+    public void startXlTunaiUIFlow_whenTransactionRequestNull() throws Exception {
+        midtransSDKSSpy.setTransactionRequest(null);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startXlTunaiUIFlow", contextMock);
+        verifyStatic(Mockito.times(2));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    @Test
+    public void startXlTunaiUIFlow_whenSdkIsrunning() throws Exception {
+        when(midtransSDKSSpy.isRunning()).thenReturn(true);
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startXlTunaiUIFlow", contextMock);
+        verifyStatic(Mockito.times(1));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    /**
+     * test startGiftCardUIFlow method
+     */
+
+    @Test
+    public void startGiftCardUIFlow_whenPaymentMethodAlreadySelected() throws Exception {
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
+        midtransSDKSSpy.uiflow = uiflowMock;
+        Whitebox.invokeMethod(midtransSDKSSpy, "startGiftCardUIFlow", contextMock);
+        Mockito.verify(midtransSDKSSpy.uiflow).runGci(contextMock);
+    }
+
+
+    @Test
+    public void startGiftCardUIFlow_whenTransactionRequestNull() throws Exception {
+        midtransSDKSSpy.setTransactionRequest(null);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startGiftCardUIFlow", contextMock);
+        verifyStatic(Mockito.times(2));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    @Test
+    public void startGiftCardUIFlow_whenSdkIsrunning() throws Exception {
+        when(midtransSDKSSpy.isRunning()).thenReturn(true);
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startGiftCardUIFlow", contextMock);
+        verifyStatic(Mockito.times(1));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    /**
+     * test startBRIEpayUIFlow method
+     */
+
+    @Test
+    public void startBRIEpayUIFlow_whenPaymentMethodAlreadySelected() throws Exception {
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
+        midtransSDKSSpy.uiflow = uiflowMock;
+        Whitebox.invokeMethod(midtransSDKSSpy, "startBRIEpayUIFlow", contextMock);
+        Mockito.verify(midtransSDKSSpy.uiflow).runBRIEpay(contextMock);
+    }
+
+
+    @Test
+    public void startBRIEpayUIFlow_whenTransactionRequestNull() throws Exception {
+        midtransSDKSSpy.setTransactionRequest(null);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startBRIEpayUIFlow", contextMock);
+        verifyStatic(Mockito.times(2));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    @Test
+    public void startBRIEpayUIFlow_whenSdkIsrunning() throws Exception {
+        when(midtransSDKSSpy.isRunning()).thenReturn(true);
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startBRIEpayUIFlow", contextMock);
+        verifyStatic(Mockito.times(1));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    /**
+     * test startOtherBankTransferUIFlow method
+     */
+
+    @Test
+    public void startOtherBankTransferUIFlow_whenPaymentMethodAlreadySelected() throws Exception {
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
+        midtransSDKSSpy.uiflow = uiflowMock;
+        Whitebox.invokeMethod(midtransSDKSSpy, "startOtherBankTransferUIFlow", contextMock);
+        Mockito.verify(midtransSDKSSpy.uiflow).runOtherBankTransfer(contextMock);
+    }
+
+
+    @Test
+    public void startOtherBankTransferUIFlow_whenTransactionRequestNull() throws Exception {
+        midtransSDKSSpy.setTransactionRequest(null);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startOtherBankTransferUIFlow", contextMock);
+        verifyStatic(Mockito.times(2));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    @Test
+    public void startOtherBankTransferUIFlow_whenSdkIsrunning() throws Exception {
+        when(midtransSDKSSpy.isRunning()).thenReturn(true);
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startOtherBankTransferUIFlow", contextMock);
+        verifyStatic(Mockito.times(1));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    /**
+     * test startCreditCardUIFlow method
+     */
+
+    @Test
+    public void startCreditCardUIFlow_whenPaymentMethodAlreadySelected() throws Exception {
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
+        midtransSDKSSpy.uiflow = uiflowMock;
+        Whitebox.invokeMethod(midtransSDKSSpy, "startCreditCardUIFlow", contextMock);
+        Mockito.verify(midtransSDKSSpy.uiflow).runCreditCard(contextMock);
+    }
+
+
+    @Test
+    public void startCreditCardUIFlow_whenTransactionRequestNull() throws Exception {
+        midtransSDKSSpy.setTransactionRequest(null);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startCreditCardUIFlow", contextMock);
+        verifyStatic(Mockito.times(2));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    @Test
+    public void startCreditCardUIFlow_whenSdkIsrunning() throws Exception {
+        when(midtransSDKSSpy.isRunning()).thenReturn(true);
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startCreditCardUIFlow", contextMock);
+        verifyStatic(Mockito.times(1));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
     }
 
     /**
@@ -1595,14 +2171,14 @@ public class MidtransAndroidSDKTest {
      */
 
     @Test
-    public void deleteCard(){
+    public void deleteCard() {
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
         midtransSDKSSpy.deleteCard(token, sampleCardNumber, deleteCardCallbackMock);
         Mockito.verify(transactionManager).deleteCard(token, sampleCardNumber, deleteCardCallbackMock);
     }
 
     @Test
-    public void deleteCard_whenNetworkUnAvailable(){
+    public void deleteCard_whenNetworkUnAvailable() {
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
         midtransSDKSSpy.deleteCard(token, sampleCardNumber, deleteCardCallbackMock);
         Mockito.verify(callbackCollaborator).onError();
@@ -1613,9 +2189,9 @@ public class MidtransAndroidSDKTest {
      */
 
     @Test
-    public void changeSdkConfig(){
+    public void changeSdkConfig() {
         midtransSDKSSpy.changeSdkConfig(sampleBaseUrl, sampleMerchantBaseUrl, sampleClientKey, sampleTimeOut);
-       Assert.assertEquals(midtransSDKSSpy.getMerchantServerUrl(), sampleMerchantBaseUrl);
+        Assert.assertEquals(midtransSDKSSpy.getMerchantServerUrl(), sampleMerchantBaseUrl);
     }
 
     /**
@@ -1623,19 +2199,18 @@ public class MidtransAndroidSDKTest {
      */
 
     @Test
-    public void notifyTransactionFinish(){
+    public void notifyTransactionFinish() {
         midtransSDKSSpy.setTransactionFinishedCallback(transactionFinishedCallbackMock);
         midtransSDKSSpy.notifyTransactionFinished(transactionResultMock);
         Mockito.verify(transactionFinishedCallbackMock).onTransactionFinished(transactionResultMock);
     }
 
     @Test
-    public void notifyTransactionFinish_whenCallbackNull(){
+    public void notifyTransactionFinish_whenCallbackNull() {
         midtransSDKSSpy.setTransactionFinishedCallback(null);
         midtransSDKSSpy.notifyTransactionFinished(transactionResultMock);
         verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
-
 
 }

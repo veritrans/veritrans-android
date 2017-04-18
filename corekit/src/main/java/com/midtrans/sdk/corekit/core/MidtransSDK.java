@@ -407,7 +407,7 @@ public class MidtransSDK {
      * @param context activity context.
      */
     private void startCreditCardUIFlow(@NonNull Context context) {
-        if (transactionRequest != null && !isRunning) {
+        if (transactionRequest != null && !isRunning()) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -431,7 +431,7 @@ public class MidtransSDK {
      * @param context activity context.
      */
     private void startBankTransferUIFlow(@NonNull Context context) {
-        if (transactionRequest != null && !isRunning) {
+        if (transactionRequest != null && !isRunning()) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -455,7 +455,7 @@ public class MidtransSDK {
      * @param context activity context.
      */
     private void startPermataBankTransferUIFlow(@NonNull Context context) {
-        if (transactionRequest != null && !isRunning) {
+        if (transactionRequest != null && !isRunning()) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -479,7 +479,7 @@ public class MidtransSDK {
      * @param context activity context.
      */
     private void startMandiriBankTransferUIFlow(@NonNull Context context) {
-        if (transactionRequest != null && !isRunning) {
+        if (transactionRequest != null && !isRunning()) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -503,7 +503,7 @@ public class MidtransSDK {
      * @param context activity context.
      */
     private void startBniBankTransferUIFlow(@NonNull Context context) {
-        if (transactionRequest != null && !isRunning) {
+        if (transactionRequest != null && !isRunning()) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -527,7 +527,7 @@ public class MidtransSDK {
      * @param context activity context.
      */
     private void startBCABankTransferUIFlow(@NonNull Context context) {
-        if (transactionRequest != null && !isRunning) {
+        if (transactionRequest != null && !isRunning()) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -551,7 +551,7 @@ public class MidtransSDK {
      * @param context activity context.
      */
     private void startOtherBankTransferUIFlow(@NonNull Context context) {
-        if (transactionRequest != null && !isRunning) {
+        if (transactionRequest != null && !isRunning()) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -575,7 +575,7 @@ public class MidtransSDK {
      * @param context activity context.
      */
     private void startBCAKlikPayUIFlow(@NonNull Context context) {
-        if (transactionRequest != null && !isRunning) {
+        if (transactionRequest != null && !isRunning()) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -599,7 +599,7 @@ public class MidtransSDK {
      * @param context activity context.
      */
     private void startKlikBCAUIFlow(@NonNull Context context) {
-        if (transactionRequest != null && !isRunning) {
+        if (transactionRequest != null && !isRunning()) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -623,7 +623,7 @@ public class MidtransSDK {
      * @param context activity context.
      */
     private void startMandiriClickpayUIFlow(@NonNull Context context) {
-        if (transactionRequest != null && !isRunning) {
+        if (transactionRequest != null && !isRunning()) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -647,7 +647,7 @@ public class MidtransSDK {
      * @param context activity context.
      */
     private void startMandiriECashUIFlow(@NonNull Context context) {
-        if (transactionRequest != null && !isRunning) {
+        if (transactionRequest != null && !isRunning()) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -671,7 +671,7 @@ public class MidtransSDK {
      * @param context activity context.
      */
     private void startCIMBClicksUIFlow(@NonNull Context context) {
-        if (transactionRequest != null && !isRunning) {
+        if (transactionRequest != null && !isRunning()) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -695,7 +695,7 @@ public class MidtransSDK {
      * @param context activity context.
      */
     private void startBRIEpayUIFlow(@NonNull Context context) {
-        if (transactionRequest != null && !isRunning) {
+        if (transactionRequest != null && !isRunning()) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -719,7 +719,7 @@ public class MidtransSDK {
      * @param context activity context.
      */
     private void startTelkomselCashUIFlow(@NonNull Context context) {
-        if (transactionRequest != null && !isRunning) {
+        if (transactionRequest != null && !isRunning()) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -743,7 +743,7 @@ public class MidtransSDK {
      * @param context activity context.
      */
     private void startIndosatDompetkuUIFlow(@NonNull Context context) {
-        if (transactionRequest != null && !isRunning) {
+        if (transactionRequest != null && !isRunning()) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -767,7 +767,7 @@ public class MidtransSDK {
      * @param context activity context.
      */
     private void startIndomaretUIFlow(@NonNull Context context) {
-        if (transactionRequest != null && !isRunning) {
+        if (transactionRequest != null && !isRunning()) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -791,7 +791,7 @@ public class MidtransSDK {
      * @param context activity context.
      */
     private void startKiosonUIFlow(@NonNull Context context) {
-        if (transactionRequest != null && !isRunning) {
+        if (transactionRequest != null && !isRunning()) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -815,7 +815,7 @@ public class MidtransSDK {
      * @param context activity context.
      */
     private void startXlTunaiUIFlow(@NonNull Context context) {
-        if (transactionRequest != null && !isRunning) {
+        if (transactionRequest != null && !isRunning()) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -839,7 +839,7 @@ public class MidtransSDK {
      * @param context activity context.
      */
     private void startGiftCardUIFlow(@NonNull Context context) {
-        if (transactionRequest != null && !isRunning) {
+        if (transactionRequest != null && !isRunning()) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
