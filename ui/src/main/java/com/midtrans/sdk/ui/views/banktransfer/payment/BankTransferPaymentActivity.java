@@ -7,40 +7,24 @@ import android.support.design.widget.TabLayout;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.AppCompatEditText;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.R;
-import com.midtrans.sdk.ui.abtracts.BaseActivity;
+import com.midtrans.sdk.ui.abtracts.BasePaymentActivity;
 import com.midtrans.sdk.ui.adapters.InstructionFragmentPagerAdapter;
-import com.midtrans.sdk.ui.adapters.ItemDetailsAdapter;
 import com.midtrans.sdk.ui.constants.AnalyticsEventName;
 import com.midtrans.sdk.ui.constants.PaymentType;
-import com.midtrans.sdk.ui.constants.Theme;
 import com.midtrans.sdk.ui.models.PaymentResult;
 import com.midtrans.sdk.ui.utils.UiUtils;
-import com.midtrans.sdk.ui.widgets.DefaultTextView;
-import com.midtrans.sdk.ui.widgets.FancyButton;
-import com.squareup.picasso.Picasso;
 
 /**
  * Created by ziahaqi on 4/3/17.
  */
 
-public class BankTransferPaymentActivity extends BaseActivity implements BankTransferPaymentView {
+public class BankTransferPaymentActivity extends BasePaymentActivity implements BankTransferPaymentView {
     public static final String ARGS_PAYMENT_TYPE = "payment.type";
-
-    private FancyButton seeAccountNumberButton;
-    private TextView titleText;
-    private RecyclerView itemDetails;
     private BankTransferPresenter presenter;
-    private ImageView merchantLogo;
 
     private ViewPager pagerInstruction;
     private TabLayout tabLayout;
@@ -48,21 +32,16 @@ public class BankTransferPaymentActivity extends BaseActivity implements BankTra
     private AppCompatEditText editEmail;
 
     private String paymentType;
-    private ItemDetailsAdapter itemDetailsAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bank_transfer_payment);
-
         initPresenter();
         initProperties();
         initViews();
-        initThemes();
-        initToolbar();
         initItemDetails();
         initValues();
-        initSeeAccountNumberButton();
     }
 
     private void initPresenter() {
@@ -80,104 +59,37 @@ public class BankTransferPaymentActivity extends BaseActivity implements BankTra
     }
 
     private void initViews() {
-        toolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        seeAccountNumberButton = (FancyButton) findViewById(R.id.btn_confirm_payment);
-        titleText = (DefaultTextView) findViewById(R.id.page_title);
-        itemDetails = (RecyclerView) findViewById(R.id.container_item_details);
-        merchantLogo = (ImageView) findViewById(R.id.merchant_logo);
         pagerInstruction = (ViewPager) findViewById(R.id.tab_view_pager);
         tabLayout = (TabLayout) findViewById(R.id.tab_instructions);
         editEmail = (AppCompatEditText) findViewById(R.id.et_email);
         textEmail = (TextInputLayout) findViewById(R.id.email_til);
     }
 
-    private void initThemes() {
-        setBackgroundColor(seeAccountNumberButton, Theme.PRIMARY_COLOR);
-        setBackgroundColor(itemDetails, Theme.PRIMARY_COLOR);
-        if (!TextUtils.isEmpty(MidtransUi.getInstance().getSemiBoldFontPath())) {
-            seeAccountNumberButton.setCustomTextFont(MidtransUi.getInstance().getSemiBoldFontPath());
-        }
-        initThemeColor();
-    }
-
-    private void initToolbar() {
-        setHeaderTitle(getString(R.string.bank_transfer));
-
-        Picasso.with(this)
-                .load(MidtransUi.getInstance().getTransaction().merchant.preference.logoUrl)
-                .into(merchantLogo);
-        initToolbarBackButton();
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
-    }
-
-    private void initItemDetails() {
-        itemDetailsAdapter = new ItemDetailsAdapter(new ItemDetailsAdapter.ItemDetailListener() {
-            @Override
-            public void onItemShown() {
-
-            }
-        }, presenter.createItemDetails(this));
-        itemDetails.setLayoutManager(new LinearLayoutManager(this));
-        itemDetails.setAdapter(itemDetailsAdapter);
-
-        if (!TextUtils.isEmpty(MidtransUi.getInstance().getSemiBoldFontPath())) {
-            seeAccountNumberButton.setCustomTextFont(MidtransUi.getInstance().getSemiBoldFontPath());
-        }
-    }
-
-    private void initSeeAccountNumberButton() {
-        seeAccountNumberButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                performTransaction();
-            }
-        });
-    }
-
-    public void setHeaderTitle(String title) {
-        titleText.setText(title);
-    }
-
-    /**
-     * Performs the validation and if satisfies the required condition then it will either start
-     * mandiri bill pay flow or bank transfer flow depending on selected payment method.
-     * <p>
-     * {@see }
-     */
-    private void performTransaction() {
-        // for sending instruction on email only if email-Id is entered.
-        String userEmail = editEmail.getText().toString();
-        if (!TextUtils.isEmpty(userEmail) && !UiUtils.isEmailValid(userEmail)) {
-            UiUtils.showToast(this, getString(R.string.error_invalid_email_id));
+    public void showPaymentStatus(PaymentResult result) {
+        if (paymentType.equals(PaymentType.E_CHANNEL)) {
+            showMandiriBillPaymentStatus(result);
         } else {
-            UiUtils.showProgressDialog(this, getString(R.string.processing_payment), false);
-            presenter.performPayment(userEmail, paymentType);
+            showBankTransferPaymentStatus(result);
         }
     }
 
-    public void showPaymentStatus(PaymentResult response) {
-        if(paymentType.equals(PaymentType.E_CHANNEL)){
-            Intent intent = new Intent(this, BankTransferMandiriStatusActivity.class);
-            intent.putExtra(BankTransferPaymentStatusActivity.EXTRA_RESPONSE, response.getTransactionResponse());
-            startActivityForResult(intent, STATUS_REQUEST_CODE);
-        } else {
-            Intent intent = new Intent(this, BankTransferPaymentStatusActivity.class);
-            intent.putExtra(BankTransferPaymentStatusActivity.EXTRA_RESPONSE, response.getTransactionResponse());
-            intent.putExtra(BankTransferPaymentStatusActivity.EXTRA_BANK, paymentType);
-            startActivityForResult(intent, STATUS_REQUEST_CODE);
-        }
+    private void showBankTransferPaymentStatus(PaymentResult result) {
+        Intent intent = new Intent(this, BankTransferMandiriStatusActivity.class);
+        intent.putExtra(BankTransferPaymentStatusActivity.EXTRA_RESPONSE, result.getTransactionResponse());
+        startActivityForResult(intent, STATUS_REQUEST_CODE);
+    }
+
+    private void showMandiriBillPaymentStatus(PaymentResult result) {
+        Intent intent = new Intent(this, BankTransferPaymentStatusActivity.class);
+        intent.putExtra(BankTransferPaymentStatusActivity.EXTRA_RESPONSE, result.getTransactionResponse());
+        intent.putExtra(BankTransferPaymentStatusActivity.EXTRA_BANK, paymentType);
+        startActivityForResult(intent, STATUS_REQUEST_CODE);
     }
 
     @Override
     public void onBackPressed() {
-        setResultCode(RESULT_CANCELED);
+        setResult(RESULT_CANCELED);
         finish();
-        overrideBackAnimation();
     }
 
     @Override
@@ -264,15 +176,31 @@ public class BankTransferPaymentActivity extends BaseActivity implements BankTra
     }
 
     @Override
+    protected void startPayment() {
+        UiUtils.showProgressDialog(this, getString(R.string.processing_payment), false);
+        presenter.performPayment(editEmail.getText().toString(), paymentType);
+    }
+
+    @Override
+    protected boolean validatePayment() {
+        String userEmail = editEmail.getText().toString();
+        boolean valid = !TextUtils.isEmpty(userEmail) && !UiUtils.isEmailValid(userEmail);
+        if (!valid) {
+            UiUtils.showToast(this, getString(R.string.error_invalid_email_id));
+        }
+        return valid;
+    }
+
+    @Override
     public void onPaymentError(String error) {
         UiUtils.hideProgressDialog();
-        UiUtils.showToast(this, getString(R.string.message_payment_failed));
+        UiUtils.showToast(this, getString(R.string.message_payment_failed_general));
     }
 
     @Override
     public void onPaymentFailure(PaymentResult paymentResult) {
         UiUtils.hideProgressDialog();
-        UiUtils.showToast(this, getString(R.string.message_payment_failed));
+        UiUtils.showToast(this, getString(R.string.message_payment_failed_general));
     }
 
     @Override

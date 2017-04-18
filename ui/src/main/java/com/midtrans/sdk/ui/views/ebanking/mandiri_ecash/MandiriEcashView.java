@@ -9,5 +9,7 @@ import com.midtrans.sdk.core.models.snap.ebanking.mandiriecash.MandiriECashPayme
 public interface MandiriEcashView {
     void onMandiriEcashSuccess(MandiriECashPaymentResponse response);
 
-    void onMandiriEcashFailure(String message);
+    void onMandiriEcashFailure(MandiriECashPaymentResponse response);
+
+    void onMandiriEcashError(String message);
 }

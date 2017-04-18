@@ -4,25 +4,17 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatEditText;
-import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.midtrans.sdk.ui.MidtransUi;
@@ -42,23 +34,12 @@ import java.lang.reflect.Field;
 
 public abstract class BaseActivity extends AppCompatActivity {
     public static final int STATUS_REQUEST_CODE = 1015;
-
     private static final String DEFAULT_TEXT_COLOR = "mDefaultTextColor";
     private static final String FOCUSED_TEXT_COLOR = "mFocusedTextColor";
-    protected String currentFragmentName;
-    protected Fragment currentFragment = null;
-    protected boolean saveCurrentFragment = false;
-    protected Toolbar toolbar;
     protected String TAG = getClass().getSimpleName();
-    protected RelativeLayout layoutTotalAmount;
-    private int resultCode = RESULT_CANCELED;
     private int primaryColor = 0;
     private int secondaryColor = 0;
     private int primaryDarkColor = 0;
-
-    private String fontDefault;
-    private String fontBold;
-    private String fontSemiBold;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,52 +47,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         initTheme();
     }
 
-    public void replaceFragment(Fragment fragment, int fragmentContainer, boolean addToBackStack, boolean clearBackStack) {
-        if (fragment != null) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            Logger.d(TAG, "replace freagment");
-            boolean fragmentPopped = false;
-            String backStateName = fragment.getClass().getName();
-
-            if (clearBackStack) {
-                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            } else {
-                fragmentPopped = fragmentManager.popBackStackImmediate(backStateName, 0);
-            }
-
-            if (!fragmentPopped) { //fragment not in back stack, create it.
-                Logger.d(TAG, "fragment not in back stack, create it");
-                FragmentTransaction ft = fragmentManager.beginTransaction();
-                ft.replace(fragmentContainer, fragment, backStateName);
-                if (addToBackStack) {
-                    ft.addToBackStack(backStateName);
-                }
-                ft.commit();
-                currentFragmentName = backStateName;
-                if (saveCurrentFragment) {
-                    currentFragment = fragment;
-                }
-            }
-        }
-    }
-
-    protected Fragment getCurrentFagment(Class fragmentClass) {
-        if (!TextUtils.isEmpty(currentFragmentName) && currentFragmentName.equals(fragmentClass.getName())) {
-            Fragment currentFragment = getSupportFragmentManager().findFragmentByTag(currentFragmentName);
-            return currentFragment;
-        }
-        return null;
-    }
-
     public void completePayment(PaymentResult result) {
         Intent data = new Intent();
         data.putExtra(Constants.PAYMENT_RESULT, result);
         setResult(RESULT_OK, data);
         finish();
-    }
 
-    public void setResultCode(int resultCode) {
-        this.resultCode = resultCode;
+        overrideBackAnimation();
     }
 
     public void initTheme() {
@@ -125,12 +67,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 Logger.d(TAG, "prim:" + primaryColor);
                 Logger.d(TAG, "secon:" + secondaryColor);
                 Logger.d(TAG, "dar:" + primaryDarkColor);
-
             }
-
-            this.fontDefault = midtransUi.getDefaultFontPath();
-            this.fontSemiBold = midtransUi.getSemiBoldFontPath();
-            this.fontBold = midtransUi.getBoldFontPath();
 
         }
         setStatusBarColor();
@@ -232,7 +169,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    public void setCheckoxStateColor(AppCompatCheckBox checkBox) {
+    public void setCheckboxStateColor(AppCompatCheckBox checkBox) {
         if (secondaryColor != 0) {
             int[][] states = new int[][]{
                     new int[]{-android.R.attr.state_checked},
@@ -270,15 +207,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    public void initToolbarBackButton() {
-        // Set toolbar back icon
-        if (primaryDarkColor != 0) {
-            Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
-            if (toolbar != null) {
-                Drawable backIcon = ContextCompat.getDrawable(this, R.drawable.ic_back);
-                backIcon.setColorFilter(primaryDarkColor, PorterDuff.Mode.SRC_ATOP);
-                toolbar.setNavigationIcon(backIcon);
-            }
+    protected void setHeaderTitle(String title) {
+        TextView headerTitleText = (TextView) findViewById(R.id.page_title);
+        if (headerTitleText != null) {
+            headerTitleText.setText(title);
         }
     }
 
@@ -292,37 +224,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public int getPrimaryColor() {
         return primaryColor;
-    }
-
-    protected void initThemeColor() {
-
-        // Set amount panel background
-
-        if (layoutTotalAmount != null && primaryColor != 0) {
-            layoutTotalAmount.setBackgroundColor(primaryColor);
-        }
-
-        if (primaryColor != 0) {
-
-            // Set button pay now color
-            FancyButton payNowButton = (FancyButton) findViewById(R.id.btn_pay_now);
-
-            if (payNowButton != null) {
-                payNowButton.setBackgroundColor(primaryColor);
-            }
-
-            // Set amount panel background
-            RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.layout_total_amount);
-            if (relativeLayout != null) {
-                relativeLayout.setBackgroundColor(primaryColor);
-            }
-
-            // Set indicator color
-            View indicator = findViewById(R.id.title_underscore);
-            if (indicator != null) {
-                indicator.setBackgroundColor(primaryColor);
-            }
-        }
     }
 
     @Override
@@ -354,10 +255,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     @Override
-    public void setSupportActionBar(@Nullable Toolbar toolbar) {
-        Drawable backButton = ContextCompat.getDrawable(this, R.drawable.ic_back);
-        backButton.setColorFilter(getPrimaryDarkColor(), PorterDuff.Mode.SRC_ATOP);
-        toolbar.setNavigationIcon(backButton);
-        super.setSupportActionBar(toolbar);
+    public void finish() {
+        super.finish();
+        overrideBackAnimation();
     }
 }

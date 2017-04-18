@@ -9,5 +9,7 @@ import com.midtrans.sdk.core.models.snap.ebanking.epaybri.EpayBriPaymentResponse
 public interface EpayBriView {
     void onEpayBriSuccess(EpayBriPaymentResponse paymentResponse);
 
-    void onEpayBriFailure(String message);
+    void onEpayBriFailure(EpayBriPaymentResponse paymentResponse);
+
+    void onEpayBriError(String message);
 }

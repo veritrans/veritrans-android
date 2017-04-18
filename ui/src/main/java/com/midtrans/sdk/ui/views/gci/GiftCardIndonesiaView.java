@@ -9,5 +9,7 @@ import com.midtrans.sdk.core.models.snap.gci.GiftCardPaymentResponse;
 public interface GiftCardIndonesiaView {
     void onGiftCardIndonesiaSuccess(GiftCardPaymentResponse response);
 
-    void onGiftCardIndonesiaFailure(String message);
+    void onGiftCardIndonesiaFailure(GiftCardPaymentResponse response);
+
+    void onGiftCardIndonesiaError(String message);
 }

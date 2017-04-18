@@ -9,5 +9,7 @@ import com.midtrans.sdk.core.models.snap.conveniencestore.indomaret.IndomaretPay
 public interface IndomaretView {
     void onIndomaretPaymentSuccess(IndomaretPaymentResponse response);
 
-    void onIndomaretPaymentFailure(String message);
+    void onIndomaretPaymentFailure(IndomaretPaymentResponse response);
+
+    void onIndomaretPaymentError(String message);
 }

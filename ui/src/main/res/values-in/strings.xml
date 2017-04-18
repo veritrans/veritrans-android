@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="activity_select_bank">Pilih Bank</string>
     <!--user detail-->
     <string name="hint_full_name">Nama Lengkap</string>
     <string name="hint_email">Email</string>
@@ -402,6 +403,7 @@
     <string name="klikbca_payment_instruction">Instruksi Pembayaran KlikBCA</string>
     <string name="message_payment_cannot_proccessed">Transaksi anda tidak dapat diproses. Pastikan info pembayaran anda benar</string>
     <string name="message_payment_failed">Pembayaran gagal. Mohon cek kembali detil kartu anda atau gunakan kartu lain.</string>
+    <string name="message_payment_failed_general">Pembayaran gagal. Mohon coba beberapa saat lagi.</string>
     <string name="message_payment_denied">Transaksi anda ditolak! Silakan ulangi lagi, atau coba dengan metode pembayaran lain.</string>
     <string name="validation_message_please_fillup_form">Silakan isi dengan informasi yang tepat.</string>
     <string name="message_getcard_token_failed">Gagal autentikasi</string>
@@ -493,6 +495,7 @@
     <string name="error_invalid_payment_form">Formulir Pembayaran tidak valid</string>
     <string name="hint_card_number_example">4811 1111 1111 1114 (Contoh)</string>
 
+    <string name="redeem_point">Gunakan Poin</string>
     <string name="how_much_point">Berapa poin yang ingin anda tukarkan?</string>
     <string name="total_bank_point">Total poin anda</string>
     <string name="status_redeemed_point">DISKON POIN</string>

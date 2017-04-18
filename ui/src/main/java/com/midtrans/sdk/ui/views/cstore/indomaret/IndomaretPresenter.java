@@ -14,7 +14,7 @@ import com.midtrans.sdk.ui.models.PaymentResult;
 public class IndomaretPresenter extends BasePaymentPresenter {
 
     private final IndomaretView view;
-    private IndomaretPaymentResponse response;
+    private PaymentResult<IndomaretPaymentResponse> paymentResult;
 
     public IndomaretPresenter(IndomaretView view) {
         this.view = view;
@@ -24,23 +24,25 @@ public class IndomaretPresenter extends BasePaymentPresenter {
         MidtransCore.getInstance().paymentUsingIndomaret(MidtransUi.getInstance().getTransaction().token, new MidtransCoreCallback<IndomaretPaymentResponse>() {
             @Override
             public void onSuccess(IndomaretPaymentResponse object) {
-                response = object;
+                paymentResult = new PaymentResult<>(object);
                 view.onIndomaretPaymentSuccess(object);
             }
 
             @Override
             public void onFailure(IndomaretPaymentResponse object) {
-                view.onIndomaretPaymentFailure("Failed to pay using Indomaret");
+                paymentResult = new PaymentResult<>(object);
+                view.onIndomaretPaymentFailure(object);
             }
 
             @Override
             public void onError(Throwable throwable) {
-                view.onIndomaretPaymentFailure(throwable.getMessage());
+                paymentResult = new PaymentResult<>(throwable.getMessage());
+                view.onIndomaretPaymentError(throwable.getMessage());
             }
         });
     }
 
     public PaymentResult<IndomaretPaymentResponse> getPaymentResult() {
-        return new PaymentResult<>(response);
+        return paymentResult;
     }
 }

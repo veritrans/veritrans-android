@@ -9,5 +9,7 @@ import com.midtrans.sdk.core.models.snap.ebanking.klikbca.KlikBcaPaymentResponse
 public interface KlikBcaView {
     void onKlikBcaSuccess(KlikBcaPaymentResponse paymentResponse);
 
-    void onKlikBcaFailure(String message);
+    void onKlikBcaFailure(KlikBcaPaymentResponse paymentResponse);
+
+    void onKlikBcaError(String message);
 }

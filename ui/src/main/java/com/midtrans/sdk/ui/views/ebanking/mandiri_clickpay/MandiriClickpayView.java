@@ -9,5 +9,7 @@ import com.midtrans.sdk.core.models.snap.ebanking.mandiriclickpay.MandiriClickpa
 public interface MandiriClickpayView {
     void onMandiriClickpaySuccess(MandiriClickpayPaymentResponse response);
 
-    void onMandiriClickpayFailure(String message);
+    void onMandiriClickpayFailure(MandiriClickpayPaymentResponse response);
+
+    void onMandiriClickpayError(String message);
 }

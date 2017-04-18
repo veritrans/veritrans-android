@@ -5,20 +5,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.widget.ImageView;
 
-import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.R;
-import com.midtrans.sdk.ui.abtracts.BaseActivity;
+import com.midtrans.sdk.ui.abtracts.BaseItemDetailsActivity;
 import com.midtrans.sdk.ui.adapters.BankTransferListAdapter;
-import com.midtrans.sdk.ui.adapters.ItemDetailsAdapter;
 import com.midtrans.sdk.ui.constants.Constants;
-import com.midtrans.sdk.ui.constants.Theme;
 import com.midtrans.sdk.ui.models.PaymentMethodModel;
 import com.midtrans.sdk.ui.views.banktransfer.payment.BankTransferPaymentActivity;
-import com.midtrans.sdk.ui.widgets.DefaultTextView;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -26,13 +19,12 @@ import java.util.List;
  * Created by ziahaqi on 3/30/17.
  */
 
-public class BankTransferListActivity extends BaseActivity implements BankTransferListAdapter.BankTransferListener {
+public class BankTransferListActivity
+        extends BaseItemDetailsActivity
+        implements BankTransferListAdapter.BankTransferListener {
     public static final String ARGS_BANK_LIST = "args.banks";
 
     private RecyclerView bankListContainer;
-    private RecyclerView itemDetails;
-    private DefaultTextView pageTitle;
-    private ImageView merchantLogo;
 
     private BankTransferListAdapter bankTransferListAdapter;
 
@@ -46,8 +38,6 @@ public class BankTransferListActivity extends BaseActivity implements BankTransf
         initViews();
         initItemDetails();
         initValues();
-        setupView();
-        initThemeColor();
     }
 
     private void initPresenter() {
@@ -57,21 +47,6 @@ public class BankTransferListActivity extends BaseActivity implements BankTransf
 
     private void initViews() {
         bankListContainer = (RecyclerView) findViewById(R.id.rv_bank_list);
-        itemDetails = (RecyclerView) findViewById(R.id.container_item_details);
-        pageTitle = (DefaultTextView) findViewById(R.id.page_title);
-        toolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        merchantLogo = (ImageView) findViewById(R.id.merchant_logo);
-    }
-
-    private void initItemDetails() {
-        ItemDetailsAdapter itemDetailsAdapter = new ItemDetailsAdapter(new ItemDetailsAdapter.ItemDetailListener() {
-            @Override
-            public void onItemShown() {
-                // Do nothing
-            }
-        }, presenter.createItemDetails(this));
-        itemDetails.setLayoutManager(new LinearLayoutManager(this));
-        itemDetails.setAdapter(itemDetailsAdapter);
     }
 
     private void initValues() {
@@ -82,24 +57,6 @@ public class BankTransferListActivity extends BaseActivity implements BankTransf
         bankListContainer.setHasFixedSize(true);
         bankListContainer.setAdapter(bankTransferListAdapter);
     }
-
-    private void setupView() {
-        setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(new android.view.View.OnClickListener() {
-            @Override
-            public void onClick(android.view.View view) {
-                onBackPressed();
-            }
-        });
-
-        pageTitle.setText(getString(R.string.activity_select_bank));
-        Picasso.with(this)
-                .load(MidtransUi.getInstance().getTransaction().merchant.preference.logoUrl)
-                .into(merchantLogo);
-        setBackgroundColor(itemDetails, Theme.PRIMARY_COLOR);
-    }
-
-
 
     @Override
     public void onItemClick(int position) {
@@ -125,11 +82,6 @@ public class BankTransferListActivity extends BaseActivity implements BankTransf
 
     private void finishPayment(int resultCode, Intent data) {
         setResult(resultCode, data);
-        finish();
-    }
-
-    private void finishPayment(int resultCode) {
-        setResult(resultCode);
         finish();
     }
 }

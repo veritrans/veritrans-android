@@ -7,13 +7,14 @@ import com.midtrans.sdk.core.MidtransCoreCallback;
 import com.midtrans.sdk.core.models.snap.CreditCard;
 import com.midtrans.sdk.core.models.snap.SavedToken;
 import com.midtrans.sdk.core.models.snap.bins.BankBinsResponse;
+import com.midtrans.sdk.core.models.snap.card.CreditCardPaymentParams;
+import com.midtrans.sdk.core.models.snap.card.CreditCardPaymentResponse;
 import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.abtracts.BasePaymentPresenter;
 import com.midtrans.sdk.ui.models.PaymentResult;
 import com.midtrans.sdk.ui.models.SavedCard;
 import com.midtrans.sdk.ui.utils.CreditCardUtils;
 import com.midtrans.sdk.ui.utils.UiUtils;
-import com.midtrans.sdk.ui.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ import java.util.List;
  */
 
 public class SavedCardPresenter extends BasePaymentPresenter {
+    private PaymentResult<CreditCardPaymentResponse> paymentResult;
 
     private SavedCardView savedCardView;
     private List<BankBinsResponse> bankBins;
@@ -83,8 +85,27 @@ public class SavedCardPresenter extends BasePaymentPresenter {
                 && MidtransUi.getInstance().getTransaction().creditCard.secure;
     }
 
-    public void sendPaymentResult(PaymentResult result) {
-        Utils.sendPaymentResult(result);
+    public void startPayment(final SavedCard savedCard) {
+        String checkoutToken = MidtransUi.getInstance().getTransaction().token;
+        MidtransCore.getInstance().paymentUsingCreditCard(checkoutToken, buildOneClickCreditCardPaymentParams(savedCard.getSavedToken()), UiUtils.buildCustomerDetails(), new MidtransCoreCallback<CreditCardPaymentResponse>() {
+            @Override
+            public void onSuccess(CreditCardPaymentResponse object) {
+                paymentResult = new PaymentResult<>(object);
+                savedCardView.onCreditCardPaymentSuccess(object);
+            }
+
+            @Override
+            public void onFailure(CreditCardPaymentResponse object) {
+                paymentResult = new PaymentResult<>(object);
+                savedCardView.onCreditCardPaymentFailure(object);
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                paymentResult = new PaymentResult<>(throwable.getMessage());
+                savedCardView.onCreditCardPaymentError(throwable.getMessage());
+            }
+        });
     }
 
     private List<SavedToken> filterCards() {
@@ -145,5 +166,13 @@ public class SavedCardPresenter extends BasePaymentPresenter {
 
     public void setBankBins(List<BankBinsResponse> bankBins) {
         this.bankBins = bankBins;
+    }
+
+    private CreditCardPaymentParams buildOneClickCreditCardPaymentParams(SavedToken savedToken) {
+        return CreditCardPaymentParams.newOneClickPaymentParams(savedToken.maskedCard);
+    }
+
+    public PaymentResult<CreditCardPaymentResponse> getPaymentResult() {
+        return paymentResult;
     }
 }

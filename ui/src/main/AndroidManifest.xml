@@ -7,9 +7,11 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.creditcard.saved.SavedCardActivity"
+            android:label="@string/saved_card"
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.creditcard.details.CreditCardDetailsActivity"
+            android:label="@string/card_details"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
@@ -17,6 +19,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.banktransfer.list.BankTransferListActivity"
+            android:label="@string/activity_select_bank"
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.banktransfer.payment.BankTransferPaymentActivity"
@@ -26,69 +29,87 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.banktransfer.payment.BankTransferMandiriStatusActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".views.instructions.BankTransferInstructionActivity"
+            android:label="@string/mandiri_bill_transfer"
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.creditcard.points.BankPointsActivity"
+            android:label="@string/redeem_point"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.midtrans.sdk.ui.views.webpayment.PaymentWebActivity"
+            android:label="@string/processing_payment"
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.cstore.indomaret.IndomaretActivity"
+            android:label="@string/indomaret"
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.cstore.indomaret.IndomaretStatusActivity"
+            android:label="@string/indomaret"
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.cstore.kioson.KiosonActivity"
+            android:label="@string/kioson"
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.cstore.kioson.KiosonStatusActivity"
+            android:label="@string/kioson"
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.cstore.kioson.KiosonInstructionActivity"
+            android:label="@string/kioson"
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.gci.GiftCardIndonesiaActivity"
+            android:label="@string/title_gci"
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.ebanking.klikbca.KlikBcaActivity"
+            android:label="@string/klik_bca"
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.ebanking.klikbca.KlikBcaStatusActivity"
+            android:label="@string/klik_bca"
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.ebanking.klikbca.KlikBcaInstructionActivity"
+            android:label="@string/payment_instruction"
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.ebanking.mandiri_clickpay.MandiriClickpayActivity"
+            android:label="@string/mandiri_click_pay"
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.ebanking.bca_klikpay.BcaKlikpayActivity"
+            android:label="@string/payment_method_bca_klikpay"
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.ebanking.cimb_clicks.CimbClicksActivity"
+            android:label="@string/cimb_clicks"
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.ebanking.epay_bri.EpayBriActivity"
+            android:label="@string/epay_bri"
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.ebanking.mandiri_ecash.MandiriEcashActivity"
+            android:label="@string/mandiri_e_cash"
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.ewallet.xltunai.XlTunaiPaymentActivity"
+            android:label="@string/xl_tunai"
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.ewallet.xltunai.XlTunaiStatusActivity"
+            android:label="@string/xl_tunai"
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.ewallet.tcash.TelkomselCashActivity"
+            android:label="@string/telkomsel_cash"
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.ewallet.indosatdompetku.IndosatDompetkuActivity"
+            android:label="@string/indosat_dompetku"
             android:screenOrientation="portrait" />
     </application>
 

@@ -31,13 +31,13 @@ import static com.midtrans.sdk.ui.constants.PaymentType.E_CHANNEL;
  * Created by ziahaqi on 2/19/17.
  */
 
-public class TransactionPresenter extends BasePresenter implements TransactionContract.Presenter {
+public class TransactionPresenter extends BasePresenter {
     private Context context;
     private List<PaymentMethodModel> paymentMethodList = new ArrayList<>();
     private List<String> bankTranferList = new ArrayList<>();
-    private TransactionContract.View view;
+    private TransactionView view;
 
-    public TransactionPresenter(Context context, TransactionContract.View view) {
+    public TransactionPresenter(Context context, TransactionView view) {
         super();
         this.context = context;
         this.view = view;

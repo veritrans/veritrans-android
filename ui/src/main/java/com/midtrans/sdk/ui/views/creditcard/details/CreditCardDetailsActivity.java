@@ -1,16 +1,12 @@
 package com.midtrans.sdk.ui.views.creditcard.details;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatCheckBox;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -35,8 +31,7 @@ import com.midtrans.sdk.core.utils.CardUtilities;
 import com.midtrans.sdk.ui.CustomSetting;
 import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.R;
-import com.midtrans.sdk.ui.abtracts.BaseActivity;
-import com.midtrans.sdk.ui.adapters.ItemDetailsAdapter;
+import com.midtrans.sdk.ui.abtracts.BasePaymentActivity;
 import com.midtrans.sdk.ui.constants.Constants;
 import com.midtrans.sdk.ui.constants.Theme;
 import com.midtrans.sdk.ui.models.PaymentResult;
@@ -47,7 +42,6 @@ import com.midtrans.sdk.ui.views.creditcard.points.BankPointsActivity;
 import com.midtrans.sdk.ui.views.status.PaymentStatusActivity;
 import com.midtrans.sdk.ui.views.webpayment.PaymentWebActivity;
 import com.midtrans.sdk.ui.widgets.FancyButton;
-import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -58,17 +52,17 @@ import java.util.List;
  * Created by rakawm on 3/27/17.
  */
 
-public class CreditCardDetailsActivity extends BaseActivity implements CreditCardDetailsView {
+public class CreditCardDetailsActivity extends BasePaymentActivity implements CreditCardDetailsView {
 
     public static final String EXTRA_CARD_DETAILS = "card.details";
     public static final String EXTRA_DELETED_CARD_DETAILS = "card.deleted.details";
 
     private static final int BANK_POINT_REQUEST_CODE = 1025;
+    private static final int MAX_RETRY = 3;
+    private int retry = 1;
 
     private MidtransUi midtransUi;
     private CreditCardDetailsPresenter presenter;
-
-    private RecyclerView itemDetails;
 
     private EditText cardNumberField;
     private EditText cardCvvField;
@@ -91,15 +85,12 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
 
     private FancyButton scanCardButton;
     private FancyButton deleteCardButton;
-    private FancyButton payNowButton;
     private FancyButton decreaseInstallmentButton;
     private FancyButton increaseInstallmentButton;
 
     private RelativeLayout containerSaveCard;
     private LinearLayout containerInstallment;
     private RelativeLayout containerPoint;
-
-    private ProgressDialog progressDialog;
 
     private AppCompatCheckBox checkboxSaveCard;
     private AppCompatCheckBox checkboxPointEnabled;
@@ -114,15 +105,11 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
         initMidtransUi();
         initViews();
         initThemes();
-        initItemDetails();
-        initToolbar();
         initCardNumberEditText();
         initExpiryEditText();
         initFocusChanges();
         initSaveCardLayout();
         initSaveCardCheckbox();
-        initPayNowButton();
-        initProgressDialog();
         initCvvHelp();
         initSaveCardHelp();
         initSavedCardIfAvailable();
@@ -138,9 +125,6 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
     }
 
     private void initViews() {
-        toolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        itemDetails = (RecyclerView) findViewById(R.id.container_item_details);
-
         cardNumberField = (EditText) findViewById(R.id.field_card_number);
         cardCvvField = (EditText) findViewById(R.id.field_cvv);
         cardExpiryField = (EditText) findViewById(R.id.field_expiry);
@@ -162,7 +146,6 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
 
         scanCardButton = (FancyButton) findViewById(R.id.button_scan_card);
         deleteCardButton = (FancyButton) findViewById(R.id.button_delete);
-        payNowButton = (FancyButton) findViewById(R.id.btn_pay_now);
         decreaseInstallmentButton = (FancyButton) findViewById(R.id.button_installment_decrease);
         increaseInstallmentButton = (FancyButton) findViewById(R.id.button_installment_increase);
 
@@ -175,9 +158,6 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
     }
 
     private void initThemes() {
-        // Set color theme for item details bar
-        setBackgroundColor(itemDetails, Theme.PRIMARY_COLOR);
-        setBackgroundColor(payNowButton, Theme.PRIMARY_COLOR);
         // Set color theme for scan card button
         setBorderColor(scanCardButton);
         setTextColor(scanCardButton);
@@ -187,18 +167,14 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
         filterColor(saveCardHelpButton);
         filterColor(pointHelpButton);
         // Set color filter on checkbox
-        setCheckoxStateColor(checkboxSaveCard);
-        setCheckoxStateColor(checkboxPointEnabled);
+        setCheckboxStateColor(checkboxSaveCard);
+        setCheckboxStateColor(checkboxPointEnabled);
         // Set background color filter on text field
         filterEditTextColor(cardNumberField);
         filterEditTextColor(cardExpiryField);
         filterEditTextColor(cardCvvField);
-        // Set font into pay now button
-        if (!TextUtils.isEmpty(midtransUi.getSemiBoldFontPath())) {
-            payNowButton.setCustomTextFont(midtransUi.getSemiBoldFontPath());
-        }
+
         initInstallmentColorTheme();
-        initThemeColor();
     }
 
     private void initInstallmentColorTheme() {
@@ -214,45 +190,10 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
         textInstallmentTerm.getBackground().setAlpha(50);
     }
 
-    private void initItemDetails() {
-        ItemDetailsAdapter itemDetailsAdapter = new ItemDetailsAdapter(new ItemDetailsAdapter.ItemDetailListener() {
-            @Override
-            public void onItemShown() {
-                // Do nothing
-            }
-        }, presenter.createItemDetails(this));
-        itemDetails.setLayoutManager(new LinearLayoutManager(this));
-        itemDetails.setAdapter(itemDetailsAdapter);
-    }
-
-    private void initToolbar() {
-        // Set title
-        setHeaderTitle(getString(R.string.card_details));
-
-        // Set merchant logo
-        ImageView merchantLogo = (ImageView) findViewById(R.id.merchant_logo);
-        Picasso.with(this)
-                .load(midtransUi.getTransaction().merchant.preference.logoUrl)
-                .into(merchantLogo);
-
-        initToolbarBackButton();
-        // Set back button click listener
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
-    }
-
     @Override
     public void onBackPressed() {
         setResult(RESULT_CANCELED);
         finish();
-
-        if (midtransUi.getCustomSetting().isAnimationEnabled()) {
-            overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
-        }
     }
 
     private void initCardNumberEditText() {
@@ -442,51 +383,6 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
         });
     }
 
-    private void initPayNowButton() {
-        payNowButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (checkCardValidity()) {
-                    // TODO: Track event pay now
-                    //midtransSDK.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
-                    if (checkPaymentValidity()) {
-                        String cvv = cardCvvField.getText().toString();
-                        showProgressDialog(getString(R.string.processing_payment));
-                        if (isOneClickMode()) {
-
-                            presenter.startPayment();
-                        } else {
-                            if (isTwoClickMode()) {
-                                presenter.startTokenize(cvv);
-                            } else {
-                                String cardNumber = cardNumberField.getText().toString();
-                                String expiry = cardExpiryField.getText().toString();
-                                // Start payment
-                                presenter.setSaveCard(checkboxSaveCard.isChecked());
-                                if (containerPoint.getVisibility() == View.VISIBLE) {
-                                    presenter.startTokenize(
-                                            cardNumber.replace(" ", ""),
-                                            expiry.split(" / ")[0],
-                                            expiry.split(" / ")[1],
-                                            cvv,
-                                            checkboxPointEnabled.isChecked()
-                                    );
-                                } else {
-                                    presenter.startTokenize(
-                                            cardNumber.replace(" ", ""),
-                                            expiry.split(" / ")[0],
-                                            expiry.split(" / ")[1],
-                                            cvv
-                                    );
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        });
-    }
-
     private boolean checkPaymentValidity() {
         // Card bin validation for bin locking and installment
         String cardNumber = cardNumberField.getText().toString().trim();
@@ -504,13 +400,6 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
         }
 
         return true;
-    }
-
-    private void initProgressDialog() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage(getString(R.string.processing_payment));
     }
 
     private void initCvvHelp() {
@@ -583,6 +472,7 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
         presenter.setInstallmentCurrentPosition(0);
         presenter.setInstallmentTermsCount(installmentTerms.size() - 1);
     }
+
 
     private void setInstallmentTermText() {
         String installmentTerm;
@@ -919,27 +809,43 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
     @Override
     public void onGetCardTokenFailure(CardTokenResponse response) {
         dismissProgressDialog();
-        // TODO: Show proper error message
-        Toast.makeText(this, "Get card token failed. Cause: " + response.statusMessage, Toast.LENGTH_SHORT).show();
+        UiUtils.showToast(this, getString(R.string.message_payment_failed));
     }
 
     @Override
     public void onGetCardTokenError(String message) {
         dismissProgressDialog();
-        // TODO: Show proper error message
-        Toast.makeText(this, "Get card token error. Cause: " + message, Toast.LENGTH_SHORT).show();
+        UiUtils.showToast(this, getString(R.string.message_payment_failed));
     }
 
     @Override
     public void onCreditCardPaymentError(Throwable throwable) {
         dismissProgressDialog();
-        Toast.makeText(this, "Payment failed. Cause: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+        if (retry < MAX_RETRY) {
+            retry += 1;
+            UiUtils.showToast(this, getString(R.string.message_payment_failed));
+        } else {
+            if (presenter.isPaymentStatusEnabled()) {
+                startPaymentStatus(presenter.getPaymentResult());
+            } else {
+                finishPayment(RESULT_OK, presenter.getPaymentResult());
+            }
+        }
     }
 
     @Override
     public void onCreditCardPaymentFailure(CreditCardPaymentResponse response) {
         dismissProgressDialog();
-        Toast.makeText(this, "Payment error. Cause: " + response.statusMessage, Toast.LENGTH_SHORT).show();
+        if (retry < MAX_RETRY) {
+            retry += 1;
+            UiUtils.showToast(this, getString(R.string.message_payment_failed));
+        } else {
+            if (presenter.isPaymentStatusEnabled()) {
+                startPaymentStatus(presenter.getPaymentResult());
+            } else {
+                finishPayment(RESULT_OK, presenter.getPaymentResult());
+            }
+        }
     }
 
     @Override
@@ -980,23 +886,12 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public String getMaskedCardNumber() {
-        return null;
-    }
-
-    @Override
-    public boolean isSaveEnabled() {
-        return checkboxSaveCard.isChecked();
-    }
-
     private void showProgressDialog(String message) {
-        progressDialog.setMessage(message);
-        progressDialog.show();
+        UiUtils.showProgressDialog(this, message, false);
     }
 
     private void dismissProgressDialog() {
-        progressDialog.dismiss();
+        UiUtils.hideProgressDialog();
     }
 
     private void start3DSecurePage(String url) {
@@ -1097,11 +992,6 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
         setHeaderTitle(getCardTitle(savedToken));
     }
 
-    private void setHeaderTitle(String title) {
-        TextView titleText = (TextView) findViewById(R.id.page_title);
-        titleText.setText(title);
-    }
-
     private String getCardTitle(SavedToken savedToken) {
         String cardType = CardUtilities.getCardType(savedToken.maskedCard);
         String cardBin = savedToken.maskedCard.substring(0, 4);
@@ -1183,5 +1073,49 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
         String cardNumber = cardNumberField.getText().toString().trim().replace(" ", "");
         intent.putExtra(BankPointsActivity.EXTRA_BANK, CreditCardUtils.getBankByBin(presenter.getBankBins(), presenter.getCardBinForBankChecking(cardNumber)));
         startActivityForResult(intent, BANK_POINT_REQUEST_CODE);
+    }
+
+    @Override
+    protected void startPayment() {
+        String cvv = cardCvvField.getText().toString();
+        showProgressDialog(getString(R.string.processing_payment));
+        if (isOneClickMode()) {
+            presenter.startPayment();
+        } else {
+            if (isTwoClickMode()) {
+                presenter.startTokenize(cvv);
+            } else {
+                String cardNumber = cardNumberField.getText().toString();
+                String expiry = cardExpiryField.getText().toString();
+                // Start payment
+                presenter.setSaveCard(checkboxSaveCard.isChecked());
+                if (containerPoint.getVisibility() == View.VISIBLE) {
+                    presenter.startTokenize(
+                            cardNumber.replace(" ", ""),
+                            expiry.split(" / ")[0],
+                            expiry.split(" / ")[1],
+                            cvv,
+                            checkboxPointEnabled.isChecked()
+                    );
+                } else {
+                    presenter.startTokenize(
+                            cardNumber.replace(" ", ""),
+                            expiry.split(" / ")[0],
+                            expiry.split(" / ")[1],
+                            cvv
+                    );
+                }
+            }
+        }
+    }
+
+    @Override
+    protected boolean validatePayment() {
+        if (checkCardValidity()) {
+            if (checkPaymentValidity()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

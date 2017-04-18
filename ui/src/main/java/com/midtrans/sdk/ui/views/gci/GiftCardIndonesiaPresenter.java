@@ -14,7 +14,7 @@ import com.midtrans.sdk.ui.models.PaymentResult;
 public class GiftCardIndonesiaPresenter extends BasePaymentPresenter {
 
     private final GiftCardIndonesiaView view;
-    private GiftCardPaymentResponse response;
+    private PaymentResult<GiftCardPaymentResponse> paymentResult;
 
     public GiftCardIndonesiaPresenter(GiftCardIndonesiaView view) {
         this.view = view;
@@ -24,23 +24,25 @@ public class GiftCardIndonesiaPresenter extends BasePaymentPresenter {
         MidtransCore.getInstance().paymentUsingGiftCard(MidtransUi.getInstance().getTransaction().token, cardNumber, password, new MidtransCoreCallback<GiftCardPaymentResponse>() {
             @Override
             public void onSuccess(GiftCardPaymentResponse object) {
-                response = object;
+                paymentResult = new PaymentResult<>(object);
                 view.onGiftCardIndonesiaSuccess(object);
             }
 
             @Override
             public void onFailure(GiftCardPaymentResponse object) {
-                view.onGiftCardIndonesiaFailure("Failed to pay using Gift Card");
+                paymentResult = new PaymentResult<>(object);
+                view.onGiftCardIndonesiaFailure(object);
             }
 
             @Override
             public void onError(Throwable throwable) {
-                view.onGiftCardIndonesiaFailure(throwable.getMessage());
+                paymentResult = new PaymentResult<>(throwable.getMessage());
+                view.onGiftCardIndonesiaError(throwable.getMessage());
             }
         });
     }
 
     public PaymentResult<GiftCardPaymentResponse> getPaymentResult() {
-        return new PaymentResult<>(response);
+        return paymentResult;
     }
 }

@@ -6,14 +6,10 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.R;
@@ -21,14 +17,12 @@ import com.midtrans.sdk.ui.abtracts.BaseActivity;
 import com.midtrans.sdk.ui.constants.Constants;
 import com.midtrans.sdk.ui.utils.Logger;
 import com.midtrans.sdk.ui.utils.UiUtils;
-import com.squareup.picasso.Picasso;
 
 
 public class PaymentWebActivity extends BaseActivity implements MidtransWebViewClient.WebViewClientCallback {
     private WebView webView;
     private String webUrl;
     private String type;
-    private TextView titleText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,39 +30,15 @@ public class PaymentWebActivity extends BaseActivity implements MidtransWebViewC
         setContentView(R.layout.activity_payment_web);
         initDefaultProperties();
         initViews();
-        initToolbar();
         initWebView();
         initValues();
     }
 
     private void initViews() {
         webView = (WebView) findViewById(R.id.webview);
-        toolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        titleText = (TextView) findViewById(R.id.page_title);
-    }
-
-    private void initToolbar() {
-        // Set title
-        setHeaderTitle(getString(R.string.processing_payment));
-
-        // Set merchant logo
-        ImageView merchantLogo = (ImageView) findViewById(R.id.merchant_logo);
-        Picasso.with(this)
-                .load(MidtransUi.getInstance().getTransaction().merchant.preference.logoUrl)
-                .into(merchantLogo);
-
-        initToolbarBackButton();
-        // Set back button click listener
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
     }
 
     private void initDefaultProperties() {
-        saveCurrentFragment = true;
         webUrl = getIntent().getStringExtra(Constants.WEB_VIEW_URL);
         type = getIntent().getStringExtra(Constants.WEB_VIEW_PARAM_TYPE);
         Logger.d(TAG, "weburl:" + webUrl);
@@ -92,10 +62,6 @@ public class PaymentWebActivity extends BaseActivity implements MidtransWebViewC
 
     private void initValues() {
         webView.loadUrl(webUrl);
-    }
-
-    private void setHeaderTitle(String title) {
-        titleText.setText(title);
     }
 
     @Override
