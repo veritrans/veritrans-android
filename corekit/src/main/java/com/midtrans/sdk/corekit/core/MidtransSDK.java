@@ -1282,7 +1282,7 @@ public class MidtransSDK {
         }
 
         if (transactionRequest != null) {
-            if (Utils.isNetworkAvailable(context)) {
+            if (isNetworkAvailable()) {
                 isRunning = true;
                 mSnapTransactionManager.paymentUsingTelkomselCash(authenticationToken,
                         new TelkomselEcashPaymentRequest(PaymentType.TELKOMSEL_CASH, new TelkomselCashPaymentParams(customerPhoneNumber)),
@@ -1419,7 +1419,7 @@ public class MidtransSDK {
         }
 
         if (transactionRequest != null) {
-            if (Utils.isNetworkAvailable(context)) {
+            if (isNetworkAvailable()) {
                 isRunning = true;
                 mSnapTransactionManager.paymentUsingBRIEpay(authenticationToken,
                         new BasePaymentRequest(PaymentType.BRI_EPAY), callback);
@@ -1446,7 +1446,7 @@ public class MidtransSDK {
             return;
         }
         if (transactionRequest != null) {
-            if (Utils.isNetworkAvailable(context)) {
+            if (isNetworkAvailable()) {
                 isRunning = true;
                 mSnapTransactionManager.paymentUsingBankTransferAllBank(authenticationToken,
                         SdkUtil.getBankTransferPaymentRequest(email, PaymentType.ALL_VA),
@@ -1475,7 +1475,7 @@ public class MidtransSDK {
             return;
         }
 
-        if (Utils.isNetworkAvailable(context)) {
+        if (isNetworkAvailable()) {
             isRunning = true;
             mSnapTransactionManager.paymentUsingGCI(authenticationToken,
                     SdkUtil.getGCIPaymentRequest(cardNumber, password),
@@ -1503,7 +1503,7 @@ public class MidtransSDK {
             return;
         }
 
-        if (Utils.isNetworkAvailable(context)) {
+        if (isNetworkAvailable()) {
             isRunning = true;
             mSnapTransactionManager.cardRegistration(cardNumber, cardCvv, cardExpMonth, cardExpYear, clientKey,
                     callback);
@@ -1608,7 +1608,7 @@ public class MidtransSDK {
      *                            finished.
      */
     public void deleteCard(@NonNull String authenticationToken, String maskedCard, DeleteCardCallback callback) {
-        if (Utils.isNetworkAvailable(context)) {
+        if (isNetworkAvailable()) {
             mSnapTransactionManager.deleteCard(authenticationToken, maskedCard, callback);
         } else {
             callback.onError(new RuntimeException(context.getString(R.string.error_unable_to_connect)));
@@ -1644,7 +1644,7 @@ public class MidtransSDK {
         if (transactionFinishedCallback != null) {
             transactionFinishedCallback.onTransactionFinished(result);
         } else {
-            Logger.i(TAG, context.getString(R.string.transaction_finished_callback_unimplemented));
+            Logger.e(TAG, context.getString(R.string.transaction_finished_callback_unimplemented));
         }
     }
 
