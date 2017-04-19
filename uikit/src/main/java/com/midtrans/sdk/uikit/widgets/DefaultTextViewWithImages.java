@@ -27,10 +27,6 @@ public class DefaultTextViewWithImages extends DefaultTextView {
         super(context, attrs, defStyleAttr);
     }
 
-    public DefaultTextViewWithImages(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-    }
-
     private boolean addImages(Context context, Spannable spannable) {
         Pattern refImg = Pattern.compile("\\Q[img src=\\E([a-zA-Z0-9_]+?)\\Q/]\\E");
         boolean hasChanges = false;
