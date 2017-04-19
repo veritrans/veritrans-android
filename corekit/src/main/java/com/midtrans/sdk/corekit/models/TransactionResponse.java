@@ -60,7 +60,7 @@ public class TransactionResponse implements Serializable {
     @SerializedName("permata_expiration")
     private String permataExpiration;
     @SerializedName("va_numbers")
-    private List<BCAVANumber> accountNumbers;
+    private List<VaNumber> accountNumbers;
     @SerializedName("bca_klikbca_expire_time")
     private String bcaKlikBcaExpiration;
     @SerializedName("bca_expiration")
@@ -313,11 +313,11 @@ public class TransactionResponse implements Serializable {
         this.paymentCodeResponse = paymentCodeResponse;
     }
 
-    public List<BCAVANumber> getAccountNumbers() {
+    public List<VaNumber> getAccountNumbers() {
         return accountNumbers;
     }
 
-    public void setAccountNumbers(List<BCAVANumber> accountNumbers) {
+    public void setAccountNumbers(List<VaNumber> accountNumbers) {
         this.accountNumbers = accountNumbers;
     }
 

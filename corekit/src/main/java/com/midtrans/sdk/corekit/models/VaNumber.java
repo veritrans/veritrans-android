@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * @author rakawm
  */
-public class BCAVANumber implements Serializable {
+public class VaNumber implements Serializable {
     private String bank;
     @SerializedName("va_number")
     private String accountNumber;

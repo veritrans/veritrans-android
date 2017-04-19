@@ -61,7 +61,7 @@ public class CallbackCollaborator {
 
     }
 
-    public void onGetBankBinSuccess(){
+    public void onGetBankBinSuccess() {
 
     }
 
@@ -82,6 +82,14 @@ public class CallbackCollaborator {
     }
 
     public void onGetbanksPointError() {
+
+    }
+
+    public void onDeleteCardSuccess() {
+
+    }
+
+    public void onDeleteCardFailure() {
 
     }
 }
