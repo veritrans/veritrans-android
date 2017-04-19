@@ -3,7 +3,6 @@ package com.midtrans.sdk.ui.views.ewallet.indosatdompetku;
 import com.midtrans.sdk.core.MidtransCore;
 import com.midtrans.sdk.core.MidtransCoreCallback;
 import com.midtrans.sdk.core.models.snap.ewallet.indosatdompetku.IndosatDompetkuPaymentResponse;
-import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.abtracts.BasePaymentPresenter;
 import com.midtrans.sdk.ui.models.PaymentResult;
 
@@ -22,7 +21,7 @@ public class IndosatDompetkuPresenter extends BasePaymentPresenter {
 
 
     public void startPayment(String phoneNumber) {
-        MidtransCore.getInstance().paymentUsingIndosatDompetku(midtransUiSdk.getCheckoutToken(), phoneNumber, new MidtransCoreCallback<IndosatDompetkuPaymentResponse>() {
+        MidtransCore.getInstance().paymentUsingIndosatDompetku(midtransUi.getCheckoutToken(), phoneNumber, new MidtransCoreCallback<IndosatDompetkuPaymentResponse>() {
             @Override
             public void onSuccess(IndosatDompetkuPaymentResponse response) {
                 paymentResult = new PaymentResult<>(response);
@@ -49,6 +48,6 @@ public class IndosatDompetkuPresenter extends BasePaymentPresenter {
     }
 
     public boolean isShowPaymentStatus() {
-        return midtransUiSdk.getCustomSetting().isShowPaymentStatus();
+        return midtransUi.getCustomSetting().isShowPaymentStatus();
     }
 }

@@ -3,8 +3,8 @@
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:fitsSystemWindows="true">
     <include
         android:id="@+id/toolbar_payment_page"
         layout="@layout/toolbar_payment_page" />
@@ -17,16 +17,18 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <include
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/container_item_details"
             layout="@layout/layout_item_details" />
 
-        <FrameLayout
+        <ScrollView
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/container_item_details" />
+            android:layout_above="@+id/btn_confirm_payment"
+            android:layout_below="@id/container_item_details">
+
+            <include layout="@layout/layout_bank_transfer_payment" />
+        </ScrollView>
 
         <com.midtrans.sdk.ui.widgets.FancyButton
             android:id="@+id/btn_confirm_payment"

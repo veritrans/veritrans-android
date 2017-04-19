@@ -13,7 +13,7 @@ import com.midtrans.sdk.ui.models.PaymentResult;
 
 public class EpayBriPresenter extends BasePaymentPresenter {
     private final EpayBriView view;
-    private EpayBriPaymentResponse paymentResponse;
+    private PaymentResult<EpayBriPaymentResponse> paymentResult;
 
     public EpayBriPresenter(EpayBriView view) {
         this.view = view;
@@ -23,23 +23,25 @@ public class EpayBriPresenter extends BasePaymentPresenter {
         MidtransCore.getInstance().paymentUsingEpayBri(MidtransUi.getInstance().getTransaction().token, new MidtransCoreCallback<EpayBriPaymentResponse>() {
             @Override
             public void onSuccess(EpayBriPaymentResponse object) {
-                paymentResponse = object;
+                paymentResult = new PaymentResult<>(object);
                 view.onEpayBriSuccess(object);
             }
 
             @Override
             public void onFailure(EpayBriPaymentResponse object) {
-                view.onEpayBriFailure("Failed to pay using Epay BRI.");
+                paymentResult = new PaymentResult<>(object);
+                view.onEpayBriFailure(object);
             }
 
             @Override
             public void onError(Throwable throwable) {
-                view.onEpayBriFailure(throwable.getMessage());
+                paymentResult = new PaymentResult<>(throwable.getMessage());
+                view.onEpayBriError(throwable.getMessage());
             }
         });
     }
 
     public PaymentResult<EpayBriPaymentResponse> getPaymentResult() {
-        return new PaymentResult<>(paymentResponse);
+        return paymentResult;
     }
 }

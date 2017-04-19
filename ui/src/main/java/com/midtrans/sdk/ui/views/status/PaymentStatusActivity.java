@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 import com.midtrans.sdk.core.models.snap.card.CreditCardPaymentResponse;
 import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.R;
-import com.midtrans.sdk.ui.abtracts.BaseActivity;
+import com.midtrans.sdk.ui.abtracts.BaseStatusActivity;
 import com.midtrans.sdk.ui.constants.Constants;
 import com.midtrans.sdk.ui.constants.PaymentStatus;
 import com.midtrans.sdk.ui.constants.PaymentType;
@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
  * Created by rakawm on 3/29/17.
  */
 
-public class PaymentStatusActivity extends BaseActivity {
+public class PaymentStatusActivity extends BaseStatusActivity {
     private FancyButton buttonFinish;
     private FancyButton buttonInstruction;
     private ImageView statusLogo;
@@ -57,7 +57,7 @@ public class PaymentStatusActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_payment_status);
+        setContentView(R.layout.activity_payment_status);
         initViews();
         initResponse();
         initLayoutColor();
@@ -245,7 +245,8 @@ public class PaymentStatusActivity extends BaseActivity {
         finishPayment();
     }
 
-    private void finishPayment() {
+    @Override
+    protected void finishPayment() {
         setResult(RESULT_OK);
         finish();
     }

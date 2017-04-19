@@ -9,5 +9,7 @@ import com.midtrans.sdk.core.models.snap.ebanking.cimbclicks.CimbClicksPaymentRe
 public interface CimbClicksView {
     void onCimbClicksSuccess(CimbClicksPaymentResponse paymentResponse);
 
-    void onCimbClicksFailure(String message);
+    void onCimbClicksFailure(CimbClicksPaymentResponse paymentResponse);
+
+    void onCimbClicksError(String message);
 }

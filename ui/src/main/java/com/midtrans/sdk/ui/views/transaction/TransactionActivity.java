@@ -53,7 +53,7 @@ import java.util.List;
 
 public class TransactionActivity
         extends BaseActivity
-        implements TransactionContract.View,
+        implements TransactionView,
         PaymentMethodsAdapter.PaymentMethodListener,
         ItemDetailsAdapter.ItemDetailListener {
 
@@ -61,6 +61,7 @@ public class TransactionActivity
     private PaymentMethodsAdapter paymentMethodsAdapter;
     private ItemDetailsAdapter itemDetailsAdapter;
 
+    private Toolbar toolbar;
     private LinearLayout layoutProgressContainer;
     private RecyclerView paymentMethodsContainer;
     private RecyclerView itemDetailsContainer;
@@ -78,7 +79,6 @@ public class TransactionActivity
         setContentView(R.layout.activity_transaction);
         initProperties();
         initViews();
-        initThemeColor();
         bindViews();
         initTransaction();
         initRetryAndCancel();

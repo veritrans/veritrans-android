@@ -18,7 +18,7 @@ public class MandiriClickpayPresenter extends BasePaymentPresenter {
 
     private final MandiriClickpayView view;
     private String input3;
-    private MandiriClickpayPaymentResponse paymentResponse;
+    private PaymentResult<MandiriClickpayPaymentResponse> paymentResult;
 
     public MandiriClickpayPresenter(MandiriClickpayView view) {
         this.view = view;
@@ -35,24 +35,26 @@ public class MandiriClickpayPresenter extends BasePaymentPresenter {
         MidtransCore.getInstance().paymentUsingMandiriClickpay(checkoutToken, paymentParams, new MidtransCoreCallback<MandiriClickpayPaymentResponse>() {
             @Override
             public void onSuccess(MandiriClickpayPaymentResponse object) {
-                paymentResponse = object;
+                paymentResult = new PaymentResult<>(object);
                 view.onMandiriClickpaySuccess(object);
             }
 
             @Override
             public void onFailure(MandiriClickpayPaymentResponse object) {
-                view.onMandiriClickpayFailure("Failed to pay using Mandiri Clickpay");
+                paymentResult = new PaymentResult<>(object);
+                view.onMandiriClickpayFailure(object);
             }
 
             @Override
             public void onError(Throwable throwable) {
-                view.onMandiriClickpayFailure(throwable.getMessage());
+                paymentResult = new PaymentResult<>(throwable.getMessage());
+                view.onMandiriClickpayError(throwable.getMessage());
             }
         });
     }
 
     public PaymentResult<MandiriClickpayPaymentResponse> getPaymentResult() {
-        return new PaymentResult<>(paymentResponse);
+        return paymentResult;
     }
 
     public String getInput3() {

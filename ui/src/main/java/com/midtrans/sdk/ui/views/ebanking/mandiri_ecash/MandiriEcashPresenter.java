@@ -13,7 +13,7 @@ import com.midtrans.sdk.ui.models.PaymentResult;
 
 public class MandiriEcashPresenter extends BasePaymentPresenter {
     private final MandiriEcashView view;
-    private MandiriECashPaymentResponse paymentResponse;
+    private PaymentResult<MandiriECashPaymentResponse> paymentResult;
 
     public MandiriEcashPresenter(MandiriEcashView view) {
         this.view = view;
@@ -23,23 +23,25 @@ public class MandiriEcashPresenter extends BasePaymentPresenter {
         MidtransCore.getInstance().paymentUsingMandiriECash(MidtransUi.getInstance().getTransaction().token, new MidtransCoreCallback<MandiriECashPaymentResponse>() {
             @Override
             public void onSuccess(MandiriECashPaymentResponse object) {
-                paymentResponse = object;
+                paymentResult = new PaymentResult<>(object);
                 view.onMandiriEcashSuccess(object);
             }
 
             @Override
             public void onFailure(MandiriECashPaymentResponse object) {
-                view.onMandiriEcashFailure("Failed to pay using Mandiri E Cash");
+                paymentResult = new PaymentResult<>(object);
+                view.onMandiriEcashFailure(object);
             }
 
             @Override
             public void onError(Throwable throwable) {
-                view.onMandiriEcashFailure(throwable.getMessage());
+                paymentResult = new PaymentResult<>(throwable.getMessage());
+                view.onMandiriEcashError(throwable.getMessage());
             }
         });
     }
 
     public PaymentResult<MandiriECashPaymentResponse> getPaymentResult() {
-        return new PaymentResult<>(paymentResponse);
+        return paymentResult;
     }
 }

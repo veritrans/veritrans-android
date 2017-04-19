@@ -13,7 +13,7 @@ import com.midtrans.sdk.ui.models.PaymentResult;
 
 public class KiosonPresenter extends BasePaymentPresenter {
     private final KiosonView view;
-    private KiosonPaymentResponse response;
+    private PaymentResult<KiosonPaymentResponse> paymentResult;
 
     public KiosonPresenter(KiosonView view) {
         this.view = view;
@@ -23,23 +23,25 @@ public class KiosonPresenter extends BasePaymentPresenter {
         MidtransCore.getInstance().paymentUsingKioson(MidtransUi.getInstance().getTransaction().token, new MidtransCoreCallback<KiosonPaymentResponse>() {
             @Override
             public void onSuccess(KiosonPaymentResponse object) {
-                response = object;
+                paymentResult = new PaymentResult<>(object);
                 view.onKiosonPaymentSuccess(object);
             }
 
             @Override
             public void onFailure(KiosonPaymentResponse object) {
-                view.onKiosonPaymentFailure("Failed to pay using Kioson");
+                paymentResult = new PaymentResult<>(object);
+                view.onKiosonPaymentFailure(object);
             }
 
             @Override
             public void onError(Throwable throwable) {
-                view.onKiosonPaymentFailure(throwable.getMessage());
+                paymentResult = new PaymentResult<>(throwable.getMessage());
+                view.onKiosonPaymentError(throwable.getMessage());
             }
         });
     }
 
     public PaymentResult<KiosonPaymentResponse> getPaymentResult() {
-        return new PaymentResult<>(response);
+        return paymentResult;
     }
 }

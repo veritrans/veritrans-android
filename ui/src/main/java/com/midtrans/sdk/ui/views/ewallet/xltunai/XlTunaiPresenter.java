@@ -21,7 +21,7 @@ public class XlTunaiPresenter extends BasePaymentPresenter {
 
 
     public void startPayment() {
-        MidtransCore.getInstance().paymentUsingXlTunai(midtransUiSdk.getCheckoutToken(), new MidtransCoreCallback<XlTunaiPaymentResponse>() {
+        MidtransCore.getInstance().paymentUsingXlTunai(midtransUi.getCheckoutToken(), new MidtransCoreCallback<XlTunaiPaymentResponse>() {
             @Override
             public void onSuccess(XlTunaiPaymentResponse object) {
                 paymentResult = new PaymentResult<>(object);

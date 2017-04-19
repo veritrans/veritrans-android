@@ -31,22 +31,26 @@ public class PaymentResult<T extends BaseTransactionResponse> implements Seriali
     }
 
     private void initPaymentStatus() {
-        if (transactionResponse.statusCode.equals(PaymentStatus.CODE_200) ||
-                (!TextUtils.isEmpty(transactionResponse.transactionStatus) &&
-                        (transactionResponse.transactionStatus.equalsIgnoreCase(PaymentStatus.SUCCESS) ||
-                                transactionResponse.transactionStatus.equalsIgnoreCase(PaymentStatus.SETTLEMENT)))) {
-            paymentStatus = PaymentStatus.SUCCESS;
-        } else if (transactionResponse.statusCode.equals(PaymentStatus.CODE_201)
-                || (!TextUtils.isEmpty(transactionResponse.transactionStatus)
-                && (transactionResponse.transactionStatus.equalsIgnoreCase(PaymentStatus.PENDING)))) {
-            if (!TextUtils.isEmpty(transactionResponse.fraudStatus)
-                    && transactionResponse.fraudStatus.equalsIgnoreCase(PaymentStatus.CHALLENGE)) {
-                paymentStatus = PaymentStatus.CHALLENGE;
+        if (transactionResponse != null) {
+            if (transactionResponse.statusCode.equals(PaymentStatus.CODE_200) ||
+                    (!TextUtils.isEmpty(transactionResponse.transactionStatus) &&
+                            (transactionResponse.transactionStatus.equalsIgnoreCase(PaymentStatus.SUCCESS) ||
+                                    transactionResponse.transactionStatus.equalsIgnoreCase(PaymentStatus.SETTLEMENT)))) {
+                paymentStatus = PaymentStatus.SUCCESS;
+            } else if (transactionResponse.statusCode.equals(PaymentStatus.CODE_201)
+                    || (!TextUtils.isEmpty(transactionResponse.transactionStatus)
+                    && (transactionResponse.transactionStatus.equalsIgnoreCase(PaymentStatus.PENDING)))) {
+                if (!TextUtils.isEmpty(transactionResponse.fraudStatus)
+                        && transactionResponse.fraudStatus.equalsIgnoreCase(PaymentStatus.CHALLENGE)) {
+                    paymentStatus = PaymentStatus.CHALLENGE;
+                } else {
+                    paymentStatus = PaymentStatus.PENDING;
+                }
+            } else if (TextUtils.isEmpty(errorMessage)) {
+                this.paymentStatus = PaymentStatus.INVALID;
             } else {
-                paymentStatus = PaymentStatus.PENDING;
+                this.paymentStatus = PaymentStatus.FAILED;
             }
-        } else if (TextUtils.isEmpty(errorMessage)) {
-            this.paymentStatus = PaymentStatus.INVALID;
         } else {
             this.paymentStatus = PaymentStatus.FAILED;
         }

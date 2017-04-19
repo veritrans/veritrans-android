@@ -13,7 +13,7 @@ import com.midtrans.sdk.ui.models.PaymentResult;
 
 public class CimbClicksPresenter extends BasePaymentPresenter {
     private final CimbClicksView view;
-    private CimbClicksPaymentResponse paymentResponse;
+    private PaymentResult<CimbClicksPaymentResponse> paymentResult;
 
     public CimbClicksPresenter(CimbClicksView view) {
         this.view = view;
@@ -23,23 +23,25 @@ public class CimbClicksPresenter extends BasePaymentPresenter {
         MidtransCore.getInstance().paymentUsingCimbClicks(MidtransUi.getInstance().getTransaction().token, new MidtransCoreCallback<CimbClicksPaymentResponse>() {
             @Override
             public void onSuccess(CimbClicksPaymentResponse object) {
-                paymentResponse = object;
+                paymentResult = new PaymentResult<>(object);
                 view.onCimbClicksSuccess(object);
             }
 
             @Override
             public void onFailure(CimbClicksPaymentResponse object) {
-                view.onCimbClicksFailure("Failed to pay using CIMB Clicks.");
+                paymentResult = new PaymentResult<>(object);
+                view.onCimbClicksFailure(object);
             }
 
             @Override
             public void onError(Throwable throwable) {
-                view.onCimbClicksFailure(throwable.getMessage());
+                paymentResult = new PaymentResult<>(throwable.getMessage());
+                view.onCimbClicksError(throwable.getMessage());
             }
         });
     }
 
     public PaymentResult<CimbClicksPaymentResponse> getPaymentResult() {
-        return new PaymentResult<CimbClicksPaymentResponse>(paymentResponse);
+        return paymentResult;
     }
 }

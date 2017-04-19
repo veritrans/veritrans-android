@@ -9,5 +9,7 @@ import com.midtrans.sdk.core.models.snap.conveniencestore.kioson.KiosonPaymentRe
 public interface KiosonView {
     void onKiosonPaymentSuccess(KiosonPaymentResponse response);
 
-    void onKiosonPaymentFailure(String message);
+    void onKiosonPaymentFailure(KiosonPaymentResponse response);
+
+    void onKiosonPaymentError(String message);
 }

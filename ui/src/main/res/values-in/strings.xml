@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="activity_select_bank">Pilih Bank</string>
     <!--user detail-->
     <string name="hint_full_name">Nama Lengkap</string>
     <string name="hint_email">Email</string>
@@ -129,7 +130,7 @@
     <string name="mandiri_instruction_step5">Masukkan kode pembayaran Anda dan tekan \'Correct\'.</string>
     <string name="mandiri_instruction_step6">Rincian pembayaran Anda akan tampil pada halaman konfirmasi. Jika informasi tersebut benar tekan \'Yes\'.</string>
 
-    <string name="mandiri_internet_instruction_step1">1.\tLogin ke Internet Banking Mandiri (ib.bankmandiri.co.id).</string>
+    <string name="mandiri_internet_instruction_step1">1.\tLogin ke Internet Banking Mandiri (https://ib.bankmandiri.co.id).</string>
     <string name="mandiri_internet_instruction_step2">2.\tPada main menu, pilih \'Payment\', kemudian pilih \'Multi Payment\'.</string>
     <string name="mandiri_internet_instruction_step3">3.\tPilih rekening Anda di \'From Account\', kemudian \'Billing Name\' pilih \'Midtrans\'.</string>
     <string name="mandiri_internet_instruction_step4">4.\tMasukkan \'Payment Code\' dan Anda akan menerima rincian pembayaran.</string>
@@ -154,8 +155,8 @@
 
     <!--KLIK BCA PAYMENT-->
     <string name="bca_klik_pay_instruction_step1">Anda akan dialihkan ke halaman BCA KlikPay setelah menekan tombol \'Konfirmasi Pembayaran\' .</string>
-    <string name="bca_klik_pay_instruction_step2">Untuk pembayaran, Anda dapat memilih akun KlikBCA Individu atau kartu BCA.</string>
-    <string name="bca_klik_pay_instruction_step3">Untuk informasi lebih lanjut mengenai BCA KlikPay harap kontak Halo BCA di (021) 1500888 atau kunjungi www.klikbca.com/klikpay.</string>
+    <string name="bca_klik_pay_instruction_step2">Untuk pembayaran, Anda dapat memilih akun KlikBCA Individu atau kartu kredit BCA.</string>
+    <string name="bca_klik_pay_instruction_step3">Untuk informasi lebih lanjut mengenai BCA KlikPay harap kontak Halo BCA di (021) 1500888 atau kunjungi http://klikbca.com/KlikPay/klikpay.html.</string>
 
     <!--m-BCA-->
     <string name="bca_mbanking_instruction_step1">1.\tPilih \'m-transfer\'.</string>
@@ -244,7 +245,7 @@
     <string name="no_saved_cards">Belum ada kartu yang disimpan.</string>
 
     <string name="text_bank_name">Nama Bank</string>
-    <string name="text_sample_valid_date">Valid Sampai : 10 September 2015, 16:00</string>
+    <string name="text_sample_valid_date">Silakan selesaikan pembayaran sebelum : 10 September 2015, 16:00</string>
     <string name="enter_cvv">Masukkan CVV</string>
 
     <string name="appli">APPLI</string>
@@ -315,7 +316,7 @@
 
     <!--KlikBCA Payment Instructions-->
     <string name="klikbca_instruction_1">Pastikan bahwa UserID sudah aktif dan terdaftar di BCA.</string>
-    <string name="klikbca_instruction_2">Silakan lanjutkan pembayaran melalui KlikBCA dengan membuka www.klikbca.com pada browser anda, menggunakan User ID yang sama dengan yang anda masukkan di atas.</string>
+    <string name="klikbca_instruction_2">Silakan lanjutkan pembayaran melalui KlikBCA dengan membuka http://klikbca.com pada browser anda, menggunakan User ID yang sama dengan yang anda masukkan di atas.</string>
     <string name="klikbca_instruction_3">Transaksi akan dibatalkan bila pembayaran tidak dilakukan dalam 2 jam.</string>
 
     <string name="payment_method_bri_epay">e-Pay BRI</string>
@@ -367,8 +368,8 @@
     <string name="copied_order_id">Kode pemesanan telah disalin ke clipboard</string>
     <string name="copied_merchant_code">Kode penjual telah disalin ke clipboard</string>
 
-    <string name="text_format_valid_until">Valid Sampai : %1$s</string>
-    <string name="klik_bca_complete_payment">Selesaikan pembayaran di www.klikbca.com sebelum:</string>
+    <string name="text_format_valid_until">Silakan menyelesaikan pembayaran sebelum : %1$s</string>
+    <string name="klik_bca_complete_payment">Selesaikan pembayaran di http://klikbca.com sebelum:</string>
     <string name="instruction_atm_bersama1">Di menu utama, pilih Others.</string>
     <string name="instruction_atm_bersama2">Pilih Transfer.</string>
     <string name="instruction_atm_bersama3">Pilih Online Transfer.</string>
@@ -402,6 +403,7 @@
     <string name="klikbca_payment_instruction">Instruksi Pembayaran KlikBCA</string>
     <string name="message_payment_cannot_proccessed">Transaksi anda tidak dapat diproses. Pastikan info pembayaran anda benar</string>
     <string name="message_payment_failed">Pembayaran gagal. Mohon cek kembali detil kartu anda atau gunakan kartu lain.</string>
+    <string name="message_payment_failed_general">Pembayaran gagal. Mohon coba beberapa saat lagi.</string>
     <string name="message_payment_denied">Transaksi anda ditolak! Silakan ulangi lagi, atau coba dengan metode pembayaran lain.</string>
     <string name="validation_message_please_fillup_form">Silakan isi dengan informasi yang tepat.</string>
     <string name="message_getcard_token_failed">Gagal autentikasi</string>
@@ -481,7 +483,7 @@
     <string name="promo_dialog_title">Selamat</string>
     <string name="promo_dialog_message">Dengan kartu ini, anda mendapatkan diskon sejumlah Rp. %1$s dari %2$s.</string>
     <string name="error_obtain_promo">Gagal memperoleh promo.</string>
-    <string name="klik_bca_continue">Mohon lanjutkan proses pembayaran lewat KlikBCA dengan membuka <b>www.klikbca.com</b> di browser anda.</string>
+    <string name="klik_bca_continue">Mohon lanjutkan proses pembayaran lewat KlikBCA dengan membuka http://klikbca.com di browser anda.</string>
     <string name="error_paid_order_id">Order ID sudah dibayar, silakan gunakan order id lain.</string>
     <string name="layout_save_card_dialog">Kami akan menyimpan kartu anda sehingga bisa digunakan untuk transaksi selanjutnya.</string>
     <string name="redeem_point_reward">Tukarkan poin hadiah</string>
@@ -493,6 +495,7 @@
     <string name="error_invalid_payment_form">Formulir Pembayaran tidak valid</string>
     <string name="hint_card_number_example">4811 1111 1111 1114 (Contoh)</string>
 
+    <string name="redeem_point">Gunakan Poin</string>
     <string name="how_much_point">Berapa poin yang ingin anda tukarkan?</string>
     <string name="total_bank_point">Total poin anda</string>
     <string name="status_redeemed_point">DISKON POIN</string>

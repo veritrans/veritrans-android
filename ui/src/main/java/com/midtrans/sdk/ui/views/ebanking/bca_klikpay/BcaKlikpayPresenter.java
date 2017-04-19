@@ -13,7 +13,7 @@ import com.midtrans.sdk.ui.models.PaymentResult;
 
 public class BcaKlikpayPresenter extends BasePaymentPresenter {
     private final BcaKlikpayView view;
-    private BcaKlikpayPaymentResponse paymentResponse;
+    private PaymentResult<BcaKlikpayPaymentResponse> paymentResult;
 
     public BcaKlikpayPresenter(BcaKlikpayView view) {
         this.view = view;
@@ -23,23 +23,25 @@ public class BcaKlikpayPresenter extends BasePaymentPresenter {
         MidtransCore.getInstance().paymentUsingBcaKlikpay(MidtransUi.getInstance().getTransaction().token, new MidtransCoreCallback<BcaKlikpayPaymentResponse>() {
             @Override
             public void onSuccess(BcaKlikpayPaymentResponse object) {
-                paymentResponse = object;
+                paymentResult = new PaymentResult<>(object);
                 view.onBcaKlikpaySuccess(object);
             }
 
             @Override
             public void onFailure(BcaKlikpayPaymentResponse object) {
-                view.onBcaKlikpayFailure("Failed to pay using BCA KlikPay");
+                paymentResult = new PaymentResult<>(object);
+                view.onBcaKlikpayFailure(object);
             }
 
             @Override
             public void onError(Throwable throwable) {
-                view.onBcaKlikpayFailure(throwable.getMessage());
+                paymentResult = new PaymentResult<>(throwable.getMessage());
+                view.onBcaKlikpayError(throwable.getMessage());
             }
         });
     }
 
     public PaymentResult<BcaKlikpayPaymentResponse> getPaymentResult() {
-        return new PaymentResult<>(paymentResponse);
+        return paymentResult;
     }
 }

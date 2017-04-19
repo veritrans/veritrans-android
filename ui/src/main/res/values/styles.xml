@@ -88,4 +88,29 @@
         <item name="android:layout_marginLeft">@dimen/four_dp</item>
         <item name="android:layout_marginRight">@dimen/four_dp</item>
     </style>
+
+    <style name="InstructionTabStyle">
+        <item name="tabGravity">fill</item>
+        <item name="tabIndicatorHeight">@dimen/three_dp</item>
+        <item name="tabMode">fixed</item>
+    </style>
+
+    <style name="BankTransferStatusHintText" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textColor">@color/dark_gray</item>
+        <item name="android:textSize">@dimen/secondary_text_size</item>
+    </style>
+
+    <style name="BankTransferStatusValueText" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:background">@color/light_gray</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/header_text_size</item>
+        <item name="android:padding">@dimen/eight_dp</item>
+    </style>
+
+    <style name="BankTransferValidityText" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:background">@color/faint_yellow</item>
+        <item name="android:padding">@dimen/sixteen_dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/secondary_text_size</item>
+    </style>
 </resources>

@@ -1,133 +1,40 @@
 package com.midtrans.sdk.ui.views.ewallet.xltunai;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.ImageView;
 
 import com.midtrans.sdk.core.models.snap.ewallet.xltunai.XlTunaiPaymentResponse;
 import com.midtrans.sdk.ui.R;
-import com.midtrans.sdk.ui.abtracts.BaseActivity;
-import com.midtrans.sdk.ui.adapters.ItemDetailsAdapter;
+import com.midtrans.sdk.ui.abtracts.BasePaymentActivity;
 import com.midtrans.sdk.ui.constants.Constants;
-import com.midtrans.sdk.ui.constants.Theme;
 import com.midtrans.sdk.ui.models.PaymentResult;
-import com.midtrans.sdk.ui.widgets.DefaultTextView;
-import com.midtrans.sdk.ui.widgets.FancyButton;
-import com.squareup.picasso.Picasso;
+import com.midtrans.sdk.ui.utils.UiUtils;
 
 /**
  * Created by ziahaqi on 4/7/17.
  */
 
-public class XlTunaiPaymentActivity extends BaseActivity implements XLTunaiPaymentView {
-
-    private ItemDetailsAdapter itemDetailsAdapter;
-
-    private FancyButton buttonPayment;
+public class XlTunaiPaymentActivity extends BasePaymentActivity implements XLTunaiPaymentView {
     private XlTunaiPresenter presenter;
-    private DefaultTextView textTitle;
-    private RecyclerView recyclerItemDetails;
-    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_xl_tunai);
         initPresenter();
-        iniViews();
-        initItemDetails();
-        initToolbar();
-        initProperties();
-        initPaymentButton();
-        initThemes();
-        bindValues();
-    }
-
-    private void initPaymentButton() {
-        buttonPayment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                performPayment();
-            }
-        });
-    }
-
-    private void initToolbar() {
-        // Set title
-        textTitle.setText(getString(R.string.xl_tunai));
-
-        // Set merchant logo
-        ImageView merchantLogo = (ImageView) findViewById(R.id.merchant_logo);
-        Picasso.with(this)
-                .load(presenter.getMerchantLogo())
-                .into(merchantLogo);
-
-        initToolbarBackButton();
-
-        // Set back button click listener
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
-    }
-
-    private void initItemDetails() {
-        itemDetailsAdapter = new ItemDetailsAdapter(new ItemDetailsAdapter.ItemDetailListener() {
-            @Override
-            public void onItemShown() {
-                // do nothing
-            }
-        }, presenter.createItemDetails(this));
     }
 
     private void initPresenter() {
         presenter = new XlTunaiPresenter(this);
     }
 
-    private void initThemes() {
-        initThemeColor();
-        setBackgroundColor(buttonPayment, Theme.PRIMARY_COLOR);
-        setBackgroundColor(recyclerItemDetails, Theme.PRIMARY_COLOR);
-    }
-
-    private void bindValues() {
-        // set item details
-        recyclerItemDetails.setLayoutManager(new LinearLayoutManager(this));
-        recyclerItemDetails.setAdapter(itemDetailsAdapter);
-    }
-
-    private void performPayment() {
-        showProgressDialog(getString(R.string.processing_payment));
-        presenter.startPayment();
-    }
-
     private void showProgressDialog(String message) {
-        progressDialog.setMessage(message);
-        progressDialog.show();
+        UiUtils.showProgressDialog(this, message, false);
     }
 
     private void dismissProgressDialog() {
-        progressDialog.dismiss();
-    }
-
-    private void iniViews() {
-        buttonPayment = (FancyButton) findViewById(R.id.btn_pay_now);
-        recyclerItemDetails = (RecyclerView) findViewById(R.id.container_item_details);
-        textTitle = (DefaultTextView) findViewById(R.id.page_title);
-        toolbar = (Toolbar) findViewById(R.id.main_toolbar);
-    }
-
-    private void initProperties() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
+        UiUtils.hideProgressDialog();
     }
 
     @Override
@@ -176,7 +83,16 @@ public class XlTunaiPaymentActivity extends BaseActivity implements XLTunaiPayme
     public void onBackPressed() {
         setResult(RESULT_CANCELED);
         finish();
+    }
 
-        overrideBackAnimation();
+    @Override
+    protected void startPayment() {
+        showProgressDialog(getString(R.string.processing_payment));
+        presenter.startPayment();
+    }
+
+    @Override
+    protected boolean validatePayment() {
+        return true;
     }
 }

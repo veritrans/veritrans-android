@@ -42,7 +42,7 @@ public class BankTransferListAdapter extends RecyclerView.Adapter<BankTransferLi
     @Override
     public BankTransferViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.adapter_banktransfer_row, parent, false);
+                .inflate(R.layout.item_bank_transfer, parent, false);
         return new BankTransferViewHolder(view, listener);
     }
 

@@ -15,3 +15,16 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+-keepattributes Exceptions, InnerClasses, Signature
+
+# Midtrans UI SDK
+
+-keep class com.midtrans.sdk.ui.themes.** { *; }
+-keep class com.midtrans.sdk.ui.thirdparty.** { *; }
+-keep class com.midtrans.sdk.ui.models.** { *; }
+-keep class com.midtrans.sdk.ui.utils.** { *; }
+-keep class com.midtrans.sdk.ui.CustomSetting { *; }
+-keep class com.midtrans.sdk.ui.MidtransUi { *; }
+-keep class com.midtrans.sdk.ui.MidtransUi$Builder { *; }
+-keep class com.midtrans.sdk.ui.MidtransUiCallback { *; }

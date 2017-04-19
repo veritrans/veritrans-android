@@ -30,8 +30,4 @@ public interface CreditCardDetailsView {
     void onGetBankPointSuccess(BankPointResponse bankPointResponse);
 
     void onGetBankPointFailure(String message);
-
-    String getMaskedCardNumber();
-
-    boolean isSaveEnabled();
 }

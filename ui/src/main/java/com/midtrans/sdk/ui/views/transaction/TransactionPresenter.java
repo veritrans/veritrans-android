@@ -10,7 +10,6 @@ import com.midtrans.sdk.core.models.merchant.CheckoutTokenResponse;
 import com.midtrans.sdk.core.models.merchant.ItemDetails;
 import com.midtrans.sdk.core.models.snap.transaction.SnapEnabledPayment;
 import com.midtrans.sdk.core.models.snap.transaction.SnapTransaction;
-import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.abtracts.BasePresenter;
 import com.midtrans.sdk.ui.constants.PaymentCategory;
@@ -32,14 +31,14 @@ import static com.midtrans.sdk.ui.constants.PaymentType.E_CHANNEL;
  * Created by ziahaqi on 2/19/17.
  */
 
-public class TransactionPresenter extends BasePresenter implements TransactionContract.Presenter {
+public class TransactionPresenter extends BasePresenter {
     private Context context;
     private List<PaymentMethodModel> paymentMethodList = new ArrayList<>();
     private List<String> bankTranferList = new ArrayList<>();
-    private TransactionContract.View view;
+    private TransactionView view;
 
-    public TransactionPresenter(Context context, TransactionContract.View view) {
-        midtransUiSdk = MidtransUi.getInstance();
+    public TransactionPresenter(Context context, TransactionView view) {
+        super();
         this.context = context;
         this.view = view;
     }
@@ -48,7 +47,7 @@ public class TransactionPresenter extends BasePresenter implements TransactionCo
      * Init transaction.
      */
     public void init() {
-        String checkoutToken = midtransUiSdk.getCheckoutToken();
+        String checkoutToken = midtransUi.getCheckoutToken();
         if (checkoutToken != null && !TextUtils.isEmpty(checkoutToken)) {
             getTransactionDetails(checkoutToken);
         } else {
@@ -58,8 +57,8 @@ public class TransactionPresenter extends BasePresenter implements TransactionCo
 
     private void checkout() {
         MidtransCore.getInstance().checkout(
-                midtransUiSdk.getCheckoutUrl(),
-                midtransUiSdk.getCheckoutTokenRequest(),
+                midtransUi.getCheckoutUrl(),
+                midtransUi.getCheckoutTokenRequest(),
                 new MidtransCoreCallback<CheckoutTokenResponse>() {
                     @Override
                     public void onSuccess(CheckoutTokenResponse checkoutTokenResponse) {
@@ -100,14 +99,14 @@ public class TransactionPresenter extends BasePresenter implements TransactionCo
     }
 
     private void getTransactionDetails(String token) {
-        midtransUiSdk.setCheckoutToken(token);
+        midtransUi.setCheckoutToken(token);
         MidtransCore.getInstance().getTransactionDetails(token, new MidtransCoreCallback<SnapTransaction>() {
             @Override
             public void onSuccess(SnapTransaction snapTransaction) {
                 // Set transaction details
-                midtransUiSdk.setTransaction(snapTransaction);
+                midtransUi.setTransaction(snapTransaction);
                 // Set color theme
-                midtransUiSdk.setColorTheme(new ColorTheme(context, snapTransaction.merchant.preference.colorScheme));
+                midtransUi.setColorTheme(new ColorTheme(context, snapTransaction.merchant.preference.colorScheme));
                 // Dismiss progress
                 view.showProgressContainer(false);
                 // Show payment methods
@@ -136,7 +135,7 @@ public class TransactionPresenter extends BasePresenter implements TransactionCo
     private List<ItemDetail> createItemDetails() {
         List<ItemDetail> itemViewDetails = new ArrayList<>();
 
-        CheckoutTokenRequest checkoutTokenRequest = midtransUiSdk.getCheckoutTokenRequest();
+        CheckoutTokenRequest checkoutTokenRequest = midtransUi.getCheckoutTokenRequest();
 
         // Add amount
         String amount = context.getString(R.string.prefix_money, Utils.getFormattedAmount(checkoutTokenRequest.transactionDetails.grossAmount));
@@ -149,7 +148,7 @@ public class TransactionPresenter extends BasePresenter implements TransactionCo
                 checkoutTokenRequest.itemDetails.size() > 0));
 
         // Add items
-        for (ItemDetails itemDetails : midtransUiSdk.getCheckoutTokenRequest().itemDetails) {
+        for (ItemDetails itemDetails : midtransUi.getCheckoutTokenRequest().itemDetails) {
             String price = context.getString(R.string.prefix_money, Utils.getFormattedAmount(itemDetails.quantity * itemDetails.price));
             String itemName = itemDetails.name;
             if (itemDetails.quantity > 1) {
@@ -197,7 +196,7 @@ public class TransactionPresenter extends BasePresenter implements TransactionCo
     }
 
     public int getPrimaryColor() {
-        return midtransUiSdk.getColorTheme().getPrimaryColor();
+        return midtransUi.getColorTheme().getPrimaryColor();
     }
 
     public List<String> getBankList() {

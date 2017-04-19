@@ -1,47 +1,29 @@
 package com.midtrans.sdk.ui.views.ebanking.mandiri_clickpay;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.AppCompatEditText;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.midtrans.sdk.core.models.snap.ebanking.mandiriclickpay.MandiriClickpayPaymentResponse;
 import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.R;
-import com.midtrans.sdk.ui.abtracts.BaseActivity;
-import com.midtrans.sdk.ui.adapters.ItemDetailsAdapter;
+import com.midtrans.sdk.ui.abtracts.BasePaymentActivity;
 import com.midtrans.sdk.ui.constants.Constants;
-import com.midtrans.sdk.ui.constants.Theme;
 import com.midtrans.sdk.ui.models.PaymentResult;
+import com.midtrans.sdk.ui.utils.UiUtils;
 import com.midtrans.sdk.ui.views.status.PaymentStatusActivity;
-import com.midtrans.sdk.ui.widgets.FancyButton;
-import com.squareup.picasso.Picasso;
 
 /**
  * Created by rakawm on 4/10/17.
  */
 
-public class MandiriClickpayActivity extends BaseActivity implements MandiriClickpayView {
-
-    private MidtransUi midtransUi;
-
-    private RecyclerView itemDetails;
-    private TextView titleText;
-    private FancyButton payNowButton;
-    private ProgressDialog progressDialog;
-
+public class MandiriClickpayActivity extends BasePaymentActivity implements MandiriClickpayView {
     private TextInputLayout cardNumberTextInput;
     private TextInputLayout tokenResponseTextInput;
     private AppCompatEditText cardNumberField;
@@ -56,20 +38,11 @@ public class MandiriClickpayActivity extends BaseActivity implements MandiriClic
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mandiri_clickpay);
-        initMidtransUi();
         initPresenter();
         initViews();
         initThemes();
-        initToolbar();
-        initProgressDialog();
-        initItemDetails();
-        initPayNowButton();
         initCardNumberField();
         initValues();
-    }
-
-    private void initMidtransUi() {
-        midtransUi = MidtransUi.getInstance();
     }
 
     private void initPresenter() {
@@ -77,10 +50,6 @@ public class MandiriClickpayActivity extends BaseActivity implements MandiriClic
     }
 
     private void initViews() {
-        toolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        itemDetails = (RecyclerView) findViewById(R.id.container_item_details);
-        payNowButton = (FancyButton) findViewById(R.id.btn_pay_now);
-        titleText = (TextView) findViewById(R.id.page_title);
         cardNumberField = (AppCompatEditText) findViewById(R.id.debit_card_no_field);
         tokenResponseField = (AppCompatEditText) findViewById(R.id.challenge_token_field);
         cardNumberTextInput = (TextInputLayout) findViewById(R.id.debit_card_no_text_input);
@@ -91,69 +60,11 @@ public class MandiriClickpayActivity extends BaseActivity implements MandiriClic
     }
 
     private void initThemes() {
-        // Set color theme for item details bar
-        setBackgroundColor(itemDetails, Theme.PRIMARY_COLOR);
-        setBackgroundColor(payNowButton, Theme.PRIMARY_COLOR);
         // Set text field themes
         setTextInputLayoutColorFilter(cardNumberTextInput);
         setTextInputLayoutColorFilter(tokenResponseTextInput);
         setEditTextCompatBackgroundTintColor(cardNumberField);
         setEditTextCompatBackgroundTintColor(tokenResponseField);
-        // Set font into pay now button
-        if (!TextUtils.isEmpty(midtransUi.getSemiBoldFontPath())) {
-            payNowButton.setCustomTextFont(midtransUi.getSemiBoldFontPath());
-        }
-        initThemeColor();
-    }
-
-    private void initToolbar() {
-        // Set title
-        setHeaderTitle(getString(R.string.mandiri_click_pay));
-
-        // Set merchant logo
-        ImageView merchantLogo = (ImageView) findViewById(R.id.merchant_logo);
-        Picasso.with(this)
-                .load(midtransUi.getTransaction().merchant.preference.logoUrl)
-                .into(merchantLogo);
-
-        initToolbarBackButton();
-        // Set back button click listener
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
-    }
-
-    private void initProgressDialog() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-    }
-
-    private void initItemDetails() {
-        ItemDetailsAdapter itemDetailsAdapter = new ItemDetailsAdapter(new ItemDetailsAdapter.ItemDetailListener() {
-            @Override
-            public void onItemShown() {
-                // Do nothing
-            }
-        }, presenter.createItemDetails(this));
-        itemDetails.setLayoutManager(new LinearLayoutManager(this));
-        itemDetails.setAdapter(itemDetailsAdapter);
-    }
-
-    private void initPayNowButton() {
-        payNowButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (checkInputValidity()) {
-                    showProgressDialog(getString(R.string.processing_payment));
-                    String cardNumber = cardNumberField.getText().toString().trim().replace(" ", "");
-                    String tokenResponse = tokenResponseField.getText().toString().trim();
-                    presenter.startPayment(cardNumber, tokenResponse);
-                }
-            }
-        });
     }
 
     private void initCardNumberField() {
@@ -211,16 +122,10 @@ public class MandiriClickpayActivity extends BaseActivity implements MandiriClic
         input2Text.setText(presenter.getInput2());
     }
 
-    private void setHeaderTitle(String title) {
-        titleText.setText(title);
-    }
-
     @Override
     public void onBackPressed() {
         setResult(RESULT_CANCELED);
         finish();
-
-        overrideBackAnimation();
     }
 
     private void startPaymentResult() {
@@ -230,12 +135,11 @@ public class MandiriClickpayActivity extends BaseActivity implements MandiriClic
     }
 
     private void showProgressDialog(String message) {
-        progressDialog.setMessage(message);
-        progressDialog.show();
+        UiUtils.showProgressDialog(this, message, false);
     }
 
     private void dismissProgressDialog() {
-        progressDialog.dismiss();
+        UiUtils.hideProgressDialog();
     }
 
     @Override
@@ -266,9 +170,15 @@ public class MandiriClickpayActivity extends BaseActivity implements MandiriClic
     }
 
     @Override
-    public void onMandiriClickpayFailure(String message) {
+    public void onMandiriClickpayFailure(MandiriClickpayPaymentResponse response) {
         dismissProgressDialog();
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        UiUtils.showToast(this, getString(R.string.message_payment_failed_general));
+    }
+
+    @Override
+    public void onMandiriClickpayError(String message) {
+        dismissProgressDialog();
+        UiUtils.showToast(this, getString(R.string.message_payment_failed_general));
     }
 
     private boolean checkInputValidity() {
@@ -308,5 +218,18 @@ public class MandiriClickpayActivity extends BaseActivity implements MandiriClic
         } else {
             input1Text.setText("");
         }
+    }
+
+    @Override
+    protected void startPayment() {
+        showProgressDialog(getString(R.string.processing_payment));
+        String cardNumber = cardNumberField.getText().toString().trim().replace(" ", "");
+        String tokenResponse = tokenResponseField.getText().toString().trim();
+        presenter.startPayment(cardNumber, tokenResponse);
+    }
+
+    @Override
+    protected boolean validatePayment() {
+        return checkInputValidity();
     }
 }

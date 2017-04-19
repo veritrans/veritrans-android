@@ -1,45 +1,30 @@
 package com.midtrans.sdk.ui.views.gci;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.AppCompatEditText;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.midtrans.sdk.core.models.snap.gci.GiftCardPaymentResponse;
 import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.R;
-import com.midtrans.sdk.ui.abtracts.BaseActivity;
-import com.midtrans.sdk.ui.adapters.ItemDetailsAdapter;
+import com.midtrans.sdk.ui.abtracts.BasePaymentActivity;
 import com.midtrans.sdk.ui.constants.Constants;
-import com.midtrans.sdk.ui.constants.Theme;
 import com.midtrans.sdk.ui.models.PaymentResult;
+import com.midtrans.sdk.ui.utils.UiUtils;
 import com.midtrans.sdk.ui.views.status.PaymentStatusActivity;
-import com.midtrans.sdk.ui.widgets.FancyButton;
-import com.squareup.picasso.Picasso;
 
 /**
  * Created by rakawm on 4/6/17.
  */
 
-public class GiftCardIndonesiaActivity extends BaseActivity implements GiftCardIndonesiaView {
+public class GiftCardIndonesiaActivity extends BasePaymentActivity implements GiftCardIndonesiaView {
     private MidtransUi midtransUi;
 
-    private RecyclerView itemDetails;
-    private TextView titleText;
-    private FancyButton payNowButton;
-    private ProgressDialog progressDialog;
     private AppCompatEditText cardNumberField;
     private AppCompatEditText passwordField;
     private TextInputLayout cardNumberTextInput;
@@ -55,10 +40,6 @@ public class GiftCardIndonesiaActivity extends BaseActivity implements GiftCardI
         initPresenter();
         initViews();
         initThemes();
-        initToolbar();
-        initProgressDialog();
-        initItemDetails();
-        initPayNowButton();
         initCardNumberField();
     }
 
@@ -71,10 +52,6 @@ public class GiftCardIndonesiaActivity extends BaseActivity implements GiftCardI
     }
 
     private void initViews() {
-        toolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        itemDetails = (RecyclerView) findViewById(R.id.container_item_details);
-        payNowButton = (FancyButton) findViewById(R.id.btn_pay_now);
-        titleText = (TextView) findViewById(R.id.page_title);
         cardNumberField = (AppCompatEditText) findViewById(R.id.card_number_field);
         passwordField = (AppCompatEditText) findViewById(R.id.password_field);
         cardNumberTextInput = (TextInputLayout) findViewById(R.id.card_number_text_input);
@@ -82,69 +59,11 @@ public class GiftCardIndonesiaActivity extends BaseActivity implements GiftCardI
     }
 
     private void initThemes() {
-        // Set color theme for item details bar
-        setBackgroundColor(itemDetails, Theme.PRIMARY_COLOR);
-        setBackgroundColor(payNowButton, Theme.PRIMARY_COLOR);
         // Set color theme for edit text field
         setTextInputLayoutColorFilter(cardNumberTextInput);
         setTextInputLayoutColorFilter(passwordTextInput);
         setEditTextCompatBackgroundTintColor(cardNumberField);
         setEditTextCompatBackgroundTintColor(passwordField);
-        // Set font into pay now button
-        if (!TextUtils.isEmpty(midtransUi.getSemiBoldFontPath())) {
-            payNowButton.setCustomTextFont(midtransUi.getSemiBoldFontPath());
-        }
-        initThemeColor();
-    }
-
-    private void initToolbar() {
-        // Set title
-        setHeaderTitle(getString(R.string.title_gci));
-
-        // Set merchant logo
-        ImageView merchantLogo = (ImageView) findViewById(R.id.merchant_logo);
-        Picasso.with(this)
-                .load(midtransUi.getTransaction().merchant.preference.logoUrl)
-                .into(merchantLogo);
-
-        initToolbarBackButton();
-        // Set back button click listener
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
-    }
-
-    private void initProgressDialog() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-    }
-
-    private void initItemDetails() {
-        ItemDetailsAdapter itemDetailsAdapter = new ItemDetailsAdapter(new ItemDetailsAdapter.ItemDetailListener() {
-            @Override
-            public void onItemShown() {
-                // Do nothing
-            }
-        }, presenter.createItemDetails(this));
-        itemDetails.setLayoutManager(new LinearLayoutManager(this));
-        itemDetails.setAdapter(itemDetailsAdapter);
-    }
-
-    private void initPayNowButton() {
-        payNowButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (checkFormValidity()) {
-                    String cardNumber = cardNumberField.getText().toString().trim().replace(" ", "");
-                    String password = passwordField.getText().toString().trim();
-                    showProgressDialog(getString(R.string.processing_payment));
-                    presenter.startPayment(cardNumber, password);
-                }
-            }
-        });
     }
 
     private void initCardNumberField() {
@@ -194,10 +113,6 @@ public class GiftCardIndonesiaActivity extends BaseActivity implements GiftCardI
         });
     }
 
-    private void setHeaderTitle(String title) {
-        titleText.setText(title);
-    }
-
     private void startPaymentStatus(GiftCardPaymentResponse paymentResponse) {
         Intent intent = new Intent(this, PaymentStatusActivity.class);
         intent.putExtra(Constants.PAYMENT_RESULT, paymentResponse);
@@ -205,12 +120,11 @@ public class GiftCardIndonesiaActivity extends BaseActivity implements GiftCardI
     }
 
     private void showProgressDialog(String message) {
-        progressDialog.setMessage(message);
-        progressDialog.show();
+        UiUtils.showProgressDialog(this, message, false);
     }
 
     private void dismissProgressDialog() {
-        progressDialog.dismiss();
+        UiUtils.hideProgressDialog();
     }
 
     @Override
@@ -241,9 +155,15 @@ public class GiftCardIndonesiaActivity extends BaseActivity implements GiftCardI
     }
 
     @Override
-    public void onGiftCardIndonesiaFailure(String message) {
+    public void onGiftCardIndonesiaFailure(GiftCardPaymentResponse response) {
         dismissProgressDialog();
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        UiUtils.showToast(this, getString(R.string.message_payment_failed_general));
+    }
+
+    @Override
+    public void onGiftCardIndonesiaError(String message) {
+        dismissProgressDialog();
+        UiUtils.showToast(this, getString(R.string.message_payment_failed_general));
     }
 
     public boolean checkFormValidity() {
@@ -283,5 +203,18 @@ public class GiftCardIndonesiaActivity extends BaseActivity implements GiftCardI
             passwordTextInput.setError(null);
         }
         return valid;
+    }
+
+    @Override
+    protected void startPayment() {
+        String cardNumber = cardNumberField.getText().toString().trim().replace(" ", "");
+        String password = passwordField.getText().toString().trim();
+        showProgressDialog(getString(R.string.processing_payment));
+        presenter.startPayment(cardNumber, password);
+    }
+
+    @Override
+    protected boolean validatePayment() {
+        return checkFormValidity();
     }
 }
