@@ -1,17 +1,15 @@
 package com.midtrans.sdk.uikit.widgets;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.os.Build;
+import android.support.v7.widget.AppCompatTextView;
 import android.text.Spannable;
 import android.text.style.ImageSpan;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+public class TextViewWithImages extends AppCompatTextView {
 
-public class TextViewWithImages extends TextView {
 
     private static final Spannable.Factory spannableFactory = Spannable.Factory.getInstance();
 
@@ -27,12 +25,7 @@ public class TextViewWithImages extends TextView {
         super(context);
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public TextViewWithImages(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-    }
-
-    private static boolean addImages(Context context, Spannable spannable) {
+    private boolean addImages(Context context, Spannable spannable) {
         Pattern refImg = Pattern.compile("\\Q[img src=\\E([a-zA-Z0-9_]+?)\\Q/]\\E");
         boolean hasChanges = false;
 
@@ -64,7 +57,7 @@ public class TextViewWithImages extends TextView {
         return hasChanges;
     }
 
-    private static Spannable getTextWithImages(Context context, CharSequence text) {
+    private Spannable getTextWithImages(Context context, CharSequence text) {
         Spannable spannable = spannableFactory.newSpannable(text);
         addImages(context, spannable);
         return spannable;

@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.midtrans.sdk.corekit.callback.DeleteCardCallback;
 import com.midtrans.sdk.corekit.callback.SaveCardCallback;
@@ -77,10 +78,6 @@ public class SavedCardListFragment extends Fragment {
 
     }
 
-    private void updateLayout() {
-
-    }
-
     private void fetchCards() {
         SavedCardList savedCardList = (SavedCardList) getArguments().getSerializable(PARAM_CARD_LIST);
         if (savedCardList != null) {
@@ -100,24 +97,54 @@ public class SavedCardListFragment extends Fragment {
         savedCardsAdapter.setData(savedCards);
         savedCardsAdapter.setListener(new SavedCardsAdapter.SavedCardAdapterEventListener() {
             @Override
-            public void onItemClick(int position) {
-                CardDetailsFragment cardDetailsFragment = CardDetailsFragment.newInstance(savedCardsAdapter.getItem(position));
+            public void onItemClick(final int position) {
+                if (MidtransSDK.getInstance().isEnableBuiltInTokenStorage()
+                        && savedCardsAdapter.getItem(position).getType().equalsIgnoreCase(getString(R.string.card_click_type_one_click))) {
+                    // Show confirmation dialog
+                    String card = SdkUIFlowUtil.getMaskedCardNumber(savedCardsAdapter.getItem(position).getMaskedCard());
+                    String amount = getString(R.string.prefix_money, Utils.getFormattedAmount(MidtransSDK.getInstance().getTransactionRequest().getAmount()));
+                    String message = getString(R.string.one_click_confirmation_message, card, amount);
+                    AlertDialog dialog = new AlertDialog.Builder(getContext())
+                            .setTitle(R.string.confirm_payment)
+                            .setMessage(message)
+                            .setCancelable(false)
+                            .setPositiveButton(R.string.text_confirm, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                    SaveCardRequest saveCardRequest = savedCardsAdapter.getItem(position);
+                                    ((CreditCardFlowActivity) getActivity()).oneClickPayment(saveCardRequest.getMaskedCard());
+                                }
+                            })
+                            .setNegativeButton(R.string.text_cancel, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            })
+                            .create();
 
-                if (savedCardsAdapter.getPromoDatas() != null
-                        && !savedCardsAdapter.getPromoDatas().isEmpty()
-                        && savedCardsAdapter.getPromoDatas().get(position) != null) {
-                    PromoResponse selectedPromo = savedCardsAdapter.getPromoDatas().get(position).getPromoResponse();
-                    if (selectedPromo != null && selectedPromo.getDiscountAmount() > 0) {
-                        cardDetailsFragment = CardDetailsFragment.newInstance(savedCardsAdapter.getItem(position), selectedPromo);
+                    dialog.show();
+                    changeDialogButtonColor(dialog);
+                } else {
+                    CardDetailsFragment cardDetailsFragment = CardDetailsFragment.newInstance(savedCardsAdapter.getItem(position));
+
+                    if (savedCardsAdapter.getPromoDatas() != null
+                            && !savedCardsAdapter.getPromoDatas().isEmpty()
+                            && savedCardsAdapter.getPromoDatas().get(position) != null) {
+                        PromoResponse selectedPromo = savedCardsAdapter.getPromoDatas().get(position).getPromoResponse();
+                        if (selectedPromo != null && selectedPromo.getDiscountAmount() > 0) {
+                            cardDetailsFragment = CardDetailsFragment.newInstance(savedCardsAdapter.getItem(position), selectedPromo);
+                        }
                     }
-                }
 
-                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
-                        && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
-                    fragmentTransaction.setCustomAnimations(R.anim.slide_in, R.anim.slide_out, R.anim.slide_in_back, R.anim.slide_out_back);
+                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                    if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
+                            && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                        fragmentTransaction.setCustomAnimations(R.anim.slide_in, R.anim.slide_out, R.anim.slide_in_back, R.anim.slide_out_back);
+                    }
+                    fragmentTransaction.replace(R.id.card_container, cardDetailsFragment).addToBackStack("").commit();
                 }
-                fragmentTransaction.replace(R.id.card_container, cardDetailsFragment).addToBackStack("").commit();
             }
         });
 
@@ -367,5 +394,18 @@ public class SavedCardListFragment extends Fragment {
             promoDatas.add(null);
         }
         return promoDatas;
+    }
+
+    private void changeDialogButtonColor(AlertDialog alertDialog) {
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
+        if (alertDialog.isShowing()
+                && midtransSDK != null
+                && midtransSDK.getColorTheme() != null
+                && midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
+            Button positiveButton = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+            Button negativeButton = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+            positiveButton.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+            negativeButton.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+        }
     }
 }

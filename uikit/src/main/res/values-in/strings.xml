@@ -137,7 +137,7 @@
     <string name="mandiri_instruction_step5">Masukkan kode pembayaran Anda dan tekan \'Correct\'.</string>
     <string name="mandiri_instruction_step6">Rincian pembayaran Anda akan tampil pada halaman konfirmasi. Jika informasi tersebut benar tekan \'Yes\'.</string>
 
-    <string name="mandiri_internet_instruction_step1">1.\tLogin ke Internet Banking Mandiri (ib.bankmandiri.co.id).</string>
+    <string name="mandiri_internet_instruction_step1">1.\tLogin ke Internet Banking Mandiri (<a href="http://ib.bankmandiri.co.id/">http://ib.bankmandiri.co.id/</a>).</string>
     <string name="mandiri_internet_instruction_step2">2.\tPada main menu, pilih \'Payment\', kemudian pilih \'Multi Payment\'.</string>
     <string name="mandiri_internet_instruction_step3">3.\tPilih rekening Anda di \'From Account\', kemudian \'Billing Name\' pilih \'Midtrans\'.</string>
     <string name="mandiri_internet_instruction_step4">4.\tMasukkan \'Payment Code\' dan Anda akan menerima rincian pembayaran.</string>
@@ -163,7 +163,7 @@
     <!--KLIK BCA PAYMENT-->
     <string name="bca_klik_pay_instruction_step1">Anda akan dialihkan ke halaman BCA KlikPay setelah menekan tombol \'Konfirmasi Pembayaran\' .</string>
     <string name="bca_klik_pay_instruction_step2">Untuk pembayaran, Anda dapat memilih akun KlikBCA Individu atau kartu kredit BCA.</string>
-    <string name="bca_klik_pay_instruction_step3">Untuk informasi lebih lanjut mengenai BCA KlikPay harap kontak Halo BCA di (021) 1500888 atau kunjungi http://klikbca.com/KlikPay/klikpay.html.</string>
+    <string name="bca_klik_pay_instruction_step3">Untuk informasi lebih lanjut mengenai BCA KlikPay harap kontak Halo BCA di (021) 1500888 atau kunjungi <a href="http://klikbca.com/KlikPay/klikpay.html">http://klikbca.com/KlikPay/klikpay.html</a>.</string>
 
     <!--m-BCA-->
     <string name="bca_mbanking_instruction_step1">1.\tPilih \'m-transfer\'.</string>
@@ -323,7 +323,7 @@
 
     <!--KlikBCA Payment Instructions-->
     <string name="klikbca_instruction_1">Pastikan bahwa UserID sudah aktif dan terdaftar di BCA.</string>
-    <string name="klikbca_instruction_2">Silakan lanjutkan pembayaran melalui KlikBCA dengan membuka www.klikbca.com pada browser anda, menggunakan User ID yang sama dengan yang anda masukkan di atas.</string>
+    <string name="klikbca_instruction_2">Silakan lanjutkan pembayaran melalui KlikBCA dengan membuka <a href="http://klikbca.com/">http://klikbca.com/</a> pada browser anda, menggunakan User ID yang sama dengan yang anda masukkan di atas.</string>
 
     <string name="payment_method_bri_epay">e-Pay BRI</string>
     <string name="payment_method_offers">Penawaran</string>
@@ -375,8 +375,8 @@
     <string name="copied_order_id">Kode pemesanan telah disalin ke clipboard</string>
     <string name="copied_merchant_code">Kode penjual telah disalin ke clipboard</string>
 
-    <string name="text_format_valid_until">Valid Sampai : %1$s</string>
-    <string name="klik_bca_complete_payment">Selesaikan pembayaran di www.klikbca.com sebelum:</string>
+    <string name="text_format_valid_until">Silakan menyelesaikan pembayaran sebelum : %1$s</string>
+    <string name="klik_bca_complete_payment">Selesaikan pembayaran di <a href="http://klikbca.com/">http://klikbca.com/</a> sebelum:</string>
     <string name="instruction_atm_bersama1">Di menu utama, pilih Others.</string>
     <string name="instruction_atm_bersama2">Pilih Transfer.</string>
     <string name="instruction_atm_bersama3">Pilih Online Transfer.</string>
@@ -484,14 +484,14 @@
     <string name="payment_bank_description_other">Bayar dari ATM bank lainnya</string>
 
     <string name="instruction_klikbca1">Mohon pastikan UserID aktif dan terdaftar di BCA.</string>
-    <string name="instruction_klikbca2">Mohon lanjutkan pembayaran melalui KlikBCA dengan membuka www.klikbca.com di jendela atau tab terpisah, menggunakan User ID yang anda masukkan sebelumnya.</string>
+    <string name="instruction_klikbca2">Mohon lanjutkan pembayaran melalui KlikBCA dengan membuka <a href="http://klikbca.com/">http://klikbca.com/</a> di jendela atau tab terpisah, menggunakan User ID yang anda masukkan sebelumnya.</string>
     <string name="instruction_klikbca3">Transaksi akan dibatalkan bila pembayaran tidak diselesaikan dalam 2 jam.</string>
     <string name="btn_show_account_number">Lihat Nomor Rekening</string>
 
     <string name="promo_dialog_title">Selamat</string>
     <string name="promo_dialog_message">Dengan kartu ini, anda mendapatkan diskon sejumlah Rp. %1$s dari %2$s.</string>
     <string name="error_obtain_promo">Gagal memperoleh promo.</string>
-    <string name="klik_bca_continue">Mohon lanjutkan proses pembayaran lewat KlikBCA dengan membuka <b>www.klikbca.com</b> di browser anda.</string>
+    <string name="klik_bca_continue">Mohon lanjutkan proses pembayaran lewat KlikBCA dengan membuka <a href="http://klikbca.com/">http://klikbca.com/</a> di browser anda.</string>
     <string name="error_delete_message">Gagal menghapus kartu</string>
     <string name="mandiri_debit_card">Kartu Debit Mandiri</string>
     <string name="bni_debit_online_card">Kartu Debit Online BNI</string>
@@ -511,7 +511,7 @@
     <string name="status_redeemed_point">DISKON POIN</string>
 
     <!-- BNI internet banking payment instruction -->
-    <string name="bni_internet_instruction_1">Kunjungi https://ibank.bni.co.id kemudian pilih \'Enter\'</string>
+    <string name="bni_internet_instruction_1">Kunjungi <a href="https://ibank.bni.co.id">https://ibank.bni.co.id</a> kemudian pilih \'Enter\'</string>
     <string name="bni_internet_instruction_2">Masukkan  User ID and Password</string>
     <string name="bni_internet_instruction_3">Pilih \'Set Destination Account\' kemudian \'Add Destination Account\' </string>
     <string name="bni_internet_instruction_4">Masukkan nama dan VA number</string>
@@ -542,4 +542,20 @@
     <string name="tab_atm_bni">ATM BNI</string>
     <string name="tab_bni_mobile">Mobile Banking</string>
     <string name="tab_bni_internet">Internet Banking</string>
+    <string name="one_click_confirmation_message">Anda akan melakukan pembayaran senilai %2$s dengan kartu kredit %1$s</string>
+    <string name="text_confirm">Konfirmasi</string>
+    <string name="text_cancel">Batal</string>
+
+    <string name="title_instruction_klikbca">Langkah-Langkah Pembayaran KlikBCA</string>
+    <string name="title_instruction_alto">Langkah-Langkah Pembayaran Alto</string>
+    <string name="title_instruction_atm_bersama">Langkah-Langkah Pembayaran ATM Bersama</string>
+    <string name="title_instruction_bca">Langkah-Langkah Pembayaran Bank Transfer BCA</string>
+    <string name="title_instruction_bca_mbca">Langkah-Langkah Pembayaran BCA Mobile</string>
+    <string name="title_instruction_bni_atm">Langkah-Langkah Pembayaran Bank Transfer BNI</string>
+    <string name="title_instruction_bni_internet">Langkah-Langkah Pembayaran BNI Internet</string>
+    <string name="title_instruction_bni_mobile">Langkah-Langkah Pembayaran BNI Mobile</string>
+    <string name="title_instruction_mandiri">Langkah-Langkah Pembayaran Bank Transfer Mandiri</string>
+    <string name="title_instruction_mandiri_internet">Langkah-Langkah Pembayaran Mandiri Internet</string>
+    <string name="title_instruction_permata">Langkah-Langkah Pembayaran Bank Transfer Permata</string>
+    <string name="title_instruction_prima">Langkah-Langkah Pembayaran Prima</string>
 </resources>
