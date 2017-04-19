@@ -35,6 +35,7 @@ project.afterEvaluate {
                                    '**/*$ViewInjector*.*',
                                    '**/*$ViewBinder*.*',
                                    '**/BuildConfig.*',
+                                   '**/com/midtrans/sdk/corekit/models/*',
                                    '**/Manifest*.*']
                 )
 
