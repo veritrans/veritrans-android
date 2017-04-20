@@ -183,9 +183,45 @@ MidtransUi
 
 ### Determine Payment Result Status
 
+```java
+if (result.isCanceled()) {
+    // Payment is canceled
+} else {
+    // Payment is finished
+    // Check the status
+    String status = result.getPaymentStatus();
+    switch (status) {
+        case PaymentStatus.PENDING:
+            // Pending status for VA (BCA, Mandiri, Permata), KlikBCA, Indomaret and Kioson
+            
+            // For E-Banking transaction such as BCAKlikpay, CIMB Clicks, BRI E-Pay, Mandiri E-Cash 
+            // Merchant need to get latest transaction status using Midtrans API.
+            break;
+        case PaymentStatus.CHALLENGE:
+            // Credit debit card only
+            // Transaction is questioned by FDS
+            break;
+        case PaymentStatus.DENY:
+            // Credit card only
+            // Denied by FDS or bank
+            break;
+        case PaymentStatus.INVALID:
+            // Invalid transaction
+            // No error message
+            break;
+        case PaymentStatus.FAILED:
+            // Error transaction
+            // Internal error detected
+            break;
+        }
+    }
 ```
 
-```
+Note for **E-Banking Transactions** (BCA KlikPay, CIMB Clicks, BRI E-Pay, Mandiri E-Cash) :
+
+- Customer complete the transaction on WebView so SDK don't know the latest transaction status whether it is succeed or failed.
+- Mobile SDK only returns transaction response when doing the charge to Midtrans API. 
+- Transaction response returned by Mobile SDK contains `transaction_id`. Merchant should get transaction status from Midtrans [Get Transaction Status API](https://api-docs.midtrans.com/#get-transaction-status) using that `transaction_id`. 
 
 
 ## 4. UI Customisation
@@ -222,7 +258,7 @@ Merchant needs to provide 3 colors:
 - *PRIMARY_DARK*
 - *SECONDARY*
 
-```
+```java
 CustomColorTheme customColorTheme = new CustomColorTheme(
     HEX_COLOR_PRIMARY, 
     HEX_COLOR_PRIMARY_DARK, 
