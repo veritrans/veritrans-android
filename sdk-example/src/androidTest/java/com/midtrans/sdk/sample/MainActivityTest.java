@@ -154,7 +154,7 @@ public class MainActivityTest {
         onView(withId(R.id.text_title_payment_status)).check(matches(withText(R.string.payment_successful)));
     }
 
-//    @Test
+    @Test
     public void bankTransferBCAFlowTest() {
         //Initializing bank transfer payment
         onView(withId(R.id.show_ui_flow)).perform(scrollTo(), click());
@@ -175,7 +175,7 @@ public class MainActivityTest {
         onView(withId(R.id.text_virtual_account_number)).check(matches(not(withText(R.string.virtual_account_number))));
     }
 
-//    @Test
+    @Test
     public void bankTransferMandiriFlowTest() {
         //Initializing bank transfer payment
         onView(withId(R.id.show_ui_flow)).perform(scrollTo(), click());
@@ -198,7 +198,7 @@ public class MainActivityTest {
         onView(withId(R.id.text_bill_pay_code)).check(matches(not(withText(R.string.virtual_account_number))));
     }
 
-//    @Test
+    @Test
     public void bankTransferPermataFlowTest() {
         //Initializing bank transfer payment
         onView(withId(R.id.show_ui_flow)).perform(scrollTo(), click());
@@ -219,7 +219,7 @@ public class MainActivityTest {
         onView(withId(R.id.text_virtual_account_number)).check(matches(not(withText(R.string.virtual_account_number))));
     }
 
-//    @Test
+    @Test
     public void bankTransferOtherBankFlowTest() {
         //Initializing bank transfer payment
         onView(withId(R.id.show_ui_flow)).perform(scrollTo(), click());
