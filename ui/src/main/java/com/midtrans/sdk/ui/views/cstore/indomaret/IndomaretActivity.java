@@ -1,11 +1,8 @@
 package com.midtrans.sdk.ui.views.cstore.indomaret;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
-import android.widget.TextView;
 
 import com.midtrans.sdk.core.models.snap.conveniencestore.indomaret.IndomaretPaymentResponse;
 import com.midtrans.sdk.ui.MidtransUi;
@@ -14,7 +11,6 @@ import com.midtrans.sdk.ui.abtracts.BasePaymentActivity;
 import com.midtrans.sdk.ui.constants.Constants;
 import com.midtrans.sdk.ui.models.PaymentResult;
 import com.midtrans.sdk.ui.utils.UiUtils;
-import com.midtrans.sdk.ui.widgets.FancyButton;
 
 /**
  * Created by rakawm on 4/6/17.
@@ -22,12 +18,6 @@ import com.midtrans.sdk.ui.widgets.FancyButton;
 
 public class IndomaretActivity extends BasePaymentActivity implements IndomaretView {
     private MidtransUi midtransUi;
-
-    private RecyclerView itemDetails;
-    private TextView titleText;
-    private FancyButton payNowButton;
-    private ProgressDialog progressDialog;
-
     private IndomaretPresenter presenter;
 
     @Override
@@ -36,7 +26,6 @@ public class IndomaretActivity extends BasePaymentActivity implements IndomaretV
         setContentView(R.layout.activity_indomaret);
         initMidtransUi();
         initPresenter();
-        initViews();
     }
 
     private void initMidtransUi() {
@@ -45,10 +34,6 @@ public class IndomaretActivity extends BasePaymentActivity implements IndomaretV
 
     private void initPresenter() {
         presenter = new IndomaretPresenter(this);
-    }
-
-    private void initViews() {
-        titleText = (TextView) findViewById(R.id.page_title);
     }
 
     @Override
