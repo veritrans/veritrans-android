@@ -1,14 +1,10 @@
 package com.midtrans.sdk.ui.views.ebanking.bca_klikpay;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
-import android.widget.TextView;
 
 import com.midtrans.sdk.core.models.snap.ebanking.bcaklikpay.BcaKlikpayPaymentResponse;
-import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.abtracts.BasePaymentActivity;
 import com.midtrans.sdk.ui.constants.Constants;
@@ -16,32 +12,19 @@ import com.midtrans.sdk.ui.constants.PaymentType;
 import com.midtrans.sdk.ui.models.PaymentResult;
 import com.midtrans.sdk.ui.utils.UiUtils;
 import com.midtrans.sdk.ui.views.webpayment.PaymentWebActivity;
-import com.midtrans.sdk.ui.widgets.FancyButton;
 
 /**
  * Created by rakawm on 4/10/17.
  */
 
 public class BcaKlikpayActivity extends BasePaymentActivity implements BcaKlikpayView {
-    private MidtransUi midtransUi;
-
-    private RecyclerView itemDetails;
-    private TextView titleText;
-    private FancyButton payNowButton;
-    private ProgressDialog progressDialog;
-
     private BcaKlikpayPresenter presenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bca_klikpay);
-        initMidtransUi();
         initPresenter();
-    }
-
-    private void initMidtransUi() {
-        midtransUi = MidtransUi.getInstance();
     }
 
     private void initPresenter() {

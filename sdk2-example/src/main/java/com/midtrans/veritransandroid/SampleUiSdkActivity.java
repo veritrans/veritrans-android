@@ -21,6 +21,7 @@ import com.midtrans.sdk.core.models.merchant.ItemDetails;
 import com.midtrans.sdk.core.models.papi.CardTokenRequest;
 import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.MidtransUiCallback;
+import com.midtrans.sdk.ui.constants.PaymentStatus;
 import com.midtrans.sdk.ui.models.PaymentResult;
 import com.midtrans.sdk.ui.utils.Logger;
 
@@ -88,6 +89,38 @@ public class SampleUiSdkActivity extends AppCompatActivity {
             @Override
             public void onFinished(PaymentResult result) {
                 Logger.d("onFinished:", "result: " + result.getPaymentStatus());
+                if (result.isCanceled()) {
+                    // Payment is canceled
+                    Toast.makeText(SampleUiSdkActivity.this, "CANCELED", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Payment is finished
+                    // Check the status
+                    String status = result.getPaymentStatus();
+                    switch (status) {
+                        case PaymentStatus.PENDING:
+                            // Pending status for VA (BCA, Mandiri, Permata), KlikBCA, Indomaret and Kioson
+
+                            // For E-Banking transaction such as BCAKlikpay, CIMB Clicks, BRI E-Pay, Mandiri E-Cash
+                            // Merchant need to get latest transaction status using Midtrans API.
+                            break;
+                        case PaymentStatus.CHALLENGE:
+                            // Credit debit card only
+                            // Transaction is
+                            break;
+                        case PaymentStatus.DENY:
+                            // Credit card only
+                            // Denied by FDS or bank
+                            break;
+                        case PaymentStatus.INVALID:
+                            // Invalid transaction
+                            // No error message
+                            break;
+                        case PaymentStatus.FAILED:
+                            // Error transaction
+                            // Internal error detected
+                            break;
+                    }
+                }
                 Toast.makeText(SampleUiSdkActivity.this, result.getPaymentStatus(), Toast.LENGTH_SHORT).show();
             }
         });
