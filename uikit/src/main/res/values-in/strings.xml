@@ -558,4 +558,11 @@
     <string name="title_instruction_mandiri_internet">Langkah-Langkah Pembayaran Mandiri Internet</string>
     <string name="title_instruction_permata">Langkah-Langkah Pembayaran Bank Transfer Permata</string>
     <string name="title_instruction_prima">Langkah-Langkah Pembayaran Prima</string>
+    <string name="error_snap_transaction_details">Gagal mengambil detil transaksi</string>
+    <string name="error_paid_orderid">Order id sudah dibayar</string>
+    <string name="error_gross_amount_not_equal">Jumlah total tidak sama dengan jumlah item detil</string>
+    <string name="error_gross_amount_required">Jumlah total diperlukan</string>
+    <string name="error_order_id_required">Order id diperlukan</string>
+    <string name="checkout_error_empty_response">Tidak ada  data dari server</string>
+    <string name="error_unable_to_connect">Gagal terhubung ke server</string>
 </resources>

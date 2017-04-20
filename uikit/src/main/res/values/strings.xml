@@ -737,5 +737,11 @@
     <string name="title_instruction_mandiri_internet">Mandiri Internet Step by Step</string>
     <string name="title_instruction_permata">Permata Bank Transfer Step by Step</string>
     <string name="title_instruction_prima">Prima Step by Step</string>
+    <string name="error_snap_transaction_details">Failed to retrieve transaction details</string>
+    <string name="error_paid_orderid">Order id has been paid</string>
+    <string name="error_gross_amount_not_equal">Gross amount is not equal to the sum of item details</string>
+    <string name="error_gross_amount_required">Gross amount is required</string>
+    <string name="error_order_id_required">Order id is required</string>
+    <string name="checkout_error_empty_response">Empty response from server</string>
 
 </resources>

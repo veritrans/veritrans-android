@@ -46,6 +46,7 @@ import com.midtrans.sdk.uikit.adapters.ItemDetailsAdapter;
 import com.midtrans.sdk.uikit.adapters.PaymentMethodsAdapter;
 import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.models.ItemViewDetails;
+import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.squareup.picasso.Picasso;
@@ -263,18 +264,20 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             public void onFailure(Token token, String reason) {
                 Log.d(TAG, "Failed to registering transaction: " + reason);
                 enableButtonBack(true);
-                showErrorMessage();
+                String errorMessage = MessageUtil.createMessageWhenCheckoutFailed(PaymentMethodsActivity.this, token.getErrorMessage());
+                showErrorMessage(errorMessage);
             }
 
             @Override
             public void onError(Throwable error) {
                 error.printStackTrace();
-
                 enableButtonBack(true);
-                showErrorMessage();
+                String errorMessage = MessageUtil.createMessageWhenCheckoutError(PaymentMethodsActivity.this, error.getMessage());
+                showErrorMessage(errorMessage);
             }
         });
     }
+
 
     private void enableButtonBack(boolean enable) {
         backButtonEnabled = enable;
@@ -323,7 +326,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             public void onFailure(Transaction transaction, String reason) {
                 enableButtonBack(true);
                 progressContainer.setVisibility(View.GONE);
-                showDefaultPaymentMethods();
+                showTransactionDetailsErrorMessage();
             }
 
             @Override
@@ -331,7 +334,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 error.printStackTrace();
                 enableButtonBack(true);
                 progressContainer.setVisibility(View.GONE);
-                showDefaultPaymentMethods();
+                showTransactionDetailsErrorMessage();
             }
         });
     }
@@ -767,17 +770,10 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         }
     }
 
-    private void showDefaultPaymentMethods() {
-        progressContainer.setVisibility(View.GONE);
-        List<EnabledPayment> paymentMethods = PaymentMethods.getDefaultPaymentList(this);
-        initialiseAdapterData(paymentMethods);
-        paymentMethodsAdapter.setData(data);
-    }
-
-    private void showErrorMessage() {
+    private void showErrorMessage(String message) {
         if (!isFinishing()) {
             alertDialog = new AlertDialog.Builder(this)
-                    .setMessage(getString(R.string.txt_error_snap_token))
+                    .setMessage(message)
                     .setPositiveButton(R.string.btn_retry, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -796,6 +792,30 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             alertDialog.show();
         }
     }
+
+    private void showTransactionDetailsErrorMessage() {
+        if (!isFinishing()) {
+            alertDialog = new AlertDialog.Builder(this)
+                    .setMessage(getString(R.string.error_snap_transaction_details))
+                    .setPositiveButton(R.string.btn_retry, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            getPaymentPages();
+                        }
+                    })
+                    .setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            finish();
+                        }
+                    })
+                    .create();
+            alertDialog.show();
+        }
+    }
+
 
     private void showErrorAlertDialog(String message) {
         if (!isFinishing()) {
