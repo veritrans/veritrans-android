@@ -143,6 +143,7 @@
     <string name="bca_bank_transfer">BCA</string>
     <string name="permata_bank_transfer">Permata</string>
     <string name="all_bank_transfer">Other Banks</string>
+    <string name="bni_bank_transfer">BNI</string>
 
 
     <string name="orderId">Order ID</string>
@@ -444,6 +445,7 @@
     <string name="payment_permata_va">permata_va</string>
     <string name="payment_bca_va">bca_va</string>
     <string name="payment_all_va">other_va</string>
+    <string name="payment_bni_va">bni_va</string>
     <string name="payment_gci">gci</string>
 
     <!--Error Response-->
@@ -475,7 +477,6 @@
     <!--KlikBCA Payment Instructions-->
     <string name="klikbca_instruction_1">Please make sure that the UserID is active and registered at BCA.</string>
     <string name="klikbca_instruction_2">Please continue the payment through KlikBCA by opening www.klikbca.com on your browser, using the same User ID that you entered above.</string>
-    <string name="klikbca_instruction_3">Transaction will be cancelled if payment is not completed within 2 hours.</string>
 
     <string name="error_user_id">Please fill user ID.</string>
     <string name="btn_close">Close</string>

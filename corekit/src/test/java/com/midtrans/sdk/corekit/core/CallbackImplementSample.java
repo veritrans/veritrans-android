@@ -5,6 +5,7 @@ import com.midtrans.sdk.corekit.callback.BanksPointCallback;
 import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
 import com.midtrans.sdk.corekit.callback.CardTokenCallback;
 import com.midtrans.sdk.corekit.callback.CheckoutCallback;
+import com.midtrans.sdk.corekit.callback.DeleteCardCallback;
 import com.midtrans.sdk.corekit.callback.GetCardCallback;
 import com.midtrans.sdk.corekit.callback.SaveCardCallback;
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
@@ -35,7 +36,7 @@ import java.util.ArrayList;
  * Created by ziahaqi on 9/5/16.
  */
 public class CallbackImplementSample implements TransactionCallback, CheckoutCallback, TransactionOptionsCallback,
-        SaveCardCallback, GetCardCallback, CardRegistrationCallback, CardTokenCallback{
+        SaveCardCallback, GetCardCallback, CardRegistrationCallback, CardTokenCallback, BanksPointCallback, DeleteCardCallback {
 
     /**
      * Created by ziahaqi on 25/06/2016.
@@ -46,6 +47,7 @@ public class CallbackImplementSample implements TransactionCallback, CheckoutCal
     private MidtransRestAPI midtransRestAPI;
     private MerchantRestAPI merchantRestAPI;
     private String authenticationToken = "token";
+
 
     public void setTransactionManager(SnapTransactionManager transactionManager, MerchantRestAPI merchantRestAPI,
                                       MidtransRestAPI midtransRestAPI, SnapRestAPI snapRestAPI) {
@@ -100,6 +102,11 @@ public class CallbackImplementSample implements TransactionCallback, CheckoutCal
     }
 
     @Override
+    public void onSuccess(BanksPointResponse response) {
+        callbackCollaborator.onGetbanksPointSuccess();
+    }
+
+    @Override
     public void onFailure(String reason) {
         callbackCollaborator.onSaveCardsFailure();
     }
@@ -122,6 +129,16 @@ public class CallbackImplementSample implements TransactionCallback, CheckoutCal
     @Override
     public void onFailure(TokenDetailsResponse response, String reason) {
         callbackCollaborator.onGetCardTokenFailed();
+    }
+
+    @Override
+    public void onSuccess(Void object) {
+        callbackCollaborator.onDeleteCardSuccess();
+    }
+
+    @Override
+    public void onFailure(Void object) {
+        callbackCollaborator.onDeleteCardFailure();
     }
 
     @Override
@@ -150,12 +167,16 @@ public class CallbackImplementSample implements TransactionCallback, CheckoutCal
         snapTransactionManager.paymentUsingBankTransferPermata(token, request, this);
     }
 
+    public void paymentUsingSnapBankTransferBni(String token, BankTransferPaymentRequest request) {
+        snapTransactionManager.paymentUsingBankTransferBni(token, request, this);
+    }
+
     public void paymentUsingKlikBCA(String token, KlikBCAPaymentRequest request) {
         snapTransactionManager.paymentUsingKlikBCA(token, request, this);
     }
 
-    public void paymentUsingBCAKlikpay(String token,BasePaymentRequest request) {
-        snapTransactionManager.paymentUsingBCAKlikpay(token,request, this);
+    public void paymentUsingBCAKlikpay(String token, BasePaymentRequest request) {
+        snapTransactionManager.paymentUsingBCAKlikpay(token, request, this);
     }
 
     public void paymentUsingSnapMandiriBillpay(String token, BankTransferPaymentRequest request) {
@@ -166,7 +187,7 @@ public class CallbackImplementSample implements TransactionCallback, CheckoutCal
         snapTransactionManager.paymentUsingMandiriClickPay(token, request, this);
     }
 
-    public void paymentUsingSnapCIMBClick(String token,BasePaymentRequest request) {
+    public void paymentUsingSnapCIMBClick(String token, BasePaymentRequest request) {
         snapTransactionManager.paymentUsingCIMBClick(token, request, this);
     }
 
@@ -283,4 +304,16 @@ public class CallbackImplementSample implements TransactionCallback, CheckoutCal
             callbackCollaborator.onGetBankBinError();
         }
     };
+
+    public SaveCardCallback getSaveCardCallback() {
+        return this;
+    }
+
+    public BanksPointCallback getbankPointCallback() {
+        return this;
+    }
+
+    public DeleteCardCallback getDeleteCardCallback() {
+        return this;
+    }
 }

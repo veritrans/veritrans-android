@@ -79,7 +79,7 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.2.0'
+    compile 'com.android.support:appcompat-v7:25.3.1'
     testCompile 'junit:junit:4.12'
     developmentCompile project(path: ':uikit', configuration: 'developmentRelease')
     productionCompile project(path: ':uikit', configuration: 'productionRelease')

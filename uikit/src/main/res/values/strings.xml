@@ -145,6 +145,7 @@
     <string name="permata_bank_transfer">Permata</string>
     <string name="mandiri_bank_transfer">Mandiri</string>
     <string name="all_bank_transfer">Other Banks</string>
+    <string name="bni_bank_transfer">BNI</string>
 
     <string name="orderId">Order ID</string>
     <string name="amount">Amount</string>
@@ -178,7 +179,7 @@
     <string name="what_is_cvv">What is CVV?</string>
     <string name="transactionTime">Transaction Time</string>
     <string name="paymentType">Payment Type</string>
-    <string name="tab_mandiri">Mandiri/ATM Bersana</string>
+    <string name="tab_mandiri">Mandiri/ATM Bersama</string>
     <string name="tab_bca_prima">BCA/Prima</string>
     <string name="tab_permata_alto">Permata/Alto</string>
     <string name="payment_instrution">Payment Instruction</string>
@@ -194,7 +195,7 @@
     <string name="mandiri_instruction_step5">Enter your Payment code and press \'Correct\'.</string>
     <string name="mandiri_instruction_step6">Your payment details will appear on the payment confirmation page. If the information is correct press \'Yes\'.</string>
 
-    <string name="mandiri_internet_instruction_step1">1.\tLogin to Mandiri Internet Banking (ib.bankmandiri.co.id).</string>
+    <string name="mandiri_internet_instruction_step1">1.\tLogin to Mandiri Internet Banking (<a href="http://ib.bankmandiri.co.id/">http://ib.bankmandiri.co.id/</a>).</string>
     <string name="mandiri_internet_instruction_step2">2.\tFrom the main menu choose \'Payment\', then choose \'Multi Payment\'.</string>
     <string name="mandiri_internet_instruction_step3">3.\tSelect your account in \'From Account\', then \'Billing Name\' select \'Midtrans\'.</string>
     <string name="mandiri_internet_instruction_step4">4.\tEnter the \'Payment Code\' and you will receive your payment details.</string>
@@ -219,8 +220,8 @@
 
     <!--KLIK BCA PAYMENT-->
     <string name="bca_klik_pay_instruction_step1">You will be redirected to BCA KlikPay once you tap \'Confirm Payment\' button.</string>
-    <string name="bca_klik_pay_instruction_step2">For payment, you can choose to use KlikBCA Individu Account or BCA card.</string>
-    <string name="bca_klik_pay_instruction_step3">For more information about BCA KlikPay please contact Halo BCA at (021) 1500888 or visit www.klikbca.com/klikpay.</string>
+    <string name="bca_klik_pay_instruction_step2">For payment, you can choose to use KlikBCA Individual Account or BCA credit card.</string>
+    <string name="bca_klik_pay_instruction_step3">For more information about BCA KlikPay please contact Halo BCA at (021) 1500888 or visit <a href="http://klikbca.com/KlikPay/klikpay.html">http://klikbca.com/KlikPay/klikpay.html</a>.</string>
 
     <!--m-BCA-->
     <string name="bca_mbanking_instruction_step1">1.\tChoose \'m-transfer\'.</string>
@@ -257,24 +258,6 @@
     <string name="indomaret_instruction_step4">The cashier will then confirm the transaction by asking for the transaction amount and the merchant name.</string>
     <string name="indomaret_instruction_step5">Confirm the payment with the cashier.</string>
     <string name="indomaret_instruction_step6">Your transaction is successful! You should be receiving an email confirming your payment. Please keep your Indomaret payment receipt just in case you need help via support.</string>
-
-
-    <!-- BBM Money Instruction-->
-    <string name="bbm_money_instruction_step1">1.\tPlease click \'Confirm Payment\'.</string>
-    <string name="bbm_money_instruction_step2">2.\tOpen or install the BBM™ Money app on your
-        smartphone.</string>
-    <string name="bbm_money_instruction_step3">3.\tMake sure you have enough balance in your BBM™ Money wallet.</string>
-    <string name="bbm_money_instruction_step4">4.\tLogin to your BBM™ Money account and select
-        \'Send To Company\'.</string>
-    <string name="bbm_money_instruction_step5">5.\tSelect \'Online Shopping\' as the biller and
-        then enter Payment Code into the \'Payment Code\' field.</string>
-    <string name="bbm_money_instruction_step6">6.\tInput amount to be paid into \'Amount\'.</string>
-
-    <string name="get_bbm_money_app">Get BBM Money App</string>
-    <string name="title_bbm_not_found">BBM Money App not found!</string>
-    <string name="message_bbm_not_found">To continue payment, please install BBM Money App.</string>
-    <string name="bbm_btn_text1">PAY WITH</string>
-    <string name="bbm_btn_text2">BBM MONEY</string>
 
 
     <!-- Permata/Alto bank transfer Instruction-->
@@ -491,8 +474,7 @@
 
     <!--KlikBCA Payment Instructions-->
     <string name="klikbca_instruction_1">Please make sure that the UserID is active and registered at BCA.</string>
-    <string name="klikbca_instruction_2">Please continue the payment through KlikBCA by opening www.klikbca.com on your browser, using the same User ID that you entered above.</string>
-    <string name="klikbca_instruction_3">Transaction will be cancelled if payment is not completed within 2 hours.</string>
+    <string name="klikbca_instruction_2">Please continue the payment through KlikBCA by opening <a href="http://klikbca.com/">http://klikbca.com/</a> on your browser, using the same User ID that you entered above.</string>
 
     <string name="error_user_id">Please fill user ID.</string>
     <string name="btn_close">Close</string>
@@ -522,7 +504,7 @@
     <string name="copied_order_id">Order ID was copied to clipboard</string>
     <string name="copied_merchant_code">Merchant code was copied to clipboard</string>
 
-    <string name="text_format_valid_until">Valid Until : %1$s</string>
+    <string name="text_format_valid_until">Please complete your payment before : %1$s</string>
     <string name="instruction_atm_bersama1">On the main menu, choose Others.</string>
     <string name="instruction_atm_bersama2">Choose Transfer.</string>
     <string name="instruction_atm_bersama3">Choose Online Transfer.</string>
@@ -610,10 +592,11 @@
     <string name="mandiri_bill_transfer">Mandiri Bill</string>
     <string name="bank_bca_transfer">Bank BCA</string>
     <string name="bank_permata_transfer">Bank Permata</string>
+    <string name="bank_bni_transfer">Bank BNI</string>
     <string name="other_bank_transfer">Other Bank</string>
     <string name="copy">Copy</string>
-    <string name="valid_until">Valid until</string>
-    <string name="klik_bca_complete_payment">Complete payment at www.klikbca.com before</string>
+    <string name="valid_until">Please complete your payment before:</string>
+    <string name="klik_bca_complete_payment">Complete payment at <a href="http://klikbca.com/">http://klikbca.com/</a> before</string>
     <string name="valid_date">10 September 2015, 16:00</string>
     <string name="mandir_bill_instruction">how can i pay with mandiri bill payment ?</string>
     <string name="thank_you">Thank you!</string>
@@ -669,10 +652,11 @@
     <string name="payment_bank_description_bca">Pay from BCA ATMs or internet banking</string>
     <string name="payment_bank_description_mandiri">Pay from Mandiri ATMs or internet banking</string>
     <string name="payment_bank_description_permata">Pay from Permata ATMs or internet banking</string>
+    <string name="payment_bank_description_bni">Pay from BNI ATMs or internet banking</string>
     <string name="payment_bank_description_other">Pay from other Bank ATMs</string>
 
     <string name="instruction_klikbca1">Please make sure that the UserID is active and registered at BCA.</string>
-    <string name="instruction_klikbca2">Please continue the payment through KlikBCA by opening www.klikbca.com on a separate window or tab, using the same User ID that you entered below.</string>
+    <string name="instruction_klikbca2">Please continue the payment through KlikBCA by opening <a href="http://klikbca.com/">http://klikbca.com/</a> on a separate window or tab, using the same User ID that you entered below.</string>
     <string name="instruction_klikbca3">Transaction will be cancelled if payment is not completed within 2 hours.</string>
     <string name="btn_show_account_number">See Account Number</string>
     <string name="failed_code_411">411</string>
@@ -689,7 +673,7 @@
     <string name="total_point">Your total %1$s Reward Point is %2$s</string>
     <string name="redeem_bni_title">Redeem BNI Reward Point</string>
     <string name="redeem_bni_details">You can pay partly through the redemption of BNI Reward Point through your Credit Card.</string>
-    <string name="klik_bca_continue">Please continue the payment process via KlikBCA by opening <b>www.klikbca.com</b> on your browser.\n\nTransaction will be cancelled if payment is not completed within 2 hours.</string>
+    <string name="klik_bca_continue">Please continue the payment process via KlikBCA by opening <a href="http://klikbca.com/">http://klikbca.com/</a> on your browser.</string>
     <string name="error_delete_message">Failed to delete card</string>
     <string name="mandiri_debit_card">Mandiri Debit Card</string>
     <string name="bni_debit_online_card">BNI Debit Online Card</string>
@@ -702,4 +686,62 @@
     <string name="bank_bni">BNI</string>
     <string name="bank_mandiri">Mandiri</string>
     <string name="status_redeemed_point">POINT DISCOUNT</string>
+
+    <!-- bni internet  payment instruction -->
+    <string name="bni_internet_instruction_1">Visit <a href="https://ibank.bni.co.id">https://ibank.bni.co.id</a> then choose \'Enter\'</string>
+    <string name="bni_internet_instruction_2">Enter User ID and Password</string>
+    <string name="bni_internet_instruction_3">Choose \'Set Destination Account\' then \'Add Destination Account\' </string>
+    <string name="bni_internet_instruction_4">Enter name and VA number</string>
+    <string name="bni_internet_instruction_5">Enter authentication token code</string>
+    <string name="bni_internet_instruction_6">Now Destination/Favorite account number is successfully added</string>
+    <string name="bni_internet_instruction_7">Back to \'Transfer\' menu</string>
+    <string name="bni_internet_instruction_8">Choose \'Transfer to BNI Account\' then choose destination/favorite account</string>
+    <string name="bni_internet_instruction_9">Choose Debit Account and enter amount, then enter authentication token code</string>
+    <string name="bni_internet_instruction_10">Payment complete</string>
+
+    <!-- bni mobile payment instruction -->
+    <string name="bni_mobile_instruction_1">Login to BNI Mobile Banking application</string>
+    <string name="bni_mobile_instruction_2">On the main menu, choose \'Transfer\'</string>
+    <string name="bni_mobile_instruction_3">Choose \'To BNI Account\' then \'Add New Account\'</string>
+    <string name="bni_mobile_instruction_4">Enter the full amount to be paid and press \'Proceed\'</string>
+    <string name="bni_mobile_instruction_5">Your payment details will appear on confirmation page.</string>
+    <string name="bni_mobile_instruction_6">If the information is correct then enter authentication token code and press \'Proceed\'</string>
+    <string name="bni_mobile_instruction_7">Payment Complete</string>
+
+    <!-- bni ATM payment instruction -->
+    <string name="bni_atm_instruction_1">On the main menu, choose \'Other transaction\'</string>
+    <string name="bni_atm_instruction_2">Choose \'Transfer\'</string>
+    <string name="bni_atm_instruction_3">Choose \'Savings Account\'</string>
+    <string name="bni_atm_instruction_4">Choose \'To BNI Account\'</string>
+    <string name="bni_atm_instruction_5">Enter BNI virtual account number and press \'Correct\'</string>
+    <string name="bni_atm_instruction_6">Enter the full amount to be paid and press \'Correct\'</string>
+    <string name="bni_atm_instruction_7">Your payment details will appear on the confirmation page. If the information is correct press \'Correct\'</string>
+    <string name="tab_atm_bni">ATM BNI</string>
+    <string name="tab_bni_mobile">Mobile Banking</string>
+    <string name="tab_bni_internet">Internet Banking</string>
+    <string name="number_instruction_10">10.</string>
+
+    <string name="one_click_confirmation_message">You are about to make a payment of %2$s with credit card %1$s</string>
+    <string name="text_confirm">Confirm</string>
+    <string name="text_cancel">Cancel</string>
+
+    <string name="title_instruction_klikbca">KlikBCA Step by Step</string>
+    <string name="title_instruction_alto">Alto Step by Step</string>
+    <string name="title_instruction_atm_bersama">ATM Bersama Step by Step</string>
+    <string name="title_instruction_bca">BCA Bank Transfer Step by Step</string>
+    <string name="title_instruction_bca_mbca">BCA Mobile Step by Step</string>
+    <string name="title_instruction_bni_atm">BNI Bank Transfer Step by Step</string>
+    <string name="title_instruction_bni_internet">BNI Internet Step by Step</string>
+    <string name="title_instruction_bni_mobile">BNI Mobile Step by Step</string>
+    <string name="title_instruction_mandiri">Mandiri Bank Transfer Step by Step</string>
+    <string name="title_instruction_mandiri_internet">Mandiri Internet Step by Step</string>
+    <string name="title_instruction_permata">Permata Bank Transfer Step by Step</string>
+    <string name="title_instruction_prima">Prima Step by Step</string>
+    <string name="error_snap_transaction_details">Failed to retrieve transaction details</string>
+    <string name="error_paid_orderid">Order id has been paid</string>
+    <string name="error_gross_amount_not_equal">Gross amount is not equal to the sum of item details</string>
+    <string name="error_gross_amount_required">Gross amount is required</string>
+    <string name="error_order_id_required">Order id is required</string>
+    <string name="checkout_error_empty_response">Empty response from server</string>
+
 </resources>

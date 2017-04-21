@@ -32,7 +32,7 @@ public class TransactionResponseTest {
     private String transTime = "transtime";
     private String transStatus = "transstatus";
     @Mock
-    private List<BCAVANumber> accountNumberMock;
+    private List<VaNumber> accountNumberMock;
     private String paymentCodeIndomaretMock = "codeindomaret";
     private String redirectUrl = "redirecturl";
     private String companyCode = "companycode";

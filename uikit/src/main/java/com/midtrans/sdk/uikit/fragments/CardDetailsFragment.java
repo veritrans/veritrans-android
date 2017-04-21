@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -23,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -138,6 +138,7 @@ public class CardDetailsFragment extends Fragment {
         initScanCard();
         initSaveCardLayout();
         initSaveCardCheckbox();
+        initBniPointCheckbox();
         initDelete();
         fetchSavedCardIfAvailable();
         initTheme();
@@ -149,6 +150,19 @@ public class CardDetailsFragment extends Fragment {
         initFocusChanges();
         initInstallmentTermButton();
         initPayNow();
+    }
+
+    private void initBniPointCheckbox() {
+        cbBankPoint.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    showInstallmentLayout(false);
+                } else {
+                    initCardInstallment();
+                }
+            }
+        });
     }
 
     private void initPointHelp() {
@@ -269,6 +283,7 @@ public class CardDetailsFragment extends Fragment {
             layoutSaveCard.setVisibility(View.GONE);
         } else {
             layoutSaveCard.setVisibility(View.VISIBLE);
+            saveCardCheckBox.setChecked(true);
         }
     }
 
@@ -400,6 +415,9 @@ public class CardDetailsFragment extends Fragment {
                     //track page cc two clicks
                     midtransSDK.trackEvent(AnalyticsEventName.PAGE_CREDIT_CARD_DETAILS, MixpanelAnalyticsManager.CARD_MODE_TWO_CLICK);
                 }
+
+                setBankType();
+                setCardType();
             } else {
                 //track page cc detail
                 midtransSDK.trackEvent(AnalyticsEventName.PAGE_CREDIT_CARD_DETAILS, MixpanelAnalyticsManager.CARD_MODE_NORMAL);
@@ -1108,6 +1126,7 @@ public class CardDetailsFragment extends Fragment {
         if (installmentCurrentPosition > 0 && installmentCurrentPosition <= installmentTotalPositions) {
             installmentCurrentPosition -= 1;
             setInstallmentTerm();
+            changeBniPointVisibility();
         }
         disableEnableInstallmentButton();
     }
@@ -1116,8 +1135,17 @@ public class CardDetailsFragment extends Fragment {
         if (installmentCurrentPosition >= 0 && installmentCurrentPosition < installmentTotalPositions) {
             installmentCurrentPosition += 1;
             setInstallmentTerm();
+            changeBniPointVisibility();
         }
         disableEnableInstallmentButton();
+    }
+
+    private void changeBniPointVisibility() {
+        if (installmentCurrentPosition == 0) {
+            initBNIPoints(true);
+        } else {
+            showBanksPoint(false);
+        }
     }
 
     private void disableEnableInstallmentButton() {
