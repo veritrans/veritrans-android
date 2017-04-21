@@ -1126,6 +1126,7 @@ public class CardDetailsFragment extends Fragment {
         if (installmentCurrentPosition > 0 && installmentCurrentPosition <= installmentTotalPositions) {
             installmentCurrentPosition -= 1;
             setInstallmentTerm();
+            changeBniPointVisibility();
         }
         disableEnableInstallmentButton();
     }
@@ -1134,8 +1135,17 @@ public class CardDetailsFragment extends Fragment {
         if (installmentCurrentPosition >= 0 && installmentCurrentPosition < installmentTotalPositions) {
             installmentCurrentPosition += 1;
             setInstallmentTerm();
+            changeBniPointVisibility();
         }
         disableEnableInstallmentButton();
+    }
+
+    private void changeBniPointVisibility() {
+        if (installmentCurrentPosition == 0) {
+            initBNIPoints(true);
+        } else {
+            showBanksPoint(false);
+        }
     }
 
     private void disableEnableInstallmentButton() {
