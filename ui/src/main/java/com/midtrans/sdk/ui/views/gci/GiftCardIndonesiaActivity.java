@@ -13,6 +13,7 @@ import com.midtrans.sdk.core.models.snap.gci.GiftCardPaymentResponse;
 import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.abtracts.BasePaymentActivity;
+import com.midtrans.sdk.ui.constants.AnalyticsEventName;
 import com.midtrans.sdk.ui.constants.Constants;
 import com.midtrans.sdk.ui.models.PaymentResult;
 import com.midtrans.sdk.ui.utils.UiUtils;
@@ -38,6 +39,7 @@ public class GiftCardIndonesiaActivity extends BasePaymentActivity implements Gi
         setContentView(R.layout.activity_gift_card);
         initMidtransUi();
         initPresenter();
+        trackPage();
         initViews();
         initThemes();
         initCardNumberField();
@@ -49,6 +51,10 @@ public class GiftCardIndonesiaActivity extends BasePaymentActivity implements Gi
 
     private void initPresenter() {
         presenter = new GiftCardIndonesiaPresenter(this);
+    }
+
+    private void trackPage() {
+        presenter.trackEvent(AnalyticsEventName.PAGE_GCI);
     }
 
     private void initViews() {

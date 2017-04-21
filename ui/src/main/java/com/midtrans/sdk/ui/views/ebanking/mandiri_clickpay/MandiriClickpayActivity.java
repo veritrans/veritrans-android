@@ -14,6 +14,7 @@ import com.midtrans.sdk.core.models.snap.ebanking.mandiriclickpay.MandiriClickpa
 import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.abtracts.BasePaymentActivity;
+import com.midtrans.sdk.ui.constants.AnalyticsEventName;
 import com.midtrans.sdk.ui.constants.Constants;
 import com.midtrans.sdk.ui.models.PaymentResult;
 import com.midtrans.sdk.ui.utils.UiUtils;
@@ -39,6 +40,7 @@ public class MandiriClickpayActivity extends BasePaymentActivity implements Mand
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mandiri_clickpay);
         initPresenter();
+        trackPage();
         initViews();
         initThemes();
         initCardNumberField();
@@ -47,6 +49,10 @@ public class MandiriClickpayActivity extends BasePaymentActivity implements Mand
 
     private void initPresenter() {
         presenter = new MandiriClickpayPresenter(this);
+    }
+
+    private void trackPage() {
+        presenter.trackEvent(AnalyticsEventName.PAGE_MANDIRI_CLICKPAY);
     }
 
     private void initViews() {

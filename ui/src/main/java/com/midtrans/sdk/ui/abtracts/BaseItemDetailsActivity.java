@@ -9,6 +9,7 @@ import com.midtrans.sdk.core.models.snap.transaction.SnapTransaction;
 import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.adapters.ItemDetailsAdapter;
+import com.midtrans.sdk.ui.constants.AnalyticsEventName;
 import com.midtrans.sdk.ui.constants.Theme;
 import com.midtrans.sdk.ui.models.ItemDetail;
 import com.midtrans.sdk.ui.utils.Utils;
@@ -42,7 +43,7 @@ public abstract class BaseItemDetailsActivity extends BaseTitleActivity {
                     new ItemDetailsAdapter.ItemDetailListener() {
                         @Override
                         public void onItemShown() {
-                            // Do nothing
+                            Utils.trackEvent(AnalyticsEventName.PAGE_ORDER_SUMMARY);
                         }
                     },
                     buildItemDetails(this)

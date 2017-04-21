@@ -4,6 +4,7 @@ import com.midtrans.sdk.core.MidtransCore;
 import com.midtrans.sdk.core.MidtransCoreCallback;
 import com.midtrans.sdk.core.models.snap.ewallet.indosatdompetku.IndosatDompetkuPaymentResponse;
 import com.midtrans.sdk.ui.abtracts.BasePaymentPresenter;
+import com.midtrans.sdk.ui.constants.AnalyticsEventName;
 import com.midtrans.sdk.ui.models.PaymentResult;
 
 /**
@@ -26,18 +27,24 @@ public class IndosatDompetkuPresenter extends BasePaymentPresenter {
             public void onSuccess(IndosatDompetkuPaymentResponse response) {
                 paymentResult = new PaymentResult<>(response);
                 view.onPaymentSuccess(response);
+
+                trackEvent(AnalyticsEventName.PAGE_STATUS_SUCCESS);
             }
 
             @Override
             public void onFailure(IndosatDompetkuPaymentResponse response) {
                 paymentResult = new PaymentResult<>(response);
                 view.onPaymentFailure(response);
+
+                trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
             }
 
             @Override
             public void onError(Throwable throwable) {
                 paymentResult = new PaymentResult<>(throwable.getMessage());
                 view.onPaymentError(throwable.getMessage());
+
+                trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
             }
         });
     }

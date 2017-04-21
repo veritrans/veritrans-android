@@ -3,6 +3,7 @@ package com.midtrans.sdk.ui.views.transaction;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.midtrans.sdk.analytics.MidtransAnalytics;
 import com.midtrans.sdk.core.MidtransCore;
 import com.midtrans.sdk.core.MidtransCoreCallback;
 import com.midtrans.sdk.core.models.merchant.CheckoutTokenRequest;
@@ -107,6 +108,8 @@ public class TransactionPresenter extends BasePresenter {
                 midtransUi.setTransaction(snapTransaction);
                 // Set color theme
                 midtransUi.setColorTheme(new ColorTheme(context, snapTransaction.merchant.preference.colorScheme));
+                // Set merchant name analytics
+                setMerchantNameOnAnalytics(snapTransaction.merchant.preference.displayName);
                 // Dismiss progress
                 view.showProgressContainer(false);
                 // Show payment methods
@@ -201,5 +204,9 @@ public class TransactionPresenter extends BasePresenter {
 
     public List<String> getBankList() {
         return bankTranferList;
+    }
+
+    private void setMerchantNameOnAnalytics(String merchantName) {
+        MidtransAnalytics.getInstance().setMerchantName(merchantName);
     }
 }

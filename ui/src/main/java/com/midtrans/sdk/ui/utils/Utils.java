@@ -1,7 +1,9 @@
 package com.midtrans.sdk.ui.utils;
 
+import android.content.Context;
 import android.text.TextUtils;
 
+import com.midtrans.sdk.analytics.MidtransAnalytics;
 import com.midtrans.sdk.core.models.snap.CreditCard;
 import com.midtrans.sdk.core.models.snap.SnapCustomerDetails;
 import com.midtrans.sdk.core.models.snap.transaction.SnapTransaction;
@@ -79,10 +81,33 @@ public class Utils {
         return firstName + " " + lastName;
     }
 
+    /**
+     * Get device identifier using SDK context.
+     *
+     * @return device identifier
+     */
+    public static String getDeviceId(Context context) {
+        String deviceId = "UNKNOWN";
+        try {
+            deviceId = Installation.id(context);
+        } catch (Exception ex) {
+            Logger.e("Utils", ex.toString());
+        }
+        return deviceId;
+    }
+
     public static void sendPaymentResult(PaymentResult paymentResult) {
         MidtransUiCallback paymentCallback = MidtransUi.getInstance().getPaymentCallback();
         if (paymentCallback != null) {
             paymentCallback.onFinished(paymentResult);
         }
+    }
+
+    public static void trackEvent(String eventName) {
+        MidtransAnalytics.getInstance().trackEvent(MidtransUi.getInstance().getTransaction().token, eventName);
+    }
+
+    public static void trackEvent(String eventName, String cardPaymentMode) {
+        MidtransAnalytics.getInstance().trackEvent(MidtransUi.getInstance().getTransaction().token, eventName, cardPaymentMode);
     }
 }

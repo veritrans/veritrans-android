@@ -48,7 +48,7 @@ public class MidtransCore {
     private SnapApiManager snapApiManager;
     private boolean secureCreditCardPayment;
 
-    public MidtransCore(Builder builder) {
+    private MidtransCore(Builder builder) {
         this.clientKey = builder.clientKey;
         Logger.enabled = builder.enableLog;
         this.environment = builder.environment;

@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import com.midtrans.sdk.core.models.snap.ebanking.bcaklikpay.BcaKlikpayPaymentResponse;
 import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.abtracts.BasePaymentActivity;
+import com.midtrans.sdk.ui.constants.AnalyticsEventName;
 import com.midtrans.sdk.ui.constants.Constants;
 import com.midtrans.sdk.ui.constants.PaymentType;
 import com.midtrans.sdk.ui.models.PaymentResult;
@@ -25,10 +26,15 @@ public class BcaKlikpayActivity extends BasePaymentActivity implements BcaKlikpa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bca_klikpay);
         initPresenter();
+        trackPage();
     }
 
     private void initPresenter() {
         presenter = new BcaKlikpayPresenter(this);
+    }
+
+    private void trackPage() {
+        presenter.trackEvent(AnalyticsEventName.PAGE_BCA_KLIKPAY);
     }
 
     @Override

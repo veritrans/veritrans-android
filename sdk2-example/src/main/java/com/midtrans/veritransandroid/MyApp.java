@@ -24,6 +24,7 @@ public class MyApp extends Application {
 
     private void initMidtransSDK() {
         new MidtransUi.Builder()
+                .setContext(this)
                 .setClientKey(CLIENT_KEY)
                 .setEnvironment(Environment.SANDBOX)
                 .setDefaultFontPath(DEFAULT_FONT)

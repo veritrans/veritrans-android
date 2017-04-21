@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 
+import com.midtrans.sdk.analytics.AnalyticsEnvironment;
+import com.midtrans.sdk.analytics.MidtransAnalytics;
 import com.midtrans.sdk.core.Environment;
 import com.midtrans.sdk.core.MidtransCore;
 import com.midtrans.sdk.core.models.merchant.CheckoutTokenRequest;
@@ -14,6 +16,7 @@ import com.midtrans.sdk.core.utils.Logger;
 import com.midtrans.sdk.ui.themes.BaseColorTheme;
 import com.midtrans.sdk.ui.themes.CustomColorTheme;
 import com.midtrans.sdk.ui.utils.CreditCardUtils;
+import com.midtrans.sdk.ui.utils.Utils;
 import com.midtrans.sdk.ui.views.transaction.TransactionActivity;
 
 import java.util.List;
@@ -25,6 +28,7 @@ import java.util.List;
 public class MidtransUi {
     private static MidtransUi instance;
 
+    private Context context;
     private boolean enableLog;
     private String clientKey;
     private Environment environment;
@@ -54,10 +58,13 @@ public class MidtransUi {
         this.boldFontPath = builder.boldFontPath;
         this.colorTheme = builder.customColorTheme;
         this.tokenStorageEnabled = builder.tokenStorageEnabled;
+        this.context = builder.context;
         // Set static instance
         instance = this;
         // Init MidtransCore
         initMidtransCore();
+        // Init MidtransAnalytics
+        initMidtransAnalytics();
     }
 
     /**
@@ -269,10 +276,34 @@ public class MidtransUi {
 
     private void initMidtransCore() {
         new MidtransCore.Builder()
-                .enableLog(true)
+                .enableLog(enableLog)
                 .setEnvironment(environment)
                 .setClientKey(clientKey)
                 .build();
+    }
+
+    private void initMidtransAnalytics() {
+        new MidtransAnalytics.Builder()
+                .setLogEnabled(enableLog)
+                .setEnvironment(getAnalyticsEnvironment())
+                .setSdkVersion(BuildConfig.VERSION_NAME)
+                .setMerchantName(clientKey)
+                .setDeviceId(Utils.getDeviceId(context))
+                .setDeviceType(context.getResources().getBoolean(R.bool.isTablet) ? MidtransAnalytics.DEVICE_TYPE_TABLET : MidtransAnalytics.DEVICE_TYPE_PHONE)
+                .build();
+    }
+
+    private AnalyticsEnvironment getAnalyticsEnvironment() {
+        switch (environment) {
+            case SANDBOX:
+                return AnalyticsEnvironment.SANDBOX;
+            case STAGING:
+                return AnalyticsEnvironment.STAGING;
+            case PRODUCTION:
+                return AnalyticsEnvironment.PRODUCTION;
+            default:
+                return AnalyticsEnvironment.SANDBOX;
+        }
     }
 
     /**
@@ -284,14 +315,12 @@ public class MidtransUi {
         this.transaction = null;
     }
 
-    public void trackEvent(String eventName) {
-    }
-
     /**
      * MidtransUi builder class.
      */
     public static class Builder {
         private boolean enableLog = true;
+        private Context context;
         private String clientKey;
         private Environment environment;
         private boolean tokenStorageEnabled = true;
@@ -299,6 +328,17 @@ public class MidtransUi {
         private String defaultFontPath;
         private String semiBoldFontPath;
         private String boldFontPath;
+
+        /**
+         * Set application context.
+         *
+         * @param context application context.
+         * @return {@link Builder}
+         */
+        public Builder setContext(Context context) {
+            this.context = context;
+            return this;
+        }
 
         /**
          * Add client key into Builder.
@@ -394,6 +434,13 @@ public class MidtransUi {
          * @return {@link MidtransUi} instance.
          */
         public MidtransUi build() {
+            if (context == null) {
+                String message = "Context cannot be null. Please pass application context using setContext()";
+                RuntimeException runtimeException = new RuntimeException(message);
+                Logger.error(message, runtimeException);
+                throw runtimeException;
+            }
+
             if (clientKey == null || clientKey.equalsIgnoreCase("")) {
                 String message = "Client key cannot be null or empty. Please pass the client key using setClientKey()";
                 RuntimeException runtimeException = new RuntimeException(message);
