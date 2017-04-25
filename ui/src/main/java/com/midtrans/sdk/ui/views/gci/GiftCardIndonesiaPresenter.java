@@ -5,6 +5,7 @@ import com.midtrans.sdk.core.MidtransCoreCallback;
 import com.midtrans.sdk.core.models.snap.gci.GiftCardPaymentResponse;
 import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.abtracts.BasePaymentPresenter;
+import com.midtrans.sdk.ui.constants.AnalyticsEventName;
 import com.midtrans.sdk.ui.models.PaymentResult;
 
 /**
@@ -26,18 +27,24 @@ public class GiftCardIndonesiaPresenter extends BasePaymentPresenter {
             public void onSuccess(GiftCardPaymentResponse object) {
                 paymentResult = new PaymentResult<>(object);
                 view.onGiftCardIndonesiaSuccess(object);
+
+                trackEvent(AnalyticsEventName.PAGE_STATUS_SUCCESS);
             }
 
             @Override
             public void onFailure(GiftCardPaymentResponse object) {
                 paymentResult = new PaymentResult<>(object);
                 view.onGiftCardIndonesiaFailure(object);
+
+                trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
             }
 
             @Override
             public void onError(Throwable throwable) {
                 paymentResult = new PaymentResult<>(throwable.getMessage());
                 view.onGiftCardIndonesiaError(throwable.getMessage());
+
+                trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
             }
         });
     }

@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import com.midtrans.sdk.core.models.snap.ebanking.mandiriecash.MandiriECashPaymentResponse;
 import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.abtracts.BasePaymentActivity;
+import com.midtrans.sdk.ui.constants.AnalyticsEventName;
 import com.midtrans.sdk.ui.constants.Constants;
 import com.midtrans.sdk.ui.constants.PaymentType;
 import com.midtrans.sdk.ui.models.PaymentResult;
@@ -25,6 +26,11 @@ public class MandiriEcashActivity extends BasePaymentActivity implements Mandiri
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mandiri_ecash);
         initPresenter();
+        trackPage();
+    }
+
+    private void trackPage() {
+        presenter.trackEvent(AnalyticsEventName.PAGE_MANDIRI_ECASH);
     }
 
     private void initPresenter() {

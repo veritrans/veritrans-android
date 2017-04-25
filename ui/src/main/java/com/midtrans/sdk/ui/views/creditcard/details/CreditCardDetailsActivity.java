@@ -22,6 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.midtrans.sdk.analytics.MidtransAnalytics;
 import com.midtrans.sdk.core.models.BankType;
 import com.midtrans.sdk.core.models.papi.CardTokenResponse;
 import com.midtrans.sdk.core.models.snap.SavedToken;
@@ -32,6 +33,7 @@ import com.midtrans.sdk.ui.CustomSetting;
 import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.abtracts.BasePaymentActivity;
+import com.midtrans.sdk.ui.constants.AnalyticsEventName;
 import com.midtrans.sdk.ui.constants.Constants;
 import com.midtrans.sdk.ui.constants.Theme;
 import com.midtrans.sdk.ui.models.PaymentResult;
@@ -102,6 +104,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card_details);
         initPresenter();
+        trackPage();
         initMidtransUi();
         initViews();
         initThemes();
@@ -118,6 +121,10 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     private void initPresenter() {
         presenter = new CreditCardDetailsPresenter();
         presenter.init(this, this);
+    }
+
+    private void trackPage() {
+        presenter.trackEvent(AnalyticsEventName.PAGE_CREDIT_CARD_DETAILS);
     }
 
     private void initMidtransUi() {
@@ -657,7 +664,8 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         }
 
         if (!isValid) {
-            //TODO: track invalid cc number
+            // Track invalid cc number
+            presenter.trackEvent(AnalyticsEventName.CREDIT_CARD_NUMBER_VALIDATION, MidtransAnalytics.CARD_MODE_NORMAL);
             //midtransSDK.trackEvent(AnalyticsEventName.CREDIT_CARD_NUMBER_VALIDATION, MixpanelAnalyticsManager.CARD_MODE_NORMAL);
         }
         return isValid;
@@ -727,8 +735,8 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         }
 
         if (!isValid) {
-            //TODO: track invalid cc expiry
-            //midtransSDK.trackEvent(AnalyticsEventName.CREDIT_CARD_EXPIRY_VALIDATION, MixpanelAnalyticsManager.CARD_MODE_NORMAL);
+            // Track invalid expiry
+            presenter.trackEvent(AnalyticsEventName.CREDIT_CARD_EXPIRY_VALIDATION, MidtransAnalytics.CARD_MODE_NORMAL);
         }
         return isValid;
     }
@@ -754,8 +762,11 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         }
 
         if (!isValid) {
-            //TODO: track invalid cc cvv
-            //midtransSDK.trackEvent(AnalyticsEventName.CREDIT_CARD_CVV_VALIDATION, MixpanelAnalyticsManager.CARD_MODE_NORMAL);
+            // Track invalid cvv
+            presenter.trackEvent(
+                    AnalyticsEventName.CREDIT_CARD_CVV_VALIDATION,
+                    isTwoClickMode() ? MidtransAnalytics.CARD_MODE_TWO_CLICK : MidtransAnalytics.CARD_MODE_NORMAL
+            );
         }
         return isValid;
     }

@@ -8,6 +8,7 @@ import com.midtrans.sdk.core.models.snap.bank.mandiri.MandiriBankTransferPayment
 import com.midtrans.sdk.core.models.snap.bank.other.OtherBankTransferPaymentResponse;
 import com.midtrans.sdk.core.models.snap.bank.permata.PermataBankTransferPaymentResponse;
 import com.midtrans.sdk.ui.abtracts.BasePaymentPresenter;
+import com.midtrans.sdk.ui.constants.AnalyticsEventName;
 import com.midtrans.sdk.ui.constants.PaymentType;
 import com.midtrans.sdk.ui.models.PaymentResult;
 import com.midtrans.sdk.ui.utils.Utils;
@@ -31,7 +32,7 @@ public class BankTransferPresenter extends BasePaymentPresenter {
      * @param eventName
      */
     public void trackEvent(String eventName) {
-        midtransUi.trackEvent(eventName);
+        Utils.trackEvent(eventName);
     }
 
     public void performPayment(String userEmail, String bankType) {
@@ -60,6 +61,8 @@ public class BankTransferPresenter extends BasePaymentPresenter {
                     public void onSuccess(OtherBankTransferPaymentResponse response) {
                         paymentResult = new PaymentResult<>(response);
                         paymentView.onPaymentSuccess(paymentResult);
+
+                        trackEvent(AnalyticsEventName.PAGE_STATUS_PENDING);
                     }
 
                     @Override
@@ -84,18 +87,24 @@ public class BankTransferPresenter extends BasePaymentPresenter {
                     public void onSuccess(PermataBankTransferPaymentResponse response) {
                         paymentResult = new PaymentResult<>(response);
                         paymentView.onPaymentSuccess(paymentResult);
+
+                        trackEvent(AnalyticsEventName.PAGE_STATUS_PENDING);
                     }
 
                     @Override
                     public void onFailure(PermataBankTransferPaymentResponse response) {
                         paymentResult = new PaymentResult<>(response);
                         paymentView.onPaymentFailure(paymentResult);
+
+                        trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
                     }
 
                     @Override
                     public void onError(Throwable throwable) {
                         paymentResult = new PaymentResult<>(throwable.getMessage());
                         paymentView.onPaymentError(throwable.getMessage());
+
+                        trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
                     }
                 });
     }
@@ -107,6 +116,8 @@ public class BankTransferPresenter extends BasePaymentPresenter {
                     public void onSuccess(MandiriBankTransferPaymentResponse response) {
                         paymentResult = new PaymentResult<>(response);
                         paymentView.onPaymentSuccess(paymentResult);
+
+                        trackEvent(AnalyticsEventName.PAGE_STATUS_PENDING);
                     }
 
                     @Override

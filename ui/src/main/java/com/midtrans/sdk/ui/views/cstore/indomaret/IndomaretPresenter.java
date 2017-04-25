@@ -5,6 +5,7 @@ import com.midtrans.sdk.core.MidtransCoreCallback;
 import com.midtrans.sdk.core.models.snap.conveniencestore.indomaret.IndomaretPaymentResponse;
 import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.abtracts.BasePaymentPresenter;
+import com.midtrans.sdk.ui.constants.AnalyticsEventName;
 import com.midtrans.sdk.ui.models.PaymentResult;
 
 /**
@@ -26,18 +27,24 @@ public class IndomaretPresenter extends BasePaymentPresenter {
             public void onSuccess(IndomaretPaymentResponse object) {
                 paymentResult = new PaymentResult<>(object);
                 view.onIndomaretPaymentSuccess(object);
+
+                trackEvent(AnalyticsEventName.PAGE_STATUS_PENDING);
             }
 
             @Override
             public void onFailure(IndomaretPaymentResponse object) {
                 paymentResult = new PaymentResult<>(object);
                 view.onIndomaretPaymentFailure(object);
+
+                trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
             }
 
             @Override
             public void onError(Throwable throwable) {
                 paymentResult = new PaymentResult<>(throwable.getMessage());
                 view.onIndomaretPaymentError(throwable.getMessage());
+
+                trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
             }
         });
     }

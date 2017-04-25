@@ -5,6 +5,7 @@ import com.midtrans.sdk.core.MidtransCoreCallback;
 import com.midtrans.sdk.core.models.snap.ebanking.epaybri.EpayBriPaymentResponse;
 import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.abtracts.BasePaymentPresenter;
+import com.midtrans.sdk.ui.constants.AnalyticsEventName;
 import com.midtrans.sdk.ui.models.PaymentResult;
 
 /**
@@ -25,18 +26,24 @@ public class EpayBriPresenter extends BasePaymentPresenter {
             public void onSuccess(EpayBriPaymentResponse object) {
                 paymentResult = new PaymentResult<>(object);
                 view.onEpayBriSuccess(object);
+
+                trackEvent(AnalyticsEventName.PAGE_STATUS_PENDING);
             }
 
             @Override
             public void onFailure(EpayBriPaymentResponse object) {
                 paymentResult = new PaymentResult<>(object);
                 view.onEpayBriFailure(object);
+
+                trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
             }
 
             @Override
             public void onError(Throwable throwable) {
                 paymentResult = new PaymentResult<>(throwable.getMessage());
                 view.onEpayBriError(throwable.getMessage());
+
+                trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
             }
         });
     }

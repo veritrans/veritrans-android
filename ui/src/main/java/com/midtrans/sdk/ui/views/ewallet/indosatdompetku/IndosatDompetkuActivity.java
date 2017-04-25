@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import com.midtrans.sdk.core.models.snap.ewallet.indosatdompetku.IndosatDompetkuPaymentResponse;
 import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.abtracts.BasePaymentActivity;
+import com.midtrans.sdk.ui.constants.AnalyticsEventName;
 import com.midtrans.sdk.ui.constants.Constants;
 import com.midtrans.sdk.ui.models.PaymentResult;
 import com.midtrans.sdk.ui.utils.UiUtils;
@@ -31,6 +32,7 @@ public class IndosatDompetkuActivity extends BasePaymentActivity implements Indo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_indosat_dompetku);
         initPresenter();
+        trackPage();
         initViews();
         initThemes();
     }
@@ -39,9 +41,8 @@ public class IndosatDompetkuActivity extends BasePaymentActivity implements Indo
         presenter = new IndosatDompetkuPresenter(this);
     }
 
-    private void performPayment() {
-
-
+    private void trackPage() {
+        presenter.trackEvent(AnalyticsEventName.PAGE_INDOSAT_DOMPETKU);
     }
 
     private void initThemes() {

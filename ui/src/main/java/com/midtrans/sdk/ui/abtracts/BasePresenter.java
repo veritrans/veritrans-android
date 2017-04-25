@@ -61,4 +61,12 @@ public abstract class BasePresenter {
     public boolean isPaymentStatusEnabled() {
         return midtransUi.getCustomSetting().isShowPaymentStatus();
     }
+
+    public void trackEvent(String eventName) {
+        Utils.trackEvent(eventName);
+    }
+
+    public void trackEvent(String eventName, String cardPaymentMode) {
+        Utils.trackEvent(eventName, cardPaymentMode);
+    }
 }

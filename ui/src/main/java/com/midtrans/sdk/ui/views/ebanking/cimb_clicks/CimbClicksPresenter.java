@@ -5,6 +5,7 @@ import com.midtrans.sdk.core.MidtransCoreCallback;
 import com.midtrans.sdk.core.models.snap.ebanking.cimbclicks.CimbClicksPaymentResponse;
 import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.abtracts.BasePaymentPresenter;
+import com.midtrans.sdk.ui.constants.AnalyticsEventName;
 import com.midtrans.sdk.ui.models.PaymentResult;
 
 /**
@@ -25,18 +26,24 @@ public class CimbClicksPresenter extends BasePaymentPresenter {
             public void onSuccess(CimbClicksPaymentResponse object) {
                 paymentResult = new PaymentResult<>(object);
                 view.onCimbClicksSuccess(object);
+
+                trackEvent(AnalyticsEventName.PAGE_STATUS_PENDING);
             }
 
             @Override
             public void onFailure(CimbClicksPaymentResponse object) {
                 paymentResult = new PaymentResult<>(object);
                 view.onCimbClicksFailure(object);
+
+                trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
             }
 
             @Override
             public void onError(Throwable throwable) {
                 paymentResult = new PaymentResult<>(throwable.getMessage());
                 view.onCimbClicksError(throwable.getMessage());
+
+                trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
             }
         });
     }

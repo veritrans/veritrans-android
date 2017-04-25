@@ -39,6 +39,7 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
         setContentView(R.layout.activity_bank_transfer_payment);
         initPresenter();
         initProperties();
+        trackPage();
         initViews();
         initItemDetails();
         initValues();
@@ -55,6 +56,25 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
         } else {
             UiUtils.showToast(BankTransferPaymentActivity.this, getString(R.string.error_something_wrong));
             finish();
+        }
+    }
+
+    private void trackPage() {
+        switch (paymentType) {
+            case PaymentType.BCA_VA:
+                presenter.trackEvent(AnalyticsEventName.PAGE_BCA_VA);
+                break;
+            case PaymentType.PERMATA_VA:
+                presenter.trackEvent(AnalyticsEventName.PAGE_PERMATA_VA);
+                break;
+            case PaymentType.OTHER_VA:
+                presenter.trackEvent(AnalyticsEventName.PAGE_PERMATA_VA);
+                break;
+            case PaymentType.E_CHANNEL:
+                presenter.trackEvent(AnalyticsEventName.PAGE_MANDIRI_BILL);
+                break;
+            case PaymentType.BNI_VA:
+                break;
         }
     }
 

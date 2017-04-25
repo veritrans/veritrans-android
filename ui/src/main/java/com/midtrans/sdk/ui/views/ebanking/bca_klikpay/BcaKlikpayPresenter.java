@@ -5,6 +5,7 @@ import com.midtrans.sdk.core.MidtransCoreCallback;
 import com.midtrans.sdk.core.models.snap.ebanking.bcaklikpay.BcaKlikpayPaymentResponse;
 import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.abtracts.BasePaymentPresenter;
+import com.midtrans.sdk.ui.constants.AnalyticsEventName;
 import com.midtrans.sdk.ui.models.PaymentResult;
 
 /**
@@ -25,18 +26,24 @@ public class BcaKlikpayPresenter extends BasePaymentPresenter {
             public void onSuccess(BcaKlikpayPaymentResponse object) {
                 paymentResult = new PaymentResult<>(object);
                 view.onBcaKlikpaySuccess(object);
+
+                trackEvent(AnalyticsEventName.PAGE_STATUS_PENDING);
             }
 
             @Override
             public void onFailure(BcaKlikpayPaymentResponse object) {
                 paymentResult = new PaymentResult<>(object);
                 view.onBcaKlikpayFailure(object);
+
+                trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
             }
 
             @Override
             public void onError(Throwable throwable) {
                 paymentResult = new PaymentResult<>(throwable.getMessage());
                 view.onBcaKlikpayError(throwable.getMessage());
+
+                trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
             }
         });
     }

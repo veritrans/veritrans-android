@@ -5,7 +5,9 @@ import android.view.View;
 
 import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.R;
+import com.midtrans.sdk.ui.constants.AnalyticsEventName;
 import com.midtrans.sdk.ui.constants.Theme;
+import com.midtrans.sdk.ui.utils.Utils;
 import com.midtrans.sdk.ui.widgets.FancyButton;
 
 /**
@@ -38,9 +40,13 @@ public abstract class BasePaymentActivity extends BaseItemDetailsActivity {
         View.OnClickListener buttonPaymentListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isPaymentButton(view)
-                        && validatePayment()) {
-                    startPayment();
+                if (isPaymentButton(view)) {
+                    // Track event pay now
+                    Utils.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
+
+                    if (validatePayment()) {
+                        startPayment();
+                    }
                 }
             }
         };

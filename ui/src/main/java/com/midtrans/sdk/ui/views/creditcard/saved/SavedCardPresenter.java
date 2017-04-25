@@ -2,6 +2,7 @@ package com.midtrans.sdk.ui.views.creditcard.saved;
 
 import android.content.Context;
 
+import com.midtrans.sdk.analytics.MidtransAnalytics;
 import com.midtrans.sdk.core.MidtransCore;
 import com.midtrans.sdk.core.MidtransCoreCallback;
 import com.midtrans.sdk.core.models.snap.CreditCard;
@@ -11,6 +12,7 @@ import com.midtrans.sdk.core.models.snap.card.CreditCardPaymentParams;
 import com.midtrans.sdk.core.models.snap.card.CreditCardPaymentResponse;
 import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.abtracts.BasePaymentPresenter;
+import com.midtrans.sdk.ui.constants.AnalyticsEventName;
 import com.midtrans.sdk.ui.models.PaymentResult;
 import com.midtrans.sdk.ui.models.SavedCard;
 import com.midtrans.sdk.ui.utils.CreditCardUtils;
@@ -92,12 +94,17 @@ public class SavedCardPresenter extends BasePaymentPresenter {
             public void onSuccess(CreditCardPaymentResponse object) {
                 paymentResult = new PaymentResult<>(object);
                 savedCardView.onCreditCardPaymentSuccess(object);
+
+                trackEvent(AnalyticsEventName.PAGE_STATUS_SUCCESS, MidtransAnalytics.CARD_MODE_ONE_CLICK);
             }
 
             @Override
             public void onFailure(CreditCardPaymentResponse object) {
                 paymentResult = new PaymentResult<>(object);
                 savedCardView.onCreditCardPaymentFailure(object);
+
+                // track 3DS validation error
+                CreditCardUtils.trackCreditCardFailure(object, savedCard.getSavedToken());
             }
 
             @Override

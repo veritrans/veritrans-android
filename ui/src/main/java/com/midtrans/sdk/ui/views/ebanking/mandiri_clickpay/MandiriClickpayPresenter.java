@@ -7,6 +7,7 @@ import com.midtrans.sdk.core.models.snap.ebanking.mandiriclickpay.MandiriClickpa
 import com.midtrans.sdk.core.models.snap.transaction.SnapTransaction;
 import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.abtracts.BasePaymentPresenter;
+import com.midtrans.sdk.ui.constants.AnalyticsEventName;
 import com.midtrans.sdk.ui.models.PaymentResult;
 import com.midtrans.sdk.ui.utils.UiUtils;
 
@@ -37,18 +38,24 @@ public class MandiriClickpayPresenter extends BasePaymentPresenter {
             public void onSuccess(MandiriClickpayPaymentResponse object) {
                 paymentResult = new PaymentResult<>(object);
                 view.onMandiriClickpaySuccess(object);
+
+                trackEvent(AnalyticsEventName.PAGE_STATUS_SUCCESS);
             }
 
             @Override
             public void onFailure(MandiriClickpayPaymentResponse object) {
                 paymentResult = new PaymentResult<>(object);
                 view.onMandiriClickpayFailure(object);
+
+                trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
             }
 
             @Override
             public void onError(Throwable throwable) {
                 paymentResult = new PaymentResult<>(throwable.getMessage());
                 view.onMandiriClickpayError(throwable.getMessage());
+
+                trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
             }
         });
     }

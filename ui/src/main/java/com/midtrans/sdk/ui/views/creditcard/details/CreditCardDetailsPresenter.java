@@ -3,6 +3,7 @@ package com.midtrans.sdk.ui.views.creditcard.details;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.midtrans.sdk.analytics.MidtransAnalytics;
 import com.midtrans.sdk.core.MidtransCore;
 import com.midtrans.sdk.core.MidtransCoreCallback;
 import com.midtrans.sdk.core.models.BankType;
@@ -18,6 +19,7 @@ import com.midtrans.sdk.core.models.snap.card.Installment;
 import com.midtrans.sdk.core.models.snap.transaction.SnapTransaction;
 import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.abtracts.BasePaymentPresenter;
+import com.midtrans.sdk.ui.constants.AnalyticsEventName;
 import com.midtrans.sdk.ui.models.PaymentResult;
 import com.midtrans.sdk.ui.utils.CreditCardUtils;
 import com.midtrans.sdk.ui.utils.UiUtils;
@@ -270,12 +272,28 @@ public class CreditCardDetailsPresenter extends BasePaymentPresenter {
             public void onSuccess(CreditCardPaymentResponse object) {
                 paymentResult = new PaymentResult<>(object);
                 cardDetailsView.onCreditCardPaymentSuccess(object);
+
+                if (savedToken != null) {
+                    if (savedToken.tokenType.equalsIgnoreCase(SavedToken.TWO_CLICKS)) {
+                        trackEvent(AnalyticsEventName.PAGE_STATUS_SUCCESS, MidtransAnalytics.CARD_MODE_TWO_CLICK);
+                    } else {
+                        trackEvent(AnalyticsEventName.PAGE_STATUS_SUCCESS, MidtransAnalytics.CARD_MODE_ONE_CLICK);
+                    }
+                } else {
+                    trackEvent(AnalyticsEventName.PAGE_STATUS_SUCCESS, MidtransAnalytics.CARD_MODE_NORMAL);
+                }
             }
 
             @Override
             public void onFailure(CreditCardPaymentResponse object) {
                 paymentResult = new PaymentResult<>(object);
                 cardDetailsView.onCreditCardPaymentFailure(object);
+
+                if (savedToken != null) {
+                    CreditCardUtils.trackCreditCardFailure(object, savedToken);
+                } else {
+                    CreditCardUtils.trackCreditCardFailure(object);
+                }
             }
 
             @Override

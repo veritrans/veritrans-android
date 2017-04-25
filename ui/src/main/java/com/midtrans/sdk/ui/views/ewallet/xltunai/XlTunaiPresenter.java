@@ -4,6 +4,7 @@ import com.midtrans.sdk.core.MidtransCore;
 import com.midtrans.sdk.core.MidtransCoreCallback;
 import com.midtrans.sdk.core.models.snap.ewallet.xltunai.XlTunaiPaymentResponse;
 import com.midtrans.sdk.ui.abtracts.BasePaymentPresenter;
+import com.midtrans.sdk.ui.constants.AnalyticsEventName;
 import com.midtrans.sdk.ui.models.PaymentResult;
 
 /**
@@ -26,6 +27,8 @@ public class XlTunaiPresenter extends BasePaymentPresenter {
             public void onSuccess(XlTunaiPaymentResponse object) {
                 paymentResult = new PaymentResult<>(object);
                 view.onPaymentSuccess(object);
+
+                trackEvent(AnalyticsEventName.PAGE_STATUS_PENDING);
             }
 
             @Override

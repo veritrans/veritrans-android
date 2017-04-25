@@ -690,6 +690,7 @@
     <string name="delete_this_card">delete this card</string>
     <string name="error_delete_message">Failed to delete card</string>
     <string name="error_message_failed_checkout">Checkout failed.\nPlease try again or cancel the payment.</string>
+    <string name="error_message_no_payment_methods">No payment methods available.</string>
     <string name="mandiri_debit_card">Mandiri Debit Card</string>
     <string name="bni_debit_online_card">BNI Debit Online Card</string>
     <string name="tab_atm_bersama">ATM Bersama</string>

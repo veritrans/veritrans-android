@@ -44,6 +44,7 @@ dependencies {
         exclude group: 'com.android.support'
     })
     compile project(path: ':core')
+    compile project(path: ':analytics')
 
     testCompile 'junit:junit:4.12'
 }

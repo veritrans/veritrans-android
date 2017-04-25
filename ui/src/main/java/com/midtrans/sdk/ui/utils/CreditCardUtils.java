@@ -4,9 +4,14 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
+import com.midtrans.sdk.analytics.MidtransAnalytics;
 import com.midtrans.sdk.core.models.BankType;
+import com.midtrans.sdk.core.models.snap.SavedToken;
 import com.midtrans.sdk.core.models.snap.bins.BankBinsResponse;
+import com.midtrans.sdk.core.models.snap.card.CreditCardPaymentResponse;
+import com.midtrans.sdk.ui.constants.AnalyticsEventName;
 
 import java.io.InputStream;
 import java.lang.reflect.Type;
@@ -108,5 +113,37 @@ public class CreditCardUtils {
             }
         }
         return null;
+    }
+
+    public static void trackCreditCardFailure(CreditCardPaymentResponse object) {
+        // track 3DS validation error
+        if (object.validationMessages != null && object.validationMessages.get(0) != null) {
+            if (object.validationMessages.get(0).contains("3d")) {
+                Utils.trackEvent(AnalyticsEventName.CREDIT_CARD_3DS_ERROR, MidtransAnalytics.CARD_MODE_NORMAL);
+            }
+        }
+
+        Utils.trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED, MidtransAnalytics.CARD_MODE_NORMAL);
+    }
+
+    public static void trackCreditCardFailure(CreditCardPaymentResponse object, @NonNull SavedToken savedToken) {
+        // track 3DS validation error
+        if (object.validationMessages != null && object.validationMessages.get(0) != null) {
+            if (object.validationMessages.get(0).contains("3d")) {
+                if (savedToken.tokenType.equalsIgnoreCase(SavedToken.TWO_CLICKS)) {
+                    Utils.trackEvent(AnalyticsEventName.CREDIT_CARD_3DS_ERROR, MidtransAnalytics.CARD_MODE_TWO_CLICK);
+                    Utils.trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED, MidtransAnalytics.CARD_MODE_TWO_CLICK);
+                } else {
+                    Utils.trackEvent(AnalyticsEventName.CREDIT_CARD_3DS_ERROR, MidtransAnalytics.CARD_MODE_ONE_CLICK);
+                    Utils.trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED, MidtransAnalytics.CARD_MODE_ONE_CLICK);
+                }
+            }
+        }
+
+        if (savedToken.tokenType.equalsIgnoreCase(SavedToken.TWO_CLICKS)) {
+            Utils.trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED, MidtransAnalytics.CARD_MODE_TWO_CLICK);
+        } else {
+            Utils.trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED, MidtransAnalytics.CARD_MODE_ONE_CLICK);
+        }
     }
 }

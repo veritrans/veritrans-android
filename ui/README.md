@@ -16,16 +16,17 @@ Initialise SDK instance in your application or main activity class.
 
 ```java
 new MidtransUi.Builder()
-                .setClientKey(CLIENT_KEY)
-                .setEnvironment(Environment.SANDBOX|PRODUCTION)
-                // Custom font path relative to assets directory
-                .setDefaultFontPath(DEFAULT_FONT)
-                // Custom font path relative to assets directory
-                .setBoldFontPath(BOLD_FONT)
-                // Custom font path relative to assets directory
-                .setSemiBoldFontPath(SEMI_BOLD_FONT)
-                .enableLog(true)
-                .build();
+    .setContext(APPLICATION_CONTEXT)
+    .setClientKey(CLIENT_KEY)
+    .setEnvironment(Environment.SANDBOX|PRODUCTION)
+    // Custom font path relative to assets directory
+    .setDefaultFontPath(DEFAULT_FONT)
+    // Custom font path relative to assets directory
+    .setBoldFontPath(BOLD_FONT)
+    // Custom font path relative to assets directory
+    .setSemiBoldFontPath(SEMI_BOLD_FONT)
+    .enableLog(true)
+    .build();
 ```
 
 ## 3. Payment Flow

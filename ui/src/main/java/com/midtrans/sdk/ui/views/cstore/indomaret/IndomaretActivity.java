@@ -8,6 +8,7 @@ import com.midtrans.sdk.core.models.snap.conveniencestore.indomaret.IndomaretPay
 import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.abtracts.BasePaymentActivity;
+import com.midtrans.sdk.ui.constants.AnalyticsEventName;
 import com.midtrans.sdk.ui.constants.Constants;
 import com.midtrans.sdk.ui.models.PaymentResult;
 import com.midtrans.sdk.ui.utils.UiUtils;
@@ -26,6 +27,11 @@ public class IndomaretActivity extends BasePaymentActivity implements IndomaretV
         setContentView(R.layout.activity_indomaret);
         initMidtransUi();
         initPresenter();
+        trackPage();
+    }
+
+    private void trackPage() {
+        presenter.trackEvent(AnalyticsEventName.PAGE_INDOMARET);
     }
 
     private void initMidtransUi() {

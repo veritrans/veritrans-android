@@ -19,6 +19,7 @@ import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.abtracts.BaseActivity;
 import com.midtrans.sdk.ui.adapters.ItemDetailsAdapter;
 import com.midtrans.sdk.ui.adapters.PaymentMethodsAdapter;
+import com.midtrans.sdk.ui.constants.AnalyticsEventName;
 import com.midtrans.sdk.ui.constants.Constants;
 import com.midtrans.sdk.ui.constants.PaymentType;
 import com.midtrans.sdk.ui.models.PaymentMethodModel;
@@ -161,7 +162,16 @@ public class TransactionActivity
     public void showPaymentMethods(List<PaymentMethodModel> enabledPayments) {
         initTheme();
         itemDetailsContainer.setBackgroundColor(presenter.getPrimaryColor());
-        paymentMethodsAdapter.setData(enabledPayments);
+        if (!enabledPayments.isEmpty()) {
+            if (enabledPayments.size() > 1) {
+                presenter.trackEvent(AnalyticsEventName.PAGE_SELECT_PAYMENT);
+                paymentMethodsAdapter.setData(enabledPayments);
+            } else {
+                showPaymentActivity(enabledPayments.get(0));
+            }
+        } else {
+            showErrorContainer(getString(R.string.error_message_no_payment_methods), false);
+        }
     }
 
     @Override
@@ -193,7 +203,6 @@ public class TransactionActivity
         } else {
             retryButton.setVisibility(View.GONE);
         }
-
     }
 
     @Override

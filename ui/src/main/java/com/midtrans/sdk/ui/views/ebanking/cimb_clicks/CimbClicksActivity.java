@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import com.midtrans.sdk.core.models.snap.ebanking.cimbclicks.CimbClicksPaymentResponse;
 import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.abtracts.BasePaymentActivity;
+import com.midtrans.sdk.ui.constants.AnalyticsEventName;
 import com.midtrans.sdk.ui.constants.Constants;
 import com.midtrans.sdk.ui.constants.PaymentType;
 import com.midtrans.sdk.ui.models.PaymentResult;
@@ -26,10 +27,15 @@ public class CimbClicksActivity extends BasePaymentActivity implements CimbClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cimb_clicks);
         initPresenter();
+        trackPage();
     }
 
     private void initPresenter() {
         presenter = new CimbClicksPresenter(this);
+    }
+
+    private void trackPage() {
+        presenter.trackEvent(AnalyticsEventName.PAGE_CIMB_CLICKS);
     }
 
     @Override

@@ -28,3 +28,4 @@
 -keep class com.midtrans.sdk.ui.MidtransUi { *; }
 -keep class com.midtrans.sdk.ui.MidtransUi$Builder { *; }
 -keep class com.midtrans.sdk.ui.MidtransUiCallback { *; }
+-keep class com.midtrans.sdk.ui.constants.PaymentStatus { *; }

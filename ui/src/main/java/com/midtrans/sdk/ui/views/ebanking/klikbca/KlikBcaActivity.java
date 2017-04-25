@@ -11,6 +11,7 @@ import com.midtrans.sdk.core.models.snap.ebanking.klikbca.KlikBcaPaymentResponse
 import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.abtracts.BasePaymentActivity;
+import com.midtrans.sdk.ui.constants.AnalyticsEventName;
 import com.midtrans.sdk.ui.constants.Constants;
 import com.midtrans.sdk.ui.models.PaymentResult;
 import com.midtrans.sdk.ui.utils.UiUtils;
@@ -34,6 +35,7 @@ public class KlikBcaActivity extends BasePaymentActivity implements KlikBcaView 
         setContentView(R.layout.activity_klikbca);
         initMidtransUi();
         initPresenter();
+        trackPage();
         initViews();
         initThemes();
     }
@@ -44,6 +46,10 @@ public class KlikBcaActivity extends BasePaymentActivity implements KlikBcaView 
 
     private void initPresenter() {
         presenter = new KlikBcaPresenter(this);
+    }
+
+    private void trackPage() {
+        presenter.trackEvent(AnalyticsEventName.PAGE_BCA_KLIKBCA);
     }
 
     private void initViews() {

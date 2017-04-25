@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import com.midtrans.sdk.core.models.snap.ewallet.tcash.TelkomselCashPaymentResponse;
 import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.abtracts.BasePaymentActivity;
+import com.midtrans.sdk.ui.constants.AnalyticsEventName;
 import com.midtrans.sdk.ui.constants.Constants;
 import com.midtrans.sdk.ui.models.PaymentResult;
 import com.midtrans.sdk.ui.utils.UiUtils;
@@ -31,6 +32,7 @@ public class TelkomselCashActivity extends BasePaymentActivity implements Telkom
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_telkomsel_cash);
         initPresenter();
+        trackPage();
         initViews();
         initThemes();
     }
@@ -39,6 +41,9 @@ public class TelkomselCashActivity extends BasePaymentActivity implements Telkom
         presenter = new TelkomselCashPresenter(this);
     }
 
+    private void trackPage() {
+        presenter.trackEvent(AnalyticsEventName.PAGE_TCASH);
+    }
 
     private void initThemes() {
         setTextInputLayoutColorFilter(tokenTextInput);
