@@ -1,7 +1,9 @@
 package com.midtrans.sdk.uikit.utilities;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -11,17 +13,15 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.AttrRes;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.midtrans.sdk.corekit.BuildConfig;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
@@ -35,6 +35,7 @@ import com.midtrans.sdk.corekit.models.snap.SavedToken;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.models.CreditCardType;
 import com.midtrans.sdk.uikit.models.PromoData;
+import com.midtrans.sdk.uikit.widgets.MidtransProgressDialogFragment;
 
 import java.io.InputStream;
 import java.security.NoSuchAlgorithmException;
@@ -57,7 +58,7 @@ import java.util.regex.Pattern;
  */
 public class SdkUIFlowUtil {
 
-    private static ProgressDialog progressDialog;
+    private static MidtransProgressDialogFragment progressDialogFragment;
     private static int maskedExpDate;
 
     /**
@@ -152,17 +153,14 @@ public class SdkUIFlowUtil {
      * @param activity     instance of an activity
      * @param isCancelable set whether dialog is cancellable or not.
      */
-    public static void showProgressDialog(Activity activity, boolean isCancelable) {
-
+    public static void showProgressDialog(AppCompatActivity activity, boolean isCancelable) {
         hideProgressDialog();
-
         if (activity != null) {
             try {
-                progressDialog = new ProgressDialog(activity);
-                progressDialog.setMessage(activity.getString(R.string.loading));
-                progressDialog.setCancelable(isCancelable);
-                progressDialog.show();
-            } catch (WindowManager.BadTokenException ex) {
+                progressDialogFragment = MidtransProgressDialogFragment.newInstance();
+                progressDialogFragment.setCancelable(isCancelable);
+                progressDialogFragment.show(activity.getSupportFragmentManager(), "");
+            } catch (Exception ex) {
                 Logger.e("error while creating progress dialog : " + ex.getMessage());
             }
         } else {
@@ -179,17 +177,16 @@ public class SdkUIFlowUtil {
      * @param message      message to display information about on going task.
      * @param isCancelable set whether dialog is cancellable or not.
      */
-    public static void showProgressDialog(Activity activity, String message, boolean isCancelable) {
+    public static void showProgressDialog(AppCompatActivity activity, String message, boolean isCancelable) {
 
         hideProgressDialog();
 
         if (activity != null) {
             try {
-                progressDialog = new ProgressDialog(activity);
-                progressDialog.setMessage(message);
-                progressDialog.setCancelable(isCancelable);
-                progressDialog.show();
-            } catch (WindowManager.BadTokenException ex) {
+                progressDialogFragment = MidtransProgressDialogFragment.newInstance(message);
+                progressDialogFragment.setCancelable(isCancelable);
+                progressDialogFragment.show(activity.getSupportFragmentManager(), "");
+            } catch (Exception ex) {
                 Logger.e("error while creating progress dialog : " + ex.getMessage());
             }
         } else {
@@ -199,25 +196,17 @@ public class SdkUIFlowUtil {
     }
 
     /**
-     * @return an instance of progress dialog if visible any else returns null.
-     */
-    public static ProgressDialog getProgressDialog() {
-        return progressDialog;
-    }
-
-    /**
      * It will close the progress dialog if visible any.
      */
     public static void hideProgressDialog() {
 
-        if (progressDialog != null && progressDialog.isShowing()) {
-
+        if (progressDialogFragment != null) {
             try {
-                progressDialog.dismiss();
+                progressDialogFragment.dismiss();
             } catch (IllegalArgumentException ex) {
                 Logger.e("error while hiding progress dialog : " + ex.getMessage());
             }
-            progressDialog = null;
+            progressDialogFragment = null;
         }
     }
 

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/progress_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal|center_vertical"
+    android:orientation="vertical"
+    android:padding="@dimen/sixteen_dp"
+    android:paddingBottom="@dimen/sixteen_dp">
+
+    <ImageView
+        android:id="@+id/progress_bar_image"
+        android:layout_width="@dimen/sixty_four_dp"
+        android:layout_height="@dimen/sixty_four_dp"
+        tools:src="@drawable/midtrans_loader" />
+
+    <com.midtrans.sdk.uikit.widgets.DefaultTextView
+        android:id="@+id/progress_bar_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/eight_dp"
+        android:text="@string/loading"
+        android:textSize="@dimen/sixteen_sp" />
+</LinearLayout>
