@@ -434,7 +434,7 @@
     <string name="save_card_info">Detail kartu diatas akan disimpan untuk membantu transaksi anda berikutnya.</string>
     <string name="choose_card">Pilih kartu kredit</string>
     <string name="add_new_card">bayar dengan kartu baru</string>
-    <string name="mandiri_bill_transfer">Mandiri Bill</string>
+    <string name="mandiri_bill_transfer">Bank Mandiri</string>
     <string name="bank_bca_transfer">Bank BCA</string>
     <string name="bank_permata_transfer">Bank Permata</string>
     <string name="bank_bni_transfer">Bank BNI</string>
