@@ -94,4 +94,8 @@ public class CreditCard {
     public void setInstallment(Installment installment) {
         this.installment = installment;
     }
+
+    public void setWhiteListBins(ArrayList<String> whiteListBins) {
+        this.whitelistBins = whiteListBins;
+    }
 }

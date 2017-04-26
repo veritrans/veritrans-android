@@ -123,7 +123,7 @@
                 style="@style/ConfigItemTextTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_secure"
+                android:drawableLeft="@drawable/ic_installment"
                 android:drawablePadding="14dp"
                 android:drawableStart="@drawable/ic_installment"
                 android:paddingLeft="12dp"
@@ -447,6 +447,48 @@
 
                 <com.midtrans.demo.DemoRadioButton
                     android:id="@+id/type_preauth_enabled"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/enabled" />
+            </RadioGroup>
+
+            <com.midtrans.demo.DemoTextView
+                android:id="@+id/title_bni_point_type"
+                style="@style/ConfigItemTextTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_bni_point"
+                android:drawablePadding="12dp"
+                android:drawableStart="@drawable/ic_bni_point"
+                android:paddingLeft="14dp"
+                android:text="@string/bni_point_only_disabled" />
+
+            <RadioGroup
+                android:id="@+id/bni_point_type_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/thirtytwo_dp"
+                android:paddingRight="@dimen/thirtytwo_dp"
+                android:visibility="gone">
+
+                <com.midtrans.demo.DemoRadioButton
+                    android:id="@+id/type_bni_point_disabled"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:checked="true"
+                    android:gravity="center_vertical"
+                    android:text="@string/disabled" />
+
+                <com.midtrans.demo.DemoRadioButton
+                    android:id="@+id/type_bni_point_enabled"
                     style="@style/CustomRadioButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

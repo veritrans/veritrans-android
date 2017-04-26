@@ -93,7 +93,7 @@
                     android:text="@string/offer_not_applied"
                     android:textColor="@color/text_offer_failure"
                     android:textSize="@dimen/eleven_sp"
-                    android:visibility="gone" />
+                    android:visibility="visible" />
             </LinearLayout>
 
             <RelativeLayout

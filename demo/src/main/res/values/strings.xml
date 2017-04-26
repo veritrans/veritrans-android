@@ -109,4 +109,8 @@
     <string name="using_bca_installment">Using BCA Installment</string>
     <string name="using_offline_installment">Using Offline Installment</string>
     <string name="installment_required_title">(Required)</string>
+
+    <!-- BNI Point -->
+    <string name="bni_point_only_disabled">BNI Point Only Disabled</string>
+    <string name="bni_point_only_enabled">BNI Point Only Enabled</string>
 </resources>
