@@ -618,6 +618,10 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     bankTitle.setText(R.string.acquiring_bank_by_bri);
                     bankBriSelection.setChecked(true);
                     break;
+                case Constants.BANK_CIMB:
+                    bankTitle.setText(R.string.acquiring_bank_by_cimb);
+                    bankCimbSelection.setChecked(true);
+                    break;
                 default:
                     bankTitle.setText(R.string.acquiring_bank_none);
                     bankNoneSelection.setChecked(true);
@@ -678,6 +682,15 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 if (checked) {
                     bankTitle.setText(R.string.acquiring_bank_by_bri);
+                }
+            }
+        });
+
+        bankCimbSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    bankTitle.setText(R.string.acquiring_bank_by_cimb);
                 }
             }
         });
@@ -890,6 +903,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             DemoPreferenceHelper.setStringPreference(this, BANK_TYPE, Constants.BANK_MAYBANK);
         } else if (bankBriSelection.isChecked()) {
             DemoPreferenceHelper.setStringPreference(this, BANK_TYPE, Constants.BANK_BRI);
+        } else if (bankCimbSelection.isChecked()) {
+            DemoPreferenceHelper.setStringPreference(this, BANK_TYPE, Constants.BANK_CIMB);
         } else {
             DemoPreferenceHelper.setStringPreference(this, BANK_TYPE, Constants.BANK_NONE);
         }
