@@ -100,6 +100,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private AppCompatRadioButton bankBcaSelection;
     private AppCompatRadioButton bankMaybankSelection;
     private AppCompatRadioButton bankBriSelection;
+    private AppCompatRadioButton bankCimbSelection;
     /**
      * Radio Button Selection for Expiry
      **/
@@ -189,6 +190,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         bankBcaSelection = (AppCompatRadioButton) findViewById(R.id.type_bank_bca);
         bankMaybankSelection = (AppCompatRadioButton) findViewById(R.id.type_bank_maybank);
         bankBriSelection = (AppCompatRadioButton) findViewById(R.id.type_bank_bri);
+        bankCimbSelection = (AppCompatRadioButton) findViewById(R.id.type_bank_cimb);
 
         expiryNoneSelection = (AppCompatRadioButton) findViewById(R.id.type_expiry_none);
         expiryOneMinuteSelection = (AppCompatRadioButton) findViewById(R.id.type_expiry_one_minute);
@@ -1233,6 +1235,9 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             creditCard.setBank(BankType.BRI);
             // credit card payment using bank BRI need migs channel
             creditCard.setChannel(CreditCard.MIGS);
+        } else if (bankCimbSelection.isChecked()) {
+            // Set bank to CIMB
+            creditCard.setBank(BankType.CIMB);
         }
 
         if (preAuthEnabledSelection.isChecked()) {
