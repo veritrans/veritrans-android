@@ -22,4 +22,12 @@ public class Installment {
     public Map<String, ArrayList<Integer>> getTerms() {
         return terms;
     }
+
+    public void setTerms(Map<String, ArrayList<Integer>> terms) {
+        this.terms = terms;
+    }
+
+    public void setRequired(boolean required) {
+        this.required = required;
+    }
 }

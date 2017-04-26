@@ -97,4 +97,16 @@
     <string name="btn_pay_20000">Pay Rp 20,000</string>
     <string name="sample_user_id">midtrans.android@yopmail.com</string>
     <string name="sample_user_id2">midtrans.android2@yopmail.com</string>
+
+    <!-- installment -->
+    <string name="installment_type_disabled">Installment Disabled</string>
+    <string name="installment_bni">BNI</string>
+    <string name="installment_mandiri">Mandiri</string>
+    <string name="installment_bca">BCA</string>
+    <string name="installment_offline">Offline</string>
+    <string name="using_bni_installment">Using BNI Installment</string>
+    <string name="using_mandiri_installment">Using Mandiri Installment</string>
+    <string name="using_bca_installment">Using BCA Installment</string>
+    <string name="using_offline_installment">Using Offline Installment</string>
+    <string name="installment_required_title">(Required)</string>
 </resources>

@@ -119,6 +119,85 @@
             </RadioGroup>
 
             <com.midtrans.demo.DemoTextView
+                android:id="@+id/title_installment_type"
+                style="@style/ConfigItemTextTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_secure"
+                android:drawablePadding="14dp"
+                android:drawableStart="@drawable/ic_installment"
+                android:paddingLeft="12dp"
+                android:text="@string/installment_type_disabled" />
+
+            <RadioGroup
+                android:id="@+id/enable_installment_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/thirtytwo_dp"
+                android:paddingRight="@dimen/thirtytwo_dp"
+                android:visibility="gone">
+
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/installment_required"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:text="@string/installment_required" />
+
+                <com.midtrans.demo.DemoRadioButton
+                    android:id="@+id/no_installment"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:checked="true"
+                    android:gravity="center_vertical"
+                    android:text="@string/no_installment" />
+
+                <com.midtrans.demo.DemoRadioButton
+                    android:id="@+id/installment_type_bni"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/installment_bni" />
+
+                <com.midtrans.demo.DemoRadioButton
+                    android:id="@+id/installment_type_bca"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/installment_bca" />
+
+                <com.midtrans.demo.DemoRadioButton
+                    android:id="@+id/installment_type_mandiri"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/installment_mandiri" />
+
+                <com.midtrans.demo.DemoRadioButton
+                    android:id="@+id/installment_type_offline"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/installment_offline" />
+            </RadioGroup>
+
+            <com.midtrans.demo.DemoTextView
                 android:id="@+id/title_issuing_bank_type"
                 style="@style/ConfigItemTextTitle"
                 android:layout_width="match_parent"
