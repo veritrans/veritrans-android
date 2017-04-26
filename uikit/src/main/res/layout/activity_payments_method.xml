@@ -98,18 +98,8 @@
         android:gravity="center_vertical|center_horizontal"
         android:orientation="vertical"
         android:visibility="gone"
-        tools:visibility="gone">
+        tools:visibility="visible">
 
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <com.midtrans.sdk.uikit.widgets.DefaultTextView
-            android:id="@+id/loading_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="@string/txt_loading_payment" />
+        <include layout="@layout/layout_midtrans_progress" />
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

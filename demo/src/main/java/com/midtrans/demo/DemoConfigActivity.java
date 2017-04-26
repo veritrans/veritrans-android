@@ -32,6 +32,7 @@ import com.midtrans.sdk.corekit.models.ExpiryModel;
 import com.midtrans.sdk.corekit.models.ItemDetails;
 import com.midtrans.sdk.corekit.models.UserAddress;
 import com.midtrans.sdk.corekit.models.UserDetail;
+import com.midtrans.sdk.corekit.models.snap.BankTransferRequestModel;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
 import com.midtrans.sdk.corekit.utilities.Utils;
@@ -99,6 +100,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private AppCompatRadioButton bankBcaSelection;
     private AppCompatRadioButton bankMaybankSelection;
     private AppCompatRadioButton bankBriSelection;
+    private AppCompatRadioButton bankCimbSelection;
     /**
      * Radio Button Selection for Expiry
      **/
@@ -188,6 +190,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         bankBcaSelection = (AppCompatRadioButton) findViewById(R.id.type_bank_bca);
         bankMaybankSelection = (AppCompatRadioButton) findViewById(R.id.type_bank_maybank);
         bankBriSelection = (AppCompatRadioButton) findViewById(R.id.type_bank_bri);
+        bankCimbSelection = (AppCompatRadioButton) findViewById(R.id.type_bank_cimb);
 
         expiryNoneSelection = (AppCompatRadioButton) findViewById(R.id.type_expiry_none);
         expiryOneMinuteSelection = (AppCompatRadioButton) findViewById(R.id.type_expiry_one_minute);
@@ -615,6 +618,10 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     bankTitle.setText(R.string.acquiring_bank_by_bri);
                     bankBriSelection.setChecked(true);
                     break;
+                case Constants.BANK_CIMB:
+                    bankTitle.setText(R.string.acquiring_bank_by_cimb);
+                    bankCimbSelection.setChecked(true);
+                    break;
                 default:
                     bankTitle.setText(R.string.acquiring_bank_none);
                     bankNoneSelection.setChecked(true);
@@ -675,6 +682,15 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 if (checked) {
                     bankTitle.setText(R.string.acquiring_bank_by_bri);
+                }
+            }
+        });
+
+        bankCimbSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    bankTitle.setText(R.string.acquiring_bank_by_cimb);
                 }
             }
         });
@@ -887,6 +903,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             DemoPreferenceHelper.setStringPreference(this, BANK_TYPE, Constants.BANK_MAYBANK);
         } else if (bankBriSelection.isChecked()) {
             DemoPreferenceHelper.setStringPreference(this, BANK_TYPE, Constants.BANK_BRI);
+        } else if (bankCimbSelection.isChecked()) {
+            DemoPreferenceHelper.setStringPreference(this, BANK_TYPE, Constants.BANK_CIMB);
         } else {
             DemoPreferenceHelper.setStringPreference(this, BANK_TYPE, Constants.BANK_NONE);
         }
@@ -1232,6 +1250,9 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             creditCard.setBank(BankType.BRI);
             // credit card payment using bank BRI need migs channel
             creditCard.setChannel(CreditCard.MIGS);
+        } else if (bankCimbSelection.isChecked()) {
+            // Set bank to CIMB
+            creditCard.setBank(BankType.CIMB);
         }
 
         if (preAuthEnabledSelection.isChecked()) {
@@ -1316,6 +1337,14 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             }
         }
         LocalDataHandler.saveObject(getString(R.string.user_details), userDetail);
+
+        transactionRequestNew.setPermataVa(
+                new BankTransferRequestModel("1234567890")
+        );
+
+        transactionRequestNew.setBcaVa(
+                new BankTransferRequestModel("12345678901")
+        );
 
         return transactionRequestNew;
     }
