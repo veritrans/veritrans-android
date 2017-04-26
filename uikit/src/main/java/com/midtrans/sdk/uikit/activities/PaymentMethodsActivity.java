@@ -231,7 +231,10 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         }
 
         // Init progress
-        Glide.with(this).load(R.drawable.midtrans_loader).asGif().into(progressImage);
+        Glide.with(this)
+                .load(R.drawable.midtrans_loader)
+                .asGif()
+                .into(progressImage);
         progressMessage.setText(R.string.txt_loading_payment);
     }
 
