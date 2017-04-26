@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.midtrans.sdk.corekit.callback.CheckoutCallback;
 import com.midtrans.sdk.corekit.callback.TransactionOptionsCallback;
 import com.midtrans.sdk.corekit.core.Constants;
@@ -49,7 +50,6 @@ import com.midtrans.sdk.uikit.models.ItemViewDetails;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,25 +60,6 @@ import java.util.List;
  * Created by shivam on 10/16/15.
  */
 public class PaymentMethodsActivity extends BaseActivity implements PaymentMethodsAdapter.PaymentMethodListener, ItemDetailsAdapter.ItemDetailListener {
-    // Payment Name
-    protected static final String PAYMENT_TYPE_CIMB_CLICK = "cimb_click";
-    protected static final String PAYMENT_TYPE_BCA_KLIKPAY = "bca_klikpay";
-    protected static final String PAYMENT_TYPE_MANDIRI_CLICKPAY = "mandiri_clickpay";
-    protected static final String PAYMENT_TYPE_MANDIRI_ECASH = "mandiri_ecash";
-    protected static final String PAYMENT_TYPE_BANK_TRANSFER = "bank_transfer";
-    protected static final String PAYMENT_TYPE_CREDIT_CARD = "cc";
-    protected static final String PAYMENT_TYPE_BRI_EPAY = "bri_epay";
-    protected static final String PAYMENT_TYPE_INDOSAT_DOMPETKU = "indosat_dompetku";
-    protected static final String PAYMENT_TYPE_INDOMARET = "indomaret";
-    protected static final String PAYMENT_TYPE_KLIK_BCA = "bca_klikbca";
-    protected static final String PAYMENT_TYPE_TELKOMSEL_ECASH = "telkomsel_ecash";
-    protected static final String PAYMENT_TYPE_XL_TUNAI = "xl_tunai";
-    protected static final String PAYMENT_TYPE_KIOSON = "kiosan";
-    protected static final String PAYMENT_TYPE_GCI = "gci";
-
-    private static final String KEY_SELECT_PAYMENT = "Payment Select";
-    private static final String KEY_CANCEL_TRANSACTION_EVENT = "Cancel Transaction";
-    private static final String PAYMENT_SNAP = "snap";
     private static final String TAG = PaymentMethodsActivity.class.getSimpleName();
     private ArrayList<PaymentMethodsModel> data = new ArrayList<>();
     private boolean isCreditCardOnly = false;
@@ -110,6 +91,8 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     private PaymentMethodsAdapter paymentMethodsAdapter;
     private AlertDialog alertDialog;
     private DefaultTextView textTitle;
+    private ImageView progressImage;
+    private TextView progressMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -236,16 +219,20 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         logo = (ImageView) findViewById(R.id.merchant_logo);
         merchantName = (TextView) findViewById(R.id.merchant_name);
         progressContainer = (LinearLayout) findViewById(R.id.progress_container);
+        progressImage = (ImageView) findViewById(R.id.progress_bar_image);
+        progressMessage = (TextView) findViewById(R.id.progress_bar_message);
         textTitle = (DefaultTextView) findViewById(R.id.title_header);
         if (isCreditCardOnly || isBankTransferOnly || isKlikBCA || isBCAKlikpay
                 || isMandiriClickPay || isMandiriECash || isCIMBClicks || isBRIEpay
                 || isTelkomselCash || isIndosatDompetku || isXlTunai
                 || isIndomaret || isKioson || isGci) {
-            TextView titleText = (TextView) findViewById(R.id.title_header);
-            TextView loadingText = (TextView) findViewById(R.id.loading_text);
-            titleText.setText(getString(R.string.txt_checkout));
-            loadingText.setText(R.string.txt_checkout);
+            textTitle.setText(getString(R.string.txt_checkout));
+            progressMessage.setText(R.string.txt_checkout);
         }
+
+        // Init progress
+        Glide.with(this).load(R.drawable.midtrans_loader).asGif().into(progressImage);
+        progressMessage.setText(R.string.txt_loading_payment);
     }
 
     private void getPaymentPages() {
@@ -754,7 +741,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
     private void showLogo(String url) {
         if (!TextUtils.isEmpty(url)) {
-            Picasso.with(this)
+            Glide.with(this)
                     .load(url)
                     .into(logo);
             merchantName.setVisibility(View.GONE);
