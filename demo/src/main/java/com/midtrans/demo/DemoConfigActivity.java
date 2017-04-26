@@ -32,6 +32,7 @@ import com.midtrans.sdk.corekit.models.ExpiryModel;
 import com.midtrans.sdk.corekit.models.ItemDetails;
 import com.midtrans.sdk.corekit.models.UserAddress;
 import com.midtrans.sdk.corekit.models.UserDetail;
+import com.midtrans.sdk.corekit.models.snap.BankTransferRequestModel;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
 import com.midtrans.sdk.corekit.utilities.Utils;
@@ -1316,6 +1317,14 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             }
         }
         LocalDataHandler.saveObject(getString(R.string.user_details), userDetail);
+
+        transactionRequestNew.setPermataVa(
+                new BankTransferRequestModel("1234567890")
+        );
+
+        transactionRequestNew.setBcaVa(
+                new BankTransferRequestModel("12345678901")
+        );
 
         return transactionRequestNew;
     }
