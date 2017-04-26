@@ -589,7 +589,7 @@
     <string name="save_card_info">Card details above will be saved to help your future transactions.</string>
     <string name="choose_card">Choose credit card</string>
     <string name="add_new_card">pay with new card</string>
-    <string name="mandiri_bill_transfer">Mandiri Bill</string>
+    <string name="mandiri_bill_transfer">Bank Mandiri</string>
     <string name="bank_bca_transfer">Bank BCA</string>
     <string name="bank_permata_transfer">Bank Permata</string>
     <string name="bank_bni_transfer">Bank BNI</string>
