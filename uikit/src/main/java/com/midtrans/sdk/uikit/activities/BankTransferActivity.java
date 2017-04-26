@@ -552,4 +552,8 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
             Logger.e("transaction error is " + errorMessage);
         }
     }
+
+    public FancyButton getmButtonConfirmPayment() {
+        return mButtonConfirmPayment;
+    }
 }
