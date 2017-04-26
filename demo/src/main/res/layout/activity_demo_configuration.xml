@@ -197,6 +197,16 @@
                     android:layout_marginStart="@dimen/eight_dp"
                     android:gravity="center_vertical"
                     android:text="@string/bank_bri" />
+
+                <com.midtrans.demo.DemoRadioButton
+                    android:id="@+id/type_bank_cimb"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/bank_cimb" />
             </RadioGroup>
 
             <com.midtrans.demo.DemoTextView

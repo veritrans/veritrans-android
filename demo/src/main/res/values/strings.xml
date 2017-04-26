@@ -22,12 +22,14 @@
     <string name="acquiring_bank_by_bca">Acquiring Bank by BCA</string>
     <string name="acquiring_bank_by_maybank">Acquiring Bank by Maybank</string>
     <string name="acquiring_bank_by_bri">Acquiring Bank by BRI</string>
+    <string name="acquiring_bank_by_cimb">Acquiring Bank by CIMB</string>
 
     <string name="bank_bni">BNI</string>
     <string name="bank_mandiri">Mandiri</string>
     <string name="bank_bca">BCA</string>
     <string name="bank_bri">BRI</string>
     <string name="bank_maybank">Maybank</string>
+    <string name="bank_cimb">CIMB</string>
 
     <!--CUSTOM EXPIRY TITLE-->
     <string name="custom_expiry_none">No Custom Expiry</string>
