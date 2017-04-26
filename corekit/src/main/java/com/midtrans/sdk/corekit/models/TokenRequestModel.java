@@ -3,6 +3,7 @@ package com.midtrans.sdk.corekit.models;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
+import com.midtrans.sdk.corekit.models.snap.BankTransferRequestModel;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.SnapPromo;
 
@@ -27,6 +28,12 @@ public class TokenRequestModel {
 
     @SerializedName("user_id")
     private String userId;
+
+    @SerializedName("permata_va")
+    private BankTransferRequestModel permataVa;
+
+    @SerializedName("bca_va")
+    private BankTransferRequestModel bcaVa;
 
     private ExpiryModel expiry;
     private SnapPromo promo;
@@ -137,5 +144,21 @@ public class TokenRequestModel {
 
     public void setCustomField3(String customField3) {
         this.customField3 = customField3;
+    }
+
+    public BankTransferRequestModel getPermataVa() {
+        return permataVa;
+    }
+
+    public void setPermataVa(BankTransferRequestModel permataVa) {
+        this.permataVa = permataVa;
+    }
+
+    public BankTransferRequestModel getBcaVa() {
+        return bcaVa;
+    }
+
+    public void setBcaVa(BankTransferRequestModel bcaVa) {
+        this.bcaVa = bcaVa;
     }
 }

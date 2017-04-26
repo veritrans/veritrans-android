@@ -8,6 +8,7 @@ import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.ExpiryModel;
 import com.midtrans.sdk.corekit.models.ItemDetails;
 import com.midtrans.sdk.corekit.models.ShippingAddress;
+import com.midtrans.sdk.corekit.models.snap.BankTransferRequestModel;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
 
 import java.util.ArrayList;
@@ -85,6 +86,8 @@ public class TransactionRequest {
     private String customField2;
     private String customField3;
 
+    private BankTransferRequestModel permataVa;
+    private BankTransferRequestModel bcaVa;
     /**
      * @param orderId       order id of transaction.
      * @param amount        amount to charge.
@@ -262,5 +265,21 @@ public class TransactionRequest {
 
     public void setCustomField3(String customField3) {
         this.customField3 = customField3;
+    }
+
+    public BankTransferRequestModel getPermataVa() {
+        return permataVa;
+    }
+
+    public void setPermataVa(BankTransferRequestModel permataVa) {
+        this.permataVa = permataVa;
+    }
+
+    public BankTransferRequestModel getBcaVa() {
+        return bcaVa;
+    }
+
+    public void setBcaVa(BankTransferRequestModel bcaVa) {
+        this.bcaVa = bcaVa;
     }
 }
