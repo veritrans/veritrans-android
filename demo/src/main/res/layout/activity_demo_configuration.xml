@@ -304,6 +304,90 @@
             </RadioGroup>
 
             <com.midtrans.demo.DemoTextView
+                android:id="@+id/title_custom_bca_va"
+                style="@style/ConfigItemTextTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_save_card"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/ic_custom_bca_va"
+                android:paddingLeft="10dp"
+                android:text="@string/custom_bca_va_disabled" />
+
+            <RadioGroup
+                android:id="@+id/custom_bca_va_type_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/thirtytwo_dp"
+                android:paddingRight="@dimen/thirtytwo_dp"
+                android:visibility="gone">
+
+                <com.midtrans.demo.DemoRadioButton
+                    android:id="@+id/type_bca_va_disabled"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:checked="true"
+                    android:gravity="center_vertical"
+                    android:text="@string/disabled" />
+
+                <com.midtrans.demo.DemoRadioButton
+                    android:id="@+id/type_bca_va_enabled"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/enabled" />
+            </RadioGroup>
+
+            <com.midtrans.demo.DemoTextView
+                android:id="@+id/title_custom_permata_va"
+                style="@style/ConfigItemTextTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_save_card"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/ic_custom_permata_va"
+                android:paddingLeft="10dp"
+                android:text="@string/custom_permata_va_disabled" />
+
+            <RadioGroup
+                android:id="@+id/custom_permata_va_type_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/thirtytwo_dp"
+                android:paddingRight="@dimen/thirtytwo_dp"
+                android:visibility="gone">
+
+                <com.midtrans.demo.DemoRadioButton
+                    android:id="@+id/type_permata_va_disabled"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:checked="true"
+                    android:gravity="center_vertical"
+                    android:text="@string/disabled" />
+
+                <com.midtrans.demo.DemoRadioButton
+                    android:id="@+id/type_permata_va_enabled"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/enabled" />
+            </RadioGroup>
+
+            <com.midtrans.demo.DemoTextView
                 android:id="@+id/title_promo_type"
                 style="@style/ConfigItemTextTitle"
                 android:layout_width="match_parent"

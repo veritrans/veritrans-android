@@ -56,6 +56,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private static final String SAVE_CARD_TYPE = "config.save";
     private static final String PROMO_TYPE = "config.promo";
     private static final String PRE_AUTH_TYPE = "config.preauth";
+    private static final String CUSTOM_BCA_VA_NUMBER = "config.va.bca";
+    private static final String CUSTOM_PERMATA_VA_NUMBER = "config.va.permata";
     private static int DELAY = 200;
     private String selectedColor = DemoThemeConstants.BLUE_THEME;
     /**
@@ -69,6 +71,9 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private TextView promoTitle;
     private TextView preAuthTitle;
     private TextView colorThemeTitle;
+    private TextView customPermataVaTitle;
+    private TextView customBcaVaTitle;
+
     /**
      * Selection Container
      **/
@@ -80,6 +85,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private RadioGroup promoContainer;
     private RadioGroup preAuthContainer;
     private RadioGroup colorThemeContainer;
+    private RadioGroup customBcaVaContainer;
+    private RadioGroup customPermataVaContainer;
     /**
      * Radio Button Selection for Card Click
      **/
@@ -113,6 +120,16 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private AppCompatRadioButton saveCardDisabledSelection;
     private AppCompatRadioButton saveCardEnabledSelection;
     /**
+     * Radio Button Selection for Custom BCA VA
+     */
+    private AppCompatRadioButton customBcaVaEnabledSelection;
+    private AppCompatRadioButton customBcaVaDisabledSelection;
+    /**
+     * Radio Button Selection for Custom Permata VA
+     */
+    private AppCompatRadioButton customPermataVaEnabledSelection;
+    private AppCompatRadioButton customPermataVaDisabledSelection;
+    /**
      * Radio Button Selection for Promo
      **/
     private AppCompatRadioButton promoDisabledSelection;
@@ -145,6 +162,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         initIssuingBankSelection();
         initCustomExpirySelection();
         initDefaultSaveCardSelection();
+        initCustomBcaVaSelection();
+        initCustomPermataVaSelection();
         initPromoSelection();
         initPreAuthSelection();
         initTitleClicks();
@@ -167,6 +186,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         promoTitle = (TextView) findViewById(R.id.title_promo_type);
         preAuthTitle = (TextView) findViewById(R.id.title_pre_auth_type);
         colorThemeTitle = (TextView) findViewById(R.id.title_color_theme_type);
+        customPermataVaTitle = (TextView) findViewById(R.id.title_custom_permata_va);
+        customBcaVaTitle = (TextView) findViewById(R.id.title_custom_bca_va);
 
         cardClickContainer = (RadioGroup) findViewById(R.id.credit_card_type_container);
         secureContainer = (RadioGroup) findViewById(R.id.secure_type_container);
@@ -176,6 +197,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         promoContainer = (RadioGroup) findViewById(R.id.promo_type_container);
         preAuthContainer = (RadioGroup) findViewById(R.id.preauth_type_container);
         colorThemeContainer = (RadioGroup) findViewById(R.id.theme_type_container);
+        customBcaVaContainer = (RadioGroup) findViewById(R.id.custom_bca_va_type_container);
+        customPermataVaContainer = (RadioGroup) findViewById(R.id.custom_permata_va_type_container);
 
         normalSelection = (AppCompatRadioButton) findViewById(R.id.type_credit_card_normal);
         twoClicksSelection = (AppCompatRadioButton) findViewById(R.id.type_credit_card_two_clicks);
@@ -198,6 +221,12 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
 
         saveCardDisabledSelection = (AppCompatRadioButton) findViewById(R.id.type_default_save_disabled);
         saveCardEnabledSelection = (AppCompatRadioButton) findViewById(R.id.type_default_save_enabled);
+
+        customBcaVaDisabledSelection = (AppCompatRadioButton) findViewById(R.id.type_bca_va_disabled);
+        customBcaVaEnabledSelection = (AppCompatRadioButton) findViewById(R.id.type_bca_va_enabled);
+
+        customPermataVaDisabledSelection = (AppCompatRadioButton) findViewById(R.id.type_permata_va_disabled);
+        customPermataVaEnabledSelection = (AppCompatRadioButton) findViewById(R.id.type_permata_va_enabled);
 
         promoDisabledSelection = (AppCompatRadioButton) findViewById(R.id.type_promo_disabled);
         promoEnabledSelection = (AppCompatRadioButton) findViewById(R.id.type_promo_enabled);
@@ -390,6 +419,52 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                             setTextViewDrawableLeftColorFilter(colorThemeTitle);
                             // Show color theme container
                             colorThemeContainer.setVisibility(View.VISIBLE);
+                        } else {
+                            unselectAllTitles();
+                            hideAllSelections();
+                        }
+                    }
+                }, DELAY);
+            }
+        });
+
+        customBcaVaTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!customBcaVaTitle.isSelected()) {
+                            unselectAllTitles();
+                            hideAllSelections();
+                            customBcaVaTitle.setSelected(true);
+                            setTextViewSelectedColor(customBcaVaTitle);
+                            setTextViewDrawableLeftColorFilter(customBcaVaTitle);
+                            // Show color theme container
+                            customBcaVaContainer.setVisibility(View.VISIBLE);
+                        } else {
+                            unselectAllTitles();
+                            hideAllSelections();
+                        }
+                    }
+                }, DELAY);
+            }
+        });
+
+        customPermataVaTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!customPermataVaTitle.isSelected()) {
+                            unselectAllTitles();
+                            hideAllSelections();
+                            customPermataVaTitle.setSelected(true);
+                            setTextViewSelectedColor(customPermataVaTitle);
+                            setTextViewDrawableLeftColorFilter(customPermataVaTitle);
+                            // Show color theme container
+                            customPermataVaContainer.setVisibility(View.VISIBLE);
                         } else {
                             unselectAllTitles();
                             hideAllSelections();
@@ -779,6 +854,92 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         });
     }
 
+    private void initCustomBcaVaSelection() {
+        String customBcaVaNumber = DemoPreferenceHelper.getStringPreference(this, CUSTOM_BCA_VA_NUMBER);
+        if (!TextUtils.isEmpty(customBcaVaNumber)) {
+            customBcaVaTitle.setText(getString(R.string.custom_bca_va_enabled));
+            customBcaVaEnabledSelection.setChecked(true);
+            customBcaVaEnabledSelection.setText(getString(R.string.custom_va_enabled_format, customBcaVaNumber));
+        } else {
+            customBcaVaTitle.setText(getString(R.string.custom_bca_va_disabled));
+            customBcaVaDisabledSelection.setChecked(true);
+            customBcaVaEnabledSelection.setText(getString(R.string.enabled));
+        }
+
+        customBcaVaEnabledSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    final CustomBcaVaInputDialogFragment fragment = CustomBcaVaInputDialogFragment.newInstance(getSelectedColorPrimaryDark(), new CustomVaDialogListener() {
+                        @Override
+                        public void onOkClicked(String input) {
+                            customBcaVaTitle.setText(R.string.custom_bca_va_enabled);
+                            customBcaVaEnabledSelection.setText(getString(R.string.custom_va_enabled_format, input));
+                        }
+
+                        @Override
+                        public void onCancelClicked() {
+                            customBcaVaDisabledSelection.setChecked(true);
+                        }
+                    });
+                    fragment.show(getSupportFragmentManager(), "");
+                }
+            }
+        });
+
+        customBcaVaDisabledSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    customBcaVaTitle.setText(R.string.custom_bca_va_disabled);
+                }
+            }
+        });
+    }
+
+    private void initCustomPermataVaSelection() {
+        String customPermataVaNumber = DemoPreferenceHelper.getStringPreference(this, CUSTOM_PERMATA_VA_NUMBER);
+        if (!TextUtils.isEmpty(customPermataVaNumber)) {
+            customPermataVaTitle.setText(getString(R.string.custom_permata_va_enabled));
+            customPermataVaEnabledSelection.setChecked(true);
+            customPermataVaEnabledSelection.setText(getString(R.string.custom_va_enabled_format, customPermataVaNumber));
+        } else {
+            customBcaVaTitle.setText(getString(R.string.custom_permata_va_disabled));
+            customPermataVaDisabledSelection.setChecked(true);
+            customPermataVaEnabledSelection.setText(getString(R.string.enabled));
+        }
+
+        customPermataVaEnabledSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    final CustomPermataVaInputDialogFragment fragment = CustomPermataVaInputDialogFragment.newInstance(getSelectedColorPrimaryDark(), new CustomVaDialogListener() {
+                        @Override
+                        public void onOkClicked(String input) {
+                            customPermataVaTitle.setText(R.string.custom_permata_va_enabled);
+                            customPermataVaEnabledSelection.setText(getString(R.string.custom_va_enabled_format, input));
+                        }
+
+                        @Override
+                        public void onCancelClicked() {
+                            customPermataVaDisabledSelection.setChecked(true);
+                        }
+                    });
+                    fragment.show(getSupportFragmentManager(), "");
+                }
+            }
+        });
+
+        customPermataVaDisabledSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    customPermataVaTitle.setText(R.string.custom_permata_va_disabled);
+                }
+            }
+        });
+    }
+
     private void initPromoSelection() {
         boolean promoEnabled = DemoPreferenceHelper.getBooleanPreference(this, PROMO_TYPE, false);
 
@@ -848,6 +1009,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 saveIssuingBankSelection();
                 saveCustomExpirySelection();
                 saveDefaultSaveCardSelection();
+                saveBcaVaNumber();
+                savePermataVaNumber();
                 savePromoSelection();
                 savePreAuthSelection();
 
@@ -928,6 +1091,24 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         }
     }
 
+    private void saveBcaVaNumber() {
+        if (customBcaVaEnabledSelection.isChecked()) {
+            String vaNumber = customBcaVaEnabledSelection.getText().toString().split(" - ")[1];
+            DemoPreferenceHelper.setStringPreference(this, CUSTOM_BCA_VA_NUMBER, vaNumber);
+        } else {
+            DemoPreferenceHelper.setStringPreference(this, CUSTOM_BCA_VA_NUMBER, "");
+        }
+    }
+
+    private void savePermataVaNumber() {
+        if (customPermataVaEnabledSelection.isChecked()) {
+            String vaNumber = customPermataVaEnabledSelection.getText().toString().split(" - ")[1];
+            DemoPreferenceHelper.setStringPreference(this, CUSTOM_PERMATA_VA_NUMBER, vaNumber);
+        } else {
+            DemoPreferenceHelper.setStringPreference(this, CUSTOM_PERMATA_VA_NUMBER, "");
+        }
+    }
+
     private void savePromoSelection() {
         if (promoEnabledSelection.isChecked()) {
             DemoPreferenceHelper.setBooleanPreference(this, PROMO_TYPE, true);
@@ -969,6 +1150,12 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         colorThemeTitle.setSelected(false);
         colorThemeTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
         clearTextViewDrawableLeftColorFilter(colorThemeTitle);
+        customBcaVaTitle.setSelected(false);
+        customBcaVaTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
+        clearTextViewDrawableLeftColorFilter(customBcaVaTitle);
+        customPermataVaTitle.setSelected(false);
+        customPermataVaTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
+        clearTextViewDrawableLeftColorFilter(customPermataVaTitle);
     }
 
     private void hideAllSelections() {
@@ -980,6 +1167,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         promoContainer.setVisibility(View.GONE);
         preAuthContainer.setVisibility(View.GONE);
         colorThemeContainer.setVisibility(View.GONE);
+        customBcaVaContainer.setVisibility(View.GONE);
+        customPermataVaContainer.setVisibility(View.GONE);
     }
 
     private void setTextViewDrawableLeftColorFilter(TextView textView) {
@@ -1149,6 +1338,12 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
 
         saveCardDisabledSelection.setSupportButtonTintList(colorStateList);
         saveCardEnabledSelection.setSupportButtonTintList(colorStateList);
+
+        customBcaVaEnabledSelection.setSupportButtonTintList(colorStateList);
+        customBcaVaDisabledSelection.setSupportButtonTintList(colorStateList);
+
+        customPermataVaEnabledSelection.setSupportButtonTintList(colorStateList);
+        customPermataVaDisabledSelection.setSupportButtonTintList(colorStateList);
 
         promoDisabledSelection.setSupportButtonTintList(colorStateList);
         promoEnabledSelection.setSupportButtonTintList(colorStateList);
@@ -1337,15 +1532,35 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             }
         }
         LocalDataHandler.saveObject(getString(R.string.user_details), userDetail);
-
-        transactionRequestNew.setPermataVa(
-                new BankTransferRequestModel("1234567890")
-        );
-
-        transactionRequestNew.setBcaVa(
-                new BankTransferRequestModel("12345678901")
-        );
-
+        if (customPermataVaEnabledSelection.isChecked()) {
+            String vaNumber = customPermataVaEnabledSelection.getText().toString().split(" - ")[1];
+            transactionRequestNew.setPermataVa(
+                    new BankTransferRequestModel(vaNumber)
+            );
+        }
+        if (customBcaVaEnabledSelection.isChecked()) {
+            String vaNumber = customBcaVaEnabledSelection.getText().toString().split(" - ")[1];
+            transactionRequestNew.setBcaVa(
+                    new BankTransferRequestModel(vaNumber)
+            );
+        }
         return transactionRequestNew;
+    }
+
+    private int getSelectedColorPrimaryDark() {
+        switch (selectedColor) {
+            case DemoThemeConstants.BLUE_THEME:
+                return Color.parseColor(DemoThemeConstants.BLUE_PRIMARY_DARK_HEX);
+            case DemoThemeConstants.RED_THEME:
+                return Color.parseColor(DemoThemeConstants.RED_PRIMARY_DARK_HEX);
+            case DemoThemeConstants.GREEN_THEME:
+                return Color.parseColor(DemoThemeConstants.GREEN_PRIMARY_DARK_HEX);
+            case DemoThemeConstants.ORANGE_THEME:
+                return Color.parseColor(DemoThemeConstants.ORANGE_PRIMARY_DARK_HEX);
+            case DemoThemeConstants.BLACK_THEME:
+                return Color.parseColor(DemoThemeConstants.BLACK_PRIMARY_DARK_HEX);
+            default:
+                return Color.parseColor(DemoThemeConstants.BLUE_PRIMARY_DARK_HEX);
+        }
     }
 }

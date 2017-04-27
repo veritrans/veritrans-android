@@ -44,6 +44,20 @@
     <string name="default_save_card_enabled">Default Save Card Enabled</string>
     <string name="default_save_card_disabled">Default Save Card Disabled</string>
 
+    <!--CUSTOM VA-->
+    <string name="custom_permata_va_disabled">Custom Permata VA Number Disabled</string>
+    <string name="custom_permata_va_enabled">Custom Permata VA Number Enabled</string>
+    <string name="custom_bca_va_disabled">Custom BCA VA Number Disabled</string>
+    <string name="custom_bca_va_enabled">Custom BCA VA Number Enabled</string>
+    <string name="custom_va_enabled_format">Enabled - %1$s</string>
+    <string name="custom_va_enabled">Enabled</string>
+    <string name="custom_va_disabled">Disabled</string>
+    <string name="custom_bca_va_hint">Custom BCA VA Number</string>
+    <string name="custom_permata_va_error">VA Number must be 10 digits.</string>
+    <string name="custom_permata_va_hint">Custom Permata VA Number</string>
+    <string name="custom_bca_va_enable_title">Enable Custom BCA VA Number</string>
+    <string name="custom_permata_va_enable_title">Enable Custom Permata VA Number</string>
+
     <!--PROMO ENABLED TITLE-->
     <string name="default_promo_enabled">Promo Enabled</string>
     <string name="default_promo_disabled">Promo Disabled</string>
