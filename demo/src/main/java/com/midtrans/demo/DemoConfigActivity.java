@@ -15,8 +15,8 @@ import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -185,8 +185,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private AppCompatRadioButton blackThemeSelection;
 
     private FancyButton nextButton;
-    private Button editBcaVaButton;
-    private Button editPermataVaButton;
+    private ImageButton editBcaVaButton;
+    private ImageButton editPermataVaButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -297,8 +297,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         bniPointOnlyDisabledSelection = (AppCompatRadioButton) findViewById(R.id.type_bni_point_disabled);
 
         nextButton = (FancyButton) findViewById(R.id.btn_launch_app);
-        editBcaVaButton = (Button) findViewById(R.id.btn_edit_bca_va);
-        editPermataVaButton = (Button) findViewById(R.id.btn_edit_permata_va);
+        editBcaVaButton = (ImageButton) findViewById(R.id.btn_edit_bca_va);
+        editPermataVaButton = (ImageButton) findViewById(R.id.btn_edit_permata_va);
     }
 
     private void initTitleClicks() {
@@ -1064,7 +1064,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
 
                     @Override
                     public void onCancelClicked() {
-                        customBcaVaDisabledSelection.setChecked(true);
+                        // Do nothing
                     }
                 });
                 fragment.show(getSupportFragmentManager(), "");
@@ -1091,7 +1091,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
 
                     @Override
                     public void onCancelClicked() {
-                        customPermataVaDisabledSelection.setChecked(true);
+                        // Do nothing
                     }
                 });
                 fragment.show(getSupportFragmentManager(), "");
