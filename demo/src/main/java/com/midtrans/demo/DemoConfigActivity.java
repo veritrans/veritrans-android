@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.text.TextUtils;
 import android.view.View;
@@ -36,6 +37,7 @@ import com.midtrans.sdk.corekit.models.UserAddress;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.BankTransferRequestModel;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
+import com.midtrans.sdk.corekit.models.snap.Installment;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.scancard.ScanCard;
@@ -43,6 +45,8 @@ import com.midtrans.sdk.uikit.SdkUIFlowBuilder;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by rakawm on 3/15/17.
@@ -60,6 +64,10 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private static final String PRE_AUTH_TYPE = "config.preauth";
     private static final String CUSTOM_BCA_VA_NUMBER = "config.va.bca";
     private static final String CUSTOM_PERMATA_VA_NUMBER = "config.va.permata";
+    private static final String INSTALLMENT_TYPE = "config.installment";
+    private static final String INSTALLMENT_REQUIRED = "config.installment.required";
+    private static final String BNI_POINT_TYPE = "config.bni.point";
+
     private static int DELAY = 200;
     private String selectedColor = DemoThemeConstants.BLUE_THEME;
     /**
@@ -76,6 +84,9 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private TextView customPermataVaTitle;
     private TextView customBcaVaTitle;
 
+    private TextView installmentTitle;
+    private TextView bniPointTitle;
+
     /**
      * Selection Container
      **/
@@ -89,12 +100,35 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private RadioGroup colorThemeContainer;
     private LinearLayout customBcaVaContainer;
     private LinearLayout customPermataVaContainer;
+    private RadioGroup installmentContainer;
+    private RadioGroup bniPointContainer;
+
+
+    /**
+     * Radio Button selection for installment
+     */
+    private AppCompatRadioButton installmentBniSelection;
+    private AppCompatRadioButton installmentMandiriSelection;
+    private AppCompatRadioButton installmentBcaSelection;
+    private AppCompatRadioButton instalmmentOfflineSelection;
+    private AppCompatRadioButton noInstallmentSelection;
+
+    private AppCompatCheckBox installmentRequiredCheckbox;
+
+
+    /**
+     * Radio Button selection for BNI Point
+     */
+    private AppCompatRadioButton bniPointOnlyEnabledSelection;
+    private AppCompatRadioButton bniPointOnlyDisabledSelection;
+
     /**
      * Radio Button Selection for Card Click
      **/
     private AppCompatRadioButton normalSelection;
     private AppCompatRadioButton twoClicksSelection;
     private AppCompatRadioButton oneClickSelection;
+
     /**
      * Radio Button Selection for Secure
      **/
@@ -170,6 +204,9 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         initCustomPermataVaSelection();
         initPromoSelection();
         initPreAuthSelection();
+        initInstallmentSelection();
+        initBniPointSelection();
+        initInstallmentRequired();
         initTitleClicks();
         initNextButton();
     }
@@ -192,6 +229,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         colorThemeTitle = (TextView) findViewById(R.id.title_color_theme_type);
         customPermataVaTitle = (TextView) findViewById(R.id.title_custom_permata_va);
         customBcaVaTitle = (TextView) findViewById(R.id.title_custom_bca_va);
+        installmentTitle = (TextView) findViewById(R.id.title_installment_type);
+        bniPointTitle = (TextView) findViewById(R.id.title_bni_point_type);
 
         cardClickContainer = (RadioGroup) findViewById(R.id.credit_card_type_container);
         secureContainer = (RadioGroup) findViewById(R.id.secure_type_container);
@@ -203,6 +242,16 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         colorThemeContainer = (RadioGroup) findViewById(R.id.theme_type_container);
         customBcaVaContainer = (LinearLayout) findViewById(R.id.custom_bca_va_type_container);
         customPermataVaContainer = (LinearLayout) findViewById(R.id.custom_permata_va_type_container);
+        installmentContainer = (RadioGroup) findViewById(R.id.enable_installment_container);
+        bniPointContainer = (RadioGroup) findViewById(R.id.bni_point_type_container);
+
+        installmentBniSelection = (AppCompatRadioButton) findViewById(R.id.installment_type_bni);
+        installmentMandiriSelection = (AppCompatRadioButton) findViewById(R.id.installment_type_mandiri);
+        installmentBcaSelection = (AppCompatRadioButton) findViewById(R.id.installment_type_bca);
+        instalmmentOfflineSelection = (AppCompatRadioButton) findViewById(R.id.installment_type_offline);
+        noInstallmentSelection = (AppCompatRadioButton) findViewById(R.id.no_installment);
+
+        installmentRequiredCheckbox = (AppCompatCheckBox) findViewById(R.id.installment_required);
 
         normalSelection = (AppCompatRadioButton) findViewById(R.id.type_credit_card_normal);
         twoClicksSelection = (AppCompatRadioButton) findViewById(R.id.type_credit_card_two_clicks);
@@ -243,6 +292,9 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         greenThemeSelection = (AppCompatRadioButton) findViewById(R.id.type_theme_green);
         orangeThemeSelection = (AppCompatRadioButton) findViewById(R.id.type_theme_orange);
         blackThemeSelection = (AppCompatRadioButton) findViewById(R.id.type_theme_black);
+
+        bniPointOnlyEnabledSelection = (AppCompatRadioButton) findViewById(R.id.type_bni_point_enabled);
+        bniPointOnlyDisabledSelection = (AppCompatRadioButton) findViewById(R.id.type_bni_point_disabled);
 
         nextButton = (FancyButton) findViewById(R.id.btn_launch_app);
         editBcaVaButton = (Button) findViewById(R.id.btn_edit_bca_va);
@@ -471,6 +523,52 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                             setTextViewDrawableLeftColorFilter(customPermataVaTitle);
                             // Show color theme container
                             customPermataVaContainer.setVisibility(View.VISIBLE);
+                        } else {
+                            unselectAllTitles();
+                            hideAllSelections();
+                        }
+                    }
+                }, DELAY);
+            }
+        });
+
+        installmentTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!installmentTitle.isSelected()) {
+                            unselectAllTitles();
+                            hideAllSelections();
+                            installmentTitle.setSelected(true);
+                            setTextViewSelectedColor(installmentTitle);
+                            setTextViewDrawableLeftColorFilter(installmentTitle);
+                            // Show pre auth container
+                            installmentContainer.setVisibility(View.VISIBLE);
+                        } else {
+                            unselectAllTitles();
+                            hideAllSelections();
+                        }
+                    }
+                }, DELAY);
+            }
+        });
+
+        bniPointTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!bniPointTitle.isSelected()) {
+                            unselectAllTitles();
+                            hideAllSelections();
+                            bniPointTitle.setSelected(true);
+                            setTextViewSelectedColor(bniPointTitle);
+                            setTextViewDrawableLeftColorFilter(bniPointTitle);
+                            // Show pre auth container
+                            bniPointContainer.setVisibility(View.VISIBLE);
                         } else {
                             unselectAllTitles();
                             hideAllSelections();
@@ -1065,6 +1163,164 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         });
     }
 
+    private void initInstallmentSelection() {
+        String installmentType = DemoPreferenceHelper.getStringPreference(this, INSTALLMENT_TYPE);
+
+        if (installmentType != null && !TextUtils.isEmpty(installmentType)) {
+            switch (installmentType) {
+                case Constants.INSTALLMENT_BNI:
+                    installmentTitle.setText(R.string.using_bni_installment);
+                    installmentBniSelection.setChecked(true);
+                    showInstallmentCheckbox();
+                    resetBniPointSelection();
+                    break;
+                case Constants.INSTALLMENT_MANDIRI:
+                    installmentTitle.setText(R.string.using_mandiri_installment);
+                    installmentMandiriSelection.setChecked(true);
+                    showInstallmentCheckbox();
+                    resetBniPointSelection();
+                    break;
+                case Constants.INSTALLMENT_BCA:
+                    installmentTitle.setText(R.string.using_bca_installment);
+                    installmentMandiriSelection.setChecked(true);
+                    showInstallmentCheckbox();
+                    resetBniPointSelection();
+                    break;
+                case Constants.INSTALLMENT_OFFLINE:
+                    installmentTitle.setText(R.string.using_offline_installment);
+                    instalmmentOfflineSelection.setChecked(true);
+                    showInstallmentCheckbox();
+                    resetBniPointSelection();
+                    break;
+                default:
+                    installmentTitle.setText(R.string.no_installment);
+                    noInstallmentSelection.setChecked(true);
+                    hideInstallmentCheckox();
+                    break;
+            }
+        } else {
+            installmentTitle.setText(R.string.no_installment);
+            noInstallmentSelection.setChecked(true);
+            hideInstallmentCheckox();
+        }
+
+        noInstallmentSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    installmentTitle.setText(R.string.no_installment);
+                    noInstallmentSelection.setChecked(true);
+                    hideInstallmentCheckox();
+                }
+            }
+        });
+
+        installmentBniSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    installmentTitle.setText(R.string.using_bni_installment);
+                    installmentBniSelection.setChecked(true);
+                    showInstallmentCheckbox();
+                    resetBniPointSelection();
+                }
+            }
+        });
+
+        installmentMandiriSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    installmentTitle.setText(R.string.using_mandiri_installment);
+                    installmentMandiriSelection.setChecked(true);
+                    showInstallmentCheckbox();
+                    resetBniPointSelection();
+                }
+            }
+        });
+
+        installmentBcaSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    installmentTitle.setText(R.string.using_bca_installment);
+                    installmentBcaSelection.setChecked(true);
+                    showInstallmentCheckbox();
+                    resetBniPointSelection();
+                }
+            }
+        });
+
+        instalmmentOfflineSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    installmentTitle.setText(R.string.using_offline_installment);
+                    instalmmentOfflineSelection.setChecked(true);
+                    showInstallmentCheckbox();
+                    resetBniPointSelection();
+                }
+            }
+        });
+    }
+
+    private void resetBniPointSelection() {
+        bniPointOnlyDisabledSelection.setChecked(true);
+    }
+
+    private void hideInstallmentCheckox() {
+        installmentRequiredCheckbox.setChecked(false);
+        installmentRequiredCheckbox.setVisibility(View.GONE);
+    }
+
+    private void showInstallmentCheckbox() {
+        installmentRequiredCheckbox.setVisibility(View.VISIBLE);
+    }
+
+    private void initInstallmentRequired() {
+        boolean installmentRequired = DemoPreferenceHelper.getBooleanPreference(this, INSTALLMENT_REQUIRED, false);
+        if (installmentRequired) {
+            installmentRequiredCheckbox.setChecked(true);
+        } else {
+            installmentRequiredCheckbox.setChecked(false);
+        }
+    }
+
+    private void initBniPointSelection() {
+        final boolean bniPointEnabled = DemoPreferenceHelper.getBooleanPreference(this, BNI_POINT_TYPE, false);
+        if (bniPointEnabled) {
+            bniPointTitle.setText(R.string.bni_point_only_enabled);
+            bniPointOnlyEnabledSelection.setChecked(true);
+            resetInstallmentSelection();
+        } else {
+            bniPointTitle.setText(R.string.bni_point_only_disabled);
+            bniPointOnlyDisabledSelection.setChecked(true);
+        }
+
+        bniPointOnlyEnabledSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    bniPointTitle.setText(R.string.bni_point_only_enabled);
+                    resetInstallmentSelection();
+                }
+            }
+        });
+
+        bniPointOnlyDisabledSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    bniPointTitle.setText(R.string.bni_point_only_disabled);
+                }
+            }
+        });
+    }
+
+    private void resetInstallmentSelection() {
+        noInstallmentSelection.setChecked(true);
+    }
+
     private void initNextButton() {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1079,6 +1335,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 savePermataVaNumber();
                 savePromoSelection();
                 savePreAuthSelection();
+                saveInstallmentSelection();
+                saveBniPointSelection();
 
                 TransactionRequest transactionRequest = initializePurchaseRequest();
                 MidtransSDK.getInstance().setTransactionRequest(transactionRequest);
@@ -1191,6 +1449,28 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         }
     }
 
+    private void saveInstallmentSelection() {
+        if (installmentBniSelection.isChecked()) {
+            DemoPreferenceHelper.setStringPreference(this, INSTALLMENT_TYPE, Constants.INSTALLMENT_BNI);
+        } else if (bankMandiriSelection.isChecked()) {
+            DemoPreferenceHelper.setStringPreference(this, INSTALLMENT_TYPE, Constants.INSTALLMENT_MANDIRI);
+        } else if (bankBcaSelection.isChecked()) {
+            DemoPreferenceHelper.setStringPreference(this, INSTALLMENT_TYPE, Constants.INSTALLMENT_BCA);
+        } else if (bankMaybankSelection.isChecked()) {
+            DemoPreferenceHelper.setStringPreference(this, INSTALLMENT_TYPE, Constants.INSTALLMENT_OFFLINE);
+        } else {
+            DemoPreferenceHelper.setStringPreference(this, INSTALLMENT_TYPE, Constants.INSTALLMENT_OFFLINE);
+        }
+    }
+
+    private void saveBniPointSelection() {
+        if (bniPointOnlyEnabledSelection.isChecked()) {
+            DemoPreferenceHelper.setBooleanPreference(this, BNI_POINT_TYPE, true);
+        } else {
+            DemoPreferenceHelper.setBooleanPreference(this, BNI_POINT_TYPE, false);
+        }
+    }
+
     private void unselectAllTitles() {
         cardClickTitle.setSelected(false);
         cardClickTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
@@ -1222,6 +1502,12 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         customPermataVaTitle.setSelected(false);
         customPermataVaTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
         clearTextViewDrawableLeftColorFilter(customPermataVaTitle);
+        installmentTitle.setSelected(false);
+        installmentTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
+        clearTextViewDrawableLeftColorFilter(installmentTitle);
+        bniPointTitle.setSelected(false);
+        bniPointTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
+        clearTextViewDrawableLeftColorFilter(bniPointTitle);
     }
 
     private void hideAllSelections() {
@@ -1235,6 +1521,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         colorThemeContainer.setVisibility(View.GONE);
         customBcaVaContainer.setVisibility(View.GONE);
         customPermataVaContainer.setVisibility(View.GONE);
+        installmentContainer.setVisibility(View.GONE);
+        bniPointContainer.setVisibility(View.GONE);
     }
 
     private void setTextViewDrawableLeftColorFilter(TextView textView) {
@@ -1422,6 +1710,17 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         greenThemeSelection.setSupportButtonTintList(colorStateList);
         orangeThemeSelection.setSupportButtonTintList(colorStateList);
         blackThemeSelection.setSupportButtonTintList(colorStateList);
+
+        installmentBniSelection.setSupportButtonTintList(colorStateList);
+        installmentMandiriSelection.setSupportButtonTintList(colorStateList);
+        installmentBcaSelection.setSupportButtonTintList(colorStateList);
+        instalmmentOfflineSelection.setSupportButtonTintList(colorStateList);
+        noInstallmentSelection.setSupportButtonTintList(colorStateList);
+        installmentRequiredCheckbox.setSupportButtonTintList(colorStateList);
+
+        bniPointOnlyEnabledSelection.setSupportButtonTintList(colorStateList);
+        bniPointOnlyDisabledSelection.setSupportButtonTintList(colorStateList);
+
     }
 
     private void initMidtransSDK() {
@@ -1490,6 +1789,14 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         // Create credit card options for payment
         // noted : channel migs is needed if bank type is BCA, BRI or MyBank
         CreditCard creditCard = new CreditCard();
+
+        // set installment option on creditcard
+        setInstallmentOption(creditCard);
+
+        // set creditcard payment by BNI only
+        setBniPointOption(creditCard);
+
+        // set bank and channel on creditcard
         if (bankMandiriSelection.isChecked()) {
             // Set bank to Mandiri
             creditCard.setBank(BankType.MANDIRI);
@@ -1556,9 +1863,11 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             transactionRequestNew.setCardPaymentInfo(cardClickType, false);
         }
 
+        // set expiry time
         ExpiryModel expiryModel = new ExpiryModel();
         expiryModel.setStartTime(Utils.getFormattedTime(System.currentTimeMillis()));
         expiryModel.setDuration(1);
+
         if (expiryOneMinuteSelection.isChecked()) {
             expiryModel.setUnit(ExpiryModel.UNIT_MINUTE);
             transactionRequestNew.setExpiry(expiryModel);
@@ -1628,5 +1937,53 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             default:
                 return Color.parseColor(DemoThemeConstants.BLUE_PRIMARY_DARK_HEX);
         }
+    }
+
+    private void setBniPointOption(CreditCard creditCard) {
+        if (bniPointOnlyEnabledSelection.isChecked()) {
+            ArrayList<String> whiteListBins = new ArrayList<>();
+            //add bni bin number for normal payment and 3DS
+            whiteListBins.add("410505");
+            creditCard.setWhiteListBins(whiteListBins);
+        }
+    }
+
+    private void setInstallmentOption(CreditCard creditCard) {
+        Installment installment = new Installment();
+
+        Map<String, ArrayList<Integer>> bankTerms = new HashMap<>();
+
+        if (instalmmentOfflineSelection.isChecked()) {
+            setInstallmentBankTerm(bankTerms, Constants.INSTALLMENT_BANK_OFFLINE);
+        } else if (installmentBniSelection.isChecked()) {
+            setInstallmentBankTerm(bankTerms, Constants.INSTALLMENT_BANK_BNI);
+        } else if (installmentMandiriSelection.isChecked()) {
+            setInstallmentBankTerm(bankTerms, Constants.INSTALLMENT_BANK_MANDIRI);
+        } else if (installmentBcaSelection.isChecked()) {
+            setInstallmentBankTerm(bankTerms, Constants.INSTALLMENT__BANK_BCA);
+        } else {
+            installment = null;
+        }
+        if (installment != null) {
+            installment.setTerms(bankTerms);
+
+            if (installmentRequiredCheckbox.isChecked()) {
+                installment.setRequired(true);
+            } else {
+                installment.setRequired(false);
+            }
+        }
+
+
+        creditCard.setInstallment(installment);
+    }
+
+    private void setInstallmentBankTerm(Map<String, ArrayList<Integer>> bankTerms, String bank) {
+        //set term installment
+        ArrayList<Integer> term = new ArrayList<>();
+        term.add(6);
+        term.add(12);
+        //set bank and term
+        bankTerms.put(bank, term);
     }
 }
