@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -219,7 +220,7 @@ public class SavedCardListFragment extends Fragment {
     }
 
     private void deleteCardFromTokenStorage(final SaveCardRequest saveCardRequest) {
-        SdkUIFlowUtil.showProgressDialog(getActivity(), getString(R.string.processing_delete), false);
+        SdkUIFlowUtil.showProgressDialog((AppCompatActivity) getActivity(), getString(R.string.processing_delete), false);
         final MidtransSDK midtransSDK = MidtransSDK.getInstance();
         midtransSDK.deleteCard(midtransSDK.readAuthenticationToken(), saveCardRequest.getMaskedCard(), new DeleteCardCallback() {
             @Override
@@ -254,7 +255,7 @@ public class SavedCardListFragment extends Fragment {
     }
 
     private void deleteCardFromMerchantServer(final String maskedCard, final ArrayList<SaveCardRequest> saveCardRequests) {
-        SdkUIFlowUtil.showProgressDialog(getActivity(), getString(R.string.processing_delete), false);
+        SdkUIFlowUtil.showProgressDialog((AppCompatActivity) getActivity(), getString(R.string.processing_delete), false);
         MidtransSDK midtransSDK = MidtransSDK.getInstance();
         UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
         midtransSDK.saveCards(userDetail.getUserId(), saveCardRequests, new SaveCardCallback() {

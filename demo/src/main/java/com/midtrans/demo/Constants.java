@@ -15,6 +15,7 @@ public class Constants {
     public static final String BANK_BCA = "bank.bca";
     public static final String BANK_MAYBANK = "bank.maybank";
     public static final String BANK_BRI = "bank.bri";
+    public static final String BANK_CIMB = "bank.cimb";
 
     public static final String EXPIRY_NONE = "expiry.none";
     public static final String EXPIRY_MINUTE = "expiry.minute";
