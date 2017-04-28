@@ -169,7 +169,11 @@
     <string name="copied_to_clipboard">Copied to clipboard</string>
     <string name="copied_bill_code">Billpay code was copied to clipboard</string>
     <string name="copied_company_code">Company code was copied to clipboard</string>
-    <string name="complete_payment_at_atm">Complete Payment At ATM</string>
+    <string name="complete_payment_at_atm">Complete Payment at ATM</string>
+    <string name="complete_payment_at_mobile_bca">Complete Payment via m-BCA</string>
+    <string name="complete_payment_at_klik_bca_va">Complete Payment via KlikBCA</string>
+    <string name="complete_payment_via_internet_banking">Complete Payment via Internet Banking</string>
+    <string name="complete_payment_va_bni_mobile">Complete Payment via BNI Mobile</string>
     <string name="complete_payment">Complete Payment</string>
     <string name="complete_payment_at_klik_bca">Finish</string>
     <string name="done">Finish</string>
@@ -743,5 +747,6 @@
     <string name="error_gross_amount_required">Gross amount is required</string>
     <string name="error_order_id_required">Order id is required</string>
     <string name="checkout_error_empty_response">Empty response from server</string>
+    <string name="complete_payment_via_xl_tunai">Complete Payment via XL Tunai</string>
 
 </resources>

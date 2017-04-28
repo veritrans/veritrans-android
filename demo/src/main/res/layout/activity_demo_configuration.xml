@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -197,6 +198,16 @@
                     android:layout_marginStart="@dimen/eight_dp"
                     android:gravity="center_vertical"
                     android:text="@string/bank_bri" />
+
+                <com.midtrans.demo.DemoRadioButton
+                    android:id="@+id/type_bank_cimb"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/bank_cimb" />
             </RadioGroup>
 
             <com.midtrans.demo.DemoTextView
@@ -292,6 +303,171 @@
                     android:gravity="center_vertical"
                     android:text="@string/enabled" />
             </RadioGroup>
+
+            <com.midtrans.demo.DemoTextView
+                android:id="@+id/title_custom_bca_va"
+                style="@style/ConfigItemTextTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_save_card"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/ic_custom_bca_va"
+                android:paddingLeft="10dp"
+                android:text="@string/custom_bca_va_disabled" />
+
+            <LinearLayout
+                android:id="@+id/custom_bca_va_type_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <RadioGroup
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.75"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/thirtytwo_dp"
+                    android:paddingRight="@dimen/thirtytwo_dp">
+
+                    <com.midtrans.demo.DemoRadioButton
+                        android:id="@+id/type_bca_va_disabled"
+                        style="@style/CustomRadioButtonStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/eight_dp"
+                        android:layout_marginStart="@dimen/eight_dp"
+                        android:checked="true"
+                        android:gravity="center_vertical"
+                        android:text="@string/disabled" />
+
+                    <com.midtrans.demo.DemoRadioButton
+                        android:id="@+id/type_bca_va_enabled"
+                        style="@style/CustomRadioButtonStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/eight_dp"
+                        android:layout_marginStart="@dimen/eight_dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/enabled" />
+                </RadioGroup>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.15"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/btn_edit_bca_va_disabled"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="30dp"
+                        android:minWidth="12dp"
+                        android:text="@string/custom_va_edit_button"
+                        android:textAllCaps="false"
+                        android:textColor="@color/gray.primary_dark"
+                        android:textSize="12sp"
+                        android:visibility="invisible" />
+
+                    <Button
+                        android:id="@+id/btn_edit_bca_va"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="30dp"
+                        android:minWidth="12dp"
+                        android:text="@string/custom_va_edit_button"
+                        android:textAllCaps="false"
+                        android:textColor="@color/gray.primary_dark"
+                        android:textSize="12sp"
+                        android:visibility="invisible" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <com.midtrans.demo.DemoTextView
+                android:id="@+id/title_custom_permata_va"
+                style="@style/ConfigItemTextTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_save_card"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/ic_custom_permata_va"
+                android:paddingLeft="10dp"
+                android:text="@string/custom_permata_va_disabled" />
+
+            <LinearLayout
+                android:id="@+id/custom_permata_va_type_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                tools:visibility="gone">
+
+                <RadioGroup
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.75"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/thirtytwo_dp"
+                    android:paddingRight="@dimen/thirtytwo_dp">
+
+                    <com.midtrans.demo.DemoRadioButton
+                        android:id="@+id/type_permata_va_disabled"
+                        style="@style/CustomRadioButtonStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/eight_dp"
+                        android:layout_marginStart="@dimen/eight_dp"
+                        android:checked="true"
+                        android:gravity="center_vertical"
+                        android:text="@string/disabled" />
+
+                    <com.midtrans.demo.DemoRadioButton
+                        android:id="@+id/type_permata_va_enabled"
+                        style="@style/CustomRadioButtonStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/eight_dp"
+                        android:layout_marginStart="@dimen/eight_dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/enabled" />
+                </RadioGroup>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.15"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/btn_edit_permata_va_disabled"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="30dp"
+                        android:minWidth="12dp"
+                        android:text="@string/custom_va_edit_button"
+                        android:textAllCaps="false"
+                        android:textColor="@color/gray.primary_dark"
+                        android:textSize="12sp"
+                        android:visibility="invisible" />
+
+                    <Button
+                        android:id="@+id/btn_edit_permata_va"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="30dp"
+                        android:minWidth="12dp"
+                        android:text="@string/custom_va_edit_button"
+                        android:textAllCaps="false"
+                        android:textColor="@color/gray.primary_dark"
+                        android:textSize="12sp"
+                        android:visibility="invisible" />
+                </LinearLayout>
+            </LinearLayout>
 
             <com.midtrans.demo.DemoTextView
                 android:id="@+id/title_promo_type"
