@@ -399,12 +399,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:visibility="gone">
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <RadioGroup
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.75"
+                    android:layout_weight="0.85"
                     android:orientation="vertical"
                     android:paddingLeft="@dimen/thirtytwo_dp"
                     android:paddingRight="@dimen/thirtytwo_dp">
@@ -434,34 +435,29 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.15"
+                    android:layout_weight="0.1"
                     android:orientation="vertical">
 
-                    <Button
+                    <ImageButton
                         android:id="@+id/btn_edit_bca_va_disabled"
-                        style="@style/Widget.AppCompat.Button.Borderless"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:background="?selectableItemBackground"
                         android:minHeight="30dp"
                         android:minWidth="12dp"
-                        android:text="@string/custom_va_edit_button"
-                        android:textAllCaps="false"
-                        android:textColor="@color/gray.primary_dark"
-                        android:textSize="12sp"
+                        android:src="@drawable/ic_edit_icon"
                         android:visibility="invisible" />
 
-                    <Button
+                    <ImageButton
                         android:id="@+id/btn_edit_bca_va"
-                        style="@style/Widget.AppCompat.Button.Borderless"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:background="?selectableItemBackground"
                         android:minHeight="30dp"
                         android:minWidth="12dp"
-                        android:text="@string/custom_va_edit_button"
-                        android:textAllCaps="false"
-                        android:textColor="@color/gray.primary_dark"
-                        android:textSize="12sp"
-                        android:visibility="invisible" />
+                        android:src="@drawable/ic_edit_icon"
+                        android:visibility="invisible"
+                        tools:visibility="visible" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -482,12 +478,12 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:visibility="gone"
-                tools:visibility="gone">
+                tools:visibility="visible">
 
                 <RadioGroup
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.75"
+                    android:layout_weight="0.85"
                     android:orientation="vertical"
                     android:paddingLeft="@dimen/thirtytwo_dp"
                     android:paddingRight="@dimen/thirtytwo_dp">
@@ -517,34 +513,29 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.15"
+                    android:layout_weight="0.1"
                     android:orientation="vertical">
 
-                    <Button
+                    <ImageButton
                         android:id="@+id/btn_edit_permata_va_disabled"
-                        style="@style/Widget.AppCompat.Button.Borderless"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:background="?selectableItemBackground"
                         android:minHeight="30dp"
                         android:minWidth="12dp"
-                        android:text="@string/custom_va_edit_button"
-                        android:textAllCaps="false"
-                        android:textColor="@color/gray.primary_dark"
-                        android:textSize="12sp"
+                        android:src="@drawable/ic_edit_icon"
                         android:visibility="invisible" />
 
-                    <Button
+                    <ImageButton
                         android:id="@+id/btn_edit_permata_va"
-                        style="@style/Widget.AppCompat.Button.Borderless"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:background="?selectableItemBackground"
                         android:minHeight="30dp"
                         android:minWidth="12dp"
-                        android:text="@string/custom_va_edit_button"
-                        android:textAllCaps="false"
-                        android:textColor="@color/gray.primary_dark"
-                        android:textSize="12sp"
-                        android:visibility="invisible" />
+                        android:src="@drawable/ic_edit_icon"
+                        android:visibility="invisible"
+                        tools:visibility="visible" />
                 </LinearLayout>
             </LinearLayout>
 
