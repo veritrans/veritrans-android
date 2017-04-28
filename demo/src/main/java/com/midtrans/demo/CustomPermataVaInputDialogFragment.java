@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +18,11 @@ import android.widget.EditText;
 
 public class CustomPermataVaInputDialogFragment extends DialogFragment {
 
+    private static final String ARG_NUMBER = "arg.number";
     private static final String ARG_LISTENER = "arg.listener";
     private static final String ARG_COLOR = "arg.color";
+
+    private String number;
     private int color;
     private CustomVaDialogListener listener;
     private EditText customVAField;
@@ -35,6 +39,16 @@ public class CustomPermataVaInputDialogFragment extends DialogFragment {
         return fragment;
     }
 
+    public static CustomPermataVaInputDialogFragment newInstance(String number, int color, CustomVaDialogListener listener) {
+        CustomPermataVaInputDialogFragment fragment = new CustomPermataVaInputDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ARG_LISTENER, listener);
+        bundle.putInt(ARG_COLOR, color);
+        bundle.putString(ARG_NUMBER, number);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -45,8 +59,8 @@ public class CustomPermataVaInputDialogFragment extends DialogFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initExtras();
         initViews(view);
+        initExtras();
         initThemes();
         initButtons();
     }
@@ -68,6 +82,10 @@ public class CustomPermataVaInputDialogFragment extends DialogFragment {
     private void initExtras() {
         this.listener = (CustomVaDialogListener) getArguments().getSerializable(ARG_LISTENER);
         this.color = getArguments().getInt(ARG_COLOR);
+        if (!TextUtils.isEmpty(getArguments().getString(ARG_NUMBER))) {
+            this.number = getArguments().getString(ARG_NUMBER);
+            initNumber(number);
+        }
     }
 
     private void initButtons() {
@@ -100,5 +118,9 @@ public class CustomPermataVaInputDialogFragment extends DialogFragment {
     private boolean isInputValid() {
         String customVaNumber = customVAField.getText().toString();
         return customVaNumber.length() == 10;
+    }
+
+    private void initNumber(String number) {
+        customVAField.setText(number);
     }
 }

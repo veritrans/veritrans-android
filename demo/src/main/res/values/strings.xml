@@ -57,7 +57,7 @@
     <string name="custom_permata_va_hint">Custom Permata VA Number</string>
     <string name="custom_bca_va_enable_title">Enable Custom BCA VA Number</string>
     <string name="custom_permata_va_enable_title">Enable Custom Permata VA Number</string>
-
+    <string name="custom_va_edit_button">Edit</string>
     <!--PROMO ENABLED TITLE-->
     <string name="default_promo_enabled">Promo Enabled</string>
     <string name="default_promo_disabled">Promo Disabled</string>

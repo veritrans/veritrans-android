@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,9 @@ public class CustomBcaVaInputDialogFragment extends DialogFragment {
 
     private static final String ARG_LISTENER = "arg.listener";
     private static final String ARG_COLOR = "arg.color";
+    private static final String ARG_NUMBER = "arg.number";
 
+    private String number;
     private int color;
     private CustomVaDialogListener listener;
     private EditText customVAField;
@@ -36,6 +39,16 @@ public class CustomBcaVaInputDialogFragment extends DialogFragment {
         return fragment;
     }
 
+    public static CustomBcaVaInputDialogFragment newInstance(String number, int color, CustomVaDialogListener listener) {
+        CustomBcaVaInputDialogFragment fragment = new CustomBcaVaInputDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ARG_LISTENER, listener);
+        bundle.putInt(ARG_COLOR, color);
+        bundle.putString(ARG_NUMBER, number);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -46,8 +59,8 @@ public class CustomBcaVaInputDialogFragment extends DialogFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initExtras();
         initViews(view);
+        initExtras();
         initThemes();
         initButtons();
     }
@@ -69,6 +82,10 @@ public class CustomBcaVaInputDialogFragment extends DialogFragment {
     private void initExtras() {
         this.listener = (CustomVaDialogListener) getArguments().getSerializable(ARG_LISTENER);
         this.color = getArguments().getInt(ARG_COLOR);
+        if (!TextUtils.isEmpty(getArguments().getString(ARG_NUMBER))) {
+            this.number = getArguments().getString(ARG_NUMBER);
+            initNumber(number);
+        }
     }
 
     private void initButtons() {
@@ -91,5 +108,9 @@ public class CustomBcaVaInputDialogFragment extends DialogFragment {
                 }
             }
         });
+    }
+
+    private void initNumber(String number) {
+        customVAField.setText(number);
     }
 }
