@@ -113,7 +113,7 @@ public class SelectPaymentMethodDialogFragment extends DialogFragment {
     }
 
     private void setAdapterData(List<EnabledPayment> enabledPayments) {
-        adapter.setPaymentMethodViewModels(mapPaymentMethods(enabledPayments));
+        adapter.setPaymentMethodViewModels(filterPaymentMethods(getDefaultMethods(), enabledPayments));
     }
 
     private List<SelectPaymentMethodViewModel> mapPaymentMethods(List<EnabledPayment> enabledPayments) {
@@ -121,10 +121,37 @@ public class SelectPaymentMethodDialogFragment extends DialogFragment {
         for (int i = 0; i < enabledPayments.size(); i++) {
             EnabledPayment enabledPayment = enabledPayments.get(i);
             PaymentMethodsModel model = PaymentMethods.getMethods(getContext(), enabledPayment.getType());
-            viewModels.add(new SelectPaymentMethodViewModel(model.getName(), enabledPayment.getType(), true));
+            if (model != null) {
+                viewModels.add(new SelectPaymentMethodViewModel(model.getName(), enabledPayment.getType(), true));
+            }
         }
         return viewModels;
     }
+
+    private List<SelectPaymentMethodViewModel> getDefaultMethods() {
+        List<EnabledPayment> enabledPayments = PaymentMethods.getDefaultPaymentList(getContext());
+        List<SelectPaymentMethodViewModel> viewModels = new ArrayList<>();
+        for (int i = 0; i < enabledPayments.size(); i++) {
+            EnabledPayment enabledPayment = enabledPayments.get(i);
+            PaymentMethodsModel model = PaymentMethods.getMethods(getContext(), enabledPayment.getType());
+            if (model != null) {
+                viewModels.add(new SelectPaymentMethodViewModel(model.getName(), enabledPayment.getType(), false));
+            }
+        }
+        return viewModels;
+    }
+
+    private List<SelectPaymentMethodViewModel> filterPaymentMethods(List<SelectPaymentMethodViewModel> defaultMethods, List<EnabledPayment> enabledPayments) {
+        for (SelectPaymentMethodViewModel model : defaultMethods) {
+            for (EnabledPayment enabledPayment : enabledPayments) {
+                if (model.getMethodType().equals(enabledPayment.getType())) {
+                    model.setSelected(true);
+                }
+            }
+        }
+        return defaultMethods;
+    }
+
 
     private void initButtons() {
         okButton.setOnClickListener(new View.OnClickListener() {

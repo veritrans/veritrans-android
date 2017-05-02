@@ -108,7 +108,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private LinearLayout customPermataVaContainer;
     private RadioGroup installmentContainer;
     private RadioGroup bniPointContainer;
-    private RadioGroup paymentChannelsContainer;
+    private LinearLayout paymentChannelsContainer;
 
     /**
      * Radio Button selection for installment
@@ -194,6 +194,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private FancyButton nextButton;
     private ImageButton editBcaVaButton;
     private ImageButton editPermataVaButton;
+    private ImageButton editPaymentChannels;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -253,7 +254,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         customPermataVaContainer = (LinearLayout) findViewById(R.id.custom_permata_va_type_container);
         installmentContainer = (RadioGroup) findViewById(R.id.enable_installment_container);
         bniPointContainer = (RadioGroup) findViewById(R.id.bni_point_type_container);
-        paymentChannelsContainer = (RadioGroup) findViewById(R.id.payment_channels_type_container);
+        paymentChannelsContainer = (LinearLayout) findViewById(R.id.payment_channels_type_container);
 
         installmentBniSelection = (AppCompatRadioButton) findViewById(R.id.installment_type_bni);
         installmentMandiriSelection = (AppCompatRadioButton) findViewById(R.id.installment_type_mandiri);
@@ -312,6 +313,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         nextButton = (FancyButton) findViewById(R.id.btn_launch_app);
         editBcaVaButton = (ImageButton) findViewById(R.id.btn_edit_bca_va);
         editPermataVaButton = (ImageButton) findViewById(R.id.btn_edit_permata_va);
+        editPaymentChannels = (ImageButton) findViewById(R.id.btn_edit_payment_method);
     }
 
     private void initTitleClicks() {
@@ -1001,12 +1003,18 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 && !listViewModel.getEnabledPayments().isEmpty()) {
             enabledPayments = mapPaymentMethods(listViewModel.getEnabledPayments());
             paymentChannelsTitle.setText(R.string.payment_channels_selected);
-            paymentChannelsSelectedSelection.setText(getString(R.string.payment_channels_selection_show_selected_format, listViewModel.getEnabledPayments().size()));
+            if (isContainEChannel(enabledPayments)) {
+                paymentChannelsSelectedSelection.setText(getString(R.string.payment_channels_selection_show_selected_format, enabledPayments.size() - 1));
+            } else {
+                paymentChannelsSelectedSelection.setText(getString(R.string.payment_channels_selection_show_selected_format, enabledPayments.size()));
+            }
             paymentChannelsSelectedSelection.setChecked(true);
+            initEditPaymentButton(PaymentMethods.getPaymentList(DemoConfigActivity.this, mapEnabledPayments()));
         } else {
             paymentChannelsTitle.setText(R.string.payment_channels_show_all);
             paymentChannelsAllSelection.setText(R.string.payment_channels_selection_show_all);
             paymentChannelsAllSelection.setChecked(true);
+            disableEditPaymentChannels();
         }
 
         paymentChannelsAllSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -1021,31 +1029,80 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         paymentChannelsSelectedSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                if (checked) {
-                    SelectPaymentMethodDialogFragment fragment = SelectPaymentMethodDialogFragment.newInstance(getSelectedColorPrimaryDark(), new SelectPaymentMethodListener() {
-                        @Override
-                        public void onCanceled() {
-                            paymentChannelsAllSelection.setChecked(true);
-                        }
+                if (editPaymentChannels.getVisibility() == View.VISIBLE) {
+                    if (checked) {
+                        SelectPaymentMethodDialogFragment fragment = SelectPaymentMethodDialogFragment.newInstance(getSelectedColorPrimaryDark(), new SelectPaymentMethodListener() {
+                            @Override
+                            public void onCanceled() {
+                                paymentChannelsAllSelection.setChecked(true);
+                            }
 
-                        @Override
-                        public void onSelectPaymentMethod(List<SelectPaymentMethodViewModel> enabledPayments) {
-                            DemoConfigActivity.this.enabledPayments = enabledPayments;
-                            paymentChannelsTitle.setText(R.string.payment_channels_selected);
-                            paymentChannelsSelectedSelection.setText(getString(R.string.payment_channels_selection_show_selected_format, enabledPayments.size()));
+                            @Override
+                            public void onSelectPaymentMethod(List<SelectPaymentMethodViewModel> enabledPayments) {
+                                DemoConfigActivity.this.enabledPayments = enabledPayments;
+                                paymentChannelsTitle.setText(R.string.payment_channels_selected);
+                                paymentChannelsSelectedSelection.setText(getString(R.string.payment_channels_selection_show_selected_format, enabledPayments.size()));
+                                initEditPaymentButton(PaymentMethods.getPaymentList(DemoConfigActivity.this, mapEnabledPayments()));
 
-                        }
+                            }
 
-                        @Override
-                        public void onSelectAll(List<SelectPaymentMethodViewModel> enabledPayments) {
-                            paymentChannelsTitle.setText(R.string.payment_channels_show_all);
-                            paymentChannelsAllSelection.setChecked(true);
-                        }
-                    });
-                    fragment.show(getSupportFragmentManager(), "");
+                            @Override
+                            public void onSelectAll(List<SelectPaymentMethodViewModel> enabledPayments) {
+                                paymentChannelsTitle.setText(R.string.payment_channels_show_all);
+                                paymentChannelsAllSelection.setChecked(true);
+                                disableEditPaymentChannels();
+                            }
+                        });
+                        fragment.show(getSupportFragmentManager(), "");
+                    }
                 }
             }
         });
+    }
+
+    private boolean isContainEChannel(List<SelectPaymentMethodViewModel> enabledPayments) {
+        for (SelectPaymentMethodViewModel enabledPayment : enabledPayments) {
+            if (enabledPayment.getMethodType().equals(getString(R.string.payment_mandiri_bill_payment))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void initEditPaymentButton(final List<EnabledPayment> enabledPayments) {
+        editPaymentChannels.setVisibility(View.VISIBLE);
+        editPaymentChannels.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SelectPaymentMethodDialogFragment fragment = SelectPaymentMethodDialogFragment.newInstance(getSelectedColorPrimaryDark(), enabledPayments, new SelectPaymentMethodListener() {
+                    @Override
+                    public void onCanceled() {
+                        // Do nothing
+                    }
+
+                    @Override
+                    public void onSelectPaymentMethod(List<SelectPaymentMethodViewModel> enabledPayments) {
+                        DemoConfigActivity.this.enabledPayments = enabledPayments;
+                        paymentChannelsTitle.setText(R.string.payment_channels_selected);
+                        paymentChannelsSelectedSelection.setText(getString(R.string.payment_channels_selection_show_selected_format, enabledPayments.size()));
+                        initEditPaymentButton(PaymentMethods.getPaymentList(DemoConfigActivity.this, mapEnabledPayments()));
+                    }
+
+                    @Override
+                    public void onSelectAll(List<SelectPaymentMethodViewModel> enabledPayments) {
+                        paymentChannelsTitle.setText(R.string.payment_channels_show_all);
+                        paymentChannelsAllSelection.setChecked(true);
+                        disableEditPaymentChannels();
+                    }
+                });
+                fragment.show(getSupportFragmentManager(), "");
+            }
+        });
+    }
+
+    private void disableEditPaymentChannels() {
+        editPaymentChannels.setVisibility(View.INVISIBLE);
+        editPaymentChannels.setOnClickListener(null);
     }
 
     private void initCustomBcaVaSelection() {
