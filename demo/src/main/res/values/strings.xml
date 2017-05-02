@@ -44,6 +44,14 @@
     <string name="default_save_card_enabled">Default Save Card Enabled</string>
     <string name="default_save_card_disabled">Default Save Card Disabled</string>
 
+    <!--PAYMENT CHANNELS OPTION-->
+    <string name="payment_channels_show_all">Show All Payment Channels</string>
+    <string name="payment_channels_selected">Show Selected Payment Channels</string>
+    <string name="payment_channels_selection_show_all">Show All</string>
+    <string name="payment_channels_selection_show_selected">Show Selected Only</string>
+    <string name="payment_channels_selection_show_selected_format">Show Selected Only - %1$d Channels</string>
+    <string name="payment_channels_select_payment_channel">Select Payment Channel</string>
+
     <!--CUSTOM VA-->
     <string name="custom_permata_va_disabled">Custom Permata VA Number Disabled</string>
     <string name="custom_permata_va_enabled">Custom Permata VA Number Enabled</string>
@@ -58,6 +66,7 @@
     <string name="custom_bca_va_enable_title">Enable Custom BCA VA Number</string>
     <string name="custom_permata_va_enable_title">Enable Custom Permata VA Number</string>
     <string name="custom_va_edit_button">Edit</string>
+
     <!--PROMO ENABLED TITLE-->
     <string name="default_promo_enabled">Promo Enabled</string>
     <string name="default_promo_disabled">Promo Disabled</string>
