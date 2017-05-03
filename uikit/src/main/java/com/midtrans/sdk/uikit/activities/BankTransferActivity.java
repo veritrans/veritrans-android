@@ -541,7 +541,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
 
         SdkUIFlowUtil.hideProgressDialog();
         try {
-            BankTransferActivity.this.errorMessage = getString(R.string.message_payment_failed);
+            BankTransferActivity.this.errorMessage = getString(R.string.message_payment_cannot_proccessed);
             BankTransferActivity.this.transactionResponse = response;
             if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
                 setUpTransactionStatusFragment(response);
