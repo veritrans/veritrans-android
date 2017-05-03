@@ -553,6 +553,11 @@ public class SdkUtil {
             requestModel.setBcaVa(transactionRequest.getBcaVa());
         }
 
+        if (transactionRequest.getEnabledPayments() != null
+                && !transactionRequest.getEnabledPayments().isEmpty()) {
+            requestModel.setEnabledPayments(transactionRequest.getEnabledPayments());
+        }
+
         // Set promo is available
         if (transactionRequest.isPromoEnabled()) {
             SnapPromo promo = new SnapPromo();

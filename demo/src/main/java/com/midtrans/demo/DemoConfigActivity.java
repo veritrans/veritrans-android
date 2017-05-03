@@ -33,19 +33,23 @@ import com.midtrans.sdk.corekit.models.BillInfoModel;
 import com.midtrans.sdk.corekit.models.CardTokenRequest;
 import com.midtrans.sdk.corekit.models.ExpiryModel;
 import com.midtrans.sdk.corekit.models.ItemDetails;
+import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 import com.midtrans.sdk.corekit.models.UserAddress;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.BankTransferRequestModel;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
+import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
 import com.midtrans.sdk.corekit.models.snap.Installment;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.scancard.ScanCard;
+import com.midtrans.sdk.uikit.PaymentMethods;
 import com.midtrans.sdk.uikit.SdkUIFlowBuilder;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -67,9 +71,11 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private static final String INSTALLMENT_TYPE = "config.installment";
     private static final String INSTALLMENT_REQUIRED = "config.installment.required";
     private static final String BNI_POINT_TYPE = "config.bni.point";
+    private static final String PAYMENT_CHANNELS_TYPE = "config.channels";
 
     private static int DELAY = 200;
     private String selectedColor = DemoThemeConstants.BLUE_THEME;
+    private List<SelectPaymentMethodViewModel> enabledPayments;
     /**
      * Title of Config
      **/
@@ -83,9 +89,9 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private TextView colorThemeTitle;
     private TextView customPermataVaTitle;
     private TextView customBcaVaTitle;
-
     private TextView installmentTitle;
     private TextView bniPointTitle;
+    private TextView paymentChannelsTitle;
 
     /**
      * Selection Container
@@ -102,7 +108,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private LinearLayout customPermataVaContainer;
     private RadioGroup installmentContainer;
     private RadioGroup bniPointContainer;
-
+    private LinearLayout paymentChannelsContainer;
 
     /**
      * Radio Button selection for installment
@@ -110,18 +116,14 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private AppCompatRadioButton installmentBniSelection;
     private AppCompatRadioButton installmentMandiriSelection;
     private AppCompatRadioButton installmentBcaSelection;
-    private AppCompatRadioButton instalmmentOfflineSelection;
+    private AppCompatRadioButton installmentOfflineSelection;
     private AppCompatRadioButton noInstallmentSelection;
-
     private AppCompatCheckBox installmentRequiredCheckbox;
-
-
     /**
      * Radio Button selection for BNI Point
      */
     private AppCompatRadioButton bniPointOnlyEnabledSelection;
     private AppCompatRadioButton bniPointOnlyDisabledSelection;
-
     /**
      * Radio Button Selection for Card Click
      **/
@@ -183,10 +185,16 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private AppCompatRadioButton greenThemeSelection;
     private AppCompatRadioButton orangeThemeSelection;
     private AppCompatRadioButton blackThemeSelection;
+    /**
+     * Radio Button Selection for Payment Channels selection
+     */
+    private AppCompatRadioButton paymentChannelsAllSelection;
+    private AppCompatRadioButton paymentChannelsSelectedSelection;
 
     private FancyButton nextButton;
     private ImageButton editBcaVaButton;
     private ImageButton editPermataVaButton;
+    private ImageButton editPaymentChannels;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -200,6 +208,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         initIssuingBankSelection();
         initCustomExpirySelection();
         initDefaultSaveCardSelection();
+        initPaymentChannelsSelections();
         initCustomBcaVaSelection();
         initCustomPermataVaSelection();
         initPromoSelection();
@@ -231,6 +240,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         customBcaVaTitle = (TextView) findViewById(R.id.title_custom_bca_va);
         installmentTitle = (TextView) findViewById(R.id.title_installment_type);
         bniPointTitle = (TextView) findViewById(R.id.title_bni_point_type);
+        paymentChannelsTitle = (TextView) findViewById(R.id.title_custom_payment_channels);
 
         cardClickContainer = (RadioGroup) findViewById(R.id.credit_card_type_container);
         secureContainer = (RadioGroup) findViewById(R.id.secure_type_container);
@@ -244,11 +254,12 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         customPermataVaContainer = (LinearLayout) findViewById(R.id.custom_permata_va_type_container);
         installmentContainer = (RadioGroup) findViewById(R.id.enable_installment_container);
         bniPointContainer = (RadioGroup) findViewById(R.id.bni_point_type_container);
+        paymentChannelsContainer = (LinearLayout) findViewById(R.id.payment_channels_type_container);
 
         installmentBniSelection = (AppCompatRadioButton) findViewById(R.id.installment_type_bni);
         installmentMandiriSelection = (AppCompatRadioButton) findViewById(R.id.installment_type_mandiri);
         installmentBcaSelection = (AppCompatRadioButton) findViewById(R.id.installment_type_bca);
-        instalmmentOfflineSelection = (AppCompatRadioButton) findViewById(R.id.installment_type_offline);
+        installmentOfflineSelection = (AppCompatRadioButton) findViewById(R.id.installment_type_offline);
         noInstallmentSelection = (AppCompatRadioButton) findViewById(R.id.no_installment);
 
         installmentRequiredCheckbox = (AppCompatCheckBox) findViewById(R.id.installment_required);
@@ -296,9 +307,13 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         bniPointOnlyEnabledSelection = (AppCompatRadioButton) findViewById(R.id.type_bni_point_enabled);
         bniPointOnlyDisabledSelection = (AppCompatRadioButton) findViewById(R.id.type_bni_point_disabled);
 
+        paymentChannelsAllSelection = (AppCompatRadioButton) findViewById(R.id.type_payment_channels_show_all);
+        paymentChannelsSelectedSelection = (AppCompatRadioButton) findViewById(R.id.type_payment_channels_show_selected);
+
         nextButton = (FancyButton) findViewById(R.id.btn_launch_app);
         editBcaVaButton = (ImageButton) findViewById(R.id.btn_edit_bca_va);
         editPermataVaButton = (ImageButton) findViewById(R.id.btn_edit_permata_va);
+        editPaymentChannels = (ImageButton) findViewById(R.id.btn_edit_payment_method);
     }
 
     private void initTitleClicks() {
@@ -500,6 +515,29 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                             setTextViewDrawableLeftColorFilter(customBcaVaTitle);
                             // Show color theme container
                             customBcaVaContainer.setVisibility(View.VISIBLE);
+                        } else {
+                            unselectAllTitles();
+                            hideAllSelections();
+                        }
+                    }
+                }, DELAY);
+            }
+        });
+
+        paymentChannelsTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!paymentChannelsTitle.isSelected()) {
+                            unselectAllTitles();
+                            hideAllSelections();
+                            paymentChannelsTitle.setSelected(true);
+                            setTextViewSelectedColor(paymentChannelsTitle);
+                            setTextViewDrawableLeftColorFilter(paymentChannelsTitle);
+                            // Show color theme container
+                            paymentChannelsContainer.setVisibility(View.VISIBLE);
                         } else {
                             unselectAllTitles();
                             hideAllSelections();
@@ -958,6 +996,115 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         });
     }
 
+    private void initPaymentChannelsSelections() {
+        SelectPaymentMethodListViewModel listViewModel = LocalDataHandler.readObject(PAYMENT_CHANNELS_TYPE, SelectPaymentMethodListViewModel.class);
+        if (listViewModel != null
+                && listViewModel.getEnabledPayments() != null
+                && !listViewModel.getEnabledPayments().isEmpty()) {
+            enabledPayments = mapPaymentMethods(listViewModel.getEnabledPayments());
+            paymentChannelsTitle.setText(R.string.payment_channels_selected);
+            if (isContainEChannel(enabledPayments)) {
+                paymentChannelsSelectedSelection.setText(getString(R.string.payment_channels_selection_show_selected_format, enabledPayments.size() - 1));
+            } else {
+                paymentChannelsSelectedSelection.setText(getString(R.string.payment_channels_selection_show_selected_format, enabledPayments.size()));
+            }
+            paymentChannelsSelectedSelection.setChecked(true);
+            initEditPaymentButton(PaymentMethods.getPaymentList(DemoConfigActivity.this, mapEnabledPayments()));
+        } else {
+            paymentChannelsTitle.setText(R.string.payment_channels_show_all);
+            paymentChannelsAllSelection.setText(R.string.payment_channels_selection_show_all);
+            paymentChannelsAllSelection.setChecked(true);
+            disableEditPaymentChannels();
+        }
+
+        paymentChannelsAllSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    paymentChannelsTitle.setText(R.string.payment_channels_show_all);
+                }
+            }
+        });
+
+        paymentChannelsSelectedSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (editPaymentChannels.getVisibility() != View.VISIBLE) {
+                    if (checked) {
+                        SelectPaymentMethodDialogFragment fragment = SelectPaymentMethodDialogFragment.newInstance(getSelectedColorPrimaryDark(), new SelectPaymentMethodListener() {
+                            @Override
+                            public void onCanceled() {
+                                paymentChannelsAllSelection.setChecked(true);
+                            }
+
+                            @Override
+                            public void onSelectPaymentMethod(List<SelectPaymentMethodViewModel> enabledPayments) {
+                                DemoConfigActivity.this.enabledPayments = enabledPayments;
+                                paymentChannelsTitle.setText(R.string.payment_channels_selected);
+                                paymentChannelsSelectedSelection.setText(getString(R.string.payment_channels_selection_show_selected_format, enabledPayments.size()));
+                                initEditPaymentButton(PaymentMethods.getPaymentList(DemoConfigActivity.this, mapEnabledPayments()));
+
+                            }
+
+                            @Override
+                            public void onSelectAll(List<SelectPaymentMethodViewModel> enabledPayments) {
+                                paymentChannelsTitle.setText(R.string.payment_channels_show_all);
+                                paymentChannelsAllSelection.setChecked(true);
+                                disableEditPaymentChannels();
+                            }
+                        });
+                        fragment.show(getSupportFragmentManager(), "");
+                    }
+                }
+            }
+        });
+    }
+
+    private boolean isContainEChannel(List<SelectPaymentMethodViewModel> enabledPayments) {
+        for (SelectPaymentMethodViewModel enabledPayment : enabledPayments) {
+            if (enabledPayment.getMethodType().equals(getString(R.string.payment_mandiri_bill_payment))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void initEditPaymentButton(final List<EnabledPayment> enabledPayments) {
+        editPaymentChannels.setVisibility(View.VISIBLE);
+        editPaymentChannels.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SelectPaymentMethodDialogFragment fragment = SelectPaymentMethodDialogFragment.newInstance(getSelectedColorPrimaryDark(), enabledPayments, new SelectPaymentMethodListener() {
+                    @Override
+                    public void onCanceled() {
+                        // Do nothing
+                    }
+
+                    @Override
+                    public void onSelectPaymentMethod(List<SelectPaymentMethodViewModel> enabledPayments) {
+                        DemoConfigActivity.this.enabledPayments = enabledPayments;
+                        paymentChannelsTitle.setText(R.string.payment_channels_selected);
+                        paymentChannelsSelectedSelection.setText(getString(R.string.payment_channels_selection_show_selected_format, enabledPayments.size()));
+                        initEditPaymentButton(PaymentMethods.getPaymentList(DemoConfigActivity.this, mapEnabledPayments()));
+                    }
+
+                    @Override
+                    public void onSelectAll(List<SelectPaymentMethodViewModel> enabledPayments) {
+                        paymentChannelsTitle.setText(R.string.payment_channels_show_all);
+                        paymentChannelsAllSelection.setChecked(true);
+                        disableEditPaymentChannels();
+                    }
+                });
+                fragment.show(getSupportFragmentManager(), "");
+            }
+        });
+    }
+
+    private void disableEditPaymentChannels() {
+        editPaymentChannels.setVisibility(View.INVISIBLE);
+        editPaymentChannels.setOnClickListener(null);
+    }
+
     private void initCustomBcaVaSelection() {
         String customBcaVaNumber = DemoPreferenceHelper.getStringPreference(this, CUSTOM_BCA_VA_NUMBER);
         if (!TextUtils.isEmpty(customBcaVaNumber)) {
@@ -976,20 +1123,22 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 if (checked) {
-                    final CustomBcaVaInputDialogFragment fragment = CustomBcaVaInputDialogFragment.newInstance(getSelectedColorPrimaryDark(), new CustomVaDialogListener() {
-                        @Override
-                        public void onOkClicked(String input) {
-                            customBcaVaTitle.setText(R.string.custom_bca_va_enabled);
-                            customBcaVaEnabledSelection.setText(getString(R.string.custom_va_enabled_format, input));
-                            initEditBcaVaButton(input);
-                        }
+                    if (editBcaVaButton.getVisibility() != View.VISIBLE) {
+                        final CustomBcaVaInputDialogFragment fragment = CustomBcaVaInputDialogFragment.newInstance(getSelectedColorPrimaryDark(), new CustomVaDialogListener() {
+                            @Override
+                            public void onOkClicked(String input) {
+                                customBcaVaTitle.setText(R.string.custom_bca_va_enabled);
+                                customBcaVaEnabledSelection.setText(getString(R.string.custom_va_enabled_format, input));
+                                initEditBcaVaButton(input);
+                            }
 
-                        @Override
-                        public void onCancelClicked() {
-                            customBcaVaDisabledSelection.setChecked(true);
-                        }
-                    });
-                    fragment.show(getSupportFragmentManager(), "");
+                            @Override
+                            public void onCancelClicked() {
+                                customBcaVaDisabledSelection.setChecked(true);
+                            }
+                        });
+                        fragment.show(getSupportFragmentManager(), "");
+                    }
                 }
             }
         });
@@ -1022,20 +1171,22 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 if (checked) {
-                    final CustomPermataVaInputDialogFragment fragment = CustomPermataVaInputDialogFragment.newInstance(getSelectedColorPrimaryDark(), new CustomVaDialogListener() {
-                        @Override
-                        public void onOkClicked(String input) {
-                            customPermataVaTitle.setText(R.string.custom_permata_va_enabled);
-                            customPermataVaEnabledSelection.setText(getString(R.string.custom_va_enabled_format, input));
-                            initEditPermataVaButton(input);
-                        }
+                    if (editPermataVaButton.getVisibility() != View.VISIBLE) {
+                        final CustomPermataVaInputDialogFragment fragment = CustomPermataVaInputDialogFragment.newInstance(getSelectedColorPrimaryDark(), new CustomVaDialogListener() {
+                            @Override
+                            public void onOkClicked(String input) {
+                                customPermataVaTitle.setText(R.string.custom_permata_va_enabled);
+                                customPermataVaEnabledSelection.setText(getString(R.string.custom_va_enabled_format, input));
+                                initEditPermataVaButton(input);
+                            }
 
-                        @Override
-                        public void onCancelClicked() {
-                            customPermataVaDisabledSelection.setChecked(true);
-                        }
-                    });
-                    fragment.show(getSupportFragmentManager(), "");
+                            @Override
+                            public void onCancelClicked() {
+                                customPermataVaDisabledSelection.setChecked(true);
+                            }
+                        });
+                        fragment.show(getSupportFragmentManager(), "");
+                    }
                 }
             }
         });
@@ -1188,7 +1339,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     break;
                 case Constants.INSTALLMENT_OFFLINE:
                     installmentTitle.setText(R.string.using_offline_installment);
-                    instalmmentOfflineSelection.setChecked(true);
+                    installmentOfflineSelection.setChecked(true);
                     showInstallmentCheckbox();
                     resetBniPointSelection();
                     break;
@@ -1251,12 +1402,12 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             }
         });
 
-        instalmmentOfflineSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        installmentOfflineSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 if (checked) {
                     installmentTitle.setText(R.string.using_offline_installment);
-                    instalmmentOfflineSelection.setChecked(true);
+                    installmentOfflineSelection.setChecked(true);
                     showInstallmentCheckbox();
                     resetBniPointSelection();
                 }
@@ -1337,6 +1488,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 savePreAuthSelection();
                 saveInstallmentSelection();
                 saveBniPointSelection();
+                saveEnabledPayments();
 
                 TransactionRequest transactionRequest = initializePurchaseRequest();
                 MidtransSDK.getInstance().setTransactionRequest(transactionRequest);
@@ -1415,6 +1567,14 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         }
     }
 
+    private void saveEnabledPayments() {
+        if (paymentChannelsAllSelection.isChecked()) {
+            LocalDataHandler.saveString(PAYMENT_CHANNELS_TYPE, "{}");
+        } else {
+            LocalDataHandler.saveObject(PAYMENT_CHANNELS_TYPE, new SelectPaymentMethodListViewModel(PaymentMethods.getPaymentList(this, mapEnabledPayments())));
+        }
+    }
+
     private void saveBcaVaNumber() {
         if (customBcaVaEnabledSelection.isChecked()) {
             String vaNumber = customBcaVaEnabledSelection.getText().toString().split(" - ")[1];
@@ -1452,14 +1612,14 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private void saveInstallmentSelection() {
         if (installmentBniSelection.isChecked()) {
             DemoPreferenceHelper.setStringPreference(this, INSTALLMENT_TYPE, Constants.INSTALLMENT_BNI);
-        } else if (bankMandiriSelection.isChecked()) {
+        } else if (installmentMandiriSelection.isChecked()) {
             DemoPreferenceHelper.setStringPreference(this, INSTALLMENT_TYPE, Constants.INSTALLMENT_MANDIRI);
-        } else if (bankBcaSelection.isChecked()) {
+        } else if (installmentBcaSelection.isChecked()) {
             DemoPreferenceHelper.setStringPreference(this, INSTALLMENT_TYPE, Constants.INSTALLMENT_BCA);
-        } else if (bankMaybankSelection.isChecked()) {
+        } else if (installmentOfflineSelection.isChecked()) {
             DemoPreferenceHelper.setStringPreference(this, INSTALLMENT_TYPE, Constants.INSTALLMENT_OFFLINE);
         } else {
-            DemoPreferenceHelper.setStringPreference(this, INSTALLMENT_TYPE, Constants.INSTALLMENT_OFFLINE);
+            DemoPreferenceHelper.setStringPreference(this, INSTALLMENT_TYPE, Constants.NO_INSTALLMENT);
         }
     }
 
@@ -1508,6 +1668,9 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         bniPointTitle.setSelected(false);
         bniPointTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
         clearTextViewDrawableLeftColorFilter(bniPointTitle);
+        paymentChannelsTitle.setSelected(false);
+        paymentChannelsTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
+        clearTextViewDrawableLeftColorFilter(paymentChannelsTitle);
     }
 
     private void hideAllSelections() {
@@ -1523,6 +1686,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         customPermataVaContainer.setVisibility(View.GONE);
         installmentContainer.setVisibility(View.GONE);
         bniPointContainer.setVisibility(View.GONE);
+        paymentChannelsContainer.setVisibility(View.GONE);
     }
 
     private void setTextViewDrawableLeftColorFilter(TextView textView) {
@@ -1714,12 +1878,15 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         installmentBniSelection.setSupportButtonTintList(colorStateList);
         installmentMandiriSelection.setSupportButtonTintList(colorStateList);
         installmentBcaSelection.setSupportButtonTintList(colorStateList);
-        instalmmentOfflineSelection.setSupportButtonTintList(colorStateList);
+        installmentOfflineSelection.setSupportButtonTintList(colorStateList);
         noInstallmentSelection.setSupportButtonTintList(colorStateList);
         installmentRequiredCheckbox.setSupportButtonTintList(colorStateList);
 
         bniPointOnlyEnabledSelection.setSupportButtonTintList(colorStateList);
         bniPointOnlyDisabledSelection.setSupportButtonTintList(colorStateList);
+
+        paymentChannelsAllSelection.setSupportButtonTintList(colorStateList);
+        paymentChannelsSelectedSelection.setSupportButtonTintList(colorStateList);
 
     }
 
@@ -1863,6 +2030,10 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             transactionRequestNew.setCardPaymentInfo(cardClickType, false);
         }
 
+        if (paymentChannelsSelectedSelection.isChecked()) {
+            transactionRequestNew.setEnabledPayments(mapEnabledPayments());
+        }
+
         // set expiry time
         ExpiryModel expiryModel = new ExpiryModel();
         expiryModel.setStartTime(Utils.getFormattedTime(System.currentTimeMillis()));
@@ -1953,7 +2124,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
 
         Map<String, ArrayList<Integer>> bankTerms = new HashMap<>();
 
-        if (instalmmentOfflineSelection.isChecked()) {
+        if (installmentOfflineSelection.isChecked()) {
             setInstallmentBankTerm(bankTerms, Constants.INSTALLMENT_BANK_OFFLINE);
         } else if (installmentBniSelection.isChecked()) {
             setInstallmentBankTerm(bankTerms, Constants.INSTALLMENT_BANK_BNI);
@@ -1985,5 +2156,28 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         term.add(12);
         //set bank and term
         bankTerms.put(bank, term);
+    }
+
+    private List<String> mapEnabledPayments() {
+        List<String> mappedPayments = new ArrayList<>();
+        for (SelectPaymentMethodViewModel model : enabledPayments) {
+            if (model.getMethodType().equalsIgnoreCase(getString(R.string.payment_bank_transfer))) {
+                mappedPayments.add(getString(R.string.payment_mandiri_bill_payment));
+            }
+            mappedPayments.add(model.getMethodType());
+        }
+        return mappedPayments;
+    }
+
+    private List<SelectPaymentMethodViewModel> mapPaymentMethods(List<EnabledPayment> enabledPayments) {
+        List<SelectPaymentMethodViewModel> viewModels = new ArrayList<>();
+        for (int i = 0; i < enabledPayments.size(); i++) {
+            EnabledPayment enabledPayment = enabledPayments.get(i);
+            PaymentMethodsModel model = PaymentMethods.getMethods(this, enabledPayment.getType());
+            if (model != null) {
+                viewModels.add(new SelectPaymentMethodViewModel(model.getName(), enabledPayment.getType(), true));
+            }
+        }
+        return viewModels;
     }
 }

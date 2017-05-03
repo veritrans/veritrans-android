@@ -384,6 +384,84 @@
             </RadioGroup>
 
             <com.midtrans.demo.DemoTextView
+                android:id="@+id/title_custom_payment_channels"
+                style="@style/ConfigItemTextTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_show_icon"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/ic_show_icon"
+                android:paddingLeft="10dp"
+                android:text="@string/payment_channels_show_all" />
+
+            <LinearLayout
+                android:id="@+id/payment_channels_type_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <RadioGroup
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.85"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/thirtytwo_dp"
+                    android:paddingRight="@dimen/thirtytwo_dp">
+
+                    <com.midtrans.demo.DemoRadioButton
+                        android:id="@+id/type_payment_channels_show_all"
+                        style="@style/CustomRadioButtonStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/eight_dp"
+                        android:layout_marginStart="@dimen/eight_dp"
+                        android:checked="true"
+                        android:gravity="center_vertical"
+                        android:text="@string/payment_channels_selection_show_all" />
+
+                    <com.midtrans.demo.DemoRadioButton
+                        android:id="@+id/type_payment_channels_show_selected"
+                        style="@style/CustomRadioButtonStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/eight_dp"
+                        android:layout_marginStart="@dimen/eight_dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/payment_channels_selection_show_selected" />
+                </RadioGroup>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.1"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/btn_edit_payment_method_disabled"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?selectableItemBackground"
+                        android:minHeight="30dp"
+                        android:minWidth="12dp"
+                        android:src="@drawable/ic_edit_icon"
+                        android:visibility="invisible" />
+
+                    <ImageButton
+                        android:id="@+id/btn_edit_payment_method"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?selectableItemBackground"
+                        android:minHeight="30dp"
+                        android:minWidth="12dp"
+                        android:src="@drawable/ic_edit_icon"
+                        android:visibility="invisible"
+                        tools:visibility="visible" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <com.midtrans.demo.DemoTextView
                 android:id="@+id/title_custom_bca_va"
                 style="@style/ConfigItemTextTitle"
                 android:layout_width="match_parent"

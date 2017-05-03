@@ -88,6 +88,7 @@ public class TransactionRequest {
 
     private BankTransferRequestModel permataVa;
     private BankTransferRequestModel bcaVa;
+    private List<String> enabledPayments;
     /**
      * @param orderId       order id of transaction.
      * @param amount        amount to charge.
@@ -281,5 +282,13 @@ public class TransactionRequest {
 
     public void setBcaVa(BankTransferRequestModel bcaVa) {
         this.bcaVa = bcaVa;
+    }
+
+    public List<String> getEnabledPayments() {
+        return enabledPayments;
+    }
+
+    public void setEnabledPayments(List<String> enabledPayments) {
+        this.enabledPayments = enabledPayments;
     }
 }

@@ -8,6 +8,7 @@ import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.SnapPromo;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by ziahaqi on 7/19/16.
@@ -34,6 +35,9 @@ public class TokenRequestModel {
 
     @SerializedName("bca_va")
     private BankTransferRequestModel bcaVa;
+
+    @SerializedName("enabled_payments")
+    private List<String> enabledPayments;
 
     private ExpiryModel expiry;
     private SnapPromo promo;
@@ -160,5 +164,13 @@ public class TokenRequestModel {
 
     public void setBcaVa(BankTransferRequestModel bcaVa) {
         this.bcaVa = bcaVa;
+    }
+
+    public List<String> getEnabledPayments() {
+        return enabledPayments;
+    }
+
+    public void setEnabledPayments(List<String> enabledPayments) {
+        this.enabledPayments = enabledPayments;
     }
 }
