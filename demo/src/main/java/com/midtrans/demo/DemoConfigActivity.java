@@ -1619,7 +1619,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         } else if (installmentOfflineSelection.isChecked()) {
             DemoPreferenceHelper.setStringPreference(this, INSTALLMENT_TYPE, Constants.INSTALLMENT_OFFLINE);
         } else {
-            DemoPreferenceHelper.setStringPreference(this, INSTALLMENT_TYPE, Constants.INSTALLMENT_OFFLINE);
+            DemoPreferenceHelper.setStringPreference(this, INSTALLMENT_TYPE, Constants.NO_INSTALLMENT);
         }
     }
 
