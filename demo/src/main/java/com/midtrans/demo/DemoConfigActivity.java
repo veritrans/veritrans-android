@@ -1029,7 +1029,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         paymentChannelsSelectedSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                if (editPaymentChannels.getVisibility() == View.VISIBLE) {
+                if (editPaymentChannels.getVisibility() != View.VISIBLE) {
                     if (checked) {
                         SelectPaymentMethodDialogFragment fragment = SelectPaymentMethodDialogFragment.newInstance(getSelectedColorPrimaryDark(), new SelectPaymentMethodListener() {
                             @Override
