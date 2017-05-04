@@ -109,16 +109,29 @@ public class WebviewFragment extends Fragment {
      * @param otp otp code.
      */
     public void setOtp(final String otp) {
-        webView.loadUrl("javascript: {" +
-                "var input = document.getElementById('PaRes');" +
-                "if(input) input.value = '" + otp + "';" +
-                "input = document.getElementById('otp');" +
-                "if(input) input.value = '" + otp + "';" +
-                "setTimeout(function(){" +
-                "var form = document.getElementsByTagName('FORM')[0];" +
-                "if(form) form.submit();" +
-                "}, 1000); " +
-                "};");
+        if (BuildConfig.FLAVOR.equals("production")) {
+            webView.loadUrl("javascript: {" +
+                    "var input = document.getElementById('PaRes');" +
+                    "if(input) input.value = '" + otp + "';" +
+                    "input = document.getElementById('otp');" +
+                    "if(input) input.value = '" + otp + "';" +
+                    "setTimeout(function(){" +
+                    "var form = document.getElementsByName('vbv_auth_form')[0];" +
+                    "if(form) form.submit();" +
+                    "}, 1000); " +
+                    "};");
+        } else {
+            webView.loadUrl("javascript: {" +
+                    "var input = document.getElementById('PaRes');" +
+                    "if(input) input.value = '" + otp + "';" +
+                    "input = document.getElementById('otp');" +
+                    "if(input) input.value = '" + otp + "';" +
+                    "setTimeout(function(){" +
+                    "var form = document.getElementsByTagName('FORM')[0];" +
+                    "if(form) form.submit();" +
+                    "}, 1000); " +
+                    "};");
+        }
     }
 
     private class MidtransWebViewClient extends WebViewClient {
