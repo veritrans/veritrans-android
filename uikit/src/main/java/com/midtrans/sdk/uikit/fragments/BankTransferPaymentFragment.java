@@ -124,14 +124,20 @@ public class BankTransferPaymentFragment extends Fragment {
         if (transactionResponse != null) {
             if (transactionResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_200))
                     || transactionResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_201))) {
-                if (getArguments() != null && getArguments().getString(BankTransferInstructionActivity.BANK) != null && getArguments().getString(BankTransferInstructionActivity.BANK).equals(BankTransferInstructionActivity.TYPE_BCA)) {
-                    if (transactionResponse.getAccountNumbers() != null && transactionResponse.getAccountNumbers().size() > 0) {
-                        mTextViewVirtualAccountNumber.setText(transactionResponse.getAccountNumbers().get(0).getAccountNumber());
+                if (getArguments() != null && getArguments().getString(BankTransferInstructionActivity.BANK) != null) {
+                    if (getArguments().getString(BankTransferInstructionActivity.BANK).equals(BankTransferInstructionActivity.TYPE_BCA)) {
+                        mTextViewVirtualAccountNumber.setText(transactionResponse.getBcaVaNumber());
                         mTextViewValidity.setText(getString(R.string.text_format_valid_until, transactionResponse.getBcaExpiration()));
+                    } else if (getArguments().getString(BankTransferInstructionActivity.BANK).equals(BankTransferInstructionActivity.TYPE_PERMATA)) {
+                        mTextViewVirtualAccountNumber.setText(transactionResponse.getPermataVANumber());
+                        mTextViewValidity.setText(getString(R.string.text_format_valid_until, transactionResponse.getPermataExpiration()));
+                    } else if (getArguments().getString(BankTransferInstructionActivity.BANK).equals(BankTransferInstructionActivity.TYPE_BNI)) {
+                        mTextViewVirtualAccountNumber.setText(transactionResponse.getBniVaNumber());
+                        mTextViewValidity.setText(getString(R.string.text_format_valid_until, transactionResponse.getBniExpiration()));
+                    } else {
+                        mTextViewVirtualAccountNumber.setText(transactionResponse.getStatusMessage());
+                        mTextViewValidity.setText(transactionResponse.getStatusMessage());
                     }
-                } else {
-                    mTextViewVirtualAccountNumber.setText(transactionResponse.getPermataVANumber());
-                    mTextViewValidity.setText(getString(R.string.text_format_valid_until, transactionResponse.getPermataExpiration()));
                 }
             } else {
                 mTextViewVirtualAccountNumber.setText(transactionResponse.getStatusMessage());
