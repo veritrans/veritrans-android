@@ -94,6 +94,7 @@ dependencies {
     compile 'ru.rambler.android:swipe-layout:1.0.14'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'me.saket:better-link-movement-method:1.2'
+    compile 'com.github.stfalcon:smsverifycatcher:0.3.1'
     developmentCompile project(path: ':corekit', configuration: 'developmentRelease')
     stagingCompile project(path: ':corekit', configuration: 'stagingRelease')
     productionCompile project(path: ':corekit', configuration: 'productionRelease')

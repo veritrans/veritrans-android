@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,6 @@ import com.midtrans.sdk.corekit.BuildConfig;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 
 public class WebviewFragment extends Fragment {
 
@@ -82,7 +80,6 @@ public class WebviewFragment extends Fragment {
 
     @SuppressLint("AddJavascriptInterface")
     private void initwebview() {
-        SdkUIFlowUtil.showProgressDialog((AppCompatActivity) getActivity(), true);
         webView.getSettings().setAllowFileAccess(false);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setInitialScale(1);
@@ -106,6 +103,24 @@ public class WebviewFragment extends Fragment {
         }
     }
 
+    /**
+     * Function to fill 3DS otp field by loading Javascript code to WebView.
+     *
+     * @param otp otp code.
+     */
+    public void setOtp(final String otp) {
+        webView.loadUrl("javascript: {" +
+                "var input = document.getElementById('PaRes');" +
+                "if(input) input.value = '" + otp + "';" +
+                "input = document.getElementById('otp');" +
+                "if(input) input.value = '" + otp + "';" +
+                "setTimeout(function(){" +
+                "var form = document.getElementsByTagName('FORM')[0];" +
+                "if(form) form.submit();" +
+                "}, 1000); " +
+                "};");
+    }
+
     private class MidtransWebViewClient extends WebViewClient {
 
         @Override
@@ -119,7 +134,6 @@ public class WebviewFragment extends Fragment {
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
             Logger.i("Url:finished:" + url);
-            SdkUIFlowUtil.hideProgressDialog();
             if (url.contains(BuildConfig.CALLBACK_STRING)) {
                 Intent returnIntent = new Intent();
                 getActivity().setResult(Activity.RESULT_OK, returnIntent);
@@ -180,7 +194,6 @@ public class WebviewFragment extends Fragment {
                     return;
                 }
             }
-            SdkUIFlowUtil.showProgressDialog((AppCompatActivity) getActivity(), false);
         }
     }
 }
