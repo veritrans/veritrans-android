@@ -296,6 +296,9 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
             } else if (position == Constants.PAYMENT_METHOD_BANK_TRANSFER_ALL_BANK) {
                 BankTransferPaymentFragment bankTransferPaymentFragment = BankTransferPaymentFragment.newInstance(transactionResponse, BankTransferInstructionActivity.TYPE_ALL_BANK);
                 fragmentTransaction.replace(R.id.instruction_container, bankTransferPaymentFragment, PAYMENT_FRAGMENT);
+            } else if (position == Constants.BANK_TRANSFER_BNI) {
+                BankTransferPaymentFragment bankTransferPaymentFragment = BankTransferPaymentFragment.newInstance(transactionResponse, BankTransferInstructionActivity.TYPE_BNI);
+                fragmentTransaction.replace(R.id.instruction_container, bankTransferPaymentFragment, PAYMENT_FRAGMENT);
             }
 
             fragmentTransaction.addToBackStack(PAYMENT_FRAGMENT);
@@ -541,7 +544,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
 
         SdkUIFlowUtil.hideProgressDialog();
         try {
-            BankTransferActivity.this.errorMessage = getString(R.string.message_payment_failed);
+            BankTransferActivity.this.errorMessage = getString(R.string.message_payment_cannot_proccessed);
             BankTransferActivity.this.transactionResponse = response;
             if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
                 setUpTransactionStatusFragment(response);
