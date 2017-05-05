@@ -118,16 +118,19 @@ public class PaymentWebActivity extends BaseActivity {
     }
 
     private void initSmsCatcher() {
-        smsVerifyCatcher = new SmsVerifyCatcher(this, new OnSmsCatchListener<String>() {
-            @Override
-            public void onSmsCatch(String message) {
-                Pattern otpPattern = Pattern.compile("[0-9]{6}");
-                Matcher matcher = otpPattern.matcher(message);
-                if (matcher.find()) {
-                    webviewFragment.setOtp(matcher.group(0));
+        if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
+                && MidtransSDK.getInstance().getUIKitCustomSetting().isEnableAutoReadSms()) {
+            smsVerifyCatcher = new SmsVerifyCatcher(this, new OnSmsCatchListener<String>() {
+                @Override
+                public void onSmsCatch(String message) {
+                    Pattern otpPattern = Pattern.compile("[0-9]{6}");
+                    Matcher matcher = otpPattern.matcher(message);
+                    if (matcher.find()) {
+                        webviewFragment.setOtp(matcher.group(0));
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     @Override

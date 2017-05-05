@@ -9,6 +9,7 @@ public class UIKitCustomSetting {
     private boolean showPaymentStatus = true;
     private boolean saveCardChecked = false;
     private boolean enabledAnimation = true;
+    private boolean enableAutoReadSms = false;
 
     public boolean isShowPaymentStatus() {
         return showPaymentStatus;
@@ -32,5 +33,13 @@ public class UIKitCustomSetting {
 
     public void setEnabledAnimation(boolean enabledAnimation) {
         this.enabledAnimation = enabledAnimation;
+    }
+
+    public boolean isEnableAutoReadSms() {
+        return enableAutoReadSms;
+    }
+
+    public void setEnableAutoReadSms(boolean enableAutoReadSms) {
+        this.enableAutoReadSms = enableAutoReadSms;
     }
 }
