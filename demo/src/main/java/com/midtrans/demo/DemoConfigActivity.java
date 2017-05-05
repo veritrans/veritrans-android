@@ -2017,6 +2017,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         }
 
         UIKitCustomSetting uiKitCustomSetting = MidtransSDK.getInstance().getUIKitCustomSetting();
+        uiKitCustomSetting.setEnableAutoReadSms(true);
         if (saveCardEnabledSelection.isChecked()) {
             uiKitCustomSetting.setSaveCardChecked(true);
         } else {
