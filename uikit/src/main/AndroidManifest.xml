@@ -2,9 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.midtrans.sdk.uikit">
 
-    <uses-permission android:name="android.permission.RECEIVE_SMS" />
-    <uses-permission android:name="android.permission.READ_SMS" />
-
     <uses-sdk tools:overrideLibrary="com.rds.swipelayout,me.saket.bettermovementmethod,com.stfalcon.smsverifycatcher" />
     <application>
         <activity
