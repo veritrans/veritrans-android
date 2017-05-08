@@ -19,7 +19,7 @@
             android:layout_marginEnd="48dp"
             android:layout_marginRight="48dp">
 
-            <com.midtrans.demo.DemoTextView
+            <com.midtrans.demo.widgets.DemoTextView
                 android:id="@+id/title"
                 style="@style/TextAppearance.AppCompat.Title"
                 android:layout_width="wrap_content"
@@ -63,7 +63,7 @@
                 app:strokeColor="@color/white"
                 app:unselectedColor="@color/gray.secondary" />
 
-            <com.midtrans.demo.DemoTextView
+            <com.midtrans.demo.widgets.DemoTextView
                 android:id="@+id/product_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
                 android:textColor="@color/navy_blue.secondary"
                 android:textSize="26sp" />
 
-            <com.midtrans.demo.DemoTextView
+            <com.midtrans.demo.widgets.DemoTextView
                 android:id="@+id/product_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -84,7 +84,7 @@
                 android:textSize="13sp"
                 android:textStyle="bold" />
 
-            <com.midtrans.demo.DemoTextView
+            <com.midtrans.demo.widgets.DemoTextView
                 android:id="@+id/product_details"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -103,7 +103,7 @@
                 android:layout_marginTop="@dimen/eight_dp"
                 android:gravity="center_vertical">
 
-                <com.midtrans.demo.DemoTextView
+                <com.midtrans.demo.widgets.DemoTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/product_rating_sample"
@@ -152,7 +152,7 @@
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
-                        <com.midtrans.demo.DemoTextView
+                        <com.midtrans.demo.widgets.DemoTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/product_copyright_sample"

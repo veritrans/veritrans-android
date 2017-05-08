@@ -1493,7 +1493,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 TransactionRequest transactionRequest = initializePurchaseRequest();
                 MidtransSDK.getInstance().setTransactionRequest(transactionRequest);
 
-                startActivity(new Intent(DemoConfigActivity.this, DemoProductPageActivity.class));
+                startActivity(new Intent(DemoConfigActivity.this, DemoProductListActivity.class));
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
         });
@@ -2116,6 +2116,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             ArrayList<String> whiteListBins = new ArrayList<>();
             //add bni bin number for normal payment and 3DS
             whiteListBins.add("410505");
+            whiteListBins.add("526422");
             creditCard.setWhiteListBins(whiteListBins);
         }
     }
