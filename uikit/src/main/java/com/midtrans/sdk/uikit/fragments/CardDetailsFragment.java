@@ -309,6 +309,8 @@ public class CardDetailsFragment extends Fragment {
                 // Track event pay now
                 midtransSDK.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
 
+                setPaymentInstallment();
+
                 if (checkCardValidity()) {
                     ((CreditCardFlowActivity) getActivity()).setBankPointStatus(isBanksPointActivated());
                     if (isValidPayment()) {
@@ -326,7 +328,6 @@ public class CardDetailsFragment extends Fragment {
                             } else {
                                 request.setGrossAmount(midtransSDK.getTransactionRequest().getAmount());
                             }
-                            setPaymentInstallment();
                             ((CreditCardFlowActivity) getActivity()).twoClickPayment(request);
                         } else {
                             String cardNumberText = cardNumber.getText().toString();
@@ -344,7 +345,6 @@ public class CardDetailsFragment extends Fragment {
                             cardTokenRequest.setSecure(midtransSDK.getTransactionRequest().isSecureCard());
                             cardTokenRequest.setGrossAmount(midtransSDK.getTransactionRequest().getAmount());
 
-                            // Start get card token and payment
                             SdkUIFlowUtil.showProgressDialog((AppCompatActivity) getActivity(), false);
                             setPaymentInstallment();
                             ((CreditCardFlowActivity) getActivity()).setSavedCardInfo(saveCardCheckBox.isChecked(), "");
@@ -1176,7 +1176,7 @@ public class CardDetailsFragment extends Fragment {
     }
 
     private void setPaymentInstallment() {
-        if (layoutInstallment.getVisibility() == View.VISIBLE) {
+        if (layoutInstallment.getVisibility() == View.VISIBLE && installmentCurrentPosition > 0) {
             ((CreditCardFlowActivity) getActivity()).setInstallment(installmentCurrentPosition);
         }
     }
