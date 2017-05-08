@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.activities.BankTransferActivity;
 import com.midtrans.sdk.uikit.activities.BankTransferInstructionActivity;
 import com.midtrans.sdk.uikit.adapters.InstructionFragmentPagerAdapter;
 import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
@@ -122,14 +124,20 @@ public class BankTransferPaymentFragment extends Fragment {
         if (transactionResponse != null) {
             if (transactionResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_200))
                     || transactionResponse.getStatusCode().trim().equalsIgnoreCase(getString(R.string.success_code_201))) {
-                if (getArguments() != null && getArguments().getString(BankTransferInstructionActivity.BANK) != null && getArguments().getString(BankTransferInstructionActivity.BANK).equals(BankTransferInstructionActivity.TYPE_BCA)) {
-                    if (transactionResponse.getAccountNumbers() != null && transactionResponse.getAccountNumbers().size() > 0) {
-                        mTextViewVirtualAccountNumber.setText(transactionResponse.getAccountNumbers().get(0).getAccountNumber());
+                if (getArguments() != null && getArguments().getString(BankTransferInstructionActivity.BANK) != null) {
+                    if (getArguments().getString(BankTransferInstructionActivity.BANK).equals(BankTransferInstructionActivity.TYPE_BCA)) {
+                        mTextViewVirtualAccountNumber.setText(transactionResponse.getBcaVaNumber());
                         mTextViewValidity.setText(getString(R.string.text_format_valid_until, transactionResponse.getBcaExpiration()));
+                    } else if (getArguments().getString(BankTransferInstructionActivity.BANK).equals(BankTransferInstructionActivity.TYPE_PERMATA)) {
+                        mTextViewVirtualAccountNumber.setText(transactionResponse.getPermataVANumber());
+                        mTextViewValidity.setText(getString(R.string.text_format_valid_until, transactionResponse.getPermataExpiration()));
+                    } else if (getArguments().getString(BankTransferInstructionActivity.BANK).equals(BankTransferInstructionActivity.TYPE_BNI)) {
+                        mTextViewVirtualAccountNumber.setText(transactionResponse.getBniVaNumber());
+                        mTextViewValidity.setText(getString(R.string.text_format_valid_until, transactionResponse.getBniExpiration()));
+                    } else {
+                        mTextViewVirtualAccountNumber.setText(transactionResponse.getStatusMessage());
+                        mTextViewValidity.setText(transactionResponse.getStatusMessage());
                     }
-                } else {
-                    mTextViewVirtualAccountNumber.setText(transactionResponse.getPermataVANumber());
-                    mTextViewValidity.setText(getString(R.string.text_format_valid_until, transactionResponse.getPermataExpiration()));
                 }
             } else {
                 mTextViewVirtualAccountNumber.setText(transactionResponse.getStatusMessage());
@@ -203,7 +211,9 @@ public class BankTransferPaymentFragment extends Fragment {
         instructionTabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                instructionViewPager.setCurrentItem(tab.getPosition());
+                int position = tab.getPosition();
+                instructionViewPager.setCurrentItem(position);
+                changeCompletePaymentTitle(position);
             }
 
             @Override
@@ -265,6 +275,66 @@ public class BankTransferPaymentFragment extends Fragment {
         instructionViewPager.setAdapter(adapter);
         if (POSITION > -1) {
             instructionViewPager.setCurrentItem(POSITION);
+        }
+        instructionViewPager.clearOnPageChangeListeners();
+        instructionViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                changeCompletePaymentTitle(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+    }
+
+    private void changeCompletePaymentTitle(int position) {
+        String title = getArguments().getString(BankTransferInstructionActivity.BANK);
+        FancyButton confirmBtn = ((BankTransferActivity) getActivity()).getmButtonConfirmPayment();
+        if (title.equals(BankTransferFragment.TYPE_BCA)) {
+            if (position == 0) {
+                confirmBtn.setText(getString(R.string.complete_payment_at_atm));
+            } else if (position == 1) {
+                confirmBtn.setText(getString(R.string.complete_payment_at_klik_bca_va));
+            } else {
+                confirmBtn.setText(getString(R.string.complete_payment_at_mobile_bca));
+            }
+        } else if (title.equals(BankTransferFragment.TYPE_PERMATA)) {
+            if (position == 0) {
+                confirmBtn.setText(getString(R.string.complete_payment_at_atm));
+            } else {
+                confirmBtn.setText(getString(R.string.complete_payment_at_atm));
+            }
+        } else if (title.equals(BankTransferFragment.TYPE_MANDIRI_BILL) ||
+                title.equals(BankTransferFragment.TYPE_MANDIRI)) {
+            if (position == 0) {
+                confirmBtn.setText(getString(R.string.complete_payment_at_atm));
+            } else {
+                confirmBtn.setText(getString(R.string.complete_payment_via_internet_banking));
+            }
+        } else if (title.equals(BankTransferFragment.TYPE_BNI)) {
+            if (position == 0) {
+                confirmBtn.setText(getString(R.string.complete_payment_at_atm));
+            } else if (position == 1) {
+                confirmBtn.setText(getString(R.string.complete_payment_va_bni_mobile));
+            } else {
+                confirmBtn.setText(getString(R.string.complete_payment_via_internet_banking));
+            }
+        } else {
+            if (position == 0) {
+                confirmBtn.setText(getString(R.string.complete_payment_at_atm));
+            } else if (position == 1) {
+                confirmBtn.setText(getString(R.string.complete_payment_at_atm));
+            } else {
+                confirmBtn.setText(getString(R.string.complete_payment_at_atm));
+            }
         }
     }
 }

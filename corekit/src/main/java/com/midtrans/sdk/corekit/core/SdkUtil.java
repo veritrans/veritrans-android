@@ -545,6 +545,19 @@ public class SdkUtil {
             requestModel.setCustomField3(transactionRequest.getCustomField3());
         }
 
+        if (transactionRequest.getPermataVa() != null) {
+            requestModel.setPermataVa(transactionRequest.getPermataVa());
+        }
+
+        if (transactionRequest.getBcaVa() != null) {
+            requestModel.setBcaVa(transactionRequest.getBcaVa());
+        }
+
+        if (transactionRequest.getEnabledPayments() != null
+                && !transactionRequest.getEnabledPayments().isEmpty()) {
+            requestModel.setEnabledPayments(transactionRequest.getEnabledPayments());
+        }
+
         // Set promo is available
         if (transactionRequest.isPromoEnabled()) {
             SnapPromo promo = new SnapPromo();

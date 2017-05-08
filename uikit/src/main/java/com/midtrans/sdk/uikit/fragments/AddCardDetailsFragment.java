@@ -15,6 +15,7 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -436,7 +437,7 @@ public class AddCardDetailsFragment extends Fragment {
 
 
                         //make payment
-                        SdkUIFlowUtil.showProgressDialog(getActivity(), false);
+                        SdkUIFlowUtil.showProgressDialog((AppCompatActivity) getActivity(), false);
                         setPaymentInstallment();
                         ((CreditDebitCardFlowActivity) getActivity()).setSavedCardInfo(cbSaveCard.isChecked(), cardType);
                         if (promo != null && promo.getDiscountAmount() > 0) {
@@ -1151,11 +1152,8 @@ public class AddCardDetailsFragment extends Fragment {
     }
 
     private boolean isBanksPointActivated() {
-        if (layoutBanksPoint.getVisibility() == View.VISIBLE && cbBankPoint.isChecked()) {
-            return true;
-        }
+        return layoutBanksPoint.getVisibility() == View.VISIBLE && cbBankPoint.isChecked();
 
-        return false;
     }
 
     private void showBanksPoint(boolean show) {

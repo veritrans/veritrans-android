@@ -12,6 +12,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -22,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -137,6 +139,7 @@ public class CardDetailsFragment extends Fragment {
         initScanCard();
         initSaveCardLayout();
         initSaveCardCheckbox();
+        initBniPointCheckbox();
         initDelete();
         fetchSavedCardIfAvailable();
         initTheme();
@@ -148,6 +151,19 @@ public class CardDetailsFragment extends Fragment {
         initFocusChanges();
         initInstallmentTermButton();
         initPayNow();
+    }
+
+    private void initBniPointCheckbox() {
+        cbBankPoint.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    showInstallmentLayout(false);
+                } else {
+                    initCardInstallment();
+                }
+            }
+        });
     }
 
     private void initPointHelp() {
@@ -180,7 +196,7 @@ public class CardDetailsFragment extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 dialogInterface.dismiss();
-                                SdkUIFlowUtil.showProgressDialog(getActivity(), getString(R.string.processing_delete), false);
+                                SdkUIFlowUtil.showProgressDialog((AppCompatActivity) getActivity(), getString(R.string.processing_delete), false);
                                 SaveCardRequest savedCard = getSavedCard();
                                 ((CreditCardFlowActivity) getActivity()).deleteSavedCard(savedCard);
                             }
@@ -329,7 +345,7 @@ public class CardDetailsFragment extends Fragment {
                             cardTokenRequest.setGrossAmount(midtransSDK.getTransactionRequest().getAmount());
 
                             // Start get card token and payment
-                            SdkUIFlowUtil.showProgressDialog(getActivity(), false);
+                            SdkUIFlowUtil.showProgressDialog((AppCompatActivity) getActivity(), false);
                             setPaymentInstallment();
                             ((CreditCardFlowActivity) getActivity()).setSavedCardInfo(saveCardCheckBox.isChecked(), "");
                             if (promo != null && promo.getDiscountAmount() > 0) {
@@ -1111,6 +1127,7 @@ public class CardDetailsFragment extends Fragment {
         if (installmentCurrentPosition > 0 && installmentCurrentPosition <= installmentTotalPositions) {
             installmentCurrentPosition -= 1;
             setInstallmentTerm();
+            changeBniPointVisibility();
         }
         disableEnableInstallmentButton();
     }
@@ -1119,8 +1136,17 @@ public class CardDetailsFragment extends Fragment {
         if (installmentCurrentPosition >= 0 && installmentCurrentPosition < installmentTotalPositions) {
             installmentCurrentPosition += 1;
             setInstallmentTerm();
+            changeBniPointVisibility();
         }
         disableEnableInstallmentButton();
+    }
+
+    private void changeBniPointVisibility() {
+        if (installmentCurrentPosition == 0) {
+            initBNIPoints(true);
+        } else {
+            showBanksPoint(false);
+        }
     }
 
     private void disableEnableInstallmentButton() {

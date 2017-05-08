@@ -22,12 +22,14 @@
     <string name="acquiring_bank_by_bca">Acquiring Bank by BCA</string>
     <string name="acquiring_bank_by_maybank">Acquiring Bank by Maybank</string>
     <string name="acquiring_bank_by_bri">Acquiring Bank by BRI</string>
+    <string name="acquiring_bank_by_cimb">Acquiring Bank by CIMB</string>
 
     <string name="bank_bni">BNI</string>
     <string name="bank_mandiri">Mandiri</string>
     <string name="bank_bca">BCA</string>
     <string name="bank_bri">BRI</string>
     <string name="bank_maybank">Maybank</string>
+    <string name="bank_cimb">CIMB</string>
 
     <!--CUSTOM EXPIRY TITLE-->
     <string name="custom_expiry_none">No Custom Expiry</string>
@@ -41,6 +43,29 @@
     <!--DEFAULT SAVE CARD TITLE-->
     <string name="default_save_card_enabled">Default Save Card Enabled</string>
     <string name="default_save_card_disabled">Default Save Card Disabled</string>
+
+    <!--PAYMENT CHANNELS OPTION-->
+    <string name="payment_channels_show_all">Show All Payment Channels</string>
+    <string name="payment_channels_selected">Show Selected Payment Channels</string>
+    <string name="payment_channels_selection_show_all">Show All</string>
+    <string name="payment_channels_selection_show_selected">Show Selected Only</string>
+    <string name="payment_channels_selection_show_selected_format">Show Selected Only - %1$d Channels</string>
+    <string name="payment_channels_select_payment_channel">Select Payment Channel</string>
+
+    <!--CUSTOM VA-->
+    <string name="custom_permata_va_disabled">Custom Permata VA Number Disabled</string>
+    <string name="custom_permata_va_enabled">Custom Permata VA Number Enabled</string>
+    <string name="custom_bca_va_disabled">Custom BCA VA Number Disabled</string>
+    <string name="custom_bca_va_enabled">Custom BCA VA Number Enabled</string>
+    <string name="custom_va_enabled_format">Enabled - %1$s</string>
+    <string name="custom_va_enabled">Enabled</string>
+    <string name="custom_va_disabled">Disabled</string>
+    <string name="custom_bca_va_hint">Custom BCA VA Number</string>
+    <string name="custom_permata_va_error">VA Number must be 10 digits.</string>
+    <string name="custom_permata_va_hint">Custom Permata VA Number</string>
+    <string name="custom_bca_va_enable_title">Enable Custom BCA VA Number</string>
+    <string name="custom_permata_va_enable_title">Enable Custom Permata VA Number</string>
+    <string name="custom_va_edit_button">Edit</string>
 
     <!--PROMO ENABLED TITLE-->
     <string name="default_promo_enabled">Promo Enabled</string>
@@ -97,4 +122,20 @@
     <string name="btn_pay_20000">Pay Rp 20,000</string>
     <string name="sample_user_id">midtrans.android@yopmail.com</string>
     <string name="sample_user_id2">midtrans.android2@yopmail.com</string>
+
+    <!-- installment -->
+    <string name="installment_type_disabled">Installment Disabled</string>
+    <string name="installment_bni">BNI</string>
+    <string name="installment_mandiri">Mandiri</string>
+    <string name="installment_bca">BCA</string>
+    <string name="installment_offline">Offline</string>
+    <string name="using_bni_installment">Using BNI Installment</string>
+    <string name="using_mandiri_installment">Using Mandiri Installment</string>
+    <string name="using_bca_installment">Using BCA Installment</string>
+    <string name="using_offline_installment">Using Offline Installment</string>
+    <string name="installment_required_title">(Required)</string>
+
+    <!-- BNI Point -->
+    <string name="bni_point_only_disabled">BNI Point Only Disabled</string>
+    <string name="bni_point_only_enabled">BNI Point Only Enabled</string>
 </resources>

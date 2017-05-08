@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -166,7 +165,7 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
                     xlTunaiPaymentFragment, PAYMENT_FRAGMENT);
             fragmentTransaction.addToBackStack(PAYMENT_FRAGMENT);
             fragmentTransaction.commit();
-            buttonConfirmPayment.setText(getString(R.string.complete_payment));
+            buttonConfirmPayment.setText(getString(R.string.complete_payment_via_xl_tunai));
             ImageView merchantLogo = (ImageView) findViewById(R.id.merchant_logo);
             if (merchantLogo != null) {
                 merchantLogo.setVisibility(View.INVISIBLE);

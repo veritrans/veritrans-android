@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.midtrans.sdk.corekit.callback.CheckoutCallback;
 import com.midtrans.sdk.corekit.callback.TransactionOptionsCallback;
 import com.midtrans.sdk.corekit.core.Constants;
@@ -46,9 +47,9 @@ import com.midtrans.sdk.uikit.adapters.ItemDetailsAdapter;
 import com.midtrans.sdk.uikit.adapters.PaymentMethodsAdapter;
 import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.models.ItemViewDetails;
+import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,25 +60,6 @@ import java.util.List;
  * Created by shivam on 10/16/15.
  */
 public class PaymentMethodsActivity extends BaseActivity implements PaymentMethodsAdapter.PaymentMethodListener, ItemDetailsAdapter.ItemDetailListener {
-    // Payment Name
-    protected static final String PAYMENT_TYPE_CIMB_CLICK = "cimb_click";
-    protected static final String PAYMENT_TYPE_BCA_KLIKPAY = "bca_klikpay";
-    protected static final String PAYMENT_TYPE_MANDIRI_CLICKPAY = "mandiri_clickpay";
-    protected static final String PAYMENT_TYPE_MANDIRI_ECASH = "mandiri_ecash";
-    protected static final String PAYMENT_TYPE_BANK_TRANSFER = "bank_transfer";
-    protected static final String PAYMENT_TYPE_CREDIT_CARD = "cc";
-    protected static final String PAYMENT_TYPE_BRI_EPAY = "bri_epay";
-    protected static final String PAYMENT_TYPE_INDOSAT_DOMPETKU = "indosat_dompetku";
-    protected static final String PAYMENT_TYPE_INDOMARET = "indomaret";
-    protected static final String PAYMENT_TYPE_KLIK_BCA = "bca_klikbca";
-    protected static final String PAYMENT_TYPE_TELKOMSEL_ECASH = "telkomsel_ecash";
-    protected static final String PAYMENT_TYPE_XL_TUNAI = "xl_tunai";
-    protected static final String PAYMENT_TYPE_KIOSON = "kiosan";
-    protected static final String PAYMENT_TYPE_GCI = "gci";
-
-    private static final String KEY_SELECT_PAYMENT = "Payment Select";
-    private static final String KEY_CANCEL_TRANSACTION_EVENT = "Cancel Transaction";
-    private static final String PAYMENT_SNAP = "snap";
     private static final String TAG = PaymentMethodsActivity.class.getSimpleName();
     private ArrayList<PaymentMethodsModel> data = new ArrayList<>();
     private boolean isCreditCardOnly = false;
@@ -109,6 +91,8 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     private PaymentMethodsAdapter paymentMethodsAdapter;
     private AlertDialog alertDialog;
     private DefaultTextView textTitle;
+    private ImageView progressImage;
+    private TextView progressMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -235,16 +219,23 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         logo = (ImageView) findViewById(R.id.merchant_logo);
         merchantName = (TextView) findViewById(R.id.merchant_name);
         progressContainer = (LinearLayout) findViewById(R.id.progress_container);
+        progressImage = (ImageView) findViewById(R.id.progress_bar_image);
+        progressMessage = (TextView) findViewById(R.id.progress_bar_message);
         textTitle = (DefaultTextView) findViewById(R.id.title_header);
         if (isCreditCardOnly || isBankTransferOnly || isKlikBCA || isBCAKlikpay
                 || isMandiriClickPay || isMandiriECash || isCIMBClicks || isBRIEpay
                 || isTelkomselCash || isIndosatDompetku || isXlTunai
                 || isIndomaret || isKioson || isGci) {
-            TextView titleText = (TextView) findViewById(R.id.title_header);
-            TextView loadingText = (TextView) findViewById(R.id.loading_text);
-            titleText.setText(getString(R.string.txt_checkout));
-            loadingText.setText(R.string.txt_checkout);
+            textTitle.setText(getString(R.string.txt_checkout));
+            progressMessage.setText(R.string.txt_checkout);
         }
+
+        // Init progress
+        Glide.with(this)
+                .load(R.drawable.midtrans_loader)
+                .asGif()
+                .into(progressImage);
+        progressMessage.setText(R.string.txt_loading_payment);
     }
 
     private void getPaymentPages() {
@@ -263,18 +254,20 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             public void onFailure(Token token, String reason) {
                 Log.d(TAG, "Failed to registering transaction: " + reason);
                 enableButtonBack(true);
-                showErrorMessage();
+                String errorMessage = MessageUtil.createMessageWhenCheckoutFailed(PaymentMethodsActivity.this, token.getErrorMessage());
+                showErrorMessage(errorMessage);
             }
 
             @Override
             public void onError(Throwable error) {
                 error.printStackTrace();
-
                 enableButtonBack(true);
-                showErrorMessage();
+                String errorMessage = MessageUtil.createMessageWhenCheckoutError(PaymentMethodsActivity.this, error.getMessage());
+                showErrorMessage(errorMessage);
             }
         });
     }
+
 
     private void enableButtonBack(boolean enable) {
         backButtonEnabled = enable;
@@ -323,7 +316,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             public void onFailure(Transaction transaction, String reason) {
                 enableButtonBack(true);
                 progressContainer.setVisibility(View.GONE);
-                showDefaultPaymentMethods();
+                showTransactionDetailsErrorMessage();
             }
 
             @Override
@@ -331,7 +324,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 error.printStackTrace();
                 enableButtonBack(true);
                 progressContainer.setVisibility(View.GONE);
-                showDefaultPaymentMethods();
+                showTransactionDetailsErrorMessage();
             }
         });
     }
@@ -660,9 +653,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         for (EnabledPayment enabledPayment : enabledPayments) {
             if ((enabledPayment.getCategory() != null && enabledPayment.getCategory().equals(getString(R.string.enabled_payment_category_banktransfer)))
                     || enabledPayment.getType().equalsIgnoreCase(getString(R.string.payment_mandiri_bill_payment))) {
-                if (!enabledPayment.getType().equalsIgnoreCase(getString(R.string.payment_bni_va))) {
-                    bankTransfers.add(enabledPayment.getType());
-                }
+                bankTransfers.add(enabledPayment.getType());
             } else {
                 PaymentMethodsModel model = PaymentMethods.getMethods(this, enabledPayment.getType());
                 if (model != null) {
@@ -751,7 +742,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
     private void showLogo(String url) {
         if (!TextUtils.isEmpty(url)) {
-            Picasso.with(this)
+            Glide.with(this)
                     .load(url)
                     .into(logo);
             merchantName.setVisibility(View.GONE);
@@ -767,17 +758,10 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         }
     }
 
-    private void showDefaultPaymentMethods() {
-        progressContainer.setVisibility(View.GONE);
-        List<EnabledPayment> paymentMethods = PaymentMethods.getDefaultPaymentList(this);
-        initialiseAdapterData(paymentMethods);
-        paymentMethodsAdapter.setData(data);
-    }
-
-    private void showErrorMessage() {
+    private void showErrorMessage(String message) {
         if (!isFinishing()) {
             alertDialog = new AlertDialog.Builder(this)
-                    .setMessage(getString(R.string.txt_error_snap_token))
+                    .setMessage(message)
                     .setPositiveButton(R.string.btn_retry, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -796,6 +780,30 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             alertDialog.show();
         }
     }
+
+    private void showTransactionDetailsErrorMessage() {
+        if (!isFinishing()) {
+            alertDialog = new AlertDialog.Builder(this)
+                    .setMessage(getString(R.string.error_snap_transaction_details))
+                    .setPositiveButton(R.string.btn_retry, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            getPaymentPages();
+                        }
+                    })
+                    .setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            finish();
+                        }
+                    })
+                    .create();
+            alertDialog.show();
+        }
+    }
+
 
     private void showErrorAlertDialog(String message) {
         if (!isFinishing()) {

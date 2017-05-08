@@ -43,29 +43,10 @@ test:
         # Unit Test Demo App
        - (./gradlew demo:assembleRelease -PdisablePreDex):
                    timeout: 3600
-       # UI Test
-       - emulator -avd circleci-android22 -no-audio -no-window:
-            background: true
-            parallel: true
-       # wait for it to have booted
-       - circle-android wait-for-boot
-       # unlock the emulator screen
-       - sleep 30
-       - fb-adb shell input keyevent 82
-       # Don't show soft keyboard
-       - fb-adb shell settings put secure show_ime_with_hard_keyboard 0
-       # run tests  against the emulator.
-       - (./gradlew :sdk-example:connectedDevelopmentDebugAndroidTest -PdisablePreDex):
-            timeout: 3600
 
     post:
        - cp -r corekit/build/reports $CIRCLE_ARTIFACTS
        - cp -r corekit/build/reports/ $CIRCLE_TEST_REPORTS
-       # copy the build outputs to artifacts
-       - cp -r sdk-example/build/outputs $CIRCLE_ARTIFACTS
-       # copy the test results to the test results directory.
-       - cp -r sdk-example/build/outputs/androidTest-results/* $CIRCLE_TEST_REPORTS
-
 
 
 # Deployment section

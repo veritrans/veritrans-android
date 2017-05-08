@@ -169,7 +169,11 @@
     <string name="copied_to_clipboard">Copied to clipboard</string>
     <string name="copied_bill_code">Billpay code was copied to clipboard</string>
     <string name="copied_company_code">Company code was copied to clipboard</string>
-    <string name="complete_payment_at_atm">Complete Payment At ATM</string>
+    <string name="complete_payment_at_atm">Complete Payment at ATM</string>
+    <string name="complete_payment_at_mobile_bca">Complete Payment via m-BCA</string>
+    <string name="complete_payment_at_klik_bca_va">Complete Payment via KlikBCA</string>
+    <string name="complete_payment_via_internet_banking">Complete Payment via Internet Banking</string>
+    <string name="complete_payment_va_bni_mobile">Complete Payment via BNI Mobile</string>
     <string name="complete_payment">Complete Payment</string>
     <string name="complete_payment_at_klik_bca">Finish</string>
     <string name="done">Finish</string>
@@ -589,7 +593,7 @@
     <string name="save_card_info">Card details above will be saved to help your future transactions.</string>
     <string name="choose_card">Choose credit card</string>
     <string name="add_new_card">pay with new card</string>
-    <string name="mandiri_bill_transfer">Mandiri Bill</string>
+    <string name="mandiri_bill_transfer">Bank Mandiri</string>
     <string name="bank_bca_transfer">Bank BCA</string>
     <string name="bank_permata_transfer">Bank Permata</string>
     <string name="bank_bni_transfer">Bank BNI</string>
@@ -737,5 +741,12 @@
     <string name="title_instruction_mandiri_internet">Mandiri Internet Step by Step</string>
     <string name="title_instruction_permata">Permata Bank Transfer Step by Step</string>
     <string name="title_instruction_prima">Prima Step by Step</string>
+    <string name="error_snap_transaction_details">Failed to retrieve transaction details</string>
+    <string name="error_paid_orderid">Order id has been paid</string>
+    <string name="error_gross_amount_not_equal">Gross amount is not equal to the sum of item details</string>
+    <string name="error_gross_amount_required">Gross amount is required</string>
+    <string name="error_order_id_required">Order id is required</string>
+    <string name="checkout_error_empty_response">Empty response from server</string>
+    <string name="complete_payment_via_xl_tunai">Complete Payment via XL Tunai</string>
 
 </resources>

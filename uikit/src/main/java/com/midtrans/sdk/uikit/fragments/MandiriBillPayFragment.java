@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.activities.BankTransferActivity;
 import com.midtrans.sdk.uikit.adapters.InstructionFragmentPagerAdapter;
 import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
@@ -194,7 +196,9 @@ public class MandiriBillPayFragment extends Fragment {
         instructionTabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                instructionViewPager.setCurrentItem(tab.getPosition());
+                int position = tab.getPosition();
+                instructionViewPager.setCurrentItem(position);
+                changeCompletePaymentTitle(position);
             }
 
             @Override
@@ -220,6 +224,33 @@ public class MandiriBillPayFragment extends Fragment {
         instructionViewPager.setAdapter(adapter);
         if (POSITION > -1) {
             instructionViewPager.setCurrentItem(POSITION);
+        }
+
+        instructionViewPager.clearOnPageChangeListeners();
+        instructionViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                changeCompletePaymentTitle(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+    }
+
+    private void changeCompletePaymentTitle(int position) {
+        FancyButton confirmButton = ((BankTransferActivity) getActivity()).getmButtonConfirmPayment();
+        if (position == 0) {
+            confirmButton.setText(getString(R.string.complete_payment_at_atm));
+        } else {
+            confirmButton.setText(getString(R.string.complete_payment_via_internet_banking));
         }
     }
 }
