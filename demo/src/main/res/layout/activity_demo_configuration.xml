@@ -383,7 +383,7 @@
                     android:text="@string/enabled" />
             </RadioGroup>
 
-            <com.midtrans.demo.DemoTextView
+            <com.midtrans.demo.widgets.DemoTextView
                 android:id="@+id/title_custom_payment_channels"
                 style="@style/ConfigItemTextTitle"
                 android:layout_width="match_parent"
@@ -410,7 +410,7 @@
                     android:paddingLeft="@dimen/thirtytwo_dp"
                     android:paddingRight="@dimen/thirtytwo_dp">
 
-                    <com.midtrans.demo.DemoRadioButton
+                    <com.midtrans.demo.widgets.DemoRadioButton
                         android:id="@+id/type_payment_channels_show_all"
                         style="@style/CustomRadioButtonStyle"
                         android:layout_width="match_parent"
@@ -421,7 +421,7 @@
                         android:gravity="center_vertical"
                         android:text="@string/payment_channels_selection_show_all" />
 
-                    <com.midtrans.demo.DemoRadioButton
+                    <com.midtrans.demo.widgets.DemoRadioButton
                         android:id="@+id/type_payment_channels_show_selected"
                         style="@style/CustomRadioButtonStyle"
                         android:layout_width="match_parent"
@@ -461,7 +461,7 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <com.midtrans.demo.DemoTextView
+            <com.midtrans.demo.widgets.DemoTextView
                 android:id="@+id/title_custom_bca_va"
                 style="@style/ConfigItemTextTitle"
                 android:layout_width="match_parent"
