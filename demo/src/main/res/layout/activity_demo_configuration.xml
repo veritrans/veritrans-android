@@ -748,9 +748,9 @@
                 style="@style/ConfigItemTextTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_bni_point"
+                android:drawableLeft="@drawable/ic_otp"
                 android:drawablePadding="12dp"
-                android:drawableStart="@drawable/ic_bni_point"
+                android:drawableStart="@drawable/ic_otp"
                 android:paddingLeft="14dp"
                 android:text="@string/auto_read_sms_disabled" />
 
