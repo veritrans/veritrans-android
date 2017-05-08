@@ -31,4 +31,6 @@ public class Constants {
     public static final String INSTALLMENT_BANK_MANDIRI = "mandiri";
     public static final String INSTALLMENT__BANK_BCA = "bca";
     public static final String INSTALLMENT_BANK_OFFLINE = "offline";
+
+
 }
