@@ -744,7 +744,6 @@
             </RadioGroup>
 
             <com.midtrans.demo.widgets.DemoTextView
-            <com.midtrans.demo.DemoTextView
                 android:id="@+id/title_auto_read_type"
                 style="@style/ConfigItemTextTitle"
                 android:layout_width="match_parent"
@@ -765,7 +764,7 @@
                 android:visibility="gone"
                 tools:visibility="visible">
 
-                <com.midtrans.demo.DemoRadioButton
+                <com.midtrans.demo.widgets.DemoRadioButton
                     android:id="@+id/type_auto_read_disabled"
                     style="@style/CustomRadioButtonStyle"
                     android:layout_width="match_parent"
@@ -776,7 +775,7 @@
                     android:gravity="center_vertical"
                     android:text="@string/disabled" />
 
-                <com.midtrans.demo.DemoRadioButton
+                <com.midtrans.demo.widgets.DemoRadioButton
                     android:id="@+id/type_auto_read_enabled"
                     style="@style/CustomRadioButtonStyle"
                     android:layout_width="match_parent"
@@ -787,7 +786,7 @@
                     android:text="@string/enabled" />
             </RadioGroup>
 
-            <com.midtrans.demo.DemoTextView
+            <com.midtrans.demo.widgets.DemoTextView
                 android:id="@+id/title_color_theme_type"
                 style="@style/ConfigItemTextTitle"
                 android:layout_width="match_parent"
