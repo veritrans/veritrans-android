@@ -26,13 +26,14 @@
                 android:layout_height="match_parent"
                 android:gravity="center">
 
-                <com.midtrans.demo.widgets.DemoTextView
+                <ImageView
+                    android:scaleType="center"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_toLeftOf="@+id/image_setting_account"
                     android:layout_toStartOf="@+id/image_setting_account"
                     android:gravity="center"
-                    android:text="@string/midtrans_store"
+                    android:src="@drawable/ic_midtransstore"
                     android:textSize="25sp" />
 
                 <ImageView
