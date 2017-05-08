@@ -72,6 +72,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private static final String INSTALLMENT_REQUIRED = "config.installment.required";
     private static final String BNI_POINT_TYPE = "config.bni.point";
     private static final String PAYMENT_CHANNELS_TYPE = "config.channels";
+    private static final String AUTO_READ_SMS_TYPE = "config.auto.otp";
 
     private static int DELAY = 200;
     private String selectedColor = DemoThemeConstants.BLUE_THEME;
@@ -92,6 +93,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private TextView installmentTitle;
     private TextView bniPointTitle;
     private TextView paymentChannelsTitle;
+    private TextView autoReadSmsTitle;
 
     /**
      * Selection Container
@@ -109,6 +111,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private RadioGroup installmentContainer;
     private RadioGroup bniPointContainer;
     private LinearLayout paymentChannelsContainer;
+    private RadioGroup autoReadSmsContainer;
 
     /**
      * Radio Button selection for installment
@@ -190,6 +193,11 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
      */
     private AppCompatRadioButton paymentChannelsAllSelection;
     private AppCompatRadioButton paymentChannelsSelectedSelection;
+    /**
+     * Radio Button Selection for Auto Read SMS selection.
+     */
+    private AppCompatRadioButton autoReadSmsEnabledSelection;
+    private AppCompatRadioButton autoReadSmsDisabledSelection;
 
     private FancyButton nextButton;
     private ImageButton editBcaVaButton;
@@ -216,6 +224,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         initInstallmentSelection();
         initBniPointSelection();
         initInstallmentRequired();
+        initAutoReadOtpSelection();
         initTitleClicks();
         initNextButton();
     }
@@ -241,6 +250,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         installmentTitle = (TextView) findViewById(R.id.title_installment_type);
         bniPointTitle = (TextView) findViewById(R.id.title_bni_point_type);
         paymentChannelsTitle = (TextView) findViewById(R.id.title_custom_payment_channels);
+        autoReadSmsTitle = (TextView) findViewById(R.id.title_auto_read_type);
 
         cardClickContainer = (RadioGroup) findViewById(R.id.credit_card_type_container);
         secureContainer = (RadioGroup) findViewById(R.id.secure_type_container);
@@ -255,6 +265,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         installmentContainer = (RadioGroup) findViewById(R.id.enable_installment_container);
         bniPointContainer = (RadioGroup) findViewById(R.id.bni_point_type_container);
         paymentChannelsContainer = (LinearLayout) findViewById(R.id.payment_channels_type_container);
+        autoReadSmsContainer = (RadioGroup) findViewById(R.id.auto_read_type_container);
 
         installmentBniSelection = (AppCompatRadioButton) findViewById(R.id.installment_type_bni);
         installmentMandiriSelection = (AppCompatRadioButton) findViewById(R.id.installment_type_mandiri);
@@ -309,6 +320,9 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
 
         paymentChannelsAllSelection = (AppCompatRadioButton) findViewById(R.id.type_payment_channels_show_all);
         paymentChannelsSelectedSelection = (AppCompatRadioButton) findViewById(R.id.type_payment_channels_show_selected);
+
+        autoReadSmsDisabledSelection = (AppCompatRadioButton) findViewById(R.id.type_auto_read_disabled);
+        autoReadSmsEnabledSelection = (AppCompatRadioButton) findViewById(R.id.type_auto_read_enabled);
 
         nextButton = (FancyButton) findViewById(R.id.btn_launch_app);
         editBcaVaButton = (ImageButton) findViewById(R.id.btn_edit_bca_va);
@@ -607,6 +621,29 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                             setTextViewDrawableLeftColorFilter(bniPointTitle);
                             // Show pre auth container
                             bniPointContainer.setVisibility(View.VISIBLE);
+                        } else {
+                            unselectAllTitles();
+                            hideAllSelections();
+                        }
+                    }
+                }, DELAY);
+            }
+        });
+
+        autoReadSmsTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!autoReadSmsTitle.isSelected()) {
+                            unselectAllTitles();
+                            hideAllSelections();
+                            autoReadSmsTitle.setSelected(true);
+                            setTextViewSelectedColor(autoReadSmsTitle);
+                            setTextViewDrawableLeftColorFilter(autoReadSmsTitle);
+                            // Show auto read selection container
+                            autoReadSmsContainer.setVisibility(View.VISIBLE);
                         } else {
                             unselectAllTitles();
                             hideAllSelections();
@@ -1468,6 +1505,35 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         });
     }
 
+    private void initAutoReadOtpSelection() {
+        boolean autoReadOtpEnabled = DemoPreferenceHelper.getBooleanPreference(this, AUTO_READ_SMS_TYPE, false);
+        if (autoReadOtpEnabled) {
+            autoReadSmsTitle.setText(R.string.auto_read_sms_enabled);
+            autoReadSmsEnabledSelection.setChecked(true);
+        } else {
+            autoReadSmsTitle.setText(R.string.auto_read_sms_disabled);
+            autoReadSmsDisabledSelection.setChecked(true);
+        }
+
+        autoReadSmsEnabledSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    autoReadSmsTitle.setText(R.string.auto_read_sms_enabled);
+                }
+            }
+        });
+
+        autoReadSmsDisabledSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    autoReadSmsTitle.setText(R.string.auto_read_sms_disabled);
+                }
+            }
+        });
+    }
+
     private void resetInstallmentSelection() {
         noInstallmentSelection.setChecked(true);
     }
@@ -1488,6 +1554,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 savePreAuthSelection();
                 saveInstallmentSelection();
                 saveBniPointSelection();
+                saveAutoReadSmsSelection();
                 saveEnabledPayments();
 
                 TransactionRequest transactionRequest = initializePurchaseRequest();
@@ -1631,6 +1698,14 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         }
     }
 
+    private void saveAutoReadSmsSelection() {
+        if (autoReadSmsEnabledSelection.isChecked()) {
+            DemoPreferenceHelper.setBooleanPreference(this, AUTO_READ_SMS_TYPE, true);
+        } else {
+            DemoPreferenceHelper.setBooleanPreference(this, AUTO_READ_SMS_TYPE, false);
+        }
+    }
+
     private void unselectAllTitles() {
         cardClickTitle.setSelected(false);
         cardClickTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
@@ -1671,6 +1746,9 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         paymentChannelsTitle.setSelected(false);
         paymentChannelsTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
         clearTextViewDrawableLeftColorFilter(paymentChannelsTitle);
+        autoReadSmsTitle.setSelected(false);
+        autoReadSmsTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
+        clearTextViewDrawableLeftColorFilter(autoReadSmsTitle);
     }
 
     private void hideAllSelections() {
@@ -1687,6 +1765,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         installmentContainer.setVisibility(View.GONE);
         bniPointContainer.setVisibility(View.GONE);
         paymentChannelsContainer.setVisibility(View.GONE);
+        autoReadSmsContainer.setVisibility(View.GONE);
     }
 
     private void setTextViewDrawableLeftColorFilter(TextView textView) {
@@ -1888,6 +1967,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         paymentChannelsAllSelection.setSupportButtonTintList(colorStateList);
         paymentChannelsSelectedSelection.setSupportButtonTintList(colorStateList);
 
+        autoReadSmsDisabledSelection.setSupportButtonTintList(colorStateList);
+        autoReadSmsEnabledSelection.setSupportButtonTintList(colorStateList);
     }
 
     private void initMidtransSDK() {
@@ -2023,6 +2104,13 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         } else {
             uiKitCustomSetting.setSaveCardChecked(false);
         }
+
+        if (autoReadSmsEnabledSelection.isChecked()) {
+            uiKitCustomSetting.setEnableAutoReadSms(true);
+        } else {
+            uiKitCustomSetting.setEnableAutoReadSms(false);
+        }
+
         MidtransSDK.getInstance().setUIKitCustomSetting(uiKitCustomSetting);
 
         if (secureEnabledSelection.isChecked()) {
@@ -2091,6 +2179,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     new BankTransferRequestModel(vaNumber)
             );
         }
+
         return transactionRequestNew;
     }
 

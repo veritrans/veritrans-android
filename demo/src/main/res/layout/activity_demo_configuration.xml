@@ -744,6 +744,49 @@
             </RadioGroup>
 
             <com.midtrans.demo.DemoTextView
+                android:id="@+id/title_auto_read_type"
+                style="@style/ConfigItemTextTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_bni_point"
+                android:drawablePadding="12dp"
+                android:drawableStart="@drawable/ic_bni_point"
+                android:paddingLeft="14dp"
+                android:text="@string/auto_read_sms_disabled" />
+
+            <RadioGroup
+                android:id="@+id/auto_read_type_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/thirtytwo_dp"
+                android:paddingRight="@dimen/thirtytwo_dp"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <com.midtrans.demo.DemoRadioButton
+                    android:id="@+id/type_auto_read_disabled"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:checked="true"
+                    android:gravity="center_vertical"
+                    android:text="@string/disabled" />
+
+                <com.midtrans.demo.DemoRadioButton
+                    android:id="@+id/type_auto_read_enabled"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/enabled" />
+            </RadioGroup>
+
+            <com.midtrans.demo.DemoTextView
                 android:id="@+id/title_color_theme_type"
                 style="@style/ConfigItemTextTitle"
                 android:layout_width="match_parent"
