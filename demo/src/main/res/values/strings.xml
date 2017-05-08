@@ -75,6 +75,10 @@
     <string name="pre_auth_enabled">Pre Auth Feature Enabled</string>
     <string name="pre_auth_disabled">Pre Auth Feature Disabled</string>
 
+    <!--AUTO READ SMS TITLE-->
+    <string name="auto_read_sms_enabled">Auto Read OTP SMS Enabled</string>
+    <string name="auto_read_sms_disabled">Auto Read OTP SMS Disabled</string>
+
     <!--COLOR THEME TITLE-->
     <string name="default_color_theme">Default Color Theme</string>
     <string name="color_theme_red">Red Color Theme</string>
