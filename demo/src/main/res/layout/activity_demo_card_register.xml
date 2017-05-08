@@ -191,7 +191,6 @@
                     android:id="@+id/button_scan_card"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/image_saved_card_delete"
                     android:layout_below="@id/expiry_date_layout"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="16dp"
