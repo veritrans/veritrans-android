@@ -269,6 +269,7 @@
 
 
             <com.midtrans.demo.widgets.DemoTextView
+            <com.midtrans.demo.widgets.DemoTextView
                 android:id="@+id/title_issuing_bank_type"
                 style="@style/ConfigItemTextTitle"
                 android:layout_width="match_parent"
