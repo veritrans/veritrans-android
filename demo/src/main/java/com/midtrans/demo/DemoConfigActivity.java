@@ -1424,6 +1424,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     noInstallmentSelection.setChecked(true);
                     hideAllSelections();
                     resetSelectedInstallment();
+                    resetAcquiringBank();
                 }
             }
         });
@@ -1439,6 +1440,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     resetBniPointSelection();
                     showInstallmentDialog(false);
                     showEditInstallmentBniOption();
+                    resetAcquiringBank();
                 }
             }
         });
@@ -1454,6 +1456,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     resetBniPointSelection();
                     showInstallmentDialog(false);
                     showEditInstallmentMandiriOption();
+                    resetAcquiringBank();
                 }
             }
         });
@@ -1489,6 +1492,10 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 }
             }
         });
+    }
+
+    private void resetAcquiringBank() {
+        bankNoneSelection.setChecked(true);
     }
 
     private void setBriAcquiringBank() {
