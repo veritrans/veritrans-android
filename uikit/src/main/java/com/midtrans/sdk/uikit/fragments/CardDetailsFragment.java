@@ -987,9 +987,7 @@ public class CardDetailsFragment extends Fragment {
             } else if (cardNumber.length() < 7) {
                 showInstallmentLayout(false);
             } else if (midtransSDK.getCreditCard() != null
-                    && midtransSDK.getCreditCard().getBank() != null
-                    && (midtransSDK.getCreditCard().getBank().equalsIgnoreCase(BankType.MAYBANK)
-                    || midtransSDK.getCreditCard().getBank().equalsIgnoreCase(BankType.BRI))) {
+                    && midtransSDK.getCreditCard().getBank() != null) {
                 showInstallmentLayout(false);
             } else {
                 String cleanCardNumber = cardNumber.getText().toString().trim().replace(" ", "").substring(0, 6);
