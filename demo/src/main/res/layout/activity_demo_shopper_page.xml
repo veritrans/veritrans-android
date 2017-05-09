@@ -4,36 +4,44 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <android.support.design.widget.AppBarLayout
+        android:id="@id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        app:contentInsetLeft="0dp"
-        app:contentInsetStart="0dp"
-        app:contentInsetStartWithNavigation="0dp"
-        app:title="">
-
-        <RelativeLayout
+        android:layout_height="wrap_content">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:background="@color/white"
+            style="@style/ThemeOverlay.AppCompat.ActionBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="48dp"
-            android:layout_marginRight="48dp">
+            android:layout_height="?actionBarSize"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp"
+            app:contentInsetStartWithNavigation="0dp"
+            app:title="">
 
-            <com.midtrans.demo.widgets.DemoTextView
-                android:id="@+id/title"
-                style="@style/TextAppearance.AppCompat.Title"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:gravity="center_horizontal"
-                android:text="@string/product_details" />
-        </RelativeLayout>
-    </android.support.v7.widget.Toolbar>
+                android:layout_marginEnd="48dp"
+                android:layout_marginRight="48dp">
+
+                <com.midtrans.demo.widgets.DemoTextView
+                    android:id="@+id/title"
+                    style="@style/TextAppearance.AppCompat.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center_horizontal"
+                    android:text="@string/product_details" />
+            </RelativeLayout>
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
+        android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar"
+        android:layout_below="@id/appbar"
         android:orientation="vertical">
 
         <RelativeLayout

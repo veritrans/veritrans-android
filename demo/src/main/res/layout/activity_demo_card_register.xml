@@ -259,7 +259,7 @@
             android:textColor="@color/white"
             app:fb_defaultColor="@color/gray.primary"
             app:fb_focusColor="@color/colorAccentLight"
-            app:fb_text="@string/pay_now"
+            app:fb_text="@string/save_card"
             app:fb_textGravity="center_vertical"
             app:fb_textSize="16sp" />
 

@@ -11,7 +11,6 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.text.TextUtils;
 import android.view.View;
@@ -22,6 +21,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.midtrans.demo.widgets.DemoRadioButton;
 import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
@@ -74,6 +74,9 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private static final String PAYMENT_CHANNELS_TYPE = "config.channels";
     private static final String AUTO_READ_SMS_TYPE = "config.auto.otp";
 
+    private static final String LABEL_INSTALLMENT_REQUIRED = " - Required";
+    private static final String LABEL_INSTALLMENT_OPTIONAL = " - optional";
+
     private static int DELAY = 200;
     private String selectedColor = DemoThemeConstants.BLUE_THEME;
     private List<SelectPaymentMethodViewModel> enabledPayments;
@@ -111,6 +114,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private RadioGroup installmentContainer;
     private RadioGroup bniPointContainer;
     private LinearLayout paymentChannelsContainer;
+    private LinearLayout changeInstallmentContainer;
     private RadioGroup autoReadSmsContainer;
 
     /**
@@ -119,9 +123,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private AppCompatRadioButton installmentBniSelection;
     private AppCompatRadioButton installmentMandiriSelection;
     private AppCompatRadioButton installmentBcaSelection;
-    private AppCompatRadioButton installmentOfflineSelection;
+    private AppCompatRadioButton installmentBriSelection;
     private AppCompatRadioButton noInstallmentSelection;
-    private AppCompatCheckBox installmentRequiredCheckbox;
     /**
      * Radio Button selection for BNI Point
      */
@@ -199,10 +202,16 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private AppCompatRadioButton autoReadSmsEnabledSelection;
     private AppCompatRadioButton autoReadSmsDisabledSelection;
 
+
     private FancyButton nextButton;
     private ImageButton editBcaVaButton;
     private ImageButton editPermataVaButton;
     private ImageButton editPaymentChannels;
+    private ImageButton editInstallmentMandiri;
+    private ImageButton editInstallmentBca;
+    private ImageButton editInstallmentBni;
+    private ImageButton editInstallmentBri;
+    private boolean installmentRequired;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -222,8 +231,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         initPromoSelection();
         initPreAuthSelection();
         initInstallmentSelection();
+        initChangeInstallmentOption();
         initBniPointSelection();
-        initInstallmentRequired();
         initAutoReadOtpSelection();
         initTitleClicks();
         initNextButton();
@@ -263,6 +272,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         customBcaVaContainer = (LinearLayout) findViewById(R.id.custom_bca_va_type_container);
         customPermataVaContainer = (LinearLayout) findViewById(R.id.custom_permata_va_type_container);
         installmentContainer = (RadioGroup) findViewById(R.id.enable_installment_container);
+        changeInstallmentContainer = (LinearLayout) findViewById(R.id.change_installment_container);
         bniPointContainer = (RadioGroup) findViewById(R.id.bni_point_type_container);
         paymentChannelsContainer = (LinearLayout) findViewById(R.id.payment_channels_type_container);
         autoReadSmsContainer = (RadioGroup) findViewById(R.id.auto_read_type_container);
@@ -270,10 +280,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         installmentBniSelection = (AppCompatRadioButton) findViewById(R.id.installment_type_bni);
         installmentMandiriSelection = (AppCompatRadioButton) findViewById(R.id.installment_type_mandiri);
         installmentBcaSelection = (AppCompatRadioButton) findViewById(R.id.installment_type_bca);
-        installmentOfflineSelection = (AppCompatRadioButton) findViewById(R.id.installment_type_offline);
+        installmentBriSelection = (AppCompatRadioButton) findViewById(R.id.installment_type_bri);
         noInstallmentSelection = (AppCompatRadioButton) findViewById(R.id.no_installment);
-
-        installmentRequiredCheckbox = (AppCompatCheckBox) findViewById(R.id.installment_required);
 
         normalSelection = (AppCompatRadioButton) findViewById(R.id.type_credit_card_normal);
         twoClicksSelection = (AppCompatRadioButton) findViewById(R.id.type_credit_card_two_clicks);
@@ -328,6 +336,10 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         editBcaVaButton = (ImageButton) findViewById(R.id.btn_edit_bca_va);
         editPermataVaButton = (ImageButton) findViewById(R.id.btn_edit_permata_va);
         editPaymentChannels = (ImageButton) findViewById(R.id.btn_edit_payment_method);
+        editInstallmentMandiri = (ImageButton) findViewById(R.id.button_mandiri_installment_edit);
+        editInstallmentBca = (ImageButton) findViewById(R.id.button_bca_installment_edit);
+        editInstallmentBni = (ImageButton) findViewById(R.id.button_bni_installment_edit);
+        editInstallmentBri = (ImageButton) findViewById(R.id.button_bri_installment_edit);
     }
 
     private void initTitleClicks() {
@@ -598,6 +610,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                             setTextViewDrawableLeftColorFilter(installmentTitle);
                             // Show pre auth container
                             installmentContainer.setVisibility(View.VISIBLE);
+                            changeInstallmentContainer.setVisibility(View.VISIBLE);
                         } else {
                             unselectAllTitles();
                             hideAllSelections();
@@ -1353,52 +1366,64 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
 
     private void initInstallmentSelection() {
         String installmentType = DemoPreferenceHelper.getStringPreference(this, INSTALLMENT_TYPE);
-
+        installmentRequired = DemoPreferenceHelper.getBooleanPreference(this, INSTALLMENT_REQUIRED, false);
         if (installmentType != null && !TextUtils.isEmpty(installmentType)) {
+            hideEditInstallmentOption();
             switch (installmentType) {
                 case Constants.INSTALLMENT_BNI:
-                    installmentTitle.setText(R.string.using_bni_installment);
+                    String bniTitle = getString(R.string.using_bni_installment);
+                    installmentTitle.setText(bniTitle);
                     installmentBniSelection.setChecked(true);
-                    showInstallmentCheckbox();
                     resetBniPointSelection();
+                    updateSelectedInstallment();
+                    showEditInstallmentBniOption();
                     break;
                 case Constants.INSTALLMENT_MANDIRI:
-                    installmentTitle.setText(R.string.using_mandiri_installment);
+                    String mandiriTitle = getString(R.string.using_mandiri_installment);
+                    installmentTitle.setText(mandiriTitle);
                     installmentMandiriSelection.setChecked(true);
-                    showInstallmentCheckbox();
                     resetBniPointSelection();
+                    updateSelectedInstallment();
+                    showEditInstallmentMandiriOption();
                     break;
                 case Constants.INSTALLMENT_BCA:
-                    installmentTitle.setText(R.string.using_bca_installment);
+                    String bcaTitle = getString(R.string.using_bca_installment);
+                    installmentTitle.setText(bcaTitle);
                     installmentMandiriSelection.setChecked(true);
-                    showInstallmentCheckbox();
                     resetBniPointSelection();
+                    updateSelectedInstallment();
+                    showEditInstallmentBcaOption();
+                    setBcaAcquiringBank();
                     break;
-                case Constants.INSTALLMENT_OFFLINE:
-                    installmentTitle.setText(R.string.using_offline_installment);
-                    installmentOfflineSelection.setChecked(true);
-                    showInstallmentCheckbox();
+                case Constants.INSTALLMENT_BRI:
+                    String briTitle = getString(R.string.using_bri_installment);
+                    installmentTitle.setText(briTitle);
+                    installmentBriSelection.setChecked(true);
                     resetBniPointSelection();
+                    updateSelectedInstallment();
+                    showEditInstallmentBriOption();
+                    setBriAcquiringBank();
                     break;
                 default:
                     installmentTitle.setText(R.string.no_installment);
                     noInstallmentSelection.setChecked(true);
-                    hideInstallmentCheckox();
+                    hideEditInstallmentOption();
                     break;
             }
         } else {
             installmentTitle.setText(R.string.no_installment);
             noInstallmentSelection.setChecked(true);
-            hideInstallmentCheckox();
+            hideEditInstallmentOption();
         }
 
         noInstallmentSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 if (checked) {
-                    installmentTitle.setText(R.string.no_installment);
+                    installmentTitle.setText(getString(R.string.no_installment));
                     noInstallmentSelection.setChecked(true);
-                    hideInstallmentCheckox();
+                    hideAllSelections();
+                    resetSelectedInstallment();
                 }
             }
         });
@@ -1407,10 +1432,13 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 if (checked) {
-                    installmentTitle.setText(R.string.using_bni_installment);
+                    String title = getString(R.string.using_bni_installment);
+                    installmentTitle.setText(title);
                     installmentBniSelection.setChecked(true);
-                    showInstallmentCheckbox();
+                    hideEditInstallmentOption();
                     resetBniPointSelection();
+                    showInstallmentDialog(false);
+                    showEditInstallmentBniOption();
                 }
             }
         });
@@ -1419,10 +1447,13 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 if (checked) {
-                    installmentTitle.setText(R.string.using_mandiri_installment);
+                    String title = getString(R.string.using_mandiri_installment);
+                    installmentTitle.setText(title);
                     installmentMandiriSelection.setChecked(true);
-                    showInstallmentCheckbox();
+                    hideEditInstallmentOption();
                     resetBniPointSelection();
+                    showInstallmentDialog(false);
+                    showEditInstallmentMandiriOption();
                 }
             }
         });
@@ -1431,48 +1462,140 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 if (checked) {
-                    installmentTitle.setText(R.string.using_bca_installment);
+                    String title = getString(R.string.using_bca_installment);
+                    installmentTitle.setText(title);
                     installmentBcaSelection.setChecked(true);
-                    showInstallmentCheckbox();
+                    hideEditInstallmentOption();
                     resetBniPointSelection();
+                    showInstallmentDialog(false);
+                    showEditInstallmentBcaOption();
+                    setBcaAcquiringBank();
                 }
             }
         });
 
-        installmentOfflineSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        installmentBriSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 if (checked) {
-                    installmentTitle.setText(R.string.using_offline_installment);
-                    installmentOfflineSelection.setChecked(true);
-                    showInstallmentCheckbox();
+                    String title = getString(R.string.using_bri_installment);
+                    installmentTitle.setText(title);
+                    installmentBriSelection.setChecked(true);
+                    hideEditInstallmentOption();
                     resetBniPointSelection();
+                    showInstallmentDialog(false);
+                    showEditInstallmentBriOption();
+                    setBriAcquiringBank();
                 }
             }
         });
+    }
+
+    private void setBriAcquiringBank() {
+        bankBriSelection.setChecked(true);
+    }
+
+    private void setBcaAcquiringBank() {
+        bankBcaSelection.setChecked(true);
+        secureEnabledSelection.setChecked(true);
+    }
+
+    private void initChangeInstallmentOption() {
+        editInstallmentMandiri.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showInstallmentDialog(installmentRequired);
+            }
+        });
+
+        editInstallmentBca.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showInstallmentDialog(installmentRequired);
+            }
+        });
+
+        editInstallmentBni.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showInstallmentDialog(installmentRequired);
+            }
+        });
+
+        editInstallmentBri.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showInstallmentDialog(installmentRequired);
+            }
+        });
+    }
+
+    private void hideEditInstallmentOption() {
+        editInstallmentMandiri.setVisibility(View.INVISIBLE);
+        editInstallmentBca.setVisibility(View.INVISIBLE);
+        editInstallmentBni.setVisibility(View.INVISIBLE);
+        editInstallmentBri.setVisibility(View.INVISIBLE);
+    }
+
+    private void showEditInstallmentMandiriOption() {
+        editInstallmentMandiri.setVisibility(View.VISIBLE);
+    }
+
+    private void showEditInstallmentBcaOption() {
+        editInstallmentBca.setVisibility(View.VISIBLE);
+    }
+
+    private void showEditInstallmentBniOption() {
+        editInstallmentBni.setVisibility(View.VISIBLE);
+    }
+
+    private void showEditInstallmentBriOption() {
+        editInstallmentBri.setVisibility(View.VISIBLE);
+    }
+
+    private void showInstallmentDialog(boolean isRequired) {
+        InstallmentDialogFragment installmentDialogFragment = InstallmentDialogFragment.newInstance(isRequired, getSelectedColorPrimaryDark(), new CustomInstallmentDialogListener() {
+            @Override
+            public void onOkClicked(boolean reqired) {
+                installmentRequired = reqired;
+                updateSelectedInstallment();
+            }
+
+            @Override
+            public void onCancelClicked() {
+
+            }
+        });
+
+        installmentDialogFragment.show(getSupportFragmentManager(), "");
+
+    }
+
+    private void updateSelectedInstallment() {
+        resetSelectedInstallment();
+        int id = installmentContainer.getCheckedRadioButtonId();
+        DemoRadioButton selectedSelection = ((DemoRadioButton) findViewById(id));
+        String newLabel = selectedSelection.getText().toString();
+        if (installmentRequired) {
+            newLabel = newLabel + LABEL_INSTALLMENT_REQUIRED;
+        } else {
+            newLabel = newLabel + LABEL_INSTALLMENT_OPTIONAL;
+        }
+
+        selectedSelection.setText(newLabel);
+    }
+
+    private void resetSelectedInstallment() {
+        installmentMandiriSelection.setText(getString(R.string.installment_mandiri));
+        installmentBcaSelection.setText(getString(R.string.installment_bca));
+        installmentBniSelection.setText(getString(R.string.installment_bni));
+        installmentBriSelection.setText(getString(R.string.installment_bri));
     }
 
     private void resetBniPointSelection() {
         bniPointOnlyDisabledSelection.setChecked(true);
     }
 
-    private void hideInstallmentCheckox() {
-        installmentRequiredCheckbox.setChecked(false);
-        installmentRequiredCheckbox.setVisibility(View.GONE);
-    }
-
-    private void showInstallmentCheckbox() {
-        installmentRequiredCheckbox.setVisibility(View.VISIBLE);
-    }
-
-    private void initInstallmentRequired() {
-        boolean installmentRequired = DemoPreferenceHelper.getBooleanPreference(this, INSTALLMENT_REQUIRED, false);
-        if (installmentRequired) {
-            installmentRequiredCheckbox.setChecked(true);
-        } else {
-            installmentRequiredCheckbox.setChecked(false);
-        }
-    }
 
     private void initBniPointSelection() {
         final boolean bniPointEnabled = DemoPreferenceHelper.getBooleanPreference(this, BNI_POINT_TYPE, false);
@@ -1683,11 +1806,12 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             DemoPreferenceHelper.setStringPreference(this, INSTALLMENT_TYPE, Constants.INSTALLMENT_MANDIRI);
         } else if (installmentBcaSelection.isChecked()) {
             DemoPreferenceHelper.setStringPreference(this, INSTALLMENT_TYPE, Constants.INSTALLMENT_BCA);
-        } else if (installmentOfflineSelection.isChecked()) {
-            DemoPreferenceHelper.setStringPreference(this, INSTALLMENT_TYPE, Constants.INSTALLMENT_OFFLINE);
+        } else if (installmentBriSelection.isChecked()) {
+            DemoPreferenceHelper.setStringPreference(this, INSTALLMENT_TYPE, Constants.INSTALLMENT_BRI);
         } else {
             DemoPreferenceHelper.setStringPreference(this, INSTALLMENT_TYPE, Constants.NO_INSTALLMENT);
         }
+        DemoPreferenceHelper.setBooleanPreference(this, INSTALLMENT_REQUIRED, installmentRequired);
     }
 
     private void saveBniPointSelection() {
@@ -1763,6 +1887,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         customBcaVaContainer.setVisibility(View.GONE);
         customPermataVaContainer.setVisibility(View.GONE);
         installmentContainer.setVisibility(View.GONE);
+        changeInstallmentContainer.setVisibility(View.GONE);
         bniPointContainer.setVisibility(View.GONE);
         paymentChannelsContainer.setVisibility(View.GONE);
         autoReadSmsContainer.setVisibility(View.GONE);
@@ -1957,9 +2082,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         installmentBniSelection.setSupportButtonTintList(colorStateList);
         installmentMandiriSelection.setSupportButtonTintList(colorStateList);
         installmentBcaSelection.setSupportButtonTintList(colorStateList);
-        installmentOfflineSelection.setSupportButtonTintList(colorStateList);
+        installmentBriSelection.setSupportButtonTintList(colorStateList);
         noInstallmentSelection.setSupportButtonTintList(colorStateList);
-        installmentRequiredCheckbox.setSupportButtonTintList(colorStateList);
 
         bniPointOnlyEnabledSelection.setSupportButtonTintList(colorStateList);
         bniPointOnlyDisabledSelection.setSupportButtonTintList(colorStateList);
@@ -2215,8 +2339,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
 
         Map<String, ArrayList<Integer>> bankTerms = new HashMap<>();
 
-        if (installmentOfflineSelection.isChecked()) {
-            setInstallmentBankTerm(bankTerms, Constants.INSTALLMENT_BANK_OFFLINE);
+        if (installmentBriSelection.isChecked()) {
+            setInstallmentBankTerm(bankTerms, Constants.INSTALLMENT_BANK_BRI);
         } else if (installmentBniSelection.isChecked()) {
             setInstallmentBankTerm(bankTerms, Constants.INSTALLMENT_BANK_BNI);
         } else if (installmentMandiriSelection.isChecked()) {
@@ -2229,7 +2353,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         if (installment != null) {
             installment.setTerms(bankTerms);
 
-            if (installmentRequiredCheckbox.isChecked()) {
+            if (installmentRequired) {
                 installment.setRequired(true);
             } else {
                 installment.setRequired(false);
