@@ -167,4 +167,5 @@
     <string name="required">Required</string>
     <string name="optional">Optional</string>
     <string name="installment_bri">BRI</string>
+    <string name="save_card">Save Card</string>
 </resources>
