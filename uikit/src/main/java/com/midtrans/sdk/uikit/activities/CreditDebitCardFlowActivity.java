@@ -967,10 +967,11 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         }
     }
 
-    private BanksPointResponse getSampleResponse(){
+    private BanksPointResponse getSampleResponse() {
         BanksPointResponse response = new BanksPointResponse("200", "success", null, 100000l, null);
         return response;
     }
+
     private void showBankPointsFragment(long balance, String bankType) {
         BanksPointFragment fragment = BanksPointFragment.newInstance(balance, bankType);
         replaceFragment(fragment, R.id.card_container, true, false);

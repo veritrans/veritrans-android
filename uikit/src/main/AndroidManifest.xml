@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.midtrans.sdk.uikit">
 
-    <uses-sdk tools:overrideLibrary="com.rds.swipelayout,me.saket.bettermovementmethod" />
+    <uses-sdk tools:overrideLibrary="com.rds.swipelayout,me.saket.bettermovementmethod,com.stfalcon.smsverifycatcher" />
     <application>
         <activity
             android:name="com.midtrans.sdk.uikit.activities.UserDetailsActivity"

@@ -4,36 +4,44 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <android.support.design.widget.AppBarLayout
+        android:id="@id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        app:contentInsetLeft="0dp"
-        app:contentInsetStart="0dp"
-        app:contentInsetStartWithNavigation="0dp"
-        app:title="">
-
-        <RelativeLayout
+        android:layout_height="wrap_content">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:background="@color/white"
+            style="@style/ThemeOverlay.AppCompat.ActionBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="48dp"
-            android:layout_marginRight="48dp">
+            android:layout_height="?actionBarSize"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp"
+            app:contentInsetStartWithNavigation="0dp"
+            app:title="">
 
-            <com.midtrans.demo.DemoTextView
-                android:id="@+id/title"
-                style="@style/TextAppearance.AppCompat.Title"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:gravity="center_horizontal"
-                android:text="@string/product_details" />
-        </RelativeLayout>
-    </android.support.v7.widget.Toolbar>
+                android:layout_marginEnd="48dp"
+                android:layout_marginRight="48dp">
+
+                <com.midtrans.demo.widgets.DemoTextView
+                    android:id="@+id/title"
+                    style="@style/TextAppearance.AppCompat.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center_horizontal"
+                    android:text="@string/product_details" />
+            </RelativeLayout>
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
+        android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar"
+        android:layout_below="@id/appbar"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -63,7 +71,7 @@
                 app:strokeColor="@color/white"
                 app:unselectedColor="@color/gray.secondary" />
 
-            <com.midtrans.demo.DemoTextView
+            <com.midtrans.demo.widgets.DemoTextView
                 android:id="@+id/product_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -73,7 +81,7 @@
                 android:textColor="@color/navy_blue.secondary"
                 android:textSize="26sp" />
 
-            <com.midtrans.demo.DemoTextView
+            <com.midtrans.demo.widgets.DemoTextView
                 android:id="@+id/product_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -84,7 +92,7 @@
                 android:textSize="13sp"
                 android:textStyle="bold" />
 
-            <com.midtrans.demo.DemoTextView
+            <com.midtrans.demo.widgets.DemoTextView
                 android:id="@+id/product_details"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -103,7 +111,7 @@
                 android:layout_marginTop="@dimen/eight_dp"
                 android:gravity="center_vertical">
 
-                <com.midtrans.demo.DemoTextView
+                <com.midtrans.demo.widgets.DemoTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/product_rating_sample"
@@ -152,7 +160,7 @@
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
-                        <com.midtrans.demo.DemoTextView
+                        <com.midtrans.demo.widgets.DemoTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/product_copyright_sample"

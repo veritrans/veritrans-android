@@ -1,23 +1,25 @@
-package com.midtrans.demo;
+package com.midtrans.demo.widgets;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.support.v7.widget.AppCompatTextView;
+import android.support.v7.widget.AppCompatRadioButton;
 import android.util.AttributeSet;
+
+import com.midtrans.demo.FontCache;
 
 /**
  * Created by rakawm on 3/15/17.
  */
 
-public class DemoTextView extends AppCompatTextView {
+public class DemoRadioButton extends AppCompatRadioButton {
     public static final String ANDROID_SCHEMA = "http://schemas.android.com/apk/res/android";
 
-    public DemoTextView(Context context, AttributeSet attrs) {
+    public DemoRadioButton(Context context, AttributeSet attrs) {
         super(context, attrs);
         applyCustomFont(context, attrs);
     }
 
-    public DemoTextView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public DemoRadioButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         applyCustomFont(context, attrs);
     }

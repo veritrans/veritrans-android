@@ -75,6 +75,10 @@
     <string name="pre_auth_enabled">Pre Auth Feature Enabled</string>
     <string name="pre_auth_disabled">Pre Auth Feature Disabled</string>
 
+    <!--AUTO READ SMS TITLE-->
+    <string name="auto_read_sms_enabled">Auto Read OTP SMS Enabled</string>
+    <string name="auto_read_sms_disabled">Auto Read OTP SMS Disabled</string>
+
     <!--COLOR THEME TITLE-->
     <string name="default_color_theme">Default Color Theme</string>
     <string name="color_theme_red">Red Color Theme</string>
@@ -129,13 +133,39 @@
     <string name="installment_mandiri">Mandiri</string>
     <string name="installment_bca">BCA</string>
     <string name="installment_offline">Offline</string>
-    <string name="using_bni_installment">Using BNI Installment</string>
-    <string name="using_mandiri_installment">Using Mandiri Installment</string>
-    <string name="using_bca_installment">Using BCA Installment</string>
-    <string name="using_offline_installment">Using Offline Installment</string>
+    <string name="using_bni_installment">BNI Installment</string>
+    <string name="using_mandiri_installment">Mandiri Installment</string>
+    <string name="using_bca_installment">BCA Installment</string>
+    <string name="using_bri_installment">BRI Installment</string>
     <string name="installment_required_title">(Required)</string>
 
     <!-- BNI Point -->
     <string name="bni_point_only_disabled">BNI Point Only Disabled</string>
     <string name="bni_point_only_enabled">BNI Point Only Enabled</string>
+
+    <!-- Demo Product List -->
+    <string name="midtrans_pillow">Midtrans Pillow</string>
+    <string name="midtrans_pillow_1">Midtrans Pillow I</string>
+    <string name="midtrans_pillow_2">Midtrans Pillow II</string>
+    <string name="price_pillow_1">Rp 20,000</string>
+    <string name="midtrans_store">midtrans store</string>
+
+    <!-- Demo Account-->
+    <string name="account_name">Budi Utomo</string>
+    <string name="account_mycards">My Cards</string>
+    <string name="account_details">Account Details</string>
+    <string name="account_email">budi@utomo.com</string>
+    <string name="user_address">Midplaza 2, 4th Jl. Jendral Sudirman Kav. 10-11, Jakarta - 10220 \n Indonesia</string>
+    <string name="account_phone">081808466410</string>
+    <string name="my_account">My Account</string>
+    <string name="add_new_card">Add New Card</string>
+
+    <string name="save_card_successfully">Save Card Successfully</string>
+    <string name="please_wait">Please Wait</string>
+    <string name="my_cards">My Cards</string>
+    <string name="title_enable_installment">Enable Installment</string>
+    <string name="required">Required</string>
+    <string name="optional">Optional</string>
+    <string name="installment_bri">BRI</string>
+    <string name="save_card">Save Card</string>
 </resources>
