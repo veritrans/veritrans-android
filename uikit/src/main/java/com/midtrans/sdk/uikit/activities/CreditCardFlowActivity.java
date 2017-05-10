@@ -875,8 +875,4 @@ public class CreditCardFlowActivity extends BaseActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.card_container, fragment).addToBackStack("").commit();
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-
-    }
 }

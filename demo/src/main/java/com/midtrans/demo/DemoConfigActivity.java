@@ -786,6 +786,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 case Constants.CARD_ONE_CLICK:
                     cardClickTitle.setText(R.string.credit_card_type_one_click);
                     oneClickSelection.setChecked(true);
+                    resetInstallmentSelection();
+                    resetBniPointSelection();
                     break;
                 default:
                     cardClickTitle.setText(R.string.credit_card_type_normal);
@@ -822,6 +824,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 if (checked) {
                     cardClickTitle.setText(R.string.credit_card_type_one_click);
                     secureEnabledSelection.setChecked(true);
+                    resetInstallmentSelection();
+                    resetBniPointSelection();
                 }
             }
         });
@@ -1377,6 +1381,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     resetBniPointSelection();
                     updateSelectedInstallment();
                     showEditInstallmentBniOption();
+                    resetAcquiringBank();
+                    resetOneClickSelection();
                     break;
                 case Constants.INSTALLMENT_MANDIRI:
                     String mandiriTitle = getString(R.string.using_mandiri_installment);
@@ -1385,6 +1391,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     resetBniPointSelection();
                     updateSelectedInstallment();
                     showEditInstallmentMandiriOption();
+                    resetAcquiringBank();
+                    resetOneClickSelection();
                     break;
                 case Constants.INSTALLMENT_BCA:
                     String bcaTitle = getString(R.string.using_bca_installment);
@@ -1394,6 +1402,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     updateSelectedInstallment();
                     showEditInstallmentBcaOption();
                     setBcaAcquiringBank();
+                    resetOneClickSelection();
                     break;
                 case Constants.INSTALLMENT_BRI:
                     String briTitle = getString(R.string.using_bri_installment);
@@ -1403,17 +1412,20 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     updateSelectedInstallment();
                     showEditInstallmentBriOption();
                     setBriAcquiringBank();
+                    resetOneClickSelection();
                     break;
                 default:
                     installmentTitle.setText(R.string.no_installment);
                     noInstallmentSelection.setChecked(true);
                     hideEditInstallmentOption();
+                    resetAcquiringBank();
                     break;
             }
         } else {
             installmentTitle.setText(R.string.no_installment);
             noInstallmentSelection.setChecked(true);
             hideEditInstallmentOption();
+            resetAcquiringBank();
         }
 
         noInstallmentSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -1441,6 +1453,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     showInstallmentDialog(false);
                     showEditInstallmentBniOption();
                     resetAcquiringBank();
+                    resetOneClickSelection();
                 }
             }
         });
@@ -1457,6 +1470,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     showInstallmentDialog(false);
                     showEditInstallmentMandiriOption();
                     resetAcquiringBank();
+                    resetOneClickSelection();
                 }
             }
         });
@@ -1473,6 +1487,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     showInstallmentDialog(false);
                     showEditInstallmentBcaOption();
                     setBcaAcquiringBank();
+                    resetOneClickSelection();
                 }
             }
         });
@@ -1489,6 +1504,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     showInstallmentDialog(false);
                     showEditInstallmentBriOption();
                     setBriAcquiringBank();
+                    resetOneClickSelection();
                 }
             }
         });
@@ -1610,6 +1626,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             bniPointTitle.setText(R.string.bni_point_only_enabled);
             bniPointOnlyEnabledSelection.setChecked(true);
             resetInstallmentSelection();
+            resetOneClickSelection();
         } else {
             bniPointTitle.setText(R.string.bni_point_only_disabled);
             bniPointOnlyDisabledSelection.setChecked(true);
@@ -1621,6 +1638,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 if (checked) {
                     bniPointTitle.setText(R.string.bni_point_only_enabled);
                     resetInstallmentSelection();
+                    resetOneClickSelection();
                 }
             }
         });
@@ -1666,6 +1684,12 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
 
     private void resetInstallmentSelection() {
         noInstallmentSelection.setChecked(true);
+    }
+
+    private void resetOneClickSelection() {
+        if (oneClickSelection.isChecked()) {
+            normalSelection.setChecked(true);
+        }
     }
 
     private void initNextButton() {
