@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.midtrans.sdk.core.models.merchant.ItemDetails;
+import com.midtrans.sdk.core.models.snap.ItemDetails;
 import com.midtrans.sdk.core.models.snap.transaction.SnapTransaction;
 import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.R;
@@ -56,23 +56,19 @@ public abstract class BaseItemDetailsActivity extends BaseTitleActivity {
 
         SnapTransaction snapTransaction = MidtransUi.getInstance().getTransaction();
 
-        if (snapTransaction != null) {
-            // Add amount
-            String amount = context.getString(
-                    R.string.prefix_money,
-                    Utils.getFormattedAmount(snapTransaction.transactionDetails.grossAmount)
-            );
+        // Add amount
+        String amount = context.getString(R.string.prefix_money, Utils.getFormattedAmount(snapTransaction.transactionDetails.grossAmount));
 
-            // Add header total amount
-            itemViewDetails.add(new ItemDetail(
-                    null,
-                    amount,
-                    ItemDetail.TYPE_ITEM_HEADER,
-                    snapTransaction.itemDetails.size() > 0)
-            );
+        // Add header total amount
+        itemViewDetails.add(new ItemDetail(
+                null,
+                amount,
+                ItemDetail.TYPE_ITEM_HEADER,
+                snapTransaction.itemDetails != null && !snapTransaction.itemDetails.isEmpty()));
 
+        if (snapTransaction.itemDetails!=null && !snapTransaction.itemDetails.isEmpty()) {
             // Add items
-            for (ItemDetails itemDetails : MidtransUi.getInstance().getCheckoutTokenRequest().itemDetails) {
+            for (ItemDetails itemDetails : snapTransaction.itemDetails) {
                 String price = context.getString(R.string.prefix_money, Utils.getFormattedAmount(itemDetails.quantity * itemDetails.price));
                 String itemName = itemDetails.name;
                 if (itemDetails.quantity > 1) {
@@ -80,9 +76,7 @@ public abstract class BaseItemDetailsActivity extends BaseTitleActivity {
                 }
                 itemViewDetails.add(new ItemDetail(itemName, price, ItemDetail.TYPE_ITEM, true));
             }
-            return itemViewDetails;
-        } else {
-            return null;
         }
+        return itemViewDetails;
     }
 }

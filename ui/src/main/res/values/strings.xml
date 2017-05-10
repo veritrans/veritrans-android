@@ -614,6 +614,7 @@
     <string name="bank_bca_transfer">Bank BCA</string>
     <string name="bank_permata_transfer">Bank Permata</string>
     <string name="other_bank_transfer">Other Bank</string>
+    <string name="bank_bni_transfer">Bank BNI</string>
     <string name="copy">Copy</string>
     <string name="valid_until">Please complete payment before</string>
     <string name="klik_bca_complete_payment">Complete payment at http://klikbca.com before</string>
@@ -673,6 +674,7 @@
     <string name="payment_bank_description_mandiri">Pay from Mandiri ATMs or internet banking</string>
     <string name="payment_bank_description_permata">Pay from Permata ATMs or internet banking</string>
     <string name="payment_bank_description_other">Pay from other Bank ATMs</string>
+    <string name="payment_bank_description_bni">Pay from BNI ATMs or internet banking</string>
 
     <string name="instruction_klikbca1">Please make sure that the UserID is active and registered at BCA.</string>
     <string name="instruction_klikbca2">Please continue the payment through KlikBCA by opening www.klikbca.com on a separate window or tab, using the same User ID that you entered below.</string>

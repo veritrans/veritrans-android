@@ -88,7 +88,6 @@ public class TransactionActivity
     private void initProperties() {
         presenter = new TransactionPresenter(this, this);
         paymentMethodsAdapter = new PaymentMethodsAdapter(this);
-        itemDetailsAdapter = new ItemDetailsAdapter(this, presenter.getItemDetails());
     }
 
     private void initViews() {
@@ -114,7 +113,6 @@ public class TransactionActivity
         paymentMethodsContainer.setAdapter(paymentMethodsAdapter);
 
         itemDetailsContainer.setLayoutManager(new LinearLayoutManager(this));
-        itemDetailsContainer.setAdapter(itemDetailsAdapter);
     }
 
 
@@ -172,6 +170,12 @@ public class TransactionActivity
         } else {
             showErrorContainer(getString(R.string.error_message_no_payment_methods), false);
         }
+    }
+
+    @Override
+    public void showItemDetails() {
+        itemDetailsAdapter = new ItemDetailsAdapter(this, presenter.getItemDetails());
+        itemDetailsContainer.setAdapter(itemDetailsAdapter);
     }
 
     @Override

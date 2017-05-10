@@ -106,13 +106,6 @@ public class MidtransUi {
      * @param callback      Callback to be called after transaction was finished.
      */
     public void runUiSdk(@NonNull Activity activity, String checkoutToken, @NonNull MidtransUiCallback callback) {
-        if (checkoutTokenRequest.customerDetails == null) {
-            String message = "You must set an customerDetails. Please set customerDetails into CheckoutTokenRequest instance";
-            RuntimeException runtimeException = new RuntimeException(message);
-            Logger.error(message, runtimeException);
-            throw runtimeException;
-        }
-        this.checkoutUrl = checkoutToken;
         this.paymentCallback = callback;
         this.checkoutToken = checkoutToken;
 

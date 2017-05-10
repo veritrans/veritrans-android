@@ -13,6 +13,7 @@ import java.util.List;
 import static com.midtrans.sdk.ui.constants.PaymentType.BANK_TRANSFER;
 import static com.midtrans.sdk.ui.constants.PaymentType.BCA_KLIKPAY;
 import static com.midtrans.sdk.ui.constants.PaymentType.BCA_VA;
+import static com.midtrans.sdk.ui.constants.PaymentType.BNI_VA;
 import static com.midtrans.sdk.ui.constants.PaymentType.BRI_EPAY;
 import static com.midtrans.sdk.ui.constants.PaymentType.CIMB_CLICKS;
 import static com.midtrans.sdk.ui.constants.PaymentType.CREDIT_CARD;
@@ -113,6 +114,9 @@ public class PaymentMethodUtils {
                 break;
             case OTHER_VA:
                 paymentMethodModel = new PaymentMethodModel(context.getString(R.string.other_bank_transfer), context.getString(R.string.payment_bank_description_other), type, R.drawable.ic_atm);
+                break;
+            case BNI_VA:
+                paymentMethodModel = new PaymentMethodModel(context.getString(R.string.bank_bni_transfer), context.getString(R.string.payment_bank_description_bni), type, R.drawable.ic_bni);
                 break;
         }
         return paymentMethodModel;
