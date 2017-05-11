@@ -13,13 +13,13 @@ import android.widget.Button;
 
 import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.R;
-import com.midtrans.sdk.ui.abtracts.BaseActivity;
+import com.midtrans.sdk.ui.abtracts.BaseTitleActivity;
 import com.midtrans.sdk.ui.constants.Constants;
 import com.midtrans.sdk.ui.utils.Logger;
 import com.midtrans.sdk.ui.utils.UiUtils;
 
 
-public class PaymentWebActivity extends BaseActivity implements MidtransWebViewClient.WebViewClientCallback {
+public class PaymentWebActivity extends BaseTitleActivity implements MidtransWebViewClient.WebViewClientCallback {
     private WebView webView;
     private String webUrl;
     private String type;
