@@ -152,6 +152,7 @@
     <string name="permata_bank_transfer">Permata</string>
     <string name="mandiri_bank_transfer">Mandiri</string>
     <string name="all_bank_transfer">Other Banks</string>
+    <string name="bni_bank_transfer">BNI</string>
 
     <string name="orderId">Order ID</string>
     <string name="amount">Amount</string>
@@ -614,7 +615,7 @@
     <string name="save_card_info">Card details above will be saved to help your future transactions.</string>
     <string name="choose_card">Choose credit card</string>
     <string name="add_new_card">pay with new card</string>
-    <string name="mandiri_bill_transfer">Mandiri Bill</string>
+    <string name="mandiri_bill_transfer">Bank Mandiri</string>
     <string name="bank_bca_transfer">Bank BCA</string>
     <string name="bank_permata_transfer">Bank Permata</string>
     <string name="other_bank_transfer">Other Bank</string>
@@ -645,6 +646,7 @@
     <string name="number_instruction7">7.</string>
     <string name="number_instruction8">8.</string>
     <string name="number_instruction9">9.</string>
+    <string name="number_instruction10">10.</string>
 
     <string name="get_challenge_token">How can i get a challenge token?</string>
     <string name="kioson_instruction">how can i pay with kioson payment ?</string>
@@ -701,6 +703,9 @@
     <string name="bni_debit_online_card">BNI Debit Online Card</string>
     <string name="tab_atm_bersama">ATM Bersama</string>
     <string name="tab_prima">Prima</string>
+    <string name="tab_atm_bni">ATM BNI</string>
+    <string name="tab_bni_mobile">Mobile Banking</string>
+    <string name="tab_bni_internet">Internet Banking</string>
     <string name="error_invalid_payment_form">Invalid Form Payment</string>
     <string name="how_much_point">How much points you want to redeem?</string>
     <string name="total_bank_point">Your total points</string>
@@ -719,4 +724,34 @@
     <string name="error_tcash_token_empty">Please fill T-Cash Token</string>
     <string name="status_code_400">400</string>
     <string name="complete_payment">Complete Payment</string>
+
+    <!-- bni ATM payment instruction -->
+    <string name="bni_atm_instruction_1">On the main menu, choose \'Other transaction\'</string>
+    <string name="bni_atm_instruction_2">Choose \'Transfer\'</string>
+    <string name="bni_atm_instruction_3">Choose \'Savings Account\'</string>
+    <string name="bni_atm_instruction_4">Choose \'To BNI Account\'</string>
+    <string name="bni_atm_instruction_5">Enter BNI virtual account number and press \'Correct\'</string>
+    <string name="bni_atm_instruction_6">Enter the full amount to be paid and press \'Correct\'</string>
+    <string name="bni_atm_instruction_7">Your payment details will appear on the confirmation page. If the information is correct press \'Correct\'</string>
+
+    <!-- bni mobile payment instruction -->
+    <string name="bni_mobile_instruction_1">Login to BNI Mobile Banking application</string>
+    <string name="bni_mobile_instruction_2">On the main menu, choose \'Transfer\'</string>
+    <string name="bni_mobile_instruction_3">Choose \'To BNI Account\' then \'Add New Account\'</string>
+    <string name="bni_mobile_instruction_4">Enter the full amount to be paid and press \'Proceed\'</string>
+    <string name="bni_mobile_instruction_5">Your payment details will appear on confirmation page.</string>
+    <string name="bni_mobile_instruction_6">If the information is correct then enter authentication token code and press \'Proceed\'</string>
+    <string name="bni_mobile_instruction_7">Payment Complete</string>
+
+    <!-- bni internet  payment instruction -->
+    <string name="bni_internet_instruction_1">Visit <a href="https://ibank.bni.co.id">https://ibank.bni.co.id</a> then choose \'Enter\'</string>
+    <string name="bni_internet_instruction_2">Enter User ID and Password</string>
+    <string name="bni_internet_instruction_3">Choose \'Set Destination Account\' then \'Add Destination Account\' </string>
+    <string name="bni_internet_instruction_4">Enter name and VA number</string>
+    <string name="bni_internet_instruction_5">Enter authentication token code</string>
+    <string name="bni_internet_instruction_6">Now Destination/Favorite account number is successfully added</string>
+    <string name="bni_internet_instruction_7">Back to \'Transfer\' menu</string>
+    <string name="bni_internet_instruction_8">Choose \'Transfer to BNI Account\' then choose destination/favorite account</string>
+    <string name="bni_internet_instruction_9">Choose Debit Account and enter amount, then enter authentication token code</string>
+    <string name="bni_internet_instruction_10">Payment complete</string>
 </resources>

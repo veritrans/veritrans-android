@@ -1,6 +1,9 @@
 package com.midtrans.sdk.core.models.snap.bank.permata;
 
 import com.midtrans.sdk.core.models.snap.bank.BankTransferPaymentResponse;
+import com.midtrans.sdk.core.models.snap.bank.VaNumber;
+
+import java.util.List;
 
 /**
  * Created by rakawm on 1/24/17.
@@ -21,6 +24,7 @@ public class PermataBankTransferPaymentResponse extends BankTransferPaymentRespo
                                               String fraudStatus,
                                               String finishRedirectUrl,
                                               String pdfUrl,
+                                              List<VaNumber> vaNumbers,
                                               String permataVaNumber,
                                               String permataExpiration) {
         super(statusCode,
@@ -33,7 +37,8 @@ public class PermataBankTransferPaymentResponse extends BankTransferPaymentRespo
                 transactionStatus,
                 fraudStatus,
                 finishRedirectUrl,
-                pdfUrl);
+                pdfUrl,
+                vaNumbers);
         this.permataVaNumber = permataVaNumber;
         this.permataExpiration = permataExpiration;
     }

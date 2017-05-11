@@ -116,7 +116,7 @@ public class PaymentMethodUtils {
                 paymentMethodModel = new PaymentMethodModel(context.getString(R.string.other_bank_transfer), context.getString(R.string.payment_bank_description_other), type, R.drawable.ic_atm);
                 break;
             case BNI_VA:
-                paymentMethodModel = new PaymentMethodModel(context.getString(R.string.bank_bni_transfer), context.getString(R.string.payment_bank_description_bni), type, R.drawable.ic_bni);
+                paymentMethodModel = new PaymentMethodModel(context.getString(R.string.bni_bank_transfer), context.getString(R.string.payment_bank_description_bni), type, R.drawable.ic_bni);
                 break;
         }
         return paymentMethodModel;

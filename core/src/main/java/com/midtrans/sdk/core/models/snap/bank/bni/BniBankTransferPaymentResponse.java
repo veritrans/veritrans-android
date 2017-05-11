@@ -1,4 +1,4 @@
-package com.midtrans.sdk.core.models.snap.bank.bca;
+package com.midtrans.sdk.core.models.snap.bank.bni;
 
 import com.midtrans.sdk.core.models.snap.bank.BankTransferPaymentResponse;
 import com.midtrans.sdk.core.models.snap.bank.VaNumber;
@@ -6,15 +6,14 @@ import com.midtrans.sdk.core.models.snap.bank.VaNumber;
 import java.util.List;
 
 /**
- * Created by rakawm on 1/24/17.
+ * Created by rakawm on 5/11/17.
  */
 
-public class BcaBankTransferPaymentResponse extends BankTransferPaymentResponse {
+public class BniBankTransferPaymentResponse extends BankTransferPaymentResponse {
+    public final String bniVaNumber;
+    public final String bniExpiration;
 
-    public final String bcaVaNumber;
-    public final String bcaExpiration;
-
-    public BcaBankTransferPaymentResponse(String statusCode,
+    public BniBankTransferPaymentResponse(String statusCode,
                                           String statusMessage,
                                           String transactionId,
                                           String orderId,
@@ -24,10 +23,8 @@ public class BcaBankTransferPaymentResponse extends BankTransferPaymentResponse 
                                           String transactionStatus,
                                           String fraudStatus,
                                           String finishRedirectUrl,
-                                          String bcaVaNumber,
-                                          String bcaExpiration,
                                           String pdfUrl,
-                                          List<VaNumber> vaNumbers) {
+                                          List<VaNumber> vaNumbers, String bniVaNumber, String bniExpiration) {
         super(statusCode,
                 statusMessage,
                 transactionId,
@@ -40,7 +37,7 @@ public class BcaBankTransferPaymentResponse extends BankTransferPaymentResponse 
                 finishRedirectUrl,
                 pdfUrl,
                 vaNumbers);
-        this.bcaVaNumber = bcaVaNumber;
-        this.bcaExpiration = bcaExpiration;
+        this.bniVaNumber = bniVaNumber;
+        this.bniExpiration = bniExpiration;
     }
 }

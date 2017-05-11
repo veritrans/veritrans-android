@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.midtrans.sdk.core.models.snap.bank.BankTransferPaymentResponse;
 import com.midtrans.sdk.core.models.snap.bank.bca.BcaBankTransferPaymentResponse;
+import com.midtrans.sdk.core.models.snap.bank.bni.BniBankTransferPaymentResponse;
 import com.midtrans.sdk.core.models.snap.bank.other.OtherBankTransferPaymentResponse;
 import com.midtrans.sdk.core.models.snap.bank.permata.PermataBankTransferPaymentResponse;
 import com.midtrans.sdk.ui.R;
@@ -30,6 +31,7 @@ public class BankTransferPaymentStatusActivity extends BaseStatusActivity {
     private static final int BCA_INSTRUCTION_TABS = 3;
     private static final int PERMATA_INSTRUCTION_TABS = 2;
     private static final int OTHER_INSTRUCTION_TABS = 3;
+    private static final int BNI_INSTRUCTION_TABS = 3;
 
     private ProgressDialog progressDialog;
 
@@ -73,7 +75,8 @@ public class BankTransferPaymentStatusActivity extends BaseStatusActivity {
                 presenter = new BankTransferPaymentStatusPresenter(otherResponse, bank);
                 break;
             case PaymentType.BNI_VA:
-                // TODO: BNI VA implementation
+                BniBankTransferPaymentResponse bniResponse = (BniBankTransferPaymentResponse) response;
+                presenter = new BankTransferPaymentStatusPresenter(bniResponse, bank);
                 break;
         }
     }
@@ -110,6 +113,7 @@ public class BankTransferPaymentStatusActivity extends BaseStatusActivity {
                 setHeaderTitle(getString(R.string.other_bank_transfer));
                 break;
             case PaymentType.BNI_VA:
+                setHeaderTitle(getString(R.string.bank_bni_transfer));
                 break;
         }
     }
@@ -157,7 +161,7 @@ public class BankTransferPaymentStatusActivity extends BaseStatusActivity {
                 pages = OTHER_INSTRUCTION_TABS;
                 break;
             case PaymentType.BNI_VA:
-                // TODO: set BNI tab counts
+                pages = BNI_INSTRUCTION_TABS;
                 break;
         }
 

@@ -6,6 +6,7 @@ import com.midtrans.sdk.core.environment.SandboxEnvironment;
 import com.midtrans.sdk.core.environment.StagingEnvironment;
 import com.midtrans.sdk.core.models.snap.SnapCustomerDetails;
 import com.midtrans.sdk.core.models.snap.bank.bca.BcaBankTransferPaymentRequest;
+import com.midtrans.sdk.core.models.snap.bank.bni.BniBankTransferPaymentRequest;
 import com.midtrans.sdk.core.models.snap.bank.mandiri.MandiriBankTransferPaymentRequest;
 import com.midtrans.sdk.core.models.snap.bank.other.OtherBankTransferPaymentRequest;
 import com.midtrans.sdk.core.models.snap.bank.permata.PermataBankTransferPaymentRequest;
@@ -64,6 +65,25 @@ public class PaymentUtilities {
      */
     public static BcaBankTransferPaymentRequest buildBcaBankTransferPaymentRequest(SnapCustomerDetails customerDetails) {
         return new BcaBankTransferPaymentRequest(customerDetails);
+    }
+
+    /**
+     * Build BNI Bank transfer payment details.
+     *
+     * @return BNI Bank transfer payment request.
+     */
+    public static BniBankTransferPaymentRequest buildBniBankTransferPaymentRequest() {
+        return new BniBankTransferPaymentRequest(null);
+    }
+
+    /**
+     * Build BNI Bank transfer payment detials.
+     *
+     * @param customerDetails customer details.
+     * @return BNI Bank transfer payment request.
+     */
+    public static BniBankTransferPaymentRequest buildBniBankTransferPaymentRequest(SnapCustomerDetails customerDetails) {
+        return new BniBankTransferPaymentRequest(customerDetails);
     }
 
     /**

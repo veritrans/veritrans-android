@@ -4,6 +4,8 @@ import com.midtrans.sdk.core.MidtransCoreCallback;
 import com.midtrans.sdk.core.models.snap.BaseTransactionResponse;
 import com.midtrans.sdk.core.models.snap.bank.bca.BcaBankTransferPaymentRequest;
 import com.midtrans.sdk.core.models.snap.bank.bca.BcaBankTransferPaymentResponse;
+import com.midtrans.sdk.core.models.snap.bank.bni.BniBankTransferPaymentRequest;
+import com.midtrans.sdk.core.models.snap.bank.bni.BniBankTransferPaymentResponse;
 import com.midtrans.sdk.core.models.snap.bank.mandiri.MandiriBankTransferPaymentRequest;
 import com.midtrans.sdk.core.models.snap.bank.mandiri.MandiriBankTransferPaymentResponse;
 import com.midtrans.sdk.core.models.snap.bank.other.OtherBankTransferPaymentRequest;
@@ -118,6 +120,28 @@ public class SnapApiManager {
             @Override
             public void onFailure(Call<BcaBankTransferPaymentResponse> call, Throwable throwable) {
                 callback.onError(new RuntimeException("Failed to pay using BCA VIA", throwable));
+            }
+        });
+    }
+
+    /**
+     * Start payment using bank transfer via BNI.
+     *
+     * @param checkoutToken                 checkout token.
+     * @param bniBankTransferPaymentRequest BNI Bank transfer payment details.
+     * @param callback                      callback to be called after API call was finished.
+     */
+    public void paymentUsingBniBankTransfer(String checkoutToken, BniBankTransferPaymentRequest bniBankTransferPaymentRequest, final MidtransCoreCallback<BniBankTransferPaymentResponse> callback) {
+        Call<BniBankTransferPaymentResponse> response = snapApi.paymentUsingBniBankTransfer(checkoutToken, bniBankTransferPaymentRequest);
+        response.enqueue(new Callback<BniBankTransferPaymentResponse>() {
+            @Override
+            public void onResponse(Call<BniBankTransferPaymentResponse> call, Response<BniBankTransferPaymentResponse> response) {
+                handlePaymentResponse(response, callback);
+            }
+
+            @Override
+            public void onFailure(Call<BniBankTransferPaymentResponse> call, Throwable throwable) {
+                callback.onError(new RuntimeException("Failed to pay using BNI VA", throwable));
             }
         });
     }

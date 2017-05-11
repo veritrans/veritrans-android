@@ -74,6 +74,7 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
                 presenter.trackEvent(AnalyticsEventName.PAGE_MANDIRI_BILL);
                 break;
             case PaymentType.BNI_VA:
+                presenter.trackEvent(AnalyticsEventName.PAGE_BNI_VA);
                 break;
         }
     }
@@ -94,15 +95,15 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
     }
 
     private void showBankTransferPaymentStatus(PaymentResult result) {
-        Intent intent = new Intent(this, BankTransferMandiriStatusActivity.class);
+        Intent intent = new Intent(this, BankTransferPaymentStatusActivity.class);
         intent.putExtra(BankTransferPaymentStatusActivity.EXTRA_RESPONSE, result.getTransactionResponse());
+        intent.putExtra(BankTransferPaymentStatusActivity.EXTRA_BANK, paymentType);
         startActivityForResult(intent, STATUS_REQUEST_CODE);
     }
 
     private void showMandiriBillPaymentStatus(PaymentResult result) {
-        Intent intent = new Intent(this, BankTransferPaymentStatusActivity.class);
-        intent.putExtra(BankTransferPaymentStatusActivity.EXTRA_RESPONSE, result.getTransactionResponse());
-        intent.putExtra(BankTransferPaymentStatusActivity.EXTRA_BANK, paymentType);
+        Intent intent = new Intent(this, BankTransferMandiriStatusActivity.class);
+        intent.putExtra(BankTransferMandiriStatusActivity.EXTRA_RESPONSE, result.getTransactionResponse());
         startActivityForResult(intent, STATUS_REQUEST_CODE);
     }
 
@@ -160,8 +161,11 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
                 presenter.trackEvent(AnalyticsEventName.PAGE_OTHER_BANK_VA_OVERVIEW);
                 break;
             case PaymentType.BNI_VA:
-                title = getString(R.string.bank_transfer);
-                pageNumber = 4;
+                title = getString(R.string.bank_bni_transfer);
+                pageNumber = 3;
+
+                // track page bni va overview
+                presenter.trackEvent(AnalyticsEventName.PAGE_OTHER_BANK_VA_OVERVIEW);
                 break;
             default:
                 title = getString(R.string.bank_transfer);
@@ -198,17 +202,17 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
     @Override
     protected void startPayment() {
         UiUtils.showProgressDialog(this, getString(R.string.processing_payment), false);
-        presenter.performPayment(editEmail.getText().toString(), paymentType);
+        String email = editEmail.getText().toString();
+        if (!TextUtils.isEmpty(email)) {
+            presenter.performPayment(editEmail.getText().toString(), paymentType);
+        } else {
+            presenter.performPayment(paymentType);
+        }
     }
 
     @Override
     protected boolean validatePayment() {
-        String userEmail = editEmail.getText().toString();
-        boolean valid = !TextUtils.isEmpty(userEmail) && !UiUtils.isEmailValid(userEmail);
-        if (!valid) {
-            UiUtils.showToast(this, getString(R.string.error_invalid_email_id));
-        }
-        return valid;
+        return true;
     }
 
     @Override

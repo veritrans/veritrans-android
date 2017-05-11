@@ -14,7 +14,7 @@ import com.midtrans.sdk.ui.R;
  * <p>
  * Created by shivam on 10/28/15.
  */
-public class InstructionBCAFragment extends Fragment {
+public class InstructionBcaFragment extends Fragment {
 
     @Nullable
     @Override

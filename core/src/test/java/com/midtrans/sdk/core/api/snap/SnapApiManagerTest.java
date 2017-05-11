@@ -177,8 +177,8 @@ public class SnapApiManagerTest {
                 null,
                 "bca-va",
                 "bca-exp",
-                null,
-                "pdf-url"
+                "pdf-url",
+                null
         );
 
         MockRetrofit mockRetrofit = MockSnapRetrofit.getSnapMockRetrofit();
@@ -220,6 +220,7 @@ public class SnapApiManagerTest {
                 "accept",
                 null,
                 "pdf-url",
+                null,
                 "permata-va",
                 "permata-exp"
         );
@@ -263,6 +264,7 @@ public class SnapApiManagerTest {
                 "accept",
                 null,
                 "pdf-url",
+                null,
                 "mandiri-bill-key",
                 "mandiri-biller",
                 "mandiri-bill-exp"
@@ -308,6 +310,7 @@ public class SnapApiManagerTest {
                 "accept",
                 null,
                 "pdf-url",
+                null,
                 "permata-va",
                 "permata-exp"
         );
