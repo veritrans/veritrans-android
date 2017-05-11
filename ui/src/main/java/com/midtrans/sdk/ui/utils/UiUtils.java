@@ -60,7 +60,6 @@ public class UiUtils {
      * @return true if given email-id is valid else returns false
      */
     public static boolean isEmailValid(String email) {
-
         if (!TextUtils.isEmpty(email)) {
             Pattern pattern = Pattern.compile(Constants.EMAIL_PATTERN, Pattern.CASE_INSENSITIVE);
             Matcher matcher = pattern.matcher(email.trim());
@@ -422,13 +421,19 @@ public class UiUtils {
     public static SnapCustomerDetails buildCustomerDetails() {
         if (MidtransUi.getInstance().getTransaction() != null) {
             CustomerDetails customerDetails = MidtransUi.getInstance().getTransaction().customerDetails;
-            return new SnapCustomerDetails(
-                    customerDetails.firstName,
-                    customerDetails.email,
-                    customerDetails.phone
-            );
+            if (customerDetails != null) {
+                return new SnapCustomerDetails(
+                        customerDetails.firstName,
+                        customerDetails.email,
+                        customerDetails.phone
+                );
+            }
         }
         return null;
+    }
+
+    public static SnapCustomerDetails buildCustomerDetails(String customerEmail, String customerPhone) {
+        return new SnapCustomerDetails(null, customerEmail, customerPhone);
     }
 
     public static void removeCardFromMidtransTransaction(SavedToken savedToken) {

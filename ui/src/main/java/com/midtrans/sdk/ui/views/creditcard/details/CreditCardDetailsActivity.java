@@ -69,10 +69,14 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     private EditText cardNumberField;
     private EditText cardCvvField;
     private EditText cardExpiryField;
+    private EditText customerEmailField;
+    private EditText customerPhoneField;
 
     private TextView cardNumberErrorText;
     private TextView cardCvvErrorText;
     private TextView cardExpiryErrorText;
+    private TextView customerEmailErrorText;
+    private TextView customerPhoneErrorText;
     private TextView textInvalidPromoStatus;
     private TextView textInstallmentTerm;
     private TextView textTitleInstallment;
@@ -93,6 +97,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     private RelativeLayout containerSaveCard;
     private LinearLayout containerInstallment;
     private RelativeLayout containerPoint;
+    private LinearLayout containerCustomerData;
 
     private AppCompatCheckBox checkboxSaveCard;
     private AppCompatCheckBox checkboxPointEnabled;
@@ -113,6 +118,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         initFocusChanges();
         initSaveCardLayout();
         initSaveCardCheckbox();
+        initCustomerData();
         initCvvHelp();
         initSaveCardHelp();
         initSavedCardIfAvailable();
@@ -135,6 +141,9 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         cardNumberField = (EditText) findViewById(R.id.field_card_number);
         cardCvvField = (EditText) findViewById(R.id.field_cvv);
         cardExpiryField = (EditText) findViewById(R.id.field_expiry);
+        customerEmailField = (EditText) findViewById(R.id.field_customer_email);
+        customerPhoneField = (EditText) findViewById(R.id.field_customer_phone);
+
         textInvalidPromoStatus = (TextView) findViewById(R.id.text_offer_status_not_applied);
         textInstallmentTerm = (TextView) findViewById(R.id.text_installment_term);
         textTitleInstallment = (TextView) findViewById(R.id.title_installment);
@@ -142,6 +151,8 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         cardNumberErrorText = (TextView) findViewById(R.id.error_message_card_number);
         cardExpiryErrorText = (TextView) findViewById(R.id.error_message_expiry);
         cardCvvErrorText = (TextView) findViewById(R.id.error_message_cvv);
+        customerEmailErrorText = (TextView) findViewById(R.id.error_customer_email);
+        customerPhoneErrorText = (TextView) findViewById(R.id.error_customer_phone);
 
         cardLogo = (ImageView) findViewById(R.id.payment_card_logo);
         bankLogo = (ImageView) findViewById(R.id.bank_logo);
@@ -159,6 +170,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         containerSaveCard = (RelativeLayout) findViewById(R.id.container_save_card_details);
         containerInstallment = (LinearLayout) findViewById(R.id.container_installment);
         containerPoint = (RelativeLayout) findViewById(R.id.container_bni_point);
+        containerCustomerData = (LinearLayout) findViewById(R.id.container_customer_data);
 
         checkboxSaveCard = (AppCompatCheckBox) findViewById(R.id.checkbox_save_card);
         checkboxPointEnabled = (AppCompatCheckBox) findViewById(R.id.checkbox_point);
@@ -386,6 +398,38 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 checkCardValidity();
+                if (!presenter.isCustomerDetailsAvailable()) {
+                    checkCustomerDataValidity();
+                }
+            }
+        });
+    }
+
+    private void initCustomerData() {
+        if (presenter.isCustomerDetailsAvailable()) {
+            containerCustomerData.setVisibility(View.GONE);
+        } else {
+            containerCustomerData.setVisibility(View.VISIBLE);
+            initCustomerDataFields();
+        }
+    }
+
+    private void initCustomerDataFields() {
+        customerEmailField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean focused) {
+                if (!focused) {
+                    checkCustomerEmailValidity();
+                }
+            }
+        });
+
+        customerPhoneField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean focused) {
+                if (!focused) {
+                    checkCustomerPhoneValidity();
+                }
             }
         });
     }
@@ -407,6 +451,38 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         }
 
         return true;
+    }
+
+    private boolean checkCustomerEmailValidity() {
+        String email = customerEmailField.getText().toString();
+        if (!TextUtils.isEmpty(email)) {
+            if (UiUtils.isEmailValid(email)) {
+                hideValidationError(customerEmailErrorText);
+                return true;
+            } else {
+                showValidationError(customerEmailErrorText, getString(R.string.validation_email_invalid));
+                return false;
+            }
+        } else {
+            showValidationError(customerEmailErrorText, getString(R.string.validation_email_empty));
+            return false;
+        }
+    }
+
+    private boolean checkCustomerPhoneValidity() {
+        String phone = customerPhoneField.getText().toString();
+        if (!TextUtils.isEmpty(phone)) {
+            if (UiUtils.isPhoneNumberValid(phone)) {
+                hideValidationError(customerPhoneErrorText);
+                return true;
+            } else {
+                showValidationError(customerPhoneErrorText, getString(R.string.validation_phone_no_invalid));
+                return false;
+            }
+        } else {
+            showValidationError(customerPhoneErrorText, getString(R.string.validation_phone_no_empty));
+            return false;
+        }
     }
 
     private void initCvvHelp() {
@@ -641,6 +717,16 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         return cardNumberValidity && cardExpiryValidity && cardCVVValidity;
     }
 
+    private boolean checkCustomerDataValidity() {
+        if (!presenter.isCustomerDetailsAvailable()) {
+            boolean customerEmailValidity = checkCustomerEmailValidity();
+            boolean customerPhoneValidity = checkCustomerPhoneValidity();
+            return customerEmailValidity && customerPhoneValidity;
+        } else {
+            return true;
+        }
+    }
+
     private boolean checkCardNumberValidity() {
         if (isTwoClickMode()) {
             return true;
@@ -813,7 +899,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             presenter.startGettingBankPoint();
         } else {
             showProgressDialog(getString(R.string.processing_payment));
-            presenter.startPayment();
+            initPayment();
         }
     }
 
@@ -933,14 +1019,34 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             if (requestCode == BANK_POINT_REQUEST_CODE) {
                 float redeemedPoint = data.getFloatExtra(BankPointsActivity.EXTRA_DATA_POINT, 0f);
                 showProgressDialog(getString(R.string.processing_payment));
-                presenter.startPayment(redeemedPoint);
+                initBankPointPayment(redeemedPoint);
             }
 
         } else if (resultCode == RESULT_CANCELED) {
             if (requestCode == Constants.INTENT_CODE_WEB_PAYMENT) {
                 dismissProgressDialog();
-                presenter.startPayment();
+                initPayment();
             }
+        }
+    }
+
+    private void initPayment() {
+        if (presenter.isCustomerDetailsAvailable()) {
+            presenter.startPayment();
+        } else {
+            String email = customerEmailField.getText().toString();
+            String phone = customerPhoneField.getText().toString();
+            presenter.startPayment(email, phone);
+        }
+    }
+
+    private void initBankPointPayment(float redeemedPoint) {
+        if (presenter.isCustomerDetailsAvailable()) {
+            presenter.startPayment(redeemedPoint);
+        } else {
+            String email = customerEmailField.getText().toString();
+            String phone = customerPhoneField.getText().toString();
+            presenter.startPayment(redeemedPoint, email, phone);
         }
     }
 
@@ -1091,7 +1197,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         String cvv = cardCvvField.getText().toString();
         showProgressDialog(getString(R.string.processing_payment));
         if (isOneClickMode()) {
-            presenter.startPayment();
+            initPayment();
         } else {
             if (isTwoClickMode()) {
                 presenter.startTokenize(cvv);
@@ -1123,8 +1229,10 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     @Override
     protected boolean validatePayment() {
         if (checkCardValidity()) {
-            if (checkPaymentValidity()) {
-                return true;
+            if (checkCustomerDataValidity()) {
+                if (checkPaymentValidity()) {
+                    return true;
+                }
             }
         }
         return false;

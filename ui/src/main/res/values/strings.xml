@@ -105,6 +105,10 @@
         <item>Indomaret</item>
     </string-array>
     <!--add credicard-->
+    <string name="hint_customer_phone_sample">081234567890</string>
+    <string name="hint_customer_email_sample">budi@utomo.com</string>
+    <string name="hint_customer_phone">Phone Number</string>
+    <string name="hint_customer_email">Email</string>
     <string name="hint_name_on_card">Name on the card</string>
     <string name="hint_card_number">Card Number</string>
     <string name="hint_card_number_example">4811 1111 1111 1114 (Example)</string>

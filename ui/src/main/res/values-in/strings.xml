@@ -2,6 +2,8 @@
 <resources>
     <string name="activity_select_bank">Pilih Bank</string>
     <!--user detail-->
+    <string name="hint_customer_phone">Nomor Telepon</string>
+    <string name="hint_customer_email">Email</string>
     <string name="hint_full_name">Nama Lengkap</string>
     <string name="hint_email">Email</string>
     <string name="next">Selanjutnya</string>
