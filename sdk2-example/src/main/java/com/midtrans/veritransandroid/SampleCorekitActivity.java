@@ -745,7 +745,7 @@ public class SampleCorekitActivity extends AppCompatActivity {
         //creditcard properties
         CreditCard creditCard = new CreditCard();
         creditCard.setSecure(false);
-        return CheckoutTokenRequest.newCompleteCheckout("rakawm-test1", creditCard, itemDetailsList, customerDetails, checkoutOrderDetails, null, null, null, null);
+        return CheckoutTokenRequest.newCompleteCheckout("rakawm-test1", null, null, creditCard, null, itemDetailsList, customerDetails, checkoutOrderDetails, null, null, null, null);
     }
 
     private CreditCardPaymentParams buildCreditCardPaymentParams(String cardToken) {

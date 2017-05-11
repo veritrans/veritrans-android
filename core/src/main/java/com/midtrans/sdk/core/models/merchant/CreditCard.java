@@ -3,6 +3,7 @@ package com.midtrans.sdk.core.models.merchant;
 import com.midtrans.sdk.core.models.BankType;
 import com.midtrans.sdk.core.models.Channel;
 import com.midtrans.sdk.core.models.snap.SavedToken;
+import com.midtrans.sdk.core.models.snap.card.Installment;
 
 import java.io.Serializable;
 import java.util.List;
@@ -18,6 +19,7 @@ public class CreditCard implements Serializable {
     private String channel;
     private String bank;
     private List<SavedToken> savedTokens;
+    private Installment installment;
     private String type;
 
     public boolean isSaveCard() {
@@ -74,5 +76,13 @@ public class CreditCard implements Serializable {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public Installment getInstallment() {
+        return installment;
+    }
+
+    public void setInstallment(Installment installment) {
+        this.installment = installment;
     }
 }
