@@ -2,6 +2,8 @@ package com.midtrans.sdk.core.api.snap;
 
 import com.midtrans.sdk.core.models.snap.bank.bca.BcaBankTransferPaymentRequest;
 import com.midtrans.sdk.core.models.snap.bank.bca.BcaBankTransferPaymentResponse;
+import com.midtrans.sdk.core.models.snap.bank.bni.BniBankTransferPaymentRequest;
+import com.midtrans.sdk.core.models.snap.bank.bni.BniBankTransferPaymentResponse;
 import com.midtrans.sdk.core.models.snap.bank.mandiri.MandiriBankTransferPaymentRequest;
 import com.midtrans.sdk.core.models.snap.bank.mandiri.MandiriBankTransferPaymentResponse;
 import com.midtrans.sdk.core.models.snap.bank.other.OtherBankTransferPaymentRequest;
@@ -88,6 +90,19 @@ public interface SnapApi {
     Call<BcaBankTransferPaymentResponse> paymentUsingBcaBankTransfer(
             @Path("checkout_token") String checkoutToken,
             @Body BcaBankTransferPaymentRequest bcaBankTransferPaymentRequest
+    );
+
+    /**
+     * Charge transaction using bank transfer via BNI.
+     *
+     * @param checkoutToken                 checkout token.
+     * @param bniBankTransferPaymentRequest BNI bank transfer payment details.
+     * @return transaction response.
+     */
+    @POST("transactions/{checkout_token}/pay")
+    Call<BniBankTransferPaymentResponse> paymentUsingBniBankTransfer(
+            @Path("checkout_token") String checkoutToken,
+            @Body BniBankTransferPaymentRequest bniBankTransferPaymentRequest
     );
 
     /**

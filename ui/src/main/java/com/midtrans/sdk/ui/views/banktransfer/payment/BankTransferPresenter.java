@@ -4,9 +4,11 @@ import com.midtrans.sdk.core.MidtransCore;
 import com.midtrans.sdk.core.MidtransCoreCallback;
 import com.midtrans.sdk.core.models.snap.SnapCustomerDetails;
 import com.midtrans.sdk.core.models.snap.bank.bca.BcaBankTransferPaymentResponse;
+import com.midtrans.sdk.core.models.snap.bank.bni.BniBankTransferPaymentResponse;
 import com.midtrans.sdk.core.models.snap.bank.mandiri.MandiriBankTransferPaymentResponse;
 import com.midtrans.sdk.core.models.snap.bank.other.OtherBankTransferPaymentResponse;
 import com.midtrans.sdk.core.models.snap.bank.permata.PermataBankTransferPaymentResponse;
+import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.abtracts.BasePaymentPresenter;
 import com.midtrans.sdk.ui.constants.AnalyticsEventName;
 import com.midtrans.sdk.ui.constants.PaymentType;
@@ -50,6 +52,29 @@ public class BankTransferPresenter extends BasePaymentPresenter {
                 break;
             case PaymentType.OTHER_VA:
                 performOtherBankPayment(customerDetails);
+                break;
+            case PaymentType.BNI_VA:
+                performBniBankTransferPayment(customerDetails);
+                break;
+        }
+    }
+
+    public void performPayment(String bankType) {
+        switch (bankType) {
+            case PaymentType.BCA_VA:
+                performBcaBankTransferPayment(null);
+                break;
+            case PaymentType.E_CHANNEL:
+                performMandiriBillPayment(null);
+                break;
+            case PaymentType.PERMATA_VA:
+                performPermataBankTransferPayment(null);
+                break;
+            case PaymentType.OTHER_VA:
+                performOtherBankPayment(null);
+                break;
+            case PaymentType.BNI_VA:
+                performBniBankTransferPayment(null);
                 break;
         }
     }
@@ -157,6 +182,31 @@ public class BankTransferPresenter extends BasePaymentPresenter {
                 });
     }
 
+    private void performBniBankTransferPayment(SnapCustomerDetails customerDetails) {
+        MidtransCore.getInstance().paymentUsingBniBankTransfer(
+                MidtransUi.getInstance().getTransaction().token,
+                customerDetails,
+                new MidtransCoreCallback<BniBankTransferPaymentResponse>() {
+                    @Override
+                    public void onSuccess(BniBankTransferPaymentResponse response) {
+                        paymentResult = new PaymentResult<>(response);
+                        paymentView.onPaymentSuccess(paymentResult);
+                    }
+
+                    @Override
+                    public void onFailure(BniBankTransferPaymentResponse response) {
+                        paymentResult = new PaymentResult<>(response);
+                        paymentView.onPaymentFailure(paymentResult);
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        paymentResult = new PaymentResult<>(throwable.getMessage());
+                        paymentView.onPaymentError(throwable.getMessage());
+                    }
+                }
+        );
+    }
     public PaymentResult getPaymentResult() {
         return paymentResult;
     }

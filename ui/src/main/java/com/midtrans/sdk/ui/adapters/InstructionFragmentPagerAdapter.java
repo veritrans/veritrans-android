@@ -13,11 +13,14 @@ import android.view.ViewGroup;
 
 import com.midtrans.sdk.ui.R;
 import com.midtrans.sdk.ui.constants.PaymentType;
-import com.midtrans.sdk.ui.views.instructions.InstructionATMBersamaFragment;
 import com.midtrans.sdk.ui.views.instructions.InstructionAltoFragment;
-import com.midtrans.sdk.ui.views.instructions.InstructionBCAFragment;
-import com.midtrans.sdk.ui.views.instructions.InstructionBCAKlikFragment;
-import com.midtrans.sdk.ui.views.instructions.InstructionBCAMobileFragment;
+import com.midtrans.sdk.ui.views.instructions.InstructionAtmBersamaFragment;
+import com.midtrans.sdk.ui.views.instructions.InstructionBcaFragment;
+import com.midtrans.sdk.ui.views.instructions.InstructionBcaKlikFragment;
+import com.midtrans.sdk.ui.views.instructions.InstructionBcaMobileFragment;
+import com.midtrans.sdk.ui.views.instructions.InstructionBniFragment;
+import com.midtrans.sdk.ui.views.instructions.InstructionBniInternetFragment;
+import com.midtrans.sdk.ui.views.instructions.InstructionBniMobileFragment;
 import com.midtrans.sdk.ui.views.instructions.InstructionMandiriFragment;
 import com.midtrans.sdk.ui.views.instructions.InstructionMandiriInternetFragment;
 import com.midtrans.sdk.ui.views.instructions.InstructionPermataFragment;
@@ -47,11 +50,11 @@ public class InstructionFragmentPagerAdapter extends FragmentStatePagerAdapter {
         switch (bank) {
             case PaymentType.BCA_VA:
                 if (position == 0) {
-                    fragment = new InstructionBCAFragment();
+                    fragment = new InstructionBcaFragment();
                 } else if (position == 1) {
-                    fragment = new InstructionBCAKlikFragment();
+                    fragment = new InstructionBcaKlikFragment();
                 } else {
-                    fragment = new InstructionBCAMobileFragment();
+                    fragment = new InstructionBcaMobileFragment();
                 }
                 break;
             case PaymentType.E_CHANNEL:
@@ -65,11 +68,17 @@ public class InstructionFragmentPagerAdapter extends FragmentStatePagerAdapter {
                 fragment = new InstructionPermataFragment();
                 break;
             case PaymentType.BNI_VA:
-                fragment = new InstructionPermataFragment();
+                if (position == 0) {
+                    fragment = new InstructionBniFragment();
+                } else if (position == 1) {
+                    fragment = new InstructionBniMobileFragment();
+                } else {
+                    fragment = new InstructionBniInternetFragment();
+                }
                 break;
             default:
                 if (position == 0) {
-                    fragment = new InstructionATMBersamaFragment();
+                    fragment = new InstructionAtmBersamaFragment();
 
                 } else if (position == 1) {
                     fragment = new InstructionPrimaFragment();
@@ -127,7 +136,13 @@ public class InstructionFragmentPagerAdapter extends FragmentStatePagerAdapter {
                 }
                 break;
             case PaymentType.BNI_VA:
-                instructionTitle = context.getString(R.string.tab_atm_bersama);
+                if (position == 0) {
+                    instructionTitle = context.getString(R.string.tab_atm_bni);
+                } else if (position == 1) {
+                    instructionTitle = context.getString(R.string.tab_bni_mobile);
+                } else {
+                    instructionTitle = context.getString(R.string.tab_bni_internet);
+                }
                 break;
             default:
                 if (position == 0) {

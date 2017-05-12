@@ -14,7 +14,7 @@ import com.midtrans.sdk.ui.R;
  *
  * @author rakawm
  */
-public class InstructionBCAMobileFragment extends Fragment {
+public class InstructionBcaMobileFragment extends Fragment {
 
     @Nullable
     @Override

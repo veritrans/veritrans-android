@@ -2,6 +2,8 @@
 <resources>
     <string name="activity_select_bank">Pilih Bank</string>
     <!--user detail-->
+    <string name="hint_customer_phone">Nomor Telepon</string>
+    <string name="hint_customer_email">Email</string>
     <string name="hint_full_name">Nama Lengkap</string>
     <string name="hint_email">Email</string>
     <string name="next">Selanjutnya</string>
@@ -428,10 +430,10 @@
     <string name="save_card_info">Detail kartu diatas akan disimpan untuk membantu transaksi anda berikutnya.</string>
     <string name="choose_card">Pilih kartu kredit</string>
     <string name="add_new_card">bayar dengan kartu baru</string>
-    <string name="mandiri_bill_transfer">Mandiri Bill</string>
+    <string name="mandiri_bill_transfer">Bank Mandiri</string>
     <string name="bank_bca_transfer">Bank BCA</string>
     <string name="bank_permata_transfer">Bank Permata</string>
-    <string name="other_bank_transfer">Others Bank</string>
+    <string name="other_bank_transfer">Bank Lainnya</string>
     <string name="copy">Salin</string>
     <string name="valid_until">Valid hingga</string>
     <string name="valid_date">10 September 2015, 16:00</string>
@@ -474,6 +476,7 @@
     <string name="payment_bank_description_mandiri">Bayar dari ATM Mandiri atau internet banking</string>
     <string name="payment_bank_description_permata">Bayar dari ATM Permata atau internet banking</string>
     <string name="payment_bank_description_other">Bayar dari ATM bank lainnya</string>
+    <string name="payment_bank_description_bni">Bayar dari ATM BNI atau internet banking</string>
 
     <string name="instruction_klikbca1">Mohon pastikan UserID aktif dan terdaftar di BCA.</string>
     <string name="instruction_klikbca2">Mohon lanjutkan pembayaran melalui KlikBCA dengan membuka www.klikbca.com di jendela atau tab terpisah, menggunakan User ID yang anda masukkan sebelumnya.</string>
@@ -502,4 +505,34 @@
     <string name="status_redeemed_point">DISKON POIN</string>
     <string name="error_tcash_token_empty">Token T-Cash harus diisi</string>
     <string name="complete_payment">Selesaikan Pembayaran</string>
+
+    <!-- bni ATM payment instruction -->
+    <string name="bni_atm_instruction_1">Pada menu utama, pilih \'Other transaction\'</string>
+    <string name="bni_atm_instruction_2">Pilih \'Transfer\'</string>
+    <string name="bni_atm_instruction_3">Pilih \'Savings Account\'</string>
+    <string name="bni_atm_instruction_4">Pilih \'To BNI Account\'</string>
+    <string name="bni_atm_instruction_5">Masukkan nomor  BNI virtual account dan tekan \'Correct\'</string>
+    <string name="bni_atm_instruction_6">Masukkan jumlah yang akan dibayarkan dan tekan \'Correct\'</string>
+    <string name="bni_atm_instruction_7">Detil pembayaran anda akan muncul pada halaman konfirmasi. Jika informasi pembayaran sudah benar tekan \'Correct\'</string>
+
+    <!-- BNI mobile payment instruction -->
+    <string name="bni_mobile_instruction_1">Login ke aplikasi BNI Mobile Banking</string>
+    <string name="bni_mobile_instruction_2">Pada menu utama, pilih \'Transfer\'</string>
+    <string name="bni_mobile_instruction_3">Pilih \'To BNI Account\' kemudian \'Add New Account\'</string>
+    <string name="bni_mobile_instruction_4">Masukkan Jumlah yang dibayarkan dan tekan \'Proceed\'</string>
+    <string name="bni_mobile_instruction_5">Detil pembayaran anda akan muncul di halaman konfirmasi</string>
+    <string name="bni_mobile_instruction_6">Jika informasi sudah benar kemudian masukkan kode autentikasi token dan tekan \'Proceed\'</string>
+    <string name="bni_mobile_instruction_7">Pembayaran selesai</string>
+
+    <!-- BNI internet banking payment instruction -->
+    <string name="bni_internet_instruction_1">Kunjungi <a href="https://ibank.bni.co.id">https://ibank.bni.co.id</a> kemudian pilih \'Enter\'</string>
+    <string name="bni_internet_instruction_2">Masukkan  User ID and Password</string>
+    <string name="bni_internet_instruction_3">Pilih \'Set Destination Account\' kemudian \'Add Destination Account\' </string>
+    <string name="bni_internet_instruction_4">Masukkan nama dan VA number</string>
+    <string name="bni_internet_instruction_5">Masukkan kode autentikasi token</string>
+    <string name="bni_internet_instruction_6">Now Destination/Favorite account number is successfully added</string>
+    <string name="bni_internet_instruction_7">Kembali ke menu \'Transfer\'</string>
+    <string name="bni_internet_instruction_8">pilih \'Transfer to BNI Account\' kemudian pilih akun destination/favorite</string>
+    <string name="bni_internet_instruction_9">Pilih Akun  debit dan masukkan jumlah pembayaran, kemudian masukkan kode autentikasi token</string>
+    <string name="bni_internet_instruction_10">Pembayaran selesai</string>
 </resources>

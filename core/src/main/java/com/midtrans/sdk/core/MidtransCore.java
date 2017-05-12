@@ -10,6 +10,7 @@ import com.midtrans.sdk.core.models.papi.CardTokenRequest;
 import com.midtrans.sdk.core.models.papi.CardTokenResponse;
 import com.midtrans.sdk.core.models.snap.SnapCustomerDetails;
 import com.midtrans.sdk.core.models.snap.bank.bca.BcaBankTransferPaymentResponse;
+import com.midtrans.sdk.core.models.snap.bank.bni.BniBankTransferPaymentResponse;
 import com.midtrans.sdk.core.models.snap.bank.mandiri.MandiriBankTransferPaymentResponse;
 import com.midtrans.sdk.core.models.snap.bank.other.OtherBankTransferPaymentResponse;
 import com.midtrans.sdk.core.models.snap.bank.permata.PermataBankTransferPaymentResponse;
@@ -161,6 +162,30 @@ public class MidtransCore {
                                             SnapCustomerDetails customerDetails,
                                             MidtransCoreCallback<BcaBankTransferPaymentResponse> callback) {
         snapApiManager.paymentUsingBcaBankTransfer(checkoutToken, PaymentUtilities.buildBcaBankTransferPaymentRequest(customerDetails), callback);
+    }
+
+    /**
+     * Start payment for transaction for specific checkout token using BNI bank transfer.
+     *
+     * @param checkoutToken checkout token.
+     * @param callback      callback to be called after transaction was done.
+     */
+    public void paymentUsingBniBankTransfer(String checkoutToken,
+                                            MidtransCoreCallback<BniBankTransferPaymentResponse> callback) {
+        snapApiManager.paymentUsingBniBankTransfer(checkoutToken, PaymentUtilities.buildBniBankTransferPaymentRequest(), callback);
+    }
+
+    /**
+     * Start payment for transaction for specific checkout token using BNI bank transfer.
+     *
+     * @param checkoutToken   checkout token.
+     * @param customerDetails customer details.
+     * @param callback        callback to be called after transaction was done.
+     */
+    public void paymentUsingBniBankTransfer(String checkoutToken,
+                                            SnapCustomerDetails customerDetails,
+                                            MidtransCoreCallback<BniBankTransferPaymentResponse> callback) {
+        snapApiManager.paymentUsingBniBankTransfer(checkoutToken, PaymentUtilities.buildBniBankTransferPaymentRequest(customerDetails), callback);
     }
 
     /**

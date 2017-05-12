@@ -19,14 +19,18 @@ import com.midtrans.sdk.core.models.merchant.CreditCard;
 import com.midtrans.sdk.core.models.merchant.CustomerDetails;
 import com.midtrans.sdk.core.models.merchant.ItemDetails;
 import com.midtrans.sdk.core.models.papi.CardTokenRequest;
+import com.midtrans.sdk.core.models.snap.card.Installment;
 import com.midtrans.sdk.ui.MidtransUi;
 import com.midtrans.sdk.ui.MidtransUiCallback;
 import com.midtrans.sdk.ui.constants.PaymentStatus;
+import com.midtrans.sdk.ui.constants.PaymentType;
 import com.midtrans.sdk.ui.models.PaymentResult;
 import com.midtrans.sdk.ui.utils.Logger;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -194,6 +198,24 @@ public class SampleUiSdkActivity extends AppCompatActivity {
         String customField2 = etCustomField2.getText().toString();
         String customField3 = etCustomField3.getText().toString();
 
-        return CheckoutTokenRequest.newCompleteCheckout("rakawm-test1", creditCard, itemDetailsList, customerDetails, checkoutOrderDetails, null, customField1, customField2, customField3);
+        List<String> enabledPayments = new ArrayList<>();
+        enabledPayments.add(PaymentType.CREDIT_CARD);
+        enabledPayments.add(PaymentType.BANK_TRANSFER);
+        enabledPayments.add(PaymentType.E_CHANNEL);
+
+        List<Integer> integers = new ArrayList<>();
+        integers.add(3);
+        integers.add(6);
+        integers.add(12);
+
+        Map<String, List<Integer>> terms = new HashMap<>();
+        terms.put(BankType.MANDIRI, integers);
+        terms.put(BankType.BNI, integers);
+
+        Installment installment = new Installment(true, terms);
+
+        creditCard.setInstallment(installment);
+
+        return CheckoutTokenRequest.newCompleteCheckout("rakawm-test1", null, null, creditCard, enabledPayments, itemDetailsList, customerDetails, checkoutOrderDetails, null, customField1, customField2, customField3);
     }
 }

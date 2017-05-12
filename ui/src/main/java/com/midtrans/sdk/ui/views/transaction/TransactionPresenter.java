@@ -8,7 +8,7 @@ import com.midtrans.sdk.core.MidtransCore;
 import com.midtrans.sdk.core.MidtransCoreCallback;
 import com.midtrans.sdk.core.models.merchant.CheckoutTokenRequest;
 import com.midtrans.sdk.core.models.merchant.CheckoutTokenResponse;
-import com.midtrans.sdk.core.models.merchant.ItemDetails;
+import com.midtrans.sdk.core.models.snap.ItemDetails;
 import com.midtrans.sdk.core.models.snap.transaction.SnapEnabledPayment;
 import com.midtrans.sdk.core.models.snap.transaction.SnapTransaction;
 import com.midtrans.sdk.ui.R;
@@ -118,7 +118,8 @@ public class TransactionPresenter extends BasePresenter {
                 view.showMerchantNameOrLogo(snapTransaction.merchant.preference.displayName, snapTransaction.merchant.preference.logoUrl);
                 // Update color theme
                 view.updateColorTheme();
-
+                // Show Item Details
+                view.showItemDetails();
             }
 
             @Override
@@ -138,26 +139,28 @@ public class TransactionPresenter extends BasePresenter {
     private List<ItemDetail> createItemDetails() {
         List<ItemDetail> itemViewDetails = new ArrayList<>();
 
-        CheckoutTokenRequest checkoutTokenRequest = midtransUi.getCheckoutTokenRequest();
+        SnapTransaction snapTransaction = midtransUi.getTransaction();
 
         // Add amount
-        String amount = context.getString(R.string.prefix_money, Utils.getFormattedAmount(checkoutTokenRequest.transactionDetails.grossAmount));
+        String amount = context.getString(R.string.prefix_money, Utils.getFormattedAmount(snapTransaction.transactionDetails.grossAmount));
 
         // Add header total amount
         itemViewDetails.add(new ItemDetail(
                 null,
                 amount,
                 ItemDetail.TYPE_ITEM_HEADER,
-                checkoutTokenRequest.itemDetails.size() > 0));
+                snapTransaction.itemDetails != null && !snapTransaction.itemDetails.isEmpty()));
 
-        // Add items
-        for (ItemDetails itemDetails : midtransUi.getCheckoutTokenRequest().itemDetails) {
-            String price = context.getString(R.string.prefix_money, Utils.getFormattedAmount(itemDetails.quantity * itemDetails.price));
-            String itemName = itemDetails.name;
-            if (itemDetails.quantity > 1) {
-                itemName = context.getString(R.string.text_item_name_format, itemDetails.name, itemDetails.quantity);
+        if (snapTransaction.itemDetails!=null && !snapTransaction.itemDetails.isEmpty()) {
+            // Add items
+            for (ItemDetails itemDetails : snapTransaction.itemDetails) {
+                String price = context.getString(R.string.prefix_money, Utils.getFormattedAmount(itemDetails.quantity * itemDetails.price));
+                String itemName = itemDetails.name;
+                if (itemDetails.quantity > 1) {
+                    itemName = context.getString(R.string.text_item_name_format, itemDetails.name, itemDetails.quantity);
+                }
+                itemViewDetails.add(new ItemDetail(itemName, price, ItemDetail.TYPE_ITEM, true));
             }
-            itemViewDetails.add(new ItemDetail(itemName, price, ItemDetail.TYPE_ITEM, true));
         }
         return itemViewDetails;
     }

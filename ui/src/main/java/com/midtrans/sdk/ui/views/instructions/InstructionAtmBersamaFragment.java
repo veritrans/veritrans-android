@@ -13,7 +13,7 @@ import com.midtrans.sdk.ui.R;
  *
  * @author rakawm
  */
-public class InstructionATMBersamaFragment extends Fragment {
+public class InstructionAtmBersamaFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

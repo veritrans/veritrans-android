@@ -10,6 +10,7 @@ import com.midtrans.sdk.core.models.BankType;
 import com.midtrans.sdk.core.models.papi.CardTokenRequest;
 import com.midtrans.sdk.core.models.papi.CardTokenResponse;
 import com.midtrans.sdk.core.models.snap.CreditCard;
+import com.midtrans.sdk.core.models.snap.CustomerDetails;
 import com.midtrans.sdk.core.models.snap.SavedToken;
 import com.midtrans.sdk.core.models.snap.bins.BankBinsResponse;
 import com.midtrans.sdk.core.models.snap.card.BankPointResponse;
@@ -221,6 +222,22 @@ public class CreditCardDetailsPresenter extends BasePaymentPresenter {
                 MidtransUi.getInstance().getTransaction().token,
                 buildCreditCardPaymentParams(redeemedPoint),
                 UiUtils.buildCustomerDetails(),
+                paymentCallback);
+    }
+
+    void startPayment(String customerEmail, String customerPhone) {
+        MidtransCore.getInstance().paymentUsingCreditCard(
+                MidtransUi.getInstance().getTransaction().token,
+                isOneClickMode() && savedToken != null ? buildOneClickCreditCardPaymentParams() : buildCreditCardPaymentParams(),
+                UiUtils.buildCustomerDetails(customerEmail, customerPhone),
+                paymentCallback);
+    }
+
+    void startPayment(float redeemedPoint, String customerEmail, String customerPhone) {
+        MidtransCore.getInstance().paymentUsingCreditCard(
+                MidtransUi.getInstance().getTransaction().token,
+                buildCreditCardPaymentParams(redeemedPoint),
+                UiUtils.buildCustomerDetails(customerEmail, customerPhone),
                 paymentCallback);
     }
 
@@ -715,5 +732,19 @@ public class CreditCardDetailsPresenter extends BasePaymentPresenter {
                 cardDetailsView.onGetBankPointFailure(throwable.getMessage());
             }
         });
+    }
+
+    boolean isCustomerDetailsAvailable() {
+        SnapTransaction snapTransaction = midtransUi.getTransaction();
+        if (snapTransaction != null) {
+            CustomerDetails customerDetails = snapTransaction.customerDetails;
+            if (customerDetails != null) {
+                if (!TextUtils.isEmpty(customerDetails.email)
+                        && !TextUtils.isEmpty(customerDetails.phone)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

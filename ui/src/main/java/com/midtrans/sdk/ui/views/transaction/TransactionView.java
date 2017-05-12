@@ -15,6 +15,8 @@ public interface TransactionView {
 
     void showPaymentMethods(List<PaymentMethodModel> paymentMethodsModel);
 
+    void showItemDetails();
+
     void updateColorTheme();
 
     void showErrorContainer();

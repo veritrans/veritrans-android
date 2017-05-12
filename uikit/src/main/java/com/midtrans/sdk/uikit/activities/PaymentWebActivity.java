@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -15,11 +16,18 @@ import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.fragments.WebviewFragment;
+import com.stfalcon.smsverifycatcher.OnSmsCatchListener;
+import com.stfalcon.smsverifycatcher.SmsVerifyCatcher;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class PaymentWebActivity extends BaseActivity {
     private Toolbar toolbar;
     private String webUrl;
     private String type = "";
+    private SmsVerifyCatcher smsVerifyCatcher;
+    private WebviewFragment webviewFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,13 +46,16 @@ public class PaymentWebActivity extends BaseActivity {
 
         setSupportActionBar(toolbar);
         prepareToolbar();
-        WebviewFragment webviewFragment;
         if (!type.equals("")) {
             webviewFragment = WebviewFragment.newInstance(webUrl, type);
         } else {
             webviewFragment = WebviewFragment.newInstance(webUrl);
         }
         replaceFragment(webviewFragment, R.id.webview_container, true, false);
+
+        if (type != null && type.equalsIgnoreCase(WebviewFragment.TYPE_CREDIT_CARD)) {
+            initSmsCatcher();
+        }
     }
 
     private void prepareToolbar() {
@@ -106,4 +117,43 @@ public class PaymentWebActivity extends BaseActivity {
         dialog.show();
     }
 
+    private void initSmsCatcher() {
+        if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
+                && MidtransSDK.getInstance().getUIKitCustomSetting().isEnableAutoReadSms()) {
+            smsVerifyCatcher = new SmsVerifyCatcher(this, new OnSmsCatchListener<String>() {
+                @Override
+                public void onSmsCatch(String message) {
+                    Pattern otpPattern = Pattern.compile("[0-9]{6}");
+                    Matcher matcher = otpPattern.matcher(message);
+                    if (matcher.find()) {
+                        webviewFragment.setOtp(matcher.group(0));
+                    }
+                }
+            });
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (smsVerifyCatcher != null) {
+            smsVerifyCatcher.onStart();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (smsVerifyCatcher != null) {
+            smsVerifyCatcher.onStop();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (smsVerifyCatcher != null) {
+            smsVerifyCatcher.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
 }

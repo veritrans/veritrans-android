@@ -2,6 +2,7 @@ package com.midtrans.sdk.ui.views.banktransfer.payment;
 
 import com.midtrans.sdk.core.models.snap.bank.BankTransferPaymentResponse;
 import com.midtrans.sdk.core.models.snap.bank.bca.BcaBankTransferPaymentResponse;
+import com.midtrans.sdk.core.models.snap.bank.bni.BniBankTransferPaymentResponse;
 import com.midtrans.sdk.core.models.snap.bank.other.OtherBankTransferPaymentResponse;
 import com.midtrans.sdk.core.models.snap.bank.permata.PermataBankTransferPaymentResponse;
 import com.midtrans.sdk.ui.abtracts.BasePaymentPresenter;
@@ -41,7 +42,8 @@ public class BankTransferPaymentStatusPresenter extends BasePaymentPresenter {
                 OtherBankTransferPaymentResponse otherBankTransferPaymentResponse = (OtherBankTransferPaymentResponse) response;
                 return otherBankTransferPaymentResponse.permataVaNumber;
             case PaymentType.BNI_VA:
-                return null;
+                BniBankTransferPaymentResponse bniBankTransferPaymentResponse = (BniBankTransferPaymentResponse) response;
+                return bniBankTransferPaymentResponse.bniVaNumber;
             default:
                 return null;
         }
@@ -59,7 +61,8 @@ public class BankTransferPaymentStatusPresenter extends BasePaymentPresenter {
                 OtherBankTransferPaymentResponse otherBankTransferPaymentResponse = (OtherBankTransferPaymentResponse) response;
                 return otherBankTransferPaymentResponse.permataExpiration;
             case PaymentType.BNI_VA:
-                return null;
+                BniBankTransferPaymentResponse bniBankTransferPaymentResponse = (BniBankTransferPaymentResponse) response;
+                return bniBankTransferPaymentResponse.bniExpiration;
             default:
                 return null;
         }

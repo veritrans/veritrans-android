@@ -1,6 +1,7 @@
 package com.midtrans.sdk.core.models.snap.bank.bca;
 
 import com.midtrans.sdk.core.models.snap.bank.BankTransferPaymentResponse;
+import com.midtrans.sdk.core.models.snap.bank.VaNumber;
 
 import java.util.List;
 
@@ -12,7 +13,6 @@ public class BcaBankTransferPaymentResponse extends BankTransferPaymentResponse 
 
     public final String bcaVaNumber;
     public final String bcaExpiration;
-    public final List<BcaVaNumber> vaNumbers;
 
     public BcaBankTransferPaymentResponse(String statusCode,
                                           String statusMessage,
@@ -26,8 +26,8 @@ public class BcaBankTransferPaymentResponse extends BankTransferPaymentResponse 
                                           String finishRedirectUrl,
                                           String bcaVaNumber,
                                           String bcaExpiration,
-                                          List<BcaVaNumber> vaNumbers,
-                                          String pdfUrl) {
+                                          String pdfUrl,
+                                          List<VaNumber> vaNumbers) {
         super(statusCode,
                 statusMessage,
                 transactionId,
@@ -38,9 +38,9 @@ public class BcaBankTransferPaymentResponse extends BankTransferPaymentResponse 
                 transactionStatus,
                 fraudStatus,
                 finishRedirectUrl,
-                pdfUrl);
+                pdfUrl,
+                vaNumbers);
         this.bcaVaNumber = bcaVaNumber;
         this.bcaExpiration = bcaExpiration;
-        this.vaNumbers = vaNumbers;
     }
 }

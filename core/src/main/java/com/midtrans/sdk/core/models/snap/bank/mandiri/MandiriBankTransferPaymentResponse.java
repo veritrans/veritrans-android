@@ -1,6 +1,9 @@
 package com.midtrans.sdk.core.models.snap.bank.mandiri;
 
 import com.midtrans.sdk.core.models.snap.bank.BankTransferPaymentResponse;
+import com.midtrans.sdk.core.models.snap.bank.VaNumber;
+
+import java.util.List;
 
 /**
  * Created by rakawm on 1/24/17.
@@ -22,6 +25,7 @@ public class MandiriBankTransferPaymentResponse extends BankTransferPaymentRespo
                                               String fraudStatus,
                                               String finishRedirectUrl,
                                               String pdfUrl,
+                                              List<VaNumber> vaNumbers,
                                               String billKey,
                                               String billerCode,
                                               String billpaymentExpiration) {
@@ -35,7 +39,8 @@ public class MandiriBankTransferPaymentResponse extends BankTransferPaymentRespo
                 transactionStatus,
                 fraudStatus,
                 finishRedirectUrl,
-                pdfUrl);
+                pdfUrl,
+                vaNumbers);
         this.billKey = billKey;
         this.billerCode = billerCode;
         this.billpaymentExpiration = billpaymentExpiration;

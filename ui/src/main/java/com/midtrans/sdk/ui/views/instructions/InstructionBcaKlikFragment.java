@@ -14,7 +14,7 @@ import com.midtrans.sdk.ui.R;
  *
  * @author rakawm
  */
-public class InstructionBCAKlikFragment extends Fragment {
+public class InstructionBcaKlikFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle

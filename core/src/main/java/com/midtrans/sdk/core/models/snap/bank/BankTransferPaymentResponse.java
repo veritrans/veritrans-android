@@ -2,12 +2,15 @@ package com.midtrans.sdk.core.models.snap.bank;
 
 import com.midtrans.sdk.core.models.snap.BaseTransactionResponse;
 
+import java.util.List;
+
 /**
  * Created by rakawm on 1/24/17.
  */
 
 public class BankTransferPaymentResponse extends BaseTransactionResponse {
     public final String pdfUrl;
+    public final List<VaNumber> vaNumbers;
 
     public BankTransferPaymentResponse(String statusCode,
                                        String statusMessage,
@@ -19,7 +22,8 @@ public class BankTransferPaymentResponse extends BaseTransactionResponse {
                                        String transactionStatus,
                                        String fraudStatus,
                                        String finishRedirectUrl,
-                                       String pdfUrl) {
+                                       String pdfUrl,
+                                       List<VaNumber> vaNumbers) {
         super(statusCode,
                 statusMessage,
                 transactionId,
@@ -31,5 +35,6 @@ public class BankTransferPaymentResponse extends BaseTransactionResponse {
                 fraudStatus,
                 finishRedirectUrl);
         this.pdfUrl = pdfUrl;
+        this.vaNumbers = vaNumbers;
     }
 }

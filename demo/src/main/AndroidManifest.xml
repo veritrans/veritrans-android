@@ -1,6 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-
     package="com.midtrans.demo">
+
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
 
     <application
         android:name=".DemoApp"
@@ -19,6 +21,11 @@
         </activity>
         <activity android:name=".DemoProductPageActivity" />
         <activity android:name=".DemoOrderReviewActivity" />
+        <activity android:name=".DemoProductListActivity" />
+        <activity android:name=".DemoSavedCardsActivity" />
+        <activity android:name=".DemoAccountActivity" />
+        <activity android:name=".DemoCardRegisterActivity" />
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="9c3548eaa37c57b1cdd980bc882bad96410b970a" />

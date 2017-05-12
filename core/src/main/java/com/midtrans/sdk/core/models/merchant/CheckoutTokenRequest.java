@@ -9,7 +9,10 @@ import java.util.List;
 
 public class CheckoutTokenRequest implements Serializable {
     public String userId;
+    public BcaBankTransfer bcaVa;
+    public BankTransfer permataVa;
     public CreditCard creditCard;
+    public List<String> enabledPayments;
     public List<ItemDetails> itemDetails;
     public CustomerDetails customerDetails;
     public CheckoutOrderDetails transactionDetails;
@@ -35,7 +38,10 @@ public class CheckoutTokenRequest implements Serializable {
      * Create complete checkout request.
      *
      * @param userId             user ID to map saved card token.
+     * @param bcaVa  BCA Bank transfer options.
+     * @param permataVa Permata Bank transfer options.
      * @param creditCard         credit card options.
+     * @param enabledPayments   enabled payment channels.
      * @param itemDetails        item details.
      * @param customerDetails    customer details.
      * @param transactionDetails transaction details.
@@ -46,7 +52,10 @@ public class CheckoutTokenRequest implements Serializable {
      * @return checkout token request.
      */
     public static CheckoutTokenRequest newCompleteCheckout(String userId,
+                                                           BcaBankTransfer bcaVa,
+                                                           BankTransfer permataVa,
                                                            CreditCard creditCard,
+                                                           List<String> enabledPayments,
                                                            List<ItemDetails> itemDetails,
                                                            CustomerDetails customerDetails,
                                                            CheckoutOrderDetails transactionDetails,
@@ -56,7 +65,10 @@ public class CheckoutTokenRequest implements Serializable {
                                                            String customField3) {
         CheckoutTokenRequest checkoutTokenRequest = new CheckoutTokenRequest();
         checkoutTokenRequest.userId = userId;
+        checkoutTokenRequest.bcaVa = bcaVa;
+        checkoutTokenRequest.permataVa = permataVa;
         checkoutTokenRequest.creditCard = creditCard;
+        checkoutTokenRequest.enabledPayments = enabledPayments;
         checkoutTokenRequest.itemDetails = itemDetails;
         checkoutTokenRequest.customerDetails = customerDetails;
         checkoutTokenRequest.transactionDetails = transactionDetails;

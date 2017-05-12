@@ -1,4 +1,4 @@
-package com.midtrans.sdk.core.models.snap.bank.bca;
+package com.midtrans.sdk.core.models.snap.bank;
 
 import java.io.Serializable;
 
@@ -6,11 +6,11 @@ import java.io.Serializable;
  * Created by rakawm on 10/19/16.
  */
 
-public class BcaVaNumber implements Serializable{
+public class VaNumber implements Serializable {
     public final String bank;
     public final String vaNumber;
 
-    public BcaVaNumber(String bank, String vaNumber) {
+    public VaNumber(String bank, String vaNumber) {
         this.bank = bank;
         this.vaNumber = vaNumber;
     }

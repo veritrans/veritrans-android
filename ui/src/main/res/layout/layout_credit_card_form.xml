@@ -34,11 +34,15 @@
             tools:visibility="visible" />
     </LinearLayout>
 
+    <include
+        android:id="@+id/container_customer_data"
+        layout="@layout/layout_credit_card_customer_form" />
+
     <RelativeLayout
         android:id="@+id/container_card_number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/container_offer_status">
+        android:layout_below="@id/container_customer_data">
 
         <TextView
             android:id="@+id/hint_card_number"
