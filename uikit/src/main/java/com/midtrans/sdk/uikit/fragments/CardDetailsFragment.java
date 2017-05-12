@@ -346,7 +346,6 @@ public class CardDetailsFragment extends Fragment {
                             cardTokenRequest.setGrossAmount(midtransSDK.getTransactionRequest().getAmount());
 
                             SdkUIFlowUtil.showProgressDialog((AppCompatActivity) getActivity(), false);
-                            setPaymentInstallment();
                             ((CreditCardFlowActivity) getActivity()).setSavedCardInfo(saveCardCheckBox.isChecked(), "");
                             if (promo != null && promo.getDiscountAmount() > 0) {
                                 // Calculate discount amount

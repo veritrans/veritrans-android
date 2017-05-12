@@ -653,7 +653,10 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         for (EnabledPayment enabledPayment : enabledPayments) {
             if ((enabledPayment.getCategory() != null && enabledPayment.getCategory().equals(getString(R.string.enabled_payment_category_banktransfer)))
                     || enabledPayment.getType().equalsIgnoreCase(getString(R.string.payment_mandiri_bill_payment))) {
-                bankTransfers.add(enabledPayment.getType());
+
+                if (!enabledPayment.getType().equalsIgnoreCase(getString(R.string.payment_bni_va))) {
+                    bankTransfers.add(enabledPayment.getType());
+                }
             } else {
                 PaymentMethodsModel model = PaymentMethods.getMethods(this, enabledPayment.getType());
                 if (model != null) {
