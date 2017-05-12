@@ -874,4 +874,5 @@ public class CreditCardFlowActivity extends BaseActivity {
         BanksPointFragment fragment = BanksPointFragment.newInstance(balance, bankType);
         getSupportFragmentManager().beginTransaction().replace(R.id.card_container, fragment).addToBackStack("").commit();
     }
+
 }
