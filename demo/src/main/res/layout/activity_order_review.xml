@@ -19,7 +19,7 @@
             android:layout_marginEnd="48dp"
             android:layout_marginRight="48dp">
 
-            <com.midtrans.demo.DemoTextView
+            <com.midtrans.demo.widgets.DemoTextView
                 android:id="@+id/title"
                 style="@style/TextAppearance.AppCompat.Title"
                 android:layout_width="wrap_content"
@@ -40,7 +40,7 @@
         android:paddingLeft="@dimen/sixteen_dp"
         android:paddingRight="@dimen/sixteen_dp">
 
-        <com.midtrans.demo.DemoTextView
+        <com.midtrans.demo.widgets.DemoTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/order_review_total_amount"
@@ -48,7 +48,7 @@
             android:textSize="@dimen/primary_text_size"
             android:textStyle="bold" />
 
-        <com.midtrans.demo.DemoTextView
+        <com.midtrans.demo.widgets.DemoTextView
             android:id="@+id/text_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -70,7 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.midtrans.demo.DemoTextView
+            <com.midtrans.demo.widgets.DemoTextView
                 android:id="@+id/title_delivery_options"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -103,19 +103,19 @@
                     android:layout_toRightOf="@id/product_image"
                     android:orientation="vertical">
 
-                    <com.midtrans.demo.DemoTextView
+                    <com.midtrans.demo.widgets.DemoTextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/product_name_sample"
                         android:textStyle="bold" />
 
-                    <com.midtrans.demo.DemoTextView
+                    <com.midtrans.demo.widgets.DemoTextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/order_review_quantity" />
                 </LinearLayout>
 
-                <com.midtrans.demo.DemoTextView
+                <com.midtrans.demo.widgets.DemoTextView
                     android:id="@+id/product_price_amount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -135,7 +135,7 @@
                 android:layout_marginTop="@dimen/eight_dp"
                 android:background="@color/gray_divider" />
 
-            <com.midtrans.demo.DemoTextView
+            <com.midtrans.demo.widgets.DemoTextView
                 android:id="@+id/title_customer_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -205,7 +205,7 @@
                 android:layout_marginTop="@dimen/eight_dp"
                 android:background="@color/gray_divider" />
 
-            <com.midtrans.demo.DemoTextView
+            <com.midtrans.demo.widgets.DemoTextView
                 android:id="@+id/title_delivery_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -234,7 +234,7 @@
                     android:layout_marginRight="@dimen/eight_dp"
                     android:src="@drawable/address" />
 
-                <com.midtrans.demo.DemoTextView
+                <com.midtrans.demo.widgets.DemoTextView
                     android:id="@+id/delivery_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

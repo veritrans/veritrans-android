@@ -12,13 +12,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.fragments.PaymentTransactionStatusFragment;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
-import com.squareup.picasso.Picasso;
 
 /**
  * @author rakawm
@@ -39,7 +39,7 @@ public class BaseActivity extends AppCompatActivity {
                     if (name != null) {
                         name.setVisibility(View.GONE);
                     }
-                    Picasso.with(this)
+                    Glide.with(this)
                             .load(mMidtransSDK.getMerchantLogo())
                             .into(logo);
                 }
@@ -110,7 +110,7 @@ public class BaseActivity extends AppCompatActivity {
                 if (addToBackStack) {
                     ft.addToBackStack(backStateName);
                 }
-                ft.commit();
+                ft.commitAllowingStateLoss();
                 currentFragmentName = backStateName;
                 if (saveCurrentFragment) {
                     currentFragment = fragment;

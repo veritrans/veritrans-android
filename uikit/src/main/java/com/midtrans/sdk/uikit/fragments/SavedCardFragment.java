@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -146,12 +147,12 @@ public class SavedCardFragment extends Fragment implements SavedCardsAdapter.Sav
                                         selectedCard = cardsAdapter.getItem(position);
                                         if (MidtransSDK.getInstance().isEnableBuiltInTokenStorage()) {
                                             // Handle delete for built in token storage
-                                            SdkUIFlowUtil.showProgressDialog(getActivity(), getString(R.string.processing_delete), false);
+                                            SdkUIFlowUtil.showProgressDialog((AppCompatActivity) getActivity(), getString(R.string.processing_delete), false);
                                             ((CreditDebitCardFlowActivity) getActivity()).setFromSavedCard(true);
                                             ((CreditDebitCardFlowActivity) getActivity()).deleteCardFromTokenStorage(selectedCard);
                                         } else {
                                             // Handle delete for merchant server implementation
-                                            SdkUIFlowUtil.showProgressDialog(getActivity(), getString(R.string.processing_delete), false);
+                                            SdkUIFlowUtil.showProgressDialog((AppCompatActivity) getActivity(), getString(R.string.processing_delete), false);
                                             ((CreditDebitCardFlowActivity) getActivity()).setFromSavedCard(true);
                                             ArrayList<SaveCardRequest> cardList = new ArrayList<>();
                                             if (creditCards != null && !creditCards.isEmpty()) {
@@ -216,7 +217,7 @@ public class SavedCardFragment extends Fragment implements SavedCardsAdapter.Sav
     }
 
     public void deleteCreditCard(String saveTokenId) {
-        SdkUIFlowUtil.showProgressDialog(getActivity(), getString(R.string.processing_delete), false);
+        SdkUIFlowUtil.showProgressDialog((AppCompatActivity) getActivity(), getString(R.string.processing_delete), false);
         deleteCards(saveTokenId);
     }
 

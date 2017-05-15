@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         }
         // Create new Transaction Request
         TransactionRequest transactionRequestNew = new
-                TransactionRequest(System.currentTimeMillis()+"", 6000);
+                TransactionRequest(System.currentTimeMillis() + "", 6000);
 
         //define customer detail (mandatory for coreflow)
         CustomerDetails mCustomerDetails = new CustomerDetails();

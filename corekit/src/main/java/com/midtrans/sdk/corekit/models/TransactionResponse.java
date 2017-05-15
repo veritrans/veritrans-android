@@ -63,8 +63,14 @@ public class TransactionResponse implements Serializable {
     private List<VaNumber> accountNumbers;
     @SerializedName("bca_klikbca_expire_time")
     private String bcaKlikBcaExpiration;
+    @SerializedName("bca_va_number")
+    private String bcaVaNumber;
     @SerializedName("bca_expiration")
     private String bcaExpiration;
+    @SerializedName("bni_va_number")
+    private String bniVaNumber;
+    @SerializedName("bni_expiration")
+    private String bniExpiration;
     @SerializedName("billpayment_expiration")
     private String mandiriBillExpiration;
     @SerializedName("xl_tunai_order_id")
@@ -439,5 +445,29 @@ public class TransactionResponse implements Serializable {
 
     public void setPointRedeemAmount(float pointRedeemAmount) {
         this.pointRedeemAmount = pointRedeemAmount;
+    }
+
+    public String getBniVaNumber() {
+        return bniVaNumber;
+    }
+
+    public void setBniVaNumber(String bniVaNumber) {
+        this.bniVaNumber = bniVaNumber;
+    }
+
+    public String getBniExpiration() {
+        return bniExpiration;
+    }
+
+    public void setBniExpiration(String bniExpiration) {
+        this.bniExpiration = bniExpiration;
+    }
+
+    public String getBcaVaNumber() {
+        return bcaVaNumber;
+    }
+
+    public void setBcaVaNumber(String bcaVaNumber) {
+        this.bcaVaNumber = bcaVaNumber;
     }
 }

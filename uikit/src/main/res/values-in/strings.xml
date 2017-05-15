@@ -112,8 +112,12 @@
     <string name="copied_bill_code">Kode tagihan sudah disalin ke clipboard</string>
     <string name="copied_company_code">Kode perusahaan sudah disalin ke clipboard</string>
     <string name="complete_payment_at_atm">Selesaikan Pembayaran di ATM</string>
-    <string name="complete_payment">Selesaikan Pembayaran</string>
+    <string name="complete_payment_at_mobile_bca">Selesaikan Pembayaran di m-BCA</string>
+    <string name="complete_payment_at_klik_bca_va">Selesaikan Pembayaran di KlikBCA</string>
+    <string name="complete_payment_via_internet_banking">Selesaikan Pembayaran di Internet Banking</string>
+    <string name="complete_payment_va_bni_mobile">Selesaikan Pembayaran di BNI Mobile</string>
     <string name="complete_payment_at_klik_bca">Selesaikan Pembayaran di KlikBCA</string>
+    <string name="complete_payment">Selesaikan Pembayaran</string>
     <string name="done">Selesai</string>
     <string name="virtual_account_number">Nomor Akun Virtual</string>
     <string name="payment_pending">Menunggu Pembayaran</string>
@@ -434,7 +438,7 @@
     <string name="save_card_info">Detail kartu diatas akan disimpan untuk membantu transaksi anda berikutnya.</string>
     <string name="choose_card">Pilih kartu kredit</string>
     <string name="add_new_card">bayar dengan kartu baru</string>
-    <string name="mandiri_bill_transfer">Mandiri Bill</string>
+    <string name="mandiri_bill_transfer">Bank Mandiri</string>
     <string name="bank_bca_transfer">Bank BCA</string>
     <string name="bank_permata_transfer">Bank Permata</string>
     <string name="bank_bni_transfer">Bank BNI</string>
@@ -455,7 +459,7 @@
     <string name="kioson_instruction">bagaimana saya dapat melakukan pembayaran dengan kioson ?</string>
     <string name="card_bin_invalid">nomor kartu kredit tidak terdapat didalam whitelist bin kartu kredit</string>
     <string name="installment_required">Pembayaran harus menggunakan cicilan</string>
-    <string name="complete_payment_kioson">Selesaikan pembayaran di kioson</string>
+    <string name="complete_payment_kioson">Selesaikan pembayaran di Kioson</string>
     <string name="complete_payment_indomaret">Selesaikan pembayaran di Indomaret</string>
     <string name="payment_not_enabled_message">Tidak dapat membuka halaman ini, silakan aktifkan channel pembayaran ini.</string>
 
@@ -565,4 +569,5 @@
     <string name="error_order_id_required">Order id diperlukan</string>
     <string name="checkout_error_empty_response">Tidak ada  data dari server</string>
     <string name="error_unable_to_connect">Gagal terhubung ke server</string>
+    <string name="complete_payment_via_xl_tunai">Selesaikan Pembayaran di XL Tunai</string>
 </resources>

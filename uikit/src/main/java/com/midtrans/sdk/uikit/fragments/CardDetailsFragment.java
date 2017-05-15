@@ -12,6 +12,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -195,7 +196,7 @@ public class CardDetailsFragment extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 dialogInterface.dismiss();
-                                SdkUIFlowUtil.showProgressDialog(getActivity(), getString(R.string.processing_delete), false);
+                                SdkUIFlowUtil.showProgressDialog((AppCompatActivity) getActivity(), getString(R.string.processing_delete), false);
                                 SaveCardRequest savedCard = getSavedCard();
                                 ((CreditCardFlowActivity) getActivity()).deleteSavedCard(savedCard);
                             }
@@ -344,8 +345,7 @@ public class CardDetailsFragment extends Fragment {
                             cardTokenRequest.setSecure(midtransSDK.getTransactionRequest().isSecureCard());
                             cardTokenRequest.setGrossAmount(midtransSDK.getTransactionRequest().getAmount());
 
-                            // Start get card token and payment
-                            SdkUIFlowUtil.showProgressDialog(getActivity(), false);
+                            SdkUIFlowUtil.showProgressDialog((AppCompatActivity) getActivity(), false);
                             ((CreditCardFlowActivity) getActivity()).setSavedCardInfo(saveCardCheckBox.isChecked(), "");
                             if (promo != null && promo.getDiscountAmount() > 0) {
                                 // Calculate discount amount
@@ -985,10 +985,7 @@ public class CardDetailsFragment extends Fragment {
                 showInstallmentLayout(false);
             } else if (cardNumber.length() < 7) {
                 showInstallmentLayout(false);
-            } else if (midtransSDK.getCreditCard() != null
-                    && midtransSDK.getCreditCard().getBank() != null
-                    && (midtransSDK.getCreditCard().getBank().equalsIgnoreCase(BankType.MAYBANK)
-                    || midtransSDK.getCreditCard().getBank().equalsIgnoreCase(BankType.BRI))) {
+            } else if (midtransSDK.getCreditCard() == null) {
                 showInstallmentLayout(false);
             } else {
                 String cleanCardNumber = cardNumber.getText().toString().trim().replace(" ", "").substring(0, 6);
