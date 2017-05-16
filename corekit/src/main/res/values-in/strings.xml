@@ -121,51 +121,11 @@
     <!-- Mandiri bank transfer Instruction-->
     <string name="instruction">Instruksi</string>
 
-    <string name="mandiri_instruction_step1">1.\tPada main menu, Pilih \'Pay/Buy\'.</string>
-    <string name="mandiri_instruction_step2">2.\tPilih \'Others\'.</string>
-    <string name="mandiri_instruction_step3">3.\tPilih \'Multi Payment\'.</string>
-    <string name="mandiri_instruction_step4">4.\tMasukan 70012 (Midtrans company code) dan tekan \'Correct\'.</string>
-    <string name="mandiri_instruction_step5">5.\tMasukkan kode pembayaran Anda dan tekan \'Correct\'.</string>
-    <string name="mandiri_instruction_step6">6.\tRincian pembayaran Anda akan tampil pada halaman konfirmasi. Jika informasi tersebut benar tekan \'Yes\'.</string>
-
-    <string name="mandiri_internet_instruction_step1">1.\tLogin ke Internet Banking Mandiri (ib.bankmandiri.co.id).</string>
-    <string name="mandiri_internet_instruction_step2">2.\tPada main menu, pilih \'Payment\', kemudian pilih \'Multi Payment\'.</string>
-    <string name="mandiri_internet_instruction_step3">3.\tPilih rekening Anda di \'From Account\', kemudian \'Billing Name\' pilih \'Midtrans\'.</string>
-    <string name="mandiri_internet_instruction_step4">4.\tMasukkan \'Payment Code\' dan Anda akan menerima rincian pembayaran.</string>
-    <string name="mandiri_internet_instruction_step5">5.\tKonfirmasi pembayaran melalui Mandiri Token.</string>
-
     <!-- bca/ prima bank transfer Instruction-->
-    <!--BCA Transfer-->
-    <string name="bca_instruction_step1">1.\tPada menu utama, pilih Transaksi lainnya.</string>
-    <string name="bca_instruction_step2">2.\tPilih \'Transfer\'.</string>
-    <string name="bca_instruction_step3">3.\tPilih \'Ke Rek BCA Virtual Account\'.</string>
-    <string name="bca_instruction_step4">4.\tMasukkan nomor (11 digit No. Rekening pembayaran) lalu tekan \'Benar\'.</string>
-    <string name="bca_instruction_step5">5.\tMasukkan jumlah tagihan yang akan anda bayar.</string>
-    <string name="bca_instruction_step6">6.\tPada halaman konfirmasi transfer akan muncul detail pembayaran anda. Jika informasi telah sesuai tekan \'Ya\'.</string>
-
-    <!--Klik BCA-->
-    <string name="bca_klik_instruction_step1">1.\Pilih menu \'Fund Transfer\'.</string>
-    <string name="bca_klik_instruction_step2">2.\tPilih \'Transfer to BCA Virtual Account\'.</string>
-    <string name="bca_klik_instruction_step3">3.\t\'Masukkan Nomor Virtual Account BCA\' atau \'Pilih dari daftar transfer\' dan klik \'Continue\'.</string>
-    <string name="bca_klik_instruction_step4">4.\tJumlah yang harus dibayarkan, nomor rekening dan nama merchant akan tampil pada halaman konfirmasi pembayaran, jika informasi tersebut benar, klik \'Continue\'.</string>
-    <string name="bca_klik_instruction_step5">5.\tDapatkan \'BCA token\' dan masukkan KEYBCA Response \'APPLI 1\' dan klik \'Submit\'.</string>
-    <string name="bca_klik_instruction_step6">6.\tTransaksi Anda selesai.</string>
-
     <!--KLIK BCA PAYMENT-->
     <string name="bca_klik_pay_instruction_step1">Anda akan dialihkan ke halaman BCA KlikPay setelah menekan tombol \'Konfirmasi Pembayaran\' .</string>
     <string name="bca_klik_pay_instruction_step2">Untuk pembayaran, Anda dapat memilih akun KlikBCA Individu atau kartu BCA.</string>
     <string name="bca_klik_pay_instruction_step3">Untuk informasi lebih lanjut mengenai BCA KlikPay harap kontak Halo BCA di (021) 500888 atau kunjungi www.bca.co.id.</string>
-
-    <!--m-BCA-->
-    <string name="bca_mbanking_instruction_step1">1.\tPilih \'m-transfer\'.</string>
-    <string name="bca_mbanking_instruction_step2">2.\tPilih \'Transfer\'</string>
-    <string name="bca_mbanking_instruction_step3">3.\tPilih \'BCA Virtual Account\'.</string>
-    <string name="bca_mbanking_instruction_step4">4.\tPilih \'account number\' yang ingin anda gunakan untuk pembayaran.</string>
-    <string name="bca_mbanking_instruction_step5">5.\tMasukkan Nomor Virtual Account BCA dan klik \'OK\'.</string>
-    <string name="bca_mbanking_instruction_step6">6.\tInformasi nomor Virtual Account dan rekening anda information akan tampil pada halaman konfirmasi pembayaran dan kemudian klik \'Send\'.</string>
-    <string name="bca_mbanking_instruction_step7">7.\tKlik \'OK\' pada halaman konfirmasi pembayaran.</string>
-    <string name="bca_mbanking_instruction_step8">8.\tMasukkan jumlah yang ingin ditransfer kemudian klik \'OK\'.</string>
-    <string name="bca_mbanking_instruction_step9">9.\tTransaksi Anda telah selesai</string>
 
     <!-- cimb transfer Instructions -->
     <string name="cimb_instruction_step1">Pastikan bahwa Anda memiliki User ID untuk CIMB Clicks dan telah mendaftarkan mPIN Anda sebelum melanjutkan pembayaran.</string>
@@ -190,16 +150,6 @@
     <string name="indomaret_instruction_step4">Kasir akan melakukan konfirmasi transaksi dengan menanyakan jumlah transaksi dan nama merchant.</string>
     <string name="indomaret_instruction_step5">Konfirmasi Pembayaran melalui kasir.</string>
     <string name="indomaret_instruction_step6">Transaksi Anda berhasil! Anda akan menerima email konfirmasi pembayaran. Harap simpan struk pembayaran Indomaret Anda apabila anda memerlukan bantuan via support.</string>
-
-    <!-- Permata/Alto bank transfer Instruction-->
-    <string name="permata_instruction_step1">1.\tPada main menu, pilih \'Other Transaction\'.</string>
-    <string name="permata_instruction_step2">2.\tPilih \'Payment\'.</string>
-    <string name="permata_instruction_step3">3.\tPilih \'Other Payment\'.</string>
-    <string name="permata_instruction_step4">4.\tPilih \'Virtual Account\'.</string>
-    <string name="permata_instruction_step5">5.\tMasukkan 16 digits rekening pembayaran. lalu klik \'Correct\'.</string>
-    <string name="permata_instruction_step6">6.\tJumlah yang perlu dibayarkan, no. rekening, dan nama merchant akan tampil pada halaman konfirmasi. Jika informasi tersebut benar, klik \'Correct\'.</string>
-    <string name="permata_instruction_step7">7.\tPilih rekening pembayaran Anda dan klik \'Correct\'.</string>
-    <string name="bank_transfer_dummy_text">* Bergantung pada biaya bank/transfer dan transaksi minimum sebesar Rp50,000, - untuk bank mandiri</string>
 
     <string name="bri_instruction_step1">Pastikan bahwa Anda memiliki User ID untuk BRI e-Pay dan telah terdaftar untuk mTOKEN sebelum melanjutkan pembayaran </string>
     <string name="bri_instruction_step2">Untuk mendapatkan User ID untuk BRI e-Pay, harap mendaftar pada ATM BRI terdekat

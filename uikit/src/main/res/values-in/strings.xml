@@ -134,35 +134,35 @@
     <!-- Mandiri bank transfer Instruction-->
     <string name="instruction">Instruksi</string>
 
-    <string name="mandiri_instruction_step1">Pada main menu, Pilih \'Pay/Buy\'.</string>
-    <string name="mandiri_instruction_step2">Pilih \'Others\'.</string>
-    <string name="mandiri_instruction_step3">Pilih \'Multi Payment\'.</string>
-    <string name="mandiri_instruction_step4">Masukan 70012 (Midtrans company code) dan tekan \'Correct\'.</string>
-    <string name="mandiri_instruction_step5">Masukkan kode pembayaran Anda dan tekan \'Correct\'.</string>
-    <string name="mandiri_instruction_step6">Rincian pembayaran Anda akan tampil pada halaman konfirmasi. Jika informasi tersebut benar tekan \'Yes\'.</string>
+    <string name="mandiri_instruction_step1">Pada menu utama, Pilih <b>Bayar/Beli</b>.</string>
+    <string name="mandiri_instruction_step2">Pilih <b>Lainnya</b>.</string>
+    <string name="mandiri_instruction_step3">Pilih <b>Multi Payment</b>.</string>
+    <string name="mandiri_instruction_step4">Masukan 70012 (kode perusahaan Midtrans) lalu tekan <b>Benar</b>.</string>
+    <string name="mandiri_instruction_step5">Masukkan <b>Kode Pembayaran</b> Anda lalu tekan <b>Benar</b>.</string>
+    <string name="mandiri_instruction_step6"><b>Detail pembayaran Anda</b> akan muncul pada halaman konfirmasi. Jika informasi telah sesuai tekan <b>Ya</b>.</string>
 
-    <string name="mandiri_internet_instruction_step1">1.\tLogin ke Internet Banking Mandiri (<a href="http://ib.bankmandiri.co.id/">http://ib.bankmandiri.co.id/</a>).</string>
-    <string name="mandiri_internet_instruction_step2">2.\tPada main menu, pilih \'Payment\', kemudian pilih \'Multi Payment\'.</string>
-    <string name="mandiri_internet_instruction_step3">3.\tPilih rekening Anda di \'From Account\', kemudian \'Billing Name\' pilih \'Midtrans\'.</string>
-    <string name="mandiri_internet_instruction_step4">4.\tMasukkan \'Payment Code\' dan Anda akan menerima rincian pembayaran.</string>
-    <string name="mandiri_internet_instruction_step5">5.\tKonfirmasi pembayaran melalui Mandiri Token.</string>
+    <string name="mandiri_internet_instruction_step1">Login ke Internet Banking Mandiri (<a href="http://ib.bankmandiri.co.id/">http://ib.bankmandiri.co.id/</a>).</string>
+    <string name="mandiri_internet_instruction_step2">Pada menu utama, pilih <b>Bayar</b>, kemudian pilih <b>Multi Payment</b>.</string>
+    <string name="mandiri_internet_instruction_step3">Pilih akun Anda di <b>Dari Rekening</b>, kemudian di Penyedia Jasa pilih <b>Midtrans</b>.</string>
+    <string name="mandiri_internet_instruction_step4">Masukkan <b>Kode Pembayaran</b> Anda dan klik <b>Lanjutkan</b>.</string>
+    <string name="mandiri_internet_instruction_step5">Konfirmasi pembayaran Anda menggunakan Mandiri Token.</string>
 
     <!-- bca/ prima bank transfer Instruction-->
     <!--BCA Transfer-->
-    <string name="bca_instruction_step1">Pada menu utama, pilih Transaksi lainnya.</string>
-    <string name="bca_instruction_step2">Pilih \'Transfer\'.</string>
-    <string name="bca_instruction_step3">Pilih \'Ke Rek BCA Virtual Account\'.</string>
-    <string name="bca_instruction_step4">Masukkan nomor (11 digit No. Rekening pembayaran) lalu tekan \'Benar\'.</string>
-    <string name="bca_instruction_step5">Masukkan jumlah tagihan yang akan anda bayar.</string>
-    <string name="bca_instruction_step6">Pada halaman konfirmasi transfer akan muncul detail pembayaran anda. Jika informasi telah sesuai tekan \'Ya\'.</string>
+    <string name="bca_instruction_step1">Pada menu utama, pilih <b>Transaksi Lainnya</b>.</string>
+    <string name="bca_instruction_step2">Pilih <b>Transfer</b>.</string>
+    <string name="bca_instruction_step3">Pilih <b>Ke Rek BCA Virtual Account</b>.</string>
+    <string name="bca_instruction_step4">Masukkan Nomor Rekening pembayaran anda(11 digit) lalu tekan <b>Benar</b>.</string>
+    <string name="bca_instruction_step5">Masukkan <b>Jumlah Tagihan</b> yang akan Anda bayar.</string>
+    <string name="bca_instruction_step6"><b>Detail pembayaran Anda</b> akan muncul pada halaman konfirmasi. jika informasi telah sesuai tekan <b>Ya</b>.</string>
 
     <!--Klik BCA-->
-    <string name="bca_klik_instruction_step1">1.\tPilih menu \'Fund Transfer\'.</string>
-    <string name="bca_klik_instruction_step2">2.\tPilih \'Transfer to BCA Virtual Account\'.</string>
-    <string name="bca_klik_instruction_step3">3.\t\'Masukkan Nomor Virtual Account BCA\' atau \'Pilih dari daftar transfer\' dan klik \'Continue\'.</string>
-    <string name="bca_klik_instruction_step4">4.\tJumlah yang harus dibayarkan, nomor rekening dan nama merchant akan tampil pada halaman konfirmasi pembayaran, jika informasi tersebut benar, klik \'Continue\'.</string>
-    <string name="bca_klik_instruction_step5">5.\tDapatkan \'BCA token\' dan masukkan KEYBCA Response \'APPLI 1\' dan klik \'Submit\'.</string>
-    <string name="bca_klik_instruction_step6">6.\tTransaksi Anda selesai.</string>
+    <string name="bca_klik_instruction_step1">Pilih menu <b>Transfer Dana</b>.</string>
+    <string name="bca_klik_instruction_step2">Pilih <b>Transfer ke BCA Virtual Account</b>.</string>
+    <string name="bca_klik_instruction_step3"><b>Masukkan nomor BCA Virtual Account</b>, atau <b>Pilih Dari Daftar Transfer</b>.</string>
+    <string name="bca_klik_instruction_step4">Jumlah yang harus dibayarkan, nomor rekening dan nama merchant akan tampil pada halaman konfirmasi pembayaran, jika informasi benar, klik <b>Lanjutkan</b>.</string>
+    <string name="bca_klik_instruction_step5">Ambil <b>BCA token</b> Anda dan masukkan KEYBCA Response <b>APPLI 1</b> dan klik <b>Submit</b>.</string>
+    <string name="bca_klik_instruction_step6">Transaksi Anda selesai.</string>
 
     <!--KLIK BCA PAYMENT-->
     <string name="bca_klik_pay_instruction_step1">Anda akan dialihkan ke halaman BCA KlikPay setelah menekan tombol \'Konfirmasi Pembayaran\' .</string>
@@ -170,15 +170,15 @@
     <string name="bca_klik_pay_instruction_step3">Untuk informasi lebih lanjut mengenai BCA KlikPay harap kontak Halo BCA di (021) 1500888 atau kunjungi <a href="http://klikbca.com/KlikPay/klikpay.html">http://klikbca.com/KlikPay/klikpay.html</a>.</string>
 
     <!--m-BCA-->
-    <string name="bca_mbanking_instruction_step1">1.\tPilih \'m-transfer\'.</string>
-    <string name="bca_mbanking_instruction_step2">2.\tPilih \'Transfer\'</string>
-    <string name="bca_mbanking_instruction_step3">3.\tPilih \'BCA Virtual Account\'.</string>
-    <string name="bca_mbanking_instruction_step4">4.\tPilih \'account number\' yang ingin anda gunakan untuk pembayaran.</string>
-    <string name="bca_mbanking_instruction_step5">5.\tMasukkan Nomor Virtual Account BCA dan klik \'OK\'.</string>
-    <string name="bca_mbanking_instruction_step6">6.\tInformasi nomor Virtual Account dan rekening anda information akan tampil pada halaman konfirmasi pembayaran dan kemudian klik \'Send\'.</string>
-    <string name="bca_mbanking_instruction_step7">7.\tKlik \'OK\' pada halaman konfirmasi pembayaran.</string>
-    <string name="bca_mbanking_instruction_step8">8.\tMasukkan jumlah yang ingin ditransfer kemudian klik \'OK\'.</string>
-    <string name="bca_mbanking_instruction_step9">9.\tTransaksi Anda telah selesai</string>
+    <string name="bca_mbanking_instruction_step1">Pilih <b>m-Transfer</b>.</string>
+    <string name="bca_mbanking_instruction_step2">Pilih <b>Transfer</b>.</string>
+    <string name="bca_mbanking_instruction_step3">Pilih <b>BCA Virtual Account</b>.</string>
+    <string name="bca_mbanking_instruction_step4">Pilih <b>nomor rekening</b> yang akan digunakan untuk pembayaran.</string>
+    <string name="bca_mbanking_instruction_step5">Masukkan nomor BCA Virtual Account, lalu pilih <b>Ok</b>.</string>
+    <string name="bca_mbanking_instruction_step6">Nomor BCA Virtual Account dan nomor rekening Anda akan terlihat pada halaman konfirmasi rekening, kemudian pilih <b>Kirim</b>.</string>
+    <string name="bca_mbanking_instruction_step7">Pilih <b>Ok</b> pada halaman konfirmasi pembayaran.</string>
+    <string name="bca_mbanking_instruction_step8">Masukkan jumlah nominal yang akan ditransfer dan kemudian pilih <b>Ok</b>.</string>
+    <string name="bca_mbanking_instruction_step9">Transaksi Anda telah selesai</string>
 
     <!-- cimb transfer Instructions -->
     <string name="cimb_instruction_step1">Pastikan bahwa Anda memiliki User ID untuk CIMB Clicks dan telah mendaftarkan mPIN Anda sebelum melanjutkan pembayaran.</string>
@@ -205,13 +205,13 @@
     <string name="indomaret_instruction_step6">Transaksi Anda berhasil! Anda akan menerima email konfirmasi pembayaran. Harap simpan struk pembayaran Indomaret Anda apabila anda memerlukan bantuan via support.</string>
 
     <!-- Permata/Alto bank transfer Instruction-->
-    <string name="permata_instruction_step1">Pada main menu, pilih \'Other Transaction\'.</string>
-    <string name="permata_instruction_step2">Pilih \'Payment\'.</string>
-    <string name="permata_instruction_step3">Pilih \'Other Payment\'.</string>
-    <string name="permata_instruction_step4">Pilih \'Virtual Account\'.</string>
-    <string name="permata_instruction_step5">Masukkan 16 digits rekening pembayaran. lalu klik \'Correct\'.</string>
-    <string name="permata_instruction_step6">Jumlah yang perlu dibayarkan, no. rekening, dan nama merchant akan tampil pada halaman konfirmasi. Jika informasi tersebut benar, klik \'Correct\'.</string>
-    <string name="permata_instruction_step7">Pilih rekening pembayaran Anda dan klik \'Correct\'.</string>
+    <string name="permata_instruction_step1">Pada menu utama, pilih <b>Transaksi Lainnya</b>.</string>
+    <string name="permata_instruction_step2">Pilih <b>Pembayaran</b>.</string>
+    <string name="permata_instruction_step3">Pilih <b>Pembayaran Lainnya</b>.</string>
+    <string name="permata_instruction_step4">Pilih <b>Virtual Account</b>.</string>
+    <string name="permata_instruction_step5">Masukkan <b>16 digit No. Virtual Account</b> yang dituju, lalu tekan <b>Benar</b>.</string>
+    <string name="permata_instruction_step6"><b>Detail pembayaran anda</b> akan muncul pada halaman konfirmasi. Jika informasi telah sesuai tekan <b>Benar</b>.</string>
+    <string name="permata_instruction_step7">Pilih rekening pembayaran Anda dan tekan <b>Benar</b>.</string>
     <string name="bank_transfer_dummy_text">* Bergantung pada biaya bank/transfer dan transaksi minimum sebesar Rp50,000, - untuk bank mandiri</string>
 
     <string name="bri_instruction_step1">Pastikan bahwa Anda memiliki User ID untuk BRI e-Pay dan telah terdaftar untuk mTOKEN sebelum melanjutkan pembayaran </string>
@@ -381,29 +381,29 @@
 
     <string name="text_format_valid_until">Silakan menyelesaikan pembayaran sebelum : %1$s</string>
     <string name="klik_bca_complete_payment">Selesaikan pembayaran di <a href="http://klikbca.com/">http://klikbca.com/</a> sebelum:</string>
-    <string name="instruction_atm_bersama1">Di menu utama, pilih Others.</string>
-    <string name="instruction_atm_bersama2">Pilih Transfer.</string>
-    <string name="instruction_atm_bersama3">Pilih Online Transfer.</string>
-    <string name="instruction_atm_bersama4">Masukkan 013 dan 16 digit Nomor Akun Virtual.</string>
-    <string name="instruction_atm_bersama5">Masukkan jumlah pembayaran total dan tekan Correct.</string>
-    <string name="instruction_atm_bersama6">Kosongkan nomor referensi dan pilih Correct.</string>
-    <string name="instruction_atm_bersama7">Detil pembayaran anda akan muncul di halaman konfirmasi. Bila informasi benar pilih Correct.</string>
+    <string name="instruction_atm_bersama1">Pada menu utama, pilih <b>Transaksi Lainnya</b>.</string>
+    <string name="instruction_atm_bersama2">Pilih <b>Transfer</b>.</string>
+    <string name="instruction_atm_bersama3">Pilih <b>Antar Bank Online</b>.</string>
+    <string name="instruction_atm_bersama4">Masukkan <b>013</b> dan <b>16 digit No. Rekening</b>, lalu tekan <b>Benar</b>.</string>
+    <string name="instruction_atm_bersama5">Masukkan <b>jumlah tagihan yang akan Anda bayar</b> secara lengkap, lalu tekan <b>Benar</b></string>
+    <string name="instruction_atm_bersama6">Kosongkan No. referensi, lalu tekan <b>Benar</b>.</string>
+    <string name="instruction_atm_bersama7"><b>Detail pembayaran Anda</b> akan muncul pada halaman konfirmasi. Jika informasi telah sesuai tekan <b>Benar</b>.</string>
 
-    <string name="instruction_prima1">Di menu utama, pilih Other Transaction.</string>
-    <string name="instruction_prima2">Pilih Transfer.</string>
-    <string name="instruction_prima3">Pilih Other Bank Account.</string>
-    <string name="instruction_prima4">Masukkan 013 dan tekan Correct.</string>
-    <string name="instruction_prima5">Masukkan jumlah pembayaran total dan tekan Correct.</string>
-    <string name="instruction_prima6">Masukkan 16 digit Nomor Akun dan pilih Correct.</string>
-    <string name="instruction_prima7">Detil pembayaran anda akan muncul di halaman konfirmasi. Bila informasi benar pilih Correct.</string>
+    <string name="instruction_prima1">Pada menu utama, pilih <b>Transaksi Lainnya</b>.</string>
+    <string name="instruction_prima2">Pilih <b>Transfer</b>.</string>
+    <string name="instruction_prima3">Pilih <b>Ke Rek Bank Lain</b>.</string>
+    <string name="instruction_prima4">Masukkan <b>013</b> (kode bank Permata) lalu tekan <b>Benar</b>.</string>
+    <string name="instruction_prima5">Masukkan <b>jumlah tagihan yang akan Anda bayar</b> secara lengkap, lalu tekan <b>Benar</b>.</string>
+    <string name="instruction_prima6">Masukkan <b>16 digit No. Rekening Pembayaran</b> yang dituju, lalu tekan <b>Benar</b>.</string>
+    <string name="instruction_prima7"><b>Detail pembayaran Anda</b> akan muncul di halaman konfirmasi. Jika informasi telah sesuai tekan <b>Benar</b>.</string>
 
-    <string name="instruction_alto1">Di menu utama, pilih Other Transaction.</string>
-    <string name="instruction_alto2">Pilih Payment.</string>
-    <string name="instruction_alto3">Pilih Other Payment.</string>
-    <string name="instruction_alto4">Pilih Virtual Account.</string>
-    <string name="instruction_alto5">Masukkan 16 digit Nomor Akun Virtual dan tekan Correct.</string>
-    <string name="instruction_alto6">Detil pembayaran anda akan muncul di halaman konfirmasi. Bila informasi benar pilih Correct.</string>
-    <string name="instruction_alto7">Pilih akun pembayaran anda.</string>
+    <string name="instruction_alto1">Pada menu utama, pilih <b>Transaksi lainnya</b>.</string>
+    <string name="instruction_alto2">Pilih <b>Transaksi Pembayaran</b>.</string>
+    <string name="instruction_alto3">Pilih <b>Lain-lain</b>.</string>
+    <string name="instruction_alto4">Pilih <b>Pembayaran Virtual Account</b>.</string>
+    <string name="instruction_alto5">Masukkan <b>16 digit No. Rekening Pembayaran</b> yang dituju, lalu tekan <b>Benar</b>.</string>
+    <string name="instruction_alto6"><b>Detail pembayaran Anda</b> akan muncul pada halaman konfirmasi. Jika informasi sesuai tekan <b>Benar</b>.</string>
+    <string name="instruction_alto7">Pilih rekening pembayaran Anda dan tekan <b>Benar</b>.</string>
 
     <string name="all_bank_transfer">Bank Lainnya</string>
     <string name="error_message_invalid_input_telkomsel">Transaksi Anda tidak dapat diproses. Pastikan informasi pembayaran Anda benar.</string>
@@ -536,13 +536,13 @@
     <string name="bni_mobile_instruction_7">Pembayaran selesai</string>
 
     <!-- BNI ATM payment instruction -->
-    <string name="bni_atm_instruction_1">Pada menu utama, pilih \'Other transaction\'</string>
-    <string name="bni_atm_instruction_2">Pilih \'Transfer\'</string>
-    <string name="bni_atm_instruction_3">Pilih \'Savings Account\'</string>
-    <string name="bni_atm_instruction_4">Pilih \'To BNI Account\'</string>
-    <string name="bni_atm_instruction_5">Masukkan nomor  BNI virtual account dan tekan \'Correct\'</string>
-    <string name="bni_atm_instruction_6">Masukkan jumlah yang akan dibayarkan dan tekan \'Correct\'</string>
-    <string name="bni_atm_instruction_7">Detil pembayaran anda akan muncul pada halaman konfirmasi. Jika informasi pembayaran sudah benar tekan \'Correct\'</string>
+    <string name="bni_atm_instruction_1">Pada menu utama, pilih <b>Transaksi lainnya</b>.</string>
+    <string name="bni_atm_instruction_2">Pilih <b>Transfer</b>.</string>
+    <string name="bni_atm_instruction_3">Pilih <b>Rekening Tabungan</b>.</string>
+    <string name="bni_atm_instruction_4">Pilih <b>Ke Rekening BNI</b>.</string>
+    <string name="bni_atm_instruction_5">Masukkan <b>No. Virtual Account</b> yang dituju, lalu tekan <b>Benar</b>.</string>
+    <string name="bni_atm_instruction_6">Masukkan <b>jumlah tagihan yang akan Anda bayar</b> secara lengkap, lalu tekan <b>Benar</b>.</string>
+    <string name="bni_atm_instruction_7"><b>Detil pembayaran anda</b> akan muncul pada halaman konfirmasi. Jika informasi telah sesuai tekan <b>Benar</b>.</string>
     <string name="tab_atm_bni">ATM BNI</string>
     <string name="tab_bni_mobile">Mobile Banking</string>
     <string name="tab_bni_internet">Internet Banking</string>

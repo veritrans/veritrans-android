@@ -183,51 +183,12 @@
     <!-- Mandiri bank transfer Instruction-->
     <string name="instruction">Instructions</string>
 
-    <string name="mandiri_instruction_step1">1.\tOn the main menu, Choose \'Pay/Buy\'.</string>
-    <string name="mandiri_instruction_step2">2.\tChoose \'Others\'.</string>
-    <string name="mandiri_instruction_step3">3.\tChoose \'Multi Payment\'.</string>
-    <string name="mandiri_instruction_step4">4.\tEnter 70012 (Midtrans company code) and press \'Correct\'.</string>
-    <string name="mandiri_instruction_step5">5.\tEnter your Payment code and press \'Correct\'.</string>
-    <string name="mandiri_instruction_step6">6.\tYour payment details will appear on the payment confirmation page. If the information is correct press \'Yes\'.</string>
-
-    <string name="mandiri_internet_instruction_step1">1.\tLogin to Mandiri Internet Banking (ib.bankmandiri.co.id).</string>
-    <string name="mandiri_internet_instruction_step2">2.\tFrom the main menu choose \'Payment\', then choose \'Multi Payment\'.</string>
-    <string name="mandiri_internet_instruction_step3">3.\tSelect your account in \'From Account\', then \'Billing Name\' select \'Midtrans\'.</string>
-    <string name="mandiri_internet_instruction_step4">4.\tEnter the \'Payment Code\' and you will receive your payment details.</string>
-    <string name="mandiri_internet_instruction_step5">5.\tConfirm your payment using Mandiri Token.</string>
-
-
     <!-- bca/ prima bank transfer Instruction-->
-    <!--BCA Transfer-->
-    <string name="bca_instruction_step1">1.\tOn the main menu, Choose \'Other Transaction\'.</string>
-    <string name="bca_instruction_step2">2.\tChoose \'Transfer\'.</string>
-    <string name="bca_instruction_step3">3.\tChoose \'To BCA Virtual Account\'.</string>
-    <string name="bca_instruction_step4">4.\tEnter your payment code (11 digit code) and press \'Correct\'.</string>
-    <string name="bca_instruction_step5">5.\tEnter full amount to be paid and press \'Correct\'.</string>
-    <string name="bca_instruction_step6">6.\tYour payment details will appear on the confirmation page. If information is correct press \'Yes\'.</string>
-    <!--Klik BCA-->
-    <string name="bca_klik_instruction_step1">1.\tChoose menu \'Fund Transfer\'.</string>
-    <string name="bca_klik_instruction_step2">2.\tChoose \'Transfer to BCA Virtual Account\'.</string>
-    <string name="bca_klik_instruction_step3">3.\t\'Input BCA Virtual Account Number\' or \'Choose from Transfer List\' and click \'Continue\'.</string>
-    <string name="bca_klik_instruction_step4">4.\tAmount to be paid, account number and Merchant name will appear on the payment confirmation page, if information is right click \'Continue\'.</string>
-    <string name="bca_klik_instruction_step5">5.\tGet your \'BCA token\' and input KEYBCA Response \'APPLI 1\' and click \'Submit\'.</string>
-    <string name="bca_klik_instruction_step6">6.\tYour transaction is Done.</string>
-
     <!--KLIK BCA PAYMENT-->
     <string name="bca_klik_pay_instruction_step1">You will be redirected to BCA KlikPay once you tap \'Confirm Payment\' button.</string>
     <string name="bca_klik_pay_instruction_step2">For payment, you can choose to use KlikBCA Individu Account or BCA card.</string>
     <string name="bca_klik_pay_instruction_step3">For more information about BCA KlikPay please contact Halo BCA at (021) 500888 or visit www.bca.co.id.</string>
 
-    <!--m-BCA-->
-    <string name="bca_mbanking_instruction_step1">1.\tChoose \'m-transfer\'.</string>
-    <string name="bca_mbanking_instruction_step2">2.\tChoose \'Transfer\'</string>
-    <string name="bca_mbanking_instruction_step3">3.\tChoose \'BCA Virtual Account\'.</string>
-    <string name="bca_mbanking_instruction_step4">4.\tChoose \'account number\' that you want to use for payment.</string>
-    <string name="bca_mbanking_instruction_step5">5.\tInput BCA Virtual Account Number and click \'OK\'.</string>
-    <string name="bca_mbanking_instruction_step6">6.\tBCA Virtual Account Number and your account information will appear on the payment confirmation page and then click \'Send\'.</string>
-    <string name="bca_mbanking_instruction_step7">7.\tClick \'OK\' on the payment confirmation page.</string>
-    <string name="bca_mbanking_instruction_step8">8.\tEnter amount to be transferred then click \'OK\'.</string>
-    <string name="bca_mbanking_instruction_step9">9.\tYour transaction is done.</string>
     <!-- cimb transfer Instructions -->
     <string name="cimb_instruction_step1">Please make sure that you have a User ID for CIMB Clicks and have registered your mPIN before going through with the payment.</string>
     <string name="cimb_instruction_step2">Transaction will be cancelled if payment is not completed within 2 hours.</string>
@@ -271,18 +232,6 @@
     <string name="message_bbm_not_found">To continue payment, please install BBM Money App.</string>
     <string name="bbm_btn_text1">PAY WITH</string>
     <string name="bbm_btn_text2">BBM MONEY</string>
-
-
-    <!-- Permata/Alto bank transfer Instruction-->
-    <string name="permata_instruction_step1">1.\tOn the main menu, Choose \'Other Transaction\'.</string>
-    <string name="permata_instruction_step2">2.\tChoose \'Payment\'.</string>
-    <string name="permata_instruction_step3">3.\tChoose \'Other Payment\'.</string>
-    <string name="permata_instruction_step4">4.\tChoose \'Virtual Account\'.</string>
-    <string name="permata_instruction_step5">5.\tEnter 16 digits payment Account No. and press \'Correct\'.</string>
-    <string name="permata_instruction_step6">6.\tAmount to be paid, account number, and merchant name will appear on confirmation page. If the confirmation page is right, press \'Correct\'.</string>
-    <string name="permata_instruction_step7">7.\tChoose your payment account and press \'Correct\'.</string>
-    <string name="bank_transfer_dummy_text">* Subject to preferred bank\'s transfer fee and a minimum transaction of Rp50,000, - for bank mandiri</string>
-
 
     <!--credit card -->
     <string name="add_card_message">You can also pay with a new card from here</string>
