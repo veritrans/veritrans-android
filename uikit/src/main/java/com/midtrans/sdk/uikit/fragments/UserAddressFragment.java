@@ -1,8 +1,5 @@
 package com.midtrans.sdk.uikit.fragments;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -14,6 +11,7 @@ import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.SwitchCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +19,8 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.Logger;
@@ -326,67 +326,29 @@ public class UserAddressFragment extends Fragment {
         String shippingZipcode = etShippingZipCode.getText().toString().trim();
         String shippingCountry = etShippingCountry.getText().toString().trim();
 
-        if (TextUtils.isEmpty(billingAddress)) {
-            SdkUIFlowUtil.showToast(getActivity(), getString(R.string
-                    .validation_billingaddress_empty));
-            etAddress.requestFocus();
-            return;
-        } else if (TextUtils.isEmpty(billingCity)) {
-            SdkUIFlowUtil.showToast(getActivity(), getString(R.string.validation_billingcity_empty));
-            etCity.requestFocus();
-            return;
-        } else if (TextUtils.isEmpty(zipcode)) {
-            SdkUIFlowUtil.showToast(getActivity(), getString(R.string
-                    .validation_billingzipcode_empty));
-            etZipCode.requestFocus();
-            return;
-        } else if (zipcode.length() < Constants.ZIPCODE_LENGTH) {
+        if (!TextUtils.isEmpty(zipcode) && zipcode.length() < Constants.ZIPCODE_LENGTH) {
             SdkUIFlowUtil.showToast(getActivity(), getString(R.string
                     .validation_billingzipcode_invalid));
             etZipCode.requestFocus();
             return;
-        } else if (TextUtils.isEmpty(country)) {
-            SdkUIFlowUtil.showToast(getActivity(), getString(R.string
-                    .validation_billingcountry_empty));
-            etCountry.requestFocus();
-            return;
-        } else if (!isCountryCodeExist(country, true)) {
+        } else if (!TextUtils.isEmpty(country) && !isCountryCodeExist(country, true)) {
             SdkUIFlowUtil.showToast(getActivity(), getString(R.string
                     .validation_billingcountry_notexist));
             etCountry.requestFocus();
             return;
         } else if (!cbShippingAddress.isChecked()) {
-            if (TextUtils.isEmpty(shippingAddress)) {
-                SdkUIFlowUtil.showToast(getActivity(), getString(R.string
-                        .validation_shippingaddress_empty));
-                etShippingAddress.requestFocus();
-                return;
-            } else if (TextUtils.isEmpty(shippingCity)) {
-                SdkUIFlowUtil.showToast(getActivity(), getString(R.string
-                        .validation_shippingcity_empty));
-                etShippingCity.requestFocus();
-                return;
-            } else if (TextUtils.isEmpty(shippingZipcode)) {
-                SdkUIFlowUtil.showToast(getActivity(), getString(R.string
-                        .validation_shippingzipcode_empty));
-                etShippingZipCode.requestFocus();
-                return;
-            } else if (shippingZipcode.length() < Constants.ZIPCODE_LENGTH) {
+            if (!TextUtils.isEmpty(shippingZipcode) && shippingZipcode.length() < Constants.ZIPCODE_LENGTH) {
                 SdkUIFlowUtil.showToast(getActivity(), getString(R.string
                         .validation_shippingzipcode_invalid));
                 etShippingZipCode.requestFocus();
                 return;
-            } else if (TextUtils.isEmpty(shippingCountry)) {
-                SdkUIFlowUtil.showToast(getActivity(), getString(R.string
-                        .validation_shippingcountry_empty));
-                etShippingCountry.requestFocus();
-                return;
-            } else if (!isCountryCodeExist(shippingCountry, false)) {
+            } else if (!TextUtils.isEmpty(shippingCountry) && !isCountryCodeExist(shippingCountry, false)) {
                 SdkUIFlowUtil.showToast(getActivity(), getString(R.string
                         .validation_billingcountry_notexist));
                 etCountry.requestFocus();
                 return;
             }
+
             UserAddress shippingUserAddress = new UserAddress();
             shippingUserAddress.setAddress(shippingAddress);
             shippingUserAddress.setCity(shippingCity);
@@ -420,10 +382,16 @@ public class UserAddressFragment extends Fragment {
                 selectPaymentIntent.putExtra(UserDetailsActivity.BANK_TRANSFER_ONLY, true);
             }
             startActivity(selectPaymentIntent);
-            if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+            if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                     && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                 getActivity().overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
+            boolean isEmailNull = userDetail.getEmail() == null;
+            boolean isFullNull = userDetail.getUserFullName() == null;
+            boolean isPhoneNull = userDetail.getPhoneNumber() == null;
+            Log.d("xdetail", "detail>email:" + userDetail.getEmail() + " | " + isEmailNull);
+            Log.d("xdetail", "detail>phone:" + userDetail.getPhoneNumber() + " | " + isPhoneNull);
+            Log.d("xdetail", "detail>name:" + userDetail.getUserFullName() + " | " + isFullNull);
             getActivity().finish();
         } catch (Exception e) {
             e.printStackTrace();

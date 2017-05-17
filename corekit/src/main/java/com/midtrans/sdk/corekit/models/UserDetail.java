@@ -1,7 +1,5 @@
 package com.midtrans.sdk.corekit.models;
 
-import android.text.TextUtils;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -17,7 +15,7 @@ public class UserDetail implements Serializable {
     private String userId;
 
     public String getUserFullName() {
-        return TextUtils.isEmpty(userFullName) ? "" : userFullName;
+        return userFullName;
     }
 
     public void setUserFullName(String userFullName) {
@@ -33,7 +31,7 @@ public class UserDetail implements Serializable {
     }
 
     public String getPhoneNumber() {
-        return TextUtils.isEmpty(phoneNumber) ? "" : phoneNumber;
+        return phoneNumber;
     }
 
     public void setPhoneNumber(String phoneNumber) {
