@@ -129,11 +129,10 @@ public class TransactionRequest {
     }
 
     public void setCustomerDetails(@NonNull CustomerDetails customerDetails) {
-        mCustomerDetails = sanitizedCustomerDetails(customerDetails);
-
+        mCustomerDetails = sanitizeCustomerDetails(customerDetails);
     }
 
-    private CustomerDetails sanitizedCustomerDetails(CustomerDetails customerDetails) {
+    private CustomerDetails sanitizeCustomerDetails(CustomerDetails customerDetails) {
         if (customerDetails != null) {
             if (TextUtils.isEmpty(customerDetails.getFirstName())) {
                 customerDetails.setFirstName(null);
