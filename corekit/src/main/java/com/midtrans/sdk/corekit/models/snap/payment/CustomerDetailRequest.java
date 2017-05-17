@@ -1,5 +1,7 @@
 package com.midtrans.sdk.corekit.models.snap.payment;
 
+import android.text.TextUtils;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -16,7 +18,7 @@ public class CustomerDetailRequest {
     }
 
     public void setFullName(String fullName) {
-        this.fullName = fullName;
+        this.fullName = TextUtils.isEmpty(fullName) ? null : fullName;
     }
 
     public String getEmail() {
@@ -24,7 +26,7 @@ public class CustomerDetailRequest {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = TextUtils.isEmpty(email) ? null : email;
     }
 
     public String getPhone() {
@@ -32,6 +34,6 @@ public class CustomerDetailRequest {
     }
 
     public void setPhone(String phone) {
-        this.phone = phone;
+        this.phone = TextUtils.isEmpty(phone) ? null : phone;
     }
 }

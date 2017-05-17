@@ -515,24 +515,24 @@
     <string name="status_redeemed_point">DISKON POIN</string>
 
     <!-- BNI internet banking payment instruction -->
-    <string name="bni_internet_instruction_1">Kunjungi <a href="https://ibank.bni.co.id">https://ibank.bni.co.id</a> kemudian pilih \'Enter\'</string>
-    <string name="bni_internet_instruction_2">Masukkan  User ID and Password</string>
-    <string name="bni_internet_instruction_3">Pilih \'Set Destination Account\' kemudian \'Add Destination Account\' </string>
-    <string name="bni_internet_instruction_4">Masukkan nama dan VA number</string>
-    <string name="bni_internet_instruction_5">Masukkan kode autentikasi token</string>
-    <string name="bni_internet_instruction_6">Now Destination/Favorite account number is successfully added</string>
-    <string name="bni_internet_instruction_7">Kembali ke menu \'Transfer\'</string>
-    <string name="bni_internet_instruction_8">pilih \'Transfer to BNI Account\' kemudian pilih akun destination/favorite</string>
-    <string name="bni_internet_instruction_9">Pilih Akun  debit dan masukkan jumlah pembayaran, kemudian masukkan kode autentikasi token</string>
-    <string name="bni_internet_instruction_10">Pembayaran selesai</string>
+    <string name="bni_internet_instruction_1">Ketik alamat <a href="https://ibank.bni.co.id">https://ibank.bni.co.id</a> kemudian pilih <b>Masuk</b></string>
+    <string name="bni_internet_instruction_2">Masukkan  User ID and Password.</string>
+    <string name="bni_internet_instruction_3">Pilih <b>Atur Rekening Tujuan</b> kemudian <b>Tambah Rekening Tujuan</b>.</string>
+    <string name="bni_internet_instruction_4">Masukkan nama dan Nomor VA.</string>
+    <string name="bni_internet_instruction_5">Masukkan kode Otentikasi Token.</string>
+    <string name="bni_internet_instruction_6">Nomor Rekening Tujuan/Favorit berhasil ditambahkan.</string>
+    <string name="bni_internet_instruction_7">Kembali ke menu <b>Transfer</b>.</string>
+    <string name="bni_internet_instruction_8">pilih <b>Transfer Antar Rekening BNI</b> kemudian pilih rekening tujuan.</string>
+    <string name="bni_internet_instruction_9">Pilih Rekening  debit dan ketik nominal, lalu masukkan kode otentikasi token</string>
+    <string name="bni_internet_instruction_10">Pembayaran Anda telah selesai</string>
 
     <!-- BNI mobile payment instruction -->
-    <string name="bni_mobile_instruction_1">Login ke aplikasi BNI Mobile Banking</string>
-    <string name="bni_mobile_instruction_2">Pada menu utama, pilih \'Transfer\'</string>
-    <string name="bni_mobile_instruction_3">Pilih \'To BNI Account\' kemudian \'Add New Account\'</string>
-    <string name="bni_mobile_instruction_4">Masukkan Jumlah yang dibayarkan dan tekan \'Proceed\'</string>
-    <string name="bni_mobile_instruction_5">Detil pembayaran anda akan muncul di halaman konfirmasi</string>
-    <string name="bni_mobile_instruction_6">Jika informasi sudah benar kemudian masukkan kode autentikasi token dan tekan \'Proceed\'</string>
+    <string name="bni_mobile_instruction_1">Login ke aplikasi BNI Mobile Banking.</string>
+    <string name="bni_mobile_instruction_2">Pada menu utama, pilih <b>Transfer</b>.</string>
+    <string name="bni_mobile_instruction_3">Pilih <b>Antar Rekening BNI</b> kemudian <b>Input Rekening Baru</b>.</string>
+    <string name="bni_mobile_instruction_4">Masukkan Jumlah yang dibayarkan dan tekan <b>Proses</b></string>
+    <string name="bni_mobile_instruction_5">Detil pembayaran Anda akan muncul di halaman konfirmasi</string>
+    <string name="bni_mobile_instruction_6">Jika informasi sudah benar kemudian masukkan kode otentikasi token kemudian tekan <b>Proses</b></string>
     <string name="bni_mobile_instruction_7">Pembayaran selesai</string>
 
     <!-- BNI ATM payment instruction -->

@@ -1,7 +1,5 @@
 package com.midtrans.sdk.corekit.models;
 
-import android.text.TextUtils;
-
 import java.io.Serializable;
 
 /**
@@ -15,7 +13,7 @@ public class UserAddress implements Serializable {
     private int addressType;
 
     public String getAddress() {
-        return TextUtils.isEmpty(address) ? "" : address;
+        return address;
     }
 
     public void setAddress(String address) {
@@ -23,7 +21,7 @@ public class UserAddress implements Serializable {
     }
 
     public String getCity() {
-        return TextUtils.isEmpty(city) ? "" : city;
+        return city;
     }
 
     public void setCity(String city) {
@@ -31,7 +29,7 @@ public class UserAddress implements Serializable {
     }
 
     public String getZipcode() {
-        return TextUtils.isEmpty(zipcode) ? "" : zipcode;
+        return zipcode;
     }
 
     public void setZipcode(String zipcode) {
@@ -39,7 +37,7 @@ public class UserAddress implements Serializable {
     }
 
     public String getCountry() {
-        return TextUtils.isEmpty(country) ? "" : country;
+        return country;
     }
 
     public void setCountry(String country) {

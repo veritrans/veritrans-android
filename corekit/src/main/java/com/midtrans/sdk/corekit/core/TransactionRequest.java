@@ -1,6 +1,7 @@
 package com.midtrans.sdk.corekit.core;
 
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.midtrans.sdk.corekit.models.BillInfoModel;
 import com.midtrans.sdk.corekit.models.BillingAddress;
@@ -89,6 +90,7 @@ public class TransactionRequest {
     private BankTransferRequestModel permataVa;
     private BankTransferRequestModel bcaVa;
     private List<String> enabledPayments;
+
     /**
      * @param orderId       order id of transaction.
      * @param amount        amount to charge.
@@ -127,8 +129,96 @@ public class TransactionRequest {
     }
 
     public void setCustomerDetails(@NonNull CustomerDetails customerDetails) {
-        mCustomerDetails = customerDetails;
+        mCustomerDetails = sanitizedCustomerDetails(customerDetails);
 
+    }
+
+    private CustomerDetails sanitizedCustomerDetails(CustomerDetails customerDetails) {
+        if (customerDetails != null) {
+            if (TextUtils.isEmpty(customerDetails.getFirstName())) {
+                customerDetails.setFirstName(null);
+            }
+
+            if (TextUtils.isEmpty(customerDetails.getLastName())) {
+                customerDetails.setLastName(null);
+            }
+
+            if (TextUtils.isEmpty(customerDetails.getEmail())) {
+                customerDetails.setEmail(null);
+            }
+
+            if (TextUtils.isEmpty(customerDetails.getPhone())) {
+                customerDetails.setPhone(null);
+            }
+
+            sanitizeBillingAddress(customerDetails.getBillingAddress());
+            sanitizeShippingAddress(customerDetails.getShippingAddress());
+        }
+        return customerDetails;
+    }
+
+    private void sanitizeBillingAddress(BillingAddress billingAddress) {
+        if (billingAddress != null) {
+            if (TextUtils.isEmpty(billingAddress.getAddress())) {
+                billingAddress.setAddress(null);
+            }
+
+            if (TextUtils.isEmpty(billingAddress.getFirstName())) {
+                billingAddress.setFirstName(null);
+            }
+
+            if (TextUtils.isEmpty(billingAddress.getLastName())) {
+                billingAddress.setLastName(null);
+            }
+
+            if (TextUtils.isEmpty(billingAddress.getCity())) {
+                billingAddress.setCity(null);
+            }
+
+            if (TextUtils.isEmpty(billingAddress.getPostalCode())) {
+                billingAddress.setPostalCode(null);
+            }
+
+            if (TextUtils.isEmpty(billingAddress.getPhone())) {
+                billingAddress.setPhone(null);
+            }
+
+            if (TextUtils.isEmpty(billingAddress.getCountryCode())) {
+                billingAddress.setCountryCode(null);
+            }
+        }
+    }
+
+    private void sanitizeShippingAddress(ShippingAddress shippingAddress) {
+        if (shippingAddress != null) {
+            if (TextUtils.isEmpty(shippingAddress.getAddress())) {
+                shippingAddress.setAddress(null);
+            }
+
+            if (TextUtils.isEmpty(shippingAddress.getFirstName())) {
+                shippingAddress.setFirstName(null);
+            }
+
+            if (TextUtils.isEmpty(shippingAddress.getLastName())) {
+                shippingAddress.setLastName(null);
+            }
+
+            if (TextUtils.isEmpty(shippingAddress.getCity())) {
+                shippingAddress.setCity(null);
+            }
+
+            if (TextUtils.isEmpty(shippingAddress.getPostalCode())) {
+                shippingAddress.setPostalCode(null);
+            }
+
+            if (TextUtils.isEmpty(shippingAddress.getPhone())) {
+                shippingAddress.setPhone(null);
+            }
+
+            if (TextUtils.isEmpty(shippingAddress.getCountryCode())) {
+                shippingAddress.setCountryCode(null);
+            }
+        }
     }
 
     public ArrayList<BillingAddress> getBillingAddressArrayList() {
