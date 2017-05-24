@@ -2,6 +2,8 @@ package com.midtrans.sdk.corekit.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 /**
  * model class to hold information about get Token api call. it contains  token id, redirect url (if
  * any) etc.
@@ -19,6 +21,8 @@ public class TokenDetailsResponse {
     @SerializedName("status_message")
     private String statusMessage;
 
+    @SerializedName("validation_messages")
+    private List<String> validationMessages;
 
     @SerializedName("bank")
     private String bank = null;
@@ -70,5 +74,9 @@ public class TokenDetailsResponse {
 
     public void setRedirectUrl(String redirect_url) {
         this.redirectUrl = redirect_url;
+    }
+
+    public List<String> getValidationMessages() {
+        return validationMessages;
     }
 }
