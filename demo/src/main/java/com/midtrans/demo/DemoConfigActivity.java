@@ -2302,21 +2302,21 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
         if (userDetail == null) {
             userDetail = new UserDetail();
-//            userDetail.setUserFullName(getString(R.string.order_review_customer_details_name));
-//            userDetail.setEmail(getString(R.string.order_review_customer_details_email));
-//            userDetail.setPhoneNumber(getString(R.string.order_review_customer_details_phone));
+            userDetail.setUserFullName(getString(R.string.order_review_customer_details_name));
+            userDetail.setEmail(getString(R.string.order_review_customer_details_email));
+            userDetail.setPhoneNumber(getString(R.string.order_review_customer_details_phone));
             if (oneClickSelection.isChecked()) {
                 userDetail.setUserId(getString(R.string.sample_user_id));
             } else if (twoClicksSelection.isChecked()) {
                 userDetail.setUserId(getString(R.string.sample_user_id2));
             }
-//            ArrayList<UserAddress> userAddresses = new ArrayList<>();
-//            UserAddress userAddress = new UserAddress();
-//            userAddress.setAddress(getString(R.string.order_review_delivery_address_sample));
-//            userAddress.setCity(getString(R.string.order_review_delivery_address_city_sample));
-//            userAddress.setAddressType(com.midtrans.sdk.corekit.core.Constants.ADDRESS_TYPE_BOTH);
-//            userAddresses.add(userAddress);
-//            userDetail.setUserAddresses(userAddresses);
+            ArrayList<UserAddress> userAddresses = new ArrayList<>();
+            UserAddress userAddress = new UserAddress();
+            userAddress.setAddress(getString(R.string.order_review_delivery_address_sample));
+            userAddress.setCity(getString(R.string.order_review_delivery_address_city_sample));
+            userAddress.setAddressType(com.midtrans.sdk.corekit.core.Constants.ADDRESS_TYPE_BOTH);
+            userAddresses.add(userAddress);
+            userDetail.setUserAddresses(userAddresses);
         } else {
             if (oneClickSelection.isChecked()) {
                 userDetail.setUserId("user@user.com");
