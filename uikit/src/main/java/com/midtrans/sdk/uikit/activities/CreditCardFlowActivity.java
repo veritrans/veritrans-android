@@ -7,13 +7,11 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -267,7 +265,7 @@ public class CreditCardFlowActivity extends BaseActivity {
 
     private void prepareToolbar() {
         Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_back);
-        MidtransSDK midtransSDK =MidtransSDK.getInstance();
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
         if (midtransSDK.getColorTheme() != null && midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
             drawable.setColorFilter(
                     midtransSDK.getColorTheme().getPrimaryDarkColor(),
@@ -509,7 +507,7 @@ public class CreditCardFlowActivity extends BaseActivity {
         for (Fragment fragment : fragments) {
             if (fragment instanceof SavedCardListFragment) {
                 SavedCardListFragment savedCardListFragment = (SavedCardListFragment) fragment;
-                savedCardListFragment.updateSavedCardsData(saveCardRequests);
+                savedCardListFragment.updateSavedCardsData(saveCardRequests, true);
             }
         }
     }
@@ -546,7 +544,7 @@ public class CreditCardFlowActivity extends BaseActivity {
                         intentPaymentWeb.putExtra(Constants.WEBURL, tokenDetailsResponse.getRedirectUrl());
                         intentPaymentWeb.putExtra(Constants.TYPE, WebviewFragment.TYPE_CREDIT_CARD);
                         startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
-                        if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                        if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                                 && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                             overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                         }
