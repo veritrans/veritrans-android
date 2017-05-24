@@ -261,7 +261,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/instruction_permata_7" />
+                android:src="@drawable/instruction_atm_bersama_7" />
 
             <com.midtrans.sdk.uikit.widgets.DefaultTextView
                 android:layout_width="wrap_content"
