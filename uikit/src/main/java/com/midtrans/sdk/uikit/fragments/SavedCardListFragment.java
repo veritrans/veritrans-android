@@ -47,6 +47,7 @@ public class SavedCardListFragment extends Fragment {
     private RecyclerView savedCardsContainer;
     private FancyButton addCardButton;
     private ArrayList<SaveCardRequest> savedCards;
+    private boolean fromBackStack;
 
     public static SavedCardListFragment newInstance(List<SaveCardRequest> saveCardRequests) {
         SavedCardListFragment fragment = new SavedCardListFragment();
@@ -80,9 +81,11 @@ public class SavedCardListFragment extends Fragment {
     }
 
     private void fetchCards() {
-        SavedCardList savedCardList = (SavedCardList) getArguments().getSerializable(PARAM_CARD_LIST);
-        if (savedCardList != null) {
-            savedCards = (ArrayList<SaveCardRequest>) savedCardList.saveCardRequests;
+        if (!fromBackStack) {
+            SavedCardList savedCardList = (SavedCardList) getArguments().getSerializable(PARAM_CARD_LIST);
+            if (savedCardList != null) {
+                savedCards = (ArrayList<SaveCardRequest>) savedCardList.saveCardRequests;
+            }
         }
     }
 
@@ -198,7 +201,7 @@ public class SavedCardListFragment extends Fragment {
             public void onClick(View view) {
                 ((CreditCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(R.string.card_details);
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                         && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                     fragmentTransaction.setCustomAnimations(R.anim.slide_in, R.anim.slide_out, R.anim.slide_in_back, R.anim.slide_out_back);
                 }
@@ -234,7 +237,7 @@ public class SavedCardListFragment extends Fragment {
                 } else {
                     ((CreditCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(R.string.card_details);
                     FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                    if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                    if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                             && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                         fragmentTransaction.setCustomAnimations(R.anim.slide_in, R.anim.slide_out, R.anim.slide_in_back, R.anim.slide_out_back);
                     }
@@ -254,6 +257,7 @@ public class SavedCardListFragment extends Fragment {
         });
     }
 
+    //
     private void deleteCardFromMerchantServer(final String maskedCard, final ArrayList<SaveCardRequest> saveCardRequests) {
         SdkUIFlowUtil.showProgressDialog((AppCompatActivity) getActivity(), getString(R.string.processing_delete), false);
         MidtransSDK midtransSDK = MidtransSDK.getInstance();
@@ -264,6 +268,7 @@ public class SavedCardListFragment extends Fragment {
                 SdkUIFlowUtil.hideProgressDialog();
                 ((CreditCardFlowActivity) getActivity()).setCreditCards(saveCardRequests);
                 savedCards = saveCardRequests;
+                fromBackStack = true;
                 if (saveCardRequests.isEmpty()) {
                     ((CreditCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(R.string.card_details);
                     getFragmentManager().beginTransaction().replace(R.id.card_container, CardDetailsFragment.newInstance()).commit();
@@ -305,7 +310,8 @@ public class SavedCardListFragment extends Fragment {
         return null;
     }
 
-    public void updateSavedCardsData(ArrayList<SaveCardRequest> saveCardRequests) {
+    public void updateSavedCardsData(ArrayList<SaveCardRequest> saveCardRequests, boolean fromBackStack) {
+        this.fromBackStack = fromBackStack;
         this.savedCards = saveCardRequests;
         savedCardsAdapter.setData(savedCards);
     }

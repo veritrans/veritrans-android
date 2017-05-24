@@ -164,8 +164,8 @@
     <string name="bca_klik_instruction_step5">Ambil <b>BCA token</b> Anda dan masukkan KEYBCA Response <b>APPLI 1</b> dan klik <b>Submit</b>.</string>
     <string name="bca_klik_instruction_step6">Transaksi Anda selesai.</string>
 
-    <!--KLIK BCA PAYMENT-->
-    <string name="bca_klik_pay_instruction_step1">Anda akan dialihkan ke halaman BCA KlikPay setelah menekan tombol \'Konfirmasi Pembayaran\' .</string>
+    <!--BCA KlikPay -->
+    <string name="bca_klik_pay_instruction_step1">Anda akan diarahkan ke halaman BCA KlikPay setelah menekan tombol <b>Konfirmasi Pembayaran</b>.</string>
     <string name="bca_klik_pay_instruction_step2">Untuk pembayaran, Anda dapat memilih akun KlikBCA Individu atau kartu kredit BCA.</string>
     <string name="bca_klik_pay_instruction_step3">Untuk informasi lebih lanjut mengenai BCA KlikPay harap kontak Halo BCA di (021) 1500888 atau kunjungi <a href="http://klikbca.com/KlikPay/klikpay.html">http://klikbca.com/KlikPay/klikpay.html</a>.</string>
 
@@ -187,22 +187,22 @@
 
     <!-- Mandiri E Cash transfer Instruction-->
     <string name="mandiri__e_cash_instruction_step1">Pastikan no. HP anda telah terdaftar untuk Mandiri e-cash.</string>
-    <string name="mandiri__e_cash_instruction_step2">Klik \'Confirm Payment\'.</string>
-    <string name="mandiri__e_cash_instruction_step3">Masukkan no. HP dan PIN Anda.</string>
+    <string name="mandiri__e_cash_instruction_step2">Klik <b>Confirm Payment</b>.</string>
+    <string name="mandiri__e_cash_instruction_step3">Masukkan <b>nomor ponsel</b> dan <b>PIN</b> Anda.</string>
     <string name="mandiri__e_cash_instruction_step4">Harap tunggu sampai Anda menerima SMS dari Mandiri e-cash berisi One Time Password (OTP).</string>
-    <string name="mandiri__e_cash_instruction_step5">Masukkan 6 digit OTP, lalu klik
-        \'pay\' untuk melakukan pembayaran.</string>
+    <string name="mandiri__e_cash_instruction_step5"><b>Masukkan kode 6 angka OTP yang diterima</b>, kemudian tekan tombol
+        <b>Bayar</b> untuk melakukan pembayaran.</string>
     <string name="mandiri__e_cash_instruction_step6">Jika Anda belum menerima OTP atau jika
-        OTP sudah kadaluarsa, klik \'cancel\' dan ulangi transaksi.</string>
+        OTP sudah kadaluarsa, klik <b>Batal</b> dan ulangi transaksi.</string>
 
     <!-- Indomaret Instruction-->
-    <string name="indomaret_instruction_step1">Setelah pembayaran dikonfirmasi, kami akan mengirimkan nomor Payment Code yang unik.</string>
-    <string name="indomaret_instruction_step2">Catat Payment Code and jumlah total.
-       Jangan khawatir, kami juga akan mengirimkan instruksi pembayaran melalui email.</string>
-    <string name="indomaret_instruction_step3">Kunjungi Indomaret terdekat dan berikan nomor Payment Code kepada kasir.</string>
-    <string name="indomaret_instruction_step4">Kasir akan melakukan konfirmasi transaksi dengan menanyakan jumlah transaksi dan nama merchant.</string>
-    <string name="indomaret_instruction_step5">Konfirmasi Pembayaran melalui kasir.</string>
-    <string name="indomaret_instruction_step6">Transaksi Anda berhasil! Anda akan menerima email konfirmasi pembayaran. Harap simpan struk pembayaran Indomaret Anda apabila anda memerlukan bantuan via support.</string>
+    <string name="indomaret_instruction_step1">Setelah melakukan <b>Konfirmasi Pembayaran</b>, Anda akan diberikan Kode Pembayaran yang unik.</string>
+    <string name="indomaret_instruction_step2">Salinlah Kode Pembayaran Anda dan jumlah pembayaran yang akan dibayarkan.
+       Jangan khawatir, Kami juga akan mengirimkan salinan kode pembayaran dan instruksi pembayaran melalui email.</string>
+    <string name="indomaret_instruction_step3">Kunjungi Indomaret terdekat dan berikan nomor Kode Pembayaran Anda ke kasir.</string>
+    <string name="indomaret_instruction_step4">Kasir Indomaret akan mengkonfirmasi transaksi dengan menanyakan jumlah transaksi dan nama merchant.</string>
+    <string name="indomaret_instruction_step5">Konfirmasi Pembayaran Anda ke kasir.</string>
+    <string name="indomaret_instruction_step6">Transaksi Anda berhasil! Anda akan menerima email konfirmasi pembayaran. Harap simpan struk pembayaran Indomaret Anda, apabila Anda memerlukan bantuan via support.</string>
 
     <!-- Permata/Alto bank transfer Instruction-->
     <string name="permata_instruction_step1">Pada menu utama, pilih <b>Transaksi Lainnya</b>.</string>
@@ -214,27 +214,23 @@
     <string name="permata_instruction_step7">Pilih rekening pembayaran Anda dan tekan <b>Benar</b>.</string>
     <string name="bank_transfer_dummy_text">* Bergantung pada biaya bank/transfer dan transaksi minimum sebesar Rp50,000, - untuk bank mandiri</string>
 
-    <string name="bri_instruction_step1">Pastikan bahwa Anda memiliki User ID untuk BRI e-Pay dan telah terdaftar untuk mTOKEN sebelum melanjutkan pembayaran </string>
-    <string name="bri_instruction_step2">Untuk mendapatkan User ID untuk BRI e-Pay, harap mendaftar pada ATM BRI terdekat
-    </string>
-    <string name="bri_instruction_step3">Harap kunjungi kantor cabang BRI terdekat untuk mendaftar mTOKEN.
-    </string>
-    <string name="bri_instruction_step4">Pembayaran melalui BRI e-Pay akan diproses secara online dan saldo rekening BRI akan dikurangi secara otomatis berdasarkan total harga.
-    </string>
-    <string name="bri_instruction_step5">Transaksi akan dibatalkan apabila pembayaran tidak dilakukan dalam 2 jam.
-    </string>
+    <string name="bri_instruction_step1">Pastikan bahwa Anda memiliki User ID untuk BRI e-Pay dan telah terdaftar untuk mTOKEN sebelum melanjutkan pembayaran.</string>
+    <string name="bri_instruction_step2">Untuk mendapatkan User ID untuk BRI e-Pay, harap mendaftar pada ATM BRI terdekat</string>
+    <string name="bri_instruction_step3">Harap kunjungi kantor cabang BRI terdekat untuk mendaftar mTOKEN.</string>
+    <string name="bri_instruction_step4">Pembayaran melalui BRI e-Pay akan diproses secara online dan saldo rekening BRI akan dikurangi secara otomatis berdasarkan total harga.</string>
+    <string name="bri_instruction_step5">Transaksi akan dibatalkan apabila pembayaran tidak dilakukan dalam 2 jam.</string>
 
     <!-- Kioson Instruction-->
-    <string name="kioson_instruction_step1">Setelah pembayaran dikonfirmasi, kami akan mengirimkan nomor Payment Code yang unik.</string>
-    <string name="kioson_instruction_step2">Catat Payment Code and jumlah total.
-       Jangan khawatir, kami juga akan mengirimkan instruksi pembayaran melalui email.</string>
-    <string name="kioson_instruction_step3">Kunjungi outlet kioson terdekat dan berikan nomor Payment Code kepada kasir.</string>
-    <string name="kioson_instruction_step4">Kasir akan membuka menu kioson Cash Point, kemudian kasir akan memilih "Keagenan".</string>
+    <string name="kioson_instruction_step1">Setelah melakukan <b>Konfirmasi Pembayaran</b>, Anda akan diberikan Kode Pembayaran yang unik.</string>
+    <string name="kioson_instruction_step2">Salinlah Kode Pembayaran Anda dan jumlah pembayaran pembayaran yang akan dibayarkan.
+       Jangan khawatir, Kami akan mengirimkan salinan Kode Pembayaran dan Instruksi Pembayaran melalui email.</string>
+    <string name="kioson_instruction_step3">Kunjungi outlet Kioson terdekat dan berikan nomor Kode Pembayaran Anda ke kasir.</string>
+    <string name="kioson_instruction_step4">Kasir akan membuka menu Kioson Cash Point, kemudian kasir akan memilih <b>Keagenan</b>.</string>
     <string name="kioson_instruction_step5">Pilih nama merchant.</string>
-    <string name="kioson_instruction_step6">Pilih sub menu "Pembayaran".</string>
+    <string name="kioson_instruction_step6">Pilih sub menu <b>Pembayaran</b>.</string>
     <string name="kioson_instruction_step7">Masukkan kode pembayaran anda dan dan detail pembayaran anda akan ditampilkan.</string>
-    <string name="kioson_instruction_step8">Konfirmasi pembayaran dan cetak bukti pembayarannya.</string>
-    <string name="kioson_instruction_step9">Transaksi Anda berhasil! Anda akan menerima email konfirmasi pembayaran. Harap simpan struk pembayaran Anda apabila anda memerlukan bantuan via support.</string>
+    <string name="kioson_instruction_step8">Konfirmasi pembayaran  Anda dan cetak bukti pembayarannya.</string>
+    <string name="kioson_instruction_step9">Transaksi Anda berhasil! Anda akan menerima email konfirmasi pembayaran. Harap simpan struk pembayaran Kioson Anda, apabila Anda memerlukan bantuan via support.</string>
 
 
     <!--credit card -->
@@ -295,7 +291,7 @@
     <string name="cancel_transaction_message">Apakah anda yakin akan meninggalkan halaman ini?</string>
     <string name="indosat_instruction_step1">Masukkan No. Indosat yang terdaftar.</string>
     <string name="indosat_instruction_step2">Pastikan terdapat dana yang mencukupi pada rekening Anda.</string>
-    <string name="indosat_instruction_step3">Klik \'Confirm Payment\'.</string>
+    <string name="indosat_instruction_step3">Klik <b>Konfirmasi Pembayaran</b>.</string>
     <string name="indosat_instruction_step4">Anda akan menerima pesan USSD dari Indosat untuk menyelesaikan transaksi melalui Dompetku app.</string>
     <string name="indosat_instruction_step5">Masukkan PIN Anda.</string>
     <string name="indosat_instruction_step6">Pembayaran Selesai.</string>
@@ -305,13 +301,15 @@
     <string name="telkomsel_instruction_step3">Transaksi anda akan kadaluarsa dalam 30 menit.</string>
 
     <string name="hint_indosat_phone_number">Indosat Phone Number</string>
+
     <string name="mandiri_click_pay_instruction_step1">1.\tAktifkan token Mandiri Anda dengan menekan [img src=ic_mandiri_instrcn/].</string>
     <string name="mandiri_click_pay_instruction_step2">2.\tMasukkan password token Mandiri Anda.</string>
-    <string name="mandiri_click_pay_instruction_step3">3.\tTekan 3 ketika APPLI ditampilkan</string>
-    <string name="mandiri_click_pay_instruction_step4">4.\tMasukkan \'masukan 1\' dan tekan [img src=ic_mandiri_instrcn/] selama 3 detik.</string>
-    <string name="mandiri_click_pay_instruction_step5">5.\tMasukkan \'masukan 2\' dan tekan [img src=ic_mandiri_instrcn/] selama 3 detik.</string>
-    <string name="mandiri_click_pay_instruction_step6">6.\tMasukkan \'masukan 3\' dan tekan [img src=ic_mandiri_instrcn/] selama 3 detik.</string>
-    <string name="mandiri_click_pay_instruction_step7">7.\tMasukkan response code pada token Mandiri Anda pada kolom challenge token.</string>
+    <string name="mandiri_click_pay_instruction_step3">3.\tTekan <b>3</b> ketika <b>APPLI</b> ditampilkan</string>
+    <string name="mandiri_click_pay_instruction_step4">4.\tMasukkan <b>masukan 1</b> dan tekan [img src=ic_mandiri_instrcn/] selama 3 detik.</string>
+    <string name="mandiri_click_pay_instruction_step5">5.\tMasukkan <b>masukan 2</b> dan tekan [img src=ic_mandiri_instrcn/] selama 3 detik.</string>
+    <string name="mandiri_click_pay_instruction_step6">6.\tMasukkan <b>masukan 3</b> dan tekan [img src=ic_mandiri_instrcn/] selama 3 detik.</string>
+    <string name="mandiri_click_pay_instruction_step7">7.\tMasukkan response code pada token Mandiri Anda pada kolom <b>challenge token</b>.</string>
+
     <string name="for_three_seconds">selama 3 detik</string>
     <string name="title_payment_status">Status Pembayaran</string>
     <string name="payment_deny">Pembayaran Ditolak.</string>
@@ -326,8 +324,8 @@
     <string name="text_no">Tidak</string>
 
     <!--KlikBCA Payment Instructions-->
-    <string name="klikbca_instruction_1">Pastikan bahwa UserID sudah aktif dan terdaftar di BCA.</string>
-    <string name="klikbca_instruction_2">Silakan lanjutkan pembayaran melalui KlikBCA dengan membuka <a href="http://klikbca.com/">http://klikbca.com/</a> pada browser anda, menggunakan User ID yang sama dengan yang anda masukkan di atas.</string>
+    <string name="klikbca_instruction_1">Pastikan bahwa <b>User ID</b> sudah aktif dan terdaftar di BCA.</string>
+    <string name="klikbca_instruction_2">Silakan lanjutkan pembayaran melalui KlikBCA dengan membuka <a href="http://klikbca.com/">http://klikbca.com/</a> pada browser anda, menggunakan <b>User ID</b> yang sama dengan yang anda masukkan di atas.</string>
 
     <string name="payment_method_bri_epay">e-Pay BRI</string>
     <string name="payment_method_offers">Penawaran</string>
@@ -364,7 +362,7 @@
     <string name="error_something_wrong">Sedang terjadi kesalahan, silakan ulangi lagi!</string>
 
     <string name="xl_instruction_step1">Hubungi *123*120# dengan nomor XL yang sudah terdaftar.</string>
-    <string name="xl_instruction_step2">Balas \'4\' untuk \'Belanja Online\'.</string>
+    <string name="xl_instruction_step2">Balas <b>4</b> untuk <b>Belanja Online</b>.</string>
     <string name="xl_instruction_step3">Masukkan Kode Penjual XL Tunai.</string>
     <string name="xl_instruction_step4">Masukkan Kode pemesanan XL Tunai.</string>
     <string name="xl_instruction_step5">Masukkan PIN XL Tunai anda.</string>
@@ -381,6 +379,8 @@
 
     <string name="text_format_valid_until">Silakan menyelesaikan pembayaran sebelum : %1$s</string>
     <string name="klik_bca_complete_payment">Selesaikan pembayaran di <a href="http://klikbca.com/">http://klikbca.com/</a> sebelum:</string>
+
+    <!-- instruction atm bersama -->
     <string name="instruction_atm_bersama1">Pada menu utama, pilih <b>Transaksi Lainnya</b>.</string>
     <string name="instruction_atm_bersama2">Pilih <b>Transfer</b>.</string>
     <string name="instruction_atm_bersama3">Pilih <b>Antar Bank Online</b>.</string>
@@ -515,34 +515,32 @@
     <string name="status_redeemed_point">DISKON POIN</string>
 
     <!-- BNI internet banking payment instruction -->
-    <string name="bni_internet_instruction_1">Ketik alamat <a href="https://ibank.bni.co.id">https://ibank.bni.co.id</a> kemudian pilih <b>Masuk</b></string>
-    <string name="bni_internet_instruction_2">Masukkan  User ID and Password.</string>
-    <string name="bni_internet_instruction_3">Pilih <b>Atur Rekening Tujuan</b> kemudian <b>Tambah Rekening Tujuan</b>.</string>
-    <string name="bni_internet_instruction_4">Masukkan nama dan Nomor VA.</string>
-    <string name="bni_internet_instruction_5">Masukkan kode Otentikasi Token.</string>
-    <string name="bni_internet_instruction_6">Nomor Rekening Tujuan/Favorit berhasil ditambahkan.</string>
-    <string name="bni_internet_instruction_7">Kembali ke menu <b>Transfer</b>.</string>
-    <string name="bni_internet_instruction_8">pilih <b>Transfer Antar Rekening BNI</b> kemudian pilih rekening tujuan.</string>
-    <string name="bni_internet_instruction_9">Pilih Rekening  debit dan ketik nominal, lalu masukkan kode otentikasi token</string>
-    <string name="bni_internet_instruction_10">Pembayaran Anda telah selesai</string>
+    <string name="bni_internet_instruction_1">Ketik alamat <a href="https://ibank.bni.co.id"><b>https://ibank.bni.co.id</b></a> kemudian klik <b>Masuk</b></string>
+    <string name="bni_internet_instruction_2">Silakan masukkan <b>User ID</b> dan <b>Password</b>.</string>
+    <string name="bni_internet_instruction_3">Klik menu <b>Transfer</b> kemudian pilih <b>Tambah Rekening Favorit</b>.</string>
+    <string name="bni_internet_instruction_4">Masukkan nama, nomor rekening, dan email, lalu klik <b>Lanjut</b>.</string>
+    <string name="bni_internet_instruction_5">Masukkan <b>Kode Otentikasi</b> dari token Anda dan klik <b>Lanjut</b>.</string>
+    <string name="bni_internet_instruction_6">Kembali ke menu utama dan pilih <b>Transfer</b> lalu <b>Transfer Antar Rekening BNI</b>.</string>
+    <string name="bni_internet_instruction_7">Pilih rekening yang telah Anda favoritkan sebelumnya di <b>Rekening Tujuan</b> lalu lanjutkan pengisian, dan tekan <b>Lanjut</b>.</string>
+    <string name="bni_internet_instruction_8">Pastikan detail transaksi Anda benar, lalu masukkan <b>Kode Otentikasi</b> dan tekan <b>Lanjut</b>.</string>
+    <string name="bni_internet_instruction_9">Transaksi selesai.</string>
 
     <!-- BNI mobile payment instruction -->
-    <string name="bni_mobile_instruction_1">Login ke aplikasi BNI Mobile Banking.</string>
-    <string name="bni_mobile_instruction_2">Pada menu utama, pilih <b>Transfer</b>.</string>
-    <string name="bni_mobile_instruction_3">Pilih <b>Antar Rekening BNI</b> kemudian <b>Input Rekening Baru</b>.</string>
-    <string name="bni_mobile_instruction_4">Masukkan Jumlah yang dibayarkan dan tekan <b>Proses</b></string>
-    <string name="bni_mobile_instruction_5">Detil pembayaran Anda akan muncul di halaman konfirmasi</string>
-    <string name="bni_mobile_instruction_6">Jika informasi sudah benar kemudian masukkan kode otentikasi token kemudian tekan <b>Proses</b></string>
-    <string name="bni_mobile_instruction_7">Pembayaran selesai</string>
+    <string name="bni_mobile_instruction_1">Buka aplikasi BNI Mobile Banking dan login.</string>
+    <string name="bni_mobile_instruction_2">Pilih <b>Transfer</b>.</string>
+    <string name="bni_mobile_instruction_3">Pilih <b>Antar Rekening BNI</b>.</string>
+    <string name="bni_mobile_instruction_4">Pilih <b>Input Rekening Baru</b>.</string>
+    <string name="bni_mobile_instruction_5">Masukkan nomor rekening, lalu tekan <b>Lanjut</b>.</string>
+    <string name="bni_mobile_instruction_6">Masukkan <b>Password Transaksi</b> lalu tekan <b>Lanjut</b>.</string>
 
     <!-- BNI ATM payment instruction -->
-    <string name="bni_atm_instruction_1">Pada menu utama, pilih <b>Transaksi lainnya</b>.</string>
+    <string name="bni_atm_instruction_1">Pada menu utama, pilih <b>Menu Lainnya</b>.</string>
     <string name="bni_atm_instruction_2">Pilih <b>Transfer</b>.</string>
     <string name="bni_atm_instruction_3">Pilih <b>Rekening Tabungan</b>.</string>
     <string name="bni_atm_instruction_4">Pilih <b>Ke Rekening BNI</b>.</string>
-    <string name="bni_atm_instruction_5">Masukkan <b>No. Virtual Account</b> yang dituju, lalu tekan <b>Benar</b>.</string>
-    <string name="bni_atm_instruction_6">Masukkan <b>jumlah tagihan yang akan Anda bayar</b> secara lengkap, lalu tekan <b>Benar</b>.</string>
-    <string name="bni_atm_instruction_7"><b>Detil pembayaran anda</b> akan muncul pada halaman konfirmasi. Jika informasi telah sesuai tekan <b>Benar</b>.</string>
+    <string name="bni_atm_instruction_5">Masukkan <b>No. Virtual Account</b> yang dituju, lalu pilih <b>Tekan Jika Benar</b>.</string>
+    <string name="bni_atm_instruction_6">Masukkan <b>jumlah tagihan yang akan Anda bayar</b> secara lengkap, lalu pilih <b>Tekan Jika Benar</b>.</string>
+    <string name="bni_atm_instruction_7"><b>Detil pembayaran anda</b> akan muncul pada halaman konfirmasi. Jika informasi telah sesuai pilih <b>Tekan Jika Ya</b>.</string>
     <string name="tab_atm_bni">ATM BNI</string>
     <string name="tab_bni_mobile">Mobile Banking</string>
     <string name="tab_bni_internet">Internet Banking</string>

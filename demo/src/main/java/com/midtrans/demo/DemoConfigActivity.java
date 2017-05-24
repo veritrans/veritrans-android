@@ -13,6 +13,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
@@ -2253,6 +2254,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         }
 
         UIKitCustomSetting uiKitCustomSetting = MidtransSDK.getInstance().getUIKitCustomSetting();
+        uiKitCustomSetting.setShowPaymentStatus(true);
+
         uiKitCustomSetting.setEnableAutoReadSms(true);
         if (saveCardEnabledSelection.isChecked()) {
             uiKitCustomSetting.setSaveCardChecked(true);
@@ -2316,9 +2319,9 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             userDetail.setUserAddresses(userAddresses);
         } else {
             if (oneClickSelection.isChecked()) {
-                userDetail.setUserId(getString(R.string.sample_user_id));
+                userDetail.setUserId("user@user.com");
             } else if (twoClicksSelection.isChecked()) {
-                userDetail.setUserId(getString(R.string.sample_user_id2));
+                userDetail.setUserId("user2@user.com");
             }
         }
         LocalDataHandler.saveObject(getString(R.string.user_details), userDetail);
