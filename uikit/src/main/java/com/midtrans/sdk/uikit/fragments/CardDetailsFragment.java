@@ -263,7 +263,7 @@ public class CardDetailsFragment extends Fragment {
     }
 
     private void initScanCard() {
-        if (midtransSDK.getExternalScanner() != null) {
+        if (midtransSDK != null && midtransSDK.getExternalScanner() != null) {
             // Set background color for scan button
             if (midtransSDK.getColorTheme() != null && midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
                 scanCardBtn.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
