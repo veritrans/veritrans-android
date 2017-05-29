@@ -1313,7 +1313,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             customBniVaTitle.setText(getString(R.string.custom_bni_va_enabled));
             customBniVaEnabledSelection.setChecked(true);
             customBniVaEnabledSelection.setText(getString(R.string.custom_va_enabled_format, customBniVaNumber));
-            initEditBniVaButton(customBniVaNumber);
+            initEditBniVaButton();
         } else {
             customBniVaTitle.setText(getString(R.string.custom_bni_va_disabled));
             customBniVaDisabledSelection.setChecked(true);
@@ -1390,7 +1390,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         editPermataVaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String vaNumber = DemoPreferenceHelper.getStringPreference(this, CUSTOM_PERMATA_VA_NUMBER);
+                String vaNumber = DemoPreferenceHelper.getStringPreference(DemoConfigActivity.this, CUSTOM_PERMATA_VA_NUMBER);
 
                 final CustomPermataVaInputDialogFragment fragment = CustomPermataVaInputDialogFragment.newInstance(vaNumber, getSelectedColorPrimaryDark(), new CustomVaDialogListener() {
                     @Override
@@ -1415,7 +1415,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         editBniVaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String vaNumber = DemoPreferenceHelper.getStringPreference(this, CUSTOM_BNI_VA_NUMBER);
+                String vaNumber = DemoPreferenceHelper.getStringPreference(DemoConfigActivity.this, CUSTOM_BNI_VA_NUMBER);
 
                 final CustomVaInputDialogFragment fragment = CustomVaInputDialogFragment.newInstance(vaNumber, getString(R.string.bni_va_title), getSelectedColorPrimaryDark(), new CustomVaDialogListener() {
                     @Override

@@ -557,7 +557,8 @@
                         android:minHeight="30dp"
                         android:minWidth="12dp"
                         android:src="@drawable/ic_edit_icon"
-                        android:visibility="visible" />
+                        tools:visibility="visible"
+                        android:visibility="invisible" />
 
                     <ImageButton
                         android:id="@+id/btn_edit_payment_method"

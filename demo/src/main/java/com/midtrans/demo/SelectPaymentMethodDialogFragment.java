@@ -2,6 +2,7 @@ package com.midtrans.demo;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -152,6 +153,15 @@ public class SelectPaymentMethodDialogFragment extends DialogFragment {
         return defaultMethods;
     }
 
+    @Override
+    public void onResume() {
+        ViewGroup.LayoutParams params = getDialog().getWindow().getAttributes();
+        params.width = AppBarLayout.LayoutParams.MATCH_PARENT;
+        params.height = AppBarLayout.LayoutParams.WRAP_CONTENT;
+        getDialog().getWindow().setAttributes((android.view.WindowManager.LayoutParams) params);
+
+        super.onResume();
+    }
 
     private void initButtons() {
         okButton.setOnClickListener(new View.OnClickListener() {

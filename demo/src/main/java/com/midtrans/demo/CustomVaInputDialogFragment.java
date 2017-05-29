@@ -127,7 +127,7 @@ public class CustomVaInputDialogFragment extends DialogFragment {
         customVAField.setText(number);
     }
 
-    private void setTitle(String vaTitle){
+    private void setTitle(String vaTitle) {
         title.setText(getString(R.string.format_va_enable_title, vaTitle));
     }
 
@@ -141,12 +141,12 @@ public class CustomVaInputDialogFragment extends DialogFragment {
         super.onResume();
     }
 
-    private void initInputFilter(){
+    private void initInputFilter() {
         InputFilter[] FilterArray = new InputFilter[1];
 
-        if(vaTitle.equalsIgnoreCase(getString(R.string.bni_va_title))){
+        if (vaTitle.equalsIgnoreCase(getString(R.string.bni_va_title))) {
             FilterArray[0] = new InputFilter.LengthFilter(8);
-        } else if(vaTitle.equalsIgnoreCase(getString(R.string.bca_va_title))){
+        } else if (vaTitle.equalsIgnoreCase(getString(R.string.bca_va_title))) {
             FilterArray[0] = new InputFilter.LengthFilter(11);
         }
 
