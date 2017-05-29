@@ -13,7 +13,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
@@ -23,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.midtrans.demo.widgets.DemoRadioButton;
+import com.midtrans.demo.widgets.DemoTextView;
 import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
@@ -30,9 +30,12 @@ import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
 import com.midtrans.sdk.corekit.core.themes.CustomColorTheme;
 import com.midtrans.sdk.corekit.models.BankType;
+import com.midtrans.sdk.corekit.models.BcaBankTransferRequestModel;
 import com.midtrans.sdk.corekit.models.BillInfoModel;
 import com.midtrans.sdk.corekit.models.CardTokenRequest;
 import com.midtrans.sdk.corekit.models.ExpiryModel;
+import com.midtrans.sdk.corekit.models.FreeText;
+import com.midtrans.sdk.corekit.models.FreeTextLanguage;
 import com.midtrans.sdk.corekit.models.ItemDetails;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 import com.midtrans.sdk.corekit.models.UserAddress;
@@ -214,6 +217,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private ImageButton editInstallmentBri;
     private boolean installmentRequired;
 
+    private DemoTextView resetSetting;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -237,6 +242,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         initAutoReadOtpSelection();
         initTitleClicks();
         initNextButton();
+        initResetSettings();
     }
 
     @Override
@@ -261,6 +267,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         bniPointTitle = (TextView) findViewById(R.id.title_bni_point_type);
         paymentChannelsTitle = (TextView) findViewById(R.id.title_custom_payment_channels);
         autoReadSmsTitle = (TextView) findViewById(R.id.title_auto_read_type);
+
+        resetSetting = (DemoTextView) findViewById(R.id.text_reset);
 
         cardClickContainer = (RadioGroup) findViewById(R.id.credit_card_type_container);
         secureContainer = (RadioGroup) findViewById(R.id.secure_type_container);
@@ -1721,6 +1729,28 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         });
     }
 
+    private void initResetSettings() {
+        resetSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                normalSelection.setChecked(true);
+                secureDisabledSelection.setChecked(true);
+                noInstallmentSelection.setChecked(true);
+                bankNoneSelection.setChecked(true);
+                expiryNoneSelection.setChecked(true);
+                saveCardDisabledSelection.setChecked(true);
+                paymentChannelsAllSelection.setChecked(true);
+                customBcaVaDisabledSelection.setChecked(true);
+                customPermataVaDisabledSelection.setChecked(true);
+                promoDisabledSelection.setChecked(true);
+                preAuthDisabledSelection.setChecked(true);
+                bniPointOnlyDisabledSelection.setChecked(true);
+                autoReadSmsDisabledSelection.setChecked(true);
+                Toast.makeText(DemoConfigActivity.this, getString(R.string.reset_setting_notification), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void saveColorThemeSelection() {
         if (redThemeSelection.isChecked()) {
             DemoPreferenceHelper.setStringPreference(this, COLOR_THEME, DemoThemeConstants.RED_THEME);
@@ -2008,6 +2038,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 break;
         }
         nextButton.setBackgroundColor(color);
+        resetSetting.setTextColor(color);
     }
 
     private void updateColorThemeTitle() {
@@ -2332,13 +2363,27 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             );
         }
         if (customBcaVaEnabledSelection.isChecked()) {
+            FreeText freeText = createSampleBcaFreeText();
             String vaNumber = customBcaVaEnabledSelection.getText().toString().split(" - ")[1];
             transactionRequestNew.setBcaVa(
-                    new BankTransferRequestModel(vaNumber)
+                    new BcaBankTransferRequestModel(vaNumber, freeText)
             );
         }
 
         return transactionRequestNew;
+    }
+
+    private FreeText createSampleBcaFreeText() {
+        List<FreeTextLanguage> inquiryLang = new ArrayList<>();
+        inquiryLang.add(new FreeTextLanguage("Text ID inquiry 0", "Text EN inquiry 0"));
+        inquiryLang.add(new FreeTextLanguage("Text ID inquiry 1", "Text EN inquiry 1"));
+
+        List<FreeTextLanguage> paymentLang = new ArrayList<>();
+        paymentLang.add(new FreeTextLanguage("Text ID payment 0", "Text EN payment 0"));
+        paymentLang.add(new FreeTextLanguage("Text ID payment 1", "Text EN payment 1"));
+
+        FreeText freeText = new FreeText(inquiryLang, paymentLang);
+        return freeText;
     }
 
     private int getSelectedColorPrimaryDark() {

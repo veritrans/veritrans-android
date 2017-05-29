@@ -23,4 +23,5 @@ public class BankTransferRequestModel implements Serializable {
     public void setVaNumber(String vaNumber) {
         this.vaNumber = vaNumber;
     }
+
 }

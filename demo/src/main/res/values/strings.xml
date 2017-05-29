@@ -168,4 +168,6 @@
     <string name="optional">Optional</string>
     <string name="installment_bri">BRI</string>
     <string name="save_card">Save Card</string>
+    <string name="reset_setting">Reset</string>
+    <string name="reset_setting_notification">All Settings are Reset</string>
 </resources>

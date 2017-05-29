@@ -3,6 +3,7 @@ package com.midtrans.sdk.corekit.core;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.midtrans.sdk.corekit.models.BcaBankTransferRequestModel;
 import com.midtrans.sdk.corekit.models.BillInfoModel;
 import com.midtrans.sdk.corekit.models.BillingAddress;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
@@ -88,7 +89,7 @@ public class TransactionRequest {
     private String customField3;
 
     private BankTransferRequestModel permataVa;
-    private BankTransferRequestModel bcaVa;
+    private BcaBankTransferRequestModel bcaVa;
     private List<String> enabledPayments;
 
     /**
@@ -365,11 +366,11 @@ public class TransactionRequest {
         this.permataVa = permataVa;
     }
 
-    public BankTransferRequestModel getBcaVa() {
+    public BcaBankTransferRequestModel getBcaVa() {
         return bcaVa;
     }
 
-    public void setBcaVa(BankTransferRequestModel bcaVa) {
+    public void setBcaVa(BcaBankTransferRequestModel bcaVa) {
         this.bcaVa = bcaVa;
     }
 
