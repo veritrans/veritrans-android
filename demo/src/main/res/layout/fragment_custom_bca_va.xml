@@ -6,6 +6,7 @@
     android:padding="@dimen/sixteen_dp">
 
     <TextView
+        android:id="@+id/custom_va_title"
         style="@style/TextAppearance.AppCompat.Title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,7 +23,7 @@
             android:id="@+id/bca_va_field"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/custom_bca_va_hint"
+            android:hint="@string/custom_va_hint"
             android:inputType="number" />
     </android.support.design.widget.TextInputLayout>
 

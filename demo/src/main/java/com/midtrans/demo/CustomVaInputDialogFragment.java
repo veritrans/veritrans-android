@@ -2,8 +2,10 @@ package com.midtrans.demo;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,16 +13,18 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 /**
  * Created by rakawm on 4/27/17.
  */
 
-public class CustomBcaVaInputDialogFragment extends DialogFragment {
+public class CustomVaInputDialogFragment extends DialogFragment {
 
     private static final String ARG_LISTENER = "arg.listener";
     private static final String ARG_COLOR = "arg.color";
     private static final String ARG_NUMBER = "arg.number";
+    private static final String ARG_TITLE = "arg.title";
 
     private String number;
     private int color;
@@ -29,22 +33,27 @@ public class CustomBcaVaInputDialogFragment extends DialogFragment {
     private TextInputLayout customVaContainer;
     private Button okButton;
     private Button cancelButton;
+    private TextView title;
 
-    public static CustomBcaVaInputDialogFragment newInstance(int color, CustomVaDialogListener listener) {
-        CustomBcaVaInputDialogFragment fragment = new CustomBcaVaInputDialogFragment();
+    private String vaTitle;
+
+    public static CustomVaInputDialogFragment newInstance(String title, int color, CustomVaDialogListener listener) {
+        CustomVaInputDialogFragment fragment = new CustomVaInputDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable(ARG_LISTENER, listener);
         bundle.putInt(ARG_COLOR, color);
+        bundle.putString(ARG_TITLE, title);
         fragment.setArguments(bundle);
         return fragment;
     }
 
-    public static CustomBcaVaInputDialogFragment newInstance(String number, int color, CustomVaDialogListener listener) {
-        CustomBcaVaInputDialogFragment fragment = new CustomBcaVaInputDialogFragment();
+    public static CustomVaInputDialogFragment newInstance(String number, String title, int color, CustomVaDialogListener listener) {
+        CustomVaInputDialogFragment fragment = new CustomVaInputDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable(ARG_LISTENER, listener);
         bundle.putInt(ARG_COLOR, color);
         bundle.putString(ARG_NUMBER, number);
+        bundle.putString(ARG_TITLE, title);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -66,6 +75,7 @@ public class CustomBcaVaInputDialogFragment extends DialogFragment {
     }
 
     private void initViews(View view) {
+        title = (TextView) view.findViewById(R.id.custom_va_title);
         customVAField = (EditText) view.findViewById(R.id.bca_va_field);
         customVaContainer = (TextInputLayout) view.findViewById(R.id.bca_va_field_container);
         okButton = (Button) view.findViewById(R.id.ok_button);
@@ -86,6 +96,9 @@ public class CustomBcaVaInputDialogFragment extends DialogFragment {
             this.number = getArguments().getString(ARG_NUMBER);
             initNumber(number);
         }
+        this.vaTitle = getArguments().getString(ARG_TITLE);
+        setTitle(vaTitle);
+        initInputFilter();
     }
 
     private void initButtons() {
@@ -112,5 +125,31 @@ public class CustomBcaVaInputDialogFragment extends DialogFragment {
 
     private void initNumber(String number) {
         customVAField.setText(number);
+    }
+
+    private void setTitle(String vaTitle){
+        title.setText(getString(R.string.format_va_enable_title, vaTitle));
+    }
+
+    @Override
+    public void onResume() {
+        ViewGroup.LayoutParams params = getDialog().getWindow().getAttributes();
+        params.width = AppBarLayout.LayoutParams.MATCH_PARENT;
+        params.height = AppBarLayout.LayoutParams.WRAP_CONTENT;
+        getDialog().getWindow().setAttributes((android.view.WindowManager.LayoutParams) params);
+
+        super.onResume();
+    }
+
+    private void initInputFilter(){
+        InputFilter[] FilterArray = new InputFilter[1];
+
+        if(vaTitle.equalsIgnoreCase(getString(R.string.bni_va_title))){
+            FilterArray[0] = new InputFilter.LengthFilter(8);
+        } else if(vaTitle.equalsIgnoreCase(getString(R.string.bca_va_title))){
+            FilterArray[0] = new InputFilter.LengthFilter(11);
+        }
+
+        customVAField.setFilters(FilterArray);
     }
 }
