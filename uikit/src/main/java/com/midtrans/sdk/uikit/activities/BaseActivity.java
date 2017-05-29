@@ -110,7 +110,7 @@ public class BaseActivity extends AppCompatActivity {
                 if (addToBackStack) {
                     ft.addToBackStack(backStateName);
                 }
-                ft.commitAllowingStateLoss();
+                ft.commit();
                 currentFragmentName = backStateName;
                 if (saveCurrentFragment) {
                     currentFragment = fragment;

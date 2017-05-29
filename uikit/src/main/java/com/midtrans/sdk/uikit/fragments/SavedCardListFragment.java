@@ -139,12 +139,14 @@ public class SavedCardListFragment extends Fragment {
                         }
                     }
 
-                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                    FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                     if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                             && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                         fragmentTransaction.setCustomAnimations(R.anim.slide_in, R.anim.slide_out, R.anim.slide_in_back, R.anim.slide_out_back);
                     }
-                    fragmentTransaction.replace(R.id.card_container, cardDetailsFragment).addToBackStack("").commit();
+                    fragmentTransaction.replace(R.id.card_container, cardDetailsFragment)
+                            .addToBackStack("")
+                            .commit();
                 }
             }
         });
@@ -197,12 +199,15 @@ public class SavedCardListFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 ((CreditCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(R.string.card_details);
-                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                         && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                     fragmentTransaction.setCustomAnimations(R.anim.slide_in, R.anim.slide_out, R.anim.slide_in_back, R.anim.slide_out_back);
                 }
-                fragmentTransaction.replace(R.id.card_container, CardDetailsFragment.newInstance()).addToBackStack("").commit();
+                fragmentTransaction
+                        .replace(R.id.card_container, CardDetailsFragment.newInstance())
+                        .addToBackStack("")
+                        .commit();
             }
         });
     }
@@ -233,8 +238,8 @@ public class SavedCardListFragment extends Fragment {
                     savedCardsAdapter.removeCard(saveCardRequest.getMaskedCard());
                 } else {
                     ((CreditCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(R.string.card_details);
-                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                    if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                    FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                             && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                         fragmentTransaction.setCustomAnimations(R.anim.slide_in, R.anim.slide_out, R.anim.slide_in_back, R.anim.slide_out_back);
                     }
@@ -266,7 +271,10 @@ public class SavedCardListFragment extends Fragment {
                 savedCards = saveCardRequests;
                 if (saveCardRequests.isEmpty()) {
                     ((CreditCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(R.string.card_details);
-                    getFragmentManager().beginTransaction().replace(R.id.card_container, CardDetailsFragment.newInstance()).commit();
+                    getActivity().getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.card_container, CardDetailsFragment.newInstance())
+                            .commit();
                 } else {
                     savedCardsAdapter.removeCard(maskedCard);
                 }
