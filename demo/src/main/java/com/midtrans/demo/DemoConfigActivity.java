@@ -30,9 +30,12 @@ import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
 import com.midtrans.sdk.corekit.core.themes.CustomColorTheme;
 import com.midtrans.sdk.corekit.models.BankType;
+import com.midtrans.sdk.corekit.models.BcaBankTransferRequestModel;
 import com.midtrans.sdk.corekit.models.BillInfoModel;
 import com.midtrans.sdk.corekit.models.CardTokenRequest;
 import com.midtrans.sdk.corekit.models.ExpiryModel;
+import com.midtrans.sdk.corekit.models.FreeText;
+import com.midtrans.sdk.corekit.models.FreeTextLanguage;
 import com.midtrans.sdk.corekit.models.ItemDetails;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 import com.midtrans.sdk.corekit.models.UserAddress;
@@ -2360,13 +2363,27 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             );
         }
         if (customBcaVaEnabledSelection.isChecked()) {
+            FreeText freeText = createSampleBcaFreeText();
             String vaNumber = customBcaVaEnabledSelection.getText().toString().split(" - ")[1];
             transactionRequestNew.setBcaVa(
-                    new BankTransferRequestModel(vaNumber)
+                    new BcaBankTransferRequestModel(vaNumber, freeText)
             );
         }
 
         return transactionRequestNew;
+    }
+
+    private FreeText createSampleBcaFreeText() {
+        List<FreeTextLanguage> inquiryLang = new ArrayList<>();
+        inquiryLang.add(new FreeTextLanguage("Text ID inquiry 0", "Text EN inquiry 0"));
+        inquiryLang.add(new FreeTextLanguage("Text ID inquiry 1", "Text EN inquiry 1"));
+
+        List<FreeTextLanguage> paymentLang = new ArrayList<>();
+        paymentLang.add(new FreeTextLanguage("Text ID payment 0", "Text EN payment 0"));
+        paymentLang.add(new FreeTextLanguage("Text ID payment 1", "Text EN payment 1"));
+
+        FreeText freeText = new FreeText(inquiryLang, paymentLang);
+        return freeText;
     }
 
     private int getSelectedColorPrimaryDark() {

@@ -34,7 +34,7 @@ public class TokenRequestModel {
     private BankTransferRequestModel permataVa;
 
     @SerializedName("bca_va")
-    private BankTransferRequestModel bcaVa;
+    private BcaBankTransferRequestModel bcaVa;
 
     @SerializedName("enabled_payments")
     private List<String> enabledPayments;
@@ -162,7 +162,7 @@ public class TokenRequestModel {
         return bcaVa;
     }
 
-    public void setBcaVa(BankTransferRequestModel bcaVa) {
+    public void setBcaVa(BcaBankTransferRequestModel bcaVa) {
         this.bcaVa = bcaVa;
     }
 
