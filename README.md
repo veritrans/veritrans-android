@@ -31,3 +31,7 @@ To see the sample app (contais UI flow), you can download from from  [Release Se
 
 ## Minimum Support OS
 **Android 4.0 Ice Cream Sandwitch API Level 14**
+
+
+
+***If you need any assistance, please contact support@midtrans.com***
