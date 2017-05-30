@@ -515,7 +515,7 @@ public class CreditCardFlowActivity extends BaseActivity {
         for (Fragment fragment : fragments) {
             if (fragment instanceof SavedCardListFragment) {
                 SavedCardListFragment savedCardListFragment = (SavedCardListFragment) fragment;
-                savedCardListFragment.updateSavedCardsData(saveCardRequests);
+                savedCardListFragment.updateSavedCardsData(saveCardRequests, true);
             }
         }
     }
