@@ -170,9 +170,11 @@ public class CreditCardFlowActivity extends BaseActivity {
 
     private void initCreditCard() {
         creditCardTransaction.setProperties(midtransSDK.getCreditCard(), SdkUIFlowUtil.getBankBins(this));
-
+        
         initBankBins();
-        if (!midtransSDK.getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_none))) {
+
+        String cardClickType = midtransSDK.getTransactionRequest().getCardClickType();
+        if (!TextUtils.isEmpty(cardClickType) && !cardClickType.equals(getString(R.string.card_click_type_none))) {
             getCreditCards();
         } else {
             showAddCardDetailFragment();
