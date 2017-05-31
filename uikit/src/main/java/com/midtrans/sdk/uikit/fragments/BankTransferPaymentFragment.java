@@ -13,6 +13,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +32,7 @@ import com.midtrans.sdk.uikit.widgets.MagicViewPager;
 
 /**
  * Displays status information about bank transfer's api call .
- *
+ * <p>
  * Created by shivam on 10/27/15.
  */
 public class BankTransferPaymentFragment extends Fragment {
@@ -46,6 +47,7 @@ public class BankTransferPaymentFragment extends Fragment {
     public static final String PAGE = "page";
     private static final String LABEL_VA_NUMBER = "Virtual Account Number";
     private static final int PAGE_MARGIN = 20;
+    private static final String TAG = "BankTransferFragment";
     private int POSITION = -1;
 
     private TransactionResponse transactionResponse;
@@ -107,18 +109,22 @@ public class BankTransferPaymentFragment extends Fragment {
         setUpViewPager();
         setUpTabLayout();
 
-        MidtransSDK midtransSDK = MidtransSDK.getInstance();
-        if (midtransSDK != null && midtransSDK.getColorTheme() != null) {
-            if (midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
-                downloadInstructionButton.setBorderColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
-                downloadInstructionButton.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
-                btnCopyToClipboard.setBorderColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
-                btnCopyToClipboard.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
-            }
+        try {
+            MidtransSDK midtransSDK = MidtransSDK.getInstance();
+            if (midtransSDK != null && midtransSDK.getColorTheme() != null) {
+                if (midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
+                    downloadInstructionButton.setBorderColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+                    downloadInstructionButton.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+                    btnCopyToClipboard.setBorderColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+                    btnCopyToClipboard.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+                }
 
-            if (midtransSDK.getColorTheme().getPrimaryColor() !=0) {
-                instructionTabs.setSelectedTabIndicatorColor(midtransSDK.getColorTheme().getPrimaryColor());
+                if (midtransSDK.getColorTheme().getPrimaryColor() != 0) {
+                    instructionTabs.setSelectedTabIndicatorColor(midtransSDK.getColorTheme().getPrimaryColor());
+                }
             }
+        } catch (Exception e) {
+            Log.e(TAG, "theme:" + e.getMessage());
         }
 
         if (transactionResponse != null) {

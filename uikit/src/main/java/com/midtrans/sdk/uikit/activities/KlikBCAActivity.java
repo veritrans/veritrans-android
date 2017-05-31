@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -29,6 +30,7 @@ public class KlikBCAActivity extends BaseActivity {
     public static final String PAYMENT_FRAGMENT = "payment";
     public static final String STATUS_FRAGMENT = "transaction_status";
     public static final String SOMETHING_WENT_WRONG = "Something went wrong";
+    private static final String TAG = "KlikBCAActivity";
     public String currentFragment = PAYMENT_FRAGMENT;
     private TransactionResponse transactionResponse;
     private String errorMessage;
@@ -63,12 +65,19 @@ public class KlikBCAActivity extends BaseActivity {
 
     private void prepareToolbar() {
         Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_back);
-        MidtransSDK midtransSDK =MidtransSDK.getInstance();
-        if (midtransSDK.getColorTheme() != null && midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
-            drawable.setColorFilter(
-                    midtransSDK.getColorTheme().getPrimaryDarkColor(),
-                    PorterDuff.Mode.SRC_ATOP);
+
+        try {
+            MidtransSDK midtransSDK = MidtransSDK.getInstance();
+
+            if (midtransSDK != null && midtransSDK.getColorTheme() != null && midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
+                drawable.setColorFilter(
+                        midtransSDK.getColorTheme().getPrimaryDarkColor(),
+                        PorterDuff.Mode.SRC_ATOP);
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "render toolbar:" + e.getMessage());
         }
+
         mToolbar.setNavigationIcon(drawable);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

@@ -142,18 +142,22 @@ public class BanksPointFragment extends Fragment implements View.OnClickListener
     }
 
     private void initThemes() {
-        MidtransSDK midtransSDK = MidtransSDK.getInstance();
-        if (midtransSDK.getColorTheme() != null) {
-            if (midtransSDK.getColorTheme().getPrimaryColor() != 0) {
-                buttonRedeemPoint.setBackgroundColor(midtransSDK.getColorTheme().getPrimaryColor());
-            }
+        try {
+            MidtransSDK midtransSDK = MidtransSDK.getInstance();
+            if (midtransSDK != null && midtransSDK.getColorTheme() != null) {
+                if (midtransSDK.getColorTheme().getPrimaryColor() != 0) {
+                    buttonRedeemPoint.setBackgroundColor(midtransSDK.getColorTheme().getPrimaryColor());
+                }
 
-            if (midtransSDK.getColorTheme().getSecondaryColor() != 0) {
-                containerAmount.setBackgroundColor(midtransSDK.getColorTheme().getSecondaryColor());
-                containerAmount.setAlpha(0.5f);
-                containerTotalPoint.setBackgroundColor(midtransSDK.getColorTheme().getSecondaryColor());
-                containerTotalPoint.setAlpha(0.5f);
+                if (midtransSDK.getColorTheme().getSecondaryColor() != 0) {
+                    containerAmount.setBackgroundColor(midtransSDK.getColorTheme().getSecondaryColor());
+                    containerAmount.setAlpha(0.5f);
+                    containerTotalPoint.setBackgroundColor(midtransSDK.getColorTheme().getSecondaryColor());
+                    containerTotalPoint.setAlpha(0.5f);
+                }
             }
+        } catch (Exception e) {
+            Log.d(TAG, "theme:" + e.getMessage());
         }
     }
 
@@ -261,7 +265,7 @@ public class BanksPointFragment extends Fragment implements View.OnClickListener
         inputPointFromButtons = true;
         long currentBalance = getCurrentPoint();
         long newBalance = currentBalance - MULTIPLY;
-        
+
         if (isValidCurrentBalance(newBalance)) {
             calculateAmount(newBalance);
         }

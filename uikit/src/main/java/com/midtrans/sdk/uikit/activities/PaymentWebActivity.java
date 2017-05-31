@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -23,6 +24,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PaymentWebActivity extends BaseActivity {
+    private static final String TAG = "PaymentWebActivity";
     private Toolbar toolbar;
     private String webUrl;
     private String type = "";
@@ -60,12 +62,19 @@ public class PaymentWebActivity extends BaseActivity {
 
     private void prepareToolbar() {
         Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_back);
-        MidtransSDK midtransSDK =MidtransSDK.getInstance();
-        if (midtransSDK.getColorTheme() != null && midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
-            drawable.setColorFilter(
-                    midtransSDK.getColorTheme().getPrimaryDarkColor(),
-                    PorterDuff.Mode.SRC_ATOP);
+
+        try {
+            MidtransSDK midtransSDK = MidtransSDK.getInstance();
+
+            if (midtransSDK != null && midtransSDK.getColorTheme() != null && midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
+                drawable.setColorFilter(
+                        midtransSDK.getColorTheme().getPrimaryDarkColor(),
+                        PorterDuff.Mode.SRC_ATOP);
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "render toolbar:" + e.getMessage());
         }
+
         toolbar.setNavigationIcon(drawable);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
