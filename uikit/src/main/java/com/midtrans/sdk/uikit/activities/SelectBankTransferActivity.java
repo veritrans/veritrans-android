@@ -4,13 +4,12 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.midtrans.sdk.corekit.core.Constants;
@@ -36,13 +35,6 @@ import java.util.List;
  */
 public class SelectBankTransferActivity extends BaseActivity implements BankTransferListAdapter.BankTransferAdapterListener {
     public static final String EXTRA_BANK = "extra.bank";
-    private static final String KEY_SELECT_PAYMENT = "Payment Select";
-    private static final String PAYMENT_TYPE_BANK_TRANSFER = "bank_transfer";
-    // Bank transfer type
-    private static final String BANK_PERMATA = "Permata";
-    private static final String BANK_BCA = "BCA";
-    private static final String BANK_MANDIRI = "Mandiri";
-    private static final String ALL_BANK = "Other";
     private static final String TAG = SelectBankTransferActivity.class.getSimpleName();
     MidtransSDK mMidtransSDK;
 
@@ -51,8 +43,6 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
     //Views
     private Toolbar toolbar = null;
     private RecyclerView mRecyclerView = null;
-    private ImageView logo = null;
-    private CollapsingToolbarLayout collapsingToolbarLayout = null;
     private BankTransferListAdapter adapter;
     private DefaultTextView textTotalAmount;
 
@@ -79,12 +69,19 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
 
     private void prepareToolbar() {
         Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_back);
-        MidtransSDK midtransSDK = MidtransSDK.getInstance();
-        if (midtransSDK.getColorTheme() != null && midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
-            drawable.setColorFilter(
-                    midtransSDK.getColorTheme().getPrimaryDarkColor(),
-                    PorterDuff.Mode.SRC_ATOP);
+
+        try {
+            MidtransSDK midtransSDK = MidtransSDK.getInstance();
+
+            if (midtransSDK != null && midtransSDK.getColorTheme() != null && midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
+                drawable.setColorFilter(
+                        midtransSDK.getColorTheme().getPrimaryDarkColor(),
+                        PorterDuff.Mode.SRC_ATOP);
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "render toolbar:" + e.getMessage());
         }
+
         toolbar.setNavigationIcon(drawable);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -200,7 +197,6 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
     private void bindActivity() {
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_bank_list);
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        logo = (ImageView) findViewById(R.id.merchant_logo);
 
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(

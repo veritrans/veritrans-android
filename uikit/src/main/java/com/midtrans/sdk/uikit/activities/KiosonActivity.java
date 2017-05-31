@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -111,12 +112,19 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
 
     private void prepareToolbar() {
         Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_back);
-        MidtransSDK midtransSDK =MidtransSDK.getInstance();
-        if (midtransSDK.getColorTheme() != null && midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
-            drawable.setColorFilter(
-                    midtransSDK.getColorTheme().getPrimaryDarkColor(),
-                    PorterDuff.Mode.SRC_ATOP);
+
+        try {
+            MidtransSDK midtransSDK = MidtransSDK.getInstance();
+
+            if (midtransSDK != null && midtransSDK.getColorTheme() != null && midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
+                drawable.setColorFilter(
+                        midtransSDK.getColorTheme().getPrimaryDarkColor(),
+                        PorterDuff.Mode.SRC_ATOP);
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "render toolbar:" + e.getMessage());
         }
+
         toolbar.setNavigationIcon(drawable);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -52,37 +53,43 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+        if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                 && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
             overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
         }
     }
 
     public void updateColorTheme(MidtransSDK mMidtransSDK) {
-        if (mMidtransSDK.getColorTheme() != null && mMidtransSDK.getColorTheme().getPrimaryColor() != 0) {
-            // Set button confirm color
-            FancyButton confirmPayButton = (FancyButton) findViewById(R.id.btn_confirm_payment);
-            if (confirmPayButton != null) {
-                confirmPayButton.setBackgroundColor(mMidtransSDK.getColorTheme().getPrimaryColor());
+        try {
+
+            if (mMidtransSDK.getColorTheme() != null && mMidtransSDK.getColorTheme().getPrimaryColor() != 0) {
+                // Set button confirm color
+                FancyButton confirmPayButton = (FancyButton) findViewById(R.id.btn_confirm_payment);
+                if (confirmPayButton != null) {
+                    confirmPayButton.setBackgroundColor(mMidtransSDK.getColorTheme().getPrimaryColor());
+                }
+
+                // Set button pay now color
+                FancyButton payNowButton = (FancyButton) findViewById(R.id.btn_pay_now);
+                if (payNowButton != null) {
+                    payNowButton.setBackgroundColor(mMidtransSDK.getColorTheme().getPrimaryColor());
+                }
+
+                // Set amount panel background
+                RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.layout_total_amount);
+                if (relativeLayout != null) {
+                    relativeLayout.setBackgroundColor(mMidtransSDK.getColorTheme().getPrimaryColor());
+                }
+
+                // Set tab indicator color if available
+                TabLayout tabLayout = (TabLayout) findViewById(R.id.instruction_tabs);
+                if (tabLayout != null) {
+                    tabLayout.setSelectedTabIndicatorColor(mMidtransSDK.getColorTheme().getPrimaryColor());
+                }
             }
 
-            // Set button pay now color
-            FancyButton payNowButton = (FancyButton) findViewById(R.id.btn_pay_now);
-            if (payNowButton != null) {
-                payNowButton.setBackgroundColor(mMidtransSDK.getColorTheme().getPrimaryColor());
-            }
-
-            // Set amount panel background
-            RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.layout_total_amount);
-            if (relativeLayout != null) {
-                relativeLayout.setBackgroundColor(mMidtransSDK.getColorTheme().getPrimaryColor());
-            }
-
-            // Set tab indicator color if available
-            TabLayout tabLayout = (TabLayout) findViewById(R.id.instruction_tabs);
-            if (tabLayout != null) {
-                tabLayout.setSelectedTabIndicatorColor(mMidtransSDK.getColorTheme().getPrimaryColor());
-            }
+        } catch (Exception e) {
+            Log.e("themes", "init:" + e.getMessage());
         }
     }
 
@@ -102,7 +109,7 @@ public class BaseActivity extends AppCompatActivity {
             if (!fragmentPopped) {
                 Logger.i("fragment not in back stack, create it");
                 FragmentTransaction ft = fragmentManager.beginTransaction();
-                if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                         && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                     ft.setCustomAnimations(R.anim.slide_in, R.anim.slide_out, R.anim.slide_in_back, R.anim.slide_out_back);
                 }

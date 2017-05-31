@@ -4,11 +4,10 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
 
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
@@ -46,16 +45,13 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
     private MidtransSDK mMidtransSDK = null;
     private TransactionResponse transactionResponse = null;
     private String errorMessage = null;
-    private int position = Constants.PAYMENT_METHOD_MANDIRI_ECASH;
 
-    private FragmentManager fragmentManager;
     private String currentFragmentName = HOME_FRAGMENT;
     private TransactionResponse transactionResponseFromMerchant;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        fragmentManager = getSupportFragmentManager();
         setContentView(R.layout.activity_mandiri_e_cash);
         mMidtransSDK = MidtransSDK.getInstance();
 
@@ -96,12 +92,18 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
 
     private void prepareToolbar() {
         Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_back);
-        MidtransSDK midtransSDK =MidtransSDK.getInstance();
-        if (midtransSDK.getColorTheme() != null && midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
-            drawable.setColorFilter(
-                    midtransSDK.getColorTheme().getPrimaryDarkColor(),
-                    PorterDuff.Mode.SRC_ATOP);
+
+        try {
+            MidtransSDK midtransSDK = MidtransSDK.getInstance();
+            if (midtransSDK.getColorTheme() != null && midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
+                drawable.setColorFilter(
+                        midtransSDK.getColorTheme().getPrimaryDarkColor(),
+                        PorterDuff.Mode.SRC_ATOP);
+            }
+        } catch (Exception e) {
+            Log.e("themes", "render>toolbar:" + e.getMessage());
         }
+
         mToolbar.setNavigationIcon(drawable);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,7 +150,7 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
                     intentPaymentWeb.putExtra(Constants.WEBURL, response.getRedirectUrl());
                     intentPaymentWeb.putExtra(Constants.TYPE, WebviewFragment.TYPE_MANDIRI_ECASH);
                     startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
-                    if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                    if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                             && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                     }
@@ -191,7 +193,11 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
         super.onActivityResult(requestCode, resultCode, data);
         Logger.i("reqCode:" + requestCode + ",res:" + resultCode);
         Drawable closeIcon = ContextCompat.getDrawable(this, R.drawable.ic_close);
-        closeIcon.setColorFilter(ContextCompat.getColor(this, R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
+
+        if (closeIcon != null) {
+            closeIcon.setColorFilter(ContextCompat.getColor(this, R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
+        }
+
         if (resultCode == RESULT_OK) {
             currentFragmentName = STATUS_FRAGMENT;
             mToolbar.setNavigationIcon(closeIcon);
