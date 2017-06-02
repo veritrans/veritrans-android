@@ -13,7 +13,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -171,9 +170,11 @@ public class CreditCardFlowActivity extends BaseActivity {
 
     private void initCreditCard() {
         creditCardTransaction.setProperties(midtransSDK.getCreditCard(), SdkUIFlowUtil.getBankBins(this));
-
+        
         initBankBins();
-        if (!midtransSDK.getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_none))) {
+
+        String cardClickType = midtransSDK.getTransactionRequest().getCardClickType();
+        if (!TextUtils.isEmpty(cardClickType) && !cardClickType.equals(getString(R.string.card_click_type_none))) {
             getCreditCards();
         } else {
             showAddCardDetailFragment();
@@ -266,14 +267,21 @@ public class CreditCardFlowActivity extends BaseActivity {
     }
 
     private void prepareToolbar() {
-        Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_back);
-        MidtransSDK midtransSDK =MidtransSDK.getInstance();
-        if (midtransSDK.getColorTheme() != null && midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
-            drawable.setColorFilter(
-                    midtransSDK.getColorTheme().getPrimaryDarkColor(),
-                    PorterDuff.Mode.SRC_ATOP);
+        try {
+            Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_back);
+            MidtransSDK midtransSDK = MidtransSDK.getInstance();
+            if (midtransSDK.getColorTheme() != null && midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
+                if (drawable != null) {
+                    drawable.setColorFilter(
+                            midtransSDK.getColorTheme().getPrimaryDarkColor(),
+                            PorterDuff.Mode.SRC_ATOP);
+                }
+            }
+            toolbar.setNavigationIcon(drawable);
+        } catch (Exception e) {
+            Log.e(TAG, "rendering theme:" + e.getMessage());
         }
-        toolbar.setNavigationIcon(drawable);
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -509,7 +517,7 @@ public class CreditCardFlowActivity extends BaseActivity {
         for (Fragment fragment : fragments) {
             if (fragment instanceof SavedCardListFragment) {
                 SavedCardListFragment savedCardListFragment = (SavedCardListFragment) fragment;
-                savedCardListFragment.updateSavedCardsData(saveCardRequests);
+                savedCardListFragment.updateSavedCardsData(saveCardRequests, true);
             }
         }
     }
@@ -546,7 +554,7 @@ public class CreditCardFlowActivity extends BaseActivity {
                         intentPaymentWeb.putExtra(Constants.WEBURL, tokenDetailsResponse.getRedirectUrl());
                         intentPaymentWeb.putExtra(Constants.TYPE, WebviewFragment.TYPE_CREDIT_CARD);
                         startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
-                        if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                        if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                                 && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                             overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                         }
@@ -873,5 +881,19 @@ public class CreditCardFlowActivity extends BaseActivity {
     private void showBankPointsFragment(float balance, String bankType) {
         BanksPointFragment fragment = BanksPointFragment.newInstance(balance, bankType);
         getSupportFragmentManager().beginTransaction().replace(R.id.card_container, fragment).addToBackStack("").commit();
+    }
+
+    public void addCardDetailFragment(CardDetailsFragment cardDetailsFragment, boolean addToBackStack) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        if (addToBackStack) {
+            if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
+                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                fragmentTransaction.setCustomAnimations(R.anim.slide_in, R.anim.slide_out, R.anim.slide_in_back, R.anim.slide_out_back);
+            }
+            fragmentTransaction.replace(R.id.card_container, cardDetailsFragment).addToBackStack("").commit();
+        } else {
+            fragmentTransaction.replace(R.id.card_container, cardDetailsFragment).addToBackStack("").commit();
+        }
+
     }
 }

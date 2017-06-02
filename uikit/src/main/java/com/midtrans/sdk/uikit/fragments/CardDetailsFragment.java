@@ -8,6 +8,7 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -19,12 +20,12 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -66,12 +67,13 @@ public class CardDetailsFragment extends Fragment {
     public static final int SCAN_REQUEST_CODE = 101;
     private static final String PARAM_CARD = "card";
     private static final String PARAM_PROMO = "promo";
+    private static final String TAG = "CardDetailsFragment";
     private TextInputLayout cardNumberContainer;
     private TextInputLayout cardExpiryContainer;
     private TextInputLayout cardCvvNumberContainer;
-    private EditText cardNumber;
-    private EditText cardExpiry;
-    private EditText cardCvv;
+    private TextInputEditText cardNumber;
+    private TextInputEditText cardExpiry;
+    private TextInputEditText cardCvv;
     private ImageView cardLogo;
     private ImageView bankLogo;
     private ImageButton imageCvvHelp;
@@ -261,7 +263,7 @@ public class CardDetailsFragment extends Fragment {
     }
 
     private void initScanCard() {
-        if (midtransSDK.getExternalScanner() != null) {
+        if (midtransSDK != null && midtransSDK.getExternalScanner() != null) {
             // Set background color for scan button
             if (midtransSDK.getColorTheme() != null && midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
                 scanCardBtn.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
@@ -346,7 +348,6 @@ public class CardDetailsFragment extends Fragment {
                             cardTokenRequest.setGrossAmount(midtransSDK.getTransactionRequest().getAmount());
 
                             SdkUIFlowUtil.showProgressDialog((AppCompatActivity) getActivity(), false);
-                            setPaymentInstallment();
                             ((CreditCardFlowActivity) getActivity()).setSavedCardInfo(saveCardCheckBox.isChecked(), "");
                             if (promo != null && promo.getDiscountAmount() > 0) {
                                 // Calculate discount amount
@@ -438,9 +439,9 @@ public class CardDetailsFragment extends Fragment {
         cardNumberContainer = (TextInputLayout) view.findViewById(R.id.til_card_no);
         cardExpiryContainer = (TextInputLayout) view.findViewById(R.id.exp_til);
         cardCvvNumberContainer = (TextInputLayout) view.findViewById(R.id.cvv_til);
-        cardNumber = (EditText) view.findViewById(R.id.et_card_no);
-        cardExpiry = (EditText) view.findViewById(R.id.et_exp_date);
-        cardCvv = (EditText) view.findViewById(R.id.et_cvv);
+        cardNumber = (TextInputEditText) view.findViewById(R.id.et_card_no);
+        cardExpiry = (TextInputEditText) view.findViewById(R.id.et_exp_date);
+        cardCvv = (TextInputEditText) view.findViewById(R.id.et_cvv);
         cardLogo = (ImageView) view.findViewById(R.id.payment_card_logo);
         bankLogo = (ImageView) view.findViewById(R.id.bank_logo);
         imageCvvHelp = (ImageButton) view.findViewById(R.id.image_cvv_help);
@@ -466,53 +467,56 @@ public class CardDetailsFragment extends Fragment {
     }
 
     private void initTheme() {
-        if (midtransSDK.getColorTheme() != null) {
-            if (midtransSDK.getColorTheme().getSecondaryColor() != 0) {
-                cardNumber.getBackground().setColorFilter(midtransSDK.getColorTheme().getSecondaryColor(), PorterDuff.Mode.SRC_ATOP);
-                cardCvv.getBackground().setColorFilter(midtransSDK.getColorTheme().getSecondaryColor(), PorterDuff.Mode.SRC_ATOP);
-                cardExpiry.getBackground().setColorFilter(midtransSDK.getColorTheme().getSecondaryColor(), PorterDuff.Mode.SRC_ATOP);
-                cardNumber.setHintTextColor(midtransSDK.getColorTheme().getSecondaryColor());
-                cardCvv.setHintTextColor(midtransSDK.getColorTheme().getSecondaryColor());
-                cardExpiry.setHintTextColor(midtransSDK.getColorTheme().getSecondaryColor());
+        try {
+            if (midtransSDK != null && midtransSDK.getColorTheme() != null) {
+                if (midtransSDK.getColorTheme().getSecondaryColor() != 0) {
 
-                textInstallmentTerm.setBackgroundColor(midtransSDK.getColorTheme().getSecondaryColor());
-                textInstallmentTerm.getBackground().setAlpha(50);
+                    cardNumber.setSupportBackgroundTintList(new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
+                    cardCvv.setSupportBackgroundTintList(new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
+                    cardExpiry.setSupportBackgroundTintList(new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
 
-                int[][] states = new int[][]{
-                        new int[]{-android.R.attr.state_checked},
-                        new int[]{android.R.attr.state_checked},
-                };
+                    textInstallmentTerm.setBackgroundColor(midtransSDK.getColorTheme().getSecondaryColor());
+                    textInstallmentTerm.getBackground().setAlpha(50);
 
-                int[] trackColors = new int[]{
-                        Color.GRAY,
-                        midtransSDK.getColorTheme().getSecondaryColor(),
-                };
-                saveCardCheckBox.setSupportButtonTintList(new ColorStateList(states, trackColors));
-                cbBankPoint.setSupportButtonTintList(new ColorStateList(states, trackColors));
+                    int[][] states = new int[][]{
+                            new int[]{-android.R.attr.state_checked},
+                            new int[]{android.R.attr.state_checked},
+                    };
+
+                    int[] trackColors = new int[]{
+                            Color.GRAY,
+                            midtransSDK.getColorTheme().getSecondaryColor(),
+                    };
+                    saveCardCheckBox.setSupportButtonTintList(new ColorStateList(states, trackColors));
+                    cbBankPoint.setSupportButtonTintList(new ColorStateList(states, trackColors));
+                }
+
+                if (midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
+                    installmentText.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+                    buttonIncrease.setBorderColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+                    buttonIncrease.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+                    buttonDecrease.setBorderColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+                    buttonDecrease.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+                    imageSaveCardHelp.setColorFilter(midtransSDK.getColorTheme().getPrimaryDarkColor(), PorterDuff.Mode.SRC_ATOP);
+                    imageCvvHelp.setColorFilter(midtransSDK.getColorTheme().getPrimaryDarkColor(), PorterDuff.Mode.SRC_ATOP);
+                    imagePointHelp.setColorFilter(midtransSDK.getColorTheme().getPrimaryColor(), PorterDuff.Mode.SRC_ATOP);
+                    scanCardBtn.setBorderColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+                    scanCardBtn.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+                    scanCardBtn.setIconColorFilter(midtransSDK.getColorTheme().getPrimaryColor());
+                }
+
+                if (midtransSDK.getColorTheme().getPrimaryColor() != 0) {
+                    payNowBtn.setBackgroundColor(midtransSDK.getColorTheme().getPrimaryColor());
+                }
             }
 
-            if (midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
-                installmentText.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
-                buttonIncrease.setBorderColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
-                buttonIncrease.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
-                buttonDecrease.setBorderColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
-                buttonDecrease.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
-                imageSaveCardHelp.setColorFilter(midtransSDK.getColorTheme().getPrimaryDarkColor(), PorterDuff.Mode.SRC_ATOP);
-                imageCvvHelp.setColorFilter(midtransSDK.getColorTheme().getPrimaryDarkColor(), PorterDuff.Mode.SRC_ATOP);
-                imagePointHelp.setColorFilter(midtransSDK.getColorTheme().getPrimaryColor(), PorterDuff.Mode.SRC_ATOP);
-                scanCardBtn.setBorderColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
-                scanCardBtn.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
-                scanCardBtn.setIconColorFilter(midtransSDK.getColorTheme().getPrimaryColor());
-            }
+            deleteCardBtn.setBorderColor(ContextCompat.getColor(getContext(), R.color.delete_color));
+            deleteCardBtn.setTextColor(ContextCompat.getColor(getContext(), R.color.delete_color));
+            deleteCardBtn.setIconColorFilter(ContextCompat.getColor(getContext(), R.color.delete_color));
 
-            if (midtransSDK.getColorTheme().getPrimaryColor() != 0) {
-                payNowBtn.setBackgroundColor(midtransSDK.getColorTheme().getPrimaryColor());
-            }
+        } catch (Exception e) {
+            Log.e(TAG, "rendering theme:" + e.getMessage());
         }
-
-        deleteCardBtn.setBorderColor(ContextCompat.getColor(getContext(), R.color.delete_color));
-        deleteCardBtn.setTextColor(ContextCompat.getColor(getContext(), R.color.delete_color));
-        deleteCardBtn.setIconColorFilter(ContextCompat.getColor(getContext(), R.color.delete_color));
     }
 
     private void initCvvHelp() {

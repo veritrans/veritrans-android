@@ -8,6 +8,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.AppCompatEditText;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,7 @@ public class BankTransferFragment extends Fragment {
     public static final String PAGE = "page";
     public static final int KLIKBCA_PAGE = 1;
     private static final int PAGE_MARGIN = 20;
+    private static final String TAG = "BankTransferFragment";
     private int POSITION = -1;
 
     private ViewPager instructionViewPager = null;
@@ -105,7 +107,7 @@ public class BankTransferFragment extends Fragment {
                     mEditTextEmailId.setSupportBackgroundTintList(new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
 
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Log.d(TAG, e.getMessage());
                 }
             }
 
