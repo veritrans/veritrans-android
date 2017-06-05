@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="app_name">Midtrans UI SDK</string>
     <!--user detail-->
     <string name="hint_full_name">Full name</string>
