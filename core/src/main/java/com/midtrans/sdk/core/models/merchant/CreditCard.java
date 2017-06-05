@@ -6,6 +6,7 @@ import com.midtrans.sdk.core.models.snap.SavedToken;
 import com.midtrans.sdk.core.models.snap.card.Installment;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,6 +21,7 @@ public class CreditCard implements Serializable {
     private String bank;
     private List<SavedToken> savedTokens;
     private Installment installment;
+    private ArrayList<String> whitelistBins;
     private String type;
 
     public boolean isSaveCard() {
@@ -84,5 +86,13 @@ public class CreditCard implements Serializable {
 
     public void setInstallment(Installment installment) {
         this.installment = installment;
+    }
+
+    public ArrayList<String> getWhitelistBins() {
+        return whitelistBins;
+    }
+
+    public void setWhitelistBins(ArrayList<String> whitelistBins) {
+        this.whitelistBins = whitelistBins;
     }
 }

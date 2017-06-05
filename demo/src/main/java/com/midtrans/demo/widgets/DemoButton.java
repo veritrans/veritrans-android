@@ -20,7 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.midtrans.sdk.uikit.widgets.FancyButton;
+import com.midtrans.demo.R;
 
 import java.util.ArrayList;
 
@@ -30,7 +30,7 @@ import java.util.ArrayList;
 
 public class DemoButton extends LinearLayout {
 
-    public static final String TAG = FancyButton.class.getSimpleName();
+    public static final String TAG = DemoButton.class.getSimpleName();
     /**
      * Tags to identify icon position
      */
@@ -104,7 +104,7 @@ public class DemoButton extends LinearLayout {
         super(context, attrs);
         this.mContext = context;
 
-        TypedArray attrsArray = context.obtainStyledAttributes(attrs, com.midtrans.sdk.uikit.R.styleable.FancyButtonsAttrs, 0, 0);
+        TypedArray attrsArray = context.obtainStyledAttributes(attrs, R.styleable.FancyButtonsAttrs, 0, 0);
         initAttributesArray(attrsArray);
         attrsArray.recycle();
 
@@ -274,56 +274,56 @@ public class DemoButton extends LinearLayout {
      */
     private void initAttributesArray(TypedArray attrsArray) {
 
-        mDefaultBackgroundColor = attrsArray.getColor(com.midtrans.sdk.uikit.R.styleable.FancyButtonsAttrs_fb_defaultColor, mDefaultBackgroundColor);
-        mFocusBackgroundColor = attrsArray.getColor(com.midtrans.sdk.uikit.R.styleable.FancyButtonsAttrs_fb_focusColor, mFocusBackgroundColor);
-        mDisabledBackgroundColor = attrsArray.getColor(com.midtrans.sdk.uikit.R.styleable.FancyButtonsAttrs_fb_disabledColor, mDisabledBackgroundColor);
+        mDefaultBackgroundColor = attrsArray.getColor(R.styleable.FancyButtonsAttrs_fb_defaultColor, mDefaultBackgroundColor);
+        mFocusBackgroundColor = attrsArray.getColor(R.styleable.FancyButtonsAttrs_fb_focusColor, mFocusBackgroundColor);
+        mDisabledBackgroundColor = attrsArray.getColor(R.styleable.FancyButtonsAttrs_fb_disabledColor, mDisabledBackgroundColor);
 
-        mEnabled = attrsArray.getBoolean(com.midtrans.sdk.uikit.R.styleable.FancyButtonsAttrs_android_enabled, true);
+        mEnabled = attrsArray.getBoolean(R.styleable.FancyButtonsAttrs_android_enabled, true);
 
-        mDisabledTextColor = attrsArray.getColor(com.midtrans.sdk.uikit.R.styleable.FancyButtonsAttrs_fb_disabledTextColor, mDisabledTextColor);
-        mDisabledBorderColor = attrsArray.getColor(com.midtrans.sdk.uikit.R.styleable.FancyButtonsAttrs_fb_disabledBorderColor, mDisabledBorderColor);
-        mDefaultTextColor = attrsArray.getColor(com.midtrans.sdk.uikit.R.styleable.FancyButtonsAttrs_fb_textColor, mDefaultTextColor);
+        mDisabledTextColor = attrsArray.getColor(R.styleable.FancyButtonsAttrs_fb_disabledTextColor, mDisabledTextColor);
+        mDisabledBorderColor = attrsArray.getColor(R.styleable.FancyButtonsAttrs_fb_disabledBorderColor, mDisabledBorderColor);
+        mDefaultTextColor = attrsArray.getColor(R.styleable.FancyButtonsAttrs_fb_textColor, mDefaultTextColor);
         // if default color is set then the icon's color is the same (the default for icon's color)
-        mDefaultIconColor = attrsArray.getColor(com.midtrans.sdk.uikit.R.styleable.FancyButtonsAttrs_fb_iconColor, mDefaultTextColor);
+        mDefaultIconColor = attrsArray.getColor(R.styleable.FancyButtonsAttrs_fb_iconColor, mDefaultTextColor);
 
-        mDefaultTextSize = (int) attrsArray.getDimension(com.midtrans.sdk.uikit.R.styleable.FancyButtonsAttrs_fb_textSize, mDefaultTextSize);
-        mDefaultTextSize = (int) attrsArray.getDimension(com.midtrans.sdk.uikit.R.styleable.FancyButtonsAttrs_android_textSize, mDefaultTextSize);
+        mDefaultTextSize = (int) attrsArray.getDimension(R.styleable.FancyButtonsAttrs_fb_textSize, mDefaultTextSize);
+        mDefaultTextSize = (int) attrsArray.getDimension(R.styleable.FancyButtonsAttrs_android_textSize, mDefaultTextSize);
 
-        mDefaultTextGravity = attrsArray.getInt(com.midtrans.sdk.uikit.R.styleable.FancyButtonsAttrs_fb_textGravity, mDefaultTextGravity);
+        mDefaultTextGravity = attrsArray.getInt(R.styleable.FancyButtonsAttrs_fb_textGravity, mDefaultTextGravity);
 
-        mBorderColor = attrsArray.getColor(com.midtrans.sdk.uikit.R.styleable.FancyButtonsAttrs_fb_borderColor, mBorderColor);
-        mBorderWidth = (int) attrsArray.getDimension(com.midtrans.sdk.uikit.R.styleable.FancyButtonsAttrs_fb_borderWidth, mBorderWidth);
+        mBorderColor = attrsArray.getColor(R.styleable.FancyButtonsAttrs_fb_borderColor, mBorderColor);
+        mBorderWidth = (int) attrsArray.getDimension(R.styleable.FancyButtonsAttrs_fb_borderWidth, mBorderWidth);
 
-        mRadius = (int) attrsArray.getDimension(com.midtrans.sdk.uikit.R.styleable.FancyButtonsAttrs_fb_radius, mRadius);
-        mFontIconSize = (int) attrsArray.getDimension(com.midtrans.sdk.uikit.R.styleable.FancyButtonsAttrs_fb_fontIconSize, mFontIconSize);
+        mRadius = (int) attrsArray.getDimension(R.styleable.FancyButtonsAttrs_fb_radius, mRadius);
+        mFontIconSize = (int) attrsArray.getDimension(R.styleable.FancyButtonsAttrs_fb_fontIconSize, mFontIconSize);
 
-        mIconPaddingLeft = (int) attrsArray.getDimension(com.midtrans.sdk.uikit.R.styleable.FancyButtonsAttrs_fb_iconPaddingLeft, mIconPaddingLeft);
-        mIconPaddingRight = (int) attrsArray.getDimension(com.midtrans.sdk.uikit.R.styleable.FancyButtonsAttrs_fb_iconPaddingRight, mIconPaddingRight);
-        mIconPaddingTop = (int) attrsArray.getDimension(com.midtrans.sdk.uikit.R.styleable.FancyButtonsAttrs_fb_iconPaddingTop, mIconPaddingTop);
-        mIconPaddingBottom = (int) attrsArray.getDimension(com.midtrans.sdk.uikit.R.styleable.FancyButtonsAttrs_fb_iconPaddingBottom, mIconPaddingBottom);
+        mIconPaddingLeft = (int) attrsArray.getDimension(R.styleable.FancyButtonsAttrs_fb_iconPaddingLeft, mIconPaddingLeft);
+        mIconPaddingRight = (int) attrsArray.getDimension(R.styleable.FancyButtonsAttrs_fb_iconPaddingRight, mIconPaddingRight);
+        mIconPaddingTop = (int) attrsArray.getDimension(R.styleable.FancyButtonsAttrs_fb_iconPaddingTop, mIconPaddingTop);
+        mIconPaddingBottom = (int) attrsArray.getDimension(R.styleable.FancyButtonsAttrs_fb_iconPaddingBottom, mIconPaddingBottom);
 
-        mTextAllCaps = attrsArray.getBoolean(com.midtrans.sdk.uikit.R.styleable.FancyButtonsAttrs_fb_textAllCaps, false);
-        mTextAllCaps = attrsArray.getBoolean(com.midtrans.sdk.uikit.R.styleable.FancyButtonsAttrs_android_textAllCaps, false);
+        mTextAllCaps = attrsArray.getBoolean(R.styleable.FancyButtonsAttrs_fb_textAllCaps, false);
+        mTextAllCaps = attrsArray.getBoolean(R.styleable.FancyButtonsAttrs_android_textAllCaps, false);
 
-        mGhost = attrsArray.getBoolean(com.midtrans.sdk.uikit.R.styleable.FancyButtonsAttrs_fb_ghost, mGhost);
-        mUseSystemFont = attrsArray.getBoolean(com.midtrans.sdk.uikit.R.styleable.FancyButtonsAttrs_fb_useSystemFont, mUseSystemFont);
+        mGhost = attrsArray.getBoolean(R.styleable.FancyButtonsAttrs_fb_ghost, mGhost);
+        mUseSystemFont = attrsArray.getBoolean(R.styleable.FancyButtonsAttrs_fb_useSystemFont, mUseSystemFont);
 
-        String text = attrsArray.getString(com.midtrans.sdk.uikit.R.styleable.FancyButtonsAttrs_fb_text);
+        String text = attrsArray.getString(R.styleable.FancyButtonsAttrs_fb_text);
 
         if (text == null) { //no fb_text attribute
-            text = attrsArray.getString(com.midtrans.sdk.uikit.R.styleable.FancyButtonsAttrs_android_text);
+            text = attrsArray.getString(R.styleable.FancyButtonsAttrs_android_text);
         }
 
-        mIconPosition = attrsArray.getInt(com.midtrans.sdk.uikit.R.styleable.FancyButtonsAttrs_fb_iconPosition, mIconPosition);
+        mIconPosition = attrsArray.getInt(R.styleable.FancyButtonsAttrs_fb_iconPosition, mIconPosition);
 
-        String fontIcon = attrsArray.getString(com.midtrans.sdk.uikit.R.styleable.FancyButtonsAttrs_fb_fontIconResource);
+        String fontIcon = attrsArray.getString(R.styleable.FancyButtonsAttrs_fb_fontIconResource);
 
-        String iconFontFamily = attrsArray.getString(com.midtrans.sdk.uikit.R.styleable.FancyButtonsAttrs_fb_iconFont);
-        String textFontFamily = attrsArray.getString(com.midtrans.sdk.uikit.R.styleable.FancyButtonsAttrs_fb_textFont);
+        String iconFontFamily = attrsArray.getString(R.styleable.FancyButtonsAttrs_fb_iconFont);
+        String textFontFamily = attrsArray.getString(R.styleable.FancyButtonsAttrs_fb_textFont);
 
         Drawable icon = null;
         try {
-            mIconResource = attrsArray.getDrawable(com.midtrans.sdk.uikit.R.styleable.FancyButtonsAttrs_fb_iconResource);
+            mIconResource = attrsArray.getDrawable(R.styleable.FancyButtonsAttrs_fb_iconResource);
 
         } catch (Exception e) {
             mIconResource = null;

@@ -11,21 +11,25 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
-import com.midtrans.sdk.corekit.core.MidtransSDK;
-import com.midtrans.sdk.corekit.models.snap.TransactionResult;
-import com.midtrans.sdk.uikit.widgets.FancyButton;
+import com.midtrans.sdk.core.models.merchant.CheckoutTokenRequest;
+import com.midtrans.sdk.ui.MidtransUi;
+import com.midtrans.sdk.ui.MidtransUiCallback;
+import com.midtrans.sdk.ui.constants.PaymentStatus;
+import com.midtrans.sdk.ui.models.PaymentResult;
+import com.midtrans.sdk.ui.utils.Logger;
+import com.midtrans.sdk.ui.widgets.FancyButton;
 
 /**
  * Created by rakawm on 3/16/17.
  */
 
-public class DemoOrderReviewActivity extends AppCompatActivity implements TransactionFinishedCallback {
+public class DemoOrderReviewActivity extends AppCompatActivity {
 
     private static final long DELAY = 300;
     private RelativeLayout amountContainer;
@@ -37,10 +41,13 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_review);
+        initCheckoutRequest();
         bindViews();
         bindThemes();
         initPayButton();
-        initMidtransSDK();
+    }
+
+    private void initCheckoutRequest() {
     }
 
     private void bindViews() {
@@ -115,49 +122,61 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
     }
 
     private void initPayButton() {
+        final CheckoutTokenRequest checkoutTokenRequest = LocalDataHandler.readObject(this, DemoConfigActivity.EXTRA_CHECKOUT_TOKEN_REQUEST, CheckoutTokenRequest.class);
+        Log.d("chekcoutrequest", "isnull:" + checkoutTokenRequest);
+
         payBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MidtransSDK.getInstance().startPaymentUiFlow(DemoOrderReviewActivity.this);
+                MidtransUi.getInstance().runUiSdk(DemoOrderReviewActivity.this, SdkConfig.CHECKOUT_URL, checkoutTokenRequest, new MidtransUiCallback() {
+                    @Override
+                    public void onFinished(PaymentResult result) {
+
+                        Logger.d("onFinished:", "result: " + result.getPaymentStatus());
+                        if (result.isCanceled()) {
+                            // Payment is canceled
+                            Toast.makeText(DemoOrderReviewActivity.this, "CANCELED", Toast.LENGTH_SHORT).show();
+                        } else {
+                            // Payment is finished
+                            // Check the status
+                            String status = result.getPaymentStatus();
+                            switch (status) {
+                                case PaymentStatus.PENDING:
+                                    // Pending status for VA (BCA, Mandiri, Permata), KlikBCA, Indomaret and Kioson
+
+                                    // For E-Banking transaction such as BCAKlikpay, CIMB Clicks, BRI E-Pay, Mandiri E-Cash
+                                    // Merchant need to get latest transaction status using Midtrans API.
+                                    break;
+                                case PaymentStatus.CHALLENGE:
+                                    // Credit debit card only
+                                    // Transaction is
+                                    break;
+                                case PaymentStatus.DENY:
+                                    // Credit card only
+                                    // Denied by FDS or bank
+                                    break;
+                                case PaymentStatus.INVALID:
+                                    // Invalid transaction
+                                    // No error message
+                                    break;
+                                case PaymentStatus.FAILED:
+                                    // Error transaction
+                                    // Internal error detected
+                                    break;
+                            }
+                        }
+                        Toast.makeText(DemoOrderReviewActivity.this, result.getPaymentStatus(), Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(DemoOrderReviewActivity.this, DemoConfigActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(DemoOrderReviewActivity.this);
+                        taskStackBuilder.addNextIntent(intent);
+                        taskStackBuilder.startActivities();
+                        startActivity(intent);
+                    }
+                });
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
         });
     }
 
-    private void initMidtransSDK() {
-        MidtransSDK.getInstance().setTransactionFinishedCallback(this);
-    }
-
-    @Override
-    public void onTransactionFinished(TransactionResult result) {
-        if (result.getResponse() != null) {
-            switch (result.getStatus()) {
-                case TransactionResult.STATUS_SUCCESS:
-                    Toast.makeText(this, "Transaction Finished. ID: " + result.getResponse().getTransactionId(), Toast.LENGTH_LONG).show();
-                    break;
-                case TransactionResult.STATUS_PENDING:
-                    Toast.makeText(this, "Transaction Pending. ID: " + result.getResponse().getTransactionId(), Toast.LENGTH_LONG).show();
-                    break;
-                case TransactionResult.STATUS_FAILED:
-                    Toast.makeText(this, "Transaction Failed. ID: " + result.getResponse().getTransactionId() + ". Message: " + result.getResponse().getStatusMessage(), Toast.LENGTH_LONG).show();
-                    break;
-            }
-            result.getResponse().getValidationMessages();
-        } else if (result.isTransactionCanceled()) {
-            Toast.makeText(this, "Transaction Canceled", Toast.LENGTH_LONG).show();
-        } else {
-            if (result.getStatus().equalsIgnoreCase(TransactionResult.STATUS_INVALID)) {
-                Toast.makeText(this, "Transaction Invalid", Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(this, "Transaction Finished with failure.", Toast.LENGTH_LONG).show();
-            }
-        }
-
-        Intent intent = new Intent(DemoOrderReviewActivity.this, DemoConfigActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(DemoOrderReviewActivity.this);
-        taskStackBuilder.addNextIntent(intent);
-        taskStackBuilder.startActivities();
-        startActivity(intent);
-    }
 }

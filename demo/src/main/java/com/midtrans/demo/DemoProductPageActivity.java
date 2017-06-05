@@ -15,7 +15,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.midtrans.demo.indicator.CirclePageIndicator;
-import com.midtrans.sdk.uikit.widgets.FancyButton;
+import com.midtrans.sdk.ui.widgets.FancyButton;
 
 /**
  * Created by rakawm on 3/15/17.

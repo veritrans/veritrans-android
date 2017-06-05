@@ -9,9 +9,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.midtrans.demo.models.SavedCard;
-import com.midtrans.sdk.corekit.utilities.Utils;
-import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.widgets.AspectRatioImageView;
+import com.midtrans.sdk.core.utils.CardUtilities;
+import com.midtrans.sdk.ui.widgets.AspectRatioImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +72,7 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
     @Override
     public SavedCardsAdapter.SavedCardsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.layout_row_saved_cards, parent, false);
+                .inflate(R.layout.item_saved_cards, parent, false);
         return new SavedCardsAdapter.SavedCardsViewHolder(view);
     }
 
@@ -81,20 +80,20 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
     public void onBindViewHolder(SavedCardsAdapter.SavedCardsViewHolder holder, int position) {
         SavedCard card = mData.get(position);
         String maskedCard = card.getMaskedCard();
-        String cardType = Utils.getCardType(maskedCard);
+        String cardType = CardUtilities.getCardType(maskedCard);
 
         holder.swipeLayout.setOffset(0);
         switch (cardType) {
-            case Utils.CARD_TYPE_VISA:
+            case CardUtilities.CARD_TYPE_VISA:
                 holder.imageCardType.setImageResource(R.drawable.ic_visa);
                 break;
-            case Utils.CARD_TYPE_MASTERCARD:
+            case CardUtilities.CARD_TYPE_MASTERCARD:
                 holder.imageCardType.setImageResource(R.drawable.ic_mastercard);
                 break;
-            case Utils.CARD_TYPE_JCB:
+            case CardUtilities.CARD_TYPE_JCB:
                 holder.imageCardType.setImageResource(R.drawable.ic_jcb);
                 break;
-            case Utils.CARD_TYPE_AMEX:
+            case CardUtilities.CARD_TYPE_AMEX:
                 holder.imageCardType.setImageResource(R.drawable.ic_amex);
                 break;
         }

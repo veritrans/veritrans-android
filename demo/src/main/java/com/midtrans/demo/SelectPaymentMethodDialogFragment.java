@@ -10,9 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
-import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
-import com.midtrans.sdk.uikit.PaymentMethods;
+import com.midtrans.sdk.ui.models.PaymentMethodModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +32,6 @@ public class SelectPaymentMethodDialogFragment extends DialogFragment {
 
     private int color;
     private SelectPaymentMethodListener listener;
-    private List<EnabledPayment> enabledPayments;
 
     public static SelectPaymentMethodDialogFragment newInstance(int color, SelectPaymentMethodListener listener) {
         SelectPaymentMethodDialogFragment fragment = new SelectPaymentMethodDialogFragment();
@@ -42,17 +39,19 @@ public class SelectPaymentMethodDialogFragment extends DialogFragment {
         bundle.putInt(ARG_COLOR, color);
         bundle.putSerializable(ARG_LISTENER, listener);
         fragment.setArguments(bundle);
+
         return fragment;
     }
 
     public static SelectPaymentMethodDialogFragment newInstance(int color,
-                                                                List<EnabledPayment> enabledPayments,
+                                                                List<SelectPaymentMethodViewModel> enabledPayments,
                                                                 SelectPaymentMethodListener listener) {
         SelectPaymentMethodDialogFragment fragment = new SelectPaymentMethodDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(ARG_COLOR, color);
         bundle.putSerializable(ARG_LISTENER, listener);
         bundle.putSerializable(ARG_ENABLED_PAYMENTS, new SelectPaymentMethodListViewModel(enabledPayments));
+
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -108,43 +107,36 @@ public class SelectPaymentMethodDialogFragment extends DialogFragment {
     }
 
     private void setAdapterData() {
-        List<EnabledPayment> enabledPayments = PaymentMethods.getDefaultPaymentList(getContext());
+        List<PaymentMethodModel> enabledPayments = PaymentMethodUtil.getDefaultPaymentMethods(getContext());
         adapter.setPaymentMethodViewModels(mapPaymentMethods(enabledPayments));
     }
 
-    private void setAdapterData(List<EnabledPayment> enabledPayments) {
-        adapter.setPaymentMethodViewModels(filterPaymentMethods(getDefaultMethods(), enabledPayments));
+    private void setAdapterData(List<SelectPaymentMethodViewModel> enabledPayments) {
+        List<SelectPaymentMethodViewModel> defaultPaymentMethods = convertPaymentMethods(PaymentMethodUtil.getDefaultPaymentMethods(getContext()));
+
+        adapter.setPaymentMethodViewModels(filterPaymentMethods(defaultPaymentMethods, enabledPayments));
     }
 
-    private List<SelectPaymentMethodViewModel> mapPaymentMethods(List<EnabledPayment> enabledPayments) {
+    private List<SelectPaymentMethodViewModel> convertPaymentMethods(List<PaymentMethodModel> enabledPayments) {
         List<SelectPaymentMethodViewModel> viewModels = new ArrayList<>();
-        for (int i = 0; i < enabledPayments.size(); i++) {
-            EnabledPayment enabledPayment = enabledPayments.get(i);
-            PaymentMethodsModel model = PaymentMethods.getMethods(getContext(), enabledPayment.getType());
-            if (model != null) {
-                viewModels.add(new SelectPaymentMethodViewModel(model.getName(), enabledPayment.getType(), true));
-            }
+        for (PaymentMethodModel model : enabledPayments) {
+            viewModels.add(new SelectPaymentMethodViewModel(model.getName(), model.getPaymentType(), false));
         }
         return viewModels;
     }
 
-    private List<SelectPaymentMethodViewModel> getDefaultMethods() {
-        List<EnabledPayment> enabledPayments = PaymentMethods.getDefaultPaymentList(getContext());
+    private List<SelectPaymentMethodViewModel> mapPaymentMethods(List<PaymentMethodModel> enabledPayments) {
         List<SelectPaymentMethodViewModel> viewModels = new ArrayList<>();
-        for (int i = 0; i < enabledPayments.size(); i++) {
-            EnabledPayment enabledPayment = enabledPayments.get(i);
-            PaymentMethodsModel model = PaymentMethods.getMethods(getContext(), enabledPayment.getType());
-            if (model != null) {
-                viewModels.add(new SelectPaymentMethodViewModel(model.getName(), enabledPayment.getType(), false));
-            }
+        for (PaymentMethodModel model : enabledPayments) {
+            viewModels.add(new SelectPaymentMethodViewModel(model.getName(), model.getPaymentType(), true));
         }
         return viewModels;
     }
 
-    private List<SelectPaymentMethodViewModel> filterPaymentMethods(List<SelectPaymentMethodViewModel> defaultMethods, List<EnabledPayment> enabledPayments) {
+    private List<SelectPaymentMethodViewModel> filterPaymentMethods(List<SelectPaymentMethodViewModel> defaultMethods, List<SelectPaymentMethodViewModel> enabledPayments) {
         for (SelectPaymentMethodViewModel model : defaultMethods) {
-            for (EnabledPayment enabledPayment : enabledPayments) {
-                if (model.getMethodType().equals(enabledPayment.getType())) {
+            for (SelectPaymentMethodViewModel enabledPayment : enabledPayments) {
+                if (model.getMethodType().equals(enabledPayment.getMethodType())) {
                     model.setSelected(true);
                 }
             }

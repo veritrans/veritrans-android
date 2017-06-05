@@ -174,7 +174,7 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <com.midtrans.sdk.uikit.widgets.FancyButton
+            <com.midtrans.sdk.ui.widgets.FancyButton
                 android:id="@+id/btn_buy"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/button_size"

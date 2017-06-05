@@ -19,45 +19,43 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.midtrans.demo.widgets.DemoRadioButton;
-import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
-import com.midtrans.sdk.corekit.core.LocalDataHandler;
-import com.midtrans.sdk.corekit.core.MidtransSDK;
-import com.midtrans.sdk.corekit.core.TransactionRequest;
-import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
-import com.midtrans.sdk.corekit.core.themes.CustomColorTheme;
-import com.midtrans.sdk.corekit.models.BankType;
-import com.midtrans.sdk.corekit.models.BillInfoModel;
-import com.midtrans.sdk.corekit.models.CardTokenRequest;
-import com.midtrans.sdk.corekit.models.ExpiryModel;
-import com.midtrans.sdk.corekit.models.ItemDetails;
-import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
-import com.midtrans.sdk.corekit.models.UserAddress;
-import com.midtrans.sdk.corekit.models.UserDetail;
-import com.midtrans.sdk.corekit.models.snap.BankTransferRequestModel;
-import com.midtrans.sdk.corekit.models.snap.CreditCard;
-import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
-import com.midtrans.sdk.corekit.models.snap.Installment;
-import com.midtrans.sdk.corekit.models.snap.TransactionResult;
-import com.midtrans.sdk.corekit.utilities.Utils;
-import com.midtrans.sdk.scancard.ScanCard;
-import com.midtrans.sdk.uikit.PaymentMethods;
-import com.midtrans.sdk.uikit.SdkUIFlowBuilder;
-import com.midtrans.sdk.uikit.widgets.FancyButton;
+import com.midtrans.sdk.core.Environment;
+import com.midtrans.sdk.core.models.BankType;
+import com.midtrans.sdk.core.models.Channel;
+import com.midtrans.sdk.core.models.merchant.Address;
+import com.midtrans.sdk.core.models.merchant.BankTransfer;
+import com.midtrans.sdk.core.models.merchant.BcaBankTransfer;
+import com.midtrans.sdk.core.models.merchant.CheckoutOrderDetails;
+import com.midtrans.sdk.core.models.merchant.CheckoutTokenRequest;
+import com.midtrans.sdk.core.models.merchant.CreditCard;
+import com.midtrans.sdk.core.models.merchant.CustomerDetails;
+import com.midtrans.sdk.core.models.merchant.FreeText;
+import com.midtrans.sdk.core.models.merchant.FreeTextItem;
+import com.midtrans.sdk.core.models.papi.CardTokenRequest;
+import com.midtrans.sdk.core.models.snap.card.Installment;
+import com.midtrans.sdk.core.models.snap.transaction.SnapEnabledPayment;
+import com.midtrans.sdk.ui.MidtransUi;
+import com.midtrans.sdk.ui.constants.PaymentType;
+import com.midtrans.sdk.ui.models.PaymentMethodModel;
+import com.midtrans.sdk.ui.themes.CustomColorTheme;
+import com.midtrans.sdk.ui.utils.PaymentMethodUtils;
+import com.midtrans.sdk.ui.widgets.FancyButton;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by rakawm on 3/15/17.
  */
 
-public class DemoConfigActivity extends AppCompatActivity implements TransactionFinishedCallback {
+public class DemoConfigActivity extends AppCompatActivity {
     public static final String COLOR_THEME = "config.theme";
+    public static final String EXTRA_CHECKOUT_TOKEN_REQUEST = "extra.checkout";
 
     private static final String CARD_CLICK_TYPE = "config.card";
     private static final String SECURE_TYPE = "config.secure";
@@ -80,6 +78,11 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private static int DELAY = 200;
     private String selectedColor = DemoThemeConstants.BLUE_THEME;
     private List<SelectPaymentMethodViewModel> enabledPayments;
+
+    private static final String DEFAULT_FONT = "fonts/SourceSansPro-Regular.ttf";
+    private static final String SEMI_BOLD_FONT = "fonts/SourceSansPro-Bold.ttf";
+    private static final String BOLD_FONT = "fonts/SourceSansPro-Bold.ttf";
+
     /**
      * Title of Config
      **/
@@ -1051,11 +1054,13 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     }
 
     private void initPaymentChannelsSelections() {
-        SelectPaymentMethodListViewModel listViewModel = LocalDataHandler.readObject(PAYMENT_CHANNELS_TYPE, SelectPaymentMethodListViewModel.class);
+        SelectPaymentMethodListViewModel listViewModel = LocalDataHandler.readObject(this, PAYMENT_CHANNELS_TYPE, SelectPaymentMethodListViewModel.class);
+
         if (listViewModel != null
                 && listViewModel.getEnabledPayments() != null
                 && !listViewModel.getEnabledPayments().isEmpty()) {
-            enabledPayments = mapPaymentMethods(listViewModel.getEnabledPayments());
+            enabledPayments = listViewModel.getEnabledPayments();
+
             paymentChannelsTitle.setText(R.string.payment_channels_selected);
             if (isContainEChannel(enabledPayments)) {
                 paymentChannelsSelectedSelection.setText(getString(R.string.payment_channels_selection_show_selected_format, enabledPayments.size() - 1));
@@ -1063,7 +1068,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 paymentChannelsSelectedSelection.setText(getString(R.string.payment_channels_selection_show_selected_format, enabledPayments.size()));
             }
             paymentChannelsSelectedSelection.setChecked(true);
-            initEditPaymentButton(PaymentMethods.getPaymentList(DemoConfigActivity.this, mapEnabledPayments()));
+            initEditPaymentButton(enabledPayments);
         } else {
             paymentChannelsTitle.setText(R.string.payment_channels_show_all);
             paymentChannelsAllSelection.setText(R.string.payment_channels_selection_show_all);
@@ -1076,6 +1081,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 if (checked) {
                     paymentChannelsTitle.setText(R.string.payment_channels_show_all);
+
+                    resetPaymentChannel();
                 }
             }
         });
@@ -1096,8 +1103,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                                 DemoConfigActivity.this.enabledPayments = enabledPayments;
                                 paymentChannelsTitle.setText(R.string.payment_channels_selected);
                                 paymentChannelsSelectedSelection.setText(getString(R.string.payment_channels_selection_show_selected_format, enabledPayments.size()));
-                                initEditPaymentButton(PaymentMethods.getPaymentList(DemoConfigActivity.this, mapEnabledPayments()));
 
+                                initEditPaymentButton(enabledPayments);
                             }
 
                             @Override
@@ -1114,6 +1121,16 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         });
     }
 
+    private void resetPaymentChannel() {
+        List<PaymentMethodModel> defaultPaymentMethodModels = PaymentMethodUtil.getDefaultPaymentMethods(DemoConfigActivity.this);
+        List<SelectPaymentMethodViewModel> paymentMethodViewModels = new ArrayList<>();
+        for (PaymentMethodModel model : defaultPaymentMethodModels) {
+            paymentMethodViewModels.add(new SelectPaymentMethodViewModel(model.getName(), model.getPaymentType(), true));
+        }
+        this.enabledPayments = paymentMethodViewModels;
+        initEditPaymentButton(this.enabledPayments);
+    }
+
     private boolean isContainEChannel(List<SelectPaymentMethodViewModel> enabledPayments) {
         for (SelectPaymentMethodViewModel enabledPayment : enabledPayments) {
             if (enabledPayment.getMethodType().equals(getString(R.string.payment_mandiri_bill_payment))) {
@@ -1123,7 +1140,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         return false;
     }
 
-    private void initEditPaymentButton(final List<EnabledPayment> enabledPayments) {
+    private void initEditPaymentButton(final List<SelectPaymentMethodViewModel> enabledPayments) {
         editPaymentChannels.setVisibility(View.VISIBLE);
         editPaymentChannels.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1139,7 +1156,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                         DemoConfigActivity.this.enabledPayments = enabledPayments;
                         paymentChannelsTitle.setText(R.string.payment_channels_selected);
                         paymentChannelsSelectedSelection.setText(getString(R.string.payment_channels_selection_show_selected_format, enabledPayments.size()));
-                        initEditPaymentButton(PaymentMethods.getPaymentList(DemoConfigActivity.this, mapEnabledPayments()));
+                        initEditPaymentButton(enabledPayments);
                     }
 
                     @Override
@@ -1710,11 +1727,13 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 saveBniPointSelection();
                 saveAutoReadSmsSelection();
                 saveEnabledPayments();
+                saveCheckoutTokenRequest(initialiseCheckoutTokenRequest());
 
-                TransactionRequest transactionRequest = initializePurchaseRequest();
-                MidtransSDK.getInstance().setTransactionRequest(transactionRequest);
-
-                startActivity(new Intent(DemoConfigActivity.this, DemoProductListActivity.class));
+                setSdkTheme();
+                CheckoutTokenRequest request = initialiseCheckoutTokenRequest();
+                Intent i = new Intent(DemoConfigActivity.this, DemoProductListActivity.class);
+                i.putExtra(EXTRA_CHECKOUT_TOKEN_REQUEST, request);
+                startActivity(i);
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
         });
@@ -1789,11 +1808,11 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     }
 
     private void saveEnabledPayments() {
-        if (paymentChannelsAllSelection.isChecked()) {
-            LocalDataHandler.saveString(PAYMENT_CHANNELS_TYPE, "{}");
-        } else {
-            LocalDataHandler.saveObject(PAYMENT_CHANNELS_TYPE, new SelectPaymentMethodListViewModel(PaymentMethods.getPaymentList(this, mapEnabledPayments())));
-        }
+        LocalDataHandler.saveObject(this, PAYMENT_CHANNELS_TYPE, new SelectPaymentMethodListViewModel(enabledPayments));
+    }
+
+    private void saveCheckoutTokenRequest(CheckoutTokenRequest checkoutTokenRequest) {
+        LocalDataHandler.saveObject(this, EXTRA_CHECKOUT_TOKEN_REQUEST, checkoutTokenRequest);
     }
 
     private void saveBcaVaNumber() {
@@ -2127,67 +2146,78 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     }
 
     private void initMidtransSDK() {
-        SdkUIFlowBuilder.init(this, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL, this)
-                .setExternalScanner(new ScanCard())
+
+        new MidtransUi.Builder()
+                .setContext(this)
+                .setClientKey(SdkConfig.CLIENT_KEY)
+                .setEnvironment(Environment.SANDBOX)
+                .setDefaultFontPath(DEFAULT_FONT)
+                .setBoldFontPath(BOLD_FONT)
+                .setSemiBoldFontPath(SEMI_BOLD_FONT)
                 .enableLog(true)
-                .setDefaultText("fonts/SourceSansPro-Regular.ttf")
-                .setBoldText("fonts/SourceSansPro-Bold.ttf")
-                .setSemiBoldText("fonts/SourceSansPro-Semibold.ttf")
-                .buildSDK();
+                .build();
     }
 
-    @Override
-    public void onTransactionFinished(TransactionResult result) {
-        if (result.getResponse() != null) {
-            switch (result.getStatus()) {
-                case TransactionResult.STATUS_SUCCESS:
-                    Toast.makeText(this, "Transaction Finished. ID: " + result.getResponse().getTransactionId(), Toast.LENGTH_LONG).show();
-                    break;
-                case TransactionResult.STATUS_PENDING:
-                    Toast.makeText(this, "Transaction Pending. ID: " + result.getResponse().getTransactionId(), Toast.LENGTH_LONG).show();
-                    break;
-                case TransactionResult.STATUS_FAILED:
-                    Toast.makeText(this, "Transaction Failed. ID: " + result.getResponse().getTransactionId() + ". Message: " + result.getResponse().getStatusMessage(), Toast.LENGTH_LONG).show();
-                    break;
-            }
-            result.getResponse().getValidationMessages();
-        } else if (result.isTransactionCanceled()) {
-            Toast.makeText(this, "Transaction Canceled", Toast.LENGTH_LONG).show();
-        } else {
-            if (result.getStatus().equalsIgnoreCase(TransactionResult.STATUS_INVALID)) {
-                Toast.makeText(this, "Transaction Invalid", Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(this, "Transaction Finished with failure.", Toast.LENGTH_LONG).show();
-            }
-        }
-    }
-
-    private TransactionRequest initializePurchaseRequest() {
-        // Init theme
+    private void setSdkTheme() {
+        // Init saved theme to sdk
         if (defaultThemeSelection.isChecked()) {
-            MidtransSDK.getInstance().setColorTheme(new CustomColorTheme(DemoThemeConstants.BLUE_PRIMARY_HEX, DemoThemeConstants.BLUE_PRIMARY_DARK_HEX, DemoThemeConstants.BLUE_SECONDARY_HEX));
+            MidtransUi.getInstance().setColorTheme(new CustomColorTheme(DemoThemeConstants.BLUE_PRIMARY_HEX, DemoThemeConstants.BLUE_PRIMARY_DARK_HEX, DemoThemeConstants.BLUE_SECONDARY_HEX));
         } else if (redThemeSelection.isChecked()) {
-            MidtransSDK.getInstance().setColorTheme(new CustomColorTheme(DemoThemeConstants.RED_PRIMARY_HEX, DemoThemeConstants.RED_PRIMARY_DARK_HEX, DemoThemeConstants.RED_SECONDARY_HEX));
+            MidtransUi.getInstance().setColorTheme(new CustomColorTheme(DemoThemeConstants.RED_PRIMARY_HEX, DemoThemeConstants.RED_PRIMARY_DARK_HEX, DemoThemeConstants.RED_SECONDARY_HEX));
         } else if (greenThemeSelection.isChecked()) {
-            MidtransSDK.getInstance().setColorTheme(new CustomColorTheme(DemoThemeConstants.GREEN_PRIMARY_HEX, DemoThemeConstants.GREEN_PRIMARY_DARK_HEX, DemoThemeConstants.GREEN_SECONDARY_HEX));
+            MidtransUi.getInstance().setColorTheme(new CustomColorTheme(DemoThemeConstants.GREEN_PRIMARY_HEX, DemoThemeConstants.GREEN_PRIMARY_DARK_HEX, DemoThemeConstants.GREEN_SECONDARY_HEX));
         } else if (orangeThemeSelection.isChecked()) {
-            MidtransSDK.getInstance().setColorTheme(new CustomColorTheme(DemoThemeConstants.ORANGE_PRIMARY_HEX, DemoThemeConstants.ORANGE_PRIMARY_DARK_HEX, DemoThemeConstants.ORANGE_SECONDARY_HEX));
+            MidtransUi.getInstance().setColorTheme(new CustomColorTheme(DemoThemeConstants.ORANGE_PRIMARY_HEX, DemoThemeConstants.ORANGE_PRIMARY_DARK_HEX, DemoThemeConstants.ORANGE_SECONDARY_HEX));
         } else if (blackThemeSelection.isChecked()) {
-            MidtransSDK.getInstance().setColorTheme(new CustomColorTheme(DemoThemeConstants.BLACK_PRIMARY_HEX, DemoThemeConstants.BLACK_PRIMARY_DARK_HEX, DemoThemeConstants.BLACK_SECONDARY_HEX));
+            MidtransUi.getInstance().setColorTheme(new CustomColorTheme(DemoThemeConstants.BLACK_PRIMARY_HEX, DemoThemeConstants.BLACK_PRIMARY_DARK_HEX, DemoThemeConstants.BLACK_SECONDARY_HEX));
         }
-        // Create new Transaction Request
-        TransactionRequest transactionRequestNew = new TransactionRequest(System.currentTimeMillis() + "", 20000);
+    }
 
 
-        // Define item details
-        ItemDetails itemDetails = new ItemDetails("1", 20000, 1, getString(R.string.product_name_sample));
-        // Add item details into item detail list.
-        ArrayList<ItemDetails> itemDetailsArrayList = new ArrayList<>();
-        itemDetailsArrayList.add(itemDetails);
-        transactionRequestNew.setItemDetails(itemDetailsArrayList);
-        // Set Bill info
-        BillInfoModel billInfoModel = new BillInfoModel("demo_label", "demo_value");
-        transactionRequestNew.setBillInfoModel(billInfoModel);
+    private CheckoutTokenRequest initialiseCheckoutTokenRequest() {
+        // Setup order details
+        CheckoutOrderDetails checkoutOrderDetails = new CheckoutOrderDetails(UUID.randomUUID().toString(), 3000);
+
+        // Setup item details
+        List<com.midtrans.sdk.core.models.merchant.ItemDetails> itemDetailsList = new ArrayList<>();
+        com.midtrans.sdk.core.models.merchant.ItemDetails itemDetails = new com.midtrans.sdk.core.models.merchant.ItemDetails("item1", 1000, 1, "Shoe 1");
+        com.midtrans.sdk.core.models.merchant.ItemDetails itemDetails2 = new com.midtrans.sdk.core.models.merchant.ItemDetails("item1", 2000, 1, "Shoe 2");
+        itemDetailsList.add(itemDetails);
+        itemDetailsList.add(itemDetails2);
+
+
+        // Setup customer details
+        CustomerDetails customerDetails = new CustomerDetails(
+                getString(R.string.order_review_customer_details_first_name),
+                getString(R.string.order_review_customer_details_last_name),
+                getString(R.string.order_review_customer_details_email),
+                getString(R.string.order_review_customer_details_phone),
+                //shipping address
+                new Address(
+                        getString(R.string.order_review_customer_details_first_name),
+                        getString(R.string.order_review_customer_details_last_name),
+                        getString(R.string.order_review_delivery_address_sample),
+                        getString(R.string.order_review_delivery_address_city_sample),
+                        getString(R.string.order_review_delivery_address_postal_sample),
+                        getString(R.string.order_review_customer_details_phone),
+                        getString(R.string.order_review_delivery_address_country_code_sample)),
+                //billing address
+                new Address(
+                        getString(R.string.order_review_customer_details_first_name),
+                        getString(R.string.order_review_customer_details_last_name),
+                        getString(R.string.order_review_delivery_address_sample),
+                        getString(R.string.order_review_delivery_address_city_sample),
+                        getString(R.string.order_review_delivery_address_postal_sample),
+                        getString(R.string.order_review_customer_details_phone),
+                        getString(R.string.order_review_delivery_address_country_code_sample)));
+
+        //init userid
+        String userId = null;
+        if (oneClickSelection.isChecked()) {
+            userId = getString(R.string.sample_user_id);
+        } else if (twoClicksSelection.isChecked()) {
+            userId = getString(R.string.sample_user_id2);
+        }
 
         // Create credit card options for payment
         // noted : channel migs is needed if bank type is BCA, BRI or MyBank
@@ -2210,17 +2240,17 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             //Set bank to BCA
             creditCard.setBank(BankType.BCA);
             // credit card payment using bank BCA need migs channel
-            creditCard.setChannel(CreditCard.MIGS);
+            creditCard.setChannel(Channel.MIGS);
         } else if (bankMaybankSelection.isChecked()) {
             //Set bank to Maybank
             creditCard.setBank(BankType.MAYBANK);
             // credit card payment using bank Maybank need migs channel
-            creditCard.setChannel(CreditCard.MIGS);
+            creditCard.setChannel(Channel.MIGS);
         } else if (bankBriSelection.isChecked()) {
             // Set bank to BRI
             creditCard.setBank(BankType.BRI);
             // credit card payment using bank BRI need migs channel
-            creditCard.setChannel(CreditCard.MIGS);
+            creditCard.setChannel(Channel.MIGS);
         } else if (bankCimbSelection.isChecked()) {
             // Set bank to CIMB
             creditCard.setBank(BankType.CIMB);
@@ -2231,111 +2261,62 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             creditCard.setType(CardTokenRequest.TYPE_AUTHORIZE);
         }
 
-        String cardClickType;
-
-        if (normalSelection.isChecked()) {
-            cardClickType = getString(R.string.card_click_type_none);
-            if (secureEnabledSelection.isChecked()) {
-                creditCard.setSecure(true);
-            } else {
-                creditCard.setSecure(false);
-            }
-            transactionRequestNew.setCreditCard(creditCard);
-        } else if (twoClicksSelection.isChecked()) {
-            cardClickType = getString(R.string.card_click_type_two_click);
-            creditCard.setSaveCard(true);
-            transactionRequestNew.setCreditCard(creditCard);
-        } else {
-            cardClickType = getString(R.string.card_click_type_one_click);
-            creditCard.setSaveCard(true);
+        if (oneClickSelection.isChecked()) {
             creditCard.setSecure(true);
-            transactionRequestNew.setCreditCard(creditCard);
-        }
-
-        UIKitCustomSetting uiKitCustomSetting = MidtransSDK.getInstance().getUIKitCustomSetting();
-        uiKitCustomSetting.setEnableAutoReadSms(true);
-        if (saveCardEnabledSelection.isChecked()) {
-            uiKitCustomSetting.setSaveCardChecked(true);
+            creditCard.setSaveCard(true);
+        } else if (twoClicksSelection.isChecked()) {
+            creditCard.setSaveCard(true);
         } else {
-            uiKitCustomSetting.setSaveCardChecked(false);
+            creditCard.setSecure(secureEnabledSelection.isChecked());
         }
 
-        if (autoReadSmsEnabledSelection.isChecked()) {
-            uiKitCustomSetting.setEnableAutoReadSms(true);
-        } else {
-            uiKitCustomSetting.setEnableAutoReadSms(false);
-        }
+        // custom fields
+        String customField1 = "sample custom field 1";
+        String customField2 = "sample custom field 2";
+        String customField3 = "sample custom field 3";
 
-        MidtransSDK.getInstance().setUIKitCustomSetting(uiKitCustomSetting);
+        // add custom enable payment
+        List<String> enabledPayments = new ArrayList<>();
+        enabledPayments.add(PaymentType.CREDIT_CARD);
+        enabledPayments.add(PaymentType.BANK_TRANSFER);
+        enabledPayments.add(PaymentType.E_CHANNEL);
 
-        if (secureEnabledSelection.isChecked()) {
-            transactionRequestNew.setCardPaymentInfo(cardClickType, true);
-        } else {
-            transactionRequestNew.setCardPaymentInfo(cardClickType, false);
-        }
 
-        if (paymentChannelsSelectedSelection.isChecked()) {
-            transactionRequestNew.setEnabledPayments(mapEnabledPayments());
-        }
-
-        // set expiry time
-        ExpiryModel expiryModel = new ExpiryModel();
-        expiryModel.setStartTime(Utils.getFormattedTime(System.currentTimeMillis()));
-        expiryModel.setDuration(1);
-
-        if (expiryOneMinuteSelection.isChecked()) {
-            expiryModel.setUnit(ExpiryModel.UNIT_MINUTE);
-            transactionRequestNew.setExpiry(expiryModel);
-        } else if (expiryOneHourSelection.isChecked()) {
-            expiryModel.setUnit(ExpiryModel.UNIT_HOUR);
-            transactionRequestNew.setExpiry(expiryModel);
-        }
-
-        if (promoEnabledSelection.isChecked()) {
-            // Set promo
-            transactionRequestNew.setPromoEnabled(true);
-        }
-
-        UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
-        if (userDetail == null) {
-            userDetail = new UserDetail();
-            userDetail.setUserFullName(getString(R.string.order_review_customer_details_name));
-            userDetail.setEmail(getString(R.string.order_review_customer_details_email));
-            userDetail.setPhoneNumber(getString(R.string.order_review_customer_details_phone));
-            if (oneClickSelection.isChecked()) {
-                userDetail.setUserId(getString(R.string.sample_user_id));
-            } else if (twoClicksSelection.isChecked()) {
-                userDetail.setUserId(getString(R.string.sample_user_id2));
-            }
-            ArrayList<UserAddress> userAddresses = new ArrayList<>();
-            UserAddress userAddress = new UserAddress();
-            userAddress.setAddress(getString(R.string.order_review_delivery_address_sample));
-            userAddress.setCity(getString(R.string.order_review_delivery_address_city_sample));
-            userAddress.setAddressType(com.midtrans.sdk.corekit.core.Constants.ADDRESS_TYPE_BOTH);
-            userAddresses.add(userAddress);
-            userDetail.setUserAddresses(userAddresses);
-        } else {
-            if (oneClickSelection.isChecked()) {
-                userDetail.setUserId(getString(R.string.sample_user_id));
-            } else if (twoClicksSelection.isChecked()) {
-                userDetail.setUserId(getString(R.string.sample_user_id2));
-            }
-        }
-        LocalDataHandler.saveObject(getString(R.string.user_details), userDetail);
-        if (customPermataVaEnabledSelection.isChecked()) {
-            String vaNumber = customPermataVaEnabledSelection.getText().toString().split(" - ")[1];
-            transactionRequestNew.setPermataVa(
-                    new BankTransferRequestModel(vaNumber)
-            );
-        }
+        BcaBankTransfer bcaBankTransfer = null;
         if (customBcaVaEnabledSelection.isChecked()) {
-            String vaNumber = customBcaVaEnabledSelection.getText().toString().split(" - ")[1];
-            transactionRequestNew.setBcaVa(
-                    new BankTransferRequestModel(vaNumber)
-            );
+
+            //set bank bca va number
+            bcaBankTransfer = new BcaBankTransfer();
+            String bcaVaNumber = customBcaVaEnabledSelection.getText().toString().split(" - ")[1];
+            bcaBankTransfer.setVaNumber(bcaVaNumber);
+            bcaBankTransfer.setFreeText(createSampleBcaFreeText());
+
         }
 
-        return transactionRequestNew;
+        BankTransfer permataBankTransfer = null;
+        if (customPermataVaEnabledSelection.isChecked()) {
+            permataBankTransfer = new BankTransfer();
+
+            //set Bank permata va number
+            String bniVaNumber = customPermataVaEnabledSelection.getText().toString().split(" - ")[1];
+            permataBankTransfer.setVaNumber(bniVaNumber);
+
+        }
+
+        return CheckoutTokenRequest.newCompleteCheckout(userId, bcaBankTransfer, permataBankTransfer, creditCard, enabledPayments, itemDetailsList, customerDetails, checkoutOrderDetails, null, customField1, customField2, customField3);
+    }
+
+    private FreeText createSampleBcaFreeText() {
+        List<FreeTextItem> inquiryLang = new ArrayList<>();
+        inquiryLang.add(new FreeTextItem("Text ID inquiry 0", "Text EN inquiry 0"));
+        inquiryLang.add(new FreeTextItem("Text ID inquiry 1", "Text EN inquiry 1"));
+
+        List<FreeTextItem> paymentLang = new ArrayList<>();
+        paymentLang.add(new FreeTextItem("Text ID payment 0", "Text EN payment 0"));
+        paymentLang.add(new FreeTextItem("Text ID payment 1", "Text EN payment 1"));
+
+        FreeText freeText = new FreeText(inquiryLang, paymentLang);
+        return freeText;
     }
 
     private int getSelectedColorPrimaryDark() {
@@ -2361,14 +2342,17 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             //add bni bin number for normal payment and 3DS
             whiteListBins.add("410505");
             whiteListBins.add("526422");
-            creditCard.setWhiteListBins(whiteListBins);
+            creditCard.setWhitelistBins(whiteListBins);
         }
     }
 
     private void setInstallmentOption(CreditCard creditCard) {
-        Installment installment = new Installment();
+        if (noInstallmentSelection.isChecked()) {
+            return;
+        }
 
-        Map<String, ArrayList<Integer>> bankTerms = new HashMap<>();
+        boolean required;
+        Map<String, List<Integer>> bankTerms = new HashMap<>();
 
         if (installmentBriSelection.isChecked()) {
             setInstallmentBankTerm(bankTerms, Constants.INSTALLMENT_BANK_BRI);
@@ -2378,26 +2362,22 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             setInstallmentBankTerm(bankTerms, Constants.INSTALLMENT_BANK_MANDIRI);
         } else if (installmentBcaSelection.isChecked()) {
             setInstallmentBankTerm(bankTerms, Constants.INSTALLMENT__BANK_BCA);
+        }
+
+        if (installmentRequired) {
+            required = true;
         } else {
-            installment = null;
-        }
-        if (installment != null) {
-            installment.setTerms(bankTerms);
-
-            if (installmentRequired) {
-                installment.setRequired(true);
-            } else {
-                installment.setRequired(false);
-            }
+            required = false;
         }
 
+        Installment installment = new Installment(required, bankTerms);
 
         creditCard.setInstallment(installment);
     }
 
-    private void setInstallmentBankTerm(Map<String, ArrayList<Integer>> bankTerms, String bank) {
+    private void setInstallmentBankTerm(Map<String, List<Integer>> bankTerms, String bank) {
         //set term installment
-        ArrayList<Integer> term = new ArrayList<>();
+        List<Integer> term = new ArrayList<>();
         term.add(6);
         term.add(12);
         //set bank and term
@@ -2415,13 +2395,13 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         return mappedPayments;
     }
 
-    private List<SelectPaymentMethodViewModel> mapPaymentMethods(List<EnabledPayment> enabledPayments) {
+    private List<SelectPaymentMethodViewModel> mapPaymentMethods(List<SnapEnabledPayment> enabledPayments) {
         List<SelectPaymentMethodViewModel> viewModels = new ArrayList<>();
         for (int i = 0; i < enabledPayments.size(); i++) {
-            EnabledPayment enabledPayment = enabledPayments.get(i);
-            PaymentMethodsModel model = PaymentMethods.getMethods(this, enabledPayment.getType());
+            SnapEnabledPayment enabledPayment = enabledPayments.get(i);
+            PaymentMethodModel model = PaymentMethodUtils.createPaymentMethodModel(this, enabledPayment.type);
             if (model != null) {
-                viewModels.add(new SelectPaymentMethodViewModel(model.getName(), enabledPayment.getType(), true));
+                viewModels.add(new SelectPaymentMethodViewModel(model.getName(), enabledPayment.type, true));
             }
         }
         return viewModels;

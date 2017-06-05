@@ -19,17 +19,12 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.midtrans.demo.models.SavedCard;
 import com.midtrans.demo.widgets.DemoButton;
-import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
-import com.midtrans.sdk.corekit.core.Logger;
-import com.midtrans.sdk.corekit.core.MidtransSDK;
-import com.midtrans.sdk.corekit.models.CardRegistrationResponse;
-import com.midtrans.sdk.corekit.utilities.Utils;
-import com.midtrans.sdk.uikit.scancard.ExternalScanner;
-import com.midtrans.sdk.uikit.scancard.ScannerModel;
+import com.midtrans.sdk.core.utils.CardUtilities;
+import com.midtrans.sdk.ui.thirdparty.ExternalScanner;
+import com.midtrans.sdk.ui.thirdparty.ScannerModel;
+import com.midtrans.sdk.ui.utils.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -155,7 +150,6 @@ public class DemoCardRegisterActivity extends AppCompatActivity {
         buttonScanCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MidtransSDK.getInstance().getExternalScanner().startScan(DemoCardRegisterActivity.this, SCAN_REQUEST_CODE);
             }
         });
     }
@@ -229,12 +223,12 @@ public class DemoCardRegisterActivity extends AppCompatActivity {
                         s.insert(s.length() - 1, String.valueOf(SPACE_CHAR));
                     }
                 }
-                String cardType = Utils.getCardType(s.toString());
+                String cardType = CardUtilities.getCardType(s.toString());
 
                 setCardType();
 
                 // Move to next input
-                if (s.length() >= 18 && cardType.equals(getString(com.midtrans.sdk.uikit.R.string.amex))) {
+                if (s.length() >= 18 && cardType.equals(getString(com.midtrans.sdk.ui.R.string.amex))) {
                     if (s.length() == 19) {
                         s.delete(s.length() - 1, s.length());
                     }
@@ -259,19 +253,19 @@ public class DemoCardRegisterActivity extends AppCompatActivity {
         }
 
         // Check card type before setting logo
-        cardType = Utils.getCardType(cardNumberText);
+        cardType = CardUtilities.getCardType(cardNumberText);
         switch (cardType) {
-            case Utils.CARD_TYPE_VISA:
-                imageCardLogo.setImageResource(com.midtrans.sdk.uikit.R.drawable.ic_visa);
+            case CardUtilities.CARD_TYPE_VISA:
+                imageCardLogo.setImageResource(com.midtrans.sdk.ui.R.drawable.ic_visa);
                 break;
-            case Utils.CARD_TYPE_MASTERCARD:
-                imageCardLogo.setImageResource(com.midtrans.sdk.uikit.R.drawable.ic_mastercard);
+            case CardUtilities.CARD_TYPE_MASTERCARD:
+                imageCardLogo.setImageResource(com.midtrans.sdk.ui.R.drawable.ic_mastercard);
                 break;
-            case Utils.CARD_TYPE_JCB:
-                imageCardLogo.setImageResource(com.midtrans.sdk.uikit.R.drawable.ic_jcb);
+            case CardUtilities.CARD_TYPE_JCB:
+                imageCardLogo.setImageResource(com.midtrans.sdk.ui.R.drawable.ic_jcb);
                 break;
-            case Utils.CARD_TYPE_AMEX:
-                imageCardLogo.setImageResource(com.midtrans.sdk.uikit.R.drawable.ic_amex);
+            case CardUtilities.CARD_TYPE_AMEX:
+                imageCardLogo.setImageResource(com.midtrans.sdk.ui.R.drawable.ic_amex);
                 break;
         }
     }
@@ -282,13 +276,13 @@ public class DemoCardRegisterActivity extends AppCompatActivity {
 
         String cardNumberText = editCardNumber.getText().toString().trim().replace(" ", "");
         if (TextUtils.isEmpty(cardNumberText)) {
-            layoutCardNumber.setError(getString(com.midtrans.sdk.uikit.R.string.validation_message_card_number));
+            layoutCardNumber.setError(getString(com.midtrans.sdk.ui.R.string.validation_message_card_number));
             isValid = false;
         } else {
             layoutCardNumber.setError(null);
         }
         if (cardNumberText.length() < 13 || !isValidCardNumber(cardNumberText)) {
-            layoutCardNumber.setError(getString(com.midtrans.sdk.uikit.R.string.validation_message_invalid_card_no));
+            layoutCardNumber.setError(getString(com.midtrans.sdk.ui.R.string.validation_message_invalid_card_no));
             isValid = false;
         } else {
             layoutCardNumber.setError(null);
@@ -312,7 +306,7 @@ public class DemoCardRegisterActivity extends AppCompatActivity {
             alternate = !alternate;
         }
         boolean isvalid = (sum % 10 == 0);
-        Logger.i("isValid:" + isvalid);
+        Log.i("cardnumber", "isValid:" + isvalid);
         return isvalid;
     }
 
@@ -353,7 +347,7 @@ public class DemoCardRegisterActivity extends AppCompatActivity {
                                 editCardExpDate.setSelection(editCardExpDate.getText().toString().length());
                             }
                         } catch (Exception exception) {
-                            Logger.e(exception.toString());
+                            Log.e("cardexpiry", exception.toString());
                         }
                     }
                 } else if (s.length() == 2) {
@@ -364,26 +358,26 @@ public class DemoCardRegisterActivity extends AppCompatActivity {
                             int month = Integer.parseInt(input);
 
                             if (month <= 12) {
-                                editCardExpDate.setText(getString(com.midtrans.sdk.uikit.R.string.expiry_month_format, editCardExpDate.getText().toString()));
+                                editCardExpDate.setText(getString(com.midtrans.sdk.ui.R.string.expiry_month_format, editCardExpDate.getText().toString()));
                                 editCardExpDate.setSelection(editCardExpDate.getText().toString().length());
                             } else {
-                                editCardExpDate.setText(getString(com.midtrans.sdk.uikit.R.string.expiry_month_int_format, com.midtrans.sdk.corekit.core.Constants.MONTH_COUNT));
+                                editCardExpDate.setText(getString(com.midtrans.sdk.ui.R.string.expiry_month_int_format, com.midtrans.sdk.ui.constants.Constants.MONTH_COUNT));
                                 editCardExpDate.setSelection(editCardExpDate.getText().toString().length());
                             }
 
                         } catch (Exception exception) {
-                            Logger.e(exception.toString());
+                            Log.e("cardexpiry", exception.toString());
                         }
                     }
                 } else if (s.length() == 1) {
                     try {
                         int month = Integer.parseInt(input);
                         if (month > 1) {
-                            editCardExpDate.setText(getString(com.midtrans.sdk.uikit.R.string.expiry_month_single_digit_format, editCardExpDate.getText().toString()));
+                            editCardExpDate.setText(getString(com.midtrans.sdk.ui.R.string.expiry_month_single_digit_format, editCardExpDate.getText().toString()));
                             editCardExpDate.setSelection(editCardExpDate.getText().toString().length());
                         }
                     } catch (Exception exception) {
-                        Logger.e(exception.toString());
+                        Log.e("cardexpiry", exception.toString());
                     }
                 }
                 lastExpDate = editCardExpDate.getText().toString();
@@ -407,21 +401,21 @@ public class DemoCardRegisterActivity extends AppCompatActivity {
             expDateArray = expiryDate.split("/");
             expDateArray[0] = expDateArray[0].trim();
             expDateArray[1] = expDateArray[1].trim();
-            Logger.i("expDate:" + expDateArray[0].trim(), "" + expDateArray[1].trim());
+            Log.i("expDate:" + expDateArray[0].trim(), "" + expDateArray[1].trim());
         } catch (NullPointerException e) {
-            Logger.i("expiry date empty");
+            Log.i("expiry", e.getMessage());
         } catch (IndexOutOfBoundsException e) {
-            Logger.i("expiry date issue");
+            Log.i("expiry", e.getMessage());
         }
 
         if (TextUtils.isEmpty(expiryDate)) {
-            layoutCardExp.setError(getString(com.midtrans.sdk.uikit.R.string.validation_message_empty_expiry_date));
+            layoutCardExp.setError(getString(com.midtrans.sdk.ui.R.string.validation_message_empty_expiry_date));
             isValid = false;
         } else if (!expiryDate.contains("/")) {
-            layoutCardExp.setError(getString(com.midtrans.sdk.uikit.R.string.validation_message_invalid_expiry_date));
+            layoutCardExp.setError(getString(com.midtrans.sdk.ui.R.string.validation_message_invalid_expiry_date));
             isValid = false;
         } else if (expDateArray.length != 2) {
-            layoutCardExp.setError(getString(com.midtrans.sdk.uikit.R.string.validation_message_invalid_expiry_date));
+            layoutCardExp.setError(getString(com.midtrans.sdk.ui.R.string.validation_message_invalid_expiry_date));
             isValid = false;
         } else {
             try {
@@ -443,13 +437,13 @@ public class DemoCardRegisterActivity extends AppCompatActivity {
 
             int currentMonth = calendar.get(Calendar.MONTH) + 1;
             int currentYear = Integer.parseInt(year);
-            Logger.i("currentMonth:" + currentMonth + ",currentYear:" + currentYear);
+            Log.i("cardexpiry", "currentMonth:" + currentMonth + ",currentYear:" + currentYear);
 
             if (expYear < currentYear) {
-                layoutCardExp.setError(getString(com.midtrans.sdk.uikit.R.string.validation_message_invalid_expiry_date));
+                layoutCardExp.setError(getString(com.midtrans.sdk.ui.R.string.validation_message_invalid_expiry_date));
                 isValid = false;
             } else if (expYear == currentYear && currentMonth > expMonth) {
-                layoutCardExp.setError(getString(com.midtrans.sdk.uikit.R.string.validation_message_invalid_expiry_date));
+                layoutCardExp.setError(getString(com.midtrans.sdk.ui.R.string.validation_message_invalid_expiry_date));
                 isValid = false;
             } else {
                 layoutCardExp.setError(null);
@@ -470,27 +464,6 @@ public class DemoCardRegisterActivity extends AppCompatActivity {
         String date = editCardExpDate.getText().toString();
         String month = date.split("/")[0].trim();
         String year = "20" + date.split("/")[1].trim();
-
-        MidtransSDK.getInstance().cardRegistration(cardNumberText, cvvText, month, year, new CardRegistrationCallback() {
-            @Override
-            public void onSuccess(CardRegistrationResponse response) {
-                hideProgressDialog();
-                Toast.makeText(DemoCardRegisterActivity.this, getString(R.string.save_card_successfully), Toast.LENGTH_SHORT).show();
-                saveAndFinish(response);
-            }
-
-            @Override
-            public void onFailure(CardRegistrationResponse response, String reason) {
-                hideProgressDialog();
-                Toast.makeText(DemoCardRegisterActivity.this, reason, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onError(Throwable error) {
-                hideProgressDialog();
-                Toast.makeText(DemoCardRegisterActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     private boolean checkCardCVVValidity() {
@@ -502,7 +475,7 @@ public class DemoCardRegisterActivity extends AppCompatActivity {
         } else {
 
             if (cvv.length() < 3) {
-                layoutCardCvv.setError(getString(com.midtrans.sdk.uikit.R.string.validation_message_invalid_cvv));
+                layoutCardCvv.setError(getString(com.midtrans.sdk.ui.R.string.validation_message_invalid_cvv));
                 isValid = false;
             } else {
                 layoutCardCvv.setError(null);
@@ -515,14 +488,6 @@ public class DemoCardRegisterActivity extends AppCompatActivity {
         return checkCardNumberValidity() && checkCardExpiryValidity() && checkCardCVVValidity();
     }
 
-    private void saveAndFinish(CardRegistrationResponse response) {
-        SavedCard savedCard = new SavedCard(cardType, response.getSavedTokenId(), response.getTransactionId(), response.getMaskedCard());
-
-        Intent data = new Intent();
-        data.putExtra(CARD_REGISTER_RESPONSE, savedCard);
-        setResult(RESULT_OK, data);
-        finish();
-    }
 
     private void showProgressDialog() {
         progressDialog = new ProgressDialog(this);

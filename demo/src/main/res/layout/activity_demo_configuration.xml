@@ -542,7 +542,7 @@
                         android:minHeight="30dp"
                         android:minWidth="12dp"
                         android:src="@drawable/ic_edit_icon"
-                        android:visibility="visible" />
+                        android:visibility="invisible" />
 
                     <ImageButton
                         android:id="@+id/btn_edit_payment_method"
@@ -722,6 +722,7 @@
                 android:drawablePadding="10dp"
                 android:drawableStart="@drawable/ic_config_promo"
                 android:paddingLeft="10dp"
+                android:visibility="gone"
                 android:text="@string/default_promo_disabled" />
 
             <RadioGroup
@@ -971,7 +972,7 @@
         </LinearLayout>
     </ScrollView>
 
-    <com.midtrans.sdk.uikit.widgets.FancyButton
+    <com.midtrans.sdk.ui.widgets.FancyButton
         android:id="@+id/btn_launch_app"
         android:layout_width="match_parent"
         android:layout_height="@dimen/button_size"

@@ -17,7 +17,6 @@ import android.view.View;
 import com.midtrans.demo.models.SavedCard;
 import com.midtrans.demo.models.SavedCards;
 import com.midtrans.demo.widgets.DemoButton;
-import com.midtrans.sdk.corekit.core.LocalDataHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -121,7 +120,7 @@ public class DemoSavedCardsActivity extends AppCompatActivity {
     private void fetchSavedCards() {
 
         try {
-            SavedCards savedCards = LocalDataHandler.readObject(SAVED_CARDS_TYPE, SavedCards.class);
+            SavedCards savedCards = LocalDataHandler.readObject(this, SAVED_CARDS_TYPE, SavedCards.class);
             List<SavedCard> loadedSaveCards = savedCards.savedCards;
             if (loadedSaveCards != null && !loadedSaveCards.isEmpty()) {
                 this.savedCards.clear();
@@ -200,6 +199,6 @@ public class DemoSavedCardsActivity extends AppCompatActivity {
         savedCards.add(savedCard);
         cardsAdapter.setData(savedCards);
 
-        LocalDataHandler.saveObject(SAVED_CARDS_TYPE, new SavedCards(savedCards));
+        LocalDataHandler.saveObject(this, SAVED_CARDS_TYPE, new SavedCards(savedCards));
     }
 }

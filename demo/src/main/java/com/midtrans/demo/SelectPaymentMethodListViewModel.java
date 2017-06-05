@@ -1,6 +1,6 @@
 package com.midtrans.demo;
 
-import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
+import com.midtrans.sdk.core.models.snap.transaction.SnapEnabledPayment;
 
 import java.io.Serializable;
 import java.util.List;
@@ -10,17 +10,17 @@ import java.util.List;
  */
 
 public class SelectPaymentMethodListViewModel implements Serializable {
-    private List<EnabledPayment> enabledPayments;
+    private List<SelectPaymentMethodViewModel> enabledPayments;
 
-    public SelectPaymentMethodListViewModel(List<EnabledPayment> enabledPayments) {
+    public SelectPaymentMethodListViewModel(List<SelectPaymentMethodViewModel> enabledPayments) {
         this.enabledPayments = enabledPayments;
     }
 
-    public List<EnabledPayment> getEnabledPayments() {
+    public List<SelectPaymentMethodViewModel> getEnabledPayments() {
         return enabledPayments;
     }
 
-    public void setEnabledPayments(List<EnabledPayment> enabledPayments) {
+    public void setEnabledPayments(List<SelectPaymentMethodViewModel> enabledPayments) {
         this.enabledPayments = enabledPayments;
     }
 }

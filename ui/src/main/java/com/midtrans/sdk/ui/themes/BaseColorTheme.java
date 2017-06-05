@@ -5,6 +5,7 @@ package com.midtrans.sdk.ui.themes;
  */
 
 public interface BaseColorTheme {
+
     int getPrimaryColor();
 
     int getPrimaryDarkColor();

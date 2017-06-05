@@ -11,6 +11,11 @@ public class FreeText implements Serializable {
     private List<FreeTextItem> inquiry;
     private List<FreeTextItem> payment;
 
+    public FreeText(List<FreeTextItem> inquiry, List<FreeTextItem> payment) {
+        this.inquiry = inquiry;
+        this.payment = payment;
+    }
+
     public List<FreeTextItem> getInquiry() {
         return inquiry;
     }
