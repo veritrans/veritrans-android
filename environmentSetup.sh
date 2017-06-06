@@ -23,6 +23,11 @@ function copyEnvVarsToGradleProperties {
         echo "KEY_ALIAS=$KEY_ALIAS" >> $GRADLE_PROPERTIES
         echo "KEY_PASSWORD=$KEY_PASSWORD" >> $GRADLE_PROPERTIES
 
+        # keystore v2
+        echo "KEYSTORE_V2=$KEYSTORE_V2" >> $GRADLE_PROPERTIES
+        echo "KEYSTORE_PASSWORD_V2=$KEYSTORE_PASSWORD_V2" >> $GRADLE_PROPERTIES
+        echo "KEY_ALIAS_V2=$KEY_ALIAS_V2" >> $GRADLE_PROPERTIES
+        echo "KEY_PASSWORD_V2=$KEY_PASSWORD_V2" >> $GRADLE_PROPERTIES
     else
         > $GRADLE_PROPERTIES
         echo "File exist. Clear previous data."
@@ -39,10 +44,16 @@ function copyEnvVarsToGradleProperties {
                 echo "KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD" >> $GRADLE_PROPERTIES
                 echo "KEY_ALIAS=$KEY_ALIAS" >> $GRADLE_PROPERTIES
                 echo "KEY_PASSWORD=$KEY_PASSWORD" >> $GRADLE_PROPERTIES
+
+                #keystore v2
+                echo "KEYSTORE_V2=$KEYSTORE_V2" >> $GRADLE_PROPERTIES
+                echo "KEYSTORE_PASSWORD_V2=$KEYSTORE_PASSWORD_V2" >> $GRADLE_PROPERTIES
+                echo "KEY_ALIAS_V2=$KEY_ALIAS_V2" >> $GRADLE_PROPERTIES
+                echo "KEY_PASSWORD_V2=$KEY_PASSWORD_V2" >> $GRADLE_PROPERTIES
     fi
 }
 
 function setGit {
-    git config --global user.name $GITHUB_NAME
-    git config --global user.email $GITHUB_EMAIL
+    git config --global user.name $GITHUB_NAME_V2
+    git config --global user.email $GITHUB_EMAIL_V2
 }

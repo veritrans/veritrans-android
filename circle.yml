@@ -33,20 +33,15 @@ test:
         # Unit Test
        - (./gradlew corekit:testDevelopmentDebugUnitTestCoverage -PdisablePreDex):
             timeout: 3600
-        # Unit Test uikit
+        # unit Test uikit
        - (./gradlew uikit:testDevelopmentDebugUnitTestCoverage -PdisablePreDex):
             timeout: 3600
-        # Unit Test Core v2
-       - (./gradlew :core:testDebugUnitTestCoverage -PdisablePreDex):
-                     timeout: 3600
-
-        # Unit Test Demo App
        - (./gradlew demo:assembleRelease -PdisablePreDex):
                    timeout: 3600
 
     post:
-       - cp -r corekit/build/reports $CIRCLE_ARTIFACTS
-       - cp -r corekit/build/reports/ $CIRCLE_TEST_REPORTS
+       - cp -r core/build/reports $CIRCLE_ARTIFACTS
+       - cp -r core/build/reports/ $CIRCLE_TEST_REPORTS
 
 
 # Deployment section
@@ -55,16 +50,15 @@ deployment:
         tag: /v[0-9]+(\.[0-9]+)*/
         owner: veritrans
         commands:
-            - ./gradlew :clean :corekit:assembleRelease :corekit:bintrayUpload -PdisablePreDex
-            - ./gradlew :clean :uikit:assembleRelease :uikit:bintrayUpload -PdisablePreDex
+            - ./gradlew :clean :core:assembleRelease :core:bintrayUpload -PdisablePreDex
+            - ./gradlew :clean :ui:assembleRelease :ui:bintrayUpload -PdisablePreDex
             - ./gradlew :clean :scancard:assembleRelease :scancard:bintrayUpload -PdisablePreDex
-            - ./gradlew :clean :widgets:assembleRelease :widgets:bintrayUpload -PdisablePreDex
+            - ./gradlew :clean :analytics:assembleRelease :analytics:bintrayUpload -PdisablePreDex
     develop:
         branch: develop
         owner: veritrans
         commands:
             - ./gradlew :demo:assembleDevelopmentRelease :demo:crashlyticsUploadDistributionDevelopmentRelease
-
     bump:
       branch: release
       owner: veritrans
