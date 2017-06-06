@@ -1,5 +1,27 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'maven-publish'
 apply from: 'jacoco.gradle'
+
+group = 'com.midtrans'
+version = '0.0.2'
+
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.3.1'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6'
+        classpath 'com.vanniktech:gradle-android-junit-jacoco-plugin:0.4.0'
+    }
+}
+
+repositories {
+    jcenter()
+    maven { url "https://dl.bintray.com/pt-midtrans/maven" }
+}
 
 android {
     compileSdkVersion 25
@@ -24,6 +46,8 @@ android {
     buildTypes {
         debug {
             minifyEnabled false
+            testCoverageEnabled = true;
+
             consumerProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -33,6 +57,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+}
+
+task sourceJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier "source"
+}
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.14.1' //version required
+}
+
+tasks.withType(Test) {
+    jvmArgs '-Dorg.gradle.jvmargs="-Xmx2048m -XX:MaxPermSize=1024m -Xms512m -XX:+HeapDumpOnOutOfMemoryError"'
 }
 
 dependencies {
@@ -54,4 +90,50 @@ dependencies {
     testCompile "org.powermock:powermock-api-mockito:${rootProject.powermockVersion}"
     testCompile "org.powermock:powermock-module-javaagent:${rootProject.powermockVersion}"
     testCompile "org.powermock:powermock-module-junit4-rule-agent:${rootProject.powermockVersion}"
+}
+
+
+publishing {
+    publications {
+
+        BintrayPublication(MavenPublication) {
+            artifact(sourceJar)
+            artifact("$buildDir/outputs/aar/core-release.aar")
+            groupId group
+            artifactId 'core'
+            version version
+
+            //The publication doesn't know about our dependencies, so we have to manually add them to the pom
+            pom.withXml {
+                def dependenciesNode = asNode().appendNode('dependencies')
+
+                //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
+                configurations.compile.allDependencies.each {
+                    def dependencyNode = dependenciesNode.appendNode('dependency')
+                    dependencyNode.appendNode('groupId', it.group)
+                    dependencyNode.appendNode('artifactId', it.name)
+                    dependencyNode.appendNode('version', it.version)
+                }
+            }
+        }
+    }
+}
+
+bintray {
+    user = System.getenv('BINTRAY_USER')
+    key = System.getenv('BINTRAY_KEY')
+    configurations = ['archives']
+    pkg {
+        repo = 'maven'
+        name = project.name
+        userOrg = 'pt-midtrans'
+        licenses = ['Apache-2.0']
+        vcsUrl = 'https://github.com/veritrans/veritrans-android.git'
+        desc = 'Android SDK for integrating with midtrans.com'
+        websiteUrl = "https://midtrans.com"
+        publish = true
+        publicDownloadNumbers = true
+    }
+    publications = ['BintrayPublication']
+
 }
