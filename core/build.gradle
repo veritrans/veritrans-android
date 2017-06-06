@@ -120,8 +120,8 @@ publishing {
 }
 
 bintray {
-    user = System.getenv('BINTRAY_USER')
-    key = System.getenv('BINTRAY_KEY')
+    user = System.getenv('BINTRAY_USER_V2')
+    key = System.getenv('BINTRAY_KEY_V2')
     configurations = ['archives']
     pkg {
         repo = 'maven'

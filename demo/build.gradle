@@ -40,10 +40,10 @@ android {
 
     signingConfigs {
         release {
-            storeFile file("$KEYSTORE")
-            storePassword "$KEYSTORE_PASSWORD"
-            keyAlias "$KEY_ALIAS"
-            keyPassword "$KEY_PASSWORD"
+            storeFile file("$KEYSTORE_V2")
+            storePassword "$KEYSTORE_PASSWORD_V2"
+            keyAlias "$KEY_ALIAS_V2"
+            keyPassword "$KEY_PASSWORD_V2"
         }
     }
 
