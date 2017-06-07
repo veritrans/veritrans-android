@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
+import com.midtrans.sdk.uikit.BuildConfig;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.fragments.PaymentTransactionStatusFragment;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
@@ -28,8 +29,12 @@ public class BaseActivity extends AppCompatActivity {
     protected Fragment currentFragment = null;
     protected boolean saveCurrentFragment = false;
     protected int RESULT_CODE = RESULT_CANCELED;
+    public static final String ENVIRONMENT_DEVELOPMENT = "development";
+
 
     public void initializeTheme() {
+        initBadgeTestView();
+
         MidtransSDK mMidtransSDK = MidtransSDK.getInstance();
         if (mMidtransSDK != null) {
             ImageView logo = (ImageView) findViewById(R.id.merchant_logo);
@@ -49,10 +54,19 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
+    private void initBadgeTestView() {
+        if (BuildConfig.FLAVOR.equalsIgnoreCase(ENVIRONMENT_DEVELOPMENT)) {
+            ImageView badgeView = (ImageView) findViewById(R.id.image_sandbox_badge);
+            if (badgeView != null) {
+                badgeView.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+        if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                 && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
             overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
         }
@@ -102,7 +116,7 @@ public class BaseActivity extends AppCompatActivity {
             if (!fragmentPopped) {
                 Logger.i("fragment not in back stack, create it");
                 FragmentTransaction ft = fragmentManager.beginTransaction();
-                if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                         && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                     ft.setCustomAnimations(R.anim.slide_in, R.anim.slide_out, R.anim.slide_in_back, R.anim.slide_out_back);
                 }
