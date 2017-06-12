@@ -8,7 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
 
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
@@ -86,14 +86,19 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
     }
 
     private void prepareToolbar() {
-        Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_back);
-        MidtransSDK midtransSDK =MidtransSDK.getInstance();
-        if (midtransSDK.getColorTheme() != null && midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
-            drawable.setColorFilter(
-                    midtransSDK.getColorTheme().getPrimaryDarkColor(),
-                    PorterDuff.Mode.SRC_ATOP);
+        try {
+            Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_back);
+            MidtransSDK midtransSDK = MidtransSDK.getInstance();
+            if (midtransSDK != null && midtransSDK.getColorTheme() != null && midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
+                drawable.setColorFilter(
+                        midtransSDK.getColorTheme().getPrimaryDarkColor(),
+                        PorterDuff.Mode.SRC_ATOP);
+            }
+            mToolbar.setNavigationIcon(drawable);
+        } catch (Exception e) {
+            Log.e(TAG, "rendering theme:" + e.getMessage());
         }
-        mToolbar.setNavigationIcon(drawable);
+
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

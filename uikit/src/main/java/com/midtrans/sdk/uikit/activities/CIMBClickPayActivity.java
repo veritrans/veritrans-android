@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -33,6 +33,7 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
     private static final int PAYMENT_WEB_INTENT = 151;
     private static final String STATUS_FRAGMENT = "status";
     private static final String HOME_FRAGMENT = "home";
+    private static final String TAG = "CIMBClickPayActivity";
     private InstructionCIMBFragment cimbClickPayFragment = null;
     private FancyButton buttonConfirmPayment = null;
     private Toolbar mToolbar = null;
@@ -77,11 +78,17 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
 
     private void prepareToolbar() {
         Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_back);
-        MidtransSDK midtransSDK =MidtransSDK.getInstance();
-        if (midtransSDK.getColorTheme() != null && midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
-            drawable.setColorFilter(
-                    midtransSDK.getColorTheme().getPrimaryDarkColor(),
-                    PorterDuff.Mode.SRC_ATOP);
+
+        try {
+            MidtransSDK midtransSDK = MidtransSDK.getInstance();
+
+            if (midtransSDK != null && midtransSDK.getColorTheme() != null && midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
+                drawable.setColorFilter(
+                        midtransSDK.getColorTheme().getPrimaryDarkColor(),
+                        PorterDuff.Mode.SRC_ATOP);
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "render toolbar:" + e.getMessage());
         }
         mToolbar.setNavigationIcon(drawable);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -145,7 +152,7 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
                     intentPaymentWeb.putExtra(Constants.TYPE, WebviewFragment.TYPE_CIMB_CLICK);
                     intentPaymentWeb.putExtra(Constants.WEBVIEW_REDIRECT_URL, response.getFinishRedirectUrl());
                     startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
-                    if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                    if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                             && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                     }
