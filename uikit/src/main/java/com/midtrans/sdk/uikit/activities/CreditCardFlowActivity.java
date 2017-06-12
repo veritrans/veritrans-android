@@ -147,6 +147,7 @@ public class CreditCardFlowActivity extends BaseActivity {
 
 
     private void initCreditCard() {
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
         creditCardTransaction.setProperties(midtransSDK.getCreditCard(), SdkUIFlowUtil.getBankBins(this));
 
         initBankBins();
@@ -866,17 +867,4 @@ public class CreditCardFlowActivity extends BaseActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.card_container, fragment).addToBackStack("").commit();
     }
 
-    public void addCardDetailFragment(CardDetailsFragment cardDetailsFragment, boolean addToBackStack) {
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        if (addToBackStack) {
-            if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
-                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
-                fragmentTransaction.setCustomAnimations(R.anim.slide_in, R.anim.slide_out, R.anim.slide_in_back, R.anim.slide_out_back);
-            }
-            fragmentTransaction.replace(R.id.card_container, cardDetailsFragment).addToBackStack("").commit();
-        } else {
-            fragmentTransaction.replace(R.id.card_container, cardDetailsFragment).addToBackStack("").commit();
-        }
-
-    }
 }

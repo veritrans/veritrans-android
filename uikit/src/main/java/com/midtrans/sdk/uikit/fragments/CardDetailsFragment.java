@@ -103,9 +103,6 @@ public class CardDetailsFragment extends Fragment {
 
     private int installmentCurrentPosition, installmentTotalPositions;
 
-
-    private MidtransSDK midtransSDK;
-
     public static CardDetailsFragment newInstance() {
         return new CardDetailsFragment();
     }
@@ -136,7 +133,6 @@ public class CardDetailsFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initMidtransSDK();
         bindViews(view);
         initScanCard();
         initSaveCardLayout();
@@ -263,6 +259,7 @@ public class CardDetailsFragment extends Fragment {
     }
 
     private void initScanCard() {
+        final MidtransSDK midtransSDK = MidtransSDK.getInstance();
         if (midtransSDK != null && midtransSDK.getExternalScanner() != null) {
             // Set background color for scan button
             if (midtransSDK.getColorTheme() != null && midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
@@ -282,7 +279,8 @@ public class CardDetailsFragment extends Fragment {
     }
 
     private void initSaveCardLayout() {
-        if (midtransSDK.getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_none))) {
+        String cardClickType = MidtransSDK.getInstance().getTransactionRequest().getCardClickType();
+        if (!TextUtils.isEmpty(cardClickType) && cardClickType.equals(getString(R.string.card_click_type_none))) {
             layoutSaveCard.setVisibility(View.GONE);
         } else {
             layoutSaveCard.setVisibility(View.VISIBLE);
@@ -308,6 +306,8 @@ public class CardDetailsFragment extends Fragment {
         payNowBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                MidtransSDK midtransSDK = MidtransSDK.getInstance();
+
                 // Track event pay now
                 midtransSDK.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
 
@@ -370,6 +370,8 @@ public class CardDetailsFragment extends Fragment {
     }
 
     private void fetchSavedCardIfAvailable() {
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
+
         if (getArguments() != null) {
             savedCard = (SaveCardRequest) getArguments().getSerializable(PARAM_CARD);
             promo = (PromoResponse) getArguments().getSerializable(PARAM_PROMO);
@@ -430,9 +432,6 @@ public class CardDetailsFragment extends Fragment {
         }
     }
 
-    private void initMidtransSDK() {
-        midtransSDK = MidtransSDK.getInstance();
-    }
 
     private void bindViews(View view) {
         deleteCardBtn = (FancyButton) view.findViewById(R.id.image_saved_card_delete);
@@ -467,6 +466,7 @@ public class CardDetailsFragment extends Fragment {
     }
 
     private void initTheme() {
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
         try {
             if (midtransSDK != null && midtransSDK.getColorTheme() != null) {
                 if (midtransSDK.getColorTheme().getSecondaryColor() != 0) {
@@ -561,6 +561,7 @@ public class CardDetailsFragment extends Fragment {
     }
 
     private void changeDialogButtonColor(AlertDialog alertDialog) {
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
         if (alertDialog.isShowing()
                 && midtransSDK != null
                 && midtransSDK.getColorTheme() != null
@@ -648,7 +649,7 @@ public class CardDetailsFragment extends Fragment {
 
         if (!isValid) {
             //track invalid cc cvv
-            midtransSDK.trackEvent(AnalyticsEventName.CREDIT_CARD_CVV_VALIDATION, MixpanelAnalyticsManager.CARD_MODE_NORMAL);
+            MidtransSDK.getInstance().trackEvent(AnalyticsEventName.CREDIT_CARD_CVV_VALIDATION, MixpanelAnalyticsManager.CARD_MODE_NORMAL);
         }
         return isValid;
     }
@@ -676,7 +677,7 @@ public class CardDetailsFragment extends Fragment {
         }
         if (!isValid) {
             //track invalid cc number
-            midtransSDK.trackEvent(AnalyticsEventName.CREDIT_CARD_NUMBER_VALIDATION, MixpanelAnalyticsManager.CARD_MODE_NORMAL);
+            MidtransSDK.getInstance().trackEvent(AnalyticsEventName.CREDIT_CARD_NUMBER_VALIDATION, MixpanelAnalyticsManager.CARD_MODE_NORMAL);
         }
         return isValid;
     }
@@ -899,7 +900,7 @@ public class CardDetailsFragment extends Fragment {
 
         if (!isValid) {
             //track invalid cc expiry
-            midtransSDK.trackEvent(AnalyticsEventName.CREDIT_CARD_EXPIRY_VALIDATION, MixpanelAnalyticsManager.CARD_MODE_NORMAL);
+            MidtransSDK.getInstance().trackEvent(AnalyticsEventName.CREDIT_CARD_EXPIRY_VALIDATION, MixpanelAnalyticsManager.CARD_MODE_NORMAL);
         }
         return isValid;
     }
@@ -990,7 +991,7 @@ public class CardDetailsFragment extends Fragment {
                 showInstallmentLayout(false);
             } else if (cardNumber.length() < 7) {
                 showInstallmentLayout(false);
-            } else if (midtransSDK.getCreditCard() == null) {
+            } else if (MidtransSDK.getInstance().getCreditCard() == null) {
                 showInstallmentLayout(false);
             } else {
                 String cleanCardNumber = cardNumber.getText().toString().trim().replace(" ", "").substring(0, 6);
@@ -1037,6 +1038,7 @@ public class CardDetailsFragment extends Fragment {
     }
 
     private void initPromoUsingPromoEngine() {
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
         if (midtransSDK.getTransactionRequest().isPromoEnabled()
                 && midtransSDK.getPromoResponses() != null
                 && !midtransSDK.getPromoResponses().isEmpty()) {
@@ -1062,6 +1064,7 @@ public class CardDetailsFragment extends Fragment {
     }
 
     private void obtainPromo(final PromoResponse promoResponse) {
+        final MidtransSDK midtransSDK = MidtransSDK.getInstance();
         midtransSDK.obtainPromo(String.valueOf(promoResponse.getId()), midtransSDK.getTransactionRequest().getAmount(), new ObtainPromoCallback() {
             @Override
             public void onSuccess(ObtainPromoResponse response) {
