@@ -29,6 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="@dimen/eight_dp"
+            android:layout_marginEnd="@dimen/eight_dp"
             android:src="@drawable/ic_arrow_right_white" />
     </LinearLayout>
 
@@ -406,7 +407,9 @@
                 android:layout_marginTop="19dp"
                 android:paddingBottom="10dp"
                 android:paddingLeft="5dp"
+                android:paddingStart="@dimen/five_dp"
                 android:paddingRight="10dp"
+                android:paddingEnd="10dp"
                 android:paddingTop="8dp"
                 android:visibility="gone"
                 app:fb_borderColor="@color/delete_color"

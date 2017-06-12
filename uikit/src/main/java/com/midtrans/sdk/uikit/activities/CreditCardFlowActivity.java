@@ -147,10 +147,12 @@ public class CreditCardFlowActivity extends BaseActivity {
 
 
     private void initCreditCard() {
-        creditCardTransaction.setProperties(MidtransSDK.getInstance().getCreditCard(), SdkUIFlowUtil.getBankBins(this));
+        creditCardTransaction.setProperties(midtransSDK.getCreditCard(), SdkUIFlowUtil.getBankBins(this));
 
         initBankBins();
-        if (!MidtransSDK.getInstance().getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_none))) {
+
+        String cardClickType = midtransSDK.getTransactionRequest().getCardClickType();
+        if (!TextUtils.isEmpty(cardClickType) && !cardClickType.equals(getString(R.string.card_click_type_none))) {
             getCreditCards();
         } else {
             showAddCardDetailFragment();
@@ -242,14 +244,21 @@ public class CreditCardFlowActivity extends BaseActivity {
     }
 
     private void prepareToolbar() {
-        Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_back);
-        MidtransSDK midtransSDK = MidtransSDK.getInstance();
-        if (midtransSDK.getColorTheme() != null && midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
-            drawable.setColorFilter(
-                    midtransSDK.getColorTheme().getPrimaryDarkColor(),
-                    PorterDuff.Mode.SRC_ATOP);
+        try {
+            Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_back);
+            MidtransSDK midtransSDK = MidtransSDK.getInstance();
+            if (midtransSDK.getColorTheme() != null && midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
+                if (drawable != null) {
+                    drawable.setColorFilter(
+                            midtransSDK.getColorTheme().getPrimaryDarkColor(),
+                            PorterDuff.Mode.SRC_ATOP);
+                }
+            }
+            toolbar.setNavigationIcon(drawable);
+        } catch (Exception e) {
+            Log.e(TAG, "rendering theme:" + e.getMessage());
         }
-        toolbar.setNavigationIcon(drawable);
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -857,4 +866,17 @@ public class CreditCardFlowActivity extends BaseActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.card_container, fragment).addToBackStack("").commit();
     }
 
+    public void addCardDetailFragment(CardDetailsFragment cardDetailsFragment, boolean addToBackStack) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        if (addToBackStack) {
+            if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
+                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                fragmentTransaction.setCustomAnimations(R.anim.slide_in, R.anim.slide_out, R.anim.slide_in_back, R.anim.slide_out_back);
+            }
+            fragmentTransaction.replace(R.id.card_container, cardDetailsFragment).addToBackStack("").commit();
+        } else {
+            fragmentTransaction.replace(R.id.card_container, cardDetailsFragment).addToBackStack("").commit();
+        }
+
+    }
 }
