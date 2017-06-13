@@ -31,7 +31,7 @@ dependencies:
 test:
     override:
         # Unit Test
-       - (./gradlew corekit:testDevelopmentDebugUnitTestCoverage -PdisablePreDex):
+       - (./gradlew core:testDebugUnitTestCoverage -PdisablePreDex):
             timeout: 3600
         # unit Test uikit
        - (./gradlew uikit:testDevelopmentDebugUnitTestCoverage -PdisablePreDex):

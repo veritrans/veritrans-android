@@ -31,8 +31,7 @@
         android:layout_marginEnd="@dimen/sixteen_dp"
         android:layout_marginRight="@dimen/sixteen_dp"
         android:layout_toEndOf="@id/merchant_logo"
-        android:layout_toRightOf="@+id/merchant_logo"
-        android:layout_toStartOf="@id/image_saved_card_delete">
+        android:layout_toRightOf="@+id/merchant_logo" >
 
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
             android:id="@+id/text_title"
