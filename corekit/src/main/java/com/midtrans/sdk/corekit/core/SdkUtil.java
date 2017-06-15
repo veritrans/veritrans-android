@@ -553,6 +553,10 @@ public class SdkUtil {
             requestModel.setBcaVa(transactionRequest.getBcaVa());
         }
 
+        if (transactionRequest.getBniVa() != null) {
+            requestModel.setBcaVa(transactionRequest.getBniVa());
+        }
+
         if (transactionRequest.getEnabledPayments() != null
                 && !transactionRequest.getEnabledPayments().isEmpty()) {
             requestModel.setEnabledPayments(transactionRequest.getEnabledPayments());

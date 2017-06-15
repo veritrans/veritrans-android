@@ -192,51 +192,53 @@
     <!-- Mandiri bank transfer Instruction-->
     <string name="instruction">Instructions</string>
 
-    <string name="mandiri_instruction_step1">On the main menu, Choose \'Pay/Buy\'.</string>
-    <string name="mandiri_instruction_step2">Choose \'Others\'.</string>
-    <string name="mandiri_instruction_step3">Choose \'Multi Payment\'.</string>
-    <string name="mandiri_instruction_step4">Enter 70012 (Midtrans company code) and press \'Correct\'.</string>
-    <string name="mandiri_instruction_step5">Enter your Payment code and press \'Correct\'.</string>
-    <string name="mandiri_instruction_step6">Your payment details will appear on the payment confirmation page. If the information is correct press \'Yes\'.</string>
+    <string name="mandiri_instruction_step1">On the main menu, Choose <b>Pay/Buy</b>.</string>
+    <string name="mandiri_instruction_step2">Choose <b>Others</b>.</string>
+    <string name="mandiri_instruction_step3">Choose <b>Multi Payment</b>.</string>
+    <string name="mandiri_instruction_step4">Enter 70012 (Midtrans company code) and press <b>Correct</b>.</string>
+    <string name="mandiri_instruction_step5">Enter your Payment code and press <b>Correct</b>.</string>
+    <string name="mandiri_instruction_step6">Your payment details will appear on the payment confirmation page. If the information is correct press <b>Yes</b>.</string>
 
-    <string name="mandiri_internet_instruction_step1">1.\tLogin to Mandiri Internet Banking (<a href="http://ib.bankmandiri.co.id/">http://ib.bankmandiri.co.id/</a>).</string>
-    <string name="mandiri_internet_instruction_step2">2.\tFrom the main menu choose \'Payment\', then choose \'Multi Payment\'.</string>
-    <string name="mandiri_internet_instruction_step3">3.\tSelect your account in \'From Account\', then \'Billing Name\' select \'Midtrans\'.</string>
-    <string name="mandiri_internet_instruction_step4">4.\tEnter the \'Payment Code\' and you will receive your payment details.</string>
-    <string name="mandiri_internet_instruction_step5">5.\tConfirm your payment using Mandiri Token.</string>
+    <string name="mandiri_internet_instruction_step1">Login to Mandiri Internet Banking (<a href="http://ib.bankmandiri.co.id/">http://ib.bankmandiri.co.id/</a>).</string>
+    <string name="mandiri_internet_instruction_step2">From the main menu choose <b>Payment</b>, then choose <b>Multi Payment</b>.</string>
+    <string name="mandiri_internet_instruction_step3">Select your account in <b>From Account</b>, then <b>Billing Name</b> select <b>Midtrans</b>.</string>
+    <string name="mandiri_internet_instruction_step4">Enter the <b>Payment Code</b> and you will receive your payment details.</string>
+    <string name="mandiri_internet_instruction_step5">Confirm your payment using your Mandiri Token.</string>
 
 
     <!-- bca/ prima bank transfer Instruction-->
     <!--BCA Transfer-->
-    <string name="bca_instruction_step1">On the main menu, Choose \'Other Transaction\'.</string>
-    <string name="bca_instruction_step2">Choose \'Transfer\'.</string>
-    <string name="bca_instruction_step3">Choose \'To BCA Virtual Account\'.</string>
-    <string name="bca_instruction_step4">Enter your payment code (11 digit code) and press \'Correct\'.</string>
-    <string name="bca_instruction_step5">Enter full amount to be paid and press \'Correct\'.</string>
-    <string name="bca_instruction_step6">Your payment details will appear on the confirmation page. If information is correct press \'Yes\'.</string>
+    <string name="bca_instruction_step1">On the main menu, Choose <b>Other Transaction</b>.</string>
+    <string name="bca_instruction_step2">Choose <b>Transfer</b>.</string>
+    <string name="bca_instruction_step3">Choose <b>To BCA Virtual Account</b>.</string>
+    <string name="bca_instruction_step4">Enter your <b>Payment Code</b> (11 digit code) and press <b>Correct</b>.</string>
+    <string name="bca_instruction_step5">Enter full amount to be paid and press <b>Correct</b>.</string>
+    <string name="bca_instruction_step6">Your payment details will appear on the confirmation page. If information is correct press <b>Yes</b>.</string>
+
     <!--Klik BCA-->
-    <string name="bca_klik_instruction_step1">1.\tChoose menu \'Fund Transfer\'.</string>
-    <string name="bca_klik_instruction_step2">2.\tChoose \'Transfer to BCA Virtual Account\'.</string>
-    <string name="bca_klik_instruction_step3">3.\t\'Input BCA Virtual Account Number\' or \'Choose from Transfer List\' and click \'Continue\'.</string>
-    <string name="bca_klik_instruction_step4">4.\tAmount to be paid, account number and Merchant name will appear on the payment confirmation page, if information is right click \'Continue\'.</string>
-    <string name="bca_klik_instruction_step5">5.\tGet your \'BCA token\' and input KEYBCA Response \'APPLI 1\' and click \'Submit\'.</string>
-    <string name="bca_klik_instruction_step6">6.\tYour transaction is Done.</string>
+    <string name="bca_klik_instruction_step1">Choose menu <b>Fund Transfer</b>.</string>
+    <string name="bca_klik_instruction_step2">Choose <b>Transfer to BCA Virtual Account</b>.</string>
+    <string name="bca_klik_instruction_step3"><b>Input BCA Virtual Account Number</b>  or <b>Choose from Transfer List</b> and click <b>Continue</b>.</string>
+    <string name="bca_klik_instruction_step4">Amount to be paid, account number and Merchant name will appear on the payment confirmation page, if information is right click <b>Continue</b>.</string>
+    <string name="bca_klik_instruction_step5">Get your <b>BCA token</b> and input KEYBCA Response <b>APPLI 1</b> and click <b>Submit</b>.</string>
+    <string name="bca_klik_instruction_step6">Your transaction is Done.</string>
 
     <!--KLIK BCA PAYMENT-->
-    <string name="bca_klik_pay_instruction_step1">You will be redirected to BCA KlikPay once you tap \'Confirm Payment\' button.</string>
+    <string name="bca_klik_pay_instruction_step1">You will be redirected to BCA KlikPay once you tap <b>Confirm Payment</b> button.</string>
     <string name="bca_klik_pay_instruction_step2">For payment, you can choose to use KlikBCA Individual Account or BCA credit card.</string>
     <string name="bca_klik_pay_instruction_step3">For more information about BCA KlikPay please contact Halo BCA at (021) 1500888 or visit <a href="http://klikbca.com/KlikPay/klikpay.html">http://klikbca.com/KlikPay/klikpay.html</a>.</string>
 
     <!--m-BCA-->
-    <string name="bca_mbanking_instruction_step1">1.\tChoose \'m-transfer\'.</string>
-    <string name="bca_mbanking_instruction_step2">2.\tChoose \'Transfer\'</string>
-    <string name="bca_mbanking_instruction_step3">3.\tChoose \'BCA Virtual Account\'.</string>
-    <string name="bca_mbanking_instruction_step4">4.\tChoose \'account number\' that you want to use for payment.</string>
-    <string name="bca_mbanking_instruction_step5">5.\tInput BCA Virtual Account Number and click \'OK\'.</string>
-    <string name="bca_mbanking_instruction_step6">6.\tBCA Virtual Account Number and your account information will appear on the payment confirmation page and then click \'Send\'.</string>
-    <string name="bca_mbanking_instruction_step7">7.\tClick \'OK\' on the payment confirmation page.</string>
-    <string name="bca_mbanking_instruction_step8">8.\tEnter amount to be transferred then click \'OK\'.</string>
-    <string name="bca_mbanking_instruction_step9">9.\tYour transaction is done.</string>
+    <string name="bca_mbanking_instruction_step1">Choose <b>m-transfer</b>.</string>
+    <string name="bca_mbanking_instruction_step2">Choose <b>Transfer</b></string>
+    <string name="bca_mbanking_instruction_step3">Choose <b>BCA Virtual Account</b>.</string>
+    <string name="bca_mbanking_instruction_step4">Choose <b>account number</b> that you want to use for payment.</string>
+    <string name="bca_mbanking_instruction_step5">Input BCA Virtual Account Number and click <b>OK</b>.</string>
+    <string name="bca_mbanking_instruction_step6">BCA Virtual Account Number and your account information will appear on the payment confirmation page and then click <b>Send</b>.</string>
+    <string name="bca_mbanking_instruction_step7">Click <b>OK</b> on the payment confirmation page.</string>
+    <string name="bca_mbanking_instruction_step8">Enter amount to be transferred then click <b>OK</b>.</string>
+    <string name="bca_mbanking_instruction_step9">Your transaction is done.</string>
+
     <!-- cimb transfer Instructions -->
     <string name="cimb_instruction_step1">Please make sure that you have a User ID for CIMB Clicks and have registered your mPIN before going through with the payment.</string>
     <string name="cimb_instruction_step2">Transaction will be cancelled if payment is not completed within 2 hours.</string>
@@ -245,13 +247,13 @@
 
     <!-- Mandiri E Cash transfer Instruction-->
     <string name="mandiri__e_cash_instruction_step1">Make sure you have registered your mobile phone number for Mandiri e-cash.</string>
-    <string name="mandiri__e_cash_instruction_step2">Click \'Confirm Payment\'.</string>
-    <string name="mandiri__e_cash_instruction_step3">Enter your phone number and PIN.</string>
+    <string name="mandiri__e_cash_instruction_step2">Click <b>Confirm Payment</b>.</string>
+    <string name="mandiri__e_cash_instruction_step3">Enter your <b>phone number</b> and <b>PIN</b>.</string>
     <string name="mandiri__e_cash_instruction_step4">Please wait for an SMS from Mandiri e-cash that contains your One Time Password (OTP).</string>
-    <string name="mandiri__e_cash_instruction_step5">Enter the 6 digit OTP, then click
-        \'pay\' to make payment.</string>
+    <string name="mandiri__e_cash_instruction_step5"><b>Enter the 6 digit OTP</b>, then click
+        <b>Pay</b> to make payment.</string>
     <string name="mandiri__e_cash_instruction_step6">If you haven\'t received the OTP or the
-        OTP has expired, click \'cancel\' and retry your transaction.</string>
+        OTP has expired, click <b>Cancel</b> and retry your transaction.</string>
 
 
     <!-- Indomaret Instruction-->
@@ -265,13 +267,14 @@
 
 
     <!-- Permata/Alto bank transfer Instruction-->
-    <string name="permata_instruction_step1">On the main menu, Choose \'Other Transaction\'.</string>
-    <string name="permata_instruction_step2">Choose \'Payment\'.</string>
-    <string name="permata_instruction_step3">Choose \'Other Payment\'.</string>
-    <string name="permata_instruction_step4">Choose \'Virtual Account\'.</string>
-    <string name="permata_instruction_step5">Enter 16 digits payment Account No. and press \'Correct\'.</string>
-    <string name="permata_instruction_step6">Amount to be paid, account number, and merchant name will appear on confirmation page. If the confirmation page is right, press \'Correct\'.</string>
-    <string name="permata_instruction_step7">Choose your payment account and press \'Correct\'.</string>
+    <string name="permata_instruction_step1">On the main menu, Choose <b>Other Transaction</b>.</string>
+    <string name="permata_instruction_step2">Choose <b>Payment</b>.</string>
+    <string name="permata_instruction_step3">Choose <b>Other Payment</b>.</string>
+    <string name="permata_instruction_step4">Choose <b>Virtual Account</b>.</string>
+    <string name="permata_instruction_step5">Enter <b>16 digits payment Account No.</b> and press <b>Correct</b>.</string>
+    <string name="permata_instruction_step6">Amount to be paid, account number, and merchant name will appear on confirmation page. If the confirmation page is right, press <b>Correct</b>.</string>
+    <string name="permata_instruction_step7">Choose your payment account and press <b>Correct</b>.</string>
+
     <string name="bank_transfer_dummy_text">* Subject to preferred bank\'s transfer fee and a minimum transaction of Rp50,000, - for bank mandiri</string>
 
 
@@ -329,27 +332,22 @@
     <string name="card_delete_message">Are you sure you want to delete card?</string>
     <string name="message_save_card">Save your card for faster checkout process.</string>
     <string name="got_it">Got it</string>
-    <string name="bri_instruction_step1">Please make sure that you have a User ID for BRI e-Pay and
-        have registered for mTOKEN before going through with the payment
-    </string>
-    <string name="bri_instruction_step2">To obtain a User ID for BRI e-Pay, please register at the
-        nearest BRI ATM.
-    </string>
-    <string name="bri_instruction_step3">Please visit the nearest BRI branch office to register
-        the mTOKEN.
-    </string>
-    <string name="bri_instruction_step4">Payment via BRI e-Pay will be processed online and your
-        BRI bank account balance will be deducted automatically based on your total amount.
-    </string>
-    <string name="bri_instruction_step5">Your transaction will be cancelled if payment is not
-        completed within 2 hours.
-    </string>
+
+    <!-- epay bri instruction -->
+    <string name="bri_instruction_step1">Please make sure that you have a User ID for BRI e-Pay and have registered for mTOKEN before going through with the payment</string>
+    <string name="bri_instruction_step2">To obtain a User ID for BRI e-Pay, please register at the nearest BRI ATM.</string>
+    <string name="bri_instruction_step3">Please visit the nearest BRI branch office to register the mTOKEN.</string>
+    <string name="bri_instruction_step4">Payment via BRI e-Pay will be processed online and your BRI bank account balance will be deducted automatically based on your total amount.</string>
+    <string name="bri_instruction_step5">Your transaction will be cancelled if payment is not completed within 2 hours.</string>
+
     <string name="empty_transaction_response">Payment failed! Please try again.</string>
     <string name="cancel_transaction">Confirm Navigation</string>
     <string name="cancel_transaction_message">Are you sure want to leave this page?</string>
+
+    <!-- indosat dompetku instruction-->
     <string name="indosat_instruction_step1">Input your registered indosat phone number.</string>
     <string name="indosat_instruction_step2">Make sure you have sufficient funds in your account.</string>
-    <string name="indosat_instruction_step3">Click \'Confirm Payment\'.</string>
+    <string name="indosat_instruction_step3">Click <b>Confirm Payment</b>.</string>
     <string name="indosat_instruction_step4">You will receive an USSD message from Indosat to complete transaction via Dompetku app.</string>
     <string name="indosat_instruction_step5">Input your PIN.</string>
     <string name="indosat_instruction_step6">Payment Complete.</string>
@@ -359,20 +357,22 @@
     <string name="telkomsel_instruction_step3">Your transaction will expire unless you complete your payment in 30 minutes.</string>
 
     <string name="xl_instruction_step1">Dial *123*120# with a registered XL phone number.</string>
-    <string name="xl_instruction_step2">Reply \'4\' for \'Belanja Online\'.</string>
+    <string name="xl_instruction_step2">Reply <b>4</b> for <b>Belanja Online</b>.</string>
     <string name="xl_instruction_step3">Input XL Tunai Merchant Code.</string>
     <string name="xl_instruction_step4">Input XL Tunai Order ID.</string>
     <string name="xl_instruction_step5">Input your XL Tunai PIN.</string>
     <string name="xl_instruction_step6">You will receive an SMS confirmation from XL.</string>
 
     <string name="hint_indosat_phone_number">Indosat Phone Number</string>
+
+    <!-- mandiri clickpay -->
     <string name="mandiri_click_pay_instruction_step1">1.\tActivate your Mandiri token by pressing [img src=ic_mandiri_instrcn/].</string>
     <string name="mandiri_click_pay_instruction_step2">2.\tEnter your Mandiri token password.</string>
-    <string name="mandiri_click_pay_instruction_step3">3.\tPress 3 when it displays APPLI</string>
-    <string name="mandiri_click_pay_instruction_step4">4.\tEnter \'input 1\' and press [img src=ic_mandiri_instrcn/] for 3 seconds.</string>
-    <string name="mandiri_click_pay_instruction_step5">5.\tEnter \'input 2\' and press [img src=ic_mandiri_instrcn/] for 3 seconds.</string>
-    <string name="mandiri_click_pay_instruction_step6">6.\tEnter \'input 3\' and press [img src=ic_mandiri_instrcn/] for 3 seconds.</string>
-    <string name="mandiri_click_pay_instruction_step7">7.\tPut the response code on your Mandiri token into the challenge token field.</string>
+    <string name="mandiri_click_pay_instruction_step3">3.\tPress <b>3</b> when it displays <b>APPLI</b></string>
+    <string name="mandiri_click_pay_instruction_step4">4.\tEnter <b>input 1</b> and press [img src=ic_mandiri_instrcn/] for 3 seconds.</string>
+    <string name="mandiri_click_pay_instruction_step5">5.\tEnter <b>input 2</b> and press [img src=ic_mandiri_instrcn/] for 3 seconds.</string>
+    <string name="mandiri_click_pay_instruction_step6">6.\tEnter <b>input 3</b> and press [img src=ic_mandiri_instrcn/] for 3 seconds.</string>
+    <string name="mandiri_click_pay_instruction_step7">7.\tPut the response code on your Mandiri token into the <b>challenge token</b> field.</string>
     <string name="for_three_seconds">for 3 seconds</string>
     <string name="title_payment_status">Payment Status</string>
     <string name="payment_deny">Payment deny.</string>
@@ -477,8 +477,8 @@
     <string name="tab_mandiri_bill">Mandiri Bill</string>
 
     <!--KlikBCA Payment Instructions-->
-    <string name="klikbca_instruction_1">Please make sure that the UserID is active and registered at BCA.</string>
-    <string name="klikbca_instruction_2">Please continue the payment through KlikBCA by opening <a href="http://klikbca.com/">http://klikbca.com/</a> on your browser, using the same User ID that you entered above.</string>
+    <string name="klikbca_instruction_1">Please make sure that the <b>User ID</b> is active and registered at BCA.</string>
+    <string name="klikbca_instruction_2">Please continue the payment through KlikBCA by opening <a href="http://klikbca.com/">http://klikbca.com/</a> on your browser, using the same <b>User ID</b> that you entered above.</string>
 
     <string name="error_user_id">Please fill user ID.</string>
     <string name="btn_close">Close</string>
@@ -509,28 +509,30 @@
     <string name="copied_merchant_code">Merchant code was copied to clipboard</string>
 
     <string name="text_format_valid_until">Please complete your payment before : %1$s</string>
-    <string name="instruction_atm_bersama1">On the main menu, choose Others.</string>
-    <string name="instruction_atm_bersama2">Choose Transfer.</string>
-    <string name="instruction_atm_bersama3">Choose Online Transfer.</string>
-    <string name="instruction_atm_bersama4">Enter 013 and 16 digit Account No.</string>
-    <string name="instruction_atm_bersama5">Enter the full amount to be paid and press Correct.</string>
-    <string name="instruction_atm_bersama6">Empty the transfer reference number and press Correct.</string>
-    <string name="instruction_atm_bersama7">Your payment details will appear on the confirmation page. If the information is correct press Correct.</string>
 
-    <string name="instruction_prima1">On the main menu, choose Other Transaction.</string>
-    <string name="instruction_prima2">Choose Transfer.</string>
-    <string name="instruction_prima3">Choose Other Bank Account.</string>
-    <string name="instruction_prima4">Enter 013 and choose Correct.</string>
-    <string name="instruction_prima5">Enter the full amount to be paid and press Correct.</string>
-    <string name="instruction_prima6">Enter 16 digits payment Account No. and press Correct.</string>
-    <string name="instruction_prima7">Your payment details will appear on the confirmation page. If the information is correct press Correct.</string>
+    <!-- instruction atm bersama -->
+    <string name="instruction_atm_bersama1">On the main menu, choose <b>Others</b>.</string>
+    <string name="instruction_atm_bersama2">Choose <b>Transfer</b>.</string>
+    <string name="instruction_atm_bersama3">Choose <b>Online Transfer</b>.</string>
+    <string name="instruction_atm_bersama4">Enter <b>013</b> and <b>16 digit Account No.</b> and press <b>Correct</b></string>
+    <string name="instruction_atm_bersama5">Enter the <b>full amount to be paid</b> and press <b>Correct</b>.</string>
+    <string name="instruction_atm_bersama6">Empty the transfer reference number and press <b>Correct</b>.</string>
+    <string name="instruction_atm_bersama7">Your payment details will appear on the confirmation page. If the information is right press <b>Correct</b>.</string>
 
-    <string name="instruction_alto1">On the main menu, choose Other Transaction.</string>
-    <string name="instruction_alto2">Choose Payment.</string>
-    <string name="instruction_alto3">Choose Other Payment.</string>
-    <string name="instruction_alto4">Choose Virtual Account.</string>
-    <string name="instruction_alto5">Enter 16 digits payment Account No. and press Correct.</string>
-    <string name="instruction_alto6">Your payment details will appear on the confirmation page. If the information is correct press Correct.</string>
+    <string name="instruction_prima1">On the main menu, choose <b>Other Transaction</b>.</string>
+    <string name="instruction_prima2">Choose <b>Transfer</b>.</string>
+    <string name="instruction_prima3">Choose <b>Other Bank Account</b>.</string>
+    <string name="instruction_prima4">Enter <b>013</b> and choose <b>Correct</b>.</string>
+    <string name="instruction_prima5">Enter the full amount to be paid and press <b>Correct</b>.</string>
+    <string name="instruction_prima6">Enter <b>16 digits payment Account No.</b> and press <b>Correct</b>.</string>
+    <string name="instruction_prima7">Your payment details will appear on the confirmation page. If the information is right, press <b>Correct</b>.</string>
+
+    <string name="instruction_alto1">On the main menu, choose <b>Other Transaction</b>.</string>
+    <string name="instruction_alto2">Choose <b>Payment</b>.</string>
+    <string name="instruction_alto3">Choose <b>Other Payment</b>.</string>
+    <string name="instruction_alto4">Choose <b>Virtual Account</b>.</string>
+    <string name="instruction_alto5">Enter <b>16 digits payment Account No.</b> and press <b>Correct</b>.</string>
+    <string name="instruction_alto6">Your payment details will appear on the confirmation page. If the information is right press <b>Correct</b>.</string>
     <string name="instruction_alto7">Choose your payment account.</string>
     <string name="amex">AMEX</string>
     <string name="jcb">JCB</string>
@@ -542,15 +544,17 @@
     <string name="instruction_5">5.</string>
     <string name="instruction_6">6.</string>
     <string name="instruction_7">7.</string>
+    <string name="instruction_8">8.</string>
+    <string name="instruction_9">9.</string>
 
     <!-- Kioson Instruction-->
     <string name="kioson_instruction_step1">After confirming your payment, we will issue you a unique Payment Code number.</string>
     <string name="kioson_instruction_step2">Note down your Payment Code and total amount.
         Don\'t worry, we will also mail you a copy of the payment instructions to your email.</string>
     <string name="kioson_instruction_step3">Go to a Kioson outlet near you and provide the cashier with the Payment Code.</string>
-    <string name="kioson_instruction_step4">The cashier will open kioson Cash Point, on the menu chasier will select "Keagenan".</string>
+    <string name="kioson_instruction_step4">The cashier will open kioson Cash Point, on the menu chasier will select <b>Keagenan</b>.</string>
     <string name="kioson_instruction_step5">Choose merchant name.</string>
-    <string name="kioson_instruction_step6">Choose sub menu "Pembayaran".</string>
+    <string name="kioson_instruction_step6">Choose sub menu <b>Pembayaran</b>.</string>
     <string name="kioson_instruction_step7">Enter your Payment Code and get the payment details.</string>
     <string name="kioson_instruction_step8">Submit payment and print the receipt.</string>
     <string name="kioson_instruction_step9">Your transaction is successful! You should be receiving an email confirming your payment. Please keep your payment receipt just in case you need help via support.</string>
@@ -692,34 +696,32 @@
     <string name="status_redeemed_point">POINT DISCOUNT</string>
 
     <!-- bni internet  payment instruction -->
-    <string name="bni_internet_instruction_1">Visit <a href="https://ibank.bni.co.id">https://ibank.bni.co.id</a> then choose \'Enter\'</string>
-    <string name="bni_internet_instruction_2">Enter User ID and Password</string>
-    <string name="bni_internet_instruction_3">Choose \'Set Destination Account\' then \'Add Destination Account\' </string>
-    <string name="bni_internet_instruction_4">Enter name and VA number</string>
-    <string name="bni_internet_instruction_5">Enter authentication token code</string>
-    <string name="bni_internet_instruction_6">Now Destination/Favorite account number is successfully added</string>
-    <string name="bni_internet_instruction_7">Back to \'Transfer\' menu</string>
-    <string name="bni_internet_instruction_8">Choose \'Transfer to BNI Account\' then choose destination/favorite account</string>
-    <string name="bni_internet_instruction_9">Choose Debit Account and enter amount, then enter authentication token code</string>
-    <string name="bni_internet_instruction_10">Payment complete</string>
+    <string name="bni_internet_instruction_1">Go to <a href="https://ibank.bni.co.id"><b>https://ibank.bni.co.id</b></a> and then click <b>Login</b>.</string>
+    <string name="bni_internet_instruction_2">Continue login with your <b>User ID</b> and <b>Password</b>.</string>
+    <string name="bni_internet_instruction_3">Click <b>Transfer</b> and then <b>Add Favorite Account</b> and choose <b>Antar Rekening BNI</b>.</string>
+    <string name="bni_internet_instruction_4">Enter account name, account number, and email and then click <b>Continue</b>.</string>
+    <string name="bni_internet_instruction_5">Input the <b>Authentification Code</b> from your token and then click <b>Continue</b>.</string>
+    <string name="bni_internet_instruction_6">Back to main menu and select <b>Transfer</b> and then <b>Transfer Antar Rekening BNI</b>.</string>
+    <string name="bni_internet_instruction_7">Pick the account that you just created in the previous step as <b>Rekening Tujuan</b> and fill in the rest before clicking <b>Continue</b>.</string>
+    <string name="bni_internet_instruction_8">Check whether the details are correct, if they are, please input the <b>Authentification Code</b> and click <b>Continue</b> and you are done.</string>
+    <string name="bni_internet_instruction_9">Your transaction is done.</string>
 
     <!-- bni mobile payment instruction -->
-    <string name="bni_mobile_instruction_1">Login to BNI Mobile Banking application</string>
-    <string name="bni_mobile_instruction_2">On the main menu, choose \'Transfer\'</string>
-    <string name="bni_mobile_instruction_3">Choose \'To BNI Account\' then \'Add New Account\'</string>
-    <string name="bni_mobile_instruction_4">Enter the full amount to be paid and press \'Proceed\'</string>
-    <string name="bni_mobile_instruction_5">Your payment details will appear on confirmation page.</string>
-    <string name="bni_mobile_instruction_6">If the information is correct then enter authentication token code and press \'Proceed\'</string>
-    <string name="bni_mobile_instruction_7">Payment Complete</string>
+    <string name="bni_mobile_instruction_1">Open the BNI Mobile Banking app and login.</string>
+    <string name="bni_mobile_instruction_2">Click <b>Transfer</b>.</string>
+    <string name="bni_mobile_instruction_3">Click <b>To BNI Account</b>.</string>
+    <string name="bni_mobile_instruction_4">Click <b>Input New Account</b>.</string>
+    <string name="bni_mobile_instruction_5">Enter account numbers, an then click <b>Continue</b>.</string>
+    <string name="bni_mobile_instruction_6">Input the <b>Transaction Password</b> and then click <b>Continue</b> and you are done.</string>
 
     <!-- bni ATM payment instruction -->
-    <string name="bni_atm_instruction_1">On the main menu, choose \'Other transaction\'</string>
-    <string name="bni_atm_instruction_2">Choose \'Transfer\'</string>
-    <string name="bni_atm_instruction_3">Choose \'Savings Account\'</string>
-    <string name="bni_atm_instruction_4">Choose \'To BNI Account\'</string>
-    <string name="bni_atm_instruction_5">Enter BNI virtual account number and press \'Correct\'</string>
-    <string name="bni_atm_instruction_6">Enter the full amount to be paid and press \'Correct\'</string>
-    <string name="bni_atm_instruction_7">Your payment details will appear on the confirmation page. If the information is correct press \'Correct\'</string>
+    <string name="bni_atm_instruction_1">On the main menu, choose <b>Others</b></string>
+    <string name="bni_atm_instruction_2">Choose <b>Transfer</b></string>
+    <string name="bni_atm_instruction_3">Choose <b>Savings Account</b></string>
+    <string name="bni_atm_instruction_4">Choose <b>To BNI Account</b></string>
+    <string name="bni_atm_instruction_5">Enter the Payment Account Number and press <b>Yes</b></string>
+    <string name="bni_atm_instruction_6">Enter the full amount to be paid and press <b>Correct</b></string>
+    <string name="bni_atm_instruction_7">Your <b>payment details</b> will appear on the confirmation page. If the information is correct press <b>Yes</b></string>
     <string name="tab_atm_bni">ATM BNI</string>
     <string name="tab_bni_mobile">Mobile Banking</string>
     <string name="tab_bni_internet">Internet Banking</string>

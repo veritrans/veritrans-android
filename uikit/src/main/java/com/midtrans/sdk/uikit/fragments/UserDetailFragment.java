@@ -134,27 +134,16 @@ public class UserDetailFragment extends Fragment {
         String email = emailEt.getText().toString().trim();
         String phoneNo = phoneEt.getText().toString().trim();
 
-        if (TextUtils.isEmpty(fullName)) {
-            SdkUIFlowUtil.showToast(getActivity(), getString(R.string.validation_full_name_empty));
-            fullnameEt.requestFocus();
-            return;
-        } else if (TextUtils.isEmpty(email)) {
-            SdkUIFlowUtil.showToast(getActivity(), getString(R.string.validation_email_empty));
-            emailEt.requestFocus();
-            return;
-        } else if (!SdkUIFlowUtil.isEmailValid(email)) {
+        if (!TextUtils.isEmpty(email) && !SdkUIFlowUtil.isEmailValid(email)) {
             SdkUIFlowUtil.showToast(getActivity(), getString(R.string.validation_email_invalid));
             emailEt.requestFocus();
             return;
-        } else if (TextUtils.isEmpty(phoneNo)) {
-            SdkUIFlowUtil.showToast(getActivity(), getString(R.string.validation_phone_no_empty));
-            phoneEt.requestFocus();
-            return;
-        } else if (!SdkUIFlowUtil.isPhoneNumberValid(phoneNo)) {
+        } else if (!TextUtils.isEmpty(phoneNo) && !SdkUIFlowUtil.isPhoneNumberValid(phoneNo)) {
             SdkUIFlowUtil.showToast(getActivity(), getString(R.string.validation_phone_no_invalid));
             phoneEt.requestFocus();
             return;
         }
+
         UserDetail userDetail = null;
         try {
             userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);

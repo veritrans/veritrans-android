@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:visibility="gone"
+    tools:visibility="visible"
+    android:id="@+id/image_sandbox_badge"
+    android:src="@drawable/ic_sandbox_badge"
+    android:layout_height="wrap_content" />

@@ -86,7 +86,11 @@ public class SdkConfigDialogFragment extends DialogFragment {
                 if(!checkFormValidity()){
                     return;
                 }
-                MidtransSDK.getInstance().changeSdkConfig(snapUrl, merchantUrl,merchantClientKey, Integer.valueOf(requestTimeout));
+                String sdkBaseUrl = MidtransSDK.getInstance().getSdkBaseUrl(); // get default sdk base url
+                String merchantBaseUrl = "merchant_base_url";
+                String merchantClientKey = "clieny_key";
+                int timeout = 20; // in seconds
+                MidtransSDK.getInstance().changeSdkConfig(sdkBaseUrl, merchantBaseUrl,merchantClientKey, timeout);
                 dismiss();
             }
         });

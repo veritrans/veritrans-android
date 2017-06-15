@@ -34,11 +34,21 @@
                     android:text="@string/demo_configuration"
                     android:textSize="20sp" />
 
+                <com.midtrans.demo.widgets.DemoTextView
+                    android:id="@+id/text_reset"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/sixteen_dp"
+                    android:text="@string/reset_setting"
+                    android:textSize="18sp" />
+
             </RelativeLayout>
 
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
-
 
 
     <ScrollView
@@ -51,18 +61,31 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="100dp"
             android:orientation="vertical"
-            android:padding="@dimen/sixteen_dp">
+            android:paddingBottom="@dimen/sixty_four_dp"
+            android:paddingLeft="@dimen/sixteen_dp"
+            android:paddingRight="@dimen/sixteen_dp"
+            android:paddingTop="@dimen/sixteen_dp">
 
-            <com.midtrans.demo.widgets.DemoTextView
-                android:id="@+id/title_credit_card_type"
-                style="@style/ConfigItemTextTitle"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_cc_click"
-                android:drawablePadding="10dp"
-                android:drawableStart="@drawable/ic_cc_click"
-                android:text="@string/credit_card_type_normal" />
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_cc_click" />
+
+                <com.midtrans.demo.widgets.DemoTextView
+                    android:id="@+id/title_credit_card_type"
+                    style="@style/ConfigItemTextTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/credit_card_type_normal" />
+            </LinearLayout>
 
             <RadioGroup
                 android:id="@+id/credit_card_type_container"
@@ -105,16 +128,25 @@
                     android:text="@string/card_click_one_click" />
             </RadioGroup>
 
-            <com.midtrans.demo.widgets.DemoTextView
-                android:id="@+id/title_secure_type"
-                style="@style/ConfigItemTextTitle"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_secure"
-                android:drawablePadding="14dp"
-                android:drawableStart="@drawable/ic_secure"
-                android:paddingLeft="12dp"
-                android:text="@string/secure_type_disabled" />
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_secure" />
+
+                <com.midtrans.demo.widgets.DemoTextView
+                    android:id="@+id/title_secure_type"
+                    style="@style/ConfigItemTextTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/secure_type_disabled" />
+            </LinearLayout>
+
 
             <RadioGroup
                 android:id="@+id/secure_type_container"
@@ -147,16 +179,25 @@
                     android:text="@string/enabled" />
             </RadioGroup>
 
-            <com.midtrans.demo.widgets.DemoTextView
-                android:id="@+id/title_installment_type"
-                style="@style/ConfigItemTextTitle"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_installment"
-                android:drawablePadding="14dp"
-                android:drawableStart="@drawable/ic_installment"
-                android:paddingLeft="12dp"
-                android:text="@string/installment_type_disabled" />
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_installment" />
+
+                <com.midtrans.demo.widgets.DemoTextView
+                    android:id="@+id/title_installment_type"
+                    style="@style/ConfigItemTextTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/installment_type_disabled" />
+            </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -226,11 +267,11 @@
 
                 <LinearLayout
                     android:id="@+id/change_installment_container"
-                    android:visibility="gone"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.1"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <ImageButton
                         android:layout_width="wrap_content"
@@ -294,15 +335,24 @@
 
             </LinearLayout>
 
-            <com.midtrans.demo.widgets.DemoTextView
-                android:id="@+id/title_issuing_bank_type"
-                style="@style/ConfigItemTextTitle"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_config_bank"
-                android:drawablePadding="10dp"
-                android:drawableStart="@drawable/ic_config_bank"
-                android:text="@string/acquiring_bank_none" />
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_config_bank" />
+
+                <com.midtrans.demo.widgets.DemoTextView
+                    android:id="@+id/title_issuing_bank_type"
+                    style="@style/ConfigItemTextTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/acquiring_bank_none" />
+            </LinearLayout>
 
             <RadioGroup
                 android:id="@+id/issuing_bank_type_container"
@@ -385,16 +435,25 @@
                     android:text="@string/bank_cimb" />
             </RadioGroup>
 
-            <com.midtrans.demo.widgets.DemoTextView
-                android:id="@+id/title_custom_expiry_type"
-                style="@style/ConfigItemTextTitle"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_config_expiry"
-                android:drawablePadding="12dp"
-                android:drawableStart="@drawable/ic_config_expiry"
-                android:paddingLeft="10dp"
-                android:text="@string/custom_expiry_none" />
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_config_expiry" />
+
+                <com.midtrans.demo.widgets.DemoTextView
+                    android:id="@+id/title_custom_expiry_type"
+                    style="@style/ConfigItemTextTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/custom_expiry_none" />
+            </LinearLayout>
+
 
             <RadioGroup
                 android:id="@+id/expiry_type_container"
@@ -437,16 +496,26 @@
                     android:text="@string/expiry_one_hour" />
             </RadioGroup>
 
-            <com.midtrans.demo.widgets.DemoTextView
-                android:id="@+id/title_default_save_card_type"
-                style="@style/ConfigItemTextTitle"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_save_card"
-                android:drawablePadding="10dp"
-                android:drawableStart="@drawable/ic_save_card"
-                android:paddingLeft="10dp"
-                android:text="@string/default_save_card_disabled" />
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_save_card" />
+
+                <com.midtrans.demo.widgets.DemoTextView
+                    android:id="@+id/title_default_save_card_type"
+                    style="@style/ConfigItemTextTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/default_save_card_disabled" />
+
+            </LinearLayout>
+
 
             <RadioGroup
                 android:id="@+id/default_save_type_container"
@@ -479,16 +548,25 @@
                     android:text="@string/enabled" />
             </RadioGroup>
 
-            <com.midtrans.demo.widgets.DemoTextView
-                android:id="@+id/title_custom_payment_channels"
-                style="@style/ConfigItemTextTitle"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_show_icon"
-                android:drawablePadding="10dp"
-                android:drawableStart="@drawable/ic_show_icon"
-                android:paddingLeft="10dp"
-                android:text="@string/payment_channels_show_all" />
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_show_icon" />
+
+                <com.midtrans.demo.widgets.DemoTextView
+                    android:id="@+id/title_custom_payment_channels"
+                    style="@style/ConfigItemTextTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/payment_channels_show_all" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/payment_channels_type_container"
@@ -496,7 +574,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:visibility="gone"
-                tools:visibility="visible">
+                tools:visibility="gone">
 
                 <RadioGroup
                     android:layout_width="0dp"
@@ -542,7 +620,8 @@
                         android:minHeight="30dp"
                         android:minWidth="12dp"
                         android:src="@drawable/ic_edit_icon"
-                        android:visibility="visible" />
+                        android:visibility="invisible"
+                        tools:visibility="visible" />
 
                     <ImageButton
                         android:id="@+id/btn_edit_payment_method"
@@ -557,16 +636,26 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <com.midtrans.demo.widgets.DemoTextView
-                android:id="@+id/title_custom_bca_va"
-                style="@style/ConfigItemTextTitle"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_save_card"
-                android:drawablePadding="10dp"
-                android:drawableStart="@drawable/ic_custom_bca_va"
-                android:paddingLeft="10dp"
-                android:text="@string/custom_bca_va_disabled" />
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_custom_bca_va" />
+
+                <com.midtrans.demo.widgets.DemoTextView
+                    android:id="@+id/title_custom_bca_va"
+                    style="@style/ConfigItemTextTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/custom_bca_va_enable_title" />
+
+            </LinearLayout>
+
 
             <LinearLayout
                 android:id="@+id/custom_bca_va_type_container"
@@ -635,16 +724,24 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <com.midtrans.demo.widgets.DemoTextView
-                android:id="@+id/title_custom_permata_va"
-                style="@style/ConfigItemTextTitle"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_save_card"
-                android:drawablePadding="10dp"
-                android:drawableStart="@drawable/ic_custom_permata_va"
-                android:paddingLeft="10dp"
-                android:text="@string/custom_permata_va_disabled" />
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_custom_permata_va" />
+
+                <com.midtrans.demo.widgets.DemoTextView
+                    android:id="@+id/title_custom_permata_va"
+                    style="@style/ConfigItemTextTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/custom_permata_va_disabled" />
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/custom_permata_va_type_container"
@@ -713,16 +810,113 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <com.midtrans.demo.widgets.DemoTextView
-                android:id="@+id/title_promo_type"
-                style="@style/ConfigItemTextTitle"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_config_promo"
-                android:drawablePadding="10dp"
-                android:drawableStart="@drawable/ic_config_promo"
-                android:paddingLeft="10dp"
-                android:text="@string/default_promo_disabled" />
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_save_card" />
+
+                <com.midtrans.demo.widgets.DemoTextView
+                    android:id="@+id/title_custom_bni_va"
+                    style="@style/ConfigItemTextTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/custom_bca_va_disabled" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/custom_bni_va_type_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <RadioGroup
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.85"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/thirtytwo_dp"
+                    android:paddingRight="@dimen/thirtytwo_dp">
+
+                    <com.midtrans.demo.widgets.DemoRadioButton
+                        android:id="@+id/type_bni_va_disabled"
+                        style="@style/CustomRadioButtonStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/eight_dp"
+                        android:layout_marginStart="@dimen/eight_dp"
+                        android:checked="true"
+                        android:gravity="center_vertical"
+                        android:text="@string/disabled" />
+
+                    <com.midtrans.demo.widgets.DemoRadioButton
+                        android:id="@+id/type_bni_va_enabled"
+                        style="@style/CustomRadioButtonStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/eight_dp"
+                        android:layout_marginStart="@dimen/eight_dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/enabled" />
+                </RadioGroup>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.1"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/btn_edit_bni_va_disabled"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?selectableItemBackground"
+                        android:minHeight="30dp"
+                        android:minWidth="12dp"
+                        android:src="@drawable/ic_edit_icon"
+                        android:visibility="invisible" />
+
+                    <ImageButton
+                        android:id="@+id/btn_edit_bni_va"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?selectableItemBackground"
+                        android:minHeight="30dp"
+                        android:minWidth="12dp"
+                        android:src="@drawable/ic_edit_icon"
+                        android:visibility="invisible"
+                        tools:visibility="visible" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_config_promo" />
+
+                <com.midtrans.demo.widgets.DemoTextView
+                    android:id="@+id/title_promo_type"
+                    style="@style/ConfigItemTextTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/default_promo_disabled" />
+
+            </LinearLayout>
+
 
             <RadioGroup
                 android:id="@+id/promo_type_container"
@@ -755,16 +949,26 @@
                     android:text="@string/enabled" />
             </RadioGroup>
 
-            <com.midtrans.demo.widgets.DemoTextView
-                android:id="@+id/title_pre_auth_type"
-                style="@style/ConfigItemTextTitle"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_config_preauth"
-                android:drawablePadding="12dp"
-                android:drawableStart="@drawable/ic_config_preauth"
-                android:paddingLeft="14dp"
-                android:text="@string/pre_auth_disabled" />
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_config_preauth" />
+
+                <com.midtrans.demo.widgets.DemoTextView
+                    android:id="@+id/title_pre_auth_type"
+                    style="@style/ConfigItemTextTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pre_auth_disabled" />
+
+            </LinearLayout>
+
 
             <RadioGroup
                 android:id="@+id/preauth_type_container"
@@ -797,16 +1001,26 @@
                     android:text="@string/enabled" />
             </RadioGroup>
 
-            <com.midtrans.demo.widgets.DemoTextView
-                android:id="@+id/title_bni_point_type"
-                style="@style/ConfigItemTextTitle"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_bni_point"
-                android:drawablePadding="12dp"
-                android:drawableStart="@drawable/ic_bni_point"
-                android:paddingLeft="14dp"
-                android:text="@string/bni_point_only_disabled" />
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_bni_point" />
+
+                <com.midtrans.demo.widgets.DemoTextView
+                    android:id="@+id/title_bni_point_type"
+                    style="@style/ConfigItemTextTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/bni_point_only_disabled" />
+
+            </LinearLayout>
+
 
             <RadioGroup
                 android:id="@+id/bni_point_type_container"
@@ -839,16 +1053,26 @@
                     android:text="@string/enabled" />
             </RadioGroup>
 
-            <com.midtrans.demo.widgets.DemoTextView
-                android:id="@+id/title_auto_read_type"
-                style="@style/ConfigItemTextTitle"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_otp"
-                android:drawablePadding="12dp"
-                android:drawableStart="@drawable/ic_otp"
-                android:paddingLeft="14dp"
-                android:text="@string/auto_read_sms_disabled" />
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_otp" />
+
+                <com.midtrans.demo.widgets.DemoTextView
+                    android:id="@+id/title_auto_read_type"
+                    style="@style/ConfigItemTextTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/auto_read_sms_disabled" />
+
+
+            </LinearLayout>
 
             <RadioGroup
                 android:id="@+id/auto_read_type_container"
@@ -882,15 +1106,25 @@
                     android:text="@string/enabled" />
             </RadioGroup>
 
-            <com.midtrans.demo.widgets.DemoTextView
-                android:id="@+id/title_color_theme_type"
-                style="@style/ConfigItemTextTitle"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_config_theme"
-                android:drawablePadding="10dp"
-                android:drawableStart="@drawable/ic_config_theme"
-                android:text="@string/default_color_theme" />
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_config_theme" />
+
+                <com.midtrans.demo.widgets.DemoTextView
+                    android:id="@+id/title_color_theme_type"
+                    style="@style/ConfigItemTextTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/default_color_theme" />
+            </LinearLayout>
+
 
             <RadioGroup
                 android:id="@+id/theme_type_container"

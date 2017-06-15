@@ -262,6 +262,7 @@ public class SavedCardListFragment extends Fragment {
         });
     }
 
+
     private void deleteCardFromMerchantServer(final String maskedCard, final ArrayList<SaveCardRequest> saveCardRequests) {
         SdkUIFlowUtil.showProgressDialog((AppCompatActivity) getActivity(), getString(R.string.processing_delete), false);
         MidtransSDK midtransSDK = MidtransSDK.getInstance();

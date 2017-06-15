@@ -183,76 +183,10 @@
     <!-- Mandiri bank transfer Instruction-->
     <string name="instruction">Instructions</string>
 
-    <string name="mandiri_instruction_step1">1.\tOn the main menu, Choose \'Pay/Buy\'.</string>
-    <string name="mandiri_instruction_step2">2.\tChoose \'Others\'.</string>
-    <string name="mandiri_instruction_step3">3.\tChoose \'Multi Payment\'.</string>
-    <string name="mandiri_instruction_step4">4.\tEnter 70012 (Midtrans company code) and press \'Correct\'.</string>
-    <string name="mandiri_instruction_step5">5.\tEnter your Payment code and press \'Correct\'.</string>
-    <string name="mandiri_instruction_step6">6.\tYour payment details will appear on the payment confirmation page. If the information is correct press \'Yes\'.</string>
-
-    <string name="mandiri_internet_instruction_step1">1.\tLogin to Mandiri Internet Banking (ib.bankmandiri.co.id).</string>
-    <string name="mandiri_internet_instruction_step2">2.\tFrom the main menu choose \'Payment\', then choose \'Multi Payment\'.</string>
-    <string name="mandiri_internet_instruction_step3">3.\tSelect your account in \'From Account\', then \'Billing Name\' select \'Midtrans\'.</string>
-    <string name="mandiri_internet_instruction_step4">4.\tEnter the \'Payment Code\' and you will receive your payment details.</string>
-    <string name="mandiri_internet_instruction_step5">5.\tConfirm your payment using Mandiri Token.</string>
-
-
-    <!-- bca/ prima bank transfer Instruction-->
-    <!--BCA Transfer-->
-    <string name="bca_instruction_step1">1.\tOn the main menu, Choose \'Other Transaction\'.</string>
-    <string name="bca_instruction_step2">2.\tChoose \'Transfer\'.</string>
-    <string name="bca_instruction_step3">3.\tChoose \'To BCA Virtual Account\'.</string>
-    <string name="bca_instruction_step4">4.\tEnter your payment code (11 digit code) and press \'Correct\'.</string>
-    <string name="bca_instruction_step5">5.\tEnter full amount to be paid and press \'Correct\'.</string>
-    <string name="bca_instruction_step6">6.\tYour payment details will appear on the confirmation page. If information is correct press \'Yes\'.</string>
-    <!--Klik BCA-->
-    <string name="bca_klik_instruction_step1">1.\tChoose menu \'Fund Transfer\'.</string>
-    <string name="bca_klik_instruction_step2">2.\tChoose \'Transfer to BCA Virtual Account\'.</string>
-    <string name="bca_klik_instruction_step3">3.\t\'Input BCA Virtual Account Number\' or \'Choose from Transfer List\' and click \'Continue\'.</string>
-    <string name="bca_klik_instruction_step4">4.\tAmount to be paid, account number and Merchant name will appear on the payment confirmation page, if information is right click \'Continue\'.</string>
-    <string name="bca_klik_instruction_step5">5.\tGet your \'BCA token\' and input KEYBCA Response \'APPLI 1\' and click \'Submit\'.</string>
-    <string name="bca_klik_instruction_step6">6.\tYour transaction is Done.</string>
-
-    <!--KLIK BCA PAYMENT-->
-    <string name="bca_klik_pay_instruction_step1">You will be redirected to BCA KlikPay once you tap \'Confirm Payment\' button.</string>
-    <string name="bca_klik_pay_instruction_step2">For payment, you can choose to use KlikBCA Individu Account or BCA card.</string>
-    <string name="bca_klik_pay_instruction_step3">For more information about BCA KlikPay please contact Halo BCA at (021) 500888 or visit www.bca.co.id.</string>
-
-    <!--m-BCA-->
-    <string name="bca_mbanking_instruction_step1">1.\tChoose \'m-transfer\'.</string>
-    <string name="bca_mbanking_instruction_step2">2.\tChoose \'Transfer\'</string>
-    <string name="bca_mbanking_instruction_step3">3.\tChoose \'BCA Virtual Account\'.</string>
-    <string name="bca_mbanking_instruction_step4">4.\tChoose \'account number\' that you want to use for payment.</string>
-    <string name="bca_mbanking_instruction_step5">5.\tInput BCA Virtual Account Number and click \'OK\'.</string>
-    <string name="bca_mbanking_instruction_step6">6.\tBCA Virtual Account Number and your account information will appear on the payment confirmation page and then click \'Send\'.</string>
-    <string name="bca_mbanking_instruction_step7">7.\tClick \'OK\' on the payment confirmation page.</string>
-    <string name="bca_mbanking_instruction_step8">8.\tEnter amount to be transferred then click \'OK\'.</string>
-    <string name="bca_mbanking_instruction_step9">9.\tYour transaction is done.</string>
     <!-- cimb transfer Instructions -->
     <string name="cimb_instruction_step1">Please make sure that you have a User ID for CIMB Clicks and have registered your mPIN before going through with the payment.</string>
     <string name="cimb_instruction_step2">Transaction will be cancelled if payment is not completed within 2 hours.</string>
     <string name="cimb_instruction_step3">Please make sure that there is no pop-up blocker on your browser.</string>
-
-
-    <!-- Mandiri E Cash transfer Instruction-->
-    <string name="mandiri__e_cash_instruction_step1">Make sure you have registered your mobile phone number for Mandiri e-cash.</string>
-    <string name="mandiri__e_cash_instruction_step2">Click \'Confirm Payment\'.</string>
-    <string name="mandiri__e_cash_instruction_step3">Enter your phone number and PIN.</string>
-    <string name="mandiri__e_cash_instruction_step4">Please wait for an SMS from Mandiri e-cash that contains your One Time Password (OTP).</string>
-    <string name="mandiri__e_cash_instruction_step5">Enter the 6 digit OTP, then click
-        \'pay\' to make payment.</string>
-    <string name="mandiri__e_cash_instruction_step6">If you haven\'t received the OTP or the
-        OTP has expired, click \'cancel\' and retry your transaction.</string>
-
-
-    <!-- Indomaret Instruction-->
-    <string name="indomaret_instruction_step1">After confirming your payment, we will issue you a unique Payment Code number.</string>
-    <string name="indomaret_instruction_step2">Note down your Payment Code and total amount.
-        Don\'t worry, we will also mail you a copy of the payment instructions.</string>
-    <string name="indomaret_instruction_step3">Go to an Indomaret store near you and provide the cashier with the Payment Code number.</string>
-    <string name="indomaret_instruction_step4">The cashier will then confirm the transaction by asking for the transaction amount and the merchant name.</string>
-    <string name="indomaret_instruction_step5">Confirm the payment with the cashier.</string>
-    <string name="indomaret_instruction_step6">Your transaction is successful! You should be receiving an email confirming your payment. Please keep your Indomaret payment receipt just in case you need help via support.</string>
 
 
     <!-- BBM Money Instruction-->
@@ -271,18 +205,6 @@
     <string name="message_bbm_not_found">To continue payment, please install BBM Money App.</string>
     <string name="bbm_btn_text1">PAY WITH</string>
     <string name="bbm_btn_text2">BBM MONEY</string>
-
-
-    <!-- Permata/Alto bank transfer Instruction-->
-    <string name="permata_instruction_step1">1.\tOn the main menu, Choose \'Other Transaction\'.</string>
-    <string name="permata_instruction_step2">2.\tChoose \'Payment\'.</string>
-    <string name="permata_instruction_step3">3.\tChoose \'Other Payment\'.</string>
-    <string name="permata_instruction_step4">4.\tChoose \'Virtual Account\'.</string>
-    <string name="permata_instruction_step5">5.\tEnter 16 digits payment Account No. and press \'Correct\'.</string>
-    <string name="permata_instruction_step6">6.\tAmount to be paid, account number, and merchant name will appear on confirmation page. If the confirmation page is right, press \'Correct\'.</string>
-    <string name="permata_instruction_step7">7.\tChoose your payment account and press \'Correct\'.</string>
-    <string name="bank_transfer_dummy_text">* Subject to preferred bank\'s transfer fee and a minimum transaction of Rp50,000, - for bank mandiri</string>
-
 
     <!--credit card -->
     <string name="add_card_message">You can also pay with a new card from here</string>
@@ -333,39 +255,11 @@
     <string name="card_delete_message">Are you sure you want to delete card?</string>
     <string name="message_save_card">Save your card for faster checkout process.</string>
     <string name="got_it">Got it</string>
-    <string name="bri_instruction_step1">Please make sure that you have a User ID for BRI e-Pay and
-        have registered for mTOKEN before going through with the payment
-    </string>
-    <string name="bri_instruction_step2">To obtain a User ID for BRI e-Pay, please register at the
-        nearest BRI ATM.
-    </string>
-    <string name="bri_instruction_step3">Please visit the nearest BRI branch office to register
-        the mTOKEN.
-    </string>
-    <string name="bri_instruction_step4">Payment via BRI e-Pay will be processed online and your
-        BRI bank account balance will be deducted automatically based on your total amount.
-    </string>
-    <string name="bri_instruction_step5">Your transaction will be cancelled if payment is not
-        completed within 2 hours.
-    </string>
     <string name="empty_transaction_response">Payment failed! Please try again.</string>
     <string name="cancel_transaction">Cancel Transaction?</string>
     <string name="cancel_transaction_message">Are you sure you want to cancel this transaction?
     </string>
-    <string name="indosat_instruction_step1">Input your registered indosat phone number.</string>
-    <string name="indosat_instruction_step2">Make sure you have sufficient funds in your account.</string>
-    <string name="indosat_instruction_step3">Click \'Confirm Payment\'.</string>
-    <string name="indosat_instruction_step4">You will receive an USSD maessage from \nIndosat to complete transaction via Dompetku app.</string>
-    <string name="indosat_instruction_step5">Input your PIN.</string>
-    <string name="indosat_instruction_step6">Payment Complete.</string>
-    <string name="hint_indosat_phone_number">Indosat Phone Number</string>
-    <string name="mandiri_click_pay_instruction_step1">1.\tActivate your Mandiri token by pressing [img src=ic_mandiri_instrcn/].</string>
-    <string name="mandiri_click_pay_instruction_step2">2.\tEnter your Mandiri token password.</string>
-    <string name="mandiri_click_pay_instruction_step3">3.\tPress 3 when it displays APPLI</string>
-    <string name="mandiri_click_pay_instruction_step4">4.\tEnter \'input 1\' and press [img src=ic_mandiri_instrcn/] for 3 seconds.</string>
-    <string name="mandiri_click_pay_instruction_step5">5.\tEnter \'input 2\' and press [img src=ic_mandiri_instrcn/] for 3 seconds.</string>
-    <string name="mandiri_click_pay_instruction_step6">6.\tEnter \'input 3\' and press [img src=ic_mandiri_instrcn/] for 3 seconds.</string>
-    <string name="mandiri_click_pay_instruction_step7">7.\tPut the response code on your Mandiri token into the challenge token field.</string>
+
     <string name="for_three_seconds">for 3 seconds</string>
     <string name="title_payment_status">Payment Status</string>
     <string name="payment_deny">Payment deny.</string>
@@ -474,28 +368,10 @@
     <string name="tab_atm_bersama">ATM Bersama</string>
     <string name="tab_prima">Prima</string>
 
-    <!--KlikBCA Payment Instructions-->
-    <string name="klikbca_instruction_1">Please make sure that the UserID is active and registered at BCA.</string>
-    <string name="klikbca_instruction_2">Please continue the payment through KlikBCA by opening www.klikbca.com on your browser, using the same User ID that you entered above.</string>
-
     <string name="error_user_id">Please fill user ID.</string>
     <string name="btn_close">Close</string>
     <string name="payment_canceled">Otorisasi 3D telah dibatalkan.</string>
     <string name="error_card_unavailable">Card is not available</string>
-
-    <!-- Kioson Instruction-->
-    <string name="kioson_instruction_step1">After confirming your payment, we will issue you a unique Payment Code number.</string>
-    <string name="kioson_instruction_step2">Note down your Payment Code and total amount.
-        Don\'t worry, we will also mail you a copy of the payment instructions to your email.</string>
-    <string name="kioson_instruction_step3">Go to a Kioson outlet near you and provide the cashier with the Payment Code.</string>
-    <string name="kioson_instruction_step4">The cashier will open kioson Cash Point, on the menu chasier will select "Keagenan".</string>
-    <string name="kioson_instruction_step5">Choose merchant name.</string>
-    <string name="kioson_instruction_step6">Choose sub menu "Pembayaran".</string>
-    <string name="kioson_instruction_step7">Enter your Payment Code and get the payment details.</string>
-    <string name="kioson_instruction_step8">Submit payment and print the receipt.</string>
-    <string name="kioson_instruction_step9">Your transaction is successful! You should be receiving an email confirming your payment. Please keep your payment receipt just in case you need help via support.</string>
-    <string name="callback_unimplemented">Callback Unimplemented</string>
-    <string name="transaction_finished_callback_unimplemented">callback not yet implemented</string>
 
     <!-- enabled payment -->
     <string name="enabled_payment_category_banktransfer">bank_transfer</string>
