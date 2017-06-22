@@ -50,6 +50,7 @@ import com.midtrans.sdk.uikit.fragments.WebviewFragment;
 import com.midtrans.sdk.uikit.models.CreditCardTransaction;
 import com.midtrans.sdk.uikit.scancard.ExternalScanner;
 import com.midtrans.sdk.uikit.scancard.ScannerModel;
+import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 
 import java.util.ArrayList;
@@ -663,10 +664,9 @@ public class CreditCardFlowActivity extends BaseActivity {
     private void actionPaymentError(Throwable throwable) {
         //track page status failed
         MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
-
-
+        String errorMessage = MessageUtil.createPaymentErrorMessage(this, throwable.getMessage(), getString(R.string.message_payment_failed));
         SdkUIFlowUtil.hideProgressDialog();
-        showErrorMessage(getString(R.string.message_payment_failed));
+        showErrorMessage(errorMessage);
     }
 
     private void showErrorMessage(String errorMessage) {
