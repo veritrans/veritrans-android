@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="false"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scaleType="fitCenter"
+        android:src="@drawable/bg_maintenance" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <com.midtrans.sdk.uikit.widgets.BoldTextView
+            android:id="@+id/text_maintenance_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/timeout_title"
+            android:textSize="30sp" />
+
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:id="@+id/text_maintenance_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/sixteen_dp"
+            android:layout_marginEnd="@dimen/thirtytwo_dp"
+            android:layout_marginLeft="@dimen/thirtytwo_dp"
+            android:layout_marginRight="@dimen/thirtytwo_dp"
+            android:layout_marginStart="@dimen/thirtytwo_dp"
+            android:layout_marginTop="@dimen/sixteen_dp"
+            android:gravity="center"
+            android:text="@string/timeout_message"
+            android:textSize="@dimen/sixteen_sp" />
+
+        <com.midtrans.sdk.uikit.widgets.FancyButton
+            android:id="@+id/button_maintenance_retry"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/button_size"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/thirtytwo_dp"
+            android:layout_marginTop="@dimen/sixteen_dp"
+            android:paddingLeft="@dimen/sixteen_dp"
+            android:paddingRight="@dimen/sixteen_dp"
+            android:visibility="visible"
+            app:fb_borderColor="?attr/colorPrimary"
+            app:fb_borderWidth="1dp"
+            app:fb_defaultColor="@android:color/white"
+            app:fb_focusColor="@color/colorAccentLight"
+            app:fb_iconColor="?attr/colorPrimary"
+            app:fb_radius="5dp"
+            app:fb_text="@string/try_again"
+            app:fb_textColor="?attr/colorPrimary" />
+
+    </LinearLayout>
+</LinearLayout>
