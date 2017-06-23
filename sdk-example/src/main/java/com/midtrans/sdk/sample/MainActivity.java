@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -581,7 +582,11 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
 
     @Override
     public void onTransactionFinished(TransactionResult result) {
+            Log.d("finalx", "rsultd:" + result.getResponse());
+
         if (result.getResponse() != null) {
+            Log.d("finalx", "result:" + result.getResponse().getStatusMessage());
+            Log.d("finalx", "result>fraud:" + result.getResponse().getFraudStatus());
             switch (result.getStatus()) {
                 case TransactionResult.STATUS_SUCCESS:
                     Toast.makeText(this, "Transaction Finished. ID: " + result.getResponse().getTransactionId(), Toast.LENGTH_LONG).show();

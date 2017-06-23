@@ -57,8 +57,11 @@ public class InstructionFragmentPagerAdapter extends FragmentStatePagerAdapter {
             } else fragment = new InstructionBCAMobileFragment();
 
         } else if (bank.equals(BankTransferFragment.TYPE_PERMATA)) {
-            fragment = new InstructionPermataFragment();
-
+           if(position == 0){
+               fragment = new InstructionPermataFragment();
+           }else{
+               fragment = new InstructionAltoFragment();
+           }
         } else if (bank.equals(BankTransferFragment.TYPE_MANDIRI) ||
                 bank.equals(BankTransferFragment.TYPE_MANDIRI_BILL)) {
             if (position == 0) {

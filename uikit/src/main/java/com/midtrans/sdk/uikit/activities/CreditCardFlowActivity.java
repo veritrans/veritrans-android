@@ -7,7 +7,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -51,6 +50,7 @@ import com.midtrans.sdk.uikit.fragments.WebviewFragment;
 import com.midtrans.sdk.uikit.models.CreditCardTransaction;
 import com.midtrans.sdk.uikit.scancard.ExternalScanner;
 import com.midtrans.sdk.uikit.scancard.ScannerModel;
+import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 
 import java.util.ArrayList;
@@ -69,7 +69,6 @@ public class CreditCardFlowActivity extends BaseActivity {
     private String errorMessage;
 
     private Toolbar toolbar;
-    private MidtransSDK midtransSDK;
     private TextView titleHeaderTextView;
     private TextView textTotalAmount;
     private String discountToken;
@@ -99,7 +98,7 @@ public class CreditCardFlowActivity extends BaseActivity {
     }
 
     public void deleteSavedCard(SaveCardRequest savedCard) {
-        if (midtransSDK.isEnableBuiltInTokenStorage()) {
+        if (MidtransSDK.getInstance().isEnableBuiltInTokenStorage()) {
             deleteCardFromTokenStorage(savedCard);
         } else {
             if (savedCard != null) {
@@ -148,29 +147,10 @@ public class CreditCardFlowActivity extends BaseActivity {
     }
 
 
-    private CardDetailsFragment searchCardDetailsFragment() {
-        List<Fragment> fragments = getSupportFragmentManager().getFragments();
-        for (Fragment fragment : fragments) {
-            if (fragment instanceof CardDetailsFragment) {
-                return (CardDetailsFragment) fragment;
-            }
-        }
-        return null;
-    }
-
-    private SavedCardListFragment searchSavedCardsFragment() {
-        List<Fragment> fragments = getSupportFragmentManager().getFragments();
-        for (Fragment fragment : fragments) {
-            if (fragment instanceof SavedCardListFragment) {
-                return (SavedCardListFragment) fragment;
-            }
-        }
-        return null;
-    }
-
     private void initCreditCard() {
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
         creditCardTransaction.setProperties(midtransSDK.getCreditCard(), SdkUIFlowUtil.getBankBins(this));
-        
+
         initBankBins();
 
         String cardClickType = midtransSDK.getTransactionRequest().getCardClickType();
@@ -179,7 +159,7 @@ public class CreditCardFlowActivity extends BaseActivity {
         } else {
             showAddCardDetailFragment();
         }
-        setTextTotalAmount(midtransSDK.getTransactionRequest().getAmount());
+        setTextTotalAmount(MidtransSDK.getInstance().getTransactionRequest().getAmount());
     }
 
     private void showAddCardDetailFragment() {
@@ -189,8 +169,8 @@ public class CreditCardFlowActivity extends BaseActivity {
 
     private void getCreditCards() {
         UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
-        if (midtransSDK.isEnableBuiltInTokenStorage()) {
-            List<SavedToken> tokens = midtransSDK.getCreditCard().getSavedTokens();
+        if (MidtransSDK.getInstance().isEnableBuiltInTokenStorage()) {
+            List<SavedToken> tokens = MidtransSDK.getInstance().getCreditCard().getSavedTokens();
             if (tokens != null && !tokens.isEmpty()) {
                 List<SaveCardRequest> savedCard = SdkUIFlowUtil.convertSavedToken(tokens);
                 List<SaveCardRequest> filteredSavedCard = SdkUIFlowUtil.filterCardsByClickType(this, savedCard);
@@ -204,7 +184,7 @@ public class CreditCardFlowActivity extends BaseActivity {
             }
         } else {
             SdkUIFlowUtil.showProgressDialog(this, getString(R.string.fetching_cards), false);
-            midtransSDK.getCards(userDetail.getUserId(), new GetCardCallback() {
+            MidtransSDK.getInstance().getCards(userDetail.getUserId(), new GetCardCallback() {
                 @Override
                 public void onSuccess(ArrayList<SaveCardRequest> response) {
                     SdkUIFlowUtil.hideProgressDialog();
@@ -255,7 +235,6 @@ public class CreditCardFlowActivity extends BaseActivity {
     }
 
     private void bindViews() {
-        midtransSDK = MidtransSDK.getInstance();
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         titleHeaderTextView = (TextView) findViewById(R.id.text_title);
         textTotalAmount = (TextView) findViewById(R.id.text_amount);
@@ -373,7 +352,7 @@ public class CreditCardFlowActivity extends BaseActivity {
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
 
         CreditCardPaymentModel paymentModel;
-        if (midtransSDK.getTransactionRequest().getCardClickType().equalsIgnoreCase(getString(R.string.card_click_type_one_click))
+        if (MidtransSDK.getInstance().getTransactionRequest().getCardClickType().equalsIgnoreCase(getString(R.string.card_click_type_one_click))
                 && !isNewCard && this.maskedCardNumber != null) {
             //using one click
             paymentModel = new CreditCardPaymentModel(this.maskedCardNumber);
@@ -397,6 +376,7 @@ public class CreditCardFlowActivity extends BaseActivity {
             paymentModel.setPointRedeemed(creditCardTransaction.getBankPointRedeemed());
         }
 
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
         if (discountToken != null && !TextUtils.isEmpty(discountToken)) {
             midtransSDK.paymentUsingCard(midtransSDK.readAuthenticationToken(), discountToken, paymentModel, new TransactionCallback() {
                 @Override
@@ -445,6 +425,7 @@ public class CreditCardFlowActivity extends BaseActivity {
     }
 
     private void deleteCardFromTokenStorage(final SaveCardRequest savedCard) {
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
         midtransSDK.deleteCard(midtransSDK.readAuthenticationToken(), savedCard.getMaskedCard(), new DeleteCardCallback() {
             @Override
             public void onSuccess(Void object) {
@@ -476,15 +457,15 @@ public class CreditCardFlowActivity extends BaseActivity {
     }
 
     private void updateSavedCards() {
-        if (midtransSDK.isEnableBuiltInTokenStorage()) {
-            List<SavedToken> savedTokens = midtransSDK.getCreditCard().getSavedTokens();
+        if (MidtransSDK.getInstance().isEnableBuiltInTokenStorage()) {
+            List<SavedToken> savedTokens = MidtransSDK.getInstance().getCreditCard().getSavedTokens();
             List<SaveCardRequest> saveCardRequests = SdkUIFlowUtil.convertSavedToken(savedTokens);
             ArrayList<SaveCardRequest> filteredSaveCardRequest = (ArrayList<SaveCardRequest>) SdkUIFlowUtil.filterCardsByClickType(this, saveCardRequests);
             updateSavedCard(filteredSaveCardRequest);
         } else {
             UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
             SdkUIFlowUtil.showProgressDialog(this, getString(R.string.fetching_cards), false);
-            midtransSDK.getCards(userDetail.getUserId(), new GetCardCallback() {
+            MidtransSDK.getInstance().getCards(userDetail.getUserId(), new GetCardCallback() {
                 @Override
                 public void onSuccess(ArrayList<SaveCardRequest> response) {
                     SdkUIFlowUtil.hideProgressDialog();
@@ -529,6 +510,8 @@ public class CreditCardFlowActivity extends BaseActivity {
         CardTokenRequest acquiringBankTokenRequest = initAcquiringBank(installmentTokenRequest);
 
         this.cardTokenRequest = acquiringBankTokenRequest;
+
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
         if (midtransSDK.getCreditCard().getType() != null
                 && !TextUtils.isEmpty(midtransSDK.getCreditCard().getType())) {
             acquiringBankTokenRequest.setType(midtransSDK.getCreditCard().getType());
@@ -543,12 +526,12 @@ public class CreditCardFlowActivity extends BaseActivity {
         } else {
             cardTokenRequest.setPoint(false);
         }
-        midtransSDK.getCardToken(cardTokenRequest, new CardTokenCallback() {
+        MidtransSDK.getInstance().getCardToken(cardTokenRequest, new CardTokenCallback() {
             @Override
             public void onSuccess(TokenDetailsResponse response) {
                 tokenDetailsResponse = response;
                 cardTokenRequest.setBank(tokenDetailsResponse.getBank());
-                if (midtransSDK.getTransactionRequest().isSecureCard()) {
+                if (MidtransSDK.getInstance().getTransactionRequest().isSecureCard()) {
                     if (!TextUtils.isEmpty(tokenDetailsResponse.getRedirectUrl())) {
                         Intent intentPaymentWeb = new Intent(CreditCardFlowActivity.this, PaymentWebActivity.class);
                         intentPaymentWeb.putExtra(Constants.WEBURL, tokenDetailsResponse.getRedirectUrl());
@@ -591,6 +574,7 @@ public class CreditCardFlowActivity extends BaseActivity {
 
     private CardTokenRequest initAcquiringBank(CardTokenRequest cardTokenRequest) {
         // Set acquiring bank and channel if available
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
         if (midtransSDK.getTransactionRequest().getCreditCard() != null) {
             String bank = midtransSDK.getTransactionRequest().getCreditCard().getBank();
             cardTokenRequest.setBank(bank);
@@ -607,12 +591,12 @@ public class CreditCardFlowActivity extends BaseActivity {
         Logger.i(TAG, "paymentResponse:" + response.getStatusCode());
 
         if (response.getStatusCode().equalsIgnoreCase(getString(R.string.success_code_200)) ||
-                response.getStatusCode().equalsIgnoreCase(midtransSDK.getContext().getString(R.string.success_code_201))) {
+                response.getStatusCode().equalsIgnoreCase(getString(R.string.success_code_201))) {
 
             titleHeaderTextView.setText(getString(R.string.title_payment_status));
 
             if (cardTokenRequest != null && cardTokenRequest.isSaved()) {
-                if (!midtransSDK.isEnableBuiltInTokenStorage()) {
+                if (!MidtransSDK.getInstance().isEnableBuiltInTokenStorage()) {
                     if (!creditCards.isEmpty()) {
                         int position = -1;
                         for (int i = 0; i < creditCards.size(); i++) {
@@ -668,7 +652,7 @@ public class CreditCardFlowActivity extends BaseActivity {
             if (response.getValidationMessages() != null && response.getValidationMessages().get(0) != null) {
                 if (response.getValidationMessages().get(0).contains("3d")) {
                     //track page bca va overview
-                    midtransSDK.trackEvent(AnalyticsEventName.CREDIT_CARD_3DS_ERROR);
+                    MidtransSDK.getInstance().trackEvent(AnalyticsEventName.CREDIT_CARD_3DS_ERROR);
                 }
             }
         }
@@ -680,10 +664,9 @@ public class CreditCardFlowActivity extends BaseActivity {
     private void actionPaymentError(Throwable throwable) {
         //track page status failed
         MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
-
-
+        String errorMessage = MessageUtil.createPaymentErrorMessage(this, throwable.getMessage(), getString(R.string.message_payment_failed));
         SdkUIFlowUtil.hideProgressDialog();
-        showErrorMessage(getString(R.string.message_payment_failed));
+        showErrorMessage(errorMessage);
     }
 
     private void showErrorMessage(String errorMessage) {
@@ -702,7 +685,7 @@ public class CreditCardFlowActivity extends BaseActivity {
     }
 
     public void prepareSaveCard(SaveCardRequest creditCard) {
-        String cardType = midtransSDK.getTransactionRequest().getCardClickType();
+        String cardType = MidtransSDK.getInstance().getTransactionRequest().getCardClickType();
         SaveCardRequest savedCard = findCardByMaskedNumber(creditCard.getMaskedCard(), creditCards);
         if (savedCard != null) {
             creditCards.remove(savedCard);
@@ -722,6 +705,7 @@ public class CreditCardFlowActivity extends BaseActivity {
     }
 
     public void twoClickPayment(CardTokenRequest request) {
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
         this.isNewCard = false;
         CardTokenRequest cardTokenRequest = new CardTokenRequest();
         cardTokenRequest.setSavedTokenId(request.getSavedTokenId());
@@ -801,7 +785,7 @@ public class CreditCardFlowActivity extends BaseActivity {
 
     public void saveCreditCards(ArrayList<SaveCardRequest> requests) {
         UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
-        midtransSDK.saveCards(userDetail.getUserId(), requests, new SaveCardCallback() {
+        MidtransSDK.getInstance().saveCards(userDetail.getUserId(), requests, new SaveCardCallback() {
             @Override
             public void onSuccess(SaveCardResponse response) {
                 SdkUIFlowUtil.hideProgressDialog();
@@ -883,17 +867,4 @@ public class CreditCardFlowActivity extends BaseActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.card_container, fragment).addToBackStack("").commit();
     }
 
-    public void addCardDetailFragment(CardDetailsFragment cardDetailsFragment, boolean addToBackStack) {
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        if (addToBackStack) {
-            if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
-                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
-                fragmentTransaction.setCustomAnimations(R.anim.slide_in, R.anim.slide_out, R.anim.slide_in_back, R.anim.slide_out_back);
-            }
-            fragmentTransaction.replace(R.id.card_container, cardDetailsFragment).addToBackStack("").commit();
-        } else {
-            fragmentTransaction.replace(R.id.card_container, cardDetailsFragment).addToBackStack("").commit();
-        }
-
-    }
 }

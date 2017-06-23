@@ -44,4 +44,12 @@
             android:layout_marginRight="@dimen/eight_dp"
             android:src="@drawable/ic_arrow_right_white" />
     </LinearLayout>
+
+    <include
+        layout="@layout/layout_sandbox_badge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>

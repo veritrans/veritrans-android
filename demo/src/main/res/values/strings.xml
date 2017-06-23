@@ -57,14 +57,19 @@
     <string name="custom_permata_va_enabled">Custom Permata VA Number Enabled</string>
     <string name="custom_bca_va_disabled">Custom BCA VA Number Disabled</string>
     <string name="custom_bca_va_enabled">Custom BCA VA Number Enabled</string>
+    <string name="custom_bni_va_disabled">Custom BNI VA Number Disabled</string>
+    <string name="custom_bni_va_enabled">Custom BNI VA Number Enabled</string>
+
     <string name="custom_va_enabled_format">Enabled - %1$s</string>
     <string name="custom_va_enabled">Enabled</string>
     <string name="custom_va_disabled">Disabled</string>
     <string name="custom_bca_va_hint">Custom BCA VA Number</string>
+    <string name="custom_va_hint">Custom VA Number</string>
     <string name="custom_permata_va_error">VA Number must be 10 digits.</string>
     <string name="custom_permata_va_hint">Custom Permata VA Number</string>
     <string name="custom_bca_va_enable_title">Enable Custom BCA VA Number</string>
     <string name="custom_permata_va_enable_title">Enable Custom Permata VA Number</string>
+    <string name="format_va_enable_title">Enable Custom %1$s Number</string>
     <string name="custom_va_edit_button">Edit</string>
 
     <!--PROMO ENABLED TITLE-->
@@ -168,4 +173,8 @@
     <string name="optional">Optional</string>
     <string name="installment_bri">BRI</string>
     <string name="save_card">Save Card</string>
+    <string name="reset_setting">Reset</string>
+    <string name="reset_setting_notification">All Settings are Reset</string>
+    <string name="bni_va_title">BNI VA</string>
+    <string name="bca_va_title">BCA VA</string>
 </resources>

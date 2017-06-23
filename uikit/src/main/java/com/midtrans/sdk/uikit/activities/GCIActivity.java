@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -20,6 +19,7 @@ import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.GCIPaymentFragment;
+import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
@@ -100,7 +100,7 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
 
     private void prepareToolbar() {
         Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_back);
-        MidtransSDK midtransSDK =MidtransSDK.getInstance();
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
         if (midtransSDK.getColorTheme() != null && midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
             drawable.setColorFilter(
                     midtransSDK.getColorTheme().getPrimaryDarkColor(),
@@ -202,7 +202,9 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
                     MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
 
                     SdkUIFlowUtil.hideProgressDialog();
-                    errorMessage = getString(R.string.message_payment_failed);
+                    String message = MessageUtil.createPaymentErrorMessage(GCIActivity.this, error.getMessage(), null);
+
+                    errorMessage = message;
                     SdkUIFlowUtil.showToast(GCIActivity.this, "" + errorMessage);
                 }
             });

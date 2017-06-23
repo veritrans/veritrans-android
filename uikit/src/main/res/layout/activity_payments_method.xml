@@ -11,57 +11,57 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/main_toolbar"
-                style="@style/ThemeOverlay.AppCompat.ActionBar"
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/main_toolbar"
+            style="@style/ThemeOverlay.AppCompat.ActionBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@android:color/white"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp"
+            app:contentInsetStartWithNavigation="0dp">
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@android:color/white"
-                app:contentInsetLeft="0dp"
-                app:contentInsetStart="0dp"
-                app:contentInsetStartWithNavigation="0dp">
+                android:layout_height="match_parent"
+                android:layout_marginEnd="48dp"
+                android:layout_marginRight="48dp"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-                <LinearLayout
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:id="@+id/merchant_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/dark_gray"
+                    android:textSize="@dimen/tool_bar_title_size"
+                    android:visibility="gone"
+                    tools:text="Name" />
+
+                <ImageView
+                    android:id="@+id/merchant_logo"
+                    android:layout_width="@dimen/logo_width"
+                    android:layout_height="@dimen/logo_height"
+                    android:layout_gravity="center"
+                    android:scaleType="centerInside"
+                    tools:src="@drawable/ic_veritrans" />
+
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:id="@+id/title_header"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="48dp"
-                    android:layout_marginRight="48dp"
-                    android:gravity="center"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:ellipsize="end"
+                    android:gravity="end"
+                    android:maxLines="1"
+                    android:text="@string/select_payment_method"
+                    android:textColor="@color/dark_gray"
+                    android:textSize="@dimen/tool_bar_title_size"
+                    android:visibility="gone" />
+            </LinearLayout>
 
-                    <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                        android:id="@+id/merchant_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/dark_gray"
-                        android:textSize="@dimen/tool_bar_title_size"
-                        android:visibility="gone"
-                        tools:text="Name" />
-
-                    <ImageView
-                        android:id="@+id/merchant_logo"
-                        android:layout_width="@dimen/logo_width"
-                        android:layout_height="@dimen/logo_height"
-                        android:layout_gravity="center"
-                        android:scaleType="centerInside"
-                        tools:src="@drawable/ic_veritrans" />
-
-                    <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                        android:id="@+id/title_header"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                        android:layout_marginRight="@dimen/activity_horizontal_margin"
-                        android:ellipsize="end"
-                        android:gravity="end"
-                        android:maxLines="1"
-                        android:text="@string/select_payment_method"
-                        android:textColor="@color/dark_gray"
-                        android:textSize="@dimen/tool_bar_title_size"
-                        android:visibility="gone" />
-                </LinearLayout>
-
-            </android.support.v7.widget.Toolbar>
+        </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
     <com.midtrans.sdk.uikit.widgets.DefaultTextView
@@ -102,4 +102,10 @@
 
         <include layout="@layout/layout_midtrans_progress" />
     </LinearLayout>
+
+    <include
+        layout="@layout/layout_sandbox_badge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start" />
 </android.support.design.widget.CoordinatorLayout>

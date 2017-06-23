@@ -71,7 +71,7 @@ public class MidtransSDK {
     private ArrayList<PaymentMethodsModel> selectedPaymentMethods = new ArrayList<>();
     private boolean enableBuiltInTokenStorage;
     private String sdkBaseUrl = "";
-    private int requestTimeOut = 10;
+    private int requestTimeOut = 30;
     private String flow = null;
     private CreditCard creditCard = new CreditCard();
     private List<PromoResponse> promoResponses = new ArrayList<>();
