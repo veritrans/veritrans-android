@@ -5,7 +5,7 @@ apply from: '../jacoco.gradle'
 apply plugin: 'com.vanniktech.android.junit.jacoco'
 
 group = 'com.midtrans'
-version = '1.7.5'
+version = '1.8.0'
 
 buildscript {
     repositories {
@@ -70,8 +70,8 @@ android {
 
         staging {
             DEFAULT_PUBLISH = "stagingRelease"
-            buildConfigField "String", "BASE_URL", "\"https://api.stg.midtrans.com/v2/\""
-            buildConfigField "String", "SNAP_BASE_URL", "\"https://app.stg.midtrans.com/snap/\""
+            buildConfigField "String", "BASE_URL", "\"https://api.stg.veritrans.co.id/v2/\""
+            buildConfigField "String", "SNAP_BASE_URL", "\"https://midtrans-checkout1.stg.veritrans.co.id/snap/\""
             buildConfigField "String", "PROMO_ENGINE_URL", "\"https://promo.vt-stage.info/\""
         }
 

@@ -15,10 +15,15 @@ import java.util.ArrayList;
 public class MessageUtil {
 
     private static final String PAID_ORDER_ID = "has been paid";
+    private static final String PROCESSED_ORDER_ID = "transaction has been processed";
+    private static final String TOKEN_NOT_FOUND = "token not found";
     private static final String GROSS_AMOUNT_NOT_EQUAL = "is not equal to the sum";
     private static final String GROSS_AMOUNT_REQUIRED = "amount is required";
     private static final String ORDER_ID_REQUIRED = "order_id is required";
     private static final String FLAVOR_DEVELOPMENT = "development";
+    public static final String TIMEOUT = "timeout";
+    public static final String MAINTENANCE = "maintenance";
+    public static final String RETROFIT_TIMEOUT = "timed out";
 
 
     public static String createMessageWhenCheckoutFailed(Context context, ArrayList<String> statusMessage) {
@@ -34,7 +39,7 @@ public class MessageUtil {
             if (statusMessage == null || statusMessage.isEmpty()) {
                 message = context.getString(R.string.txt_error_snap_token);
             } else {
-                if (statusMessage.contains(PAID_ORDER_ID)) {
+                if (statusMessage.contains(PAID_ORDER_ID) || statusMessage.contains(PROCESSED_ORDER_ID)) {
                     message = context.getString(R.string.error_paid_orderid);
                 } else if (statusMessage.contains(GROSS_AMOUNT_NOT_EQUAL)) {
                     message = context.getString(R.string.error_gross_amount_not_equal);
@@ -44,6 +49,8 @@ public class MessageUtil {
                     message = context.getString(R.string.error_order_id_required);
                 } else if (statusMessage.contains(ORDER_ID_REQUIRED)) {
                     message = context.getString(R.string.error_order_id_required);
+                } else if (statusMessage.contains(TIMEOUT)) {
+                    message = context.getString(R.string.timeout_message);
                 } else {
                     message = context.getString(R.string.txt_error_snap_token);
                 }
@@ -53,7 +60,7 @@ public class MessageUtil {
         return message;
     }
 
-    public static String createMessageWhenCheckoutError(Context context, String statusMessage) {
+    public static String createMessageWhenCheckoutError(Context context, String statusMessage, String defaultMessage) {
         String message;
 
         if (BuildConfig.FLAVOR.equals(FLAVOR_DEVELOPMENT)) {
@@ -63,8 +70,13 @@ public class MessageUtil {
                 message = statusMessage;
             }
         } else {
-            message = context.getString(R.string.error_unable_to_connect);
+            if (!TextUtils.isEmpty(statusMessage) && statusMessage.contains(TIMEOUT)) {
+                message = context.getString(R.string.timeout_message);
+            } else {
+                message = defaultMessage;
+            }
         }
         return message;
     }
+
 }

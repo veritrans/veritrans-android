@@ -121,7 +121,8 @@ public class SelectPaymentMethodDialogFragment extends DialogFragment {
         List<SelectPaymentMethodViewModel> viewModels = new ArrayList<>();
         for (int i = 0; i < enabledPayments.size(); i++) {
             EnabledPayment enabledPayment = enabledPayments.get(i);
-            PaymentMethodsModel model = PaymentMethods.getMethods(getContext(), enabledPayment.getType());
+            PaymentMethodsModel model = PaymentMethods.getMethods(getContext(), enabledPayment.getType(),
+                    enabledPayment.getStatus());
             if (model != null) {
                 viewModels.add(new SelectPaymentMethodViewModel(model.getName(), enabledPayment.getType(), true));
             }
@@ -134,7 +135,7 @@ public class SelectPaymentMethodDialogFragment extends DialogFragment {
         List<SelectPaymentMethodViewModel> viewModels = new ArrayList<>();
         for (int i = 0; i < enabledPayments.size(); i++) {
             EnabledPayment enabledPayment = enabledPayments.get(i);
-            PaymentMethodsModel model = PaymentMethods.getMethods(getContext(), enabledPayment.getType());
+            PaymentMethodsModel model = PaymentMethods.getMethods(getContext(), enabledPayment.getType(), enabledPayment.getStatus());
             if (model != null) {
                 viewModels.add(new SelectPaymentMethodViewModel(model.getName(), enabledPayment.getType(), false));
             }

@@ -5,10 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
+import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 
 import java.util.ArrayList;
 
@@ -54,6 +57,20 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
         holder.mImageView.setImageResource(data.get(position).getImageId());
         holder.name.setText(data.get(position).getName());
         holder.description.setText(data.get(position).getDescription());
+
+        disablePaymentView(holder, data.get(position));
+    }
+
+    private void disablePaymentView(PaymentViewHolder holder, PaymentMethodsModel paymentMethod) {
+        if (paymentMethod.getStatus().equals(EnabledPayment.STATUS_DOWN)) {
+            holder.layoutPaymentUnavailable.setVisibility(View.VISIBLE);
+            holder.itemView.setClickable(false);
+            holder.textUnavailable.setVisibility(View.VISIBLE);
+        } else {
+            holder.layoutPaymentUnavailable.setVisibility(View.GONE);
+            holder.itemView.setClickable(true);
+            holder.textUnavailable.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -73,12 +90,17 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
         TextView name;
         TextView description;
         ImageView mImageView;
+        DefaultTextView textUnavailable;
+        LinearLayout layoutPaymentUnavailable;
 
         PaymentViewHolder(View itemView, final PaymentMethodListener listener) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.text_payment_method_name);
             mImageView = (ImageView) itemView.findViewById(R.id.img_payment_method_icon);
             description = (TextView) itemView.findViewById(R.id.text_payment_method_description);
+            textUnavailable = (DefaultTextView) itemView.findViewById(R.id.text_option_unavailable);
+            layoutPaymentUnavailable = (LinearLayout) itemView.findViewById(R.id.layout_payment_unavailable);
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

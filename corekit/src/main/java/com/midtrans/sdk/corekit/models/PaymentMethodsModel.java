@@ -8,6 +8,7 @@ package com.midtrans.sdk.corekit.models;
  */
 public class PaymentMethodsModel {
 
+    private  String status;
     private String name;
     private int imageId;
     private int paymentType;
@@ -15,13 +16,15 @@ public class PaymentMethodsModel {
     private boolean isSelected;
     private Integer priority;
 
-    public PaymentMethodsModel(String name, String description, int imageId, int paymentType, int priority) {
+    public PaymentMethodsModel(String name, String description, int imageId, int paymentType, int priority, String status) {
         this.paymentType = paymentType;
         this.imageId = imageId;
         this.name = name;
         this.description = description;
         this.priority = priority;
+        this.status = status;
     }
+
 
     public String getName() {
         return name;
@@ -49,5 +52,13 @@ public class PaymentMethodsModel {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

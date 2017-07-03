@@ -35,4 +35,5 @@
     <color name="grey_f1">#f1f1f2</color>
 
     <color name="delete_color">#D4385C</color>
+    <color name="disable">#F1F1F2</color>
 </resources>
