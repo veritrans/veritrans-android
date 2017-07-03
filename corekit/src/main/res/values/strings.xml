@@ -142,7 +142,6 @@
     <!--Bank Transfer-->
     <string name="bca_bank_transfer">BCA</string>
     <string name="permata_bank_transfer">Permata</string>
-    <string name="all_bank_transfer">Other Banks</string>
     <string name="bni_bank_transfer">BNI</string>
 
 

@@ -144,7 +144,7 @@
     <string name="bca_bank_transfer">BCA</string>
     <string name="permata_bank_transfer">Permata</string>
     <string name="mandiri_bank_transfer">Mandiri</string>
-    <string name="all_bank_transfer">Other Banks</string>
+    <string name="all_bank_transfer">Other ATM Network</string>
     <string name="bni_bank_transfer">BNI</string>
 
     <string name="orderId">Order ID</string>
@@ -601,7 +601,7 @@
     <string name="bank_bca_transfer">Bank BCA</string>
     <string name="bank_permata_transfer">Bank Permata</string>
     <string name="bank_bni_transfer">Bank BNI</string>
-    <string name="other_bank_transfer">Other Bank</string>
+    <string name="other_bank_transfer">Other ATM Network</string>
     <string name="copy">Copy</string>
     <string name="valid_until">Please complete your payment before:</string>
     <string name="klik_bca_complete_payment">Complete payment at <a href="http://klikbca.com/">http://klikbca.com/</a> before</string>

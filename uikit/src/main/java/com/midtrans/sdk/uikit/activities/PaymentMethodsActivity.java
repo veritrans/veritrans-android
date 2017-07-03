@@ -6,6 +6,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -100,6 +101,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     private BoldTextView maintenanceTitleMessage;
     private DefaultTextView maintenanceMessage;
     private FancyButton buttonRetry;
+    private AppBarLayout appbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -233,6 +235,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         paymentMethodsView = (RecyclerView) findViewById(R.id.rv_payment_methods);
         itemDetailsView = (RecyclerView) findViewById(R.id.rv_item_list);
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        appbar = (AppBarLayout) findViewById(R.id.main_appbar);
         logo = (ImageView) findViewById(R.id.merchant_logo);
         merchantName = (TextView) findViewById(R.id.merchant_name);
         progressContainer = (LinearLayout) findViewById(R.id.progress_container);
@@ -301,31 +304,34 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             buttonRetry.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    maintenanceContainer.setVisibility(View.GONE);
+                    showMaintenanceContainer(false);
                     getPaymentPages();
                 }
             });
         } else {
-
-            if (message.contains(MessageUtil.MAINTENANCE)) {
-                maintenanceTitleMessage.setText(getString(R.string.maintenance_title));
-                maintenanceMessage.setText(getString(R.string.maintenance_message));
-                buttonRetry.setText(getString(R.string.maintenance_back));
-            } else {
-                maintenanceTitleMessage.setText(getString(R.string.sorry));
-                maintenanceMessage.setText(message);
-                buttonRetry.setText(getString(R.string.maintenance_back));
-            }
+            maintenanceTitleMessage.setText(getString(R.string.maintenance_title));
+            maintenanceMessage.setText(getString(R.string.maintenance_message));
+            buttonRetry.setText(getString(R.string.maintenance_back));
 
             buttonRetry.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    maintenanceContainer.setVisibility(View.GONE);
+                    showMaintenanceContainer(false);
                     finish();
                 }
             });
         }
-        maintenanceContainer.setVisibility(View.VISIBLE);
+        showMaintenanceContainer(true);
+    }
+
+    private void showMaintenanceContainer(boolean show) {
+        if (show) {
+            appbar.setVisibility(View.GONE);
+            maintenanceContainer.setVisibility(View.VISIBLE);
+        } else {
+            appbar.setVisibility(View.VISIBLE);
+            maintenanceContainer.setVisibility(View.GONE);
+        }
     }
 
     private void enableButtonBack(boolean enable) {

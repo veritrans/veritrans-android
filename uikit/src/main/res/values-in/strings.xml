@@ -405,7 +405,7 @@
     <string name="instruction_alto6"><b>Detail pembayaran Anda</b> akan muncul pada halaman konfirmasi. Jika informasi sesuai tekan <b>Benar</b>.</string>
     <string name="instruction_alto7">Pilih rekening pembayaran Anda dan tekan <b>Benar</b>.</string>
 
-    <string name="all_bank_transfer">Bank Lainnya</string>
+    <string name="all_bank_transfer">Jaringan ATM Lainnya</string>
     <string name="error_message_invalid_input_telkomsel">Transaksi Anda tidak dapat diproses. Pastikan informasi pembayaran Anda benar.</string>
     <string name="no_network_msg">Koneksi tidak tersedia! Coba lagi lain waktu.</string>
     <string name="kioson">Kioson</string>
@@ -442,7 +442,7 @@
     <string name="bank_bca_transfer">Bank BCA</string>
     <string name="bank_permata_transfer">Bank Permata</string>
     <string name="bank_bni_transfer">Bank BNI</string>
-    <string name="other_bank_transfer">Others Bank</string>
+    <string name="other_bank_transfer">Jaringan ATM Lainnya</string>
     <string name="copy">Salin</string>
     <string name="valid_until">Valid hingga</string>
     <string name="valid_date">10 September 2015, 16:00</string>
