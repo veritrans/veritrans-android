@@ -131,6 +131,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private AppCompatRadioButton installmentMandiriSelection;
     private AppCompatRadioButton installmentBcaSelection;
     private AppCompatRadioButton installmentBriSelection;
+    private AppCompatRadioButton installmentCimbSelection;
     private AppCompatRadioButton noInstallmentSelection;
     /**
      * Radio Button selection for BNI Point
@@ -226,6 +227,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private ImageButton editInstallmentBca;
     private ImageButton editInstallmentBni;
     private ImageButton editInstallmentBri;
+    private ImageButton editInstallmentCimb;
+
     private boolean installmentRequired;
 
     private DemoTextView resetSetting;
@@ -304,6 +307,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         installmentMandiriSelection = (AppCompatRadioButton) findViewById(R.id.installment_type_mandiri);
         installmentBcaSelection = (AppCompatRadioButton) findViewById(R.id.installment_type_bca);
         installmentBriSelection = (AppCompatRadioButton) findViewById(R.id.installment_type_bri);
+        installmentCimbSelection = (AppCompatRadioButton) findViewById(R.id.installment_type_cimb);
         noInstallmentSelection = (AppCompatRadioButton) findViewById(R.id.no_installment);
 
         normalSelection = (AppCompatRadioButton) findViewById(R.id.type_credit_card_normal);
@@ -367,6 +371,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         editInstallmentBca = (ImageButton) findViewById(R.id.button_bca_installment_edit);
         editInstallmentBni = (ImageButton) findViewById(R.id.button_bni_installment_edit);
         editInstallmentBri = (ImageButton) findViewById(R.id.button_bri_installment_edit);
+        editInstallmentCimb = (ImageButton) findViewById(R.id.button_cimb_installment_edit);
     }
 
     private void initTitleClicks() {
@@ -818,6 +823,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 }
             }
         });
+
     }
 
     private void initCardClickSelection() {
@@ -1550,6 +1556,18 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     setBriAcquiringBank();
                     resetOneClickSelection();
                     break;
+
+                case Constants.INSTALLMENT_CIMB:
+                    String cimbTitle = getString(R.string.using_cimb_installment);
+                    installmentTitle.setText(cimbTitle);
+                    installmentBriSelection.setChecked(true);
+                    resetBniPointSelection();
+                    updateSelectedInstallment();
+                    showEditInstallmentCimbOption();
+                    setCimbAcquiringBank();
+                    resetOneClickSelection();
+                    break;
+
                 default:
                     installmentTitle.setText(R.string.no_installment);
                     noInstallmentSelection.setChecked(true);
@@ -1644,6 +1662,23 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 }
             }
         });
+
+        installmentCimbSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    String title = getString(R.string.using_cimb_installment);
+                    installmentTitle.setText(title);
+                    installmentCimbSelection.setChecked(true);
+                    hideEditInstallmentOption();
+                    resetBniPointSelection();
+                    showInstallmentDialog(false);
+                    showEditInstallmentCimbOption();
+                    setCimbAcquiringBank();
+                    resetOneClickSelection();
+                }
+            }
+        });
     }
 
     private void resetAcquiringBank() {
@@ -1652,6 +1687,10 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
 
     private void setBriAcquiringBank() {
         bankBriSelection.setChecked(true);
+    }
+
+    private void setCimbAcquiringBank() {
+        bankCimbSelection.setChecked(true);
     }
 
     private void setBcaAcquiringBank() {
@@ -1694,6 +1733,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         editInstallmentBca.setVisibility(View.INVISIBLE);
         editInstallmentBni.setVisibility(View.INVISIBLE);
         editInstallmentBri.setVisibility(View.INVISIBLE);
+        editInstallmentCimb.setVisibility(View.INVISIBLE);
     }
 
     private void showEditInstallmentMandiriOption() {
@@ -1710,6 +1750,10 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
 
     private void showEditInstallmentBriOption() {
         editInstallmentBri.setVisibility(View.VISIBLE);
+    }
+
+    private void showEditInstallmentCimbOption() {
+        editInstallmentCimb.setVisibility(View.VISIBLE);
     }
 
     private void showInstallmentDialog(boolean isRequired) {
@@ -2007,6 +2051,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             DemoPreferenceHelper.setStringPreference(this, INSTALLMENT_TYPE, Constants.INSTALLMENT_BCA);
         } else if (installmentBriSelection.isChecked()) {
             DemoPreferenceHelper.setStringPreference(this, INSTALLMENT_TYPE, Constants.INSTALLMENT_BRI);
+        } else if (installmentCimbSelection.isChecked()) {
+            DemoPreferenceHelper.setStringPreference(this, INSTALLMENT_TYPE, Constants.INSTALLMENT_CIMB);
         } else {
             DemoPreferenceHelper.setStringPreference(this, INSTALLMENT_TYPE, Constants.NO_INSTALLMENT);
         }
@@ -2578,7 +2624,9 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         } else if (installmentMandiriSelection.isChecked()) {
             setInstallmentBankTerm(bankTerms, Constants.INSTALLMENT_BANK_MANDIRI);
         } else if (installmentBcaSelection.isChecked()) {
-            setInstallmentBankTerm(bankTerms, Constants.INSTALLMENT__BANK_BCA);
+            setInstallmentBankTerm(bankTerms, Constants.INSTALLMENT_BANK_BCA);
+        } else if (installmentBcaSelection.isChecked()) {
+            setInstallmentBankTerm(bankTerms, Constants.INSTALLMENT_BANK_CIMB);
         } else {
             installment = null;
         }

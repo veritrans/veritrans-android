@@ -26,11 +26,13 @@ public class Constants {
     public static final String INSTALLMENT_MANDIRI = "installment.mandiri";
     public static final String INSTALLMENT_BCA = "installment.bca";
     public static final String INSTALLMENT_BRI = "installment.bri";
+    public static final String INSTALLMENT_CIMB = "installment.cimb";
 
     public static final String INSTALLMENT_BANK_BNI = "bni";
     public static final String INSTALLMENT_BANK_MANDIRI = "mandiri";
-    public static final String INSTALLMENT__BANK_BCA = "bca";
+    public static final String INSTALLMENT_BANK_BCA = "bca";
     public static final String INSTALLMENT_BANK_BRI = "bri";
+    public static final String INSTALLMENT_BANK_CIMB = "cimb";
 
 
 }

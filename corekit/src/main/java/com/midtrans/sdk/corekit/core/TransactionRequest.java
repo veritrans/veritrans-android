@@ -297,6 +297,7 @@ public class TransactionRequest {
      * @param clickType    use click type from Constants.
      * @param isSecureCard is secure
      */
+    @Deprecated
     public void setCardPaymentInfo(String clickType, boolean isSecureCard) {
         Logger.i("clicktype:" + clickType + ",isSecured:" + isSecureCard);
         this.cardClickType = clickType;

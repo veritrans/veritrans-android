@@ -117,7 +117,7 @@ public class SavedCardListFragment extends Fragment {
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     dialogInterface.dismiss();
                                     SaveCardRequest saveCardRequest = savedCardsAdapter.getItem(position);
-                                    ((CreditCardFlowActivity) getActivity()).oneClickPayment(saveCardRequest.getMaskedCard());
+                                    ((CreditCardFlowActivity) getActivity()).oneClickPayment(saveCardRequest);
                                 }
                             })
                             .setNegativeButton(R.string.text_cancel, new DialogInterface.OnClickListener() {
@@ -237,7 +237,7 @@ public class SavedCardListFragment extends Fragment {
                 removeFromCreditCardInstance(saveCardRequest.getMaskedCard());
                 removeCardFromInstance(saveCardRequest.getMaskedCard());
                 ((CreditCardFlowActivity) getActivity()).setCreditCards(savedCards);
-                if (checkIfCreditCardTokensAvailable()) {
+                if (((CreditCardFlowActivity) getActivity()).checkIfCreditCardTokensAvailable()) {
                     savedCardsAdapter.removeCard(saveCardRequest.getMaskedCard());
                 } else {
                     ((CreditCardFlowActivity) getActivity()).getTitleHeaderTextView().setText(R.string.card_details);
@@ -318,9 +318,9 @@ public class SavedCardListFragment extends Fragment {
         return null;
     }
 
-    public void updateSavedCardsData(ArrayList<SaveCardRequest> saveCardRequests, boolean fromBackStack) {
+    public void updateSavedCardsData(List<SaveCardRequest> saveCardRequests, boolean fromBackStack) {
         this.fromBackStack = fromBackStack;
-        this.savedCards = saveCardRequests;
+        this.savedCards = new ArrayList<>(saveCardRequests);
         savedCardsAdapter.setData(savedCards);
     }
 

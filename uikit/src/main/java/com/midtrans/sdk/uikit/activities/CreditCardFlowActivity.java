@@ -26,6 +26,7 @@ import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.CardTokenRequest;
 import com.midtrans.sdk.corekit.models.CreditCardFromScanner;
@@ -75,6 +76,7 @@ public class CreditCardFlowActivity extends BaseActivity {
     private boolean saveCard = false;
     private boolean isNewCard = true;
     private String maskedCardNumber;
+    private String savedCardClickType;
     private int attempt = 0;
     private CardTokenRequest cardTokenRequest;
     private ArrayList<SaveCardRequest> creditCards = new ArrayList<>();
@@ -151,12 +153,12 @@ public class CreditCardFlowActivity extends BaseActivity {
         creditCardTransaction.setProperties(midtransSDK.getCreditCard(), SdkUIFlowUtil.getBankBins(this));
 
         initBankBins();
-
-        String cardClickType = midtransSDK.getTransactionRequest().getCardClickType();
-        if (!TextUtils.isEmpty(cardClickType) && !cardClickType.equals(getString(R.string.card_click_type_none))) {
+        if (isClickPayment()) {
             getCreditCards();
+
         } else {
             showAddCardDetailFragment();
+
         }
         setTextTotalAmount(MidtransSDK.getInstance().getTransactionRequest().getAmount());
     }
@@ -172,9 +174,8 @@ public class CreditCardFlowActivity extends BaseActivity {
             List<SavedToken> tokens = MidtransSDK.getInstance().getCreditCard().getSavedTokens();
             if (tokens != null && !tokens.isEmpty()) {
                 List<SaveCardRequest> savedCard = SdkUIFlowUtil.convertSavedToken(tokens);
-                List<SaveCardRequest> filteredSavedCard = SdkUIFlowUtil.filterCardsByClickType(this, savedCard);
-                if (!filteredSavedCard.isEmpty()) {
-                    showSavedCardFragment(filteredSavedCard);
+                if (!savedCard.isEmpty()) {
+                    showSavedCardFragment(savedCard);
                 } else {
                     showAddCardDetailFragment();
                 }
@@ -351,7 +352,7 @@ public class CreditCardFlowActivity extends BaseActivity {
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
 
         CreditCardPaymentModel paymentModel;
-        if (MidtransSDK.getInstance().getTransactionRequest().getCardClickType().equalsIgnoreCase(getString(R.string.card_click_type_one_click))
+        if (isOneClickPayment()
                 && !isNewCard && this.maskedCardNumber != null) {
             //using one click
             paymentModel = new CreditCardPaymentModel(this.maskedCardNumber);
@@ -413,6 +414,18 @@ public class CreditCardFlowActivity extends BaseActivity {
         }
     }
 
+    private boolean isOneClickPayment() {
+        if (this.savedCardClickType != null) {
+            CreditCard creditCard = MidtransSDK.getInstance().getCreditCard();
+            if (creditCard.isSaveCard() && creditCard.isSecure()
+                    && savedCardClickType.equals(getString(R.string.card_click_type_one_click))) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private void updateScanCardData(ScannerModel scanData) {
         List<Fragment> fragments = getSupportFragmentManager().getFragments();
         for (Fragment fragment : fragments) {
@@ -459,8 +472,7 @@ public class CreditCardFlowActivity extends BaseActivity {
         if (MidtransSDK.getInstance().isEnableBuiltInTokenStorage()) {
             List<SavedToken> savedTokens = MidtransSDK.getInstance().getCreditCard().getSavedTokens();
             List<SaveCardRequest> saveCardRequests = SdkUIFlowUtil.convertSavedToken(savedTokens);
-            ArrayList<SaveCardRequest> filteredSaveCardRequest = (ArrayList<SaveCardRequest>) SdkUIFlowUtil.filterCardsByClickType(this, saveCardRequests);
-            updateSavedCard(filteredSaveCardRequest);
+            updateSavedCard(saveCardRequests);
         } else {
             UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
             SdkUIFlowUtil.showProgressDialog(this, getString(R.string.fetching_cards), false);
@@ -492,7 +504,7 @@ public class CreditCardFlowActivity extends BaseActivity {
         }
     }
 
-    private void updateSavedCard(ArrayList<SaveCardRequest> saveCardRequests) {
+    private void updateSavedCard(List<SaveCardRequest> saveCardRequests) {
         List<Fragment> fragments = getSupportFragmentManager().getFragments();
         for (Fragment fragment : fragments) {
             if (fragment instanceof SavedCardListFragment) {
@@ -530,7 +542,7 @@ public class CreditCardFlowActivity extends BaseActivity {
             public void onSuccess(TokenDetailsResponse response) {
                 tokenDetailsResponse = response;
                 cardTokenRequest.setBank(tokenDetailsResponse.getBank());
-                if (MidtransSDK.getInstance().getTransactionRequest().isSecureCard()) {
+                if (isSecurePayment()) {
                     if (!TextUtils.isEmpty(tokenDetailsResponse.getRedirectUrl())) {
                         Intent intentPaymentWeb = new Intent(CreditCardFlowActivity.this, PaymentWebActivity.class);
                         intentPaymentWeb.putExtra(Constants.WEBURL, tokenDetailsResponse.getRedirectUrl());
@@ -540,6 +552,9 @@ public class CreditCardFlowActivity extends BaseActivity {
                                 && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                             overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                         }
+                    } else {
+                        SdkUIFlowUtil.showProgressDialog(CreditCardFlowActivity.this, getString(R.string.processing_payment), false);
+                        preCreditCardPayment();
                     }
                 } else {
                     SdkUIFlowUtil.showProgressDialog(CreditCardFlowActivity.this, getString(R.string.processing_payment), false);
@@ -685,7 +700,7 @@ public class CreditCardFlowActivity extends BaseActivity {
     }
 
     public void prepareSaveCard(SaveCardRequest creditCard) {
-        String cardType = MidtransSDK.getInstance().getTransactionRequest().getCardClickType();
+        String cardType = getString(R.string.card_click_type_two_click);
         SaveCardRequest savedCard = findCardByMaskedNumber(creditCard.getMaskedCard(), creditCards);
         if (savedCard != null) {
             creditCards.remove(savedCard);
@@ -712,7 +727,7 @@ public class CreditCardFlowActivity extends BaseActivity {
         cardTokenRequest.setCardCVV(request.getCardCVV());
         cardTokenRequest.setGrossAmount(request.getGrossAmount());
         cardTokenRequest.setTwoClick(true);
-        cardTokenRequest.setSecure(midtransSDK.getTransactionRequest().isSecureCard());
+        cardTokenRequest.setSecure(isSecurePayment());
         cardTokenRequest.setBank(midtransSDK.getTransactionRequest().getCreditCard().getBank());
         cardTokenRequest.setClientKey(midtransSDK.getClientKey());
         if (midtransSDK.getCreditCard().getType() != null
@@ -725,9 +740,10 @@ public class CreditCardFlowActivity extends BaseActivity {
         getCardToken(cardTokenRequest);
     }
 
-    public void oneClickPayment(String maskedCard) {
+    public void oneClickPayment(SaveCardRequest request) {
         this.isNewCard = false;
-        this.maskedCardNumber = maskedCard;
+        this.maskedCardNumber = request.getMaskedCard();
+        this.savedCardClickType = request.getType();
         payUsingCard();
     }
 
@@ -768,13 +784,10 @@ public class CreditCardFlowActivity extends BaseActivity {
         return null;
     }
 
-    private boolean checkIfCreditCardTokensAvailable() {
+    public boolean checkIfCreditCardTokensAvailable() {
         List<SavedToken> savedTokens = MidtransSDK.getInstance().getCreditCard().getSavedTokens();
-        String type = MidtransSDK.getInstance().getTransactionRequest().getCardClickType();
-        for (SavedToken savedToken : savedTokens) {
-            if (savedToken.getTokenType().equals(type)) {
-                return true;
-            }
+        if (savedTokens != null && !savedTokens.isEmpty()) {
+            return true;
         }
         return false;
     }
@@ -832,6 +845,7 @@ public class CreditCardFlowActivity extends BaseActivity {
 
     private void preCreditCardPayment() {
         if (creditCardTransaction.isBankPointEnabled()) {
+
             MidtransSDK.getInstance().getBanksPoint(this.tokenDetailsResponse.getTokenId(), new BanksPointCallback() {
                 @Override
                 public void onSuccess(BanksPointResponse response) {
@@ -867,4 +881,38 @@ public class CreditCardFlowActivity extends BaseActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.card_container, fragment).addToBackStack("").commit();
     }
 
+    public boolean isClickPayment() {
+        TransactionRequest request = MidtransSDK.getInstance().getTransactionRequest();
+        if (request != null) {
+            String cardClickType = request.getCardClickType();
+            if (TextUtils.isEmpty(cardClickType)) {
+                if (MidtransSDK.getInstance().getCreditCard().isSaveCard()) {
+                    return true;
+                }
+            } else {
+                if (cardClickType.equals(getString(R.string.card_click_type_one_click)) ||
+                        cardClickType.equals(getString(R.string.card_click_type_two_click))) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public boolean isSecurePayment() {
+        TransactionRequest request = MidtransSDK.getInstance().getTransactionRequest();
+        if (request != null) {
+            String cardClickType = request.getCardClickType();
+            if (TextUtils.isEmpty(cardClickType)) {
+                if (MidtransSDK.getInstance().getCreditCard().isSecure()) {
+                    return true;
+                }
+            } else if (request.isSecureCard()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
