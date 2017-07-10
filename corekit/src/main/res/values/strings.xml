@@ -369,11 +369,16 @@
     <string name="btn_close">Close</string>
     <string name="payment_canceled">Otorisasi 3D telah dibatalkan.</string>
     <string name="error_card_unavailable">Card is not available</string>
+    <string name="callback_unimplemented">Callback Unimplemented</string>
+    <string name="hint_indosat_phone_number">Indosat Phone Number</string>
+    <string name="transaction_finished_callback_unimplemented">TransactionFinishedCallback unimplemented</string>
+
 
     <!-- enabled payment -->
     <string name="enabled_payment_category_banktransfer">bank_transfer</string>
     <string name="enabled_payment_category_cstore">cstore</string>
     <string name="saved_card_one_click">one_click</string>
     <string name="saved_card_two_click">two_clicks</string>
+
 
 </resources>

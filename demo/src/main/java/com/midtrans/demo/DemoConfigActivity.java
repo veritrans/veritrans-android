@@ -160,6 +160,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private AppCompatRadioButton bankMaybankSelection;
     private AppCompatRadioButton bankBriSelection;
     private AppCompatRadioButton bankCimbSelection;
+    private AppCompatRadioButton bankMegaSelection;
     /**
      * Radio Button Selection for Expiry
      **/
@@ -324,6 +325,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         bankMaybankSelection = (AppCompatRadioButton) findViewById(R.id.type_bank_maybank);
         bankBriSelection = (AppCompatRadioButton) findViewById(R.id.type_bank_bri);
         bankCimbSelection = (AppCompatRadioButton) findViewById(R.id.type_bank_cimb);
+        bankMegaSelection = (AppCompatRadioButton) findViewById(R.id.type_bank_mega);
 
         expiryNoneSelection = (AppCompatRadioButton) findViewById(R.id.type_expiry_none);
         expiryOneMinuteSelection = (AppCompatRadioButton) findViewById(R.id.type_expiry_one_minute);
@@ -949,6 +951,10 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     bankTitle.setText(R.string.acquiring_bank_by_cimb);
                     bankCimbSelection.setChecked(true);
                     break;
+                case Constants.BANK_MEGA:
+                    bankTitle.setText(R.string.acquiring_bank_by_cimb);
+                    bankCimbSelection.setChecked(true);
+                    break;
                 default:
                     bankTitle.setText(R.string.acquiring_bank_none);
                     bankNoneSelection.setChecked(true);
@@ -1018,6 +1024,15 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 if (checked) {
                     bankTitle.setText(R.string.acquiring_bank_by_cimb);
+                }
+            }
+        });
+
+        bankMegaSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    bankTitle.setText(R.string.acquiring_bank_by_mega);
                 }
             }
         });
@@ -1693,6 +1708,10 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         bankCimbSelection.setChecked(true);
     }
 
+    private void setMegaAcquiringBank() {
+        bankMegaSelection.setChecked(true);
+    }
+
     private void setBcaAcquiringBank() {
         bankBcaSelection.setChecked(true);
         secureEnabledSelection.setChecked(true);
@@ -1968,6 +1987,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             DemoPreferenceHelper.setStringPreference(this, BANK_TYPE, Constants.BANK_BRI);
         } else if (bankCimbSelection.isChecked()) {
             DemoPreferenceHelper.setStringPreference(this, BANK_TYPE, Constants.BANK_CIMB);
+        } else if (bankMegaSelection.isChecked()) {
+            DemoPreferenceHelper.setStringPreference(this, BANK_TYPE, Constants.BANK_MEGA);
         } else {
             DemoPreferenceHelper.setStringPreference(this, BANK_TYPE, Constants.BANK_NONE);
         }
@@ -2446,6 +2467,9 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         } else if (bankCimbSelection.isChecked()) {
             // Set bank to CIMB
             creditCard.setBank(BankType.CIMB);
+        } else if (bankMegaSelection.isChecked()) {
+            // Set bank to CIMB
+            creditCard.setBank(BankType.MEGA);
         }
 
         if (preAuthEnabledSelection.isChecked()) {

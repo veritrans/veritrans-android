@@ -49,7 +49,7 @@ public class MessageUtil {
                     message = context.getString(R.string.error_order_id_required);
                 } else if (statusMessage.contains(ORDER_ID_REQUIRED)) {
                     message = context.getString(R.string.error_order_id_required);
-                } else if (statusMessage.contains(TIMEOUT)) {
+                } else if (statusMessage.contains(TIMEOUT) || statusMessage.contains(RETROFIT_TIMEOUT)) {
                     message = context.getString(R.string.timeout_message);
                 } else {
                     message = context.getString(R.string.txt_error_snap_token);

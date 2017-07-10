@@ -23,6 +23,8 @@
     <string name="acquiring_bank_by_maybank">Acquiring Bank by Maybank</string>
     <string name="acquiring_bank_by_bri">Acquiring Bank by BRI</string>
     <string name="acquiring_bank_by_cimb">Acquiring Bank by CIMB</string>
+    <string name="acquiring_bank_by_mega">Acquiring Bank by Mega</string>
+
 
     <string name="bank_bni">BNI</string>
     <string name="bank_mandiri">Mandiri</string>
@@ -179,4 +181,5 @@
     <string name="reset_setting_notification">All Settings are Reset</string>
     <string name="bni_va_title">BNI VA</string>
     <string name="bca_va_title">BCA VA</string>
+    <string name="bank_mega">Mega</string>
 </resources>

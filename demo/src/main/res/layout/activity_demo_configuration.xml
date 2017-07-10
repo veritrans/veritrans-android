@@ -455,6 +455,16 @@
                     android:layout_marginStart="@dimen/eight_dp"
                     android:gravity="center_vertical"
                     android:text="@string/bank_cimb" />
+
+                <com.midtrans.demo.widgets.DemoRadioButton
+                    android:id="@+id/type_bank_mega"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/bank_mega" />
             </RadioGroup>
 
             <LinearLayout
