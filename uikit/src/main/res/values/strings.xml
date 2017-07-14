@@ -757,5 +757,7 @@
     <string name="maintenance_message">We expect to be back in a couple hours. Thanks for your patience</string>
     <string name="maintenance_title">We are currently down for maintenance</string>
     <string name="payment_method_unavailable">This option is currently unavailable</string>
+    <string name="notification_token_message">Key token device is required for this payment method.</string>
+    <string name="notification_otp_message">SMS charges may be applied for this payment method</string>
 
 </resources>

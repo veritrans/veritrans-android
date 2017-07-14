@@ -574,4 +574,7 @@
     <string name="maintenance_message">We expect to be back in a couple hours. Thanks for your patience</string>
     <string name="maintenance_title">Saat ini kami sedang dalam perawatan</string>
     <string name="payment_method_unavailable">Opsi ini sekarang tidak tersedia</string>
+    <string name="notification_token_message">Perangkat token key dibutuhkan untuk cara pembayaran ini.</string>
+    <string name="notification_otp_message">Biaya SMS mungkin akan dikenakan untuk cara pembayaran ini.</string>
+
 </resources>

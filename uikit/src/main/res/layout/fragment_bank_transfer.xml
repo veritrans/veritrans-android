@@ -19,6 +19,20 @@
         android:layout_height="1dp"
         android:background="@color/gray_divider" />
 
+    <com.midtrans.sdk.uikit.widgets.DefaultTextView
+        android:visibility="gone"
+        android:id="@+id/text_notificationToken"
+        android:layout_width="match_parent"
+        style="@style/TokenNotification"
+        android:layout_height="wrap_content" />
+
+    <com.midtrans.sdk.uikit.widgets.DefaultTextView
+        android:visibility="gone"
+        android:id="@+id/text_notificationOtp"
+        android:layout_width="match_parent"
+        style="@style/TokenNotification"
+        android:layout_height="wrap_content" />
+
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
