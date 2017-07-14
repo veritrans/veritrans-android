@@ -153,6 +153,7 @@ public class CreditCardFlowActivity extends BaseActivity {
         creditCardTransaction.setProperties(midtransSDK.getCreditCard(), SdkUIFlowUtil.getBankBins(this));
 
         initBankBins();
+
         if (isClickPayment()) {
             getCreditCards();
 

@@ -82,7 +82,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     private static final String KEY_SCAN_CANCELLED_EVENT = "Scan Card Cancelled";
     private static final int PAY_USING_CARD = 51;
     private static final int MAX_ATTEMPT = 3;
-    private static final String TAG = "CreditCardActivity";
+    private static final String TAG = "CreditCardDetailsActivity";
     private int attempt = 0;
     private Toolbar toolbar;
     private MidtransSDK midtransSDK;

@@ -80,6 +80,10 @@
         <activity
             android:name=".activities.KlikBCAInstructionActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".views.creditcard.details.CreditCardDetailsActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

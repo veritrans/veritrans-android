@@ -51,6 +51,7 @@ import com.midtrans.sdk.uikit.models.EnabledPayments;
 import com.midtrans.sdk.uikit.models.ItemViewDetails;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
+import com.midtrans.sdk.uikit.views.creditcard.details.CreditCardDetailsActivity;
 import com.midtrans.sdk.uikit.widgets.BoldTextView;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
@@ -402,7 +403,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
         if (isCreditCardOnly) {
             if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_credit_debit))) {
-                Intent intent = new Intent(PaymentMethodsActivity.this, CreditCardFlowActivity.class);
+                Intent intent = new Intent(PaymentMethodsActivity.this, CreditCardDetailsActivity.class);
                 startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
                 if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                         && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
@@ -606,7 +607,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     private void startPaymentMethod(PaymentMethodsModel paymentMethod) {
         String name = paymentMethod.getName();
         if (name.equalsIgnoreCase(getString(R.string.payment_method_credit_card))) {
-            Intent intent = new Intent(this, CreditCardFlowActivity.class);
+            Intent intent = new Intent(this, CreditCardDetailsActivity.class);
             startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
             if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                     && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
