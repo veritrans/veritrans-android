@@ -19,7 +19,6 @@ import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.sample.CreditCardPaymentActivity;
 import com.midtrans.sdk.sample.R;
 import com.midtrans.sdk.sample.adapters.CardListAdapter;
-import com.midtrans.sdk.uikit.activities.CreditCardFlowActivity;
 
 import java.util.ArrayList;
 
@@ -75,14 +74,22 @@ public class CardListPaymentFragment extends Fragment implements CardListAdapter
 
     private ArrayList<SaveCardRequest> filterCardsByType(ArrayList<SaveCardRequest> savedCards) {
         ArrayList<SaveCardRequest> filteredCards = new ArrayList<>();
-        if (savedCards != null) {
+        if (MidtransSDK.getInstance().isEnableBuiltInTokenStorage()) {
             for (SaveCardRequest card : savedCards) {
-                if (((CreditCardFlowActivity) getActivity()).isClickPayment()) {
+                if (MidtransSDK.getInstance().getTransactionRequest().getCardClickType().equals(getString(com.midtrans.sdk.uikit.R.string.card_click_type_one_click))
+                        && card.getType().equals(getString(com.midtrans.sdk.uikit.R.string.saved_card_one_click))) {
+                    filteredCards.add(card);
+                } else if (MidtransSDK.getInstance().getTransactionRequest().getCardClickType().equals(getString(com.midtrans.sdk.uikit.R.string.card_click_type_two_click))
+                        && card.getType().equals(getString(com.midtrans.sdk.uikit.R.string.saved_card_two_click))) {
                     filteredCards.add(card);
                 }
             }
+        } else {
+            //if token storage on merchantserver then saved cards can be used just for two click
+            if (MidtransSDK.getInstance().getTransactionRequest().getCardClickType().equals(R.string.card_click_type_two_click)) {
+                filteredCards.addAll(savedCards);
+            }
         }
-
         return filteredCards;
     }
 

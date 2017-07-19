@@ -13,6 +13,8 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.utilities.Utils;
@@ -37,6 +39,7 @@ public class MandiriClickPayFragment extends Fragment {
     private TextInputLayout mTextInputLayoutChallengeToken = null;
     private FancyButton btnSeeInstruction = null;
     private DefaultTextView textAppli, textInput1, textInput2, textInput3;
+    private DefaultTextView textNotification;
 
     @Nullable
     @Override
@@ -57,6 +60,8 @@ public class MandiriClickPayFragment extends Fragment {
         textInput1 = (DefaultTextView) view.findViewById(R.id.text_input_1);
         textInput2 = (DefaultTextView) view.findViewById(R.id.text_input_2);
         textInput3 = (DefaultTextView) view.findViewById(R.id.text_input_3);
+        textNotification = (DefaultTextView) view.findViewById(R.id.text_notification);
+
         setTextWatcher();
 
         if (BuildConfig.DEBUG) {
@@ -71,7 +76,7 @@ public class MandiriClickPayFragment extends Fragment {
                 MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_MANDIRI_CLICKPAY_OVERVIEW);
 
                 getActivity().startActivity(new Intent(getActivity(), MandiriClickPayInstructionActivity.class));
-                if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                         && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                     getActivity().overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 }
@@ -118,6 +123,12 @@ public class MandiriClickPayFragment extends Fragment {
                 btnSeeInstruction.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
             }
         }
+        showTokenNotification();
+    }
+
+    private void showTokenNotification() {
+        Animation slideIn = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_top);
+        textNotification.startAnimation(slideIn);
     }
 
     private void setTextWatcher() {

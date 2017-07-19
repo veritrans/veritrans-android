@@ -168,7 +168,6 @@
     <string name="epay_bri">ePay BRI</string>
     <string name="bbm_money">BBM Money</string>
     <string name="indosat_dompetku">Indosat Dompetku</string>
-    <string name="mandiri_e_cash">Mandiri e-Cash</string>
     <string name="bca_klik">BCA KlikPay</string>
     <string name="indomaret">Indomaret</string>
     <string name="offers">Penawaran</string>
@@ -208,7 +207,6 @@
     <string name="payment_method_bca_klikpay">BCA Klikpay</string>
     <string name="payment_method_bbm_money">BBM Money</string>
     <string name="payment_method_indosat_dompetku">Indosat Dompetku</string>
-    <string name="payment_method_mandiri_ecash">Mandiri E-Cash</string>
     <string name="payment_method_indomaret">Indomaret</string>
 
     <string name="btn_close">Tutup</string>

@@ -12,6 +12,12 @@
         android:orientation="vertical">
 
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:id="@+id/text_notification"
+            style="@style/TokenNotification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/sixteen_dp"
