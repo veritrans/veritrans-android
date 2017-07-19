@@ -30,7 +30,7 @@
         android:visibility="gone"
         android:id="@+id/text_notificationOtp"
         android:layout_width="match_parent"
-        style="@style/TokenNotification"
+        style="@style/OtpNotification"
         android:layout_height="wrap_content" />
 
     <android.support.v4.widget.NestedScrollView

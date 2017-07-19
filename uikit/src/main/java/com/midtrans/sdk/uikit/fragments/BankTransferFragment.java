@@ -222,13 +222,14 @@ public class BankTransferFragment extends Fragment {
             if (!TextUtils.isEmpty(bank) && bank.equals(BankTransferFragment.TYPE_BCA)) {
                 if (position == 1) {
                     showTokenNotification(true);
-                    showOtpNotification(false);
-                } else if (position == 2) {
-                    showOtpNotification(true);
+                } else {
                     showTokenNotification(false);
+                }
+            } else if (!TextUtils.isEmpty(bank) && bank.equals(BankTransferFragment.TYPE_BNI)) {
+                if (position == 1) {
+                    showOtpNotification(true);
                 } else {
                     showOtpNotification(false);
-                    showTokenNotification(false);
                 }
             } else {
                 showOtpNotification(false);
@@ -240,8 +241,9 @@ public class BankTransferFragment extends Fragment {
     private void showOtpNotification(boolean show) {
         if (show) {
             textNotificationOtp.setVisibility(View.VISIBLE);
-            Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_top);
+            final Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_top);
             textNotificationOtp.startAnimation(animation);
+
         } else {
             textNotificationOtp.setVisibility(View.GONE);
             textNotificationOtp.setAnimation(null);
@@ -251,8 +253,9 @@ public class BankTransferFragment extends Fragment {
     private void showTokenNotification(boolean show) {
         if (show) {
             textNotificationToken.setVisibility(View.VISIBLE);
-            Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_top);
+            final Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_top);
             textNotificationToken.startAnimation(animation);
+
         } else {
             textNotificationToken.setVisibility(View.GONE);
             textNotificationToken.setAnimation(null);

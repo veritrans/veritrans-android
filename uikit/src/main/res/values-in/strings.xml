@@ -186,10 +186,10 @@
     <string name="cimb_instruction_step3">Pastikan bahwa tidak ada pop-up blocker pada browser Anda.</string>
 
     <!-- Mandiri E Cash transfer Instruction-->
-    <string name="mandiri__e_cash_instruction_step1">Pastikan no. HP anda telah terdaftar untuk Mandiri e-cash.</string>
+    <string name="mandiri__e_cash_instruction_step1">Pastikan no. HP anda telah terdaftar untuk LINE Pay e-cash / mandiri e-cash.</string>
     <string name="mandiri__e_cash_instruction_step2">Klik <b>Confirm Payment</b>.</string>
     <string name="mandiri__e_cash_instruction_step3">Masukkan <b>nomor ponsel</b> dan <b>PIN</b> Anda.</string>
-    <string name="mandiri__e_cash_instruction_step4">Harap tunggu sampai Anda menerima SMS dari Mandiri e-cash berisi One Time Password (OTP).</string>
+    <string name="mandiri__e_cash_instruction_step4">Harap tunggu sampai Anda menerima SMS dari LINE Pay e-cash / mandiri e-cash berisi One Time Password (OTP).</string>
     <string name="mandiri__e_cash_instruction_step5"><b>Masukkan kode 6 angka OTP yang diterima</b>, kemudian tekan tombol
         <b>Bayar</b> untuk melakukan pembayaran.</string>
     <string name="mandiri__e_cash_instruction_step6">Jika Anda belum menerima OTP atau jika
@@ -276,7 +276,7 @@
     <string name="epay_bri">e-Pay BRI</string>
     <string name="bbm_money">BBM Money</string>
     <string name="indosat_dompetku">Indosat Dompetku</string>
-    <string name="mandiri_e_cash">Mandiri e-Cash</string>
+    <string name="mandiri_e_cash">LINE Pay e-cash / mandiri e-cash</string>
     <string name="bca_klik">BCA KlikPay</string>
     <string name="indomaret">Indomaret</string>
     <string name="offers">Penawaran</string>
@@ -337,7 +337,7 @@
     <string name="payment_method_bca_klikpay">BCA KlikPay</string>
     <string name="payment_method_bbm_money">BBM Money</string>
     <string name="payment_method_indosat_dompetku">Indosat Dompetku</string>
-    <string name="payment_method_mandiri_ecash">Mandiri E-Cash</string>
+    <string name="payment_method_mandiri_ecash">LINE Pay e-cash / mandiri e-cash</string>
     <string name="payment_method_indomaret">Indomaret</string>
     <string name="payment_method_kioson">Kioson</string>
 
@@ -473,7 +473,7 @@
     <string name="payment_method_description_mandiri_clickpay">Bayar melalui akun Mandiri Clickpay anda</string>
     <string name="payment_method_description_cimb_clicks">Bayar menggunakan akun CIMB Clicks</string>
     <string name="payment_method_description_epay_bri">Bayar menggunakan akun e-Pay BRI</string>
-    <string name="payment_method_description_mandiri_ecash">Bayar dengan akun Mandiri e-Cash anda</string>
+    <string name="payment_method_description_mandiri_ecash">Bayar dengan akun LINE Pay e-cash / mandiri e-cash anda</string>
     <string name="payment_method_description_telkomsel_cash">Bayar melalui akun Telkomsel Cash anda</string>
     <string name="payment_method_description_xl_tunai">Bayar dengan XL Tunai</string>
     <string name="payment_method_description_indomaret">Bayar dari Indomaret</string>

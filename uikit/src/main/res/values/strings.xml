@@ -246,10 +246,10 @@
 
 
     <!-- Mandiri E Cash transfer Instruction-->
-    <string name="mandiri__e_cash_instruction_step1">Make sure you have registered your mobile phone number for Mandiri e-cash.</string>
+    <string name="mandiri__e_cash_instruction_step1">Make sure you have registered your mobile phone number for LINE Pay e-cash / mandiri e-cash.</string>
     <string name="mandiri__e_cash_instruction_step2">Click <b>Confirm Payment</b>.</string>
     <string name="mandiri__e_cash_instruction_step3">Enter your <b>phone number</b> and <b>PIN</b>.</string>
-    <string name="mandiri__e_cash_instruction_step4">Please wait for an SMS from Mandiri e-cash that contains your One Time Password (OTP).</string>
+    <string name="mandiri__e_cash_instruction_step4">Please wait for an SMS from LINE Pay e-cash / mandiri e-cash that contains your One Time Password (OTP).</string>
     <string name="mandiri__e_cash_instruction_step5"><b>Enter the 6 digit OTP</b>, then click
         <b>Pay</b> to make payment.</string>
     <string name="mandiri__e_cash_instruction_step6">If you haven\'t received the OTP or the
@@ -322,7 +322,7 @@
     <string name="indosat_dompetku">Indosat Dompetku</string>
     <string name="telkomsel_cash">Telkomsel Cash</string>
     <string name="xl_tunai">XL Tunai</string>
-    <string name="mandiri_e_cash">Mandiri e-Cash</string>
+    <string name="mandiri_e_cash">LINE Pay e-cash / mandiri e-cash</string>
     <string name="klik_bca">KlikBCA</string>
     <string name="bca_klik">BCA KlikPay</string>
     <string name="indomaret">Indomaret</string>
@@ -426,7 +426,7 @@
     <string name="payment_method_indosat_dompetku">Indosat Dompetku</string>
     <string name="payment_method_telkomsel_cash">Telkomsel Cash</string>
     <string name="payment_method_xl_tunai">XL Tunai</string>
-    <string name="payment_method_mandiri_ecash">Mandiri E-Cash</string>
+    <string name="payment_method_mandiri_ecash">LINE Pay e-cash / mandiri e-cash</string>
     <string name="payment_method_indomaret">Indomaret</string>
     <string name="payment_method_klik_bca">KlikBCA</string>
     <string name="payment_method_kioson">Kioson</string>
@@ -649,7 +649,7 @@
     <string name="payment_method_description_mandiri_clickpay">Pay through your Mandiri Clickpay account</string>
     <string name="payment_method_description_cimb_clicks">Pay using CIMB Clicks account</string>
     <string name="payment_method_description_epay_bri">Pay using e-Pay BRI account</string>
-    <string name="payment_method_description_mandiri_ecash">Pay with your mandiri e-Cash account</string>
+    <string name="payment_method_description_mandiri_ecash">Pay with your LINE Pay e-cash / mandiri e-cash account</string>
     <string name="payment_method_description_telkomsel_cash">Pay through your Telkomsel Cash account</string>
     <string name="payment_method_description_xl_tunai">Pay with XL Tunai</string>
     <string name="payment_method_description_indomaret">Pay from Indomaret</string>
