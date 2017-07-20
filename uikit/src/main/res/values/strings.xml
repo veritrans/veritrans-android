@@ -322,7 +322,7 @@
     <string name="indosat_dompetku">Indosat Dompetku</string>
     <string name="telkomsel_cash">Telkomsel Cash</string>
     <string name="xl_tunai">XL Tunai</string>
-    <string name="mandiri_e_cash">LINE Pay e-cash / mandiri e-cash</string>
+    <string name="mandiri_e_cash">LINE Pay e-cash / Mandiri e-cash</string>
     <string name="klik_bca">KlikBCA</string>
     <string name="bca_klik">BCA KlikPay</string>
     <string name="indomaret">Indomaret</string>
@@ -426,7 +426,7 @@
     <string name="payment_method_indosat_dompetku">Indosat Dompetku</string>
     <string name="payment_method_telkomsel_cash">Telkomsel Cash</string>
     <string name="payment_method_xl_tunai">XL Tunai</string>
-    <string name="payment_method_mandiri_ecash">LINE Pay e-cash / mandiri e-cash</string>
+    <string name="payment_method_mandiri_ecash">LINE Pay e-cash / Mandiri e-cash</string>
     <string name="payment_method_indomaret">Indomaret</string>
     <string name="payment_method_klik_bca">KlikBCA</string>
     <string name="payment_method_kioson">Kioson</string>

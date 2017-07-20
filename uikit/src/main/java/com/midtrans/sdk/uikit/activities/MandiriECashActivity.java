@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
@@ -83,6 +84,7 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
             textTotalAmount.setText(getString(R.string.prefix_money,
                     Utils.getFormattedAmount(mMidtransSDK.getTransactionRequest().getAmount())));
         }
+        textTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         textTitle.setText(getString(R.string.mandiri_e_cash));
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
