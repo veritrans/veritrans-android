@@ -19,7 +19,6 @@ import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.sample.CreditCardPaymentActivity;
 import com.midtrans.sdk.sample.R;
 import com.midtrans.sdk.sample.adapters.CardListAdapter;
-import com.midtrans.sdk.uikit.activities.CreditCardFlowActivity;
 
 import java.util.ArrayList;
 
@@ -35,6 +34,7 @@ public class CardListPaymentFragment extends Fragment implements CardListAdapter
     private CardListAdapter adapter;
     private Dialog dialog;
     private TextView labelEmpty;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -61,10 +61,10 @@ public class CardListPaymentFragment extends Fragment implements CardListAdapter
     private void showSavedCards() {
         Log.i(TAG, "savecard>showSavedCards");
 
-        ArrayList<SaveCardRequest> savedCards = ((CreditCardPaymentActivity)getActivity()).getSavedCards();
-        if(savedCards.isEmpty()){
+        ArrayList<SaveCardRequest> savedCards = ((CreditCardPaymentActivity) getActivity()).getSavedCards();
+        if (savedCards.isEmpty()) {
             labelEmpty.setVisibility(View.VISIBLE);
-        } else{
+        } else {
             labelEmpty.setVisibility(View.GONE);
             Log.i(TAG, "savecard>size:" + savedCards.size());
             ArrayList<SaveCardRequest> filteredCards = filterCardsByType(savedCards);
@@ -86,7 +86,7 @@ public class CardListPaymentFragment extends Fragment implements CardListAdapter
             }
         } else {
             //if token storage on merchantserver then saved cards can be used just for two click
-            if(MidtransSDK.getInstance().getTransactionRequest().getCardClickType().equals(R.string.card_click_type_two_click)){
+            if (MidtransSDK.getInstance().getTransactionRequest().getCardClickType().equals(R.string.card_click_type_two_click)) {
                 filteredCards.addAll(savedCards);
             }
         }
@@ -94,7 +94,7 @@ public class CardListPaymentFragment extends Fragment implements CardListAdapter
     }
 
 
-    public static CardListPaymentFragment newInstance(){
+    public static CardListPaymentFragment newInstance() {
         CardListPaymentFragment fragment = new CardListPaymentFragment();
         return fragment;
     }
@@ -113,10 +113,10 @@ public class CardListPaymentFragment extends Fragment implements CardListAdapter
         TextView textClickType = (TextView) dialog.findViewById(R.id.text_clicktype);
 
 
-        if(MidtransSDK.getInstance().getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_one_click))){
+        if (MidtransSDK.getInstance().getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_one_click))) {
             editCvv.setVisibility(View.GONE);
             textClickType.setText(R.string.card_click_one_click);
-        }else {
+        } else {
             editCvv.setVisibility(View.VISIBLE);
             textClickType.setText(R.string.card_click_two_click);
         }
@@ -125,11 +125,11 @@ public class CardListPaymentFragment extends Fragment implements CardListAdapter
         btnPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(MidtransSDK.getInstance().getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_one_click))){
-                    ((CreditCardPaymentActivity)getActivity()).paymentOneclick(card.getMaskedCard(), false);
-                }else {
+                if (MidtransSDK.getInstance().getTransactionRequest().getCardClickType().equals(getString(R.string.card_click_type_one_click))) {
+                    ((CreditCardPaymentActivity) getActivity()).paymentOneclick(card.getMaskedCard(), false);
+                } else {
                     String cvv = editCvv.getText().toString().trim();
-                    ((CreditCardPaymentActivity)getActivity()).paymentTwoClick(cvv, card.getSavedTokenId(), false);
+                    ((CreditCardPaymentActivity) getActivity()).paymentTwoClick(cvv, card.getSavedTokenId(), false);
                 }
                 dialog.dismiss();
             }

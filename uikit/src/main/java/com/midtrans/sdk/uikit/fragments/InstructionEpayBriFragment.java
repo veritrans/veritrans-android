@@ -6,10 +6,15 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 
 public class InstructionEpayBriFragment extends Fragment {
+
+    private DefaultTextView textNotification;
 
     @Nullable
     @Override
@@ -17,5 +22,17 @@ public class InstructionEpayBriFragment extends Fragment {
             savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_instruction_epay_bri, container, false);
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        textNotification = (DefaultTextView) view.findViewById(R.id.text_notification);
+        showOtpNotification();
+    }
+
+    private void showOtpNotification() {
+        Animation slideIn = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_top);
+        textNotification.startAnimation(slideIn);
     }
 }
