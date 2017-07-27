@@ -20,6 +20,8 @@ public class MessageUtil {
     private static final String GROSS_AMOUNT_NOT_EQUAL = "is not equal to the sum";
     private static final String GROSS_AMOUNT_REQUIRED = "amount is required";
     private static final String ORDER_ID_REQUIRED = "order_id is required";
+    public static final String TIME_OUT = "timeout";
+    public static final String TIMED_OUT = "timed out";
     private static final String FLAVOR_DEVELOPMENT = "development";
     public static final String TIMEOUT = "timeout";
     public static final String MAINTENANCE = "maintenance";
@@ -76,6 +78,25 @@ public class MessageUtil {
                 message = defaultMessage;
             }
         }
+        return message;
+    }
+
+    public static String createPaymentErrorMessage(Context context, String errorMessage, String defaultMessage) {
+        String message;
+        if (!TextUtils.isEmpty(defaultMessage)) {
+            message = defaultMessage;
+        } else {
+            message = context.getString(R.string.payment_failed);
+        }
+
+        if (errorMessage == null) {
+            message = context.getString(R.string.error_empty_response);
+        } else {
+            if (errorMessage.contains(TIME_OUT) || errorMessage.contains(TIMED_OUT)) {
+                message = context.getString(R.string.timeout_message);
+            }
+        }
+
         return message;
     }
 

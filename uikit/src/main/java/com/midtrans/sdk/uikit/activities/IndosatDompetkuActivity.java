@@ -9,7 +9,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
@@ -22,6 +21,7 @@ import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.BankTransferFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionIndosatFragment;
+import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
@@ -275,7 +275,9 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
                         MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
 
                         try {
-                            IndosatDompetkuActivity.this.errorMessage = getString(R.string.message_payment_failed);
+                            String message = MessageUtil.createPaymentErrorMessage(IndosatDompetkuActivity.this, error.getMessage(), null);
+
+                            errorMessage = message;
                             SdkUIFlowUtil.hideProgressDialog();
                             SdkUIFlowUtil.showToast(IndosatDompetkuActivity.this, "" + errorMessage);
 

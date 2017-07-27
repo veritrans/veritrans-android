@@ -21,6 +21,7 @@ import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.BankTransferFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionTelkomselCashFragment;
+import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
@@ -229,7 +230,8 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
                         MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
 
                         SdkUIFlowUtil.hideProgressDialog();
-                        errorMessage = getString(R.string.error_message_invalid_input_telkomsel);
+                        String message = MessageUtil.createPaymentErrorMessage(TelkomselCashActivity.this, error.getMessage(), null);
+                        errorMessage = message;
                         SdkUIFlowUtil.showToast(TelkomselCashActivity.this, errorMessage);
                     }
                 });

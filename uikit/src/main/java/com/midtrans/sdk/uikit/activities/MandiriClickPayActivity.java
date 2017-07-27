@@ -21,6 +21,7 @@ import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.MandiriClickPayFragment;
+import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
@@ -262,7 +263,9 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
                         MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
 
                         SdkUIFlowUtil.hideProgressDialog();
-                        MandiriClickPayActivity.this.errorMessage = getString(R.string.message_payment_failed);
+                        String message = MessageUtil.createPaymentErrorMessage(MandiriClickPayActivity.this, error.getMessage(), null);
+
+                        errorMessage = message;
                         Logger.e(TAG, "Error is" + error.getMessage());
                     }
                 });

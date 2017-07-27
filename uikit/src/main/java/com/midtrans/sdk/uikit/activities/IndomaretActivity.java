@@ -24,6 +24,7 @@ import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.BankTransferFragment;
 import com.midtrans.sdk.uikit.fragments.IndomaretPaymentFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionIndomaretFragment;
+import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
@@ -243,7 +244,9 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
                 MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
 
                 SdkUIFlowUtil.hideProgressDialog();
-                IndomaretActivity.this.errorMessage = getString(R.string.message_payment_failed);
+                String message = MessageUtil.createPaymentErrorMessage(IndomaretActivity.this, error.getMessage(), null);
+
+                errorMessage = message;
                 SdkUIFlowUtil.showToast(IndomaretActivity.this, "" + errorMessage);
             }
         });

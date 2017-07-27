@@ -26,6 +26,7 @@ import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.BankTransferFragment;
 import com.midtrans.sdk.uikit.fragments.BankTransferPaymentFragment;
 import com.midtrans.sdk.uikit.fragments.MandiriBillPayFragment;
+import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
@@ -529,7 +530,9 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
         MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
 
         SdkUIFlowUtil.hideProgressDialog();
-        BankTransferActivity.this.errorMessage = getString(R.string.message_payment_failed);
+
+        String errorMessage = MessageUtil.createPaymentErrorMessage(this, error.getMessage(), null);
+        BankTransferActivity.this.errorMessage = errorMessage;
         SdkUIFlowUtil.showToast(BankTransferActivity.this, "" + errorMessage);
     }
 

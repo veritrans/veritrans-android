@@ -750,6 +750,8 @@
     <string name="error_order_id_required">Order id is required</string>
     <string name="checkout_error_empty_response">Empty response from server</string>
     <string name="complete_payment_via_xl_tunai">Complete Payment via XL Tunai</string>
+    <string name="timeout_message">This request too long process. Please try again.</string>
+    <string name="payment_failed">Payment failed! Please try again.</string>
     <string name="timeout_title">oops!</string>
     <string name="try_again">Try Again</string>
     <string name="timeout_message">This request too long process. Please try again.</string>

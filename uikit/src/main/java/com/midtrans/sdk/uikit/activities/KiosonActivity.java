@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,6 +24,7 @@ import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.BankTransferFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionKiosonFragment;
 import com.midtrans.sdk.uikit.fragments.KiosonPaymentFragment;
+import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
@@ -263,7 +263,9 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
                 SdkUIFlowUtil.hideProgressDialog();
 
                 try {
-                    KiosonActivity.this.errorMessage = getString(R.string.message_payment_failed);
+                    String message = MessageUtil.createPaymentErrorMessage(KiosonActivity.this, error.getMessage(), null);
+
+                    errorMessage = message;
                     SdkUIFlowUtil.showToast(KiosonActivity.this, "" + errorMessage);
                 } catch (NullPointerException ex) {
                     Logger.e(TAG, "transaction error is " + ex.getMessage());
