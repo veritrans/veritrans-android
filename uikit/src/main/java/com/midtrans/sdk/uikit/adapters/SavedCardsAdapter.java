@@ -13,9 +13,9 @@ import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.activities.CreditCardFlowActivity;
 import com.midtrans.sdk.uikit.models.PromoData;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
+import com.midtrans.sdk.uikit.views.creditcard.saved.SavedCreditCardActivity;
 import com.midtrans.sdk.uikit.widgets.AspectRatioImageView;
 
 import java.util.ArrayList;
@@ -134,7 +134,7 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
             }
         }
 
-        CreditCardFlowActivity creditCardFlowActivity = (CreditCardFlowActivity) holder.itemView.getContext();
+        SavedCreditCardActivity creditCardFlowActivity = (SavedCreditCardActivity) holder.itemView.getContext();
         if (creditCardFlowActivity != null) {
             String bank = creditCardFlowActivity.getBankByBin(card.getMaskedCard().substring(0, 6));
             if (bank != null && !TextUtils.isEmpty(bank)) {

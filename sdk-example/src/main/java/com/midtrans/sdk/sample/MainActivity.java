@@ -181,6 +181,8 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             creditCard.setChannel(CreditCard.MIGS);
         }
 
+        creditCard.setAuthentication(CreditCard.RBA);
+
         if (preAuthActive.isChecked()) {
             // Set Pre Auth mode
             creditCard.setType(CardTokenRequest.TYPE_AUTHORIZE);

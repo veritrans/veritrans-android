@@ -5,14 +5,21 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingBottom="@dimen/sixteen_dp"
-    android:paddingTop="@dimen/sixteen_dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <com.midtrans.sdk.uikit.widgets.DefaultTextView
+        android:id="@+id/text_notification"
+        style="@style/TokenNotification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <android.support.design.widget.TextInputLayout
         android:id="@+id/til_debit_card_no"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/sixteen_dp"
-        android:layout_marginRight="@dimen/sixteen_dp">
+        android:layout_marginRight="@dimen/sixteen_dp"
+        android:layout_marginTop="@dimen/sixteen_dp">
 
         <android.support.v7.widget.AppCompatEditText
             android:id="@+id/et_debit_card_no"
@@ -57,10 +64,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/sixteen_dp"
-                android:orientation="vertical"
                 android:layout_marginLeft="@dimen/sixteen_dp"
                 android:layout_marginRight="@dimen/sixteen_dp"
+                android:layout_marginTop="@dimen/sixteen_dp"
+                android:orientation="vertical"
                 android:paddingBottom="@dimen/eight_dp">
 
 

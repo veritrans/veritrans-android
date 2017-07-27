@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -19,6 +18,7 @@ import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.KlikBCAFragment;
 import com.midtrans.sdk.uikit.fragments.KlikBCAStatusFragment;
+import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
@@ -169,8 +169,9 @@ public class KlikBCAActivity extends BaseActivity {
                                     public void onError(Throwable error) {
                                         //track page status failed
                                         MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+                                        String message = MessageUtil.createPaymentErrorMessage(KlikBCAActivity.this, error.getMessage(), null);
 
-                                        errorMessage = getString(R.string.message_payment_failed);
+                                        errorMessage = message;
                                         SdkUIFlowUtil.hideProgressDialog();
                                         SdkUIFlowUtil.showToast(KlikBCAActivity.this, errorMessage);
                                     }

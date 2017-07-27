@@ -11,6 +11,17 @@ public class BankTransferModel {
     private boolean isSelected;
     private Integer priority = 0;
     private String description;
+    private String status;
+
+    public BankTransferModel(String bankName, int image, boolean isSelected, int priority, String description, String status) {
+        setBankName(bankName);
+        setImage(image);
+        setIsSelected(isSelected);
+        setPriority(priority);
+        setDescription(description);
+        setStatus(status);
+    }
+
 
     public BankTransferModel(String bankName, int image, boolean isSelected, int priority, String description) {
         setBankName(bankName);
@@ -58,5 +69,13 @@ public class BankTransferModel {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getStatus() {
+        return status;
     }
 }

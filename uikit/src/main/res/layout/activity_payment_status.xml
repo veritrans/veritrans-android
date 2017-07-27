@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray.primary">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="@dimen/sixteen_dp">
+
+            <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                android:id="@+id/text_status_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:maxLines="2"
+                android:text="@string/payment_successful"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="@dimen/fortytwo_dp"
+                android:layout_height="@dimen/four_dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/twenty_four_dp"
+                android:layout_marginTop="@dimen/eight_dp"
+                android:background="@color/white" />
+
+            <ImageView
+                android:id="@+id/image_status_payment"
+                android:layout_width="@dimen/sixtyfour_dp"
+                android:layout_height="@dimen/sixtyfour_dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/eight_dp"
+                android:contentDescription="@string/description_success_transaction"
+                android:src="@drawable/ic_status_success" />
+
+            <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                android:id="@+id/text_status_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/eight_dp"
+                android:gravity="center"
+                android:padding="@dimen/eight_dp"
+                android:text="@string/thank_you"
+                android:textColor="@color/white"
+                android:textSize="@dimen/thirtytwo_sp" />
+
+            <com.midtrans.sdk.uikit.widgets.SemiBoldTextView
+                android:id="@+id/text_status_error_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/eight_dp"
+                android:gravity="center"
+                android:text="@string/payment_unsuccessful_msg"
+                android:textColor="@color/white"
+                android:textSize="@dimen/secondary_text_size"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/layout_status_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/twenty_four_dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/layout_status_order"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal"
+                        android:visibility="visible">
+
+                        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/status_order_id"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/small_text_size"
+                            android:textStyle="bold" />
+
+                        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                            android:id="@+id/text_order_id"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:text="@string/text_order_id_here"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/primary_text_size" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="@dimen/two_dp"
+                        android:layout_marginTop="@dimen/two_dp"
+                        android:background="@color/material_grey" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/layout_status_total_amount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:visibility="visible">
+
+                        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/status_payable_amount"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/small_text_size"
+                            android:textStyle="bold" />
+
+                        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                            android:id="@+id/text_status_amount"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:text="@string/text_amount_here"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/primary_text_size" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="@dimen/two_dp"
+                        android:layout_marginTop="@dimen/two_dp"
+                        android:background="@color/material_grey" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/layout_status_point_amount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:visibility="visible">
+
+                        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/status_redeemed_point"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/small_text_size"
+                            android:textStyle="bold" />
+
+                        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                            android:id="@+id/text_point_amount"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:text="@string/text_amount_here"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/primary_text_size" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="@dimen/two_dp"
+                        android:layout_marginTop="@dimen/two_dp"
+                        android:background="@color/material_grey" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_status_due_amount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <com.midtrans.sdk.uikit.widgets.BoldTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/status_due_amount"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/small_text_size"
+                            android:textStyle="bold" />
+
+                        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                            android:id="@+id/text_status_due_amount"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:text="@string/text_due_amount_here"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/primary_text_size" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="@dimen/two_dp"
+                        android:layout_marginTop="@dimen/two_dp"
+                        android:background="@color/material_grey" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_status_due_installment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/status_due_installment"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/small_text_size"
+                            android:textStyle="bold" />
+
+                        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                            android:id="@+id/text_status_due_installment"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:text="@string/due_installment_here"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/primary_text_size" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="@dimen/two_dp"
+                        android:layout_marginTop="@dimen/two_dp"
+                        android:background="@color/material_grey" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_status_bank"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/status_bank"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/small_text_size"
+                            android:textStyle="bold"
+                            android:visibility="visible" />
+
+                        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                            android:id="@+id/text_status_bank"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:text="@string/status_installment_bank"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/primary_text_size" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="@dimen/two_dp"
+                        android:layout_marginTop="@dimen/two_dp"
+                        android:background="@color/material_grey" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/layout_status_payment_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical">
+
+                        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/text_payment_type"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/small_text_size"
+                            android:textStyle="bold" />
+
+                        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                            android:id="@+id/text_payment_type"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:text="@string/text_payment_type_here"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/primary_text_size"
+                            android:textStyle="" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="@dimen/two_dp"
+                        android:layout_marginTop="@dimen/two_dp"
+                        android:background="@color/material_grey" />
+
+                </LinearLayout>
+
+                <com.midtrans.sdk.uikit.widgets.FancyButton
+                    android:id="@+id/button_status_see_instruction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/twenty_dp"
+                    android:padding="@dimen/eight_dp"
+                    android:visibility="gone"
+                    app:fb_borderColor="@color/white"
+                    app:fb_borderWidth="1dp"
+                    app:fb_defaultColor="@android:color/transparent"
+                    app:fb_focusColor="@color/colorAccentLight"
+                    app:fb_iconColor="?attr/colorPrimary"
+                    app:fb_radius="5dp"
+                    app:fb_text="@string/see_instruction"
+                    app:fb_textColor="@color/white"
+                    tools:visibility="visible" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <com.midtrans.sdk.uikit.widgets.FancyButton
+        android:id="@+id/button_status_finish"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_size"
+        android:layout_gravity="center_horizontal|bottom"
+        android:textColor="@color/white"
+        app:fb_defaultColor="@color/gray.primary"
+        app:fb_focusColor="@color/colorAccentLight"
+        app:fb_text="@string/done"
+        app:fb_textGravity="center_vertical"
+        app:fb_textSize="16sp" />
+</FrameLayout>

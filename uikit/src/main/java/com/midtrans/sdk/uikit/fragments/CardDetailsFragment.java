@@ -61,7 +61,7 @@ import java.util.Date;
 /**
  * Created by rakawm on 3/7/17.
  */
-
+@Deprecated
 public class CardDetailsFragment extends Fragment {
 
     public static final int SCAN_REQUEST_CODE = 101;
@@ -279,12 +279,20 @@ public class CardDetailsFragment extends Fragment {
     }
 
     private void initSaveCardLayout() {
-        String cardClickType = MidtransSDK.getInstance().getTransactionRequest().getCardClickType();
-        if (!TextUtils.isEmpty(cardClickType) && cardClickType.equals(getString(R.string.card_click_type_none))) {
-            layoutSaveCard.setVisibility(View.GONE);
+        if (((CreditCardFlowActivity) getActivity()).isClickPayment()) {
+            showSavedCardlayout(true);
         } else {
+            showSavedCardlayout(false);
+        }
+    }
+
+    private void showSavedCardlayout(boolean show) {
+        if (show) {
             layoutSaveCard.setVisibility(View.VISIBLE);
             saveCardCheckBox.setChecked(true);
+        } else {
+            layoutSaveCard.setVisibility(View.GONE);
+            saveCardCheckBox.setChecked(false);
         }
     }
 
@@ -317,7 +325,7 @@ public class CardDetailsFragment extends Fragment {
                     ((CreditCardFlowActivity) getActivity()).setBankPointStatus(isBanksPointActivated());
                     if (isValidPayment()) {
                         if (isOneClickMode()) {
-                            ((CreditCardFlowActivity) getActivity()).oneClickPayment(savedCard.getMaskedCard());
+                            ((CreditCardFlowActivity) getActivity()).oneClickPayment(savedCard);
                         } else if (isTwoClickMode()) {
                             CardTokenRequest request = new CardTokenRequest();
                             request.setSavedTokenId(savedCard.getSavedTokenId());
@@ -344,7 +352,7 @@ public class CardDetailsFragment extends Fragment {
                                     year,
                                     midtransSDK.getClientKey());
                             cardTokenRequest.setIsSaved(saveCardCheckBox.isChecked());
-                            cardTokenRequest.setSecure(midtransSDK.getTransactionRequest().isSecureCard());
+                            cardTokenRequest.setSecure(((CreditCardFlowActivity) getActivity()).isSecurePayment());
                             cardTokenRequest.setGrossAmount(midtransSDK.getTransactionRequest().getAmount());
 
                             SdkUIFlowUtil.showProgressDialog((AppCompatActivity) getActivity(), false);
@@ -364,6 +372,7 @@ public class CardDetailsFragment extends Fragment {
             }
         });
     }
+
 
     private boolean isBanksPointActivated() {
         return layoutBanksPoint.getVisibility() == View.VISIBLE && cbBankPoint.isChecked();

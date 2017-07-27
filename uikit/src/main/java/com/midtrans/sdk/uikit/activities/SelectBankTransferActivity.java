@@ -20,10 +20,12 @@ import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.models.BankTransferModel;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.UserDetail;
+import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.PaymentMethods;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.adapters.BankTransferListAdapter;
+import com.midtrans.sdk.uikit.models.EnabledPayments;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 
@@ -105,7 +107,13 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
         setSupportActionBar(toolbar);
         prepareToolbar();
         // setUp recyclerView
-        ArrayList<String> banks = getIntent().getStringArrayListExtra(EXTRA_BANK);
+
+        EnabledPayments enabledPayments = (EnabledPayments) getIntent().getSerializableExtra(EXTRA_BANK);
+        List<EnabledPayment> banks = new ArrayList<>();
+        if (enabledPayments != null) {
+            banks.addAll(enabledPayments.getEnabledPayments());
+        }
+
         if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_PERMATA, false)) {
             Intent startBankPayment = new Intent(this, BankTransferActivity.class);
             startBankPayment.putExtra(
@@ -210,11 +218,11 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
     /**
      * initialize adapter data model by snap values.
      */
-    private void initialiseBankTransfersModel(List<String> banks) {
+    private void initialiseBankTransfersModel(List<EnabledPayment> banks) {
         data.clear();
         if (banks.size() > 0) {
-            for (String bank : banks) {
-                BankTransferModel model = PaymentMethods.getBankTransferModel(this, bank);
+            for (EnabledPayment bank : banks) {
+                BankTransferModel model = PaymentMethods.getBankTransferModel(this, bank.getType(), bank.getStatus());
                 if (model != null) {
                     data.add(model);
                 }

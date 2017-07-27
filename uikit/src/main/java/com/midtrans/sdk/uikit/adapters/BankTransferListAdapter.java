@@ -1,15 +1,19 @@
 package com.midtrans.sdk.uikit.adapters;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.models.BankTransferModel;
+import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 
 import java.util.ArrayList;
 
@@ -26,7 +30,7 @@ public class BankTransferListAdapter extends RecyclerView.Adapter<BankTransferLi
         this.listener = listener;
     }
 
-    public void setData(ArrayList<BankTransferModel> banktransfers){
+    public void setData(ArrayList<BankTransferModel> banktransfers) {
         this.mData.clear();
         this.mData.addAll(banktransfers);
         this.notifyDataSetChanged();
@@ -49,6 +53,16 @@ public class BankTransferListAdapter extends RecyclerView.Adapter<BankTransferLi
         holder.bankIcon.setImageResource(mData.get(position).getImage());
         holder.bankDescription.setText(mData.get(position).getDescription());
         Logger.d(TAG, "Bank Item: " + mData.get(position).getBankName());
+
+        disablePaymentView(holder, mData.get(position));
+    }
+
+    private void disablePaymentView(BankTransferViewHolder holder, BankTransferModel paymentMethod) {
+        if (paymentMethod.getStatus().equals(EnabledPayment.STATUS_DOWN)) {
+            holder.layoutPaymentUnavailable.setVisibility(View.VISIBLE);
+            holder.itemView.setClickable(false);
+            holder.textUnavailable.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -64,12 +78,17 @@ public class BankTransferListAdapter extends RecyclerView.Adapter<BankTransferLi
         TextView bankName;
         TextView bankDescription;
         ImageView bankIcon;
+        DefaultTextView textUnavailable;
+        LinearLayout layoutPaymentUnavailable;
 
         BankTransferViewHolder(View itemView, final BankTransferAdapterListener listener) {
             super(itemView);
-            bankName = (TextView) itemView.findViewById(R.id.text_bank_name);
-            bankIcon = (ImageView) itemView.findViewById(R.id.img_bank_icon);
-            bankDescription = (TextView) itemView.findViewById(R.id.text_bank_description);
+            bankName = (TextView) itemView.findViewById(R.id.text_payment_method_name);
+            bankIcon = (ImageView) itemView.findViewById(R.id.img_payment_method_icon);
+            bankDescription = (TextView) itemView.findViewById(R.id.text_payment_method_description);
+            textUnavailable = (DefaultTextView) itemView.findViewById(R.id.text_option_unavailable);
+            layoutPaymentUnavailable = (LinearLayout) itemView.findViewById(R.id.layout_payment_unavailable);
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

@@ -20,6 +20,7 @@ import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.BCAKlikPayInstructionFragment;
 import com.midtrans.sdk.uikit.fragments.WebviewFragment;
+import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
@@ -159,7 +160,7 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
                     intentPaymentWeb.putExtra(Constants.WEBURL, response.getRedirectUrl());
                     intentPaymentWeb.putExtra(Constants.TYPE, WebviewFragment.TYPE_BCA_KLIKPAY);
                     startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
-                    if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                    if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                             && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                     }
@@ -193,7 +194,9 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
 
             @Override
             public void onError(Throwable error) {
-                BCAKlikPayActivity.this.errorMessage = getString(R.string.message_payment_failed);
+                String message = MessageUtil.createPaymentErrorMessage(BCAKlikPayActivity.this, error.getMessage(), null);
+
+                errorMessage = message;
                 SdkUIFlowUtil.hideProgressDialog();
                 SdkUIFlowUtil.showToast(BCAKlikPayActivity.this, "" + errorMessage);
 

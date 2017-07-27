@@ -8,7 +8,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
@@ -21,6 +20,7 @@ import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.InstructionEpayBriFragment;
 import com.midtrans.sdk.uikit.fragments.WebviewFragment;
+import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
@@ -145,7 +145,7 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
                     intentPaymentWeb.putExtra(Constants.WEBURL, response.getRedirectUrl());
                     intentPaymentWeb.putExtra(Constants.TYPE, WebviewFragment.TYPE_EPAY_BRI);
                     startActivityForResult(intentPaymentWeb, PAYMENT_WEB_INTENT);
-                    if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                    if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                             && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                     }
@@ -175,7 +175,9 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
                 MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
 
                 SdkUIFlowUtil.hideProgressDialog();
-                EpayBriActivity.this.errorMessage = getString(R.string.message_payment_failed);
+                String message = MessageUtil.createPaymentErrorMessage(EpayBriActivity.this, error.getMessage(), null);
+
+                errorMessage = message;
                 SdkUIFlowUtil.showApiFailedMessage(EpayBriActivity.this, errorMessage);
             }
         });

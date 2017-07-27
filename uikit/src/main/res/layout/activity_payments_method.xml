@@ -64,12 +64,6 @@
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
-    <com.midtrans.sdk.uikit.widgets.DefaultTextView
-        android:id="@+id/textview_to_compare"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -103,9 +97,24 @@
         <include layout="@layout/layout_midtrans_progress" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_marginTop="?attr/actionBarSize"
+        android:id="@+id/maintenance_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:gravity="center_vertical|center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <include layout="@layout/layout_maintenance" />
+    </LinearLayout>
+
     <include
         layout="@layout/layout_sandbox_badge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|start" />
+
 </android.support.design.widget.CoordinatorLayout>

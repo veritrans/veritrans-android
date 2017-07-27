@@ -19,6 +19,7 @@
     <color name="faint_white">#9AD7F9</color>
 
     <color name="dark_gray">#757575</color>
+    <color name="dark_gray_primer">#555555</color>
     <color name="gray_divider">#E0E0E0</color>
 
     <color name="text_offer_success">#37AF87</color>
@@ -35,4 +36,5 @@
     <color name="grey_f1">#f1f1f2</color>
 
     <color name="delete_color">#D4385C</color>
+    <color name="disable">#F1F1F2</color>
 </resources>

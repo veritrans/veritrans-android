@@ -15,4 +15,7 @@ public class CreditCardType {
     public static final int TYPE_MASTER_VISA_JCB = 3;
     public static final int TYPE_MASTER_VISA_AMEX = 4;
     public static final int TYPE_UNKNOWN = 0;
+
+    public static final String ONE_CLICK = "one_click";
+    public static final String TWO_CLICKS = "two_clicks";
 }

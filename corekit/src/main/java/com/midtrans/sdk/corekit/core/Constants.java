@@ -87,4 +87,22 @@ public class Constants {
 
     public static final String AUTH_TOKEN = "authentication.token";
     public static final String WEBVIEW_REDIRECT_URL = "redirect_url";
+
+    public static final int INTENT_CODE_3DS_PAYMENT = 100;
+    public static final int INTENT_CODE_PAYMENT_STATUS = 210;
+    public static final String KEY_USER_DETAILS = "user_details";
+    public static int INTENT_SCAN_CARD = 101;
+
+    public static final String STATUS_CODE_200 = "200";
+    public static final String STATUS_CODE_201 = "201";
+    public static final String STATUS_CODE_400 = "400";
+
+    public static final String STATUS_SUCCESS = "success";
+    public static final String STATUS_PENDING = "pending";
+    public static final String STATUS_FAILED = "failed";
+    public static final String STATUS_INVALID = "invalid";
+    public static final String STATUS_ERROR = "error";
+    public static final String STATUS_SETTLEMENT = "settlement";
+    public static final String STATUS_CHALLENGE = "challenge";
+    public static final String STATUS_DENY = "deny";
 }

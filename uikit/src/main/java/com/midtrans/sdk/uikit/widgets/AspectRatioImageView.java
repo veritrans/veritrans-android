@@ -7,6 +7,7 @@ package com.midtrans.sdk.uikit.widgets;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.IntDef;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
@@ -18,7 +19,7 @@ import java.lang.annotation.RetentionPolicy;
 /**
  * Maintains an aspect ratio based on either width or height. Disabled by default.
  */
-public class AspectRatioImageView extends ImageView {
+public class AspectRatioImageView extends AppCompatImageView {
 
     // NOTE: These must be kept in sync with the AspectRatioImageView attributes in attrs.xml.
     public static final int MEASUREMENT_WIDTH = 0;

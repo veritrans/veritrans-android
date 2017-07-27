@@ -59,7 +59,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
+@Deprecated
 public class AddCardDetailsFragment extends Fragment {
 
     private static final String KEY_PAY_BUTTON_EVENT = "Pay";
