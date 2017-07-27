@@ -181,4 +181,17 @@ public class CreditCardTransaction {
     public void setBankPointRedeemed(float pointRedeemed) {
         cardBankPoint.setpointRedeemed(pointRedeemed);
     }
+
+    public boolean checkCardBinValidity(String cardNumber) {
+        return !TextUtils.isEmpty(cardNumber)
+                && cardNumber.length() >= 7
+                && isCardBinValid(cardNumber);
+    }
+
+
+    private boolean isCardBinValid(String cardNumber) {
+        String cardBin = cardNumber.replace(" ", "").substring(0, 6);
+        return isInWhiteList(cardBin);
+    }
+
 }

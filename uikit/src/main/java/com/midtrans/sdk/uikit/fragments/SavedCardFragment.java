@@ -29,7 +29,7 @@ import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Deprecated
 public class SavedCardFragment extends Fragment implements SavedCardsAdapter.SavedCardAdapterEventListener {
     private static final String PARAM_CARD_BINS = "param_card_bins";
     private static final String TAG = SavedCardFragment.class.getSimpleName();

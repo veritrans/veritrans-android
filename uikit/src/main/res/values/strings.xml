@@ -757,7 +757,13 @@
     <string name="maintenance_message">We expect to be back in a couple hours. Thanks for your patience</string>
     <string name="maintenance_title">We are currently down for maintenance</string>
     <string name="payment_method_unavailable">This option is currently unavailable</string>
+    <string name="hint_card_number_example">4811 1111 1111 1114</string>
+    <string name="hint_expiry_date_example">01 / 20</string>
+    <string name="hint_cvv_example">123</string>
+    <string name="payment_info">Payment Info</string>
     <string name="notification_token_message">Key token device is required for this payment method.</string>
     <string name="notification_otp_message">SMS charges may be applied for this payment method</string>
+    <string name="failed_to_get_bank_point">Failed to get bank points</string>
+    <string name="total_bank_point">Your total points</string>
 
 </resources>

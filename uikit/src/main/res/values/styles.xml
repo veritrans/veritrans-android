@@ -24,6 +24,69 @@
         <item name="windowActionModeOverlay">true</item>
     </style>
 
+    <style name="EditTextHint">
+        <item name="android:textSize">@dimen/eleven_sp</item>
+        <item name="android:layout_marginLeft">@dimen/four_dp</item>
+        <item name="android:layout_marginRight">@dimen/four_dp</item>
+    </style>
+
+    <style name="FormErrorMessage" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:layout_marginLeft">@dimen/four_dp</item>
+        <item name="android:layout_marginRight">@dimen/four_dp</item>
+        <item name="android:textSize">@dimen/eleven_sp</item>
+        <item name="android:textColor">@color/red</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+
+    <style name="OfferText">
+        <item name="android:paddingTop">@dimen/four_dp</item>
+        <item name="android:paddingBottom">@dimen/four_dp</item>
+        <item name="android:paddingLeft">@dimen/eight_dp</item>
+        <item name="android:paddingRight">@dimen/eight_dp</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:drawablePadding">@dimen/eight_dp</item>
+    </style>
+
+    <style name="OfferText.Success">
+        <item name="android:drawableLeft">@drawable/ic_offer_success</item>
+        <item name="android:background">@color/bg_offer_success</item>
+        <item name="android:textColor">@color/text_offer_success</item>
+    </style>
+
+    <style name="OfferText.Failure">
+        <item name="android:drawableLeft">@drawable/ic_offer_fail</item>
+        <item name="android:background">@color/bg_offer_failure</item>
+        <item name="android:textColor">@color/text_offer_failure</item>
+    </style>
+
+    <style name="ButtonSecondary">
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingTop">@dimen/eight_dp</item>
+        <item name="fb_borderWidth">1.25dp</item>
+        <item name="fb_focusColor">@color/colorAccentLight</item>
+        <item name="fb_iconPaddingLeft">0dp</item>
+        <item name="fb_iconPaddingRight">0dp</item>
+        <item name="fb_iconPosition">left</item>
+        <item name="fb_radius">5dp</item>
+        <item name="fb_textSize">12sp</item>
+        <item name="fb_defaultColor">@color/white</item>
+    </style>
+
+
+    <style name="CreditCardInstallmentButton">
+        <item name="fb_borderColor">@color/gray.primary_dark</item>
+        <item name="fb_defaultColor">@color/white</item>
+        <item name="fb_focusColor">@color/colorAccentLight</item>
+        <item name="fb_textColor">@color/gray.primary_dark</item>
+        <item name="fb_radius">5dp</item>
+        <item name="fb_textSize">14sp</item>
+        <item name="fb_borderWidth">1dp</item>
+    </style>
+
 
     <style name="Notification">
         <item name="android:paddingTop">@dimen/eight_dp</item>
@@ -47,5 +110,4 @@
         <item name="android:text">@string/notification_otp_message</item>
     </style>
 
-    <style name="ScrollTheme"></style>
 </resources>

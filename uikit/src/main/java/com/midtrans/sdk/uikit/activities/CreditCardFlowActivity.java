@@ -60,6 +60,7 @@ import java.util.List;
  * Created by rakawm on 3/7/17.
  */
 
+@Deprecated
 public class CreditCardFlowActivity extends BaseActivity {
     public static final int SCAN_REQUEST_CODE = 101;
     private static final String TAG = CreditCardFlowActivity.class.getSimpleName();
@@ -153,6 +154,7 @@ public class CreditCardFlowActivity extends BaseActivity {
         creditCardTransaction.setProperties(midtransSDK.getCreditCard(), SdkUIFlowUtil.getBankBins(this));
 
         initBankBins();
+
         if (isClickPayment()) {
             getCreditCards();
 
@@ -537,6 +539,7 @@ public class CreditCardFlowActivity extends BaseActivity {
         } else {
             cardTokenRequest.setPoint(false);
         }
+
         MidtransSDK.getInstance().getCardToken(cardTokenRequest, new CardTokenCallback() {
             @Override
             public void onSuccess(TokenDetailsResponse response) {
@@ -802,7 +805,6 @@ public class CreditCardFlowActivity extends BaseActivity {
             @Override
             public void onSuccess(SaveCardResponse response) {
                 SdkUIFlowUtil.hideProgressDialog();
-
             }
 
             @Override
@@ -813,7 +815,6 @@ public class CreditCardFlowActivity extends BaseActivity {
             @Override
             public void onError(Throwable error) {
                 SdkUIFlowUtil.hideProgressDialog();
-
             }
         });
     }

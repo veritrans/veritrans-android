@@ -39,7 +39,7 @@ import java.util.List;
 /**
  * Created by rakawm on 3/7/17.
  */
-
+@Deprecated
 public class SavedCardListFragment extends Fragment {
     private static final String PARAM_CARD_LIST = "card.list";
 

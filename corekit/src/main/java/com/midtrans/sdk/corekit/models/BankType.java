@@ -15,4 +15,5 @@ public class BankType {
     public static final String MANDIRI_DEBIT = "mandiri_debit";
     public static final String BNI_DEBIT_ONLINE = "bni_debit_online";
     public static final String PERMATA = "permata";
+    public static final String MEGA = "mega";
 }
