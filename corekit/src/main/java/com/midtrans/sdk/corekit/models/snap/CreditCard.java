@@ -11,6 +11,7 @@ import java.util.List;
 public class CreditCard {
 
     public static final String MIGS = "migs";
+    public static final String RBA = "rba";
 
     @SerializedName("save_card")
     private boolean saveCard;
@@ -26,6 +27,7 @@ public class CreditCard {
     @SerializedName("installment")
     private Installment installment;
     private String type;
+    private String authentication;
 
     public String getChannel() {
         return channel;
@@ -97,5 +99,13 @@ public class CreditCard {
 
     public void setWhiteListBins(ArrayList<String> whiteListBins) {
         this.whitelistBins = whiteListBins;
+    }
+
+    public String getAuthentication() {
+        return authentication;
+    }
+
+    public void setAuthentication(String authentication) {
+        this.authentication = authentication;
     }
 }

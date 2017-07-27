@@ -6,6 +6,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -46,10 +47,14 @@ import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.adapters.ItemDetailsAdapter;
 import com.midtrans.sdk.uikit.adapters.PaymentMethodsAdapter;
 import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
+import com.midtrans.sdk.uikit.models.EnabledPayments;
 import com.midtrans.sdk.uikit.models.ItemViewDetails;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
+import com.midtrans.sdk.uikit.views.creditcard.saved.SavedCreditCardActivity;
+import com.midtrans.sdk.uikit.widgets.BoldTextView;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
+import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,13 +91,18 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     private RecyclerView itemDetailsView = null;
     private TextView merchantName = null;
     private LinearLayout progressContainer = null;
+    private LinearLayout maintenanceContainer;
     private ImageView logo = null;
-    private ArrayList<String> bankTransfers = new ArrayList<>();
+    private ArrayList<EnabledPayment> bankTransfers = new ArrayList<>();
     private PaymentMethodsAdapter paymentMethodsAdapter;
     private AlertDialog alertDialog;
     private DefaultTextView textTitle;
     private ImageView progressImage;
     private TextView progressMessage;
+    private BoldTextView maintenanceTitleMessage;
+    private DefaultTextView maintenanceMessage;
+    private FancyButton buttonRetry;
+    private AppBarLayout appbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,12 +161,22 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
         //initialize views
         bindActivity();
+        initRetryButton();
         setupToolbarTitle(false);
 
         setSupportActionBar(toolbar);
 
         bindDataToView();
         getPaymentPages();
+    }
+
+    private void initRetryButton() {
+        if (midtransSDK != null && midtransSDK.getColorTheme() != null) {
+            if (midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
+                buttonRetry.setBorderColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+                buttonRetry.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+            }
+        }
     }
 
     private void setupToolbarTitle(boolean showTitle) {
@@ -216,11 +236,17 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         paymentMethodsView = (RecyclerView) findViewById(R.id.rv_payment_methods);
         itemDetailsView = (RecyclerView) findViewById(R.id.rv_item_list);
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        appbar = (AppBarLayout) findViewById(R.id.main_appbar);
         logo = (ImageView) findViewById(R.id.merchant_logo);
         merchantName = (TextView) findViewById(R.id.merchant_name);
         progressContainer = (LinearLayout) findViewById(R.id.progress_container);
+        maintenanceContainer = (LinearLayout) findViewById(R.id.maintenance_container);
         progressImage = (ImageView) findViewById(R.id.progress_bar_image);
         progressMessage = (TextView) findViewById(R.id.progress_bar_message);
+        maintenanceTitleMessage = (BoldTextView) findViewById(R.id.text_maintenance_title);
+        maintenanceMessage = (DefaultTextView) findViewById(R.id.text_maintenance_message);
+        buttonRetry = (FancyButton) findViewById(R.id.button_maintenance_retry);
+
         textTitle = (DefaultTextView) findViewById(R.id.title_header);
         if (isCreditCardOnly || isBankTransferOnly || isKlikBCA || isBCAKlikpay
                 || isMandiriClickPay || isMandiriECash || isCIMBClicks || isBRIEpay
@@ -260,14 +286,54 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
             @Override
             public void onError(Throwable error) {
+                Log.e("xxerror", "error:" + error);
                 error.printStackTrace();
                 enableButtonBack(true);
-                String errorMessage = MessageUtil.createMessageWhenCheckoutError(PaymentMethodsActivity.this, error.getMessage());
-                showErrorMessage(errorMessage);
+                String errorMessage = MessageUtil.createMessageWhenCheckoutError(PaymentMethodsActivity.this,
+                        error.getMessage(),
+                        getString(R.string.error_unable_to_connect));
+                showFallbackErrorPage(errorMessage);
             }
         });
     }
 
+    private void showFallbackErrorPage(String message) {
+        if (!TextUtils.isEmpty(message) && (message.contains(MessageUtil.TIMEOUT) || message.contains(MessageUtil.RETROFIT_TIMEOUT))) {
+            maintenanceTitleMessage.setText(getString(R.string.timeout_title));
+            maintenanceMessage.setText(getString(R.string.timeout_message));
+            buttonRetry.setText(getString(R.string.try_again));
+            buttonRetry.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showMaintenanceContainer(false);
+                    getPaymentPages();
+                }
+            });
+        } else {
+            maintenanceTitleMessage.setText(getString(R.string.maintenance_title));
+            maintenanceMessage.setText(getString(R.string.maintenance_message));
+            buttonRetry.setText(getString(R.string.maintenance_back));
+
+            buttonRetry.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showMaintenanceContainer(false);
+                    finish();
+                }
+            });
+        }
+        showMaintenanceContainer(true);
+    }
+
+    private void showMaintenanceContainer(boolean show) {
+        if (show) {
+            appbar.setVisibility(View.GONE);
+            maintenanceContainer.setVisibility(View.VISIBLE);
+        } else {
+            appbar.setVisibility(View.VISIBLE);
+            maintenanceContainer.setVisibility(View.GONE);
+        }
+    }
 
     private void enableButtonBack(boolean enable) {
         backButtonEnabled = enable;
@@ -288,6 +354,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     midtransSDK.setMerchantLogo(logoUrl);
                     midtransSDK.setMerchantName(merchantName);
                     midtransSDK.setBanksPointEnabled(transaction.getMerchantData().getPointBanks());
+                    midtransSDK.setTransaction(transaction);
                     // Prioritize custom color themes over Snap preferences
                     if (midtransSDK.getColorTheme() == null
                             || !(midtransSDK.getColorTheme() instanceof CustomColorTheme)) {
@@ -324,18 +391,20 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 error.printStackTrace();
                 enableButtonBack(true);
                 progressContainer.setVisibility(View.GONE);
-                showTransactionDetailsErrorMessage();
+                String errorMessage = MessageUtil.createMessageWhenCheckoutError(PaymentMethodsActivity.this,
+                        error.getMessage(),
+                        getString(R.string.error_snap_transaction_details));
+                showFallbackErrorPage(errorMessage);
             }
         });
     }
 
     private void initPaymentMethods(List<EnabledPayment> enabledPayments) {
         initialiseAdapterData(enabledPayments);
-        String authenticationToken = MidtransSDK.getInstance().readAuthenticationToken();
 
         if (isCreditCardOnly) {
             if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_credit_debit))) {
-                Intent intent = new Intent(PaymentMethodsActivity.this, CreditCardFlowActivity.class);
+                Intent intent = new Intent(PaymentMethodsActivity.this, SavedCreditCardActivity.class);
                 startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
                 if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                         && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
@@ -383,7 +452,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                         return;
                     }
                 }
-                startBankPayment.putStringArrayListExtra(SelectBankTransferActivity.EXTRA_BANK, getBankTransfers());
+                startBankPayment.putExtra(SelectBankTransferActivity.EXTRA_BANK, getBankTransfers());
                 startActivityForResult(startBankPayment, Constants.RESULT_CODE_PAYMENT_TRANSFER);
                 if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                         && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
@@ -539,7 +608,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     private void startPaymentMethod(PaymentMethodsModel paymentMethod) {
         String name = paymentMethod.getName();
         if (name.equalsIgnoreCase(getString(R.string.payment_method_credit_card))) {
-            Intent intent = new Intent(this, CreditCardFlowActivity.class);
+            Intent intent = new Intent(this, SavedCreditCardActivity.class);
             startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
             if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                     && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
@@ -547,7 +616,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             }
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_bank_transfer))) {
             Intent startBankPayment = new Intent(this, SelectBankTransferActivity.class);
-            startBankPayment.putStringArrayListExtra(SelectBankTransferActivity.EXTRA_BANK, getBankTransfers());
+            startBankPayment.putExtra(SelectBankTransferActivity.EXTRA_BANK, getBankTransfers());
             startActivityForResult(startBankPayment, Constants.RESULT_CODE_PAYMENT_TRANSFER);
             if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                     && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
@@ -653,10 +722,9 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         for (EnabledPayment enabledPayment : enabledPayments) {
             if ((enabledPayment.getCategory() != null && enabledPayment.getCategory().equals(getString(R.string.enabled_payment_category_banktransfer)))
                     || enabledPayment.getType().equalsIgnoreCase(getString(R.string.payment_mandiri_bill_payment))) {
-
-                bankTransfers.add(enabledPayment.getType());
+                bankTransfers.add(enabledPayment);
             } else {
-                PaymentMethodsModel model = PaymentMethods.getMethods(this, enabledPayment.getType());
+                PaymentMethodsModel model = PaymentMethods.getMethods(this, enabledPayment.getType(), enabledPayment.getStatus());
                 if (model != null) {
                     data.add(model);
                 }
@@ -664,7 +732,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         }
 
         if (!bankTransfers.isEmpty()) {
-            data.add(PaymentMethods.getMethods(this, getString(R.string.payment_bank_transfer)));
+            data.add(PaymentMethods.getMethods(this, getString(R.string.payment_bank_transfer), EnabledPayment.STATUS_UP));
         }
         SdkUtil.sortPaymentMethodsByPriority(data);
     }
@@ -822,8 +890,8 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         }
     }
 
-    public ArrayList<String> getBankTransfers() {
-        return bankTransfers;
+    public EnabledPayments getBankTransfers() {
+        return new EnabledPayments(this.bankTransfers);
     }
 
 

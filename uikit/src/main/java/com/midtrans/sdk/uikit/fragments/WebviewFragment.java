@@ -2,14 +2,17 @@ package com.midtrans.sdk.uikit.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -27,6 +30,7 @@ public class WebviewFragment extends Fragment {
     public static final String TYPE_MANDIRI_ECASH = "mandiri_ecash";
     public static final String TYPE_CIMB_CLICK = "cimb_click";
     public static final String TYPE_EPAY_BRI = "epay_bri";
+    public static final String RBA = "rba";
 
     private static final String URL_PARAM = "url_param";
     private static final String TYPE_PARAM = "type_param";
@@ -92,6 +96,11 @@ public class WebviewFragment extends Fragment {
         webView.setWebChromeClient(new WebChromeClient());
     }
 
+
+    private void initjS() {
+
+    }
+
     @Override
     public void onDetach() {
         super.onDetach();
@@ -151,7 +160,7 @@ public class WebviewFragment extends Fragment {
                 Intent returnIntent = new Intent();
                 getActivity().setResult(Activity.RESULT_OK, returnIntent);
                 getActivity().finish();
-                if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                         && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                     getActivity().overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
                 }
@@ -167,7 +176,7 @@ public class WebviewFragment extends Fragment {
                     Intent returnIntent = new Intent();
                     getActivity().setResult(Activity.RESULT_OK, returnIntent);
                     getActivity().finish();
-                    if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                    if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                             && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                         getActivity().overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
                     }
@@ -178,7 +187,7 @@ public class WebviewFragment extends Fragment {
                     Intent returnIntent = new Intent();
                     getActivity().setResult(Activity.RESULT_OK, returnIntent);
                     getActivity().finish();
-                    if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                    if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                             && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                         getActivity().overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
                     }
@@ -189,7 +198,7 @@ public class WebviewFragment extends Fragment {
                     Intent returnIntent = new Intent();
                     getActivity().setResult(Activity.RESULT_OK, returnIntent);
                     getActivity().finish();
-                    if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                    if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                             && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                         getActivity().overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
                     }
@@ -200,7 +209,7 @@ public class WebviewFragment extends Fragment {
                     Intent returnIntent = new Intent();
                     getActivity().setResult(Activity.RESULT_OK, returnIntent);
                     getActivity().finish();
-                    if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                    if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                             && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                         getActivity().overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
                     }

@@ -38,5 +38,7 @@
     <string name="save_card_hint_message">Save your card for faster checkout process.</string>
     <string name="message_payment_not_completed">Payment information is not completed!</string>
     <string name="text_saved_card_expiry">xx/xx</string>
+    <string name="card_click_type_one_click">one_click</string>
+    <string name="card_click_type_two_click">two_clicks</string>
 
 </resources>

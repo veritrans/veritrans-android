@@ -8,17 +8,22 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.AppCompatEditText;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.activities.BankTransferInstructionActivity;
 import com.midtrans.sdk.uikit.adapters.InstructionFragmentPagerAdapter;
 import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
+import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 
 import java.lang.reflect.Field;
 
@@ -44,6 +49,9 @@ public class BankTransferFragment extends Fragment {
     private TabLayout instructionTab = null;
     private TextInputLayout mTextInputEmailId = null;
     private AppCompatEditText mEditTextEmailId = null;
+    private DefaultTextView textNotificationToken;
+    private DefaultTextView textNotificationOtp;
+
     private UserDetail userDetail;
 
     public static BankTransferFragment newInstance(String bank, int position) {
@@ -79,6 +87,8 @@ public class BankTransferFragment extends Fragment {
         instructionTab = (TabLayout) view.findViewById(R.id.tab_instructions);
         mEditTextEmailId = (AppCompatEditText) view.findViewById(R.id.et_email);
         mTextInputEmailId = (TextInputLayout) view.findViewById(R.id.email_til);
+        textNotificationToken = (DefaultTextView) view.findViewById(R.id.text_notificationToken);
+        textNotificationOtp = (DefaultTextView) view.findViewById(R.id.text_notificationOtp);
         try {
             userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
         } catch (Exception e) {
@@ -193,6 +203,7 @@ public class BankTransferFragment extends Fragment {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 instructionViewPager.setCurrentItem(tab.getPosition());
+                initTopNotification(tab.getPosition());
             }
 
             @Override
@@ -204,4 +215,51 @@ public class BankTransferFragment extends Fragment {
             }
         });
     }
+
+    private void initTopNotification(int position) {
+        if (getArguments() != null) {
+            String bank = getArguments().getString(BankTransferInstructionActivity.BANK);
+            if (!TextUtils.isEmpty(bank) && bank.equals(BankTransferFragment.TYPE_BCA)) {
+                if (position == 1) {
+                    showTokenNotification(true);
+                } else {
+                    showTokenNotification(false);
+                }
+            } else if (!TextUtils.isEmpty(bank) && bank.equals(BankTransferFragment.TYPE_BNI)) {
+                if (position == 1) {
+                    showOtpNotification(true);
+                } else {
+                    showOtpNotification(false);
+                }
+            } else {
+                showOtpNotification(false);
+                showTokenNotification(false);
+            }
+        }
+    }
+
+    private void showOtpNotification(boolean show) {
+        if (show) {
+            textNotificationOtp.setVisibility(View.VISIBLE);
+            final Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_top);
+            textNotificationOtp.startAnimation(animation);
+
+        } else {
+            textNotificationOtp.setVisibility(View.GONE);
+            textNotificationOtp.setAnimation(null);
+        }
+    }
+
+    private void showTokenNotification(boolean show) {
+        if (show) {
+            textNotificationToken.setVisibility(View.VISIBLE);
+            final Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_top);
+            textNotificationToken.startAnimation(animation);
+
+        } else {
+            textNotificationToken.setVisibility(View.GONE);
+            textNotificationToken.setAnimation(null);
+        }
+    }
+
 }

@@ -5,7 +5,7 @@ apply from: '../jacoco-uikit.gradle'
 apply plugin: 'com.vanniktech.android.junit.jacoco'
 
 group = 'com.midtrans'
-version = '1.8.0'
+version = '1.9.0'
 
 ext {
     espressoVersion = "2.2.2"
@@ -32,14 +32,14 @@ repositories {
 android {
     def DEFAULT_PUBLISH
     compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    buildToolsVersion '25.0.3'
 
     lintOptions {
         abortOnError false
     }
 
     defaultConfig {
-        minSdkVersion 9
+        minSdkVersion 14
         targetSdkVersion 25
         versionCode 2
         versionName version

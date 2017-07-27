@@ -1,8 +1,5 @@
 package com.midtrans.sdk.uikit.utilities;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -16,12 +13,15 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.midtrans.sdk.corekit.BuildConfig;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
@@ -579,5 +579,40 @@ public class SdkUIFlowUtil {
         }
 
         return CreditCardType.TYPE_UNKNOWN;
+    }
+
+    public static List<SaveCardRequest> filterMultipleSavedCard(List<SaveCardRequest> savedCards) {
+        Collections.reverse(savedCards);
+        Set<String> maskedCardSet = new HashSet<>();
+        for (Iterator<SaveCardRequest> it = savedCards.iterator(); it.hasNext(); ) {
+            if (!maskedCardSet.add(it.next().getMaskedCard())) {
+                it.remove();
+            }
+        }
+        return savedCards;
+    }
+
+    public static List<SaveCardRequest> convertSavedTokens(List<SavedToken> savedTokens) {
+        List<SaveCardRequest> cards = new ArrayList<>();
+        if (savedTokens != null && !savedTokens.isEmpty()) {
+            for (SavedToken saved : savedTokens) {
+                cards.add(new SaveCardRequest(saved.getToken(), saved.getMaskedCard(), saved.getTokenType()));
+            }
+        }
+        return cards;
+    }
+
+    public static List<SavedToken> convertSavedCards(List<SaveCardRequest> savedCards) {
+        List<SavedToken> cards = new ArrayList<>();
+        if (savedCards != null && !savedCards.isEmpty()) {
+            for (SaveCardRequest saved : savedCards) {
+                SavedToken savedToken = new SavedToken();
+                savedToken.setTokenType(saved.getType());
+                savedToken.setMaskedCard(saved.getMaskedCard());
+                savedToken.setToken(saved.getSavedTokenId());
+                cards.add(savedToken);
+            }
+        }
+        return cards;
     }
 }

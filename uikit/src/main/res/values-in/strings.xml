@@ -186,10 +186,10 @@
     <string name="cimb_instruction_step3">Pastikan bahwa tidak ada pop-up blocker pada browser Anda.</string>
 
     <!-- Mandiri E Cash transfer Instruction-->
-    <string name="mandiri__e_cash_instruction_step1">Pastikan no. HP anda telah terdaftar untuk Mandiri e-cash.</string>
+    <string name="mandiri__e_cash_instruction_step1">Pastikan no. HP anda telah terdaftar untuk LINE Pay e-cash / mandiri e-cash.</string>
     <string name="mandiri__e_cash_instruction_step2">Klik <b>Confirm Payment</b>.</string>
     <string name="mandiri__e_cash_instruction_step3">Masukkan <b>nomor ponsel</b> dan <b>PIN</b> Anda.</string>
-    <string name="mandiri__e_cash_instruction_step4">Harap tunggu sampai Anda menerima SMS dari Mandiri e-cash berisi One Time Password (OTP).</string>
+    <string name="mandiri__e_cash_instruction_step4">Harap tunggu sampai Anda menerima SMS dari LINE Pay e-cash / mandiri e-cash berisi One Time Password (OTP).</string>
     <string name="mandiri__e_cash_instruction_step5"><b>Masukkan kode 6 angka OTP yang diterima</b>, kemudian tekan tombol
         <b>Bayar</b> untuk melakukan pembayaran.</string>
     <string name="mandiri__e_cash_instruction_step6">Jika Anda belum menerima OTP atau jika
@@ -276,7 +276,7 @@
     <string name="epay_bri">e-Pay BRI</string>
     <string name="bbm_money">BBM Money</string>
     <string name="indosat_dompetku">Indosat Dompetku</string>
-    <string name="mandiri_e_cash">Mandiri e-Cash</string>
+    <string name="mandiri_e_cash">LINE Pay e-cash / Mandiri e-cash</string>
     <string name="bca_klik">BCA KlikPay</string>
     <string name="indomaret">Indomaret</string>
     <string name="offers">Penawaran</string>
@@ -337,7 +337,7 @@
     <string name="payment_method_bca_klikpay">BCA KlikPay</string>
     <string name="payment_method_bbm_money">BBM Money</string>
     <string name="payment_method_indosat_dompetku">Indosat Dompetku</string>
-    <string name="payment_method_mandiri_ecash">Mandiri E-Cash</string>
+    <string name="payment_method_mandiri_ecash">LINE Pay e-cash / Mandiri e-cash</string>
     <string name="payment_method_indomaret">Indomaret</string>
     <string name="payment_method_kioson">Kioson</string>
 
@@ -405,7 +405,7 @@
     <string name="instruction_alto6"><b>Detail pembayaran Anda</b> akan muncul pada halaman konfirmasi. Jika informasi sesuai tekan <b>Benar</b>.</string>
     <string name="instruction_alto7">Pilih rekening pembayaran Anda dan tekan <b>Benar</b>.</string>
 
-    <string name="all_bank_transfer">Bank Lainnya</string>
+    <string name="all_bank_transfer">Jaringan ATM Lainnya</string>
     <string name="error_message_invalid_input_telkomsel">Transaksi Anda tidak dapat diproses. Pastikan informasi pembayaran Anda benar.</string>
     <string name="no_network_msg">Koneksi tidak tersedia! Coba lagi lain waktu.</string>
     <string name="kioson">Kioson</string>
@@ -442,7 +442,7 @@
     <string name="bank_bca_transfer">Bank BCA</string>
     <string name="bank_permata_transfer">Bank Permata</string>
     <string name="bank_bni_transfer">Bank BNI</string>
-    <string name="other_bank_transfer">Others Bank</string>
+    <string name="other_bank_transfer">Jaringan ATM Lainnya</string>
     <string name="copy">Salin</string>
     <string name="valid_until">Valid hingga</string>
     <string name="valid_date">10 September 2015, 16:00</string>
@@ -473,7 +473,7 @@
     <string name="payment_method_description_mandiri_clickpay">Bayar melalui akun Mandiri Clickpay anda</string>
     <string name="payment_method_description_cimb_clicks">Bayar menggunakan akun CIMB Clicks</string>
     <string name="payment_method_description_epay_bri">Bayar menggunakan akun e-Pay BRI</string>
-    <string name="payment_method_description_mandiri_ecash">Bayar dengan akun Mandiri e-Cash anda</string>
+    <string name="payment_method_description_mandiri_ecash">Bayar dengan akun LINE Pay e-cash / mandiri e-cash anda</string>
     <string name="payment_method_description_telkomsel_cash">Bayar melalui akun Telkomsel Cash anda</string>
     <string name="payment_method_description_xl_tunai">Bayar dengan XL Tunai</string>
     <string name="payment_method_description_indomaret">Bayar dari Indomaret</string>
@@ -568,7 +568,17 @@
     <string name="checkout_error_empty_response">Tidak ada  data dari server</string>
     <string name="error_unable_to_connect">Gagal terhubung ke server</string>
     <string name="complete_payment_via_xl_tunai">Selesaikan Pembayaran di XL Tunai</string>
-    <string name="timeout_message">Proses ini terlalu lama. Silakan coba lagi.</string>
     <string name="payment_failed">Pembayaran gagal! silakan coba lagi.</string>
+
+    <string name="try_again">Try Again</string>
+    <string name="timeout_message">Proses ini terlalu lama. Silakan coba lagi.</string>
+    <string name="maintenance_back">Oke, Kembali</string>
+    <string name="maintenance_message">We expect to be back in a couple hours. Thanks for your patience</string>
+    <string name="maintenance_title">Saat ini kami sedang dalam perawatan</string>
+    <string name="payment_method_unavailable">Opsi ini sekarang tidak tersedia</string>
+    <string name="notification_token_message">Perangkat token key dibutuhkan untuk cara pembayaran ini.</string>
+    <string name="notification_otp_message">Biaya SMS mungkin akan dikenakan untuk cara pembayaran ini.</string>
+    <string name="failed_to_get_bank_point">Gagal mengambil bank point</string>
+    <string name="total_bank_point">Total poin anda</string>
 
 </resources>
