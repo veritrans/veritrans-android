@@ -1,0 +1,11 @@
+com.midtrans.sdk.analytics.BuildConfig
+com.midtrans.sdk.analytics.api.RestAdapter:
+    private static final java.lang.String BASE_URL
+    private static final int TIMEOUT_IN_SECOND
+com.midtrans.sdk.analytics.environment.ProductionAnalyticsEnvironment:
+    private static final java.lang.String MIXPANEL_TOKEN
+com.midtrans.sdk.analytics.environment.SandboxAnalyticsEnvironment:
+    private static final java.lang.String MIXPANEL_TOKEN
+com.midtrans.sdk.analytics.utils.Logger:
+    private static final java.lang.String TAG
+    9:9:public Logger()

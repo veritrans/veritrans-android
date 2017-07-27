@@ -1,0 +1,331 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/rakawm/Documents/Projects/veritrans/veritrans-android/sdk2-example/src/main/AndroidManifest.xml:2:1-21:12
+	package
+		ADDED from /Users/rakawm/Documents/Projects/veritrans/veritrans-android/sdk2-example/src/main/AndroidManifest.xml:3:5-44
+		INJECTED from /Users/rakawm/Documents/Projects/veritrans/veritrans-android/sdk2-example/src/main/AndroidManifest.xml
+		INJECTED from /Users/rakawm/Documents/Projects/veritrans/veritrans-android/sdk2-example/src/main/AndroidManifest.xml
+	android:versionName
+		INJECTED from /Users/rakawm/Documents/Projects/veritrans/veritrans-android/sdk2-example/src/main/AndroidManifest.xml
+		INJECTED from /Users/rakawm/Documents/Projects/veritrans/veritrans-android/sdk2-example/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/rakawm/Documents/Projects/veritrans/veritrans-android/sdk2-example/src/main/AndroidManifest.xml:2:11-69
+	android:versionCode
+		INJECTED from /Users/rakawm/Documents/Projects/veritrans/veritrans-android/sdk2-example/src/main/AndroidManifest.xml
+		INJECTED from /Users/rakawm/Documents/Projects/veritrans/veritrans-android/sdk2-example/src/main/AndroidManifest.xml
+uses-permission#android.permission.INTERNET
+ADDED from /Users/rakawm/Documents/Projects/veritrans/veritrans-android/sdk2-example/src/main/AndroidManifest.xml:5:5-67
+	android:name
+		ADDED from /Users/rakawm/Documents/Projects/veritrans/veritrans-android/sdk2-example/src/main/AndroidManifest.xml:5:22-64
+application
+ADDED from /Users/rakawm/Documents/Projects/veritrans/veritrans-android/sdk2-example/src/main/AndroidManifest.xml:6:5-19:19
+MERGED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:11:5-121:19
+MERGED from [com.android.support:design:25.3.1] /Users/rakawm/.android/build-cache/7162d170cb3bdae3312155f47c6154dbf60cfb80/output/AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:transition:25.3.1] /Users/rakawm/.android/build-cache/bbe6a40f8380c771c1f710c86f15071cd83321b5/output/AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:cardview-v7:25.3.1] /Users/rakawm/.android/build-cache/5afe8a4b0a944437ba34a0d9a04c07aca4129e58/output/AndroidManifest.xml:26:5-20
+MERGED from [ru.rambler.android:swipe-layout:1.0.14] /Users/rakawm/.android/build-cache/50c7f6135b3c9c2ad7b0dd88c5e2efdd5247ecb1/output/AndroidManifest.xml:12:5-14:47
+MERGED from [veritrans-android:core:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/core/build/intermediates/bundles/default/AndroidManifest.xml:12:5-20
+MERGED from [veritrans-android:analytics:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/analytics/build/intermediates/bundles/default/AndroidManifest.xml:12:5-20
+MERGED from [com.android.support:appcompat-v7:25.3.1] /Users/rakawm/.android/build-cache/705439632bc76a7120692d1d1a31be7857197cbb/output/AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-v4:25.3.1] /Users/rakawm/.android/build-cache/ec9fb32047e5461c641b22f3e6bc910c855f6645/output/AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-fragment:25.3.1] /Users/rakawm/.android/build-cache/b4bd654009aa329544159f7554f27890514955e0/output/AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-media-compat:25.3.1] /Users/rakawm/.android/build-cache/223599fa6933beab8a7e056e2502f6dbb632bf56/output/AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-core-ui:25.3.1] /Users/rakawm/.android/build-cache/f7ec2733a53b3d0e8a264c0ba336669d3229375f/output/AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-core-utils:25.3.1] /Users/rakawm/.android/build-cache/03cd01487ab0a3740c69ae48fe73df2c903a4bfd/output/AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:animated-vector-drawable:25.3.1] /Users/rakawm/.android/build-cache/30c5ae8a86ae7d7abb1010c708569759f35e09b1/output/AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:support-vector-drawable:25.3.1] /Users/rakawm/.android/build-cache/0c1af76e87a95afca875bd2e2ab5ad4a179d4c44/output/AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:support-compat:25.3.1] /Users/rakawm/.android/build-cache/0bc3cb0d2f07f0834c73db19b2daceec8a3d1245/output/AndroidManifest.xml:29:5-20
+	android:label
+		ADDED from /Users/rakawm/Documents/Projects/veritrans/veritrans-android/sdk2-example/src/main/AndroidManifest.xml:9:9-41
+	android:supportsRtl
+		ADDED from [ru.rambler.android:swipe-layout:1.0.14] /Users/rakawm/.android/build-cache/50c7f6135b3c9c2ad7b0dd88c5e2efdd5247ecb1/output/AndroidManifest.xml:13:9-35
+	android:icon
+		ADDED from /Users/rakawm/Documents/Projects/veritrans/veritrans-android/sdk2-example/src/main/AndroidManifest.xml:8:9-43
+	android:theme
+		ADDED from /Users/rakawm/Documents/Projects/veritrans/veritrans-android/sdk2-example/src/main/AndroidManifest.xml:10:9-40
+	tools:replace
+		ADDED from [ru.rambler.android:swipe-layout:1.0.14] /Users/rakawm/.android/build-cache/50c7f6135b3c9c2ad7b0dd88c5e2efdd5247ecb1/output/AndroidManifest.xml:14:9-44
+	android:name
+		ADDED from /Users/rakawm/Documents/Projects/veritrans/veritrans-android/sdk2-example/src/main/AndroidManifest.xml:7:9-30
+activity#com.midtrans.veritransandroid.SampleUiSdkActivity
+ADDED from /Users/rakawm/Documents/Projects/veritrans/veritrans-android/sdk2-example/src/main/AndroidManifest.xml:11:9-17:20
+	android:name
+		ADDED from /Users/rakawm/Documents/Projects/veritrans/veritrans-android/sdk2-example/src/main/AndroidManifest.xml:11:19-54
+intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
+ADDED from /Users/rakawm/Documents/Projects/veritrans/veritrans-android/sdk2-example/src/main/AndroidManifest.xml:12:13-16:29
+action#android.intent.action.MAIN
+ADDED from /Users/rakawm/Documents/Projects/veritrans/veritrans-android/sdk2-example/src/main/AndroidManifest.xml:13:17-69
+	android:name
+		ADDED from /Users/rakawm/Documents/Projects/veritrans/veritrans-android/sdk2-example/src/main/AndroidManifest.xml:13:25-66
+category#android.intent.category.LAUNCHER
+ADDED from /Users/rakawm/Documents/Projects/veritrans/veritrans-android/sdk2-example/src/main/AndroidManifest.xml:15:17-77
+	android:name
+		ADDED from /Users/rakawm/Documents/Projects/veritrans/veritrans-android/sdk2-example/src/main/AndroidManifest.xml:15:27-74
+activity#com.midtrans.veritransandroid.SampleCorekitActivity
+ADDED from /Users/rakawm/Documents/Projects/veritrans/veritrans-android/sdk2-example/src/main/AndroidManifest.xml:18:9-59
+	android:name
+		ADDED from /Users/rakawm/Documents/Projects/veritrans/veritrans-android/sdk2-example/src/main/AndroidManifest.xml:18:19-56
+uses-sdk
+INJECTED from /Users/rakawm/Documents/Projects/veritrans/veritrans-android/sdk2-example/src/main/AndroidManifest.xml reason: use-sdk injection requested
+MERGED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:7:5-9:41
+MERGED from [com.android.support:design:25.3.1] /Users/rakawm/.android/build-cache/7162d170cb3bdae3312155f47c6154dbf60cfb80/output/AndroidManifest.xml:21:5-23:62
+MERGED from [com.android.support:recyclerview-v7:25.3.1] /Users/rakawm/.android/build-cache/5cd306b2432b7415f226635037aa10345296bf7c/output/AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:transition:25.3.1] /Users/rakawm/.android/build-cache/bbe6a40f8380c771c1f710c86f15071cd83321b5/output/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:cardview-v7:25.3.1] /Users/rakawm/.android/build-cache/5afe8a4b0a944437ba34a0d9a04c07aca4129e58/output/AndroidManifest.xml:20:5-43
+MERGED from [me.saket:better-link-movement-method:1.2] /Users/rakawm/.android/build-cache/aec2fdd592f45edba65a9ba69d00f46db4ffce17/output/AndroidManifest.xml:8:5-10:41
+MERGED from [ru.rambler.android:swipe-layout:1.0.14] /Users/rakawm/.android/build-cache/50c7f6135b3c9c2ad7b0dd88c5e2efdd5247ecb1/output/AndroidManifest.xml:8:5-10:41
+MERGED from [veritrans-android:core:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/core/build/intermediates/bundles/default/AndroidManifest.xml:8:5-10:41
+MERGED from [veritrans-android:analytics:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/analytics/build/intermediates/bundles/default/AndroidManifest.xml:8:5-10:41
+MERGED from [com.android.support:appcompat-v7:25.3.1] /Users/rakawm/.android/build-cache/705439632bc76a7120692d1d1a31be7857197cbb/output/AndroidManifest.xml:21:5-23:78
+MERGED from [com.android.support:support-v4:25.3.1] /Users/rakawm/.android/build-cache/ec9fb32047e5461c641b22f3e6bc910c855f6645/output/AndroidManifest.xml:21:5-23:54
+MERGED from [com.android.support:support-fragment:25.3.1] /Users/rakawm/.android/build-cache/b4bd654009aa329544159f7554f27890514955e0/output/AndroidManifest.xml:21:5-23:60
+MERGED from [com.android.support:support-media-compat:25.3.1] /Users/rakawm/.android/build-cache/223599fa6933beab8a7e056e2502f6dbb632bf56/output/AndroidManifest.xml:21:5-23:63
+MERGED from [com.android.support:support-core-ui:25.3.1] /Users/rakawm/.android/build-cache/f7ec2733a53b3d0e8a264c0ba336669d3229375f/output/AndroidManifest.xml:21:5-23:58
+MERGED from [com.android.support:support-core-utils:25.3.1] /Users/rakawm/.android/build-cache/03cd01487ab0a3740c69ae48fe73df2c903a4bfd/output/AndroidManifest.xml:21:5-23:61
+MERGED from [com.android.support:animated-vector-drawable:25.3.1] /Users/rakawm/.android/build-cache/30c5ae8a86ae7d7abb1010c708569759f35e09b1/output/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:25.3.1] /Users/rakawm/.android/build-cache/0c1af76e87a95afca875bd2e2ab5ad4a179d4c44/output/AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-compat:25.3.1] /Users/rakawm/.android/build-cache/0bc3cb0d2f07f0834c73db19b2daceec8a3d1245/output/AndroidManifest.xml:21:5-23:58
+	tools:overrideLibrary
+		ADDED from [com.android.support:design:25.3.1] /Users/rakawm/.android/build-cache/7162d170cb3bdae3312155f47c6154dbf60cfb80/output/AndroidManifest.xml:23:9-59
+	android:targetSdkVersion
+		INJECTED from /Users/rakawm/Documents/Projects/veritrans/veritrans-android/sdk2-example/src/main/AndroidManifest.xml
+		INJECTED from /Users/rakawm/Documents/Projects/veritrans/veritrans-android/sdk2-example/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/rakawm/Documents/Projects/veritrans/veritrans-android/sdk2-example/src/main/AndroidManifest.xml
+		INJECTED from /Users/rakawm/Documents/Projects/veritrans/veritrans-android/sdk2-example/src/main/AndroidManifest.xml
+activity#com.midtrans.sdk.ui.views.transaction.TransactionActivity
+ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:12:9-14:52
+	android:screenOrientation
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:14:13-49
+	android:name
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:13:13-85
+activity#com.midtrans.sdk.ui.views.creditcard.saved.SavedCardActivity
+ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:15:9-18:52
+	android:screenOrientation
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:18:13-49
+	android:label
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:17:13-47
+	android:name
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:16:13-88
+activity#com.midtrans.sdk.ui.views.creditcard.details.CreditCardDetailsActivity
+ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:19:9-23:57
+	android:screenOrientation
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:22:13-49
+	android:label
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:21:13-49
+	android:windowSoftInputMode
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:23:13-54
+	android:name
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:20:13-98
+activity#com.midtrans.sdk.ui.views.status.PaymentStatusActivity
+ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:24:9-26:52
+	android:screenOrientation
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:26:13-49
+	android:name
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:25:13-82
+activity#com.midtrans.sdk.ui.views.banktransfer.list.BankTransferListActivity
+ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:27:9-30:52
+	android:screenOrientation
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:30:13-49
+	android:label
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:29:13-57
+	android:name
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:28:13-96
+activity#com.midtrans.sdk.ui.views.banktransfer.payment.BankTransferPaymentActivity
+ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:31:9-33:52
+	android:screenOrientation
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:33:13-49
+	android:name
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:32:13-102
+activity#com.midtrans.sdk.ui.views.banktransfer.payment.BankTransferPaymentStatusActivity
+ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:34:9-36:52
+	android:screenOrientation
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:36:13-49
+	android:name
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:35:13-108
+activity#com.midtrans.sdk.ui.views.banktransfer.payment.BankTransferMandiriStatusActivity
+ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:37:9-40:52
+	android:screenOrientation
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:40:13-49
+	android:label
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:39:13-58
+	android:name
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:38:13-108
+activity#com.midtrans.sdk.ui.views.creditcard.points.BankPointsActivity
+ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:41:9-44:52
+	android:screenOrientation
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:44:13-49
+	android:label
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:43:13-49
+	android:name
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:42:13-90
+activity#com.midtrans.sdk.ui.views.webpayment.PaymentWebActivity
+ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:45:9-48:52
+	android:screenOrientation
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:48:13-49
+	android:label
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:47:13-55
+	android:name
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:46:13-83
+activity#com.midtrans.sdk.ui.views.cstore.indomaret.IndomaretActivity
+ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:49:9-52:52
+	android:screenOrientation
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:52:13-49
+	android:label
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:51:13-46
+	android:name
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:50:13-88
+activity#com.midtrans.sdk.ui.views.cstore.indomaret.IndomaretStatusActivity
+ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:53:9-56:52
+	android:screenOrientation
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:56:13-49
+	android:label
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:55:13-46
+	android:name
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:54:13-94
+activity#com.midtrans.sdk.ui.views.cstore.kioson.KiosonActivity
+ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:57:9-60:52
+	android:screenOrientation
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:60:13-49
+	android:label
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:59:13-43
+	android:name
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:58:13-82
+activity#com.midtrans.sdk.ui.views.cstore.kioson.KiosonStatusActivity
+ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:61:9-64:52
+	android:screenOrientation
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:64:13-49
+	android:label
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:63:13-43
+	android:name
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:62:13-88
+activity#com.midtrans.sdk.ui.views.cstore.kioson.KiosonInstructionActivity
+ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:65:9-68:52
+	android:screenOrientation
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:68:13-49
+	android:label
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:67:13-43
+	android:name
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:66:13-93
+activity#com.midtrans.sdk.ui.views.gci.GiftCardIndonesiaActivity
+ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:69:9-72:52
+	android:screenOrientation
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:72:13-49
+	android:label
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:71:13-46
+	android:name
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:70:13-83
+activity#com.midtrans.sdk.ui.views.ebanking.klikbca.KlikBcaActivity
+ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:73:9-76:52
+	android:screenOrientation
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:76:13-49
+	android:label
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:75:13-45
+	android:name
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:74:13-86
+activity#com.midtrans.sdk.ui.views.ebanking.klikbca.KlikBcaStatusActivity
+ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:77:9-80:52
+	android:screenOrientation
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:80:13-49
+	android:label
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:79:13-45
+	android:name
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:78:13-92
+activity#com.midtrans.sdk.ui.views.ebanking.klikbca.KlikBcaInstructionActivity
+ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:81:9-84:52
+	android:screenOrientation
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:84:13-49
+	android:label
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:83:13-56
+	android:name
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:82:13-97
+activity#com.midtrans.sdk.ui.views.ebanking.mandiri_clickpay.MandiriClickpayActivity
+ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:85:9-88:52
+	android:screenOrientation
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:88:13-49
+	android:label
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:87:13-54
+	android:name
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:86:13-103
+activity#com.midtrans.sdk.ui.views.ebanking.bca_klikpay.BcaKlikpayActivity
+ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:89:9-92:52
+	android:screenOrientation
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:92:13-49
+	android:label
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:91:13-63
+	android:name
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:90:13-93
+activity#com.midtrans.sdk.ui.views.ebanking.cimb_clicks.CimbClicksActivity
+ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:93:9-96:52
+	android:screenOrientation
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:96:13-49
+	android:label
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:95:13-48
+	android:name
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:94:13-93
+activity#com.midtrans.sdk.ui.views.ebanking.epay_bri.EpayBriActivity
+ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:97:9-100:52
+	android:screenOrientation
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:100:13-49
+	android:label
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:99:13-45
+	android:name
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:98:13-87
+activity#com.midtrans.sdk.ui.views.ebanking.mandiri_ecash.MandiriEcashActivity
+ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:101:9-104:52
+	android:screenOrientation
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:104:13-49
+	android:label
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:103:13-51
+	android:name
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:102:13-97
+activity#com.midtrans.sdk.ui.views.ewallet.xltunai.XlTunaiPaymentActivity
+ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:105:9-108:52
+	android:screenOrientation
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:108:13-49
+	android:label
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:107:13-45
+	android:name
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:106:13-92
+activity#com.midtrans.sdk.ui.views.ewallet.xltunai.XlTunaiStatusActivity
+ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:109:9-112:52
+	android:screenOrientation
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:112:13-49
+	android:label
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:111:13-45
+	android:name
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:110:13-91
+activity#com.midtrans.sdk.ui.views.ewallet.tcash.TelkomselCashActivity
+ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:113:9-116:52
+	android:screenOrientation
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:116:13-49
+	android:label
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:115:13-51
+	android:name
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:114:13-89
+activity#com.midtrans.sdk.ui.views.ewallet.indosatdompetku.IndosatDompetkuActivity
+ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:117:9-120:52
+	android:screenOrientation
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:120:13-49
+	android:label
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:119:13-53
+	android:name
+		ADDED from [veritrans-android:ui:unspecified] /Users/rakawm/Documents/Projects/veritrans/veritrans-android/ui/build/intermediates/bundles/default/AndroidManifest.xml:118:13-101
+meta-data#android.support.VERSION
+ADDED from [com.android.support:design:25.3.1] /Users/rakawm/.android/build-cache/7162d170cb3bdae3312155f47c6154dbf60cfb80/output/AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:recyclerview-v7:25.3.1] /Users/rakawm/.android/build-cache/5cd306b2432b7415f226635037aa10345296bf7c/output/AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:transition:25.3.1] /Users/rakawm/.android/build-cache/bbe6a40f8380c771c1f710c86f15071cd83321b5/output/AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:cardview-v7:25.3.1] /Users/rakawm/.android/build-cache/5afe8a4b0a944437ba34a0d9a04c07aca4129e58/output/AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:appcompat-v7:25.3.1] /Users/rakawm/.android/build-cache/705439632bc76a7120692d1d1a31be7857197cbb/output/AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-v4:25.3.1] /Users/rakawm/.android/build-cache/ec9fb32047e5461c641b22f3e6bc910c855f6645/output/AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-fragment:25.3.1] /Users/rakawm/.android/build-cache/b4bd654009aa329544159f7554f27890514955e0/output/AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-media-compat:25.3.1] /Users/rakawm/.android/build-cache/223599fa6933beab8a7e056e2502f6dbb632bf56/output/AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-core-ui:25.3.1] /Users/rakawm/.android/build-cache/f7ec2733a53b3d0e8a264c0ba336669d3229375f/output/AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-core-utils:25.3.1] /Users/rakawm/.android/build-cache/03cd01487ab0a3740c69ae48fe73df2c903a4bfd/output/AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:animated-vector-drawable:25.3.1] /Users/rakawm/.android/build-cache/30c5ae8a86ae7d7abb1010c708569759f35e09b1/output/AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:support-vector-drawable:25.3.1] /Users/rakawm/.android/build-cache/0c1af76e87a95afca875bd2e2ab5ad4a179d4c44/output/AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:support-compat:25.3.1] /Users/rakawm/.android/build-cache/0bc3cb0d2f07f0834c73db19b2daceec8a3d1245/output/AndroidManifest.xml:25:5-27:34
+	android:value
+		ADDED from [com.android.support:design:25.3.1] /Users/rakawm/.android/build-cache/7162d170cb3bdae3312155f47c6154dbf60cfb80/output/AndroidManifest.xml:27:9-31
+	android:name
+		ADDED from [com.android.support:design:25.3.1] /Users/rakawm/.android/build-cache/7162d170cb3bdae3312155f47c6154dbf60cfb80/output/AndroidManifest.xml:26:9-47

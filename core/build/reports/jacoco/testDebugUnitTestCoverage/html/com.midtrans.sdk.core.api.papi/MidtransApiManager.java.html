@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MidtransApiManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.midtrans.sdk.core.api.papi</a> &gt; <span class="el_source">MidtransApiManager.java</span></div><h1>MidtransApiManager.java</h1><pre class="source lang-java linenums">package com.midtrans.sdk.core.api.papi;
+
+import android.text.TextUtils;
+
+import com.midtrans.sdk.core.MidtransCore;
+import com.midtrans.sdk.core.MidtransCoreCallback;
+import com.midtrans.sdk.core.models.Channel;
+import com.midtrans.sdk.core.models.papi.CardTokenRequest;
+import com.midtrans.sdk.core.models.papi.CardTokenResponse;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+/**
+ * Created by rakawm on 10/19/16.
+ */
+
+public class MidtransApiManager {
+
+    private final MidtransApi midtransApi;
+
+<span class="fc" id="L23">    public MidtransApiManager(MidtransApi midtransApi) {</span>
+<span class="fc" id="L24">        this.midtransApi = midtransApi;</span>
+<span class="fc" id="L25">    }</span>
+
+    /**
+     * Get card token to Midtrans Payment API.
+     */
+    public void getCardToken(CardTokenRequest cardTokenRequest,
+                             final MidtransCoreCallback&lt;CardTokenResponse&gt; callback) {
+<span class="fc" id="L32">        String clientKey = MidtransCore.getInstance().getClientKey();</span>
+        Call&lt;CardTokenResponse&gt; cardTokenResponseCall;
+
+<span class="fc bfc" id="L35" title="All 2 branches covered.">        if (cardTokenRequest.isTwoClick()) {</span>
+<span class="fc" id="L36">            cardTokenResponseCall = midtransApi.getCardToken(</span>
+<span class="fc" id="L37">                    cardTokenRequest.getCardCvv(),</span>
+<span class="fc" id="L38">                    cardTokenRequest.getSavedTokenId(),</span>
+<span class="fc" id="L39">                    cardTokenRequest.isTwoClick(),</span>
+<span class="fc" id="L40">                    cardTokenRequest.getGrossAmount(),</span>
+<span class="fc" id="L41">                    cardTokenRequest.isSecure(),</span>
+                    clientKey,
+<span class="fc" id="L43">                    cardTokenRequest.getType(),</span>
+<span class="fc" id="L44">                    cardTokenRequest.getBank(),</span>
+<span class="fc" id="L45">                    cardTokenRequest.isInstallment(),</span>
+<span class="fc" id="L46">                    cardTokenRequest.getInstallmentTerm(),</span>
+<span class="pc bpc" id="L47" title="1 of 2 branches missed.">                    !TextUtils.isEmpty(cardTokenRequest.getChannel()) ? cardTokenRequest.getChannel() : Channel.DRAGON,</span>
+<span class="fc" id="L48">                    cardTokenRequest.isPoint()</span>
+            );
+        } else {
+<span class="fc bfc" id="L51" title="All 2 branches covered.">            if (cardTokenRequest.isSecure()) {</span>
+<span class="fc" id="L52">                cardTokenResponseCall = midtransApi.getCardToken(</span>
+<span class="fc" id="L53">                        cardTokenRequest.getCardNumber(),</span>
+<span class="fc" id="L54">                        cardTokenRequest.getCardCvv(),</span>
+<span class="fc" id="L55">                        cardTokenRequest.getCardExpiryMonth(),</span>
+<span class="fc" id="L56">                        cardTokenRequest.getCardExpiryYear(),</span>
+<span class="fc" id="L57">                        cardTokenRequest.isSecure(),</span>
+<span class="fc" id="L58">                        cardTokenRequest.getGrossAmount(),</span>
+                        clientKey,
+<span class="fc" id="L60">                        cardTokenRequest.getType(),</span>
+<span class="fc" id="L61">                        cardTokenRequest.getBank(),</span>
+<span class="fc" id="L62">                        cardTokenRequest.isInstallment(),</span>
+<span class="fc" id="L63">                        cardTokenRequest.getInstallmentTerm(),</span>
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">                        !TextUtils.isEmpty(cardTokenRequest.getChannel()) ? cardTokenRequest.getChannel() : Channel.DRAGON,</span>
+<span class="fc" id="L65">                        cardTokenRequest.isPoint()</span>
+                );
+            } else {
+<span class="fc" id="L68">                cardTokenResponseCall = midtransApi.getCardToken(</span>
+<span class="fc" id="L69">                        cardTokenRequest.getCardNumber(),</span>
+<span class="fc" id="L70">                        cardTokenRequest.getCardCvv(),</span>
+<span class="fc" id="L71">                        cardTokenRequest.getCardExpiryMonth(),</span>
+<span class="fc" id="L72">                        cardTokenRequest.getCardExpiryYear(),</span>
+                        clientKey,
+<span class="fc" id="L74">                        cardTokenRequest.getType(),</span>
+<span class="fc" id="L75">                        cardTokenRequest.getBank(),</span>
+<span class="fc" id="L76">                        cardTokenRequest.isInstallment(),</span>
+<span class="fc" id="L77">                        cardTokenRequest.getInstallmentTerm(),</span>
+<span class="pc bpc" id="L78" title="1 of 2 branches missed.">                        !TextUtils.isEmpty(cardTokenRequest.getChannel()) ? cardTokenRequest.getChannel() : Channel.DRAGON,</span>
+<span class="fc" id="L79">                        cardTokenRequest.isPoint()</span>
+                );
+            }
+        }
+
+        // Do the API call
+<span class="fc" id="L85">        cardTokenResponseCall.enqueue(new Callback&lt;CardTokenResponse&gt;() {</span>
+            @Override
+            public void onResponse(Call&lt;CardTokenResponse&gt; call, Response&lt;CardTokenResponse&gt; response) {
+<span class="fc" id="L88">                handleGetTokenCardResponse(response, callback);</span>
+<span class="fc" id="L89">            }</span>
+
+            @Override
+            public void onFailure(Call&lt;CardTokenResponse&gt; call, Throwable throwable) {
+<span class="nc" id="L93">                callback.onError(throwable);</span>
+<span class="nc" id="L94">            }</span>
+        });
+<span class="fc" id="L96">    }</span>
+
+    private void handleGetTokenCardResponse(Response&lt;CardTokenResponse&gt; response, MidtransCoreCallback&lt;CardTokenResponse&gt; callback) {
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">        if (response.isSuccessful()</span>
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">                &amp;&amp; response.code() == 200</span>
+<span class="fc bfc" id="L101" title="All 2 branches covered.">                &amp;&amp; response.body().statusCode.equals(&quot;200&quot;)) {</span>
+<span class="fc" id="L102">            callback.onSuccess(response.body());</span>
+        } else {
+<span class="fc" id="L104">            callback.onFailure(response.body());</span>
+        }
+<span class="fc" id="L106">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

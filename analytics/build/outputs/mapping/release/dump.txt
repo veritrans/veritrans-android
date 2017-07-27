@@ -1,0 +1,3180 @@
+_____________________________________________________________________
++ Program class: com/midtrans/sdk/analytics/AnalyticsEnvironment
+  Superclass:    java/lang/Enum
+  Major version: 0x33
+  Minor version: 0x0
+    = target 1.7
+  Access flags:  0x4031
+    = public final enum enum com.midtrans.sdk.analytics.AnalyticsEnvironment extends java.lang.Enum
+
+Interfaces (count = 0):
+
+Constant Pool (count = 44):
+  + String [PRODUCTION]
+  + String [SANDBOX]
+  + String [STAGING]
+  + Class [[Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+  + Class [com/midtrans/sdk/analytics/AnalyticsEnvironment]
+  + Class [java/lang/Enum]
+  + Fieldref [com/midtrans/sdk/analytics/AnalyticsEnvironment.$VALUES [Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+  + Fieldref [com/midtrans/sdk/analytics/AnalyticsEnvironment.PRODUCTION Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+  + Fieldref [com/midtrans/sdk/analytics/AnalyticsEnvironment.SANDBOX Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+  + Fieldref [com/midtrans/sdk/analytics/AnalyticsEnvironment.STAGING Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+  + Methodref [[Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;.clone ()Ljava/lang/Object;]
+  + Methodref [com/midtrans/sdk/analytics/AnalyticsEnvironment.<init> (Ljava/lang/String;I)V]
+  + Methodref [java/lang/Enum.<init> (Ljava/lang/String;I)V]
+  + Methodref [java/lang/Enum.valueOf (Ljava/lang/Class;Ljava/lang/String;)Ljava/lang/Enum;]
+  + NameAndType [$VALUES [Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+  + NameAndType [<init> (Ljava/lang/String;I)V]
+  + NameAndType [PRODUCTION Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+  + NameAndType [SANDBOX Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+  + NameAndType [STAGING Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+  + NameAndType [clone ()Ljava/lang/Object;]
+  + NameAndType [valueOf (Ljava/lang/Class;Ljava/lang/String;)Ljava/lang/Enum;]
+  + Utf8 [$VALUES]
+  + Utf8 [()Ljava/lang/Object;]
+  + Utf8 [()V]
+  + Utf8 [()[Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+  + Utf8 [(Ljava/lang/Class;Ljava/lang/String;)Ljava/lang/Enum;]
+  + Utf8 [(Ljava/lang/String;)Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+  + Utf8 [(Ljava/lang/String;I)V]
+  + Utf8 [<clinit>]
+  + Utf8 [<init>]
+  + Utf8 [Code]
+  + Utf8 [Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+  + Utf8 [Ljava/lang/Enum<Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;>;]
+  + Utf8 [PRODUCTION]
+  + Utf8 [SANDBOX]
+  + Utf8 [STAGING]
+  + Utf8 [Signature]
+  + Utf8 [[Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+  + Utf8 [clone]
+  + Utf8 [com/midtrans/sdk/analytics/AnalyticsEnvironment]
+  + Utf8 [java/lang/Enum]
+  + Utf8 [valueOf]
+  + Utf8 [values]
+
+Fields (count = 4):
+  + Field:        PRODUCTION Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;
+    Access flags: 0x4019
+      = public static final com.midtrans.sdk.analytics.AnalyticsEnvironment PRODUCTION
+  + Field:        STAGING Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;
+    Access flags: 0x4019
+      = public static final com.midtrans.sdk.analytics.AnalyticsEnvironment STAGING
+  + Field:        SANDBOX Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;
+    Access flags: 0x4019
+      = public static final com.midtrans.sdk.analytics.AnalyticsEnvironment SANDBOX
+  + Field:        $VALUES [Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;
+    Access flags: 0x101a
+      = private static final synthetic com.midtrans.sdk.analytics.AnalyticsEnvironment[] $VALUES
+
+Methods (count = 4):
+  + Method:       values()[Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;
+    Access flags: 0x9
+      = public static com.midtrans.sdk.analytics.AnalyticsEnvironment[] values()
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 10, locals = 0, stack = 1):
+      [0] getstatic #7
+        + Fieldref [com/midtrans/sdk/analytics/AnalyticsEnvironment.$VALUES [Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+      [3] invokevirtual #11
+        + Methodref [[Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;.clone ()Ljava/lang/Object;]
+      [6] checkcast #4
+        + Class [[Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+      [9] areturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       valueOf(Ljava/lang/String;)Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;
+    Access flags: 0x9
+      = public static com.midtrans.sdk.analytics.AnalyticsEnvironment valueOf(java.lang.String)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 10, locals = 1, stack = 2):
+      [0] ldc #5
+        + Class [com/midtrans/sdk/analytics/AnalyticsEnvironment]
+      [2] aload_0 v0
+      [3] invokestatic #14
+        + Methodref [java/lang/Enum.valueOf (Ljava/lang/Class;Ljava/lang/String;)Ljava/lang/Enum;]
+      [6] checkcast #5
+        + Class [com/midtrans/sdk/analytics/AnalyticsEnvironment]
+      [9] areturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  - Method:       <init>(Ljava/lang/String;I)V
+    Access flags: 0x2
+      = private AnalyticsEnvironment(java.lang.String,int)
+    Class member attributes (count = 2):
+    + Code attribute instructions (code length = 7, locals = 3, stack = 3):
+      [0] aload_0 v0
+      [1] aload_1 v1
+      [2] iload_2 v2
+      [3] invokespecial #13
+        + Methodref [java/lang/Enum.<init> (Ljava/lang/String;I)V]
+      [6] return
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+    + Signature attribute:
+      + Utf8 [()V]
+  - Method:       <clinit>()V
+    Access flags: 0x8
+      = static void <clinit>()
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 65, locals = 0, stack = 4):
+      [0] new #5
+        + Class [com/midtrans/sdk/analytics/AnalyticsEnvironment]
+      [3] dup
+      [4] ldc #1
+        + String [PRODUCTION]
+      [6] iconst_0
+      [7] invokespecial #12
+        + Methodref [com/midtrans/sdk/analytics/AnalyticsEnvironment.<init> (Ljava/lang/String;I)V]
+      [10] putstatic #8
+        + Fieldref [com/midtrans/sdk/analytics/AnalyticsEnvironment.PRODUCTION Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+      [13] new #5
+        + Class [com/midtrans/sdk/analytics/AnalyticsEnvironment]
+      [16] dup
+      [17] ldc #3
+        + String [STAGING]
+      [19] iconst_1
+      [20] invokespecial #12
+        + Methodref [com/midtrans/sdk/analytics/AnalyticsEnvironment.<init> (Ljava/lang/String;I)V]
+      [23] putstatic #10
+        + Fieldref [com/midtrans/sdk/analytics/AnalyticsEnvironment.STAGING Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+      [26] new #5
+        + Class [com/midtrans/sdk/analytics/AnalyticsEnvironment]
+      [29] dup
+      [30] ldc #2
+        + String [SANDBOX]
+      [32] iconst_2
+      [33] invokespecial #12
+        + Methodref [com/midtrans/sdk/analytics/AnalyticsEnvironment.<init> (Ljava/lang/String;I)V]
+      [36] putstatic #9
+        + Fieldref [com/midtrans/sdk/analytics/AnalyticsEnvironment.SANDBOX Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+      [39] iconst_3
+      [40] anewarray #5
+        + Class [com/midtrans/sdk/analytics/AnalyticsEnvironment]
+      [43] dup
+      [44] iconst_0
+      [45] getstatic #8
+        + Fieldref [com/midtrans/sdk/analytics/AnalyticsEnvironment.PRODUCTION Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+      [48] aastore
+      [49] dup
+      [50] iconst_1
+      [51] getstatic #10
+        + Fieldref [com/midtrans/sdk/analytics/AnalyticsEnvironment.STAGING Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+      [54] aastore
+      [55] dup
+      [56] iconst_2
+      [57] getstatic #9
+        + Fieldref [com/midtrans/sdk/analytics/AnalyticsEnvironment.SANDBOX Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+      [60] aastore
+      [61] putstatic #7
+        + Fieldref [com/midtrans/sdk/analytics/AnalyticsEnvironment.$VALUES [Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+      [64] return
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+
+Class file attributes (count = 1):
+  + Signature attribute:
+    + Utf8 [Ljava/lang/Enum<Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;>;]
+
+_____________________________________________________________________
++ Program class: com/midtrans/sdk/analytics/MidtransAnalytics
+  Superclass:    java/lang/Object
+  Major version: 0x33
+  Minor version: 0x0
+    = target 1.7
+  Access flags:  0x21
+    = public class com.midtrans.sdk.analytics.MidtransAnalytics extends java.lang.Object
+
+Interfaces (count = 0):
+
+Constant Pool (count = 221):
+  + String [Analytics SDK is not initialized. Please initialize it using MidtransAnalytics.Builder().]
+  + String [Android]
+  + String [UI]
+  + String [normal]
+  + String [one click]
+  + String [phone]
+  + String [tablet]
+  + String [two click]
+  + Class [android/os/Build]
+  + Class [android/os/Build$VERSION]
+  + Class [com/midtrans/sdk/analytics/AnalyticsEnvironment]
+  + Class [com/midtrans/sdk/analytics/MidtransAnalytics]
+  + Class [com/midtrans/sdk/analytics/MidtransAnalytics$1]
+  + Class [com/midtrans/sdk/analytics/MidtransAnalytics$Builder]
+  + Class [com/midtrans/sdk/analytics/a/b]
+  + Class [com/midtrans/sdk/analytics/a/c]
+  + Class [com/midtrans/sdk/analytics/b/a]
+  + Class [com/midtrans/sdk/analytics/b/b]
+  + Class [com/midtrans/sdk/analytics/b/c]
+  + Class [com/midtrans/sdk/analytics/models/Event]
+  + Class [com/midtrans/sdk/analytics/models/Properties]
+  + Class [java/lang/Object]
+  + Class [java/lang/RuntimeException]
+  + Class [java/lang/String]
+  + Class [java/lang/System]
+  + Class [java/sql/Timestamp]
+  + Fieldref [android/os/Build$VERSION.RELEASE Ljava/lang/String;]
+  + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics.analyticsApiManager Lcom/midtrans/sdk/analytics/a/b;]
+  + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics.deviceId Ljava/lang/String;]
+  + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics.deviceType Ljava/lang/String;]
+  + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics.environment Lcom/midtrans/sdk/analytics/b/a;]
+  + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics.instance Lcom/midtrans/sdk/analytics/MidtransAnalytics;]
+  + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics.merchantName Ljava/lang/String;]
+  + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics.sdkVersion Ljava/lang/String;]
+  + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics$1.a [I]
+  + Methodref [com/midtrans/sdk/analytics/AnalyticsEnvironment.ordinal ()I]
+  + Methodref [com/midtrans/sdk/analytics/MidtransAnalytics.<init> (Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;)V]
+  + Methodref [com/midtrans/sdk/analytics/MidtransAnalytics.buildAnalyticsApiManager (Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;)Lcom/midtrans/sdk/analytics/a/b;]
+  + Methodref [com/midtrans/sdk/analytics/MidtransAnalytics.buildAnalyticsEnvironment (Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;)Lcom/midtrans/sdk/analytics/b/a;]
+  + Methodref [com/midtrans/sdk/analytics/MidtransAnalytics.buildProperties ()Lcom/midtrans/sdk/analytics/models/Properties;]
+  + Methodref [com/midtrans/sdk/analytics/MidtransAnalytics$Builder.access$000 (Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;)Ljava/lang/String;]
+  + Methodref [com/midtrans/sdk/analytics/MidtransAnalytics$Builder.access$100 (Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;)Ljava/lang/String;]
+  + Methodref [com/midtrans/sdk/analytics/MidtransAnalytics$Builder.access$200 (Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;)Ljava/lang/String;]
+  + Methodref [com/midtrans/sdk/analytics/MidtransAnalytics$Builder.access$300 (Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;)Ljava/lang/String;]
+  + Methodref [com/midtrans/sdk/analytics/MidtransAnalytics$Builder.access$400 (Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;)Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+  + Methodref [com/midtrans/sdk/analytics/a/b.<init> (Lcom/midtrans/sdk/analytics/b/a;Lcom/midtrans/sdk/analytics/a/a;)V]
+  + Methodref [com/midtrans/sdk/analytics/a/b.a (Lcom/midtrans/sdk/analytics/models/Event;)V]
+  + Methodref [com/midtrans/sdk/analytics/a/c.<init> (Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;)V]
+  + Methodref [com/midtrans/sdk/analytics/a/c.a ()Lcom/midtrans/sdk/analytics/a/a;]
+  + Methodref [com/midtrans/sdk/analytics/b/a.a ()Ljava/lang/String;]
+  + Methodref [com/midtrans/sdk/analytics/b/b.<init> ()V]
+  + Methodref [com/midtrans/sdk/analytics/b/c.<init> ()V]
+  + Methodref [com/midtrans/sdk/analytics/models/Event.<init> ()V]
+  + Methodref [com/midtrans/sdk/analytics/models/Event.setEvent (Ljava/lang/String;)V]
+  + Methodref [com/midtrans/sdk/analytics/models/Event.setProperties (Lcom/midtrans/sdk/analytics/models/Properties;)V]
+  + Methodref [com/midtrans/sdk/analytics/models/Properties.<init> ()V]
+  + Methodref [com/midtrans/sdk/analytics/models/Properties.setCardPaymentMode (Ljava/lang/String;)V]
+  + Methodref [com/midtrans/sdk/analytics/models/Properties.setDeviceId (Ljava/lang/String;)V]
+  + Methodref [com/midtrans/sdk/analytics/models/Properties.setDeviceType (Ljava/lang/String;)V]
+  + Methodref [com/midtrans/sdk/analytics/models/Properties.setDistinctId (Ljava/lang/String;)V]
+  + Methodref [com/midtrans/sdk/analytics/models/Properties.setFlow (Ljava/lang/String;)V]
+  + Methodref [com/midtrans/sdk/analytics/models/Properties.setMerchant (Ljava/lang/String;)V]
+  + Methodref [com/midtrans/sdk/analytics/models/Properties.setOsVersion (Ljava/lang/String;)V]
+  + Methodref [com/midtrans/sdk/analytics/models/Properties.setPlatform (Ljava/lang/String;)V]
+  + Methodref [com/midtrans/sdk/analytics/models/Properties.setResponseTime (J)V]
+  + Methodref [com/midtrans/sdk/analytics/models/Properties.setTimeStamp (Ljava/lang/String;)V]
+  + Methodref [com/midtrans/sdk/analytics/models/Properties.setToken (Ljava/lang/String;)V]
+  + Methodref [com/midtrans/sdk/analytics/models/Properties.setVersion (Ljava/lang/String;)V]
+  + Methodref [java/lang/Object.<init> ()V]
+  + Methodref [java/lang/RuntimeException.<init> (Ljava/lang/String;)V]
+  + Methodref [java/lang/String.valueOf (Ljava/lang/Object;)Ljava/lang/String;]
+  + Methodref [java/lang/System.currentTimeMillis ()J]
+  + Methodref [java/sql/Timestamp.<init> (J)V]
+  + NameAndType [<init> ()V]
+  + NameAndType [<init> (J)V]
+  + NameAndType [<init> (Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;)V]
+  + NameAndType [<init> (Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;)V]
+  + NameAndType [<init> (Lcom/midtrans/sdk/analytics/b/a;Lcom/midtrans/sdk/analytics/a/a;)V]
+  + NameAndType [<init> (Ljava/lang/String;)V]
+  + NameAndType [RELEASE Ljava/lang/String;]
+  + NameAndType [a ()Lcom/midtrans/sdk/analytics/a/a;]
+  + NameAndType [a ()Ljava/lang/String;]
+  + NameAndType [a (Lcom/midtrans/sdk/analytics/models/Event;)V]
+  + NameAndType [a [I]
+  + NameAndType [access$000 (Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;)Ljava/lang/String;]
+  + NameAndType [access$100 (Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;)Ljava/lang/String;]
+  + NameAndType [access$200 (Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;)Ljava/lang/String;]
+  + NameAndType [access$300 (Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;)Ljava/lang/String;]
+  + NameAndType [access$400 (Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;)Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+  + NameAndType [analyticsApiManager Lcom/midtrans/sdk/analytics/a/b;]
+  + NameAndType [buildAnalyticsApiManager (Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;)Lcom/midtrans/sdk/analytics/a/b;]
+  + NameAndType [buildAnalyticsEnvironment (Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;)Lcom/midtrans/sdk/analytics/b/a;]
+  + NameAndType [buildProperties ()Lcom/midtrans/sdk/analytics/models/Properties;]
+  + NameAndType [currentTimeMillis ()J]
+  + NameAndType [deviceId Ljava/lang/String;]
+  + NameAndType [deviceType Ljava/lang/String;]
+  + NameAndType [environment Lcom/midtrans/sdk/analytics/b/a;]
+  + NameAndType [instance Lcom/midtrans/sdk/analytics/MidtransAnalytics;]
+  + NameAndType [merchantName Ljava/lang/String;]
+  + NameAndType [ordinal ()I]
+  + NameAndType [sdkVersion Ljava/lang/String;]
+  + NameAndType [setCardPaymentMode (Ljava/lang/String;)V]
+  + NameAndType [setDeviceId (Ljava/lang/String;)V]
+  + NameAndType [setDeviceType (Ljava/lang/String;)V]
+  + NameAndType [setDistinctId (Ljava/lang/String;)V]
+  + NameAndType [setEvent (Ljava/lang/String;)V]
+  + NameAndType [setFlow (Ljava/lang/String;)V]
+  + NameAndType [setMerchant (Ljava/lang/String;)V]
+  + NameAndType [setOsVersion (Ljava/lang/String;)V]
+  + NameAndType [setPlatform (Ljava/lang/String;)V]
+  + NameAndType [setProperties (Lcom/midtrans/sdk/analytics/models/Properties;)V]
+  + NameAndType [setResponseTime (J)V]
+  + NameAndType [setTimeStamp (Ljava/lang/String;)V]
+  + NameAndType [setToken (Ljava/lang/String;)V]
+  + NameAndType [setVersion (Ljava/lang/String;)V]
+  + NameAndType [valueOf (Ljava/lang/Object;)Ljava/lang/String;]
+  + Utf8 [()I]
+  + Utf8 [()J]
+  + Utf8 [()Lcom/midtrans/sdk/analytics/MidtransAnalytics;]
+  + Utf8 [()Lcom/midtrans/sdk/analytics/a/a;]
+  + Utf8 [()Lcom/midtrans/sdk/analytics/models/Properties;]
+  + Utf8 [()Ljava/lang/String;]
+  + Utf8 [()V]
+  + Utf8 [(J)V]
+  + Utf8 [(Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;)Lcom/midtrans/sdk/analytics/a/b;]
+  + Utf8 [(Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;)Lcom/midtrans/sdk/analytics/b/a;]
+  + Utf8 [(Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;)V]
+  + Utf8 [(Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;)Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+  + Utf8 [(Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;)Ljava/lang/String;]
+  + Utf8 [(Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;)V]
+  + Utf8 [(Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;Lcom/midtrans/sdk/analytics/MidtransAnalytics$1;)V]
+  + Utf8 [(Lcom/midtrans/sdk/analytics/b/a;Lcom/midtrans/sdk/analytics/a/a;)V]
+  + Utf8 [(Lcom/midtrans/sdk/analytics/models/Event;)V]
+  + Utf8 [(Lcom/midtrans/sdk/analytics/models/Properties;)V]
+  + Utf8 [(Ljava/lang/Object;)Ljava/lang/String;]
+  + Utf8 [(Ljava/lang/String;)V]
+  + Utf8 [(Ljava/lang/String;Ljava/lang/String;)V]
+  + Utf8 [(Ljava/lang/String;Ljava/lang/String;J)V]
+  + Utf8 [(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V]
+  + Utf8 [<init>]
+  + Utf8 [Analytics SDK is not initialized. Please initialize it using MidtransAnalytics.Builder().]
+  + Utf8 [Android]
+  + Utf8 [Builder]
+  + Utf8 [CARD_MODE_NORMAL]
+  + Utf8 [CARD_MODE_ONE_CLICK]
+  + Utf8 [CARD_MODE_TWO_CLICK]
+  + Utf8 [Code]
+  + Utf8 [ConstantValue]
+  + Utf8 [DEVICE_TYPE_PHONE]
+  + Utf8 [DEVICE_TYPE_TABLET]
+  + Utf8 [FLOW]
+  + Utf8 [InnerClasses]
+  + Utf8 [Lcom/midtrans/sdk/analytics/MidtransAnalytics;]
+  + Utf8 [Lcom/midtrans/sdk/analytics/a/b;]
+  + Utf8 [Lcom/midtrans/sdk/analytics/b/a;]
+  + Utf8 [Ljava/lang/String;]
+  + Utf8 [PLATFORM]
+  + Utf8 [RELEASE]
+  + Utf8 [UI]
+  + Utf8 [VERSION]
+  + Utf8 [[I]
+  + Utf8 [a]
+  + Utf8 [access$000]
+  + Utf8 [access$100]
+  + Utf8 [access$200]
+  + Utf8 [access$300]
+  + Utf8 [access$400]
+  + Utf8 [analyticsApiManager]
+  + Utf8 [android/os/Build]
+  + Utf8 [android/os/Build$VERSION]
+  + Utf8 [buildAnalyticsApiManager]
+  + Utf8 [buildAnalyticsEnvironment]
+  + Utf8 [buildProperties]
+  + Utf8 [com/midtrans/sdk/analytics/AnalyticsEnvironment]
+  + Utf8 [com/midtrans/sdk/analytics/MidtransAnalytics]
+  + Utf8 [com/midtrans/sdk/analytics/MidtransAnalytics$1]
+  + Utf8 [com/midtrans/sdk/analytics/MidtransAnalytics$Builder]
+  + Utf8 [com/midtrans/sdk/analytics/a/b]
+  + Utf8 [com/midtrans/sdk/analytics/a/c]
+  + Utf8 [com/midtrans/sdk/analytics/b/a]
+  + Utf8 [com/midtrans/sdk/analytics/b/b]
+  + Utf8 [com/midtrans/sdk/analytics/b/c]
+  + Utf8 [com/midtrans/sdk/analytics/models/Event]
+  + Utf8 [com/midtrans/sdk/analytics/models/Properties]
+  + Utf8 [currentTimeMillis]
+  + Utf8 [deviceId]
+  + Utf8 [deviceType]
+  + Utf8 [environment]
+  + Utf8 [getInstance]
+  + Utf8 [instance]
+  + Utf8 [java/lang/Object]
+  + Utf8 [java/lang/RuntimeException]
+  + Utf8 [java/lang/String]
+  + Utf8 [java/lang/System]
+  + Utf8 [java/sql/Timestamp]
+  + Utf8 [merchantName]
+  + Utf8 [normal]
+  + Utf8 [one click]
+  + Utf8 [ordinal]
+  + Utf8 [phone]
+  + Utf8 [sdkVersion]
+  + Utf8 [setCardPaymentMode]
+  + Utf8 [setDeviceId]
+  + Utf8 [setDeviceType]
+  + Utf8 [setDistinctId]
+  + Utf8 [setEvent]
+  + Utf8 [setFlow]
+  + Utf8 [setMerchant]
+  + Utf8 [setMerchantName]
+  + Utf8 [setOsVersion]
+  + Utf8 [setPlatform]
+  + Utf8 [setProperties]
+  + Utf8 [setResponseTime]
+  + Utf8 [setTimeStamp]
+  + Utf8 [setToken]
+  + Utf8 [setVersion]
+  + Utf8 [tablet]
+  + Utf8 [trackEvent]
+  + Utf8 [two click]
+  + Utf8 [valueOf]
+
+Fields (count = 14):
+  + Field:        CARD_MODE_ONE_CLICK Ljava/lang/String;
+    Access flags: 0x19
+      = public static final java.lang.String CARD_MODE_ONE_CLICK
+    Class member attributes (count = 1):
+    + Constant value attribute:
+    + String [one click]
+  + Field:        CARD_MODE_TWO_CLICK Ljava/lang/String;
+    Access flags: 0x19
+      = public static final java.lang.String CARD_MODE_TWO_CLICK
+    Class member attributes (count = 1):
+    + Constant value attribute:
+    + String [two click]
+  + Field:        CARD_MODE_NORMAL Ljava/lang/String;
+    Access flags: 0x19
+      = public static final java.lang.String CARD_MODE_NORMAL
+    Class member attributes (count = 1):
+    + Constant value attribute:
+    + String [normal]
+  + Field:        DEVICE_TYPE_TABLET Ljava/lang/String;
+    Access flags: 0x19
+      = public static final java.lang.String DEVICE_TYPE_TABLET
+    Class member attributes (count = 1):
+    + Constant value attribute:
+    + String [tablet]
+  + Field:        DEVICE_TYPE_PHONE Ljava/lang/String;
+    Access flags: 0x19
+      = public static final java.lang.String DEVICE_TYPE_PHONE
+    Class member attributes (count = 1):
+    + Constant value attribute:
+    + String [phone]
+  + Field:        PLATFORM Ljava/lang/String;
+    Access flags: 0x1a
+      = private static final java.lang.String PLATFORM
+    Class member attributes (count = 1):
+    + Constant value attribute:
+    + String [Android]
+  + Field:        FLOW Ljava/lang/String;
+    Access flags: 0x1a
+      = private static final java.lang.String FLOW
+    Class member attributes (count = 1):
+    + Constant value attribute:
+    + String [UI]
+  + Field:        instance Lcom/midtrans/sdk/analytics/MidtransAnalytics;
+    Access flags: 0xa
+      = private static com.midtrans.sdk.analytics.MidtransAnalytics instance
+  + Field:        sdkVersion Ljava/lang/String;
+    Access flags: 0x12
+      = private final java.lang.String sdkVersion
+  + Field:        deviceId Ljava/lang/String;
+    Access flags: 0x12
+      = private final java.lang.String deviceId
+  + Field:        deviceType Ljava/lang/String;
+    Access flags: 0x12
+      = private final java.lang.String deviceType
+  + Field:        environment Lcom/midtrans/sdk/analytics/b/a;
+    Access flags: 0x12
+      = private final com.midtrans.sdk.analytics.b.a environment
+  + Field:        analyticsApiManager Lcom/midtrans/sdk/analytics/a/b;
+    Access flags: 0x12
+      = private final com.midtrans.sdk.analytics.a.b analyticsApiManager
+  + Field:        merchantName Ljava/lang/String;
+    Access flags: 0x2
+      = private java.lang.String merchantName
+
+Methods (count = 10):
+  - Method:       <init>(Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;)V
+    Access flags: 0x2
+      = private MidtransAnalytics(com.midtrans.sdk.analytics.MidtransAnalytics$Builder)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 65, locals = 2, stack = 3):
+      [0] aload_0 v0
+      [1] invokespecial #69
+        + Methodref [java/lang/Object.<init> ()V]
+      [4] aload_0 v0
+      [5] aload_1 v1
+      [6] invokestatic #41
+        + Methodref [com/midtrans/sdk/analytics/MidtransAnalytics$Builder.access$000 (Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;)Ljava/lang/String;]
+      [9] putfield #34
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics.sdkVersion Ljava/lang/String;]
+      [12] aload_0 v0
+      [13] aload_1 v1
+      [14] invokestatic #42
+        + Methodref [com/midtrans/sdk/analytics/MidtransAnalytics$Builder.access$100 (Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;)Ljava/lang/String;]
+      [17] putfield #33
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics.merchantName Ljava/lang/String;]
+      [20] aload_0 v0
+      [21] aload_1 v1
+      [22] invokestatic #43
+        + Methodref [com/midtrans/sdk/analytics/MidtransAnalytics$Builder.access$200 (Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;)Ljava/lang/String;]
+      [25] putfield #29
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics.deviceId Ljava/lang/String;]
+      [28] aload_0 v0
+      [29] aload_1 v1
+      [30] invokestatic #44
+        + Methodref [com/midtrans/sdk/analytics/MidtransAnalytics$Builder.access$300 (Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;)Ljava/lang/String;]
+      [33] putfield #30
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics.deviceType Ljava/lang/String;]
+      [36] aload_0 v0
+      [37] aload_0 v0
+      [38] aload_1 v1
+      [39] invokestatic #45
+        + Methodref [com/midtrans/sdk/analytics/MidtransAnalytics$Builder.access$400 (Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;)Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+      [42] invokespecial #39
+        + Methodref [com/midtrans/sdk/analytics/MidtransAnalytics.buildAnalyticsEnvironment (Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;)Lcom/midtrans/sdk/analytics/b/a;]
+      [45] putfield #31
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics.environment Lcom/midtrans/sdk/analytics/b/a;]
+      [48] aload_0 v0
+      [49] aload_0 v0
+      [50] aload_1 v1
+      [51] invokestatic #45
+        + Methodref [com/midtrans/sdk/analytics/MidtransAnalytics$Builder.access$400 (Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;)Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+      [54] invokespecial #38
+        + Methodref [com/midtrans/sdk/analytics/MidtransAnalytics.buildAnalyticsApiManager (Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;)Lcom/midtrans/sdk/analytics/a/b;]
+      [57] putfield #28
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics.analyticsApiManager Lcom/midtrans/sdk/analytics/a/b;]
+      [60] aload_0 v0
+      [61] putstatic #32
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics.instance Lcom/midtrans/sdk/analytics/MidtransAnalytics;]
+      [64] return
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       getInstance()Lcom/midtrans/sdk/analytics/MidtransAnalytics;
+    Access flags: 0x9
+      = public static com.midtrans.sdk.analytics.MidtransAnalytics getInstance()
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 20, locals = 0, stack = 3):
+      [0] getstatic #32
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics.instance Lcom/midtrans/sdk/analytics/MidtransAnalytics;]
+      [3] ifnonnull +13 (target=16)
+      [6] new #23
+        + Class [java/lang/RuntimeException]
+      [9] dup
+      [10] ldc #1
+        + String [Analytics SDK is not initialized. Please initialize it using MidtransAnalytics.Builder().]
+      [12] invokespecial #70
+        + Methodref [java/lang/RuntimeException.<init> (Ljava/lang/String;)V]
+      [15] athrow
+      [16] getstatic #32
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics.instance Lcom/midtrans/sdk/analytics/MidtransAnalytics;]
+      [19] areturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       buildAnalyticsApiManager(Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;)Lcom/midtrans/sdk/analytics/a/b;
+    Access flags: 0x2
+      = private com.midtrans.sdk.analytics.a.b buildAnalyticsApiManager(com.midtrans.sdk.analytics.AnalyticsEnvironment)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 24, locals = 2, stack = 6):
+      [0] new #15
+        + Class [com/midtrans/sdk/analytics/a/b]
+      [3] dup
+      [4] aload_0 v0
+      [5] aload_1 v1
+      [6] invokespecial #39
+        + Methodref [com/midtrans/sdk/analytics/MidtransAnalytics.buildAnalyticsEnvironment (Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;)Lcom/midtrans/sdk/analytics/b/a;]
+      [9] new #16
+        + Class [com/midtrans/sdk/analytics/a/c]
+      [12] dup
+      [13] aload_1 v1
+      [14] invokespecial #48
+        + Methodref [com/midtrans/sdk/analytics/a/c.<init> (Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;)V]
+      [17] invokevirtual #49
+        + Methodref [com/midtrans/sdk/analytics/a/c.a ()Lcom/midtrans/sdk/analytics/a/a;]
+      [20] invokespecial #46
+        + Methodref [com/midtrans/sdk/analytics/a/b.<init> (Lcom/midtrans/sdk/analytics/b/a;Lcom/midtrans/sdk/analytics/a/a;)V]
+      [23] areturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       buildAnalyticsEnvironment(Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;)Lcom/midtrans/sdk/analytics/b/a;
+    Access flags: 0x2
+      = private com.midtrans.sdk.analytics.b.a buildAnalyticsEnvironment(com.midtrans.sdk.analytics.AnalyticsEnvironment)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 68, locals = 2, stack = 2):
+      [0] getstatic #35
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics$1.a [I]
+      [3] aload_1 v1
+      [4] invokevirtual #36
+        + Methodref [com/midtrans/sdk/analytics/AnalyticsEnvironment.ordinal ()I]
+      [7] iaload
+      [8] tableswitch (3 offsets, default=52) (target=60)
+        1: offset = 28, target = 36
+        2: offset = 36, target = 44
+        3: offset = 44, target = 52
+        default: offset = 52, target = 60
+      [36] new #19
+        + Class [com/midtrans/sdk/analytics/b/c]
+      [39] dup
+      [40] invokespecial #52
+        + Methodref [com/midtrans/sdk/analytics/b/c.<init> ()V]
+      [43] areturn
+      [44] new #18
+        + Class [com/midtrans/sdk/analytics/b/b]
+      [47] dup
+      [48] invokespecial #51
+        + Methodref [com/midtrans/sdk/analytics/b/b.<init> ()V]
+      [51] areturn
+      [52] new #19
+        + Class [com/midtrans/sdk/analytics/b/c]
+      [55] dup
+      [56] invokespecial #52
+        + Methodref [com/midtrans/sdk/analytics/b/c.<init> ()V]
+      [59] areturn
+      [60] new #19
+        + Class [com/midtrans/sdk/analytics/b/c]
+      [63] dup
+      [64] invokespecial #52
+        + Methodref [com/midtrans/sdk/analytics/b/c.<init> ()V]
+      [67] areturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       setMerchantName(Ljava/lang/String;)V
+    Access flags: 0x1
+      = public void setMerchantName(java.lang.String)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 6, locals = 2, stack = 2):
+      [0] aload_0 v0
+      [1] aload_1 v1
+      [2] putfield #33
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics.merchantName Ljava/lang/String;]
+      [5] return
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       trackEvent(Ljava/lang/String;Ljava/lang/String;)V
+    Access flags: 0x1
+      = public void trackEvent(java.lang.String,java.lang.String)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 40, locals = 5, stack = 2):
+      [0] new #20
+        + Class [com/midtrans/sdk/analytics/models/Event]
+      [3] dup
+      [4] invokespecial #53
+        + Methodref [com/midtrans/sdk/analytics/models/Event.<init> ()V]
+      [7] astore_3 v3
+      [8] aload_3 v3
+      [9] aload_2 v2
+      [10] invokevirtual #54
+        + Methodref [com/midtrans/sdk/analytics/models/Event.setEvent (Ljava/lang/String;)V]
+      [13] aload_0 v0
+      [14] invokespecial #40
+        + Methodref [com/midtrans/sdk/analytics/MidtransAnalytics.buildProperties ()Lcom/midtrans/sdk/analytics/models/Properties;]
+      [17] astore v4
+      [19] aload v4
+      [21] aload_1 v1
+      [22] invokevirtual #60
+        + Methodref [com/midtrans/sdk/analytics/models/Properties.setDistinctId (Ljava/lang/String;)V]
+      [25] aload_3 v3
+      [26] aload v4
+      [28] invokevirtual #55
+        + Methodref [com/midtrans/sdk/analytics/models/Event.setProperties (Lcom/midtrans/sdk/analytics/models/Properties;)V]
+      [31] aload_0 v0
+      [32] getfield #28
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics.analyticsApiManager Lcom/midtrans/sdk/analytics/a/b;]
+      [35] aload_3 v3
+      [36] invokevirtual #47
+        + Methodref [com/midtrans/sdk/analytics/a/b.a (Lcom/midtrans/sdk/analytics/models/Event;)V]
+      [39] return
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       trackEvent(Ljava/lang/String;Ljava/lang/String;J)V
+    Access flags: 0x1
+      = public void trackEvent(java.lang.String,java.lang.String,long)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 50, locals = 7, stack = 3):
+      [0] new #20
+        + Class [com/midtrans/sdk/analytics/models/Event]
+      [3] dup
+      [4] invokespecial #53
+        + Methodref [com/midtrans/sdk/analytics/models/Event.<init> ()V]
+      [7] astore v5
+      [9] aload v5
+      [11] aload_2 v2
+      [12] invokevirtual #54
+        + Methodref [com/midtrans/sdk/analytics/models/Event.setEvent (Ljava/lang/String;)V]
+      [15] aload_0 v0
+      [16] invokespecial #40
+        + Methodref [com/midtrans/sdk/analytics/MidtransAnalytics.buildProperties ()Lcom/midtrans/sdk/analytics/models/Properties;]
+      [19] astore v6
+      [21] aload v6
+      [23] aload_1 v1
+      [24] invokevirtual #60
+        + Methodref [com/midtrans/sdk/analytics/models/Properties.setDistinctId (Ljava/lang/String;)V]
+      [27] aload v6
+      [29] lload_3 v3
+      [30] invokevirtual #65
+        + Methodref [com/midtrans/sdk/analytics/models/Properties.setResponseTime (J)V]
+      [33] aload v5
+      [35] aload v6
+      [37] invokevirtual #55
+        + Methodref [com/midtrans/sdk/analytics/models/Event.setProperties (Lcom/midtrans/sdk/analytics/models/Properties;)V]
+      [40] aload_0 v0
+      [41] getfield #28
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics.analyticsApiManager Lcom/midtrans/sdk/analytics/a/b;]
+      [44] aload v5
+      [46] invokevirtual #47
+        + Methodref [com/midtrans/sdk/analytics/a/b.a (Lcom/midtrans/sdk/analytics/models/Event;)V]
+      [49] return
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       trackEvent(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+    Access flags: 0x1
+      = public void trackEvent(java.lang.String,java.lang.String,java.lang.String)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 50, locals = 6, stack = 2):
+      [0] new #20
+        + Class [com/midtrans/sdk/analytics/models/Event]
+      [3] dup
+      [4] invokespecial #53
+        + Methodref [com/midtrans/sdk/analytics/models/Event.<init> ()V]
+      [7] astore v4
+      [9] aload v4
+      [11] aload_2 v2
+      [12] invokevirtual #54
+        + Methodref [com/midtrans/sdk/analytics/models/Event.setEvent (Ljava/lang/String;)V]
+      [15] aload_0 v0
+      [16] invokespecial #40
+        + Methodref [com/midtrans/sdk/analytics/MidtransAnalytics.buildProperties ()Lcom/midtrans/sdk/analytics/models/Properties;]
+      [19] astore v5
+      [21] aload v5
+      [23] aload_1 v1
+      [24] invokevirtual #60
+        + Methodref [com/midtrans/sdk/analytics/models/Properties.setDistinctId (Ljava/lang/String;)V]
+      [27] aload v5
+      [29] aload_3 v3
+      [30] invokevirtual #57
+        + Methodref [com/midtrans/sdk/analytics/models/Properties.setCardPaymentMode (Ljava/lang/String;)V]
+      [33] aload v4
+      [35] aload v5
+      [37] invokevirtual #55
+        + Methodref [com/midtrans/sdk/analytics/models/Event.setProperties (Lcom/midtrans/sdk/analytics/models/Properties;)V]
+      [40] aload_0 v0
+      [41] getfield #28
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics.analyticsApiManager Lcom/midtrans/sdk/analytics/a/b;]
+      [44] aload v4
+      [46] invokevirtual #47
+        + Methodref [com/midtrans/sdk/analytics/a/b.a (Lcom/midtrans/sdk/analytics/models/Event;)V]
+      [49] return
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       buildProperties()Lcom/midtrans/sdk/analytics/models/Properties;
+    Access flags: 0x2
+      = private com.midtrans.sdk.analytics.models.Properties buildProperties()
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 89, locals = 2, stack = 5):
+      [0] new #21
+        + Class [com/midtrans/sdk/analytics/models/Properties]
+      [3] dup
+      [4] invokespecial #56
+        + Methodref [com/midtrans/sdk/analytics/models/Properties.<init> ()V]
+      [7] astore_1 v1
+      [8] aload_1 v1
+      [9] aload_0 v0
+      [10] getfield #33
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics.merchantName Ljava/lang/String;]
+      [13] invokevirtual #62
+        + Methodref [com/midtrans/sdk/analytics/models/Properties.setMerchant (Ljava/lang/String;)V]
+      [16] aload_1 v1
+      [17] aload_0 v0
+      [18] getfield #29
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics.deviceId Ljava/lang/String;]
+      [21] invokevirtual #58
+        + Methodref [com/midtrans/sdk/analytics/models/Properties.setDeviceId (Ljava/lang/String;)V]
+      [24] aload_1 v1
+      [25] aload_0 v0
+      [26] getfield #34
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics.sdkVersion Ljava/lang/String;]
+      [29] invokevirtual #68
+        + Methodref [com/midtrans/sdk/analytics/models/Properties.setVersion (Ljava/lang/String;)V]
+      [32] aload_1 v1
+      [33] aload_0 v0
+      [34] getfield #31
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics.environment Lcom/midtrans/sdk/analytics/b/a;]
+      [37] invokevirtual #50
+        + Methodref [com/midtrans/sdk/analytics/b/a.a ()Ljava/lang/String;]
+      [40] invokevirtual #67
+        + Methodref [com/midtrans/sdk/analytics/models/Properties.setToken (Ljava/lang/String;)V]
+      [43] aload_1 v1
+      [44] getstatic #27
+        + Fieldref [android/os/Build$VERSION.RELEASE Ljava/lang/String;]
+      [47] invokevirtual #63
+        + Methodref [com/midtrans/sdk/analytics/models/Properties.setOsVersion (Ljava/lang/String;)V]
+      [50] aload_1 v1
+      [51] ldc #2
+        + String [Android]
+      [53] invokevirtual #64
+        + Methodref [com/midtrans/sdk/analytics/models/Properties.setPlatform (Ljava/lang/String;)V]
+      [56] aload_1 v1
+      [57] ldc #3
+        + String [UI]
+      [59] invokevirtual #61
+        + Methodref [com/midtrans/sdk/analytics/models/Properties.setFlow (Ljava/lang/String;)V]
+      [62] aload_1 v1
+      [63] aload_0 v0
+      [64] getfield #30
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics.deviceType Ljava/lang/String;]
+      [67] invokevirtual #59
+        + Methodref [com/midtrans/sdk/analytics/models/Properties.setDeviceType (Ljava/lang/String;)V]
+      [70] aload_1 v1
+      [71] new #26
+        + Class [java/sql/Timestamp]
+      [74] dup
+      [75] invokestatic #72
+        + Methodref [java/lang/System.currentTimeMillis ()J]
+      [78] invokespecial #73
+        + Methodref [java/sql/Timestamp.<init> (J)V]
+      [81] invokestatic #71
+        + Methodref [java/lang/String.valueOf (Ljava/lang/Object;)Ljava/lang/String;]
+      [84] invokevirtual #66
+        + Methodref [com/midtrans/sdk/analytics/models/Properties.setTimeStamp (Ljava/lang/String;)V]
+      [87] aload_1 v1
+      [88] areturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  - Method:       <init>(Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;Lcom/midtrans/sdk/analytics/MidtransAnalytics$1;)V
+    Access flags: 0x1000
+      = synthetic MidtransAnalytics(com.midtrans.sdk.analytics.MidtransAnalytics$Builder,com.midtrans.sdk.analytics.MidtransAnalytics$1)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 6, locals = 3, stack = 2):
+      [0] aload_0 v0
+      [1] aload_1 v1
+      [2] invokespecial #37
+        + Methodref [com/midtrans/sdk/analytics/MidtransAnalytics.<init> (Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;)V]
+      [5] return
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+
+Class file attributes (count = 1):
+  + Inner classes attribute (count = 3)
+    - InnerClassesInfo:
+      Access flags:  0x1008 = static synthetic 
+      + Class [com/midtrans/sdk/analytics/MidtransAnalytics$1]
+    - InnerClassesInfo:
+      Access flags:  0x9 = public static 
+      + Class [com/midtrans/sdk/analytics/MidtransAnalytics$Builder]
+      + Class [com/midtrans/sdk/analytics/MidtransAnalytics]
+      + Utf8 [Builder]
+    - InnerClassesInfo:
+      Access flags:  0x9 = public static 
+      + Class [android/os/Build$VERSION]
+      + Class [android/os/Build]
+      + Utf8 [VERSION]
+
+_____________________________________________________________________
++ Program class: com/midtrans/sdk/analytics/MidtransAnalytics$1
+  Superclass:    java/lang/Object
+  Major version: 0x33
+  Minor version: 0x0
+    = target 1.7
+  Access flags:  0x1020
+    = synthetic class com.midtrans.sdk.analytics.MidtransAnalytics$1 extends java.lang.Object
+
+Interfaces (count = 0):
+
+Constant Pool (count = 38):
+  + Class [com/midtrans/sdk/analytics/AnalyticsEnvironment]
+  + Class [com/midtrans/sdk/analytics/MidtransAnalytics]
+  + Class [com/midtrans/sdk/analytics/MidtransAnalytics$1]
+  + Class [java/lang/NoSuchFieldError]
+  + Class [java/lang/Object]
+  + Fieldref [com/midtrans/sdk/analytics/AnalyticsEnvironment.PRODUCTION Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+  + Fieldref [com/midtrans/sdk/analytics/AnalyticsEnvironment.SANDBOX Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+  + Fieldref [com/midtrans/sdk/analytics/AnalyticsEnvironment.STAGING Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+  + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics$1.a [I]
+  + Methodref [com/midtrans/sdk/analytics/AnalyticsEnvironment.ordinal ()I]
+  + Methodref [com/midtrans/sdk/analytics/AnalyticsEnvironment.values ()[Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+  + NameAndType [PRODUCTION Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+  + NameAndType [SANDBOX Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+  + NameAndType [STAGING Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+  + NameAndType [a [I]
+  + NameAndType [ordinal ()I]
+  + NameAndType [values ()[Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+  + Utf8 [()I]
+  + Utf8 [()V]
+  + Utf8 [()[Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+  + Utf8 [<clinit>]
+  + Utf8 [Code]
+  + Utf8 [EnclosingMethod]
+  + Utf8 [InnerClasses]
+  + Utf8 [Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+  + Utf8 [PRODUCTION]
+  + Utf8 [SANDBOX]
+  + Utf8 [STAGING]
+  + Utf8 [[I]
+  + Utf8 [a]
+  + Utf8 [com/midtrans/sdk/analytics/AnalyticsEnvironment]
+  + Utf8 [com/midtrans/sdk/analytics/MidtransAnalytics]
+  + Utf8 [com/midtrans/sdk/analytics/MidtransAnalytics$1]
+  + Utf8 [java/lang/NoSuchFieldError]
+  + Utf8 [java/lang/Object]
+  + Utf8 [ordinal]
+  + Utf8 [values]
+
+Fields (count = 1):
+  + Field:        a [I
+    Access flags: 0x1018
+      = static final synthetic int[] a
+
+Methods (count = 1):
+  - Method:       <clinit>()V
+    Access flags: 0x8
+      = static void <clinit>()
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 55, locals = 1, stack = 3):
+      [0] invokestatic #11
+        + Methodref [com/midtrans/sdk/analytics/AnalyticsEnvironment.values ()[Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+      [3] arraylength
+      [4] newarray 10
+      [6] putstatic #9
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics$1.a [I]
+      [9] getstatic #9
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics$1.a [I]
+      [12] getstatic #7
+        + Fieldref [com/midtrans/sdk/analytics/AnalyticsEnvironment.SANDBOX Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+      [15] invokevirtual #10
+        + Methodref [com/midtrans/sdk/analytics/AnalyticsEnvironment.ordinal ()I]
+      [18] iconst_1
+      [19] iastore
+      [20] goto +4 (target=24)
+      [23] astore_0 v0
+      [24] getstatic #9
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics$1.a [I]
+      [27] getstatic #6
+        + Fieldref [com/midtrans/sdk/analytics/AnalyticsEnvironment.PRODUCTION Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+      [30] invokevirtual #10
+        + Methodref [com/midtrans/sdk/analytics/AnalyticsEnvironment.ordinal ()I]
+      [33] iconst_2
+      [34] iastore
+      [35] goto +4 (target=39)
+      [38] astore_0 v0
+      [39] getstatic #9
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics$1.a [I]
+      [42] getstatic #8
+        + Fieldref [com/midtrans/sdk/analytics/AnalyticsEnvironment.STAGING Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+      [45] invokevirtual #10
+        + Methodref [com/midtrans/sdk/analytics/AnalyticsEnvironment.ordinal ()I]
+      [48] iconst_3
+      [49] iastore
+      [50] goto +4 (target=54)
+      [53] astore_0 v0
+      [54] return
+      Code attribute exceptions (count = 3):
+      - ExceptionInfo (9 -> 20: 23):
+      + Class [java/lang/NoSuchFieldError]
+      - ExceptionInfo (24 -> 35: 38):
+      + Class [java/lang/NoSuchFieldError]
+      - ExceptionInfo (39 -> 50: 53):
+      + Class [java/lang/NoSuchFieldError]
+      Code attribute attributes (attribute count = 0):
+
+Class file attributes (count = 2):
+  + Enclosing method attribute:
+    + Class [com/midtrans/sdk/analytics/MidtransAnalytics]
+  + Inner classes attribute (count = 1)
+    - InnerClassesInfo:
+      Access flags:  0x1008 = static synthetic 
+      + Class [com/midtrans/sdk/analytics/MidtransAnalytics$1]
+
+_____________________________________________________________________
++ Program class: com/midtrans/sdk/analytics/MidtransAnalytics$Builder
+  Superclass:    java/lang/Object
+  Major version: 0x33
+  Minor version: 0x0
+    = target 1.7
+  Access flags:  0x21
+    = public class com.midtrans.sdk.analytics.MidtransAnalytics$Builder extends java.lang.Object
+
+Interfaces (count = 0):
+
+Constant Pool (count = 89):
+  + String []
+  + String [Device id cannot be null or empty. Please pass the device id using setDeviceId()]
+  + String [Device type cannot be null or empty. Please pass the device type using setDeviceType()]
+  + String [Merchant name cannot be null or empty. Please pass the merchant name using setMerchantName()]
+  + String [SDK Version cannot be null or empty. Please pass the client key using setSdkVersion()]
+  + String [SDK version cannot be null or empty. Please pass the SDK version using setSdkVersion()]
+  + String [You must set an environment. Please use setEnvironment(Environment.$ENV)]
+  + Class [com/midtrans/sdk/analytics/MidtransAnalytics]
+  + Class [com/midtrans/sdk/analytics/MidtransAnalytics$1]
+  + Class [com/midtrans/sdk/analytics/MidtransAnalytics$Builder]
+  + Class [com/midtrans/sdk/analytics/c/a]
+  + Class [java/lang/Object]
+  + Class [java/lang/RuntimeException]
+  + Class [java/lang/String]
+  + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics$Builder.deviceId Ljava/lang/String;]
+  + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics$Builder.deviceType Ljava/lang/String;]
+  + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics$Builder.environment Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+  + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics$Builder.logEnabled Z]
+  + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics$Builder.merchantName Ljava/lang/String;]
+  + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics$Builder.sdkVersion Ljava/lang/String;]
+  + Methodref [com/midtrans/sdk/analytics/MidtransAnalytics.<init> (Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;Lcom/midtrans/sdk/analytics/MidtransAnalytics$1;)V]
+  + Methodref [com/midtrans/sdk/analytics/c/a.a (Ljava/lang/String;Ljava/lang/Throwable;)V]
+  + Methodref [java/lang/Object.<init> ()V]
+  + Methodref [java/lang/RuntimeException.<init> (Ljava/lang/String;)V]
+  + Methodref [java/lang/String.equalsIgnoreCase (Ljava/lang/String;)Z]
+  + NameAndType [<init> ()V]
+  + NameAndType [<init> (Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;Lcom/midtrans/sdk/analytics/MidtransAnalytics$1;)V]
+  + NameAndType [<init> (Ljava/lang/String;)V]
+  + NameAndType [a (Ljava/lang/String;Ljava/lang/Throwable;)V]
+  + NameAndType [deviceId Ljava/lang/String;]
+  + NameAndType [deviceType Ljava/lang/String;]
+  + NameAndType [environment Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+  + NameAndType [equalsIgnoreCase (Ljava/lang/String;)Z]
+  + NameAndType [logEnabled Z]
+  + NameAndType [merchantName Ljava/lang/String;]
+  + NameAndType [sdkVersion Ljava/lang/String;]
+  + Utf8 []
+  + Utf8 [()Lcom/midtrans/sdk/analytics/MidtransAnalytics;]
+  + Utf8 [()V]
+  + Utf8 [(Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;)Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;]
+  + Utf8 [(Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;)Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+  + Utf8 [(Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;)Ljava/lang/String;]
+  + Utf8 [(Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;Lcom/midtrans/sdk/analytics/MidtransAnalytics$1;)V]
+  + Utf8 [(Ljava/lang/String;)Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;]
+  + Utf8 [(Ljava/lang/String;)V]
+  + Utf8 [(Ljava/lang/String;)Z]
+  + Utf8 [(Ljava/lang/String;Ljava/lang/Throwable;)V]
+  + Utf8 [(Z)Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;]
+  + Utf8 [<init>]
+  + Utf8 [Builder]
+  + Utf8 [Code]
+  + Utf8 [Device id cannot be null or empty. Please pass the device id using setDeviceId()]
+  + Utf8 [Device type cannot be null or empty. Please pass the device type using setDeviceType()]
+  + Utf8 [InnerClasses]
+  + Utf8 [Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+  + Utf8 [Ljava/lang/String;]
+  + Utf8 [Merchant name cannot be null or empty. Please pass the merchant name using setMerchantName()]
+  + Utf8 [SDK Version cannot be null or empty. Please pass the client key using setSdkVersion()]
+  + Utf8 [SDK version cannot be null or empty. Please pass the SDK version using setSdkVersion()]
+  + Utf8 [You must set an environment. Please use setEnvironment(Environment.$ENV)]
+  + Utf8 [Z]
+  + Utf8 [a]
+  + Utf8 [access$000]
+  + Utf8 [access$100]
+  + Utf8 [access$200]
+  + Utf8 [access$300]
+  + Utf8 [access$400]
+  + Utf8 [build]
+  + Utf8 [com/midtrans/sdk/analytics/MidtransAnalytics]
+  + Utf8 [com/midtrans/sdk/analytics/MidtransAnalytics$1]
+  + Utf8 [com/midtrans/sdk/analytics/MidtransAnalytics$Builder]
+  + Utf8 [com/midtrans/sdk/analytics/c/a]
+  + Utf8 [deviceId]
+  + Utf8 [deviceType]
+  + Utf8 [environment]
+  + Utf8 [equalsIgnoreCase]
+  + Utf8 [java/lang/Object]
+  + Utf8 [java/lang/RuntimeException]
+  + Utf8 [java/lang/String]
+  + Utf8 [logEnabled]
+  + Utf8 [merchantName]
+  + Utf8 [sdkVersion]
+  + Utf8 [setDeviceId]
+  + Utf8 [setDeviceType]
+  + Utf8 [setEnvironment]
+  + Utf8 [setLogEnabled]
+  + Utf8 [setMerchantName]
+  + Utf8 [setSdkVersion]
+
+Fields (count = 6):
+  + Field:        logEnabled Z
+    Access flags: 0x1
+      = public boolean logEnabled
+  + Field:        sdkVersion Ljava/lang/String;
+    Access flags: 0x2
+      = private java.lang.String sdkVersion
+  + Field:        deviceId Ljava/lang/String;
+    Access flags: 0x2
+      = private java.lang.String deviceId
+  + Field:        merchantName Ljava/lang/String;
+    Access flags: 0x2
+      = private java.lang.String merchantName
+  + Field:        deviceType Ljava/lang/String;
+    Access flags: 0x2
+      = private java.lang.String deviceType
+  + Field:        environment Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;
+    Access flags: 0x2
+      = private com.midtrans.sdk.analytics.AnalyticsEnvironment environment
+
+Methods (count = 13):
+  - Method:       <init>()V
+    Access flags: 0x1
+      = public MidtransAnalytics$Builder()
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 10, locals = 1, stack = 2):
+      [0] aload_0 v0
+      [1] invokespecial #23
+        + Methodref [java/lang/Object.<init> ()V]
+      [4] aload_0 v0
+      [5] iconst_1
+      [6] putfield #18
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics$Builder.logEnabled Z]
+      [9] return
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       setLogEnabled(Z)Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;
+    Access flags: 0x1
+      = public com.midtrans.sdk.analytics.MidtransAnalytics$Builder setLogEnabled(boolean)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 7, locals = 2, stack = 2):
+      [0] aload_0 v0
+      [1] iload_1 v1
+      [2] putfield #18
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics$Builder.logEnabled Z]
+      [5] aload_0 v0
+      [6] areturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       setSdkVersion(Ljava/lang/String;)Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;
+    Access flags: 0x1
+      = public com.midtrans.sdk.analytics.MidtransAnalytics$Builder setSdkVersion(java.lang.String)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 7, locals = 2, stack = 2):
+      [0] aload_0 v0
+      [1] aload_1 v1
+      [2] putfield #20
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics$Builder.sdkVersion Ljava/lang/String;]
+      [5] aload_0 v0
+      [6] areturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       setMerchantName(Ljava/lang/String;)Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;
+    Access flags: 0x1
+      = public com.midtrans.sdk.analytics.MidtransAnalytics$Builder setMerchantName(java.lang.String)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 7, locals = 2, stack = 2):
+      [0] aload_0 v0
+      [1] aload_1 v1
+      [2] putfield #19
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics$Builder.merchantName Ljava/lang/String;]
+      [5] aload_0 v0
+      [6] areturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       setDeviceId(Ljava/lang/String;)Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;
+    Access flags: 0x1
+      = public com.midtrans.sdk.analytics.MidtransAnalytics$Builder setDeviceId(java.lang.String)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 7, locals = 2, stack = 2):
+      [0] aload_0 v0
+      [1] aload_1 v1
+      [2] putfield #15
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics$Builder.deviceId Ljava/lang/String;]
+      [5] aload_0 v0
+      [6] areturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       setDeviceType(Ljava/lang/String;)Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;
+    Access flags: 0x1
+      = public com.midtrans.sdk.analytics.MidtransAnalytics$Builder setDeviceType(java.lang.String)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 7, locals = 2, stack = 2):
+      [0] aload_0 v0
+      [1] aload_1 v1
+      [2] putfield #16
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics$Builder.deviceType Ljava/lang/String;]
+      [5] aload_0 v0
+      [6] areturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       setEnvironment(Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;)Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;
+    Access flags: 0x1
+      = public com.midtrans.sdk.analytics.MidtransAnalytics$Builder setEnvironment(com.midtrans.sdk.analytics.AnalyticsEnvironment)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 7, locals = 2, stack = 2):
+      [0] aload_0 v0
+      [1] aload_1 v1
+      [2] putfield #17
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics$Builder.environment Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+      [5] aload_0 v0
+      [6] areturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       build()Lcom/midtrans/sdk/analytics/MidtransAnalytics;
+    Access flags: 0x1
+      = public com.midtrans.sdk.analytics.MidtransAnalytics build()
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 226, locals = 3, stack = 4):
+      [0] aload_0 v0
+      [1] getfield #20
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics$Builder.sdkVersion Ljava/lang/String;]
+      [4] ifnull +15 (target=19)
+      [7] aload_0 v0
+      [8] getfield #20
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics$Builder.sdkVersion Ljava/lang/String;]
+      [11] ldc #1
+        + String []
+      [13] invokevirtual #25
+        + Methodref [java/lang/String.equalsIgnoreCase (Ljava/lang/String;)Z]
+      [16] ifeq +22 (target=38)
+      [19] ldc #6
+        + String [SDK version cannot be null or empty. Please pass the SDK version using setSdkVersion()]
+      [21] astore_1 v1
+      [22] new #13
+        + Class [java/lang/RuntimeException]
+      [25] dup
+      [26] aload_1 v1
+      [27] invokespecial #24
+        + Methodref [java/lang/RuntimeException.<init> (Ljava/lang/String;)V]
+      [30] astore_2 v2
+      [31] aload_1 v1
+      [32] aload_2 v2
+      [33] invokestatic #22
+        + Methodref [com/midtrans/sdk/analytics/c/a.a (Ljava/lang/String;Ljava/lang/Throwable;)V]
+      [36] aload_2 v2
+      [37] athrow
+      [38] aload_0 v0
+      [39] getfield #19
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics$Builder.merchantName Ljava/lang/String;]
+      [42] ifnull +15 (target=57)
+      [45] aload_0 v0
+      [46] getfield #19
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics$Builder.merchantName Ljava/lang/String;]
+      [49] ldc #1
+        + String []
+      [51] invokevirtual #25
+        + Methodref [java/lang/String.equalsIgnoreCase (Ljava/lang/String;)Z]
+      [54] ifeq +22 (target=76)
+      [57] ldc #4
+        + String [Merchant name cannot be null or empty. Please pass the merchant name using setMerchantName()]
+      [59] astore_1 v1
+      [60] new #13
+        + Class [java/lang/RuntimeException]
+      [63] dup
+      [64] aload_1 v1
+      [65] invokespecial #24
+        + Methodref [java/lang/RuntimeException.<init> (Ljava/lang/String;)V]
+      [68] astore_2 v2
+      [69] aload_1 v1
+      [70] aload_2 v2
+      [71] invokestatic #22
+        + Methodref [com/midtrans/sdk/analytics/c/a.a (Ljava/lang/String;Ljava/lang/Throwable;)V]
+      [74] aload_2 v2
+      [75] athrow
+      [76] aload_0 v0
+      [77] getfield #15
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics$Builder.deviceId Ljava/lang/String;]
+      [80] ifnull +15 (target=95)
+      [83] aload_0 v0
+      [84] getfield #15
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics$Builder.deviceId Ljava/lang/String;]
+      [87] ldc #1
+        + String []
+      [89] invokevirtual #25
+        + Methodref [java/lang/String.equalsIgnoreCase (Ljava/lang/String;)Z]
+      [92] ifeq +22 (target=114)
+      [95] ldc #2
+        + String [Device id cannot be null or empty. Please pass the device id using setDeviceId()]
+      [97] astore_1 v1
+      [98] new #13
+        + Class [java/lang/RuntimeException]
+      [101] dup
+      [102] aload_1 v1
+      [103] invokespecial #24
+        + Methodref [java/lang/RuntimeException.<init> (Ljava/lang/String;)V]
+      [106] astore_2 v2
+      [107] aload_1 v1
+      [108] aload_2 v2
+      [109] invokestatic #22
+        + Methodref [com/midtrans/sdk/analytics/c/a.a (Ljava/lang/String;Ljava/lang/Throwable;)V]
+      [112] aload_2 v2
+      [113] athrow
+      [114] aload_0 v0
+      [115] getfield #20
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics$Builder.sdkVersion Ljava/lang/String;]
+      [118] ifnull +15 (target=133)
+      [121] aload_0 v0
+      [122] getfield #20
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics$Builder.sdkVersion Ljava/lang/String;]
+      [125] ldc #1
+        + String []
+      [127] invokevirtual #25
+        + Methodref [java/lang/String.equalsIgnoreCase (Ljava/lang/String;)Z]
+      [130] ifeq +22 (target=152)
+      [133] ldc #5
+        + String [SDK Version cannot be null or empty. Please pass the client key using setSdkVersion()]
+      [135] astore_1 v1
+      [136] new #13
+        + Class [java/lang/RuntimeException]
+      [139] dup
+      [140] aload_1 v1
+      [141] invokespecial #24
+        + Methodref [java/lang/RuntimeException.<init> (Ljava/lang/String;)V]
+      [144] astore_2 v2
+      [145] aload_1 v1
+      [146] aload_2 v2
+      [147] invokestatic #22
+        + Methodref [com/midtrans/sdk/analytics/c/a.a (Ljava/lang/String;Ljava/lang/Throwable;)V]
+      [150] aload_2 v2
+      [151] athrow
+      [152] aload_0 v0
+      [153] getfield #16
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics$Builder.deviceType Ljava/lang/String;]
+      [156] ifnull +15 (target=171)
+      [159] aload_0 v0
+      [160] getfield #16
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics$Builder.deviceType Ljava/lang/String;]
+      [163] ldc #1
+        + String []
+      [165] invokevirtual #25
+        + Methodref [java/lang/String.equalsIgnoreCase (Ljava/lang/String;)Z]
+      [168] ifeq +22 (target=190)
+      [171] ldc #3
+        + String [Device type cannot be null or empty. Please pass the device type using setDeviceType()]
+      [173] astore_1 v1
+      [174] new #13
+        + Class [java/lang/RuntimeException]
+      [177] dup
+      [178] aload_1 v1
+      [179] invokespecial #24
+        + Methodref [java/lang/RuntimeException.<init> (Ljava/lang/String;)V]
+      [182] astore_2 v2
+      [183] aload_1 v1
+      [184] aload_2 v2
+      [185] invokestatic #22
+        + Methodref [com/midtrans/sdk/analytics/c/a.a (Ljava/lang/String;Ljava/lang/Throwable;)V]
+      [188] aload_2 v2
+      [189] athrow
+      [190] aload_0 v0
+      [191] getfield #17
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics$Builder.environment Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+      [194] ifnonnull +22 (target=216)
+      [197] ldc #7
+        + String [You must set an environment. Please use setEnvironment(Environment.$ENV)]
+      [199] astore_1 v1
+      [200] new #13
+        + Class [java/lang/RuntimeException]
+      [203] dup
+      [204] aload_1 v1
+      [205] invokespecial #24
+        + Methodref [java/lang/RuntimeException.<init> (Ljava/lang/String;)V]
+      [208] astore_2 v2
+      [209] aload_1 v1
+      [210] aload_2 v2
+      [211] invokestatic #22
+        + Methodref [com/midtrans/sdk/analytics/c/a.a (Ljava/lang/String;Ljava/lang/Throwable;)V]
+      [214] aload_2 v2
+      [215] athrow
+      [216] new #8
+        + Class [com/midtrans/sdk/analytics/MidtransAnalytics]
+      [219] dup
+      [220] aload_0 v0
+      [221] aconst_null
+      [222] invokespecial #21
+        + Methodref [com/midtrans/sdk/analytics/MidtransAnalytics.<init> (Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;Lcom/midtrans/sdk/analytics/MidtransAnalytics$1;)V]
+      [225] areturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       access$000(Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;)Ljava/lang/String;
+    Access flags: 0x1008
+      = static synthetic java.lang.String access$000(com.midtrans.sdk.analytics.MidtransAnalytics$Builder)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 5, locals = 1, stack = 1):
+      [0] aload_0 v0
+      [1] getfield #20
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics$Builder.sdkVersion Ljava/lang/String;]
+      [4] areturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       access$100(Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;)Ljava/lang/String;
+    Access flags: 0x1008
+      = static synthetic java.lang.String access$100(com.midtrans.sdk.analytics.MidtransAnalytics$Builder)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 5, locals = 1, stack = 1):
+      [0] aload_0 v0
+      [1] getfield #19
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics$Builder.merchantName Ljava/lang/String;]
+      [4] areturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       access$200(Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;)Ljava/lang/String;
+    Access flags: 0x1008
+      = static synthetic java.lang.String access$200(com.midtrans.sdk.analytics.MidtransAnalytics$Builder)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 5, locals = 1, stack = 1):
+      [0] aload_0 v0
+      [1] getfield #15
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics$Builder.deviceId Ljava/lang/String;]
+      [4] areturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       access$300(Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;)Ljava/lang/String;
+    Access flags: 0x1008
+      = static synthetic java.lang.String access$300(com.midtrans.sdk.analytics.MidtransAnalytics$Builder)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 5, locals = 1, stack = 1):
+      [0] aload_0 v0
+      [1] getfield #16
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics$Builder.deviceType Ljava/lang/String;]
+      [4] areturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       access$400(Lcom/midtrans/sdk/analytics/MidtransAnalytics$Builder;)Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;
+    Access flags: 0x1008
+      = static synthetic com.midtrans.sdk.analytics.AnalyticsEnvironment access$400(com.midtrans.sdk.analytics.MidtransAnalytics$Builder)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 5, locals = 1, stack = 1):
+      [0] aload_0 v0
+      [1] getfield #17
+        + Fieldref [com/midtrans/sdk/analytics/MidtransAnalytics$Builder.environment Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+      [4] areturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+
+Class file attributes (count = 1):
+  + Inner classes attribute (count = 2)
+    - InnerClassesInfo:
+      Access flags:  0x9 = public static 
+      + Class [com/midtrans/sdk/analytics/MidtransAnalytics$Builder]
+      + Class [com/midtrans/sdk/analytics/MidtransAnalytics]
+      + Utf8 [Builder]
+    - InnerClassesInfo:
+      Access flags:  0x1008 = static synthetic 
+      + Class [com/midtrans/sdk/analytics/MidtransAnalytics$1]
+
+_____________________________________________________________________
++ Program class: com/midtrans/sdk/analytics/R
+  Superclass:    java/lang/Object
+  Major version: 0x33
+  Minor version: 0x0
+    = target 1.7
+  Access flags:  0x31
+    = public final class com.midtrans.sdk.analytics.R extends java.lang.Object
+
+Interfaces (count = 0):
+
+Constant Pool (count = 17):
+  + Class [com/midtrans/sdk/analytics/R]
+  + Class [com/midtrans/sdk/analytics/R$attr]
+  + Class [com/midtrans/sdk/analytics/R$string]
+  + Class [java/lang/Object]
+  + Methodref [java/lang/Object.<init> ()V]
+  + NameAndType [<init> ()V]
+  + Utf8 [()V]
+  + Utf8 [<init>]
+  + Utf8 [Code]
+  + Utf8 [InnerClasses]
+  + Utf8 [attr]
+  + Utf8 [com/midtrans/sdk/analytics/R]
+  + Utf8 [com/midtrans/sdk/analytics/R$attr]
+  + Utf8 [com/midtrans/sdk/analytics/R$string]
+  + Utf8 [java/lang/Object]
+  + Utf8 [string]
+
+Fields (count = 0):
+
+Methods (count = 1):
+  - Method:       <init>()V
+    Access flags: 0x1
+      = public R()
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 5, locals = 1, stack = 1):
+      [0] aload_0 v0
+      [1] invokespecial #5
+        + Methodref [java/lang/Object.<init> ()V]
+      [4] return
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+
+Class file attributes (count = 1):
+  + Inner classes attribute (count = 2)
+    - InnerClassesInfo:
+      Access flags:  0x19 = public static final 
+      + Class [com/midtrans/sdk/analytics/R$string]
+      + Class [com/midtrans/sdk/analytics/R]
+      + Utf8 [string]
+    - InnerClassesInfo:
+      Access flags:  0x19 = public static final 
+      + Class [com/midtrans/sdk/analytics/R$attr]
+      + Class [com/midtrans/sdk/analytics/R]
+      + Utf8 [attr]
+
+_____________________________________________________________________
++ Program class: com/midtrans/sdk/analytics/R$attr
+  Superclass:    java/lang/Object
+  Major version: 0x33
+  Minor version: 0x0
+    = target 1.7
+  Access flags:  0x31
+    = public final class com.midtrans.sdk.analytics.R$attr extends java.lang.Object
+
+Interfaces (count = 0):
+
+Constant Pool (count = 14):
+  + Class [com/midtrans/sdk/analytics/R]
+  + Class [com/midtrans/sdk/analytics/R$attr]
+  + Class [java/lang/Object]
+  + Methodref [java/lang/Object.<init> ()V]
+  + NameAndType [<init> ()V]
+  + Utf8 [()V]
+  + Utf8 [<init>]
+  + Utf8 [Code]
+  + Utf8 [InnerClasses]
+  + Utf8 [attr]
+  + Utf8 [com/midtrans/sdk/analytics/R]
+  + Utf8 [com/midtrans/sdk/analytics/R$attr]
+  + Utf8 [java/lang/Object]
+
+Fields (count = 0):
+
+Methods (count = 1):
+  - Method:       <init>()V
+    Access flags: 0x1
+      = public R$attr()
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 5, locals = 1, stack = 1):
+      [0] aload_0 v0
+      [1] invokespecial #4
+        + Methodref [java/lang/Object.<init> ()V]
+      [4] return
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+
+Class file attributes (count = 1):
+  + Inner classes attribute (count = 1)
+    - InnerClassesInfo:
+      Access flags:  0x19 = public static final 
+      + Class [com/midtrans/sdk/analytics/R$attr]
+      + Class [com/midtrans/sdk/analytics/R]
+      + Utf8 [attr]
+
+_____________________________________________________________________
++ Program class: com/midtrans/sdk/analytics/R$string
+  Superclass:    java/lang/Object
+  Major version: 0x33
+  Minor version: 0x0
+    = target 1.7
+  Access flags:  0x31
+    = public final class com.midtrans.sdk.analytics.R$string extends java.lang.Object
+
+Interfaces (count = 0):
+
+Constant Pool (count = 20):
+  + Integer [2130837504]
+  + Class [com/midtrans/sdk/analytics/R]
+  + Class [com/midtrans/sdk/analytics/R$string]
+  + Class [java/lang/Object]
+  + Fieldref [com/midtrans/sdk/analytics/R$string.app_name I]
+  + Methodref [java/lang/Object.<init> ()V]
+  + NameAndType [<init> ()V]
+  + NameAndType [app_name I]
+  + Utf8 [()V]
+  + Utf8 [<clinit>]
+  + Utf8 [<init>]
+  + Utf8 [Code]
+  + Utf8 [I]
+  + Utf8 [InnerClasses]
+  + Utf8 [app_name]
+  + Utf8 [com/midtrans/sdk/analytics/R]
+  + Utf8 [com/midtrans/sdk/analytics/R$string]
+  + Utf8 [java/lang/Object]
+  + Utf8 [string]
+
+Fields (count = 1):
+  + Field:        app_name I
+    Access flags: 0x9
+      = public static int app_name
+
+Methods (count = 2):
+  - Method:       <init>()V
+    Access flags: 0x1
+      = public R$string()
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 5, locals = 1, stack = 1):
+      [0] aload_0 v0
+      [1] invokespecial #6
+        + Methodref [java/lang/Object.<init> ()V]
+      [4] return
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  - Method:       <clinit>()V
+    Access flags: 0x8
+      = static void <clinit>()
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 6, locals = 0, stack = 1):
+      [0] ldc #1
+        + Integer [2130837504]
+      [2] putstatic #5
+        + Fieldref [com/midtrans/sdk/analytics/R$string.app_name I]
+      [5] return
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+
+Class file attributes (count = 1):
+  + Inner classes attribute (count = 1)
+    - InnerClassesInfo:
+      Access flags:  0x19 = public static final 
+      + Class [com/midtrans/sdk/analytics/R$string]
+      + Class [com/midtrans/sdk/analytics/R]
+      + Utf8 [string]
+
+_____________________________________________________________________
++ Program class: com/midtrans/sdk/analytics/a/a
+  Superclass:    java/lang/Object
+  Major version: 0x33
+  Minor version: 0x0
+    = target 1.7
+  Access flags:  0x601
+    = public interface com.midtrans.sdk.analytics.a.a extends java.lang.Object
+
+Interfaces (count = 0):
+
+Constant Pool (count = 16):
+  + Class [com/midtrans/sdk/analytics/a/a]
+  + Class [java/lang/Object]
+  + Utf8 [(Ljava/lang/String;)Lretrofit2/Call;]
+  + Utf8 [(Ljava/lang/String;)Lretrofit2/Call<Ljava/lang/Integer;>;]
+  + Utf8 [Lretrofit2/http/GET;]
+  + Utf8 [Lretrofit2/http/Query;]
+  + Utf8 [RuntimeVisibleAnnotations]
+  + Utf8 [RuntimeVisibleParameterAnnotations]
+  + Utf8 [Signature]
+  + Utf8 [a]
+  + Utf8 [com/midtrans/sdk/analytics/a/a]
+  + Utf8 [data]
+  + Utf8 [java/lang/Object]
+  + Utf8 [track]
+  + Utf8 [value]
+
+Fields (count = 0):
+
+Methods (count = 1):
+  + Method:       a(Ljava/lang/String;)Lretrofit2/Call;
+    Access flags: 0x401
+      = public abstract retrofit2.Call a(java.lang.String)
+    Class member attributes (count = 3):
+    + Runtime visible annotations attribute:
+      - Annotation [Lretrofit2/http/GET;]:
+        - Constant element value [value 's']
+          + Utf8 [track]
+    + Runtime visible parameter annotations attribute (parameter count = 1):
+      - Annotation [Lretrofit2/http/Query;]:
+        - Constant element value [value 's']
+          + Utf8 [data]
+    + Signature attribute:
+      + Utf8 [(Ljava/lang/String;)Lretrofit2/Call<Ljava/lang/Integer;>;]
+
+Class file attributes (count = 0):
+
+_____________________________________________________________________
++ Program class: com/midtrans/sdk/analytics/a/b
+  Superclass:    java/lang/Object
+  Major version: 0x33
+  Minor version: 0x0
+    = target 1.7
+  Access flags:  0x21
+    = public class com.midtrans.sdk.analytics.a.b extends java.lang.Object
+
+Interfaces (count = 0):
+
+Constant Pool (count = 65):
+  + Class [android/util/Base64]
+  + Class [com/google/gson/Gson]
+  + Class [com/midtrans/sdk/analytics/a/a]
+  + Class [com/midtrans/sdk/analytics/a/b]
+  + Class [com/midtrans/sdk/analytics/a/b$1]
+  + Class [java/lang/Object]
+  + Class [java/lang/String]
+  + Class [retrofit2/Call]
+  + Fieldref [com/midtrans/sdk/analytics/a/b.a Lcom/midtrans/sdk/analytics/b/a;]
+  + Fieldref [com/midtrans/sdk/analytics/a/b.b Lcom/midtrans/sdk/analytics/a/a;]
+  + Methodref [android/util/Base64.encodeToString ([BI)Ljava/lang/String;]
+  + Methodref [com/google/gson/Gson.<init> ()V]
+  + Methodref [com/google/gson/Gson.toJson (Ljava/lang/Object;)Ljava/lang/String;]
+  + Methodref [com/midtrans/sdk/analytics/a/b.a ()Lcom/google/gson/Gson;]
+  + Methodref [com/midtrans/sdk/analytics/a/b.a (Ljava/lang/String;)Ljava/lang/String;]
+  + Methodref [com/midtrans/sdk/analytics/a/b.b (Lcom/midtrans/sdk/analytics/models/Event;)Ljava/lang/String;]
+  + Methodref [com/midtrans/sdk/analytics/a/b$1.<init> (Lcom/midtrans/sdk/analytics/a/b;Lcom/midtrans/sdk/analytics/models/Event;)V]
+  + Methodref [java/lang/Object.<init> ()V]
+  + Methodref [java/lang/String.getBytes ()[B]
+  + InterfaceMethodref [com/midtrans/sdk/analytics/a/a.a (Ljava/lang/String;)Lretrofit2/Call;]
+  + InterfaceMethodref [retrofit2/Call.enqueue (Lretrofit2/Callback;)V]
+  + NameAndType [<init> ()V]
+  + NameAndType [<init> (Lcom/midtrans/sdk/analytics/a/b;Lcom/midtrans/sdk/analytics/models/Event;)V]
+  + NameAndType [a ()Lcom/google/gson/Gson;]
+  + NameAndType [a (Ljava/lang/String;)Ljava/lang/String;]
+  + NameAndType [a (Ljava/lang/String;)Lretrofit2/Call;]
+  + NameAndType [a Lcom/midtrans/sdk/analytics/b/a;]
+  + NameAndType [b (Lcom/midtrans/sdk/analytics/models/Event;)Ljava/lang/String;]
+  + NameAndType [b Lcom/midtrans/sdk/analytics/a/a;]
+  + NameAndType [encodeToString ([BI)Ljava/lang/String;]
+  + NameAndType [enqueue (Lretrofit2/Callback;)V]
+  + NameAndType [getBytes ()[B]
+  + NameAndType [toJson (Ljava/lang/Object;)Ljava/lang/String;]
+  + Utf8 [()Lcom/google/gson/Gson;]
+  + Utf8 [()V]
+  + Utf8 [()[B]
+  + Utf8 [(Lcom/midtrans/sdk/analytics/a/b;Lcom/midtrans/sdk/analytics/models/Event;)V]
+  + Utf8 [(Lcom/midtrans/sdk/analytics/b/a;Lcom/midtrans/sdk/analytics/a/a;)V]
+  + Utf8 [(Lcom/midtrans/sdk/analytics/models/Event;)Ljava/lang/String;]
+  + Utf8 [(Lcom/midtrans/sdk/analytics/models/Event;)V]
+  + Utf8 [(Ljava/lang/Object;)Ljava/lang/String;]
+  + Utf8 [(Ljava/lang/String;)Ljava/lang/String;]
+  + Utf8 [(Ljava/lang/String;)Lretrofit2/Call;]
+  + Utf8 [(Lretrofit2/Callback;)V]
+  + Utf8 [([BI)Ljava/lang/String;]
+  + Utf8 [<init>]
+  + Utf8 [Code]
+  + Utf8 [InnerClasses]
+  + Utf8 [Lcom/midtrans/sdk/analytics/a/a;]
+  + Utf8 [Lcom/midtrans/sdk/analytics/b/a;]
+  + Utf8 [a]
+  + Utf8 [android/util/Base64]
+  + Utf8 [b]
+  + Utf8 [com/google/gson/Gson]
+  + Utf8 [com/midtrans/sdk/analytics/a/a]
+  + Utf8 [com/midtrans/sdk/analytics/a/b]
+  + Utf8 [com/midtrans/sdk/analytics/a/b$1]
+  + Utf8 [encodeToString]
+  + Utf8 [enqueue]
+  + Utf8 [getBytes]
+  + Utf8 [java/lang/Object]
+  + Utf8 [java/lang/String]
+  + Utf8 [retrofit2/Call]
+  + Utf8 [toJson]
+
+Fields (count = 2):
+  + Field:        a Lcom/midtrans/sdk/analytics/b/a;
+    Access flags: 0x12
+      = private final com.midtrans.sdk.analytics.b.a a
+  + Field:        b Lcom/midtrans/sdk/analytics/a/a;
+    Access flags: 0x12
+      = private final com.midtrans.sdk.analytics.a.a b
+
+Methods (count = 5):
+  - Method:       <init>(Lcom/midtrans/sdk/analytics/b/a;Lcom/midtrans/sdk/analytics/a/a;)V
+    Access flags: 0x1
+      = public b(com.midtrans.sdk.analytics.b.a,com.midtrans.sdk.analytics.a.a)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 15, locals = 3, stack = 2):
+      [0] aload_0 v0
+      [1] invokespecial #18
+        + Methodref [java/lang/Object.<init> ()V]
+      [4] aload_0 v0
+      [5] aload_1 v1
+      [6] putfield #9
+        + Fieldref [com/midtrans/sdk/analytics/a/b.a Lcom/midtrans/sdk/analytics/b/a;]
+      [9] aload_0 v0
+      [10] aload_2 v2
+      [11] putfield #10
+        + Fieldref [com/midtrans/sdk/analytics/a/b.b Lcom/midtrans/sdk/analytics/a/a;]
+      [14] return
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       a(Lcom/midtrans/sdk/analytics/models/Event;)V
+    Access flags: 0x1
+      = public void a(com.midtrans.sdk.analytics.models.Event)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 37, locals = 4, stack = 5):
+      [0] aload_0 v0
+      [1] aload_0 v0
+      [2] aload_1 v1
+      [3] invokespecial #16
+        + Methodref [com/midtrans/sdk/analytics/a/b.b (Lcom/midtrans/sdk/analytics/models/Event;)Ljava/lang/String;]
+      [6] invokespecial #15
+        + Methodref [com/midtrans/sdk/analytics/a/b.a (Ljava/lang/String;)Ljava/lang/String;]
+      [9] astore_2 v2
+      [10] aload_0 v0
+      [11] getfield #10
+        + Fieldref [com/midtrans/sdk/analytics/a/b.b Lcom/midtrans/sdk/analytics/a/a;]
+      [14] aload_2 v2
+      [15] invokeinterface #20, 512
+        + InterfaceMethodref [com/midtrans/sdk/analytics/a/a.a (Ljava/lang/String;)Lretrofit2/Call;]
+      [20] astore_3 v3
+      [21] aload_3 v3
+      [22] new #5
+        + Class [com/midtrans/sdk/analytics/a/b$1]
+      [25] dup
+      [26] aload_0 v0
+      [27] aload_1 v1
+      [28] invokespecial #17
+        + Methodref [com/midtrans/sdk/analytics/a/b$1.<init> (Lcom/midtrans/sdk/analytics/a/b;Lcom/midtrans/sdk/analytics/models/Event;)V]
+      [31] invokeinterface #21, 512
+        + InterfaceMethodref [retrofit2/Call.enqueue (Lretrofit2/Callback;)V]
+      [36] return
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       a(Ljava/lang/String;)Ljava/lang/String;
+    Access flags: 0x2
+      = private java.lang.String a(java.lang.String)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 9, locals = 2, stack = 2):
+      [0] aload_1 v1
+      [1] invokevirtual #19
+        + Methodref [java/lang/String.getBytes ()[B]
+      [4] iconst_0
+      [5] invokestatic #11
+        + Methodref [android/util/Base64.encodeToString ([BI)Ljava/lang/String;]
+      [8] areturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       b(Lcom/midtrans/sdk/analytics/models/Event;)Ljava/lang/String;
+    Access flags: 0x2
+      = private java.lang.String b(com.midtrans.sdk.analytics.models.Event)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 9, locals = 2, stack = 2):
+      [0] aload_0 v0
+      [1] invokespecial #14
+        + Methodref [com/midtrans/sdk/analytics/a/b.a ()Lcom/google/gson/Gson;]
+      [4] aload_1 v1
+      [5] invokevirtual #13
+        + Methodref [com/google/gson/Gson.toJson (Ljava/lang/Object;)Ljava/lang/String;]
+      [8] areturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       a()Lcom/google/gson/Gson;
+    Access flags: 0x2
+      = private com.google.gson.Gson a()
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 8, locals = 1, stack = 2):
+      [0] new #2
+        + Class [com/google/gson/Gson]
+      [3] dup
+      [4] invokespecial #12
+        + Methodref [com/google/gson/Gson.<init> ()V]
+      [7] areturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+
+Class file attributes (count = 1):
+  + Inner classes attribute (count = 1)
+    - InnerClassesInfo:
+      Access flags:  0x0 = 
+      + Class [com/midtrans/sdk/analytics/a/b$1]
+
+_____________________________________________________________________
++ Program class: com/midtrans/sdk/analytics/a/b$1
+  Superclass:    java/lang/Object
+  Major version: 0x33
+  Minor version: 0x0
+    = target 1.7
+  Access flags:  0x20
+    = class com.midtrans.sdk.analytics.a.b$1 extends java.lang.Object
+
+Interfaces (count = 1):
+  + Class [retrofit2/Callback]
+
+Constant Pool (count = 63):
+  + String [Analytics event failed to send. Name: ]
+  + String [Analytics event sent. Name: ]
+  + Class [com/midtrans/sdk/analytics/a/b]
+  + Class [com/midtrans/sdk/analytics/a/b$1]
+  + Class [com/midtrans/sdk/analytics/c/a]
+  + Class [com/midtrans/sdk/analytics/models/Event]
+  + Class [java/lang/Object]
+  + Class [java/lang/StringBuilder]
+  + Class [retrofit2/Callback]
+  + Fieldref [com/midtrans/sdk/analytics/a/b$1.a Lcom/midtrans/sdk/analytics/models/Event;]
+  + Fieldref [com/midtrans/sdk/analytics/a/b$1.b Lcom/midtrans/sdk/analytics/a/b;]
+  + Methodref [com/midtrans/sdk/analytics/c/a.a (Ljava/lang/String;)V]
+  + Methodref [com/midtrans/sdk/analytics/c/a.a (Ljava/lang/String;Ljava/lang/Throwable;)V]
+  + Methodref [com/midtrans/sdk/analytics/models/Event.getEvent ()Ljava/lang/String;]
+  + Methodref [java/lang/Object.<init> ()V]
+  + Methodref [java/lang/StringBuilder.<init> ()V]
+  + Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
+  + Methodref [java/lang/StringBuilder.toString ()Ljava/lang/String;]
+  + NameAndType [<init> ()V]
+  + NameAndType [a (Lcom/midtrans/sdk/analytics/models/Event;)V]
+  + NameAndType [a (Ljava/lang/String;)V]
+  + NameAndType [a (Ljava/lang/String;Ljava/lang/Throwable;)V]
+  + NameAndType [a Lcom/midtrans/sdk/analytics/models/Event;]
+  + NameAndType [append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
+  + NameAndType [b Lcom/midtrans/sdk/analytics/a/b;]
+  + NameAndType [getEvent ()Ljava/lang/String;]
+  + NameAndType [toString ()Ljava/lang/String;]
+  + Utf8 [()Ljava/lang/String;]
+  + Utf8 [()V]
+  + Utf8 [(Lcom/midtrans/sdk/analytics/a/b;Lcom/midtrans/sdk/analytics/models/Event;)V]
+  + Utf8 [(Lcom/midtrans/sdk/analytics/models/Event;)V]
+  + Utf8 [(Ljava/lang/String;)Ljava/lang/StringBuilder;]
+  + Utf8 [(Ljava/lang/String;)V]
+  + Utf8 [(Ljava/lang/String;Ljava/lang/Throwable;)V]
+  + Utf8 [(Lretrofit2/Call;Ljava/lang/Throwable;)V]
+  + Utf8 [(Lretrofit2/Call;Lretrofit2/Response;)V]
+  + Utf8 [(Lretrofit2/Call<Ljava/lang/Integer;>;Ljava/lang/Throwable;)V]
+  + Utf8 [(Lretrofit2/Call<Ljava/lang/Integer;>;Lretrofit2/Response<Ljava/lang/Integer;>;)V]
+  + Utf8 [<init>]
+  + Utf8 [Analytics event failed to send. Name: ]
+  + Utf8 [Analytics event sent. Name: ]
+  + Utf8 [Code]
+  + Utf8 [EnclosingMethod]
+  + Utf8 [InnerClasses]
+  + Utf8 [Lcom/midtrans/sdk/analytics/a/b;]
+  + Utf8 [Lcom/midtrans/sdk/analytics/models/Event;]
+  + Utf8 [Ljava/lang/Object;Lretrofit2/Callback<Ljava/lang/Integer;>;]
+  + Utf8 [Signature]
+  + Utf8 [a]
+  + Utf8 [append]
+  + Utf8 [b]
+  + Utf8 [com/midtrans/sdk/analytics/a/b]
+  + Utf8 [com/midtrans/sdk/analytics/a/b$1]
+  + Utf8 [com/midtrans/sdk/analytics/c/a]
+  + Utf8 [com/midtrans/sdk/analytics/models/Event]
+  + Utf8 [getEvent]
+  + Utf8 [java/lang/Object]
+  + Utf8 [java/lang/StringBuilder]
+  + Utf8 [onFailure]
+  + Utf8 [onResponse]
+  + Utf8 [retrofit2/Callback]
+  + Utf8 [toString]
+
+Fields (count = 2):
+  + Field:        a Lcom/midtrans/sdk/analytics/models/Event;
+    Access flags: 0x1010
+      = final synthetic com.midtrans.sdk.analytics.models.Event a
+  + Field:        b Lcom/midtrans/sdk/analytics/a/b;
+    Access flags: 0x1010
+      = final synthetic com.midtrans.sdk.analytics.a.b b
+
+Methods (count = 3):
+  - Method:       <init>(Lcom/midtrans/sdk/analytics/a/b;Lcom/midtrans/sdk/analytics/models/Event;)V
+    Access flags: 0x0
+      = b$1(com.midtrans.sdk.analytics.a.b,com.midtrans.sdk.analytics.models.Event)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 15, locals = 3, stack = 2):
+      [0] aload_0 v0
+      [1] aload_1 v1
+      [2] putfield #11
+        + Fieldref [com/midtrans/sdk/analytics/a/b$1.b Lcom/midtrans/sdk/analytics/a/b;]
+      [5] aload_0 v0
+      [6] aload_2 v2
+      [7] putfield #10
+        + Fieldref [com/midtrans/sdk/analytics/a/b$1.a Lcom/midtrans/sdk/analytics/models/Event;]
+      [10] aload_0 v0
+      [11] invokespecial #15
+        + Methodref [java/lang/Object.<init> ()V]
+      [14] return
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       onResponse(Lretrofit2/Call;Lretrofit2/Response;)V
+    Access flags: 0x1
+      = public void onResponse(retrofit2.Call,retrofit2.Response)
+    Class member attributes (count = 2):
+    + Code attribute instructions (code length = 29, locals = 3, stack = 2):
+      [0] new #8
+        + Class [java/lang/StringBuilder]
+      [3] dup
+      [4] invokespecial #16
+        + Methodref [java/lang/StringBuilder.<init> ()V]
+      [7] ldc #2
+        + String [Analytics event sent. Name: ]
+      [9] invokevirtual #17
+        + Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
+      [12] aload_0 v0
+      [13] getfield #10
+        + Fieldref [com/midtrans/sdk/analytics/a/b$1.a Lcom/midtrans/sdk/analytics/models/Event;]
+      [16] invokevirtual #14
+        + Methodref [com/midtrans/sdk/analytics/models/Event.getEvent ()Ljava/lang/String;]
+      [19] invokevirtual #17
+        + Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
+      [22] invokevirtual #18
+        + Methodref [java/lang/StringBuilder.toString ()Ljava/lang/String;]
+      [25] invokestatic #12
+        + Methodref [com/midtrans/sdk/analytics/c/a.a (Ljava/lang/String;)V]
+      [28] return
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+    + Signature attribute:
+      + Utf8 [(Lretrofit2/Call<Ljava/lang/Integer;>;Lretrofit2/Response<Ljava/lang/Integer;>;)V]
+  + Method:       onFailure(Lretrofit2/Call;Ljava/lang/Throwable;)V
+    Access flags: 0x1
+      = public void onFailure(retrofit2.Call,java.lang.Throwable)
+    Class member attributes (count = 2):
+    + Code attribute instructions (code length = 30, locals = 3, stack = 2):
+      [0] new #8
+        + Class [java/lang/StringBuilder]
+      [3] dup
+      [4] invokespecial #16
+        + Methodref [java/lang/StringBuilder.<init> ()V]
+      [7] ldc #1
+        + String [Analytics event failed to send. Name: ]
+      [9] invokevirtual #17
+        + Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
+      [12] aload_0 v0
+      [13] getfield #10
+        + Fieldref [com/midtrans/sdk/analytics/a/b$1.a Lcom/midtrans/sdk/analytics/models/Event;]
+      [16] invokevirtual #14
+        + Methodref [com/midtrans/sdk/analytics/models/Event.getEvent ()Ljava/lang/String;]
+      [19] invokevirtual #17
+        + Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
+      [22] invokevirtual #18
+        + Methodref [java/lang/StringBuilder.toString ()Ljava/lang/String;]
+      [25] aload_2 v2
+      [26] invokestatic #13
+        + Methodref [com/midtrans/sdk/analytics/c/a.a (Ljava/lang/String;Ljava/lang/Throwable;)V]
+      [29] return
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+    + Signature attribute:
+      + Utf8 [(Lretrofit2/Call<Ljava/lang/Integer;>;Ljava/lang/Throwable;)V]
+
+Class file attributes (count = 3):
+  + Enclosing method attribute:
+    + Class [com/midtrans/sdk/analytics/a/b]
+    + NameAndType [a (Lcom/midtrans/sdk/analytics/models/Event;)V]
+  + Inner classes attribute (count = 1)
+    - InnerClassesInfo:
+      Access flags:  0x0 = 
+      + Class [com/midtrans/sdk/analytics/a/b$1]
+  + Signature attribute:
+    + Utf8 [Ljava/lang/Object;Lretrofit2/Callback<Ljava/lang/Integer;>;]
+
+_____________________________________________________________________
++ Program class: com/midtrans/sdk/analytics/a/c
+  Superclass:    java/lang/Object
+  Major version: 0x33
+  Minor version: 0x0
+    = target 1.7
+  Access flags:  0x21
+    = public class com.midtrans.sdk.analytics.a.c extends java.lang.Object
+
+Interfaces (count = 0):
+
+Constant Pool (count = 128):
+  + String [https://api.mixpanel.com/]
+  + Class [com/google/gson/GsonBuilder]
+  + Class [com/midtrans/sdk/analytics/a/a]
+  + Class [com/midtrans/sdk/analytics/a/c]
+  + Class [com/midtrans/sdk/analytics/c/a]
+  + Class [java/lang/Object]
+  + Class [java/util/concurrent/TimeUnit]
+  + Class [okhttp3/OkHttpClient]
+  + Class [okhttp3/OkHttpClient$Builder]
+  + Class [okhttp3/logging/HttpLoggingInterceptor]
+  + Class [okhttp3/logging/HttpLoggingInterceptor$Level]
+  + Class [retrofit2/Converter]
+  + Class [retrofit2/Converter$Factory]
+  + Class [retrofit2/Retrofit]
+  + Class [retrofit2/Retrofit$Builder]
+  + Class [retrofit2/converter/gson/GsonConverterFactory]
+  + Long [30]
+  + Fieldref [com/midtrans/sdk/analytics/a/c.a Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+  + Fieldref [com/midtrans/sdk/analytics/c/a.a Z]
+  + Fieldref [java/util/concurrent/TimeUnit.SECONDS Ljava/util/concurrent/TimeUnit;]
+  + Fieldref [okhttp3/logging/HttpLoggingInterceptor$Level.BODY Lokhttp3/logging/HttpLoggingInterceptor$Level;]
+  + Fieldref [okhttp3/logging/HttpLoggingInterceptor$Level.NONE Lokhttp3/logging/HttpLoggingInterceptor$Level;]
+  + Methodref [com/google/gson/GsonBuilder.<init> ()V]
+  + Methodref [com/google/gson/GsonBuilder.create ()Lcom/google/gson/Gson;]
+  + Methodref [com/midtrans/sdk/analytics/a/c.b ()Lretrofit2/Retrofit;]
+  + Methodref [com/midtrans/sdk/analytics/a/c.c ()Lokhttp3/OkHttpClient;]
+  + Methodref [com/midtrans/sdk/analytics/a/c.d ()Lokhttp3/Interceptor;]
+  + Methodref [com/midtrans/sdk/analytics/a/c.e ()Lcom/google/gson/Gson;]
+  + Methodref [java/lang/Object.<init> ()V]
+  + Methodref [okhttp3/OkHttpClient$Builder.<init> ()V]
+  + Methodref [okhttp3/OkHttpClient$Builder.addInterceptor (Lokhttp3/Interceptor;)Lokhttp3/OkHttpClient$Builder;]
+  + Methodref [okhttp3/OkHttpClient$Builder.build ()Lokhttp3/OkHttpClient;]
+  + Methodref [okhttp3/OkHttpClient$Builder.connectTimeout (JLjava/util/concurrent/TimeUnit;)Lokhttp3/OkHttpClient$Builder;]
+  + Methodref [okhttp3/OkHttpClient$Builder.readTimeout (JLjava/util/concurrent/TimeUnit;)Lokhttp3/OkHttpClient$Builder;]
+  + Methodref [okhttp3/OkHttpClient$Builder.writeTimeout (JLjava/util/concurrent/TimeUnit;)Lokhttp3/OkHttpClient$Builder;]
+  + Methodref [okhttp3/logging/HttpLoggingInterceptor.<init> ()V]
+  + Methodref [okhttp3/logging/HttpLoggingInterceptor.setLevel (Lokhttp3/logging/HttpLoggingInterceptor$Level;)Lokhttp3/logging/HttpLoggingInterceptor;]
+  + Methodref [retrofit2/Retrofit.create (Ljava/lang/Class;)Ljava/lang/Object;]
+  + Methodref [retrofit2/Retrofit$Builder.<init> ()V]
+  + Methodref [retrofit2/Retrofit$Builder.addConverterFactory (Lretrofit2/Converter$Factory;)Lretrofit2/Retrofit$Builder;]
+  + Methodref [retrofit2/Retrofit$Builder.baseUrl (Ljava/lang/String;)Lretrofit2/Retrofit$Builder;]
+  + Methodref [retrofit2/Retrofit$Builder.build ()Lretrofit2/Retrofit;]
+  + Methodref [retrofit2/Retrofit$Builder.client (Lokhttp3/OkHttpClient;)Lretrofit2/Retrofit$Builder;]
+  + Methodref [retrofit2/converter/gson/GsonConverterFactory.create (Lcom/google/gson/Gson;)Lretrofit2/converter/gson/GsonConverterFactory;]
+  + NameAndType [<init> ()V]
+  + NameAndType [BODY Lokhttp3/logging/HttpLoggingInterceptor$Level;]
+  + NameAndType [NONE Lokhttp3/logging/HttpLoggingInterceptor$Level;]
+  + NameAndType [SECONDS Ljava/util/concurrent/TimeUnit;]
+  + NameAndType [a Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+  + NameAndType [a Z]
+  + NameAndType [addConverterFactory (Lretrofit2/Converter$Factory;)Lretrofit2/Retrofit$Builder;]
+  + NameAndType [addInterceptor (Lokhttp3/Interceptor;)Lokhttp3/OkHttpClient$Builder;]
+  + NameAndType [b ()Lretrofit2/Retrofit;]
+  + NameAndType [baseUrl (Ljava/lang/String;)Lretrofit2/Retrofit$Builder;]
+  + NameAndType [build ()Lokhttp3/OkHttpClient;]
+  + NameAndType [build ()Lretrofit2/Retrofit;]
+  + NameAndType [c ()Lokhttp3/OkHttpClient;]
+  + NameAndType [client (Lokhttp3/OkHttpClient;)Lretrofit2/Retrofit$Builder;]
+  + NameAndType [connectTimeout (JLjava/util/concurrent/TimeUnit;)Lokhttp3/OkHttpClient$Builder;]
+  + NameAndType [create ()Lcom/google/gson/Gson;]
+  + NameAndType [create (Lcom/google/gson/Gson;)Lretrofit2/converter/gson/GsonConverterFactory;]
+  + NameAndType [create (Ljava/lang/Class;)Ljava/lang/Object;]
+  + NameAndType [d ()Lokhttp3/Interceptor;]
+  + NameAndType [e ()Lcom/google/gson/Gson;]
+  + NameAndType [readTimeout (JLjava/util/concurrent/TimeUnit;)Lokhttp3/OkHttpClient$Builder;]
+  + NameAndType [setLevel (Lokhttp3/logging/HttpLoggingInterceptor$Level;)Lokhttp3/logging/HttpLoggingInterceptor;]
+  + NameAndType [writeTimeout (JLjava/util/concurrent/TimeUnit;)Lokhttp3/OkHttpClient$Builder;]
+  + Utf8 [()Lcom/google/gson/Gson;]
+  + Utf8 [()Lcom/midtrans/sdk/analytics/a/a;]
+  + Utf8 [()Lokhttp3/Interceptor;]
+  + Utf8 [()Lokhttp3/OkHttpClient;]
+  + Utf8 [()Lretrofit2/Retrofit;]
+  + Utf8 [()V]
+  + Utf8 [(JLjava/util/concurrent/TimeUnit;)Lokhttp3/OkHttpClient$Builder;]
+  + Utf8 [(Lcom/google/gson/Gson;)Lretrofit2/converter/gson/GsonConverterFactory;]
+  + Utf8 [(Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;)V]
+  + Utf8 [(Ljava/lang/Class;)Ljava/lang/Object;]
+  + Utf8 [(Ljava/lang/String;)Lretrofit2/Retrofit$Builder;]
+  + Utf8 [(Lokhttp3/Interceptor;)Lokhttp3/OkHttpClient$Builder;]
+  + Utf8 [(Lokhttp3/OkHttpClient;)Lretrofit2/Retrofit$Builder;]
+  + Utf8 [(Lokhttp3/logging/HttpLoggingInterceptor$Level;)Lokhttp3/logging/HttpLoggingInterceptor;]
+  + Utf8 [(Lretrofit2/Converter$Factory;)Lretrofit2/Retrofit$Builder;]
+  + Utf8 [<init>]
+  + Utf8 [BODY]
+  + Utf8 [Builder]
+  + Utf8 [Code]
+  + Utf8 [Factory]
+  + Utf8 [InnerClasses]
+  + Utf8 [Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+  + Utf8 [Level]
+  + Utf8 [Ljava/util/concurrent/TimeUnit;]
+  + Utf8 [Lokhttp3/logging/HttpLoggingInterceptor$Level;]
+  + Utf8 [NONE]
+  + Utf8 [SECONDS]
+  + Utf8 [Z]
+  + Utf8 [a]
+  + Utf8 [addConverterFactory]
+  + Utf8 [addInterceptor]
+  + Utf8 [b]
+  + Utf8 [baseUrl]
+  + Utf8 [build]
+  + Utf8 [c]
+  + Utf8 [client]
+  + Utf8 [com/google/gson/GsonBuilder]
+  + Utf8 [com/midtrans/sdk/analytics/a/a]
+  + Utf8 [com/midtrans/sdk/analytics/a/c]
+  + Utf8 [com/midtrans/sdk/analytics/c/a]
+  + Utf8 [connectTimeout]
+  + Utf8 [create]
+  + Utf8 [d]
+  + Utf8 [e]
+  + Utf8 [https://api.mixpanel.com/]
+  + Utf8 [java/lang/Object]
+  + Utf8 [java/util/concurrent/TimeUnit]
+  + Utf8 [okhttp3/OkHttpClient]
+  + Utf8 [okhttp3/OkHttpClient$Builder]
+  + Utf8 [okhttp3/logging/HttpLoggingInterceptor]
+  + Utf8 [okhttp3/logging/HttpLoggingInterceptor$Level]
+  + Utf8 [readTimeout]
+  + Utf8 [retrofit2/Converter]
+  + Utf8 [retrofit2/Converter$Factory]
+  + Utf8 [retrofit2/Retrofit]
+  + Utf8 [retrofit2/Retrofit$Builder]
+  + Utf8 [retrofit2/converter/gson/GsonConverterFactory]
+  + Utf8 [setLevel]
+  + Utf8 [writeTimeout]
+
+Fields (count = 1):
+  + Field:        a Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;
+    Access flags: 0x12
+      = private final com.midtrans.sdk.analytics.AnalyticsEnvironment a
+
+Methods (count = 6):
+  - Method:       <init>(Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;)V
+    Access flags: 0x1
+      = public c(com.midtrans.sdk.analytics.AnalyticsEnvironment)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 10, locals = 2, stack = 2):
+      [0] aload_0 v0
+      [1] invokespecial #30
+        + Methodref [java/lang/Object.<init> ()V]
+      [4] aload_0 v0
+      [5] aload_1 v1
+      [6] putfield #19
+        + Fieldref [com/midtrans/sdk/analytics/a/c.a Lcom/midtrans/sdk/analytics/AnalyticsEnvironment;]
+      [9] return
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       a()Lcom/midtrans/sdk/analytics/a/a;
+    Access flags: 0x1
+      = public com.midtrans.sdk.analytics.a.a a()
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 13, locals = 1, stack = 2):
+      [0] aload_0 v0
+      [1] invokespecial #26
+        + Methodref [com/midtrans/sdk/analytics/a/c.b ()Lretrofit2/Retrofit;]
+      [4] ldc #3
+        + Class [com/midtrans/sdk/analytics/a/a]
+      [6] invokevirtual #39
+        + Methodref [retrofit2/Retrofit.create (Ljava/lang/Class;)Ljava/lang/Object;]
+      [9] checkcast #3
+        + Class [com/midtrans/sdk/analytics/a/a]
+      [12] areturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       b()Lretrofit2/Retrofit;
+    Access flags: 0x2
+      = private retrofit2.Retrofit b()
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 33, locals = 1, stack = 2):
+      [0] new #15
+        + Class [retrofit2/Retrofit$Builder]
+      [3] dup
+      [4] invokespecial #40
+        + Methodref [retrofit2/Retrofit$Builder.<init> ()V]
+      [7] aload_0 v0
+      [8] invokespecial #27
+        + Methodref [com/midtrans/sdk/analytics/a/c.c ()Lokhttp3/OkHttpClient;]
+      [11] invokevirtual #44
+        + Methodref [retrofit2/Retrofit$Builder.client (Lokhttp3/OkHttpClient;)Lretrofit2/Retrofit$Builder;]
+      [14] ldc #1
+        + String [https://api.mixpanel.com/]
+      [16] invokevirtual #42
+        + Methodref [retrofit2/Retrofit$Builder.baseUrl (Ljava/lang/String;)Lretrofit2/Retrofit$Builder;]
+      [19] aload_0 v0
+      [20] invokespecial #29
+        + Methodref [com/midtrans/sdk/analytics/a/c.e ()Lcom/google/gson/Gson;]
+      [23] invokestatic #45
+        + Methodref [retrofit2/converter/gson/GsonConverterFactory.create (Lcom/google/gson/Gson;)Lretrofit2/converter/gson/GsonConverterFactory;]
+      [26] invokevirtual #41
+        + Methodref [retrofit2/Retrofit$Builder.addConverterFactory (Lretrofit2/Converter$Factory;)Lretrofit2/Retrofit$Builder;]
+      [29] invokevirtual #43
+        + Methodref [retrofit2/Retrofit$Builder.build ()Lretrofit2/Retrofit;]
+      [32] areturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       c()Lokhttp3/OkHttpClient;
+    Access flags: 0x2
+      = private okhttp3.OkHttpClient c()
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 45, locals = 1, stack = 4):
+      [0] new #9
+        + Class [okhttp3/OkHttpClient$Builder]
+      [3] dup
+      [4] invokespecial #31
+        + Methodref [okhttp3/OkHttpClient$Builder.<init> ()V]
+      [7] aload_0 v0
+      [8] invokespecial #28
+        + Methodref [com/midtrans/sdk/analytics/a/c.d ()Lokhttp3/Interceptor;]
+      [11] invokevirtual #32
+        + Methodref [okhttp3/OkHttpClient$Builder.addInterceptor (Lokhttp3/Interceptor;)Lokhttp3/OkHttpClient$Builder;]
+      [14] ldc2_w #17
+        + Long [30]
+      [17] getstatic #21
+        + Fieldref [java/util/concurrent/TimeUnit.SECONDS Ljava/util/concurrent/TimeUnit;]
+      [20] invokevirtual #34
+        + Methodref [okhttp3/OkHttpClient$Builder.connectTimeout (JLjava/util/concurrent/TimeUnit;)Lokhttp3/OkHttpClient$Builder;]
+      [23] ldc2_w #17
+        + Long [30]
+      [26] getstatic #21
+        + Fieldref [java/util/concurrent/TimeUnit.SECONDS Ljava/util/concurrent/TimeUnit;]
+      [29] invokevirtual #35
+        + Methodref [okhttp3/OkHttpClient$Builder.readTimeout (JLjava/util/concurrent/TimeUnit;)Lokhttp3/OkHttpClient$Builder;]
+      [32] ldc2_w #17
+        + Long [30]
+      [35] getstatic #21
+        + Fieldref [java/util/concurrent/TimeUnit.SECONDS Ljava/util/concurrent/TimeUnit;]
+      [38] invokevirtual #36
+        + Methodref [okhttp3/OkHttpClient$Builder.writeTimeout (JLjava/util/concurrent/TimeUnit;)Lokhttp3/OkHttpClient$Builder;]
+      [41] invokevirtual #33
+        + Methodref [okhttp3/OkHttpClient$Builder.build ()Lokhttp3/OkHttpClient;]
+      [44] areturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       d()Lokhttp3/Interceptor;
+    Access flags: 0x2
+      = private okhttp3.Interceptor d()
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 30, locals = 2, stack = 2):
+      [0] new #10
+        + Class [okhttp3/logging/HttpLoggingInterceptor]
+      [3] dup
+      [4] invokespecial #37
+        + Methodref [okhttp3/logging/HttpLoggingInterceptor.<init> ()V]
+      [7] astore_1 v1
+      [8] aload_1 v1
+      [9] getstatic #20
+        + Fieldref [com/midtrans/sdk/analytics/c/a.a Z]
+      [12] ifeq +9 (target=21)
+      [15] getstatic #22
+        + Fieldref [okhttp3/logging/HttpLoggingInterceptor$Level.BODY Lokhttp3/logging/HttpLoggingInterceptor$Level;]
+      [18] goto +6 (target=24)
+      [21] getstatic #23
+        + Fieldref [okhttp3/logging/HttpLoggingInterceptor$Level.NONE Lokhttp3/logging/HttpLoggingInterceptor$Level;]
+      [24] invokevirtual #38
+        + Methodref [okhttp3/logging/HttpLoggingInterceptor.setLevel (Lokhttp3/logging/HttpLoggingInterceptor$Level;)Lokhttp3/logging/HttpLoggingInterceptor;]
+      [27] pop
+      [28] aload_1 v1
+      [29] areturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       e()Lcom/google/gson/Gson;
+    Access flags: 0x2
+      = private com.google.gson.Gson e()
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 11, locals = 1, stack = 2):
+      [0] new #2
+        + Class [com/google/gson/GsonBuilder]
+      [3] dup
+      [4] invokespecial #24
+        + Methodref [com/google/gson/GsonBuilder.<init> ()V]
+      [7] invokevirtual #25
+        + Methodref [com/google/gson/GsonBuilder.create ()Lcom/google/gson/Gson;]
+      [10] areturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+
+Class file attributes (count = 1):
+  + Inner classes attribute (count = 4)
+    - InnerClassesInfo:
+      Access flags:  0x19 = public static final 
+      + Class [retrofit2/Retrofit$Builder]
+      + Class [retrofit2/Retrofit]
+      + Utf8 [Builder]
+    - InnerClassesInfo:
+      Access flags:  0x19 = public static final 
+      + Class [okhttp3/OkHttpClient$Builder]
+      + Class [okhttp3/OkHttpClient]
+      + Utf8 [Builder]
+    - InnerClassesInfo:
+      Access flags:  0x4019 = public static final enum 
+      + Class [okhttp3/logging/HttpLoggingInterceptor$Level]
+      + Class [okhttp3/logging/HttpLoggingInterceptor]
+      + Utf8 [Level]
+    - InnerClassesInfo:
+      Access flags:  0x409 = public static abstract 
+      + Class [retrofit2/Converter$Factory]
+      + Class [retrofit2/Converter]
+      + Utf8 [Factory]
+
+_____________________________________________________________________
++ Program class: com/midtrans/sdk/analytics/b/a
+  Superclass:    java/lang/Object
+  Major version: 0x33
+  Minor version: 0x0
+    = target 1.7
+  Access flags:  0x421
+    = public abstract class com.midtrans.sdk.analytics.b.a extends java.lang.Object
+
+Interfaces (count = 0):
+
+Constant Pool (count = 12):
+  + Class [com/midtrans/sdk/analytics/b/a]
+  + Class [java/lang/Object]
+  + Methodref [java/lang/Object.<init> ()V]
+  + NameAndType [<init> ()V]
+  + Utf8 [()Ljava/lang/String;]
+  + Utf8 [()V]
+  + Utf8 [<init>]
+  + Utf8 [Code]
+  + Utf8 [a]
+  + Utf8 [com/midtrans/sdk/analytics/b/a]
+  + Utf8 [java/lang/Object]
+
+Fields (count = 0):
+
+Methods (count = 2):
+  - Method:       <init>()V
+    Access flags: 0x1
+      = public a()
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 5, locals = 1, stack = 1):
+      [0] aload_0 v0
+      [1] invokespecial #3
+        + Methodref [java/lang/Object.<init> ()V]
+      [4] return
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       a()Ljava/lang/String;
+    Access flags: 0x401
+      = public abstract java.lang.String a()
+
+Class file attributes (count = 0):
+
+_____________________________________________________________________
++ Program class: com/midtrans/sdk/analytics/b/b
+  Superclass:    com/midtrans/sdk/analytics/b/a
+  Major version: 0x33
+  Minor version: 0x0
+    = target 1.7
+  Access flags:  0x21
+    = public class com.midtrans.sdk.analytics.b.b extends com.midtrans.sdk.analytics.b.a
+
+Interfaces (count = 0):
+
+Constant Pool (count = 14):
+  + String [0269722c477a0e085fde32e0248c6003]
+  + Class [com/midtrans/sdk/analytics/b/a]
+  + Class [com/midtrans/sdk/analytics/b/b]
+  + Methodref [com/midtrans/sdk/analytics/b/a.<init> ()V]
+  + NameAndType [<init> ()V]
+  + Utf8 [()Ljava/lang/String;]
+  + Utf8 [()V]
+  + Utf8 [0269722c477a0e085fde32e0248c6003]
+  + Utf8 [<init>]
+  + Utf8 [Code]
+  + Utf8 [a]
+  + Utf8 [com/midtrans/sdk/analytics/b/a]
+  + Utf8 [com/midtrans/sdk/analytics/b/b]
+
+Fields (count = 0):
+
+Methods (count = 2):
+  - Method:       <init>()V
+    Access flags: 0x1
+      = public b()
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 5, locals = 1, stack = 1):
+      [0] aload_0 v0
+      [1] invokespecial #4
+        + Methodref [com/midtrans/sdk/analytics/b/a.<init> ()V]
+      [4] return
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       a()Ljava/lang/String;
+    Access flags: 0x1
+      = public java.lang.String a()
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 3, locals = 1, stack = 1):
+      [0] ldc #1
+        + String [0269722c477a0e085fde32e0248c6003]
+      [2] areturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+
+Class file attributes (count = 0):
+
+_____________________________________________________________________
++ Program class: com/midtrans/sdk/analytics/b/c
+  Superclass:    com/midtrans/sdk/analytics/b/a
+  Major version: 0x33
+  Minor version: 0x0
+    = target 1.7
+  Access flags:  0x21
+    = public class com.midtrans.sdk.analytics.b.c extends com.midtrans.sdk.analytics.b.a
+
+Interfaces (count = 0):
+
+Constant Pool (count = 14):
+  + String [cc005b296ca4ce612fe3939177c668bb]
+  + Class [com/midtrans/sdk/analytics/b/a]
+  + Class [com/midtrans/sdk/analytics/b/c]
+  + Methodref [com/midtrans/sdk/analytics/b/a.<init> ()V]
+  + NameAndType [<init> ()V]
+  + Utf8 [()Ljava/lang/String;]
+  + Utf8 [()V]
+  + Utf8 [<init>]
+  + Utf8 [Code]
+  + Utf8 [a]
+  + Utf8 [cc005b296ca4ce612fe3939177c668bb]
+  + Utf8 [com/midtrans/sdk/analytics/b/a]
+  + Utf8 [com/midtrans/sdk/analytics/b/c]
+
+Fields (count = 0):
+
+Methods (count = 2):
+  - Method:       <init>()V
+    Access flags: 0x1
+      = public c()
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 5, locals = 1, stack = 1):
+      [0] aload_0 v0
+      [1] invokespecial #4
+        + Methodref [com/midtrans/sdk/analytics/b/a.<init> ()V]
+      [4] return
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       a()Ljava/lang/String;
+    Access flags: 0x1
+      = public java.lang.String a()
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 3, locals = 1, stack = 1):
+      [0] ldc #1
+        + String [cc005b296ca4ce612fe3939177c668bb]
+      [2] areturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+
+Class file attributes (count = 0):
+
+_____________________________________________________________________
++ Program class: com/midtrans/sdk/analytics/models/Event
+  Superclass:    java/lang/Object
+  Major version: 0x33
+  Minor version: 0x0
+    = target 1.7
+  Access flags:  0x21
+    = public class com.midtrans.sdk.analytics.models.Event extends java.lang.Object
+
+Interfaces (count = 0):
+
+Constant Pool (count = 26):
+  + Class [com/midtrans/sdk/analytics/models/Event]
+  + Class [java/lang/Object]
+  + Fieldref [com/midtrans/sdk/analytics/models/Event.event Ljava/lang/String;]
+  + Fieldref [com/midtrans/sdk/analytics/models/Event.properties Lcom/midtrans/sdk/analytics/models/Properties;]
+  + Methodref [java/lang/Object.<init> ()V]
+  + NameAndType [<init> ()V]
+  + NameAndType [event Ljava/lang/String;]
+  + NameAndType [properties Lcom/midtrans/sdk/analytics/models/Properties;]
+  + Utf8 [()Lcom/midtrans/sdk/analytics/models/Properties;]
+  + Utf8 [()Ljava/lang/String;]
+  + Utf8 [()V]
+  + Utf8 [(Lcom/midtrans/sdk/analytics/models/Properties;)V]
+  + Utf8 [(Ljava/lang/String;)V]
+  + Utf8 [<init>]
+  + Utf8 [Code]
+  + Utf8 [Lcom/midtrans/sdk/analytics/models/Properties;]
+  + Utf8 [Ljava/lang/String;]
+  + Utf8 [com/midtrans/sdk/analytics/models/Event]
+  + Utf8 [event]
+  + Utf8 [getEvent]
+  + Utf8 [getProperties]
+  + Utf8 [java/lang/Object]
+  + Utf8 [properties]
+  + Utf8 [setEvent]
+  + Utf8 [setProperties]
+
+Fields (count = 2):
+  + Field:        event Ljava/lang/String;
+    Access flags: 0x2
+      = private java.lang.String event
+  + Field:        properties Lcom/midtrans/sdk/analytics/models/Properties;
+    Access flags: 0x2
+      = private com.midtrans.sdk.analytics.models.Properties properties
+
+Methods (count = 5):
+  - Method:       <init>()V
+    Access flags: 0x1
+      = public Event()
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 5, locals = 1, stack = 1):
+      [0] aload_0 v0
+      [1] invokespecial #5
+        + Methodref [java/lang/Object.<init> ()V]
+      [4] return
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       getEvent()Ljava/lang/String;
+    Access flags: 0x1
+      = public java.lang.String getEvent()
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 5, locals = 1, stack = 1):
+      [0] aload_0 v0
+      [1] getfield #3
+        + Fieldref [com/midtrans/sdk/analytics/models/Event.event Ljava/lang/String;]
+      [4] areturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       setEvent(Ljava/lang/String;)V
+    Access flags: 0x1
+      = public void setEvent(java.lang.String)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 6, locals = 2, stack = 2):
+      [0] aload_0 v0
+      [1] aload_1 v1
+      [2] putfield #3
+        + Fieldref [com/midtrans/sdk/analytics/models/Event.event Ljava/lang/String;]
+      [5] return
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       getProperties()Lcom/midtrans/sdk/analytics/models/Properties;
+    Access flags: 0x1
+      = public com.midtrans.sdk.analytics.models.Properties getProperties()
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 5, locals = 1, stack = 1):
+      [0] aload_0 v0
+      [1] getfield #4
+        + Fieldref [com/midtrans/sdk/analytics/models/Event.properties Lcom/midtrans/sdk/analytics/models/Properties;]
+      [4] areturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       setProperties(Lcom/midtrans/sdk/analytics/models/Properties;)V
+    Access flags: 0x1
+      = public void setProperties(com.midtrans.sdk.analytics.models.Properties)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 6, locals = 2, stack = 2):
+      [0] aload_0 v0
+      [1] aload_1 v1
+      [2] putfield #4
+        + Fieldref [com/midtrans/sdk/analytics/models/Event.properties Lcom/midtrans/sdk/analytics/models/Properties;]
+      [5] return
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+
+Class file attributes (count = 0):
+
+_____________________________________________________________________
++ Program class: com/midtrans/sdk/analytics/models/Properties
+  Superclass:    java/lang/Object
+  Major version: 0x33
+  Minor version: 0x0
+    = target 1.7
+  Access flags:  0x21
+    = public class com.midtrans.sdk.analytics.models.Properties extends java.lang.Object
+
+Interfaces (count = 0):
+
+Constant Pool (count = 93):
+  + Class [com/midtrans/sdk/analytics/models/Properties]
+  + Class [java/lang/Object]
+  + Fieldref [com/midtrans/sdk/analytics/models/Properties.cardPaymentMode Ljava/lang/String;]
+  + Fieldref [com/midtrans/sdk/analytics/models/Properties.deviceId Ljava/lang/String;]
+  + Fieldref [com/midtrans/sdk/analytics/models/Properties.deviceType Ljava/lang/String;]
+  + Fieldref [com/midtrans/sdk/analytics/models/Properties.distinctId Ljava/lang/String;]
+  + Fieldref [com/midtrans/sdk/analytics/models/Properties.flow Ljava/lang/String;]
+  + Fieldref [com/midtrans/sdk/analytics/models/Properties.merchant Ljava/lang/String;]
+  + Fieldref [com/midtrans/sdk/analytics/models/Properties.message Ljava/lang/String;]
+  + Fieldref [com/midtrans/sdk/analytics/models/Properties.osVersion Ljava/lang/String;]
+  + Fieldref [com/midtrans/sdk/analytics/models/Properties.platform Ljava/lang/String;]
+  + Fieldref [com/midtrans/sdk/analytics/models/Properties.responseTime J]
+  + Fieldref [com/midtrans/sdk/analytics/models/Properties.timeStamp Ljava/lang/String;]
+  + Fieldref [com/midtrans/sdk/analytics/models/Properties.token Ljava/lang/String;]
+  + Fieldref [com/midtrans/sdk/analytics/models/Properties.version Ljava/lang/String;]
+  + Methodref [java/lang/Object.<init> ()V]
+  + NameAndType [<init> ()V]
+  + NameAndType [cardPaymentMode Ljava/lang/String;]
+  + NameAndType [deviceId Ljava/lang/String;]
+  + NameAndType [deviceType Ljava/lang/String;]
+  + NameAndType [distinctId Ljava/lang/String;]
+  + NameAndType [flow Ljava/lang/String;]
+  + NameAndType [merchant Ljava/lang/String;]
+  + NameAndType [message Ljava/lang/String;]
+  + NameAndType [osVersion Ljava/lang/String;]
+  + NameAndType [platform Ljava/lang/String;]
+  + NameAndType [responseTime J]
+  + NameAndType [timeStamp Ljava/lang/String;]
+  + NameAndType [token Ljava/lang/String;]
+  + NameAndType [version Ljava/lang/String;]
+  + Utf8 [()J]
+  + Utf8 [()Ljava/lang/String;]
+  + Utf8 [()V]
+  + Utf8 [(J)V]
+  + Utf8 [(Ljava/lang/String;)V]
+  + Utf8 [<init>]
+  + Utf8 [Code]
+  + Utf8 [J]
+  + Utf8 [Lcom/google/gson/annotations/SerializedName;]
+  + Utf8 [Ljava/lang/String;]
+  + Utf8 [RuntimeVisibleAnnotations]
+  + Utf8 [card mode]
+  + Utf8 [cardPaymentMode]
+  + Utf8 [com/midtrans/sdk/analytics/models/Properties]
+  + Utf8 [device id]
+  + Utf8 [device type]
+  + Utf8 [deviceId]
+  + Utf8 [deviceType]
+  + Utf8 [distinctId]
+  + Utf8 [distinct_id]
+  + Utf8 [error message]
+  + Utf8 [flow]
+  + Utf8 [getCardPaymentMode]
+  + Utf8 [getDeviceId]
+  + Utf8 [getDeviceType]
+  + Utf8 [getDistinctId]
+  + Utf8 [getFlow]
+  + Utf8 [getMerchant]
+  + Utf8 [getMessage]
+  + Utf8 [getOsVersion]
+  + Utf8 [getPlatform]
+  + Utf8 [getResponseTime]
+  + Utf8 [getTimeStamp]
+  + Utf8 [getToken]
+  + Utf8 [getVersion]
+  + Utf8 [java/lang/Object]
+  + Utf8 [merchant]
+  + Utf8 [message]
+  + Utf8 [os version]
+  + Utf8 [osVersion]
+  + Utf8 [platform]
+  + Utf8 [response time]
+  + Utf8 [responseTime]
+  + Utf8 [sdk version]
+  + Utf8 [setCardPaymentMode]
+  + Utf8 [setDeviceId]
+  + Utf8 [setDeviceType]
+  + Utf8 [setDistinctId]
+  + Utf8 [setFlow]
+  + Utf8 [setMerchant]
+  + Utf8 [setMessage]
+  + Utf8 [setOsVersion]
+  + Utf8 [setPlatform]
+  + Utf8 [setResponseTime]
+  + Utf8 [setTimeStamp]
+  + Utf8 [setToken]
+  + Utf8 [setVersion]
+  + Utf8 [time stamp]
+  + Utf8 [timeStamp]
+  + Utf8 [token]
+  + Utf8 [value]
+  + Utf8 [version]
+
+Fields (count = 13):
+  + Field:        distinctId Ljava/lang/String;
+    Access flags: 0x2
+      = private java.lang.String distinctId
+    Class member attributes (count = 1):
+    + Runtime visible annotations attribute:
+      - Annotation [Lcom/google/gson/annotations/SerializedName;]:
+        - Constant element value [value 's']
+          + Utf8 [distinct_id]
+  + Field:        token Ljava/lang/String;
+    Access flags: 0x2
+      = private java.lang.String token
+  + Field:        responseTime J
+    Access flags: 0x2
+      = private long responseTime
+    Class member attributes (count = 1):
+    + Runtime visible annotations attribute:
+      - Annotation [Lcom/google/gson/annotations/SerializedName;]:
+        - Constant element value [value 's']
+          + Utf8 [response time]
+  + Field:        message Ljava/lang/String;
+    Access flags: 0x2
+      = private java.lang.String message
+    Class member attributes (count = 1):
+    + Runtime visible annotations attribute:
+      - Annotation [Lcom/google/gson/annotations/SerializedName;]:
+        - Constant element value [value 's']
+          + Utf8 [error message]
+  + Field:        platform Ljava/lang/String;
+    Access flags: 0x2
+      = private java.lang.String platform
+    Class member attributes (count = 1):
+    + Runtime visible annotations attribute:
+      - Annotation [Lcom/google/gson/annotations/SerializedName;]:
+        - Constant element value [value 's']
+          + Utf8 [platform]
+  + Field:        osVersion Ljava/lang/String;
+    Access flags: 0x2
+      = private java.lang.String osVersion
+    Class member attributes (count = 1):
+    + Runtime visible annotations attribute:
+      - Annotation [Lcom/google/gson/annotations/SerializedName;]:
+        - Constant element value [value 's']
+          + Utf8 [os version]
+  + Field:        merchant Ljava/lang/String;
+    Access flags: 0x2
+      = private java.lang.String merchant
+    Class member attributes (count = 1):
+    + Runtime visible annotations attribute:
+      - Annotation [Lcom/google/gson/annotations/SerializedName;]:
+        - Constant element value [value 's']
+          + Utf8 [merchant]
+  + Field:        version Ljava/lang/String;
+    Access flags: 0x2
+      = private java.lang.String version
+    Class member attributes (count = 1):
+    + Runtime visible annotations attribute:
+      - Annotation [Lcom/google/gson/annotations/SerializedName;]:
+        - Constant element value [value 's']
+          + Utf8 [sdk version]
+  + Field:        deviceId Ljava/lang/String;
+    Access flags: 0x2
+      = private java.lang.String deviceId
+    Class member attributes (count = 1):
+    + Runtime visible annotations attribute:
+      - Annotation [Lcom/google/gson/annotations/SerializedName;]:
+        - Constant element value [value 's']
+          + Utf8 [device id]
+  + Field:        flow Ljava/lang/String;
+    Access flags: 0x2
+      = private java.lang.String flow
+    Class member attributes (count = 1):
+    + Runtime visible annotations attribute:
+      - Annotation [Lcom/google/gson/annotations/SerializedName;]:
+        - Constant element value [value 's']
+          + Utf8 [flow]
+  + Field:        deviceType Ljava/lang/String;
+    Access flags: 0x2
+      = private java.lang.String deviceType
+    Class member attributes (count = 1):
+    + Runtime visible annotations attribute:
+      - Annotation [Lcom/google/gson/annotations/SerializedName;]:
+        - Constant element value [value 's']
+          + Utf8 [device type]
+  + Field:        timeStamp Ljava/lang/String;
+    Access flags: 0x2
+      = private java.lang.String timeStamp
+    Class member attributes (count = 1):
+    + Runtime visible annotations attribute:
+      - Annotation [Lcom/google/gson/annotations/SerializedName;]:
+        - Constant element value [value 's']
+          + Utf8 [time stamp]
+  + Field:        cardPaymentMode Ljava/lang/String;
+    Access flags: 0x2
+      = private java.lang.String cardPaymentMode
+    Class member attributes (count = 1):
+    + Runtime visible annotations attribute:
+      - Annotation [Lcom/google/gson/annotations/SerializedName;]:
+        - Constant element value [value 's']
+          + Utf8 [card mode]
+
+Methods (count = 27):
+  - Method:       <init>()V
+    Access flags: 0x1
+      = public Properties()
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 5, locals = 1, stack = 1):
+      [0] aload_0 v0
+      [1] invokespecial #16
+        + Methodref [java/lang/Object.<init> ()V]
+      [4] return
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       getDistinctId()Ljava/lang/String;
+    Access flags: 0x1
+      = public java.lang.String getDistinctId()
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 5, locals = 1, stack = 1):
+      [0] aload_0 v0
+      [1] getfield #6
+        + Fieldref [com/midtrans/sdk/analytics/models/Properties.distinctId Ljava/lang/String;]
+      [4] areturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       setDistinctId(Ljava/lang/String;)V
+    Access flags: 0x1
+      = public void setDistinctId(java.lang.String)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 6, locals = 2, stack = 2):
+      [0] aload_0 v0
+      [1] aload_1 v1
+      [2] putfield #6
+        + Fieldref [com/midtrans/sdk/analytics/models/Properties.distinctId Ljava/lang/String;]
+      [5] return
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       getToken()Ljava/lang/String;
+    Access flags: 0x1
+      = public java.lang.String getToken()
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 5, locals = 1, stack = 1):
+      [0] aload_0 v0
+      [1] getfield #14
+        + Fieldref [com/midtrans/sdk/analytics/models/Properties.token Ljava/lang/String;]
+      [4] areturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       setToken(Ljava/lang/String;)V
+    Access flags: 0x1
+      = public void setToken(java.lang.String)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 6, locals = 2, stack = 2):
+      [0] aload_0 v0
+      [1] aload_1 v1
+      [2] putfield #14
+        + Fieldref [com/midtrans/sdk/analytics/models/Properties.token Ljava/lang/String;]
+      [5] return
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       getResponseTime()J
+    Access flags: 0x1
+      = public long getResponseTime()
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 5, locals = 1, stack = 2):
+      [0] aload_0 v0
+      [1] getfield #12
+        + Fieldref [com/midtrans/sdk/analytics/models/Properties.responseTime J]
+      [4] lreturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       setResponseTime(J)V
+    Access flags: 0x1
+      = public void setResponseTime(long)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 6, locals = 3, stack = 3):
+      [0] aload_0 v0
+      [1] lload_1 v1
+      [2] putfield #12
+        + Fieldref [com/midtrans/sdk/analytics/models/Properties.responseTime J]
+      [5] return
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       getMessage()Ljava/lang/String;
+    Access flags: 0x1
+      = public java.lang.String getMessage()
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 5, locals = 1, stack = 1):
+      [0] aload_0 v0
+      [1] getfield #9
+        + Fieldref [com/midtrans/sdk/analytics/models/Properties.message Ljava/lang/String;]
+      [4] areturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       setMessage(Ljava/lang/String;)V
+    Access flags: 0x1
+      = public void setMessage(java.lang.String)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 6, locals = 2, stack = 2):
+      [0] aload_0 v0
+      [1] aload_1 v1
+      [2] putfield #9
+        + Fieldref [com/midtrans/sdk/analytics/models/Properties.message Ljava/lang/String;]
+      [5] return
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       getPlatform()Ljava/lang/String;
+    Access flags: 0x1
+      = public java.lang.String getPlatform()
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 5, locals = 1, stack = 1):
+      [0] aload_0 v0
+      [1] getfield #11
+        + Fieldref [com/midtrans/sdk/analytics/models/Properties.platform Ljava/lang/String;]
+      [4] areturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       setPlatform(Ljava/lang/String;)V
+    Access flags: 0x1
+      = public void setPlatform(java.lang.String)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 6, locals = 2, stack = 2):
+      [0] aload_0 v0
+      [1] aload_1 v1
+      [2] putfield #11
+        + Fieldref [com/midtrans/sdk/analytics/models/Properties.platform Ljava/lang/String;]
+      [5] return
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       getOsVersion()Ljava/lang/String;
+    Access flags: 0x1
+      = public java.lang.String getOsVersion()
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 5, locals = 1, stack = 1):
+      [0] aload_0 v0
+      [1] getfield #10
+        + Fieldref [com/midtrans/sdk/analytics/models/Properties.osVersion Ljava/lang/String;]
+      [4] areturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       setOsVersion(Ljava/lang/String;)V
+    Access flags: 0x1
+      = public void setOsVersion(java.lang.String)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 6, locals = 2, stack = 2):
+      [0] aload_0 v0
+      [1] aload_1 v1
+      [2] putfield #10
+        + Fieldref [com/midtrans/sdk/analytics/models/Properties.osVersion Ljava/lang/String;]
+      [5] return
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       getMerchant()Ljava/lang/String;
+    Access flags: 0x1
+      = public java.lang.String getMerchant()
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 5, locals = 1, stack = 1):
+      [0] aload_0 v0
+      [1] getfield #8
+        + Fieldref [com/midtrans/sdk/analytics/models/Properties.merchant Ljava/lang/String;]
+      [4] areturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       setMerchant(Ljava/lang/String;)V
+    Access flags: 0x1
+      = public void setMerchant(java.lang.String)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 6, locals = 2, stack = 2):
+      [0] aload_0 v0
+      [1] aload_1 v1
+      [2] putfield #8
+        + Fieldref [com/midtrans/sdk/analytics/models/Properties.merchant Ljava/lang/String;]
+      [5] return
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       getVersion()Ljava/lang/String;
+    Access flags: 0x1
+      = public java.lang.String getVersion()
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 5, locals = 1, stack = 1):
+      [0] aload_0 v0
+      [1] getfield #15
+        + Fieldref [com/midtrans/sdk/analytics/models/Properties.version Ljava/lang/String;]
+      [4] areturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       setVersion(Ljava/lang/String;)V
+    Access flags: 0x1
+      = public void setVersion(java.lang.String)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 6, locals = 2, stack = 2):
+      [0] aload_0 v0
+      [1] aload_1 v1
+      [2] putfield #15
+        + Fieldref [com/midtrans/sdk/analytics/models/Properties.version Ljava/lang/String;]
+      [5] return
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       getDeviceId()Ljava/lang/String;
+    Access flags: 0x1
+      = public java.lang.String getDeviceId()
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 5, locals = 1, stack = 1):
+      [0] aload_0 v0
+      [1] getfield #4
+        + Fieldref [com/midtrans/sdk/analytics/models/Properties.deviceId Ljava/lang/String;]
+      [4] areturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       setDeviceId(Ljava/lang/String;)V
+    Access flags: 0x1
+      = public void setDeviceId(java.lang.String)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 6, locals = 2, stack = 2):
+      [0] aload_0 v0
+      [1] aload_1 v1
+      [2] putfield #4
+        + Fieldref [com/midtrans/sdk/analytics/models/Properties.deviceId Ljava/lang/String;]
+      [5] return
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       getFlow()Ljava/lang/String;
+    Access flags: 0x1
+      = public java.lang.String getFlow()
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 5, locals = 1, stack = 1):
+      [0] aload_0 v0
+      [1] getfield #7
+        + Fieldref [com/midtrans/sdk/analytics/models/Properties.flow Ljava/lang/String;]
+      [4] areturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       setFlow(Ljava/lang/String;)V
+    Access flags: 0x1
+      = public void setFlow(java.lang.String)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 6, locals = 2, stack = 2):
+      [0] aload_0 v0
+      [1] aload_1 v1
+      [2] putfield #7
+        + Fieldref [com/midtrans/sdk/analytics/models/Properties.flow Ljava/lang/String;]
+      [5] return
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       getDeviceType()Ljava/lang/String;
+    Access flags: 0x1
+      = public java.lang.String getDeviceType()
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 5, locals = 1, stack = 1):
+      [0] aload_0 v0
+      [1] getfield #5
+        + Fieldref [com/midtrans/sdk/analytics/models/Properties.deviceType Ljava/lang/String;]
+      [4] areturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       setDeviceType(Ljava/lang/String;)V
+    Access flags: 0x1
+      = public void setDeviceType(java.lang.String)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 6, locals = 2, stack = 2):
+      [0] aload_0 v0
+      [1] aload_1 v1
+      [2] putfield #5
+        + Fieldref [com/midtrans/sdk/analytics/models/Properties.deviceType Ljava/lang/String;]
+      [5] return
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       getTimeStamp()Ljava/lang/String;
+    Access flags: 0x1
+      = public java.lang.String getTimeStamp()
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 5, locals = 1, stack = 1):
+      [0] aload_0 v0
+      [1] getfield #13
+        + Fieldref [com/midtrans/sdk/analytics/models/Properties.timeStamp Ljava/lang/String;]
+      [4] areturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       setTimeStamp(Ljava/lang/String;)V
+    Access flags: 0x1
+      = public void setTimeStamp(java.lang.String)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 6, locals = 2, stack = 2):
+      [0] aload_0 v0
+      [1] aload_1 v1
+      [2] putfield #13
+        + Fieldref [com/midtrans/sdk/analytics/models/Properties.timeStamp Ljava/lang/String;]
+      [5] return
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       getCardPaymentMode()Ljava/lang/String;
+    Access flags: 0x1
+      = public java.lang.String getCardPaymentMode()
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 5, locals = 1, stack = 1):
+      [0] aload_0 v0
+      [1] getfield #3
+        + Fieldref [com/midtrans/sdk/analytics/models/Properties.cardPaymentMode Ljava/lang/String;]
+      [4] areturn
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       setCardPaymentMode(Ljava/lang/String;)V
+    Access flags: 0x1
+      = public void setCardPaymentMode(java.lang.String)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 6, locals = 2, stack = 2):
+      [0] aload_0 v0
+      [1] aload_1 v1
+      [2] putfield #3
+        + Fieldref [com/midtrans/sdk/analytics/models/Properties.cardPaymentMode Ljava/lang/String;]
+      [5] return
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+
+Class file attributes (count = 0):
+
+_____________________________________________________________________
++ Program class: com/midtrans/sdk/analytics/c/a
+  Superclass:    java/lang/Object
+  Major version: 0x33
+  Minor version: 0x0
+    = target 1.7
+  Access flags:  0x21
+    = public class com.midtrans.sdk.analytics.c.a extends java.lang.Object
+
+Interfaces (count = 0):
+
+Constant Pool (count = 24):
+  + String [MidtransAnalytics]
+  + Class [android/util/Log]
+  + Class [com/midtrans/sdk/analytics/c/a]
+  + Class [java/lang/Object]
+  + Fieldref [com/midtrans/sdk/analytics/c/a.a Z]
+  + Methodref [android/util/Log.d (Ljava/lang/String;Ljava/lang/String;)I]
+  + Methodref [android/util/Log.e (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I]
+  + NameAndType [a Z]
+  + NameAndType [d (Ljava/lang/String;Ljava/lang/String;)I]
+  + NameAndType [e (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I]
+  + Utf8 [(Ljava/lang/String;)V]
+  + Utf8 [(Ljava/lang/String;Ljava/lang/String;)I]
+  + Utf8 [(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I]
+  + Utf8 [(Ljava/lang/String;Ljava/lang/Throwable;)V]
+  + Utf8 [Code]
+  + Utf8 [MidtransAnalytics]
+  + Utf8 [Z]
+  + Utf8 [a]
+  + Utf8 [android/util/Log]
+  + Utf8 [com/midtrans/sdk/analytics/c/a]
+  + Utf8 [d]
+  + Utf8 [e]
+  + Utf8 [java/lang/Object]
+
+Fields (count = 1):
+  + Field:        a Z
+    Access flags: 0x9
+      = public static boolean a
+
+Methods (count = 2):
+  + Method:       a(Ljava/lang/String;)V
+    Access flags: 0x9
+      = public static void a(java.lang.String)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 14, locals = 1, stack = 2):
+      [0] getstatic #5
+        + Fieldref [com/midtrans/sdk/analytics/c/a.a Z]
+      [3] ifeq +10 (target=13)
+      [6] ldc #1
+        + String [MidtransAnalytics]
+      [8] aload_0 v0
+      [9] invokestatic #6
+        + Methodref [android/util/Log.d (Ljava/lang/String;Ljava/lang/String;)I]
+      [12] pop
+      [13] return
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+  + Method:       a(Ljava/lang/String;Ljava/lang/Throwable;)V
+    Access flags: 0x9
+      = public static void a(java.lang.String,java.lang.Throwable)
+    Class member attributes (count = 1):
+    + Code attribute instructions (code length = 15, locals = 2, stack = 3):
+      [0] getstatic #5
+        + Fieldref [com/midtrans/sdk/analytics/c/a.a Z]
+      [3] ifeq +11 (target=14)
+      [6] ldc #1
+        + String [MidtransAnalytics]
+      [8] aload_0 v0
+      [9] aload_1 v1
+      [10] invokestatic #7
+        + Methodref [android/util/Log.e (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I]
+      [13] pop
+      [14] return
+      Code attribute exceptions (count = 0):
+      Code attribute attributes (attribute count = 0):
+
+Class file attributes (count = 0):
+

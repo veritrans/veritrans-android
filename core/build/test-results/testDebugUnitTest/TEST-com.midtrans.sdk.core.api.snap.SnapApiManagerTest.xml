@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.midtrans.sdk.core.api.snap.SnapApiManagerTest" tests="19" skipped="0" failures="0" errors="0" timestamp="2017-06-02T07:58:32" hostname="Rakas-MacBook-Pro.local" time="0.133">
+  <properties/>
+  <testcase name="paymentUsingIndomaret" classname="com.midtrans.sdk.core.api.snap.SnapApiManagerTest" time="0.015"/>
+  <testcase name="paymentUsingMandiriBankTransfer" classname="com.midtrans.sdk.core.api.snap.SnapApiManagerTest" time="0.006"/>
+  <testcase name="paymentUsingKlikBca" classname="com.midtrans.sdk.core.api.snap.SnapApiManagerTest" time="0.008"/>
+  <testcase name="paymentUsingMandiriECash" classname="com.midtrans.sdk.core.api.snap.SnapApiManagerTest" time="0.009"/>
+  <testcase name="paymentUsingOtherBankTransfer" classname="com.midtrans.sdk.core.api.snap.SnapApiManagerTest" time="0.007"/>
+  <testcase name="paymentUsingMandiriClickpay" classname="com.midtrans.sdk.core.api.snap.SnapApiManagerTest" time="0.005"/>
+  <testcase name="paymentUsingPermataBankTransfer" classname="com.midtrans.sdk.core.api.snap.SnapApiManagerTest" time="0.009"/>
+  <testcase name="paymentUsingIndosatDompetku" classname="com.midtrans.sdk.core.api.snap.SnapApiManagerTest" time="0.01"/>
+  <testcase name="paymentUsingCreditCard" classname="com.midtrans.sdk.core.api.snap.SnapApiManagerTest" time="0.005"/>
+  <testcase name="paymentUsingKioson" classname="com.midtrans.sdk.core.api.snap.SnapApiManagerTest" time="0.005"/>
+  <testcase name="paymentUsingGiftCard" classname="com.midtrans.sdk.core.api.snap.SnapApiManagerTest" time="0.006"/>
+  <testcase name="getBankBins" classname="com.midtrans.sdk.core.api.snap.SnapApiManagerTest" time="0.005"/>
+  <testcase name="paymentUsingTelkomselCash" classname="com.midtrans.sdk.core.api.snap.SnapApiManagerTest" time="0.005"/>
+  <testcase name="paymentUsingCimbClicks" classname="com.midtrans.sdk.core.api.snap.SnapApiManagerTest" time="0.004"/>
+  <testcase name="paymentUsingBcaBankTransfer" classname="com.midtrans.sdk.core.api.snap.SnapApiManagerTest" time="0.004"/>
+  <testcase name="paymentUsingXlTunai" classname="com.midtrans.sdk.core.api.snap.SnapApiManagerTest" time="0.005"/>
+  <testcase name="getTransactionDetails" classname="com.midtrans.sdk.core.api.snap.SnapApiManagerTest" time="0.006"/>
+  <testcase name="paymentUsingBcaKlikpay" classname="com.midtrans.sdk.core.api.snap.SnapApiManagerTest" time="0.005"/>
+  <testcase name="paymentUsingEpayBri" classname="com.midtrans.sdk.core.api.snap.SnapApiManagerTest" time="0.006"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

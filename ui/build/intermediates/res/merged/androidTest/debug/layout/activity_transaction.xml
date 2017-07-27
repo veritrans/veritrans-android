@@ -1,0 +1,75 @@
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:fitsSystemWindows="true">
+
+    <include layout="@layout/toolbar_payment_methods" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <include layout="@layout/layout_item_details" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/container_payment_methods"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+    </LinearLayout>
+
+    <include layout="@layout/layout_progress_bar" />
+
+    <RelativeLayout
+        android:id="@+id/container_error"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <com.midtrans.sdk.ui.widgets.DefaultTextView
+            android:id="@+id/error_text"
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center_horizontal"
+            android:text="@string/error_message_failed_checkout"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/error_text"
+            android:layout_marginTop="@dimen/eight_dp"
+            android:gravity="center_horizontal">
+
+            <com.midtrans.sdk.ui.widgets.FancyButton
+                android:id="@+id/checkout_retry_button"
+                style="@style/ButtonSecondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/eight_dp"
+                android:layout_marginRight="@dimen/eight_dp"
+                app:fb_borderColor="@color/navy_blue.primary_dark"
+                app:fb_text="@string/retry"
+                app:fb_textColor="@color/navy_blue.primary_dark" />
+
+            <com.midtrans.sdk.ui.widgets.FancyButton
+                android:id="@+id/cancel_button"
+                style="@style/ButtonSecondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/checkout_retry_button"
+                android:layout_toRightOf="@id/checkout_retry_button"
+                app:fb_borderColor="@color/navy_blue.primary_dark"
+                app:fb_text="@string/btn_cancel"
+                app:fb_textColor="@color/navy_blue.primary_dark" />
+        </LinearLayout>
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

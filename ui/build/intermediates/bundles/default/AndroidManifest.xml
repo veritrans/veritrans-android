@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.midtrans.sdk.ui"
+    android:versionCode="1"
+    android:versionName="2.0.0" >
+
+    <uses-sdk
+        android:minSdkVersion="16"
+        android:targetSdkVersion="25" />
+
+    <application>
+        <activity
+            android:name="com.midtrans.sdk.ui.views.transaction.TransactionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.ui.views.creditcard.saved.SavedCardActivity"
+            android:label="@string/saved_card"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.ui.views.creditcard.details.CreditCardDetailsActivity"
+            android:label="@string/card_details"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.midtrans.sdk.ui.views.status.PaymentStatusActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.ui.views.banktransfer.list.BankTransferListActivity"
+            android:label="@string/activity_select_bank"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.ui.views.banktransfer.payment.BankTransferPaymentActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.ui.views.banktransfer.payment.BankTransferPaymentStatusActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.ui.views.banktransfer.payment.BankTransferMandiriStatusActivity"
+            android:label="@string/mandiri_bill_transfer"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.ui.views.creditcard.points.BankPointsActivity"
+            android:label="@string/redeem_point"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.ui.views.webpayment.PaymentWebActivity"
+            android:label="@string/processing_payment"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.ui.views.cstore.indomaret.IndomaretActivity"
+            android:label="@string/indomaret"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.ui.views.cstore.indomaret.IndomaretStatusActivity"
+            android:label="@string/indomaret"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.ui.views.cstore.kioson.KiosonActivity"
+            android:label="@string/kioson"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.ui.views.cstore.kioson.KiosonStatusActivity"
+            android:label="@string/kioson"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.ui.views.cstore.kioson.KiosonInstructionActivity"
+            android:label="@string/kioson"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.ui.views.gci.GiftCardIndonesiaActivity"
+            android:label="@string/title_gci"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.ui.views.ebanking.klikbca.KlikBcaActivity"
+            android:label="@string/klik_bca"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.ui.views.ebanking.klikbca.KlikBcaStatusActivity"
+            android:label="@string/klik_bca"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.ui.views.ebanking.klikbca.KlikBcaInstructionActivity"
+            android:label="@string/payment_instruction"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.ui.views.ebanking.mandiri_clickpay.MandiriClickpayActivity"
+            android:label="@string/mandiri_click_pay"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.ui.views.ebanking.bca_klikpay.BcaKlikpayActivity"
+            android:label="@string/payment_method_bca_klikpay"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.ui.views.ebanking.cimb_clicks.CimbClicksActivity"
+            android:label="@string/cimb_clicks"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.ui.views.ebanking.epay_bri.EpayBriActivity"
+            android:label="@string/epay_bri"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.ui.views.ebanking.mandiri_ecash.MandiriEcashActivity"
+            android:label="@string/mandiri_e_cash"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.ui.views.ewallet.xltunai.XlTunaiPaymentActivity"
+            android:label="@string/xl_tunai"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.ui.views.ewallet.xltunai.XlTunaiStatusActivity"
+            android:label="@string/xl_tunai"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.ui.views.ewallet.tcash.TelkomselCashActivity"
+            android:label="@string/telkomsel_cash"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.ui.views.ewallet.indosatdompetku.IndosatDompetkuActivity"
+            android:label="@string/indosat_dompetku"
+            android:screenOrientation="portrait" />
+    </application>
+
+</manifest>

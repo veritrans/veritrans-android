@@ -1,0 +1,590 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SnapApiManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.midtrans.sdk.core.api.snap</a> &gt; <span class="el_source">SnapApiManager.java</span></div><h1>SnapApiManager.java</h1><pre class="source lang-java linenums">package com.midtrans.sdk.core.api.snap;
+
+import com.midtrans.sdk.core.MidtransCoreCallback;
+import com.midtrans.sdk.core.models.snap.BaseTransactionResponse;
+import com.midtrans.sdk.core.models.snap.bank.bca.BcaBankTransferPaymentRequest;
+import com.midtrans.sdk.core.models.snap.bank.bca.BcaBankTransferPaymentResponse;
+import com.midtrans.sdk.core.models.snap.bank.bni.BniBankTransferPaymentRequest;
+import com.midtrans.sdk.core.models.snap.bank.bni.BniBankTransferPaymentResponse;
+import com.midtrans.sdk.core.models.snap.bank.mandiri.MandiriBankTransferPaymentRequest;
+import com.midtrans.sdk.core.models.snap.bank.mandiri.MandiriBankTransferPaymentResponse;
+import com.midtrans.sdk.core.models.snap.bank.other.OtherBankTransferPaymentRequest;
+import com.midtrans.sdk.core.models.snap.bank.other.OtherBankTransferPaymentResponse;
+import com.midtrans.sdk.core.models.snap.bank.permata.PermataBankTransferPaymentRequest;
+import com.midtrans.sdk.core.models.snap.bank.permata.PermataBankTransferPaymentResponse;
+import com.midtrans.sdk.core.models.snap.bins.BankBinsResponse;
+import com.midtrans.sdk.core.models.snap.card.BankPointResponse;
+import com.midtrans.sdk.core.models.snap.card.CreditCardPaymentRequest;
+import com.midtrans.sdk.core.models.snap.card.CreditCardPaymentResponse;
+import com.midtrans.sdk.core.models.snap.conveniencestore.indomaret.IndomaretPaymentRequest;
+import com.midtrans.sdk.core.models.snap.conveniencestore.indomaret.IndomaretPaymentResponse;
+import com.midtrans.sdk.core.models.snap.conveniencestore.kioson.KiosonPaymentRequest;
+import com.midtrans.sdk.core.models.snap.conveniencestore.kioson.KiosonPaymentResponse;
+import com.midtrans.sdk.core.models.snap.ebanking.bcaklikpay.BcaKlikpayPaymentRequest;
+import com.midtrans.sdk.core.models.snap.ebanking.bcaklikpay.BcaKlikpayPaymentResponse;
+import com.midtrans.sdk.core.models.snap.ebanking.cimbclicks.CimbClicksPaymentRequest;
+import com.midtrans.sdk.core.models.snap.ebanking.cimbclicks.CimbClicksPaymentResponse;
+import com.midtrans.sdk.core.models.snap.ebanking.epaybri.EpayBriPaymentRequest;
+import com.midtrans.sdk.core.models.snap.ebanking.epaybri.EpayBriPaymentResponse;
+import com.midtrans.sdk.core.models.snap.ebanking.klikbca.KlikBcaPaymentRequest;
+import com.midtrans.sdk.core.models.snap.ebanking.klikbca.KlikBcaPaymentResponse;
+import com.midtrans.sdk.core.models.snap.ebanking.mandiriclickpay.MandiriClickpayPaymentRequest;
+import com.midtrans.sdk.core.models.snap.ebanking.mandiriclickpay.MandiriClickpayPaymentResponse;
+import com.midtrans.sdk.core.models.snap.ebanking.mandiriecash.MandiriECashPaymentRequest;
+import com.midtrans.sdk.core.models.snap.ebanking.mandiriecash.MandiriECashPaymentResponse;
+import com.midtrans.sdk.core.models.snap.ewallet.indosatdompetku.IndosatDompetkuPaymentRequest;
+import com.midtrans.sdk.core.models.snap.ewallet.indosatdompetku.IndosatDompetkuPaymentResponse;
+import com.midtrans.sdk.core.models.snap.ewallet.tcash.TelkomselCashPaymentRequest;
+import com.midtrans.sdk.core.models.snap.ewallet.tcash.TelkomselCashPaymentResponse;
+import com.midtrans.sdk.core.models.snap.ewallet.xltunai.XlTunaiPaymentRequest;
+import com.midtrans.sdk.core.models.snap.ewallet.xltunai.XlTunaiPaymentResponse;
+import com.midtrans.sdk.core.models.snap.gci.GiftCardPaymentRequest;
+import com.midtrans.sdk.core.models.snap.gci.GiftCardPaymentResponse;
+import com.midtrans.sdk.core.models.snap.transaction.SnapTransaction;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+/**
+ * Created by rakawm on 10/19/16.
+ */
+
+public class SnapApiManager {
+    private final SnapApi snapApi;
+
+<span class="fc" id="L58">    public SnapApiManager(SnapApi snapApi) {</span>
+<span class="fc" id="L59">        this.snapApi = snapApi;</span>
+<span class="fc" id="L60">    }</span>
+
+    /**
+     * Get transaction details from Snap.
+     *
+     * @param checkoutToken checkout token.
+     * @param callback      callback to be called after API call was finished.
+     */
+    public void getTransactionDetails(String checkoutToken, final MidtransCoreCallback&lt;SnapTransaction&gt; callback) {
+<span class="fc" id="L69">        Call&lt;SnapTransaction&gt; response = snapApi.getTransactionDetails(checkoutToken);</span>
+<span class="fc" id="L70">        response.enqueue(new Callback&lt;SnapTransaction&gt;() {</span>
+            @Override
+            public void onResponse(Call&lt;SnapTransaction&gt; call, Response&lt;SnapTransaction&gt; response) {
+<span class="fc" id="L73">                handleGetTransactionResponse(response, callback);</span>
+<span class="fc" id="L74">            }</span>
+
+            @Override
+            public void onFailure(Call&lt;SnapTransaction&gt; call, Throwable throwable) {
+<span class="nc" id="L78">                callback.onError(new RuntimeException(&quot;Failed to get transaction details&quot;, throwable));</span>
+<span class="nc" id="L79">            }</span>
+        });
+<span class="fc" id="L81">    }</span>
+
+    /**
+     * Start payment using credit card.
+     *
+     * @param checkoutToken            checkout token generated on checkout process.
+     * @param creditCardPaymentRequest credit card payment request.
+     * @param callback                 callback to be called after API call was finished.
+     */
+    public void paymentUsingCreditCard(String checkoutToken, CreditCardPaymentRequest creditCardPaymentRequest, final MidtransCoreCallback&lt;CreditCardPaymentResponse&gt; callback) {
+<span class="fc" id="L91">        Call&lt;CreditCardPaymentResponse&gt; response = snapApi.paymentUsingCreditCard(checkoutToken, creditCardPaymentRequest);</span>
+<span class="fc" id="L92">        response.enqueue(new Callback&lt;CreditCardPaymentResponse&gt;() {</span>
+            @Override
+            public void onResponse(Call&lt;CreditCardPaymentResponse&gt; call, Response&lt;CreditCardPaymentResponse&gt; response) {
+<span class="fc" id="L95">                handlePaymentResponse(response, callback);</span>
+<span class="fc" id="L96">            }</span>
+
+            @Override
+            public void onFailure(Call&lt;CreditCardPaymentResponse&gt; call, Throwable throwable) {
+<span class="nc" id="L100">                callback.onError(new RuntimeException(&quot;Failed to pay using credit card&quot;, throwable));</span>
+<span class="nc" id="L101">            }</span>
+        });
+<span class="fc" id="L103">    }</span>
+
+    /**
+     * Start payment using bank transfer via BCA.
+     *
+     * @param checkoutToken                 checkout token.
+     * @param bcaBankTransferPaymentRequest BCA bank transfer payment details.
+     * @param callback                      callback to be called after API call was finished.
+     */
+    public void paymentUsingBcaBankTransfer(String checkoutToken, BcaBankTransferPaymentRequest bcaBankTransferPaymentRequest, final MidtransCoreCallback&lt;BcaBankTransferPaymentResponse&gt; callback) {
+<span class="fc" id="L113">        Call&lt;BcaBankTransferPaymentResponse&gt; response = snapApi.paymentUsingBcaBankTransfer(checkoutToken, bcaBankTransferPaymentRequest);</span>
+<span class="fc" id="L114">        response.enqueue(new Callback&lt;BcaBankTransferPaymentResponse&gt;() {</span>
+            @Override
+            public void onResponse(Call&lt;BcaBankTransferPaymentResponse&gt; call, Response&lt;BcaBankTransferPaymentResponse&gt; response) {
+<span class="fc" id="L117">                handlePaymentResponse(response, callback);</span>
+<span class="fc" id="L118">            }</span>
+
+            @Override
+            public void onFailure(Call&lt;BcaBankTransferPaymentResponse&gt; call, Throwable throwable) {
+<span class="nc" id="L122">                callback.onError(new RuntimeException(&quot;Failed to pay using BCA VIA&quot;, throwable));</span>
+<span class="nc" id="L123">            }</span>
+        });
+<span class="fc" id="L125">    }</span>
+
+    /**
+     * Start payment using bank transfer via BNI.
+     *
+     * @param checkoutToken                 checkout token.
+     * @param bniBankTransferPaymentRequest BNI Bank transfer payment details.
+     * @param callback                      callback to be called after API call was finished.
+     */
+    public void paymentUsingBniBankTransfer(String checkoutToken, BniBankTransferPaymentRequest bniBankTransferPaymentRequest, final MidtransCoreCallback&lt;BniBankTransferPaymentResponse&gt; callback) {
+<span class="nc" id="L135">        Call&lt;BniBankTransferPaymentResponse&gt; response = snapApi.paymentUsingBniBankTransfer(checkoutToken, bniBankTransferPaymentRequest);</span>
+<span class="nc" id="L136">        response.enqueue(new Callback&lt;BniBankTransferPaymentResponse&gt;() {</span>
+            @Override
+            public void onResponse(Call&lt;BniBankTransferPaymentResponse&gt; call, Response&lt;BniBankTransferPaymentResponse&gt; response) {
+<span class="nc" id="L139">                handlePaymentResponse(response, callback);</span>
+<span class="nc" id="L140">            }</span>
+
+            @Override
+            public void onFailure(Call&lt;BniBankTransferPaymentResponse&gt; call, Throwable throwable) {
+<span class="nc" id="L144">                callback.onError(new RuntimeException(&quot;Failed to pay using BNI VA&quot;, throwable));</span>
+<span class="nc" id="L145">            }</span>
+        });
+<span class="nc" id="L147">    }</span>
+
+    /**
+     * Start payment using bank transfer via Permata.
+     *
+     * @param checkoutToken                     checkout token.
+     * @param permataBankTransferPaymentRequest Permata bank transfer payment details.
+     * @param callback                          callback to be called after API call was finished.
+     */
+    public void paymentUsingPermataBankTransfer(String checkoutToken, PermataBankTransferPaymentRequest permataBankTransferPaymentRequest, final MidtransCoreCallback&lt;PermataBankTransferPaymentResponse&gt; callback) {
+<span class="fc" id="L157">        Call&lt;PermataBankTransferPaymentResponse&gt; response = snapApi.paymentUsingPermataBankTransfer(checkoutToken, permataBankTransferPaymentRequest);</span>
+<span class="fc" id="L158">        response.enqueue(new Callback&lt;PermataBankTransferPaymentResponse&gt;() {</span>
+            @Override
+            public void onResponse(Call&lt;PermataBankTransferPaymentResponse&gt; call, Response&lt;PermataBankTransferPaymentResponse&gt; response) {
+<span class="fc" id="L161">                handlePaymentResponse(response, callback);</span>
+<span class="fc" id="L162">            }</span>
+
+            @Override
+            public void onFailure(Call&lt;PermataBankTransferPaymentResponse&gt; call, Throwable throwable) {
+<span class="nc" id="L166">                callback.onError(new RuntimeException(&quot;Failed to pay using BCA VIA&quot;, throwable));</span>
+<span class="nc" id="L167">            }</span>
+        });
+<span class="fc" id="L169">    }</span>
+
+    /**
+     * Start payment using bank transfer via Mandiri.
+     *
+     * @param checkoutToken                     checkout token.
+     * @param mandiriBankTransferPaymentRequest Mandiri bank transfer payment details.
+     * @param callback                          callback to be called after API call was finished.
+     */
+    public void paymentUsingMandiriBankTransfer(String checkoutToken, MandiriBankTransferPaymentRequest mandiriBankTransferPaymentRequest, final MidtransCoreCallback&lt;MandiriBankTransferPaymentResponse&gt; callback) {
+<span class="fc" id="L179">        Call&lt;MandiriBankTransferPaymentResponse&gt; response = snapApi.paymentUsingMandiriBankTransfer(checkoutToken, mandiriBankTransferPaymentRequest);</span>
+<span class="fc" id="L180">        response.enqueue(new Callback&lt;MandiriBankTransferPaymentResponse&gt;() {</span>
+            @Override
+            public void onResponse(Call&lt;MandiriBankTransferPaymentResponse&gt; call, Response&lt;MandiriBankTransferPaymentResponse&gt; response) {
+<span class="fc" id="L183">                handlePaymentResponse(response, callback);</span>
+<span class="fc" id="L184">            }</span>
+
+            @Override
+            public void onFailure(Call&lt;MandiriBankTransferPaymentResponse&gt; call, Throwable throwable) {
+<span class="nc" id="L188">                callback.onError(new RuntimeException(&quot;Failed to pay using Mandiri Bill pay&quot;, throwable));</span>
+<span class="nc" id="L189">            }</span>
+        });
+<span class="fc" id="L191">    }</span>
+
+    /**
+     * Start payment using bank transfer via Other Bank .
+     *
+     * @param checkoutToken                   checkout token.
+     * @param otherBankTransferPaymentRequest Other bank transfer payment details.
+     * @param callback                        callback to be called after API call was finished.
+     */
+    public void paymentUsingOtherBankTransfer(String checkoutToken, OtherBankTransferPaymentRequest otherBankTransferPaymentRequest, final MidtransCoreCallback&lt;OtherBankTransferPaymentResponse&gt; callback) {
+<span class="fc" id="L201">        Call&lt;OtherBankTransferPaymentResponse&gt; response = snapApi.paymentUsingOtherBankTransfer(checkoutToken, otherBankTransferPaymentRequest);</span>
+<span class="fc" id="L202">        response.enqueue(new Callback&lt;OtherBankTransferPaymentResponse&gt;() {</span>
+            @Override
+            public void onResponse(Call&lt;OtherBankTransferPaymentResponse&gt; call, Response&lt;OtherBankTransferPaymentResponse&gt; response) {
+<span class="fc" id="L205">                handlePaymentResponse(response, callback);</span>
+<span class="fc" id="L206">            }</span>
+
+            @Override
+            public void onFailure(Call&lt;OtherBankTransferPaymentResponse&gt; call, Throwable throwable) {
+<span class="nc" id="L210">                callback.onError(new RuntimeException(&quot;Failed to pay using other Bank Transfer payment&quot;, throwable));</span>
+<span class="nc" id="L211">            }</span>
+        });
+<span class="fc" id="L213">    }</span>
+
+    /**
+     * Start payment using BCA KlikPay.
+     *
+     * @param checkoutToken            checkout token.
+     * @param bcaKlikpayPaymentRequest BCA KlikPay payment details.
+     * @param callback                 callback to be called after API call was finished.
+     */
+    public void paymentUsingBcaKlikpay(String checkoutToken, BcaKlikpayPaymentRequest bcaKlikpayPaymentRequest, final MidtransCoreCallback&lt;BcaKlikpayPaymentResponse&gt; callback) {
+<span class="fc" id="L223">        Call&lt;BcaKlikpayPaymentResponse&gt; response = snapApi.paymentUsingBcaKlikpay(checkoutToken, bcaKlikpayPaymentRequest);</span>
+<span class="fc" id="L224">        response.enqueue(new Callback&lt;BcaKlikpayPaymentResponse&gt;() {</span>
+            @Override
+            public void onResponse(Call&lt;BcaKlikpayPaymentResponse&gt; call, Response&lt;BcaKlikpayPaymentResponse&gt; response) {
+<span class="fc" id="L227">                handlePaymentResponse(response, callback);</span>
+<span class="fc" id="L228">            }</span>
+
+            @Override
+            public void onFailure(Call&lt;BcaKlikpayPaymentResponse&gt; call, Throwable throwable) {
+<span class="nc" id="L232">                callback.onError(new RuntimeException(&quot;Failed to pay using BCA KlikPay&quot;, throwable));</span>
+<span class="nc" id="L233">            }</span>
+        });
+<span class="fc" id="L235">    }</span>
+
+    /**
+     * Start payment using KlikBCA
+     *
+     * @param checkoutToken         checkout token.
+     * @param klikBcaPaymentRequest KlikBCA payment details.
+     * @param callback              callback to be called after API call was finished.
+     */
+    public void paymentUsingKlikBca(String checkoutToken, KlikBcaPaymentRequest klikBcaPaymentRequest, final MidtransCoreCallback&lt;KlikBcaPaymentResponse&gt; callback) {
+<span class="fc" id="L245">        Call&lt;KlikBcaPaymentResponse&gt; response = snapApi.paymentUsingKlikBca(checkoutToken, klikBcaPaymentRequest);</span>
+<span class="fc" id="L246">        response.enqueue(new Callback&lt;KlikBcaPaymentResponse&gt;() {</span>
+            @Override
+            public void onResponse(Call&lt;KlikBcaPaymentResponse&gt; call, Response&lt;KlikBcaPaymentResponse&gt; response) {
+<span class="fc" id="L249">                handlePaymentResponse(response, callback);</span>
+<span class="fc" id="L250">            }</span>
+
+            @Override
+            public void onFailure(Call&lt;KlikBcaPaymentResponse&gt; call, Throwable throwable) {
+<span class="nc" id="L254">                callback.onError(new RuntimeException(&quot;Failed to pay using KlikBCA&quot;, throwable));</span>
+<span class="nc" id="L255">            }</span>
+        });
+<span class="fc" id="L257">    }</span>
+
+    /**
+     * Start payment using Epay BRI.
+     *
+     * @param checkoutToken         checkout token.
+     * @param epayBriPaymentRequest Epay BRI payment details.
+     * @param callback              callback to be called after API call was finished.
+     */
+    public void paymentUsingEpayBri(String checkoutToken, EpayBriPaymentRequest epayBriPaymentRequest, final MidtransCoreCallback&lt;EpayBriPaymentResponse&gt; callback) {
+<span class="fc" id="L267">        Call&lt;EpayBriPaymentResponse&gt; response = snapApi.paymentUsingEpayBri(checkoutToken, epayBriPaymentRequest);</span>
+<span class="fc" id="L268">        response.enqueue(new Callback&lt;EpayBriPaymentResponse&gt;() {</span>
+            @Override
+            public void onResponse(Call&lt;EpayBriPaymentResponse&gt; call, Response&lt;EpayBriPaymentResponse&gt; response) {
+<span class="fc" id="L271">                handlePaymentResponse(response, callback);</span>
+<span class="fc" id="L272">            }</span>
+
+            @Override
+            public void onFailure(Call&lt;EpayBriPaymentResponse&gt; call, Throwable throwable) {
+<span class="nc" id="L276">                callback.onError(new RuntimeException(&quot;Failed to pay using Epay BRI&quot;, throwable));</span>
+<span class="nc" id="L277">            }</span>
+        });
+<span class="fc" id="L279">    }</span>
+
+    /**
+     * Start payment using CIMB Clicks.
+     *
+     * @param checkoutToken            checkout token.
+     * @param cimbClicksPaymentRequest CIMB Clicks payment details.
+     * @param callback                 callback to be called after API call was finished.
+     */
+    public void paymentUsingCimbClicks(String checkoutToken, CimbClicksPaymentRequest cimbClicksPaymentRequest, final MidtransCoreCallback&lt;CimbClicksPaymentResponse&gt; callback) {
+<span class="fc" id="L289">        Call&lt;CimbClicksPaymentResponse&gt; response = snapApi.paymentUsingCimbClicks(checkoutToken, cimbClicksPaymentRequest);</span>
+<span class="fc" id="L290">        response.enqueue(new Callback&lt;CimbClicksPaymentResponse&gt;() {</span>
+            @Override
+            public void onResponse(Call&lt;CimbClicksPaymentResponse&gt; call, Response&lt;CimbClicksPaymentResponse&gt; response) {
+<span class="fc" id="L293">                handlePaymentResponse(response, callback);</span>
+<span class="fc" id="L294">            }</span>
+
+            @Override
+            public void onFailure(Call&lt;CimbClicksPaymentResponse&gt; call, Throwable throwable) {
+<span class="fc" id="L298">                callback.onError(new RuntimeException(&quot;Failed to pay using CIMB Clicks&quot;, throwable));</span>
+<span class="fc" id="L299">            }</span>
+        });
+<span class="fc" id="L301">    }</span>
+
+    /**
+     * Start payment using Mandiri Clickpay.
+     *
+     * @param checkoutToken                 checkout token.
+     * @param mandiriClickpayPaymentRequest Mandiri Clickpay payment details.
+     * @param callback                      callback to be called after API call was finished.
+     */
+    public void paymentUsingMandiriClickpay(String checkoutToken, MandiriClickpayPaymentRequest mandiriClickpayPaymentRequest, final MidtransCoreCallback&lt;MandiriClickpayPaymentResponse&gt; callback) {
+<span class="fc" id="L311">        Call&lt;MandiriClickpayPaymentResponse&gt; response = snapApi.paymentUsingMandiriClickpay(checkoutToken, mandiriClickpayPaymentRequest);</span>
+<span class="fc" id="L312">        response.enqueue(new Callback&lt;MandiriClickpayPaymentResponse&gt;() {</span>
+            @Override
+            public void onResponse(Call&lt;MandiriClickpayPaymentResponse&gt; call, Response&lt;MandiriClickpayPaymentResponse&gt; response) {
+<span class="fc" id="L315">                handlePaymentResponse(response, callback);</span>
+<span class="fc" id="L316">            }</span>
+
+            @Override
+            public void onFailure(Call&lt;MandiriClickpayPaymentResponse&gt; call, Throwable throwable) {
+<span class="nc" id="L320">                callback.onError(new RuntimeException(&quot;Failed to pay using Mandiri Clickpay&quot;, throwable));</span>
+<span class="nc" id="L321">            }</span>
+        });
+<span class="fc" id="L323">    }</span>
+
+    /**
+     * Start payment using Mandiri E Cash.
+     *
+     * @param checkoutToken              checkout token.
+     * @param mandiriECashPaymentRequest Mandiri E Cash payment details.
+     * @param callback                   callback to be called after API call was finished.
+     */
+    public void paymentUsingMandiriECash(String checkoutToken, MandiriECashPaymentRequest mandiriECashPaymentRequest, final MidtransCoreCallback&lt;MandiriECashPaymentResponse&gt; callback) {
+<span class="fc" id="L333">        Call&lt;MandiriECashPaymentResponse&gt; response = snapApi.paymentUsingMandiriECash(checkoutToken, mandiriECashPaymentRequest);</span>
+<span class="fc" id="L334">        response.enqueue(new Callback&lt;MandiriECashPaymentResponse&gt;() {</span>
+            @Override
+            public void onResponse(Call&lt;MandiriECashPaymentResponse&gt; call, Response&lt;MandiriECashPaymentResponse&gt; response) {
+<span class="fc" id="L337">                handlePaymentResponse(response, callback);</span>
+<span class="fc" id="L338">            }</span>
+
+            @Override
+            public void onFailure(Call&lt;MandiriECashPaymentResponse&gt; call, Throwable throwable) {
+<span class="nc" id="L342">                callback.onError(new RuntimeException(&quot;Failed to pay using Mandiri E Cash&quot;, throwable));</span>
+<span class="nc" id="L343">            }</span>
+        });
+<span class="fc" id="L345">    }</span>
+
+    /**
+     * Start payment using Telkomsel Cash.
+     *
+     * @param checkoutToken               checkout token.
+     * @param telkomselCashPaymentRequest Telkomsel Cash Payment Details.
+     * @param callback                    callback to be called after API call was finished.
+     */
+    public void paymentUsingTelkomselCash(String checkoutToken, TelkomselCashPaymentRequest telkomselCashPaymentRequest, final MidtransCoreCallback&lt;TelkomselCashPaymentResponse&gt; callback) {
+<span class="fc" id="L355">        Call&lt;TelkomselCashPaymentResponse&gt; response = snapApi.paymentUsingTelkomselCash(checkoutToken, telkomselCashPaymentRequest);</span>
+<span class="fc" id="L356">        response.enqueue(new Callback&lt;TelkomselCashPaymentResponse&gt;() {</span>
+            @Override
+            public void onResponse(Call&lt;TelkomselCashPaymentResponse&gt; call, Response&lt;TelkomselCashPaymentResponse&gt; response) {
+<span class="fc" id="L359">                handlePaymentResponse(response, callback);</span>
+<span class="fc" id="L360">            }</span>
+
+            @Override
+            public void onFailure(Call&lt;TelkomselCashPaymentResponse&gt; call, Throwable throwable) {
+<span class="nc" id="L364">                callback.onError(new RuntimeException(&quot;Failed to pay using Telkomsel Cash&quot;, throwable));</span>
+<span class="nc" id="L365">            }</span>
+        });
+<span class="fc" id="L367">    }</span>
+
+    /**
+     * Start payment using Indosat Dompetku.
+     *
+     * @param checkoutToken                 checkout token.
+     * @param indosatDompetkuPaymentRequest Indosat Dompetku payment details.
+     * @param callback                      callback to be called after API call was finished.
+     */
+    public void paymentUsingIndosatDompetku(String checkoutToken, IndosatDompetkuPaymentRequest indosatDompetkuPaymentRequest, final MidtransCoreCallback&lt;IndosatDompetkuPaymentResponse&gt; callback) {
+<span class="fc" id="L377">        Call&lt;IndosatDompetkuPaymentResponse&gt; response = snapApi.paymentUsingIndosatDompetku(checkoutToken, indosatDompetkuPaymentRequest);</span>
+<span class="fc" id="L378">        response.enqueue(new Callback&lt;IndosatDompetkuPaymentResponse&gt;() {</span>
+            @Override
+            public void onResponse(Call&lt;IndosatDompetkuPaymentResponse&gt; call, Response&lt;IndosatDompetkuPaymentResponse&gt; response) {
+<span class="fc" id="L381">                handlePaymentResponse(response, callback);</span>
+<span class="fc" id="L382">            }</span>
+
+            @Override
+            public void onFailure(Call&lt;IndosatDompetkuPaymentResponse&gt; call, Throwable throwable) {
+<span class="nc" id="L386">                callback.onError(new RuntimeException(&quot;Failed to pay using Indosat Dompetku&quot;, throwable));</span>
+<span class="nc" id="L387">            }</span>
+        });
+<span class="fc" id="L389">    }</span>
+
+    /**
+     * Start payment using XL Tunai.
+     *
+     * @param checkoutToken         checkout token.
+     * @param xlTunaiPaymentRequest XL Tunai payment details.
+     * @param callback              callback to be called after API call was finished.
+     */
+    public void paymentUsingXlTunai(String checkoutToken, XlTunaiPaymentRequest xlTunaiPaymentRequest, final MidtransCoreCallback&lt;XlTunaiPaymentResponse&gt; callback) {
+<span class="fc" id="L399">        Call&lt;XlTunaiPaymentResponse&gt; response = snapApi.paymentUsingXlTunai(checkoutToken, xlTunaiPaymentRequest);</span>
+<span class="fc" id="L400">        response.enqueue(new Callback&lt;XlTunaiPaymentResponse&gt;() {</span>
+            @Override
+            public void onResponse(Call&lt;XlTunaiPaymentResponse&gt; call, Response&lt;XlTunaiPaymentResponse&gt; response) {
+<span class="fc" id="L403">                handlePaymentResponse(response, callback);</span>
+<span class="fc" id="L404">            }</span>
+
+            @Override
+            public void onFailure(Call&lt;XlTunaiPaymentResponse&gt; call, Throwable throwable) {
+<span class="nc" id="L408">                callback.onError(new RuntimeException(&quot;Failed to pay using XL Tunai&quot;, throwable));</span>
+<span class="nc" id="L409">            }</span>
+        });
+<span class="fc" id="L411">    }</span>
+
+    /**
+     * Start payment using Indomaret.
+     *
+     * @param checkoutToken           checkout token.
+     * @param indomaretPaymentRequest Indomaret Payment Details.
+     * @param callback                callback to be called after API call was finished.
+     */
+    public void paymentUsingIndomaret(String checkoutToken, IndomaretPaymentRequest indomaretPaymentRequest, final MidtransCoreCallback&lt;IndomaretPaymentResponse&gt; callback) {
+<span class="fc" id="L421">        Call&lt;IndomaretPaymentResponse&gt; response = snapApi.paymentUsingIndomaret(checkoutToken, indomaretPaymentRequest);</span>
+<span class="fc" id="L422">        response.enqueue(new Callback&lt;IndomaretPaymentResponse&gt;() {</span>
+            @Override
+            public void onResponse(Call&lt;IndomaretPaymentResponse&gt; call, Response&lt;IndomaretPaymentResponse&gt; response) {
+<span class="fc" id="L425">                handlePaymentResponse(response, callback);</span>
+<span class="fc" id="L426">            }</span>
+
+            @Override
+            public void onFailure(Call&lt;IndomaretPaymentResponse&gt; call, Throwable throwable) {
+<span class="nc" id="L430">                callback.onError(new RuntimeException(&quot;Failed to pay using Indomaret.&quot;, throwable));</span>
+<span class="nc" id="L431">            }</span>
+        });
+<span class="fc" id="L433">    }</span>
+
+    /**
+     * Start payment using Kioson.
+     *
+     * @param checkoutToken        checkout token.
+     * @param kiosonPaymentRequest Kioson payment details.
+     * @param callback             callback to be called after API call was finished.
+     */
+    public void paymentUsingKioson(String checkoutToken, KiosonPaymentRequest kiosonPaymentRequest, final MidtransCoreCallback&lt;KiosonPaymentResponse&gt; callback) {
+<span class="fc" id="L443">        Call&lt;KiosonPaymentResponse&gt; response = snapApi.paymentUsingKioson(checkoutToken, kiosonPaymentRequest);</span>
+<span class="fc" id="L444">        response.enqueue(new Callback&lt;KiosonPaymentResponse&gt;() {</span>
+            @Override
+            public void onResponse(Call&lt;KiosonPaymentResponse&gt; call, Response&lt;KiosonPaymentResponse&gt; response) {
+<span class="fc" id="L447">                handlePaymentResponse(response, callback);</span>
+<span class="fc" id="L448">            }</span>
+
+            @Override
+            public void onFailure(Call&lt;KiosonPaymentResponse&gt; call, Throwable throwable) {
+<span class="fc" id="L452">                callback.onError(new RuntimeException(&quot;Failed to pay using Kioson.&quot;, throwable));</span>
+<span class="fc" id="L453">            }</span>
+        });
+<span class="fc" id="L455">    }</span>
+
+    /**
+     * Start payment using Gift Card.
+     *
+     * @param checkoutToken          checkout token.
+     * @param giftCardPaymentRequest Gift Card payment details.
+     * @param callback               callback to be called after API call was finished.
+     */
+    public void paymentUsingGiftCard(String checkoutToken, GiftCardPaymentRequest giftCardPaymentRequest, final MidtransCoreCallback&lt;GiftCardPaymentResponse&gt; callback) {
+<span class="fc" id="L465">        Call&lt;GiftCardPaymentResponse&gt; response = snapApi.paymentUsingGiftCard(checkoutToken, giftCardPaymentRequest);</span>
+<span class="fc" id="L466">        response.enqueue(new Callback&lt;GiftCardPaymentResponse&gt;() {</span>
+            @Override
+            public void onResponse(Call&lt;GiftCardPaymentResponse&gt; call, Response&lt;GiftCardPaymentResponse&gt; response) {
+<span class="fc" id="L469">                handlePaymentResponse(response, callback);</span>
+<span class="fc" id="L470">            }</span>
+
+            @Override
+            public void onFailure(Call&lt;GiftCardPaymentResponse&gt; call, Throwable throwable) {
+<span class="nc" id="L474">                callback.onError(new RuntimeException(&quot;Failed to pay using Gift Card.&quot;, throwable));</span>
+<span class="nc" id="L475">            }</span>
+        });
+<span class="fc" id="L477">    }</span>
+
+    /**
+     * Start delete card from token storage.
+     *
+     * @param checkoutToken checkout token.
+     * @param maskedCard masked card.
+     * @param callback callback to be called after process was finished.
+     */
+    public void deleteCard(String checkoutToken, String maskedCard, final MidtransCoreCallback&lt;Void&gt; callback) {
+<span class="nc" id="L487">        Call&lt;Void&gt; response = snapApi.deleteCard(checkoutToken, maskedCard);</span>
+<span class="nc" id="L488">        response.enqueue(new Callback&lt;Void&gt;() {</span>
+            @Override
+            public void onResponse(Call&lt;Void&gt; call, Response&lt;Void&gt; response) {
+<span class="nc" id="L491">                handleDeleteCardResponse(response, callback);</span>
+<span class="nc" id="L492">            }</span>
+
+            @Override
+            public void onFailure(Call&lt;Void&gt; call, Throwable throwable) {
+<span class="nc" id="L496">                callback.onError(new RuntimeException(&quot;Failed to delete card.&quot;, throwable));</span>
+<span class="nc" id="L497">            }</span>
+        });
+<span class="nc" id="L499">    }</span>
+
+    /**
+     * Start getting bank bins from Snap.
+     *
+     * @param callback callback to be called after API call was finished.
+     */
+    public void getBankBins(final MidtransCoreCallback&lt;List&lt;BankBinsResponse&gt;&gt; callback) {
+<span class="fc" id="L507">        Call&lt;List&lt;BankBinsResponse&gt;&gt; response = snapApi.getBankBins();</span>
+<span class="fc" id="L508">        response.enqueue(new Callback&lt;List&lt;BankBinsResponse&gt;&gt;() {</span>
+            @Override
+            public void onResponse(Call&lt;List&lt;BankBinsResponse&gt;&gt; call, Response&lt;List&lt;BankBinsResponse&gt;&gt; response) {
+<span class="fc" id="L511">                handleGetBankBinsResponse(response, callback);</span>
+<span class="fc" id="L512">            }</span>
+
+            @Override
+            public void onFailure(Call&lt;List&lt;BankBinsResponse&gt;&gt; call, Throwable throwable) {
+<span class="nc" id="L516">                callback.onError(new RuntimeException(&quot;Failed to get bank bins&quot;, throwable));</span>
+<span class="nc" id="L517">            }</span>
+        });
+<span class="fc" id="L519">    }</span>
+
+    /**
+     * Get bank point.
+     *
+     * @param checkoutToken checkout token.
+     * @param cardToken     card token.
+     * @param callback      callback to be called after the process was finished.
+     */
+    public void getBankPoint(String checkoutToken, String cardToken, final MidtransCoreCallback&lt;BankPointResponse&gt; callback) {
+<span class="nc" id="L529">        Call&lt;BankPointResponse&gt; response = snapApi.getBankPoint(checkoutToken, cardToken);</span>
+<span class="nc" id="L530">        response.enqueue(new Callback&lt;BankPointResponse&gt;() {</span>
+            @Override
+            public void onResponse(Call&lt;BankPointResponse&gt; call, Response&lt;BankPointResponse&gt; response) {
+<span class="nc" id="L533">                handleGetBankPointResponse(response, callback);</span>
+<span class="nc" id="L534">            }</span>
+
+            @Override
+            public void onFailure(Call&lt;BankPointResponse&gt; call, Throwable throwable) {
+<span class="nc" id="L538">                callback.onError(new RuntimeException(&quot;Failed to get bank point&quot;, throwable));</span>
+<span class="nc" id="L539">            }</span>
+        });
+<span class="nc" id="L541">    }</span>
+
+    private void handleGetBankPointResponse(Response&lt;BankPointResponse&gt; response, MidtransCoreCallback&lt;BankPointResponse&gt; callback) {
+<span class="nc bnc" id="L544" title="All 2 branches missed.">        if (response.isSuccessful()</span>
+<span class="nc bnc" id="L545" title="All 2 branches missed.">                &amp;&amp; response.code() == 200</span>
+<span class="nc bnc" id="L546" title="All 2 branches missed.">                &amp;&amp; response.body().statusCode.equalsIgnoreCase(&quot;200&quot;)) {</span>
+<span class="nc" id="L547">            callback.onSuccess(response.body());</span>
+        } else {
+<span class="nc" id="L549">            callback.onFailure(response.body());</span>
+        }
+<span class="nc" id="L551">    }</span>
+
+    private &lt;T extends BaseTransactionResponse&gt; void handlePaymentResponse(Response&lt;T&gt; response, MidtransCoreCallback&lt;T&gt; callback) {
+<span class="pc bpc" id="L554" title="1 of 2 branches missed.">        if (response.isSuccessful()</span>
+<span class="pc bpc" id="L555" title="1 of 2 branches missed.">                &amp;&amp; response.code() == 200</span>
+<span class="fc bfc" id="L556" title="All 2 branches covered.">                &amp;&amp; (response.body().statusCode.equalsIgnoreCase(&quot;200&quot;)</span>
+<span class="pc bpc" id="L557" title="1 of 2 branches missed.">                || response.body().statusCode.equalsIgnoreCase(&quot;201&quot;))) {</span>
+<span class="fc" id="L558">            callback.onSuccess(response.body());</span>
+        } else {
+<span class="nc" id="L560">            callback.onFailure(response.body());</span>
+        }
+<span class="fc" id="L562">    }</span>
+
+    private void handleGetTransactionResponse(Response&lt;SnapTransaction&gt; response, MidtransCoreCallback&lt;SnapTransaction&gt; callback) {
+<span class="pc bpc" id="L565" title="1 of 2 branches missed.">        if (response.isSuccessful()</span>
+<span class="pc bpc" id="L566" title="1 of 2 branches missed.">                &amp;&amp; response.code() == 200) {</span>
+<span class="fc" id="L567">            callback.onSuccess(response.body());</span>
+        } else {
+<span class="nc" id="L569">            callback.onFailure(response.body());</span>
+        }
+<span class="fc" id="L571">    }</span>
+
+    private void handleGetBankBinsResponse(Response&lt;List&lt;BankBinsResponse&gt;&gt; response, MidtransCoreCallback&lt;List&lt;BankBinsResponse&gt;&gt; callback) {
+<span class="pc bpc" id="L574" title="1 of 2 branches missed.">        if (response.isSuccessful()</span>
+<span class="pc bpc" id="L575" title="1 of 2 branches missed.">                &amp;&amp; response.code() == 200) {</span>
+<span class="fc" id="L576">            callback.onSuccess(response.body());</span>
+        } else {
+<span class="nc" id="L578">            callback.onFailure(response.body());</span>
+        }
+<span class="fc" id="L580">    }</span>
+
+    private void handleDeleteCardResponse(Response&lt;Void&gt; response, MidtransCoreCallback&lt;Void&gt; callback) {
+<span class="nc bnc" id="L583" title="All 2 branches missed.">        if (response.isSuccessful()) {</span>
+<span class="nc" id="L584">            callback.onSuccess(response.body());</span>
+        } else {
+<span class="nc" id="L586">            callback.onFailure(response.body());</span>
+        }
+<span class="nc" id="L588">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

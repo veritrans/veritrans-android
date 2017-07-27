@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/sixteen_dp"
+    android:orientation="vertical">
+
+    <com.midtrans.sdk.ui.widgets.DefaultTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/payment_code"
+        android:textSize="14sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.midtrans.sdk.ui.widgets.DefaultTextView
+            android:id="@+id/indomaret_payment_code"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/light_gray"
+            android:padding="@dimen/eight_dp"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            tools:text="131841294124124124" />
+
+        <com.midtrans.sdk.ui.widgets.FancyButton
+            android:id="@+id/copy_payment_code_button"
+            style="@style/ButtonSecondary"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:fb_borderColor="@color/gray.primary_dark"
+            app:fb_defaultColor="@android:color/white"
+            app:fb_focusColor="@color/colorAccentLight"
+            app:fb_iconColor="@color/gray.primary_dark"
+            app:fb_text="@string/copy"
+            app:fb_textColor="@color/gray.primary_dark"
+            app:fb_textSize="16sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@color/faint_yellow"
+        android:orientation="horizontal"
+        android:padding="@dimen/sixteen_dp">
+
+        <com.midtrans.sdk.ui.widgets.DefaultTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="start"
+            android:text="@string/valid_until"
+            android:textColor="@color/black"
+            android:textSize="@dimen/secondary_text_size" />
+
+        <com.midtrans.sdk.ui.widgets.DefaultTextView
+            android:id="@+id/text_validity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="end"
+            android:text="@string/valid_date"
+            android:textColor="@color/black"
+            android:textSize="@dimen/secondary_text_size" />
+    </LinearLayout>
+
+    <com.midtrans.sdk.ui.widgets.FancyButton
+        android:id="@+id/btn_see_instruction"
+        style="@style/ButtonSecondary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/twenty_four_dp"
+        android:padding="@dimen/eight_dp"
+        app:fb_borderColor="@color/gray.primary_dark"
+        app:fb_defaultColor="@android:color/white"
+        app:fb_focusColor="@color/colorAccentLight"
+        app:fb_text="@string/kioson_instruction"
+        app:fb_textColor="@color/gray.primary_dark" />
+</LinearLayout>

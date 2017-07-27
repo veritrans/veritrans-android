@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container_customer_data"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/container_offer_status"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/container_customer_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/hint_customer_email"
+            style="@style/EditTextHint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/hint_customer_email" />
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/field_customer_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/hint_customer_email"
+            android:hint="@string/hint_customer_email_sample"
+            android:imeOptions="actionNext"
+            android:inputType="textEmailAddress"
+            android:maxLines="1" />
+
+        <TextView
+            android:id="@+id/error_customer_email"
+            style="@style/FormErrorMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/field_customer_email"
+            tools:text="@string/validation_email_empty"
+            tools:visibility="visible" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/container_customer_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/eight_dp">
+
+        <TextView
+            android:id="@+id/hint_customer_phone"
+            style="@style/EditTextHint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/hint_customer_phone" />
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/field_customer_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/hint_customer_phone"
+            android:digits="0123456789"
+            android:hint="@string/hint_customer_phone_sample"
+            android:imeOptions="actionNext"
+            android:inputType="phone"
+            android:maxLength="19"
+            android:maxLines="1" />
+
+        <TextView
+            android:id="@+id/error_customer_phone"
+            style="@style/FormErrorMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/field_customer_phone"
+            tools:text="@string/validation_phone_no_empty"
+            tools:visibility="visible" />
+    </RelativeLayout>
+</LinearLayout>

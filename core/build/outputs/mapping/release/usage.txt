@@ -1,0 +1,10 @@
+com.midtrans.corekit.BuildConfig
+com.midtrans.sdk.core.api.RestAdapter:
+    private static final int TIMEOUT_IN_SECOND
+com.midtrans.sdk.core.environment.BaseEnvironment
+com.midtrans.sdk.core.environment.ProductionEnvironment
+com.midtrans.sdk.core.environment.SandboxEnvironment
+com.midtrans.sdk.core.environment.StagingEnvironment
+com.midtrans.sdk.core.utils.Constants
+com.midtrans.sdk.core.utils.PaymentUtilities:
+    37:37:public PaymentUtilities()

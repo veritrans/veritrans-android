@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container_form"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/sixteen_dp"
+    android:paddingRight="@dimen/sixteen_dp">
+
+    <LinearLayout
+        android:id="@+id/container_offer_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/sixteen_dp"
+        android:orientation="vertical">
+
+        <com.midtrans.sdk.ui.widgets.DefaultTextView
+            android:id="@+id/text_offer_status_applied"
+            style="@style/OfferText.Success"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/offer_applied"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <com.midtrans.sdk.ui.widgets.DefaultTextView
+            android:id="@+id/text_offer_status_not_applied"
+            style="@style/OfferText.Failure"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/offer_not_applied"
+            android:visibility="gone"
+            tools:visibility="visible" />
+    </LinearLayout>
+
+    <include
+        android:id="@+id/container_customer_data"
+        layout="@layout/layout_credit_card_customer_form" />
+
+    <RelativeLayout
+        android:id="@+id/container_card_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/container_customer_data">
+
+        <TextView
+            android:id="@+id/hint_card_number"
+            style="@style/EditTextHint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/hint_card_number" />
+
+        <EditText
+            android:id="@+id/field_card_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/hint_card_number"
+            android:digits="0123456789 "
+            android:hint="@string/hint_card_number_example"
+            android:imeOptions="actionNext"
+            android:inputType="number"
+            android:maxLength="19"
+            android:maxLines="1"
+            android:nextFocusDown="@+id/field_expiry" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.midtrans.sdk.ui.widgets.AspectRatioImageView
+                android:id="@+id/bank_logo"
+                android:layout_width="@dimen/bank_logo_size"
+                android:layout_height="@dimen/bank_logo_size"
+                android:layout_marginEnd="@dimen/four_dp"
+                android:layout_marginRight="@dimen/four_dp"
+                tools:src="@drawable/bri" />
+
+            <com.midtrans.sdk.ui.widgets.AspectRatioImageView
+                android:id="@+id/payment_card_logo"
+                android:layout_width="@dimen/payment_logo_size"
+                android:layout_height="@dimen/payment_logo_size"
+                android:layout_marginEnd="@dimen/four_dp"
+                android:layout_marginRight="@dimen/four_dp"
+                tools:src="@drawable/ic_visa" />
+
+            <com.midtrans.sdk.ui.widgets.AspectRatioImageView
+                android:id="@+id/promo_logo"
+                android:layout_width="@dimen/promo_logo_size"
+                android:layout_height="@dimen/promo_logo_size"
+                android:background="?selectableItemBackground"
+                android:src="@drawable/ic_promo"
+                android:visibility="gone"
+                tools:visibility="visible" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/error_message_card_number"
+            style="@style/FormErrorMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/field_card_number"
+            tools:text="@string/validation_message_card_number"
+            tools:visibility="visible" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/container_card_expiry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/container_card_number"
+        android:layout_marginTop="@dimen/eight_dp"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/eight_dp"
+        android:weightSum="1">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.6">
+
+            <TextView
+                android:id="@+id/hint_card_expiry"
+                style="@style/EditTextHint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/hint_expiry_date" />
+
+            <EditText
+                android:id="@+id/field_expiry"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/hint_card_expiry"
+                android:layout_gravity="bottom"
+                android:hint="@string/hint_expiry_date_example"
+                android:inputType="date"
+                android:maxLength="7"
+                android:maxLines="1"
+                android:nextFocusDown="@+id/field_cvv" />
+
+            <TextView
+                android:id="@+id/error_message_expiry"
+                style="@style/FormErrorMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/field_expiry"
+                tools:text="@string/validation_message_empty_expiry_date"
+                tools:visibility="visible" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.4">
+
+            <TextView
+                android:id="@+id/hint_card_cvv"
+                style="@style/EditTextHint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/hint_cvv" />
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/field_cvv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/hint_card_cvv"
+                android:hint="@string/hint_cvv_example"
+                android:imeOptions="actionDone"
+                android:inputType="numberPassword"
+                android:maxLength="6"
+                android:maxLines="1" />
+
+            <ImageButton
+                android:id="@+id/help_cvv_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:background="?selectableItemBackground"
+                android:src="@drawable/ic_hints" />
+
+            <TextView
+                android:id="@+id/error_message_cvv"
+                style="@style/FormErrorMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/field_cvv"
+                android:maxLines="1"
+                tools:text="@string/validation_message_empty_expiry_date"
+                tools:visibility="visible" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/container_save_card_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/container_card_expiry"
+        android:layout_marginTop="@dimen/eight_dp">
+
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id="@+id/checkbox_save_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/four_dp"
+            android:layout_marginEnd="@dimen/eight_dp"
+            android:layout_marginRight="@dimen/eight_dp"
+            android:layout_marginTop="@dimen/four_dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/save_card_message"
+            app:buttonTint="@color/gray.primary_dark" />
+
+        <ImageButton
+            android:id="@+id/help_save_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="?selectableItemBackground"
+            android:src="@drawable/ic_hints" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/container_bni_point"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/container_save_card_details"
+        android:layout_marginTop="@dimen/eight_dp"
+        android:gravity="end"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id="@+id/checkbox_point"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/four_dp"
+            android:layout_marginTop="@dimen/four_dp"
+            android:text="@string/redeem_point_reward"
+            android:visibility="visible" />
+
+        <ImageButton
+            android:id="@+id/help_bank_point"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="?selectableItemBackground"
+            android:src="@drawable/ic_hints"
+            android:textColor="?colorAccent" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/container_installment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/container_bni_point"
+        android:layout_marginTop="@dimen/four_dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:padding="@dimen/eight_dp"
+        android:paddingBottom="@dimen/four_dp"
+        android:visibility="gone"
+        tools:visibility="gone">
+
+        <com.midtrans.sdk.ui.widgets.DefaultTextView
+            android:id="@+id/title_installment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pay_with_instalments"
+            android:textColor="@color/gray.primary_dark" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/four_dp">
+
+            <com.midtrans.sdk.ui.widgets.FancyButton
+                android:id="@+id/button_installment_decrease"
+                style="@style/CreditCardInstallmentButton"
+                android:layout_width="@dimen/forty_dp"
+                android:layout_height="@dimen/forty_dp"
+                app:fb_text="-" />
+
+            <com.midtrans.sdk.ui.widgets.DefaultTextView
+                android:id="@+id/text_installment_term"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/eight_dp"
+                android:layout_marginRight="@dimen/eight_dp"
+                android:layout_weight="1"
+                android:background="@color/gray.secondary"
+                android:gravity="center"
+                android:text="@string/installment_term"
+                android:textStyle="bold" />
+
+            <com.midtrans.sdk.ui.widgets.FancyButton
+                android:id="@+id/button_installment_increase"
+                style="@style/CreditCardInstallmentButton"
+                android:layout_width="@dimen/forty_dp"
+                android:layout_height="@dimen/forty_dp"
+                app:fb_radius="5dp"
+                app:fb_text="+" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/container_security"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/container_installment"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:background="@drawable/grey_rounded_background"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/eight_dp">
+
+        <ImageView
+            android:id="@+id/midtrans_lock"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/four_dp"
+            android:layout_marginRight="@dimen/four_dp"
+            android:layout_weight="0.4"
+            android:scaleType="centerInside"
+            android:src="@drawable/midtrans_lock" />
+
+        <ImageView
+            android:id="@+id/cc_badge"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/four_dp"
+            android:layout_marginStart="@dimen/four_dp"
+            android:layout_weight="0.6"
+            android:scaleType="centerInside"
+            android:src="@drawable/cc_badge" />
+    </LinearLayout>
+
+    <com.midtrans.sdk.ui.widgets.FancyButton
+        android:id="@+id/button_delete"
+        style="@style/ButtonSecondary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/container_security"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="19dp"
+        android:visibility="gone"
+        app:fb_borderColor="@color/dark_red"
+        app:fb_iconColor="@color/dark_red"
+        app:fb_iconResource="@drawable/ic_delete_black"
+        app:fb_text="@string/delete_this_card"
+        app:fb_textColor="@color/dark_red"
+        tools:visibility="visible" />
+
+    <com.midtrans.sdk.ui.widgets.FancyButton
+        android:id="@+id/button_scan_card"
+        style="@style/ButtonSecondary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/button_delete"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="19dp"
+        android:visibility="gone"
+        app:fb_borderColor="@color/navy_blue.primary_dark"
+        app:fb_iconColor="@color/navy_blue.primary_dark"
+        app:fb_iconResource="@drawable/ic_scan_cam"
+        app:fb_text="@string/btn_scan_card"
+        app:fb_textColor="@color/navy_blue.primary_dark"
+        tools:visibility="visible" />
+</RelativeLayout>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RestAdapter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.midtrans.sdk.core.api</a> &gt; <span class="el_source">RestAdapter.java</span></div><h1>RestAdapter.java</h1><pre class="source lang-java linenums">package com.midtrans.sdk.core.api;
+
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.internal.bind.DateTypeAdapter;
+
+import com.midtrans.sdk.core.Environment;
+import com.midtrans.sdk.core.api.merchant.MerchantApi;
+import com.midtrans.sdk.core.api.papi.MidtransApi;
+import com.midtrans.sdk.core.api.snap.SnapApi;
+import com.midtrans.sdk.core.models.snap.card.CreditCardPaymentParams;
+import com.midtrans.sdk.core.utils.Logger;
+import com.midtrans.sdk.core.utils.PaymentUtilities;
+import com.midtrans.sdk.core.utils.Utilities;
+
+import java.sql.Date;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+/**
+ * Created by rakawm on 10/19/16.
+ */
+
+public class RestAdapter {
+    private static final int TIMEOUT_IN_SECOND = 30;
+    private final Environment environment;
+
+<span class="fc" id="L34">    public RestAdapter(Environment environment) {</span>
+<span class="fc" id="L35">        this.environment = environment;</span>
+<span class="fc" id="L36">    }</span>
+
+    public MidtransApi getMidtransApiClient() {
+<span class="fc" id="L39">        return buildPaymentApiRetrofit().create(MidtransApi.class);</span>
+    }
+
+    public SnapApi getSnapApiClient() {
+<span class="fc" id="L43">        return buildSnapApiRetrofit().create(SnapApi.class);</span>
+    }
+
+    public MerchantApi getMerchantApiClient(String checkoutUrl) {
+<span class="nc" id="L47">        return buildMerchantApiRetrofit(checkoutUrl).create(MerchantApi.class);</span>
+    }
+
+    private Retrofit buildPaymentApiRetrofit() {
+<span class="fc" id="L51">        return new Retrofit.Builder()</span>
+<span class="fc" id="L52">                .client(buildOkHttpClient())</span>
+<span class="fc" id="L53">                .baseUrl(PaymentUtilities.getPaymentBaseUrl(environment))</span>
+<span class="fc" id="L54">                .addConverterFactory(GsonConverterFactory.create(Utilities.buildGson()))</span>
+<span class="fc" id="L55">                .build();</span>
+    }
+
+    private Retrofit buildSnapApiRetrofit() {
+<span class="fc" id="L59">        return new Retrofit.Builder()</span>
+<span class="fc" id="L60">                .client(buildOkHttpClient())</span>
+<span class="fc" id="L61">                .baseUrl(PaymentUtilities.getSnapBaseUrl(environment))</span>
+<span class="fc" id="L62">                .addConverterFactory(GsonConverterFactory.create(buildSnapGson()))</span>
+<span class="fc" id="L63">                .build();</span>
+    }
+
+    private Retrofit buildMerchantApiRetrofit(String checkoutUrl) {
+<span class="nc" id="L67">        return new Retrofit.Builder()</span>
+<span class="nc" id="L68">                .client(buildOkHttpClient())</span>
+<span class="nc" id="L69">                .baseUrl(checkoutUrl)</span>
+<span class="nc" id="L70">                .addConverterFactory(GsonConverterFactory.create(Utilities.buildGson()))</span>
+<span class="nc" id="L71">                .build();</span>
+    }
+
+    private OkHttpClient buildOkHttpClient() {
+<span class="fc" id="L75">        return new OkHttpClient.Builder()</span>
+<span class="fc" id="L76">                .addInterceptor(buildHttpLoggingInterceptor())</span>
+<span class="fc" id="L77">                .addInterceptor(new HeaderInterceptor())</span>
+<span class="fc" id="L78">                .connectTimeout(TIMEOUT_IN_SECOND, TimeUnit.SECONDS)</span>
+<span class="fc" id="L79">                .readTimeout(TIMEOUT_IN_SECOND, TimeUnit.SECONDS)</span>
+<span class="fc" id="L80">                .writeTimeout(TIMEOUT_IN_SECOND, TimeUnit.SECONDS)</span>
+<span class="fc" id="L81">                .build();</span>
+    }
+
+    private Interceptor buildHttpLoggingInterceptor() {
+<span class="fc" id="L85">        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();</span>
+<span class="pc bpc" id="L86" title="1 of 2 branches missed.">        httpLoggingInterceptor</span>
+<span class="fc" id="L87">                .setLevel(Logger.enabled ?</span>
+                        HttpLoggingInterceptor.Level.BODY :
+                        HttpLoggingInterceptor.Level.NONE);
+<span class="fc" id="L90">        return httpLoggingInterceptor;</span>
+    }
+
+    private Gson buildSnapGson() {
+<span class="fc" id="L94">        return new GsonBuilder()</span>
+<span class="fc" id="L95">                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)</span>
+<span class="fc" id="L96">                .registerTypeAdapter(Date.class, new DateTypeAdapter())</span>
+<span class="fc" id="L97">                .registerTypeAdapter(CreditCardPaymentParams.class, new CreditCardPaymentParamsTypeAdapter())</span>
+<span class="fc" id="L98">                .create();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>
