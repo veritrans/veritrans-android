@@ -568,7 +568,6 @@
     <string name="checkout_error_empty_response">Tidak ada  data dari server</string>
     <string name="error_unable_to_connect">Gagal terhubung ke server</string>
     <string name="complete_payment_via_xl_tunai">Selesaikan Pembayaran di XL Tunai</string>
-    <string name="timeout_message">Proses ini terlalu lama. Silakan coba lagi.</string>
     <string name="payment_failed">Pembayaran gagal! silakan coba lagi.</string>
 
     <string name="try_again">Try Again</string>
