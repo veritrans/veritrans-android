@@ -40,14 +40,14 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/container_offer_status">
 
-        <TextView
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
             android:id="@+id/hint_card_number"
             style="@style/EditTextHint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/hint_card_number" />
 
-        <EditText
+        <android.support.v7.widget.AppCompatEditText
             android:id="@+id/field_card_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -106,12 +106,12 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:baselineAligned="false"
         android:id="@+id/container_card_expiry"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/container_card_number"
         android:layout_marginTop="@dimen/eight_dp"
+        android:baselineAligned="false"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/eight_dp"
         android:weightSum="1">
@@ -121,14 +121,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.6">
 
-            <TextView
+            <com.midtrans.sdk.uikit.widgets.DefaultTextView
                 android:id="@+id/hint_card_expiry"
                 style="@style/EditTextHint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/hint_expiry_date" />
 
-            <EditText
+            <android.support.v7.widget.AppCompatEditText
                 android:id="@+id/field_expiry"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -155,7 +155,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.4">
 
-            <TextView
+            <com.midtrans.sdk.uikit.widgets.DefaultTextView
                 android:id="@+id/hint_card_cvv"
                 style="@style/EditTextHint"
                 android:layout_width="match_parent"
@@ -175,13 +175,13 @@
 
             <ImageButton
                 android:id="@+id/help_cvv_button"
-                android:contentDescription="@string/what_is_cvv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerInParent="true"
                 android:background="?selectableItemBackground"
+                android:contentDescription="@string/what_is_cvv"
                 android:src="@drawable/ic_hints" />
 
             <TextView
@@ -201,27 +201,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/container_card_expiry"
+        android:visibility="gone"
+        tools:visibility="visible"
         android:layout_marginTop="@dimen/eight_dp">
 
         <android.support.v7.widget.AppCompatCheckBox
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_toStartOf="@id/help_save_card"
-            android:layout_toLeftOf="@id/help_save_card"
             android:id="@+id/checkbox_save_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_marginBottom="@dimen/four_dp"
             android:layout_marginEnd="@dimen/eight_dp"
             android:layout_marginRight="@dimen/eight_dp"
             android:layout_marginTop="@dimen/four_dp"
+            android:layout_toLeftOf="@id/help_save_card"
+            android:layout_toStartOf="@id/help_save_card"
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@string/save_card_message"
             app:buttonTint="@color/gray.primary_dark" />
 
         <ImageButton
-            android:contentDescription="@string/save_card_info"
             android:id="@+id/help_save_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -229,6 +230,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:background="?selectableItemBackground"
+            android:contentDescription="@string/save_card_info"
             android:src="@drawable/ic_hints" />
     </RelativeLayout>
 
@@ -254,13 +256,13 @@
 
         <ImageButton
             android:id="@+id/help_bank_point"
-            android:contentDescription="@string/redeem_bank_point_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:background="?selectableItemBackground"
+            android:contentDescription="@string/redeem_bank_point_title"
             android:src="@drawable/ic_hints"
             android:textColor="?colorAccent" />
     </RelativeLayout>

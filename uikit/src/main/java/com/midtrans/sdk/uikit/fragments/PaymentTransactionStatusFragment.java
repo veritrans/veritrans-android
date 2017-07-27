@@ -246,7 +246,6 @@ public class PaymentTransactionStatusFragment extends Fragment {
         } else {
             layoutRedeemedPoint.setVisibility(View.GONE);
         }
-
     }
 
     private void setBankInfo() {

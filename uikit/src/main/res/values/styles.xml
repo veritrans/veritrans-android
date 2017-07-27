@@ -87,7 +87,6 @@
         <item name="fb_borderWidth">1dp</item>
     </style>
 
-    <style name="ScrollTheme">
 
     <style name="Notification">
         <item name="android:paddingTop">@dimen/eight_dp</item>
@@ -111,5 +110,4 @@
         <item name="android:text">@string/notification_otp_message</item>
     </style>
 
-    <style name="ScrollTheme"></style>
 </resources>

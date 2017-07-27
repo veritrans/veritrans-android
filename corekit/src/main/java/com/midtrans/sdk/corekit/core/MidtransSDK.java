@@ -30,6 +30,7 @@ import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
 import com.midtrans.sdk.corekit.models.snap.MerchantData;
 import com.midtrans.sdk.corekit.models.snap.PromoResponse;
+import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
 import com.midtrans.sdk.corekit.models.snap.params.IndosatDompetkuPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.params.TelkomselCashPaymentParams;
@@ -78,6 +79,7 @@ public class MidtransSDK {
     private ArrayList<String> banksPointEnabled;
     private BaseColorTheme colorTheme;
     private MerchantData merchantData;
+    private Transaction transaction;
 
     private MidtransSDK(@NonNull BaseSdkBuilder sdkBuilder) {
         this.context = sdkBuilder.context;
@@ -1685,7 +1687,9 @@ public class MidtransSDK {
     }
 
     public void setUIKitCustomSetting(UIKitCustomSetting uiKitCustomSetting) {
-        this.UIKitCustomSetting = uiKitCustomSetting;
+        if (uiKitCustomSetting != null) {
+            this.UIKitCustomSetting = uiKitCustomSetting;
+        }
     }
 
     public CreditCard getCreditCard() {
@@ -1751,5 +1755,13 @@ public class MidtransSDK {
 
     public void setMerchantData(MerchantData merchantData) {
         this.merchantData = merchantData;
+    }
+
+    public void setTransaction(Transaction transaction) {
+        this.transaction = transaction;
+    }
+
+    public Transaction getTransaction() {
+        return transaction;
     }
 }

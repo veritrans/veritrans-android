@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/sixteen_dp"
+    android:layout_marginRight="@dimen/sixteen_dp"
+    android:layout_marginTop="@dimen/sixteen_dp"
+    android:orientation="vertical">
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/container_redeemed_point"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/redeemed_point_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/how_much_point"
+            android:inputType="number" />
+    </android.support.design.widget.TextInputLayout>
+
+    <com.midtrans.sdk.uikit.widgets.DefaultTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/sixteen_dp"
+        android:text="@string/total_bank_point"
+        android:textColor="@color/black" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.midtrans.sdk.uikit.widgets.FancyButton
+            android:id="@+id/container_total_point"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:alpha="0.1"
+            android:clickable="false"
+            android:gravity="center"
+            android:visibility="visible"
+            app:fb_defaultColor="?attr/colorPrimary"
+            app:fb_focusColor="@color/colorAccentLight"
+            app:fb_radius="5dp"
+            app:fb_text="" />
+
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:id="@+id/text_total_point"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/total_point_here"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <com.midtrans.sdk.uikit.widgets.DefaultTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/sixteen_dp"
+        android:text="@string/amount_after_discount"
+        android:textColor="@color/black" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.midtrans.sdk.uikit.widgets.FancyButton
+            android:id="@+id/container_amount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:alpha="0.1"
+            android:clickable="false"
+            android:gravity="center"
+            android:visibility="visible"
+            app:fb_defaultColor="?attr/colorPrimary"
+            app:fb_focusColor="@color/colorAccentLight"
+            app:fb_radius="5dp"
+            app:fb_text="" />
+
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:id="@+id/text_amount_to_pay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/text_amount_here"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/bank_point_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/sixteen_dp"
+        tools:src="@drawable/bni_badge" />
+</LinearLayout>

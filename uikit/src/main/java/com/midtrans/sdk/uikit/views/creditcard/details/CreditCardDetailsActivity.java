@@ -1,70 +1,87 @@
 package com.midtrans.sdk.uikit.views.creditcard.details;
 
-import android.app.ProgressDialog;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
+import android.annotation.SuppressLint;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatEditText;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.BankType;
+import com.midtrans.sdk.corekit.models.SaveCardRequest;
+import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
+import com.midtrans.sdk.corekit.models.TransactionResponse;
+import com.midtrans.sdk.corekit.models.snap.BanksPointResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.activities.BaseActivity;
-import com.midtrans.sdk.uikit.activities.CreditCardFlowActivity;
+import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
+import com.midtrans.sdk.uikit.activities.PaymentWebActivity;
 import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
+import com.midtrans.sdk.uikit.fragments.WebviewFragment;
+import com.midtrans.sdk.uikit.models.CreditCardType;
+import com.midtrans.sdk.uikit.scancard.ExternalScanner;
+import com.midtrans.sdk.uikit.scancard.ScannerModel;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
+import com.midtrans.sdk.uikit.utilities.UiKitConstants;
+import com.midtrans.sdk.uikit.views.creditcard.bankpoints.BankPointsActivity;
+import com.midtrans.sdk.uikit.views.status.PaymentStatusActivity;
+import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by ziahaqi on 7/11/17.
  */
 
-public class CreditCardDetailsActivity extends BaseActivity implements CreditCardDetailsView {
+public class CreditCardDetailsActivity extends BasePaymentActivity implements CreditCardDetailsView {
 
     private static final String TAG = CreditCardDetailsActivity.class.getSimpleName();
 
     public static final String EXTRA_CARD_DETAILS = "card.details";
     public static final String EXTRA_DELETED_CARD_DETAILS = "card.deleted.details";
-    private static final int BANK_POINT_REQUEST_CODE = 1025;
-
-    private Toolbar toolbar;
-
-    private RecyclerView itemDetails;
+    public static final String EXTRA_SAVED_CARD = "extra.card.saved";
 
     private AppCompatEditText cardNumberField;
     private AppCompatEditText cardCvvField;
     private AppCompatEditText cardExpiryField;
 
+    private DefaultTextView textCardNumberHint;
+    private DefaultTextView textExpriyHint;
+    private DefaultTextView textCvvHint;
+    private DefaultTextView textInApplicablePromoStatus;
+
     private TextView cardNumberErrorText;
     private TextView cardCvvErrorText;
     private TextView cardExpiryErrorText;
-    private TextView textInvalidPromoStatus;
     private TextView textInstallmentTerm;
     private TextView textTitleInstallment;
 
     private ImageView cardLogo;
     private ImageView bankLogo;
-    private ImageView promoLogo;
 
     private ImageButton cvvHelpButton;
     private ImageButton saveCardHelpButton;
@@ -80,90 +97,191 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
     private LinearLayout containerInstallment;
     private RelativeLayout containerPoint;
 
-    private ProgressDialog progressDialog;
-
     private AppCompatCheckBox checkboxSaveCard;
     private AppCompatCheckBox checkboxPointEnabled;
 
     private CreditCardDetailsPresenter presenter;
+    private DefaultTextView titleHeaderTextView;
+    private SaveCardRequest savedCard;
     private String lastExpDate = "";
+    private int attempt = 0;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_credit_card);
-        initProperties();
         bindviews();
+        initExtras();
+        initProperties();
         initTheme();
-        setupToolbarEvent();
         initCardNumber();
-        setupInputCardExpiryEvent();
-        setupInputCardCvvEvent();
-        setupInstallmentEvent();
-        setupBankPointEvent();
+        initCardExpiry();
+        initCardCvv();
+        intPaymentButton();
+        initHelpButtons();
+        initInstallmentButton();
+        initDeleteButton();
+        initScanCardButton();
+        initLayoutState();
+        bindData();
     }
 
-    private void initProperties() {
-        this.presenter = new CreditCardDetailsPresenter(this);
+    private void initScanCardButton() {
+        final MidtransSDK midtransSDK = MidtransSDK.getInstance();
+        if (midtransSDK != null && midtransSDK.getExternalScanner() != null) {
+            showScanCardButton(true);
+
+            scanCardButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Start scanning
+                    midtransSDK.getExternalScanner().startScan(CreditCardDetailsActivity.this, UiKitConstants.INTENT_REQUEST_SCAN_CARD);
+                }
+            });
+        } else {
+            showScanCardButton(false);
+        }
+    }
+
+    private void initDeleteButton() {
+        deleteCardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCardDeletionConfirmation();
+            }
+        });
+    }
+
+    private void showCardDeletionConfirmation() {
+        AlertDialog alertDialog = new AlertDialog.Builder(this)
+                .setMessage(R.string.card_delete_message)
+                .setPositiveButton(R.string.text_yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                        SdkUIFlowUtil.showProgressDialog(CreditCardDetailsActivity.this, getString(R.string.processing_delete), false);
+                        presenter.deleteSavedCard(savedCard);
+                    }
+                })
+                .setNegativeButton(R.string.text_no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .create();
+        alertDialog.show();
+    }
+
+    private void bindData() {
+
+        if (savedCard != null) {
+            showDeleteIcon();
+
+            String cardType = Utils.getCardType(savedCard.getMaskedCard());
+            if (!TextUtils.isEmpty(cardType)) {
+                String cardBin = savedCard.getMaskedCard().substring(0, 4);
+                String title = cardType + "-" + cardBin;
+                titleHeaderTextView.setText(title);
+            }
+
+            showSavedCardLayout(false);
+
+            cardExpiryField.setInputType(InputType.TYPE_CLASS_TEXT);
+            InputFilter[] filterArray = new InputFilter[1];
+            filterArray[0] = new InputFilter.LengthFilter(20);
+            cardExpiryField.setFilters(filterArray);
+            cardExpiryField.setEnabled(false);
+            cardExpiryField.setText(SdkUIFlowUtil.getMaskedExpDate());
+
+            cardNumberField.setEnabled(false);
+            cardNumberField.setText(SdkUIFlowUtil.getMaskedCardNumber(savedCard.getMaskedCard()));
+
+            cardCvvField.requestFocus();
+
+
+            if (isOneClickMode()) {
+                cardCvvField.setInputType(InputType.TYPE_CLASS_TEXT);
+                cardCvvField.setFilters(filterArray);
+                cardCvvField.setText(SdkUIFlowUtil.getMaskedCardCvv());
+                cardCvvField.setEnabled(false);
+
+                // Track page cc one click
+                presenter.trackEvent(AnalyticsEventName.PAGE_CREDIT_CARD_DETAILS, MixpanelAnalyticsManager.CARD_MODE_ONE_CLICK);
+            } else {
+                checkInstallment();
+                checkBankPoint();
+                checkBinLockingValidity();
+
+                //track page cc two clicks
+                presenter.trackEvent(AnalyticsEventName.PAGE_CREDIT_CARD_DETAILS, MixpanelAnalyticsManager.CARD_MODE_TWO_CLICK);
+            }
+
+            setBankType();
+            setCardType();
+        } else {
+            //track page cc detail
+            presenter.trackEvent(AnalyticsEventName.PAGE_CREDIT_CARD_DETAILS, MixpanelAnalyticsManager.CARD_MODE_NORMAL);
+        }
 
     }
 
-    private void initTheme() {
-        MidtransSDK midtransSDK = MidtransSDK.getInstance();
-//        try {
-        if (midtransSDK != null && midtransSDK.getColorTheme() != null) {
-            if (midtransSDK.getColorTheme().getSecondaryColor() != 0) {
+    private void showDeleteIcon() {
+        deleteCardButton.setVisibility(View.VISIBLE);
+    }
 
-                cardNumberField.setSupportBackgroundTintList(new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
-                cardExpiryField.setSupportBackgroundTintList(new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
-                cardCvvField.setSupportBackgroundTintList(new ColorStateList(new int[][]{{0}}, new int[]{midtransSDK.getColorTheme().getSecondaryColor()}));
+    private void initExtras() {
+        this.savedCard = (SaveCardRequest) getIntent().getSerializableExtra(EXTRA_SAVED_CARD);
+    }
 
-                textInstallmentTerm.setBackgroundColor(midtransSDK.getColorTheme().getSecondaryColor());
-                textInstallmentTerm.getBackground().setAlpha(50);
-
-                int[][] states = new int[][]{
-                        new int[]{-android.R.attr.state_checked},
-                        new int[]{android.R.attr.state_checked},
-                };
-
-                int[] trackColors = new int[]{
-                        Color.GRAY,
-                        midtransSDK.getColorTheme().getSecondaryColor(),
-                };
-                checkboxSaveCard.setSupportButtonTintList(new ColorStateList(states, trackColors));
-                checkboxPointEnabled.setSupportButtonTintList(new ColorStateList(states, trackColors));
-            }
-
-            if (midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
-                textInstallmentTerm.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
-                increaseInstallmentButton.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
-                decreaseInstallmentButton.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
-                saveCardHelpButton.setColorFilter(midtransSDK.getColorTheme().getPrimaryDarkColor(), PorterDuff.Mode.SRC_ATOP);
-                cvvHelpButton.setColorFilter(midtransSDK.getColorTheme().getPrimaryDarkColor(), PorterDuff.Mode.SRC_ATOP);
-                pointHelpButton.setColorFilter(midtransSDK.getColorTheme().getPrimaryColor(), PorterDuff.Mode.SRC_ATOP);
-                scanCardButton.setBorderColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
-                scanCardButton.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
-                scanCardButton.setIconColorFilter(midtransSDK.getColorTheme().getPrimaryColor());
-            }
-
-            if (midtransSDK.getColorTheme().getPrimaryColor() != 0) {
-                payNowButton.setBackgroundColor(midtransSDK.getColorTheme().getPrimaryColor());
+    private void initLayoutState() {
+        if (presenter.isSavedCardEnabled()) {
+            showSavedCardLayout(true);
+            if (presenter.isSaveCardOptionChecked()) {
+                checkboxSaveCard.setChecked(true);
             }
         }
 
-        deleteCardButton.setBorderColor(ContextCompat.getColor(this, R.color.delete_color));
-        deleteCardButton.setTextColor(ContextCompat.getColor(this, R.color.delete_color));
-        deleteCardButton.setIconColorFilter(ContextCompat.getColor(this, R.color.delete_color));
-
-//        } catch (Exception e) {
-//            Log.e(TAG, "rendering theme:" + e.getMessage());
-//        }
     }
 
 
-    private void setupToolbarEvent() {
-        setSupportActionBar(toolbar);
+    private void initProperties() {
+        this.presenter = new CreditCardDetailsPresenter(this, this);
+    }
+
+    private void initTheme() {
+        try {
+
+            setBackgroundTintList(cardNumberField);
+            setBackgroundTintList(cardExpiryField);
+            setBackgroundTintList(cardCvvField);
+
+            setSecondaryBackgroundColor(textInstallmentTerm);
+            textInstallmentTerm.getBackground().setAlpha(50);
+
+
+            setCheckboxStateColor(checkboxSaveCard);
+            setCheckboxStateColor(checkboxPointEnabled);
+            setTextColor(textInstallmentTerm);
+            setTextColor(textCardNumberHint);
+            setTextColor(textExpriyHint);
+            setTextColor(textCvvHint);
+
+            setTextColor(increaseInstallmentButton);
+            setTextColor(decreaseInstallmentButton);
+            setColorFilter(saveCardHelpButton);
+            setColorFilter(cvvHelpButton);
+            setColorFilter(pointHelpButton);
+
+            setBorderColor(scanCardButton);
+            setTextColor(scanCardButton);
+            setIconColorFilter(scanCardButton);
+            setPrimaryBackgroundColor(payNowButton);
+
+        } catch (Exception e) {
+            Log.e(TAG, "rendering theme:" + e.getMessage());
+        }
     }
 
 
@@ -220,11 +338,23 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
                 }
             }
         });
+
+        // focus change listener
+        cardNumberField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasfocus) {
+                if (!hasfocus) {
+                    checkCardNumberValidity();
+                    checkBinLockingValidity();
+                    checkInstallment();
+                    checkBankPoint();
+                }
+            }
+        });
     }
 
 
-    private void setupInputCardExpiryEvent() {
-        // text change event
+    private void initCardExpiry() {
         cardExpiryField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -264,7 +394,7 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
                             int month = Integer.parseInt(input);
 
                             if (month <= 12) {
-                                cardExpiryField.setText(getString(R.string.expiry_month_format, cardExpiry.getText().toString()));
+                                cardExpiryField.setText(getString(R.string.expiry_month_format, cardExpiryField.getText().toString()));
                                 cardExpiryField.setSelection(cardExpiryField.getText().toString().length());
                             } else {
                                 cardExpiryField.setText(getString(R.string.expiry_month_int_format, Constants.MONTH_COUNT));
@@ -279,7 +409,7 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
                     try {
                         int month = Integer.parseInt(input);
                         if (month > 1) {
-                            cardExpiryField.setText(getString(R.string.expiry_month_single_digit_format, cardExpiry.getText().toString()));
+                            cardExpiryField.setText(getString(R.string.expiry_month_single_digit_format, cardExpiryField.getText().toString()));
                             cardExpiryField.setSelection(cardExpiryField.getText().toString().length());
                         }
                     } catch (Exception exception) {
@@ -295,43 +425,209 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
             }
         });
 
-        // focus change listener
-        cardNumberField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        cardExpiryField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onFocusChange(View view, boolean hasfocus) {
-                if (!hasfocus) {
-                    checkCardNumberValidity();
-                    checkBinLockingValidity();
-                    initCardInstallment();
-                    initBNIPoints(checkCardNumberValidity());
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    checkCardExpiryValidity();
+                }
+            }
+        });
+
+    }
+
+    private void initCardCvv() {
+        cardCvvField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean focused) {
+                if (!focused) {
+                    checkCardCvvValidity();
                 }
             }
         });
     }
 
-    private void setupInputCardCvvEvent() {
-
+    private void intPaymentButton() {
+        payNowButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkCardValidity()) {
+                    if (checkPaymentValidity()) {
+                        TokenizeCreditCard();
+                    }
+                }
+            }
+        });
     }
 
-    private void setupBankPointEvent() {
+    private void initHelpButtons() {
+        cvvHelpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog alertDialog = new AlertDialog.Builder(CreditCardDetailsActivity.this)
+                        .setTitle(R.string.what_is_cvv)
+                        .setView(R.layout.dialog_cvv)
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .create();
+                alertDialog.show();
+                changeDialogButtonColor(alertDialog);
+            }
+        });
 
+        pointHelpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pointHelpButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        AlertDialog alertDialog = new AlertDialog.Builder(CreditCardDetailsActivity.this)
+                                .setTitle(R.string.redeem_bni_title)
+                                .setMessage(R.string.redeem_bni_details)
+                                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.dismiss();
+                                    }
+                                })
+                                .create();
+                        alertDialog.show();
+                        changeDialogButtonColor(alertDialog);
+                    }
+                });
+            }
+        });
+
+        saveCardHelpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Show help dialog
+                AlertDialog alertDialog = new AlertDialog.Builder(CreditCardDetailsActivity.this)
+                        .setTitle(R.string.save_card_message)
+                        .setMessage(R.string.save_card_dialog)
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .create();
+                alertDialog.show();
+                changeDialogButtonColor(alertDialog);
+            }
+        });
     }
 
-    private void setupInstallmentEvent() {
+    private void changeDialogButtonColor(AlertDialog alertDialog) {
+        try {
+            Button positiveButton = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+            setTextColor(positiveButton);
+        } catch (Exception e) {
+            Log.d(TAG, "RenderThemeError:" + e.getMessage());
+        }
+    }
 
+    private void TokenizeCreditCard() {
+        showProgressDialog();
+        if (isOneClickMode()) {
+            presenter.startOneClickPayment(savedCard.getMaskedCard());
+        } else if (isTwoClicksMode()) {
+            String cvv = cardCvvField.getText().toString().trim();
+            presenter.startGettingCardToken(savedCard.getSavedTokenId(), cvv);
+        } else {
+
+            String cardNumber = getCleanedCardNumber();
+            String cvv = cardCvvField.getText().toString().trim();
+            String date = cardExpiryField.getText().toString();
+            String month = date.split("/")[0].trim();
+            String year = "20" + date.split("/")[1].trim();
+
+            presenter.startGettingCardToken(cardNumber, month, year, cvv, checkboxSaveCard.isChecked());
+        }
+    }
+
+    private boolean checkPaymentValidity() {
+        // Card bin validation for bin locking and installment
+        String cardNumber = cardNumberField.getText().toString().trim();
+        if (presenter.isWhitelistBinsAvailable()) {
+            if (!presenter.isCardBinLockingValid(cardNumber)) {
+                Toast.makeText(this, getString(R.string.card_bin_invalid), Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }
+
+        // Installment validation
+        if (!presenter.isInstallmentValid()) {
+            Toast.makeText(this, getString(R.string.installment_required), Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean checkCardValidity() {
+        boolean cardNumberValidity = checkCardNumberValidity();
+        boolean cardExpiryValidity = checkCardExpiryValidity();
+        boolean cardCVVValidity = checkCardCvvValidity();
+        return cardNumberValidity && cardExpiryValidity && cardCVVValidity;
+    }
+
+    private void checkBinLockingValidity() {
+        String cardBin = getCardNumberBin();
+        if (!TextUtils.isEmpty(cardBin)) {
+            if (presenter.isWhitelistBinsAvailable()) {
+                if (!presenter.isCardBinInWhiteList(cardBin)) {
+                    showInApplicablePromo(true);
+                } else {
+                    showInApplicablePromo(false);
+                }
+            } else {
+                showInApplicablePromo(false);
+            }
+        } else {
+            showInApplicablePromo(false);
+        }
+    }
+
+    private void showInApplicablePromo(boolean show) {
+        if (show) {
+            textInApplicablePromoStatus.setVisibility(View.VISIBLE);
+        } else {
+            textInApplicablePromoStatus.setVisibility(View.GONE);
+        }
+    }
+
+
+    private void checkBankPoint() {
+        String cardBin = getCardNumberBin();
+        if (!TextUtils.isEmpty(cardBin)) {
+            if (presenter.isBankPointAvailable(cardBin)) {
+                showBniPointLayout(true);
+            } else {
+                showBniPointLayout(false);
+            }
+        } else {
+            showBniPointLayout(false);
+        }
     }
 
 
     private void bindviews() {
-        toolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        itemDetails = (RecyclerView) findViewById(R.id.container_item_details);
-
         cardNumberField = (AppCompatEditText) findViewById(R.id.field_card_number);
         cardCvvField = (AppCompatEditText) findViewById(R.id.field_cvv);
         cardExpiryField = (AppCompatEditText) findViewById(R.id.field_expiry);
-        textInvalidPromoStatus = (TextView) findViewById(R.id.text_offer_status_not_applied);
+
         textInstallmentTerm = (TextView) findViewById(R.id.text_installment_term);
         textTitleInstallment = (TextView) findViewById(R.id.title_installment);
+        titleHeaderTextView = (DefaultTextView) findViewById(R.id.text_page_title);
+        textCardNumberHint = (DefaultTextView) findViewById(R.id.hint_card_number);
+        textExpriyHint = (DefaultTextView) findViewById(R.id.hint_card_expiry);
+        textCvvHint = (DefaultTextView) findViewById(R.id.hint_card_cvv);
+        textInApplicablePromoStatus = (DefaultTextView) findViewById(R.id.text_offer_status_not_applied);
 
         cardNumberErrorText = (TextView) findViewById(R.id.error_message_card_number);
         cardExpiryErrorText = (TextView) findViewById(R.id.error_message_expiry);
@@ -339,7 +635,6 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
 
         cardLogo = (ImageView) findViewById(R.id.payment_card_logo);
         bankLogo = (ImageView) findViewById(R.id.bank_logo);
-        promoLogo = (ImageView) findViewById(R.id.promo_logo);
 
         cvvHelpButton = (ImageButton) findViewById(R.id.help_cvv_button);
         saveCardHelpButton = (ImageButton) findViewById(R.id.help_save_card);
@@ -361,70 +656,57 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
 
     private void setBankType() {
         // Don't set card type when card number is empty
-        String cardNumberText = cardNumber.getText().toString().trim();
+        String cardNumberText = getCardNumberValue();
         if (TextUtils.isEmpty(cardNumberText) || cardNumberText.length() < 7) {
             bankLogo.setImageDrawable(null);
             return;
         }
 
-        String cleanCardNumber = cardNumberText.replace(" ", "").substring(0, 6);
-        String bank = getBankByBin(cleanCardNumber);
+        String cleanCardNumber = getCardNumberBin();
+        String bank = presenter.getBankByCardBin(cleanCardNumber);
+        titleHeaderTextView.setText(R.string.card_details);
 
         if (bank != null) {
+
             switch (bank) {
                 case BankType.BCA:
                     bankLogo.setImageResource(R.drawable.bca);
-                    titleHeaderTextView.setText(R.string.card_details);
                     break;
                 case BankType.BNI:
                     bankLogo.setImageResource(R.drawable.bni);
-                    titleHeaderTextView.setText(R.string.card_details);
                     break;
                 case BankType.BRI:
                     bankLogo.setImageResource(R.drawable.bri);
-                    titleHeaderTextView.setText(R.string.card_details);
                     break;
                 case BankType.CIMB:
                     bankLogo.setImageResource(R.drawable.cimb);
-                    titleHeaderTextView.setText(R.string.card_details);
                     break;
                 case BankType.MANDIRI:
                     bankLogo.setImageResource(R.drawable.mandiri);
-                    titleHeaderTextView.setText(R.string.card_details);
-                    if (isMandiriDebitCard(cleanCardNumber)) {
+                    if (presenter.isMandiriDebitCard(cleanCardNumber)) {
                         titleHeaderTextView.setText(R.string.mandiri_debit_card);
                     }
                     break;
                 case BankType.MAYBANK:
                     bankLogo.setImageResource(R.drawable.maybank);
-                    titleHeaderTextView.setText(R.string.card_details);
                     break;
                 case BankType.BNI_DEBIT_ONLINE:
                     bankLogo.setImageResource(R.drawable.bni);
-//                    titleHeaderTextView.setText(R.string.bni_debit_online_card);
+                    titleHeaderTextView.setText(R.string.bni_debit_online_card);
                     break;
                 default:
                     bankLogo.setImageDrawable(null);
-//                    titleHeaderTextView.setText(R.string.card_details);
                     break;
             }
         } else {
             bankLogo.setImageDrawable(null);
-//            titleHeaderTextView.setText(R.string.card_details);
         }
     }
-//
-//    public boolean isMandiriDebitCard(String cleanCardNumber) {
-//        return creditCardTransaction.isMandiriCardDebit(cleanCardNumber);
-//    }
-//
-//    public String getBankByBin(String cardBin) {
-//        return creditCardTransaction.getBankByBin(cardBin);
-//    }
+
 
     private void setCardType() {
         // Don't set card type when card number is empty
-        String cardNumberText = cardNumber.getText().toString().trim();
+        String cardNumberText = getCardNumberValue();
         if (TextUtils.isEmpty(cardNumberText) || cardNumberText.length() < 2) {
             cardLogo.setImageResource(0);
             return;
@@ -449,30 +731,492 @@ public class CreditCardDetailsActivity extends BaseActivity implements CreditCar
     }
 
     private boolean checkCardNumberValidity() {
-        if (isTwoClickMode()) {
+        if (isTwoClicksMode()) {
             return true;
         }
 
         boolean isValid = true;
 
-        String cardNumberText = cardNumberField.getText().toString().trim().replace(" ", "");
+        String cardNumberText = getCleanedCardNumber();
         if (TextUtils.isEmpty(cardNumberText)) {
-            cardNumberErrorText.setError(getString(R.string.validation_message_card_number));
+            showValidationError(cardNumberErrorText, getString(R.string.validation_message_card_number));
             isValid = false;
         } else {
-            cardNumberErrorText.setError(null);
+            hideValidationError(cardNumberErrorText);
         }
 
         if (cardNumberText.length() < 13 || !SdkUIFlowUtil.isValidCardNumber(cardNumberText)) {
-            cardNumberErrorText.setError(getString(R.string.validation_message_invalid_card_no));
+            showValidationError(cardNumberErrorText, getString(R.string.validation_message_invalid_card_no));
             isValid = false;
         } else {
-            cardNumberErrorText.setError(null);
+            hideValidationError(cardNumberErrorText);
         }
         if (!isValid) {
             //track invalid cc number
-            MidtransSDK.getInstance().trackEvent(AnalyticsEventName.CREDIT_CARD_NUMBER_VALIDATION, MixpanelAnalyticsManager.CARD_MODE_NORMAL);
+            presenter.trackEvent(AnalyticsEventName.CREDIT_CARD_NUMBER_VALIDATION, MixpanelAnalyticsManager.CARD_MODE_NORMAL);
         }
         return isValid;
     }
+
+    private boolean checkCardExpiryValidity() {
+        if (isTwoClicksMode()) {
+            return true;
+        }
+
+        boolean isValid = true;
+        String expiryDate = cardExpiryField.getText().toString().trim();
+        String[] expDateArray = new String[2];
+        int expMonth = 0;
+        int expYear = 0;
+        try {
+            expDateArray = expiryDate.split("/");
+            expDateArray[0] = expDateArray[0].trim();
+            expDateArray[1] = expDateArray[1].trim();
+            Logger.d(TAG, "expDate:" + expDateArray[0].trim() + expDateArray[1].trim());
+        } catch (NullPointerException e) {
+            Logger.d(TAG, "expiry date empty");
+        } catch (IndexOutOfBoundsException e) {
+            Logger.d(TAG, "expiry date issue");
+        }
+
+        if (TextUtils.isEmpty(expiryDate)) {
+            showValidationError(cardExpiryErrorText, getString(R.string.validation_message_empty_expiry_date));
+            isValid = false;
+        } else if (!expiryDate.contains("/")) {
+            showValidationError(cardExpiryErrorText, getString(R.string.validation_message_invalid_expiry_date));
+            isValid = false;
+        } else if (expDateArray.length != 2) {
+            showValidationError(cardExpiryErrorText, getString(R.string.validation_message_invalid_expiry_date));
+            isValid = false;
+        } else {
+            try {
+                expMonth = Integer.parseInt(expDateArray[0]);
+            } catch (NumberFormatException e) {
+                showValidationError(cardExpiryErrorText, getString(R.string.validation_message_invalid_expiry_date));
+                isValid = false;
+            }
+            try {
+                expYear = Integer.parseInt(expDateArray[1]);
+            } catch (NumberFormatException e) {
+                showValidationError(cardExpiryErrorText, getString(R.string.validation_message_invalid_expiry_date));
+                isValid = false;
+            }
+            Calendar calendar = Calendar.getInstance();
+            Date date = calendar.getTime();
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("yy");
+            String year = format.format(date);
+
+            int currentMonth = calendar.get(Calendar.MONTH) + 1;
+            int currentYear = Integer.parseInt(year);
+            Logger.d(TAG, "currentMonth:" + currentMonth + ",currentYear:" + currentYear);
+
+            if (expYear < currentYear) {
+                showValidationError(cardExpiryErrorText, getString(R.string.validation_message_invalid_expiry_date));
+                isValid = false;
+            } else if (expYear == currentYear && currentMonth > expMonth) {
+                showValidationError(cardExpiryErrorText, getString(R.string.validation_message_invalid_expiry_date));
+                isValid = false;
+            } else {
+                hideValidationError(cardExpiryErrorText);
+            }
+        }
+
+        if (!isValid) {
+            // Track invalid expiry
+            presenter.trackEvent(AnalyticsEventName.CREDIT_CARD_EXPIRY_VALIDATION, MixpanelAnalyticsManager.CARD_MODE_NORMAL);
+        }
+        return isValid;
+    }
+
+
+    private boolean checkCardCvvValidity() {
+        if (isOneClickMode()) {
+            return true;
+        }
+        boolean isValid = true;
+        String cvv = cardCvvField.getText().toString().trim();
+        if (TextUtils.isEmpty(cvv)) {
+            showValidationError(cardCvvErrorText, getString(R.string.validation_message_cvv));
+            isValid = false;
+
+        } else {
+            if (cvv.length() < 3) {
+                showValidationError(cardCvvErrorText, getString(R.string.validation_message_invalid_cvv));
+                isValid = false;
+            } else {
+                hideValidationError(cardCvvErrorText);
+            }
+        }
+
+        if (!isValid) {
+            // Track invalid cvv
+            presenter.trackEvent(
+                    AnalyticsEventName.CREDIT_CARD_CVV_VALIDATION,
+                    isTwoClicksMode() ? MixpanelAnalyticsManager.CARD_MODE_TWO_CLICK : MixpanelAnalyticsManager.CARD_MODE_NORMAL
+            );
+        }
+        return isValid;
+    }
+
+    private void showValidationError(TextView textView, String errorText) {
+        if (errorText != null && !TextUtils.isEmpty(errorText)) {
+            textView.setVisibility(View.VISIBLE);
+            textView.setText(errorText);
+        } else {
+            textView.setVisibility(View.GONE);
+        }
+    }
+
+    private void hideValidationError(TextView textView) {
+        textView.setVisibility(View.GONE);
+    }
+
+
+    public String getCardNumberValue() {
+        return cardNumberField.getText().toString().trim();
+    }
+
+    public String getCardNumberBin() {
+        String cardNumber = getCardNumberValue();
+        if (!TextUtils.isEmpty(cardNumber) && cardNumber.length() > 6) {
+            String cardBin = cardNumber.replace(" ", "").substring(0, 6);
+            return cardBin;
+        }
+        return null;
+    }
+
+    public String getCleanedCardNumber() {
+        String cardNumber = getCardNumberValue();
+        String cleanCardNumber = cardNumber.replace(" ", "");
+        return cleanCardNumber;
+    }
+
+    @Override
+    public void showProgressDialog() {
+        SdkUIFlowUtil.showProgressDialog(this, getString(R.string.fetching_cards), false);
+    }
+
+    @Override
+    public void hideProgressDialog() {
+        SdkUIFlowUtil.hideProgressDialog();
+    }
+
+
+    @Override
+    public boolean isBankPointEnabled() {
+        return checkboxPointEnabled.isChecked();
+    }
+
+    @Override
+    public void onGetCardTokenSuccess(TokenDetailsResponse response) {
+        SdkUIFlowUtil.hideKeyboard(this);
+        if (!TextUtils.isEmpty(response.getRedirectUrl())) {
+            hideProgressDialog();
+            start3DSecurePage(response.getRedirectUrl());
+        } else {
+            startPreCrediCardPayment();
+        }
+    }
+
+    @Override
+    public void onGetCardTokenFailed() {
+        SdkUIFlowUtil.hideProgressDialog();
+        SdkUIFlowUtil.showApiFailedMessage(this, getString(R.string.message_getcard_token_failed));
+    }
+
+    @Override
+    public void onGetBankPointSuccess(BanksPointResponse response) {
+        SdkUIFlowUtil.hideProgressDialog();
+        startBankPointPage(response);
+    }
+
+    private void startBankPointPage(BanksPointResponse response) {
+        Intent intent = new Intent(this, BankPointsActivity.class);
+        float point = Float.parseFloat(response.getPointBalanceAmount());
+        intent.putExtra(BankPointsActivity.EXTRA_POINT, point);
+        String cardBin = getCardNumberBin();
+        intent.putExtra(BankPointsActivity.EXTRA_BANK, presenter.getBankByCardBin(cardBin));
+        startActivityForResult(intent, UiKitConstants.INTENT_BANK_POINT);
+    }
+
+    @Override
+    public void onGetBankPointFailed() {
+        SdkUIFlowUtil.hideProgressDialog();
+        SdkUIFlowUtil.showToast(this, getString(R.string.failed_to_get_bank_point));
+    }
+
+    @Override
+    public void onPaymentSuccess(TransactionResponse response) {
+        SdkUIFlowUtil.hideProgressDialog();
+        if (presenter.isShowPaymentStatus()) {
+            showPaymentStatus(response);
+        } else {
+            finishPayment(RESULT_OK);
+        }
+    }
+
+    private void showPaymentStatus(TransactionResponse response) {
+
+        Intent intent = new Intent(this, PaymentStatusActivity.class);
+        intent.putExtra(PaymentStatusActivity.EXTRA_PAYMENT_RESULT, response);
+        startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT_STATUS);
+    }
+
+    private void finishPayment(int resultCode) {
+        Intent data = new Intent();
+        data.putExtra(getString(R.string.transaction_response), presenter.getTransactionResponse());
+        setResult(resultCode, data);
+        finish();
+    }
+
+    @Override
+    public void onPaymentFailed(TransactionResponse response) {
+        SdkUIFlowUtil.hideProgressDialog();
+        if (attempt < UiKitConstants.MAX_ATTEMPT) {
+            attempt += 1;
+            SdkUIFlowUtil.showApiFailedMessage(this, getString(R.string.message_payment_failed));
+        } else {
+            showPaymentStatus(response);
+        }
+
+        if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
+            Log.d("3dserror", "400:" + response.getValidationMessages().get(0));
+            if (response.getValidationMessages() != null && response.getValidationMessages().get(0) != null) {
+                if (response.getValidationMessages().get(0).contains("3d")) {
+                    //track page bca va overview
+                    presenter.trackEvent(AnalyticsEventName.CREDIT_CARD_3DS_ERROR);
+                }
+            }
+        }
+
+        //track page status failed
+        presenter.trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+    }
+
+    @Override
+    public void onPaymentError(Throwable error) {
+        //track page status failed
+        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
+        SdkUIFlowUtil.hideProgressDialog();
+        SdkUIFlowUtil.showToast(this, getString(R.string.message_payment_failed));
+    }
+
+    @Override
+    public void onCardDeletionSuccess(String maskedCardNumber) {
+        SdkUIFlowUtil.hideProgressDialog();
+        Intent intent = new Intent();
+        intent.putExtra(EXTRA_DELETED_CARD_DETAILS, maskedCardNumber);
+        setResult(UiKitConstants.INTENT_RESULT_DELETE_CARD, intent);
+        onBackPressed();
+    }
+
+
+    @Override
+    public void onCardDeletionFailed() {
+        SdkUIFlowUtil.hideProgressDialog();
+        SdkUIFlowUtil.showToast(this, getString(R.string.error_delete_message));
+    }
+
+    private void startPreCrediCardPayment() {
+        if (isBankPointEnabled()) {
+            presenter.getBankPoint(BankType.BNI);
+        } else {
+            startCreditCardPayment();
+        }
+    }
+
+    private void startCreditCardPayment() {
+        presenter.startNormalPayment(checkboxSaveCard.isChecked());
+    }
+
+    private void start3DSecurePage(String redirectUrl) {
+        Intent intent = new Intent(this, PaymentWebActivity.class);
+        intent.putExtra(Constants.WEBURL, redirectUrl);
+        intent.putExtra(Constants.TYPE, WebviewFragment.TYPE_CREDIT_CARD);
+        startActivityForResult(intent, Constants.INTENT_CODE_3DS_PAYMENT);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            if (requestCode == Constants.INTENT_CODE_3DS_PAYMENT) {
+                startPreCrediCardPayment();
+            } else if (requestCode == UiKitConstants.INTENT_REQUEST_SCAN_CARD) {
+                if (data != null && data.hasExtra(ExternalScanner.EXTRA_SCAN_DATA)) {
+                    ScannerModel scanData = (ScannerModel) data.getSerializableExtra(ExternalScanner.EXTRA_SCAN_DATA);
+                    Logger.i(String.format("Card Number: %s, Card Expire: %s/%d",
+                            scanData.getCardNumber(), scanData.getExpiredMonth() < 10 ? String.format("0%d",
+                                    scanData.getExpiredMonth()) : String.format("%d", scanData.getExpiredMonth()),
+                            scanData.getExpiredYear() - 2000));
+                    updateScanCardData(scanData);
+                }
+            } else if (requestCode == Constants.INTENT_CODE_PAYMENT_STATUS) {
+                finishPayment(resultCode);
+            } else if (requestCode == UiKitConstants.INTENT_BANK_POINT) {
+                if (data != null) {
+                    float redeemedPoint = data.getFloatExtra(BankPointsActivity.EXTRA_DATA_POINT, 0f);
+                    initBanksPointPayment(redeemedPoint);
+                }
+            }
+        } else if (resultCode == RESULT_CANCELED) {
+            if (requestCode == Constants.INTENT_CODE_3DS_PAYMENT) {
+                startPreCrediCardPayment();
+            }
+        }
+    }
+
+    private void initBanksPointPayment(float redeemedPoint) {
+        presenter.startBankPointsPayment(redeemedPoint, checkboxSaveCard.isChecked());
+    }
+
+    private void updateScanCardData(ScannerModel scanCardData) {
+        String formattedCardNumber = Utils.getFormattedCreditCardNumber(scanCardData.getCardNumber());
+        String cvv = scanCardData.getCvv();
+        String cardExpiry = String.format("%s/%d", scanCardData.getExpiredMonth() < 10 ? String.format("0%d",
+                scanCardData.getExpiredMonth()) : String.format("%d", scanCardData.getExpiredMonth()),
+                scanCardData.getExpiredYear() - 2000);
+        cardNumberField.setText(formattedCardNumber);
+        cardCvvField.setText(cvv);
+        cardExpiryField.setText(cardExpiry);
+    }
+
+    private void showSavedCardLayout(boolean show) {
+        if (show) {
+            containerSaveCard.setVisibility(View.VISIBLE);
+        } else {
+            checkboxSaveCard.setChecked(false);
+            containerSaveCard.setVisibility(View.GONE);
+        }
+    }
+
+    private void showScanCardButton(boolean show) {
+        if (show) {
+            scanCardButton.setVisibility(View.VISIBLE);
+        } else {
+            scanCardButton.setVisibility(View.GONE);
+        }
+    }
+
+    private void showBniPointLayout(boolean show) {
+        if (show) {
+            containerPoint.setVisibility(View.VISIBLE);
+        } else {
+            checkboxPointEnabled.setChecked(false);
+            containerPoint.setVisibility(View.GONE);
+        }
+    }
+
+    public boolean isOneClickMode() {
+        return savedCard != null && savedCard.getType() != null && savedCard.getType().equals(CreditCardType.ONE_CLICK);
+    }
+
+    public boolean isTwoClicksMode() {
+        return savedCard != null;
+    }
+
+
+    private void checkInstallment() {
+        String cardNumber = getCleanedCardNumber();
+        if (presenter.isInstallmentAvailable()
+                && presenter.isCardBinValidForBankChecking(cardNumber)) {
+            String cardBin = getCardNumberBin();
+            ArrayList<Integer> installmentTerms = presenter.getInstallmentTermsByCardBin(cardBin);
+
+            if (installmentTerms != null && installmentTerms.size() > 1) {
+                setInstallmentTerms(installmentTerms);
+                setCurrentInstallmentTerm();
+                showInstallmentLayout(true);
+            } else {
+                showInstallmentLayout(false);
+            }
+        } else {
+            showInstallmentLayout(false);
+        }
+    }
+
+    private void showInstallmentLayout(boolean show) {
+        if (show) {
+            containerInstallment.setVisibility(View.VISIBLE);
+            resetInstallmentButtons();
+        } else {
+            containerInstallment.setVisibility(View.GONE);
+            presenter.setCurrentInstallment(0);
+        }
+    }
+
+    private void resetInstallmentButtons() {
+        decreaseInstallmentButton.setEnabled(false);
+        increaseInstallmentButton.setEnabled(true);
+    }
+
+    private void setCurrentInstallmentTerm() {
+        String installmentTerm;
+        int term = presenter.getCurrentInstallmentTerm();
+        if (term < 1) {
+            installmentTerm = getString(R.string.no_installment);
+        } else {
+            installmentTerm = getString(R.string.formatted_installment_month, String.valueOf(term));
+        }
+        textInstallmentTerm.setText(installmentTerm);
+    }
+
+    private void setInstallmentTerms(ArrayList<Integer> installmentTerms) {
+        presenter.initInstallmentTerms(installmentTerms);
+    }
+
+
+    private void initInstallmentButton() {
+        increaseInstallmentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int installmentTermCurrentPosition = presenter.getInstallmentCurrentPosition();
+                int installmentTermCount = presenter.getInstallmentTotalPositions();
+                if (installmentTermCurrentPosition >= 0 && installmentTermCurrentPosition < installmentTermCount) {
+                    presenter.setCurrentInstallment(installmentTermCurrentPosition + 1);
+                    setCurrentInstallmentTerm();
+                }
+                disableEnableInstallmentButton();
+            }
+        });
+
+        decreaseInstallmentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int installmentTermCurrentPosition = presenter.getInstallmentCurrentPosition();
+                int installmentTermCount = presenter.getInstallmentTotalPositions();
+                if (installmentTermCurrentPosition > 0 && installmentTermCurrentPosition <= installmentTermCount) {
+                    presenter.setCurrentInstallment(installmentTermCurrentPosition - 1);
+                    setCurrentInstallmentTerm();
+                }
+                disableEnableInstallmentButton();
+            }
+        });
+    }
+
+    private void disableEnableInstallmentButton() {
+        int installmentTermCurrentPosition = presenter.getInstallmentCurrentPosition();
+        int installmentTermCount = presenter.getInstallmentTotalPositions();
+        if (installmentTermCurrentPosition == 0
+                && installmentTermCount == 0) {
+            decreaseInstallmentButton.setEnabled(false);
+            increaseInstallmentButton.setEnabled(false);
+        } else if (installmentTermCurrentPosition > 0
+                && installmentTermCurrentPosition < installmentTermCount) {
+            decreaseInstallmentButton.setEnabled(true);
+            increaseInstallmentButton.setEnabled(true);
+        } else if (installmentTermCurrentPosition > 0
+                && installmentTermCurrentPosition == installmentTermCount) {
+            decreaseInstallmentButton.setEnabled(true);
+            increaseInstallmentButton.setEnabled(false);
+        } else if (installmentTermCurrentPosition == 0
+                && installmentTermCurrentPosition < installmentTermCount) {
+            decreaseInstallmentButton.setEnabled(false);
+            increaseInstallmentButton.setEnabled(true);
+        }
+    }
+
 }

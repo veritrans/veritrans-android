@@ -23,6 +23,17 @@
             android:layout_marginRight="@dimen/sixteen_dp"
             android:orientation="horizontal">
 
+            <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                android:id="@+id/text_page_merchant_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:textSize="@dimen/tool_bar_title_size"
+                android:visibility="gone"
+                tools:visibility="gone" />
+
             <ImageView
                 android:id="@+id/merchant_logo"
                 android:layout_width="@dimen/logo_width"
@@ -34,6 +45,7 @@
                 tools:src="@drawable/ic_veritrans" />
 
             <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                android:id="@+id/text_page_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"

@@ -186,7 +186,6 @@
 
     <string name="for_three_seconds">selama 3 detik</string>
     <string name="title_payment_status">Status Pembayaran</string>
-    <string name="payment_deny">Pembayaran Ditolak.</string>
     <string name="success">success</string>
     <string name="fetching_cards">Mengambil data kartu</string>
     <string name="btn_save_card">Mendaftarkan Kartu</string>

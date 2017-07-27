@@ -538,6 +538,7 @@ public class CreditCardFlowActivity extends BaseActivity {
         } else {
             cardTokenRequest.setPoint(false);
         }
+
         MidtransSDK.getInstance().getCardToken(cardTokenRequest, new CardTokenCallback() {
             @Override
             public void onSuccess(TokenDetailsResponse response) {
@@ -803,7 +804,6 @@ public class CreditCardFlowActivity extends BaseActivity {
             @Override
             public void onSuccess(SaveCardResponse response) {
                 SdkUIFlowUtil.hideProgressDialog();
-
             }
 
             @Override
@@ -814,7 +814,6 @@ public class CreditCardFlowActivity extends BaseActivity {
             @Override
             public void onError(Throwable error) {
                 SdkUIFlowUtil.hideProgressDialog();
-
             }
         });
     }
