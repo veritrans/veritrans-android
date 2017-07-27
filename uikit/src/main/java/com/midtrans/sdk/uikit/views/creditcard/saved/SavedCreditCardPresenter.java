@@ -134,7 +134,6 @@ public class SavedCreditCardPresenter {
         CreditCard creditCard = MidtransSDK.getInstance().getCreditCard();
 
         List<SavedToken> savedTokens = creditCard.getSavedTokens();
-        Log.d("xdel", "savedTokens:" + savedTokens.size());
 
         SavedToken savedToken = findSavedCardByMaskedNumber(savedTokens, maskedCardNumber);
         if (savedToken != null) {
@@ -142,10 +141,8 @@ public class SavedCreditCardPresenter {
             creditCard.setSavedTokens(savedTokens);
             midtransSDK.setCreditCard(creditCard);
         }
-        Log.d("xdel", "savedTokens>after:" + savedTokens.size());
 
         List<SaveCardRequest> updatedCards = SdkUIFlowUtil.convertSavedTokens(savedTokens);
-        Log.d("xdel", "savedTokens>after>up:" + updatedCards.size());
 
         this.creditCards.clear();
         this.creditCards.addAll(updatedCards);
@@ -153,20 +150,11 @@ public class SavedCreditCardPresenter {
 
 
     private SavedToken findSavedCardByMaskedNumber(List<SavedToken> savedTokens, String maskedCard) {
-        Log.d("xdel", "del:" + maskedCard);
         for (SavedToken savedToken : savedTokens) {
-            Log.d("xdel", "saved>mask:" + savedToken.getMaskedCard());
             if (savedToken.getMaskedCard().equals(maskedCard)) {
                 return savedToken;
             }
         }
         return null;
-    }
-
-
-    private void removeSavedCardFromSdk(String maskedCard) {
-        MidtransSDK midtransSDK = MidtransSDK.getInstance();
-        CreditCard creditCard = midtransSDK.getCreditCard();
-
     }
 }

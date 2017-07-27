@@ -1,11 +1,8 @@
 package com.midtrans.sdk.uikit.views.creditcard.details;
 
-import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.snap.BanksPointResponse;
-
-import java.util.List;
 
 /**
  * Created by ziahaqi on 7/12/17.

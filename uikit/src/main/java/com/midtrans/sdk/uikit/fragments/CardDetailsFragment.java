@@ -61,7 +61,7 @@ import java.util.Date;
 /**
  * Created by rakawm on 3/7/17.
  */
-
+@Deprecated
 public class CardDetailsFragment extends Fragment {
 
     public static final int SCAN_REQUEST_CODE = 101;

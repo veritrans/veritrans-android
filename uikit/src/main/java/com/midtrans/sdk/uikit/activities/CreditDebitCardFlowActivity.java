@@ -73,6 +73,7 @@ import java.util.Set;
 import static com.midtrans.sdk.uikit.utilities.ReadBankDetailTask.ReadBankDetailCallback;
 
 
+@Deprecated
 public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBankDetailCallback {
     public static final String PAYMENT_CREDIT_CARD = "cc";
     public static final int SCAN_REQUEST_CODE = 101;

@@ -60,6 +60,7 @@ import java.util.List;
  * Created by rakawm on 3/7/17.
  */
 
+@Deprecated
 public class CreditCardFlowActivity extends BaseActivity {
     public static final int SCAN_REQUEST_CODE = 101;
     private static final String TAG = CreditCardFlowActivity.class.getSimpleName();
