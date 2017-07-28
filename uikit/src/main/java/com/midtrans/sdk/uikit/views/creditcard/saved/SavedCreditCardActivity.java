@@ -1,8 +1,10 @@
 package com.midtrans.sdk.uikit.views.creditcard.saved;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -15,6 +17,7 @@ import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
 import com.midtrans.sdk.uikit.adapters.SavedCardsAdapter;
+import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.views.creditcard.details.CreditCardDetailsActivity;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
@@ -99,6 +102,35 @@ public class SavedCreditCardActivity extends BasePaymentActivity implements Save
                 showCardDetailPage(savedCard);
             }
         });
+
+        adapter.setDeleteCardListener(new SavedCardsAdapter.DeleteCardListener() {
+            @Override
+            public void onItemDelete(int position) {
+                SaveCardRequest request = adapter.getItem(position);
+                showDeleteCardConfirmationDialog(request);
+            }
+        });
+    }
+
+    private void showDeleteCardConfirmationDialog(final SaveCardRequest request) {
+        AlertDialog alertDialog = new AlertDialog.Builder(this)
+                .setMessage(R.string.card_delete_message)
+                .setPositiveButton(R.string.text_yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int j) {
+                        dialogInterface.dismiss();
+                        showProgressLayout(true);
+                        presenter.deleteSavedCard(request);
+                    }
+                })
+                .setNegativeButton(R.string.text_no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .create();
+        alertDialog.show();
     }
 
 
@@ -174,7 +206,7 @@ public class SavedCreditCardActivity extends BasePaymentActivity implements Save
         if (presenter.isSavedCardsAvailable()) {
             setSavedCards(presenter.getSavedCards());
         } else {
-            onBackPressed();
+            showCardDetailPage(null);
         }
     }
 
@@ -197,6 +229,18 @@ public class SavedCreditCardActivity extends BasePaymentActivity implements Save
     public void onGetSavedCardTokenFailed() {
         showCardDetailPage(null);
 
+    }
+
+    @Override
+    public void onCardDeletionSuccess(String maskedCard) {
+        showProgressLayout(false);
+        updateSavedCardsInstance(maskedCard);
+    }
+
+    @Override
+    public void onCardDeletionFailed() {
+        showProgressLayout(false);
+        SdkUIFlowUtil.showToast(this, getString(R.string.error_delete_message));
     }
 
     public String getBankByBin(String cardBin) {

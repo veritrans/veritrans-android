@@ -4,11 +4,14 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.midtrans.sdk.corekit.callback.DeleteCardCallback;
 import com.midtrans.sdk.corekit.callback.GetCardCallback;
+import com.midtrans.sdk.corekit.callback.SaveCardCallback;
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
+import com.midtrans.sdk.corekit.models.SaveCardResponse;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
@@ -156,5 +159,71 @@ public class SavedCreditCardPresenter {
             }
         }
         return null;
+    }
+
+
+    public void deleteSavedCard(SaveCardRequest savedCard) {
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
+        if (midtransSDK.isEnableBuiltInTokenStorage()) {
+            deleteCardFromTokenStorage(savedCard);
+        } else {
+            List<SavedToken> savedTokens = midtransSDK.getCreditCard().getSavedTokens();
+            List<SaveCardRequest> savedCards = SdkUIFlowUtil.convertSavedTokens(savedTokens);
+
+            ArrayList<SaveCardRequest> cardList = new ArrayList<>();
+            if (savedCards != null && !savedCards.isEmpty()) {
+                cardList.addAll(savedCards);
+                for (int i = 0; i < cardList.size(); i++) {
+                    if (cardList.get(i).getMaskedCard().equalsIgnoreCase(savedCard.getMaskedCard())) {
+                        cardList.remove(cardList.get(i));
+                    }
+                }
+            }
+
+            deleteCardFromMerchantServer(cardList, savedCard.getMaskedCard());
+        }
+    }
+
+    private void deleteCardFromMerchantServer(ArrayList<SaveCardRequest> cardList, final String maskedCard) {
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
+        UserDetail userDetail = LocalDataHandler.readObject(UiKitConstants.KEY_USER_DETAILS, UserDetail.class);
+        midtransSDK.saveCards(userDetail.getUserId(), cardList, new SaveCardCallback() {
+            @Override
+            public void onSuccess(SaveCardResponse response) {
+                SdkUIFlowUtil.hideProgressDialog();
+                view.onCardDeletionSuccess(maskedCard);
+            }
+
+            @Override
+            public void onFailure(String reason) {
+                view.onCardDeletionFailed();
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                view.onCardDeletionFailed();
+            }
+        });
+    }
+
+    private void deleteCardFromTokenStorage(final SaveCardRequest savedCard) {
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
+        midtransSDK.deleteCard(midtransSDK.readAuthenticationToken(), savedCard.getMaskedCard(), new DeleteCardCallback() {
+            @Override
+            public void onSuccess(Void object) {
+                SdkUIFlowUtil.hideProgressDialog();
+                view.onCardDeletionSuccess(savedCard.getMaskedCard());
+            }
+
+            @Override
+            public void onFailure(Void object) {
+                view.onCardDeletionFailed();
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                view.onCardDeletionFailed();
+            }
+        });
     }
 }
