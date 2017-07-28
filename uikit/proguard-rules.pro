@@ -26,6 +26,7 @@
 
 -keepclassmembers class ** {
     public void onEvent*(***);
+    public void on*(***);
 }
 
 -keepclassmembers class ** {
@@ -159,6 +160,7 @@
 
 # Android
 -keep public class * extends android.app.Activity
+-keep public class * android.support.v7.app.AppCompatActivity
 -keep public class * extends android.app.Application
 -keep public class * extends android.app.Service
 -keep public class * extends android.content.BroadcastReceiver
