@@ -13,4 +13,7 @@ public class UiKitConstants {
 
     public static final int MAX_ATTEMPT = 2;
     public static final int INTENT_REQUEST_SCAN_CARD = 101;
+
+    public static final String ENVIRONMENT_DEVELOPMENT = "development";
+    public static final String ENVIRONMENT_PRODUCTION = "production";
 }
