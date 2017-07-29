@@ -15,6 +15,7 @@ import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.TransactionRequest;
+import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.CardTokenRequest;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.SaveCardResponse;
@@ -202,7 +203,7 @@ public class CreditCardDetailsPresenter {
 
     private void applyInstallmentProperties(CardTokenRequest cardTokenRequest) {
         int termSelected = creditCardTransaction.getInstallmentTermSelected();
-        Logger.d(TAG, "appliedInstallment()> term:" + termSelected);
+        Logger.d(TAG, "applyInstallmentProperties()>term:" + termSelected);
 
         if (termSelected > 0) {
             cardTokenRequest.setInstallment(true);
@@ -501,8 +502,10 @@ public class CreditCardDetailsPresenter {
     public boolean isBankPointAvailable(String cardBin) {
         String bank = creditCardTransaction.getBankByBin(cardBin);
         Transaction transaction = MidtransSDK.getInstance().getTransaction();
+
         return !TextUtils.isEmpty(bank)
-                && transaction.getMerchantData().getPointBanks().contains(bank);
+                && transaction.getMerchantData().getPointBanks().contains(bank)
+                && bank.equals(BankType.BNI);
     }
 
     public void startBankPointsPayment(float redeemedPoint, boolean isSaveCard) {
