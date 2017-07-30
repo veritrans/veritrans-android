@@ -1,9 +1,9 @@
 package com.midtrans.sdk.corekit.models;
 
+import android.text.TextUtils;
+
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
-
-import android.text.TextUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * contains information about payment charge api call like, </p> status message, status code,
  * transaction id, transaction status etc.
- *
+ * <p>
  * Created by chetan on 30/10/15.
  */
 public class TransactionResponse implements Serializable {
@@ -140,6 +140,15 @@ public class TransactionResponse implements Serializable {
         this.paymentType = paymentType;
         this.transactionTime = transactionTime;
         this.transactionStatus = transactionStatus;
+    }
+
+    /**
+     * init transaction response by rba status
+     *
+     * @param statusMessage
+     */
+    public TransactionResponse(String statusMessage) {
+        this.statusMessage = statusMessage;
     }
 
     public String getStatusCode() {

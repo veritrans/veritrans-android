@@ -41,6 +41,7 @@ import com.midtrans.sdk.uikit.fragments.WebviewFragment;
 import com.midtrans.sdk.uikit.models.CreditCardType;
 import com.midtrans.sdk.uikit.scancard.ExternalScanner;
 import com.midtrans.sdk.uikit.scancard.ScannerModel;
+import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.views.creditcard.bankpoints.BankPointsActivity;
@@ -891,182 +892,17 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         return cleanCardNumber;
     }
 
-    @Override
     public void showProgressDialog() {
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.fetching_cards), false);
     }
 
-    @Override
     public void hideProgressDialog() {
         SdkUIFlowUtil.hideProgressDialog();
     }
 
-
-    @Override
-    public boolean isBankPointEnabled() {
-        return checkboxPointEnabled.isChecked();
-    }
-
-    @Override
-    public void onGetCardTokenSuccess(TokenDetailsResponse response) {
-        SdkUIFlowUtil.hideKeyboard(this);
-        if (!TextUtils.isEmpty(response.getRedirectUrl())) {
-            hideProgressDialog();
-            start3DSecurePage(response.getRedirectUrl());
-        } else {
-            startPreCrediCardPayment();
-        }
-    }
-
-    @Override
-    public void onGetCardTokenFailed() {
-        SdkUIFlowUtil.hideProgressDialog();
-        SdkUIFlowUtil.showApiFailedMessage(this, getString(R.string.message_getcard_token_failed));
-    }
-
-    @Override
-    public void onGetBankPointSuccess(BanksPointResponse response) {
-        SdkUIFlowUtil.hideProgressDialog();
-        startBankPointPage(response);
-    }
-
-    private void startBankPointPage(BanksPointResponse response) {
-        Intent intent = new Intent(this, BankPointsActivity.class);
-        float point = Float.parseFloat(response.getPointBalanceAmount());
-        intent.putExtra(BankPointsActivity.EXTRA_POINT, point);
-        String cardBin = getCardNumberBin();
-        intent.putExtra(BankPointsActivity.EXTRA_BANK, presenter.getBankByCardBin(cardBin));
-        startActivityForResult(intent, UiKitConstants.INTENT_BANK_POINT);
-    }
-
-    @Override
-    public void onGetBankPointFailed() {
-        SdkUIFlowUtil.hideProgressDialog();
-        SdkUIFlowUtil.showToast(this, getString(R.string.failed_to_get_bank_point));
-    }
-
-    @Override
-    public void onPaymentSuccess(TransactionResponse response) {
-        SdkUIFlowUtil.hideProgressDialog();
-        if (presenter.isShowPaymentStatus()) {
-            showPaymentStatus(response);
-        } else {
-            finishPayment(RESULT_OK);
-        }
-    }
-
-    private void showPaymentStatus(TransactionResponse response) {
-
-        Intent intent = new Intent(this, PaymentStatusActivity.class);
-        intent.putExtra(PaymentStatusActivity.EXTRA_PAYMENT_RESULT, response);
-        startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT_STATUS);
-    }
-
-    private void finishPayment(int resultCode) {
-        Intent data = new Intent();
-        data.putExtra(getString(R.string.transaction_response), presenter.getTransactionResponse());
-        setResult(resultCode, data);
-        finish();
-    }
-
-    @Override
-    public void onPaymentFailed(TransactionResponse response) {
-        SdkUIFlowUtil.hideProgressDialog();
-        if (attempt < UiKitConstants.MAX_ATTEMPT) {
-            attempt += 1;
-            SdkUIFlowUtil.showApiFailedMessage(this, getString(R.string.message_payment_failed));
-        } else {
-            showPaymentStatus(response);
-        }
-
-        if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
-            Log.d("3dserror", "400:" + response.getValidationMessages().get(0));
-            if (response.getValidationMessages() != null && response.getValidationMessages().get(0) != null) {
-                if (response.getValidationMessages().get(0).contains("3d")) {
-                    //track page bca va overview
-                    presenter.trackEvent(AnalyticsEventName.CREDIT_CARD_3DS_ERROR);
-                }
-            }
-        }
-
-        //track page status failed
-        presenter.trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
-    }
-
-    @Override
-    public void onPaymentError(Throwable error) {
-        //track page status failed
-        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
-
-        SdkUIFlowUtil.hideProgressDialog();
-        SdkUIFlowUtil.showToast(this, getString(R.string.message_payment_failed));
-    }
-
-    @Override
-    public void onCardDeletionSuccess(String maskedCardNumber) {
-        SdkUIFlowUtil.hideProgressDialog();
-        Intent intent = new Intent();
-        intent.putExtra(EXTRA_DELETED_CARD_DETAILS, maskedCardNumber);
-        setResult(UiKitConstants.INTENT_RESULT_DELETE_CARD, intent);
-        onBackPressed();
-    }
-
-
-    @Override
-    public void onCardDeletionFailed() {
-        SdkUIFlowUtil.hideProgressDialog();
-        SdkUIFlowUtil.showToast(this, getString(R.string.error_delete_message));
-    }
-
-    private void startPreCrediCardPayment() {
-        if (isBankPointEnabled()) {
-            presenter.getBankPoint(BankType.BNI);
-        } else {
-            startCreditCardPayment();
-        }
-    }
-
-    private void startCreditCardPayment() {
-        presenter.startNormalPayment(checkboxSaveCard.isChecked());
-    }
-
-    private void start3DSecurePage(String redirectUrl) {
-        Intent intent = new Intent(this, PaymentWebActivity.class);
-        intent.putExtra(Constants.WEBURL, redirectUrl);
-        intent.putExtra(Constants.TYPE, WebviewFragment.TYPE_CREDIT_CARD);
-        startActivityForResult(intent, Constants.INTENT_CODE_3DS_PAYMENT);
-    }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == RESULT_OK) {
-            if (requestCode == Constants.INTENT_CODE_3DS_PAYMENT) {
-                startPreCrediCardPayment();
-            } else if (requestCode == UiKitConstants.INTENT_REQUEST_SCAN_CARD) {
-                if (data != null && data.hasExtra(ExternalScanner.EXTRA_SCAN_DATA)) {
-                    ScannerModel scanData = (ScannerModel) data.getSerializableExtra(ExternalScanner.EXTRA_SCAN_DATA);
-                    Logger.i(String.format("Card Number: %s, Card Expire: %s/%d",
-                            scanData.getCardNumber(), scanData.getExpiredMonth() < 10 ? String.format("0%d",
-                                    scanData.getExpiredMonth()) : String.format("%d", scanData.getExpiredMonth()),
-                            scanData.getExpiredYear() - 2000));
-                    updateScanCardData(scanData);
-                }
-            } else if (requestCode == Constants.INTENT_CODE_PAYMENT_STATUS) {
-                finishPayment(resultCode);
-            } else if (requestCode == UiKitConstants.INTENT_BANK_POINT) {
-                if (data != null) {
-                    float redeemedPoint = data.getFloatExtra(BankPointsActivity.EXTRA_DATA_POINT, 0f);
-                    initBanksPointPayment(redeemedPoint);
-                }
-            }
-        } else if (resultCode == RESULT_CANCELED) {
-            if (requestCode == Constants.INTENT_CODE_3DS_PAYMENT) {
-                startPreCrediCardPayment();
-            }
-        }
+    private void getPaymentStatus() {
+        showProgressDialog();
+        presenter.getPaymentStatus();
     }
 
     private void initBanksPointPayment(float redeemedPoint) {
@@ -1217,6 +1053,228 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             decreaseInstallmentButton.setEnabled(false);
             increaseInstallmentButton.setEnabled(true);
         }
+    }
+
+    private void initPaymentStatus(TransactionResponse response) {
+        if (presenter.isShowPaymentStatus()) {
+            showPaymentStatus(response);
+        } else {
+            finishPayment(RESULT_OK);
+        }
+    }
+
+
+    private void showErrorMessage(String errorMessage) {
+        AlertDialog alert = new AlertDialog.Builder(this)
+                .setMessage(errorMessage)
+                .setNegativeButton(R.string.btn_close, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        // TODO: set result and finish
+                    }
+                })
+                .create();
+        alert.show();
+        changeDialogButtonColor(alert);
+    }
+
+    private void startBankPointPage(BanksPointResponse response) {
+        Intent intent = new Intent(this, BankPointsActivity.class);
+        float point = Float.parseFloat(response.getPointBalanceAmount());
+        intent.putExtra(BankPointsActivity.EXTRA_POINT, point);
+        String cardBin = getCardNumberBin();
+        intent.putExtra(BankPointsActivity.EXTRA_BANK, presenter.getBankByCardBin(cardBin));
+        startActivityForResult(intent, UiKitConstants.INTENT_BANK_POINT);
+    }
+
+    private void showPaymentStatus(TransactionResponse response) {
+        Intent intent = new Intent(this, PaymentStatusActivity.class);
+        intent.putExtra(PaymentStatusActivity.EXTRA_PAYMENT_RESULT, response);
+        startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT_STATUS);
+    }
+
+    private void finishPayment(int resultCode) {
+        Intent data = new Intent();
+        data.putExtra(getString(R.string.transaction_response), presenter.getTransactionResponse());
+        setResult(resultCode, data);
+        finish();
+    }
+
+
+    private void startPreCrediCardPayment() {
+        if (isBankPointEnabled()) {
+            presenter.getBankPoint(BankType.BNI);
+        } else {
+            startCreditCardPayment();
+        }
+    }
+
+    private void startCreditCardPayment() {
+        presenter.startNormalPayment(checkboxSaveCard.isChecked());
+    }
+
+    private void start3DSecurePage(String redirectUrl, int requestCode) {
+        Intent intent = new Intent(this, PaymentWebActivity.class);
+        intent.putExtra(Constants.WEBURL, redirectUrl);
+        intent.putExtra(Constants.TYPE, WebviewFragment.TYPE_CREDIT_CARD);
+        startActivityForResult(intent, requestCode);
+    }
+
+    private void initPaymentError(Throwable error) {
+        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+        presenter.trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+        String errorMessage = MessageUtil.createPaymentErrorMessage(this, error.getMessage(), getString(R.string.message_payment_failed));
+        SdkUIFlowUtil.hideProgressDialog();
+        showErrorMessage(errorMessage);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            if (requestCode == UiKitConstants.INTENT_CODE_3DS_PAYMENT) {
+                startPreCrediCardPayment();
+            } else if (requestCode == UiKitConstants.INTENT_CODE_RBA_AUTHENTICATION) {
+                getPaymentStatus();
+            } else if (requestCode == UiKitConstants.INTENT_REQUEST_SCAN_CARD) {
+                if (data != null && data.hasExtra(ExternalScanner.EXTRA_SCAN_DATA)) {
+                    ScannerModel scanData = (ScannerModel) data.getSerializableExtra(ExternalScanner.EXTRA_SCAN_DATA);
+                    Logger.i(String.format("Card Number: %s, Card Expire: %s/%d",
+                            scanData.getCardNumber(), scanData.getExpiredMonth() < 10 ? String.format("0%d",
+                                    scanData.getExpiredMonth()) : String.format("%d", scanData.getExpiredMonth()),
+                            scanData.getExpiredYear() - 2000));
+                    updateScanCardData(scanData);
+                }
+            } else if (requestCode == Constants.INTENT_CODE_PAYMENT_STATUS) {
+                finishPayment(resultCode);
+            } else if (requestCode == UiKitConstants.INTENT_BANK_POINT) {
+                if (data != null) {
+                    float redeemedPoint = data.getFloatExtra(BankPointsActivity.EXTRA_DATA_POINT, 0f);
+                    initBanksPointPayment(redeemedPoint);
+                }
+            }
+        } else if (resultCode == RESULT_CANCELED) {
+            if (requestCode == UiKitConstants.INTENT_CODE_3DS_PAYMENT) {
+                startPreCrediCardPayment();
+            }
+        }
+    }
+
+
+    @Override
+    public boolean isBankPointEnabled() {
+        return checkboxPointEnabled.isChecked();
+    }
+
+    @Override
+    public void onGetCardTokenSuccess(TokenDetailsResponse response) {
+        SdkUIFlowUtil.hideKeyboard(this);
+        if (!TextUtils.isEmpty(response.getRedirectUrl())) {
+            hideProgressDialog();
+            start3DSecurePage(response.getRedirectUrl(), UiKitConstants.INTENT_CODE_3DS_PAYMENT);
+        } else {
+            startPreCrediCardPayment();
+        }
+    }
+
+    @Override
+    public void onGetCardTokenFailed() {
+        SdkUIFlowUtil.hideProgressDialog();
+        SdkUIFlowUtil.showApiFailedMessage(this, getString(R.string.message_getcard_token_failed));
+    }
+
+    @Override
+    public void onGetBankPointSuccess(BanksPointResponse response) {
+        SdkUIFlowUtil.hideProgressDialog();
+        startBankPointPage(response);
+    }
+
+
+    @Override
+    public void onGetBankPointFailed() {
+        SdkUIFlowUtil.hideProgressDialog();
+        SdkUIFlowUtil.showToast(this, getString(R.string.failed_to_get_bank_point));
+    }
+
+    @Override
+    public void onPaymentSuccess(TransactionResponse response) {
+        SdkUIFlowUtil.hideProgressDialog();
+        if (presenter.isRbaAuthentication(response)) {
+            start3DSecurePage(response.getRedirectUrl(), UiKitConstants.INTENT_CODE_RBA_AUTHENTICATION);
+        } else {
+            if (presenter.isShowPaymentStatus()) {
+                showPaymentStatus(response);
+            } else {
+                finishPayment(RESULT_OK);
+            }
+        }
+    }
+
+    @Override
+    public void onPaymentFailed(TransactionResponse response) {
+        SdkUIFlowUtil.hideProgressDialog();
+        if (attempt < UiKitConstants.MAX_ATTEMPT) {
+            attempt += 1;
+            SdkUIFlowUtil.showApiFailedMessage(this, getString(R.string.message_payment_failed));
+        } else {
+            showPaymentStatus(response);
+        }
+
+        if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
+            Log.d("3dserror", "400:" + response.getValidationMessages().get(0));
+            if (response.getValidationMessages() != null && response.getValidationMessages().get(0) != null) {
+                if (response.getValidationMessages().get(0).contains("3d")) {
+                    //track page bca va overview
+                    presenter.trackEvent(AnalyticsEventName.CREDIT_CARD_3DS_ERROR);
+                }
+            }
+        }
+
+        //track page status failed
+        presenter.trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+    }
+
+    @Override
+    public void onPaymentError(Throwable error) {
+        SdkUIFlowUtil.hideProgressDialog();
+        initPaymentError(error);
+    }
+
+    @Override
+    public void onCardDeletionSuccess(String maskedCardNumber) {
+        SdkUIFlowUtil.hideProgressDialog();
+        Intent intent = new Intent();
+        intent.putExtra(EXTRA_DELETED_CARD_DETAILS, maskedCardNumber);
+        setResult(UiKitConstants.INTENT_RESULT_DELETE_CARD, intent);
+        onBackPressed();
+    }
+
+
+    @Override
+    public void onCardDeletionFailed() {
+        SdkUIFlowUtil.hideProgressDialog();
+        SdkUIFlowUtil.showToast(this, getString(R.string.error_delete_message));
+    }
+
+    @Override
+    public void onGetTransactionStatusError(Throwable error) {
+        hideProgressDialog();
+        initPaymentError(error);
+    }
+
+    @Override
+    public void onGetTransactionStatusFailed(TransactionResponse response) {
+        hideProgressDialog();
+        initPaymentStatus(response);
+    }
+
+    @Override
+    public void onGetTransactionStatusSuccess(TransactionResponse transactionResponse) {
+        Log.d(TAG, "xrba>onGetTransactionStatusSuccess()");
+        hideProgressDialog();
+        initPaymentStatus(transactionResponse);
     }
 
 }

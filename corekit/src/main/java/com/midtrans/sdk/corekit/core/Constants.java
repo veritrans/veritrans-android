@@ -88,7 +88,6 @@ public class Constants {
     public static final String AUTH_TOKEN = "authentication.token";
     public static final String WEBVIEW_REDIRECT_URL = "redirect_url";
 
-    public static final int INTENT_CODE_3DS_PAYMENT = 100;
     public static final int INTENT_CODE_PAYMENT_STATUS = 210;
     public static final String KEY_USER_DETAILS = "user_details";
     public static int INTENT_SCAN_CARD = 101;

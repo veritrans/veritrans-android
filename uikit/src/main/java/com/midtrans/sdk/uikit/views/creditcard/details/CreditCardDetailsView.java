@@ -4,16 +4,13 @@ import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.snap.BanksPointResponse;
 
+import java.util.List;
+
 /**
  * Created by ziahaqi on 7/12/17.
  */
 
 public interface CreditCardDetailsView {
-
-    void showProgressDialog();
-
-    void hideProgressDialog();
-
 
     boolean isBankPointEnabled();
 
@@ -34,4 +31,10 @@ public interface CreditCardDetailsView {
     void onCardDeletionSuccess(String maskedCardNumber);
 
     void onCardDeletionFailed();
+
+    void onGetTransactionStatusError(Throwable error);
+
+    void onGetTransactionStatusFailed(TransactionResponse transactionResponse);
+
+    void onGetTransactionStatusSuccess(TransactionResponse transactionResponse);
 }

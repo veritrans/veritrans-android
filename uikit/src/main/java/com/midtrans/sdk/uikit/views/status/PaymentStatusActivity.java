@@ -16,6 +16,8 @@ import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BaseActivity;
+import com.midtrans.sdk.uikit.utilities.MessageUtil;
+import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
@@ -325,6 +327,14 @@ public class PaymentStatusActivity extends BaseActivity {
             String formattedBalance = String.format("%s", String.valueOf(pointRedeemed));
             pointAmount.setText(formattedBalance);
             layoutPointAmount.setVisibility(View.VISIBLE);
+        }
+
+        String transactionStatus = transactionResponse.getTransactionStatus();
+        if (!TextUtils.isEmpty(transactionStatus) && transactionStatus.equals(UiKitConstants.STATUS_PENDING)) {
+            String transactionMessage = transactionResponse.getStatusMessage();
+            if (!TextUtils.isEmpty(transactionMessage) && transactionMessage.contains(MessageUtil.STATUS_UNSUCCESSFUL)) {
+                statusMessage.setText(R.string.status_rba_unsuccessful);
+            }
         }
     }
 }

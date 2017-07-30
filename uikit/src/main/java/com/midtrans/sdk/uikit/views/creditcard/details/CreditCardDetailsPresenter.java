@@ -8,6 +8,7 @@ import com.midtrans.sdk.corekit.callback.BankBinsCallback;
 import com.midtrans.sdk.corekit.callback.BanksPointCallback;
 import com.midtrans.sdk.corekit.callback.CardTokenCallback;
 import com.midtrans.sdk.corekit.callback.DeleteCardCallback;
+import com.midtrans.sdk.corekit.callback.GetTransactionStatusCallback;
 import com.midtrans.sdk.corekit.callback.SaveCardCallback;
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.core.Constants;
@@ -28,6 +29,7 @@ import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
 import com.midtrans.sdk.corekit.models.snap.SavedToken;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
+import com.midtrans.sdk.corekit.models.snap.TransactionStatusResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.models.CreditCardTransaction;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
@@ -515,5 +517,51 @@ public class CreditCardDetailsPresenter {
 
     public boolean isCardBinInWhiteList(String cardBin) {
         return creditCardTransaction.isInWhiteList(cardBin);
+    }
+
+    public boolean isRbaAuthentication(TransactionResponse response) {
+        if (response != null) {
+            String transactionStatus = response.getTransactionStatus();
+            if (!TextUtils.isEmpty(transactionStatus) && transactionStatus.equals(UiKitConstants.STATUS_PENDING)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void getPaymentStatus() {
+        String snapToken = MidtransSDK.getInstance().readAuthenticationToken();
+        MidtransSDK.getInstance().getTransactionStatus(snapToken, new GetTransactionStatusCallback() {
+            @Override
+            public void onSuccess(TransactionStatusResponse response) {
+
+                TransactionResponse transactionResponse = convertTransactionStatus(response);
+                CreditCardDetailsPresenter.this.transactionResponse = transactionResponse;
+
+                view.onGetTransactionStatusSuccess(transactionResponse);
+            }
+
+            @Override
+            public void onFailure(TransactionStatusResponse response, String reason) {
+
+                TransactionResponse transactionResponse = convertTransactionStatus(response);
+                CreditCardDetailsPresenter.this.transactionResponse = transactionResponse;
+                view.onGetTransactionStatusFailed(transactionResponse);
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                view.onGetTransactionStatusError(error);
+            }
+        });
+    }
+
+    private TransactionResponse convertTransactionStatus(TransactionStatusResponse response) {
+        TransactionResponse transactionResponse = new TransactionResponse(
+                response.getStatusCode(), response.getStatusMessage(), response.getTransactionId(),
+                response.getOrderId(), response.getGrossAmount(), response.getPaymentType(),
+                response.getTransactionTime(), response.getTransactionStatus());
+        this.transactionResponse = transactionResponse;
+        return transactionResponse;
     }
 }

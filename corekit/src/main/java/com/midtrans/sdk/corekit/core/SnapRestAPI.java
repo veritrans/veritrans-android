@@ -4,6 +4,7 @@ import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 import com.midtrans.sdk.corekit.models.snap.BanksPointResponse;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
+import com.midtrans.sdk.corekit.models.snap.TransactionStatusResponse;
 import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.BasePaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.CreditCardPaymentRequest;
@@ -49,7 +50,7 @@ public interface SnapRestAPI {
     /**
      * Charge payment using bank transfer Virtual account.
      *
-     * @param paymentRequest  Payment Request Details.
+     * @param paymentRequest              Payment Request Details.
      * @param transactionResponseCallback Callback
      */
     @POST("/v1/transactions/{token}/pay")
@@ -69,7 +70,7 @@ public interface SnapRestAPI {
      * Charge payment using BCA Klikpay.
      *
      * @param authenticationToken
-     * @param basePaymentRequest Payment Request Details.
+     * @param basePaymentRequest          Payment Request Details.
      * @param transactionResponseCallback transaction callback
      */
     @POST("/v1/transactions/{token}/pay")
@@ -159,7 +160,8 @@ public interface SnapRestAPI {
 
     /**
      * Charge payment using indosat dompetku.
-     *@param authenticationToken
+     *
+     * @param authenticationToken
      * @param request                     IndosatDompetkuPaymentRequest model
      * @param transactionResponseCallback Callback.
      */
@@ -188,7 +190,6 @@ public interface SnapRestAPI {
 
 
     /**
-     *
      * @param callback callback
      */
     @GET("/v1/bank_bins")
@@ -207,4 +208,12 @@ public interface SnapRestAPI {
     @GET("/v1/transactions/{snap_token}/point_inquiry/{card_token}")
     void getBanksPoint(@Path("snap_token") String snapToken, @Path("card_token") String cardToken, Callback<BanksPointResponse> transactionCallback);
 
+    /**
+     * Get Transaction Status.
+     *
+     * @param snapToken snap token
+     * @param callback  response get transaction request
+     */
+    @GET("/v1/transactions/{snap_token}/status")
+    void getTransactionStatus(@Path("snap_token") String snapToken, Callback<TransactionStatusResponse> callback);
 }

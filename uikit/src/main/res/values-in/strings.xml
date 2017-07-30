@@ -580,5 +580,6 @@
     <string name="notification_otp_message">Biaya SMS mungkin akan dikenakan untuk cara pembayaran ini.</string>
     <string name="failed_to_get_bank_point">Gagal mengambil bank point</string>
     <string name="total_bank_point">Total poin anda</string>
+    <string name="status_rba_unsuccessful">Pembayaran belum dilakukan</string>
 
 </resources>

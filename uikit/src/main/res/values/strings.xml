@@ -766,5 +766,6 @@
     <string name="notification_otp_message">SMS charges may be applied for this payment method</string>
     <string name="failed_to_get_bank_point">Failed to get bank points</string>
     <string name="total_bank_point">Your total points</string>
+    <string name="status_rba_unsuccessful">Payment has not been made</string>
 
 </resources>
