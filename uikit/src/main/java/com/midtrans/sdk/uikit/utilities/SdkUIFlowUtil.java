@@ -13,7 +13,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -71,8 +70,12 @@ public class SdkUIFlowUtil {
 
         if (!TextUtils.isEmpty(email)) {
             Pattern pattern = Pattern.compile(Constants.EMAIL_PATTERN, Pattern.CASE_INSENSITIVE);
-            Matcher matcher = pattern.matcher(email.trim());
-            return matcher.matches();
+            if (pattern != null) {
+                Matcher matcher = pattern.matcher(email.trim());
+                return matcher.matches();
+            } else {
+                return false;
+            }
         } else {
             return false;
         }

@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -48,22 +49,23 @@ public class PaymentWebActivity extends BaseActivity {
 
         setSupportActionBar(toolbar);
         prepareToolbar();
-        if (!type.equals("")) {
+        if (!TextUtils.isEmpty(type)) {
             webviewFragment = WebviewFragment.newInstance(webUrl, type);
         } else {
             webviewFragment = WebviewFragment.newInstance(webUrl);
         }
         replaceFragment(webviewFragment, R.id.webview_container, true, false);
 
-        if (type != null && type.equalsIgnoreCase(WebviewFragment.TYPE_CREDIT_CARD)) {
+        if (!TextUtils.isEmpty(type) && type.equalsIgnoreCase(WebviewFragment.TYPE_CREDIT_CARD)) {
             initSmsCatcher();
         }
     }
 
     private void prepareToolbar() {
-        Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_back);
 
         try {
+            Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_back);
+
             MidtransSDK midtransSDK = MidtransSDK.getInstance();
 
             if (midtransSDK != null && midtransSDK.getColorTheme() != null && midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
@@ -71,15 +73,15 @@ public class PaymentWebActivity extends BaseActivity {
                         midtransSDK.getColorTheme().getPrimaryDarkColor(),
                         PorterDuff.Mode.SRC_ATOP);
             }
+            toolbar.setNavigationIcon(drawable);
         } catch (Exception e) {
             Log.d(TAG, "render toolbar:" + e.getMessage());
         }
 
-        toolbar.setNavigationIcon(drawable);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               showCancelConfirmationDialog();
+                showCancelConfirmationDialog();
             }
         });
     }
@@ -108,7 +110,7 @@ public class PaymentWebActivity extends BaseActivity {
                         Intent returnIntent = new Intent();
                         setResult(RESULT_CANCELED, returnIntent);
                         finish();
-                        if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                        if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                                 && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                             overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
                         }
@@ -127,14 +129,16 @@ public class PaymentWebActivity extends BaseActivity {
     }
 
     private void initSmsCatcher() {
-        if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
-                && MidtransSDK.getInstance().getUIKitCustomSetting().isEnableAutoReadSms()) {
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
+        if (midtransSDK != null && midtransSDK.getUIKitCustomSetting() != null
+                && midtransSDK.getUIKitCustomSetting().isEnableAutoReadSms()) {
             smsVerifyCatcher = new SmsVerifyCatcher(this, new OnSmsCatchListener<String>() {
                 @Override
                 public void onSmsCatch(String message) {
                     Pattern otpPattern = Pattern.compile("[0-9]{6}");
-                    Matcher matcher = otpPattern.matcher(message);
-                    if (matcher.find()) {
+                    if (otpPattern != null) {
+                        Matcher matcher = otpPattern.matcher(message);
+                        matcher.find();
                         webviewFragment.setOtp(matcher.group(0));
                     }
                 }

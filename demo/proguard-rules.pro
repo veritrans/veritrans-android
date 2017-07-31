@@ -54,6 +54,10 @@
    public void *(android.view.View);
    public void *(android.view.MenuItem);
 }
+-keepclassmembers public class * extends android.view.View {
+   void set*(***);
+   *** get*();
+}
 
 -dontwarn android.support.design.**
 -keep class android.support.design.** { *; }
@@ -181,4 +185,18 @@ public static final *** NULL; }
 -keep class **.R
 -keep class **.R$* {
    <fields>;
+}
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+-keepclassmembers class * extends android.app.Activity {
+   public void *(android.view.View);
+}
+-keepclassmembers class * extends android.support.v7.app.AppCompatActivity{
+    public void *(android.view.View);
+}
+-keepclassmembers public class * extends android.support.v4.app.Fragment{
+     public *** on*(...);
+     public *** *Dialog();
+     public void *(android.view.View);
 }

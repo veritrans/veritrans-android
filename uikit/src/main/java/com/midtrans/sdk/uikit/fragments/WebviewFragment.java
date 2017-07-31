@@ -97,10 +97,6 @@ public class WebviewFragment extends Fragment {
     }
 
 
-    private void initjS() {
-
-    }
-
     @Override
     public void onDetach() {
         super.onDetach();

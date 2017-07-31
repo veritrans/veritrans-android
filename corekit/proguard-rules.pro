@@ -222,3 +222,7 @@ public static final *** NULL; }
     java.lang.Object writeReplace();
     java.lang.Object readResolve();
 }
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+
