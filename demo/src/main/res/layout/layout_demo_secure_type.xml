@@ -9,7 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical">
-
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
@@ -56,6 +55,7 @@
             android:text="@string/secure_3ds" />
 
         <com.midtrans.demo.widgets.DemoRadioButton
+            android:visibility="gone"
             android:id="@+id/type_secure_rba"
             style="@style/CustomRadioButtonStyle"
             android:layout_width="match_parent"
