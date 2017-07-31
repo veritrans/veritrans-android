@@ -200,7 +200,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/four_dp"
-            android:background="@color/light_gray"
             android:orientation="horizontal"
             android:paddingBottom="@dimen/five_dp"
             android:paddingLeft="@dimen/eight_dp"
@@ -215,7 +214,6 @@
             <com.midtrans.sdk.uikit.widgets.DefaultTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/light_gray"
                 android:lineSpacingExtra="2dp"
                 android:text="@string/bca_mbanking_instruction_step8"
                 android:textColor="@color/black"

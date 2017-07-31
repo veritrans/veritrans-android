@@ -1111,6 +1111,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     }
 
     private void startCreditCardPayment() {
+        SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
         presenter.startNormalPayment(checkboxSaveCard.isChecked());
     }
 
@@ -1266,6 +1267,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
     @Override
     public void onGetTransactionStatusFailed(TransactionResponse response) {
+        Log.d(TAG, "xrba>onGetTransactionStatusFailed()");
         hideProgressDialog();
         initPaymentStatus(response);
     }
