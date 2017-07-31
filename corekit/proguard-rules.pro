@@ -45,6 +45,9 @@
 -keepnames class * implements android.os.Parcelable {
     public static final ** CREATOR;
 }
+-keep interface org.parceler.Parcel
+-keep @org.parceler.Parcel class * { *; }
+-keep class **$$Parcelable { *; }
 
 # Keep the BuildConfig
 -keep class com.midtrans.sdk.corekit.BuildConfig { *; }
