@@ -2545,11 +2545,11 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         MidtransSDK.getInstance().setUIKitCustomSetting(uiKitCustomSetting);
 
         if (secureEnabledSelection.isChecked()) {
-            creditCard.setSecure(true);
-//            transactionRequestNew.setCardPaymentInfo(cardClickType, true);
+//            creditCard.setSecure(true);
+            transactionRequestNew.setCardPaymentInfo(cardClickType, true);
         } else {
-//            transactionRequestNew.setCardPaymentInfo(cardClickType, false);
-            creditCard.setSecure(false);
+            transactionRequestNew.setCardPaymentInfo(cardClickType, false);
+//            creditCard.setSecure(false);
         }
 
         if (paymentChannelsSelectedSelection.isChecked()) {
