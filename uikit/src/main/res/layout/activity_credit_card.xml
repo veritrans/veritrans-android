@@ -7,6 +7,12 @@
 
     <include layout="@layout/appbar_payment" />
 
+    <include
+        layout="@layout/layout_sandbox_badge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -60,11 +66,5 @@
                 android:src="@drawable/ic_arrow_right_white" />
         </LinearLayout>
     </RelativeLayout>
-
-    <include
-        layout="@layout/layout_sandbox_badge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|start" />
 
 </android.support.design.widget.CoordinatorLayout>

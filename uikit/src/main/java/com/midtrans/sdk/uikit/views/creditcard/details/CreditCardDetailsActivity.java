@@ -176,6 +176,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     }
 
     private void bindData() {
+        titleHeaderTextView.setText(R.string.card_details);
 
         if (savedCard != null) {
             showDeleteIcon();
@@ -580,8 +581,11 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     private void checkBinLockingValidity() {
         String cardBin = getCardNumberBin();
         if (!TextUtils.isEmpty(cardBin)) {
+
             if (presenter.isWhitelistBinsAvailable()) {
+
                 if (!presenter.isCardBinInWhiteList(cardBin)) {
+
                     showInApplicablePromo(true);
                 } else {
                     showInApplicablePromo(false);
@@ -590,6 +594,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                 showInApplicablePromo(false);
             }
         } else {
+
             showInApplicablePromo(false);
         }
     }

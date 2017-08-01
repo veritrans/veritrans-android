@@ -67,7 +67,8 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingTop="15dp">
 
             <com.midtrans.sdk.uikit.widgets.AspectRatioImageView
                 android:id="@+id/bank_logo"
@@ -201,9 +202,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/container_card_expiry"
+        android:layout_marginTop="@dimen/eight_dp"
         android:visibility="gone"
-        tools:visibility="visible"
-        android:layout_marginTop="@dimen/eight_dp">
+        tools:visibility="visible">
 
         <android.support.v7.widget.AppCompatCheckBox
             android:id="@+id/checkbox_save_card"

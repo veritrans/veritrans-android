@@ -135,7 +135,6 @@
     <string name="unsuccessful">Tidak Berhasil</string>
     <string name="payment_successful">Pembayaran Berhasil</string>
     <string name="payment_unsuccessful_msg">Payment gateway <i>error</i></string>
-    <string name="payment_unsuccessful">Pembayaran Tidak Berhasil</string>
     <string name="validation_message_invalid_expiry_date">Masukkan tanggal kadaluarsa yang benar</string>
     <string name="api_fail_message">Terjadi kesalahan. Silakan coba lagi.</string>
     <string name="title_payment_failed">Pembayaran Gagal</string>

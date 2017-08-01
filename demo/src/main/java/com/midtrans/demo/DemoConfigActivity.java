@@ -915,7 +915,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 if (checked) {
-                    secureTitle.setText(R.string.secure_type_rba);
+                    secureTitle.setText(R.string.secure_type_enabled);
                 }
             }
         });
@@ -926,7 +926,9 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 if (checked) {
                     secureTitle.setText(R.string.secure_type_rba);
-                    normalSelection.setChecked(true);
+                    if (oneClickSelection.isChecked()) {
+                        normalSelection.setChecked(true);
+                    }
                 }
             }
         });
@@ -943,30 +945,42 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 case Constants.BANK_BNI:
                     bankTitle.setText(R.string.acquiring_bank_by_bni);
                     bankBniSelection.setChecked(true);
+                    secureEnabledSelection.setChecked(true);
+
                     break;
                 case Constants.BANK_MANDIRI:
                     bankTitle.setText(R.string.acquiring_bank_by_mandiri);
                     bankMandiriSelection.setChecked(true);
+                    secureEnabledSelection.setChecked(true);
+
                     break;
                 case Constants.BANK_BCA:
                     bankTitle.setText(R.string.acquiring_bank_by_bca);
                     bankBcaSelection.setChecked(true);
+                    secureEnabledSelection.setChecked(true);
+
                     break;
                 case Constants.BANK_MAYBANK:
                     bankTitle.setText(R.string.acquiring_bank_by_maybank);
                     bankMaybankSelection.setChecked(true);
+                    secureEnabledSelection.setChecked(true);
+
                     break;
                 case Constants.BANK_BRI:
                     bankTitle.setText(R.string.acquiring_bank_by_bri);
                     bankBriSelection.setChecked(true);
+                    secureEnabledSelection.setChecked(true);
+
                     break;
                 case Constants.BANK_CIMB:
                     bankTitle.setText(R.string.acquiring_bank_by_cimb);
                     bankCimbSelection.setChecked(true);
+                    secureEnabledSelection.setChecked(true);
                     break;
                 case Constants.BANK_MEGA:
                     bankTitle.setText(R.string.acquiring_bank_by_cimb);
                     bankCimbSelection.setChecked(true);
+                    secureEnabledSelection.setChecked(true);
                     break;
                 default:
                     bankTitle.setText(R.string.acquiring_bank_none);
@@ -2531,9 +2545,11 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         MidtransSDK.getInstance().setUIKitCustomSetting(uiKitCustomSetting);
 
         if (secureEnabledSelection.isChecked()) {
-            transactionRequestNew.setCardPaymentInfo(cardClickType, true);
+            creditCard.setSecure(true);
+//            transactionRequestNew.setCardPaymentInfo(cardClickType, true);
         } else {
-            transactionRequestNew.setCardPaymentInfo(cardClickType, false);
+//            transactionRequestNew.setCardPaymentInfo(cardClickType, false);
+            creditCard.setSecure(false);
         }
 
         if (paymentChannelsSelectedSelection.isChecked()) {

@@ -52,7 +52,7 @@
             android:layout_marginLeft="@dimen/eight_dp"
             android:layout_marginStart="@dimen/eight_dp"
             android:gravity="center_vertical"
-            android:text="@string/secure_3ds" />
+            android:text="@string/enabled" />
 
         <com.midtrans.demo.widgets.DemoRadioButton
             android:visibility="gone"

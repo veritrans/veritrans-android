@@ -141,12 +141,12 @@ public class BankTransferPaymentFragment extends Fragment {
                         mTextViewVirtualAccountNumber.setText(transactionResponse.getBniVaNumber());
                         mTextViewValidity.setText(getString(R.string.text_format_valid_until, transactionResponse.getBniExpiration()));
                     } else {
-                        mTextViewVirtualAccountNumber.setText(transactionResponse.getStatusMessage());
-                        mTextViewValidity.setText(transactionResponse.getStatusMessage());
+                        mTextViewVirtualAccountNumber.setText(transactionResponse.getPermataVANumber());
+                        mTextViewValidity.setText(getString(R.string.text_format_valid_until, transactionResponse.getPermataExpiration()));
                     }
                 }
             } else {
-                mTextViewVirtualAccountNumber.setText(transactionResponse.getStatusMessage());
+                mTextViewVirtualAccountNumber.setText("");
                 mTextViewValidity.setText(transactionResponse.getStatusMessage());
             }
 
