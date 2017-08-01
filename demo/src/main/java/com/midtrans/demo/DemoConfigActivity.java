@@ -2386,7 +2386,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         SdkUIFlowBuilder.init(this, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL, this)
                 .setExternalScanner(new ScanCard())
                 .enableLog(true)
-                .useBuiltInTokenStorage(false)
+                .useBuiltInTokenStorage(true)
                 .setDefaultText("fonts/SourceSansPro-Regular.ttf")
                 .setBoldText("fonts/SourceSansPro-Bold.ttf")
                 .setSemiBoldText("fonts/SourceSansPro-Semibold.ttf")
