@@ -57,6 +57,7 @@ import java.util.regex.Pattern;
  */
 public class SdkUIFlowUtil {
 
+    private static final String TAG = SdkUIFlowUtil.class.getSimpleName();
     private static MidtransProgressDialogFragment progressDialogFragment;
     private static int maskedExpDate;
 
@@ -68,17 +69,18 @@ public class SdkUIFlowUtil {
      */
     public static boolean isEmailValid(String email) {
 
-        if (!TextUtils.isEmpty(email)) {
-            Pattern pattern = Pattern.compile(Constants.EMAIL_PATTERN, Pattern.CASE_INSENSITIVE);
-            if (pattern != null) {
-                Matcher matcher = pattern.matcher(email.trim());
-                return matcher.matches();
-            } else {
-                return false;
+        try {
+            if (!TextUtils.isEmpty(email)) {
+                Pattern pattern = Pattern.compile(Constants.EMAIL_PATTERN, Pattern.CASE_INSENSITIVE);
+                if (pattern != null) {
+                    Matcher matcher = pattern.matcher(email.trim());
+                    return matcher.matches();
+                }
             }
-        } else {
-            return false;
+        } catch (RuntimeException e) {
+            Logger.d(TAG, e.getMessage());
         }
+        return false;
     }
 
     /**

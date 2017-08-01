@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.midtrans.sdk.corekit.core.Constants;
+import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.fragments.WebviewFragment;
@@ -129,20 +130,24 @@ public class PaymentWebActivity extends BaseActivity {
     }
 
     private void initSmsCatcher() {
-        MidtransSDK midtransSDK = MidtransSDK.getInstance();
-        if (midtransSDK != null && midtransSDK.getUIKitCustomSetting() != null
-                && midtransSDK.getUIKitCustomSetting().isEnableAutoReadSms()) {
-            smsVerifyCatcher = new SmsVerifyCatcher(this, new OnSmsCatchListener<String>() {
-                @Override
-                public void onSmsCatch(String message) {
-                    Pattern otpPattern = Pattern.compile("[0-9]{6}");
-                    if (otpPattern != null) {
-                        Matcher matcher = otpPattern.matcher(message);
-                        matcher.find();
-                        webviewFragment.setOtp(matcher.group(0));
+        try {
+            MidtransSDK midtransSDK = MidtransSDK.getInstance();
+            if (midtransSDK != null && midtransSDK.getUIKitCustomSetting() != null
+                    && midtransSDK.getUIKitCustomSetting().isEnableAutoReadSms()) {
+                smsVerifyCatcher = new SmsVerifyCatcher(this, new OnSmsCatchListener<String>() {
+                    @Override
+                    public void onSmsCatch(String message) {
+                        Pattern otpPattern = Pattern.compile("[0-9]{6}");
+                        if (otpPattern != null) {
+                            Matcher matcher = otpPattern.matcher(message);
+                            matcher.find();
+                            webviewFragment.setOtp(matcher.group(0));
+                        }
                     }
-                }
-            });
+                });
+            }
+        } catch (Exception e) {
+            Logger.e(TAG, e.getMessage());
         }
     }
 
