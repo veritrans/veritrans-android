@@ -323,8 +323,11 @@ public class CreditCardDetailsPresenter {
             if (savedCards != null && !savedCards.isEmpty()) {
                 cardList.addAll(savedCards);
                 for (int i = 0; i < cardList.size(); i++) {
-                    if (cardList.get(i).getMaskedCard().equalsIgnoreCase(savedCard.getMaskedCard())) {
-                        cardList.remove(cardList.get(i));
+                    SaveCardRequest saveCard = cardList.get(i);
+                    if (saveCard != null) {
+                        if (!TextUtils.isEmpty(saveCard.getMaskedCard()) && saveCard.getMaskedCard().equalsIgnoreCase(savedCard.getMaskedCard())) {
+                            cardList.remove(cardList.get(i));
+                        }
                     }
                 }
             }

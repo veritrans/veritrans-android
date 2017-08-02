@@ -174,8 +174,11 @@ public class SavedCreditCardPresenter {
             if (savedCards != null && !savedCards.isEmpty()) {
                 cardList.addAll(savedCards);
                 for (int i = 0; i < cardList.size(); i++) {
-                    if (cardList.get(i).getMaskedCard().equalsIgnoreCase(savedCard.getMaskedCard())) {
-                        cardList.remove(cardList.get(i));
+                    SaveCardRequest saveCard = cardList.get(i);
+                    if (saveCard != null) {
+                        if (!TextUtils.isEmpty(saveCard.getMaskedCard()) && saveCard.getMaskedCard().equalsIgnoreCase(savedCard.getMaskedCard())) {
+                            cardList.remove(cardList.get(i));
+                        }
                     }
                 }
             }
@@ -187,23 +190,27 @@ public class SavedCreditCardPresenter {
     private void deleteCardFromMerchantServer(ArrayList<SaveCardRequest> cardList, final String maskedCard) {
         MidtransSDK midtransSDK = MidtransSDK.getInstance();
         UserDetail userDetail = LocalDataHandler.readObject(UiKitConstants.KEY_USER_DETAILS, UserDetail.class);
-        midtransSDK.saveCards(userDetail.getUserId(), cardList, new SaveCardCallback() {
-            @Override
-            public void onSuccess(SaveCardResponse response) {
-                SdkUIFlowUtil.hideProgressDialog();
-                view.onCardDeletionSuccess(maskedCard);
-            }
+        if (userDetail != null) {
+            midtransSDK.saveCards(userDetail.getUserId(), cardList, new SaveCardCallback() {
+                @Override
+                public void onSuccess(SaveCardResponse response) {
+                    SdkUIFlowUtil.hideProgressDialog();
+                    view.onCardDeletionSuccess(maskedCard);
+                }
 
-            @Override
-            public void onFailure(String reason) {
-                view.onCardDeletionFailed();
-            }
+                @Override
+                public void onFailure(String reason) {
+                    view.onCardDeletionFailed();
+                }
 
-            @Override
-            public void onError(Throwable error) {
-                view.onCardDeletionFailed();
-            }
-        });
+                @Override
+                public void onError(Throwable error) {
+                    view.onCardDeletionFailed();
+                }
+            });
+        } else {
+            view.onCardDeletionFailed();
+        }
     }
 
     private void deleteCardFromTokenStorage(final SaveCardRequest savedCard) {

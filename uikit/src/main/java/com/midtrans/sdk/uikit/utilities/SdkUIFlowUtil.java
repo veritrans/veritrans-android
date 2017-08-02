@@ -208,7 +208,7 @@ public class SdkUIFlowUtil {
         if (progressDialogFragment != null) {
             try {
                 progressDialogFragment.dismiss();
-            } catch (IllegalArgumentException ex) {
+            } catch (RuntimeException ex) {
                 Logger.e("error while hiding progress dialog : " + ex.getMessage());
             }
             progressDialogFragment = null;
@@ -401,12 +401,14 @@ public class SdkUIFlowUtil {
      * Sorting bank payment method by priority (Ascending)
      */
     public static void sortBankPaymentMethodsByPriority(ArrayList<BankTransferModel> paymentMethodsModels) {
-        Collections.sort(paymentMethodsModels, new Comparator<BankTransferModel>() {
-            @Override
-            public int compare(BankTransferModel lhs, BankTransferModel rhs) {
-                return lhs.getPriority().compareTo(rhs.getPriority());
-            }
-        });
+        if (paymentMethodsModels != null) {
+            Collections.sort(paymentMethodsModels, new Comparator<BankTransferModel>() {
+                @Override
+                public int compare(BankTransferModel lhs, BankTransferModel rhs) {
+                    return lhs.getPriority().compareTo(rhs.getPriority());
+                }
+            });
+        }
     }
 
     /**
@@ -417,9 +419,11 @@ public class SdkUIFlowUtil {
      * @return true if selected payment is enabled.
      */
     public static boolean isPaymentMethodEnabled(List<EnabledPayment> enabledPayments, String method) {
-        for (EnabledPayment enabledPayment : enabledPayments) {
-            if (enabledPayment.getType().equalsIgnoreCase(method)) {
-                return true;
+        if (enabledPayments != null) {
+            for (EnabledPayment enabledPayment : enabledPayments) {
+                if (enabledPayment.getType().equalsIgnoreCase(method)) {
+                    return true;
+                }
             }
         }
         return false;
@@ -433,12 +437,14 @@ public class SdkUIFlowUtil {
      * @return true if bank transfer payment is enabled.
      */
     public static boolean isBankTransferMethodEnabled(Context context, List<EnabledPayment> enabledPayments) {
-        for (EnabledPayment enabledPayment : enabledPayments) {
-            if (enabledPayment.getType().equalsIgnoreCase(context.getString(R.string.payment_bca_va))
-                    || enabledPayment.getType().equalsIgnoreCase(context.getString(R.string.payment_permata_va))
-                    || enabledPayment.getType().equalsIgnoreCase(context.getString(R.string.payment_mandiri_bill_payment))
-                    || enabledPayment.getType().equalsIgnoreCase(context.getString(R.string.payment_all_va))) {
-                return true;
+        if (enabledPayments != null) {
+            for (EnabledPayment enabledPayment : enabledPayments) {
+                if (enabledPayment.getType().equalsIgnoreCase(context.getString(R.string.payment_bca_va))
+                        || enabledPayment.getType().equalsIgnoreCase(context.getString(R.string.payment_permata_va))
+                        || enabledPayment.getType().equalsIgnoreCase(context.getString(R.string.payment_mandiri_bill_payment))
+                        || enabledPayment.getType().equalsIgnoreCase(context.getString(R.string.payment_all_va))) {
+                    return true;
+                }
             }
         }
         return false;
@@ -505,9 +511,11 @@ public class SdkUIFlowUtil {
 
     public static List<SavedToken> removeCardFromSavedCards(List<SavedToken> savedTokens, String maskedCard) {
         List<SavedToken> updatedTokens = new ArrayList<>();
-        for (SavedToken savedToken : savedTokens) {
-            if (!savedToken.getMaskedCard().equals(maskedCard)) {
-                updatedTokens.add(savedToken);
+        if (savedTokens != null) {
+            for (SavedToken savedToken : savedTokens) {
+                if (!savedToken.getMaskedCard().equals(maskedCard)) {
+                    updatedTokens.add(savedToken);
+                }
             }
         }
         return updatedTokens;
@@ -550,11 +558,13 @@ public class SdkUIFlowUtil {
     }
 
     public static List<SaveCardRequest> filterMultipleSavedCard(ArrayList<SaveCardRequest> savedCards) {
-        Collections.reverse(savedCards);
-        Set<String> maskedCardSet = new HashSet<>();
-        for (Iterator<SaveCardRequest> it = savedCards.iterator(); it.hasNext(); ) {
-            if (!maskedCardSet.add(it.next().getMaskedCard())) {
-                it.remove();
+        if (savedCards != null) {
+            Collections.reverse(savedCards);
+            Set<String> maskedCardSet = new HashSet<>();
+            for (Iterator<SaveCardRequest> it = savedCards.iterator(); it.hasNext(); ) {
+                if (!maskedCardSet.add(it.next().getMaskedCard())) {
+                    it.remove();
+                }
             }
         }
         return savedCards;
@@ -570,7 +580,7 @@ public class SdkUIFlowUtil {
     public static int getCreditCardIconType() {
         if (MidtransSDK.getInstance().getMerchantData() != null) {
             List<String> principles = MidtransSDK.getInstance().getMerchantData().getEnabledPrinciples();
-            if (principles.contains(CreditCardType.MASTERCARD) && principles.contains(CreditCardType.VISA)) {
+            if (principles != null && principles.contains(CreditCardType.MASTERCARD) && principles.contains(CreditCardType.VISA)) {
                 if (principles.contains(CreditCardType.JCB)) {
                     if (principles.contains(CreditCardType.AMEX)) {
                         return CreditCardType.TYPE_MASTER_VISA_JCB_AMEX;
@@ -587,11 +597,13 @@ public class SdkUIFlowUtil {
     }
 
     public static List<SaveCardRequest> filterMultipleSavedCard(List<SaveCardRequest> savedCards) {
-        Collections.reverse(savedCards);
-        Set<String> maskedCardSet = new HashSet<>();
-        for (Iterator<SaveCardRequest> it = savedCards.iterator(); it.hasNext(); ) {
-            if (!maskedCardSet.add(it.next().getMaskedCard())) {
-                it.remove();
+        if (savedCards != null) {
+            Collections.reverse(savedCards);
+            Set<String> maskedCardSet = new HashSet<>();
+            for (Iterator<SaveCardRequest> it = savedCards.iterator(); it.hasNext(); ) {
+                if (!maskedCardSet.add(it.next().getMaskedCard())) {
+                    it.remove();
+                }
             }
         }
         return savedCards;
