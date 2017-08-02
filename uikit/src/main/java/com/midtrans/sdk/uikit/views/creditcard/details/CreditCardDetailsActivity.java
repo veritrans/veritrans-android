@@ -62,7 +62,6 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
     private static final String TAG = CreditCardDetailsActivity.class.getSimpleName();
 
-    public static final String EXTRA_CARD_DETAILS = "card.details";
     public static final String EXTRA_DELETED_CARD_DETAILS = "card.deleted.details";
     public static final String EXTRA_SAVED_CARD = "extra.card.saved";
 
@@ -1272,14 +1271,14 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
     @Override
     public void onGetTransactionStatusFailed(TransactionResponse response) {
-        Log.d(TAG, "xrba>onGetTransactionStatusFailed()");
+        Log.d(TAG, "rba>onGetTransactionStatusFailed()");
         hideProgressDialog();
         initPaymentStatus(response);
     }
 
     @Override
     public void onGetTransactionStatusSuccess(TransactionResponse transactionResponse) {
-        Log.d(TAG, "xrba>onGetTransactionStatusSuccess()");
+        Log.d(TAG, "rba>onGetTransactionStatusSuccess()");
         hideProgressDialog();
         initPaymentStatus(transactionResponse);
     }

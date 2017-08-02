@@ -13,6 +13,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -78,7 +79,7 @@ public class SdkUIFlowUtil {
                 }
             }
         } catch (RuntimeException e) {
-            Logger.d(TAG, e.getMessage());
+            Logger.e(TAG, e.getMessage());
         }
         return false;
     }
@@ -122,8 +123,8 @@ public class SdkUIFlowUtil {
                         .INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
-        } catch (NullPointerException e) {
-            e.printStackTrace();
+        } catch (RuntimeException e) {
+            Log.d(TAG, e.getMessage());
         }
     }
 
@@ -356,7 +357,7 @@ public class SdkUIFlowUtil {
             }.getType());
 
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.e(TAG, e.getMessage());
         }
 
         return list;
