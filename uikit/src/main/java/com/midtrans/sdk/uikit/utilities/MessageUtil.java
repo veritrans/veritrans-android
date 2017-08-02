@@ -26,6 +26,8 @@ public class MessageUtil {
     public static final String TIMEOUT = "timeout";
     public static final String MAINTENANCE = "maintenance";
     public static final String RETROFIT_TIMEOUT = "timed out";
+    public static final String STATUS_UNSUCCESSFUL = "Payment has not been made";
+
 
 
     public static String createMessageWhenCheckoutFailed(Context context, ArrayList<String> statusMessage) {

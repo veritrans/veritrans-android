@@ -10,7 +10,9 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.models.MerchantPreferences;
 import com.midtrans.sdk.corekit.models.snap.MerchantData;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.utilities.Utils;
@@ -23,27 +25,37 @@ import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 
 public class BasePaymentActivity extends BaseActivity {
 
+    private static final java.lang.String TAG = BasePaymentActivity.class.getSimpleName();
+
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
-        initMerchantLogo();
-        initToolbarBackButton();
-        initItemDetails();
+        try {
+            initMerchantLogo();
+            initToolbarBackButton();
+            initItemDetails();
+        } catch (Exception e) {
+            Logger.e(TAG, "appbar:" + e.getMessage());
+        }
     }
 
 
     private void initItemDetails() {
         View itemDetailContainer = findViewById(R.id.container_item_details);
-        setPrimaryBackgroundColor(itemDetailContainer);
-        setTotalAmount();
+        if (itemDetailContainer != null) {
+            setPrimaryBackgroundColor(itemDetailContainer);
+            setTotalAmount();
+        }
     }
 
     private void setTotalAmount() {
         Transaction transaction = MidtransSDK.getInstance().getTransaction();
         if (transaction != null && transaction.getTransactionDetails() != null) {
             DefaultTextView textTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
-            String totalAmount = getString(R.string.prefix_money, Utils.getFormattedAmount(transaction.getTransactionDetails().getAmount()));
-            textTotalAmount.setText(totalAmount);
+            if (textTotalAmount != null) {
+                String totalAmount = getString(R.string.prefix_money, Utils.getFormattedAmount(transaction.getTransactionDetails().getAmount()));
+                textTotalAmount.setText(totalAmount);
+            }
         }
     }
 
@@ -54,20 +66,25 @@ public class BasePaymentActivity extends BaseActivity {
         MerchantData merchantData = MidtransSDK.getInstance().getMerchantData();
 
         if (merchantData != null) {
-            String merchantName = merchantData.getPreference().getDisplayName();
-            String merchantLogoUrl = merchantData.getPreference().getLogoUrl();
-            if (!TextUtils.isEmpty(merchantLogoUrl)) {
-                if (merchantLogo != null) {
-                    Glide.with(this)
-                            .load(merchantLogoUrl)
-                            .into(merchantLogo);
-                }
-            } else {
-                if (merchantName != null) {
-                    if (!TextUtils.isEmpty(merchantName)) {
-                        merchantLogo.setVisibility(View.GONE);
-                        merchantNameText.setVisibility(View.VISIBLE);
-                        merchantNameText.setText(merchantName);
+            MerchantPreferences preferences = merchantData.getPreference();
+            if (preferences != null) {
+                String merchantName = preferences.getDisplayName();
+                String merchantLogoUrl = preferences.getLogoUrl();
+                if (!TextUtils.isEmpty(merchantLogoUrl)) {
+                    if (merchantLogo != null) {
+                        Glide.with(this)
+                                .load(merchantLogoUrl)
+                                .into(merchantLogo);
+                    }
+                } else {
+                    if (merchantName != null) {
+                        if (merchantNameText != null && !TextUtils.isEmpty(merchantName)) {
+                            merchantNameText.setVisibility(View.VISIBLE);
+                            merchantNameText.setText(merchantName);
+                            if (merchantLogo != null) {
+                                merchantLogo.setVisibility(View.GONE);
+                            }
+                        }
                     }
                 }
             }

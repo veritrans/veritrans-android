@@ -17,7 +17,6 @@ import com.midtrans.sdk.corekit.core.Logger;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -75,9 +74,7 @@ public class Utils {
             otherSymbols.setGroupingSeparator(',');
             String amountString = new DecimalFormat("#,###", otherSymbols).format(amount);
             return amountString;
-        } catch (NumberFormatException e) {
-            return "" + amount;
-        } catch (NullPointerException e) {
+        } catch (NullPointerException | IllegalArgumentException e) {
             return "" + amount;
         }
     }
@@ -229,9 +226,9 @@ public class Utils {
     }
 
     public static String formatDouble(double d) {
-        if(d == (long) d)
-            return String.format("%d",(long)d);
+        if (d == (long) d)
+            return String.format("%d", (long) d);
         else
-            return String.format("%s",d);
+            return String.format("%s", d);
     }
 }

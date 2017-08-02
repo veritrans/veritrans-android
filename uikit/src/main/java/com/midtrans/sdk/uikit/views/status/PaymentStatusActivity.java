@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -15,6 +16,8 @@ import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BaseActivity;
+import com.midtrans.sdk.uikit.utilities.MessageUtil;
+import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
@@ -27,6 +30,7 @@ import java.util.regex.Pattern;
 
 public class PaymentStatusActivity extends BaseActivity {
     public static final String EXTRA_PAYMENT_RESULT = "payment.result";
+    private static final String TAG = PaymentStatusActivity.class.getSimpleName();
 
     private FancyButton buttonFinish;
     private FancyButton buttonInstruction;
@@ -34,13 +38,14 @@ public class PaymentStatusActivity extends BaseActivity {
     private DefaultTextView statusMessage;
     private SemiBoldTextView statusErrorMessage;
     private DefaultTextView totalAmount;
-    private DefaultTextView orderId;
+    private DefaultTextView labelOrderId;
     private DefaultTextView paymentType;
     private DefaultTextView bank;
     private DefaultTextView dueInstallment;
     private DefaultTextView statusTitle;
     private DefaultTextView totalDueAmount;
     private DefaultTextView pointAmount;
+
 
     private LinearLayout layoutTotalAmount;
     private LinearLayout layoutTotalDueAmount;
@@ -119,7 +124,7 @@ public class PaymentStatusActivity extends BaseActivity {
         statusTitle = (DefaultTextView) findViewById(R.id.text_status_title);
         statusMessage = (DefaultTextView) findViewById(R.id.text_status_message);
         statusErrorMessage = (SemiBoldTextView) findViewById(R.id.text_status_error_message);
-        orderId = (DefaultTextView) findViewById(R.id.text_order_id);
+        labelOrderId = (DefaultTextView) findViewById(R.id.text_order_id);
         totalAmount = (DefaultTextView) findViewById(R.id.text_status_amount);
         totalDueAmount = (DefaultTextView) findViewById(R.id.text_status_due_amount);
         dueInstallment = (DefaultTextView) findViewById(R.id.text_status_due_installment);
@@ -221,17 +226,44 @@ public class PaymentStatusActivity extends BaseActivity {
                     if (!TextUtils.isEmpty(message) && message.toLowerCase().contains(getString(R.string.label_expired))) {
                         statusErrorMessage.setText(getString(R.string.message_payment_expired));
                     } else {
-                        statusErrorMessage.setText(getString(R.string.message_cannot_proccessed));
+                        statusErrorMessage.setText(getString(R.string.message_payment_cannot_proccessed));
                     }
                 } else {
                     statusErrorMessage.setText(transactionResponse.getStatusMessage());
                 }
 
-                layoutDetails.setVisibility(View.GONE);
+                setLayoutVisibilityWhenFailed();
                 break;
         }
     }
 
+    private void setLayoutVisibilityWhenFailed() {
+        //order id
+        String orderId = transactionResponse.getOrderId();
+        if (TextUtils.isEmpty(orderId)) {
+            layoutOrderId.setVisibility(View.GONE);
+        } else {
+            labelOrderId.setText(orderId);
+        }
+
+        //total amount
+        String amount = transactionResponse.getGrossAmount();
+        if (TextUtils.isEmpty(amount)) {
+            layoutTotalAmount.setVisibility(View.GONE);
+        } else {
+            try {
+                String formattedAmount = amount.split(Pattern.quote(".")).length == 2 ? amount.split(Pattern.quote("."))[0] : amount;
+                totalAmount.setText(formattedAmount);
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
+        }
+
+        String paymentType = transactionResponse.getPaymentType();
+        if (TextUtils.isEmpty(paymentType)) {
+            layoutPaymentType.setVisibility(View.GONE);
+        }
+    }
 
     private void setContentValues() {
         if (transactionResponse != null) {
@@ -257,7 +289,7 @@ public class PaymentStatusActivity extends BaseActivity {
             }
 
             // Set order id
-            orderId.setText(String.valueOf(transactionResponse.getOrderId()));
+            labelOrderId.setText(String.valueOf(transactionResponse.getOrderId()));
 
             // Set total amount
             String amount = transactionResponse.getGrossAmount();
@@ -295,6 +327,14 @@ public class PaymentStatusActivity extends BaseActivity {
             String formattedBalance = String.format("%s", String.valueOf(pointRedeemed));
             pointAmount.setText(formattedBalance);
             layoutPointAmount.setVisibility(View.VISIBLE);
+        }
+
+        String transactionStatus = transactionResponse.getTransactionStatus();
+        if (!TextUtils.isEmpty(transactionStatus) && transactionStatus.equals(UiKitConstants.STATUS_PENDING)) {
+            String transactionMessage = transactionResponse.getStatusMessage();
+            if (!TextUtils.isEmpty(transactionMessage) && transactionMessage.contains(MessageUtil.STATUS_UNSUCCESSFUL)) {
+                statusMessage.setText(R.string.status_rba_unsuccessful);
+            }
         }
     }
 }

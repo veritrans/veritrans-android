@@ -150,6 +150,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
      **/
     private AppCompatRadioButton secureDisabledSelection;
     private AppCompatRadioButton secureEnabledSelection;
+    private AppCompatRadioButton secureRbaSelection;
     /**
      * Radio Button Selection for Issuing Bank
      **/
@@ -317,6 +318,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
 
         secureDisabledSelection = (AppCompatRadioButton) findViewById(R.id.type_secure_disabled);
         secureEnabledSelection = (AppCompatRadioButton) findViewById(R.id.type_secure_enabled);
+        secureRbaSelection = (AppCompatRadioButton) findViewById(R.id.type_secure_rba);
 
         bankNoneSelection = (AppCompatRadioButton) findViewById(R.id.type_bank_none);
         bankBniSelection = (AppCompatRadioButton) findViewById(R.id.type_bank_bni);
@@ -917,6 +919,19 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 }
             }
         });
+
+
+        secureRbaSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    secureTitle.setText(R.string.secure_type_rba);
+                    if (oneClickSelection.isChecked()) {
+                        normalSelection.setChecked(true);
+                    }
+                }
+            }
+        });
     }
 
     private void initIssuingBankSelection() {
@@ -930,30 +945,42 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 case Constants.BANK_BNI:
                     bankTitle.setText(R.string.acquiring_bank_by_bni);
                     bankBniSelection.setChecked(true);
+                    secureEnabledSelection.setChecked(true);
+
                     break;
                 case Constants.BANK_MANDIRI:
                     bankTitle.setText(R.string.acquiring_bank_by_mandiri);
                     bankMandiriSelection.setChecked(true);
+                    secureEnabledSelection.setChecked(true);
+
                     break;
                 case Constants.BANK_BCA:
                     bankTitle.setText(R.string.acquiring_bank_by_bca);
                     bankBcaSelection.setChecked(true);
+                    secureEnabledSelection.setChecked(true);
+
                     break;
                 case Constants.BANK_MAYBANK:
                     bankTitle.setText(R.string.acquiring_bank_by_maybank);
                     bankMaybankSelection.setChecked(true);
+                    secureEnabledSelection.setChecked(true);
+
                     break;
                 case Constants.BANK_BRI:
                     bankTitle.setText(R.string.acquiring_bank_by_bri);
                     bankBriSelection.setChecked(true);
+                    secureEnabledSelection.setChecked(true);
+
                     break;
                 case Constants.BANK_CIMB:
                     bankTitle.setText(R.string.acquiring_bank_by_cimb);
                     bankCimbSelection.setChecked(true);
+                    secureEnabledSelection.setChecked(true);
                     break;
                 case Constants.BANK_MEGA:
                     bankTitle.setText(R.string.acquiring_bank_by_cimb);
                     bankCimbSelection.setChecked(true);
+                    secureEnabledSelection.setChecked(true);
                     break;
                 default:
                     bankTitle.setText(R.string.acquiring_bank_none);
@@ -2373,6 +2400,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         SdkUIFlowBuilder.init(this, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL, this)
                 .setExternalScanner(new ScanCard())
                 .enableLog(true)
+                .useBuiltInTokenStorage(true)
                 .setDefaultText("fonts/SourceSansPro-Regular.ttf")
                 .setBoldText("fonts/SourceSansPro-Bold.ttf")
                 .setSemiBoldText("fonts/SourceSansPro-Semibold.ttf")
@@ -2517,9 +2545,11 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         MidtransSDK.getInstance().setUIKitCustomSetting(uiKitCustomSetting);
 
         if (secureEnabledSelection.isChecked()) {
+//            creditCard.setSecure(true);
             transactionRequestNew.setCardPaymentInfo(cardClickType, true);
         } else {
             transactionRequestNew.setCardPaymentInfo(cardClickType, false);
+//            creditCard.setSecure(false);
         }
 
         if (paymentChannelsSelectedSelection.isChecked()) {
@@ -2569,6 +2599,14 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 userDetail.setUserId("user2@user.com");
             }
         }
+
+        // if rba activated
+        if (secureRbaSelection.isChecked()) {
+            userDetail.setEmail("secure_email_rba@example.com");
+            creditCard.setAuthentication(CreditCard.RBA);
+            creditCard.setSecure(false);
+        }
+
         LocalDataHandler.saveObject(getString(R.string.user_details), userDetail);
         if (customPermataVaEnabledSelection.isChecked()) {
             String vaNumber = customPermataVaEnabledSelection.getText().toString().split(" - ")[1];

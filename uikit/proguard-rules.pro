@@ -26,6 +26,7 @@
 
 -keepclassmembers class ** {
     public void onEvent*(***);
+    public void on*(***);
 }
 
 -keepclassmembers class ** {
@@ -44,7 +45,11 @@
 
 -keepnames class * implements android.os.Parcelable {
     public static final ** CREATOR;
+    public static final android.os.Parcelable$Creator *;
 }
+-keep interface org.parceler.Parcel
+-keep @org.parceler.Parcel class * { *; }
+-keep class **$$Parcelable { *; }
 
 # Keep the BuildConfig
 -keep class com.midtrans.sdk.corekit.BuildConfig { *; }
@@ -159,6 +164,7 @@
 
 # Android
 -keep public class * extends android.app.Activity
+-keep public class * extends android.support.v7.app.AppCompatActivity
 -keep public class * extends android.app.Application
 -keep public class * extends android.app.Service
 -keep public class * extends android.content.BroadcastReceiver
@@ -218,3 +224,33 @@ public static final *** NULL; }
     java.lang.Object writeReplace();
     java.lang.Object readResolve();
 }
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+-keepclassmembers public class * extends android.view.View {
+   void set*(***);
+   *** get*();
+}
+
+-keepclassmembers class * extends android.app.Activity {
+   public void *(android.view.View);
+}
+-keepclassmembers class * extends android.support.v7.app.AppCompatActivity{
+    public void *(android.view.View);
+}
+
+-keepclassmembers public class * extends android.support.v4.app.Fragment{
+     public *** on*(...);
+     public *** *Dialog();
+     public void *(android.view.View);
+}
+
+-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+   public *;
+}
+
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface <methods>;
+}
+
+-keep class com.viewpagerindicator.** {*;}

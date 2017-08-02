@@ -5,17 +5,21 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatEditText;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.themes.BaseColorTheme;
+import com.midtrans.sdk.uikit.BuildConfig;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 /**
@@ -33,6 +37,21 @@ public class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initThemeProperties();
+    }
+
+    @Override
+    public void setContentView(@LayoutRes int layoutResID) {
+        super.setContentView(layoutResID);
+        initBadgeLayout();
+    }
+
+    private void initBadgeLayout() {
+        if (BuildConfig.FLAVOR.equalsIgnoreCase(UiKitConstants.ENVIRONMENT_DEVELOPMENT)) {
+            ImageView badgeView = (ImageView) findViewById(R.id.image_sandbox_badge);
+            if (badgeView != null) {
+                badgeView.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     private void initThemeProperties() {

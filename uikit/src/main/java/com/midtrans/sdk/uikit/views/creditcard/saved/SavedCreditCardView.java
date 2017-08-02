@@ -12,4 +12,8 @@ public interface SavedCreditCardView {
     void onGetSavedCardsSuccess(List<SaveCardRequest> savedCards);
 
     void onGetSavedCardTokenFailed();
+
+    void onCardDeletionSuccess(String maskedCard);
+
+    void onCardDeletionFailed();
 }

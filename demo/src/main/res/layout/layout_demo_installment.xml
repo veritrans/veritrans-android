@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:scaleType="center"
+            android:src="@drawable/ic_installment" />
+
+        <com.midtrans.demo.widgets.DemoTextView
+            android:id="@+id/title_installment_type"
+            style="@style/ConfigItemTextTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/installment_type_disabled" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RadioGroup
+            android:id="@+id/enable_installment_container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.85"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/thirtytwo_dp"
+            android:visibility="gone">
+
+            <com.midtrans.demo.widgets.DemoRadioButton
+                android:id="@+id/no_installment"
+                style="@style/CustomRadioButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginLeft="@dimen/eight_dp"
+                android:layout_marginStart="@dimen/eight_dp"
+                android:checked="true"
+                android:gravity="center_vertical"
+                android:text="@string/no_installment" />
+
+            <com.midtrans.demo.widgets.DemoRadioButton
+                android:id="@+id/installment_type_mandiri"
+                style="@style/CustomRadioButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/eight_dp"
+                android:layout_marginStart="@dimen/eight_dp"
+                android:gravity="center_vertical"
+                android:text="@string/installment_mandiri" />
+
+            <com.midtrans.demo.widgets.DemoRadioButton
+                android:id="@+id/installment_type_bca"
+                style="@style/CustomRadioButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/eight_dp"
+                android:layout_marginStart="@dimen/eight_dp"
+                android:gravity="center_vertical"
+                android:text="@string/installment_bca" />
+
+            <com.midtrans.demo.widgets.DemoRadioButton
+                android:id="@+id/installment_type_bni"
+                style="@style/CustomRadioButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/eight_dp"
+                android:layout_marginStart="@dimen/eight_dp"
+                android:gravity="center_vertical"
+                android:text="@string/installment_bni" />
+
+            <com.midtrans.demo.widgets.DemoRadioButton
+                android:id="@+id/installment_type_bri"
+                style="@style/CustomRadioButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/eight_dp"
+                android:layout_marginStart="@dimen/eight_dp"
+                android:gravity="center_vertical"
+                android:text="@string/installment_bri" />
+
+            <com.midtrans.demo.widgets.DemoRadioButton
+                android:id="@+id/installment_type_cimb"
+                style="@style/CustomRadioButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/eight_dp"
+                android:layout_marginStart="@dimen/eight_dp"
+                android:gravity="center_vertical"
+                android:text="@string/installment_cimb" />
+
+        </RadioGroup>
+
+        <LinearLayout
+            android:id="@+id/change_installment_container"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.1"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="?selectableItemBackground"
+                android:minHeight="30dp"
+                android:minWidth="12dp"
+                android:src="@drawable/ic_edit_icon"
+                android:visibility="invisible"
+                tools:visibility="invisible" />
+
+            <ImageButton
+                android:id="@+id/button_mandiri_installment_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="?selectableItemBackground"
+                android:minHeight="30dp"
+                android:minWidth="12dp"
+                android:src="@drawable/ic_edit_icon"
+                android:visibility="invisible"
+                tools:visibility="visible" />
+
+            <ImageButton
+                android:id="@+id/button_bca_installment_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="?selectableItemBackground"
+                android:minHeight="30dp"
+                android:minWidth="12dp"
+                android:src="@drawable/ic_edit_icon"
+                android:visibility="invisible"
+                tools:visibility="visible" />
+
+            <ImageButton
+                android:id="@+id/button_bni_installment_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="?selectableItemBackground"
+                android:minHeight="30dp"
+                android:minWidth="12dp"
+                android:src="@drawable/ic_edit_icon"
+                android:visibility="invisible"
+                tools:visibility="visible" />
+
+            <ImageButton
+                android:id="@+id/button_bri_installment_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="?selectableItemBackground"
+                android:minHeight="30dp"
+                android:minWidth="12dp"
+                android:src="@drawable/ic_edit_icon"
+                android:visibility="invisible"
+                tools:visibility="visible" />
+
+            <ImageButton
+                android:id="@+id/button_cimb_installment_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="?selectableItemBackground"
+                android:minHeight="30dp"
+                android:minWidth="12dp"
+                android:src="@drawable/ic_edit_icon"
+                android:visibility="invisible"
+                tools:visibility="visible" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

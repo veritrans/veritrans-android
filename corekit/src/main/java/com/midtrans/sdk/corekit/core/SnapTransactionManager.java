@@ -12,6 +12,7 @@ import com.midtrans.sdk.corekit.callback.CardTokenCallback;
 import com.midtrans.sdk.corekit.callback.CheckoutCallback;
 import com.midtrans.sdk.corekit.callback.DeleteCardCallback;
 import com.midtrans.sdk.corekit.callback.GetCardCallback;
+import com.midtrans.sdk.corekit.callback.GetTransactionStatusCallback;
 import com.midtrans.sdk.corekit.callback.SaveCardCallback;
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.callback.TransactionOptionsCallback;
@@ -26,6 +27,7 @@ import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 import com.midtrans.sdk.corekit.models.snap.BanksPointResponse;
 import com.midtrans.sdk.corekit.models.snap.Token;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
+import com.midtrans.sdk.corekit.models.snap.TransactionStatusResponse;
 import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.BasePaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.CreditCardPaymentRequest;
@@ -1384,4 +1386,30 @@ public class SnapTransactionManager extends BaseTransactionManager {
 
     }
 
+    public void getTransactionStatus(String snapToken, final GetTransactionStatusCallback callback) {
+        snapRestAPI.getTransactionStatus(snapToken, new Callback<TransactionStatusResponse>() {
+            @Override
+            public void success(TransactionStatusResponse transactionStatusResponse, Response response) {
+                releaseResources();
+                if (transactionStatusResponse != null) {
+                    if (transactionStatusResponse.getStatusCode() != null && transactionStatusResponse.getStatusCode().equals(context.getString(R.string.success_code_200))) {
+                        callback.onSuccess(transactionStatusResponse);
+                    } else {
+                        callback.onFailure(transactionStatusResponse, response.getReason());
+                    }
+                } else {
+                    callback.onError(new Throwable(context.getString(R.string.error_empty_response)));
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                releaseResources();
+                if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
+                    Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
+                }
+                callback.onError(new Throwable(error.getMessage(), error.getCause()));
+            }
+        });
+    }
 }

@@ -59,6 +59,7 @@ public class PaymentTransactionStatusFragment extends Fragment {
     private static final int STATUS_PENDING = 1;
     private static final int STATUS_FAILED = 0;
     private static final String PAYMENT_TYPE = "payment_type";
+    private static final java.lang.String TAG = PaymentTransactionStatusFragment.class.getSimpleName();
     private TransactionResponse transactionResponse;
     private boolean isSuccessful;
 
@@ -218,8 +219,7 @@ public class PaymentTransactionStatusFragment extends Fragment {
             }
 
         } catch (NullPointerException e) {
-            e.printStackTrace();
-
+            Logger.e(TAG, e.getMessage());
         }
 
         // setbank
