@@ -249,4 +249,8 @@ public static final *** NULL; }
    public *;
 }
 
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface <methods>;
+}
+
 -keep class com.viewpagerindicator.** {*;}

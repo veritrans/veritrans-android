@@ -147,7 +147,7 @@ public class PaymentWebActivity extends BaseActivity {
                 });
             }
         } catch (Exception e) {
-            Logger.e(TAG, e.getMessage());
+            Logger.e(TAG, "initSmsCatcher:" + e.getMessage());
         }
     }
 
