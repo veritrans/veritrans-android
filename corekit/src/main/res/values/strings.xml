@@ -247,7 +247,6 @@
     <string name="bca_klik">BCA KlikPay</string>
     <string name="indomaret">Indomaret</string>
     <string name="offers">Offers</string>
-    <string name="loading">Loading</string>
     <string name="delete">Delete</string>
     <string name="card_delete_message">Are you sure you want to delete card?</string>
     <string name="message_save_card">Save your card for faster checkout process.</string>

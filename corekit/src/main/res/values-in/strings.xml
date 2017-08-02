@@ -170,7 +170,6 @@
     <string name="bca_klik">BCA KlikPay</string>
     <string name="indomaret">Indomaret</string>
     <string name="offers">Penawaran</string>
-    <string name="loading">Memuat</string>
     <string name="delete">Delete</string>
     <string name="card_delete_message">Anda yakin ingin menghapus kartu ini?</string>
     <string name="message_save_card">Simpan kartu anda untuk proses checkout lebih cepat.</string>

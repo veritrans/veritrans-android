@@ -124,7 +124,7 @@ public class SdkUIFlowUtil {
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
         } catch (RuntimeException e) {
-            Log.d(TAG, e.getMessage());
+            Log.d(TAG, "hideKeyboard():" + e.getMessage());
         }
     }
 

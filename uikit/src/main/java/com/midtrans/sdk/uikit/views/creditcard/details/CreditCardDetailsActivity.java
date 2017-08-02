@@ -23,6 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
@@ -73,6 +74,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     private DefaultTextView textExpriyHint;
     private DefaultTextView textCvvHint;
     private DefaultTextView textInApplicablePromoStatus;
+    private DefaultTextView textBarMessage;
 
     private TextView cardNumberErrorText;
     private TextView cardCvvErrorText;
@@ -82,6 +84,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
     private ImageView cardLogo;
     private ImageView bankLogo;
+    private ImageView imageProcessLogo;
 
     private ImageButton cvvHelpButton;
     private ImageButton saveCardHelpButton;
@@ -96,6 +99,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     private RelativeLayout containerSaveCard;
     private LinearLayout containerInstallment;
     private RelativeLayout containerPoint;
+    private LinearLayout progressContainer;
 
     private AppCompatCheckBox checkboxSaveCard;
     private AppCompatCheckBox checkboxPointEnabled;
@@ -123,6 +127,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         initInstallmentButton();
         initDeleteButton();
         initScanCardButton();
+        initProgressLayout();
         initLayoutState();
         bindData();
     }
@@ -160,7 +165,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
-                        SdkUIFlowUtil.showProgressDialog(CreditCardDetailsActivity.this, getString(R.string.processing_delete), false);
+                        showProgressLayout(getString(R.string.processing_delete));
                         presenter.deleteSavedCard(savedCard);
                     }
                 })
@@ -452,6 +457,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         payNowButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SdkUIFlowUtil.hideKeyboard(CreditCardDetailsActivity.this);
                 if (checkCardValidity()) {
                     if (checkPaymentValidity()) {
                         TokenizeCreditCard();
@@ -533,7 +539,8 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     }
 
     private void TokenizeCreditCard() {
-        showProgressDialog();
+        showProgressLayout(getString(R.string.processing_payment));
+
         if (isOneClickMode()) {
             presenter.startOneClickPayment(savedCard.getMaskedCard());
         } else if (isTwoClicksMode()) {
@@ -633,6 +640,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         textExpriyHint = (DefaultTextView) findViewById(R.id.hint_card_expiry);
         textCvvHint = (DefaultTextView) findViewById(R.id.hint_card_cvv);
         textInApplicablePromoStatus = (DefaultTextView) findViewById(R.id.text_offer_status_not_applied);
+        textBarMessage = (DefaultTextView) findViewById(R.id.progress_bar_message);
 
         cardNumberErrorText = (TextView) findViewById(R.id.error_message_card_number);
         cardExpiryErrorText = (TextView) findViewById(R.id.error_message_expiry);
@@ -640,6 +648,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
         cardLogo = (ImageView) findViewById(R.id.payment_card_logo);
         bankLogo = (ImageView) findViewById(R.id.bank_logo);
+        imageProcessLogo = (ImageView) findViewById(R.id.progress_bar_image);
 
         cvvHelpButton = (ImageButton) findViewById(R.id.help_cvv_button);
         saveCardHelpButton = (ImageButton) findViewById(R.id.help_save_card);
@@ -654,6 +663,8 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         containerSaveCard = (RelativeLayout) findViewById(R.id.container_save_card_details);
         containerInstallment = (LinearLayout) findViewById(R.id.container_installment);
         containerPoint = (RelativeLayout) findViewById(R.id.container_bni_point);
+        progressContainer = (LinearLayout) findViewById(R.id.progress_container);
+
 
         checkboxSaveCard = (AppCompatCheckBox) findViewById(R.id.checkbox_save_card);
         checkboxPointEnabled = (AppCompatCheckBox) findViewById(R.id.checkbox_point);
@@ -896,16 +907,9 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         return cleanCardNumber;
     }
 
-    public void showProgressDialog() {
-        SdkUIFlowUtil.showProgressDialog(this, getString(R.string.fetching_cards), false);
-    }
-
-    public void hideProgressDialog() {
-        SdkUIFlowUtil.hideProgressDialog();
-    }
 
     private void getPaymentStatus() {
-        showProgressDialog();
+        showProgressLayout(null);
         presenter.getPaymentStatus();
     }
 
@@ -1107,6 +1111,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
 
     private void startPreCrediCardPayment() {
+        hideProgresslayout();
         if (isBankPointEnabled()) {
             presenter.getBankPoint(BankType.BNI);
         } else {
@@ -1115,7 +1120,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     }
 
     private void startCreditCardPayment() {
-        SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
+        showProgressLayout(getString(R.string.processing_payment));
         presenter.startNormalPayment(checkboxSaveCard.isChecked());
     }
 
@@ -1130,9 +1135,30 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
         presenter.trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
         String errorMessage = MessageUtil.createPaymentErrorMessage(this, error.getMessage(), getString(R.string.message_payment_failed));
-        SdkUIFlowUtil.hideProgressDialog();
+        hideProgresslayout();
         showErrorMessage(errorMessage);
     }
+
+
+    private void initProgressLayout() {
+        Glide.with(this)
+                .load(R.drawable.midtrans_loader)
+                .asGif()
+                .into(imageProcessLogo);
+    }
+
+    private void showProgressLayout(String message) {
+        if (!TextUtils.isEmpty(message)) {
+            textBarMessage.setText(message);
+        }
+        progressContainer.setVisibility(View.VISIBLE);
+    }
+
+    private void hideProgresslayout() {
+        progressContainer.setVisibility(View.GONE);
+        textBarMessage.setText(R.string.loading);
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -1177,7 +1203,6 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     public void onGetCardTokenSuccess(TokenDetailsResponse response) {
         SdkUIFlowUtil.hideKeyboard(this);
         if (!TextUtils.isEmpty(response.getRedirectUrl())) {
-            hideProgressDialog();
             start3DSecurePage(response.getRedirectUrl(), UiKitConstants.INTENT_CODE_3DS_PAYMENT);
         } else {
             startPreCrediCardPayment();
@@ -1186,29 +1211,29 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
     @Override
     public void onGetCardTokenFailed() {
-        SdkUIFlowUtil.hideProgressDialog();
+        hideProgresslayout();
         SdkUIFlowUtil.showApiFailedMessage(this, getString(R.string.message_getcard_token_failed));
     }
 
     @Override
     public void onGetBankPointSuccess(BanksPointResponse response) {
-        SdkUIFlowUtil.hideProgressDialog();
+        hideProgresslayout();
         startBankPointPage(response);
     }
 
 
     @Override
     public void onGetBankPointFailed() {
-        SdkUIFlowUtil.hideProgressDialog();
+        hideProgresslayout();
         SdkUIFlowUtil.showToast(this, getString(R.string.failed_to_get_bank_point));
     }
 
     @Override
     public void onPaymentSuccess(TransactionResponse response) {
-        SdkUIFlowUtil.hideProgressDialog();
         if (presenter.isRbaAuthentication(response)) {
             start3DSecurePage(response.getRedirectUrl(), UiKitConstants.INTENT_CODE_RBA_AUTHENTICATION);
         } else {
+            hideProgresslayout();
             if (presenter.isShowPaymentStatus()) {
                 showPaymentStatus(response);
             } else {
@@ -1219,7 +1244,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
     @Override
     public void onPaymentFailed(TransactionResponse response) {
-        SdkUIFlowUtil.hideProgressDialog();
+        hideProgresslayout();
         if (attempt < UiKitConstants.MAX_ATTEMPT) {
             attempt += 1;
             SdkUIFlowUtil.showApiFailedMessage(this, getString(R.string.message_payment_failed));
@@ -1243,13 +1268,13 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
     @Override
     public void onPaymentError(Throwable error) {
-        SdkUIFlowUtil.hideProgressDialog();
+        hideProgresslayout();
         initPaymentError(error);
     }
 
     @Override
     public void onCardDeletionSuccess(String maskedCardNumber) {
-        SdkUIFlowUtil.hideProgressDialog();
+        hideProgresslayout();
         Intent intent = new Intent();
         intent.putExtra(EXTRA_DELETED_CARD_DETAILS, maskedCardNumber);
         setResult(UiKitConstants.INTENT_RESULT_DELETE_CARD, intent);
@@ -1259,27 +1284,27 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
     @Override
     public void onCardDeletionFailed() {
-        SdkUIFlowUtil.hideProgressDialog();
+        hideProgresslayout();
         SdkUIFlowUtil.showToast(this, getString(R.string.error_delete_message));
     }
 
     @Override
     public void onGetTransactionStatusError(Throwable error) {
-        hideProgressDialog();
+        hideProgresslayout();
         initPaymentError(error);
     }
 
     @Override
     public void onGetTransactionStatusFailed(TransactionResponse response) {
         Log.d(TAG, "rba>onGetTransactionStatusFailed()");
-        hideProgressDialog();
+        hideProgresslayout();
         initPaymentStatus(response);
     }
 
     @Override
     public void onGetTransactionStatusSuccess(TransactionResponse transactionResponse) {
         Log.d(TAG, "rba>onGetTransactionStatusSuccess()");
-        hideProgressDialog();
+        hideProgresslayout();
         initPaymentStatus(transactionResponse);
     }
 

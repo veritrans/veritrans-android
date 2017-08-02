@@ -194,7 +194,6 @@ public class SavedCreditCardPresenter {
             midtransSDK.saveCards(userDetail.getUserId(), cardList, new SaveCardCallback() {
                 @Override
                 public void onSuccess(SaveCardResponse response) {
-                    SdkUIFlowUtil.hideProgressDialog();
                     view.onCardDeletionSuccess(maskedCard);
                 }
 
@@ -218,7 +217,6 @@ public class SavedCreditCardPresenter {
         midtransSDK.deleteCard(midtransSDK.readAuthenticationToken(), savedCard.getMaskedCard(), new DeleteCardCallback() {
             @Override
             public void onSuccess(Void object) {
-                SdkUIFlowUtil.hideProgressDialog();
                 view.onCardDeletionSuccess(savedCard.getMaskedCard());
             }
 
