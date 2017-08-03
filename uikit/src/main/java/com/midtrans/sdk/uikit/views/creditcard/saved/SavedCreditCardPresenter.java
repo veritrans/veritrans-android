@@ -45,16 +45,21 @@ public class SavedCreditCardPresenter {
 
     private void initCreditCardTransaction(Context context) {
         CreditCard creditCard = MidtransSDK.getInstance().getCreditCard();
-        List<BankBinsResponse> bankBins = SdkUIFlowUtil.getBankBins(context);
-        this.creditCardTransaction.setProperties(creditCard, new ArrayList<>(bankBins));
+        if (creditCard != null) {
+            List<BankBinsResponse> bankBins = SdkUIFlowUtil.getBankBins(context);
+            this.creditCardTransaction.setProperties(creditCard, new ArrayList<>(bankBins));
+        }
     }
 
     private void initSavedCards() {
         if (isBuiltInTokenStorage()) {
-            List<SavedToken> savedTokens = MidtransSDK.getInstance().getCreditCard().getSavedTokens();
-            if (savedTokens != null && !savedTokens.isEmpty()) {
-                List<SaveCardRequest> savedCards = SdkUIFlowUtil.convertSavedTokens(savedTokens);
-                this.creditCards.addAll(savedCards);
+            CreditCard creditCard = MidtransSDK.getInstance().getCreditCard();
+            if (creditCard != null) {
+                List<SavedToken> savedTokens = creditCard.getSavedTokens();
+                if (savedTokens != null && !savedTokens.isEmpty()) {
+                    List<SaveCardRequest> savedCards = SdkUIFlowUtil.convertSavedTokens(savedTokens);
+                    this.creditCards.addAll(savedCards);
+                }
             }
         }
     }

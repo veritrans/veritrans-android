@@ -141,7 +141,10 @@ public class PaymentWebActivity extends BaseActivity {
                         if (otpPattern != null) {
                             Matcher matcher = otpPattern.matcher(message);
                             matcher.find();
-                            webviewFragment.setOtp(matcher.group(0));
+                            String otp = matcher.group(0);
+                            if (!TextUtils.isEmpty(otp) && webviewFragment != null) {
+                                webviewFragment.setOtp(matcher.group(0));
+                            }
                         }
                     }
                 });

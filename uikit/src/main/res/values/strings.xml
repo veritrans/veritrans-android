@@ -767,5 +767,6 @@
     <string name="failed_to_get_bank_point">Failed to get bank points</string>
     <string name="total_bank_point">Your total points</string>
     <string name="status_rba_unsuccessful">Payment has not been made</string>
+    <string name="message_error_internal_server">Sorry, there is an internal problem. Please try again or try another payment method</string>
 
 </resources>

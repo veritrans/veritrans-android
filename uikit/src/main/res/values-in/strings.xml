@@ -581,5 +581,6 @@
     <string name="failed_to_get_bank_point">Gagal mengambil bank point</string>
     <string name="total_bank_point">Total poin anda</string>
     <string name="status_rba_unsuccessful">Pembayaran belum dilakukan</string>
+    <string name="message_error_internal_server">Maaf, terdapat masalah internal. Silakan ulangi lagi, atau coba dengan metode pembayaran lain.</string>
 
 </resources>

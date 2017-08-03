@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.midtrans.sdk.uikit.BuildConfig;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.activities.MandiriClickPayActivity;
 
 import java.util.ArrayList;
 
@@ -102,4 +103,25 @@ public class MessageUtil {
         return message;
     }
 
+    public static String createpaymentFailedMessage(Context context, String statusCode, String errorMessage, String defaultMessage) {
+        String message;
+        if (!TextUtils.isEmpty(defaultMessage)) {
+            message = defaultMessage;
+        } else {
+            message = context.getString(R.string.payment_failed);
+        }
+
+        if (errorMessage == null) {
+            message = context.getString(R.string.error_empty_response);
+        } else if(!TextUtils.isEmpty(statusCode) && statusCode.equals(UiKitConstants.STATUS_CODE_500)){
+            message = context.getString(R.string.message_error_internal_server);
+        }
+        else {
+            if (errorMessage.contains(TIME_OUT) || errorMessage.contains(TIMED_OUT)) {
+                message = context.getString(R.string.timeout_message);
+            }
+        }
+
+        return message;
+    }
 }

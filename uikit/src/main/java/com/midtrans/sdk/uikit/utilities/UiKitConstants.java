@@ -34,6 +34,9 @@ public class UiKitConstants {
     public static final String STATUS_CHALLENGE = "challenge";
     public static final String STATUS_DENY = "deny";
 
+    public static final String STATUS_CODE_500 = "500";
+
+
     // webview url callback pattern
     public static final String CALLBACK_PATTERN_RBA = "/token/rba/callback/";
     public static final String CALLBACK_PATTERN_3DS = "/token/callback/";
