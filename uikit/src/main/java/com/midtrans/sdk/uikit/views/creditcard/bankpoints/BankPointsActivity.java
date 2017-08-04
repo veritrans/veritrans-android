@@ -19,6 +19,7 @@ import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
+import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
@@ -181,6 +182,7 @@ public class BankPointsActivity extends BasePaymentActivity implements BankPoint
     }
 
     private void redeemPoint() {
+        SdkUIFlowUtil.hideKeyboard(this);
         String strPoint = redeemedPointField.getText().toString().trim();
         float redeemedPoint = Float.valueOf(strPoint);
         finishBankPoint(redeemedPoint);

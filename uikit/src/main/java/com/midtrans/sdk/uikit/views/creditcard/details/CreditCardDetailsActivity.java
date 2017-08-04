@@ -931,6 +931,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     }
 
     private void initBanksPointPayment(float redeemedPoint) {
+        showProgressLayout(getString(R.string.processing_payment));
         presenter.startBankPointsPayment(redeemedPoint, checkboxSaveCard.isChecked());
     }
 
@@ -1138,7 +1139,6 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
 
     private void startPreCrediCardPayment() {
-        hideProgresslayout();
         if (isBankPointEnabled()) {
             presenter.getBankPoint(BankType.BNI);
         } else {
