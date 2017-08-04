@@ -2,7 +2,6 @@ package com.midtrans.sdk.uikit.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -12,18 +11,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.midtrans.sdk.corekit.BuildConfig;
-import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 
 public class WebviewFragment extends Fragment {
+
+    private static final String TAG = WebviewFragment.class.getSimpleName();
 
     public static final String TYPE_CREDIT_CARD = "credit";
     public static final String TYPE_BCA_KLIKPAY = "bca_klikpay";
@@ -97,10 +97,6 @@ public class WebviewFragment extends Fragment {
     }
 
 
-    private void initjS() {
-
-    }
-
     @Override
     public void onDetach() {
         super.onDetach();
@@ -147,7 +143,7 @@ public class WebviewFragment extends Fragment {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            Logger.i("Url:finished:" + url);
+            Log.d(TAG, "shouldOverrideUrlLoading()>url:" + url);
             view.loadUrl(url);
             return true;
         }
@@ -155,8 +151,8 @@ public class WebviewFragment extends Fragment {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            Logger.i("Url:finished:" + url);
-            if (url.contains(BuildConfig.CALLBACK_STRING)) {
+            Log.d(TAG, "onPageFinished()>url:" + url);
+            if (url.contains(UiKitConstants.CALLBACK_PATTERN_3DS) || url.contains(UiKitConstants.CALLBACK_PATTERN_RBA)) {
                 Intent returnIntent = new Intent();
                 getActivity().setResult(Activity.RESULT_OK, returnIntent);
                 getActivity().finish();
@@ -169,7 +165,7 @@ public class WebviewFragment extends Fragment {
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            Logger.i("Url:" + url);
+            Log.d(TAG, "onPageStarted()>url:" + url);
             super.onPageStarted(view, url, favicon);
             if (type != null && type.equals(TYPE_BCA_KLIKPAY)) {
                 if (url.contains("?id=")) {

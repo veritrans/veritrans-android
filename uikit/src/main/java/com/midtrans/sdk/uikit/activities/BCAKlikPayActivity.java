@@ -173,7 +173,10 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
             @Override
             public void onFailure(TransactionResponse response, String reason) {
                 try {
-                    BCAKlikPayActivity.this.errorMessage = getString(R.string.message_payment_failed);
+                    String errorMessage = MessageUtil.createpaymentFailedMessage(BCAKlikPayActivity.this, response.getStatusCode(),
+                            response.getStatusMessage(), getString(R.string.payment_failed));
+
+                    BCAKlikPayActivity.this.errorMessage = errorMessage;
                     BCAKlikPayActivity.this.transactionResponse = response;
                     SdkUIFlowUtil.hideProgressDialog();
 

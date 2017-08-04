@@ -14,6 +14,7 @@
     <!--SECURE TYPE TITLE-->
     <string name="secure_type_enabled">3D Secure Enabled</string>
     <string name="secure_type_disabled">3D Secure Disabled</string>
+    <string name="secure_type_rba">RBA Enabled</string>
 
     <!--ISSUING BANK TITLE-->
     <string name="acquiring_bank_none">No Acquiring Bank</string>
@@ -182,4 +183,6 @@
     <string name="bni_va_title">BNI VA</string>
     <string name="bca_va_title">BCA VA</string>
     <string name="bank_mega">Mega</string>
+    <string name="secure_3ds">3ds</string>
+    <string name="rba">rba</string>
 </resources>

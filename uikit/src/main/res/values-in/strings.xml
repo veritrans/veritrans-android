@@ -412,7 +412,7 @@
     <string name="kioson_valid">Konfirmasi pembayaran anda di outlet Kioson Sebelum : %1$s </string>
     <string name="kioson_payment_instruction">Instruksi Pembayaran Kioson</string>
     <string name="klikbca_payment_instruction">Instruksi Pembayaran KlikBCA</string>
-    <string name="message_payment_cannot_proccessed">Transaksi anda tidak dapat diproses. Pastikan info pembayaran anda benar</string>
+    <string name="message_payment_cannot_proccessed">Transaksi anda tidak dapat diproses. Pastikan informasi pembayaran anda benar</string>
     <string name="message_payment_failed">Pembayaran gagal. Mohon cek kembali detil kartu anda atau gunakan kartu lain.</string>
     <string name="message_payment_denied">Transaksi anda ditolak! Silakan ulangi lagi, atau coba dengan metode pembayaran lain.</string>
     <string name="validation_message_please_fillup_form">Silakan isi dengan informasi yang tepat.</string>
@@ -580,5 +580,7 @@
     <string name="notification_otp_message">Biaya SMS mungkin akan dikenakan untuk cara pembayaran ini.</string>
     <string name="failed_to_get_bank_point">Gagal mengambil bank point</string>
     <string name="total_bank_point">Total poin anda</string>
+    <string name="status_rba_unsuccessful">Pembayaran belum dilakukan</string>
+    <string name="message_error_internal_server">Maaf, terdapat masalah internal. Silakan ulangi lagi, atau coba dengan metode pembayaran lain.</string>
 
 </resources>

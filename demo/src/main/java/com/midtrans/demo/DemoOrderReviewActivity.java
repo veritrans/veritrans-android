@@ -126,7 +126,9 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
     }
 
     private void initMidtransSDK() {
-        MidtransSDK.getInstance().setTransactionFinishedCallback(this);
+        if (MidtransSDK.getInstance() != null) {
+            MidtransSDK.getInstance().setTransactionFinishedCallback(this);
+        }
     }
 
     @Override

@@ -8,6 +8,7 @@ import com.midtrans.sdk.corekit.callback.BankBinsCallback;
 import com.midtrans.sdk.corekit.callback.BanksPointCallback;
 import com.midtrans.sdk.corekit.callback.CardTokenCallback;
 import com.midtrans.sdk.corekit.callback.DeleteCardCallback;
+import com.midtrans.sdk.corekit.callback.GetTransactionStatusCallback;
 import com.midtrans.sdk.corekit.callback.SaveCardCallback;
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.core.Constants;
@@ -15,6 +16,7 @@ import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.TransactionRequest;
+import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.CardTokenRequest;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.SaveCardResponse;
@@ -27,6 +29,7 @@ import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
 import com.midtrans.sdk.corekit.models.snap.SavedToken;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
+import com.midtrans.sdk.corekit.models.snap.TransactionStatusResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.models.CreditCardTransaction;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
@@ -202,7 +205,7 @@ public class CreditCardDetailsPresenter {
 
     private void applyInstallmentProperties(CardTokenRequest cardTokenRequest) {
         int termSelected = creditCardTransaction.getInstallmentTermSelected();
-        Logger.d(TAG, "appliedInstallment()> term:" + termSelected);
+        Logger.d(TAG, "applyInstallmentProperties()>term:" + termSelected);
 
         if (termSelected > 0) {
             cardTokenRequest.setInstallment(true);
@@ -211,9 +214,13 @@ public class CreditCardDetailsPresenter {
     }
 
     public void startNormalPayment(boolean saveCard) {
-        CreditCardPaymentModel model = new CreditCardPaymentModel(creditCardToken.getTokenId(), saveCard);
-        applyPaymentProperties(model);
-        startCreditCardPayment(model);
+        if (creditCardToken != null) {
+            CreditCardPaymentModel model = new CreditCardPaymentModel(creditCardToken.getTokenId(), saveCard);
+            applyPaymentProperties(model);
+            startCreditCardPayment(model);
+        } else {
+            view.onPaymentError(new Throwable(context.getString(R.string.message_payment_failed)));
+        }
     }
 
 
@@ -320,8 +327,11 @@ public class CreditCardDetailsPresenter {
             if (savedCards != null && !savedCards.isEmpty()) {
                 cardList.addAll(savedCards);
                 for (int i = 0; i < cardList.size(); i++) {
-                    if (cardList.get(i).getMaskedCard().equalsIgnoreCase(savedCard.getMaskedCard())) {
-                        cardList.remove(cardList.get(i));
+                    SaveCardRequest saveCard = cardList.get(i);
+                    if (saveCard != null) {
+                        if (!TextUtils.isEmpty(saveCard.getMaskedCard()) && saveCard.getMaskedCard().equalsIgnoreCase(savedCard.getMaskedCard())) {
+                            cardList.remove(cardList.get(i));
+                        }
                     }
                 }
             }
@@ -336,7 +346,6 @@ public class CreditCardDetailsPresenter {
         midtransSDK.saveCards(userDetail.getUserId(), cardList, new SaveCardCallback() {
             @Override
             public void onSuccess(SaveCardResponse response) {
-                SdkUIFlowUtil.hideProgressDialog();
                 view.onCardDeletionSuccess(maskedCard);
             }
 
@@ -357,7 +366,6 @@ public class CreditCardDetailsPresenter {
         midtransSDK.deleteCard(midtransSDK.readAuthenticationToken(), savedCard.getMaskedCard(), new DeleteCardCallback() {
             @Override
             public void onSuccess(Void object) {
-                SdkUIFlowUtil.hideProgressDialog();
                 view.onCardDeletionSuccess(savedCard.getMaskedCard());
             }
 
@@ -441,23 +449,27 @@ public class CreditCardDetailsPresenter {
 
 
     public void getBankPoint(final String bankType) {
-        MidtransSDK.getInstance().getBanksPoint(creditCardToken.getTokenId(), new BanksPointCallback() {
-            @Override
-            public void onSuccess(BanksPointResponse response) {
-                creditCardTransaction.setBankPoint(response, bankType);
-                view.onGetBankPointSuccess(response);
-            }
+        if (creditCardToken != null) {
+            MidtransSDK.getInstance().getBanksPoint(creditCardToken.getTokenId(), new BanksPointCallback() {
+                @Override
+                public void onSuccess(BanksPointResponse response) {
+                    creditCardTransaction.setBankPoint(response, bankType);
+                    view.onGetBankPointSuccess(response);
+                }
 
-            @Override
-            public void onFailure(String reason) {
-                view.onGetBankPointFailed();
-            }
+                @Override
+                public void onFailure(String reason) {
+                    view.onGetBankPointFailed();
+                }
 
-            @Override
-            public void onError(Throwable error) {
-                view.onGetBankPointFailed();
-            }
-        });
+                @Override
+                public void onError(Throwable error) {
+                    view.onGetBankPointFailed();
+                }
+            });
+        } else {
+            view.onGetBankPointFailed();
+        }
     }
 
     public void trackEvent(String eventName) {
@@ -501,8 +513,10 @@ public class CreditCardDetailsPresenter {
     public boolean isBankPointAvailable(String cardBin) {
         String bank = creditCardTransaction.getBankByBin(cardBin);
         Transaction transaction = MidtransSDK.getInstance().getTransaction();
+
         return !TextUtils.isEmpty(bank)
-                && transaction.getMerchantData().getPointBanks().contains(bank);
+                && transaction.getMerchantData().getPointBanks().contains(bank)
+                && bank.equals(BankType.BNI);
     }
 
     public void startBankPointsPayment(float redeemedPoint, boolean isSaveCard) {
@@ -512,5 +526,51 @@ public class CreditCardDetailsPresenter {
 
     public boolean isCardBinInWhiteList(String cardBin) {
         return creditCardTransaction.isInWhiteList(cardBin);
+    }
+
+    public boolean isRbaAuthentication(TransactionResponse response) {
+        if (response != null) {
+            String transactionStatus = response.getTransactionStatus();
+            if (!TextUtils.isEmpty(transactionStatus) && transactionStatus.equals(UiKitConstants.STATUS_PENDING)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void getPaymentStatus() {
+        String snapToken = MidtransSDK.getInstance().readAuthenticationToken();
+        MidtransSDK.getInstance().getTransactionStatus(snapToken, new GetTransactionStatusCallback() {
+            @Override
+            public void onSuccess(TransactionStatusResponse response) {
+
+                TransactionResponse transactionResponse = convertTransactionStatus(response);
+                CreditCardDetailsPresenter.this.transactionResponse = transactionResponse;
+
+                view.onGetTransactionStatusSuccess(transactionResponse);
+            }
+
+            @Override
+            public void onFailure(TransactionStatusResponse response, String reason) {
+
+                TransactionResponse transactionResponse = convertTransactionStatus(response);
+                CreditCardDetailsPresenter.this.transactionResponse = transactionResponse;
+                view.onGetTransactionStatusFailed(transactionResponse);
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                view.onGetTransactionStatusError(error);
+            }
+        });
+    }
+
+    private TransactionResponse convertTransactionStatus(TransactionStatusResponse response) {
+        TransactionResponse transactionResponse = new TransactionResponse(
+                response.getStatusCode(), response.getStatusMessage(), response.getTransactionId(),
+                response.getOrderId(), response.getGrossAmount(), response.getPaymentType(),
+                response.getTransactionTime(), response.getTransactionStatus());
+        this.transactionResponse = transactionResponse;
+        return transactionResponse;
     }
 }

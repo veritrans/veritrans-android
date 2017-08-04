@@ -248,8 +248,10 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
 
                         SdkUIFlowUtil.hideProgressDialog();
                         MandiriClickPayActivity.this.transactionResponse = response;
-                        MandiriClickPayActivity.this.errorMessage = getString(R.string.message_payment_failed);
-
+                        String errorMessage = MessageUtil.createpaymentFailedMessage(MandiriClickPayActivity.this, response.getStatusCode(),
+                                response.getStatusMessage(), getString(R.string.payment_failed));
+                        MandiriClickPayActivity.this.errorMessage = errorMessage;
+                        SdkUIFlowUtil.showToast(MandiriClickPayActivity.this, errorMessage);
                         if (transactionResponse != null && (transactionResponse.getStatusCode().contains(DENY)
                                 || transactionResponse.getStatusCode().equals(getString(R.string.failed_code_400))
                         )) {

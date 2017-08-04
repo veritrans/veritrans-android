@@ -215,7 +215,6 @@
     <string name="unsuccessful">Unsuccessful</string>
     <string name="payment_successful">Payment Successful</string>
     <string name="payment_unsuccessful_msg">Payment gateway error</string>
-    <string name="payment_unsuccessful">Payment unsuccessful</string>
     <string name="validation_message_invalid_expiry_date">Please enter valid expiry date</string>
     <string name="api_fail_message">Something went wrong. Please try later.</string>
     <string name="title_payment_failed">Payment Failed</string>
@@ -248,7 +247,6 @@
     <string name="bca_klik">BCA KlikPay</string>
     <string name="indomaret">Indomaret</string>
     <string name="offers">Offers</string>
-    <string name="loading">Loading</string>
     <string name="delete">Delete</string>
     <string name="card_delete_message">Are you sure you want to delete card?</string>
     <string name="message_save_card">Save your card for faster checkout process.</string>

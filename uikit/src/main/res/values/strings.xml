@@ -288,7 +288,7 @@
     <string name="unsuccessful">Unsuccessful</string>
     <string name="payment_successful">Payment Successful</string>
     <string name="payment_unsuccessful_msg">Payment gateway error</string>
-    <string name="payment_unsuccessful">Payment unsuccessful</string>
+    <string name="payment_unsuccessful">Payment Unsuccessful</string>
     <string name="validation_message_invalid_expiry_date">Please enter valid expiry date</string>
     <string name="api_fail_message">Something went wrong. Please try later.</string>
     <string name="title_payment_failed">Payment Failed</string>
@@ -766,5 +766,7 @@
     <string name="notification_otp_message">SMS charges may be applied for this payment method</string>
     <string name="failed_to_get_bank_point">Failed to get bank points</string>
     <string name="total_bank_point">Your total points</string>
+    <string name="status_rba_unsuccessful">Payment has not been made</string>
+    <string name="message_error_internal_server">Sorry, there is an internal problem. Please try again or try another payment method</string>
 
 </resources>
