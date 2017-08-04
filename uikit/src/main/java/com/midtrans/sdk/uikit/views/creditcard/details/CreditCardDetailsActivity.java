@@ -16,6 +16,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -127,6 +128,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         initInstallmentButton();
         initDeleteButton();
         initScanCardButton();
+        initCheckBox();
         initProgressLayout();
         initLayoutState();
         bindData();
@@ -147,6 +149,19 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         } else {
             showScanCardButton(false);
         }
+    }
+
+    private void initCheckBox() {
+        checkboxPointEnabled.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    showInstallmentLayout(false);
+                } else {
+                    checkInstallment();
+                }
+            }
+        });
     }
 
     private void initDeleteButton() {
@@ -276,6 +291,8 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
             setTextColor(increaseInstallmentButton);
             setTextColor(decreaseInstallmentButton);
+            setBorderColor(increaseInstallmentButton);
+            setBorderColor(decreaseInstallmentButton);
             setColorFilter(saveCardHelpButton);
             setColorFilter(cvvHelpButton);
             setColorFilter(pointHelpButton);
@@ -1023,6 +1040,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                     presenter.setCurrentInstallment(installmentTermCurrentPosition + 1);
                     setCurrentInstallmentTerm();
                 }
+                changeBankPointVisibility();
                 disableEnableInstallmentButton();
             }
         });
@@ -1036,9 +1054,18 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                     presenter.setCurrentInstallment(installmentTermCurrentPosition - 1);
                     setCurrentInstallmentTerm();
                 }
+                changeBankPointVisibility();
                 disableEnableInstallmentButton();
             }
         });
+    }
+
+    private void changeBankPointVisibility() {
+        if (presenter.getInstallmentCurrentPosition() == 0) {
+            checkBankPoint();
+        } else {
+            showBniPointLayout(false);
+        }
     }
 
     private void disableEnableInstallmentButton() {
