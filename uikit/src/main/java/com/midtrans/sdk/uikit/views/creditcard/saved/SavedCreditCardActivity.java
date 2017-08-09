@@ -226,19 +226,19 @@ public class SavedCreditCardActivity extends BasePaymentActivity implements Save
     }
 
     @Override
-    public void onGetSavedCardTokenFailed() {
+    public void onGetSavedCardTokenFailure() {
         showCardDetailPage(null);
 
     }
 
     @Override
-    public void onCardDeletionSuccess(String maskedCard) {
+    public void onDeleteCardSuccess(String maskedCard) {
         showProgressLayout(false);
         updateSavedCardsInstance(maskedCard);
     }
 
     @Override
-    public void onCardDeletionFailed() {
+    public void onDeleteCardFailure() {
         showProgressLayout(false);
         SdkUIFlowUtil.showToast(this, getString(R.string.error_delete_message));
     }

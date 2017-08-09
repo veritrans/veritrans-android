@@ -1237,7 +1237,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     }
 
     @Override
-    public void onGetCardTokenFailed() {
+    public void onGetCardTokenFailure() {
         hideProgresslayout();
         SdkUIFlowUtil.showApiFailedMessage(this, getString(R.string.message_getcard_token_failed));
     }
@@ -1250,7 +1250,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
 
     @Override
-    public void onGetBankPointFailed() {
+    public void onGetBankPointFailure() {
         hideProgresslayout();
         SdkUIFlowUtil.showToast(this, getString(R.string.failed_to_get_bank_point));
     }
@@ -1270,7 +1270,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     }
 
     @Override
-    public void onPaymentFailed(TransactionResponse response) {
+    public void onPaymentFailure(TransactionResponse response) {
         hideProgresslayout();
         if (attempt < UiKitConstants.MAX_ATTEMPT) {
             attempt += 1;
@@ -1300,7 +1300,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     }
 
     @Override
-    public void onCardDeletionSuccess(String maskedCardNumber) {
+    public void onDeleteCardSuccess(String maskedCardNumber) {
         hideProgresslayout();
         Intent intent = new Intent();
         intent.putExtra(EXTRA_DELETED_CARD_DETAILS, maskedCardNumber);
@@ -1310,7 +1310,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
 
     @Override
-    public void onCardDeletionFailed() {
+    public void onDeleteCardFailure() {
         hideProgresslayout();
         SdkUIFlowUtil.showToast(this, getString(R.string.error_delete_message));
     }
@@ -1322,8 +1322,8 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     }
 
     @Override
-    public void onGetTransactionStatusFailed(TransactionResponse response) {
-        Log.d(TAG, "rba>onGetTransactionStatusFailed()");
+    public void onGetTransactionStatusFailure(TransactionResponse response) {
+        Log.d(TAG, "rba>onGetTransactionStatusFailure()");
         hideProgresslayout();
         initPaymentStatus(response);
     }
