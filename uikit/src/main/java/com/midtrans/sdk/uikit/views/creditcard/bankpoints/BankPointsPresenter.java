@@ -64,40 +64,12 @@ public class BankPointsPresenter {
         return pointBalance;
     }
 
-    public void setPointBalance(float pointBalance) {
-        this.pointBalance = pointBalance;
-    }
-
-    public double getTotalAmount() {
-        return totalAmount;
-    }
-
-    public void setTotalAmount(double totalAmount) {
-        this.totalAmount = totalAmount;
-    }
-
     public double getAmountToPay() {
         return amountToPay;
     }
 
-    public void setAmountToPay(double amountToPay) {
-        this.amountToPay = amountToPay;
-    }
-
-    public float getPointRedeemed() {
-        return pointRedeemed;
-    }
-
-    public void setPointRedeemed(float pointRedeemed) {
-        this.pointRedeemed = pointRedeemed;
-    }
-
     public String getPointBank() {
         return pointBank;
-    }
-
-    public void setPointBank(String pointBank) {
-        this.pointBank = pointBank;
     }
 
     public String getSemiBoldFontPath() {

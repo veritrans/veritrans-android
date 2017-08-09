@@ -67,9 +67,9 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     public static final String EXTRA_DELETED_CARD_DETAILS = "card.deleted.details";
     public static final String EXTRA_SAVED_CARD = "extra.card.saved";
 
-    private AppCompatEditText cardNumberField;
-    private AppCompatEditText cardCvvField;
-    private AppCompatEditText cardExpiryField;
+    private AppCompatEditText fieldCardNumber;
+    private AppCompatEditText fieldCardCvv;
+    private AppCompatEditText fieldCardExpiry;
 
     private DefaultTextView textCardNumberHint;
     private DefaultTextView textExpriyHint;
@@ -77,36 +77,36 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     private DefaultTextView textInApplicablePromoStatus;
     private DefaultTextView textBarMessage;
 
-    private TextView cardNumberErrorText;
-    private TextView cardCvvErrorText;
-    private TextView cardExpiryErrorText;
+    private TextView textCardNumberError;
+    private TextView textCardCvvError;
+    private TextView textCardExpiryError;
     private TextView textInstallmentTerm;
     private TextView textTitleInstallment;
+    private DefaultTextView textTitle;
 
-    private ImageView cardLogo;
-    private ImageView bankLogo;
+    private ImageView imageCardLogo;
+    private ImageView imageBankLogo;
     private ImageView imageProcessLogo;
 
-    private ImageButton cvvHelpButton;
-    private ImageButton saveCardHelpButton;
-    private ImageButton pointHelpButton;
+    private ImageButton buttonCvvHelp;
+    private ImageButton buttonSaveCardHelp;
+    private ImageButton buttonPointHelp;
 
-    private FancyButton scanCardButton;
-    private FancyButton deleteCardButton;
-    private FancyButton payNowButton;
-    private FancyButton decreaseInstallmentButton;
-    private FancyButton increaseInstallmentButton;
+    private FancyButton buttonScanCard;
+    private FancyButton buttonDeleteCard;
+    private FancyButton buttonPayNow;
+    private FancyButton buttonDecreaseInstallment;
+    private FancyButton buttonIncreaseInstallment;
 
     private RelativeLayout containerSaveCard;
     private LinearLayout containerInstallment;
     private RelativeLayout containerPoint;
-    private LinearLayout progressContainer;
+    private LinearLayout containerProgress;
 
     private AppCompatCheckBox checkboxSaveCard;
     private AppCompatCheckBox checkboxPointEnabled;
 
     private CreditCardDetailsPresenter presenter;
-    private DefaultTextView titleHeaderTextView;
     private SaveCardRequest savedCard;
     private String lastExpDate = "";
     private int attempt = 0;
@@ -139,7 +139,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         if (midtransSDK != null && midtransSDK.getExternalScanner() != null) {
             showScanCardButton(true);
 
-            scanCardButton.setOnClickListener(new View.OnClickListener() {
+            buttonScanCard.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     // Start scanning
@@ -165,7 +165,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     }
 
     private void initDeleteButton() {
-        deleteCardButton.setOnClickListener(new View.OnClickListener() {
+        buttonDeleteCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showCardDeletionConfirmation();
@@ -195,7 +195,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     }
 
     private void bindData() {
-        titleHeaderTextView.setText(R.string.card_details);
+        textTitle.setText(R.string.card_details);
 
         if (savedCard != null) {
             showDeleteIcon();
@@ -204,29 +204,29 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             if (!TextUtils.isEmpty(cardType)) {
                 String cardBin = savedCard.getMaskedCard().substring(0, 4);
                 String title = cardType + "-" + cardBin;
-                titleHeaderTextView.setText(title);
+                textTitle.setText(title);
             }
 
             showSavedCardLayout(false);
 
-            cardExpiryField.setInputType(InputType.TYPE_CLASS_TEXT);
+            fieldCardExpiry.setInputType(InputType.TYPE_CLASS_TEXT);
             InputFilter[] filterArray = new InputFilter[1];
             filterArray[0] = new InputFilter.LengthFilter(20);
-            cardExpiryField.setFilters(filterArray);
-            cardExpiryField.setEnabled(false);
-            cardExpiryField.setText(SdkUIFlowUtil.getMaskedExpDate());
+            fieldCardExpiry.setFilters(filterArray);
+            fieldCardExpiry.setEnabled(false);
+            fieldCardExpiry.setText(SdkUIFlowUtil.getMaskedExpDate());
 
-            cardNumberField.setEnabled(false);
-            cardNumberField.setText(SdkUIFlowUtil.getMaskedCardNumber(savedCard.getMaskedCard()));
+            fieldCardNumber.setEnabled(false);
+            fieldCardNumber.setText(SdkUIFlowUtil.getMaskedCardNumber(savedCard.getMaskedCard()));
 
-            cardCvvField.requestFocus();
+            fieldCardCvv.requestFocus();
 
 
             if (isOneClickMode()) {
-                cardCvvField.setInputType(InputType.TYPE_CLASS_TEXT);
-                cardCvvField.setFilters(filterArray);
-                cardCvvField.setText(SdkUIFlowUtil.getMaskedCardCvv());
-                cardCvvField.setEnabled(false);
+                fieldCardCvv.setInputType(InputType.TYPE_CLASS_TEXT);
+                fieldCardCvv.setFilters(filterArray);
+                fieldCardCvv.setText(SdkUIFlowUtil.getMaskedCardCvv());
+                fieldCardCvv.setEnabled(false);
 
                 // Track page cc one click
                 presenter.trackEvent(AnalyticsEventName.PAGE_CREDIT_CARD_DETAILS, MixpanelAnalyticsManager.CARD_MODE_ONE_CLICK);
@@ -249,7 +249,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     }
 
     private void showDeleteIcon() {
-        deleteCardButton.setVisibility(View.VISIBLE);
+        buttonDeleteCard.setVisibility(View.VISIBLE);
     }
 
     private void initExtras() {
@@ -274,9 +274,9 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     private void initTheme() {
         try {
 
-            setBackgroundTintList(cardNumberField);
-            setBackgroundTintList(cardExpiryField);
-            setBackgroundTintList(cardCvvField);
+            setBackgroundTintList(fieldCardNumber);
+            setBackgroundTintList(fieldCardExpiry);
+            setBackgroundTintList(fieldCardCvv);
 
             setSecondaryBackgroundColor(textInstallmentTerm);
             textInstallmentTerm.getBackground().setAlpha(50);
@@ -289,18 +289,18 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             setTextColor(textExpriyHint);
             setTextColor(textCvvHint);
 
-            setTextColor(increaseInstallmentButton);
-            setTextColor(decreaseInstallmentButton);
-            setBorderColor(increaseInstallmentButton);
-            setBorderColor(decreaseInstallmentButton);
-            setColorFilter(saveCardHelpButton);
-            setColorFilter(cvvHelpButton);
-            setColorFilter(pointHelpButton);
+            setTextColor(buttonIncreaseInstallment);
+            setTextColor(buttonDecreaseInstallment);
+            setBorderColor(buttonIncreaseInstallment);
+            setBorderColor(buttonDecreaseInstallment);
+            setColorFilter(buttonSaveCardHelp);
+            setColorFilter(buttonCvvHelp);
+            setColorFilter(buttonPointHelp);
 
-            setBorderColor(scanCardButton);
-            setTextColor(scanCardButton);
-            setIconColorFilter(scanCardButton);
-            setPrimaryBackgroundColor(payNowButton);
+            setBorderColor(buttonScanCard);
+            setTextColor(buttonScanCard);
+            setIconColorFilter(buttonScanCard);
+            setPrimaryBackgroundColor(buttonPayNow);
 
         } catch (Exception e) {
             Log.e(TAG, "rendering theme:" + e.getMessage());
@@ -309,7 +309,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
 
     private void initCardNumber() {
-        cardNumberField.addTextChangedListener(new TextWatcher() {
+        fieldCardNumber.addTextChangedListener(new TextWatcher() {
             private static final char SPACE_CHAR = ' ';
 
             @Override
@@ -325,7 +325,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             @Override
             public void afterTextChanged(Editable s) {
                 Logger.i(TAG, "card number:" + s.length());
-                cardNumberErrorText.setError(null);
+                textCardNumberError.setError(null);
                 if (s.length() > 0 && (s.length() % 5) == 0) {
                     final char c = s.charAt(s.length() - 1);
                     if (SPACE_CHAR == c) {
@@ -352,18 +352,18 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                         s.delete(s.length() - 1, s.length());
                     }
                     if (checkCardNumberValidity()) {
-                        cardExpiryField.requestFocus();
+                        fieldCardExpiry.requestFocus();
                     }
                 } else if (s.length() == 19) {
                     if (checkCardNumberValidity()) {
-                        cardExpiryField.requestFocus();
+                        fieldCardExpiry.requestFocus();
                     }
                 }
             }
         });
 
         // focus change listener
-        cardNumberField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        fieldCardNumber.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasfocus) {
                 if (!hasfocus) {
@@ -378,7 +378,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
 
     private void initCardExpiry() {
-        cardExpiryField.addTextChangedListener(new TextWatcher() {
+        fieldCardExpiry.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -399,11 +399,11 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                         try {
                             int month = Integer.parseInt(input.substring(0, 2));
                             if (month <= 12) {
-                                cardExpiryField.setText(cardExpiryField.getText().toString().substring(0, 1));
-                                cardExpiryField.setSelection(cardExpiryField.getText().toString().length());
+                                fieldCardExpiry.setText(fieldCardExpiry.getText().toString().substring(0, 1));
+                                fieldCardExpiry.setSelection(fieldCardExpiry.getText().toString().length());
                             } else {
-                                cardExpiryField.setText("");
-                                cardExpiryField.setSelection(cardExpiryField.getText().toString().length());
+                                fieldCardExpiry.setText("");
+                                fieldCardExpiry.setSelection(fieldCardExpiry.getText().toString().length());
                             }
                         } catch (Exception exception) {
                             Logger.e(exception.toString());
@@ -417,11 +417,11 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                             int month = Integer.parseInt(input);
 
                             if (month <= 12) {
-                                cardExpiryField.setText(getString(R.string.expiry_month_format, cardExpiryField.getText().toString()));
-                                cardExpiryField.setSelection(cardExpiryField.getText().toString().length());
+                                fieldCardExpiry.setText(getString(R.string.expiry_month_format, fieldCardExpiry.getText().toString()));
+                                fieldCardExpiry.setSelection(fieldCardExpiry.getText().toString().length());
                             } else {
-                                cardExpiryField.setText(getString(R.string.expiry_month_int_format, UiKitConstants.MONTH_COUNT));
-                                cardExpiryField.setSelection(cardExpiryField.getText().toString().length());
+                                fieldCardExpiry.setText(getString(R.string.expiry_month_int_format, UiKitConstants.MONTH_COUNT));
+                                fieldCardExpiry.setSelection(fieldCardExpiry.getText().toString().length());
                             }
 
                         } catch (Exception exception) {
@@ -432,23 +432,23 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                     try {
                         int month = Integer.parseInt(input);
                         if (month > 1) {
-                            cardExpiryField.setText(getString(R.string.expiry_month_single_digit_format, cardExpiryField.getText().toString()));
-                            cardExpiryField.setSelection(cardExpiryField.getText().toString().length());
+                            fieldCardExpiry.setText(getString(R.string.expiry_month_single_digit_format, fieldCardExpiry.getText().toString()));
+                            fieldCardExpiry.setSelection(fieldCardExpiry.getText().toString().length());
                         }
                     } catch (Exception exception) {
                         Logger.e(exception.toString());
                     }
                 }
-                lastExpDate = cardExpiryField.getText().toString();
+                lastExpDate = fieldCardExpiry.getText().toString();
 
                 // Move to next input
                 if (s.length() == 7) {
-                    cardCvvField.requestFocus();
+                    fieldCardCvv.requestFocus();
                 }
             }
         });
 
-        cardExpiryField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        fieldCardExpiry.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
@@ -460,7 +460,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     }
 
     private void initCardCvv() {
-        cardCvvField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        fieldCardCvv.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean focused) {
                 if (!focused) {
@@ -471,7 +471,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     }
 
     private void intPaymentButton() {
-        payNowButton.setOnClickListener(new View.OnClickListener() {
+        buttonPayNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SdkUIFlowUtil.hideKeyboard(CreditCardDetailsActivity.this);
@@ -485,7 +485,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     }
 
     private void initHelpButtons() {
-        cvvHelpButton.setOnClickListener(new View.OnClickListener() {
+        buttonCvvHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog alertDialog = new AlertDialog.Builder(CreditCardDetailsActivity.this)
@@ -503,10 +503,10 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             }
         });
 
-        pointHelpButton.setOnClickListener(new View.OnClickListener() {
+        buttonPointHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pointHelpButton.setOnClickListener(new View.OnClickListener() {
+                buttonPointHelp.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         AlertDialog alertDialog = new AlertDialog.Builder(CreditCardDetailsActivity.this)
@@ -526,7 +526,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             }
         });
 
-        saveCardHelpButton.setOnClickListener(new View.OnClickListener() {
+        buttonSaveCardHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Show help dialog
@@ -561,13 +561,13 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         if (isOneClickMode()) {
             presenter.startOneClickPayment(savedCard.getMaskedCard());
         } else if (isTwoClicksMode()) {
-            String cvv = cardCvvField.getText().toString().trim();
+            String cvv = fieldCardCvv.getText().toString().trim();
             presenter.startGettingCardToken(savedCard.getSavedTokenId(), cvv);
         } else {
 
             String cardNumber = getCleanedCardNumber();
-            String cvv = cardCvvField.getText().toString().trim();
-            String date = cardExpiryField.getText().toString();
+            String cvv = fieldCardCvv.getText().toString().trim();
+            String date = fieldCardExpiry.getText().toString();
             String month = date.split("/")[0].trim();
             String year = "20" + date.split("/")[1].trim();
 
@@ -577,7 +577,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
     private boolean checkPaymentValidity() {
         // Card bin validation for bin locking and installment
-        String cardNumber = cardNumberField.getText().toString().trim();
+        String cardNumber = fieldCardNumber.getText().toString().trim();
         if (presenter.isWhitelistBinsAvailable()) {
             if (!presenter.isCardBinLockingValid(cardNumber)) {
                 Toast.makeText(this, getString(R.string.card_bin_invalid), Toast.LENGTH_SHORT).show();
@@ -646,41 +646,41 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
 
     private void bindviews() {
-        cardNumberField = (AppCompatEditText) findViewById(R.id.field_card_number);
-        cardCvvField = (AppCompatEditText) findViewById(R.id.field_cvv);
-        cardExpiryField = (AppCompatEditText) findViewById(R.id.field_expiry);
+        fieldCardNumber = (AppCompatEditText) findViewById(R.id.field_card_number);
+        fieldCardCvv = (AppCompatEditText) findViewById(R.id.field_cvv);
+        fieldCardExpiry = (AppCompatEditText) findViewById(R.id.field_expiry);
 
         textInstallmentTerm = (TextView) findViewById(R.id.text_installment_term);
         textTitleInstallment = (TextView) findViewById(R.id.title_installment);
-        titleHeaderTextView = (DefaultTextView) findViewById(R.id.text_page_title);
+        textTitle = (DefaultTextView) findViewById(R.id.text_page_title);
         textCardNumberHint = (DefaultTextView) findViewById(R.id.hint_card_number);
         textExpriyHint = (DefaultTextView) findViewById(R.id.hint_card_expiry);
         textCvvHint = (DefaultTextView) findViewById(R.id.hint_card_cvv);
         textInApplicablePromoStatus = (DefaultTextView) findViewById(R.id.text_offer_status_not_applied);
         textBarMessage = (DefaultTextView) findViewById(R.id.progress_bar_message);
 
-        cardNumberErrorText = (TextView) findViewById(R.id.error_message_card_number);
-        cardExpiryErrorText = (TextView) findViewById(R.id.error_message_expiry);
-        cardCvvErrorText = (TextView) findViewById(R.id.error_message_cvv);
+        textCardNumberError = (TextView) findViewById(R.id.error_message_card_number);
+        textCardExpiryError = (TextView) findViewById(R.id.error_message_expiry);
+        textCardCvvError = (TextView) findViewById(R.id.error_message_cvv);
 
-        cardLogo = (ImageView) findViewById(R.id.payment_card_logo);
-        bankLogo = (ImageView) findViewById(R.id.bank_logo);
+        imageCardLogo = (ImageView) findViewById(R.id.payment_card_logo);
+        imageBankLogo = (ImageView) findViewById(R.id.bank_logo);
         imageProcessLogo = (ImageView) findViewById(R.id.progress_bar_image);
 
-        cvvHelpButton = (ImageButton) findViewById(R.id.help_cvv_button);
-        saveCardHelpButton = (ImageButton) findViewById(R.id.help_save_card);
-        pointHelpButton = (ImageButton) findViewById(R.id.help_bank_point);
+        buttonCvvHelp = (ImageButton) findViewById(R.id.help_cvv_button);
+        buttonSaveCardHelp = (ImageButton) findViewById(R.id.help_save_card);
+        buttonPointHelp = (ImageButton) findViewById(R.id.help_bank_point);
 
-        scanCardButton = (FancyButton) findViewById(R.id.button_scan_card);
-        deleteCardButton = (FancyButton) findViewById(R.id.button_delete);
-        payNowButton = (FancyButton) findViewById(R.id.btn_pay_now);
-        decreaseInstallmentButton = (FancyButton) findViewById(R.id.button_installment_decrease);
-        increaseInstallmentButton = (FancyButton) findViewById(R.id.button_installment_increase);
+        buttonScanCard = (FancyButton) findViewById(R.id.button_scan_card);
+        buttonDeleteCard = (FancyButton) findViewById(R.id.button_delete);
+        buttonPayNow = (FancyButton) findViewById(R.id.btn_pay_now);
+        buttonDecreaseInstallment = (FancyButton) findViewById(R.id.button_installment_decrease);
+        buttonIncreaseInstallment = (FancyButton) findViewById(R.id.button_installment_increase);
 
         containerSaveCard = (RelativeLayout) findViewById(R.id.container_save_card_details);
         containerInstallment = (LinearLayout) findViewById(R.id.container_installment);
         containerPoint = (RelativeLayout) findViewById(R.id.container_bni_point);
-        progressContainer = (LinearLayout) findViewById(R.id.progress_container);
+        containerProgress = (LinearLayout) findViewById(R.id.progress_container);
 
 
         checkboxSaveCard = (AppCompatCheckBox) findViewById(R.id.checkbox_save_card);
@@ -691,48 +691,48 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         // Don't set card type when card number is empty
         String cardNumberText = getCardNumberValue();
         if (TextUtils.isEmpty(cardNumberText) || cardNumberText.length() < 7) {
-            bankLogo.setImageDrawable(null);
+            imageBankLogo.setImageDrawable(null);
             return;
         }
 
         String cleanCardNumber = getCardNumberBin();
         String bank = presenter.getBankByCardBin(cleanCardNumber);
-        titleHeaderTextView.setText(R.string.card_details);
+        textTitle.setText(R.string.card_details);
 
         if (bank != null) {
 
             switch (bank) {
                 case BankType.BCA:
-                    bankLogo.setImageResource(R.drawable.bca);
+                    imageBankLogo.setImageResource(R.drawable.bca);
                     break;
                 case BankType.BNI:
-                    bankLogo.setImageResource(R.drawable.bni);
+                    imageBankLogo.setImageResource(R.drawable.bni);
                     break;
                 case BankType.BRI:
-                    bankLogo.setImageResource(R.drawable.bri);
+                    imageBankLogo.setImageResource(R.drawable.bri);
                     break;
                 case BankType.CIMB:
-                    bankLogo.setImageResource(R.drawable.cimb);
+                    imageBankLogo.setImageResource(R.drawable.cimb);
                     break;
                 case BankType.MANDIRI:
-                    bankLogo.setImageResource(R.drawable.mandiri);
+                    imageBankLogo.setImageResource(R.drawable.mandiri);
                     if (presenter.isMandiriDebitCard(cleanCardNumber)) {
-                        titleHeaderTextView.setText(R.string.mandiri_debit_card);
+                        textTitle.setText(R.string.mandiri_debit_card);
                     }
                     break;
                 case BankType.MAYBANK:
-                    bankLogo.setImageResource(R.drawable.maybank);
+                    imageBankLogo.setImageResource(R.drawable.maybank);
                     break;
                 case BankType.BNI_DEBIT_ONLINE:
-                    bankLogo.setImageResource(R.drawable.bni);
-                    titleHeaderTextView.setText(R.string.bni_debit_online_card);
+                    imageBankLogo.setImageResource(R.drawable.bni);
+                    textTitle.setText(R.string.bni_debit_online_card);
                     break;
                 default:
-                    bankLogo.setImageDrawable(null);
+                    imageBankLogo.setImageDrawable(null);
                     break;
             }
         } else {
-            bankLogo.setImageDrawable(null);
+            imageBankLogo.setImageDrawable(null);
         }
     }
 
@@ -741,7 +741,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         // Don't set card type when card number is empty
         String cardNumberText = getCardNumberValue();
         if (TextUtils.isEmpty(cardNumberText) || cardNumberText.length() < 2) {
-            cardLogo.setImageResource(0);
+            imageCardLogo.setImageResource(0);
             return;
         }
 
@@ -749,16 +749,16 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         String cardType = Utils.getCardType(cardNumberText);
         switch (cardType) {
             case Utils.CARD_TYPE_VISA:
-                cardLogo.setImageResource(R.drawable.ic_visa);
+                imageCardLogo.setImageResource(R.drawable.ic_visa);
                 break;
             case Utils.CARD_TYPE_MASTERCARD:
-                cardLogo.setImageResource(R.drawable.ic_mastercard);
+                imageCardLogo.setImageResource(R.drawable.ic_mastercard);
                 break;
             case Utils.CARD_TYPE_JCB:
-                cardLogo.setImageResource(R.drawable.ic_jcb);
+                imageCardLogo.setImageResource(R.drawable.ic_jcb);
                 break;
             case Utils.CARD_TYPE_AMEX:
-                cardLogo.setImageResource(R.drawable.ic_amex);
+                imageCardLogo.setImageResource(R.drawable.ic_amex);
                 break;
         }
     }
@@ -772,17 +772,17 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
         String cardNumberText = getCleanedCardNumber();
         if (TextUtils.isEmpty(cardNumberText)) {
-            showValidationError(cardNumberErrorText, getString(R.string.validation_message_card_number));
+            showValidationError(textCardNumberError, getString(R.string.validation_message_card_number));
             isValid = false;
         } else {
-            hideValidationError(cardNumberErrorText);
+            hideValidationError(textCardNumberError);
         }
 
         if (cardNumberText.length() < 13 || !SdkUIFlowUtil.isValidCardNumber(cardNumberText)) {
-            showValidationError(cardNumberErrorText, getString(R.string.validation_message_invalid_card_no));
+            showValidationError(textCardNumberError, getString(R.string.validation_message_invalid_card_no));
             isValid = false;
         } else {
-            hideValidationError(cardNumberErrorText);
+            hideValidationError(textCardNumberError);
         }
         if (!isValid) {
             //track invalid cc number
@@ -797,7 +797,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         }
 
         boolean isValid = true;
-        String expiryDate = cardExpiryField.getText().toString().trim();
+        String expiryDate = fieldCardExpiry.getText().toString().trim();
         String[] expDateArray = new String[2];
         int expMonth = 0;
         int expYear = 0;
@@ -813,25 +813,25 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         }
 
         if (TextUtils.isEmpty(expiryDate)) {
-            showValidationError(cardExpiryErrorText, getString(R.string.validation_message_empty_expiry_date));
+            showValidationError(textCardExpiryError, getString(R.string.validation_message_empty_expiry_date));
             isValid = false;
         } else if (!expiryDate.contains("/")) {
-            showValidationError(cardExpiryErrorText, getString(R.string.validation_message_invalid_expiry_date));
+            showValidationError(textCardExpiryError, getString(R.string.validation_message_invalid_expiry_date));
             isValid = false;
         } else if (expDateArray.length != 2) {
-            showValidationError(cardExpiryErrorText, getString(R.string.validation_message_invalid_expiry_date));
+            showValidationError(textCardExpiryError, getString(R.string.validation_message_invalid_expiry_date));
             isValid = false;
         } else {
             try {
                 expMonth = Integer.parseInt(expDateArray[0]);
             } catch (NumberFormatException e) {
-                showValidationError(cardExpiryErrorText, getString(R.string.validation_message_invalid_expiry_date));
+                showValidationError(textCardExpiryError, getString(R.string.validation_message_invalid_expiry_date));
                 isValid = false;
             }
             try {
                 expYear = Integer.parseInt(expDateArray[1]);
             } catch (NumberFormatException e) {
-                showValidationError(cardExpiryErrorText, getString(R.string.validation_message_invalid_expiry_date));
+                showValidationError(textCardExpiryError, getString(R.string.validation_message_invalid_expiry_date));
                 isValid = false;
             }
             Calendar calendar = Calendar.getInstance();
@@ -844,13 +844,13 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             Logger.d(TAG, "currentMonth:" + currentMonth + ",currentYear:" + currentYear);
 
             if (expYear < currentYear) {
-                showValidationError(cardExpiryErrorText, getString(R.string.validation_message_invalid_expiry_date));
+                showValidationError(textCardExpiryError, getString(R.string.validation_message_invalid_expiry_date));
                 isValid = false;
             } else if (expYear == currentYear && currentMonth > expMonth) {
-                showValidationError(cardExpiryErrorText, getString(R.string.validation_message_invalid_expiry_date));
+                showValidationError(textCardExpiryError, getString(R.string.validation_message_invalid_expiry_date));
                 isValid = false;
             } else {
-                hideValidationError(cardExpiryErrorText);
+                hideValidationError(textCardExpiryError);
             }
         }
 
@@ -867,17 +867,17 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             return true;
         }
         boolean isValid = true;
-        String cvv = cardCvvField.getText().toString().trim();
+        String cvv = fieldCardCvv.getText().toString().trim();
         if (TextUtils.isEmpty(cvv)) {
-            showValidationError(cardCvvErrorText, getString(R.string.validation_message_cvv));
+            showValidationError(textCardCvvError, getString(R.string.validation_message_cvv));
             isValid = false;
 
         } else {
             if (cvv.length() < 3) {
-                showValidationError(cardCvvErrorText, getString(R.string.validation_message_invalid_cvv));
+                showValidationError(textCardCvvError, getString(R.string.validation_message_invalid_cvv));
                 isValid = false;
             } else {
-                hideValidationError(cardCvvErrorText);
+                hideValidationError(textCardCvvError);
             }
         }
 
@@ -906,7 +906,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
 
     public String getCardNumberValue() {
-        return cardNumberField.getText().toString().trim();
+        return fieldCardNumber.getText().toString().trim();
     }
 
     public String getCardNumberBin() {
@@ -941,9 +941,9 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         String cardExpiry = String.format("%s/%d", scanCardData.getExpiredMonth() < 10 ? String.format("0%d",
                 scanCardData.getExpiredMonth()) : String.format("%d", scanCardData.getExpiredMonth()),
                 scanCardData.getExpiredYear() - 2000);
-        cardNumberField.setText(formattedCardNumber);
-        cardCvvField.setText(cvv);
-        cardExpiryField.setText(cardExpiry);
+        fieldCardNumber.setText(formattedCardNumber);
+        fieldCardCvv.setText(cvv);
+        fieldCardExpiry.setText(cardExpiry);
     }
 
     private void showSavedCardLayout(boolean show) {
@@ -957,9 +957,9 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
     private void showScanCardButton(boolean show) {
         if (show) {
-            scanCardButton.setVisibility(View.VISIBLE);
+            buttonScanCard.setVisibility(View.VISIBLE);
         } else {
-            scanCardButton.setVisibility(View.GONE);
+            buttonScanCard.setVisibility(View.GONE);
         }
     }
 
@@ -1011,8 +1011,8 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     }
 
     private void resetInstallmentButtons() {
-        decreaseInstallmentButton.setEnabled(false);
-        increaseInstallmentButton.setEnabled(true);
+        buttonDecreaseInstallment.setEnabled(false);
+        buttonIncreaseInstallment.setEnabled(true);
     }
 
     private void setCurrentInstallmentTerm() {
@@ -1032,7 +1032,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
 
     private void initInstallmentButton() {
-        increaseInstallmentButton.setOnClickListener(new View.OnClickListener() {
+        buttonIncreaseInstallment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int installmentTermCurrentPosition = presenter.getInstallmentCurrentPosition();
@@ -1046,7 +1046,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             }
         });
 
-        decreaseInstallmentButton.setOnClickListener(new View.OnClickListener() {
+        buttonDecreaseInstallment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int installmentTermCurrentPosition = presenter.getInstallmentCurrentPosition();
@@ -1074,20 +1074,20 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         int installmentTermCount = presenter.getInstallmentTotalPositions();
         if (installmentTermCurrentPosition == 0
                 && installmentTermCount == 0) {
-            decreaseInstallmentButton.setEnabled(false);
-            increaseInstallmentButton.setEnabled(false);
+            buttonDecreaseInstallment.setEnabled(false);
+            buttonIncreaseInstallment.setEnabled(false);
         } else if (installmentTermCurrentPosition > 0
                 && installmentTermCurrentPosition < installmentTermCount) {
-            decreaseInstallmentButton.setEnabled(true);
-            increaseInstallmentButton.setEnabled(true);
+            buttonDecreaseInstallment.setEnabled(true);
+            buttonIncreaseInstallment.setEnabled(true);
         } else if (installmentTermCurrentPosition > 0
                 && installmentTermCurrentPosition == installmentTermCount) {
-            decreaseInstallmentButton.setEnabled(true);
-            increaseInstallmentButton.setEnabled(false);
+            buttonDecreaseInstallment.setEnabled(true);
+            buttonIncreaseInstallment.setEnabled(false);
         } else if (installmentTermCurrentPosition == 0
                 && installmentTermCurrentPosition < installmentTermCount) {
-            decreaseInstallmentButton.setEnabled(false);
-            increaseInstallmentButton.setEnabled(true);
+            buttonDecreaseInstallment.setEnabled(false);
+            buttonIncreaseInstallment.setEnabled(true);
         }
     }
 
@@ -1178,11 +1178,11 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         if (!TextUtils.isEmpty(message)) {
             textBarMessage.setText(message);
         }
-        progressContainer.setVisibility(View.VISIBLE);
+        containerProgress.setVisibility(View.VISIBLE);
     }
 
     private void hideProgresslayout() {
-        progressContainer.setVisibility(View.GONE);
+        containerProgress.setVisibility(View.GONE);
         textBarMessage.setText(R.string.loading);
     }
 
