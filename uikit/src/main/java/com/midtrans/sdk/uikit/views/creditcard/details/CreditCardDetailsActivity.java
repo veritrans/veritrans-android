@@ -420,7 +420,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                                 cardExpiryField.setText(getString(R.string.expiry_month_format, cardExpiryField.getText().toString()));
                                 cardExpiryField.setSelection(cardExpiryField.getText().toString().length());
                             } else {
-                                cardExpiryField.setText(getString(R.string.expiry_month_int_format, Constants.MONTH_COUNT));
+                                cardExpiryField.setText(getString(R.string.expiry_month_int_format, UiKitConstants.MONTH_COUNT));
                                 cardExpiryField.setSelection(cardExpiryField.getText().toString().length());
                             }
 
@@ -1127,7 +1127,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     private void showPaymentStatus(TransactionResponse response) {
         Intent intent = new Intent(this, PaymentStatusActivity.class);
         intent.putExtra(PaymentStatusActivity.EXTRA_PAYMENT_RESULT, response);
-        startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT_STATUS);
+        startActivityForResult(intent, UiKitConstants.INTENT_CODE_PAYMENT_STATUS);
     }
 
     private void finishPayment(int resultCode) {
@@ -1205,7 +1205,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                             scanData.getExpiredYear() - 2000));
                     updateScanCardData(scanData);
                 }
-            } else if (requestCode == Constants.INTENT_CODE_PAYMENT_STATUS) {
+            } else if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS) {
                 finishPayment(resultCode);
             } else if (requestCode == UiKitConstants.INTENT_BANK_POINT) {
                 if (data != null) {

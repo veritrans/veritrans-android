@@ -7,13 +7,8 @@ public class Constants {
 
     public static final int PAYMENT_METHOD_NOT_SELECTED = -1;
 
-    public static final int PAYMENT_METHOD_OFFERS = 0;
     public static final int PAYMENT_METHOD_CREDIT_OR_DEBIT = 1;
     public static final int PAYMENT_METHOD_MANDIRI_CLICK_PAY = 2;
-
-    public static final int PAYMENT_METHOD_CIMB_CLICKS = 3;
-    public static final int PAYMENT_METHOD_EPAY_BRI = 4;
-    public static final int PAYMENT_METHOD_BBM_MONEY = 5;
 
     public static final int PAYMENT_METHOD_INDOSAT_DOMPETKU = 6;
     public static final int PAYMENT_METHOD_MANDIRI_ECASH = 7;
@@ -59,16 +54,12 @@ public class Constants {
     public static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
-
-    public static final float CARD_ASPECT_RATIO = 0.62222f;
-
     /**
      * If trying to create api request before initializing sdk.
      */
     public static final String ERROR_SDK_IS_NOT_INITIALIZED = "sdk is not initialized.";
 
 
-    public static final int MONTH_COUNT = 12;
     public static final String WEBURL = "weburl";
     public static final String TYPE = "type";
 
@@ -81,27 +72,9 @@ public class Constants {
     public static final String PAYMENT_CIMB_CLICKS = "cimb_clicks";
 
     public static final String PAYMENT_CREDIT_DEBIT = "credit_card";
-    public static final long CARD_ANIMATION_TIME = 300;
-    public static final int FAB_HEIGHT_DP = 56;
     public static final long FADE_IN_FORM_TIME = 300;
 
     public static final String AUTH_TOKEN = "authentication.token";
     public static final String WEBVIEW_REDIRECT_URL = "redirect_url";
 
-    public static final int INTENT_CODE_PAYMENT_STATUS = 210;
-    public static final String KEY_USER_DETAILS = "user_details";
-    public static int INTENT_SCAN_CARD = 101;
-
-    public static final String STATUS_CODE_200 = "200";
-    public static final String STATUS_CODE_201 = "201";
-    public static final String STATUS_CODE_400 = "400";
-
-    public static final String STATUS_SUCCESS = "success";
-    public static final String STATUS_PENDING = "pending";
-    public static final String STATUS_FAILED = "failed";
-    public static final String STATUS_INVALID = "invalid";
-    public static final String STATUS_ERROR = "error";
-    public static final String STATUS_SETTLEMENT = "settlement";
-    public static final String STATUS_CHALLENGE = "challenge";
-    public static final String STATUS_DENY = "deny";
 }

@@ -9,7 +9,6 @@ import com.midtrans.sdk.corekit.callback.CardTokenCallback;
 import com.midtrans.sdk.corekit.callback.GetTransactionStatusCallback;
 import com.midtrans.sdk.corekit.callback.SaveCardCallback;
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
-import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
@@ -280,7 +279,7 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
     }
 
     private void startSavingCreditCards(List<SaveCardRequest> saveCardRequest) {
-        UserDetail userDetail = LocalDataHandler.readObject(Constants.KEY_USER_DETAILS, UserDetail.class);
+        UserDetail userDetail = LocalDataHandler.readObject(UiKitConstants.KEY_USER_DETAILS, UserDetail.class);
         MidtransSDK.getInstance().saveCards(userDetail.getUserId(), new ArrayList<>(saveCardRequest),
                 new SaveCardCallback() {
                     @Override
