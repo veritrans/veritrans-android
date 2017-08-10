@@ -47,7 +47,6 @@ public class SavedCreditCardActivity extends BasePaymentActivity implements Save
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved_credit_card);
         initProperties();
-        bindView();
         initProgressLayout();
         initTitle();
         initCardsContainer();
@@ -81,7 +80,8 @@ public class SavedCreditCardActivity extends BasePaymentActivity implements Save
         });
     }
 
-    private void initTheme() {
+    @Override
+    public void initTheme() {
         setBorderColor(buttonAddCard);
         setTextColor(buttonAddCard);
         setIconColorFilter(buttonAddCard);
@@ -130,7 +130,8 @@ public class SavedCreditCardActivity extends BasePaymentActivity implements Save
     }
 
 
-    private void bindView() {
+    @Override
+    public void bindViews() {
         textTitle = (DefaultTextView) findViewById(R.id.text_page_title);
         buttonAddCard = (FancyButton) findViewById(R.id.btn_add_card);
         listCard = (RecyclerView) findViewById(R.id.container_saved_card);

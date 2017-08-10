@@ -26,7 +26,7 @@ import com.midtrans.sdk.uikit.widgets.FancyButton;
  * Created by ziahaqi on 7/20/17.
  */
 
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
 
     private int primaryColor = 0;
     private int primaryDarkColor = 0;
@@ -42,6 +42,8 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
+        bindViews();
+        initTheme();
         initBadgeLayout();
     }
 
@@ -173,4 +175,7 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
+    public abstract void bindViews();
+
+    public abstract void initTheme();
 }

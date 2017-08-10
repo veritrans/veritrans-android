@@ -116,10 +116,8 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_credit_card);
-        bindviews();
         initExtras();
         initProperties();
-        initTheme();
         initCardNumber();
         initCardExpiry();
         initCardCvv();
@@ -271,7 +269,8 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         this.presenter = new CreditCardDetailsPresenter(this, this);
     }
 
-    private void initTheme() {
+    @Override
+    public void initTheme() {
         try {
 
             setBackgroundTintList(fieldCardNumber);
@@ -644,8 +643,8 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         }
     }
 
-
-    private void bindviews() {
+    @Override
+    public void bindViews() {
         fieldCardNumber = (AppCompatEditText) findViewById(R.id.field_card_number);
         fieldCardCvv = (AppCompatEditText) findViewById(R.id.field_cvv);
         fieldCardExpiry = (AppCompatEditText) findViewById(R.id.field_expiry);
@@ -681,7 +680,6 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         containerInstallment = (LinearLayout) findViewById(R.id.container_installment);
         containerPoint = (RelativeLayout) findViewById(R.id.container_bni_point);
         containerProgress = (LinearLayout) findViewById(R.id.progress_container);
-
 
         checkboxSaveCard = (AppCompatCheckBox) findViewById(R.id.checkbox_save_card);
         checkboxPointEnabled = (AppCompatCheckBox) findViewById(R.id.checkbox_point);
