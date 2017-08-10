@@ -124,6 +124,10 @@ public class CreditCardDetailsPresenter {
         return false;
     }
 
+    public int getCcBadge() {
+        return SdkUIFlowUtil.getCreditCardIconType();
+    }
+
 
     public String getBankByCardBin(String cardBin) {
         return creditCardTransaction.getBankByBin(cardBin);
