@@ -3,8 +3,13 @@ package com.midtrans.sdk.uikit.views.banktransfer.list;
 import android.content.Context;
 
 import com.midtrans.sdk.corekit.models.BankTransferModel;
+import com.midtrans.sdk.corekit.models.snap.BankTransfer;
+import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
 import com.midtrans.sdk.uikit.PaymentMethods;
+import com.midtrans.sdk.uikit.models.EnabledPayments;
+import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,15 +18,30 @@ import java.util.List;
 
 public class BankTransferListPresenter {
     private final Context context;
-    private final List<String> bankList;
+    private final List<EnabledPayment> bankList;
 
-    public BankTransferListPresenter(Context context, List<String> bankList) {
-        midtransUi = MidtransUi.getInstance();
-        this.bankList = bankList;
+    public BankTransferListPresenter(Context context, EnabledPayments enabledPayments) {
         this.context = context;
+        this.bankList = new ArrayList<>();
+
+        if (enabledPayments != null) {
+            this.bankList.addAll(enabledPayments.getEnabledPayments());
+        }
     }
 
-    public List<BankTransferModel> getBankList() {
-        return PaymentMethods.getBankTransferModel(context);
+    public List<BankTransfer> getBankList() {
+        List<BankTransferModel> banks = new ArrayList<>();
+        if (bankList != null && !bankList.isEmpty()) {
+            for (EnabledPayment bank : bankList) {
+                BankTransferModel model = PaymentMethods.createBankTransferModel(context, bank.getType(), bank.getStatus());
+                if (model != null) {
+                    banks.add(model);
+                }
+            }
+        }
+
+        SdkUIFlowUtil.sortBankPaymentMethodsByPriority(banks);
+
+        return banks;
     }
 }

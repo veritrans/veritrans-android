@@ -1,6 +1,7 @@
 package com.midtrans.sdk.uikit;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.models.BankTransferModel;
@@ -205,5 +206,15 @@ public class PaymentMethods {
             }
         }
         return enabledPayments;
+    }
+
+    public static BankTransferModel createBankTransferModel(Context context, String type, String status) {
+        if(!TextUtils.isEmpty(type)){
+            switch (type){
+                case PaymentMethodsModel.
+            }
+        }
+
+        return null;
     }
 }

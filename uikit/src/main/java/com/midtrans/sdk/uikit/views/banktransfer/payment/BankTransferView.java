@@ -6,5 +6,5 @@ import com.midtrans.sdk.uikit.abstracts.BasePaymentView;
  * Created by ziahaqi on 8/9/17.
  */
 
-interface BankTransferView extends BasePaymentView{
+interface BankTransferView extends BasePaymentView {
 }

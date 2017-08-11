@@ -401,7 +401,7 @@ public class SdkUIFlowUtil {
     /**
      * Sorting bank payment method by priority (Ascending)
      */
-    public static void sortBankPaymentMethodsByPriority(ArrayList<BankTransferModel> paymentMethodsModels) {
+    public static void sortBankPaymentMethodsByPriority(List<BankTransferModel> paymentMethodsModels) {
         if (paymentMethodsModels != null) {
             Collections.sort(paymentMethodsModels, new Comparator<BankTransferModel>() {
                 @Override

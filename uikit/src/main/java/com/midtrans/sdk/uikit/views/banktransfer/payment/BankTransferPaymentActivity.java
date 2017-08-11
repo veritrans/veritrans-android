@@ -33,6 +33,7 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
 
 
     private static final String EXTRA_BANK_TYPE = "bank.type";
+    public static final String EXTRA_PAYMENT_NAME = "extra.bank.name";
 
     public static final String DOWNLOAD_URL = "url";
     public static final String BANK = "bank";
