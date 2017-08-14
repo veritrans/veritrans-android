@@ -119,7 +119,8 @@ public class PaymentStatusActivity extends BaseActivity {
         finish();
     }
 
-    private void bindViews() {
+    @Override
+    public void bindViews() {
         statusTitle = (DefaultTextView) findViewById(R.id.text_status_title);
         statusMessage = (DefaultTextView) findViewById(R.id.text_status_message);
         statusErrorMessage = (SemiBoldTextView) findViewById(R.id.text_status_error_message);
@@ -148,7 +149,8 @@ public class PaymentStatusActivity extends BaseActivity {
         buttonFinish = (FancyButton) findViewById(R.id.button_status_finish);
     }
 
-    private void initTheme() {
+    @Override
+    public void initTheme() {
         try {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

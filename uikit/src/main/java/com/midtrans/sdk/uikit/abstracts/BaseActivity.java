@@ -7,9 +7,11 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatEditText;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -22,12 +24,15 @@ import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
+import java.lang.reflect.Field;
+
 /**
  * Created by ziahaqi on 7/20/17.
  */
 
 public abstract class BaseActivity extends AppCompatActivity {
 
+    private static final String TAG = BaseActivity.class.getSimpleName();
     private int primaryColor = 0;
     private int primaryDarkColor = 0;
     private int secondaryColor = 0;
@@ -43,7 +48,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
         bindViews();
-        initTheme();
+        try {
+            initTheme();
+        } catch (RuntimeException e) {
+            Log.e(TAG, "initTheme():" + e.getMessage());
+        }
+
         initBadgeLayout();
     }
 
@@ -112,6 +122,22 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
+    public void setTextInputlayoutFilter(TextInputLayout textInputLayout) {
+        if (secondaryColor != 0) {
+            try {
+                Field fDefaultTextColor = TextInputLayout.class.getDeclaredField("mDefaultTextColor");
+                fDefaultTextColor.setAccessible(true);
+                fDefaultTextColor.set(textInputLayout, new ColorStateList(new int[][]{{0}}, new int[]{secondaryColor}));
+
+                Field fFocusedTextColor = TextInputLayout.class.getDeclaredField("mFocusedTextColor");
+                fFocusedTextColor.setAccessible(true);
+                fFocusedTextColor.set(textInputLayout, new ColorStateList(new int[][]{{0}}, new int[]{secondaryColor}));
+
+            } catch (RuntimeException | NoSuchFieldException | IllegalAccessException e) {
+                Log.e(TAG, "tilfilter():" + e.getMessage());
+            }
+        }
+    }
 
     public void setIconColorFilter(FancyButton fancyButton) {
         if (primaryDarkColor != 0) {

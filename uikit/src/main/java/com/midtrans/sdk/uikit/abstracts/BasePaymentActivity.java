@@ -23,7 +23,7 @@ import com.midtrans.sdk.uikit.widgets.DefaultTextView;
  * Created by ziahaqi on 7/20/17.
  */
 
-public class BasePaymentActivity extends BaseActivity {
+public abstract class BasePaymentActivity extends BaseActivity {
 
     private static final java.lang.String TAG = BasePaymentActivity.class.getSimpleName();
 

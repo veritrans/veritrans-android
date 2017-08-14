@@ -4,9 +4,11 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.midtrans.sdk.corekit.core.Constants;
+import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.BankTransferModel;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
+import com.midtrans.sdk.uikit.models.BankTransfer;
 import com.midtrans.sdk.uikit.models.CreditCardType;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 
@@ -129,6 +131,7 @@ public class PaymentMethods {
         return models;
     }
 
+    @Deprecated
     public static BankTransferModel getBankTransferModel(Context context, String name, String status) {
         if (name.equals(context.getString(R.string.payment_bca_va))) {
             return new BankTransferModel(context.getString(R.string.bca_bank_transfer), R.drawable.ic_bca, true, 1, context.getString(R.string.payment_bank_description_bca), status);
@@ -208,13 +211,33 @@ public class PaymentMethods {
         return enabledPayments;
     }
 
-    public static BankTransferModel createBankTransferModel(Context context, String type, String status) {
-        if(!TextUtils.isEmpty(type)){
-            switch (type){
-                case PaymentMethodsModel.
+    public static BankTransfer createBankTransferModel(Context context, String type, String status) {
+        BankTransfer bankTransfer = null;
+        if (!TextUtils.isEmpty(type)) {
+            switch (type) {
+                case PaymentType.BCA_VA:
+                    bankTransfer = new BankTransfer(type, context.getString(R.string.bca_bank_transfer), R.drawable.ic_bca, 1, context.getString(R.string.payment_bank_description_bca), status);
+                    break;
+
+                case PaymentType.E_CHANNEL:
+                    bankTransfer = new BankTransfer(type, context.getString(R.string.mandiri_bill), R.drawable.ic_mandiri_bill_payment2, 2, context.getString(R.string.payment_bank_description_mandiri), status);
+                    break;
+
+                case PaymentType.BNI_VA:
+                    bankTransfer = new BankTransfer(type, context.getString(R.string.bni_bank_transfer), R.drawable.ic_bni, 4, context.getString(R.string.payment_bank_description_bni), status);
+                    break;
+
+                case PaymentType.PERMATA_VA:
+                    bankTransfer = new BankTransfer(type, context.getString(R.string.permata_bank_transfer), R.drawable.ic_permata, 3, context.getString(R.string.payment_bank_description_permata), status);
+                    break;
+
+                case PaymentType.ALL_VA:
+                    bankTransfer = new BankTransfer(type, context.getString(R.string.all_bank_transfer), R.drawable.ic_atm, 5, context.getString(R.string.payment_bank_description_other), status);
+                    break;
             }
+
         }
 
-        return null;
+        return bankTransfer;
     }
 }

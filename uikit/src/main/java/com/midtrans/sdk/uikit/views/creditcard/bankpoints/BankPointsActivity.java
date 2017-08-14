@@ -55,8 +55,6 @@ public class BankPointsActivity extends BasePaymentActivity implements BankPoint
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bank_points);
         initPresenter();
-        initViews();
-        initThemes();
         initRedeemedPointsField();
         bindValues();
         updateAmountToPayText();
@@ -71,7 +69,8 @@ public class BankPointsActivity extends BasePaymentActivity implements BankPoint
     }
 
 
-    private void initViews() {
+    @Override
+    public void bindViews() {
         fieldRedeemedPoint = (AppCompatEditText) findViewById(R.id.redeemed_point_field);
         textTotalPoints = (TextView) findViewById(R.id.text_total_point);
         textAmountToPay = (TextView) findViewById(R.id.text_amount_to_pay);
@@ -84,7 +83,8 @@ public class BankPointsActivity extends BasePaymentActivity implements BankPoint
 
     }
 
-    private void initThemes() {
+    @Override
+    public void initTheme() {
         setPrimaryBackgroundColor(buttonRedeemPoint);
         setPrimaryBackgroundColor(buttonRedeemPoint);
         setSecondaryBackgroundColor(containerAmount);

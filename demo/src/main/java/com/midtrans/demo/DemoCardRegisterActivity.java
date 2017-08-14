@@ -30,7 +30,6 @@ import com.midtrans.sdk.corekit.models.CardRegistrationResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.scancard.ExternalScanner;
 import com.midtrans.sdk.uikit.scancard.ScannerModel;
-import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -368,7 +367,7 @@ public class DemoCardRegisterActivity extends AppCompatActivity {
                                 editCardExpDate.setText(getString(com.midtrans.sdk.uikit.R.string.expiry_month_format, editCardExpDate.getText().toString()));
                                 editCardExpDate.setSelection(editCardExpDate.getText().toString().length());
                             } else {
-                                editCardExpDate.setText(getString(com.midtrans.sdk.uikit.R.string.expiry_month_int_format, UiKitConstants.MONTH_COUNT));
+                                editCardExpDate.setText(getString(com.midtrans.sdk.uikit.R.string.expiry_month_int_format, 12));
                                 editCardExpDate.setSelection(editCardExpDate.getText().toString().length());
                             }
 

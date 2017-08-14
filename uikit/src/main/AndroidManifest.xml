@@ -95,6 +95,14 @@
         <activity
             android:name=".views.creditcard.bankpoints.BankPointsActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".views.banktransfer.list.BankTransferListActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".views.banktransfer.payment.BankTransferPaymentActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

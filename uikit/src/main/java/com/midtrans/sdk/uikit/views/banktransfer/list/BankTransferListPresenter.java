@@ -3,12 +3,11 @@ package com.midtrans.sdk.uikit.views.banktransfer.list;
 import android.content.Context;
 
 import com.midtrans.sdk.corekit.models.BankTransferModel;
-import com.midtrans.sdk.corekit.models.snap.BankTransfer;
 import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
 import com.midtrans.sdk.uikit.PaymentMethods;
+import com.midtrans.sdk.uikit.models.BankTransfer;
 import com.midtrans.sdk.uikit.models.EnabledPayments;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,17 +29,17 @@ public class BankTransferListPresenter {
     }
 
     public List<BankTransfer> getBankList() {
-        List<BankTransferModel> banks = new ArrayList<>();
+        List<BankTransfer> banks = new ArrayList<>();
         if (bankList != null && !bankList.isEmpty()) {
             for (EnabledPayment bank : bankList) {
-                BankTransferModel model = PaymentMethods.createBankTransferModel(context, bank.getType(), bank.getStatus());
+                BankTransfer model = PaymentMethods.createBankTransferModel(context, bank.getType(), bank.getStatus());
                 if (model != null) {
                     banks.add(model);
                 }
             }
         }
 
-        SdkUIFlowUtil.sortBankPaymentMethodsByPriority(banks);
+        SdkUIFlowUtil.sortBankTransferMethodsByPriority(banks);
 
         return banks;
     }

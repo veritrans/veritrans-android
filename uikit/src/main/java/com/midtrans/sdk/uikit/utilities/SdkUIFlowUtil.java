@@ -33,6 +33,7 @@ import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
 import com.midtrans.sdk.corekit.models.snap.PromoResponse;
 import com.midtrans.sdk.corekit.models.snap.SavedToken;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.models.BankTransfer;
 import com.midtrans.sdk.uikit.models.CreditCardType;
 import com.midtrans.sdk.uikit.models.PromoData;
 import com.midtrans.sdk.uikit.widgets.MidtransProgressDialogFragment;
@@ -400,12 +401,29 @@ public class SdkUIFlowUtil {
 
     /**
      * Sorting bank payment method by priority (Ascending)
+     * <p>
+     * this method is deprecated, use sortBankTransferMethodsByPriority instead
      */
+    @Deprecated
     public static void sortBankPaymentMethodsByPriority(List<BankTransferModel> paymentMethodsModels) {
         if (paymentMethodsModels != null) {
             Collections.sort(paymentMethodsModels, new Comparator<BankTransferModel>() {
                 @Override
                 public int compare(BankTransferModel lhs, BankTransferModel rhs) {
+                    return lhs.getPriority().compareTo(rhs.getPriority());
+                }
+            });
+        }
+    }
+
+    /**
+     * Sorting bank payment method by priority (Ascending)
+     */
+    public static void sortBankTransferMethodsByPriority(List<BankTransfer> paymentMethodsModels) {
+        if (paymentMethodsModels != null) {
+            Collections.sort(paymentMethodsModels, new Comparator<BankTransfer>() {
+                @Override
+                public int compare(BankTransfer lhs, BankTransfer rhs) {
                     return lhs.getPriority().compareTo(rhs.getPriority());
                 }
             });
