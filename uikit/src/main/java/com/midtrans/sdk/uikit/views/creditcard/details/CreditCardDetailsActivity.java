@@ -87,6 +87,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     private ImageView imageCardLogo;
     private ImageView imageBankLogo;
     private ImageView imageProcessLogo;
+    private ImageView ccBadge;
 
     private ImageButton buttonCvvHelp;
     private ImageButton buttonSaveCardHelp;
@@ -242,6 +243,22 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         } else {
             //track page cc detail
             presenter.trackEvent(AnalyticsEventName.PAGE_CREDIT_CARD_DETAILS, MixpanelAnalyticsManager.CARD_MODE_NORMAL);
+        }
+
+        int badgeCode = presenter.getCcBadge();
+        switch (badgeCode) {
+            case 1:
+                ccBadge.setImageResource(R.drawable.badge_full);
+                break;
+            case 3:
+                ccBadge.setImageResource(R.drawable.badge_jcb);
+                break;
+            case 4:
+                ccBadge.setImageResource(R.drawable.badge_amex);
+                break;
+            default:
+                ccBadge.setImageResource(R.drawable.badge_default);
+
         }
 
     }
@@ -665,6 +682,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         imageCardLogo = (ImageView) findViewById(R.id.payment_card_logo);
         imageBankLogo = (ImageView) findViewById(R.id.bank_logo);
         imageProcessLogo = (ImageView) findViewById(R.id.progress_bar_image);
+        ccBadge = (ImageView) findViewById(R.id.cc_badge);
 
         buttonCvvHelp = (ImageButton) findViewById(R.id.help_cvv_button);
         buttonSaveCardHelp = (ImageButton) findViewById(R.id.help_save_card);
@@ -1214,6 +1232,8 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         } else if (resultCode == RESULT_CANCELED) {
             if (requestCode == UiKitConstants.INTENT_CODE_3DS_PAYMENT) {
                 startPreCrediCardPayment();
+            } else if (requestCode == Constants.INTENT_CODE_PAYMENT_STATUS) {
+                finishPayment(RESULT_OK);
             }
         }
     }
@@ -1259,11 +1279,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             start3DSecurePage(response.getRedirectUrl(), UiKitConstants.INTENT_CODE_RBA_AUTHENTICATION);
         } else {
             hideProgresslayout();
-            if (presenter.isShowPaymentStatus()) {
-                showPaymentStatus(response);
-            } else {
-                finishPayment(RESULT_OK);
-            }
+            initPaymentStatus(response);
         }
     }
 
@@ -1274,7 +1290,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             attempt += 1;
             SdkUIFlowUtil.showApiFailedMessage(this, getString(R.string.message_payment_failed));
         } else {
-            showPaymentStatus(response);
+            initPaymentStatus(response);
         }
 
         if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {

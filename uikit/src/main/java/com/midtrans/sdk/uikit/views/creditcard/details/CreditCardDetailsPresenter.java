@@ -93,6 +93,10 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
         return false;
     }
 
+    public int getCcBadge() {
+        return SdkUIFlowUtil.getCreditCardIconType();
+    }
+
 
     public boolean isMandiriDebitCard(String cardBin) {
         return creditCardTransaction.isMandiriCardDebit(cardBin);
