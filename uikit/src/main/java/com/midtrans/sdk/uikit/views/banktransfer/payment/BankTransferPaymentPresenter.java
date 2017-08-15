@@ -3,11 +3,14 @@ package com.midtrans.sdk.uikit.views.banktransfer.payment;
 import android.text.TextUtils;
 
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
+import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
+import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentPresenter;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
+import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 
 /**
  * Created by ziahaqi on 8/14/17.
@@ -27,7 +30,6 @@ public class BankTransferPaymentPresenter extends BasePaymentPresenter<BankTrans
 
     public void startPayment(String bankType, String email) {
         if (!TextUtils.isEmpty(bankType)) {
-            String paymentType = null;
             String snapToken = MidtransSDK.getInstance().readAuthenticationToken();
             switch (bankType) {
                 case PaymentType.BCA_VA:
@@ -173,5 +175,14 @@ public class BankTransferPaymentPresenter extends BasePaymentPresenter<BankTrans
 
     public TransactionResponse getTransactionResponse() {
         return transactionResponse;
+    }
+
+    public String getUserEmail() {
+        String userEmail = "";
+        UserDetail userDetail = LocalDataHandler.readObject(UiKitConstants.KEY_USER_DETAILS, UserDetail.class);
+        if (userDetail != null) {
+            userEmail = userDetail.getEmail();
+        }
+        return userEmail;
     }
 }

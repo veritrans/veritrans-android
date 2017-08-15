@@ -7,7 +7,10 @@ import android.support.design.widget.TabLayout;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.AppCompatEditText;
+import android.text.TextUtils;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -16,8 +19,10 @@ import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
-import com.midtrans.sdk.uikit.adapters.InstructionFragmentPagerAdapter;
+import com.midtrans.sdk.uikit.adapters.InstructionPagerAdapter;
 import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
+import com.midtrans.sdk.uikit.fragments.BankTransferFragment;
+import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.views.banktransfer.status.BankTransferStatusActivity;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
@@ -34,13 +39,17 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
 
     private ViewPager pagerInstruction;
     private TabLayout tabInstruction;
-    private TextInputLayout containerEmail;
     private AppCompatEditText editEmail;
     private FancyButton buttonPay;
     private ImageView imageProgress;
 
-    private DefaultTextView textTitle;
+    private TextInputLayout containerEmail;
     private LinearLayout containerProgress;
+
+    private DefaultTextView textTitle;
+    private DefaultTextView textNotificationToken;
+    private DefaultTextView textNotificationOtp;
+
 
     private String paymentType;
 
@@ -51,18 +60,21 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
         setContentView(R.layout.activity_bank_transfer_payment);
         initProperties();
         trackPage();
-        initValues();
+        initTabPager();
         initPaymentButton();
         initProgressLayout();
+        initData();
     }
 
     private void initPaymentButton() {
         buttonPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SdkUIFlowUtil.hideKeyboard(BankTransferPaymentActivity.this);
 
                 String email = editEmail.getText().toString().trim();
                 if (checkEmailValidity(email)) {
+                    showProgressLayout();
                     presenter.startPayment(paymentType, email);
                 }
             }
@@ -115,41 +127,18 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
                 .into(imageProgress);
     }
 
-    public void showPaymentStatus(TransactionResponse result) {
-        if (paymentType.equals(PaymentType.E_CHANNEL)) {
-            showMandiriBillPaymentStatus(result);
-        } else {
-            showBankTransferPaymentStatus(result);
-        }
-    }
-
-    private void showBankTransferPaymentStatus(TransactionResponse result) {
-//        Intent intent = new Intent(this, BankTransferPaymentStatusActivity.class);
-//        intent.putExtra(BankTransferPaymentStatusActivity.EXTRA_RESPONSE, result.getTransactionResponse());
-//        intent.putExtra(BankTransferPaymentStatusActivity.EXTRA_BANK, paymentType);
-//        startActivityForResult(intent, STATUS_REQUEST_CODE);
-    }
-
-    private void showMandiriBillPaymentStatus(TransactionResponse result) {
-//        Intent intent = new Intent(this, BankTransferMandiriStatusActivity.class);
-//        intent.putExtra(BankTransferMandiriStatusActivity.EXTRA_RESPONSE, result.getTransactionResponse());
-//        startActivityForResult(intent, STATUS_REQUEST_CODE);
-    }
-
-    @Override
-    public void onBackPressed() {
-        setResult(RESULT_CANCELED);
-        finish();
-    }
 
     @Override
     public void bindViews() {
         pagerInstruction = (ViewPager) findViewById(R.id.tab_view_pager);
         tabInstruction = (TabLayout) findViewById(R.id.tab_instructions);
         editEmail = (AppCompatEditText) findViewById(R.id.edit_email);
-        textTitle = (DefaultTextView) findViewById(R.id.text_page_title);
         imageProgress = (ImageView) findViewById(R.id.progress_bar_image);
         buttonPay = (FancyButton) findViewById(R.id.btn_pay_now);
+
+        textTitle = (DefaultTextView) findViewById(R.id.text_page_title);
+        textNotificationToken = (DefaultTextView) findViewById(R.id.text_notificationToken);
+        textNotificationOtp = (DefaultTextView) findViewById(R.id.text_notificationOtp);
 
         containerEmail = (TextInputLayout) findViewById(R.id.container_email);
         containerProgress = (LinearLayout) findViewById(R.id.progress_container);
@@ -164,7 +153,7 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
     }
 
 
-    private void initValues() {
+    private void initTabPager() {
 
         tabInstruction.setSelectedTabIndicatorColor(getPrimaryColor());
         pagerInstruction.setPageMargin(getResources().getDimensionPixelSize(R.dimen.twenty_dp));
@@ -215,9 +204,14 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
         }
 
         setPageTitle(title);
-        InstructionFragmentPagerAdapter adapter = new InstructionFragmentPagerAdapter(this, bankType, getSupportFragmentManager(), pageNumber);
+        InstructionPagerAdapter adapter = new InstructionPagerAdapter(this, bankType, getSupportFragmentManager(), pageNumber);
         pagerInstruction.setAdapter(adapter);
         setUpTabLayout();
+    }
+
+    private void initData() {
+        editEmail.setText(presenter.getUserEmail());
+        editEmail.clearFocus();
     }
 
     public void setPageTitle(String pageTitle) {
@@ -232,6 +226,7 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 pagerInstruction.setCurrentItem(tab.getPosition());
+                initTopNotification(tab.getPosition());
             }
 
             @Override
@@ -255,16 +250,24 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
     }
 
     private void initPaymentStatus(TransactionResponse response) {
-        if (presenter.isShowPaymentStatusPage()) {
-            showPaymenStatusPage(response);
+        if (!TextUtils.isEmpty(paymentType) && paymentType.equals(PaymentType.E_CHANNEL)) {
+            showEchannelStatusPage(response);
         } else {
-            finishPayment(RESULT_OK);
+            showBankTransferStatusPage(response);
         }
     }
 
-    private void showPaymenStatusPage(TransactionResponse response) {
+    private void showEchannelStatusPage(TransactionResponse response) {
         Intent intent = new Intent(this, BankTransferStatusActivity.class);
         intent.putExtra(BankTransferStatusActivity.EXTRA_PAYMENT_RESULT, response);
+        intent.putExtra(BankTransferStatusActivity.EXTRA_BANK_TYPE, paymentType);
+        startActivityForResult(intent, UiKitConstants.INTENT_CODE_PAYMENT_STATUS);
+    }
+
+    private void showBankTransferStatusPage(TransactionResponse response) {
+        Intent intent = new Intent(this, BankTransferStatusActivity.class);
+        intent.putExtra(BankTransferStatusActivity.EXTRA_PAYMENT_RESULT, response);
+        intent.putExtra(BankTransferStatusActivity.EXTRA_BANK_TYPE, paymentType);
         startActivityForResult(intent, UiKitConstants.INTENT_CODE_PAYMENT_STATUS);
     }
 
@@ -294,7 +297,7 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
     @Override
     public void onPaymentFailure(TransactionResponse response) {
         hideProgressLayout();
-
+        initPaymentStatus(response);
     }
 
     @Override
@@ -305,5 +308,51 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
     @Override
     public void onBankTranferPaymentUnavailable(String bankType) {
         hideProgressLayout();
+    }
+
+    private void initTopNotification(int position) {
+        if (!TextUtils.isEmpty(paymentType)) {
+            if (paymentType.equals(PaymentType.BCA_VA)) {
+                if (position == 1) {
+                    showTokenNotification(true);
+                } else {
+                    showTokenNotification(false);
+                }
+            } else if (paymentType.equals(BankTransferFragment.TYPE_BNI)) {
+                if (position == 1) {
+                    showOtpNotification(true);
+                } else {
+                    showOtpNotification(false);
+                }
+            } else {
+                showOtpNotification(false);
+                showTokenNotification(false);
+            }
+        }
+
+    }
+
+    private void showTokenNotification(boolean show) {
+        if (show) {
+            textNotificationToken.setVisibility(View.VISIBLE);
+            final Animation animation = AnimationUtils.loadAnimation(this, R.anim.slide_in_top);
+            textNotificationToken.startAnimation(animation);
+
+        } else {
+            textNotificationToken.setVisibility(View.GONE);
+            textNotificationToken.setAnimation(null);
+        }
+    }
+
+    private void showOtpNotification(boolean show) {
+        if (show) {
+            textNotificationOtp.setVisibility(View.VISIBLE);
+            final Animation animation = AnimationUtils.loadAnimation(this, R.anim.slide_in_top);
+            textNotificationOtp.startAnimation(animation);
+
+        } else {
+            textNotificationOtp.setVisibility(View.GONE);
+            textNotificationOtp.setAnimation(null);
+        }
     }
 }

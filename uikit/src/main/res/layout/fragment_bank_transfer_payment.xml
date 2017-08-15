@@ -59,7 +59,7 @@
                     android:padding="@dimen/eight_dp"
                     android:text="@string/virtual_account_number"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/big_text" />
+                    android:textSize="@dimen/va_number_size" />
 
                 <com.midtrans.sdk.uikit.widgets.FancyButton
                     android:id="@+id/btn_copy_va"

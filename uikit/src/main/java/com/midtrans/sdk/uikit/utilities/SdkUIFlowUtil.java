@@ -2,11 +2,13 @@ package com.midtrans.sdk.uikit.utilities;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.annotation.AttrRes;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
@@ -650,5 +652,12 @@ public class SdkUIFlowUtil {
             }
         }
         return cards;
+    }
+
+
+    public static void startWebIntent(Activity activity, String instructionUrl) {
+        Intent webIntent = new Intent(Intent.ACTION_VIEW);
+        webIntent.setData(Uri.parse(instructionUrl));
+        activity.startActivity(webIntent);
     }
 }
