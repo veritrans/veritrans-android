@@ -1234,6 +1234,8 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         } else if (resultCode == RESULT_CANCELED) {
             if (requestCode == UiKitConstants.INTENT_CODE_3DS_PAYMENT) {
                 startPreCrediCardPayment();
+            } else if (requestCode == Constants.INTENT_CODE_PAYMENT_STATUS) {
+                finishPayment(RESULT_OK);
             }
         }
     }
@@ -1279,11 +1281,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             start3DSecurePage(response.getRedirectUrl(), UiKitConstants.INTENT_CODE_RBA_AUTHENTICATION);
         } else {
             hideProgresslayout();
-            if (presenter.isShowPaymentStatus()) {
-                showPaymentStatus(response);
-            } else {
-                finishPayment(RESULT_OK);
-            }
+            initPaymentStatus(response);
         }
     }
 
@@ -1294,7 +1292,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             attempt += 1;
             SdkUIFlowUtil.showApiFailedMessage(this, getString(R.string.message_payment_failed));
         } else {
-            showPaymentStatus(response);
+            initPaymentStatus(response);
         }
 
         if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
