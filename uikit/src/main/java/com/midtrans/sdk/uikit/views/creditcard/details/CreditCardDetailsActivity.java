@@ -1232,7 +1232,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         } else if (resultCode == RESULT_CANCELED) {
             if (requestCode == UiKitConstants.INTENT_CODE_3DS_PAYMENT) {
                 startPreCrediCardPayment();
-            } else if (requestCode == Constants.INTENT_CODE_PAYMENT_STATUS) {
+            } else if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS) {
                 finishPayment(RESULT_OK);
             }
         }

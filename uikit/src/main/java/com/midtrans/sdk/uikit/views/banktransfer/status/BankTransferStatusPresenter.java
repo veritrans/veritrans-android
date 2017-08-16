@@ -2,8 +2,10 @@ package com.midtrans.sdk.uikit.views.banktransfer.status;
 
 import android.text.TextUtils;
 
+import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
+import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 
 /**
  * Created by ziahaqi on 8/15/17.
@@ -12,12 +14,14 @@ import com.midtrans.sdk.corekit.models.TransactionResponse;
 public class BankTransferStatusPresenter {
 
     private final TransactionResponse response;
+    private final String bankType;
 
-    public BankTransferStatusPresenter(TransactionResponse response) {
+    public BankTransferStatusPresenter(TransactionResponse response, String bankType) {
+        this.bankType = bankType;
         this.response = response;
     }
 
-    public String getVaNumber(String bankType) {
+    public String getVaNumber() {
 
         String vaNumber = "";
         if (!TextUtils.isEmpty(bankType)) {
@@ -40,7 +44,7 @@ public class BankTransferStatusPresenter {
         return vaNumber;
     }
 
-    public String getVaExpiration(String bankType) {
+    public String getVaExpiration() {
 
         String expiration = "";
         if (!TextUtils.isEmpty(bankType)) {
@@ -65,5 +69,23 @@ public class BankTransferStatusPresenter {
 
     public String getInstructionUrl() {
         return response.getPdfUrl();
+    }
+
+    public boolean isPaymentFailed() {
+        if (response != null) {
+            if (!response.getTransactionStatus().equals(UiKitConstants.STATUS_CODE_200)
+                    || !response.getTransactionStatus().equals(UiKitConstants.STATUS_CODE_201)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void trackEvent(String eventName) {
+        MidtransSDK.getInstance().trackEvent(eventName);
+    }
+
+    public String getBankType() {
+        return bankType;
     }
 }
