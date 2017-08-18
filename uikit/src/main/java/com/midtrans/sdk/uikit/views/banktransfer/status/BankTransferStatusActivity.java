@@ -86,12 +86,9 @@ public class BankTransferStatusActivity extends BaseBankTransferStatusActivity {
     @Override
     public void bindViews() {
         super.bindViews();
-        tabInstruction = (TabLayout) findViewById(R.id.tab_instructions);
-        pagerInstruction = (MagicViewPager) findViewById(R.id.pager_instruction);
 
         buttonInstruction = (FancyButton) findViewById(R.id.button_download_instruction);
         buttonCopyVa = (FancyButton) findViewById(R.id.button_copy_va);
-        buttonCompletePayment = (FancyButton) findViewById(R.id.button_complete_payment);
 
         textValidity = (DefaultTextView) findViewById(R.id.text_validity);
         textVaNumber = (DefaultTextView) findViewById(R.id.text_virtual_account_number);

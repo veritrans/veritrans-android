@@ -74,6 +74,7 @@ public class MandiriBillStatusActivity extends BaseBankTransferStatusActivity {
 
     @Override
     public void bindViews() {
+        super.bindViews();
         buttonCopyCompanyCode = (FancyButton) findViewById(R.id.button_copy_company_code);
         buttonCopyBillPayCode = (FancyButton) findViewById(R.id.button_copy_bill_pay);
         buttonInstruction = (FancyButton) findViewById(R.id.button_download_instruction);
@@ -87,6 +88,8 @@ public class MandiriBillStatusActivity extends BaseBankTransferStatusActivity {
     public void initTheme() {
         super.initTheme();
         setBorderColor(buttonCopyBillPayCode);
+        setTextColor(buttonCopyBillPayCode);
+        setBorderColor(buttonCopyCompanyCode);
         setTextColor(buttonCopyCompanyCode);
         setBorderColor(buttonInstruction);
         setTextColor(buttonInstruction);
