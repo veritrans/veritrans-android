@@ -34,7 +34,6 @@ import android.widget.TextView;
 
 import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.callback.ObtainPromoCallback;
-import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
@@ -49,6 +48,7 @@ import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.activities.CreditCardFlowActivity;
 import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
+import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.widgets.AspectRatioImageView;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
@@ -815,7 +815,7 @@ public class CardDetailsFragment extends Fragment {
                                 cardExpiry.setText(getString(R.string.expiry_month_format, cardExpiry.getText().toString()));
                                 cardExpiry.setSelection(cardExpiry.getText().toString().length());
                             } else {
-                                cardExpiry.setText(getString(R.string.expiry_month_int_format, Constants.MONTH_COUNT));
+                                cardExpiry.setText(getString(R.string.expiry_month_int_format, UiKitConstants.MONTH_COUNT));
                                 cardExpiry.setSelection(cardExpiry.getText().toString().length());
                             }
 

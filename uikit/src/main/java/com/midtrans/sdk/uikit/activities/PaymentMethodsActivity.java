@@ -51,6 +51,7 @@ import com.midtrans.sdk.uikit.models.EnabledPayments;
 import com.midtrans.sdk.uikit.models.ItemViewDetails;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
+import com.midtrans.sdk.uikit.views.banktransfer.list.BankTransferListActivity;
 import com.midtrans.sdk.uikit.views.creditcard.saved.SavedCreditCardActivity;
 import com.midtrans.sdk.uikit.widgets.BoldTextView;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
@@ -471,7 +472,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                         return;
                     }
                 }
-                startBankPayment.putExtra(SelectBankTransferActivity.EXTRA_BANK, getBankTransfers());
+                startBankPayment.putExtra(BankTransferListActivity.EXTRA_BANK_LIST, getBankTransfers());
                 startActivityForResult(startBankPayment, Constants.RESULT_CODE_PAYMENT_TRANSFER);
                 if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                         && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
@@ -634,8 +635,8 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_bank_transfer))) {
-            Intent startBankPayment = new Intent(this, SelectBankTransferActivity.class);
-            startBankPayment.putExtra(SelectBankTransferActivity.EXTRA_BANK, getBankTransfers());
+            Intent startBankPayment = new Intent(this, BankTransferListActivity.class);
+            startBankPayment.putExtra(BankTransferListActivity.EXTRA_BANK_LIST, getBankTransfers());
             startActivityForResult(startBankPayment, Constants.RESULT_CODE_PAYMENT_TRANSFER);
             if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                     && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {

@@ -3,38 +3,28 @@ package com.midtrans.sdk.uikit.views.creditcard.details;
 import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.snap.BanksPointResponse;
-
-import java.util.List;
+import com.midtrans.sdk.uikit.abstracts.BaseCreditCardPaymentView;
+import com.midtrans.sdk.uikit.abstracts.BasePaymentView;
 
 /**
  * Created by ziahaqi on 7/12/17.
  */
 
-public interface CreditCardDetailsView {
+public interface CreditCardDetailsView extends BasePaymentView, BaseCreditCardPaymentView {
 
     boolean isBankPointEnabled();
 
     void onGetCardTokenSuccess(TokenDetailsResponse response);
 
-    void onGetCardTokenFailed();
+    void onGetCardTokenFailure();
 
     void onGetBankPointSuccess(BanksPointResponse response);
 
-    void onGetBankPointFailed();
-
-    void onPaymentSuccess(TransactionResponse response);
-
-    void onPaymentFailed(TransactionResponse response);
-
-    void onPaymentError(Throwable error);
-
-    void onCardDeletionSuccess(String maskedCardNumber);
-
-    void onCardDeletionFailed();
+    void onGetBankPointFailure();
 
     void onGetTransactionStatusError(Throwable error);
 
-    void onGetTransactionStatusFailed(TransactionResponse transactionResponse);
+    void onGetTransactionStatusFailure(TransactionResponse transactionResponse);
 
     void onGetTransactionStatusSuccess(TransactionResponse transactionResponse);
 }

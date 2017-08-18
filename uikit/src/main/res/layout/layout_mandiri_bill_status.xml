@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/sixteen_dp">
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tab_instructions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:tabGravity="fill"
+        app:tabIndicatorColor="@color/gray.primary"
+        app:tabIndicatorHeight="3dp"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/dark_gray"
+        app:tabTextColor="@color/faint_gray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/sixteen_dp"
+            android:layout_marginRight="@dimen/sixteen_dp"
+            android:layout_marginTop="@dimen/eight_dp"
+            android:paddingTop="@dimen/four_dp"
+            android:text="@string/company_code"
+            android:textColor="@color/dark_gray"
+            android:textSize="@dimen/secondary_text_size" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/sixteen_dp"
+            android:layout_marginRight="@dimen/sixteen_dp"
+            android:orientation="horizontal">
+
+            <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                android:id="@+id/text_company_code"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/eight_dp"
+                android:layout_marginRight="@dimen/eight_dp"
+                android:layout_weight="1"
+                android:background="@color/light_gray"
+                android:padding="@dimen/eight_dp"
+                android:text="@string/text_company_code_here"
+                android:textColor="@color/black"
+                android:textSize="@dimen/big_text" />
+
+            <com.midtrans.sdk.uikit.widgets.FancyButton
+                android:id="@+id/button_copy_company_code"
+                style="@style/ButtonSecondary"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="@dimen/sixteen_dp"
+                android:paddingRight="@dimen/sixteen_dp"
+                android:visibility="visible"
+                app:fb_text="@string/copy" />
+        </LinearLayout>
+
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/sixteen_dp"
+            android:layout_marginRight="@dimen/sixteen_dp"
+            android:layout_marginTop="@dimen/sixteen_dp"
+            android:text="@string/bill_code"
+            android:textColor="@color/dark_gray"
+            android:textSize="@dimen/secondary_text_size" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/sixteen_dp"
+            android:layout_marginRight="@dimen/sixteen_dp">
+
+            <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                android:id="@+id/text_bill_pay_code"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/eight_dp"
+                android:layout_marginRight="@dimen/eight_dp"
+                android:layout_weight="1"
+                android:background="@color/light_gray"
+                android:padding="@dimen/eight_dp"
+                android:text="@string/text_billpay_code_here"
+                android:textColor="@color/black"
+                android:textSize="@dimen/big_text" />
+
+            <com.midtrans.sdk.uikit.widgets.FancyButton
+                android:id="@+id/button_copy_bill_pay"
+                style="@style/ButtonSecondary"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="@dimen/sixteen_dp"
+                android:paddingRight="@dimen/sixteen_dp"
+                android:visibility="visible"
+                app:fb_text="@string/copy" />
+        </LinearLayout>
+
+
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:id="@+id/text_validity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/sixteen_dp"
+            android:layout_marginRight="@dimen/sixteen_dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/faint_yellow"
+            android:gravity="start"
+            android:padding="@dimen/sixteen_dp"
+            android:text="@string/text_sample_valid_date"
+            android:textColor="@color/black"
+            android:textSize="@dimen/secondary_text_size" />
+
+        <com.midtrans.sdk.uikit.widgets.MagicViewPager
+            android:id="@+id/pager_instruction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/sixteen_dp"
+            android:layout_marginRight="@dimen/sixteen_dp" />
+
+        <com.midtrans.sdk.uikit.widgets.FancyButton
+            android:id="@+id/button_download_instruction"
+            style="@style/ButtonDownloadInstruction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/sixteen_dp"
+            android:layout_marginRight="@dimen/sixteen_dp"
+            android:layout_marginTop="@dimen/sixteen_dp"
+            android:visibility="visible"
+            app:fb_text="@string/download_instruction" />
+    </LinearLayout>
+
+</LinearLayout>

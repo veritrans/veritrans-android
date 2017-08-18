@@ -1,4 +1,4 @@
-package com.midtrans.sdk.uikit.adapters;
+package com.midtrans.sdk.uikit.views.banktransfer.list;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,34 +9,38 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.midtrans.sdk.corekit.core.Logger;
-import com.midtrans.sdk.corekit.models.BankTransferModel;
 import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.models.BankTransfer;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author rakawm
+ * Created by ziahaqi on 8/11/17.
  */
+
 public class BankTransferListAdapter extends RecyclerView.Adapter<BankTransferListAdapter.BankTransferViewHolder> {
+
     private static final String TAG = BankTransferListAdapter.class.getSimpleName();
 
-    private List<BankTransferModel> mData = new ArrayList<>();
+    private List<BankTransfer> mData = new ArrayList<>();
     private BankTransferAdapterListener listener;
 
     public BankTransferListAdapter(BankTransferAdapterListener listener) {
         this.listener = listener;
     }
 
-    public void setData(List<BankTransferModel> banktransfers) {
+    public void setData(List<BankTransfer> banktransfers) {
         this.mData.clear();
-        this.mData.addAll(banktransfers);
+        if (banktransfers != null) {
+            this.mData.addAll(banktransfers);
+        }
         this.notifyDataSetChanged();
     }
 
-    public BankTransferModel getItem(int position) {
+    public BankTransfer getItem(int position) {
         return mData.get(position);
     }
 
@@ -57,7 +61,7 @@ public class BankTransferListAdapter extends RecyclerView.Adapter<BankTransferLi
         disablePaymentView(holder, mData.get(position));
     }
 
-    private void disablePaymentView(BankTransferViewHolder holder, BankTransferModel paymentMethod) {
+    private void disablePaymentView(BankTransferViewHolder holder, BankTransfer paymentMethod) {
         if (paymentMethod.getStatus().equals(EnabledPayment.STATUS_DOWN)) {
             holder.layoutPaymentUnavailable.setVisibility(View.VISIBLE);
             holder.itemView.setClickable(false);

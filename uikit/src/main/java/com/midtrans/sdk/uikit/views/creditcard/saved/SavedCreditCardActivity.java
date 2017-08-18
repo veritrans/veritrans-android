@@ -31,16 +31,12 @@ import java.util.List;
  */
 
 public class SavedCreditCardActivity extends BasePaymentActivity implements SavedCreditCardView {
-    private static final int CARD_DETAILS_REQUEST_CODE = 1024;
-    private static final int MAX_RETRY = 3;
 
-    private int retry = 1;
-
-    private RecyclerView cardsContainer;
-    private FancyButton addCardButton;
+    private RecyclerView listCard;
+    private FancyButton buttonAddCard;
+    private LinearLayout containerProgress;
+    private DefaultTextView textProgressBarMessage;
     private DefaultTextView textTitle;
-    private LinearLayout progressContainer;
-    private DefaultTextView progressBarMessage;
     private ImageView imageProgress;
 
     private SavedCreditCardPresenter presenter;
@@ -51,7 +47,6 @@ public class SavedCreditCardActivity extends BasePaymentActivity implements Save
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved_credit_card);
         initProperties();
-        bindView();
         initProgressLayout();
         initTitle();
         initCardsContainer();
@@ -72,12 +67,12 @@ public class SavedCreditCardActivity extends BasePaymentActivity implements Save
     }
 
     private void initCardsContainer() {
-        cardsContainer.setLayoutManager(new LinearLayoutManager(this));
-        cardsContainer.setAdapter(adapter);
+        listCard.setLayoutManager(new LinearLayoutManager(this));
+        listCard.setAdapter(adapter);
     }
 
     private void initActionButton() {
-        addCardButton.setOnClickListener(new View.OnClickListener() {
+        buttonAddCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showCardDetailPage(null);
@@ -85,10 +80,11 @@ public class SavedCreditCardActivity extends BasePaymentActivity implements Save
         });
     }
 
-    private void initTheme() {
-        setBorderColor(addCardButton);
-        setTextColor(addCardButton);
-        setIconColorFilter(addCardButton);
+    @Override
+    public void initTheme() {
+        setBorderColor(buttonAddCard);
+        setTextColor(buttonAddCard);
+        setIconColorFilter(buttonAddCard);
     }
 
     private void initProperties() {
@@ -134,12 +130,13 @@ public class SavedCreditCardActivity extends BasePaymentActivity implements Save
     }
 
 
-    private void bindView() {
+    @Override
+    public void bindViews() {
         textTitle = (DefaultTextView) findViewById(R.id.text_page_title);
-        addCardButton = (FancyButton) findViewById(R.id.btn_add_card);
-        cardsContainer = (RecyclerView) findViewById(R.id.container_saved_card);
-        progressContainer = (LinearLayout) findViewById(R.id.progress_container);
-        progressBarMessage = (DefaultTextView) findViewById(R.id.progress_bar_message);
+        buttonAddCard = (FancyButton) findViewById(R.id.btn_add_card);
+        listCard = (RecyclerView) findViewById(R.id.container_saved_card);
+        containerProgress = (LinearLayout) findViewById(R.id.progress_container);
+        textProgressBarMessage = (DefaultTextView) findViewById(R.id.progress_bar_message);
         imageProgress = (ImageView) findViewById(R.id.progress_bar_image);
     }
 
@@ -177,9 +174,9 @@ public class SavedCreditCardActivity extends BasePaymentActivity implements Save
 
     private void showProgressLayout(boolean show) {
         if (show) {
-            progressContainer.setVisibility(View.VISIBLE);
+            containerProgress.setVisibility(View.VISIBLE);
         } else {
-            progressContainer.setVisibility(View.GONE);
+            containerProgress.setVisibility(View.GONE);
         }
     }
 
@@ -226,19 +223,19 @@ public class SavedCreditCardActivity extends BasePaymentActivity implements Save
     }
 
     @Override
-    public void onGetSavedCardTokenFailed() {
+    public void onGetSavedCardTokenFailure() {
         showCardDetailPage(null);
 
     }
 
     @Override
-    public void onCardDeletionSuccess(String maskedCard) {
+    public void onDeleteCardSuccess(String maskedCard) {
         showProgressLayout(false);
         updateSavedCardsInstance(maskedCard);
     }
 
     @Override
-    public void onCardDeletionFailed() {
+    public void onDeleteCardFailure() {
         showProgressLayout(false);
         SdkUIFlowUtil.showToast(this, getString(R.string.error_delete_message));
     }

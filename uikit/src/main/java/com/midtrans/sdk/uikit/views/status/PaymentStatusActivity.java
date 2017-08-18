@@ -11,7 +11,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
@@ -77,25 +76,25 @@ public class PaymentStatusActivity extends BaseActivity {
         this.transactionResponse = (TransactionResponse) getIntent().getSerializableExtra(EXTRA_PAYMENT_RESULT);
 
         if (transactionResponse != null) {
-            if (transactionResponse.getStatusCode().equals(Constants.STATUS_CODE_200) ||
+            if (transactionResponse.getStatusCode().equals(UiKitConstants.STATUS_CODE_200) ||
                     (!TextUtils.isEmpty(transactionResponse.getTransactionStatus()) &&
-                            (transactionResponse.getTransactionStatus().equalsIgnoreCase(Constants.STATUS_SUCCESS) ||
-                                    transactionResponse.getTransactionStatus().equalsIgnoreCase(Constants.STATUS_SETTLEMENT)))) {
-                paymentStatus = Constants.STATUS_SUCCESS;
-            } else if (transactionResponse.getStatusCode().equals(Constants.STATUS_CODE_201)
+                            (transactionResponse.getTransactionStatus().equalsIgnoreCase(UiKitConstants.STATUS_SUCCESS) ||
+                                    transactionResponse.getTransactionStatus().equalsIgnoreCase(UiKitConstants.STATUS_SETTLEMENT)))) {
+                paymentStatus = UiKitConstants.STATUS_SUCCESS;
+            } else if (transactionResponse.getStatusCode().equals(UiKitConstants.STATUS_CODE_201)
                     || (!TextUtils.isEmpty(transactionResponse.getTransactionStatus())
-                    && (transactionResponse.getTransactionStatus().equalsIgnoreCase(Constants.STATUS_PENDING)))) {
+                    && (transactionResponse.getTransactionStatus().equalsIgnoreCase(UiKitConstants.STATUS_PENDING)))) {
                 if (!TextUtils.isEmpty(transactionResponse.getFraudStatus())
-                        && transactionResponse.getFraudStatus().equalsIgnoreCase(Constants.STATUS_CHALLENGE)) {
-                    paymentStatus = Constants.STATUS_CHALLENGE;
+                        && transactionResponse.getFraudStatus().equalsIgnoreCase(UiKitConstants.STATUS_CHALLENGE)) {
+                    paymentStatus = UiKitConstants.STATUS_CHALLENGE;
                 } else {
-                    paymentStatus = Constants.STATUS_PENDING;
+                    paymentStatus = UiKitConstants.STATUS_PENDING;
                 }
             } else {
-                this.paymentStatus = Constants.STATUS_FAILED;
+                this.paymentStatus = UiKitConstants.STATUS_FAILED;
             }
         } else {
-            this.paymentStatus = Constants.STATUS_FAILED;
+            this.paymentStatus = UiKitConstants.STATUS_FAILED;
         }
     }
 
@@ -120,7 +119,8 @@ public class PaymentStatusActivity extends BaseActivity {
         finish();
     }
 
-    private void bindViews() {
+    @Override
+    public void bindViews() {
         statusTitle = (DefaultTextView) findViewById(R.id.text_status_title);
         statusMessage = (DefaultTextView) findViewById(R.id.text_status_message);
         statusErrorMessage = (SemiBoldTextView) findViewById(R.id.text_status_error_message);
@@ -149,15 +149,16 @@ public class PaymentStatusActivity extends BaseActivity {
         buttonFinish = (FancyButton) findViewById(R.id.button_status_finish);
     }
 
-    private void initTheme() {
+    @Override
+    public void initTheme() {
         try {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 switch (this.paymentStatus) {
-                    case Constants.STATUS_SUCCESS:
+                    case UiKitConstants.STATUS_SUCCESS:
                         getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.payment_status_success));
                         break;
-                    case Constants.STATUS_PENDING:
+                    case UiKitConstants.STATUS_PENDING:
                         getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.payment_status_pending));
                         break;
                     default:
@@ -167,10 +168,10 @@ public class PaymentStatusActivity extends BaseActivity {
             }
 
             switch (this.paymentStatus) {
-                case Constants.STATUS_SUCCESS:
+                case UiKitConstants.STATUS_SUCCESS:
                     layoutMain.setBackgroundColor(ContextCompat.getColor(this, R.color.payment_status_success));
                     break;
-                case Constants.STATUS_PENDING:
+                case UiKitConstants.STATUS_PENDING:
                     layoutMain.setBackgroundColor(ContextCompat.getColor(this, R.color.payment_status_pending));
                     break;
                 default:
@@ -193,13 +194,13 @@ public class PaymentStatusActivity extends BaseActivity {
 
     private void setHeaderValues() {
         switch (paymentStatus) {
-            case Constants.STATUS_SUCCESS:
+            case UiKitConstants.STATUS_SUCCESS:
                 statusTitle.setText(getString(R.string.payment_successful));
                 statusLogo.setImageResource(R.drawable.ic_status_success);
                 statusMessage.setText(getString(R.string.thank_you));
                 break;
-            case Constants.STATUS_PENDING:
-                if (transactionResponse.getFraudStatus().equals(Constants.STATUS_CHALLENGE)) {
+            case UiKitConstants.STATUS_PENDING:
+                if (transactionResponse.getFraudStatus().equals(UiKitConstants.STATUS_CHALLENGE)) {
                     statusTitle.setText(getString(R.string.payment_challenged));
                 } else {
                     statusTitle.setText(getString(R.string.payment_pending));
@@ -216,7 +217,7 @@ public class PaymentStatusActivity extends BaseActivity {
                 if (transactionResponse.getTransactionStatus() != null &&
                         transactionResponse.getTransactionStatus().equalsIgnoreCase(getString(R.string.deny))) {
                     statusErrorMessage.setText(getString(R.string.payment_deny));
-                } else if (transactionResponse.getStatusCode().equals(Constants.STATUS_CODE_400)) {
+                } else if (transactionResponse.getStatusCode().equals(UiKitConstants.STATUS_CODE_400)) {
                     String message = "";
                     if (transactionResponse.getValidationMessages() != null
                             && !transactionResponse.getValidationMessages().isEmpty()) {

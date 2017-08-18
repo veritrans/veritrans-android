@@ -2,11 +2,13 @@ package com.midtrans.sdk.uikit.utilities;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.annotation.AttrRes;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
@@ -33,6 +35,7 @@ import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
 import com.midtrans.sdk.corekit.models.snap.PromoResponse;
 import com.midtrans.sdk.corekit.models.snap.SavedToken;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.models.BankTransfer;
 import com.midtrans.sdk.uikit.models.CreditCardType;
 import com.midtrans.sdk.uikit.models.PromoData;
 import com.midtrans.sdk.uikit.widgets.MidtransProgressDialogFragment;
@@ -400,12 +403,29 @@ public class SdkUIFlowUtil {
 
     /**
      * Sorting bank payment method by priority (Ascending)
+     * <p>
+     * this method is deprecated, use sortBankTransferMethodsByPriority instead
      */
-    public static void sortBankPaymentMethodsByPriority(ArrayList<BankTransferModel> paymentMethodsModels) {
+    @Deprecated
+    public static void sortBankPaymentMethodsByPriority(List<BankTransferModel> paymentMethodsModels) {
         if (paymentMethodsModels != null) {
             Collections.sort(paymentMethodsModels, new Comparator<BankTransferModel>() {
                 @Override
                 public int compare(BankTransferModel lhs, BankTransferModel rhs) {
+                    return lhs.getPriority().compareTo(rhs.getPriority());
+                }
+            });
+        }
+    }
+
+    /**
+     * Sorting bank payment method by priority (Ascending)
+     */
+    public static void sortBankTransferMethodsByPriority(List<BankTransfer> paymentMethodsModels) {
+        if (paymentMethodsModels != null) {
+            Collections.sort(paymentMethodsModels, new Comparator<BankTransfer>() {
+                @Override
+                public int compare(BankTransfer lhs, BankTransfer rhs) {
                     return lhs.getPriority().compareTo(rhs.getPriority());
                 }
             });
@@ -632,5 +652,12 @@ public class SdkUIFlowUtil {
             }
         }
         return cards;
+    }
+
+
+    public static void startWebIntent(Activity activity, String instructionUrl) {
+        Intent webIntent = new Intent(Intent.ACTION_VIEW);
+        webIntent.setData(Uri.parse(instructionUrl));
+        activity.startActivity(webIntent);
     }
 }
