@@ -5,22 +5,21 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.abstracts.BaseBankTransferStatusActivity;
+import com.midtrans.sdk.uikit.abstracts.BaseVaPaymentStatusActivity;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
-import com.midtrans.sdk.uikit.widgets.MagicViewPager;
 
 /**
  * Created by ziahaqi on 8/14/17.
  */
 
-public class BankTransferStatusActivity extends BaseBankTransferStatusActivity {
+public class VaPaymentStatusActivity extends BaseVaPaymentStatusActivity {
 
     private DefaultTextView textVaNumber;
     private DefaultTextView textValidity;
@@ -48,7 +47,7 @@ public class BankTransferStatusActivity extends BaseBankTransferStatusActivity {
             @Override
             public void onClick(View v) {
                 String instructionUrl = presenter.getInstructionUrl();
-                SdkUIFlowUtil.startWebIntent(BankTransferStatusActivity.this, instructionUrl);
+                SdkUIFlowUtil.startWebIntent(VaPaymentStatusActivity.this, instructionUrl);
             }
         });
 
@@ -64,10 +63,12 @@ public class BankTransferStatusActivity extends BaseBankTransferStatusActivity {
 
     private void initData() {
 
-        String vaNumber = presenter.getVaNumber();
-        textVaNumber.setText(vaNumber);
-
+        textVaNumber.setText(presenter.getVaNumber());
         textValidity.setText(getString(R.string.text_format_valid_until, presenter.getVaExpiration()));
+
+        if (TextUtils.isEmpty(presenter.getInstructionUrl())) {
+            buttonInstruction.setVisibility(View.GONE);
+        }
 
         initStatusPayment();
     }

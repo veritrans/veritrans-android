@@ -5,11 +5,13 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.abstracts.BaseBankTransferStatusActivity;
+import com.midtrans.sdk.uikit.abstracts.BaseVaPaymentStatusActivity;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
@@ -18,13 +20,14 @@ import com.midtrans.sdk.uikit.widgets.FancyButton;
  * Created by ziahaqi on 8/15/17.
  */
 
-public class MandiriBillStatusActivity extends BaseBankTransferStatusActivity {
+public class MandiriBillStatusActivity extends BaseVaPaymentStatusActivity {
 
     private static final String LABEL_BILL_CODE = "Bill Code Number";
     private static final String LABEL_COMPANY_CODE = "Company Code Number";
 
     private DefaultTextView textBillPayCode;
     private DefaultTextView textCompanyCode;
+    private DefaultTextView textValidity;
 
     private FancyButton buttonCopyBillPayCode;
     private FancyButton buttonCopyCompanyCode;
@@ -35,6 +38,32 @@ public class MandiriBillStatusActivity extends BaseBankTransferStatusActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mandiri_bill_status);
         initActionButton();
+        initData();
+    }
+
+    private void initData() {
+        textBillPayCode.setText(presenter.getVaNumber());
+        textCompanyCode.setText(presenter.getCompanyCode());
+        textValidity.setText(getString(R.string.text_format_valid_until, presenter.getMandiriBillExpiration()));
+
+
+        if (TextUtils.isEmpty(presenter.getInstructionUrl())) {
+            buttonInstruction.setVisibility(View.GONE);
+        }
+
+        initStatusPayment();
+    }
+
+    private void initStatusPayment() {
+        if (presenter.isPaymentFailed()) {
+            textValidity.setBackgroundColor(ContextCompat.getColor(this, R.color.bg_offer_failure));
+            textValidity.setText(getString(R.string.payment_failed));
+            textBillPayCode.setText("");
+            textCompanyCode.setText("");
+            buttonCopyBillPayCode.setEnabled(false);
+            buttonCopyCompanyCode.setEnabled(false);
+            buttonInstruction.setVisibility(View.GONE);
+        }
     }
 
     private void initActionButton() {
@@ -82,6 +111,7 @@ public class MandiriBillStatusActivity extends BaseBankTransferStatusActivity {
 
         textBillPayCode = (DefaultTextView) findViewById(R.id.text_bill_pay_code);
         textCompanyCode = (DefaultTextView) findViewById(R.id.text_company_code);
+        textValidity = (DefaultTextView) findViewById(R.id.text_validity);
     }
 
     @Override

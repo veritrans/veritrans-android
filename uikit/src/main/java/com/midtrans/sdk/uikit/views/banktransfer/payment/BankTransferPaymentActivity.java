@@ -22,9 +22,10 @@ import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
 import com.midtrans.sdk.uikit.adapters.InstructionPagerAdapter;
 import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.BankTransferFragment;
+import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
-import com.midtrans.sdk.uikit.views.banktransfer.status.BankTransferStatusActivity;
+import com.midtrans.sdk.uikit.views.banktransfer.status.VaPaymentStatusActivity;
 import com.midtrans.sdk.uikit.views.banktransfer.status.MandiriBillStatusActivity;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
@@ -266,9 +267,9 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
     }
 
     private void showBankTransferStatusPage(TransactionResponse response) {
-        Intent intent = new Intent(this, BankTransferStatusActivity.class);
-        intent.putExtra(BankTransferStatusActivity.EXTRA_PAYMENT_RESULT, response);
-        intent.putExtra(BankTransferStatusActivity.EXTRA_BANK_TYPE, paymentType);
+        Intent intent = new Intent(this, VaPaymentStatusActivity.class);
+        intent.putExtra(VaPaymentStatusActivity.EXTRA_PAYMENT_RESULT, response);
+        intent.putExtra(VaPaymentStatusActivity.EXTRA_BANK_TYPE, paymentType);
         startActivityForResult(intent, UiKitConstants.INTENT_CODE_PAYMENT_STATUS);
     }
 
@@ -292,18 +293,26 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
     @Override
     public void onPaymentSuccess(TransactionResponse response) {
         hideProgressLayout();
+        presenter.trackEvent(AnalyticsEventName.PAGE_STATUS_PENDING);
+
         initPaymentStatus(response);
     }
 
     @Override
     public void onPaymentFailure(TransactionResponse response) {
         hideProgressLayout();
+        presenter.trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
         initPaymentStatus(response);
     }
 
     @Override
     public void onPaymentError(Throwable error) {
         hideProgressLayout();
+        presenter.trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+
+        String errorMessage = MessageUtil.createPaymentErrorMessage(this, error.getMessage(), null);
+        SdkUIFlowUtil.showToast(this, "" + errorMessage);
     }
 
     @Override

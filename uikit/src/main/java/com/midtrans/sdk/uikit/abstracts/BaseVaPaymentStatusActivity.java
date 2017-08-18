@@ -19,7 +19,7 @@ import com.midtrans.sdk.uikit.widgets.MagicViewPager;
  * Created by ziahaqi on 8/15/17.
  */
 
-public abstract class BaseBankTransferStatusActivity extends BasePaymentActivity {
+public abstract class BaseVaPaymentStatusActivity extends BasePaymentActivity {
 
     public static final String EXTRA_PAYMENT_RESULT = "bank.payment.result";
     public static final String EXTRA_BANK_TYPE = "bank.type";
@@ -215,6 +215,9 @@ public abstract class BaseBankTransferStatusActivity extends BasePaymentActivity
                 break;
             case PaymentType.BNI_VA:
                 setPageTitle(getString(R.string.bank_bni_transfer));
+
+            case PaymentType.E_CHANNEL:
+                setPageTitle(getString(R.string.mandiri_bill_transfer));
                 break;
         }
     }

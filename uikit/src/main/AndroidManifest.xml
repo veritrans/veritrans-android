@@ -105,7 +105,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".views.banktransfer.status.BankTransferStatusActivity"
+            android:name=".views.banktransfer.status.VaPaymentStatusActivity"
             android:screenOrientation="portrait" />
 
         <activity

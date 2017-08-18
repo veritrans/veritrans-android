@@ -38,6 +38,9 @@ public class BankTransferStatusPresenter {
                 case PaymentType.BNI_VA:
                     vaNumber = response.getBniVaNumber();
                     break;
+                case PaymentType.E_CHANNEL:
+                    vaNumber = response.getPaymentCode();
+                    break;
             }
         }
 
@@ -47,7 +50,7 @@ public class BankTransferStatusPresenter {
     public String getVaExpiration() {
 
         String expiration = "";
-        if (!TextUtils.isEmpty(bankType)) {
+        if (!TextUtils.isEmpty(bankType) && response != null) {
             switch (bankType) {
                 case PaymentType.BCA_VA:
                     expiration = response.getBcaExpiration();
@@ -88,5 +91,13 @@ public class BankTransferStatusPresenter {
 
     public String getBankType() {
         return bankType;
+    }
+
+    public String getCompanyCode() {
+        return (response == null || TextUtils.isEmpty(response.getCompanyCode()) ? "" : response.getCompanyCode());
+    }
+
+    public String getMandiriBillExpiration() {
+        return (response == null || TextUtils.isEmpty(response.getMandiriBillExpiration()) ? "" : response.getMandiriBillExpiration());
     }
 }
