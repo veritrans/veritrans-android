@@ -25,6 +25,7 @@ import com.midtrans.sdk.uikit.fragments.BankTransferFragment;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.views.banktransfer.status.BankTransferStatusActivity;
+import com.midtrans.sdk.uikit.views.banktransfer.status.MandiriBillStatusActivity;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
@@ -258,9 +259,9 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
     }
 
     private void showEchannelStatusPage(TransactionResponse response) {
-        Intent intent = new Intent(this, BankTransferStatusActivity.class);
-        intent.putExtra(BankTransferStatusActivity.EXTRA_PAYMENT_RESULT, response);
-        intent.putExtra(BankTransferStatusActivity.EXTRA_BANK_TYPE, paymentType);
+        Intent intent = new Intent(this, MandiriBillStatusActivity.class);
+        intent.putExtra(MandiriBillStatusActivity.EXTRA_PAYMENT_RESULT, response);
+        intent.putExtra(MandiriBillStatusActivity.EXTRA_BANK_TYPE, paymentType);
         startActivityForResult(intent, UiKitConstants.INTENT_CODE_PAYMENT_STATUS);
     }
 

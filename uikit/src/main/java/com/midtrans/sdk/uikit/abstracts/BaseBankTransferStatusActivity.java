@@ -1,10 +1,9 @@
 package com.midtrans.sdk.uikit.abstracts;
 
-import android.os.Bundle;
 import android.support.annotation.LayoutRes;
-import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 
 import com.midtrans.sdk.corekit.core.PaymentType;
@@ -37,18 +36,15 @@ public abstract class BaseBankTransferStatusActivity extends BasePaymentActivity
 
     protected BankTransferStatusPresenter presenter;
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        initProperties();
-    }
 
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
+        initProperties();
         initPagerInstruction();
         initTabInstruction();
         initCompletePaymentButton();
+        setTitle();
     }
 
     @Override
@@ -62,7 +58,7 @@ public abstract class BaseBankTransferStatusActivity extends BasePaymentActivity
     }
 
     private void initProperties() {
-//        Log
+        Log.d("testz", "initproperties");
         String bankType = getIntent().getStringExtra(EXTRA_BANK_TYPE);
         TransactionResponse response = (TransactionResponse) getIntent().getSerializableExtra(EXTRA_PAYMENT_RESULT);
         presenter = new BankTransferStatusPresenter(response, bankType == null ? "" : bankType);

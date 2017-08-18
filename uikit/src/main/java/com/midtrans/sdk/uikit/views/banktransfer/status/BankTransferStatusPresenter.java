@@ -72,13 +72,14 @@ public class BankTransferStatusPresenter {
     }
 
     public boolean isPaymentFailed() {
+
         if (response != null) {
-            if (!response.getTransactionStatus().equals(UiKitConstants.STATUS_CODE_200)
-                    || !response.getTransactionStatus().equals(UiKitConstants.STATUS_CODE_201)) {
-                return true;
+            if (response.getTransactionStatus().equals(UiKitConstants.STATUS_PENDING)
+                    || response.getStatusCode().equals(UiKitConstants.STATUS_CODE_201)) {
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     public void trackEvent(String eventName) {

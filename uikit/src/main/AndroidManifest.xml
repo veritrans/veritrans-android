@@ -107,6 +107,10 @@
         <activity
             android:name=".views.banktransfer.status.BankTransferStatusActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".views.banktransfer.status.MandiriBillStatusActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

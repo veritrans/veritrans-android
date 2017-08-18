@@ -25,7 +25,6 @@ public class BankTransferStatusActivity extends BaseBankTransferStatusActivity {
     private DefaultTextView textVaNumber;
     private DefaultTextView textValidity;
 
-
     private FancyButton buttonCopyVa;
     private FancyButton buttonInstruction;
 
