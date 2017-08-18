@@ -99,6 +99,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     private AlertDialog alertDialog;
     private DefaultTextView textTitle;
     private ImageView progressImage;
+    private ImageView secureBadge;
     private TextView progressMessage;
     private BoldTextView maintenanceTitleMessage;
     private DefaultTextView maintenanceMessage;
@@ -243,6 +244,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         progressContainer = (LinearLayout) findViewById(R.id.progress_container);
         maintenanceContainer = (LinearLayout) findViewById(R.id.maintenance_container);
         progressImage = (ImageView) findViewById(R.id.progress_bar_image);
+        secureBadge = (ImageView) findViewById(R.id.secure_badge);
         progressMessage = (TextView) findViewById(R.id.progress_bar_message);
         maintenanceTitleMessage = (BoldTextView) findViewById(R.id.text_maintenance_title);
         maintenanceMessage = (DefaultTextView) findViewById(R.id.text_maintenance_message);
@@ -373,6 +375,23 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                         showName(merchantName);
                     }
                     setupToolbarTitle(false);
+
+                    //merchant data is already retrieved, set secure badge here
+                    int secureBadgeCode = SdkUIFlowUtil.getCreditCardIconType();
+                    switch (secureBadgeCode) {
+                        case 1:
+                            secureBadge.setImageResource(R.drawable.badge_full);
+                            break;
+                        case 3:
+                            secureBadge.setImageResource(R.drawable.badge_jcb);
+                            break;
+                        case 4:
+                            secureBadge.setImageResource(R.drawable.badge_amex);
+                            break;
+                        default:
+                            secureBadge.setImageResource(R.drawable.badge_default);
+                    }
+
                     // Directly start credit card payment if using credit card mode only
                     initPaymentMethods(transaction.getEnabledPayments());
                 } catch (NullPointerException e) {
