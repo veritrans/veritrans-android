@@ -3,9 +3,11 @@ package com.midtrans.sdk.uikit;
 import android.content.Context;
 import android.content.Intent;
 
+import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
 import com.midtrans.sdk.corekit.core.ISdkFlow;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.uikit.activities.UserDetailsActivity;
+import com.midtrans.sdk.uikit.views.creditcard.register.CardRegistrationActivity;
 
 /**
  * Created by ziahaqi on 15/06/2016.
@@ -214,5 +216,13 @@ public class UIFlow implements ISdkFlow {
             intent.putExtra(UserDetailsActivity.GIFT_CARD, true);
             context.startActivity(intent);
         }
+    }
+
+
+    @Override
+    public void runCardRegistration(Context context, CardRegistrationCallback callback) {
+        Intent intent = new Intent(context, CardRegistrationActivity.class);
+        intent.putExtra(CardRegistrationActivity.EXTRA_CALLBACK, callback);
+        context.startActivity(intent);
     }
 }

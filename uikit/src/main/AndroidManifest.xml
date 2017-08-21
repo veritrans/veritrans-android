@@ -111,6 +111,10 @@
         <activity
             android:name=".views.banktransfer.status.MandiriBillStatusActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".views.creditcard.register.CardRegistrationActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

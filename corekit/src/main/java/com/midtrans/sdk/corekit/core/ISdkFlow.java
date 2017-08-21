@@ -2,6 +2,8 @@ package com.midtrans.sdk.corekit.core;
 
 import android.content.Context;
 
+import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
+
 /**
  * Created by ziahaqi on 15/06/2016.
  */
@@ -46,4 +48,6 @@ public interface ISdkFlow {
     void runKioson(Context context);
 
     void runGci(Context context);
+
+    void runCardRegistration(Context context, CardRegistrationCallback callback);
 }

@@ -354,6 +354,16 @@ public class MidtransSDK {
         }
     }
 
+
+    /**
+     *
+     */
+
+    public void UiCardRegistration(@NonNull Context context, @NonNull CardRegistrationCallback callback){
+
+        uiflow.runCardRegistration(context, callback);
+    }
+
     /**
      * Start payment UI flow.
      *
@@ -1600,7 +1610,6 @@ public class MidtransSDK {
             callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
         }
     }
-
 
     /**
      * It will run background task to delete saved card from token storage.

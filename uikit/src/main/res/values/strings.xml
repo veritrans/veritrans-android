@@ -770,5 +770,8 @@
     <string name="message_error_internal_server">Sorry, there is an internal problem. Please try again or try another payment method</string>
     <string name="mandiri_bill">Mandiri</string>
     <string name="message_virtual_account">Virtual Account Number</string>
+    <string name="message_card_register_error">Failed to save card information</string>
+    <string name="message_card_register_success">Card information successfully saved</string>
+    <string name="save_card">Save Card</string>
 
 </resources>
