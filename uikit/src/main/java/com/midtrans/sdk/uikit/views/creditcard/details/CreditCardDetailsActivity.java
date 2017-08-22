@@ -201,9 +201,14 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
             String cardType = Utils.getCardType(savedCard.getMaskedCard());
             if (!TextUtils.isEmpty(cardType)) {
-                String cardBin = savedCard.getMaskedCard().substring(0, 4);
-                String title = cardType + "-" + cardBin;
-                textTitle.setText(title);
+                try {
+                    String cardBin = savedCard.getMaskedCard().substring(0, 4);
+                    String title = cardType + "-" + cardBin;
+                    textTitle.setText(title);
+
+                } catch (RuntimeException e) {
+                    Logger.e(TAG, "cardType:" + e.getMessage());
+                }
             }
 
             showSavedCardLayout(false);
@@ -926,10 +931,15 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     }
 
     public String getCardNumberBin() {
-        String cardNumber = getCardNumberValue();
-        if (!TextUtils.isEmpty(cardNumber) && cardNumber.length() > 6) {
-            String cardBin = cardNumber.replace(" ", "").substring(0, 6);
-            return cardBin;
+        try {
+            String cardNumber = getCardNumberValue();
+            if (!TextUtils.isEmpty(cardNumber) && cardNumber.length() > 6) {
+                String cardBin = cardNumber.replace(" ", "").substring(0, 6);
+                return cardBin;
+            }
+
+        } catch (RuntimeException e) {
+            Logger.e(TAG, "getCardNumberBin:" + e.getMessage());
         }
         return null;
     }
