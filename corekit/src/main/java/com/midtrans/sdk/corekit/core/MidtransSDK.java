@@ -52,6 +52,7 @@ public class MidtransSDK {
     private static final String LOCAL_DATA_PREFERENCES = "local.data";
     private static SharedPreferences mPreferences = null;
     private static MidtransSDK midtransSDK;
+    private static BaseSdkBuilder sdkBuilder;
     protected boolean isRunning = false;
     ISdkFlow uiflow;
     private UIKitCustomSetting UIKitCustomSetting;
@@ -109,21 +110,22 @@ public class MidtransSDK {
                 MidtransRestAdapter.getVeritransApiClient(BuildConfig.BASE_URL, requestTimeOut));
         this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), clientKey, getFlow(flow));
         this.mSnapTransactionManager.setSDKLogEnabled(isLogEnabled);
-
         initializeSharedPreferences();
     }
 
     /**
      * get Veritrans SDK instance
      *
-     * @param sdkBuilder SDK Coreflow Builder
+     * @param newSdkBuilder SDK Coreflow Builder
      */
-    protected static MidtransSDK delegateInstance(@NonNull BaseSdkBuilder sdkBuilder) {
-        if (sdkBuilder != null) {
+    protected static MidtransSDK delegateInstance(@NonNull BaseSdkBuilder newSdkBuilder) {
+        if (newSdkBuilder != null) {
             midtransSDK = new MidtransSDK(sdkBuilder);
+            sdkBuilder = newSdkBuilder;
         } else {
             Logger.e("sdk is not initialized.");
         }
+
         return midtransSDK;
     }
 
@@ -133,6 +135,9 @@ public class MidtransSDK {
      * @return MidtransSDK instance
      */
     public synchronized static MidtransSDK getInstance() {
+        if (midtransSDK == null) {
+            midtransSDK = new MidtransSDK(sdkBuilder);
+        }
         return midtransSDK;
     }
 
@@ -359,7 +364,7 @@ public class MidtransSDK {
      *
      */
 
-    public void UiCardRegistration(@NonNull Context context, @NonNull CardRegistrationCallback callback){
+    public void UiCardRegistration(@NonNull Context context, @NonNull CardRegistrationCallback callback) {
 
         uiflow.runCardRegistration(context, callback);
     }
@@ -1718,6 +1723,9 @@ public class MidtransSDK {
     }
 
     public CreditCard getCreditCard() {
+        if (creditCard == null) {
+            creditCard = new CreditCard();
+        }
         return creditCard;
     }
 
