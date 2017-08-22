@@ -26,6 +26,7 @@ import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 public abstract class BasePaymentActivity extends BaseActivity {
 
     private static final java.lang.String TAG = BasePaymentActivity.class.getSimpleName();
+    protected boolean processingPayment;
 
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
@@ -110,4 +111,11 @@ public abstract class BasePaymentActivity extends BaseActivity {
         }
     }
 
+    public void setProcessingPayment(boolean processingPayment) {
+        this.processingPayment = processingPayment;
+    }
+
+    public boolean isProcessingPayment() {
+        return processingPayment;
+    }
 }

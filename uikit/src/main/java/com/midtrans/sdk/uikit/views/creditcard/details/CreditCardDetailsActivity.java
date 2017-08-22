@@ -1116,19 +1116,9 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     }
 
 
-    private void showErrorMessage(String errorMessage) {
-        AlertDialog alert = new AlertDialog.Builder(this)
-                .setMessage(errorMessage)
-                .setNegativeButton(R.string.btn_close, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        // TODO: set result and finish
-                    }
-                })
-                .create();
-        alert.show();
-        changeDialogButtonColor(alert);
+    private void showErrorMessage(Throwable error) {
+        String errorMessage = MessageUtil.createPaymentErrorMessage(this, error.getMessage(), getString(R.string.message_payment_failed));
+        SdkUIFlowUtil.showToast(this, errorMessage);
     }
 
     private void startBankPointPage(BanksPointResponse response) {
@@ -1176,10 +1166,11 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
     private void initPaymentError(Throwable error) {
         MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
-        presenter.trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
-        String errorMessage = MessageUtil.createPaymentErrorMessage(this, error.getMessage(), getString(R.string.message_payment_failed));
-        hideProgresslayout();
-        showErrorMessage(errorMessage);
+        if (!isFinishing()) {
+            presenter.trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+            hideProgresslayout();
+            showErrorMessage(error);
+        }
     }
 
 
@@ -1194,14 +1185,24 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         if (!TextUtils.isEmpty(message)) {
             textBarMessage.setText(message);
         }
+        setProcessingPayment(true);
         containerProgress.setVisibility(View.VISIBLE);
     }
 
     private void hideProgresslayout() {
+        setProcessingPayment(false);
         containerProgress.setVisibility(View.GONE);
         textBarMessage.setText(R.string.loading);
     }
 
+    @Override
+    public void onBackPressed() {
+        if (isProcessingPayment()) {
+            return;
+        }
+
+        super.onBackPressed();
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -1285,26 +1286,28 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
     @Override
     public void onPaymentFailure(TransactionResponse response) {
-        hideProgresslayout();
-        if (attempt < UiKitConstants.MAX_ATTEMPT) {
-            attempt += 1;
-            SdkUIFlowUtil.showApiFailedMessage(this, getString(R.string.message_payment_failed));
-        } else {
-            initPaymentStatus(response);
-        }
+        if (!isFinishing()) {
+            hideProgresslayout();
+            if (attempt < UiKitConstants.MAX_ATTEMPT) {
+                attempt += 1;
+                SdkUIFlowUtil.showApiFailedMessage(this, getString(R.string.message_payment_failed));
+            } else {
+                initPaymentStatus(response);
+            }
 
-        if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
-            Log.d("3dserror", "400:" + response.getValidationMessages().get(0));
-            if (response.getValidationMessages() != null && response.getValidationMessages().get(0) != null) {
-                if (response.getValidationMessages().get(0).contains("3d")) {
-                    //track page bca va overview
-                    presenter.trackEvent(AnalyticsEventName.CREDIT_CARD_3DS_ERROR);
+            if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
+                Log.d("3dserror", "400:" + response.getValidationMessages().get(0));
+                if (response.getValidationMessages() != null && response.getValidationMessages().get(0) != null) {
+                    if (response.getValidationMessages().get(0).contains("3d")) {
+                        //track page bca va overview
+                        presenter.trackEvent(AnalyticsEventName.CREDIT_CARD_3DS_ERROR);
+                    }
                 }
             }
-        }
 
-        //track page status failed
-        presenter.trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+            //track page status failed
+            presenter.trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+        }
     }
 
     @Override
