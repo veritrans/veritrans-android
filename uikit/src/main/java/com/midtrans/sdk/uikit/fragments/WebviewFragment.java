@@ -154,12 +154,11 @@ public class WebviewFragment extends Fragment {
             Log.d(TAG, "onPageFinished()>url:" + url);
             if (url.contains(UiKitConstants.CALLBACK_PATTERN_3DS) || url.contains(UiKitConstants.CALLBACK_PATTERN_RBA)) {
                 Intent returnIntent = new Intent();
-                getActivity().setResult(Activity.RESULT_OK, returnIntent);
-                getActivity().finish();
-                if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
-                        && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
-                    getActivity().overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
+                if (getActivity() != null && !getActivity().isFinishing()) {
+                    getActivity().setResult(Activity.RESULT_OK, returnIntent);
+                    getActivity().finish();
                 }
+                overridePendingTransition();
             }
         }
 
@@ -169,48 +168,55 @@ public class WebviewFragment extends Fragment {
             super.onPageStarted(view, url, favicon);
             if (type != null && type.equals(TYPE_BCA_KLIKPAY)) {
                 if (url.contains("?id=")) {
-                    Intent returnIntent = new Intent();
-                    getActivity().setResult(Activity.RESULT_OK, returnIntent);
-                    getActivity().finish();
-                    if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
-                            && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
-                        getActivity().overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
+                    if (getActivity() != null && !getActivity().isFinishing()) {
+                        Intent returnIntent = new Intent();
+                        getActivity().setResult(Activity.RESULT_OK, returnIntent);
+                        getActivity().finish();
                     }
+                    overridePendingTransition();
                     return;
                 }
             } else if (type != null && type.equals(TYPE_MANDIRI_ECASH)) {
                 if (url.contains("notify?id=")) {
-                    Intent returnIntent = new Intent();
-                    getActivity().setResult(Activity.RESULT_OK, returnIntent);
-                    getActivity().finish();
-                    if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
-                            && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
-                        getActivity().overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
+                    if (getActivity() != null && !getActivity().isFinishing()) {
+                        Intent returnIntent = new Intent();
+                        getActivity().setResult(Activity.RESULT_OK, returnIntent);
+                        getActivity().finish();
                     }
+                    overridePendingTransition();
                     return;
                 }
             } else if (type != null && type.equals(TYPE_EPAY_BRI)) {
                 if (url.contains("briPayment?tid=")) {
-                    Intent returnIntent = new Intent();
-                    getActivity().setResult(Activity.RESULT_OK, returnIntent);
-                    getActivity().finish();
-                    if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
-                            && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
-                        getActivity().overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
+                    if (getActivity() != null && !getActivity().isFinishing()) {
+                        Intent returnIntent = new Intent();
+                        getActivity().setResult(Activity.RESULT_OK, returnIntent);
+                        getActivity().finish();
                     }
+                    overridePendingTransition();
                     return;
                 }
             } else if (type != null && type.equals(TYPE_CIMB_CLICK)) {
                 if (url.contains("cimb-clicks/response")) {
-                    Intent returnIntent = new Intent();
-                    getActivity().setResult(Activity.RESULT_OK, returnIntent);
-                    getActivity().finish();
-                    if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
-                            && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
-                        getActivity().overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
+                    if (getActivity() != null && !getActivity().isFinishing()) {
+                        Intent returnIntent = new Intent();
+                        getActivity().setResult(Activity.RESULT_OK, returnIntent);
+                        getActivity().finish();
                     }
+                    overridePendingTransition();
                     return;
                 }
+            }
+        }
+    }
+
+    private void overridePendingTransition() {
+        if (getActivity() != null && !getActivity().isFinishing()) {
+            MidtransSDK midtransSDK = MidtransSDK.getInstance();
+            if (midtransSDK != null && midtransSDK.getUIKitCustomSetting() != null
+                    && midtransSDK.getUIKitCustomSetting().isEnabledAnimation()) {
+                getActivity().overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
+
             }
         }
     }
