@@ -945,8 +945,13 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     }
 
     public String getCleanedCardNumber() {
-        String cardNumber = getCardNumberValue();
-        String cleanCardNumber = cardNumber.replace(" ", "");
+        String cleanCardNumber = "";
+        try {
+            String cardNumber = getCardNumberValue();
+            cleanCardNumber = cardNumber.replace(" ", "");
+        } catch (RuntimeException e) {
+
+        }
         return cleanCardNumber;
     }
 
@@ -962,14 +967,16 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     }
 
     private void updateScanCardData(ScannerModel scanCardData) {
-        String formattedCardNumber = Utils.getFormattedCreditCardNumber(scanCardData.getCardNumber());
-        String cvv = scanCardData.getCvv();
-        String cardExpiry = String.format("%s/%d", scanCardData.getExpiredMonth() < 10 ? String.format("0%d",
-                scanCardData.getExpiredMonth()) : String.format("%d", scanCardData.getExpiredMonth()),
-                scanCardData.getExpiredYear() - 2000);
-        fieldCardNumber.setText(formattedCardNumber);
-        fieldCardCvv.setText(cvv);
-        fieldCardExpiry.setText(cardExpiry);
+        if (scanCardData != null) {
+            String formattedCardNumber = Utils.getFormattedCreditCardNumber(scanCardData.getCardNumber());
+            String cvv = scanCardData.getCvv();
+            String cardExpiry = String.format("%s/%d", scanCardData.getExpiredMonth() < 10 ? String.format("0%d",
+                    scanCardData.getExpiredMonth()) : String.format("%d", scanCardData.getExpiredMonth()),
+                    scanCardData.getExpiredYear() - 2000);
+            fieldCardNumber.setText(formattedCardNumber);
+            fieldCardCvv.setText(cvv);
+            fieldCardExpiry.setText(cardExpiry);
+        }
     }
 
     private void showSavedCardLayout(boolean show) {

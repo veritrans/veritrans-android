@@ -169,7 +169,7 @@ public class PaymentWebActivity extends BaseActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if (smsVerifyCatcher != null) {
+        if (!isFinishing() && smsVerifyCatcher != null) {
             smsVerifyCatcher.onStart();
         }
     }
@@ -184,9 +184,11 @@ public class PaymentWebActivity extends BaseActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (smsVerifyCatcher != null) {
-            smsVerifyCatcher.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (!isFinishing()) {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            if (smsVerifyCatcher != null) {
+                smsVerifyCatcher.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            }
         }
     }
 }
