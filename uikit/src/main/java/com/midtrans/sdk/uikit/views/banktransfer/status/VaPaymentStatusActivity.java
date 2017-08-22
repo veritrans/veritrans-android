@@ -63,24 +63,21 @@ public class VaPaymentStatusActivity extends BaseVaPaymentStatusActivity {
 
     private void initData() {
 
-        textVaNumber.setText(presenter.getVaNumber());
-        textValidity.setText(getString(R.string.text_format_valid_until, presenter.getVaExpiration()));
-
-        if (TextUtils.isEmpty(presenter.getInstructionUrl())) {
-            buttonInstruction.setVisibility(View.GONE);
-        }
-
-        initStatusPayment();
-    }
-
-    private void initStatusPayment() {
         if (presenter.isPaymentFailed()) {
             textValidity.setBackgroundColor(ContextCompat.getColor(this, R.color.bg_offer_failure));
             textValidity.setText(getString(R.string.payment_failed));
             textVaNumber.setText("");
             buttonCopyVa.setEnabled(false);
             buttonInstruction.setVisibility(View.GONE);
+        } else {
+            textVaNumber.setText(presenter.getVaNumber());
+            textValidity.setText(getString(R.string.text_format_valid_until, presenter.getVaExpiration()));
+
+            if (TextUtils.isEmpty(presenter.getInstructionUrl())) {
+                buttonInstruction.setVisibility(View.GONE);
+            }
         }
+
     }
 
 
@@ -109,6 +106,6 @@ public class VaPaymentStatusActivity extends BaseVaPaymentStatusActivity {
 
     @Override
     public void onBackPressed() {
-        finish();
+        finishPaymentStatus();
     }
 }

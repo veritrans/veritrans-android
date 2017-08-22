@@ -1,6 +1,7 @@
 package com.midtrans.sdk.uikit.views.banktransfer.list;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,16 +54,19 @@ public class BankTransferListAdapter extends RecyclerView.Adapter<BankTransferLi
 
     @Override
     public void onBindViewHolder(BankTransferViewHolder holder, int position) {
-        holder.bankName.setText(mData.get(position).getBankName());
-        holder.bankIcon.setImageResource(mData.get(position).getImage());
-        holder.bankDescription.setText(mData.get(position).getDescription());
-        Logger.d(TAG, "Bank Item: " + mData.get(position).getBankName());
+        BankTransfer bankTransfer = mData.get(position);
+        if (bankTransfer != null) {
+            holder.bankName.setText(mData.get(position).getBankName());
+            holder.bankIcon.setImageResource(mData.get(position).getImage());
+            holder.bankDescription.setText(mData.get(position).getDescription());
+            Logger.d(TAG, "Bank Item: " + mData.get(position).getBankName());
 
-        disablePaymentView(holder, mData.get(position));
+            disablePaymentView(holder, bankTransfer);
+        }
     }
 
     private void disablePaymentView(BankTransferViewHolder holder, BankTransfer paymentMethod) {
-        if (paymentMethod.getStatus().equals(EnabledPayment.STATUS_DOWN)) {
+        if (!TextUtils.isEmpty(paymentMethod.getStatus()) && paymentMethod.getStatus().equals(EnabledPayment.STATUS_DOWN)) {
             holder.layoutPaymentUnavailable.setVisibility(View.VISIBLE);
             holder.itemView.setClickable(false);
             holder.textUnavailable.setVisibility(View.VISIBLE);

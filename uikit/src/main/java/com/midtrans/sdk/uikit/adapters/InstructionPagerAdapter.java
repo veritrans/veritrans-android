@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.text.TextUtils;
 import android.view.ViewGroup;
 
 import com.midtrans.sdk.corekit.core.PaymentType;
@@ -44,59 +45,62 @@ public class InstructionPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         Fragment fragment;
 
-        switch (paymentType) {
+        if (TextUtils.isEmpty(paymentType)) {
+            fragment = new InstructionAltoFragment();
+        } else {
+            switch (paymentType) {
 
-            case PaymentType.BCA_VA:
-                if (position == 0) {
-                    fragment = new InstructionBCAFragment();
-                } else if (position == 1) {
-                    fragment = new InstructionBCAKlikFragment();
-                } else {
-                    fragment = new InstructionBCAMobileFragment();
-                }
+                case PaymentType.BCA_VA:
+                    if (position == 0) {
+                        fragment = new InstructionBCAFragment();
+                    } else if (position == 1) {
+                        fragment = new InstructionBCAKlikFragment();
+                    } else {
+                        fragment = new InstructionBCAMobileFragment();
+                    }
+                    break;
 
-                break;
+                case PaymentType.PERMATA_VA:
+                    if (position == 0) {
+                        fragment = new InstructionPermataFragment();
+                    } else {
+                        fragment = new InstructionAltoFragment();
+                    }
+                    break;
 
-            case PaymentType.PERMATA_VA:
-                if (position == 0) {
-                    fragment = new InstructionPermataFragment();
-                } else {
-                    fragment = new InstructionAltoFragment();
-                }
-                break;
+                case PaymentType.E_CHANNEL:
+                    if (position == 0) {
+                        fragment = new InstructionMandiriFragment();
 
-            case PaymentType.E_CHANNEL:
-                if (position == 0) {
-                    fragment = new InstructionMandiriFragment();
+                    } else {
+                        fragment = new InstructionMandiriInternetFragment();
+                    }
+                    break;
 
-                } else {
-                    fragment = new InstructionMandiriInternetFragment();
-                }
-                break;
+                case PaymentType.BNI_VA:
+                    if (position == 0) {
+                        fragment = new InstructionAtmBniFragment();
 
-            case PaymentType.BNI_VA:
-                if (position == 0) {
-                    fragment = new InstructionAtmBniFragment();
+                    } else if (position == 1) {
+                        fragment = new InstructionBniMobileFragment();
 
-                } else if (position == 1) {
-                    fragment = new InstructionBniMobileFragment();
+                    } else {
+                        fragment = new InstructionBniInternetFragment();
+                    }
 
-                } else {
-                    fragment = new InstructionBniInternetFragment();
-                }
+                    break;
 
-                break;
+                default:
+                    if (position == 0) {
+                        fragment = new InstructionATMBersamaFragment();
+                    } else if (position == 1) {
+                        fragment = new InstructionPrimaFragment();
+                    } else {
+                        fragment = new InstructionAltoFragment();
+                    }
 
-            default:
-                if (position == 0) {
-                    fragment = new InstructionATMBersamaFragment();
-                } else if (position == 1) {
-                    fragment = new InstructionPrimaFragment();
-                } else {
-                    fragment = new InstructionAltoFragment();
-                }
-
-                break;
+                    break;
+            }
         }
 
         return fragment;
@@ -119,59 +123,62 @@ public class InstructionPagerAdapter extends FragmentStatePagerAdapter {
 
         String pageTitle;
 
-        switch (paymentType) {
+        if (TextUtils.isEmpty(paymentType)) {
+            pageTitle = context.getString(R.string.tab_alto);
+        } else {
+            switch (paymentType) {
 
-            case PaymentType.BCA_VA:
-                if (position == 0) {
-                    pageTitle = context.getString(R.string.tab_bca_atm);
-                } else if (position == 1) {
-                    pageTitle = context.getString(R.string.tab_bca_klik);
-                } else {
-                    pageTitle = context.getString(R.string.tab_bca_mobile);
-                }
+                case PaymentType.BCA_VA:
+                    if (position == 0) {
+                        pageTitle = context.getString(R.string.tab_bca_atm);
+                    } else if (position == 1) {
+                        pageTitle = context.getString(R.string.tab_bca_klik);
+                    } else {
+                        pageTitle = context.getString(R.string.tab_bca_mobile);
+                    }
 
-                break;
+                    break;
 
-            case PaymentType.PERMATA_VA:
-                if (position == 0) {
-                    pageTitle = context.getString(R.string.tab_permata_atm);
-                } else {
-                    pageTitle = context.getString(R.string.tab_alto);
-                }
-                break;
+                case PaymentType.PERMATA_VA:
+                    if (position == 0) {
+                        pageTitle = context.getString(R.string.tab_permata_atm);
+                    } else {
+                        pageTitle = context.getString(R.string.tab_alto);
+                    }
+                    break;
 
-            case PaymentType.E_CHANNEL:
-                if (position == 0) {
-                    pageTitle = context.getString(R.string.tab_mandiri_atm);
+                case PaymentType.E_CHANNEL:
+                    if (position == 0) {
+                        pageTitle = context.getString(R.string.tab_mandiri_atm);
 
-                } else {
-                    pageTitle = context.getString(R.string.tab_mandiri_internet);
-                }
-                break;
+                    } else {
+                        pageTitle = context.getString(R.string.tab_mandiri_internet);
+                    }
+                    break;
 
-            case PaymentType.BNI_VA:
-                if (position == 0) {
-                    pageTitle = context.getString(R.string.tab_atm_bni);
-                } else if (position == 1) {
-                    pageTitle = context.getString(R.string.tab_bni_mobile);
-                } else {
-                    pageTitle = context.getString(R.string.tab_bni_internet);
-                }
+                case PaymentType.BNI_VA:
+                    if (position == 0) {
+                        pageTitle = context.getString(R.string.tab_atm_bni);
+                    } else if (position == 1) {
+                        pageTitle = context.getString(R.string.tab_bni_mobile);
+                    } else {
+                        pageTitle = context.getString(R.string.tab_bni_internet);
+                    }
 
-                break;
+                    break;
 
-            default:
-                if (position == 0) {
-                    pageTitle = context.getString(R.string.tab_atm_bersama);
-                } else if (position == 1) {
-                    pageTitle = context.getString(R.string.tab_prima);
-                } else {
-                    pageTitle = context.getString(R.string.tab_alto);
-                }
+                default:
+                    if (position == 0) {
+                        pageTitle = context.getString(R.string.tab_atm_bersama);
+                    } else if (position == 1) {
+                        pageTitle = context.getString(R.string.tab_prima);
+                    } else {
+                        pageTitle = context.getString(R.string.tab_alto);
+                    }
 
-                break;
+                    break;
+            }
         }
-
 
         return pageTitle;
     }

@@ -120,7 +120,7 @@ public class MidtransSDK {
      */
     protected static MidtransSDK delegateInstance(@NonNull BaseSdkBuilder newSdkBuilder) {
         if (newSdkBuilder != null) {
-            midtransSDK = new MidtransSDK(sdkBuilder);
+            midtransSDK = new MidtransSDK(newSdkBuilder);
             sdkBuilder = newSdkBuilder;
         } else {
             Logger.e("sdk is not initialized.");
@@ -1713,6 +1713,9 @@ public class MidtransSDK {
     }
 
     public UIKitCustomSetting getUIKitCustomSetting() {
+        if (UIKitCustomSetting == null) {
+            this.UIKitCustomSetting = new UIKitCustomSetting();
+        }
         return UIKitCustomSetting;
     }
 

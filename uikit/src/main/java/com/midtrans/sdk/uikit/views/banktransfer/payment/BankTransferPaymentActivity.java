@@ -25,8 +25,8 @@ import com.midtrans.sdk.uikit.fragments.BankTransferFragment;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
-import com.midtrans.sdk.uikit.views.banktransfer.status.VaPaymentStatusActivity;
 import com.midtrans.sdk.uikit.views.banktransfer.status.MandiriBillStatusActivity;
+import com.midtrans.sdk.uikit.views.banktransfer.status.VaPaymentStatusActivity;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
@@ -244,18 +244,22 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
 
 
     private void showProgressLayout() {
+        setProcessingPayment(true);
         containerProgress.setVisibility(View.VISIBLE);
     }
 
     private void hideProgressLayout() {
+        setProcessingPayment(false);
         containerProgress.setVisibility(View.GONE);
     }
 
     private void initPaymentStatus(TransactionResponse response) {
-        if (!TextUtils.isEmpty(paymentType) && paymentType.equals(PaymentType.E_CHANNEL)) {
-            showEchannelStatusPage(response);
-        } else {
-            showBankTransferStatusPage(response);
+        if (!isFinishing()) {
+            if (!TextUtils.isEmpty(paymentType) && paymentType.equals(PaymentType.E_CHANNEL)) {
+                showEchannelStatusPage(response);
+            } else {
+                showBankTransferStatusPage(response);
+            }
         }
     }
 
@@ -278,46 +282,6 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
         data.putExtra(getString(R.string.transaction_response), presenter.getTransactionResponse());
         setResult(resultCode, data);
         finish();
-    }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS) {
-            finishPayment(RESULT_OK);
-        }
-    }
-
-    @Override
-    public void onPaymentSuccess(TransactionResponse response) {
-        hideProgressLayout();
-        presenter.trackEvent(AnalyticsEventName.PAGE_STATUS_PENDING);
-
-        initPaymentStatus(response);
-    }
-
-    @Override
-    public void onPaymentFailure(TransactionResponse response) {
-        hideProgressLayout();
-        presenter.trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
-
-        initPaymentStatus(response);
-    }
-
-    @Override
-    public void onPaymentError(Throwable error) {
-        hideProgressLayout();
-        presenter.trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
-
-        String errorMessage = MessageUtil.createPaymentErrorMessage(this, error.getMessage(), null);
-        SdkUIFlowUtil.showToast(this, "" + errorMessage);
-    }
-
-    @Override
-    public void onBankTranferPaymentUnavailable(String bankType) {
-        hideProgressLayout();
     }
 
     private void initTopNotification(int position) {
@@ -365,4 +329,50 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
             textNotificationOtp.setAnimation(null);
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        if (isProcessingPayment()) {
+            return;
+        }
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS && resultCode == RESULT_OK) {
+            finishPayment(RESULT_OK);
+        }
+    }
+
+    @Override
+    public void onPaymentSuccess(TransactionResponse response) {
+        hideProgressLayout();
+        presenter.trackEvent(AnalyticsEventName.PAGE_STATUS_PENDING);
+        initPaymentStatus(response);
+    }
+
+    @Override
+    public void onPaymentFailure(TransactionResponse response) {
+        hideProgressLayout();
+        presenter.trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+        initPaymentStatus(response);
+    }
+
+    @Override
+    public void onPaymentError(Throwable error) {
+        hideProgressLayout();
+        presenter.trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+        if (!isFinishing()) {
+            String errorMessage = MessageUtil.createPaymentErrorMessage(this, error.getMessage(), null);
+            SdkUIFlowUtil.showToast(this, "" + errorMessage);
+        }
+    }
+
+    @Override
+    public void onBankTranferPaymentUnavailable(String bankType) {
+        hideProgressLayout();
+    }
+
 }

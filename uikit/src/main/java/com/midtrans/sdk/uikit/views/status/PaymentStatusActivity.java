@@ -64,8 +64,8 @@ public class PaymentStatusActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_payment_status);
         initPaymentResponse();
+        setContentView(R.layout.activity_payment_status);
         bindViews();
         initTheme();
         initActionButton();

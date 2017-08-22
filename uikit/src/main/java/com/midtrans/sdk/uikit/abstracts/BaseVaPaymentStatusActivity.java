@@ -1,6 +1,8 @@
 package com.midtrans.sdk.uikit.abstracts;
 
+import android.os.Bundle;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -37,9 +39,14 @@ public abstract class BaseVaPaymentStatusActivity extends BasePaymentActivity {
 
 
     @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initProperties();
+    }
+
+    @Override
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
-        initProperties();
         initPagerInstruction();
         initTabInstruction();
         initCompletePaymentButton();
@@ -70,9 +77,14 @@ public abstract class BaseVaPaymentStatusActivity extends BasePaymentActivity {
         buttonCompletePayment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                finishPaymentStatus();
             }
         });
+    }
+
+    protected void finishPaymentStatus() {
+        setResult(RESULT_OK);
+        finish();
     }
 
     private void initPagerInstruction() {
