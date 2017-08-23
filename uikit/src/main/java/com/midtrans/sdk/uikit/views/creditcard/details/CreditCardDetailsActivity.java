@@ -939,7 +939,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             String cardNumber = getCardNumberValue();
             cleanCardNumber = cardNumber.replace(" ", "");
         } catch (RuntimeException e) {
-
+            Logger.e(TAG, "getCleanedCardNumber():" + e.getMessage());
         }
         return cleanCardNumber;
     }
