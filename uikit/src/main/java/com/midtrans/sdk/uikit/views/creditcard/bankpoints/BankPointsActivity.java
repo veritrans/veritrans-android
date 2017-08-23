@@ -44,7 +44,6 @@ public class BankPointsActivity extends BasePaymentActivity implements BankPoint
     private ImageView imageBankPointLogo;
 
     private FancyButton buttonRedeemPoint;
-
     private FancyButton containerAmount;
     private FancyButton containerTotalPoint;
 

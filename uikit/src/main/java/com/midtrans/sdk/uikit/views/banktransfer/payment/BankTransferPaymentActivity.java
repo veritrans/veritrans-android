@@ -11,10 +11,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 
-import com.bumptech.glide.Glide;
 import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
@@ -43,10 +40,8 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
     private TabLayout tabInstruction;
     private AppCompatEditText editEmail;
     private FancyButton buttonPay;
-    private ImageView imageProgress;
 
     private TextInputLayout containerEmail;
-    private LinearLayout containerProgress;
 
     private DefaultTextView textTitle;
     private DefaultTextView textNotificationToken;
@@ -64,7 +59,6 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
         trackPage();
         initTabPager();
         initPaymentButton();
-        initProgressLayout();
         initData();
     }
 
@@ -122,20 +116,12 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
         }
     }
 
-    private void initProgressLayout() {
-        Glide.with(this)
-                .load(R.drawable.midtrans_loader)
-                .asGif()
-                .into(imageProgress);
-    }
-
 
     @Override
     public void bindViews() {
         pagerInstruction = (ViewPager) findViewById(R.id.tab_view_pager);
         tabInstruction = (TabLayout) findViewById(R.id.tab_instructions);
         editEmail = (AppCompatEditText) findViewById(R.id.edit_email);
-        imageProgress = (ImageView) findViewById(R.id.progress_bar_image);
         buttonPay = (FancyButton) findViewById(R.id.btn_pay_now);
 
         textTitle = (DefaultTextView) findViewById(R.id.text_page_title);
@@ -143,7 +129,6 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
         textNotificationOtp = (DefaultTextView) findViewById(R.id.text_notificationOtp);
 
         containerEmail = (TextInputLayout) findViewById(R.id.container_email);
-        containerProgress = (LinearLayout) findViewById(R.id.progress_container);
     }
 
     @Override
@@ -242,17 +227,6 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
         });
     }
 
-
-    private void showProgressLayout() {
-        setProcessingPayment(true);
-        containerProgress.setVisibility(View.VISIBLE);
-    }
-
-    private void hideProgressLayout() {
-        setProcessingPayment(false);
-        containerProgress.setVisibility(View.GONE);
-    }
-
     private void initPaymentStatus(TransactionResponse response) {
         if (!isFinishing()) {
             if (!TextUtils.isEmpty(paymentType) && paymentType.equals(PaymentType.E_CHANNEL)) {
@@ -328,14 +302,6 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
             textNotificationOtp.setVisibility(View.GONE);
             textNotificationOtp.setAnimation(null);
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (isProcessingPayment()) {
-            return;
-        }
-        super.onBackPressed();
     }
 
     @Override

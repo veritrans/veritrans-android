@@ -11,17 +11,21 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatEditText;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.themes.BaseColorTheme;
 import com.midtrans.sdk.uikit.BuildConfig;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
+import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 import java.lang.reflect.Field;
@@ -33,9 +37,18 @@ import java.lang.reflect.Field;
 public abstract class BaseActivity extends AppCompatActivity {
 
     private static final String TAG = BaseActivity.class.getSimpleName();
+
     private int primaryColor = 0;
     private int primaryDarkColor = 0;
     private int secondaryColor = 0;
+
+    private LinearLayout containerProgress;
+    private DefaultTextView textProgressMessage;
+    private ImageView imageProgressLogo;
+
+
+    private boolean activityRunning = false;
+    protected boolean backgroundProcess;
 
 
     @Override
@@ -47,14 +60,28 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
+        initProgressContainer();
         bindViews();
-        try {
-            initTheme();
-        } catch (RuntimeException e) {
-            Log.e(TAG, "initTheme():" + e.getMessage());
-        }
+//        try {
+        initTheme();
+//        } catch (RuntimeException e) {
+//            Log.e(TAG, "initTheme():" + e.getMessage());
+//        }
 
         initBadgeLayout();
+    }
+
+    private void initProgressContainer() {
+        textProgressMessage = (DefaultTextView) findViewById(R.id.progress_bar_message);
+        containerProgress = (LinearLayout) findViewById(R.id.progress_container);
+        imageProgressLogo = (ImageView) findViewById(R.id.progress_bar_image);
+
+        if (imageProgressLogo != null) {
+            Glide.with(this)
+                    .load(R.drawable.midtrans_loader)
+                    .asGif()
+                    .into(imageProgressLogo);
+        }
     }
 
     private void initBadgeLayout() {
@@ -173,6 +200,58 @@ public abstract class BaseActivity extends AppCompatActivity {
         return secondaryColor;
     }
 
+
+    protected void overrideBackAnimation() {
+        if (MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+            overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
+        }
+    }
+
+    public boolean isActivityRunning() {
+        return activityRunning;
+    }
+
+    protected void showProgressLayout(String message) {
+        setBackgroundProcess(true);
+
+        if (!TextUtils.isEmpty(message)) {
+            textProgressMessage.setText(message);
+        }
+
+        if (containerProgress != null) {
+            containerProgress.setVisibility(View.VISIBLE);
+        }
+    }
+
+    protected void showProgressLayout() {
+        showProgressLayout("");
+    }
+
+    protected void hideProgressLayout() {
+        setBackgroundProcess(false);
+
+        if (containerProgress != null) {
+            containerProgress.setVisibility(View.GONE);
+        }
+
+        if (textProgressMessage != null) {
+            textProgressMessage.setText(R.string.loading);
+        }
+    }
+
+    private void setBackgroundProcess(boolean backgroundProcess) {
+        this.backgroundProcess = backgroundProcess;
+    }
+
+    public boolean isBackgroundProcess() {
+        return backgroundProcess;
+    }
+
+
+    public abstract void bindViews();
+
+    public abstract void initTheme();
+
     @Override
     public void startActivityForResult(Intent intent, int requestCode) {
         super.startActivityForResult(intent, requestCode);
@@ -191,17 +270,40 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        if (isBackgroundProcess()) {
+            return;
+        }
         super.onBackPressed();
         overrideBackAnimation();
     }
 
-    protected void overrideBackAnimation() {
-        if (MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
-            overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
-        }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        activityRunning = true;
     }
 
-    public abstract void bindViews();
+    @Override
+    protected void onResume() {
+        super.onResume();
+        activityRunning = true;
+    }
 
-    public abstract void initTheme();
+    @Override
+    protected void onPause() {
+        activityRunning = false;
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        activityRunning = false;
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        activityRunning = false;
+        super.onDestroy();
+    }
 }
