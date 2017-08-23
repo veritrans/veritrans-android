@@ -34,8 +34,6 @@ public abstract class BaseSdkBuilder<T> {
     protected String flow;
     protected BaseColorTheme colorTheme;
 
-    public abstract T setSelectedPaymentMethods(ArrayList<PaymentMethodsModel> selectedPaymentMethods);
-
     /**
      * controls the log of sdk. Log can help you to debug application. set false to disable log of
      * sdk, by default logs are on.

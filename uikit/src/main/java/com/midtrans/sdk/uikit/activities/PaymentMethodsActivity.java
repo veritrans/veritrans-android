@@ -351,13 +351,10 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 try {
                     String logoUrl = transaction.getMerchantData().getPreference().getLogoUrl();
                     String merchantName = transaction.getMerchantData().getPreference().getDisplayName();
-                    midtransSDK.setCreditCard(transaction.getCreditCard());
+                    midtransSDK.setTransaction(transaction);
                     midtransSDK.setPromoResponses(transaction.getPromos());
-                    midtransSDK.setMerchantData(transaction.getMerchantData());
                     midtransSDK.setMerchantLogo(logoUrl);
                     midtransSDK.setMerchantName(merchantName);
-                    midtransSDK.setBanksPointEnabled(transaction.getMerchantData().getPointBanks());
-                    midtransSDK.setTransaction(transaction);
                     // Prioritize custom color themes over Snap preferences
                     if (midtransSDK.getColorTheme() == null
                             || !(midtransSDK.getColorTheme() instanceof CustomColorTheme)) {

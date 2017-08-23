@@ -26,7 +26,6 @@ import com.midtrans.sdk.corekit.models.CardTokenRequest;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.TokenRequestModel;
-import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
 import com.midtrans.sdk.corekit.models.snap.MerchantData;
@@ -50,9 +49,11 @@ public class MidtransSDK {
     private static final String TAG = "MidtransSDK";
     private static final String ADD_TRANSACTION_DETAILS = "Add transaction request details.";
     private static final String LOCAL_DATA_PREFERENCES = "local.data";
+
     private static SharedPreferences mPreferences = null;
-    private static MidtransSDK midtransSDK;
+    private static volatile MidtransSDK midtransSDK;
     private static BaseSdkBuilder sdkBuilder;
+
     protected boolean isRunning = false;
     ISdkFlow uiflow;
     private UIKitCustomSetting UIKitCustomSetting;
@@ -76,17 +77,15 @@ public class MidtransSDK {
     private String sdkBaseUrl = "";
     private int requestTimeOut = 30;
     private String flow = null;
-    private CreditCard creditCard = new CreditCard();
     private List<PromoResponse> promoResponses = new ArrayList<>();
-    private ArrayList<String> banksPointEnabled;
     private BaseColorTheme colorTheme;
-    private MerchantData merchantData;
     private Transaction transaction;
 
+    private MidtransSDK() {
+
+    }
+
     private MidtransSDK(@NonNull BaseSdkBuilder sdkBuilder) {
-        if (sdkBuilder == null) {
-            sdkBuilder = new SdkCoreFlowBuilder();
-        }
 
         this.context = sdkBuilder.context;
         this.clientKey = sdkBuilder.clientKey;
@@ -103,9 +102,14 @@ public class MidtransSDK {
         this.enableBuiltInTokenStorage = sdkBuilder.enableBuiltInTokenStorage;
         this.UIKitCustomSetting = sdkBuilder.UIKitCustomSetting == null ? new UIKitCustomSetting() : sdkBuilder.UIKitCustomSetting;
         this.flow = sdkBuilder.flow;
+
         // Set custom color theme. This will be prioritized over Snap preferences.
         if (sdkBuilder.colorTheme != null) {
             this.colorTheme = sdkBuilder.colorTheme;
+        }
+
+        if (context != null) {
+            mPreferences = context.getSharedPreferences(LOCAL_DATA_PREFERENCES, Context.MODE_PRIVATE);
         }
 
         this.promoEngineManager = new PromoEngineManager(sdkBuilder.context, MidtransRestAdapter.getPromoEngineRestAPI(BuildConfig.PROMO_ENGINE_URL, requestTimeOut));
@@ -114,7 +118,6 @@ public class MidtransSDK {
                 MidtransRestAdapter.getVeritransApiClient(BuildConfig.BASE_URL, requestTimeOut));
         this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), clientKey, getFlow(flow));
         this.mSnapTransactionManager.setSDKLogEnabled(isLogEnabled);
-        initializeSharedPreferences();
     }
 
     /**
@@ -140,7 +143,15 @@ public class MidtransSDK {
      */
     public synchronized static MidtransSDK getInstance() {
         if (midtransSDK == null) {
-            midtransSDK = new MidtransSDK(sdkBuilder);
+            synchronized (MidtransSDK.class) {
+                if (midtransSDK == null) {
+                    if (sdkBuilder != null) {
+                        midtransSDK = new MidtransSDK(sdkBuilder);
+                    } else {
+                        midtransSDK = new MidtransSDK();
+                    }
+                }
+            }
         }
         return midtransSDK;
     }
@@ -171,9 +182,6 @@ public class MidtransSDK {
         }
     }
 
-    private void initializeSharedPreferences() {
-        mPreferences = context.getSharedPreferences(LOCAL_DATA_PREFERENCES, Context.MODE_PRIVATE);
-    }
 
     /**
      * get Default text font for SDK
@@ -249,19 +257,6 @@ public class MidtransSDK {
     }
 
 
-    public String getMerchantToken() {
-        UserDetail userDetail = null;
-        try {
-            userDetail = LocalDataHandler.readObject(context.getString(R.string.user_details), UserDetail.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "";
-        }
-        String merchantToken = userDetail.getMerchantToken();
-        Logger.i("merchantToken:" + merchantToken);
-        return merchantToken;
-    }
-
     public String readAuthenticationToken() {
         return LocalDataHandler.readString(Constants.AUTH_TOKEN);
     }
@@ -274,10 +269,22 @@ public class MidtransSDK {
         return merchantServerUrl;
     }
 
+    /**
+     * this method deprecated since v 1.9.3
+     *
+     * @return
+     */
+    @Deprecated
     public ArrayList<PaymentMethodsModel> getSelectedPaymentMethods() {
         return selectedPaymentMethods;
     }
 
+    /**
+     * this method deprecated since v 1.9.3
+     *
+     * @param selectedPaymentMethods
+     */
+    @Deprecated
     public void setSelectedPaymentMethods(ArrayList<PaymentMethodsModel> selectedPaymentMethods) {
         this.selectedPaymentMethods = selectedPaymentMethods;
     }
@@ -1730,15 +1737,17 @@ public class MidtransSDK {
     }
 
     public CreditCard getCreditCard() {
-        if (creditCard == null) {
-            creditCard = new CreditCard();
+        Transaction transaction = getTransaction();
+        if (transaction.getCreditCard() == null) {
+            transaction.setCreditCard(new CreditCard());
         }
-        return creditCard;
+
+        return transaction.getCreditCard();
     }
 
     public void setCreditCard(CreditCard creditCard) {
         if (creditCard != null) {
-            this.creditCard = creditCard;
+            getTransaction().setCreditCard(creditCard);
         }
     }
 
@@ -1778,11 +1787,13 @@ public class MidtransSDK {
     }
 
     public ArrayList<String> getBanksPointEnabled() {
-        return banksPointEnabled;
-    }
+        MerchantData merchantData = getMerchantData();
+        if (merchantData.getPointBanks() == null) {
+            ArrayList<String> newPointBanks = new ArrayList<>();
+            merchantData.setPointBanks(newPointBanks);
+        }
 
-    public void setBanksPointEnabled(ArrayList<String> pointBanks) {
-        this.banksPointEnabled = pointBanks;
+        return merchantData.getPointBanks();
     }
 
     public void setTransactionFinishedCallback(TransactionFinishedCallback transactionFinishedCallback) {
@@ -1790,20 +1801,24 @@ public class MidtransSDK {
     }
 
     public MerchantData getMerchantData() {
-        return merchantData;
-    }
-
-    public void setMerchantData(MerchantData merchantData) {
-        this.merchantData = merchantData;
+        Transaction transaction = getTransaction();
+        if (transaction.getMerchantData() == null) {
+            transaction.setMerchantData(new MerchantData());
+        }
+        return transaction.getMerchantData();
     }
 
     public void setTransaction(Transaction transaction) {
-        this.transaction = transaction;
+        if (transaction != null) {
+            this.transaction = transaction;
+        }
     }
 
     public Transaction getTransaction() {
-        return transaction;
+        if (this.transaction == null) {
+            this.transaction = new Transaction();
+        }
+        return this.transaction;
     }
-
 
 }

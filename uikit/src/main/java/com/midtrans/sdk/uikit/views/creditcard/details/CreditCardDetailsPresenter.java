@@ -25,7 +25,7 @@ import com.midtrans.sdk.corekit.models.snap.BanksPointResponse;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
 import com.midtrans.sdk.corekit.models.snap.SavedToken;
-import com.midtrans.sdk.corekit.models.snap.Transaction;
+import com.midtrans.sdk.corekit.models.snap.TransactionDetails;
 import com.midtrans.sdk.corekit.models.snap.TransactionStatusResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BaseCreditCardPresenter;
@@ -119,10 +119,14 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
     }
 
     public Integer getGrossAmount() {
-        Transaction transacton = MidtransSDK.getInstance().getTransaction();
-        if (transacton != null) {
-            return transacton.getTransactionDetails().getAmount();
+        MidtransSDK sdk = MidtransSDK.getInstance();
+        if (sdk != null) {
+            TransactionDetails transactionDetails = sdk.getTransaction().getTransactionDetails();
+            if (transactionDetails != null) {
+                return transactionDetails.getAmount();
+            }
         }
+
         return 0;
     }
 
@@ -413,10 +417,11 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
 
     public boolean isBankPointAvailable(String cardBin) {
         String bank = creditCardTransaction.getBankByBin(cardBin);
-        Transaction transaction = MidtransSDK.getInstance().getTransaction();
+        List<String> bankPoints = MidtransSDK.getInstance().getBanksPointEnabled();
 
         return !TextUtils.isEmpty(bank)
-                && transaction.getMerchantData().getPointBanks().contains(bank)
+                && bankPoints != null
+                && bankPoints.contains(bank)
                 && bank.equals(BankType.BNI);
     }
 

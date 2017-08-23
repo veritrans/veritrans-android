@@ -50,7 +50,7 @@ public abstract class BasePaymentActivity extends BaseActivity {
 
     private void setTotalAmount() {
         Transaction transaction = MidtransSDK.getInstance().getTransaction();
-        if (transaction != null && transaction.getTransactionDetails() != null) {
+        if (transaction.getTransactionDetails() != null) {
             DefaultTextView textTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
             if (textTotalAmount != null) {
                 String totalAmount = getString(R.string.prefix_money, Utils.getFormattedAmount(transaction.getTransactionDetails().getAmount()));
