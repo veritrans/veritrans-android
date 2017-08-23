@@ -59,6 +59,12 @@ deployment:
         owner: veritrans
         commands:
             - ./gradlew :demo:assembleDevelopmentRelease :demo:crashlyticsUploadDistributionDevelopmentRelease
+
+    refactor-cc-va:
+        branch: refactor-cc-va
+        owner: veritrans
+        commands:
+            - ./gradlew :demo:assembleDevelopmentRelease :demo:crashlyticsUploadDistributionDevelopmentRelease
     bump:
       branch: release
       owner: veritrans
