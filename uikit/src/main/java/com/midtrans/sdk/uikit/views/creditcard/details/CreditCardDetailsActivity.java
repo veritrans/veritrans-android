@@ -25,7 +25,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
-import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.BankType;
@@ -36,9 +35,7 @@ import com.midtrans.sdk.corekit.models.snap.BanksPointResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
-import com.midtrans.sdk.uikit.activities.PaymentWebActivity;
 import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
-import com.midtrans.sdk.uikit.fragments.WebviewFragment;
 import com.midtrans.sdk.uikit.models.CreditCardType;
 import com.midtrans.sdk.uikit.scancard.ExternalScanner;
 import com.midtrans.sdk.uikit.scancard.ScannerModel;
@@ -47,6 +44,7 @@ import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.views.creditcard.bankpoints.BankPointsActivity;
 import com.midtrans.sdk.uikit.views.status.PaymentStatusActivity;
+import com.midtrans.sdk.uikit.views.webview.WebViewPaymentActivity;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
@@ -1166,9 +1164,9 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     }
 
     private void start3DSecurePage(String redirectUrl, int requestCode) {
-        Intent intent = new Intent(this, PaymentWebActivity.class);
-        intent.putExtra(Constants.WEBURL, redirectUrl);
-        intent.putExtra(Constants.TYPE, WebviewFragment.TYPE_CREDIT_CARD);
+        Intent intent = new Intent(this, WebViewPaymentActivity.class);
+        intent.putExtra(WebViewPaymentActivity.EXTRA_PAYMENT_URL, redirectUrl);
+        intent.putExtra(WebViewPaymentActivity.EXTRA_PAYMENT_TYPE, WebViewPaymentActivity.TYPE_CREDIT_CARD);
         startActivityForResult(intent, requestCode);
     }
 

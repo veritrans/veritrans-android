@@ -84,6 +84,10 @@ public class MidtransSDK {
     private Transaction transaction;
 
     private MidtransSDK(@NonNull BaseSdkBuilder sdkBuilder) {
+        if (sdkBuilder == null) {
+            sdkBuilder = new SdkCoreFlowBuilder();
+        }
+
         this.context = sdkBuilder.context;
         this.clientKey = sdkBuilder.clientKey;
         this.merchantServerUrl = sdkBuilder.merchantServerUrl;

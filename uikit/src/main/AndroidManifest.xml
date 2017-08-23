@@ -115,6 +115,10 @@
         <activity
             android:name=".views.creditcard.register.CardRegistrationActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".views.webview.WebViewPaymentActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

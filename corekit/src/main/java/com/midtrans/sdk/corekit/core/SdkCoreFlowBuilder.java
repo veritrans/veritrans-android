@@ -14,11 +14,17 @@ import java.util.ArrayList;
  * client_key and sever_key. </p> You can also enable or disable using {@link #enableLog(boolean)}
  */
 public class SdkCoreFlowBuilder extends BaseSdkBuilder<SdkCoreFlowBuilder> {
+
+    protected SdkCoreFlowBuilder() {
+
+    }
+
     /**
      * It  will initialize an data required to sdk.
      *
      * @param context application context
      */
+
     private SdkCoreFlowBuilder(@NonNull Context context, @NonNull String clientKey, @NonNull String merchantServerUrl) {
         this.context = context.getApplicationContext();
         this.clientKey = clientKey;

@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
 import com.midtrans.sdk.corekit.core.themes.BaseColorTheme;
 import com.midtrans.sdk.uikit.BuildConfig;
 import com.midtrans.sdk.uikit.R;
@@ -108,7 +109,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void setBackgroundTintList(AppCompatEditText editText) {
         if (secondaryColor != 0) {
             editText.setSupportBackgroundTintList(new ColorStateList(new int[][]{{0}}, new int[]{secondaryColor}));
-
         }
     }
 
@@ -202,8 +202,12 @@ public abstract class BaseActivity extends AppCompatActivity {
 
 
     protected void overrideBackAnimation() {
-        if (MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
-            overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
+        if (midtransSDK != null) {
+            UIKitCustomSetting setting = midtransSDK.getUIKitCustomSetting();
+            if (setting != null && setting.isEnabledAnimation()) {
+                overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
+            }
         }
     }
 
