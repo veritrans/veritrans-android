@@ -328,11 +328,11 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
 
     @Override
     public void onPaymentError(Throwable error) {
-        hideProgressLayout();
         presenter.trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
         if (!isFinishing()) {
             String errorMessage = MessageUtil.createPaymentErrorMessage(this, error.getMessage(), null);
             SdkUIFlowUtil.showToast(this, "" + errorMessage);
+            hideProgressLayout();
         }
     }
 
