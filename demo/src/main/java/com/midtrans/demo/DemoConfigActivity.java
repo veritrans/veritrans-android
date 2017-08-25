@@ -978,7 +978,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     secureEnabledSelection.setChecked(true);
                     break;
                 case Constants.BANK_MEGA:
-                    bankTitle.setText(R.string.acquiring_bank_by_cimb);
+                    bankTitle.setText(R.string.acquiring_bank_by_mega);
                     bankCimbSelection.setChecked(true);
                     secureEnabledSelection.setChecked(true);
                     break;
