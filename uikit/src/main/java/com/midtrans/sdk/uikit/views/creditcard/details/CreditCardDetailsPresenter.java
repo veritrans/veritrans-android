@@ -1,5 +1,6 @@
 package com.midtrans.sdk.uikit.views.creditcard.details;
 
+import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
 
@@ -478,5 +479,15 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
                 response.getTransactionTime(), response.getTransactionStatus());
         this.transactionResponse = transactionResponse;
         return transactionResponse;
+    }
+
+    public void startScanCard(Activity activity, int intentRequestScanCard) {
+        if (isCardScannerAvailable()) {
+            MidtransSDK.getInstance().getExternalScanner().startScan(activity, intentRequestScanCard);
+        }
+    }
+
+    public boolean isCardScannerAvailable() {
+        return MidtransSDK.getInstance().getExternalScanner() != null;
     }
 }

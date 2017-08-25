@@ -159,32 +159,36 @@ public class WebViewPaymentActivity extends BasePaymentActivity {
 
 
     private static void showCancelConfirmationDialog(final WebViewPaymentActivity activity) {
-        if (activity != null && !activity.isFinishing()) {
-            try {
-                AlertDialog dialog = new AlertDialog.Builder(activity, R.style.AlertDialogCustom)
-                        .setPositiveButton(R.string.text_yes, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                if (activity != null && !activity.isFinishing()) {
-                                    dialog.dismiss();
-                                    finishWebViewPayment(activity, RESULT_CANCELED);
+        if (activity != null) {
+            if (!activity.isFinishing()) {
+                try {
+                    AlertDialog dialog = new AlertDialog.Builder(activity, R.style.AlertDialogCustom)
+                            .setPositiveButton(R.string.text_yes, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if (activity != null && !activity.isFinishing()) {
+                                        dialog.dismiss();
+                                        finishWebViewPayment(activity, RESULT_CANCELED);
+                                    }
                                 }
-                            }
-                        })
-                        .setNegativeButton(R.string.text_no, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                if (!activity.isFinishing()) {
-                                    dialog.dismiss();
+                            })
+                            .setNegativeButton(R.string.text_no, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if (!activity.isFinishing()) {
+                                        dialog.dismiss();
+                                    }
                                 }
-                            }
-                        })
-                        .setTitle(R.string.cancel_transaction)
-                        .setMessage(R.string.cancel_transaction_message)
-                        .create();
-                dialog.show();
-            } catch (Exception e) {
-                Logger.e(TAG, "showDialog:" + e.getMessage());
+                            })
+                            .setTitle(R.string.cancel_transaction)
+                            .setMessage(R.string.cancel_transaction_message)
+                            .create();
+                    dialog.show();
+                } catch (Exception e) {
+                    Logger.e(TAG, "showDialog:" + e.getMessage());
+                }
+            } else {
+                activity.finish();
             }
         }
     }

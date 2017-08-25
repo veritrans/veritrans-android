@@ -3,11 +3,14 @@ package com.midtrans.sdk.uikit.utilities;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.midtrans.sdk.corekit.models.TransactionResponse;
+import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.BuildConfig;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.activities.MandiriClickPayActivity;
+import com.midtrans.sdk.uikit.models.MessageInfo;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by ziahaqi on 4/19/17.
@@ -25,10 +28,13 @@ public class MessageUtil {
     public static final String TIMED_OUT = "timed out";
     private static final String FLAVOR_DEVELOPMENT = "development";
     public static final String TIMEOUT = "timeout";
-    public static final String MAINTENANCE = "maintenance";
     public static final String RETROFIT_TIMEOUT = "timed out";
+    public static final String MAINTENANCE = "maintenance";
     public static final String STATUS_UNSUCCESSFUL = "Payment has not been made";
-
+    private static final String NOT_ACCEPTABLE = "406 Not Acceptable";
+    private static final CharSequence PAYMENT_EXIPIRED = "expired";
+    private static final String NOT_FOUND = "404 Not Found";
+    private static final String UNABLE_RESOLVE_HOST = "Unable to resolve host";
 
 
     public static String createMessageWhenCheckoutFailed(Context context, ArrayList<String> statusMessage) {
@@ -65,25 +71,6 @@ public class MessageUtil {
         return message;
     }
 
-    public static String createMessageWhenCheckoutError(Context context, String statusMessage, String defaultMessage) {
-        String message;
-
-        if (BuildConfig.FLAVOR.equals(FLAVOR_DEVELOPMENT)) {
-            if (TextUtils.isEmpty(statusMessage)) {
-                message = context.getString(R.string.checkout_error_empty_response);
-            } else {
-                message = statusMessage;
-            }
-        } else {
-            if (!TextUtils.isEmpty(statusMessage) && statusMessage.contains(TIMEOUT)) {
-                message = context.getString(R.string.timeout_message);
-            } else {
-                message = defaultMessage;
-            }
-        }
-        return message;
-    }
-
     public static String createPaymentErrorMessage(Context context, String errorMessage, String defaultMessage) {
         String message;
         if (!TextUtils.isEmpty(defaultMessage)) {
@@ -113,15 +100,116 @@ public class MessageUtil {
 
         if (errorMessage == null) {
             message = context.getString(R.string.error_empty_response);
-        } else if(!TextUtils.isEmpty(statusCode) && statusCode.equals(UiKitConstants.STATUS_CODE_500)){
+        } else if (!TextUtils.isEmpty(statusCode) && statusCode.equals(UiKitConstants.STATUS_CODE_500)) {
             message = context.getString(R.string.message_error_internal_server);
-        }
-        else {
+        } else {
             if (errorMessage.contains(TIME_OUT) || errorMessage.contains(TIMED_OUT)) {
                 message = context.getString(R.string.timeout_message);
             }
         }
 
+        return message;
+    }
+
+    public static MessageInfo createpaymentFailedMessage(Context context, TransactionResponse response, String defaultMessage) {
+        MessageInfo message = new MessageInfo(null, null, context.getString(R.string.payment_failed));
+
+        if (!TextUtils.isEmpty(defaultMessage)) {
+            message = new MessageInfo(null, null, defaultMessage);
+        }
+
+        if (response != null) {
+            if (BuildConfig.FLAVOR.equals(FLAVOR_DEVELOPMENT)) {
+
+                if (response.getValidationMessages() != null && !response.getValidationMessages().isEmpty()) {
+
+                    message = new MessageInfo(response.getStatusCode(), context.getString(R.string.status_message_invalid),
+                            response.getValidationMessages().get(0));
+
+                } else if (!TextUtils.isEmpty(response.getStatusMessage())) {
+
+                    message = new MessageInfo(response.getStatusCode(), context.getString(R.string.status_message_invalid),
+                            response.getStatusMessage());
+                }
+
+            } else {
+                String statusCode = response.getStatusCode();
+                if (!TextUtils.isEmpty(statusCode)) {
+                    if (statusCode.equalsIgnoreCase(UiKitConstants.STATUS_CODE_400)) {
+
+                        List<String> validationMessages = response.getValidationMessages();
+                        if (validationMessages != null && !validationMessages.isEmpty()) {
+
+                            if (validationMessages.get(0).contains(PAYMENT_EXIPIRED)) {
+                                message = new MessageInfo(statusCode, context.getString(R.string.status_message_expired),
+                                        context.getString(R.string.details_message_expired));
+                            } else {
+                                message = new MessageInfo(statusCode, context.getString(R.string.status_message_invalid),
+                                        context.getString(R.string.details_message_invalid));
+                            }
+                        } else {
+                            message = new MessageInfo(statusCode, context.getString(R.string.status_message_invalid),
+                                    context.getString(R.string.details_message_invalid));
+                        }
+                    } else if (statusCode.equalsIgnoreCase(UiKitConstants.STATUS_CODE_500)) {
+                        message = new MessageInfo(statusCode, context.getString(R.string.status_message_internal_error),
+                                context.getString(R.string.message_error_internal_server));
+                    }
+                }
+            }
+        }
+        return message;
+    }
+
+    public static MessageInfo createMessageOnError(Context context, Throwable error, String defaultMessage) {
+        MessageInfo message = new MessageInfo(null, context.getString(R.string.status_message_payment_error), context.getString(R.string.detail_message_payment_error));
+
+        if (!TextUtils.isEmpty(defaultMessage)) {
+            message = new MessageInfo(null, context.getString(R.string.status_message_payment_error), defaultMessage);
+        }
+
+        if (BuildConfig.FLAVOR.equals(FLAVOR_DEVELOPMENT)) {
+
+            if (error != null && !TextUtils.isEmpty(error.getMessage())) {
+                message = new MessageInfo(null, context.getString(R.string.failed_title), error.getMessage());
+            }
+
+        } else {
+            if (error != null) {
+                if (!TextUtils.isEmpty(error.getMessage())) {
+                    String errorMessage = error.getMessage();
+                    if (errorMessage.equalsIgnoreCase(TOKEN_NOT_FOUND)) {
+
+                        message = new MessageInfo(UiKitConstants.STATUS_CODE_404,
+                                context.getString(R.string.status_message_token_notfound),
+                                context.getString(R.string.detail_message_token_notfound));
+
+                    } else if (!Utils.isNetworkAvailable(context)) {
+
+                        message = new MessageInfo(null,
+                                context.getString(R.string.status_message_network_unavailable),
+                                context.getString(R.string.detail_message_network_unavailable));
+
+                    } else if (errorMessage.equalsIgnoreCase(NOT_FOUND)) {
+
+                        message = new MessageInfo(UiKitConstants.STATUS_CODE_404,
+                                context.getString(R.string.status_message_not_found),
+                                context.getString(R.string.detail_message_not_found));
+
+                    } else if (errorMessage.equalsIgnoreCase(TIMEOUT) || errorMessage.equalsIgnoreCase(RETROFIT_TIMEOUT)) {
+
+                        message = new MessageInfo(null,
+                                context.getString(R.string.failed_title), context.getString(R.string.timeout_message));
+
+                    } else if (errorMessage.equalsIgnoreCase(UNABLE_RESOLVE_HOST)) {
+
+                        message = new MessageInfo(null,
+                                context.getString(R.string.failed_title), context.getString(R.string.timeout_message));
+
+                    }
+                }
+            }
+        }
         return message;
     }
 }

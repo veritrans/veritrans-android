@@ -153,6 +153,7 @@ public class MidtransSDK {
                 }
             }
         }
+
         return midtransSDK;
     }
 

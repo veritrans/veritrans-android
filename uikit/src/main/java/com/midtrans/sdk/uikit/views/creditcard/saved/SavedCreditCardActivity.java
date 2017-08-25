@@ -151,7 +151,6 @@ public class SavedCreditCardActivity extends BasePaymentActivity implements Save
         startActivityForResult(intent, UiKitConstants.INTENT_CARD_DETAILS);
     }
 
-
     public void fetchSavedCard() {
         showProgressLayout();
         presenter.fetchSavedCards();
@@ -184,6 +183,10 @@ public class SavedCreditCardActivity extends BasePaymentActivity implements Save
         }
     }
 
+    public String getBankByBin(String cardBin) {
+        return presenter.getBankByCardBin(cardBin);
+    }
+
     private void finishPayment(int resultCode, Intent data) {
         setResult(resultCode, data);
         finish();
@@ -191,9 +194,10 @@ public class SavedCreditCardActivity extends BasePaymentActivity implements Save
 
     @Override
     public void onGetSavedCardsSuccess(List<SaveCardRequest> savedCards) {
+        hideProgressLayout();
+
         if (isActivityRunning()) {
             if (!savedCards.isEmpty()) {
-                hideProgressLayout();
                 setSavedCards(savedCards);
             } else {
                 showCardDetailPage(null);
@@ -210,22 +214,19 @@ public class SavedCreditCardActivity extends BasePaymentActivity implements Save
 
     @Override
     public void onDeleteCardSuccess(String maskedCard) {
+        hideProgressLayout();
         if (isActivityRunning()) {
-            hideProgressLayout();
             updateSavedCardsInstance(maskedCard);
         }
     }
 
     @Override
     public void onDeleteCardFailure() {
+        hideProgressLayout();
         if (isActivityRunning()) {
-            hideProgressLayout();
             SdkUIFlowUtil.showToast(this, getString(R.string.error_delete_message));
         }
     }
 
-    public String getBankByBin(String cardBin) {
-        return presenter.getBankByCardBin(cardBin);
-    }
 
 }

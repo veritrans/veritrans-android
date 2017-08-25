@@ -49,6 +49,7 @@ import com.midtrans.sdk.uikit.adapters.PaymentMethodsAdapter;
 import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.models.EnabledPayments;
 import com.midtrans.sdk.uikit.models.ItemViewDetails;
+import com.midtrans.sdk.uikit.models.MessageInfo;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.views.banktransfer.list.BankTransferListActivity;
@@ -105,10 +106,12 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     private DefaultTextView maintenanceMessage;
     private FancyButton buttonRetry;
     private AppBarLayout appbar;
+    private boolean alreadyCheckout = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_payments_method);
         isCreditCardOnly = getIntent().getBooleanExtra(UserDetailsActivity.CREDIT_CARD_ONLY, false);
         isBankTransferOnly = getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_ONLY, false);
@@ -271,50 +274,52 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         progressContainer.setVisibility(View.VISIBLE);
         enableButtonBack(false);
         UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
-        midtransSDK.checkout(userDetail.getUserId(), new CheckoutCallback() {
-            @Override
-            public void onSuccess(Token token) {
-                Log.i(TAG, "checkout token:" + token.getTokenId());
-                LocalDataHandler.saveString(Constants.AUTH_TOKEN, token.getTokenId());
-                getPaymentOptions(token.getTokenId());
-            }
 
-            @Override
-            public void onFailure(Token token, String reason) {
-                Log.d(TAG, "Failed to registering transaction: " + reason);
-                enableButtonBack(true);
-                String errorMessage = MessageUtil.createMessageWhenCheckoutFailed(PaymentMethodsActivity.this, token.getErrorMessage());
-                showErrorMessage(errorMessage);
-            }
+        if (!isAlreadyCheckout()) {
+            midtransSDK.checkout(userDetail.getUserId(), new CheckoutCallback() {
+                @Override
+                public void onSuccess(Token token) {
+                    Log.i(TAG, "checkout token:" + token.getTokenId());
+                    setAlreadyCheckout(true);
+                    LocalDataHandler.saveString(Constants.AUTH_TOKEN, token.getTokenId());
+                    getPaymentOptions(token.getTokenId());
+                }
 
-            @Override
-            public void onError(Throwable error) {
-                Log.e("xxerror", "error:" + error);
-                error.printStackTrace();
-                enableButtonBack(true);
-                String errorMessage = MessageUtil.createMessageWhenCheckoutError(PaymentMethodsActivity.this,
-                        error.getMessage(),
-                        getString(R.string.error_unable_to_connect));
-                showFallbackErrorPage(errorMessage);
-            }
-        });
+                @Override
+                public void onFailure(Token token, String reason) {
+                    Log.d(TAG, "Failed to registering transaction: " + reason);
+                    enableButtonBack(true);
+                    String errorMessage = MessageUtil.createMessageWhenCheckoutFailed(PaymentMethodsActivity.this, token.getErrorMessage());
+                    showErrorMessage(errorMessage);
+                }
+
+                @Override
+                public void onError(Throwable error) {
+                    Logger.e(TAG, "checkout>error:" + error.getMessage());
+                    showFallbackErrorPage(error, getString(R.string.maintenance_message));
+                }
+            });
+        }
     }
 
-    private void showFallbackErrorPage(String message) {
-        if (!TextUtils.isEmpty(message) && (message.contains(MessageUtil.TIMEOUT) || message.contains(MessageUtil.RETROFIT_TIMEOUT))) {
-            maintenanceTitleMessage.setText(getString(R.string.timeout_title));
+    private void showFallbackErrorPage(Throwable error, String defaultMessage) {
+        MessageInfo messageInfo = MessageUtil.createMessageOnError(this, error, defaultMessage);
+
+        if (messageInfo.statusMessage.equalsIgnoreCase(MessageUtil.TIMEOUT) || messageInfo.statusMessage.equalsIgnoreCase(MessageUtil.RETROFIT_TIMEOUT)) {
+            maintenanceTitleMessage.setText(getString(R.string.failed_title));
             maintenanceMessage.setText(getString(R.string.timeout_message));
             buttonRetry.setText(getString(R.string.try_again));
             buttonRetry.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    setAlreadyCheckout(false);
                     showMaintenanceContainer(false);
                     getPaymentPages();
                 }
             });
         } else {
-            maintenanceTitleMessage.setText(getString(R.string.maintenance_title));
-            maintenanceMessage.setText(getString(R.string.maintenance_message));
+            maintenanceTitleMessage.setText(getString(R.string.failed_title));
+            maintenanceMessage.setText(messageInfo.detailsMessage);
             buttonRetry.setText(getString(R.string.maintenance_back));
 
             buttonRetry.setOnClickListener(new View.OnClickListener() {
@@ -405,13 +410,10 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
             @Override
             public void onError(Throwable error) {
-                error.printStackTrace();
+                Logger.e(TAG, "error:" + error.getMessage());
                 enableButtonBack(true);
                 progressContainer.setVisibility(View.GONE);
-                String errorMessage = MessageUtil.createMessageWhenCheckoutError(PaymentMethodsActivity.this,
-                        error.getMessage(),
-                        getString(R.string.error_snap_transaction_details));
-                showFallbackErrorPage(errorMessage);
+                showFallbackErrorPage(error, getString(R.string.maintenance_message));
             }
         });
     }
@@ -760,6 +762,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         Logger.d(TAG, "in onActivity result : request code is " + requestCode + "," + resultCode);
         Logger.d(TAG, "in onActivity result : data:" + data);
 
@@ -816,7 +819,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     }
                 }
             }
-
+            setAlreadyCheckout(true);
         } else {
             Logger.d(TAG, "failed to send result back " + requestCode);
         }
@@ -851,6 +854,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     .setPositiveButton(R.string.btn_retry, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            setAlreadyCheckout(false);
                             dialog.dismiss();
                             getPaymentPages();
                         }
@@ -965,5 +969,14 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     @Override
     public void onItemShown() {
         midtransSDK.trackEvent(AnalyticsEventName.PAGE_ORDER_SUMMARY);
+    }
+
+
+    public void setAlreadyCheckout(boolean alreadyCheckout) {
+        this.alreadyCheckout = alreadyCheckout;
+    }
+
+    public boolean isAlreadyCheckout() {
+        return alreadyCheckout;
     }
 }
