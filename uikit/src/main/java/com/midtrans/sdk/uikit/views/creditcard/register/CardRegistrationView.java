@@ -14,4 +14,6 @@ public interface CardRegistrationView extends BaseView {
     void onRegisterCardSuccess(CardRegistrationResponse response);
 
     void onRegisterError(Throwable error);
+
+    void onCallbackUnImplemented();
 }

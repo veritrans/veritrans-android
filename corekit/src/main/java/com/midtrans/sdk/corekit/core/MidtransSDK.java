@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.BuildConfig;
@@ -22,6 +23,7 @@ import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
 import com.midtrans.sdk.corekit.callback.TransactionOptionsCallback;
 import com.midtrans.sdk.corekit.core.themes.BaseColorTheme;
+import com.midtrans.sdk.corekit.models.CardRegistrationResponse;
 import com.midtrans.sdk.corekit.models.CardTokenRequest;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
@@ -80,6 +82,7 @@ public class MidtransSDK {
     private List<PromoResponse> promoResponses = new ArrayList<>();
     private BaseColorTheme colorTheme;
     private Transaction transaction;
+    private CardRegistrationCallback cardRegitrationCallback;
 
     private MidtransSDK() {
 
@@ -377,8 +380,12 @@ public class MidtransSDK {
      */
 
     public void UiCardRegistration(@NonNull Context context, @NonNull CardRegistrationCallback callback) {
-
-        uiflow.runCardRegistration(context, callback);
+        if (uiflow != null) {
+            this.cardRegitrationCallback = callback;
+            uiflow.runCardRegistration(context, callback);
+        } else {
+            Log.d(TAG, "uikit sdk is needed to use this feature");
+        }
     }
 
     /**
@@ -1822,4 +1829,7 @@ public class MidtransSDK {
         return this.transaction;
     }
 
+    public CardRegistrationCallback getUiCardRegistrationCallback() {
+        return this.cardRegitrationCallback;
+    }
 }

@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.CardRegistrationResponse;
@@ -62,17 +61,21 @@ public class CardRegistrationActivity extends BaseActivity implements CardRegist
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_credit_card_register);
         initProperties();
+        setContentView(R.layout.activity_credit_card_register);
         initActionButton();
         initCardNumber();
         initCardExpiry();
         initCardCvv();
+        initData();
+    }
+
+    private void initData() {
+        textTitle.setText(getString(R.string.card_registration));
     }
 
     private void initProperties() {
-        CardRegistrationCallback callback = (CardRegistrationCallback) getIntent().getSerializableExtra(EXTRA_CALLBACK);
-        presenter = new CardRegistrationPresenter(this, callback);
+        presenter = new CardRegistrationPresenter(this, this);
     }
 
     private void initActionButton() {
@@ -109,38 +112,44 @@ public class CardRegistrationActivity extends BaseActivity implements CardRegist
             public void afterTextChanged(Editable s) {
                 Logger.i(TAG, "card number:" + s.length());
                 containerCardNumber.setError(null);
-                if (s.length() > 0 && (s.length() % 5) == 0) {
-                    final char c = s.charAt(s.length() - 1);
-                    if (SPACE_CHAR == c) {
-                        s.delete(s.length() - 1, s.length());
-                    }
-                }
-                // Insert char where needed.
-                if (s.length() > 0 && (s.length() % 5) == 0) {
-                    char c = s.charAt(s.length() - 1);
-                    // Only if its a digit where there should be a space we insert a space
-                    if (Character.isDigit(c) && TextUtils.split(s.toString(), String.valueOf
-                            (SPACE_CHAR)).length <= 3) {
-                        s.insert(s.length() - 1, String.valueOf(SPACE_CHAR));
-                    }
-                }
-                String cardType = Utils.getCardType(s.toString());
+                try {
 
-                setCardType();
-                setBankType();
+                    if (s.length() > 0 && (s.length() % 5) == 0) {
+                        final char c = s.charAt(s.length() - 1);
+                        if (SPACE_CHAR == c) {
+                            s.delete(s.length() - 1, s.length());
+                        }
+                    }
+                    // Insert char where needed.
+                    if (s.length() > 0 && (s.length() % 5) == 0) {
+                        char c = s.charAt(s.length() - 1);
+                        // Only if its a digit where there should be a space we insert a space
+                        if (Character.isDigit(c) && TextUtils.split(s.toString(), String.valueOf
+                                (SPACE_CHAR)).length <= 3) {
+                            s.insert(s.length() - 1, String.valueOf(SPACE_CHAR));
+                        }
+                    }
+                    String cardType = Utils.getCardType(s.toString());
 
-                // Move to next input
-                if (s.length() >= 18 && cardType.equals(getString(R.string.amex))) {
-                    if (s.length() == 19) {
-                        s.delete(s.length() - 1, s.length());
+                    setCardType();
+                    setBankType();
+
+                    // Move to next input
+                    if (s.length() >= 18 && cardType.equals(getString(R.string.amex))) {
+                        if (s.length() == 19) {
+                            s.delete(s.length() - 1, s.length());
+                        }
+                        if (checkCardNumberValidity()) {
+                            fieldCardExpiry.requestFocus();
+                        }
+                    } else if (s.length() == 19) {
+                        if (checkCardNumberValidity()) {
+                            fieldCardExpiry.requestFocus();
+                        }
                     }
-                    if (checkCardNumberValidity()) {
-                        fieldCardExpiry.requestFocus();
-                    }
-                } else if (s.length() == 19) {
-                    if (checkCardNumberValidity()) {
-                        fieldCardExpiry.requestFocus();
-                    }
+
+                } catch (RuntimeException e) {
+                    Logger.e(TAG, "cardnumber:" + e.getMessage());
                 }
             }
         });
@@ -168,7 +177,6 @@ public class CardRegistrationActivity extends BaseActivity implements CardRegist
         String cleanCardNumber = cardNumberText.replace(" ", "");
         String cardBin = cleanCardNumber.substring(0, 6);
         String bank = presenter.getBankByCardBin(cardBin);
-        textTitle.setText(R.string.card_details);
 
         if (bank != null) {
 
@@ -187,16 +195,12 @@ public class CardRegistrationActivity extends BaseActivity implements CardRegist
                     break;
                 case BankType.MANDIRI:
                     imageBankLogo.setImageResource(R.drawable.mandiri);
-                    if (presenter.isMandiriDebitCard(cleanCardNumber)) {
-                        textTitle.setText(R.string.mandiri_debit_card);
-                    }
                     break;
                 case BankType.MAYBANK:
                     imageBankLogo.setImageResource(R.drawable.maybank);
                     break;
                 case BankType.BNI_DEBIT_ONLINE:
                     imageBankLogo.setImageResource(R.drawable.bni);
-                    textTitle.setText(R.string.bni_debit_online_card);
                     break;
                 default:
                     imageBankLogo.setImageDrawable(null);
@@ -216,7 +220,7 @@ public class CardRegistrationActivity extends BaseActivity implements CardRegist
         }
 
         // Check card type before setting logo
-        String cleanCardNumber = cardNumberText.replace(" ","");
+        String cleanCardNumber = cardNumberText.replace(" ", "");
         String cardType = Utils.getCardType(cleanCardNumber);
         switch (cardType) {
             case Utils.CARD_TYPE_VISA:
@@ -250,51 +254,57 @@ public class CardRegistrationActivity extends BaseActivity implements CardRegist
             public void afterTextChanged(Editable s) {
 
                 String input = s.toString();
-                if (s.length() == 4) {
-                    if (lastExpDate.length() > s.length()) {
 
-                        try {
-                            int month = Integer.parseInt(input.substring(0, 2));
-                            if (month <= 12) {
-                                fieldCardExpiry.setText(fieldCardExpiry.getText().toString().substring(0, 1));
-                                fieldCardExpiry.setSelection(fieldCardExpiry.getText().toString().length());
-                            } else {
-                                fieldCardExpiry.setText("");
-                                fieldCardExpiry.setSelection(fieldCardExpiry.getText().toString().length());
+                try {
+                    if (s.length() == 4) {
+                        if (lastExpDate.length() > s.length()) {
+
+                            try {
+                                int month = Integer.parseInt(input.substring(0, 2));
+                                if (month <= 12) {
+                                    fieldCardExpiry.setText(fieldCardExpiry.getText().toString().substring(0, 1));
+                                    fieldCardExpiry.setSelection(fieldCardExpiry.getText().toString().length());
+                                } else {
+                                    fieldCardExpiry.setText("");
+                                    fieldCardExpiry.setSelection(fieldCardExpiry.getText().toString().length());
+                                }
+                            } catch (Exception exception) {
+                                Logger.e(exception.toString());
                             }
-                        } catch (Exception exception) {
-                            Logger.e(exception.toString());
                         }
-                    }
-                } else if (s.length() == 2) {
+                    } else if (s.length() == 2) {
 
-                    if (lastExpDate.length() < s.length()) {
+                        if (lastExpDate.length() < s.length()) {
 
+                            try {
+                                int month = Integer.parseInt(input);
+
+                                if (month <= 12) {
+                                    fieldCardExpiry.setText(getString(R.string.expiry_month_format, fieldCardExpiry.getText().toString()));
+                                    fieldCardExpiry.setSelection(fieldCardExpiry.getText().toString().length());
+                                } else {
+                                    fieldCardExpiry.setText(getString(R.string.expiry_month_int_format, UiKitConstants.MONTH_COUNT));
+                                    fieldCardExpiry.setSelection(fieldCardExpiry.getText().toString().length());
+                                }
+
+                            } catch (Exception exception) {
+                                Logger.e(exception.toString());
+                            }
+                        }
+                    } else if (s.length() == 1) {
                         try {
                             int month = Integer.parseInt(input);
-
-                            if (month <= 12) {
-                                fieldCardExpiry.setText(getString(R.string.expiry_month_format, fieldCardExpiry.getText().toString()));
-                                fieldCardExpiry.setSelection(fieldCardExpiry.getText().toString().length());
-                            } else {
-                                fieldCardExpiry.setText(getString(R.string.expiry_month_int_format, UiKitConstants.MONTH_COUNT));
+                            if (month > 1) {
+                                fieldCardExpiry.setText(getString(R.string.expiry_month_single_digit_format, fieldCardExpiry.getText().toString()));
                                 fieldCardExpiry.setSelection(fieldCardExpiry.getText().toString().length());
                             }
-
                         } catch (Exception exception) {
                             Logger.e(exception.toString());
                         }
                     }
-                } else if (s.length() == 1) {
-                    try {
-                        int month = Integer.parseInt(input);
-                        if (month > 1) {
-                            fieldCardExpiry.setText(getString(R.string.expiry_month_single_digit_format, fieldCardExpiry.getText().toString()));
-                            fieldCardExpiry.setSelection(fieldCardExpiry.getText().toString().length());
-                        }
-                    } catch (Exception exception) {
-                        Logger.e(exception.toString());
-                    }
+
+                } catch (RuntimeException e) {
+                    Logger.e(TAG, "inputcardnumber:" + e.getMessage());
                 }
                 lastExpDate = fieldCardExpiry.getText().toString();
 
@@ -437,13 +447,15 @@ public class CardRegistrationActivity extends BaseActivity implements CardRegist
 
     private void registerCardNumber() {
 
-        String cardNumber = fieldCardNumber.getText().toString();
-        String cvv = fieldCardCvv.getText().toString();
-        String date = fieldCardExpiry.getText().toString();
-        String expiryMonth = date.split("/")[0].trim();
-        String expiryYear = "20" + date.split("/")[1].trim();
+        if (isCardInfoValid()) {
+            String cardNumber = fieldCardNumber.getText().toString();
+            String cvv = fieldCardCvv.getText().toString();
+            String date = fieldCardExpiry.getText().toString();
+            String expiryMonth = date.split("/")[0].trim();
+            String expiryYear = "20" + date.split("/")[1].trim();
 
-        presenter.register(cardNumber, cvv, expiryMonth, expiryYear);
+            presenter.register(cardNumber, cvv, expiryMonth, expiryYear);
+        }
     }
 
     private void actionScanCard() {
@@ -472,6 +484,11 @@ public class CardRegistrationActivity extends BaseActivity implements CardRegist
 
     @Override
     public void initTheme() {
+
+        setBackgroundTintList(fieldCardNumber);
+        setBackgroundTintList(fieldCardExpiry);
+        setBackgroundTintList(fieldCardCvv);
+
         setPrimaryBackgroundColor(buttonSaveCard);
         setBorderColor(buttonScanCard);
         setTextColor(buttonScanCard);
@@ -493,13 +510,17 @@ public class CardRegistrationActivity extends BaseActivity implements CardRegist
     }
 
     private void updateScanCardData(ScannerModel scanData) {
-        String cardNumber = Utils.getFormattedCreditCardNumber(Utils.getFormattedCreditCardNumber(scanData.getCardNumber()));
-        String expDate = String.format("%s/%d", scanData.getExpiredMonth() < 10 ? String.format("0%d", scanData.getExpiredMonth()) : String.format("%d", scanData.getExpiredMonth()), scanData.getExpiredYear() - 2000);
-        String cvv = scanData.getCvv();
+        if (scanData != null) {
+            String cardNumber = Utils.getFormattedCreditCardNumber(Utils.getFormattedCreditCardNumber(scanData.getCardNumber()));
+            String expDate = String.format("%s/%d", scanData.getExpiredMonth() < 10 ? String.format("0%d",
+                    scanData.getExpiredMonth()) : String.format("%d", scanData.getExpiredMonth()),
+                    scanData.getExpiredYear() - 2000);
+            String cvv = scanData.getCvv();
 
-        fieldCardCvv.setText(cvv);
-        fieldCardExpiry.setText(expDate);
-        fieldCardNumber.setText(cardNumber);
+            fieldCardCvv.setText(cvv);
+            fieldCardExpiry.setText(expDate);
+            fieldCardNumber.setText(cardNumber);
+        }
     }
 
     private void finishRegistration(int resultCode) {
@@ -525,5 +546,15 @@ public class CardRegistrationActivity extends BaseActivity implements CardRegist
     public void onRegisterError(Throwable error) {
         Logger.d(TAG, "onRegisterError():" + error.getMessage());
         SdkUIFlowUtil.showToast(this, getString(R.string.message_card_register_error));
+    }
+
+    @Override
+    public void onCallbackUnImplemented() {
+        SdkUIFlowUtil.showToast(this, getString(R.string.callback_unimplemented));
+        finishRegistration(RESULT_CANCELED);
+    }
+
+    public boolean isCardInfoValid() {
+        return checkCardNumberValidity() && checkCardExpiryValidity() && checkCardCvvValidity();
     }
 }

@@ -787,5 +787,6 @@
     <string name="status_message_token_notfound">Token not found</string>
     <string name="status_message_network_unavailable">Network unavailable</string>
     <string name="detail_message_network_unavailable">Sorry, network unavailable</string>
+    <string name="card_registration">Card Registration</string>
 
 </resources>

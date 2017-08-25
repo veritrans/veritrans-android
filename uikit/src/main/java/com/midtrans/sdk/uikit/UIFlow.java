@@ -222,7 +222,6 @@ public class UIFlow implements ISdkFlow {
     @Override
     public void runCardRegistration(Context context, CardRegistrationCallback callback) {
         Intent intent = new Intent(context, CardRegistrationActivity.class);
-        intent.putExtra(CardRegistrationActivity.EXTRA_CALLBACK, callback);
         context.startActivity(intent);
     }
 }

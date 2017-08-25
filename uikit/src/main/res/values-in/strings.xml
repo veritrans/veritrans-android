@@ -600,5 +600,6 @@
     <string name="status_message_token_notfound">Token tidak ditemukan</string>
     <string name="status_message_network_unavailable">Jaringan data tidak tersedia</string>
     <string name="detail_message_network_unavailable">Maaf, jaringan data tidak tersedia</string>
+    <string name="card_registration">Registrasi Kartu</string>
 
 </resources>
