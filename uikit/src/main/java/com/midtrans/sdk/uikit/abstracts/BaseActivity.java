@@ -72,14 +72,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
         initProgressContainer();
-        bindViews();
-//        try {
-        initTheme();
-//        } catch (RuntimeException e) {
-//            Log.e(TAG, "initTheme():" + e.getMessage());
-//        }
+        try {
+            bindViews();
+            initTheme();
+            initBadgeLayout();
+        } catch (RuntimeException e) {
+            Log.e(TAG, "initTheme():" + e.getMessage());
+        }
 
-        initBadgeLayout();
     }
 
     private void initProgressContainer() {
