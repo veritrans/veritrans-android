@@ -978,7 +978,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     secureEnabledSelection.setChecked(true);
                     break;
                 case Constants.BANK_MEGA:
-                    bankTitle.setText(R.string.acquiring_bank_by_cimb);
+                    bankTitle.setText(R.string.acquiring_bank_by_mega);
                     bankCimbSelection.setChecked(true);
                     secureEnabledSelection.setChecked(true);
                     break;
@@ -2709,7 +2709,10 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private void setInstallmentBankTerm(Map<String, ArrayList<Integer>> bankTerms, String bank) {
         //set term installment
         ArrayList<Integer> term = new ArrayList<>();
+        term.add(3);
         term.add(6);
+        term.add(18);
+        term.add(24);
         term.add(12);
         //set bank and term
         bankTerms.put(bank, term);

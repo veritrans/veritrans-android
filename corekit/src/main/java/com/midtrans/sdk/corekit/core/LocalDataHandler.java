@@ -1,8 +1,8 @@
 package com.midtrans.sdk.corekit.core;
 
-import com.google.gson.Gson;
-
 import android.content.SharedPreferences;
+
+import com.google.gson.Gson;
 
 /**
  * @author rakawm
@@ -27,7 +27,9 @@ public class LocalDataHandler {
      */
     public static void saveString(String key, String value) {
         SharedPreferences preferences = MidtransSDK.getmPreferences();
-        preferences.edit().putString(key, value).apply();
+        if (preferences != null) {
+            preferences.edit().putString(key, value).apply();
+        }
     }
 
     /**
@@ -38,7 +40,7 @@ public class LocalDataHandler {
      */
     public static String readString(String key) {
         SharedPreferences preferences = MidtransSDK.getmPreferences();
-        return preferences.getString(key, "");
+        return preferences == null ? null : preferences.getString(key, "");
     }
 
     /**
@@ -50,7 +52,9 @@ public class LocalDataHandler {
      */
     public static void saveObject(String key, Object object) {
         SharedPreferences preferences = MidtransSDK.getmPreferences();
-        preferences.edit().putString(key, convertObjectIntoJson(object)).apply();
+        if (preferences != null) {
+            preferences.edit().putString(key, convertObjectIntoJson(object)).apply();
+        }
     }
 
     /**
@@ -61,7 +65,7 @@ public class LocalDataHandler {
      */
     public static <T> T readObject(String key, Class<T> classType) {
         SharedPreferences preferences = MidtransSDK.getmPreferences();
-        return convertBackToObject(preferences.getString(key, ""), classType);
+        return preferences == null ? null : convertBackToObject(preferences.getString(key, ""), classType);
     }
 
 }

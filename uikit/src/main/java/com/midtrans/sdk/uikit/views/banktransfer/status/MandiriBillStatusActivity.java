@@ -125,4 +125,9 @@ public class MandiriBillStatusActivity extends BaseVaPaymentStatusActivity {
         setTextColor(buttonInstruction);
         setPrimaryBackgroundColor(buttonCompletePayment);
     }
+
+    @Override
+    public void onBackPressed() {
+        finishPaymentStatus();
+    }
 }

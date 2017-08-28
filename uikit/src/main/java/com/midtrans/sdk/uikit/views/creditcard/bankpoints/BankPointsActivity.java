@@ -44,7 +44,6 @@ public class BankPointsActivity extends BasePaymentActivity implements BankPoint
     private ImageView imageBankPointLogo;
 
     private FancyButton buttonRedeemPoint;
-
     private FancyButton containerAmount;
     private FancyButton containerTotalPoint;
 
@@ -53,8 +52,8 @@ public class BankPointsActivity extends BasePaymentActivity implements BankPoint
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bank_points);
         initPresenter();
+        setContentView(R.layout.activity_bank_points);
         initRedeemedPointsField();
         bindValues();
         updateAmountToPayText();

@@ -23,6 +23,8 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.ArrayList;
 
+import static org.powermock.api.mockito.PowerMockito.when;
+
 /**
  * Created by ziahaqi on 7/13/16.
  */
@@ -54,6 +56,9 @@ public class TransactionRequestTest {
         PowerMockito.mockStatic(Logger.class);
         PowerMockito.mockStatic(Utils.class);
         transactionRequest = new TransactionRequest(orderId, amount);
+
+        when(TextUtils.isEmpty(Matchers.anyString())).thenReturn(false);
+
     }
 
     @Test
@@ -75,6 +80,9 @@ public class TransactionRequestTest {
 
     @Test
     public void constructor3ArgsTest_whenOrderIdNull() {
+        when(TextUtils.isEmpty(null)).thenReturn(true);
+        when(TextUtils.isEmpty("")).thenReturn(true);
+
         transactionRequest = new TransactionRequest(null, amount, Constants.PAYMENT_METHOD_NOT_SELECTED);
         PowerMockito.verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString());
@@ -83,6 +91,9 @@ public class TransactionRequestTest {
 
     @Test
     public void constructor2ArgsTest_whenAmount0() {
+        when(TextUtils.isEmpty(null)).thenReturn(true);
+        when(TextUtils.isEmpty("")).thenReturn(true);
+
         transactionRequest = new TransactionRequest(orderId, 0, Constants.PAYMENT_METHOD_NOT_SELECTED);
         PowerMockito.verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString());
@@ -101,6 +112,9 @@ public class TransactionRequestTest {
 
     @Test
     public void constructor2ArgsTest_whenOrderIdNull() {
+        when(TextUtils.isEmpty(null)).thenReturn(true);
+        when(TextUtils.isEmpty("")).thenReturn(true);
+
         transactionRequest = new TransactionRequest(null, amount);
         PowerMockito.verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString());

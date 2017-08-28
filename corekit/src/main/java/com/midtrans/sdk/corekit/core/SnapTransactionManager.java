@@ -4,6 +4,8 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.midtrans.sdk.corekit.R;
 import com.midtrans.sdk.corekit.callback.BankBinsCallback;
 import com.midtrans.sdk.corekit.callback.BanksPointCallback;
@@ -56,6 +58,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
     private static final String GET_SNAP_TRANSACTION_SUCCESS = "Success Getting Snap Transaction";
     private static final String PAYMENT_TYPE_SNAP = "snap";
     private static final String TAG = "TransactionManager";
+    private static final String KEY_ERROR_MESSAGE = "error_messages";
 
     private SnapRestAPI snapRestAPI;
 
@@ -142,7 +145,19 @@ public class SnapTransactionManager extends BaseTransactionManager {
                 if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
                     Logger.e(TAG, "Error in SSL Certificate. " + e.getMessage());
                 }
-                callback.onError(new Throwable(e.getMessage(), e.getCause()));
+
+                JsonObject jsonObject = (JsonObject) e.getBodyAs(JsonObject.class);
+                if (jsonObject != null && jsonObject.getAsJsonArray(KEY_ERROR_MESSAGE) != null) {
+                    JsonArray jsonArray = jsonObject.getAsJsonArray(KEY_ERROR_MESSAGE);
+                    String errorMessage = e.getMessage();
+                    if (jsonArray.get(0) != null) {
+                        errorMessage = jsonArray.get(0).toString();
+                    }
+                    callback.onError(new Throwable(errorMessage, e.getCause()));
+
+                } else {
+                    callback.onError(new Throwable(e.getMessage(), e.getCause()));
+                }
             }
         });
     }

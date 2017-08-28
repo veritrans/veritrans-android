@@ -35,11 +35,10 @@
             android:layout_height="@dimen/button_size"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
             android:textColor="@color/white"
             app:fb_defaultColor="@color/gray.primary"
             app:fb_focusColor="@color/colorAccentLight"
-            app:fb_text="@string/pay_now"
+            app:fb_text="@string/btn_show_account_number"
             app:fb_textGravity="center_vertical"
             app:fb_textSize="16sp" />
 
@@ -53,6 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_marginEnd="@dimen/eight_dp"
                 android:layout_marginRight="@dimen/eight_dp"
                 android:src="@drawable/ic_arrow_right_white" />
         </LinearLayout>
@@ -62,6 +62,7 @@
         android:id="@+id/progress_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:alpha="0.93"
         android:background="@color/white"
         android:gravity="center_vertical|center_horizontal"
         android:orientation="vertical"

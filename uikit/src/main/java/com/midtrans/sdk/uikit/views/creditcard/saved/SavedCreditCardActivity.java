@@ -8,10 +8,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 
-import com.bumptech.glide.Glide;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
@@ -34,10 +31,7 @@ public class SavedCreditCardActivity extends BasePaymentActivity implements Save
 
     private RecyclerView listCard;
     private FancyButton buttonAddCard;
-    private LinearLayout containerProgress;
-    private DefaultTextView textProgressBarMessage;
     private DefaultTextView textTitle;
-    private ImageView imageProgress;
 
     private SavedCreditCardPresenter presenter;
     private SavedCardsAdapter adapter;
@@ -47,19 +41,11 @@ public class SavedCreditCardActivity extends BasePaymentActivity implements Save
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved_credit_card);
         initProperties();
-        initProgressLayout();
         initTitle();
         initCardsContainer();
         initTheme();
         initActionButton();
         initSavedCards();
-    }
-
-    private void initProgressLayout() {
-        Glide.with(this)
-                .load(R.drawable.midtrans_loader)
-                .asGif()
-                .into(imageProgress);
     }
 
     private void initTitle() {
@@ -109,24 +95,26 @@ public class SavedCreditCardActivity extends BasePaymentActivity implements Save
     }
 
     private void showDeleteCardConfirmationDialog(final SaveCardRequest request) {
-        AlertDialog alertDialog = new AlertDialog.Builder(this)
-                .setMessage(R.string.card_delete_message)
-                .setPositiveButton(R.string.text_yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int j) {
-                        dialogInterface.dismiss();
-                        showProgressLayout(true);
-                        presenter.deleteSavedCard(request);
-                    }
-                })
-                .setNegativeButton(R.string.text_no, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                })
-                .create();
-        alertDialog.show();
+        if (isActivityRunning()) {
+            AlertDialog alertDialog = new AlertDialog.Builder(this)
+                    .setMessage(R.string.card_delete_message)
+                    .setPositiveButton(R.string.text_yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int j) {
+                            dialogInterface.dismiss();
+                            showProgressLayout();
+                            presenter.deleteSavedCard(request);
+                        }
+                    })
+                    .setNegativeButton(R.string.text_no, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    })
+                    .create();
+            alertDialog.show();
+        }
     }
 
 
@@ -135,9 +123,6 @@ public class SavedCreditCardActivity extends BasePaymentActivity implements Save
         textTitle = (DefaultTextView) findViewById(R.id.text_page_title);
         buttonAddCard = (FancyButton) findViewById(R.id.btn_add_card);
         listCard = (RecyclerView) findViewById(R.id.container_saved_card);
-        containerProgress = (LinearLayout) findViewById(R.id.progress_container);
-        textProgressBarMessage = (DefaultTextView) findViewById(R.id.progress_bar_message);
-        imageProgress = (ImageView) findViewById(R.id.progress_bar_image);
     }
 
     private void initSavedCards() {
@@ -166,18 +151,9 @@ public class SavedCreditCardActivity extends BasePaymentActivity implements Save
         startActivityForResult(intent, UiKitConstants.INTENT_CARD_DETAILS);
     }
 
-
     public void fetchSavedCard() {
-        showProgressLayout(true);
+        showProgressLayout();
         presenter.fetchSavedCards();
-    }
-
-    private void showProgressLayout(boolean show) {
-        if (show) {
-            containerProgress.setVisibility(View.VISIBLE);
-        } else {
-            containerProgress.setVisibility(View.GONE);
-        }
     }
 
     @Override
@@ -207,6 +183,10 @@ public class SavedCreditCardActivity extends BasePaymentActivity implements Save
         }
     }
 
+    public String getBankByBin(String cardBin) {
+        return presenter.getBankByCardBin(cardBin);
+    }
+
     private void finishPayment(int resultCode, Intent data) {
         setResult(resultCode, data);
         finish();
@@ -214,34 +194,39 @@ public class SavedCreditCardActivity extends BasePaymentActivity implements Save
 
     @Override
     public void onGetSavedCardsSuccess(List<SaveCardRequest> savedCards) {
-        if (!savedCards.isEmpty()) {
-            showProgressLayout(false);
-            setSavedCards(savedCards);
-        } else {
-            showCardDetailPage(null);
+        hideProgressLayout();
+
+        if (isActivityRunning()) {
+            if (!savedCards.isEmpty()) {
+                setSavedCards(savedCards);
+            } else {
+                showCardDetailPage(null);
+            }
         }
     }
 
     @Override
     public void onGetSavedCardTokenFailure() {
-        showCardDetailPage(null);
-
+        if (isActivityRunning()) {
+            showCardDetailPage(null);
+        }
     }
 
     @Override
     public void onDeleteCardSuccess(String maskedCard) {
-        showProgressLayout(false);
-        updateSavedCardsInstance(maskedCard);
+        hideProgressLayout();
+        if (isActivityRunning()) {
+            updateSavedCardsInstance(maskedCard);
+        }
     }
 
     @Override
     public void onDeleteCardFailure() {
-        showProgressLayout(false);
-        SdkUIFlowUtil.showToast(this, getString(R.string.error_delete_message));
+        hideProgressLayout();
+        if (isActivityRunning()) {
+            SdkUIFlowUtil.showToast(this, getString(R.string.error_delete_message));
+        }
     }
 
-    public String getBankByBin(String cardBin) {
-        return presenter.getBankByCardBin(cardBin);
-    }
 
 }

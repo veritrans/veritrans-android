@@ -26,7 +26,7 @@ import java.util.List;
  * Created by ziahaqi on 7/28/17.
  */
 
-public class BaseCreditCardPresenter<V extends BaseView> extends BasePresenter<V> {
+public class BaseCreditCardPresenter<V extends BaseView> extends BasePaymentPresenter<V> {
 
     protected CreditCardTransaction creditCardTransaction;
 

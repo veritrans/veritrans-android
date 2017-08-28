@@ -24,8 +24,8 @@ public class BankTransferPaymentPresenter extends BasePaymentPresenter<BankTrans
         this.view = view;
     }
 
-    public void trackEvent(String bankType) {
-        // todo bank
+    public void trackEvent(String eventName) {
+        MidtransSDK.getInstance().trackEvent(eventName);
     }
 
     public void startPayment(String bankType, String email) {

@@ -75,7 +75,7 @@ public class BankTransferListActivity extends BasePaymentActivity implements Ban
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT) {
-            if (resultCode == RESULT_OK) {
+            if (resultCode == RESULT_OK && data != null) {
                 finishPayment(RESULT_OK, data);
             }
         }

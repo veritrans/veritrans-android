@@ -19,6 +19,7 @@ import android.webkit.WebViewClient;
 import com.midtrans.sdk.corekit.BuildConfig;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.activities.PaymentWebActivity;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 
 public class WebviewFragment extends Fragment {
@@ -34,6 +35,7 @@ public class WebviewFragment extends Fragment {
 
     private static final String URL_PARAM = "url_param";
     private static final String TYPE_PARAM = "type_param";
+
     public WebView webView;
     private String webUrl;
     private String type = "";
@@ -92,7 +94,7 @@ public class WebviewFragment extends Fragment {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
-        webView.setWebViewClient(new MidtransWebViewClient());
+        webView.setWebViewClient(new MidtransWebViewClient(((PaymentWebActivity) getActivity()), type));
         webView.setWebChromeClient(new WebChromeClient());
     }
 
@@ -139,7 +141,15 @@ public class WebviewFragment extends Fragment {
         }
     }
 
-    private class MidtransWebViewClient extends WebViewClient {
+    private static class MidtransWebViewClient extends WebViewClient {
+
+        private final String type;
+        private PaymentWebActivity activity;
+
+        private MidtransWebViewClient(PaymentWebActivity activity, String type) {
+            this.type = type;
+            this.activity = activity;
+        }
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -152,13 +162,12 @@ public class WebviewFragment extends Fragment {
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
             Log.d(TAG, "onPageFinished()>url:" + url);
-            if (url.contains(UiKitConstants.CALLBACK_PATTERN_3DS) || url.contains(UiKitConstants.CALLBACK_PATTERN_RBA)) {
-                Intent returnIntent = new Intent();
-                getActivity().setResult(Activity.RESULT_OK, returnIntent);
-                getActivity().finish();
-                if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
-                        && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
-                    getActivity().overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
+            if (activity != null && !activity.isFinishing()) {
+                if (url.contains(UiKitConstants.CALLBACK_PATTERN_3DS) || url.contains(UiKitConstants.CALLBACK_PATTERN_RBA)) {
+                    Intent returnIntent = new Intent();
+                    activity.setResult(Activity.RESULT_OK, returnIntent);
+                    activity.finish();
+                    overridePendingTransition();
                 }
             }
         }
@@ -167,51 +176,54 @@ public class WebviewFragment extends Fragment {
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             Log.d(TAG, "onPageStarted()>url:" + url);
             super.onPageStarted(view, url, favicon);
-            if (type != null && type.equals(TYPE_BCA_KLIKPAY)) {
-                if (url.contains("?id=")) {
-                    Intent returnIntent = new Intent();
-                    getActivity().setResult(Activity.RESULT_OK, returnIntent);
-                    getActivity().finish();
-                    if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
-                            && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
-                        getActivity().overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
+
+            if (activity != null && !activity.isFinishing()) {
+                if (type != null && type.equals(TYPE_BCA_KLIKPAY)) {
+                    if (url.contains("?id=")) {
+                        Intent returnIntent = new Intent();
+                        activity.setResult(Activity.RESULT_OK, returnIntent);
+                        activity.finish();
+                        overridePendingTransition();
+                        return;
                     }
-                    return;
+                } else if (type != null && type.equals(TYPE_MANDIRI_ECASH)) {
+                    if (url.contains("notify?id=")) {
+                        Intent returnIntent = new Intent();
+                        activity.setResult(Activity.RESULT_OK, returnIntent);
+                        activity.finish();
+                        overridePendingTransition();
+                        return;
+                    }
+                } else if (type != null && type.equals(TYPE_EPAY_BRI)) {
+                    if (url.contains("briPayment?tid=")) {
+                        Intent returnIntent = new Intent();
+                        activity.setResult(Activity.RESULT_OK, returnIntent);
+                        activity.finish();
+                        overridePendingTransition();
+                        return;
+                    }
+                } else if (type != null && type.equals(TYPE_CIMB_CLICK)) {
+                    if (url.contains("cimb-clicks/response")) {
+                        Intent returnIntent = new Intent();
+                        activity.setResult(Activity.RESULT_OK, returnIntent);
+                        activity.finish();
+                        overridePendingTransition();
+                        return;
+                    }
                 }
-            } else if (type != null && type.equals(TYPE_MANDIRI_ECASH)) {
-                if (url.contains("notify?id=")) {
-                    Intent returnIntent = new Intent();
-                    getActivity().setResult(Activity.RESULT_OK, returnIntent);
-                    getActivity().finish();
-                    if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
-                            && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
-                        getActivity().overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
-                    }
-                    return;
-                }
-            } else if (type != null && type.equals(TYPE_EPAY_BRI)) {
-                if (url.contains("briPayment?tid=")) {
-                    Intent returnIntent = new Intent();
-                    getActivity().setResult(Activity.RESULT_OK, returnIntent);
-                    getActivity().finish();
-                    if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
-                            && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
-                        getActivity().overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
-                    }
-                    return;
-                }
-            } else if (type != null && type.equals(TYPE_CIMB_CLICK)) {
-                if (url.contains("cimb-clicks/response")) {
-                    Intent returnIntent = new Intent();
-                    getActivity().setResult(Activity.RESULT_OK, returnIntent);
-                    getActivity().finish();
-                    if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
-                            && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
-                        getActivity().overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
-                    }
-                    return;
+            }
+        }
+
+        private void overridePendingTransition() {
+            if (activity != null && !activity.isFinishing()) {
+                MidtransSDK midtransSDK = MidtransSDK.getInstance();
+                if (midtransSDK != null && midtransSDK.getUIKitCustomSetting() != null
+                        && midtransSDK.getUIKitCustomSetting().isEnabledAnimation()) {
+                    activity.overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
+
                 }
             }
         }
     }
+
 }

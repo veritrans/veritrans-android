@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
@@ -33,17 +34,17 @@ public class PaymentStatusActivity extends BaseActivity {
 
     private FancyButton buttonFinish;
     private FancyButton buttonInstruction;
-    private ImageView statusLogo;
-    private DefaultTextView statusMessage;
-    private SemiBoldTextView statusErrorMessage;
-    private DefaultTextView totalAmount;
-    private DefaultTextView labelOrderId;
-    private DefaultTextView paymentType;
-    private DefaultTextView bank;
-    private DefaultTextView dueInstallment;
-    private DefaultTextView statusTitle;
-    private DefaultTextView totalDueAmount;
-    private DefaultTextView pointAmount;
+    private ImageView imageStatusLogo;
+    private DefaultTextView textStatusMessage;
+    private SemiBoldTextView textStatusErrorMessage;
+    private DefaultTextView textTotalAmount;
+    private DefaultTextView textOrderId;
+    private DefaultTextView textPaymentType;
+    private DefaultTextView textBank;
+    private DefaultTextView textDueInstallment;
+    private DefaultTextView textStatusTitle;
+    private DefaultTextView textTotalDueAmount;
+    private DefaultTextView textPointAmount;
 
 
     private LinearLayout layoutTotalAmount;
@@ -63,8 +64,8 @@ public class PaymentStatusActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_payment_status);
         initPaymentResponse();
+        setContentView(R.layout.activity_payment_status);
         bindViews();
         initTheme();
         initActionButton();
@@ -95,6 +96,7 @@ public class PaymentStatusActivity extends BaseActivity {
             }
         } else {
             this.paymentStatus = UiKitConstants.STATUS_FAILED;
+            finishPayment();
         }
     }
 
@@ -121,16 +123,16 @@ public class PaymentStatusActivity extends BaseActivity {
 
     @Override
     public void bindViews() {
-        statusTitle = (DefaultTextView) findViewById(R.id.text_status_title);
-        statusMessage = (DefaultTextView) findViewById(R.id.text_status_message);
-        statusErrorMessage = (SemiBoldTextView) findViewById(R.id.text_status_error_message);
-        labelOrderId = (DefaultTextView) findViewById(R.id.text_order_id);
-        totalAmount = (DefaultTextView) findViewById(R.id.text_status_amount);
-        totalDueAmount = (DefaultTextView) findViewById(R.id.text_status_due_amount);
-        dueInstallment = (DefaultTextView) findViewById(R.id.text_status_due_installment);
-        bank = (DefaultTextView) findViewById(R.id.text_status_bank);
-        paymentType = (DefaultTextView) findViewById(R.id.text_payment_type);
-        pointAmount = (DefaultTextView) findViewById(R.id.text_point_amount);
+        textStatusTitle = (DefaultTextView) findViewById(R.id.text_status_title);
+        textStatusMessage = (DefaultTextView) findViewById(R.id.text_status_message);
+        textStatusErrorMessage = (SemiBoldTextView) findViewById(R.id.text_status_error_message);
+        textOrderId = (DefaultTextView) findViewById(R.id.text_order_id);
+        textTotalAmount = (DefaultTextView) findViewById(R.id.text_status_amount);
+        textTotalDueAmount = (DefaultTextView) findViewById(R.id.text_status_due_amount);
+        textDueInstallment = (DefaultTextView) findViewById(R.id.text_status_due_installment);
+        textBank = (DefaultTextView) findViewById(R.id.text_status_bank);
+        textPaymentType = (DefaultTextView) findViewById(R.id.text_payment_type);
+        textPointAmount = (DefaultTextView) findViewById(R.id.text_point_amount);
 
         layoutOrderId = (LinearLayout) findViewById(R.id.layout_status_order);
         layoutTotalAmount = (LinearLayout) findViewById(R.id.layout_status_total_amount);
@@ -143,7 +145,7 @@ public class PaymentStatusActivity extends BaseActivity {
         layoutPointAmount = (LinearLayout) findViewById(R.id.layout_status_point_amount);
 
 
-        statusLogo = (ImageView) findViewById(R.id.image_status_payment);
+        imageStatusLogo = (ImageView) findViewById(R.id.image_status_payment);
 
         buttonInstruction = (FancyButton) findViewById(R.id.button_status_see_instruction);
         buttonFinish = (FancyButton) findViewById(R.id.button_status_finish);
@@ -151,40 +153,33 @@ public class PaymentStatusActivity extends BaseActivity {
 
     @Override
     public void initTheme() {
-        try {
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                switch (this.paymentStatus) {
-                    case UiKitConstants.STATUS_SUCCESS:
-                        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.payment_status_success));
-                        break;
-                    case UiKitConstants.STATUS_PENDING:
-                        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.payment_status_pending));
-                        break;
-                    default:
-                        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.payment_status_failed));
-                        break;
-                }
-            }
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             switch (this.paymentStatus) {
                 case UiKitConstants.STATUS_SUCCESS:
-                    layoutMain.setBackgroundColor(ContextCompat.getColor(this, R.color.payment_status_success));
+                    getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.payment_status_success));
                     break;
                 case UiKitConstants.STATUS_PENDING:
-                    layoutMain.setBackgroundColor(ContextCompat.getColor(this, R.color.payment_status_pending));
+                    getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.payment_status_pending));
                     break;
                 default:
-                    layoutMain.setBackgroundColor(ContextCompat.getColor(this, R.color.payment_status_failed));
+                    getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.payment_status_failed));
                     break;
             }
-
-            setPrimaryBackgroundColor(buttonFinish);
-
-        } catch (Exception e) {
-
         }
 
+        switch (this.paymentStatus) {
+            case UiKitConstants.STATUS_SUCCESS:
+                layoutMain.setBackgroundColor(ContextCompat.getColor(this, R.color.payment_status_success));
+                break;
+            case UiKitConstants.STATUS_PENDING:
+                layoutMain.setBackgroundColor(ContextCompat.getColor(this, R.color.payment_status_pending));
+                break;
+            default:
+                layoutMain.setBackgroundColor(ContextCompat.getColor(this, R.color.payment_status_failed));
+                break;
+        }
+
+        setPrimaryBackgroundColor(buttonFinish);
     }
 
     private void bindData() {
@@ -193,48 +188,50 @@ public class PaymentStatusActivity extends BaseActivity {
     }
 
     private void setHeaderValues() {
-        switch (paymentStatus) {
-            case UiKitConstants.STATUS_SUCCESS:
-                statusTitle.setText(getString(R.string.payment_successful));
-                statusLogo.setImageResource(R.drawable.ic_status_success);
-                statusMessage.setText(getString(R.string.thank_you));
-                break;
-            case UiKitConstants.STATUS_PENDING:
-                if (transactionResponse.getFraudStatus().equals(UiKitConstants.STATUS_CHALLENGE)) {
-                    statusTitle.setText(getString(R.string.payment_challenged));
-                } else {
-                    statusTitle.setText(getString(R.string.payment_pending));
-                }
-                statusMessage.setText(getString(R.string.thank_you));
-                statusLogo.setImageResource(R.drawable.ic_status_pending);
-                break;
-            default:
-                statusTitle.setText(getString(R.string.payment_unsuccessful));
-                statusMessage.setText(getString(R.string.sorry));
-                statusLogo.setImageResource(R.drawable.ic_status_failed);
-                statusErrorMessage.setVisibility(View.VISIBLE);
-
-                if (transactionResponse.getTransactionStatus() != null &&
-                        transactionResponse.getTransactionStatus().equalsIgnoreCase(getString(R.string.deny))) {
-                    statusErrorMessage.setText(getString(R.string.payment_deny));
-                } else if (transactionResponse.getStatusCode().equals(UiKitConstants.STATUS_CODE_400)) {
-                    String message = "";
-                    if (transactionResponse.getValidationMessages() != null
-                            && !transactionResponse.getValidationMessages().isEmpty()) {
-                        message = transactionResponse.getValidationMessages().get(0);
-                    }
-
-                    if (!TextUtils.isEmpty(message) && message.toLowerCase().contains(getString(R.string.label_expired))) {
-                        statusErrorMessage.setText(getString(R.string.message_payment_expired));
+        if (!TextUtils.isEmpty(paymentStatus)) {
+            switch (paymentStatus) {
+                case UiKitConstants.STATUS_SUCCESS:
+                    textStatusTitle.setText(getString(R.string.payment_successful));
+                    imageStatusLogo.setImageResource(R.drawable.ic_status_success);
+                    textStatusMessage.setText(getString(R.string.thank_you));
+                    break;
+                case UiKitConstants.STATUS_PENDING:
+                    if (transactionResponse.getFraudStatus().equals(UiKitConstants.STATUS_CHALLENGE)) {
+                        textStatusTitle.setText(getString(R.string.payment_challenged));
                     } else {
-                        statusErrorMessage.setText(getString(R.string.message_payment_cannot_proccessed));
+                        textStatusTitle.setText(getString(R.string.payment_pending));
                     }
-                } else {
-                    statusErrorMessage.setText(transactionResponse.getStatusMessage());
-                }
+                    textStatusMessage.setText(getString(R.string.thank_you));
+                    imageStatusLogo.setImageResource(R.drawable.ic_status_pending);
+                    break;
+                default:
+                    textStatusTitle.setText(getString(R.string.payment_unsuccessful));
+                    textStatusMessage.setText(getString(R.string.sorry));
+                    imageStatusLogo.setImageResource(R.drawable.ic_status_failed);
+                    textStatusErrorMessage.setVisibility(View.VISIBLE);
 
-                setLayoutVisibilityWhenFailed();
-                break;
+                    if (transactionResponse.getTransactionStatus() != null &&
+                            transactionResponse.getTransactionStatus().equalsIgnoreCase(getString(R.string.deny))) {
+                        textStatusErrorMessage.setText(getString(R.string.payment_deny));
+                    } else if (transactionResponse.getStatusCode().equals(UiKitConstants.STATUS_CODE_400)) {
+                        String message = "";
+                        if (transactionResponse.getValidationMessages() != null
+                                && !transactionResponse.getValidationMessages().isEmpty()) {
+                            message = transactionResponse.getValidationMessages().get(0);
+                        }
+
+                        if (!TextUtils.isEmpty(message) && message.toLowerCase().contains(getString(R.string.label_expired))) {
+                            textStatusErrorMessage.setText(getString(R.string.message_payment_expired));
+                        } else {
+                            textStatusErrorMessage.setText(getString(R.string.message_payment_cannot_proccessed));
+                        }
+                    } else {
+                        textStatusErrorMessage.setText(transactionResponse.getStatusMessage());
+                    }
+
+                    setLayoutVisibilityWhenFailed();
+                    break;
+            }
         }
     }
 
@@ -244,7 +241,7 @@ public class PaymentStatusActivity extends BaseActivity {
         if (TextUtils.isEmpty(orderId)) {
             layoutOrderId.setVisibility(View.GONE);
         } else {
-            labelOrderId.setText(orderId);
+            textOrderId.setText(orderId);
         }
 
         //total amount
@@ -254,7 +251,7 @@ public class PaymentStatusActivity extends BaseActivity {
         } else {
             try {
                 String formattedAmount = amount.split(Pattern.quote(".")).length == 2 ? amount.split(Pattern.quote("."))[0] : amount;
-                totalAmount.setText(formattedAmount);
+                textTotalAmount.setText(formattedAmount);
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
@@ -271,32 +268,36 @@ public class PaymentStatusActivity extends BaseActivity {
             // Set payment type
             switch (transactionResponse.getPaymentType()) {
                 case PaymentType.CREDIT_CARD:
-                    paymentType.setText(R.string.payment_method_credit_card);
+                    textPaymentType.setText(R.string.payment_method_credit_card);
                     setCreditCardPaymentStatus();
                     break;
                 case PaymentType.MANDIRI_CLICKPAY:
-                    paymentType.setText(R.string.payment_method_mandiri_clickpay);
+                    textPaymentType.setText(R.string.payment_method_mandiri_clickpay);
                     break;
                 case PaymentType.GCI:
-                    paymentType.setText(R.string.payment_method_gci);
+                    textPaymentType.setText(R.string.payment_method_gci);
                     break;
 
                 case PaymentType.TELKOMSEL_CASH:
-                    paymentType.setText(getString(R.string.payment_method_telkomsel_cash));
+                    textPaymentType.setText(getString(R.string.payment_method_telkomsel_cash));
                     break;
                 case PaymentType.INDOSAT_DOMPETKU:
-                    paymentType.setText(getString(R.string.payment_method_indosat_dompetku));
+                    textPaymentType.setText(getString(R.string.payment_method_indosat_dompetku));
                     break;
             }
 
             // Set order id
-            labelOrderId.setText(String.valueOf(transactionResponse.getOrderId()));
+            textOrderId.setText(String.valueOf(transactionResponse.getOrderId()));
 
             // Set total amount
-            String amount = transactionResponse.getGrossAmount();
-            if (!TextUtils.isEmpty(amount)) {
-                String formattedAmount = amount.split(Pattern.quote(".")).length == 2 ? amount.split(Pattern.quote("."))[0] : amount;
-                totalAmount.setText(formattedAmount);
+            try {
+                String amount = transactionResponse.getGrossAmount();
+                if (!TextUtils.isEmpty(amount)) {
+                    String formattedAmount = amount.split(Pattern.quote(".")).length == 2 ? amount.split(Pattern.quote("."))[0] : amount;
+                    textTotalAmount.setText(formattedAmount);
+                }
+            } catch (RuntimeException e) {
+                Logger.e(TAG, "amount:" + e.getMessage());
             }
 
             // Set credit card properties
@@ -304,7 +305,7 @@ public class PaymentStatusActivity extends BaseActivity {
                 if (TextUtils.isEmpty(transactionResponse.getBank())) {
                     layoutBank.setVisibility(View.GONE);
                 } else {
-                    bank.setText(transactionResponse.getBank());
+                    textBank.setText(transactionResponse.getBank());
                 }
 
                 //installment term
@@ -312,7 +313,7 @@ public class PaymentStatusActivity extends BaseActivity {
                     layoutInstallmentTerm.setVisibility(View.GONE);
                 } else {
                     layoutInstallmentTerm.setVisibility(View.VISIBLE);
-                    dueInstallment.setText(transactionResponse.getInstallmentTerm());
+                    textDueInstallment.setText(transactionResponse.getInstallmentTerm());
                 }
             } else {
                 layoutBank.setVisibility(View.GONE);
@@ -326,7 +327,7 @@ public class PaymentStatusActivity extends BaseActivity {
         int pointRedeemed = (int) transactionResponse.getPointRedeemAmount();
         if (pointRedeemed != 0.f) {
             String formattedBalance = String.format("%s", String.valueOf(pointRedeemed));
-            pointAmount.setText(formattedBalance);
+            textPointAmount.setText(formattedBalance);
             layoutPointAmount.setVisibility(View.VISIBLE);
         }
 
@@ -334,7 +335,7 @@ public class PaymentStatusActivity extends BaseActivity {
         if (!TextUtils.isEmpty(transactionStatus) && transactionStatus.equals(UiKitConstants.STATUS_PENDING)) {
             String transactionMessage = transactionResponse.getStatusMessage();
             if (!TextUtils.isEmpty(transactionMessage) && transactionMessage.contains(MessageUtil.STATUS_UNSUCCESSFUL)) {
-                statusMessage.setText(R.string.status_rba_unsuccessful);
+                textStatusMessage.setText(R.string.status_rba_unsuccessful);
             }
         }
     }

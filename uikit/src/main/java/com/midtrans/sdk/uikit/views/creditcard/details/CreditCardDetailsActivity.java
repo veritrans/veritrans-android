@@ -24,9 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
-import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.BankType;
@@ -37,10 +35,9 @@ import com.midtrans.sdk.corekit.models.snap.BanksPointResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
-import com.midtrans.sdk.uikit.activities.PaymentWebActivity;
 import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
-import com.midtrans.sdk.uikit.fragments.WebviewFragment;
 import com.midtrans.sdk.uikit.models.CreditCardType;
+import com.midtrans.sdk.uikit.models.MessageInfo;
 import com.midtrans.sdk.uikit.scancard.ExternalScanner;
 import com.midtrans.sdk.uikit.scancard.ScannerModel;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
@@ -48,6 +45,7 @@ import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.views.creditcard.bankpoints.BankPointsActivity;
 import com.midtrans.sdk.uikit.views.status.PaymentStatusActivity;
+import com.midtrans.sdk.uikit.views.webview.WebViewPaymentActivity;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
@@ -75,7 +73,6 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     private DefaultTextView textExpriyHint;
     private DefaultTextView textCvvHint;
     private DefaultTextView textInApplicablePromoStatus;
-    private DefaultTextView textBarMessage;
 
     private TextView textCardNumberError;
     private TextView textCardCvvError;
@@ -86,7 +83,6 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
     private ImageView imageCardLogo;
     private ImageView imageBankLogo;
-    private ImageView imageProcessLogo;
     private ImageView ccBadge;
 
     private ImageButton buttonCvvHelp;
@@ -102,7 +98,6 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     private RelativeLayout containerSaveCard;
     private LinearLayout containerInstallment;
     private RelativeLayout containerPoint;
-    private LinearLayout containerProgress;
 
     private AppCompatCheckBox checkboxSaveCard;
     private AppCompatCheckBox checkboxPointEnabled;
@@ -116,9 +111,8 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_credit_card);
-        initExtras();
         initProperties();
+        setContentView(R.layout.activity_credit_card);
         initCardNumber();
         initCardExpiry();
         initCardCvv();
@@ -128,21 +122,19 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         initDeleteButton();
         initScanCardButton();
         initCheckBox();
-        initProgressLayout();
         initLayoutState();
         bindData();
     }
 
     private void initScanCardButton() {
-        final MidtransSDK midtransSDK = MidtransSDK.getInstance();
-        if (midtransSDK != null && midtransSDK.getExternalScanner() != null) {
+        if (presenter.isCardScannerAvailable()) {
             showScanCardButton(true);
 
             buttonScanCard.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     // Start scanning
-                    midtransSDK.getExternalScanner().startScan(CreditCardDetailsActivity.this, UiKitConstants.INTENT_REQUEST_SCAN_CARD);
+                    presenter.startScanCard(CreditCardDetailsActivity.this, UiKitConstants.INTENT_REQUEST_SCAN_CARD);
                 }
             });
         } else {
@@ -201,9 +193,14 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
             String cardType = Utils.getCardType(savedCard.getMaskedCard());
             if (!TextUtils.isEmpty(cardType)) {
-                String cardBin = savedCard.getMaskedCard().substring(0, 4);
-                String title = cardType + "-" + cardBin;
-                textTitle.setText(title);
+                try {
+                    String cardBin = savedCard.getMaskedCard().substring(0, 4);
+                    String title = cardType + "-" + cardBin;
+                    textTitle.setText(title);
+
+                } catch (RuntimeException e) {
+                    Logger.e(TAG, "cardType:" + e.getMessage());
+                }
             }
 
             showSavedCardLayout(false);
@@ -268,7 +265,6 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     }
 
     private void initExtras() {
-        this.savedCard = (SaveCardRequest) getIntent().getSerializableExtra(EXTRA_SAVED_CARD);
     }
 
     private void initLayoutState() {
@@ -283,6 +279,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
 
     private void initProperties() {
+        this.savedCard = (SaveCardRequest) getIntent().getSerializableExtra(EXTRA_SAVED_CARD);
         this.presenter = new CreditCardDetailsPresenter(this, this);
     }
 
@@ -342,38 +339,43 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             public void afterTextChanged(Editable s) {
                 Logger.i(TAG, "card number:" + s.length());
                 textCardNumberError.setError(null);
-                if (s.length() > 0 && (s.length() % 5) == 0) {
-                    final char c = s.charAt(s.length() - 1);
-                    if (SPACE_CHAR == c) {
-                        s.delete(s.length() - 1, s.length());
+                try {
+                    if (s.length() > 0 && (s.length() % 5) == 0) {
+                        final char c = s.charAt(s.length() - 1);
+                        if (SPACE_CHAR == c) {
+                            s.delete(s.length() - 1, s.length());
+                        }
                     }
-                }
-                // Insert char where needed.
-                if (s.length() > 0 && (s.length() % 5) == 0) {
-                    char c = s.charAt(s.length() - 1);
-                    // Only if its a digit where there should be a space we insert a space
-                    if (Character.isDigit(c) && TextUtils.split(s.toString(), String.valueOf
-                            (SPACE_CHAR)).length <= 3) {
-                        s.insert(s.length() - 1, String.valueOf(SPACE_CHAR));
+                    // Insert char where needed.
+                    if (s.length() > 0 && (s.length() % 5) == 0) {
+                        char c = s.charAt(s.length() - 1);
+                        // Only if its a digit where there should be a space we insert a space
+                        if (Character.isDigit(c) && TextUtils.split(s.toString(), String.valueOf
+                                (SPACE_CHAR)).length <= 3) {
+                            s.insert(s.length() - 1, String.valueOf(SPACE_CHAR));
+                        }
                     }
-                }
-                String cardType = Utils.getCardType(s.toString());
+                    String cardType = Utils.getCardType(s.toString());
 
-                setCardType();
-                setBankType();
+                    setCardType();
+                    setBankType();
 
-                // Move to next input
-                if (s.length() >= 18 && cardType.equals(getString(R.string.amex))) {
-                    if (s.length() == 19) {
-                        s.delete(s.length() - 1, s.length());
+                    // Move to next input
+                    if (s.length() >= 18 && cardType.equals(getString(R.string.amex))) {
+                        if (s.length() == 19) {
+                            s.delete(s.length() - 1, s.length());
+                        }
+                        if (checkCardNumberValidity()) {
+                            fieldCardExpiry.requestFocus();
+                        }
+                    } else if (s.length() == 19) {
+                        if (checkCardNumberValidity()) {
+                            fieldCardExpiry.requestFocus();
+                        }
                     }
-                    if (checkCardNumberValidity()) {
-                        fieldCardExpiry.requestFocus();
-                    }
-                } else if (s.length() == 19) {
-                    if (checkCardNumberValidity()) {
-                        fieldCardExpiry.requestFocus();
-                    }
+
+                } catch (RuntimeException e) {
+                    Logger.d(TAG, "inputccnumber:" + e.getMessage());
                 }
             }
         });
@@ -409,52 +411,57 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             public void afterTextChanged(Editable s) {
 
                 String input = s.toString();
-                if (s.length() == 4) {
-                    if (lastExpDate.length() > s.length()) {
 
-                        try {
-                            int month = Integer.parseInt(input.substring(0, 2));
-                            if (month <= 12) {
-                                fieldCardExpiry.setText(fieldCardExpiry.getText().toString().substring(0, 1));
-                                fieldCardExpiry.setSelection(fieldCardExpiry.getText().toString().length());
-                            } else {
-                                fieldCardExpiry.setText("");
-                                fieldCardExpiry.setSelection(fieldCardExpiry.getText().toString().length());
+                try {
+                    if (s.length() == 4) {
+                        if (lastExpDate.length() > s.length()) {
+                            try {
+                                int month = Integer.parseInt(input.substring(0, 2));
+                                if (month <= 12) {
+                                    fieldCardExpiry.setText(fieldCardExpiry.getText().toString().substring(0, 1));
+                                    fieldCardExpiry.setSelection(fieldCardExpiry.getText().toString().length());
+                                } else {
+                                    fieldCardExpiry.setText("");
+                                    fieldCardExpiry.setSelection(fieldCardExpiry.getText().toString().length());
+                                }
+                            } catch (Exception exception) {
+                                Logger.e(exception.toString());
                             }
-                        } catch (Exception exception) {
-                            Logger.e(exception.toString());
                         }
-                    }
-                } else if (s.length() == 2) {
+                    } else if (s.length() == 2) {
 
-                    if (lastExpDate.length() < s.length()) {
+                        if (lastExpDate.length() < s.length()) {
 
+                            try {
+                                int month = Integer.parseInt(input);
+
+                                if (month <= 12) {
+                                    fieldCardExpiry.setText(getString(R.string.expiry_month_format, fieldCardExpiry.getText().toString()));
+                                    fieldCardExpiry.setSelection(fieldCardExpiry.getText().toString().length());
+                                } else {
+                                    fieldCardExpiry.setText(getString(R.string.expiry_month_int_format, UiKitConstants.MONTH_COUNT));
+                                    fieldCardExpiry.setSelection(fieldCardExpiry.getText().toString().length());
+                                }
+
+                            } catch (Exception exception) {
+                                Logger.e(exception.toString());
+                            }
+                        }
+                    } else if (s.length() == 1) {
                         try {
                             int month = Integer.parseInt(input);
-
-                            if (month <= 12) {
-                                fieldCardExpiry.setText(getString(R.string.expiry_month_format, fieldCardExpiry.getText().toString()));
-                                fieldCardExpiry.setSelection(fieldCardExpiry.getText().toString().length());
-                            } else {
-                                fieldCardExpiry.setText(getString(R.string.expiry_month_int_format, UiKitConstants.MONTH_COUNT));
+                            if (month > 1) {
+                                fieldCardExpiry.setText(getString(R.string.expiry_month_single_digit_format, fieldCardExpiry.getText().toString()));
                                 fieldCardExpiry.setSelection(fieldCardExpiry.getText().toString().length());
                             }
-
                         } catch (Exception exception) {
                             Logger.e(exception.toString());
                         }
                     }
-                } else if (s.length() == 1) {
-                    try {
-                        int month = Integer.parseInt(input);
-                        if (month > 1) {
-                            fieldCardExpiry.setText(getString(R.string.expiry_month_single_digit_format, fieldCardExpiry.getText().toString()));
-                            fieldCardExpiry.setSelection(fieldCardExpiry.getText().toString().length());
-                        }
-                    } catch (Exception exception) {
-                        Logger.e(exception.toString());
-                    }
+                } catch (RuntimeException e) {
+                    Logger.e(TAG, "ccexpiry:" + e.getMessage());
                 }
+
                 lastExpDate = fieldCardExpiry.getText().toString();
 
                 // Move to next input
@@ -673,7 +680,6 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         textExpriyHint = (DefaultTextView) findViewById(R.id.hint_card_expiry);
         textCvvHint = (DefaultTextView) findViewById(R.id.hint_card_cvv);
         textInApplicablePromoStatus = (DefaultTextView) findViewById(R.id.text_offer_status_not_applied);
-        textBarMessage = (DefaultTextView) findViewById(R.id.progress_bar_message);
 
         textCardNumberError = (TextView) findViewById(R.id.error_message_card_number);
         textCardExpiryError = (TextView) findViewById(R.id.error_message_expiry);
@@ -681,7 +687,6 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
         imageCardLogo = (ImageView) findViewById(R.id.payment_card_logo);
         imageBankLogo = (ImageView) findViewById(R.id.bank_logo);
-        imageProcessLogo = (ImageView) findViewById(R.id.progress_bar_image);
         ccBadge = (ImageView) findViewById(R.id.cc_badge);
 
         buttonCvvHelp = (ImageButton) findViewById(R.id.help_cvv_button);
@@ -697,7 +702,6 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         containerSaveCard = (RelativeLayout) findViewById(R.id.container_save_card_details);
         containerInstallment = (LinearLayout) findViewById(R.id.container_installment);
         containerPoint = (RelativeLayout) findViewById(R.id.container_bni_point);
-        containerProgress = (LinearLayout) findViewById(R.id.progress_container);
 
         checkboxSaveCard = (AppCompatCheckBox) findViewById(R.id.checkbox_save_card);
         checkboxPointEnabled = (AppCompatCheckBox) findViewById(R.id.checkbox_point);
@@ -926,17 +930,27 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     }
 
     public String getCardNumberBin() {
-        String cardNumber = getCardNumberValue();
-        if (!TextUtils.isEmpty(cardNumber) && cardNumber.length() > 6) {
-            String cardBin = cardNumber.replace(" ", "").substring(0, 6);
-            return cardBin;
+        try {
+            String cardNumber = getCardNumberValue();
+            if (!TextUtils.isEmpty(cardNumber) && cardNumber.length() > 6) {
+                String cardBin = cardNumber.replace(" ", "").substring(0, 6);
+                return cardBin;
+            }
+
+        } catch (RuntimeException e) {
+            Logger.e(TAG, "getCardNumberBin:" + e.getMessage());
         }
         return null;
     }
 
     public String getCleanedCardNumber() {
-        String cardNumber = getCardNumberValue();
-        String cleanCardNumber = cardNumber.replace(" ", "");
+        String cleanCardNumber = "";
+        try {
+            String cardNumber = getCardNumberValue();
+            cleanCardNumber = cardNumber.replace(" ", "");
+        } catch (RuntimeException e) {
+            Logger.e(TAG, "getCleanedCardNumber():" + e.getMessage());
+        }
         return cleanCardNumber;
     }
 
@@ -952,14 +966,16 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     }
 
     private void updateScanCardData(ScannerModel scanCardData) {
-        String formattedCardNumber = Utils.getFormattedCreditCardNumber(scanCardData.getCardNumber());
-        String cvv = scanCardData.getCvv();
-        String cardExpiry = String.format("%s/%d", scanCardData.getExpiredMonth() < 10 ? String.format("0%d",
-                scanCardData.getExpiredMonth()) : String.format("%d", scanCardData.getExpiredMonth()),
-                scanCardData.getExpiredYear() - 2000);
-        fieldCardNumber.setText(formattedCardNumber);
-        fieldCardCvv.setText(cvv);
-        fieldCardExpiry.setText(cardExpiry);
+        if (scanCardData != null) {
+            String formattedCardNumber = Utils.getFormattedCreditCardNumber(scanCardData.getCardNumber());
+            String cvv = scanCardData.getCvv();
+            String cardExpiry = String.format("%s/%d", scanCardData.getExpiredMonth() < 10 ? String.format("0%d",
+                    scanCardData.getExpiredMonth()) : String.format("%d", scanCardData.getExpiredMonth()),
+                    scanCardData.getExpiredYear() - 2000);
+            fieldCardNumber.setText(formattedCardNumber);
+            fieldCardCvv.setText(cvv);
+            fieldCardExpiry.setText(cardExpiry);
+        }
     }
 
     private void showSavedCardLayout(boolean show) {
@@ -1115,20 +1131,9 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         }
     }
 
-
-    private void showErrorMessage(String errorMessage) {
-        AlertDialog alert = new AlertDialog.Builder(this)
-                .setMessage(errorMessage)
-                .setNegativeButton(R.string.btn_close, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        // TODO: set result and finish
-                    }
-                })
-                .create();
-        alert.show();
-        changeDialogButtonColor(alert);
+    private void showErrorMessage(Throwable error) {
+        MessageInfo messageInfo = MessageUtil.createMessageOnError(this, error, null);
+        SdkUIFlowUtil.showToast(this, messageInfo.detailsMessage);
     }
 
     private void startBankPointPage(BanksPointResponse response) {
@@ -1168,38 +1173,19 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     }
 
     private void start3DSecurePage(String redirectUrl, int requestCode) {
-        Intent intent = new Intent(this, PaymentWebActivity.class);
-        intent.putExtra(Constants.WEBURL, redirectUrl);
-        intent.putExtra(Constants.TYPE, WebviewFragment.TYPE_CREDIT_CARD);
+        Intent intent = new Intent(this, WebViewPaymentActivity.class);
+        intent.putExtra(WebViewPaymentActivity.EXTRA_PAYMENT_URL, redirectUrl);
+        intent.putExtra(WebViewPaymentActivity.EXTRA_PAYMENT_TYPE, WebViewPaymentActivity.TYPE_CREDIT_CARD);
         startActivityForResult(intent, requestCode);
     }
 
     private void initPaymentError(Throwable error) {
-        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
-        presenter.trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
-        String errorMessage = MessageUtil.createPaymentErrorMessage(this, error.getMessage(), getString(R.string.message_payment_failed));
-        hideProgresslayout();
-        showErrorMessage(errorMessage);
-    }
-
-
-    private void initProgressLayout() {
-        Glide.with(this)
-                .load(R.drawable.midtrans_loader)
-                .asGif()
-                .into(imageProcessLogo);
-    }
-
-    private void showProgressLayout(String message) {
-        if (!TextUtils.isEmpty(message)) {
-            textBarMessage.setText(message);
+        if (isActivityRunning()) {
+            MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+            presenter.trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+            hideProgressLayout();
+            showErrorMessage(error);
         }
-        containerProgress.setVisibility(View.VISIBLE);
-    }
-
-    private void hideProgresslayout() {
-        containerProgress.setVisibility(View.GONE);
-        textBarMessage.setText(R.string.loading);
     }
 
 
@@ -1246,107 +1232,133 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
     @Override
     public void onGetCardTokenSuccess(TokenDetailsResponse response) {
-        SdkUIFlowUtil.hideKeyboard(this);
-        if (!TextUtils.isEmpty(response.getRedirectUrl())) {
-            start3DSecurePage(response.getRedirectUrl(), UiKitConstants.INTENT_CODE_3DS_PAYMENT);
-        } else {
-            startPreCrediCardPayment();
+        if (isActivityRunning()) {
+            SdkUIFlowUtil.hideKeyboard(this);
+            if (!TextUtils.isEmpty(response.getRedirectUrl())) {
+                start3DSecurePage(response.getRedirectUrl(), UiKitConstants.INTENT_CODE_3DS_PAYMENT);
+            } else {
+                startPreCrediCardPayment();
+            }
         }
     }
 
     @Override
     public void onGetCardTokenFailure() {
-        hideProgresslayout();
-        SdkUIFlowUtil.showApiFailedMessage(this, getString(R.string.message_getcard_token_failed));
+        hideProgressLayout();
+        if (isActivityRunning()) {
+            SdkUIFlowUtil.showApiFailedMessage(this, getString(R.string.message_getcard_token_failed));
+        }
     }
 
     @Override
     public void onGetBankPointSuccess(BanksPointResponse response) {
-        hideProgresslayout();
-        startBankPointPage(response);
+        hideProgressLayout();
+        if (isActivityRunning()) {
+            startBankPointPage(response);
+        }
     }
 
 
     @Override
     public void onGetBankPointFailure() {
-        hideProgresslayout();
-        SdkUIFlowUtil.showToast(this, getString(R.string.failed_to_get_bank_point));
+        hideProgressLayout();
+        if (isActivityRunning()) {
+            SdkUIFlowUtil.showToast(this, getString(R.string.failed_to_get_bank_point));
+        }
     }
 
     @Override
     public void onPaymentSuccess(TransactionResponse response) {
-        if (presenter.isRbaAuthentication(response)) {
-            start3DSecurePage(response.getRedirectUrl(), UiKitConstants.INTENT_CODE_RBA_AUTHENTICATION);
+        if (isActivityRunning()) {
+            if (presenter.isRbaAuthentication(response)) {
+                start3DSecurePage(response.getRedirectUrl(), UiKitConstants.INTENT_CODE_RBA_AUTHENTICATION);
+            } else {
+                hideProgressLayout();
+                initPaymentStatus(response);
+            }
         } else {
-            hideProgresslayout();
-            initPaymentStatus(response);
+            finishPayment(RESULT_OK);
         }
     }
 
     @Override
     public void onPaymentFailure(TransactionResponse response) {
-        hideProgresslayout();
-        if (attempt < UiKitConstants.MAX_ATTEMPT) {
-            attempt += 1;
-            SdkUIFlowUtil.showApiFailedMessage(this, getString(R.string.message_payment_failed));
-        } else {
-            initPaymentStatus(response);
-        }
+        hideProgressLayout();
+        if (isActivityRunning()) {
+            if (attempt < UiKitConstants.MAX_ATTEMPT) {
+                attempt += 1;
+                SdkUIFlowUtil.showApiFailedMessage(this, getString(R.string.message_payment_failed));
+            } else {
+                initPaymentStatus(response);
+            }
 
-        if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
-            Log.d("3dserror", "400:" + response.getValidationMessages().get(0));
-            if (response.getValidationMessages() != null && response.getValidationMessages().get(0) != null) {
-                if (response.getValidationMessages().get(0).contains("3d")) {
-                    //track page bca va overview
-                    presenter.trackEvent(AnalyticsEventName.CREDIT_CARD_3DS_ERROR);
+            if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
+                Log.d("3dserror", "400:" + response.getValidationMessages().get(0));
+                if (response.getValidationMessages() != null && response.getValidationMessages().get(0) != null) {
+                    if (response.getValidationMessages().get(0).contains("3d")) {
+                        //track page bca va overview
+                        presenter.trackEvent(AnalyticsEventName.CREDIT_CARD_3DS_ERROR);
+                    }
                 }
             }
-        }
 
-        //track page status failed
-        presenter.trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+            //track page status failed
+            presenter.trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
+        }
     }
 
     @Override
     public void onPaymentError(Throwable error) {
-        hideProgresslayout();
-        initPaymentError(error);
+        hideProgressLayout();
+        if (isActivityRunning()) {
+            initPaymentError(error);
+        }
     }
 
     @Override
     public void onDeleteCardSuccess(String maskedCardNumber) {
-        hideProgresslayout();
-        Intent intent = new Intent();
-        intent.putExtra(EXTRA_DELETED_CARD_DETAILS, maskedCardNumber);
-        setResult(UiKitConstants.INTENT_RESULT_DELETE_CARD, intent);
-        onBackPressed();
+        hideProgressLayout();
+        if (isActivityRunning()) {
+            Intent intent = new Intent();
+            intent.putExtra(EXTRA_DELETED_CARD_DETAILS, maskedCardNumber);
+            setResult(UiKitConstants.INTENT_RESULT_DELETE_CARD, intent);
+            onBackPressed();
+        }
     }
 
 
     @Override
     public void onDeleteCardFailure() {
-        hideProgresslayout();
-        SdkUIFlowUtil.showToast(this, getString(R.string.error_delete_message));
+        hideProgressLayout();
+        if (isActivityRunning()) {
+            SdkUIFlowUtil.showToast(this, getString(R.string.error_delete_message));
+        }
     }
 
     @Override
     public void onGetTransactionStatusError(Throwable error) {
-        hideProgresslayout();
-        initPaymentError(error);
+        hideProgressLayout();
+        if (isActivityRunning()) {
+            initPaymentError(error);
+        }
     }
 
     @Override
     public void onGetTransactionStatusFailure(TransactionResponse response) {
         Log.d(TAG, "rba>onGetTransactionStatusFailure()");
-        hideProgresslayout();
-        initPaymentStatus(response);
+        hideProgressLayout();
+        if (isActivityRunning()) {
+            initPaymentStatus(response);
+        }
     }
 
     @Override
     public void onGetTransactionStatusSuccess(TransactionResponse transactionResponse) {
         Log.d(TAG, "rba>onGetTransactionStatusSuccess()");
-        hideProgresslayout();
-        initPaymentStatus(transactionResponse);
-    }
+        hideProgressLayout();
 
+        if (isActivityRunning()) {
+            initPaymentStatus(transactionResponse);
+        }
+    }
 }
