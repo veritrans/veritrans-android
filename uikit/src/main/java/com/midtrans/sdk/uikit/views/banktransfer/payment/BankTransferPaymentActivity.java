@@ -8,6 +8,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.AppCompatEditText;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -313,6 +314,7 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
 
     @Override
     public void onPaymentSuccess(TransactionResponse response) {
+
         hideProgressLayout();
         if (!isFinishing()) {
             presenter.trackEvent(AnalyticsEventName.PAGE_STATUS_PENDING);
@@ -324,6 +326,7 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
 
     @Override
     public void onPaymentFailure(TransactionResponse response) {
+
         hideProgressLayout();
 
         if (!isFinishing()) {

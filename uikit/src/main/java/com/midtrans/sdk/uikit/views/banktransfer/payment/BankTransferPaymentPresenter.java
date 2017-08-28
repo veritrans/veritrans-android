@@ -24,6 +24,27 @@ public class BankTransferPaymentPresenter extends BasePaymentPresenter<BankTrans
         this.view = view;
     }
 
+
+    public boolean isEmailValid(String email) {
+        if (!TextUtils.isEmpty(email) && !SdkUIFlowUtil.isEmailValid(email)) {
+            return false;
+        }
+        return true;
+    }
+
+    public TransactionResponse getTransactionResponse() {
+        return transactionResponse;
+    }
+
+    public String getUserEmail() {
+        String userEmail = "";
+        UserDetail userDetail = LocalDataHandler.readObject(UiKitConstants.KEY_USER_DETAILS, UserDetail.class);
+        if (userDetail != null) {
+            userEmail = userDetail.getEmail();
+        }
+        return userEmail;
+    }
+
     public void trackEvent(String eventName) {
         MidtransSDK.getInstance().trackEvent(eventName);
     }
@@ -87,7 +108,7 @@ public class BankTransferPaymentPresenter extends BasePaymentPresenter<BankTrans
             @Override
             public void onSuccess(TransactionResponse response) {
                 transactionResponse = response;
-                view.onPaymentFailure(response);
+                view.onPaymentSuccess(response);
             }
 
             @Override
@@ -108,7 +129,7 @@ public class BankTransferPaymentPresenter extends BasePaymentPresenter<BankTrans
             @Override
             public void onSuccess(TransactionResponse response) {
                 transactionResponse = response;
-                view.onPaymentFailure(response);
+                view.onPaymentSuccess(response);
             }
 
             @Override
@@ -129,7 +150,7 @@ public class BankTransferPaymentPresenter extends BasePaymentPresenter<BankTrans
             @Override
             public void onSuccess(TransactionResponse response) {
                 transactionResponse = response;
-                view.onPaymentFailure(response);
+                view.onPaymentSuccess(response);
             }
 
             @Override
@@ -150,7 +171,7 @@ public class BankTransferPaymentPresenter extends BasePaymentPresenter<BankTrans
             @Override
             public void onSuccess(TransactionResponse response) {
                 transactionResponse = response;
-                view.onPaymentFailure(response);
+                view.onPaymentSuccess(response);
             }
 
             @Override
@@ -164,25 +185,5 @@ public class BankTransferPaymentPresenter extends BasePaymentPresenter<BankTrans
                 view.onPaymentError(error);
             }
         });
-    }
-
-    public boolean isEmailValid(String email) {
-        if (!TextUtils.isEmpty(email) && !SdkUIFlowUtil.isEmailValid(email)) {
-            return false;
-        }
-        return true;
-    }
-
-    public TransactionResponse getTransactionResponse() {
-        return transactionResponse;
-    }
-
-    public String getUserEmail() {
-        String userEmail = "";
-        UserDetail userDetail = LocalDataHandler.readObject(UiKitConstants.KEY_USER_DETAILS, UserDetail.class);
-        if (userDetail != null) {
-            userEmail = userDetail.getEmail();
-        }
-        return userEmail;
     }
 }
