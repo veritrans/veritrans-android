@@ -23,7 +23,6 @@ import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
 import com.midtrans.sdk.corekit.callback.TransactionOptionsCallback;
 import com.midtrans.sdk.corekit.core.themes.BaseColorTheme;
-import com.midtrans.sdk.corekit.models.CardRegistrationResponse;
 import com.midtrans.sdk.corekit.models.CardTokenRequest;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
@@ -82,7 +81,7 @@ public class MidtransSDK {
     private List<PromoResponse> promoResponses = new ArrayList<>();
     private BaseColorTheme colorTheme;
     private Transaction transaction;
-    private CardRegistrationCallback cardRegitrationCallback;
+    private CardRegistrationCallback cardRegistrationCallback;
 
     private MidtransSDK() {
 
@@ -303,16 +302,11 @@ public class MidtransSDK {
      * @param transactionRequest transaction request  object
      */
     public void setTransactionRequest(TransactionRequest transactionRequest) {
-        if (!isRunning) {
 
-            if (transactionRequest != null) {
-                this.transactionRequest = transactionRequest;
-            } else {
-                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
-            }
-
+        if (transactionRequest != null) {
+            this.transactionRequest = transactionRequest;
         } else {
-            Logger.e(TAG, context.getString(R.string.error_already_running));
+            Logger.e(TAG, ADD_TRANSACTION_DETAILS);
         }
     }
 
@@ -381,7 +375,7 @@ public class MidtransSDK {
 
     public void UiCardRegistration(@NonNull Context context, @NonNull CardRegistrationCallback callback) {
         if (uiflow != null) {
-            this.cardRegitrationCallback = callback;
+            this.cardRegistrationCallback = callback;
             uiflow.runCardRegistration(context, callback);
         } else {
             Log.d(TAG, "uikit sdk is needed to use this feature");
@@ -1830,6 +1824,6 @@ public class MidtransSDK {
     }
 
     public CardRegistrationCallback getUiCardRegistrationCallback() {
-        return this.cardRegitrationCallback;
+        return this.cardRegistrationCallback;
     }
 }

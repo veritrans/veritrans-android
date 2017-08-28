@@ -106,7 +106,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     private DefaultTextView maintenanceMessage;
     private FancyButton buttonRetry;
     private AppBarLayout appbar;
-    private boolean alreadyCheckout = false;
+    private boolean alreadyUtilized = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -275,12 +275,11 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         enableButtonBack(false);
         UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
 
-        if (!isAlreadyCheckout()) {
+        if (!isAlreadyUtilized()) {
             midtransSDK.checkout(userDetail.getUserId(), new CheckoutCallback() {
                 @Override
                 public void onSuccess(Token token) {
                     Log.i(TAG, "checkout token:" + token.getTokenId());
-                    setAlreadyCheckout(true);
                     LocalDataHandler.saveString(Constants.AUTH_TOKEN, token.getTokenId());
                     getPaymentOptions(token.getTokenId());
                 }
@@ -299,6 +298,8 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     showFallbackErrorPage(error, getString(R.string.maintenance_message));
                 }
             });
+        } else {
+            SdkUIFlowUtil.showToast(this, getString(R.string.error_utilized_orderid));
         }
     }
 
@@ -312,9 +313,12 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             buttonRetry.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    setAlreadyCheckout(false);
                     showMaintenanceContainer(false);
-                    getPaymentPages();
+                    if (isAlreadyUtilized()) {
+                        SdkUIFlowUtil.showToast(PaymentMethodsActivity.this, getString(R.string.error_utilized_orderid));
+                    } else {
+                        getPaymentPages();
+                    }
                 }
             });
         } else {
@@ -775,8 +779,10 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 if (response != null) {
                     if (response.getStatusCode().equals(getString(R.string.success_code_200))) {
                         midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_SUCCESS));
+                        setAlreadyUtilized(true);
                     } else if (response.getStatusCode().equals(getString(R.string.success_code_201))) {
                         midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_PENDING));
+                        setAlreadyUtilized(true);
                     } else {
                         midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_FAILED));
                     }
@@ -801,8 +807,10 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     if (response != null) {
                         if (response.getStatusCode().equals(getString(R.string.success_code_200))) {
                             midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_SUCCESS));
+                            setAlreadyUtilized(true);
                         } else if (response.getStatusCode().equals(getString(R.string.success_code_201))) {
                             midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_PENDING));
+                            setAlreadyUtilized(true);
                         } else {
                             midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_FAILED));
                         }
@@ -819,7 +827,6 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     }
                 }
             }
-            setAlreadyCheckout(true);
         } else {
             Logger.d(TAG, "failed to send result back " + requestCode);
         }
@@ -854,9 +861,12 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     .setPositiveButton(R.string.btn_retry, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            setAlreadyCheckout(false);
                             dialog.dismiss();
-                            getPaymentPages();
+                            if (isAlreadyUtilized()) {
+                                SdkUIFlowUtil.showToast(PaymentMethodsActivity.this, getString(R.string.error_utilized_orderid));
+                            } else {
+                                getPaymentPages();
+                            }
                         }
                     })
                     .setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
@@ -879,7 +889,11 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
-                            getPaymentPages();
+                            if (isAlreadyUtilized()) {
+                                SdkUIFlowUtil.showToast(PaymentMethodsActivity.this, getString(R.string.error_utilized_orderid));
+                            } else {
+                                getPaymentPages();
+                            }
                         }
                     })
                     .setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
@@ -972,11 +986,11 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     }
 
 
-    public void setAlreadyCheckout(boolean alreadyCheckout) {
-        this.alreadyCheckout = alreadyCheckout;
+    public void setAlreadyUtilized(boolean alreadyUtilized) {
+        this.alreadyUtilized = alreadyUtilized;
     }
 
-    public boolean isAlreadyCheckout() {
-        return alreadyCheckout;
+    public boolean isAlreadyUtilized() {
+        return alreadyUtilized;
     }
 }

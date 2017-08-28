@@ -140,7 +140,7 @@ public class MessageUtil {
                         List<String> validationMessages = response.getValidationMessages();
                         if (validationMessages != null && !validationMessages.isEmpty()) {
                             String validationMessage = validationMessages.get(0);
-                            if (!TextUtils.isEmpty(validationMessage) && validationMessage.contains(PAYMENT_EXIPIRED)) {
+                            if (!TextUtils.isEmpty(validationMessage) && validationMessage.toLowerCase().contains(PAYMENT_EXIPIRED)) {
                                 message = new MessageInfo(statusCode, context.getString(R.string.status_message_expired),
                                         context.getString(R.string.details_message_expired));
                             } else {
