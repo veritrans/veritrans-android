@@ -22,6 +22,7 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_above="@+id/btn_pay_now"
             android:layout_below="@id/container_item_details">
 
             <include
