@@ -454,6 +454,7 @@ public class CardRegistrationActivity extends BaseActivity implements CardRegist
             String expiryMonth = date.split("/")[0].trim();
             String expiryYear = "20" + date.split("/")[1].trim();
 
+            showProgressLayout(getString(R.string.processing_card_registration));
             presenter.register(cardNumber, cvv, expiryMonth, expiryYear);
         }
     }

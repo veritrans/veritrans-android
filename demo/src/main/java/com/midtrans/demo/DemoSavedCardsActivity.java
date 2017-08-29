@@ -18,9 +18,11 @@ import com.midtrans.demo.models.SavedCards;
 import com.midtrans.demo.widgets.DemoButton;
 import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
+import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.CardRegistrationResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
+import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +35,7 @@ public class DemoSavedCardsActivity extends AppCompatActivity implements CardReg
 
     private static final String SAVED_CARDS_TYPE = "saved.cards";
     private static final int REQUEST_REGISTER = 123;
+    private static final String TAG = DemoSavedCardsActivity.class.getSimpleName();
 
     private RecyclerView listSavedCard;
     private DemoButton buttonDemo;
@@ -193,6 +196,7 @@ public class DemoSavedCardsActivity extends AppCompatActivity implements CardReg
 
     @Override
     public void onSuccess(CardRegistrationResponse response) {
+        SdkUIFlowUtil.showToast(this, getString(R.string.success));
         String cardType = Utils.getCardType(response.getMaskedCard());
         SavedCard savedCard = new SavedCard(cardType, response.getSavedTokenId(), response.getTransactionId(), response.getMaskedCard());
         updateSavedCards(savedCard);
@@ -200,11 +204,12 @@ public class DemoSavedCardsActivity extends AppCompatActivity implements CardReg
 
     @Override
     public void onFailure(CardRegistrationResponse response, String reason) {
+        Logger.d(TAG, "card registration:onFailure()");
 
     }
 
     @Override
     public void onError(Throwable error) {
-
+        Logger.d(TAG, "card registration:error()");
     }
 }

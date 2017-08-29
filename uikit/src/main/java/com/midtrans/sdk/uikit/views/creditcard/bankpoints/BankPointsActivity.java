@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
@@ -34,6 +35,7 @@ public class BankPointsActivity extends BasePaymentActivity implements BankPoint
     public static final String EXTRA_BANK = "point.bank";
 
     public static final String EXTRA_DATA_POINT = "point.redeemed";
+    private static final String TAG = BankPointsActivity.class.getSimpleName();
 
     private EditText fieldRedeemedPoint;
 
@@ -113,10 +115,16 @@ public class BankPointsActivity extends BasePaymentActivity implements BankPoint
             @Override
             public void afterTextChanged(Editable editable) {
                 String inputString = editable.toString();
-                if (editable.length() == 0) {
-                    editable.insert(0, "0");
-                } else if (inputString.length() > 1 && inputString.charAt(0) == '0') {
-                    editable.delete(0, 1);
+
+                try {
+                    if (editable.length() == 0) {
+                        editable.insert(0, "0");
+                    } else if (inputString.length() > 1 && inputString.charAt(0) == '0') {
+                        editable.delete(0, 1);
+                    }
+
+                } catch (RuntimeException e) {
+                    Logger.e(TAG, "fieldRedeemedPoint:" + e.getMessage());
                 }
 
                 if (presenter.isValidInputPoint(inputString)) {

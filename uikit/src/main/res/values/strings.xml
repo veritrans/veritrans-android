@@ -789,5 +789,6 @@
     <string name="detail_message_network_unavailable">Sorry, network unavailable</string>
     <string name="card_registration">Card Registration</string>
     <string name="error_utilized_orderid">Sorry, the order id already utilized</string>
+    <string name="processing_card_registration">Processing card registration</string>
 
 </resources>

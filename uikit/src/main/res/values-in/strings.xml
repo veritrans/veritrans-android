@@ -602,5 +602,6 @@
     <string name="detail_message_network_unavailable">Maaf, jaringan data tidak tersedia</string>
     <string name="card_registration">Registrasi Kartu</string>
     <string name="error_utilized_orderid">Maaf, order id sudah digunakan</string>
+    <string name="processing_card_registration">Proses registrasi kartu</string>
 
 </resources>
