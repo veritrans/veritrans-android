@@ -532,12 +532,14 @@ public class CardRegistrationActivity extends BaseActivity implements CardRegist
     @Override
     public void onRegisterFailure(CardRegistrationResponse response, String reason) {
         Logger.d(TAG, "onRegisterFailure():" + reason);
+        hideProgressLayout();
         SdkUIFlowUtil.showToast(this, getString(R.string.message_card_register_error));
         finishRegistration(RESULT_OK);
     }
 
     @Override
     public void onRegisterCardSuccess(CardRegistrationResponse response) {
+        hideProgressLayout();
         SdkUIFlowUtil.showToast(this, getString(R.string.message_card_register_success));
         finishRegistration(RESULT_OK);
     }
@@ -546,11 +548,15 @@ public class CardRegistrationActivity extends BaseActivity implements CardRegist
     @Override
     public void onRegisterError(Throwable error) {
         Logger.d(TAG, "onRegisterError():" + error.getMessage());
+        hideProgressLayout();
         SdkUIFlowUtil.showToast(this, getString(R.string.message_card_register_error));
     }
 
     @Override
     public void onCallbackUnImplemented() {
+        Logger.d(TAG, "onCallbackUnImplemented()");
+
+        hideProgressLayout();
         SdkUIFlowUtil.showToast(this, getString(R.string.callback_unimplemented));
         finishRegistration(RESULT_CANCELED);
     }

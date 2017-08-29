@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Toast;
 
 import com.midtrans.demo.models.SavedCard;
 import com.midtrans.demo.models.SavedCards;
@@ -22,7 +23,6 @@ import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.CardRegistrationResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
-import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -196,7 +196,7 @@ public class DemoSavedCardsActivity extends AppCompatActivity implements CardReg
 
     @Override
     public void onSuccess(CardRegistrationResponse response) {
-        SdkUIFlowUtil.showToast(this, getString(R.string.success));
+        Toast.makeText(this, getString(R.string.success), Toast.LENGTH_SHORT).show();
         String cardType = Utils.getCardType(response.getMaskedCard());
         SavedCard savedCard = new SavedCard(cardType, response.getSavedTokenId(), response.getTransactionId(), response.getMaskedCard());
         updateSavedCards(savedCard);
