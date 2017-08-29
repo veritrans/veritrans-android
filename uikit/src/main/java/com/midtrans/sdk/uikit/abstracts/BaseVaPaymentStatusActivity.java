@@ -227,7 +227,7 @@ public abstract class BaseVaPaymentStatusActivity extends BasePaymentActivity {
                 break;
             case PaymentType.BNI_VA:
                 setPageTitle(getString(R.string.bank_bni_transfer));
-
+                break;
             case PaymentType.E_CHANNEL:
                 setPageTitle(getString(R.string.mandiri_bill_transfer));
                 break;
