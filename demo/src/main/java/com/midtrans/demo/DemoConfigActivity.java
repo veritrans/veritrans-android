@@ -2720,12 +2720,16 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
 
     private List<String> mapEnabledPayments() {
         List<String> mappedPayments = new ArrayList<>();
-        for (SelectPaymentMethodViewModel model : enabledPayments) {
-            if (model.getMethodType().equalsIgnoreCase(getString(R.string.payment_bank_transfer))) {
-                mappedPayments.add(getString(R.string.payment_mandiri_bill_payment));
+
+        if (enabledPayments != null) {
+            for (SelectPaymentMethodViewModel model : enabledPayments) {
+                if (model.getMethodType().equalsIgnoreCase(getString(R.string.payment_bank_transfer))) {
+                    mappedPayments.add(getString(R.string.payment_mandiri_bill_payment));
+                }
+                mappedPayments.add(model.getMethodType());
             }
-            mappedPayments.add(model.getMethodType());
         }
+
         return mappedPayments;
     }
 
