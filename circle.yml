@@ -60,17 +60,20 @@ deployment:
         commands:
             - ./gradlew :demo:assembleDevelopmentRelease :demo:crashlyticsUploadDistributionDevelopmentRelease
 
-    refactor-cc-va:
-        branch: refactor-cc-va
+    demo-sandbox:
+        branch: demo-sandbox
         owner: veritrans
         commands:
+            - git merge master
             - ./gradlew :demo:assembleDevelopmentRelease :demo:crashlyticsUploadDistributionDevelopmentRelease
 
-    demo-prod:
-        branch: demo-prod
+    demo-production:
+        branch: demo-production
         owner: veritrans
         commands:
+            - git merge master
             - ./gradlew :demo:assembleProductionRelease :demo:crashlyticsUploadDistributionProductionRelease
+
     bump:
       branch: release
       owner: veritrans
