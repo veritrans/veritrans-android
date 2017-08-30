@@ -368,9 +368,11 @@ public class MidtransSDK {
         }
     }
 
-
     /**
+     * It will run backround task to register card PAPI(Payment API) Backend using uikit sdk
      *
+     * @param context       activity context.
+     * @param callback Card Registration Callback.
      */
 
     public void UiCardRegistration(@NonNull Context context, @NonNull CardRegistrationCallback callback) {
