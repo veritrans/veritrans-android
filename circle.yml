@@ -60,19 +60,6 @@ deployment:
         commands:
             - ./gradlew :demo:assembleDevelopmentRelease :demo:crashlyticsUploadDistributionDevelopmentRelease
 
-    demo-sandbox:
-        branch: demo-sandbox
-        owner: veritrans
-        commands:
-            - git merge master
-            - ./gradlew :demo:assembleDevelopmentRelease :demo:crashlyticsUploadDistributionDevelopmentRelease
-
-    demo-production:
-        branch: demo-production
-        owner: veritrans
-        commands:
-            - git merge master
-            - ./gradlew :demo:assembleProductionRelease :demo:crashlyticsUploadDistributionProductionRelease
 
     bump:
       branch: release
@@ -83,3 +70,5 @@ deployment:
             - bmp -c
             - git checkout master && git merge release
             - git push origin master --tag
+            - ./gradlew :demo:assembleProductionRelease :demo:crashlyticsUploadDistributionProductionRelease
+            - ./gradlew :demo:assembleDevelopmentRelease :demo:crashlyticsUploadDistributionDevelopmentRelease
