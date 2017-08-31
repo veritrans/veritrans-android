@@ -38,7 +38,9 @@
         android:id="@+id/container_card_number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/container_offer_status">
+        android:layout_below="@+id/container_offer_status"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
             android:id="@+id/hint_card_number"
@@ -51,24 +53,26 @@
             android:id="@+id/field_card_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/hint_card_number"
             android:digits="0123456789 "
             android:hint="@string/hint_card_number_example"
             android:imeOptions="actionNext"
             android:inputType="number"
             android:maxLength="19"
             android:maxLines="1"
-            android:nextFocusDown="@+id/field_expiry" />
+            android:nextFocusDown="@+id/field_expiry"
+            android:layout_below="@+id/hint_card_number"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:layout_alignTop="@id/field_card_number"
             android:layout_centerVertical="true"
             android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingTop="15dp">
+            android:orientation="horizontal">
 
             <com.midtrans.sdk.uikit.widgets.AspectRatioImageView
                 android:id="@+id/bank_logo"
