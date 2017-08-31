@@ -350,15 +350,6 @@ public class MidtransAndroidSDKTest {
     }
 
     @Test
-    public void getMerhcantToken() {
-        PowerMockito.mockStatic(LocalDataHandler.class);
-        when(LocalDataHandler.readObject(contextMock.getString(R.string.user_details), UserDetail.class)).thenReturn(userDetailMock);
-        when(userDetailMock.getMerchantToken()).thenReturn(sampleToken);
-        Assert.assertEquals(sampleToken, midtransSDKSSpy.getMerchantToken());
-
-    }
-
-    @Test
     public void isLogEnabled() {
         Assert.assertTrue(midtransSDKSSpy.isLogEnabled());
     }

@@ -1,18 +1,12 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    xmlns:tools="http://schemas.android.com/tools"
     android:fitsSystemWindows="true">
 
     <include layout="@layout/appbar_payment" />
-
-    <include
-        layout="@layout/layout_sandbox_badge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|start" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -45,7 +39,6 @@
             android:layout_height="@dimen/button_size"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
             android:textColor="@color/white"
             app:fb_defaultColor="@color/gray.primary"
             app:fb_focusColor="@color/colorAccentLight"
@@ -63,6 +56,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_marginEnd="@dimen/eight_dp"
                 android:layout_marginRight="@dimen/eight_dp"
                 android:src="@drawable/ic_arrow_right_white" />
         </LinearLayout>
@@ -72,14 +66,20 @@
         android:id="@+id/progress_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
         android:alpha="0.93"
+        android:background="@color/white"
         android:gravity="center_vertical|center_horizontal"
         android:orientation="vertical"
         android:visibility="gone"
-        tools:visibility="visible">
+        tools:visibility="gone">
 
         <include layout="@layout/layout_midtrans_progress" />
     </LinearLayout>
+
+    <include
+        layout="@layout/layout_sandbox_badge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start" />
 
 </android.support.design.widget.CoordinatorLayout>

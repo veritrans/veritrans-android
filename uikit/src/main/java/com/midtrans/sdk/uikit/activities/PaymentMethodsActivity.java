@@ -49,8 +49,10 @@ import com.midtrans.sdk.uikit.adapters.PaymentMethodsAdapter;
 import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.models.EnabledPayments;
 import com.midtrans.sdk.uikit.models.ItemViewDetails;
+import com.midtrans.sdk.uikit.models.MessageInfo;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
+import com.midtrans.sdk.uikit.views.banktransfer.list.BankTransferListActivity;
 import com.midtrans.sdk.uikit.views.creditcard.saved.SavedCreditCardActivity;
 import com.midtrans.sdk.uikit.widgets.BoldTextView;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
@@ -98,15 +100,18 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     private AlertDialog alertDialog;
     private DefaultTextView textTitle;
     private ImageView progressImage;
+    private ImageView secureBadge;
     private TextView progressMessage;
     private BoldTextView maintenanceTitleMessage;
     private DefaultTextView maintenanceMessage;
     private FancyButton buttonRetry;
     private AppBarLayout appbar;
+    private boolean alreadyUtilized = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_payments_method);
         isCreditCardOnly = getIntent().getBooleanExtra(UserDetailsActivity.CREDIT_CARD_ONLY, false);
         isBankTransferOnly = getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_ONLY, false);
@@ -242,6 +247,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         progressContainer = (LinearLayout) findViewById(R.id.progress_container);
         maintenanceContainer = (LinearLayout) findViewById(R.id.maintenance_container);
         progressImage = (ImageView) findViewById(R.id.progress_bar_image);
+        secureBadge = (ImageView) findViewById(R.id.secure_badge);
         progressMessage = (TextView) findViewById(R.id.progress_bar_message);
         maintenanceTitleMessage = (BoldTextView) findViewById(R.id.text_maintenance_title);
         maintenanceMessage = (DefaultTextView) findViewById(R.id.text_maintenance_message);
@@ -268,50 +274,56 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         progressContainer.setVisibility(View.VISIBLE);
         enableButtonBack(false);
         UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
-        midtransSDK.checkout(userDetail.getUserId(), new CheckoutCallback() {
-            @Override
-            public void onSuccess(Token token) {
-                Log.i(TAG, "checkout token:" + token.getTokenId());
-                LocalDataHandler.saveString(Constants.AUTH_TOKEN, token.getTokenId());
-                getPaymentOptions(token.getTokenId());
-            }
 
-            @Override
-            public void onFailure(Token token, String reason) {
-                Log.d(TAG, "Failed to registering transaction: " + reason);
-                enableButtonBack(true);
-                String errorMessage = MessageUtil.createMessageWhenCheckoutFailed(PaymentMethodsActivity.this, token.getErrorMessage());
-                showErrorMessage(errorMessage);
-            }
+        if (!isAlreadyUtilized()) {
+            midtransSDK.checkout(userDetail.getUserId(), new CheckoutCallback() {
+                @Override
+                public void onSuccess(Token token) {
+                    Log.i(TAG, "checkout token:" + token.getTokenId());
+                    LocalDataHandler.saveString(Constants.AUTH_TOKEN, token.getTokenId());
+                    getPaymentOptions(token.getTokenId());
+                }
 
-            @Override
-            public void onError(Throwable error) {
-                Log.e("xxerror", "error:" + error);
-                error.printStackTrace();
-                enableButtonBack(true);
-                String errorMessage = MessageUtil.createMessageWhenCheckoutError(PaymentMethodsActivity.this,
-                        error.getMessage(),
-                        getString(R.string.error_unable_to_connect));
-                showFallbackErrorPage(errorMessage);
-            }
-        });
+                @Override
+                public void onFailure(Token token, String reason) {
+                    Log.d(TAG, "Failed to registering transaction: " + reason);
+                    enableButtonBack(true);
+                    String errorMessage = MessageUtil.createMessageWhenCheckoutFailed(PaymentMethodsActivity.this, token.getErrorMessage());
+                    showErrorMessage(errorMessage);
+                }
+
+                @Override
+                public void onError(Throwable error) {
+                    Logger.e(TAG, "checkout>error:" + error.getMessage());
+                    showFallbackErrorPage(error, getString(R.string.maintenance_message));
+                }
+            });
+        } else {
+            SdkUIFlowUtil.showToast(this, getString(R.string.error_utilized_orderid));
+        }
     }
 
-    private void showFallbackErrorPage(String message) {
-        if (!TextUtils.isEmpty(message) && (message.contains(MessageUtil.TIMEOUT) || message.contains(MessageUtil.RETROFIT_TIMEOUT))) {
-            maintenanceTitleMessage.setText(getString(R.string.timeout_title));
+    private void showFallbackErrorPage(Throwable error, String defaultMessage) {
+        MessageInfo messageInfo = MessageUtil.createMessageOnError(this, error, defaultMessage);
+
+        if (messageInfo.statusMessage.equalsIgnoreCase(MessageUtil.TIMEOUT) || messageInfo.statusMessage.equalsIgnoreCase(MessageUtil.RETROFIT_TIMEOUT)) {
+            maintenanceTitleMessage.setText(getString(R.string.failed_title));
             maintenanceMessage.setText(getString(R.string.timeout_message));
             buttonRetry.setText(getString(R.string.try_again));
             buttonRetry.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     showMaintenanceContainer(false);
-                    getPaymentPages();
+                    if (isAlreadyUtilized()) {
+                        SdkUIFlowUtil.showToast(PaymentMethodsActivity.this, getString(R.string.error_utilized_orderid));
+                    } else {
+                        getPaymentPages();
+                    }
                 }
             });
         } else {
-            maintenanceTitleMessage.setText(getString(R.string.maintenance_title));
-            maintenanceMessage.setText(getString(R.string.maintenance_message));
+            maintenanceTitleMessage.setText(getString(R.string.failed_title));
+            maintenanceMessage.setText(messageInfo.detailsMessage);
             buttonRetry.setText(getString(R.string.maintenance_back));
 
             buttonRetry.setOnClickListener(new View.OnClickListener() {
@@ -348,13 +360,10 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 try {
                     String logoUrl = transaction.getMerchantData().getPreference().getLogoUrl();
                     String merchantName = transaction.getMerchantData().getPreference().getDisplayName();
-                    midtransSDK.setCreditCard(transaction.getCreditCard());
+                    midtransSDK.setTransaction(transaction);
                     midtransSDK.setPromoResponses(transaction.getPromos());
-                    midtransSDK.setMerchantData(transaction.getMerchantData());
                     midtransSDK.setMerchantLogo(logoUrl);
                     midtransSDK.setMerchantName(merchantName);
-                    midtransSDK.setBanksPointEnabled(transaction.getMerchantData().getPointBanks());
-                    midtransSDK.setTransaction(transaction);
                     // Prioritize custom color themes over Snap preferences
                     if (midtransSDK.getColorTheme() == null
                             || !(midtransSDK.getColorTheme() instanceof CustomColorTheme)) {
@@ -372,6 +381,23 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                         showName(merchantName);
                     }
                     setupToolbarTitle(false);
+
+                    //merchant data is already retrieved, set secure badge here
+                    int secureBadgeCode = SdkUIFlowUtil.getCreditCardIconType();
+                    switch (secureBadgeCode) {
+                        case 1:
+                            secureBadge.setImageResource(R.drawable.badge_full);
+                            break;
+                        case 3:
+                            secureBadge.setImageResource(R.drawable.badge_jcb);
+                            break;
+                        case 4:
+                            secureBadge.setImageResource(R.drawable.badge_amex);
+                            break;
+                        default:
+                            secureBadge.setImageResource(R.drawable.badge_default);
+                    }
+
                     // Directly start credit card payment if using credit card mode only
                     initPaymentMethods(transaction.getEnabledPayments());
                 } catch (NullPointerException e) {
@@ -388,13 +414,10 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
             @Override
             public void onError(Throwable error) {
-                error.printStackTrace();
+                Logger.e(TAG, "error:" + error.getMessage());
                 enableButtonBack(true);
                 progressContainer.setVisibility(View.GONE);
-                String errorMessage = MessageUtil.createMessageWhenCheckoutError(PaymentMethodsActivity.this,
-                        error.getMessage(),
-                        getString(R.string.error_snap_transaction_details));
-                showFallbackErrorPage(errorMessage);
+                showFallbackErrorPage(error, getString(R.string.maintenance_message));
             }
         });
     }
@@ -452,7 +475,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                         return;
                     }
                 }
-                startBankPayment.putExtra(SelectBankTransferActivity.EXTRA_BANK, getBankTransfers());
+                startBankPayment.putExtra(BankTransferListActivity.EXTRA_BANK_LIST, getBankTransfers());
                 startActivityForResult(startBankPayment, Constants.RESULT_CODE_PAYMENT_TRANSFER);
                 if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                         && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
@@ -615,8 +638,8 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_bank_transfer))) {
-            Intent startBankPayment = new Intent(this, SelectBankTransferActivity.class);
-            startBankPayment.putExtra(SelectBankTransferActivity.EXTRA_BANK, getBankTransfers());
+            Intent startBankPayment = new Intent(this, BankTransferListActivity.class);
+            startBankPayment.putExtra(BankTransferListActivity.EXTRA_BANK_LIST, getBankTransfers());
             startActivityForResult(startBankPayment, Constants.RESULT_CODE_PAYMENT_TRANSFER);
             if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                     && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
@@ -743,6 +766,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         Logger.d(TAG, "in onActivity result : request code is " + requestCode + "," + resultCode);
         Logger.d(TAG, "in onActivity result : data:" + data);
 
@@ -755,8 +779,10 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 if (response != null) {
                     if (response.getStatusCode().equals(getString(R.string.success_code_200))) {
                         midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_SUCCESS));
+                        setAlreadyUtilized(true);
                     } else if (response.getStatusCode().equals(getString(R.string.success_code_201))) {
                         midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_PENDING));
+                        setAlreadyUtilized(true);
                     } else {
                         midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_FAILED));
                     }
@@ -781,8 +807,10 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     if (response != null) {
                         if (response.getStatusCode().equals(getString(R.string.success_code_200))) {
                             midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_SUCCESS));
+                            setAlreadyUtilized(true);
                         } else if (response.getStatusCode().equals(getString(R.string.success_code_201))) {
                             midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_PENDING));
+                            setAlreadyUtilized(true);
                         } else {
                             midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_FAILED));
                         }
@@ -799,7 +827,6 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     }
                 }
             }
-
         } else {
             Logger.d(TAG, "failed to send result back " + requestCode);
         }
@@ -835,7 +862,11 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
-                            getPaymentPages();
+                            if (isAlreadyUtilized()) {
+                                SdkUIFlowUtil.showToast(PaymentMethodsActivity.this, getString(R.string.error_utilized_orderid));
+                            } else {
+                                getPaymentPages();
+                            }
                         }
                     })
                     .setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
@@ -858,7 +889,11 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
-                            getPaymentPages();
+                            if (isAlreadyUtilized()) {
+                                SdkUIFlowUtil.showToast(PaymentMethodsActivity.this, getString(R.string.error_utilized_orderid));
+                            } else {
+                                getPaymentPages();
+                            }
                         }
                     })
                     .setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
@@ -948,5 +983,14 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     @Override
     public void onItemShown() {
         midtransSDK.trackEvent(AnalyticsEventName.PAGE_ORDER_SUMMARY);
+    }
+
+
+    public void setAlreadyUtilized(boolean alreadyUtilized) {
+        this.alreadyUtilized = alreadyUtilized;
+    }
+
+    public boolean isAlreadyUtilized() {
+        return alreadyUtilized;
     }
 }

@@ -128,6 +128,7 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
                     && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
+
         } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_MANDIRI, false)) {
             Intent startMandiriBankPayment = new Intent(this, BankTransferActivity.class);
             startMandiriBankPayment.putExtra(getString(R.string.position), Constants.PAYMENT_METHOD_MANDIRI_BILL_PAYMENT);

@@ -100,7 +100,7 @@ public class TransactionRequest {
      */
     public TransactionRequest(String orderId, double amount, int paymentMethod) {
 
-        if (orderId != null && amount > 0) {
+        if (!TextUtils.isEmpty(orderId) && amount > 0) {
             this.orderId = orderId;
             this.amount = amount;
             this.paymentMethod = paymentMethod;
@@ -116,7 +116,7 @@ public class TransactionRequest {
      */
     public TransactionRequest(String orderId, double amount) {
 
-        if (orderId != null && amount > 0) {
+        if (!TextUtils.isEmpty(orderId) && amount > 0) {
             this.orderId = orderId;
             this.amount = amount;
             this.paymentMethod = Constants.PAYMENT_METHOD_NOT_SELECTED;

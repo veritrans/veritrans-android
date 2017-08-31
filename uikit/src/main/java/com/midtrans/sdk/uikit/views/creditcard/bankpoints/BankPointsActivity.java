@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
@@ -34,25 +35,27 @@ public class BankPointsActivity extends BasePaymentActivity implements BankPoint
     public static final String EXTRA_BANK = "point.bank";
 
     public static final String EXTRA_DATA_POINT = "point.redeemed";
+    private static final String TAG = BankPointsActivity.class.getSimpleName();
 
-    private EditText redeemedPointField;
-    private TextView totalPointsText;
-    private TextView amountToPayText;
-    private ImageView bankPointLogo;
-    private FancyButton redeemPointButton;
+    private EditText fieldRedeemedPoint;
+
+    private TextView textTotalPoints;
+    private TextView textAmountToPay;
+    private DefaultTextView textTitle;
+
+    private ImageView imageBankPointLogo;
+
+    private FancyButton buttonRedeemPoint;
     private FancyButton containerAmount;
     private FancyButton containerTotalPoint;
 
     private BankPointsPresenter presenter;
-    private DefaultTextView titleHeaderTextView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bank_points);
         initPresenter();
-        initViews();
-        initThemes();
+        setContentView(R.layout.activity_bank_points);
         initRedeemedPointsField();
         bindValues();
         updateAmountToPayText();
@@ -67,22 +70,24 @@ public class BankPointsActivity extends BasePaymentActivity implements BankPoint
     }
 
 
-    private void initViews() {
-        redeemedPointField = (AppCompatEditText) findViewById(R.id.redeemed_point_field);
-        totalPointsText = (TextView) findViewById(R.id.text_total_point);
-        amountToPayText = (TextView) findViewById(R.id.text_amount_to_pay);
-        titleHeaderTextView = (DefaultTextView) findViewById(R.id.text_page_title);
+    @Override
+    public void bindViews() {
+        fieldRedeemedPoint = (AppCompatEditText) findViewById(R.id.redeemed_point_field);
+        textTotalPoints = (TextView) findViewById(R.id.text_total_point);
+        textAmountToPay = (TextView) findViewById(R.id.text_amount_to_pay);
+        textTitle = (DefaultTextView) findViewById(R.id.text_page_title);
 
-        bankPointLogo = (ImageView) findViewById(R.id.bank_point_logo);
-        redeemPointButton = (FancyButton) findViewById(R.id.btn_redeem_point);
+        imageBankPointLogo = (ImageView) findViewById(R.id.bank_point_logo);
+        buttonRedeemPoint = (FancyButton) findViewById(R.id.btn_redeem_point);
         containerAmount = (FancyButton) findViewById(R.id.container_amount);
         containerTotalPoint = (FancyButton) findViewById(R.id.container_total_point);
 
     }
 
-    private void initThemes() {
-        setPrimaryBackgroundColor(redeemPointButton);
-        setPrimaryBackgroundColor(redeemPointButton);
+    @Override
+    public void initTheme() {
+        setPrimaryBackgroundColor(buttonRedeemPoint);
+        setPrimaryBackgroundColor(buttonRedeemPoint);
         setSecondaryBackgroundColor(containerAmount);
         containerAmount.setAlpha(0.5f);
         setSecondaryBackgroundColor(containerTotalPoint);
@@ -91,12 +96,12 @@ public class BankPointsActivity extends BasePaymentActivity implements BankPoint
         // Set font into pay now button
         String fonthPath = presenter.getSemiBoldFontPath();
         if (!TextUtils.isEmpty(fonthPath)) {
-            redeemPointButton.setCustomTextFont(fonthPath);
+            buttonRedeemPoint.setCustomTextFont(fonthPath);
         }
     }
 
     private void initRedeemedPointsField() {
-        redeemedPointField.addTextChangedListener(new TextWatcher() {
+        fieldRedeemedPoint.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -110,17 +115,23 @@ public class BankPointsActivity extends BasePaymentActivity implements BankPoint
             @Override
             public void afterTextChanged(Editable editable) {
                 String inputString = editable.toString();
-                if (editable.length() == 0) {
-                    editable.insert(0, "0");
-                } else if (inputString.length() > 1 && inputString.charAt(0) == '0') {
-                    editable.delete(0, 1);
+
+                try {
+                    if (editable.length() == 0) {
+                        editable.insert(0, "0");
+                    } else if (inputString.length() > 1 && inputString.charAt(0) == '0') {
+                        editable.delete(0, 1);
+                    }
+
+                } catch (RuntimeException e) {
+                    Logger.e(TAG, "fieldRedeemedPoint:" + e.getMessage());
                 }
 
                 if (presenter.isValidInputPoint(inputString)) {
                     presenter.setLatestValidPoint(inputString);
                 } else {
-                    redeemedPointField.setText(presenter.getLatestValidPoint());
-                    redeemedPointField.setSelection(redeemedPointField.getText().length());
+                    fieldRedeemedPoint.setText(presenter.getLatestValidPoint());
+                    fieldRedeemedPoint.setSelection(fieldRedeemedPoint.getText().length());
                 }
                 updateAmountToPayText();
             }
@@ -130,10 +141,10 @@ public class BankPointsActivity extends BasePaymentActivity implements BankPoint
             @Override
             public void run() {
                 // Request focus for edit text
-                redeemedPointField.requestFocus();
-                redeemedPointField.setSelection(redeemedPointField.getText().toString().length());
+                fieldRedeemedPoint.requestFocus();
+                fieldRedeemedPoint.setSelection(fieldRedeemedPoint.getText().toString().length());
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(redeemedPointField, InputMethodManager.SHOW_IMPLICIT);
+                imm.showSoftInput(fieldRedeemedPoint, InputMethodManager.SHOW_IMPLICIT);
             }
         }, 500);
     }
@@ -147,9 +158,9 @@ public class BankPointsActivity extends BasePaymentActivity implements BankPoint
         }
         presenter.setLatestValidPoint(formattedBalance);
         presenter.calculateAmount(presenter.getPointBalance());
-        redeemedPointField.setText(formattedBalance);
-        totalPointsText.setText(formattedBalance);
-        amountToPayText.setText(getString(R.string.prefix_money, Utils.getFormattedAmount(presenter.getAmountToPay())));
+        fieldRedeemedPoint.setText(formattedBalance);
+        textTotalPoints.setText(formattedBalance);
+        textAmountToPay.setText(getString(R.string.prefix_money, Utils.getFormattedAmount(presenter.getAmountToPay())));
     }
 
     private void initBankPointLogoAndTitle() {
@@ -157,7 +168,7 @@ public class BankPointsActivity extends BasePaymentActivity implements BankPoint
         switch (bank) {
             case BankType.BNI:
                 setHeaderTitle(getString(R.string.redeem_bank_point_title, getString(R.string.bank_bni)));
-                bankPointLogo.setImageResource(R.drawable.bni_badge);
+                imageBankPointLogo.setImageResource(R.drawable.bni_badge);
                 break;
             default:
                 break;
@@ -165,11 +176,11 @@ public class BankPointsActivity extends BasePaymentActivity implements BankPoint
     }
 
     private void setHeaderTitle(String title) {
-        titleHeaderTextView.setText(title);
+        textTitle.setText(title);
     }
 
     private void initRedeemPointButton() {
-        redeemPointButton.setOnClickListener(new View.OnClickListener() {
+        buttonRedeemPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 redeemPoint();
@@ -178,12 +189,12 @@ public class BankPointsActivity extends BasePaymentActivity implements BankPoint
     }
 
     private void updateAmountToPayText() {
-        amountToPayText.setText(getString(R.string.prefix_money, Utils.getFormattedAmount(presenter.getAmountToPay())));
+        textAmountToPay.setText(getString(R.string.prefix_money, Utils.getFormattedAmount(presenter.getAmountToPay())));
     }
 
     private void redeemPoint() {
         SdkUIFlowUtil.hideKeyboard(this);
-        String strPoint = redeemedPointField.getText().toString().trim();
+        String strPoint = fieldRedeemedPoint.getText().toString().trim();
         float redeemedPoint = Float.valueOf(strPoint);
         finishBankPoint(redeemedPoint);
     }

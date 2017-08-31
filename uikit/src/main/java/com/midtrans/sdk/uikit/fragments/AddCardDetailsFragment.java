@@ -51,6 +51,7 @@ import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.activities.CreditDebitCardFlowActivity;
 import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
+import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.widgets.AspectRatioImageView;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
@@ -575,7 +576,7 @@ public class AddCardDetailsFragment extends Fragment {
                                         etExpiryDate.setText(getString(R.string.expiry_month_format, etExpiryDate.getText().toString()));
                                         etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
                                     } else {
-                                        etExpiryDate.setText(getString(R.string.expiry_month_int_format, Constants.MONTH_COUNT));
+                                        etExpiryDate.setText(getString(R.string.expiry_month_int_format, UiKitConstants.MONTH_COUNT));
                                         etExpiryDate.setSelection(etExpiryDate.getText().toString().length());
                                     }
 

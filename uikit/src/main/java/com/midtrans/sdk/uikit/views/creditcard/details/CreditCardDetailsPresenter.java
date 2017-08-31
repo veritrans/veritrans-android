@@ -1,17 +1,15 @@
 package com.midtrans.sdk.uikit.views.creditcard.details;
 
+import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.midtrans.sdk.corekit.callback.BankBinsCallback;
 import com.midtrans.sdk.corekit.callback.BanksPointCallback;
 import com.midtrans.sdk.corekit.callback.CardTokenCallback;
-import com.midtrans.sdk.corekit.callback.DeleteCardCallback;
 import com.midtrans.sdk.corekit.callback.GetTransactionStatusCallback;
 import com.midtrans.sdk.corekit.callback.SaveCardCallback;
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
-import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
@@ -28,9 +26,10 @@ import com.midtrans.sdk.corekit.models.snap.BanksPointResponse;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
 import com.midtrans.sdk.corekit.models.snap.SavedToken;
-import com.midtrans.sdk.corekit.models.snap.Transaction;
+import com.midtrans.sdk.corekit.models.snap.TransactionDetails;
 import com.midtrans.sdk.corekit.models.snap.TransactionStatusResponse;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.abstracts.BaseCreditCardPresenter;
 import com.midtrans.sdk.uikit.models.CreditCardTransaction;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
@@ -42,11 +41,9 @@ import java.util.List;
  * Created by ziahaqi on 7/12/17.
  */
 
-public class CreditCardDetailsPresenter {
+public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCardDetailsView> {
     private static final String TAG = CreditCardDetailsPresenter.class.getSimpleName();
-    private CreditCardDetailsView view;
     private Context context;
-    CreditCardTransaction creditCardTransaction;
     private TokenDetailsResponse creditCardToken;
     private TransactionResponse transactionResponse;
     private CardTokenRequest cardTokenRequest;
@@ -57,17 +54,10 @@ public class CreditCardDetailsPresenter {
     public CreditCardDetailsPresenter(Context context, CreditCardDetailsView view) {
         this.view = view;
         this.creditCardTransaction = new CreditCardTransaction();
-        initCreditCardTransaction(context);
-    }
-
-    public void initCreditCardTransaction(Context context) {
-        CreditCard creditCard = MidtransSDK.getInstance().getCreditCard();
-        List<BankBinsResponse> bankBins = SdkUIFlowUtil.getBankBins(context);
         this.context = context;
-        this.creditCardTransaction.setProperties(creditCard, new ArrayList<>(bankBins));
+        initCreditCardTransaction(context);
         fetchBankBins();
     }
-
 
     private void fetchBankBins() {
         MidtransSDK.getInstance().getBankBins(new BankBinsCallback() {
@@ -86,26 +76,6 @@ public class CreditCardDetailsPresenter {
                 // do nothing
             }
         });
-    }
-
-
-    public boolean isSavedCardEnabled() {
-        TransactionRequest request = MidtransSDK.getInstance().getTransactionRequest();
-        if (request != null) {
-            String cardClickType = request.getCardClickType();
-            if (TextUtils.isEmpty(cardClickType)) {
-                if (MidtransSDK.getInstance().getCreditCard().isSaveCard()) {
-                    return true;
-                }
-            } else {
-                if (cardClickType.equals(context.getString(R.string.card_click_type_one_click)) ||
-                        cardClickType.equals(context.getString(R.string.card_click_type_two_click))) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
     }
 
     public boolean isSecurePayment() {
@@ -129,10 +99,6 @@ public class CreditCardDetailsPresenter {
     }
 
 
-    public String getBankByCardBin(String cardBin) {
-        return creditCardTransaction.getBankByBin(cardBin);
-    }
-
     public boolean isMandiriDebitCard(String cardBin) {
         return creditCardTransaction.isMandiriCardDebit(cardBin);
     }
@@ -153,17 +119,15 @@ public class CreditCardDetailsPresenter {
         return creditCardTransaction.isInstallmentValid();
     }
 
-
-    public void getCardToken(String cardNumber, String month, String year, String cvv, boolean savedCard) {
-
-    }
-
-
     public Integer getGrossAmount() {
-        Transaction transacton = MidtransSDK.getInstance().getTransaction();
-        if (transacton != null) {
-            return transacton.getTransactionDetails().getAmount();
+        MidtransSDK sdk = MidtransSDK.getInstance();
+        if (sdk != null) {
+            TransactionDetails transactionDetails = sdk.getTransaction().getTransactionDetails();
+            if (transactionDetails != null) {
+                return transactionDetails.getAmount();
+            }
         }
+
         return 0;
     }
 
@@ -319,89 +283,27 @@ public class CreditCardDetailsPresenter {
         getCardToken(request);
     }
 
-    public void deleteSavedCard(SaveCardRequest savedCard) {
-        MidtransSDK midtransSDK = MidtransSDK.getInstance();
-        if (midtransSDK.isEnableBuiltInTokenStorage()) {
-            deleteCardFromTokenStorage(savedCard);
-        } else {
-            List<SavedToken> savedTokens = midtransSDK.getCreditCard().getSavedTokens();
-            List<SaveCardRequest> savedCards = SdkUIFlowUtil.convertSavedTokens(savedTokens);
-
-            ArrayList<SaveCardRequest> cardList = new ArrayList<>();
-            if (savedCards != null && !savedCards.isEmpty()) {
-                cardList.addAll(savedCards);
-                for (int i = 0; i < cardList.size(); i++) {
-                    SaveCardRequest saveCard = cardList.get(i);
-                    if (saveCard != null) {
-                        if (!TextUtils.isEmpty(saveCard.getMaskedCard()) && saveCard.getMaskedCard().equalsIgnoreCase(savedCard.getMaskedCard())) {
-                            cardList.remove(cardList.get(i));
-                        }
-                    }
-                }
-            }
-
-            deleteCardFromMerchantServer(cardList, savedCard.getMaskedCard());
-        }
-    }
-
-    private void deleteCardFromMerchantServer(ArrayList<SaveCardRequest> cardList, final String maskedCard) {
-        MidtransSDK midtransSDK = MidtransSDK.getInstance();
-        UserDetail userDetail = LocalDataHandler.readObject(UiKitConstants.KEY_USER_DETAILS, UserDetail.class);
-        midtransSDK.saveCards(userDetail.getUserId(), cardList, new SaveCardCallback() {
-            @Override
-            public void onSuccess(SaveCardResponse response) {
-                view.onCardDeletionSuccess(maskedCard);
-            }
-
-            @Override
-            public void onFailure(String reason) {
-                view.onCardDeletionFailed();
-            }
-
-            @Override
-            public void onError(Throwable error) {
-                view.onCardDeletionFailed();
-            }
-        });
-    }
-
-    private void deleteCardFromTokenStorage(final SaveCardRequest savedCard) {
-        MidtransSDK midtransSDK = MidtransSDK.getInstance();
-        midtransSDK.deleteCard(midtransSDK.readAuthenticationToken(), savedCard.getMaskedCard(), new DeleteCardCallback() {
-            @Override
-            public void onSuccess(Void object) {
-                view.onCardDeletionSuccess(savedCard.getMaskedCard());
-            }
-
-            @Override
-            public void onFailure(Void object) {
-                view.onCardDeletionFailed();
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-                view.onCardDeletionFailed();
-            }
-        });
+    public void deleteSavedCard(SaveCardRequest request) {
+        deleteSavedCard(request, view);
     }
 
     private void startSavingCreditCards(List<SaveCardRequest> saveCardRequest) {
-        UserDetail userDetail = LocalDataHandler.readObject(Constants.KEY_USER_DETAILS, UserDetail.class);
+        UserDetail userDetail = LocalDataHandler.readObject(UiKitConstants.KEY_USER_DETAILS, UserDetail.class);
         MidtransSDK.getInstance().saveCards(userDetail.getUserId(), new ArrayList<>(saveCardRequest),
                 new SaveCardCallback() {
                     @Override
                     public void onSuccess(SaveCardResponse response) {
-                        Log.d(TAG, "savecards:success");
+                        Logger.d(TAG, "savecards:success");
                     }
 
                     @Override
                     public void onFailure(String reason) {
-                        Log.d(TAG, "savecards:failed");
+                        Logger.d(TAG, "savecards:failed");
                     }
 
                     @Override
                     public void onError(Throwable error) {
-                        Log.d(TAG, "savecards:error");
+                        Logger.d(TAG, "savecards:error");
                     }
                 });
     }
@@ -419,7 +321,7 @@ public class CreditCardDetailsPresenter {
             @Override
             public void onFailure(TransactionResponse response, String reason) {
                 transactionResponse = response;
-                view.onPaymentFailed(response);
+                view.onPaymentFailure(response);
             }
 
             @Override
@@ -441,12 +343,12 @@ public class CreditCardDetailsPresenter {
 
             @Override
             public void onFailure(TokenDetailsResponse response, String reason) {
-                view.onGetCardTokenFailed();
+                view.onGetCardTokenFailure();
             }
 
             @Override
             public void onError(Throwable error) {
-                view.onGetCardTokenFailed();
+                view.onGetCardTokenFailure();
             }
         });
     }
@@ -463,16 +365,16 @@ public class CreditCardDetailsPresenter {
 
                 @Override
                 public void onFailure(String reason) {
-                    view.onGetBankPointFailed();
+                    view.onGetBankPointFailure();
                 }
 
                 @Override
                 public void onError(Throwable error) {
-                    view.onGetBankPointFailed();
+                    view.onGetBankPointFailure();
                 }
             });
         } else {
-            view.onGetBankPointFailed();
+            view.onGetBankPointFailure();
         }
     }
 
@@ -516,10 +418,11 @@ public class CreditCardDetailsPresenter {
 
     public boolean isBankPointAvailable(String cardBin) {
         String bank = creditCardTransaction.getBankByBin(cardBin);
-        Transaction transaction = MidtransSDK.getInstance().getTransaction();
+        List<String> bankPoints = MidtransSDK.getInstance().getBanksPointEnabled();
 
         return !TextUtils.isEmpty(bank)
-                && transaction.getMerchantData().getPointBanks().contains(bank)
+                && bankPoints != null
+                && bankPoints.contains(bank)
                 && bank.equals(BankType.BNI);
     }
 
@@ -559,7 +462,7 @@ public class CreditCardDetailsPresenter {
 
                 TransactionResponse transactionResponse = convertTransactionStatus(response);
                 CreditCardDetailsPresenter.this.transactionResponse = transactionResponse;
-                view.onGetTransactionStatusFailed(transactionResponse);
+                view.onGetTransactionStatusFailure(transactionResponse);
             }
 
             @Override
@@ -576,5 +479,15 @@ public class CreditCardDetailsPresenter {
                 response.getTransactionTime(), response.getTransactionStatus());
         this.transactionResponse = transactionResponse;
         return transactionResponse;
+    }
+
+    public void startScanCard(Activity activity, int intentRequestScanCard) {
+        if (isCardScannerAvailable()) {
+            MidtransSDK.getInstance().getExternalScanner().startScan(activity, intentRequestScanCard);
+        }
+    }
+
+    public boolean isCardScannerAvailable() {
+        return MidtransSDK.getInstance().getExternalScanner() != null;
     }
 }

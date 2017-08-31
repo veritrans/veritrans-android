@@ -1,6 +1,5 @@
 package com.midtrans.demo;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -13,11 +12,17 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Toast;
 
 import com.midtrans.demo.models.SavedCard;
 import com.midtrans.demo.models.SavedCards;
 import com.midtrans.demo.widgets.DemoButton;
+import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
+import com.midtrans.sdk.corekit.core.Logger;
+import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.models.CardRegistrationResponse;
+import com.midtrans.sdk.corekit.utilities.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,10 +31,11 @@ import java.util.List;
  * Created by ziahaqi on 5/3/17.
  */
 
-public class DemoSavedCardsActivity extends AppCompatActivity {
+public class DemoSavedCardsActivity extends AppCompatActivity implements CardRegistrationCallback {
 
     private static final String SAVED_CARDS_TYPE = "saved.cards";
     private static final int REQUEST_REGISTER = 123;
+    private static final String TAG = DemoSavedCardsActivity.class.getSimpleName();
 
     private RecyclerView listSavedCard;
     private DemoButton buttonDemo;
@@ -170,8 +176,7 @@ public class DemoSavedCardsActivity extends AppCompatActivity {
     }
 
     private void startCardRegisterActivity() {
-        Intent intent = new Intent(DemoSavedCardsActivity.this, DemoCardRegisterActivity.class);
-        startActivityForResult(intent, REQUEST_REGISTER);
+        MidtransSDK.getInstance().UiCardRegistration(this, this);
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
     }
 
@@ -181,25 +186,30 @@ public class DemoSavedCardsActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_REGISTER && resultCode == RESULT_OK) {
-            SavedCard savedCard = (SavedCard) data.getSerializableExtra(DemoCardRegisterActivity.CARD_REGISTER_RESPONSE);
-            if (savedCard != null) {
-                updateSavedCards(savedCard);
-            }
-        } else {
-            if (savedCards == null || savedCards.isEmpty()) {
-                finish();
-            }
-        }
-    }
 
     private void updateSavedCards(SavedCard savedCard) {
         savedCards.add(savedCard);
         cardsAdapter.setData(savedCards);
 
         LocalDataHandler.saveObject(SAVED_CARDS_TYPE, new SavedCards(savedCards));
+    }
+
+    @Override
+    public void onSuccess(CardRegistrationResponse response) {
+        Toast.makeText(this, getString(R.string.success), Toast.LENGTH_SHORT).show();
+        String cardType = Utils.getCardType(response.getMaskedCard());
+        SavedCard savedCard = new SavedCard(cardType, response.getSavedTokenId(), response.getTransactionId(), response.getMaskedCard());
+        updateSavedCards(savedCard);
+    }
+
+    @Override
+    public void onFailure(CardRegistrationResponse response, String reason) {
+        Logger.d(TAG, "card registration:onFailure()");
+
+    }
+
+    @Override
+    public void onError(Throwable error) {
+        Logger.d(TAG, "card registration:error()");
     }
 }

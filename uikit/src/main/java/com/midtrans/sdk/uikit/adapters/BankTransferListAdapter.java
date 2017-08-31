@@ -1,7 +1,6 @@
 package com.midtrans.sdk.uikit.adapters;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +15,7 @@ import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author rakawm
@@ -23,14 +23,14 @@ import java.util.ArrayList;
 public class BankTransferListAdapter extends RecyclerView.Adapter<BankTransferListAdapter.BankTransferViewHolder> {
     private static final String TAG = BankTransferListAdapter.class.getSimpleName();
 
-    private ArrayList<BankTransferModel> mData = new ArrayList<>();
+    private List<BankTransferModel> mData = new ArrayList<>();
     private BankTransferAdapterListener listener;
 
     public BankTransferListAdapter(BankTransferAdapterListener listener) {
         this.listener = listener;
     }
 
-    public void setData(ArrayList<BankTransferModel> banktransfers) {
+    public void setData(List<BankTransferModel> banktransfers) {
         this.mData.clear();
         this.mData.addAll(banktransfers);
         this.notifyDataSetChanged();

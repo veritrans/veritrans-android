@@ -1,0 +1,30 @@
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:fitsSystemWindows="true">
+
+    <include layout="@layout/appbar_payment" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <include
+            android:id="@+id/container_item_details"
+            layout="@layout/layout_total_amount" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_bank_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/container_item_details">
+
+        </android.support.v7.widget.RecyclerView>
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

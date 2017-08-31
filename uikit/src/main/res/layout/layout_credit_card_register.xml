@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/sixteen_dp"
+    android:paddingRight="@dimen/sixteen_dp">
+
+    <RelativeLayout
+        android:id="@+id/card_number_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/container_edit_card_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edit_card_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:digits="0123456789 "
+                android:hint="@string/hint_card_number"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:maxLength="19"
+                android:nextFocusDown="@+id/et_exp_date"
+                android:singleLine="true" />
+        </android.support.design.widget.TextInputLayout>
+
+        <LinearLayout
+            android:paddingTop="@dimen/eight_dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true">
+
+            <com.midtrans.sdk.uikit.widgets.AspectRatioImageView
+                android:id="@+id/image_bank_logo"
+                android:layout_width="@dimen/bank_logo_size"
+                android:layout_height="@dimen/bank_logo_size"
+                android:layout_marginEnd="@dimen/four_dp"
+                android:layout_marginRight="@dimen/four_dp"
+                tools:src="@drawable/bri" />
+
+            <com.midtrans.sdk.uikit.widgets.AspectRatioImageView
+                android:id="@+id/image_card_logo"
+                android:layout_width="@dimen/payment_logo_size"
+                android:layout_height="@dimen/payment_logo_size"
+                android:layout_marginEnd="@dimen/four_dp"
+                android:layout_marginRight="@dimen/four_dp"
+                tools:src="@drawable/ic_visa" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/container_card_expiry_cvv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/card_number_container"
+        android:layout_marginTop="@dimen/eight_dp"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/eight_dp"
+        android:weightSum="1">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.6">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/container_card_expiry"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edit_card_expiry"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:hint="@string/hint_expiry_date"
+                    android:imeOptions="actionNext"
+                    android:inputType="date"
+                    android:lines="1"
+                    android:maxLength="7"
+                    android:nextFocusDown="@+id/et_cvv" />
+            </android.support.design.widget.TextInputLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/eight_dp"
+            android:layout_marginStart="@dimen/eight_dp"
+            android:layout_weight="0.4">
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/container_card_cvv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edit_card_cvv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_cvv"
+                    android:imeOptions="actionDone"
+                    android:inputType="numberPassword"
+                    android:lines="1"
+                    android:maxLength="6" />
+
+            </android.support.design.widget.TextInputLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
+
+    <com.midtrans.sdk.uikit.widgets.FancyButton
+        android:id="@+id/button_scan_card"
+        style="@style/ButtonSecondary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/container_card_expiry_cvv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="19dp"
+        android:visibility="gone"
+        app:fb_borderColor="@color/navy_blue.primary_dark"
+        app:fb_iconColor="@color/navy_blue.primary_dark"
+        app:fb_iconResource="@drawable/ic_scan_cam"
+        app:fb_text="@string/btn_scan_card"
+        app:fb_textColor="@color/navy_blue.primary_dark"
+        tools:visibility="visible" />
+</RelativeLayout>

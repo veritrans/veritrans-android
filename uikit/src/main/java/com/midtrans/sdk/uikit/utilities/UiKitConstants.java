@@ -15,6 +15,8 @@ public class UiKitConstants {
     public static final int INTENT_CODE_3DS_PAYMENT = 100;
     public static final int INTENT_CODE_RBA_AUTHENTICATION = 102;
     public static final int INTENT_REQUEST_SCAN_CARD = 101;
+    public static final int INTENT_CODE_PAYMENT_STATUS = 210;
+    public static final int INTENT_CODE_PAYMENT = 108;
 
 
     public static final String KEY_USER_DETAILS = "user_details";
@@ -23,6 +25,16 @@ public class UiKitConstants {
     //environment
     public static final String ENVIRONMENT_DEVELOPMENT = "development";
     public static final String ENVIRONMENT_PRODUCTION = "production";
+
+    // response status code
+    public static final String STATUS_CODE_200 = "200";
+    public static final String STATUS_CODE_201 = "201";
+    public static final String STATUS_CODE_400 = "400";
+    public static final String STATUS_CODE_404 = "404";
+    public static final String STATUS_CODE_500 = "500";
+    public static final String STATUS_CODE_503 = "503";
+    public static final String STATUS_CODE_504 = "504";
+
 
     // payment status
     public static final String STATUS_SUCCESS = "success";
@@ -34,10 +46,10 @@ public class UiKitConstants {
     public static final String STATUS_CHALLENGE = "challenge";
     public static final String STATUS_DENY = "deny";
 
-    public static final String STATUS_CODE_500 = "500";
-
 
     // webview url callback pattern
     public static final String CALLBACK_PATTERN_RBA = "/token/rba/callback/";
     public static final String CALLBACK_PATTERN_3DS = "/token/callback/";
+
+    public static final int MONTH_COUNT = 12;
 }

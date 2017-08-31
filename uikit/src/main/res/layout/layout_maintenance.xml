@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
-            android:text="@string/timeout_title"
+            android:text="@string/failed_title"
             android:textSize="28sp" />
 
         <com.midtrans.sdk.uikit.widgets.DefaultTextView

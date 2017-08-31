@@ -751,7 +751,7 @@
     <string name="checkout_error_empty_response">Empty response from server</string>
     <string name="complete_payment_via_xl_tunai">Complete Payment via XL Tunai</string>
     <string name="payment_failed">Payment failed! Please try again.</string>
-    <string name="timeout_title">oops!</string>
+    <string name="failed_title">oops!</string>
     <string name="try_again">Try Again</string>
     <string name="timeout_message">This request too long process. Please try again.</string>
     <string name="maintenance_back">Okey, bring me back</string>
@@ -768,5 +768,27 @@
     <string name="total_bank_point">Your total points</string>
     <string name="status_rba_unsuccessful">Payment has not been made</string>
     <string name="message_error_internal_server">Sorry, there is an internal problem. Please try again or try another payment method</string>
+    <string name="mandiri_bill">Mandiri</string>
+    <string name="message_virtual_account">Virtual Account Number</string>
+    <string name="message_card_register_error">Failed to save card information</string>
+    <string name="message_card_register_success">Card information successfully saved</string>
+    <string name="save_card">Save Card</string>
+
+    <string name="details_message_expired">The order is no longer available and thus cannot be processed. Retry ordering from the store page.</string>
+    <string name="status_message_expired">Your order has expired</string>
+    <string name="status_message_invalid">Transaction is invalid</string>
+    <string name="details_message_invalid">Transaction cannot be proccessed. Make sure your payment informations is correct</string>
+    <string name="status_message_internal_error">Internal problem</string>
+    <string name="detail_message_payment_error">Failed to get response from server</string>
+    <string name="status_message_payment_error">Payment Failed</string>
+    <string name="status_message_not_found">not found</string>
+    <string name="detail_message_not_found">Failed to connect to server</string>
+    <string name="detail_message_token_notfound">Transaction data not found</string>
+    <string name="status_message_token_notfound">Token not found</string>
+    <string name="status_message_network_unavailable">Network unavailable</string>
+    <string name="detail_message_network_unavailable">Sorry, network unavailable</string>
+    <string name="card_registration">Card Registration</string>
+    <string name="error_utilized_orderid">Sorry, the order id already utilized</string>
+    <string name="processing_card_registration">Processing card registration</string>
 
 </resources>
