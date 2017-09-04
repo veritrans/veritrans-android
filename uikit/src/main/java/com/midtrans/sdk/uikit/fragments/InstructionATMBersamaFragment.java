@@ -5,14 +5,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.midtrans.sdk.uikit.R;
 
 /**
  * Displays ATM bersama payment instruction.
- *
  * @author rakawm
+ * Deprecated, use {@link com.midtrans.sdk.uikit.fragments.InstructionOtherBankFragment} instead
  */
+@Deprecated
 public class InstructionATMBersamaFragment extends Fragment {
 
     @Override

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="atm_bersama_banks">
+        <item>Bank Aceh</item>
+        <item>Bank Agroniaga</item>
+        <item>Bank Andara</item>
+        <item>Bank ANZ</item>
+        <item>Bank Artos Indonesia</item>
+        <item>Bank Bengkulu</item>
+        <item>Bank BJB</item>
+        <item>Bank BJB Syariah</item>
+        <item>Bank Bukopin</item>
+        <item>Bank Capital</item>
+        <item>Bank CIMB Niaga</item>
+        <item>Bank Commonwealth</item>
+        <item>Bank Danamon</item>
+        <item>Bank DBS</item>
+        <item>Bank Dinar</item>
+        <item>Bank DKI</item>
+        <item>Bank Ekonomi</item>
+        <item>Bank Ganesha</item>
+        <item>Bank HSBC</item>
+        <item>Bank ICBC</item>
+        <item>Bank Ina Perdana</item>
+        <item>Bank Index</item>
+        <item>Bank J Trust</item>
+        <item>Bank Jambi</item>
+        <item>Bank Jateng</item>
+        <item>Bank Jatim</item>
+        <item>Bank Kalbar</item>
+        <item>Bank Kalsel</item>
+        <item>Bank Kaltim</item>
+        <item>Bank Kesejahteraan</item>
+        <item>Bank Lampung</item>
+        <item>Bank Maluku</item>
+        <item>Bank Mandiri</item>
+        <item>Bank Mayapada Internasional</item>
+        <item>Bank Maybank Indonesia</item>
+        <item>Bank Mayora</item>
+        <item>Bank Mega Syariah</item>
+        <item>Bank Mega</item>
+        <item>Bank Mestika</item>
+        <item>Bank MNC Internasional</item>
+        <item>Bank Muamalat</item>
+        <item>Bank Nagari</item>
+        <item>Bank Negara Indonesia (BNI)</item>
+        <item>Bank NTB</item>
+        <item>Bank NTT</item>
+        <item>Bank Nusantara Parahyangan (BNP)</item>
+        <item>Bank of China</item>
+        <item>Bank of India Indonesia</item>
+        <item>Bank Panin Syariah</item>
+        <item>Bank Panin</item>
+        <item>Bank Papua</item>
+        <item>Bank Permata</item>
+        <item>Bank Pundi Indonesia</item>
+        <item>Bank QNB Kesawan</item>
+        <item>Bank Rakyat Indonesia (BRI)</item>
+        <item>Bank Riau Kepri</item>
+        <item>Bank Saudara</item>
+        <item>Bank Sinarmas</item>
+        <item>Bank Sulselbar</item>
+        <item>Bank Sulteng</item>
+        <item>Bank Sultra</item>
+        <item>Bank Sulut</item>
+        <item>Bank Sumsel Babel</item>
+        <item>Bank Sumut</item>
+        <item>Bank Syariah Mandiri</item>
+        <item>Bank Tabungan Negara (BTN)</item>
+        <item>Bank Tabungan Pensiunan (BTPN)</item>
+        <item>Bank Woori Saudara (BWS)</item>
+        <item>BPD Bali</item>
+        <item>BPD DIY</item>
+        <item>BPD Kalteng</item>
+        <item>BPR Bank Supra</item>
+        <item>BPR Eka Bumi Artha</item>
+        <item>BPR KS</item>
+        <item>BPR Semoga Jaya Artha</item>
+        <item>BRI Syariah</item>
+        <item>Citibank</item>
+        <item>ICB Bumiputera</item>
+        <item>Nobu Bank</item>
+        <item>OCBC NISP</item>
+        <item>Rabobank</item>
+        <item>Standard Chartered</item>
+        <item>UOB Indonesia</item>
+    </string-array>
+    
+    <string-array name="prima_banks">
+        <item>Bank Aceh Syariah</item>
+        <item>Bank Agris</item>
+        <item>Bank ANDA</item>
+        <item>Bank ANZ</item>
+        <item>Bank Artha Graha</item>
+        <item>Bank Banten</item>
+        <item>Bank BCA</item>
+        <item>Bank BCA Syariah</item>
+        <item>Bank BJB</item>
+        <item>Bank BJB Syariah</item>
+        <item>Bank BNI</item>
+        <item>Bank BNP</item>
+        <item>Bank BPD DIY</item>
+        <item>Bank BRI</item>
+        <item>Bank BRI Syariah</item>
+        <item>Bank BTN</item>
+        <item>Bank BTPN</item>
+        <item>Bank BTPN Syariah</item>
+        <item>Bank Bukopin</item>
+        <item>Bank Bumi Arta</item>
+        <item>Bank CIMB Niaga</item>
+        <item>Bank Commonwealth</item>
+        <item>Bank CTBC Indonesia</item>
+        <item>Bank Danamon Indonesia</item>
+        <item>Bank DKI</item>
+        <item>Bank Ekonomi</item>
+        <item>Bank Jasa Jakarta</item>
+        <item>Bank Jateng</item>
+        <item>Bank Jatim</item>
+        <item>Bank JTrust Indonesia</item>
+        <item>Bank Kalbar</item>
+        <item>Bank Kaltim</item>
+        <item>Bank KEB Hana Indonesia</item>
+        <item>Bank Mandiri</item>
+        <item>Bank Maspion</item>
+        <item>Bank Mayapada</item>
+        <item>Bank Maybank Indonesia</item>
+        <item>Bank Mega Syariah</item>
+        <item>Bank Mega</item>
+        <item>Bank MNC</item>
+        <item>Bank Muamalat</item>
+        <item>Bank Multiarta Sentosa</item>
+        <item>Bank Nagari</item>
+        <item>Bank National Nobu</item>
+        <item>Bank OCBC NISP</item>
+        <item>Bank of Tokyo — Mitsubishi</item>
+        <item>Bank Panin</item>
+        <item>Bank Papua</item>
+        <item>Bank Permata</item>
+        <item>Bank Rabobank</item>
+        <item>Bank Riaukepri</item>
+        <item>Bank Royal</item>
+        <item>Bank Sahabat Sampoerna</item>
+        <item>Bank SBI Indonesia</item>
+        <item>Bank Sinarmas</item>
+        <item>Bank Sulselbar</item>
+        <item>Bank Sumselbabel</item>
+        <item>Bank Syariah Bukopin</item>
+        <item>Bank Syariah Mandiri</item>
+        <item>Bank UOB Indonesia</item>
+        <item>Bank Victoria</item>
+        <item>Bank Victoria Syariah</item>
+        <item>Bank Windu</item>
+        <item>Bank Woori Saudara</item>
+    </string-array>
+    
+    <string-array name="alto_banks">
+        <item>Bank Artha Graha</item>
+        <item>Bank CNB</item>
+        <item>Bank Danamon</item>
+        <item>Bank DBS</item>
+        <item>Bank Harda Internasional (BHI)</item>
+        <item>Bank KEB Hana Indonesia</item>
+        <item>Bank Kesejahteraan</item>
+        <item>Bank Maybank Indonesia</item>
+        <item>Bank Nusantara Parahyangan (BNP)</item>
+        <item>Bank Panin</item>
+        <item>Bank Permata</item>
+        <item>Bank Prima Master</item>
+        <item>Bank SBI Indonesia</item>
+        <item>Bank Sinarmas</item>
+        <item>Bank Tabungan Negara (BTN)</item>
+        <item>BPR Eka Bumi Artha</item>
+        <item>BPR KS</item>
+        <item>Citibank</item>
+        <item>KSP Intidana</item>
+    </string-array>
+</resources>

@@ -91,6 +91,18 @@
     </style>
 
 
+    <style name="ButtonBankTransferInstruction">
+        <item name="fb_textSize">12sp</item>
+        <item name="fb_textColor">@color/navy_blue.primary</item>
+        <item name="fb_radius">5dp</item>
+        <item name="fb_focusColor">@color/colorAccentLight</item>
+        <item name="fb_defaultColor">@android:color/white</item>
+        <item name="fb_borderWidth">1.25dp</item>
+        <item name="fb_borderColor">@color/navy_blue.primary</item>
+        <item name="android:padding">10dp</item>
+    </style>
+
+
     <style name="CreditCardInstallmentButton">
         <item name="fb_borderColor">@color/gray.primary_dark</item>
         <item name="fb_defaultColor">@color/white</item>

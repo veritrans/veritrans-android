@@ -511,6 +511,10 @@
     <string name="text_format_valid_until">Please complete your payment before : %1$s</string>
 
     <!-- instruction atm bersama -->
+    <string name="preview_atm_bersama">Bayar melalui <b>semua ATM bank berlogo ATM Bersama</b></string>
+    <string name="expand_link_atm_bersama">Total <u>+</u>83 bank terdaftar</string>
+    <string name="instruction_card_atm_bersama">Pastikan terdapat <b>logo ATM Bersama di belakang kartu ATM</b> Anda.</string>
+    <string name="bank_list_header_atm_bersama">Bank terdaftar ATM Bersama</string>
     <string name="instruction_atm_bersama1">On the main menu, choose <b>Others</b>.</string>
     <string name="instruction_atm_bersama2">Choose <b>Transfer</b>.</string>
     <string name="instruction_atm_bersama3">Choose <b>Online Transfer</b>.</string>
@@ -518,7 +522,12 @@
     <string name="instruction_atm_bersama5">Enter the <b>full amount to be paid</b> and press <b>Correct</b>.</string>
     <string name="instruction_atm_bersama6">Empty the transfer reference number and press <b>Correct</b>.</string>
     <string name="instruction_atm_bersama7">Your payment details will appear on the confirmation page. If the information is right press <b>Correct</b>.</string>
+    <string name="pay_with_atm_bersama">Bayar melalui ATM berlogo ATM Bersama</string>
 
+    <string name="preview_prima">Bayar melalui <b>semua ATM bank berlogo Prima</b></string>
+    <string name="expand_link_prima">Total <u>+</u>64 bank terdaftar</string>
+    <string name="instruction_card_prima">Pastikan terdapat <b>logo Prima di belakang kartu ATM</b> Anda.</string>
+    <string name="bank_list_header_prima">Bank terdaftar jaringan Prima</string>
     <string name="instruction_prima1">On the main menu, choose <b>Other Transaction</b>.</string>
     <string name="instruction_prima2">Choose <b>Transfer</b>.</string>
     <string name="instruction_prima3">Choose <b>Other Bank Account</b>.</string>
@@ -526,7 +535,12 @@
     <string name="instruction_prima5">Enter the full amount to be paid and press <b>Correct</b>.</string>
     <string name="instruction_prima6">Enter <b>16 digits payment Account No.</b> and press <b>Correct</b>.</string>
     <string name="instruction_prima7">Your payment details will appear on the confirmation page. If the information is right, press <b>Correct</b>.</string>
+    <string name="pay_with_prima">Bayar melalui ATM berlogo Prima</string>
 
+    <string name="preview_alto">Bayar melalui <b>semua ATM bank berlogo Alto</b></string>
+    <string name="expand_link_alto">Total <u>+</u>19 bank terdaftar</string>
+    <string name="instruction_card_alto">Pastikan terdapat <b>logo Alto di belakang kartu ATM</b> Anda.</string>
+    <string name="bank_list_header_alto">Bank terdaftar jaringan Alto</string>
     <string name="instruction_alto1">On the main menu, choose <b>Other Transaction</b>.</string>
     <string name="instruction_alto2">Choose <b>Payment</b>.</string>
     <string name="instruction_alto3">Choose <b>Other Payment</b>.</string>
@@ -534,8 +548,12 @@
     <string name="instruction_alto5">Enter <b>16 digits payment Account No.</b> and press <b>Correct</b>.</string>
     <string name="instruction_alto6">Your payment details will appear on the confirmation page. If the information is right press <b>Correct</b>.</string>
     <string name="instruction_alto7">Choose your payment account.</string>
+    <string name="pay_with_alto">Bayar melalui ATM berlogo Alto</string>
+
     <string name="amex">AMEX</string>
     <string name="jcb">JCB</string>
+    <string name="show_instruction">Lihat Instruksi Pembayaran</string>
+    <string name="hide_instruction">Sembunyikan Instruksi Pembayaran</string>
 
     <string name="instruction_1">1.</string>
     <string name="instruction_2">2.</string>
