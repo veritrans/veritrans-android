@@ -1,9 +1,8 @@
 ---
-version: 1.9.3
+version: 1.9.4
 commit: Bump to version %.%.%
 files:
   corekit/build.gradle: version = '%.%.%'
   uikit/build.gradle: version = '%.%.%'
   scancard/build.gradle: version = '%.%.%'
   widgets/build.gradle: version = '%.%.%'
-  demo/build.gradle: version = '%.%.%'

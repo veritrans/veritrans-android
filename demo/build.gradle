@@ -30,7 +30,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 25
         versionCode 1
-        versionName "1.9.4-sandbox"
+        versionName "1.9.4"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
