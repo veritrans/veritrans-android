@@ -485,10 +485,12 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
     }
 
     public void showEmailForm() {
-        findViewById(R.id.email_form).setVisibility(View.VISIBLE);
+        findViewById(R.id.container_email).setVisibility(View.VISIBLE);
+        findViewById(R.id.email_description).setVisibility(View.VISIBLE);
     }
 
     public void hideEmailForm() {
-        findViewById(R.id.email_form).setVisibility(View.GONE);
+        findViewById(R.id.container_email).setVisibility(View.GONE);
+        findViewById(R.id.email_description).setVisibility(View.GONE);
     }
 }
