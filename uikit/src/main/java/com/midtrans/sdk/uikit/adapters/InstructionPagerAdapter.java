@@ -61,7 +61,6 @@ public class InstructionPagerAdapter extends FragmentStatePagerAdapter {
                     if (position == 0) {
                         fragment = new InstructionPermataFragment();
                     } else {
-//                    fragment = new InstructionAltoFragment();
                         fragment = InstructionOtherBankFragment.newInstance(UiKitConstants.ALTO);
                     }
                     break;
@@ -85,14 +84,6 @@ public class InstructionPagerAdapter extends FragmentStatePagerAdapter {
                     }
                     break;
                 default:
-//                if (position == 0) {
-//                    fragment = new InstructionATMBersamaFragment();
-//                } else if (position == 1) {
-//                    fragment = new InstructionPrimaFragment();
-//                } else {
-//                    fragment = new InstructionAltoFragment();
-//                }
-
                     fragment = InstructionOtherBankFragment.newInstance(position);
                     break;
             }
