@@ -91,6 +91,13 @@
     </style>
 
 
+    <style name="ButtonBankTransferInstruction" parent="ButtonSecondary">
+        <item name="fb_textColor">@color/navy_blue.primary</item>
+        <item name="fb_radius">5dp</item>
+        <item name="fb_borderColor">@color/navy_blue.primary</item>
+    </style>
+
+
     <style name="CreditCardInstallmentButton">
         <item name="fb_borderColor">@color/gray.primary_dark</item>
         <item name="fb_defaultColor">@color/white</item>

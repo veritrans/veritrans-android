@@ -7,10 +7,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.text.TextUtils;
 import android.view.ViewGroup;
-
 import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.fragments.InstructionATMBersamaFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionAltoFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionAtmBniFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionBCAFragment;
@@ -20,8 +18,9 @@ import com.midtrans.sdk.uikit.fragments.InstructionBniInternetFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionBniMobileFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionMandiriFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionMandiriInternetFragment;
+import com.midtrans.sdk.uikit.fragments.InstructionOtherBankFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionPermataFragment;
-import com.midtrans.sdk.uikit.fragments.InstructionPrimaFragment;
+import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.widgets.MagicViewPager;
 
 /**
@@ -49,7 +48,6 @@ public class InstructionPagerAdapter extends FragmentStatePagerAdapter {
             fragment = new InstructionAltoFragment();
         } else {
             switch (paymentType) {
-
                 case PaymentType.BCA_VA:
                     if (position == 0) {
                         fragment = new InstructionBCAFragment();
@@ -59,15 +57,13 @@ public class InstructionPagerAdapter extends FragmentStatePagerAdapter {
                         fragment = new InstructionBCAMobileFragment();
                     }
                     break;
-
                 case PaymentType.PERMATA_VA:
                     if (position == 0) {
                         fragment = new InstructionPermataFragment();
                     } else {
-                        fragment = new InstructionAltoFragment();
+                        fragment = InstructionOtherBankFragment.newInstance(UiKitConstants.ALTO);
                     }
                     break;
-
                 case PaymentType.E_CHANNEL:
                     if (position == 0) {
                         fragment = new InstructionMandiriFragment();
@@ -76,7 +72,6 @@ public class InstructionPagerAdapter extends FragmentStatePagerAdapter {
                         fragment = new InstructionMandiriInternetFragment();
                     }
                     break;
-
                 case PaymentType.BNI_VA:
                     if (position == 0) {
                         fragment = new InstructionAtmBniFragment();
@@ -87,22 +82,12 @@ public class InstructionPagerAdapter extends FragmentStatePagerAdapter {
                     } else {
                         fragment = new InstructionBniInternetFragment();
                     }
-
                     break;
-
                 default:
-                    if (position == 0) {
-                        fragment = new InstructionATMBersamaFragment();
-                    } else if (position == 1) {
-                        fragment = new InstructionPrimaFragment();
-                    } else {
-                        fragment = new InstructionAltoFragment();
-                    }
-
+                    fragment = InstructionOtherBankFragment.newInstance(position);
                     break;
             }
         }
-
         return fragment;
     }
 
@@ -181,6 +166,23 @@ public class InstructionPagerAdapter extends FragmentStatePagerAdapter {
         }
 
         return pageTitle;
+    }
+
+    /**
+     * Get payment button text for other ATM network such as ATM Bersama, Prima, and Alto
+     * @param position to recognize which text should be displayed, -1 for default text
+     */
+    public String getPayButtonText(int position) {
+        switch (position) {
+            case UiKitConstants.ATM_BERSAMA:
+                return context.getString(R.string.pay_with_atm_bersama);
+            case UiKitConstants.PRIMA:
+                return context.getString(R.string.pay_with_prima);
+            case UiKitConstants.ALTO:
+                return context.getString(R.string.pay_with_alto);
+            default:
+                return context.getString(R.string.pay_now);
+        }
     }
 
     @Override

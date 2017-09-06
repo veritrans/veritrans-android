@@ -52,4 +52,9 @@ public class UiKitConstants {
     public static final String CALLBACK_PATTERN_3DS = "/token/callback/";
 
     public static final int MONTH_COUNT = 12;
+
+    // atm network
+    public static final int ATM_BERSAMA = 0;
+    public static final int PRIMA = 1;
+    public static final int ALTO = 2;
 }
