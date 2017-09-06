@@ -16,20 +16,20 @@
         app:contentInsetStart="0dp"
         app:contentInsetStartWithNavigation="0dp">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginEnd="@dimen/sixteen_dp"
-            android:layout_marginRight="@dimen/sixteen_dp"
+            android:layout_marginEnd="@dimen/eight_dp"
+            android:layout_marginRight="@dimen/eight_dp"
             android:orientation="horizontal">
 
             <com.midtrans.sdk.uikit.widgets.DefaultTextView
                 android:id="@+id/text_page_merchant_name"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/five_dp"
+                android:layout_marginRight="@dimen/five_dp"
+                android:gravity="center_vertical"
                 android:textSize="@dimen/tool_bar_title_size"
                 android:visibility="gone"
                 tools:visibility="gone" />
@@ -38,25 +38,23 @@
                 android:id="@+id/merchant_logo"
                 android:layout_width="@dimen/logo_width"
                 android:layout_height="@dimen/logo_height"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:padding="@dimen/five_dp"
                 android:scaleType="centerInside"
-                tools:src="@drawable/ic_veritrans" />
+                android:visibility="gone"
+                tools:src="@drawable/ic_veritrans"/>
 
             <com.midtrans.sdk.uikit.widgets.DefaultTextView
                 android:id="@+id/text_page_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:gravity="center_horizontal"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical|end"
                 android:textColor="@color/dark_gray"
                 android:textSize="@dimen/tool_bar_title_size"
                 tools:text="@string/payment_info"
                 tools:visibility="visible" />
-        </RelativeLayout>
+        </LinearLayout>
 
     </android.support.v7.widget.Toolbar>
 </android.support.design.widget.AppBarLayout>

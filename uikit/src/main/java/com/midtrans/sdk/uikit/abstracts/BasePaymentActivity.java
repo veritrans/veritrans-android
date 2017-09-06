@@ -8,7 +8,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
-
 import com.bumptech.glide.Glide;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
@@ -17,7 +16,6 @@ import com.midtrans.sdk.corekit.models.snap.MerchantData;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.views.creditcard.saved.SavedCreditCardActivity;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 
 /**
@@ -61,9 +59,6 @@ public abstract class BasePaymentActivity extends BaseActivity {
     }
 
     protected void initMerchantLogo() {
-        if (this instanceof SavedCreditCardActivity) {
-            return;
-        }
         ImageView merchantLogo = (ImageView) findViewById(R.id.merchant_logo);
         DefaultTextView merchantNameText = (DefaultTextView) findViewById(R.id.text_page_merchant_name);
 
@@ -79,6 +74,7 @@ public abstract class BasePaymentActivity extends BaseActivity {
                         Glide.with(this)
                                 .load(merchantLogoUrl)
                                 .into(merchantLogo);
+                        merchantLogo.setVisibility(View.VISIBLE);
                     }
                 } else {
                     if (merchantName != null) {
