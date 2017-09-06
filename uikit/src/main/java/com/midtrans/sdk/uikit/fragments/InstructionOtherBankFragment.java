@@ -1,5 +1,6 @@
 package com.midtrans.sdk.uikit.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.views.banktransfer.payment.BankTransferPaymentActivity;
@@ -26,6 +28,7 @@ public class InstructionOtherBankFragment extends Fragment implements OnClickLis
 
     private LinearLayout instructionLayout;
     private boolean isInstructionShown = false;
+    private OnInstructionShownListener listener;
 
     public static InstructionOtherBankFragment newInstance(int code) {
         InstructionOtherBankFragment fragment = new InstructionOtherBankFragment();
@@ -52,13 +55,25 @@ public class InstructionOtherBankFragment extends Fragment implements OnClickLis
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            listener = (OnInstructionShownListener) context;
+        } catch (ClassCastException e) {
+            Logger.e("The activity needs to implement interface first.");
+        }
+    }
+
+    @Override
     public void onClick(View v) {
         int viewId = v.getId();
         if (viewId == R.id.instruction_toggle) {
             isInstructionShown = !isInstructionShown;
+            if (listener != null) {
+                listener.onInstructionShown(isInstructionShown, getFragmentCode());
+            }
             instructionToggle.setText(isInstructionShown ? getText(R.string.hide_instruction).toString() : getText(R.string.show_instruction).toString());
             instructionLayout.setVisibility(isInstructionShown ? View.VISIBLE : View.GONE);
-            adjustEmailForm();
         }
     }
 
@@ -80,17 +95,16 @@ public class InstructionOtherBankFragment extends Fragment implements OnClickLis
         return getArguments() == null ? 0 : getArguments().getInt(CODE);
     }
 
-    public boolean getInstructionFlag() {
-        return isInstructionShown;
+    @Override
+    public void onDestroyView() {
+        if (listener != null) {
+            listener.onInstructionShown(false, getFragmentCode());
+            listener = null;
+        }
+        super.onDestroyView();
     }
 
-    public void adjustEmailForm() {
-        if (getActivity() instanceof BankTransferPaymentActivity) {
-            if (isInstructionShown) {
-                ((BankTransferPaymentActivity) getActivity()).showEmailForm();
-            } else {
-                ((BankTransferPaymentActivity) getActivity()).hideEmailForm();
-            }
-        }
+    public interface OnInstructionShownListener {
+        void onInstructionShown(boolean isShown, int fragmentCode);
     }
 }

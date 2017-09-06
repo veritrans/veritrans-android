@@ -89,7 +89,7 @@
     <!--Bank Transfer-->
     <string name="bca_bank_transfer">BCA</string>
     <string name="permata_bank_transfer">Permata</string>
-
+    <string name="error_invalid_email_id">Alamat email tidak valid</string>
     <string name="orderId">Order ID</string>
     <string name="amount">Jumlah</string>
     <string name="transfer_amount">Jumlah Transfer</string>
@@ -102,7 +102,7 @@
     <string name="bank_atm_transfer_step3">Harap selesaikan pembayaran melalui Prima (BCA), ATM Bersama(Mandiri), or Alto(Permata).</string>
     <string name="bank_atm_transfer_step4">Bila pembayaran sudah selesai, Anda akan menerima email konfirmasi.</string>
     <string name="see_instruction">Lihat instruksi</string>
-    <string name="download_instruction">Unduh instruksi</string>
+    <string name="download_instruction">Unduh Instruksi</string>
     <string name="confirm_payment">Konfirmasi Pembayaran</string>
     <string name="copy_payment_code">Salin Kode Pembayaran</string>
     <string name="copy_va_number">Salin Nomor Akun Virtual</string>

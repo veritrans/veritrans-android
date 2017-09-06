@@ -18,6 +18,7 @@ import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.Toast;
 import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
@@ -27,6 +28,7 @@ import com.midtrans.sdk.uikit.adapters.ListBankAdapter;
 import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.BankTransferFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionOtherBankFragment;
+import com.midtrans.sdk.uikit.fragments.InstructionOtherBankFragment.OnInstructionShownListener;
 import com.midtrans.sdk.uikit.models.MessageInfo;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
@@ -40,7 +42,8 @@ import com.midtrans.sdk.uikit.widgets.FancyButton;
  * Created by ziahaqi on 8/9/17.
  */
 
-public class BankTransferPaymentActivity extends BasePaymentActivity implements BankTransferPaymentView {
+public class BankTransferPaymentActivity extends BasePaymentActivity implements BankTransferPaymentView,
+    OnInstructionShownListener {
 
     public static final String EXTRA_BANK_TYPE = "bank.type";
     private BankTransferPaymentPresenter presenter;
@@ -62,6 +65,7 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
     //for other ATM network
     private ImageView bankPreview;
     private DefaultTextView bankDescription, bankToggle, cardDescription;
+    private boolean[] flags;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,6 +89,8 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
                 if (checkEmailValidity(email)) {
                     showProgressLayout();
                     presenter.startPayment(paymentType, email);
+                } else {
+                    Toast.makeText(BankTransferPaymentActivity.this, getString(R.string.error_invalid_email_id), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -179,6 +185,7 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
             case PaymentType.PERMATA_VA:
                 title = getString(R.string.bank_permata_transfer);
                 pageNumber = 2;
+                flags = new boolean[pageNumber];
 
                 //track page permata va overview
                 presenter.trackEvent(AnalyticsEventName.PAGE_PERMATA_VA_OVERVIEW);
@@ -186,6 +193,7 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
             case PaymentType.ALL_VA:
                 title = getString(R.string.other_bank_transfer);
                 pageNumber = 3;
+                flags = new boolean[pageNumber];
 
                 //track page other bank va overview
                 presenter.trackEvent(AnalyticsEventName.PAGE_OTHER_BANK_VA_OVERVIEW);
@@ -216,9 +224,9 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
             @Override
             public void onPageSelected(int position) {
                 Fragment fragment = adapter.getItem(position);
-                if (fragment instanceof InstructionOtherBankFragment) {
+                if (fragment instanceof InstructionOtherBankFragment && flags != null) {
                     showOtherAtmGuidance(((InstructionOtherBankFragment) fragment).getFragmentCode());
-                    boolean isInstructionShown = ((InstructionOtherBankFragment) fragment).getInstructionFlag();
+                    boolean isInstructionShown = flags[position];
                     if (isInstructionShown) {
                         showEmailForm();
                     } else {
@@ -484,13 +492,29 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
         buttonPay.setText(text);
     }
 
-    public void showEmailForm() {
+    private void showEmailForm() {
         findViewById(R.id.container_email).setVisibility(View.VISIBLE);
         findViewById(R.id.email_description).setVisibility(View.VISIBLE);
     }
 
-    public void hideEmailForm() {
+    private void hideEmailForm() {
         findViewById(R.id.container_email).setVisibility(View.GONE);
         findViewById(R.id.email_description).setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onInstructionShown(boolean isShown, int fragmentCode) {
+        if (flags != null) {
+            if (flags.length == 3) { //for all ATM network
+                flags[fragmentCode] = isShown;
+            } else if (flags.length == 2) { //for Permata
+                flags[fragmentCode-1] = isShown; //Alto code is 2, while in Permata VA its index is 1
+            }
+            if (isShown) {
+                showEmailForm();
+            } else {
+                hideEmailForm();
+            }
+        }
     }
 }

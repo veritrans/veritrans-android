@@ -86,13 +86,11 @@
         <com.midtrans.sdk.uikit.widgets.MagicViewPager
             android:id="@+id/pager_instruction"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/sixteen_dp"
-            android:layout_marginRight="@dimen/sixteen_dp" />
+            android:layout_height="wrap_content" />
 
         <com.midtrans.sdk.uikit.widgets.FancyButton
             android:id="@+id/button_download_instruction"
-            style="@style/ButtonDownloadInstruction"
+            style="@style/ButtonSecondary"
             app:fb_text="@string/download_instruction"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

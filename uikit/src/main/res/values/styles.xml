@@ -91,15 +91,10 @@
     </style>
 
 
-    <style name="ButtonBankTransferInstruction">
-        <item name="fb_textSize">12sp</item>
+    <style name="ButtonBankTransferInstruction" parent="ButtonSecondary">
         <item name="fb_textColor">@color/navy_blue.primary</item>
         <item name="fb_radius">5dp</item>
-        <item name="fb_focusColor">@color/colorAccentLight</item>
-        <item name="fb_defaultColor">@android:color/white</item>
-        <item name="fb_borderWidth">1.25dp</item>
         <item name="fb_borderColor">@color/navy_blue.primary</item>
-        <item name="android:padding">10dp</item>
     </style>
 
 
