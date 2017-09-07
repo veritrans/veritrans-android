@@ -34,6 +34,7 @@ import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.BasePaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.CreditCardPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.GCIPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.GoPayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.IndosatDompetkuPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.MandiriClickPayPaymentRequest;
@@ -989,6 +990,56 @@ public class SnapTransactionManager extends BaseTransactionManager {
     }
 
     /**
+     * This method is used for payment using GoPay
+     *
+     * @param paymentRequest
+     * @param callback
+     */
+    public void paymentUsingGoPay(String snapToken, GoPayPaymentRequest paymentRequest, final TransactionCallback callback) {
+        if (paymentRequest != null) {
+            snapRestAPI.paymentUsingGoPay(snapToken, paymentRequest, new Callback<TransactionResponse>() {
+                @Override
+                public void success(TransactionResponse transactionResponse, Response response) {
+                    actionOnPaymentResponseSuccess(transactionResponse, response, callback);
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    actionOnPaymentResponseFailure(error, callback);
+                }
+            });
+        } else {
+            releaseResources();
+            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+        }
+    }
+
+    private void actionOnPaymentResponseFailure(RetrofitError error, TransactionCallback callback) {
+        releaseResources();
+        if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
+            Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
+        }
+        callback.onError(new Throwable(error.getMessage(), error.getCause()));
+    }
+
+    private void actionOnPaymentResponseSuccess(TransactionResponse transactionResponse, Response response, TransactionCallback callback) {
+        releaseResources();
+        if (isSDKLogEnabled) {
+            displayResponse(transactionResponse);
+        }
+        if (transactionResponse != null) {
+            if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
+                    || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
+                callback.onSuccess(transactionResponse);
+            } else {
+                actionFailedTransaction(callback, transactionResponse);
+            }
+        } else {
+            callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
+        }
+    }
+
+    /**
      * This method is used to save credit cards to merchant server
      *
      * @param cardRequests credit card Request model
@@ -1427,4 +1478,5 @@ public class SnapTransactionManager extends BaseTransactionManager {
             }
         });
     }
+
 }

@@ -9,6 +9,7 @@ import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.BasePaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.CreditCardPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.GCIPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.GoPayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.IndosatDompetkuPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.MandiriClickPayPaymentRequest;
@@ -188,6 +189,15 @@ public interface SnapRestAPI {
     @POST("/v1/transactions/{token}/pay")
     void paymentUsingGCI(@Path("token") String authenticationToken, @Body GCIPaymentRequest paymentRequest, Callback<TransactionResponse> callback);
 
+    /**
+     * Charge payment using GoPay
+     *
+     * @param snapToken
+     * @param paymentRequest
+     * @param callback
+     */
+    @POST("/v1/transactions/{token}/pay")
+    void paymentUsingGoPay(String snapToken, GoPayPaymentRequest paymentRequest, Callback<TransactionResponse> callback);
 
     /**
      * @param callback callback
@@ -216,4 +226,5 @@ public interface SnapRestAPI {
      */
     @GET("/v1/transactions/{snap_token}/status")
     void getTransactionStatus(@Path("snap_token") String snapToken, Callback<TransactionStatusResponse> callback);
+
 }

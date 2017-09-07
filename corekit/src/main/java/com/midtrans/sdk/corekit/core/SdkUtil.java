@@ -37,12 +37,14 @@ import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
 import com.midtrans.sdk.corekit.models.snap.SnapPromo;
 import com.midtrans.sdk.corekit.models.snap.params.CreditCardPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.params.GCIPaymentParams;
+import com.midtrans.sdk.corekit.models.snap.params.GoPayPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.params.KlikBcaPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.params.MandiriClickPayPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.CreditCardPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.CustomerDetailRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.GCIPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.GoPayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.MandiriClickPayPaymentRequest;
 import com.midtrans.sdk.corekit.utilities.Installation;
@@ -648,6 +650,9 @@ public class SdkUtil {
         return request;
     }
 
+    public static GoPayPaymentRequest getGoPayPaymentRequest(String phoneNumber) {
+        return new GoPayPaymentRequest(new GoPayPaymentParams(phoneNumber), PaymentType.GOPAY);
+    }
     /**
      * Sorting payment method by priority (Ascending)
      */
