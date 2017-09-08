@@ -19,65 +19,54 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_centerVertical="true"
+                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="@dimen/sixteen_dp"
-                android:layout_marginStart="@dimen/sixteen_dp"
+                android:layout_marginRight="@dimen/sixteen_dp"
+                android:layout_marginTop="10dp"
                 android:contentDescription="@string/description_payment_method_icon"
                 tools:src="@drawable/ic_launcher" />
 
-            <FrameLayout
-                android:id="@+id/layout_payment_info"
+            <LinearLayout
+                android:id="@+id/payment_text_container"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginLeft="@dimen/sixteen_dp"
-                android:layout_marginStart="@dimen/sixteen_dp"
-                android:layout_toEndOf="@id/img_payment_method_icon"
-                android:layout_toRightOf="@id/img_payment_method_icon">
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/image_arrow_right"
+                android:layout_toRightOf="@id/img_payment_method_icon"
+                android:orientation="vertical">
 
-                <RelativeLayout
+                <com.midtrans.sdk.uikit.widgets.SemiBoldTextView
+                    android:id="@+id/text_payment_method_name"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:orientation="vertical">
+                    android:textColor="@color/black"
+                    tools:text="@string/text_demo" />
 
-                        <com.midtrans.sdk.uikit.widgets.SemiBoldTextView
-                            android:id="@+id/text_payment_method_name"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/black"
-                            tools:text="@string/text_demo" />
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:id="@+id/text_payment_method_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    tools:text="@string/payment_method_description_bank_transfer" />
+            </LinearLayout>
 
-                        <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                            android:id="@+id/text_payment_method_description"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_horizontal"
-                            android:ellipsize="end"
-                            android:maxLines="2"
-                            android:textColor="@color/black"
-                            android:textSize="12sp"
-                            tools:text="@string/payment_method_description_bank_transfer" />
-                    </LinearLayout>
-
-                    <View
-                        android:id="@+id/divider"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_alignParentBottom="true"
-                        android:background="@color/gray_divider" />
-                </RelativeLayout>
-
-
-            </FrameLayout>
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignLeft="@id/payment_text_container"
+                android:layout_alignParentBottom="true"
+                android:background="@color/gray_divider" />
 
             <ImageView
                 android:id="@+id/image_arrow_right"
                 android:layout_width="@dimen/twenty_four_dp"
                 android:layout_height="@dimen/twenty_four_dp"
-                android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/eight_dp"
