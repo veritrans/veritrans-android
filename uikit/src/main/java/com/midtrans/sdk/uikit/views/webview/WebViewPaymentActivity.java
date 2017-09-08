@@ -81,6 +81,8 @@ public class WebViewPaymentActivity extends BasePaymentActivity {
         webviewContainer.setInitialScale(1);
         webviewContainer.getSettings().setLoadWithOverviewMode(true);
         webviewContainer.getSettings().setUseWideViewPort(true);
+        webviewContainer.getSettings().setBuiltInZoomControls(true);
+        webviewContainer.getSettings().setDisplayZoomControls(false);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             webviewContainer.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
