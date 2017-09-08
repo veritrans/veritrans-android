@@ -621,5 +621,9 @@
     <string name="card_registration">Registrasi Kartu</string>
     <string name="error_utilized_orderid">Maaf, order id sudah digunakan</string>
     <string name="processing_card_registration">Proses registrasi kartu</string>
+    <string name="info_gopay_account">Pastikan nomor telpon anda <b>sudah teregistrasi dengan GO-JEK dan memiliki saldo GO-PAY yang cukup</b></string>
+    <string name="country_code">Kode negara</string>
+    <string name="hint_gopay_phone_number">Masukkan nomor telepon yang teregistrasi GO-PAY</string>
+    <string name="payment_continue">Lanjutkan</string>
 
 </resources>

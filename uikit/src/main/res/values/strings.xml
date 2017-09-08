@@ -808,5 +808,10 @@
     <string name="card_registration">Card Registration</string>
     <string name="error_utilized_orderid">Sorry, the order id already utilized</string>
     <string name="processing_card_registration">Processing card registration</string>
+    <string name="info_gopay_account">Make sure your phone number is <b>registered with GO-JEK and has sufficient GO-PAY balance</b></string>
+    <string name="country_code">Country code</string>
+    <string name="country_code_default">+62</string>
+    <string name="hint_gopay_phone_number">Enter GO-PAY Registered Phone Number</string>
+    <string name="payment_continue">Continue</string>
 
 </resources>
