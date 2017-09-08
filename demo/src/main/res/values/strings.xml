@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">Midtrans Demo</string>
 
     <!--CREDIT CARD TYPE TITLE-->
     <string name="credit_card_type_normal">Normal Credit Card Payment</string>

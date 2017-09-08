@@ -62,12 +62,14 @@ android {
     productFlavors {
         development {
             applicationId "com.midtrans.sdk.demo.development"
+            resValue "string", "app_name", "Midtrans Demo Dev"
             buildConfigField "String", "BASE_URL", MERCHANT_BASE_URL_SANDBOX
             buildConfigField "String", "CLIENT_KEY", MERCHANT_CLIENT_KEY_SANDBOX
         }
 
         production {
             applicationId "com.midtrans.sdk.demo"
+            resValue "string", "app_name", "Midtrans Demo"
             buildConfigField "String", "BASE_URL", MERCHANT_BASE_URL_PRODUCTION
             buildConfigField "String", "CLIENT_KEY", MERCHANT_CLIENT_KEY_PRODUCTION
         }
