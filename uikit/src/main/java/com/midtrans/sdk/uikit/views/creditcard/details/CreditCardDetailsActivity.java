@@ -1217,6 +1217,8 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         } else if (resultCode == RESULT_CANCELED) {
             if (requestCode == UiKitConstants.INTENT_CODE_3DS_PAYMENT) {
                 startPreCrediCardPayment();
+            } else if (requestCode == UiKitConstants.INTENT_CODE_RBA_AUTHENTICATION) {
+                getPaymentStatus();
             } else if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS) {
                 finishPayment(RESULT_OK);
             }
