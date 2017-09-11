@@ -197,7 +197,7 @@ public interface SnapRestAPI {
      * @param callback
      */
     @POST("/v1/transactions/{token}/pay")
-    void paymentUsingGoPay(String snapToken, GoPayPaymentRequest paymentRequest, Callback<TransactionResponse> callback);
+    void paymentUsingGoPay(@Path("token") String snapToken, @Body GoPayPaymentRequest paymentRequest, Callback<TransactionResponse> callback);
 
     /**
      * @param callback callback

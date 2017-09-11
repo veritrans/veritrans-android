@@ -371,7 +371,7 @@ public class MidtransSDK {
     /**
      * It will run backround task to register card PAPI(Payment API) Backend using uikit sdk
      *
-     * @param context       activity context.
+     * @param context  activity context.
      * @param callback Card Registration Callback.
      */
 
@@ -1538,6 +1538,10 @@ public class MidtransSDK {
             isRunning = false;
             callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
         }
+    }
+
+    public void authorizeGopayPayment(String verificationCode) {
+        // todo auth gopay
     }
 
     /**

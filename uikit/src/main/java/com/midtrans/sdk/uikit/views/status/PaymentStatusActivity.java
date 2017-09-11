@@ -284,6 +284,9 @@ public class PaymentStatusActivity extends BaseActivity {
                 case PaymentType.INDOSAT_DOMPETKU:
                     textPaymentType.setText(getString(R.string.payment_method_indosat_dompetku));
                     break;
+                case PaymentType.GOPAY:
+                    textPaymentType.setText(getString(R.string.payment_method_gopay));
+                    break;
             }
 
             // Set order id

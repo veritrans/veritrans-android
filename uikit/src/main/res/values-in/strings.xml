@@ -625,5 +625,11 @@
     <string name="country_code">Kode negara</string>
     <string name="hint_gopay_phone_number">Masukkan nomor telepon yang teregistrasi GO-PAY</string>
     <string name="payment_continue">Lanjutkan</string>
+    <string name="validation_country_code_empty">Masukkan kode negara</string>
+    <string name="status_message_not_enabled">Metode pembayaran belum diaktifkan</string>
+    <string name="details_message_not_enabled">Maaf, metode pembayaran belum diaktifkan</string>
+    <string name="hint_gopay_verification_number">Masukkan kode verifikasi</string>
+    <string name="info_gopay_auth">Kami telah mengirim <b>sebuah kode verifikasi</b> via sms ke nomor yang telah teregistrasi di GO-PAY <b>%1$s</b></string>
+    <string name="verificaton_code_empty">Masukkan kode verifikasi</string>
 
 </resources>

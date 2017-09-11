@@ -51,6 +51,8 @@ public class PaymentMethods {
             return getMethodXLTunai(context, 13, status);
         } else if (name.equals(context.getString(R.string.payment_gci))) {
             return getMethodGCI(context, 14, status);
+        } else if (name.equals(context.getString(R.string.payment_gopay))) {
+            return getMethodGopay(context, 15, status);
         } else {
             return null;
         }
@@ -120,6 +122,10 @@ public class PaymentMethods {
 
     private static PaymentMethodsModel getMethodGCI(Context context, int priority, String status) {
         return new PaymentMethodsModel(context.getString(R.string.payment_method_gci), context.getString(R.string.payment_method_description_gci), R.drawable.ic_gci, Constants.PAYMENT_METHOD_NOT_SELECTED, priority, status);
+    }
+
+    private static PaymentMethodsModel getMethodGopay(Context context, int priority, String status) {
+        return new PaymentMethodsModel(context.getString(R.string.payment_method_gopay), context.getString(R.string.payment_method_description_gci), R.drawable.ic_launcher, Constants.PAYMENT_METHOD_NOT_SELECTED, priority, status);
     }
 
     public static ArrayList<BankTransferModel> getBankTransferList(Context context) {

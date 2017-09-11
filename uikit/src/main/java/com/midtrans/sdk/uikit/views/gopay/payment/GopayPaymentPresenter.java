@@ -11,6 +11,8 @@ import com.midtrans.sdk.uikit.abstracts.BasePaymentPresenter;
 
 public class GopayPaymentPresenter extends BasePaymentPresenter<GoPayPaymentView> {
 
+    private TransactionResponse transactionResponse;
+
     public GopayPaymentPresenter(GoPayPaymentView view) {
         this.view = view;
     }
@@ -21,11 +23,13 @@ public class GopayPaymentPresenter extends BasePaymentPresenter<GoPayPaymentView
         midtransSDK.paymentUsingGoPay(snapToken, phoneNumber, new TransactionCallback() {
             @Override
             public void onSuccess(TransactionResponse response) {
+                transactionResponse = response;
                 view.onPaymentSuccess(response);
             }
 
             @Override
             public void onFailure(TransactionResponse response, String reason) {
+                transactionResponse = response;
                 view.onPaymentFailure(response);
             }
 
@@ -34,5 +38,9 @@ public class GopayPaymentPresenter extends BasePaymentPresenter<GoPayPaymentView
                 view.onPaymentError(error);
             }
         });
+    }
+
+    public TransactionResponse getTransactionResponse() {
+        return transactionResponse;
     }
 }

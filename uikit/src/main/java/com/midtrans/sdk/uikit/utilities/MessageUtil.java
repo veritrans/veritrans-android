@@ -35,6 +35,7 @@ public class MessageUtil {
     private static final CharSequence PAYMENT_EXIPIRED = "expired";
     private static final String NOT_FOUND = "404 not found";
     private static final String UNABLE_RESOLVE_HOST = "unable to resolve host";
+    private static final String PAYMENT_NOT_ENABLED = "is not enabled";
 
 
     public static String createMessageWhenCheckoutFailed(Context context, ArrayList<String> statusMessage) {
@@ -143,6 +144,9 @@ public class MessageUtil {
                             if (!TextUtils.isEmpty(validationMessage) && validationMessage.toLowerCase().contains(PAYMENT_EXIPIRED)) {
                                 message = new MessageInfo(statusCode, context.getString(R.string.status_message_expired),
                                         context.getString(R.string.details_message_expired));
+                            } else if (!TextUtils.isEmpty(validationMessage) && validationMessage.toLowerCase().contains(PAYMENT_NOT_ENABLED)) {
+                                message = new MessageInfo(statusCode, context.getString(R.string.status_message_not_enabled),
+                                        context.getString(R.string.details_message_not_enabled));
                             } else {
                                 message = new MessageInfo(statusCode, context.getString(R.string.status_message_invalid),
                                         context.getString(R.string.details_message_invalid));

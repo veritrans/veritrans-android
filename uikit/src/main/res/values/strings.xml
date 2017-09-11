@@ -431,6 +431,7 @@
     <string name="payment_method_klik_bca">KlikBCA</string>
     <string name="payment_method_kioson">Kioson</string>
     <string name="payment_method_gci"> Gift Card Indonesia </string>
+    <string name="payment_method_gopay">GO-PAY</string>
 
     <!--Payment List-->
     <string name="payment_epay_bri">bri_epay</string>
@@ -451,6 +452,7 @@
     <string name="payment_klik_bca">bca_klikbca</string>
     <string name="payment_kioson">kioson</string>
     <string name="payment_gci">gci</string>
+    <string name="payment_gopay">gopay</string>
 
 
     <!--Error Response-->
@@ -813,5 +815,11 @@
     <string name="country_code_default">+62</string>
     <string name="hint_gopay_phone_number">Enter GO-PAY Registered Phone Number</string>
     <string name="payment_continue">Continue</string>
+    <string name="validation_country_code_empty">Please enter country code</string>
+    <string name="status_message_not_enabled">Payment method is not enabled</string>
+    <string name="details_message_not_enabled">Sorry, payment method is not enabled</string>
+    <string name="hint_gopay_verification_number">Enter verification code</string>
+    <string name="info_gopay_auth">We sent a <b>verification code</b> via sms to your GO-PAY registered phone number<b>%1$s</b></string>
+    <string name="verificaton_code_empty">Please enter verification code</string>
 
 </resources>
