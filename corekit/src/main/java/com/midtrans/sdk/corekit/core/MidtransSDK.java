@@ -17,6 +17,8 @@ import com.midtrans.sdk.corekit.callback.CheckoutCallback;
 import com.midtrans.sdk.corekit.callback.DeleteCardCallback;
 import com.midtrans.sdk.corekit.callback.GetCardCallback;
 import com.midtrans.sdk.corekit.callback.GetTransactionStatusCallback;
+import com.midtrans.sdk.corekit.callback.GoPayAuthorizationCallback;
+import com.midtrans.sdk.corekit.callback.GoPayResendAuthorizationCallback;
 import com.midtrans.sdk.corekit.callback.ObtainPromoCallback;
 import com.midtrans.sdk.corekit.callback.SaveCardCallback;
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
@@ -1540,8 +1542,46 @@ public class MidtransSDK {
         }
     }
 
-    public void authorizeGopayPayment(String verificationCode) {
-        // todo auth gopay
+    /**
+     * It will run backround task to authorize GoPay Payment
+     *
+     * @param phoneNumber gopay registered phone number
+     * @param snapToken   snap token
+     * @param callback    GoPayAuthorizationCallback
+     */
+    public void authorizeGoPayPayment(String snapToken, String phoneNumber, GoPayAuthorizationCallback callback) {
+        if (callback == null) {
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
+
+        if (isNetworkAvailable()) {
+            isRunning = true;
+            mSnapTransactionManager.authorizeGoPayPayment(snapToken, SdkUtil.getGoPayAuthorizationRequest(phoneNumber), callback);
+        } else {
+            isRunning = false;
+            callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+        }
+    }
+
+    /**
+     * It will run backround task to resend GoPay authorization
+     *
+     * @param snapToken
+     */
+    public void resendGopayAuthorization(String snapToken, GoPayResendAuthorizationCallback callback) {
+        if (callback == null) {
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
+
+        if (isNetworkAvailable()) {
+            isRunning = true;
+            mSnapTransactionManager.resendGoPayAuthorization(snapToken, callback);
+        } else {
+            isRunning = false;
+            callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+        }
     }
 
     /**

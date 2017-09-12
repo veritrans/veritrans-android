@@ -15,11 +15,14 @@ import com.midtrans.sdk.corekit.callback.CheckoutCallback;
 import com.midtrans.sdk.corekit.callback.DeleteCardCallback;
 import com.midtrans.sdk.corekit.callback.GetCardCallback;
 import com.midtrans.sdk.corekit.callback.GetTransactionStatusCallback;
+import com.midtrans.sdk.corekit.callback.GoPayAuthorizationCallback;
+import com.midtrans.sdk.corekit.callback.GoPayResendAuthorizationCallback;
 import com.midtrans.sdk.corekit.callback.SaveCardCallback;
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.callback.TransactionOptionsCallback;
 import com.midtrans.sdk.corekit.models.CardRegistrationResponse;
 import com.midtrans.sdk.corekit.models.CardTokenRequest;
+import com.midtrans.sdk.corekit.models.GoPayResendAuthorizationResponse;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.SaveCardResponse;
 import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
@@ -27,6 +30,7 @@ import com.midtrans.sdk.corekit.models.TokenRequestModel;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 import com.midtrans.sdk.corekit.models.snap.BanksPointResponse;
+import com.midtrans.sdk.corekit.models.snap.GoPayAuthorizationResponse;
 import com.midtrans.sdk.corekit.models.snap.Token;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.TransactionStatusResponse;
@@ -34,6 +38,7 @@ import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.BasePaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.CreditCardPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.GCIPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.GoPayAuthorizationRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.GoPayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.IndosatDompetkuPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
@@ -1013,6 +1018,88 @@ public class SnapTransactionManager extends BaseTransactionManager {
             callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
         }
     }
+
+    /**
+     * This method is used for payment using GoPay
+     *
+     * @param request  GoPayAuthorizationRequest
+     * @param callback
+     */
+    public void authorizeGoPayPayment(String snapToken, GoPayAuthorizationRequest request, final GoPayAuthorizationCallback callback) {
+        if (request != null) {
+            snapRestAPI.authorizeGoPayPayment(snapToken, request, new Callback<GoPayAuthorizationResponse>() {
+                @Override
+                public void success(GoPayAuthorizationResponse response, Response retrofitResponse) {
+                    releaseResources();
+                    if (response != null) {
+                        if (response.getStatusCode() != null && response.getStatusCode().equals(context.getString(R.string.success_code_200))) {
+                            callback.onSuccess(response);
+                        } else {
+                            callback.onFailure(response, retrofitResponse.getReason());
+                        }
+                    } else {
+                        callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
+                    }
+                }
+
+                @Override
+                public void failure(RetrofitError e) {
+                    releaseResources();
+
+                    if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+                        Logger.i(TAG, "Error in SSL Certificate. " + e.getMessage());
+                    }
+
+                    callback.onError(new Throwable(e.getMessage(), e.getCause()));
+                }
+            });
+        } else {
+            releaseResources();
+            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+        }
+    }
+
+    /**
+     * This method is used for resend  GoPay otp authorization
+     *
+     * @param snapToken Snap Token
+     * @param callback
+     */
+    public void resendGoPayAuthorization(String snapToken, final GoPayResendAuthorizationCallback callback) {
+        if (snapToken != null) {
+            snapRestAPI.resendGoPayAuthorization(snapToken, new Callback<GoPayResendAuthorizationResponse>() {
+                @Override
+                public void success(GoPayResendAuthorizationResponse response, Response retrofitResponse) {
+                    releaseResources();
+
+                    if (response != null) {
+                        if (response.getStatusCode() != null && response.getStatusCode().equals(context.getString(R.string.success_code_200))) {
+                            callback.onSuccess(response);
+                        } else {
+                            callback.onFailure(response, retrofitResponse.getReason());
+                        }
+                    } else {
+                        callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
+                    }
+                }
+
+                @Override
+                public void failure(RetrofitError e) {
+                    releaseResources();
+
+                    if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+                        Logger.i(TAG, "Error in SSL Certificate. " + e.getMessage());
+                    }
+
+                    callback.onError(new Throwable(e.getMessage(), e.getCause()));
+                }
+            });
+        } else {
+            releaseResources();
+            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+        }
+    }
+
 
     private void actionOnPaymentResponseFailure(RetrofitError error, TransactionCallback callback) {
         releaseResources();
