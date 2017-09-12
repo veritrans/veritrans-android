@@ -84,6 +84,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     private boolean isIndomaret = false;
     private boolean isKioson = false;
     private boolean isGci = false;
+    private boolean isGopay = false;
     private boolean backButtonEnabled;
 
     private MidtransSDK midtransSDK = null;
@@ -599,6 +600,17 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             } else {
                 showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
             }
+        } else if (isGopay) {
+            if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_gopay))) {
+                Intent gopayActivity = new Intent(this, GoPayPaymentActivity.class);
+                startActivityForResult(gopayActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+                if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
+                        && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                    overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                }
+            } else {
+                showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
+            }
         } else {
             if (data.isEmpty()) {
                 showErrorAlertDialog(getString(R.string.message_payment_method_empty));
@@ -735,9 +747,6 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     private void initialiseAdapterData(List<EnabledPayment> enabledPayments) {
         data.clear();
         bankTransfers.clear();
-        EnabledPayment gopay = new EnabledPayment("gopay", "gopay");
-        gopay.setStatus(EnabledPayment.STATUS_UP);
-        enabledPayments.add(gopay);
 
         for (EnabledPayment enabledPayment : enabledPayments) {
             if ((enabledPayment.getCategory() != null && enabledPayment.getCategory().equals(getString(R.string.enabled_payment_category_banktransfer)))

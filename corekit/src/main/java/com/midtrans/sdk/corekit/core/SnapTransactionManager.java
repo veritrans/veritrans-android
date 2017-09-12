@@ -15,7 +15,6 @@ import com.midtrans.sdk.corekit.callback.CheckoutCallback;
 import com.midtrans.sdk.corekit.callback.DeleteCardCallback;
 import com.midtrans.sdk.corekit.callback.GetCardCallback;
 import com.midtrans.sdk.corekit.callback.GetTransactionStatusCallback;
-import com.midtrans.sdk.corekit.callback.GoPayAuthorizationCallback;
 import com.midtrans.sdk.corekit.callback.GoPayResendAuthorizationCallback;
 import com.midtrans.sdk.corekit.callback.SaveCardCallback;
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
@@ -30,7 +29,6 @@ import com.midtrans.sdk.corekit.models.TokenRequestModel;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 import com.midtrans.sdk.corekit.models.snap.BanksPointResponse;
-import com.midtrans.sdk.corekit.models.snap.GoPayAuthorizationResponse;
 import com.midtrans.sdk.corekit.models.snap.Token;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.TransactionStatusResponse;
@@ -1025,32 +1023,17 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param request  GoPayAuthorizationRequest
      * @param callback
      */
-    public void authorizeGoPayPayment(String snapToken, GoPayAuthorizationRequest request, final GoPayAuthorizationCallback callback) {
+    public void authorizeGoPayPayment(String snapToken, GoPayAuthorizationRequest request, final TransactionCallback callback) {
         if (request != null) {
-            snapRestAPI.authorizeGoPayPayment(snapToken, request, new Callback<GoPayAuthorizationResponse>() {
+            snapRestAPI.authorizeGoPayPayment(snapToken, request, new Callback<TransactionResponse>() {
                 @Override
-                public void success(GoPayAuthorizationResponse response, Response retrofitResponse) {
-                    releaseResources();
-                    if (response != null) {
-                        if (response.getStatusCode() != null && response.getStatusCode().equals(context.getString(R.string.success_code_200))) {
-                            callback.onSuccess(response);
-                        } else {
-                            callback.onFailure(response, retrofitResponse.getReason());
-                        }
-                    } else {
-                        callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
-                    }
+                public void success(TransactionResponse transactionResponse, Response response) {
+                    actionOnPaymentResponseSuccess(transactionResponse, response, callback);
                 }
 
                 @Override
-                public void failure(RetrofitError e) {
-                    releaseResources();
-
-                    if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
-                        Logger.i(TAG, "Error in SSL Certificate. " + e.getMessage());
-                    }
-
-                    callback.onError(new Throwable(e.getMessage(), e.getCause()));
+                public void failure(RetrofitError error) {
+                    actionOnPaymentResponseFailure(error, callback);
                 }
             });
         } else {

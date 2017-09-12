@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+
     android:layout_height="match_parent"
     android:layout_marginLeft="@dimen/sixteen_dp"
     android:layout_marginRight="@dimen/sixteen_dp"
@@ -41,5 +43,21 @@
                 android:textSize="@dimen/sixteen_sp" />
         </android.support.design.widget.TextInputLayout>
     </LinearLayout>
+
+    <com.midtrans.sdk.uikit.widgets.FancyButton
+        android:id="@+id/button_resend"
+        style="@style/ButtonSecondary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/sixty_four_dp"
+        android:paddingEnd="@dimen/sixteen_sp"
+        android:paddingLeft="@dimen/sixteen_dp"
+        android:paddingRight="@dimen/sixteen_dp"
+        android:paddingStart="@dimen/sixteen_sp"
+        app:fb_borderColor="@color/navy_blue.primary_dark"
+        app:fb_iconColor="@color/navy_blue.primary_dark"
+        app:fb_text="@string/verification_code"
+        app:fb_textColor="@color/navy_blue.primary_dark" />
 
 </LinearLayout>

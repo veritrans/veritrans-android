@@ -1,1 +1,1 @@
-include ':corekit', ':uikit', ':scancard', ':widgets', ':sdk-example', ':demo'
+include ':corekit', ':uikit', ':scancard', ':widgets', ':sdk-example'

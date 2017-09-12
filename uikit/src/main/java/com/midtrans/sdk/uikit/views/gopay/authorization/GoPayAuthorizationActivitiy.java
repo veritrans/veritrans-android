@@ -8,8 +8,14 @@ import android.support.design.widget.TextInputLayout;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
+import com.midtrans.sdk.uikit.models.MessageInfo;
+import com.midtrans.sdk.uikit.utilities.MessageUtil;
+import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
+import com.midtrans.sdk.uikit.utilities.UiKitConstants;
+import com.midtrans.sdk.uikit.views.status.PaymentStatusActivity;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
@@ -38,7 +44,7 @@ public class GoPayAuthorizationActivitiy extends BasePaymentActivity implements 
 
     private void initProperties() {
         presenter = new GoPayAuthorizationPresenter(this);
-        String phoneNumber = getIntent().getStringExtra(Intent.EXTRA_PHONE_NUMBER);
+        String phoneNumber = getIntent().getStringExtra(EXTRA_PHONE_NUMBER);
         textInfo.setText(getString(R.string.info_gopay_auth, phoneNumber));
     }
 
@@ -46,13 +52,40 @@ public class GoPayAuthorizationActivitiy extends BasePaymentActivity implements 
         buttonContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String verificationCode = fieldVerificationCode.getText().toString().trim();
-                if (verificationCodeValid(verificationCode)) {
-                    showProgressLayout();
-                    presenter.authorizePayment(verificationCode);
-                }
+                authorizePayment();
             }
         });
+    }
+
+    private void authorizePayment() {
+        SdkUIFlowUtil.hideKeyboard(this);
+
+        String verificationCode = fieldVerificationCode.getText().toString().trim();
+        if (verificationCodeValid(verificationCode)) {
+            showProgressLayout();
+            presenter.authorizePayment(verificationCode);
+        }
+    }
+
+    private void showPaymentStatusPage(TransactionResponse response) {
+        if (isActivityRunning()) {
+            if (presenter.isShowPaymentStatusPage()) {
+                Intent intent = new Intent(this, PaymentStatusActivity.class);
+                intent.putExtra(PaymentStatusActivity.EXTRA_PAYMENT_RESULT, response);
+                startActivityForResult(intent, UiKitConstants.INTENT_CODE_PAYMENT_STATUS);
+            } else {
+                finishPayment(RESULT_OK);
+            }
+        } else {
+            finish();
+        }
+    }
+
+    private void finishPayment(int resultCode) {
+        Intent intent = new Intent();
+        intent.putExtra(getString(R.string.transaction_response), presenter.getTransactionResponse());
+        setResult(resultCode, intent);
+        finish();
     }
 
 
@@ -72,24 +105,23 @@ public class GoPayAuthorizationActivitiy extends BasePaymentActivity implements 
     }
 
     @Override
-    public void onVerificationCodeSuccess() {
+    public void onVerificationCodeSuccess(TransactionResponse response) {
         hideProgressLayout();
-        showPaymentStatusPage();
-    }
-
-    private void showPaymentStatusPage() {
-
+        showPaymentStatusPage(response);
     }
 
     @Override
-    public void onVerificationCodeFailure() {
+    public void onVerificationCodeFailure(TransactionResponse response) {
         hideProgressLayout();
-        showPaymentStatusPage();
+        showPaymentStatusPage(response);
     }
 
     @Override
-    public void onVerificationCodeError() {
-
+    public void onVerificationCodeError(Throwable error) {
+        if (isActivityRunning()) {
+            MessageInfo messageInfo = MessageUtil.createMessageOnError(this, error, null);
+            SdkUIFlowUtil.showToast(this, messageInfo.detailsMessage);
+        }
     }
 
     @Override
@@ -114,5 +146,14 @@ public class GoPayAuthorizationActivitiy extends BasePaymentActivity implements 
         }
         containerVerificationCode.setError("");
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS) {
+            finishPayment(RESULT_OK);
+        }
     }
 }

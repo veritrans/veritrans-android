@@ -4,7 +4,6 @@ import com.midtrans.sdk.corekit.models.GoPayResendAuthorizationResponse;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 import com.midtrans.sdk.corekit.models.snap.BanksPointResponse;
-import com.midtrans.sdk.corekit.models.snap.GoPayAuthorizationResponse;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.TransactionStatusResponse;
 import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
@@ -210,7 +209,7 @@ public interface SnapRestAPI {
      * @param callback
      */
     @POST("/v1/gopay/{token}/pay")
-    void authorizeGoPayPayment(@Path("token") String snapToken, @Body GoPayAuthorizationRequest request, Callback<GoPayAuthorizationResponse> callback);
+    void authorizeGoPayPayment(@Path("token") String snapToken, @Body GoPayAuthorizationRequest request, Callback<TransactionResponse> callback);
 
 
     /**

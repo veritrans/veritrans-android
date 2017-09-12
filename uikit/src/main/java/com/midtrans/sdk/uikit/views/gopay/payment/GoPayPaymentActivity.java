@@ -39,6 +39,7 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
 
 
     private GopayPaymentPresenter presenter;
+    private String fullPhoneNumber = "";
 
 
     @Override
@@ -54,17 +55,21 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
         buttonContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                String countryCode = fieldCountryCode.getText().toString().trim();
-                String phoneNumber = fieldPhoneNumber.getText().toString().trim();
-
-                if (phoneNumberValid(countryCode, phoneNumber)) {
-                    showProgressLayout();
-                    String fullPhoneNumber = countryCode + phoneNumber;
-                    presenter.startGoPayPayment(fullPhoneNumber);
-                }
+                startGoPayPayment();
             }
         });
+    }
+
+    private void startGoPayPayment() {
+        SdkUIFlowUtil.hideKeyboard(this);
+
+        String countryCode = fieldCountryCode.getText().toString().trim();
+        String phoneNumber = fieldPhoneNumber.getText().toString().trim();
+        if (phoneNumberValid(countryCode, phoneNumber)) {
+            showProgressLayout();
+            fullPhoneNumber = countryCode + phoneNumber;
+            presenter.startGoPayPayment(fullPhoneNumber);
+        }
     }
 
     private boolean phoneNumberValid(String countryCode, String phoneNumber) {
@@ -118,7 +123,7 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
         hideProgressLayout();
         if (isActivityRunning()) {
             Intent intent = new Intent(this, GoPayAuthorizationActivitiy.class);
-            intent.putExtra(GoPayAuthorizationActivitiy.EXTRA_PHONE_NUMBER, response);
+            intent.putExtra(GoPayAuthorizationActivitiy.EXTRA_PHONE_NUMBER, fullPhoneNumber);
             startActivityForResult(intent, UiKitConstants.INTENT_VERIFICATION);
         }
     }
@@ -153,12 +158,16 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS) {
-            finishPayment(RESULT_OK);
-        }
-        if (requestCode == UiKitConstants.INTENT_VERIFICATION) {
-            finishPayment(RESULT_OK, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS) {
+                finishPayment(RESULT_OK);
+            } else if (requestCode == UiKitConstants.INTENT_VERIFICATION) {
+                finishPayment(RESULT_OK, data);
+            }
+        } else if (resultCode == RESULT_CANCELED) {
+            if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS) {
+                finishPayment(RESULT_OK);
+            }
         }
     }
 

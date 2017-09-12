@@ -498,6 +498,7 @@
     <string name="payment_method_description_indosat_dompetku">Bayar dengan Indosat Dompetku</string>
     <string name="payment_method_description_kioson">Bayar dari gerai Kioson</string>
     <string name="payment_method_description_gci">Bayar dengan Gift Card</string>
+    <string name="payment_method_description_gopay">Bayar dengan GO-PAY</string>
 
     <string name="payment_bank_description_bca">Bayar dari ATM BCA atau internet banking</string>
     <string name="payment_bank_description_mandiri">Bayar dari ATM Mandiri atau internet banking</string>
@@ -631,5 +632,6 @@
     <string name="hint_gopay_verification_number">Masukkan kode verifikasi</string>
     <string name="info_gopay_auth">Kami telah mengirim <b>sebuah kode verifikasi</b> via sms ke nomor yang telah teregistrasi di GO-PAY <b>%1$s</b></string>
     <string name="verificaton_code_empty">Masukkan kode verifikasi</string>
+    <string name="verification_code">Kirim Ulang Kode Verifikasi</string>
 
 </resources>
