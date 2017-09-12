@@ -1,7 +1,9 @@
 package com.midtrans.sdk.uikit.views.gopay.authorization;
 
+import com.midtrans.sdk.corekit.callback.GoPayResendAuthorizationCallback;
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.models.GoPayResendAuthorizationResponse;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentPresenter;
 
@@ -43,5 +45,28 @@ public class GoPayAuthorizationPresenter extends BasePaymentPresenter<GoPayAutho
 
     public TransactionResponse getTransactionResponse() {
         return this.transactionResponse;
+    }
+
+    public void resendVerificationCode() {
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
+        String snapToken = midtransSDK.readAuthenticationToken();
+
+        midtransSDK.resendGopayAuthorization(snapToken, new GoPayResendAuthorizationCallback() {
+            @Override
+            public void onSuccess(GoPayResendAuthorizationResponse response) {
+                view.onResendSuccess(response);
+            }
+
+            @Override
+            public void onFailure(GoPayResendAuthorizationResponse response, String reason) {
+                view.onResendFailure(response);
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                view.onResendError(error);
+            }
+        });
+
     }
 }

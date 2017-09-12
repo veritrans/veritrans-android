@@ -6,8 +6,10 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 
+import com.midtrans.sdk.corekit.models.GoPayResendAuthorizationResponse;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
@@ -26,11 +28,16 @@ import com.midtrans.sdk.uikit.widgets.FancyButton;
 public class GoPayAuthorizationActivitiy extends BasePaymentActivity implements GoPayAuthorizationView {
 
     public static final String EXTRA_PHONE_NUMBER = "extra.number";
+    private static final String TAG = GoPayAuthorizationActivitiy.class.getSimpleName();
 
     private TextInputLayout containerVerificationCode;
     private TextInputEditText fieldVerificationCode;
+
     private DefaultTextView textInfo;
+    private DefaultTextView textTitle;
+
     private FancyButton buttonContinue;
+    private FancyButton buttonResend;
 
     private GoPayAuthorizationPresenter presenter;
 
@@ -40,6 +47,11 @@ public class GoPayAuthorizationActivitiy extends BasePaymentActivity implements 
         setContentView(R.layout.activity_gopay_authorization);
         initProperties();
         initActionButton();
+        initData();
+    }
+
+    private void initData() {
+        textTitle.setText(getString(R.string.gopay));
     }
 
     private void initProperties() {
@@ -55,6 +67,18 @@ public class GoPayAuthorizationActivitiy extends BasePaymentActivity implements 
                 authorizePayment();
             }
         });
+
+        buttonResend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resendVerificationCode();
+            }
+        });
+    }
+
+    private void resendVerificationCode() {
+        showProgressLayout(getString(R.string.resend_verification_code));
+        presenter.resendVerificationCode();
     }
 
     private void authorizePayment() {
@@ -88,13 +112,23 @@ public class GoPayAuthorizationActivitiy extends BasePaymentActivity implements 
         finish();
     }
 
+    private void showResendingMessage(String message) {
+        if (isActivityRunning()) {
+            SdkUIFlowUtil.showToast(this, message);
+        }
+    }
 
     @Override
     public void bindViews() {
         containerVerificationCode = (TextInputLayout) findViewById(R.id.container_verification_number);
         fieldVerificationCode = (TextInputEditText) findViewById(R.id.edit_verification_number);
-        buttonContinue = (FancyButton) findViewById(R.id.button_primary);
+
         textInfo = (DefaultTextView) findViewById(R.id.text_athorization_info);
+        textTitle = (DefaultTextView) findViewById(R.id.text_page_title);
+
+        buttonContinue = (FancyButton) findViewById(R.id.button_primary);
+        buttonResend = (FancyButton) findViewById(R.id.button_resend);
+
     }
 
     @Override
@@ -125,18 +159,24 @@ public class GoPayAuthorizationActivitiy extends BasePaymentActivity implements 
     }
 
     @Override
-    public void onResendSuccess() {
+    public void onResendSuccess(GoPayResendAuthorizationResponse response) {
+        hideProgressLayout();
+        showResendingMessage(getString(R.string.resend_verification_code_success));
+    }
 
+
+    @Override
+    public void onResendFailure(GoPayResendAuthorizationResponse response) {
+        Log.d(TAG, "onResendError:" + response.getStatusMessage());
+        hideProgressLayout();
+        showResendingMessage(getString(R.string.resend_verification_code_failure));
     }
 
     @Override
-    public void onResendFailure() {
-
-    }
-
-    @Override
-    public void onResenError() {
-
+    public void onResendError(Throwable error) {
+        Log.d(TAG, "onResendError:" + error.getMessage());
+        hideProgressLayout();
+        showResendingMessage(getString(R.string.resend_verification_code_failure));
     }
 
     private boolean verificationCodeValid(String verificationCode) {

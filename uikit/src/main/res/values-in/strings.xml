@@ -633,5 +633,8 @@
     <string name="info_gopay_auth">Kami telah mengirim <b>sebuah kode verifikasi</b> via sms ke nomor yang telah teregistrasi di GO-PAY <b>%1$s</b></string>
     <string name="verificaton_code_empty">Masukkan kode verifikasi</string>
     <string name="verification_code">Kirim Ulang Kode Verifikasi</string>
+    <string name="resend_verification_code">Sedang mengirim ulang kode verifikasi</string>
+    <string name="resend_verification_code_success">Kode verifikasi berhasil dikirim</string>
+    <string name="resend_verification_code_failure">Gagal mengirim kode verifikasi</string>
 
 </resources>

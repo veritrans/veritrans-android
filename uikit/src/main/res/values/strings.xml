@@ -820,8 +820,12 @@
     <string name="status_message_not_enabled">Payment method is not enabled</string>
     <string name="details_message_not_enabled">Sorry, payment method is not enabled</string>
     <string name="hint_gopay_verification_number">Enter verification code</string>
-    <string name="info_gopay_auth">We sent a <b>verification code</b> via sms to your GO-PAY registered phone number<b>%1$s</b></string>
+    <string name="info_gopay_auth">We sent a <b>verification code</b> via sms to your GO-PAY registered phone number <b>%1$s</b></string>
     <string name="verificaton_code_empty">Please enter verification code</string>
     <string name="verification_code">Resend Verification Code</string>
+    <string name="resend_verification_code">Resending verification code</string>
+    <string name="resend_verification_code_success">Verification code already sent</string>
+    <string name="resend_verification_code_failure">Failed to resend verification code</string>
+    <string name="gopay">GO-PAY</string>
 
 </resources>

@@ -212,7 +212,7 @@ public class PaymentStatusActivity extends BaseActivity {
 
                     if (transactionResponse.getTransactionStatus() != null &&
                             transactionResponse.getTransactionStatus().equalsIgnoreCase(getString(R.string.deny))) {
-                        textStatusErrorMessage.setText(getString(R.string.payment_deny));
+                        textStatusErrorMessage.setText(getString(R.string.message_payment_denied));
                     } else if (transactionResponse.getStatusCode().equals(UiKitConstants.STATUS_CODE_400)) {
                         String message = "";
                         if (transactionResponse.getValidationMessages() != null

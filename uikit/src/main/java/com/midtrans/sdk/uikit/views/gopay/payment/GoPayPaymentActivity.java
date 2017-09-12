@@ -35,6 +35,8 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
     private TextInputEditText fieldPhoneNumber;
 
     private DefaultTextView textNotificationInfo;
+    private DefaultTextView textTitle;
+
     private FancyButton buttonContinue;
 
 
@@ -48,7 +50,11 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
         setContentView(R.layout.activity_gopay_payment);
         initProperties();
         initActionButton();
+        initData();
+    }
 
+    private void initData() {
+        textTitle.setText(R.string.gopay);
     }
 
     private void initActionButton() {
@@ -102,6 +108,7 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
         fieldCountryCode = (TextInputEditText) findViewById(R.id.edit_country_code);
         fieldPhoneNumber = (TextInputEditText) findViewById(R.id.edit_phone_number);
 
+        textTitle = (DefaultTextView) findViewById(R.id.text_page_title);
         buttonContinue = (FancyButton) findViewById(R.id.button_primary);
     }
 

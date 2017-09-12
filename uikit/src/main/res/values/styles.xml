@@ -121,6 +121,10 @@
         <item name="android:textColor">@color/dark_gray_primer</item>
     </style>
 
+    <style name="RoundedNotification" parent="Notification">
+        <item name="android:background">@drawable/rounded_notification_background</item>
+    </style>
+
     <style name="TokenNotification" parent="Notification">
         <item name="android:drawableLeft">@drawable/ic_token_key</item>
         <item name="android:text">@string/notification_token_message</item>

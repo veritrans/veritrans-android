@@ -1,5 +1,6 @@
 package com.midtrans.sdk.uikit.views.gopay.authorization;
 
+import com.midtrans.sdk.corekit.models.GoPayResendAuthorizationResponse;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 
 /**
@@ -14,10 +15,10 @@ public interface GoPayAuthorizationView {
 
     void onVerificationCodeError(Throwable error);
 
-    void onResendSuccess();
+    void onResendSuccess(GoPayResendAuthorizationResponse response);
 
-    void onResendFailure();
+    void onResendFailure(GoPayResendAuthorizationResponse reason);
 
-    void onResenError();
+    void onResendError(Throwable error);
 
 }

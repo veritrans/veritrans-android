@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:layout_marginLeft="@dimen/sixteen_dp"
     android:layout_marginRight="@dimen/sixteen_dp"
     android:layout_marginTop="@dimen/sixteen_dp"
-    android:layout_height="match_parent">
+    android:orientation="vertical">
 
     <LinearLayout
-        style="@style/Notification"
+        style="@style/RoundedNotification"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -34,11 +35,11 @@
                 android:id="@+id/edit_country_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:digits="0123456789+"
                 android:hint="@string/country_code"
                 android:inputType="number"
-                android:digits="0123456789+"
-                android:textSize="@dimen/sixteen_sp"
-                android:text="@string/country_code_default" />
+                android:text="@string/country_code_default"
+                android:textSize="@dimen/sixteen_sp" />
         </android.support.design.widget.TextInputLayout>
 
 
@@ -51,10 +52,10 @@
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/edit_phone_number"
                 android:layout_width="match_parent"
-                android:inputType="number"
-                android:textSize="@dimen/sixteen_sp"
                 android:layout_height="wrap_content"
-                android:hint="@string/hint_gopay_phone_number" />
+                android:hint="@string/hint_gopay_phone_number"
+                android:inputType="number"
+                android:textSize="@dimen/sixteen_sp" />
         </android.support.design.widget.TextInputLayout>
     </LinearLayout>
 
