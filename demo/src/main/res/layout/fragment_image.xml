@@ -4,5 +4,6 @@
     android:id="@+id/product_image"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:scaleType="fitXY"
+    android:adjustViewBounds="true"
     tools:src="@drawable/slide_img_1" />
