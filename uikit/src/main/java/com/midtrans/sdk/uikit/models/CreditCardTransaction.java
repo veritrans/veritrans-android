@@ -104,6 +104,24 @@ public class CreditCardTransaction {
         return null;
     }
 
+    /**
+     * get bank name bu card number
+     *
+     * @param cardNumber
+     * @return bank name
+     */
+    public String getBankByCardNumber(String cardNumber) {
+        for (BankBinsResponse savedBankBin : bankBins) {
+            if (savedBankBin.getBins() != null && !savedBankBin.getBins().isEmpty()) {
+                String bankName = findBankByCardNumber(savedBankBin, cardNumber);
+                if (bankName != null) {
+                    return bankName;
+                }
+            }
+        }
+        return null;
+    }
+
     public boolean isMandiriCardDebit(String cardBin) {
         if (getMandiriDebitResponse() != null) {
             String bankBin = findBankByCardBin(getMandiriDebitResponse(), cardBin);
@@ -124,6 +142,16 @@ public class CreditCardTransaction {
     private String findBankByCardBin(BankBinsResponse savedBankBin, String cardBin) {
         for (String savedBin : savedBankBin.getBins()) {
             if (savedBin.contains(cardBin)) {
+                return savedBankBin.getBank();
+            }
+        }
+        return null;
+    }
+
+
+    private String findBankByCardNumber(BankBinsResponse savedBankBin, String cardNumber) {
+        for (String savedBin : savedBankBin.getBins()) {
+            if (!TextUtils.isEmpty(savedBin) && cardNumber.startsWith(savedBin)) {
                 return savedBankBin.getBank();
             }
         }
@@ -194,4 +222,29 @@ public class CreditCardTransaction {
         return isInWhiteList(cardBin);
     }
 
+    /**
+     * check whether card number consists of one of card bin
+     *
+     * @param cardNumber
+     * @return boolean
+     */
+    public boolean isWhitelistBinContainCardNumber(String cardNumber) {
+        if (!TextUtils.isEmpty(cardNumber) && isWhiteListBinsAvailable()) {
+            for (String bin : creditCard.getWhitelistBins()) {
+                if (!TextUtils.isEmpty(bin)) {
+                    if (TextUtils.isDigitsOnly(bin)) {
+                        if (cardNumber.startsWith(bin)) {
+                            return true;
+                        }
+                    } else {
+                        String bank = getBankByCardNumber(cardNumber);
+                        if (bin.equalsIgnoreCase(bank)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
 }

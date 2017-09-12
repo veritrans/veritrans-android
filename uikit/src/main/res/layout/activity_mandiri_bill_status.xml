@@ -55,7 +55,7 @@
             app:fb_focusColor="@color/colorAccentLight"
             app:fb_text="@string/complete_payment_at_atm"
             app:fb_textGravity="center_vertical"
-            app:fb_textSize="16sp" />
+            app:fb_textSize="14sp" />
 
         <LinearLayout
             android:layout_width="match_parent"

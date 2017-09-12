@@ -15,6 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/sixteen_dp"
+            android:layout_marginLeft="@dimen/sixteen_dp"
             android:layout_marginTop="@dimen/sixteen_dp"
             android:text="@string/title_instruction_klikbca"
             android:textColor="@color/dark_gray"

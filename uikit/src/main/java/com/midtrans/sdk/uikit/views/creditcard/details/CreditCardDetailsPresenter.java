@@ -490,4 +490,8 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
     public boolean isCardScannerAvailable() {
         return MidtransSDK.getInstance().getExternalScanner() != null;
     }
+
+    public boolean isBinLockingValid(String cardNumber) {
+        return creditCardTransaction.isWhitelistBinContainCardNumber(cardNumber);
+    }
 }

@@ -16,18 +16,14 @@ To see how to install this SDK please read [this wiki](https://mobile-docs.midtr
 ## Implementation
 
 There are two implementation modes on this SDK.
+- **UI Kit** To see the implementation guide please read [this wiki](https://mobile-docs.midtrans.com/#prepare-transaction-details).
 
-### UI Kit
-
-To see the implementation guide please read [this wiki](https://mobile-docs.midtrans.com/#prepare-transaction-details).
-
-### Core Kit
-
-To see the implementation guide please read [this wiki](https://github.com/veritrans/veritrans-android/wiki/Core-Flow).
+- **Core Kit** To see the implementation guide please read [this wiki](https://github.com/veritrans/veritrans-android/wiki/Core-Flow).
 
 ## Sample/ Demo App
+- To build the sdk repository, need to create file `fabric.properties` inside the `demo` module folder and then define  `apiKey=fabric_api_key` and `apiSecret=fabric_api_secret`. or if you doesn't have fabric credentials just remove  `apply plugin: 'io.fabric'` in file `build.gradle` of `demo` folder.
+- To see the sample app (contais UI flow), you can download from from  [Release Section](https://github.com/veritrans/veritrans-android/releases) or see [Release Section](https://github.com/veritrans/veritrans-android/releases)`sdk-example` sub-module to see the code.
 
-To see the sample app (contais UI flow), you can download from from  [Release Section](https://github.com/veritrans/veritrans-android/releases) or see `sdk-example` sub-module to see the code.
 
 ## Minimum Support OS
 **Android 4.0 Ice Cream Sandwitch API Level 14**

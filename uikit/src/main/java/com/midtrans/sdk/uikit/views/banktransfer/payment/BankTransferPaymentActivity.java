@@ -5,20 +5,30 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.support.v7.app.AppCompatDialog;
 import android.support.v7.widget.AppCompatEditText;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-
+import android.widget.ImageView;
+import android.widget.Toast;
 import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
 import com.midtrans.sdk.uikit.adapters.InstructionPagerAdapter;
+import com.midtrans.sdk.uikit.adapters.ListBankAdapter;
 import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.BankTransferFragment;
+import com.midtrans.sdk.uikit.fragments.InstructionOtherBankFragment;
+import com.midtrans.sdk.uikit.fragments.InstructionOtherBankFragment.OnInstructionShownListener;
 import com.midtrans.sdk.uikit.models.MessageInfo;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
@@ -32,7 +42,8 @@ import com.midtrans.sdk.uikit.widgets.FancyButton;
  * Created by ziahaqi on 8/9/17.
  */
 
-public class BankTransferPaymentActivity extends BasePaymentActivity implements BankTransferPaymentView {
+public class BankTransferPaymentActivity extends BasePaymentActivity implements BankTransferPaymentView,
+    OnInstructionShownListener {
 
     public static final String EXTRA_BANK_TYPE = "bank.type";
     private BankTransferPaymentPresenter presenter;
@@ -51,6 +62,10 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
 
     private String paymentType;
 
+    //for other ATM network
+    private ImageView bankPreview;
+    private DefaultTextView bankDescription, bankToggle, cardDescription;
+    private boolean[] flags;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,6 +76,7 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
         initTabPager();
         initPaymentButton();
         initData();
+        bindOtherAtmGuidanceView();
     }
 
     private void initPaymentButton() {
@@ -73,6 +89,8 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
                 if (checkEmailValidity(email)) {
                     showProgressLayout();
                     presenter.startPayment(paymentType, email);
+                } else {
+                    Toast.makeText(BankTransferPaymentActivity.this, getString(R.string.error_invalid_email_id), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -167,6 +185,7 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
             case PaymentType.PERMATA_VA:
                 title = getString(R.string.bank_permata_transfer);
                 pageNumber = 2;
+                flags = new boolean[pageNumber];
 
                 //track page permata va overview
                 presenter.trackEvent(AnalyticsEventName.PAGE_PERMATA_VA_OVERVIEW);
@@ -174,6 +193,7 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
             case PaymentType.ALL_VA:
                 title = getString(R.string.other_bank_transfer);
                 pageNumber = 3;
+                flags = new boolean[pageNumber];
 
                 //track page other bank va overview
                 presenter.trackEvent(AnalyticsEventName.PAGE_OTHER_BANK_VA_OVERVIEW);
@@ -192,8 +212,46 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
         }
 
         setPageTitle(title);
-        InstructionPagerAdapter adapter = new InstructionPagerAdapter(this, bankType, getSupportFragmentManager(), pageNumber);
+        final InstructionPagerAdapter adapter = new InstructionPagerAdapter(this, bankType, getSupportFragmentManager(), pageNumber);
         pagerInstruction.setAdapter(adapter);
+        final OnPageChangeListener onPageChangeListener = new OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset,
+                int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                Fragment fragment = adapter.getItem(position);
+                if (fragment instanceof InstructionOtherBankFragment && flags != null) {
+                    showOtherAtmGuidance(((InstructionOtherBankFragment) fragment).getFragmentCode());
+                    boolean isInstructionShown = flags[position];
+                    if (isInstructionShown) {
+                        showEmailForm();
+                    } else {
+                        hideEmailForm();
+                    }
+                    setButtonPayText(adapter.getPayButtonText(((InstructionOtherBankFragment) fragment).getFragmentCode()));
+                } else {
+                    hideOtherAtmGuidance();
+                    showEmailForm();
+                    setButtonPayText(adapter.getPayButtonText(-1));
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        };
+        pagerInstruction.addOnPageChangeListener(onPageChangeListener);
+        pagerInstruction.post(new Runnable() {
+            @Override
+            public void run() {
+                onPageChangeListener.onPageSelected(pagerInstruction.getCurrentItem());
+            }
+        });
         setUpTabLayout();
     }
 
@@ -353,4 +411,110 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
         hideProgressLayout();
     }
 
+    /**
+     * Setup UI for additional information about other ATM network transfer
+     * @param fragmentCode
+     */
+    public void showOtherAtmGuidance(int fragmentCode) {
+        findViewById(R.id.other_atm_guidance).setVisibility(View.VISIBLE);
+        final int bankArrayId, dialogTitleId;
+        switch (fragmentCode) {
+            case UiKitConstants.ATM_BERSAMA:
+                bankArrayId = R.array.atm_bersama_banks;
+                dialogTitleId = R.string.bank_list_header_atm_bersama;
+                bankPreview.setImageResource(R.drawable.bersama_preview);
+                bankDescription.setText(R.string.preview_atm_bersama);
+                bankToggle.setText(R.string.expand_link_atm_bersama);
+                cardDescription.setText(R.string.instruction_card_atm_bersama);
+                cardDescription.setCompoundDrawablesWithIntrinsicBounds(R.drawable.bersama_atm, 0, 0, 0);
+                break;
+            case UiKitConstants.PRIMA:
+                bankArrayId = R.array.prima_banks;
+                dialogTitleId = R.string.bank_list_header_prima;
+                bankPreview.setImageResource(R.drawable.prima_preview);
+                bankDescription.setText(R.string.preview_prima);
+                bankToggle.setText(R.string.expand_link_prima);
+                cardDescription.setText(R.string.instruction_card_prima);
+                cardDescription.setCompoundDrawablesWithIntrinsicBounds(R.drawable.prima_atm, 0, 0, 0);
+                break;
+            default:
+                bankArrayId = R.array.alto_banks;
+                dialogTitleId = R.string.bank_list_header_alto;
+                bankPreview.setImageResource(R.drawable.alto_preview);
+                bankDescription.setText(R.string.preview_alto);
+                bankToggle.setText(R.string.expand_link_alto);
+                cardDescription.setText(R.string.instruction_card_alto);
+                cardDescription.setCompoundDrawablesWithIntrinsicBounds(R.drawable.alto_atm, 0, 0, 0);
+                break;
+        }
+        bankToggle.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_next, 0);
+        bankToggle.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (v.getId() == R.id.bank_toggle) {
+                    //prepare bank name
+                    String[] bankNames = getResources().getStringArray(bankArrayId);
+                    ListBankAdapter bankAdapter = new ListBankAdapter(bankNames, v.getContext());
+
+                    final AppCompatDialog dialog = new AppCompatDialog(v.getContext());
+                    dialog.setContentView(R.layout.dialog_bank_list);
+                    RecyclerView recyclerView = (RecyclerView) dialog.findViewById(R.id.bank_list_items);
+                    recyclerView.setAdapter(bankAdapter);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(v.getContext()));
+                    recyclerView.setHasFixedSize(true);
+                    ((DefaultTextView) dialog.findViewById(R.id.bank_list_title))
+                        .setText(getString(dialogTitleId));
+                    (dialog.findViewById(R.id.bank_list_ok)).setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+                    dialog.setCancelable(true);
+                    dialog.show();
+                }
+            }
+        });
+    }
+
+    private void hideOtherAtmGuidance() {
+        findViewById(R.id.other_atm_guidance).setVisibility(View.GONE);
+    }
+
+    private void bindOtherAtmGuidanceView() {
+        bankPreview = (ImageView) findViewById(R.id.bank_preview);
+        bankDescription = (DefaultTextView) findViewById(R.id.bank_description);
+        bankToggle = (DefaultTextView) findViewById(R.id.bank_toggle);
+        cardDescription = (DefaultTextView) findViewById(R.id.card_description);
+    }
+
+    private void setButtonPayText(String text) {
+        buttonPay.setText(text);
+    }
+
+    private void showEmailForm() {
+        findViewById(R.id.container_email).setVisibility(View.VISIBLE);
+        findViewById(R.id.email_description).setVisibility(View.VISIBLE);
+    }
+
+    private void hideEmailForm() {
+        findViewById(R.id.container_email).setVisibility(View.GONE);
+        findViewById(R.id.email_description).setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onInstructionShown(boolean isShown, int fragmentCode) {
+        if (flags != null) {
+            if (flags.length == 3) { //for all ATM network
+                flags[fragmentCode] = isShown;
+            } else if (flags.length == 2) { //for Permata
+                flags[fragmentCode-1] = isShown; //Alto code is 2, while in Permata VA its index is 1
+            }
+            if (isShown) {
+                showEmailForm();
+            } else {
+                hideEmailForm();
+            }
+        }
+    }
 }

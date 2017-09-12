@@ -98,7 +98,6 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     private ArrayList<EnabledPayment> bankTransfers = new ArrayList<>();
     private PaymentMethodsAdapter paymentMethodsAdapter;
     private AlertDialog alertDialog;
-    private DefaultTextView textTitle;
     private ImageView progressImage;
     private ImageView secureBadge;
     private TextView progressMessage;
@@ -167,7 +166,6 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         //initialize views
         bindActivity();
         initRetryButton();
-        setupToolbarTitle(false);
 
         setSupportActionBar(toolbar);
 
@@ -181,16 +179,6 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 buttonRetry.setBorderColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
                 buttonRetry.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
             }
-        }
-    }
-
-    private void setupToolbarTitle(boolean showTitle) {
-        if (showTitle) {
-            textTitle.setVisibility(View.VISIBLE);
-            logo.setVisibility(View.GONE);
-        } else {
-            textTitle.setVisibility(View.GONE);
-            logo.setVisibility(View.VISIBLE);
         }
     }
 
@@ -253,12 +241,10 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         maintenanceMessage = (DefaultTextView) findViewById(R.id.text_maintenance_message);
         buttonRetry = (FancyButton) findViewById(R.id.button_maintenance_retry);
 
-        textTitle = (DefaultTextView) findViewById(R.id.title_header);
         if (isCreditCardOnly || isBankTransferOnly || isKlikBCA || isBCAKlikpay
                 || isMandiriClickPay || isMandiriECash || isCIMBClicks || isBRIEpay
                 || isTelkomselCash || isIndosatDompetku || isXlTunai
                 || isIndomaret || isKioson || isGci) {
-            textTitle.setText(getString(R.string.txt_checkout));
             progressMessage.setText(R.string.txt_checkout);
         }
 
@@ -380,7 +366,6 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     if (TextUtils.isEmpty(logoUrl)) {
                         showName(merchantName);
                     }
-                    setupToolbarTitle(false);
 
                     //merchant data is already retrieved, set secure badge here
                     int secureBadgeCode = SdkUIFlowUtil.getCreditCardIconType();

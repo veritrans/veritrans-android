@@ -89,7 +89,7 @@
     <!--Bank Transfer-->
     <string name="bca_bank_transfer">BCA</string>
     <string name="permata_bank_transfer">Permata</string>
-
+    <string name="error_invalid_email_id">Alamat email tidak valid</string>
     <string name="orderId">Order ID</string>
     <string name="amount">Jumlah</string>
     <string name="transfer_amount">Jumlah Transfer</string>
@@ -102,7 +102,7 @@
     <string name="bank_atm_transfer_step3">Harap selesaikan pembayaran melalui Prima (BCA), ATM Bersama(Mandiri), or Alto(Permata).</string>
     <string name="bank_atm_transfer_step4">Bila pembayaran sudah selesai, Anda akan menerima email konfirmasi.</string>
     <string name="see_instruction">Lihat instruksi</string>
-    <string name="download_instruction">Unduh instruksi</string>
+    <string name="download_instruction">Unduh Instruksi</string>
     <string name="confirm_payment">Konfirmasi Pembayaran</string>
     <string name="copy_payment_code">Salin Kode Pembayaran</string>
     <string name="copy_va_number">Salin Nomor Akun Virtual</string>
@@ -381,6 +381,10 @@
     <string name="klik_bca_complete_payment">Selesaikan pembayaran di <a href="http://klikbca.com/">http://klikbca.com/</a> sebelum:</string>
 
     <!-- instruction atm bersama -->
+    <string name="preview_atm_bersama">Bayar melalui <b>semua ATM bank berlogo ATM Bersama</b></string>
+    <string name="expand_link_atm_bersama">Total <u>+</u>83 bank terdaftar</string>
+    <string name="instruction_card_atm_bersama">Pastikan terdapat <b>logo ATM Bersama di belakang kartu ATM</b> Anda.</string>
+    <string name="bank_list_header_atm_bersama">Bank terdaftar ATM Bersama</string>
     <string name="instruction_atm_bersama1">Pada menu utama, pilih <b>Transaksi Lainnya</b>.</string>
     <string name="instruction_atm_bersama2">Pilih <b>Transfer</b>.</string>
     <string name="instruction_atm_bersama3">Pilih <b>Antar Bank Online</b>.</string>
@@ -388,7 +392,12 @@
     <string name="instruction_atm_bersama5">Masukkan <b>jumlah tagihan yang akan Anda bayar</b> secara lengkap, lalu tekan <b>Benar</b></string>
     <string name="instruction_atm_bersama6">Kosongkan No. referensi, lalu tekan <b>Benar</b>.</string>
     <string name="instruction_atm_bersama7"><b>Detail pembayaran Anda</b> akan muncul pada halaman konfirmasi. Jika informasi telah sesuai tekan <b>Benar</b>.</string>
+    <string name="pay_with_atm_bersama">Bayar melalui ATM berlogo ATM Bersama</string>
 
+    <string name="preview_prima">Bayar melalui <b>semua ATM bank berlogo Prima</b></string>
+    <string name="expand_link_prima">Total <u>+</u>64 bank terdaftar</string>
+    <string name="instruction_card_prima">Pastikan terdapat <b>logo Prima di belakang kartu ATM</b> Anda.</string>
+    <string name="bank_list_header_prima">Bank terdaftar jaringan Prima</string>
     <string name="instruction_prima1">Pada menu utama, pilih <b>Transaksi Lainnya</b>.</string>
     <string name="instruction_prima2">Pilih <b>Transfer</b>.</string>
     <string name="instruction_prima3">Pilih <b>Ke Rek Bank Lain</b>.</string>
@@ -396,7 +405,12 @@
     <string name="instruction_prima5">Masukkan <b>jumlah tagihan yang akan Anda bayar</b> secara lengkap, lalu tekan <b>Benar</b>.</string>
     <string name="instruction_prima6">Masukkan <b>16 digit No. Rekening Pembayaran</b> yang dituju, lalu tekan <b>Benar</b>.</string>
     <string name="instruction_prima7"><b>Detail pembayaran Anda</b> akan muncul di halaman konfirmasi. Jika informasi telah sesuai tekan <b>Benar</b>.</string>
+    <string name="pay_with_prima">Bayar melalui ATM berlogo Prima</string>
 
+    <string name="preview_alto">Bayar melalui <b>semua ATM bank berlogo Alto</b></string>
+    <string name="expand_link_alto">Total <u>+</u>19 bank terdaftar</string>
+    <string name="instruction_card_alto">Pastikan terdapat <b>logo Alto di belakang kartu ATM</b> Anda.</string>
+    <string name="bank_list_header_alto">Bank terdaftar jaringan Alto</string>
     <string name="instruction_alto1">Pada menu utama, pilih <b>Transaksi lainnya</b>.</string>
     <string name="instruction_alto2">Pilih <b>Transaksi Pembayaran</b>.</string>
     <string name="instruction_alto3">Pilih <b>Lain-lain</b>.</string>
@@ -404,6 +418,10 @@
     <string name="instruction_alto5">Masukkan <b>16 digit No. Rekening Pembayaran</b> yang dituju, lalu tekan <b>Benar</b>.</string>
     <string name="instruction_alto6"><b>Detail pembayaran Anda</b> akan muncul pada halaman konfirmasi. Jika informasi sesuai tekan <b>Benar</b>.</string>
     <string name="instruction_alto7">Pilih rekening pembayaran Anda dan tekan <b>Benar</b>.</string>
+    <string name="pay_with_alto">Bayar melalui ATM berlogo Alto</string>
+
+    <string name="show_instruction">Lihat Instruksi Pembayaran</string>
+    <string name="hide_instruction">Sembunyikan Instruksi Pembayaran</string>
 
     <string name="all_bank_transfer">Jaringan ATM Lainnya</string>
     <string name="error_message_invalid_input_telkomsel">Transaksi Anda tidak dapat diproses. Pastikan informasi pembayaran Anda benar.</string>

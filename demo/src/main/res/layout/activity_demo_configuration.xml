@@ -578,14 +578,14 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:scaleType="center"
-                    android:src="@drawable/ic_save_card" />
+                    android:src="@drawable/ic_custom_bni_va" />
 
                 <com.midtrans.demo.widgets.DemoTextView
                     android:id="@+id/title_custom_bni_va"
                     style="@style/ConfigItemTextTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/custom_bca_va_disabled" />
+                    android:text="@string/custom_bni_va_disabled" />
 
             </LinearLayout>
 

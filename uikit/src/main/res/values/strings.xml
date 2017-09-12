@@ -458,7 +458,7 @@
     <string name="error_sdk_not_initialized">sdk is not initialized.</string>
     <string name="error_invalid_data_supplied">invalid data supplied to sdk.</string>
     <string name="error_unable_to_connect">failed to connect to server.</string>
-    <string name="error_invalid_email_id">invalid email id.</string>
+    <string name="error_invalid_email_id">Email is invalid</string>
     <string name="error_invalid_phone_number">invalid phone number.</string>
     <string name="error_something_wrong">Please try again, something went wrong!</string>
     <string name="error_already_running">Already running!</string>
@@ -511,6 +511,10 @@
     <string name="text_format_valid_until">Please complete your payment before : %1$s</string>
 
     <!-- instruction atm bersama -->
+    <string name="preview_atm_bersama">Pay through <b>all bank ATMs with ATM Bersama logo</b></string>
+    <string name="expand_link_atm_bersama">Total <u>+</u>83 registered banks</string>
+    <string name="instruction_card_atm_bersama">Ensure there is <b>ATM Bersama logo in the back of your ATM card.</b></string>
+    <string name="bank_list_header_atm_bersama">Banks registered with ATM Bersama</string>
     <string name="instruction_atm_bersama1">On the main menu, choose <b>Others</b>.</string>
     <string name="instruction_atm_bersama2">Choose <b>Transfer</b>.</string>
     <string name="instruction_atm_bersama3">Choose <b>Online Transfer</b>.</string>
@@ -518,7 +522,12 @@
     <string name="instruction_atm_bersama5">Enter the <b>full amount to be paid</b> and press <b>Correct</b>.</string>
     <string name="instruction_atm_bersama6">Empty the transfer reference number and press <b>Correct</b>.</string>
     <string name="instruction_atm_bersama7">Your payment details will appear on the confirmation page. If the information is right press <b>Correct</b>.</string>
+    <string name="pay_with_atm_bersama">Pay through ATM with ATM Bersama logo</string>
 
+    <string name="preview_prima">Pay through <b>all bank ATMs with Prima logo</b></string>
+    <string name="expand_link_prima">Total <u>+</u>64 registered banks</string>
+    <string name="instruction_card_prima">Ensure there is <b>Prima logo in the back of your ATM card.</b></string>
+    <string name="bank_list_header_prima">Banks registered with Prima network</string>
     <string name="instruction_prima1">On the main menu, choose <b>Other Transaction</b>.</string>
     <string name="instruction_prima2">Choose <b>Transfer</b>.</string>
     <string name="instruction_prima3">Choose <b>Other Bank Account</b>.</string>
@@ -526,7 +535,12 @@
     <string name="instruction_prima5">Enter the full amount to be paid and press <b>Correct</b>.</string>
     <string name="instruction_prima6">Enter <b>16 digits payment Account No.</b> and press <b>Correct</b>.</string>
     <string name="instruction_prima7">Your payment details will appear on the confirmation page. If the information is right, press <b>Correct</b>.</string>
+    <string name="pay_with_prima">Pay through ATM with Prima logo</string>
 
+    <string name="preview_alto">Pay through <b>all bank ATMs with Alto logo</b></string>
+    <string name="expand_link_alto">Total <u>+</u>19 registered banks</string>
+    <string name="instruction_card_alto">Ensure there is <b>Alto logo in the back of your ATM card</b></string>
+    <string name="bank_list_header_alto">Banks registered with Alto network</string>
     <string name="instruction_alto1">On the main menu, choose <b>Other Transaction</b>.</string>
     <string name="instruction_alto2">Choose <b>Payment</b>.</string>
     <string name="instruction_alto3">Choose <b>Other Payment</b>.</string>
@@ -534,8 +548,12 @@
     <string name="instruction_alto5">Enter <b>16 digits payment Account No.</b> and press <b>Correct</b>.</string>
     <string name="instruction_alto6">Your payment details will appear on the confirmation page. If the information is right press <b>Correct</b>.</string>
     <string name="instruction_alto7">Choose your payment account.</string>
+    <string name="pay_with_alto">Pay through ATM with Alto logo</string>
+
     <string name="amex">AMEX</string>
     <string name="jcb">JCB</string>
+    <string name="show_instruction">View Payment Instruction</string>
+    <string name="hide_instruction">Hide Payment Instruction</string>
 
     <string name="instruction_1">1.</string>
     <string name="instruction_2">2.</string>
