@@ -136,6 +136,8 @@ public class GoPayAuthorizationActivitiy extends BasePaymentActivity implements 
         setPrimaryBackgroundColor(buttonContinue);
         setBackgroundTintList(fieldVerificationCode);
         setTextInputlayoutFilter(containerVerificationCode);
+        setBorderColor(buttonResend);
+        setTextColor(buttonResend);
     }
 
     @Override

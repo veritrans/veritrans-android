@@ -5,9 +5,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 
+import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
@@ -50,7 +53,38 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
         setContentView(R.layout.activity_gopay_payment);
         initProperties();
         initActionButton();
+        initActionField();
         initData();
+    }
+
+    private void initActionField() {
+        fieldCountryCode.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                try {
+                    if (!s.toString().contains("+")) {
+                        s.insert(0, "+");
+                    }
+                    if (s.length() > 5) {
+                        s.delete(s.length() - 1, s.length());
+                    }
+
+                } catch (RuntimeException e) {
+                    Logger.e(TAG, "fieldCountryCode:" + e.getMessage());
+                }
+            }
+        });
     }
 
     private void initData() {
@@ -132,6 +166,8 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
             Intent intent = new Intent(this, GoPayAuthorizationActivitiy.class);
             intent.putExtra(GoPayAuthorizationActivitiy.EXTRA_PHONE_NUMBER, fullPhoneNumber);
             startActivityForResult(intent, UiKitConstants.INTENT_VERIFICATION);
+        } else {
+            finish();
         }
     }
 
@@ -158,8 +194,10 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
     @Override
     public void onPaymentError(Throwable error) {
         hideProgressLayout();
-        MessageInfo messageInfo = MessageUtil.createMessageOnError(this, error, null);
-        SdkUIFlowUtil.showToast(this, messageInfo.detailsMessage);
+        if (isActivityRunning()) {
+            MessageInfo messageInfo = MessageUtil.createMessageOnError(this, error, null);
+            SdkUIFlowUtil.showToast(this, messageInfo.detailsMessage);
+        }
     }
 
     @Override

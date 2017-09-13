@@ -32,7 +32,9 @@
             android:id="@+id/container_verification_number"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="3">
+            android:layout_weight="3"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/edit_verification_number"
@@ -50,11 +52,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/sixty_four_dp"
-        android:paddingEnd="@dimen/sixteen_sp"
+        android:layout_marginTop="@dimen/twenty_four_dp"
+        android:paddingEnd="@dimen/sixteen_dp"
         android:paddingLeft="@dimen/sixteen_dp"
         android:paddingRight="@dimen/sixteen_dp"
-        android:paddingStart="@dimen/sixteen_sp"
+        android:paddingStart="@dimen/sixteen_dp"
         app:fb_borderColor="@color/navy_blue.primary_dark"
         app:fb_iconColor="@color/navy_blue.primary_dark"
         app:fb_text="@string/verification_code"

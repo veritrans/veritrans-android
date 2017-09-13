@@ -20,6 +20,10 @@ public class GoPayAuthorizationPresenter extends BasePaymentPresenter<GoPayAutho
         this.view = view;
     }
 
+    public TransactionResponse getTransactionResponse() {
+        return this.transactionResponse;
+    }
+
     public void authorizePayment(final String verificationCode) {
         MidtransSDK midtransSDK = MidtransSDK.getInstance();
         String snapToken = midtransSDK.readAuthenticationToken();
@@ -41,10 +45,6 @@ public class GoPayAuthorizationPresenter extends BasePaymentPresenter<GoPayAutho
                 view.onVerificationCodeError(error);
             }
         });
-    }
-
-    public TransactionResponse getTransactionResponse() {
-        return this.transactionResponse;
     }
 
     public void resendVerificationCode() {
