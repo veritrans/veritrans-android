@@ -13,7 +13,6 @@ import com.midtrans.sdk.uikit.abstracts.BasePaymentPresenter;
 
 public class GoPayAuthorizationPresenter extends BasePaymentPresenter<GoPayAuthorizationView> {
 
-
     private TransactionResponse transactionResponse;
 
     public GoPayAuthorizationPresenter(GoPayAuthorizationView view) {
