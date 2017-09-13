@@ -9,6 +9,10 @@ import com.midtrans.sdk.corekit.core.MidtransSDK;
 public class BasePaymentPresenter<V> extends BasePresenter<V> {
 
     public boolean isShowPaymentStatusPage() {
-        return MidtransSDK.getInstance().getUIKitCustomSetting().isShowPaymentStatus();
+        MidtransSDK midtransSdk = MidtransSDK.getInstance();
+        if (midtransSdk != null && midtransSdk.getUIKitCustomSetting() != null && midtransSdk.getUIKitCustomSetting().isShowPaymentStatus()) {
+            return true;
+        }
+        return false;
     }
 }

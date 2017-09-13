@@ -72,6 +72,15 @@ android {
         }
     }
 
+    testOptions {
+        unitTests {
+            all {
+                // configure the test JVM arguments
+                jvmArgs '-noverify'
+            }
+        }
+    }
+
     defaultPublishConfig = DEFAULT_PUBLISH
     publishNonDefault true
 }

@@ -17,6 +17,7 @@ import com.midtrans.sdk.corekit.callback.CheckoutCallback;
 import com.midtrans.sdk.corekit.callback.DeleteCardCallback;
 import com.midtrans.sdk.corekit.callback.GetCardCallback;
 import com.midtrans.sdk.corekit.callback.GetTransactionStatusCallback;
+import com.midtrans.sdk.corekit.callback.GoPayResendAuthorizationCallback;
 import com.midtrans.sdk.corekit.callback.ObtainPromoCallback;
 import com.midtrans.sdk.corekit.callback.SaveCardCallback;
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
@@ -371,7 +372,7 @@ public class MidtransSDK {
     /**
      * It will run backround task to register card PAPI(Payment API) Backend using uikit sdk
      *
-     * @param context       activity context.
+     * @param context  activity context.
      * @param callback Card Registration Callback.
      */
 
@@ -1513,6 +1514,69 @@ public class MidtransSDK {
             mSnapTransactionManager.paymentUsingGCI(authenticationToken,
                     SdkUtil.getGCIPaymentRequest(cardNumber, password),
                     callback);
+        } else {
+            isRunning = false;
+            callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+        }
+    }
+
+    /**
+     * It will run backround task to charge payment using GoPay
+     *
+     * @param phoneNumber
+     * @param snapToken
+     */
+    public void paymentUsingGoPay(String snapToken, String phoneNumber, TransactionCallback callback) {
+        if (callback == null) {
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
+
+        if (isNetworkAvailable()) {
+            isRunning = true;
+            mSnapTransactionManager.paymentUsingGoPay(snapToken, SdkUtil.getGoPayPaymentRequest(phoneNumber), callback);
+        } else {
+            isRunning = false;
+            callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+        }
+    }
+
+    /**
+     * It will run backround task to authorize GoPay Payment
+     *
+     * @param verificationCode gopay verification code
+     * @param snapToken        snap token
+     * @param callback         GoPayAuthorizationCallback
+     */
+    public void authorizeGoPayPayment(String snapToken, String verificationCode, TransactionCallback callback) {
+        if (callback == null) {
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
+
+        if (isNetworkAvailable()) {
+            isRunning = true;
+            mSnapTransactionManager.authorizeGoPayPayment(snapToken, SdkUtil.getGoPayAuthorizationRequest(verificationCode), callback);
+        } else {
+            isRunning = false;
+            callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+        }
+    }
+
+    /**
+     * It will run backround task to resend GoPay authorization
+     *
+     * @param snapToken
+     */
+    public void resendGopayAuthorization(String snapToken, GoPayResendAuthorizationCallback callback) {
+        if (callback == null) {
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
+
+        if (isNetworkAvailable()) {
+            isRunning = true;
+            mSnapTransactionManager.resendGoPayAuthorization(snapToken, callback);
         } else {
             isRunning = false;
             callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
