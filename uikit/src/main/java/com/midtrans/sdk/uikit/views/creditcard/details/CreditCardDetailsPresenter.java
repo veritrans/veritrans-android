@@ -412,7 +412,7 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
         return installmentTotalPositions;
     }
 
-    public boolean isBankPointAvailable(String cardBin) {
+    public boolean isBniPointAvailable(String cardBin) {
         String bank = creditCardTransaction.getBankByBin(cardBin);
         List<String> bankPoints = MidtransSDK.getInstance().getBanksPointEnabled();
 
@@ -420,6 +420,16 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
                 && bankPoints != null
                 && bankPoints.contains(bank)
                 && bank.equals(BankType.BNI);
+    }
+
+    public boolean isMandiriPointAvailable(String cardBin) {
+        String bank = creditCardTransaction.getBankByBin(cardBin);
+        List<String> bankPoints = MidtransSDK.getInstance().getBanksPointEnabled();
+
+        return !TextUtils.isEmpty(bank)
+            && bankPoints != null
+            && bankPoints.contains(bank)
+            && bank.equals(BankType.MANDIRI);
     }
 
     public void startBankPointsPayment(float redeemedPoint, boolean isSaveCard) {

@@ -700,6 +700,7 @@
     <string name="promo_dialog_message">With this card, you will get Rp. %1$s discount from %2$s.</string>
     <string name="error_obtain_promo">Failed to obtain promo.</string>
     <string name="redeem_bni_reward">Redeem BNI Reward Point</string>
+    <string name="redeem_mandiri_point">Redeem Fiesta Point</string>
     <string name="amount_after_discount">Amount to pay after discount</string>
     <string name="will_be_used_point_here">Will be used point</string>
     <string name="total_point_here">total point here</string>
@@ -708,6 +709,8 @@
     <string name="total_point">Your total %1$s Reward Point is %2$s</string>
     <string name="redeem_bni_title">Redeem BNI Reward Point</string>
     <string name="redeem_bni_details">You can pay partly through the redemption of BNI Reward Point through your Credit Card.</string>
+    <string name="redeem_mandiri_title">Redeem Fiesta Point</string>
+    <string name="redeem_mandiri_details">You can pay partly through the redemption of Fiesta Point through your Credit Card.</string>
     <string name="klik_bca_continue">Please continue the payment process via KlikBCA by opening <a href="http://klikbca.com/">http://klikbca.com/</a> on your browser.</string>
     <string name="error_delete_message">Failed to delete card</string>
     <string name="mandiri_debit_card">Mandiri Debit Card</string>

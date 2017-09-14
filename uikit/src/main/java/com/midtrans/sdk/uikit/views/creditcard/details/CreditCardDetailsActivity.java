@@ -530,29 +530,6 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             }
         });
 
-        buttonPointHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                buttonPointHelp.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        AlertDialog alertDialog = new AlertDialog.Builder(CreditCardDetailsActivity.this)
-                                .setTitle(R.string.redeem_bni_title)
-                                .setMessage(R.string.redeem_bni_details)
-                                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        dialogInterface.dismiss();
-                                    }
-                                })
-                                .create();
-                        alertDialog.show();
-                        changeDialogButtonColor(alertDialog);
-                    }
-                });
-            }
-        });
-
         buttonSaveCardHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -567,6 +544,36 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                             }
                         })
                         .create();
+                alertDialog.show();
+                changeDialogButtonColor(alertDialog);
+            }
+        });
+    }
+
+    private void initBankPointHelp(final String bankName) {
+        buttonPointHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int titleId = 0, detailId = 0;
+
+                if (bankName.equalsIgnoreCase(BankType.BNI)) {
+                    titleId = R.string.redeem_bni_title;
+                    detailId = R.string.redeem_bni_details;
+                } else if (bankName.equalsIgnoreCase(BankType.MANDIRI)) {
+                    titleId = R.string.redeem_mandiri_title;
+                    detailId = R.string.redeem_mandiri_details;
+                }
+
+                AlertDialog alertDialog = new AlertDialog.Builder(CreditCardDetailsActivity.this)
+                    .setTitle(titleId)
+                    .setMessage(detailId)
+                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    })
+                    .create();
                 alertDialog.show();
                 changeDialogButtonColor(alertDialog);
             }
@@ -660,13 +667,15 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     private void checkBankPoint() {
         String cardBin = getCardNumberBin();
         if (!TextUtils.isEmpty(cardBin)) {
-            if (presenter.isBankPointAvailable(cardBin)) {
-                showBniPointLayout(true);
+            if (presenter.isBniPointAvailable(cardBin)) {
+                showBankPointLayout(BankType.BNI, true);
+            } else if (presenter.isMandiriPointAvailable(cardBin)) {
+                showBankPointLayout(BankType.MANDIRI, true);
             } else {
-                showBniPointLayout(false);
+                showBankPointLayout("", false);
             }
         } else {
-            showBniPointLayout(false);
+            showBankPointLayout("", false);
         }
     }
 
@@ -998,8 +1007,17 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         }
     }
 
-    private void showBniPointLayout(boolean show) {
+    private void showBankPointLayout(String bankName, boolean show) {
         if (show) {
+            initBankPointHelp(bankName);
+            switch (bankName) {
+                case BankType.BNI:
+                    checkboxPointEnabled.setText(getString(R.string.redeem_bni_reward));
+                    break;
+                case BankType.MANDIRI:
+                    checkboxPointEnabled.setText(getString(R.string.redeem_mandiri_point));
+                    break;
+            }
             containerPoint.setVisibility(View.VISIBLE);
         } else {
             checkboxPointEnabled.setChecked(false);
@@ -1100,7 +1118,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         if (presenter.getInstallmentCurrentPosition() == 0) {
             checkBankPoint();
         } else {
-            showBniPointLayout(false);
+            showBankPointLayout("", false);
         }
     }
 
