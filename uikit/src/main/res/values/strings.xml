@@ -827,5 +827,8 @@
     <string name="resend_verification_code_success">Verification code already sent</string>
     <string name="resend_verification_code_failure">Failed to resend verification code</string>
     <string name="gopay">GO-PAY</string>
+    <string name="danamon_online_instruction_step1">Enter Danamon Online Banking User ID and Password and select the source of fund</string>
+    <string name="danamon_online_instruction_step2">Check detail transaction and enter Token Code and klik <b>Next</b>.</string>
+    <string name="danamon_online_instruction_step3">Payment confirmation will be displayed and payment is completed. Keep the merchant reference and payment reference no. and klik \"Next\" to return to merchant website.</string>
 
 </resources>
