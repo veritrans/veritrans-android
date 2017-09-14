@@ -71,7 +71,7 @@ public class WebViewPaymentActivity extends BasePaymentActivity {
                     textTitle.setText(getString(R.string.payment_method_credit_card));
                     break;
                 case PaymentType.DANAMON_ONLINE:
-                    textTitle.setText(getString(R.string.payment_danamon_online));
+                    textTitle.setText(getString(R.string.payment_method_danamon_online));
                     break;
                 case PaymentType.BCA_KLIKPAY:
                     textTitle.setText(getString(R.string.payment_method_bca_klikpay));
