@@ -9,6 +9,7 @@ import com.midtrans.sdk.corekit.models.snap.TransactionStatusResponse;
 import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.BasePaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.CreditCardPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.DanamonOnlinePaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.GCIPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.GoPayAuthorizationRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.GoPayPaymentRequest;
@@ -221,6 +222,17 @@ public interface SnapRestAPI {
     @POST("/v1/gopay/{token}/resend")
     void resendGoPayAuthorization(@Path("token") String snapToken, Callback<GoPayResendAuthorizationResponse> callback);
 
+    /**
+     * Charge payment using Danamon Online
+     *
+     * @param snapToken SnapToken
+     * @param paymentRequest DanamonOnlinePaymentRequest
+     * @param callback TransactionResponseCallback
+     */
+    @POST("/v1/transactions/{token}/pay")
+    void paymentUsingDanamonOnline(@Path("token") String snapToken, @Body DanamonOnlinePaymentRequest paymentRequest, Callback<TransactionResponse> callback);
+
+    /**
 
     /**
      * @param callback callback

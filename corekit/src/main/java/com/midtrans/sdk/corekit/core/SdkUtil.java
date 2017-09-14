@@ -43,6 +43,7 @@ import com.midtrans.sdk.corekit.models.snap.params.MandiriClickPayPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.CreditCardPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.CustomerDetailRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.DanamonOnlinePaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.GCIPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.GoPayAuthorizationRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.GoPayPaymentRequest;
@@ -658,6 +659,11 @@ public class SdkUtil {
     public static GoPayAuthorizationRequest getGoPayAuthorizationRequest(String otp) {
         return new GoPayAuthorizationRequest(otp);
     }
+
+    public static DanamonOnlinePaymentRequest getDanamonOnlinePaymentRequest() {
+        return new DanamonOnlinePaymentRequest(PaymentType.DANAMON_ONLINE);
+    }
+
     /**
      * Sorting payment method by priority (Ascending)
      */
@@ -669,6 +675,4 @@ public class SdkUtil {
             }
         });
     }
-
-
 }
