@@ -28,6 +28,7 @@ import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.core.SdkUtil;
 import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.core.themes.ColorTheme;
@@ -54,6 +55,7 @@ import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.views.banktransfer.list.BankTransferListActivity;
 import com.midtrans.sdk.uikit.views.creditcard.saved.SavedCreditCardActivity;
+import com.midtrans.sdk.uikit.views.danamon_online.DanamonOnlineActivity;
 import com.midtrans.sdk.uikit.views.gopay.payment.GoPayPaymentActivity;
 import com.midtrans.sdk.uikit.widgets.BoldTextView;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
@@ -85,6 +87,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     private boolean isKioson = false;
     private boolean isGci = false;
     private boolean isGopay = false;
+    private boolean isDanamonOnline = false;
     private boolean backButtonEnabled;
 
     private MidtransSDK midtransSDK = null;
@@ -611,6 +614,17 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             } else {
                 showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
             }
+        } else if (isDanamonOnline) {
+            if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_danamon_online))) {
+                Intent danamonOnlineIntent = new Intent(this, DanamonOnlineActivity.class);
+                startActivityForResult(danamonOnlineIntent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+                if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
+                        && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                    overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                }
+            } else {
+                showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
+            }
         } else {
             if (data.isEmpty()) {
                 showErrorAlertDialog(getString(R.string.message_payment_method_empty));
@@ -731,6 +745,13 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_gopay))) {
             Intent gopayIntent = new Intent(this, GoPayPaymentActivity.class);
             startActivityForResult(gopayIntent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
+                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+            }
+        } else if (name.equalsIgnoreCase(getString(R.string.payment_method_danamon_online))) {
+            Intent danamonOnlineIntent = new Intent(this, DanamonOnlineActivity.class);
+            startActivityForResult(danamonOnlineIntent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
             if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                     && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);

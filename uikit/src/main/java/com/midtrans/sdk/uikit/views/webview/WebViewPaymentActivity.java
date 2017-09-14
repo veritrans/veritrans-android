@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.MerchantPreferences;
 import com.midtrans.sdk.corekit.models.snap.MerchantData;
 import com.midtrans.sdk.uikit.R;
@@ -43,10 +44,6 @@ public class WebViewPaymentActivity extends BasePaymentActivity {
     public static final String EXTRA_PAYMENT_URL = "extra.url";
 
     public static final String TYPE_CREDIT_CARD = "credit.card";
-    public static final String TYPE_BCA_KLIKPAY = "bca.klikpay";
-    public static final String TYPE_MANDIRI_ECASH = "mandiri.ecash";
-    public static final String TYPE_CIMB_CLICK = "cimb.click";
-    public static final String TYPE_EPAY_BRI = "epay.bri";
 
     private WebView webviewContainer;
     private Toolbar toolbar;
@@ -229,20 +226,24 @@ public class WebViewPaymentActivity extends BasePaymentActivity {
             super.onPageStarted(view, url, favicon);
 
             if (activity != null && activity.isActivityRunning()) {
-                if (!TextUtils.isEmpty(paymentType) && paymentType.equals(TYPE_BCA_KLIKPAY)) {
-                    if (url.contains("?id=")) {
+                if (!TextUtils.isEmpty(paymentType) && paymentType.equals(PaymentType.BCA_KLIKPAY)) {
+                    if (url.contains(UiKitConstants.CALLBACK_BCA_KLIKPAY)) {
                         finishWebViewPayment(activity, RESULT_OK);
                     }
-                } else if (!TextUtils.isEmpty(paymentType) && paymentType.equals(TYPE_MANDIRI_ECASH)) {
-                    if (url.contains("notify?id=")) {
+                } else if (!TextUtils.isEmpty(paymentType) && paymentType.equals(PaymentType.MANDIRI_ECASH)) {
+                    if (url.contains(UiKitConstants.CALLBACK_MANDIRI_ECAH)) {
                         finishWebViewPayment(activity, RESULT_OK);
                     }
-                } else if (!TextUtils.isEmpty(paymentType) && paymentType.equals(TYPE_EPAY_BRI)) {
-                    if (url.contains("briPayment?tid=")) {
+                } else if (!TextUtils.isEmpty(paymentType) && paymentType.equals(PaymentType.BRI_EPAY)) {
+                    if (url.contains(UiKitConstants.CALLBACK_BRI_EPAY)) {
                         finishWebViewPayment(activity, RESULT_OK);
                     }
-                } else if (!TextUtils.isEmpty(paymentType) && paymentType.equals(TYPE_CIMB_CLICK)) {
-                    if (url.contains("cimb-clicks/response")) {
+                } else if (!TextUtils.isEmpty(paymentType) && paymentType.equals(PaymentType.CIMB_CLICKS)) {
+                    if (url.contains(UiKitConstants.CALLBACK_CIMB_CLICKS)) {
+                        finishWebViewPayment(activity, RESULT_OK);
+                    }
+                } else if (!TextUtils.isEmpty(paymentType) && paymentType.equals(PaymentType.DANAMON_ONLINE)) {
+                    if (url.contains(UiKitConstants.CALLBACK_DANAMON_ONLINE)) {
                         finishWebViewPayment(activity, RESULT_OK);
                     }
                 }

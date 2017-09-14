@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
+import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
@@ -14,6 +15,8 @@ import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.views.status.PaymentStatusActivity;
+import com.midtrans.sdk.uikit.views.webview.WebViewPaymentActivity;
+import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 /**
@@ -22,8 +25,10 @@ import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 public class DanamonOnlineActivity extends BasePaymentActivity implements BasePaymentView {
 
-    private DanamonOnlinePresenter presenter;
     private FancyButton buttonPrimary;
+    private DefaultTextView textTitle;
+
+    private DanamonOnlinePresenter presenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,6 +42,7 @@ public class DanamonOnlineActivity extends BasePaymentActivity implements BasePa
         buttonPrimary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                showProgressLayout(getString(R.string.processing_payment));
                 presenter.startPayment();
             }
         });
@@ -44,6 +50,7 @@ public class DanamonOnlineActivity extends BasePaymentActivity implements BasePa
 
     private void initProperties() {
         this.presenter = new DanamonOnlinePresenter(this);
+        textTitle.setText(getString(R.string.payment_method_danamon_online));
     }
 
     private void showStatusPage(TransactionResponse response) {
@@ -64,11 +71,13 @@ public class DanamonOnlineActivity extends BasePaymentActivity implements BasePa
         Intent intent = new Intent();
         intent.putExtra(getString(R.string.transaction_response), presenter.getTransactionResponse());
         setResult(resultCode, intent);
+        finish();
     }
 
     @Override
     public void bindViews() {
         buttonPrimary = (FancyButton) findViewById(R.id.button_primary);
+        textTitle = (DefaultTextView) findViewById(R.id.text_page_title);
     }
 
     @Override
@@ -78,17 +87,27 @@ public class DanamonOnlineActivity extends BasePaymentActivity implements BasePa
 
     @Override
     public void onPaymentSuccess(TransactionResponse response) {
-        showStatusPage(response);
+        hideProgressLayout();
+        if (isActivityRunning()) {
+            Intent intent = new Intent(this, WebViewPaymentActivity.class);
+            intent.putExtra(WebViewPaymentActivity.EXTRA_PAYMENT_TYPE, PaymentType.DANAMON_ONLINE);
+            intent.putExtra(WebViewPaymentActivity.EXTRA_PAYMENT_URL, response.getRedirectUrl());
+            startActivityForResult(intent, UiKitConstants.INTENT_WEBVIEW_PAYMENT);
+        } else {
+            finishPayment(RESULT_OK);
+        }
     }
 
 
     @Override
     public void onPaymentFailure(TransactionResponse response) {
+        hideProgressLayout();
         showStatusPage(response);
     }
 
     @Override
     public void onPaymentError(Throwable error) {
+        hideProgressLayout();
         if (isActivityRunning()) {
             MessageInfo messageInfo = MessageUtil.createMessageOnError(this, error, null);
             SdkUIFlowUtil.showToast(this, messageInfo.detailsMessage);
@@ -99,7 +118,7 @@ public class DanamonOnlineActivity extends BasePaymentActivity implements BasePa
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS) {
+        if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS || requestCode == UiKitConstants.INTENT_WEBVIEW_PAYMENT) {
             finishPayment(RESULT_OK);
         }
     }

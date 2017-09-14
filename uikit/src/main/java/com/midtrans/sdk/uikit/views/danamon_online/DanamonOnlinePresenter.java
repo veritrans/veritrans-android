@@ -12,6 +12,8 @@ import com.midtrans.sdk.uikit.abstracts.BasePaymentView;
 
 public class DanamonOnlinePresenter extends BasePaymentPresenter<BasePaymentView> {
 
+    private TransactionResponse transactionResponse;
+
     public DanamonOnlinePresenter(BasePaymentView view) {
         this.view = view;
     }
@@ -22,11 +24,13 @@ public class DanamonOnlinePresenter extends BasePaymentPresenter<BasePaymentView
         midtransSDK.paymentUsingDanamonOnline(snapToken, new TransactionCallback() {
             @Override
             public void onSuccess(TransactionResponse response) {
+                transactionResponse = response;
                 view.onPaymentSuccess(response);
             }
 
             @Override
             public void onFailure(TransactionResponse response, String reason) {
+                transactionResponse = response;
                 view.onPaymentFailure(response);
             }
 
@@ -38,6 +42,6 @@ public class DanamonOnlinePresenter extends BasePaymentPresenter<BasePaymentView
     }
 
     public TransactionResponse getTransactionResponse() {
-        return this.getTransactionResponse();
+        return this.transactionResponse;
     }
 }
