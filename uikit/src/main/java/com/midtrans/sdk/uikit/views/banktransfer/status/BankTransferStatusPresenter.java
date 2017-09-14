@@ -2,21 +2,22 @@ package com.midtrans.sdk.uikit.views.banktransfer.status;
 
 import android.text.TextUtils;
 
-import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
+import com.midtrans.sdk.uikit.abstracts.BasePaymentPresenter;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 
 /**
  * Created by ziahaqi on 8/15/17.
  */
 
-public class BankTransferStatusPresenter {
+public class BankTransferStatusPresenter extends BasePaymentPresenter {
 
     private final TransactionResponse response;
     private final String bankType;
 
     public BankTransferStatusPresenter(TransactionResponse response, String bankType) {
+        super();
         this.bankType = bankType;
         this.response = response;
     }
@@ -85,9 +86,6 @@ public class BankTransferStatusPresenter {
         return true;
     }
 
-    public void trackEvent(String eventName) {
-        MidtransSDK.getInstance().trackEvent(eventName);
-    }
 
     public String getBankType() {
         return bankType;

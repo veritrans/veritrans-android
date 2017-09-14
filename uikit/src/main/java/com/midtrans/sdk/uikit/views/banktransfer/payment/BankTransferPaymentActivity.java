@@ -19,6 +19,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.Toast;
+
 import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
@@ -43,7 +44,7 @@ import com.midtrans.sdk.uikit.widgets.FancyButton;
  */
 
 public class BankTransferPaymentActivity extends BasePaymentActivity implements BankTransferPaymentView,
-    OnInstructionShownListener {
+        OnInstructionShownListener {
 
     public static final String EXTRA_BANK_TYPE = "bank.type";
     private BankTransferPaymentPresenter presenter;
@@ -217,7 +218,7 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
         final OnPageChangeListener onPageChangeListener = new OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset,
-                int positionOffsetPixels) {
+                                       int positionOffsetPixels) {
 
             }
 
@@ -413,6 +414,7 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
 
     /**
      * Setup UI for additional information about other ATM network transfer
+     *
      * @param fragmentCode
      */
     public void showOtherAtmGuidance(int fragmentCode) {
@@ -463,7 +465,7 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
                     recyclerView.setLayoutManager(new LinearLayoutManager(v.getContext()));
                     recyclerView.setHasFixedSize(true);
                     ((DefaultTextView) dialog.findViewById(R.id.bank_list_title))
-                        .setText(getString(dialogTitleId));
+                            .setText(getString(dialogTitleId));
                     (dialog.findViewById(R.id.bank_list_ok)).setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -508,7 +510,7 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
             if (flags.length == 3) { //for all ATM network
                 flags[fragmentCode] = isShown;
             } else if (flags.length == 2) { //for Permata
-                flags[fragmentCode-1] = isShown; //Alto code is 2, while in Permata VA its index is 1
+                flags[fragmentCode - 1] = isShown; //Alto code is 2, while in Permata VA its index is 1
             }
             if (isShown) {
                 showEmailForm();

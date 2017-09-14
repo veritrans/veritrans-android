@@ -3,24 +3,23 @@ package com.midtrans.sdk.uikit.views.creditcard.bankpoints;
 import android.util.Log;
 
 import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.uikit.abstracts.BasePaymentPresenter;
 
 /**
  * Created by ziahaqi on 7/25/17.
  */
 
-public class BankPointsPresenter {
-    private static final String TAG = BankPointsPresenter.class.getSimpleName();
+public class BankPointsPresenter extends BasePaymentPresenter {
     private String pointBank;
     private float pointBalance;
-    private final BankPointsView view;
     private double totalAmount;
     private double amountToPay;
     private float pointRedeemed;
     private String latestValidPoint;
 
-    public BankPointsPresenter(BankPointsView view, float pointBalance, String pointBank) {
+    public BankPointsPresenter(float pointBalance, String pointBank) {
+        super();
         initValues();
-        this.view = view;
         this.pointBalance = pointBalance;
         this.pointBank = pointBank;
     }
@@ -36,8 +35,8 @@ public class BankPointsPresenter {
         long currentBalance = 0;
         try {
             currentBalance = Long.parseLong(inputString);
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
+        } catch (RuntimeException e) {
+            Log.e(TAG, "currentBalance:" + e.getMessage());
         }
 
         if (currentBalance >= 0 && currentBalance <= pointBalance) {
@@ -73,6 +72,6 @@ public class BankPointsPresenter {
     }
 
     public String getSemiBoldFontPath() {
-        return MidtransSDK.getInstance().getSemiBoldText();
+        return getMidtransSDK().getSemiBoldText();
     }
 }

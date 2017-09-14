@@ -259,6 +259,9 @@ public class MidtransSDK {
     }
 
     public MixpanelAnalyticsManager getmMixpanelAnalyticsManager() {
+        if (mSnapTransactionManager == null) {
+            this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), clientKey, getFlow(flow));
+        }
         return mMixpanelAnalyticsManager;
     }
 
@@ -1607,7 +1610,6 @@ public class MidtransSDK {
     }
 
 
-
     /**
      * It will run backround task to register card PAPI(Payment API) Backend
      *
@@ -1846,22 +1848,38 @@ public class MidtransSDK {
 
     /**
      * tracking sdk events
+     * don't use this method, for new uikit payment pattern (inside views package)
+     * use tracker in base payment presenter instead
      *
      * @param eventName
      */
+    @Deprecated
     public void trackEvent(String eventName) {
-        this.mMixpanelAnalyticsManager.trackMixpanel(readAuthenticationToken(), eventName);
+        try {
+            this.mMixpanelAnalyticsManager.trackMixpanel(readAuthenticationToken(), eventName);
+        } catch (NullPointerException e) {
+            Logger.e(TAG, "trackEvent():" + e.getMessage());
+        }
     }
 
     /**
      * tracking sdk events
+     * <p>
+     * don't use this method, for new uikit payment pattern (inside views package)
+     * use tracker in base payment presenter instead
      *
      * @param eventName
      * @param cardPaymentMode
      */
+    @Deprecated
     public void trackEvent(String eventName, String cardPaymentMode) {
-        this.mMixpanelAnalyticsManager.trackMixpanel(readAuthenticationToken(), eventName, cardPaymentMode);
+        try {
+            this.mMixpanelAnalyticsManager.trackMixpanel(readAuthenticationToken(), eventName, cardPaymentMode);
+        } catch (NullPointerException e) {
+            Logger.e(TAG, "trackEvent():" + e.getMessage());
+        }
     }
+
 
     public List<PromoResponse> getPromoResponses() {
         return promoResponses;
@@ -1917,10 +1935,4 @@ public class MidtransSDK {
     public CardRegistrationCallback getUiCardRegistrationCallback() {
         return this.cardRegistrationCallback;
     }
-
-    public void setCreditCardSavedTokens(List<SavedToken> creditCardSavedTokens) {
-        this.creditCardSavedTokens = creditCardSavedTokens;
-    }
-
-
 }

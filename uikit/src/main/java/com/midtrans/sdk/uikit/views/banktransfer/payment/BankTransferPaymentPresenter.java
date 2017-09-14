@@ -21,6 +21,7 @@ public class BankTransferPaymentPresenter extends BasePaymentPresenter<BankTrans
     private TransactionResponse transactionResponse;
 
     public BankTransferPaymentPresenter(BankTransferPaymentView view) {
+        super();
         this.view = view;
     }
 
@@ -43,10 +44,6 @@ public class BankTransferPaymentPresenter extends BasePaymentPresenter<BankTrans
             userEmail = userDetail.getEmail();
         }
         return userEmail;
-    }
-
-    public void trackEvent(String eventName) {
-        MidtransSDK.getInstance().trackEvent(eventName);
     }
 
     public void startPayment(String bankType, String email) {
