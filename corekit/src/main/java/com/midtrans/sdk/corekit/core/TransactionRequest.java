@@ -293,6 +293,7 @@ public class TransactionRequest {
 
     /**
      * It is used in case of payment using credit card.
+     * this method being deprecated since v1.9.x, please don't implement this method
      *
      * @param clickType    use click type from Constants.
      * @param isSecureCard is secure

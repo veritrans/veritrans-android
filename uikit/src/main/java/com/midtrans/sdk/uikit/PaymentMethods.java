@@ -131,7 +131,7 @@ public class PaymentMethods {
     }
 
     private static PaymentMethodsModel getDanamonOnline(Context context, int priority, String status) {
-        return new PaymentMethodsModel(context.getString(R.string.payment_method_danamon_online), context.getString(R.string.payment_method_description_danamon_online), R.drawable.ic_launcher, Constants.PAYMENT_METHOD_NOT_SELECTED, priority, status);
+        return new PaymentMethodsModel(context.getString(R.string.payment_method_danamon_online), context.getString(R.string.payment_method_description_danamon_online), R.drawable.ic_danamon_online, Constants.PAYMENT_METHOD_NOT_SELECTED, priority, status);
     }
 
     public static ArrayList<BankTransferModel> getBankTransferList(Context context) {

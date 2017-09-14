@@ -43,11 +43,11 @@ public class WebViewPaymentActivity extends BasePaymentActivity {
     public static final String EXTRA_PAYMENT_TYPE = "extra.paymentType";
     public static final String EXTRA_PAYMENT_URL = "extra.url";
 
-    public static final String TYPE_CREDIT_CARD = "credit.card";
-
     private WebView webviewContainer;
     private Toolbar toolbar;
+
     private DefaultTextView textMerchantName;
+    private DefaultTextView textTitle;
     private ImageView imageMerchantLogo;
 
     private String webUrl;
@@ -61,6 +61,32 @@ public class WebViewPaymentActivity extends BasePaymentActivity {
         initWebViewContainer();
         initToolbarBackButton();
         initMerchantLogo();
+        initPageTitle();
+    }
+
+    private void initPageTitle() {
+        if (!TextUtils.isEmpty(paymentType)) {
+            switch (paymentType) {
+                case PaymentType.CREDIT_CARD:
+                    textTitle.setText(getString(R.string.payment_method_credit_card));
+                    break;
+                case PaymentType.DANAMON_ONLINE:
+                    textTitle.setText(getString(R.string.payment_danamon_online));
+                    break;
+                case PaymentType.BCA_KLIKPAY:
+                    textTitle.setText(getString(R.string.payment_method_bca_klikpay));
+                    break;
+                case PaymentType.MANDIRI_ECASH:
+                    textTitle.setText(getString(R.string.payment_method_mandiri_ecash));
+                    break;
+                case PaymentType.BRI_EPAY:
+                    textTitle.setText(getString(R.string.payment_method_bri_epay));
+                    break;
+                case PaymentType.CIMB_CLICKS:
+                    textTitle.setText(getString(R.string.payment_method_cimb_clicks));
+                    break;
+            }
+        }
     }
 
     private void initProperties() {
@@ -92,6 +118,8 @@ public class WebViewPaymentActivity extends BasePaymentActivity {
     public void bindViews() {
         webviewContainer = (WebView) findViewById(R.id.webview_container);
         imageMerchantLogo = (ImageView) findViewById(R.id.merchant_logo);
+
+        textTitle = (DefaultTextView) findViewById(R.id.text_page_title);
         textMerchantName = (DefaultTextView) findViewById(R.id.text_page_merchant_name);
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
     }
@@ -249,7 +277,6 @@ public class WebViewPaymentActivity extends BasePaymentActivity {
                 }
             }
         }
-
 
     }
 
