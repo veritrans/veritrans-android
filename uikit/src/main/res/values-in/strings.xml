@@ -498,7 +498,8 @@
     <string name="payment_method_description_indosat_dompetku">Bayar dengan Indosat Dompetku</string>
     <string name="payment_method_description_kioson">Bayar dari gerai Kioson</string>
     <string name="payment_method_description_gci">Bayar dengan Gift Card</string>
-    <string name="payment_method_description_gopay">Bayar dengan GO-PAY</string>
+    <string name="payment_method_description_gopay">Bayar dengan akun Danamon Online Banking anda</string>
+    <string name="payment_method_description_danamon_online">Bayar dengan GO-PAY</string>
 
     <string name="payment_bank_description_bca">Bayar dari ATM BCA atau internet banking</string>
     <string name="payment_bank_description_mandiri">Bayar dari ATM Mandiri atau internet banking</string>
@@ -636,5 +637,8 @@
     <string name="resend_verification_code">Sedang mengirim ulang kode verifikasi</string>
     <string name="resend_verification_code_success">Kode verifikasi berhasil dikirim</string>
     <string name="resend_verification_code_failure">Gagal mengirim kode verifikasi</string>
+    <string name="danamon_online_instruction_step1">Masukkan User ID dan Password Danamon Online Banking Anda dan pilih sumber rekening untuk pembayaran Anda.</string>
+    <string name="danamon_online_instruction_step2">Cek rincian informasi transaksi Anda, masukkan Kode Token, lalu tekan <b>lanjut</b>.</string>
+    <string name="danamon_online_instruction_step3">Konfirmasi transaksi pembayaran akan muncul, pembayaran selesai. Simpan informasi referensi merchant dan referensi pembayaran, tekan <b>Lanjut</b> untuk kembali ke situs merchant.</string>
 
 </resources>

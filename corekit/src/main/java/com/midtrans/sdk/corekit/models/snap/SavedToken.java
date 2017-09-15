@@ -18,6 +18,8 @@ public class SavedToken {
     @SerializedName("expires_at")
     private String expiresAt;
 
+    private boolean fromHostApp;
+
     public String getToken() {
         return token;
     }

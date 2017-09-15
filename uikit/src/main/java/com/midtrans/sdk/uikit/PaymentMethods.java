@@ -53,6 +53,8 @@ public class PaymentMethods {
             return getMethodGCI(context, 14, status);
         } else if (name.equals(context.getString(R.string.payment_gopay))) {
             return getMethodGopay(context, 15, status);
+        } else if (name.equals(context.getString(R.string.payment_danamon_online))) {
+            return getDanamonOnline(context, 16, status);
         } else {
             return null;
         }
@@ -126,6 +128,10 @@ public class PaymentMethods {
 
     private static PaymentMethodsModel getMethodGopay(Context context, int priority, String status) {
         return new PaymentMethodsModel(context.getString(R.string.payment_method_gopay), context.getString(R.string.payment_method_description_gopay), R.drawable.ic_gopay, Constants.PAYMENT_METHOD_NOT_SELECTED, priority, status);
+    }
+
+    private static PaymentMethodsModel getDanamonOnline(Context context, int priority, String status) {
+        return new PaymentMethodsModel(context.getString(R.string.payment_method_danamon_online), context.getString(R.string.payment_method_description_danamon_online), R.drawable.ic_danamon_online, Constants.PAYMENT_METHOD_NOT_SELECTED, priority, status);
     }
 
     public static ArrayList<BankTransferModel> getBankTransferList(Context context) {

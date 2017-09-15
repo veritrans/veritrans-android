@@ -35,6 +35,7 @@ import com.midtrans.sdk.corekit.models.snap.TransactionStatusResponse;
 import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.BasePaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.CreditCardPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.DanamonOnlinePaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.GCIPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.GoPayAuthorizationRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.GoPayPaymentRequest;
@@ -1083,6 +1084,32 @@ public class SnapTransactionManager extends BaseTransactionManager {
         }
     }
 
+
+    /**
+     * This method is used for payment using Danamon Online
+     *
+     *@param snapToken SnapToken
+     * @param paymentRequest DanamonOnlinePaymentRequest
+     * @param callback TransactionCallback
+     */
+    public void paymentUsingDanamonOnline(String snapToken, DanamonOnlinePaymentRequest paymentRequest, final TransactionCallback callback) {
+        if (paymentRequest != null) {
+            snapRestAPI.paymentUsingDanamonOnline(snapToken, paymentRequest, new Callback<TransactionResponse>() {
+                @Override
+                public void success(TransactionResponse transactionResponse, Response response) {
+                    actionOnPaymentResponseSuccess(transactionResponse, response, callback);
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    actionOnPaymentResponseFailure(error, callback);
+                }
+            });
+        } else {
+            releaseResources();
+            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+        }
+    }
 
     private void actionOnPaymentResponseFailure(RetrofitError error, TransactionCallback callback) {
         releaseResources();

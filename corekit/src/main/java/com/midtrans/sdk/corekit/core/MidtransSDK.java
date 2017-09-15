@@ -32,6 +32,7 @@ import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
 import com.midtrans.sdk.corekit.models.snap.MerchantData;
 import com.midtrans.sdk.corekit.models.snap.PromoResponse;
+import com.midtrans.sdk.corekit.models.snap.SavedToken;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
 import com.midtrans.sdk.corekit.models.snap.params.IndosatDompetkuPaymentParams;
@@ -83,6 +84,7 @@ public class MidtransSDK {
     private BaseColorTheme colorTheme;
     private Transaction transaction;
     private CardRegistrationCallback cardRegistrationCallback;
+    private List<SavedToken> creditCardSavedTokens;
 
     private MidtransSDK() {
 
@@ -1583,6 +1585,29 @@ public class MidtransSDK {
         }
     }
 
+
+    /**
+     * It will run backround task to charge payment using Danamon Online
+     *
+     * @param snapToken
+     */
+    public void paymentUsingDanamonOnline(String snapToken, TransactionCallback callback) {
+        if (callback == null) {
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
+
+        if (isNetworkAvailable()) {
+            isRunning = true;
+            mSnapTransactionManager.paymentUsingDanamonOnline(snapToken, SdkUtil.getDanamonOnlinePaymentRequest(), callback);
+        } else {
+            isRunning = false;
+            callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+        }
+    }
+
+
+
     /**
      * It will run backround task to register card PAPI(Payment API) Backend
      *
@@ -1892,4 +1917,10 @@ public class MidtransSDK {
     public CardRegistrationCallback getUiCardRegistrationCallback() {
         return this.cardRegistrationCallback;
     }
+
+    public void setCreditCardSavedTokens(List<SavedToken> creditCardSavedTokens) {
+        this.creditCardSavedTokens = creditCardSavedTokens;
+    }
+
+
 }

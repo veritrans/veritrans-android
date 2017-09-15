@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
@@ -1174,7 +1175,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     private void start3DSecurePage(String redirectUrl, int requestCode) {
         Intent intent = new Intent(this, WebViewPaymentActivity.class);
         intent.putExtra(WebViewPaymentActivity.EXTRA_PAYMENT_URL, redirectUrl);
-        intent.putExtra(WebViewPaymentActivity.EXTRA_PAYMENT_TYPE, WebViewPaymentActivity.TYPE_CREDIT_CARD);
+        intent.putExtra(WebViewPaymentActivity.EXTRA_PAYMENT_TYPE, PaymentType.CREDIT_CARD);
         startActivityForResult(intent, requestCode);
     }
 

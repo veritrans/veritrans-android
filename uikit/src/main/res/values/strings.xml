@@ -432,6 +432,7 @@
     <string name="payment_method_kioson">Kioson</string>
     <string name="payment_method_gci"> Gift Card Indonesia </string>
     <string name="payment_method_gopay">GO-PAY</string>
+    <string name="payment_method_danamon_online">Danamon Online Banking</string>
 
     <!--Payment List-->
     <string name="payment_epay_bri">bri_epay</string>
@@ -453,6 +454,7 @@
     <string name="payment_kioson">kioson</string>
     <string name="payment_gci">gci</string>
     <string name="payment_gopay">gopay</string>
+    <string name="payment_danamon_online">danamon_online</string>
 
 
     <!--Error Response-->
@@ -677,6 +679,7 @@
     <string name="payment_method_description_kioson">Pay from Kioson Outlet</string>
     <string name="payment_method_description_gci">Pay with Gift Cards</string>
     <string name="payment_method_description_gopay">Pay with GO-PAY</string>
+    <string name="payment_method_description_danamon_online">Pay with your Danamon Online Banking Account</string>
 
     <string name="payment_bank_description_bca">Pay from BCA ATMs or internet banking</string>
     <string name="payment_bank_description_mandiri">Pay from Mandiri ATMs or internet banking</string>
@@ -827,5 +830,8 @@
     <string name="resend_verification_code_success">Verification code already sent</string>
     <string name="resend_verification_code_failure">Failed to resend verification code</string>
     <string name="gopay">GO-PAY</string>
+    <string name="danamon_online_instruction_step1">Enter Danamon Online Banking User ID and Password and select the source of fund</string>
+    <string name="danamon_online_instruction_step2">Check detail transaction and enter Token Code and klik <b>Next</b>.</string>
+    <string name="danamon_online_instruction_step3">Payment confirmation will be displayed and payment is completed. Keep the merchant reference and payment reference no. and klik <b>Next</b> to return to merchant website.</string>
 
 </resources>
