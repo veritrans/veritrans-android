@@ -35,9 +35,8 @@ import java.lang.reflect.Field;
  * Created by ziahaqi on 7/20/17.
  */
 
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity implements BaseView {
 
-    public static final int RESULT_NOT_AVAILABLE = 4;
     private static final String TAG = BaseActivity.class.getSimpleName();
 
 
@@ -63,8 +62,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private void checkSdkInstance() {
         if (MidtransSDK.getInstance() == null) {
-            setResult(RESULT_NOT_AVAILABLE);
-            finish();
+            onNullInstanceSdk();
         }
     }
 
@@ -324,9 +322,15 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_NOT_AVAILABLE) {
+        if (resultCode == UiKitConstants.RESULT_SDK_NOT_AVAILABLE) {
             setResult(resultCode);
             finish();
         }
+    }
+
+    @Override
+    public void onNullInstanceSdk() {
+        setResult(UiKitConstants.RESULT_SDK_NOT_AVAILABLE);
+        finish();
     }
 }

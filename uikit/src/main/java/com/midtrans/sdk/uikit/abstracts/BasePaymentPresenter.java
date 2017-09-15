@@ -2,15 +2,16 @@ package com.midtrans.sdk.uikit.abstracts;
 
 import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.core.Logger;
-import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.models.TransactionResponse;
 
 /**
  * Created by ziahaqi on 7/28/17.
  */
 
-public class BasePaymentPresenter<V> extends BasePresenter<V> {
+public class BasePaymentPresenter<V extends BaseView> extends BasePresenter<V> {
 
     private volatile MixpanelAnalyticsManager mixpanelAnalyticsManager;
+    protected TransactionResponse transactionResponse;
 
     public BasePaymentPresenter() {
         super();
@@ -32,7 +33,6 @@ public class BasePaymentPresenter<V> extends BasePresenter<V> {
     public void trackEvent(String eventName) {
         try {
             getMixpanelManager().trackMixpanel(getMidtransSDK().readAuthenticationToken(), eventName);
-            MidtransSDK.getInstance().trackEvent(eventName);
         } catch (NullPointerException e) {
             Logger.e(TAG, "trackEvent():" + e.getMessage());
         }
@@ -47,7 +47,6 @@ public class BasePaymentPresenter<V> extends BasePresenter<V> {
     public void trackEvent(String eventName, String cardPaymentMode) {
         try {
             getMixpanelManager().trackMixpanel(getMidtransSDK().readAuthenticationToken(), eventName, cardPaymentMode);
-            MidtransSDK.getInstance().trackEvent(eventName);
         } catch (NullPointerException e) {
             Logger.e(TAG, "trackEvent():" + e.getMessage());
         }
@@ -66,4 +65,9 @@ public class BasePaymentPresenter<V> extends BasePresenter<V> {
 
         return false;
     }
+
+    public TransactionResponse getTransactionResponse() {
+        return transactionResponse;
+    }
+
 }

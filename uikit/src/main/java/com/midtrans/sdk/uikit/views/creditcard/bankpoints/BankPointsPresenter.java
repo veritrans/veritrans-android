@@ -2,7 +2,7 @@ package com.midtrans.sdk.uikit.views.creditcard.bankpoints;
 
 import android.util.Log;
 
-import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.models.snap.TransactionDetails;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentPresenter;
 
 /**
@@ -25,7 +25,12 @@ public class BankPointsPresenter extends BasePaymentPresenter {
     }
 
     private void initValues() {
-        double totalAmount = MidtransSDK.getInstance().getTransaction().getTransactionDetails().getAmount();
+        double totalAmount = 0;
+
+        TransactionDetails transactionDetails = getMidtransSDK().getTransaction().getTransactionDetails();
+        if (transactionDetails != null) {
+            totalAmount = transactionDetails.getAmount();
+        }
         this.amountToPay = totalAmount;
         this.totalAmount = totalAmount;
         this.pointRedeemed = 0;

@@ -32,7 +32,6 @@ import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
 import com.midtrans.sdk.corekit.models.snap.MerchantData;
 import com.midtrans.sdk.corekit.models.snap.PromoResponse;
-import com.midtrans.sdk.corekit.models.snap.SavedToken;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
 import com.midtrans.sdk.corekit.models.snap.params.IndosatDompetkuPaymentParams;
@@ -56,6 +55,7 @@ public class MidtransSDK {
     private static SharedPreferences mPreferences = null;
     private static volatile MidtransSDK midtransSDK;
     private static BaseSdkBuilder sdkBuilder;
+    private static boolean sdkNotAvailable = false;
 
     protected boolean isRunning = false;
     ISdkFlow uiflow;
@@ -84,7 +84,6 @@ public class MidtransSDK {
     private BaseColorTheme colorTheme;
     private Transaction transaction;
     private CardRegistrationCallback cardRegistrationCallback;
-    private List<SavedToken> creditCardSavedTokens;
 
     private MidtransSDK() {
 
@@ -154,12 +153,17 @@ public class MidtransSDK {
                         midtransSDK = new MidtransSDK(sdkBuilder);
                     } else {
                         midtransSDK = new MidtransSDK();
+                        sdkNotAvailable = true;
                     }
                 }
             }
         }
 
         return midtransSDK;
+    }
+
+    public boolean isSdkNotAvailable() {
+        return sdkNotAvailable;
     }
 
     /**

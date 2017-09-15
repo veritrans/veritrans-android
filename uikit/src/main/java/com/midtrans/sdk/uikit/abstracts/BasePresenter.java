@@ -6,11 +6,11 @@ import com.midtrans.sdk.corekit.core.MidtransSDK;
  * Created by ziahaqi on 7/28/17.
  */
 
-public class BasePresenter<V> {
+public class BasePresenter<V extends BaseView> {
     protected String TAG = getClass().getSimpleName();
 
     protected V view;
-    private MidtransSDK midtransSDK;
+    private volatile MidtransSDK midtransSDK;
 
     public BasePresenter() {
         midtransSDK = MidtransSDK.getInstance();
@@ -18,8 +18,15 @@ public class BasePresenter<V> {
 
     public MidtransSDK getMidtransSDK() {
         if (midtransSDK == null) {
-            MidtransSDK.getInstance();
+            midtransSDK = MidtransSDK.getInstance();
+            if (midtransSDK.isSdkNotAvailable()) {
+                if (view != null) {
+                    view.onNullInstanceSdk();
+                }
+            }
         }
+
         return midtransSDK;
     }
+
 }

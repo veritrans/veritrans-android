@@ -18,8 +18,6 @@ import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 
 public class BankTransferPaymentPresenter extends BasePaymentPresenter<BankTransferPaymentView> {
 
-    private TransactionResponse transactionResponse;
-
     public BankTransferPaymentPresenter(BankTransferPaymentView view) {
         super();
         this.view = view;
@@ -31,10 +29,6 @@ public class BankTransferPaymentPresenter extends BasePaymentPresenter<BankTrans
             return false;
         }
         return true;
-    }
-
-    public TransactionResponse getTransactionResponse() {
-        return transactionResponse;
     }
 
     public String getUserEmail() {
