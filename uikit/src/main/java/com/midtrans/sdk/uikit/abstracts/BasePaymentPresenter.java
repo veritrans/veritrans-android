@@ -1,6 +1,5 @@
 package com.midtrans.sdk.uikit.abstracts;
 
-import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 
@@ -10,19 +9,10 @@ import com.midtrans.sdk.corekit.models.TransactionResponse;
 
 public class BasePaymentPresenter<V extends BaseView> extends BasePresenter<V> {
 
-    private volatile MixpanelAnalyticsManager mixpanelAnalyticsManager;
     protected TransactionResponse transactionResponse;
 
     public BasePaymentPresenter() {
         super();
-        mixpanelAnalyticsManager = getMidtransSDK().getmMixpanelAnalyticsManager();
-    }
-
-    private MixpanelAnalyticsManager getMixpanelManager() {
-        if (mixpanelAnalyticsManager == null) {
-            mixpanelAnalyticsManager = getMidtransSDK().getmMixpanelAnalyticsManager();
-        }
-        return mixpanelAnalyticsManager;
     }
 
     /**
@@ -32,7 +22,8 @@ public class BasePaymentPresenter<V extends BaseView> extends BasePresenter<V> {
      */
     public void trackEvent(String eventName) {
         try {
-            getMixpanelManager().trackMixpanel(getMidtransSDK().readAuthenticationToken(), eventName);
+            getMidtransSDK().getmMixpanelAnalyticsManager()
+                    .trackMixpanel(getMidtransSDK().readAuthenticationToken(), eventName);
         } catch (NullPointerException e) {
             Logger.e(TAG, "trackEvent():" + e.getMessage());
         }
@@ -46,7 +37,7 @@ public class BasePaymentPresenter<V extends BaseView> extends BasePresenter<V> {
      */
     public void trackEvent(String eventName, String cardPaymentMode) {
         try {
-            getMixpanelManager().trackMixpanel(getMidtransSDK().readAuthenticationToken(), eventName, cardPaymentMode);
+            getMidtransSDK().getmMixpanelAnalyticsManager().trackMixpanel(getMidtransSDK().readAuthenticationToken(), eventName, cardPaymentMode);
         } catch (NullPointerException e) {
             Logger.e(TAG, "trackEvent():" + e.getMessage());
         }

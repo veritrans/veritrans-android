@@ -12,6 +12,7 @@ import com.midtrans.sdk.uikit.abstracts.BasePaymentView;
 public class DanamonOnlinePresenter extends BasePaymentPresenter<BasePaymentView> {
 
     public DanamonOnlinePresenter(BasePaymentView view) {
+        super();
         this.view = view;
     }
 

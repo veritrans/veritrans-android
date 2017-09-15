@@ -11,6 +11,7 @@ import com.midtrans.sdk.uikit.abstracts.BasePaymentPresenter;
 public class GopayPaymentPresenter extends BasePaymentPresenter<GoPayPaymentView> {
 
     public GopayPaymentPresenter(GoPayPaymentView view) {
+        super();
         this.view = view;
     }
 

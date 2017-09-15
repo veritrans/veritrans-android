@@ -2,12 +2,12 @@ package com.midtrans.sdk.uikit.views.banktransfer.list;
 
 import android.content.Context;
 
-import com.midtrans.sdk.corekit.models.BankTransferModel;
 import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
 import com.midtrans.sdk.uikit.PaymentMethods;
 import com.midtrans.sdk.uikit.models.BankTransfer;
 import com.midtrans.sdk.uikit.models.EnabledPayments;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 
