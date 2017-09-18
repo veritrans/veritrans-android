@@ -13,7 +13,6 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -321,7 +320,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             setPrimaryBackgroundColor(buttonPayNow);
 
         } catch (Exception e) {
-            Log.e(TAG, "rendering theme:" + e.getMessage());
+            Logger.e(TAG, "rendering theme:" + e.getMessage());
         }
     }
 
@@ -579,7 +578,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             Button positiveButton = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
             setTextColor(positiveButton);
         } catch (Exception e) {
-            Log.d(TAG, "RenderThemeError:" + e.getMessage());
+            Logger.d(TAG, "RenderThemeError:" + e.getMessage());
         }
     }
 
@@ -1299,7 +1298,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             }
 
             if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
-                Log.d("3dserror", "400:" + response.getValidationMessages().get(0));
+                Logger.d("3dserror", "400:" + response.getValidationMessages().get(0));
                 if (response.getValidationMessages() != null && response.getValidationMessages().get(0) != null) {
                     if (response.getValidationMessages().get(0).contains("3d")) {
                         //track page bca va overview
@@ -1351,7 +1350,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
     @Override
     public void onGetTransactionStatusFailure(TransactionResponse response) {
-        Log.d(TAG, "rba>onGetTransactionStatusFailure()");
+        Logger.d(TAG, "rba>onGetTransactionStatusFailure()");
         hideProgressLayout();
         if (isActivityRunning()) {
             initPaymentStatus(response);
@@ -1360,7 +1359,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
     @Override
     public void onGetTransactionStatusSuccess(TransactionResponse transactionResponse) {
-        Log.d(TAG, "rba>onGetTransactionStatusSuccess()");
+        Logger.d(TAG, "rba>onGetTransactionStatusSuccess()");
         hideProgressLayout();
 
         if (isActivityRunning()) {
