@@ -5,5 +5,5 @@ package com.midtrans.sdk.uikit.abstracts;
  */
 
 public interface BaseView {
-
+    void onNullInstanceSdk();
 }

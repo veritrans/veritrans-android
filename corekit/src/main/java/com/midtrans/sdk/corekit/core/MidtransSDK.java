@@ -32,7 +32,6 @@ import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
 import com.midtrans.sdk.corekit.models.snap.MerchantData;
 import com.midtrans.sdk.corekit.models.snap.PromoResponse;
-import com.midtrans.sdk.corekit.models.snap.SavedToken;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
 import com.midtrans.sdk.corekit.models.snap.params.IndosatDompetkuPaymentParams;
@@ -56,6 +55,7 @@ public class MidtransSDK {
     private static SharedPreferences mPreferences = null;
     private static volatile MidtransSDK midtransSDK;
     private static BaseSdkBuilder sdkBuilder;
+    private static boolean sdkNotAvailable = false;
 
     protected boolean isRunning = false;
     ISdkFlow uiflow;
@@ -84,7 +84,6 @@ public class MidtransSDK {
     private BaseColorTheme colorTheme;
     private Transaction transaction;
     private CardRegistrationCallback cardRegistrationCallback;
-    private List<SavedToken> creditCardSavedTokens;
 
     private MidtransSDK() {
 
@@ -154,12 +153,17 @@ public class MidtransSDK {
                         midtransSDK = new MidtransSDK(sdkBuilder);
                     } else {
                         midtransSDK = new MidtransSDK();
+                        sdkNotAvailable = true;
                     }
                 }
             }
         }
 
         return midtransSDK;
+    }
+
+    public boolean isSdkNotAvailable() {
+        return sdkNotAvailable;
     }
 
     /**
@@ -259,6 +263,9 @@ public class MidtransSDK {
     }
 
     public MixpanelAnalyticsManager getmMixpanelAnalyticsManager() {
+        if (mSnapTransactionManager == null) {
+            this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), clientKey, getFlow(flow));
+        }
         return mMixpanelAnalyticsManager;
     }
 
@@ -1607,7 +1614,6 @@ public class MidtransSDK {
     }
 
 
-
     /**
      * It will run backround task to register card PAPI(Payment API) Backend
      *
@@ -1846,22 +1852,38 @@ public class MidtransSDK {
 
     /**
      * tracking sdk events
+     * don't use this method, for new uikit payment pattern (inside views package)
+     * use tracker in base payment presenter instead
      *
      * @param eventName
      */
+    @Deprecated
     public void trackEvent(String eventName) {
-        this.mMixpanelAnalyticsManager.trackMixpanel(readAuthenticationToken(), eventName);
+        try {
+            this.mMixpanelAnalyticsManager.trackMixpanel(readAuthenticationToken(), eventName);
+        } catch (NullPointerException e) {
+            Logger.e(TAG, "trackEvent():" + e.getMessage());
+        }
     }
 
     /**
      * tracking sdk events
+     * <p>
+     * don't use this method, for new uikit payment pattern (inside views package)
+     * use tracker in base payment presenter instead
      *
      * @param eventName
      * @param cardPaymentMode
      */
+    @Deprecated
     public void trackEvent(String eventName, String cardPaymentMode) {
-        this.mMixpanelAnalyticsManager.trackMixpanel(readAuthenticationToken(), eventName, cardPaymentMode);
+        try {
+            this.mMixpanelAnalyticsManager.trackMixpanel(readAuthenticationToken(), eventName, cardPaymentMode);
+        } catch (NullPointerException e) {
+            Logger.e(TAG, "trackEvent():" + e.getMessage());
+        }
     }
+
 
     public List<PromoResponse> getPromoResponses() {
         return promoResponses;
@@ -1917,10 +1939,4 @@ public class MidtransSDK {
     public CardRegistrationCallback getUiCardRegistrationCallback() {
         return this.cardRegistrationCallback;
     }
-
-    public void setCreditCardSavedTokens(List<SavedToken> creditCardSavedTokens) {
-        this.creditCardSavedTokens = creditCardSavedTokens;
-    }
-
-
 }

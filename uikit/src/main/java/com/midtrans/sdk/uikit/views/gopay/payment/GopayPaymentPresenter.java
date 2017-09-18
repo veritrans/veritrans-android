@@ -1,7 +1,6 @@
 package com.midtrans.sdk.uikit.views.gopay.payment;
 
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
-import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentPresenter;
 
@@ -11,16 +10,14 @@ import com.midtrans.sdk.uikit.abstracts.BasePaymentPresenter;
 
 public class GopayPaymentPresenter extends BasePaymentPresenter<GoPayPaymentView> {
 
-    private TransactionResponse transactionResponse;
-
     public GopayPaymentPresenter(GoPayPaymentView view) {
+        super();
         this.view = view;
     }
 
     public void startGoPayPayment(String phoneNumber) {
-        MidtransSDK midtransSDK = MidtransSDK.getInstance();
-        String snapToken = midtransSDK.readAuthenticationToken();
-        midtransSDK.paymentUsingGoPay(snapToken, phoneNumber, new TransactionCallback() {
+        String snapToken = getMidtransSDK().readAuthenticationToken();
+        getMidtransSDK().paymentUsingGoPay(snapToken, phoneNumber, new TransactionCallback() {
             @Override
             public void onSuccess(TransactionResponse response) {
                 transactionResponse = response;
@@ -40,7 +37,4 @@ public class GopayPaymentPresenter extends BasePaymentPresenter<GoPayPaymentView
         });
     }
 
-    public TransactionResponse getTransactionResponse() {
-        return transactionResponse;
-    }
 }

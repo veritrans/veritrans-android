@@ -2,7 +2,6 @@ package com.midtrans.sdk.uikit.views.gopay.authorization;
 
 import com.midtrans.sdk.corekit.callback.GoPayResendAuthorizationCallback;
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
-import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.GoPayResendAuthorizationResponse;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentPresenter;
@@ -13,20 +12,14 @@ import com.midtrans.sdk.uikit.abstracts.BasePaymentPresenter;
 
 public class GoPayAuthorizationPresenter extends BasePaymentPresenter<GoPayAuthorizationView> {
 
-    private TransactionResponse transactionResponse;
-
     public GoPayAuthorizationPresenter(GoPayAuthorizationView view) {
+        super();
         this.view = view;
     }
 
-    public TransactionResponse getTransactionResponse() {
-        return this.transactionResponse;
-    }
-
     public void authorizePayment(final String verificationCode) {
-        MidtransSDK midtransSDK = MidtransSDK.getInstance();
-        String snapToken = midtransSDK.readAuthenticationToken();
-        MidtransSDK.getInstance().authorizeGoPayPayment(snapToken, verificationCode, new TransactionCallback() {
+        String snapToken = getMidtransSDK().readAuthenticationToken();
+        getMidtransSDK().authorizeGoPayPayment(snapToken, verificationCode, new TransactionCallback() {
             @Override
             public void onSuccess(TransactionResponse response) {
                 transactionResponse = response;
@@ -47,10 +40,9 @@ public class GoPayAuthorizationPresenter extends BasePaymentPresenter<GoPayAutho
     }
 
     public void resendVerificationCode() {
-        MidtransSDK midtransSDK = MidtransSDK.getInstance();
-        String snapToken = midtransSDK.readAuthenticationToken();
+        String snapToken = getMidtransSDK().readAuthenticationToken();
 
-        midtransSDK.resendGopayAuthorization(snapToken, new GoPayResendAuthorizationCallback() {
+        getMidtransSDK().resendGopayAuthorization(snapToken, new GoPayResendAuthorizationCallback() {
             @Override
             public void onSuccess(GoPayResendAuthorizationResponse response) {
                 view.onResendSuccess(response);

@@ -64,4 +64,7 @@ public class UiKitConstants {
     public static final int ATM_BERSAMA = 0;
     public static final int PRIMA = 1;
     public static final int ALTO = 2;
+
+    public static final int RESULT_SDK_NOT_AVAILABLE = -999;
+
 }
