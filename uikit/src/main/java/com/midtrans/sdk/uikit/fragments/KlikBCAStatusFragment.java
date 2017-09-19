@@ -19,6 +19,7 @@ import com.midtrans.sdk.uikit.widgets.FancyButton;
  * Created by rakawm on 2/15/17.
  */
 
+@Deprecated
 public class KlikBCAStatusFragment extends Fragment {
     private static final String RESPONSE = "response";
     TextView expire;
@@ -67,7 +68,7 @@ public class KlikBCAStatusFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), KlikBCAInstructionActivity.class);
                 startActivity(intent);
-                if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
+                if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                         && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                     getActivity().overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 }

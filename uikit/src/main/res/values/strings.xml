@@ -833,5 +833,7 @@
     <string name="danamon_online_instruction_step1">Enter Danamon Online Banking User ID and Password and select the source of fund</string>
     <string name="danamon_online_instruction_step2">Check detail transaction and enter Token Code and klik <b>Next</b>.</string>
     <string name="danamon_online_instruction_step3">Payment confirmation will be displayed and payment is completed. Keep the merchant reference and payment reference no. and klik <b>Next</b> to return to merchant website.</string>
+    <string name="status_message_userid_invalid">User ID invalid</string>
+    <string name="details_message_userid_invalid">User ID format is invalid</string>
 
 </resources>
