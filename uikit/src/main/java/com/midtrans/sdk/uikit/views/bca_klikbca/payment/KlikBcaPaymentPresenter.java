@@ -1,4 +1,4 @@
-package com.midtrans.sdk.uikit.views.klikbca.payment;
+package com.midtrans.sdk.uikit.views.bca_klikbca.payment;
 
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.models.TransactionResponse;

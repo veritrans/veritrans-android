@@ -1,4 +1,4 @@
-package com.midtrans.sdk.uikit.views.klikbca.payment;
+package com.midtrans.sdk.uikit.views.bca_klikbca.payment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,7 +18,7 @@ import com.midtrans.sdk.uikit.models.MessageInfo;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
-import com.midtrans.sdk.uikit.views.klikbca.status.KlikBcaStatusActivity;
+import com.midtrans.sdk.uikit.views.bca_klikbca.status.KlikBcaStatusActivity;
 import com.midtrans.sdk.uikit.views.status.PaymentStatusActivity;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;

@@ -47,7 +47,7 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bca_klikpay);
+        setContentView(R.layout.activity_bca_klikpay_old);
         mMidtransSDK = MidtransSDK.getInstance();
 
         if (mMidtransSDK == null) {

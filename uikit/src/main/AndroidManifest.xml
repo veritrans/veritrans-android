@@ -153,12 +153,17 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".views.klikbca.payment.KlikBcaPaymentActivity"
+            android:name=".views.bca_klikbca.payment.KlikBcaPaymentActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".views.klikbca.status.KlikBcaStatusActivity"
+            android:name=".views.bca_klikbca.status.KlikBcaStatusActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".views.bca_klikpay.BcaKlikPayPaymentActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
 
