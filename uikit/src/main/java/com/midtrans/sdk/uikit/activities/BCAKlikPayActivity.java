@@ -28,6 +28,7 @@ import com.midtrans.sdk.uikit.widgets.FancyButton;
 /**
  * @author rakawm
  */
+@Deprecated
 public class BCAKlikPayActivity extends BaseActivity implements View.OnClickListener {
 
     private static final int PAYMENT_WEB_INTENT = 152;

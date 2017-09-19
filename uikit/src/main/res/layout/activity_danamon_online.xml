@@ -25,14 +25,19 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/button_primary"
+            android:layout_above="@+id/layout_primary_button"
             android:layout_below="@id/container_item_details">
 
             <include layout="@layout/layout_danamon_online" />
 
         </ScrollView>
 
-        <include layout="@layout/layout_primary_button" />
+        <include
+            android:id="@+id/layout_primary_button"
+            layout="@layout/layout_primary_button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_size"
+            android:layout_alignParentBottom="true" />
     </RelativeLayout>
 
     <include layout="@layout/layout_loading_and_badge" />
