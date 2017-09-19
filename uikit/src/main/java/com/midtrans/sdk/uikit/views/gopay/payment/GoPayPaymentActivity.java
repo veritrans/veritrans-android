@@ -14,12 +14,10 @@ import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
-import com.midtrans.sdk.uikit.models.MessageInfo;
-import com.midtrans.sdk.uikit.utilities.MessageUtil;
+import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.views.gopay.authorization.GoPayAuthorizationActivitiy;
-import com.midtrans.sdk.uikit.views.status.PaymentStatusActivity;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
@@ -38,7 +36,6 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
     private TextInputEditText fieldPhoneNumber;
 
     private DefaultTextView textNotificationInfo;
-    private DefaultTextView textTitle;
 
     private FancyButton buttonContinue;
 
@@ -88,7 +85,7 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
     }
 
     private void initData() {
-        textTitle.setText(R.string.gopay);
+        setPageTitle(getString(R.string.gopay));
     }
 
     private void initActionButton() {
@@ -110,6 +107,8 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
             fullPhoneNumber = countryCode + phoneNumber;
             presenter.startGoPayPayment(fullPhoneNumber);
         }
+
+        presenter.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
     }
 
     private boolean phoneNumberValid(String countryCode, String phoneNumber) {
@@ -142,7 +141,6 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
         fieldCountryCode = (TextInputEditText) findViewById(R.id.edit_country_code);
         fieldPhoneNumber = (TextInputEditText) findViewById(R.id.edit_phone_number);
 
-        textTitle = (DefaultTextView) findViewById(R.id.text_page_title);
         buttonContinue = (FancyButton) findViewById(R.id.button_primary);
     }
 
@@ -167,37 +165,20 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
             intent.putExtra(GoPayAuthorizationActivitiy.EXTRA_PHONE_NUMBER, fullPhoneNumber);
             startActivityForResult(intent, UiKitConstants.INTENT_VERIFICATION);
         } else {
-            finish();
+            finishPayment(RESULT_OK, presenter.getTransactionResponse());
         }
     }
 
     @Override
     public void onPaymentFailure(TransactionResponse response) {
         hideProgressLayout();
-        showPaymentStatusPage(response);
-    }
-
-    private void showPaymentStatusPage(TransactionResponse response) {
-        if (isActivityRunning()) {
-            if (presenter.isShowPaymentStatusPage()) {
-                Intent intent = new Intent(this, PaymentStatusActivity.class);
-                intent.putExtra(PaymentStatusActivity.EXTRA_PAYMENT_RESULT, response);
-                startActivityForResult(intent, UiKitConstants.INTENT_CODE_PAYMENT_STATUS);
-            } else {
-                finishPayment(RESULT_OK);
-            }
-        } else {
-            finish();
-        }
+        showPaymentStatusPage(response, presenter.isShowPaymentStatusPage());
     }
 
     @Override
     public void onPaymentError(Throwable error) {
         hideProgressLayout();
-        if (isActivityRunning()) {
-            MessageInfo messageInfo = MessageUtil.createMessageOnError(this, error, null);
-            SdkUIFlowUtil.showToast(this, messageInfo.detailsMessage);
-        }
+        showOnErrorPaymentStatusmessage(error);
     }
 
     @Override
@@ -205,13 +186,13 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS) {
-                finishPayment(RESULT_OK);
+                finishPayment(RESULT_OK, presenter.getTransactionResponse());
             } else if (requestCode == UiKitConstants.INTENT_VERIFICATION) {
                 finishPayment(RESULT_OK, data);
             }
         } else if (resultCode == RESULT_CANCELED) {
             if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS) {
-                finishPayment(RESULT_OK);
+                finishPayment(RESULT_OK, presenter.getTransactionResponse());
             }
         }
     }
@@ -221,10 +202,4 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
         finish();
     }
 
-    private void finishPayment(int resultCode) {
-        Intent data = new Intent();
-        data.putExtra(getString(R.string.transaction_response), presenter.getTransactionResponse());
-        setResult(resultCode, data);
-        finish();
-    }
 }
