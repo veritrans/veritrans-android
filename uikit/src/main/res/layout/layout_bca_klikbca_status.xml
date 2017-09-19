@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/sixteen_dp">
+
+    <LinearLayout
+        android:id="@+id/container_expiry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/faint_yellow"
+        android:orientation="vertical"
+        android:padding="@dimen/sixteen_dp">
+
+        <com.midtrans.sdk.uikit.widgets.DefaultTextViewWithLink
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/klik_bca_complete_payment"
+            android:textColor="@color/black"
+            android:textSize="@dimen/secondary_text_size" />
+
+        <com.midtrans.sdk.uikit.widgets.SemiBoldTextView
+            android:id="@+id/text_expiry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/eight_dp"
+            android:gravity="center_horizontal"
+            android:textColor="@color/black"
+            android:textSize="@dimen/secondary_text_size"
+            tools:text="21 Februari 2017" />
+    </LinearLayout>
+
+
+    <com.midtrans.sdk.uikit.widgets.DefaultTextViewWithLink
+        android:id="@+id/text_status_failed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/sixteen_dp"
+        android:background="@color/faint_pink"
+        android:gravity="left"
+        android:padding="@dimen/sixteen_dp"
+        android:text="@string/klik_bca_continue"
+        android:textColor="@color/black"
+        android:textSize="@dimen/secondary_text_size" />
+
+    <com.midtrans.sdk.uikit.widgets.FancyButton
+        android:id="@+id/button_instruction"
+        style="@style/ButtonSecondary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="@dimen/sixteen_dp"
+        android:layout_marginRight="@dimen/sixteen_dp"
+        android:layout_marginTop="@dimen/sixteen_dp"
+        app:fb_text="@string/see_instruction" />
+</LinearLayout>

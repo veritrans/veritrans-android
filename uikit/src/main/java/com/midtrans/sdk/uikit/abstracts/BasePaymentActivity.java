@@ -24,7 +24,7 @@ import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 
 public abstract class BasePaymentActivity extends BaseActivity {
 
-    private static final java.lang.String TAG = BasePaymentActivity.class.getSimpleName();
+    private static final String TAG = BasePaymentActivity.class.getSimpleName();
 
     @Override
     public void setContentView(@LayoutRes int layoutResID) {

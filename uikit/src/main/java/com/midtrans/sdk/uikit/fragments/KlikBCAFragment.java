@@ -20,6 +20,7 @@ import java.lang.reflect.Field;
  *
  * @author rakawm
  */
+@Deprecated
 public class KlikBCAFragment extends Fragment {
 
     private AppCompatEditText userIdEditText;

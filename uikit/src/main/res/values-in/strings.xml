@@ -640,5 +640,7 @@
     <string name="danamon_online_instruction_step1">Masukkan User ID dan Password Danamon Online Banking Anda dan pilih sumber rekening untuk pembayaran Anda.</string>
     <string name="danamon_online_instruction_step2">Cek rincian informasi transaksi Anda, masukkan Kode Token, lalu tekan <b>lanjut</b>.</string>
     <string name="danamon_online_instruction_step3">Konfirmasi transaksi pembayaran akan muncul, pembayaran selesai. Simpan informasi referensi merchant dan referensi pembayaran, tekan <b>Lanjut</b> untuk kembali ke situs merchant.</string>
+    <string name="status_message_userid_invalid">ID pengguna tidak sah</string>
+    <string name="details_message_userid_invalid">Format ID pengguna tidak sah</string>
 
 </resources>

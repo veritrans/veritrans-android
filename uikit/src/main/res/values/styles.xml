@@ -70,6 +70,8 @@
         <item name="fb_focusColor">@color/colorAccentLight</item>
         <item name="fb_iconPaddingLeft">0dp</item>
         <item name="fb_iconPaddingRight">0dp</item>
+        <item name="fb_borderColor">@color/gray.primary_dark</item>
+        <item name="fb_textColor">@color/gray.primary_dark</item>
         <item name="fb_iconPosition">left</item>
         <item name="fb_radius">5dp</item>
         <item name="fb_textSize">12sp</item>
