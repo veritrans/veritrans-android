@@ -19,6 +19,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.Toast;
+
 import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
@@ -43,7 +44,7 @@ import com.midtrans.sdk.uikit.widgets.FancyButton;
  */
 
 public class BankTransferPaymentActivity extends BasePaymentActivity implements BankTransferPaymentView,
-    OnInstructionShownListener {
+        OnInstructionShownListener {
 
     public static final String EXTRA_BANK_TYPE = "bank.type";
     private BankTransferPaymentPresenter presenter;
@@ -55,7 +56,6 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
 
     private TextInputLayout containerEmail;
 
-    private DefaultTextView textTitle;
     private DefaultTextView textNotificationToken;
     private DefaultTextView textNotificationOtp;
 
@@ -143,7 +143,6 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
         editEmail = (AppCompatEditText) findViewById(R.id.edit_email);
         buttonPay = (FancyButton) findViewById(R.id.btn_pay_now);
 
-        textTitle = (DefaultTextView) findViewById(R.id.text_page_title);
         textNotificationToken = (DefaultTextView) findViewById(R.id.text_notificationToken);
         textNotificationOtp = (DefaultTextView) findViewById(R.id.text_notificationOtp);
 
@@ -217,7 +216,7 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
         final OnPageChangeListener onPageChangeListener = new OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset,
-                int positionOffsetPixels) {
+                                       int positionOffsetPixels) {
 
             }
 
@@ -258,10 +257,6 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
     private void initData() {
         editEmail.setText(presenter.getUserEmail());
         editEmail.clearFocus();
-    }
-
-    public void setPageTitle(String pageTitle) {
-        this.textTitle.setText(pageTitle);
     }
 
 
@@ -383,9 +378,7 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
 
     @Override
     public void onPaymentFailure(TransactionResponse response) {
-
         hideProgressLayout();
-
         if (!isFinishing()) {
             MessageInfo messageInfo = MessageUtil.createpaymentFailedMessage(this, response, null);
             SdkUIFlowUtil.showToast(this, messageInfo.detailsMessage);
@@ -398,12 +391,7 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
     @Override
     public void onPaymentError(Throwable error) {
         hideProgressLayout();
-        if (!isFinishing()) {
-            presenter.trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
-            MessageInfo messageInfo = MessageUtil.createMessageOnError(this, error, null);
-
-            SdkUIFlowUtil.showToast(this, "" + messageInfo.detailsMessage);
-        }
+        showOnErrorPaymentStatusmessage(error);
     }
 
     @Override
@@ -413,6 +401,7 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
 
     /**
      * Setup UI for additional information about other ATM network transfer
+     *
      * @param fragmentCode
      */
     public void showOtherAtmGuidance(int fragmentCode) {
@@ -463,7 +452,7 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
                     recyclerView.setLayoutManager(new LinearLayoutManager(v.getContext()));
                     recyclerView.setHasFixedSize(true);
                     ((DefaultTextView) dialog.findViewById(R.id.bank_list_title))
-                        .setText(getString(dialogTitleId));
+                            .setText(getString(dialogTitleId));
                     (dialog.findViewById(R.id.bank_list_ok)).setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -508,7 +497,7 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
             if (flags.length == 3) { //for all ATM network
                 flags[fragmentCode] = isShown;
             } else if (flags.length == 2) { //for Permata
-                flags[fragmentCode-1] = isShown; //Alto code is 2, while in Permata VA its index is 1
+                flags[fragmentCode - 1] = isShown; //Alto code is 2, while in Permata VA its index is 1
             }
             if (isShown) {
                 showEmailForm();

@@ -70,6 +70,8 @@
         <item name="fb_focusColor">@color/colorAccentLight</item>
         <item name="fb_iconPaddingLeft">0dp</item>
         <item name="fb_iconPaddingRight">0dp</item>
+        <item name="fb_borderColor">@color/gray.primary_dark</item>
+        <item name="fb_textColor">@color/gray.primary_dark</item>
         <item name="fb_iconPosition">left</item>
         <item name="fb_radius">5dp</item>
         <item name="fb_textSize">12sp</item>
@@ -119,6 +121,10 @@
         <item name="android:drawablePadding">@dimen/eight_dp</item>
         <item name="android:background">@color/bg_notification</item>
         <item name="android:textColor">@color/dark_gray_primer</item>
+    </style>
+
+    <style name="RoundedNotification" parent="Notification">
+        <item name="android:background">@drawable/rounded_notification_background</item>
     </style>
 
     <style name="TokenNotification" parent="Notification">

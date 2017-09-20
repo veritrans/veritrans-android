@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 
 import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
+import com.midtrans.sdk.corekit.core.IScanner;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.CardRegistrationResponse;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
@@ -20,12 +21,16 @@ public class CardRegistrationPresenter extends BasePresenter<CardRegistrationVie
     private final List<BankBinsResponse> bankBins;
 
     public CardRegistrationPresenter(Context context, CardRegistrationView view) {
+        super();
         this.bankBins = SdkUIFlowUtil.getBankBins(context);
         this.view = view;
     }
 
     public void startScan(Activity activity, int intentScanCard) {
-        MidtransSDK.getInstance().getExternalScanner().startScan(activity, intentScanCard);
+        IScanner scanner = getMidtransSDK().getExternalScanner();
+        if (scanner != null) {
+            scanner.startScan(activity, intentScanCard);
+        }
     }
 
     public void register(String cardNumber, String cvv, String expiryMonth, String expiryYear) {

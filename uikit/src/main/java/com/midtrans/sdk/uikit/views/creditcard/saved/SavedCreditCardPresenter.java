@@ -28,6 +28,7 @@ public class SavedCreditCardPresenter extends BaseCreditCardPresenter<SavedCredi
 
 
     public SavedCreditCardPresenter(Context context, SavedCreditCardView view) {
+        super();
         this.view = view;
         this.creditCards = new ArrayList<>();
         creditCardTransaction = new CreditCardTransaction();

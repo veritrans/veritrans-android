@@ -584,7 +584,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
 
     @Override
     public void onTransactionFinished(TransactionResult result) {
-            Log.d("finalx", "rsultd:" + result.getResponse());
+        Log.d("finalx", "rsultd:" + result.getResponse());
 
         if (result.getResponse() != null) {
             Log.d("finalx", "result:" + result.getResponse().getStatusMessage());

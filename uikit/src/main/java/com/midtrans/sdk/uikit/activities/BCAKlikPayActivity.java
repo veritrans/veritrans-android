@@ -28,6 +28,7 @@ import com.midtrans.sdk.uikit.widgets.FancyButton;
 /**
  * @author rakawm
  */
+@Deprecated
 public class BCAKlikPayActivity extends BaseActivity implements View.OnClickListener {
 
     private static final int PAYMENT_WEB_INTENT = 152;
@@ -47,7 +48,7 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bca_klikpay);
+        setContentView(R.layout.activity_bca_klikpay_old);
         mMidtransSDK = MidtransSDK.getInstance();
 
         if (mMidtransSDK == null) {

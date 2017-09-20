@@ -25,6 +25,7 @@ import com.midtrans.sdk.uikit.widgets.FancyButton;
 /**
  * @author rakawm
  */
+@Deprecated
 public class KlikBCAActivity extends BaseActivity {
 
     public static final String PAYMENT_FRAGMENT = "payment";

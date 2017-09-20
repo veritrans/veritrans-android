@@ -3,27 +3,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingLeft="@dimen/sixteen_dp"
-    android:paddingRight="@dimen/sixteen_dp"
-    android:paddingTop="@dimen/sixteen_dp">
+    android:paddingLeft="@dimen/eight_dp"
+    android:paddingRight="@dimen/eight_dp"
+    android:paddingTop="@dimen/eight_dp">
 
     <TextView
         style="@style/TextAppearance.AppCompat.Title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
+        android:gravity="center"
+        android:padding="@dimen/eight_dp"
         android:text="@string/payment_channels_select_payment_channel" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="@dimen/sixteen_dp"
         android:background="@color/divider" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/container_payment_methods"
         android:layout_width="match_parent"
-        android:layout_height="350dp" />
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 
     <View
         android:layout_width="match_parent"
@@ -34,9 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:orientation="horizontal"
-        android:paddingBottom="@dimen/eight_dp"
-        android:paddingTop="@dimen/eight_dp">
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/cancel_button"

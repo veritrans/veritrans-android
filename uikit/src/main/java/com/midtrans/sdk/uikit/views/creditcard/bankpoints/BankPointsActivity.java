@@ -30,7 +30,7 @@ import java.util.Locale;
  * Created by ziahaqi on 7/25/17.
  */
 
-public class BankPointsActivity extends BasePaymentActivity implements BankPointsView {
+public class BankPointsActivity extends BasePaymentActivity {
     public static final String EXTRA_POINT = "point.balance";
     public static final String EXTRA_BANK = "point.bank";
 
@@ -66,7 +66,7 @@ public class BankPointsActivity extends BasePaymentActivity implements BankPoint
     private void initPresenter() {
         String pointBank = getIntent().getStringExtra(EXTRA_BANK);
         float pointBalance = getIntent().getFloatExtra(EXTRA_POINT, 0f);
-        presenter = new BankPointsPresenter(this, pointBalance, pointBank);
+        presenter = new BankPointsPresenter(pointBalance, pointBank);
     }
 
 

@@ -17,6 +17,7 @@ import com.midtrans.sdk.corekit.callback.CheckoutCallback;
 import com.midtrans.sdk.corekit.callback.DeleteCardCallback;
 import com.midtrans.sdk.corekit.callback.GetCardCallback;
 import com.midtrans.sdk.corekit.callback.GetTransactionStatusCallback;
+import com.midtrans.sdk.corekit.callback.GoPayResendAuthorizationCallback;
 import com.midtrans.sdk.corekit.callback.ObtainPromoCallback;
 import com.midtrans.sdk.corekit.callback.SaveCardCallback;
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
@@ -54,6 +55,7 @@ public class MidtransSDK {
     private static SharedPreferences mPreferences = null;
     private static volatile MidtransSDK midtransSDK;
     private static BaseSdkBuilder sdkBuilder;
+    private static boolean sdkNotAvailable = false;
 
     protected boolean isRunning = false;
     ISdkFlow uiflow;
@@ -151,12 +153,17 @@ public class MidtransSDK {
                         midtransSDK = new MidtransSDK(sdkBuilder);
                     } else {
                         midtransSDK = new MidtransSDK();
+                        sdkNotAvailable = true;
                     }
                 }
             }
         }
 
         return midtransSDK;
+    }
+
+    public boolean isSdkNotAvailable() {
+        return sdkNotAvailable;
     }
 
     /**
@@ -256,6 +263,9 @@ public class MidtransSDK {
     }
 
     public MixpanelAnalyticsManager getmMixpanelAnalyticsManager() {
+        if (mSnapTransactionManager == null) {
+            this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), clientKey, getFlow(flow));
+        }
         return mMixpanelAnalyticsManager;
     }
 
@@ -371,7 +381,7 @@ public class MidtransSDK {
     /**
      * It will run backround task to register card PAPI(Payment API) Backend using uikit sdk
      *
-     * @param context       activity context.
+     * @param context  activity context.
      * @param callback Card Registration Callback.
      */
 
@@ -1520,6 +1530,91 @@ public class MidtransSDK {
     }
 
     /**
+     * It will run backround task to charge payment using GoPay
+     *
+     * @param phoneNumber
+     * @param snapToken
+     */
+    public void paymentUsingGoPay(String snapToken, String phoneNumber, TransactionCallback callback) {
+        if (callback == null) {
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
+
+        if (isNetworkAvailable()) {
+            isRunning = true;
+            mSnapTransactionManager.paymentUsingGoPay(snapToken, SdkUtil.getGoPayPaymentRequest(phoneNumber), callback);
+        } else {
+            isRunning = false;
+            callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+        }
+    }
+
+    /**
+     * It will run backround task to authorize GoPay Payment
+     *
+     * @param verificationCode gopay verification code
+     * @param snapToken        snap token
+     * @param callback         GoPayAuthorizationCallback
+     */
+    public void authorizeGoPayPayment(String snapToken, String verificationCode, TransactionCallback callback) {
+        if (callback == null) {
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
+
+        if (isNetworkAvailable()) {
+            isRunning = true;
+            mSnapTransactionManager.authorizeGoPayPayment(snapToken, SdkUtil.getGoPayAuthorizationRequest(verificationCode), callback);
+        } else {
+            isRunning = false;
+            callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+        }
+    }
+
+    /**
+     * It will run backround task to resend GoPay authorization
+     *
+     * @param snapToken
+     */
+    public void resendGopayAuthorization(String snapToken, GoPayResendAuthorizationCallback callback) {
+        if (callback == null) {
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
+
+        if (isNetworkAvailable()) {
+            isRunning = true;
+            mSnapTransactionManager.resendGoPayAuthorization(snapToken, callback);
+        } else {
+            isRunning = false;
+            callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+        }
+    }
+
+
+    /**
+     * It will run backround task to charge payment using Danamon Online
+     *
+     * @param snapToken
+     */
+    public void paymentUsingDanamonOnline(String snapToken, TransactionCallback callback) {
+        if (callback == null) {
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
+
+        if (isNetworkAvailable()) {
+            isRunning = true;
+            mSnapTransactionManager.paymentUsingDanamonOnline(snapToken, SdkUtil.getDanamonOnlinePaymentRequest(), callback);
+        } else {
+            isRunning = false;
+            callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+        }
+    }
+
+
+    /**
      * It will run backround task to register card PAPI(Payment API) Backend
      *
      * @param cardNumber   credit card number
@@ -1757,22 +1852,38 @@ public class MidtransSDK {
 
     /**
      * tracking sdk events
+     * don't use this method, for new uikit payment pattern (inside views package)
+     * use tracker in base payment presenter instead
      *
      * @param eventName
      */
+    @Deprecated
     public void trackEvent(String eventName) {
-        this.mMixpanelAnalyticsManager.trackMixpanel(readAuthenticationToken(), eventName);
+        try {
+            this.mMixpanelAnalyticsManager.trackMixpanel(readAuthenticationToken(), eventName);
+        } catch (NullPointerException e) {
+            Logger.e(TAG, "trackEvent():" + e.getMessage());
+        }
     }
 
     /**
      * tracking sdk events
+     * <p>
+     * don't use this method, for new uikit payment pattern (inside views package)
+     * use tracker in base payment presenter instead
      *
      * @param eventName
      * @param cardPaymentMode
      */
+    @Deprecated
     public void trackEvent(String eventName, String cardPaymentMode) {
-        this.mMixpanelAnalyticsManager.trackMixpanel(readAuthenticationToken(), eventName, cardPaymentMode);
+        try {
+            this.mMixpanelAnalyticsManager.trackMixpanel(readAuthenticationToken(), eventName, cardPaymentMode);
+        } catch (NullPointerException e) {
+            Logger.e(TAG, "trackEvent():" + e.getMessage());
+        }
     }
+
 
     public List<PromoResponse> getPromoResponses() {
         return promoResponses;

@@ -1,5 +1,7 @@
 package com.midtrans.sdk.corekit.models.snap;
 
+import android.text.TextUtils;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -106,6 +108,9 @@ public class CreditCard {
     }
 
     public void setAuthentication(String authentication) {
+        if (!TextUtils.isEmpty(authentication) && authentication.equals(RBA)) {
+            this.secure = false;
+        }
         this.authentication = authentication;
     }
 }

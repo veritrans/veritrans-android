@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/layout_toolbar_header"
+        layout="@layout/toolbar_custom_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <com.midtrans.sdk.uikit.widgets.FancyButton
+        android:id="@+id/btn_confirm_payment"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_size"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:textColor="@color/white"
+        app:fb_defaultColor="@color/gray.primary"
+        app:fb_focusColor="@color/colorAccentLight"
+        app:fb_iconPaddingLeft="0dp"
+        app:fb_iconPaddingRight="0dp"
+        app:fb_text="@string/confirm_payment"
+        app:fb_textGravity="center_vertical"
+        app:fb_textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_size"
+        android:layout_alignParentBottom="true"
+        android:gravity="bottom|end">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="@dimen/eight_dp"
+            android:src="@drawable/ic_arrow_right_white" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/instruction_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/layout_toolbar_header"
+        android:layout_marginBottom="@dimen/fifty_six_dp" />
+
+    <include
+        layout="@layout/layout_sandbox_badge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+</RelativeLayout>

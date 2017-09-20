@@ -52,8 +52,13 @@ import com.midtrans.sdk.uikit.models.ItemViewDetails;
 import com.midtrans.sdk.uikit.models.MessageInfo;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
+import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.views.banktransfer.list.BankTransferListActivity;
+import com.midtrans.sdk.uikit.views.bca_klikbca.payment.KlikBcaPaymentActivity;
+import com.midtrans.sdk.uikit.views.bca_klikpay.BcaKlikPayPaymentActivity;
 import com.midtrans.sdk.uikit.views.creditcard.saved.SavedCreditCardActivity;
+import com.midtrans.sdk.uikit.views.danamon_online.DanamonOnlineActivity;
+import com.midtrans.sdk.uikit.views.gopay.payment.GoPayPaymentActivity;
 import com.midtrans.sdk.uikit.widgets.BoldTextView;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
@@ -83,6 +88,8 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     private boolean isIndomaret = false;
     private boolean isKioson = false;
     private boolean isGci = false;
+    private boolean isGopay = false;
+    private boolean isDanamonOnline = false;
     private boolean backButtonEnabled;
 
     private MidtransSDK midtransSDK = null;
@@ -471,7 +478,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             }
         } else if (isBCAKlikpay) {
             if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_bca_click))) {
-                Intent startBCAKlikPayActivity = new Intent(this, BCAKlikPayActivity.class);
+                Intent startBCAKlikPayActivity = new Intent(this, BcaKlikPayPaymentActivity.class);
                 startActivityForResult(startBCAKlikPayActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
                 if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                         && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
@@ -482,7 +489,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             }
         } else if (isKlikBCA) {
             if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_klik_bca))) {
-                Intent startKlikBcaActivity = new Intent(this, KlikBCAActivity.class);
+                Intent startKlikBcaActivity = new Intent(this, KlikBcaPaymentActivity.class);
                 startKlikBcaActivity.putExtra(getString(R.string.position), Constants.PAYMENT_METHOD_KLIKBCA);
                 startActivityForResult(startKlikBcaActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
                 if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
@@ -598,6 +605,28 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             } else {
                 showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
             }
+        } else if (isGopay) {
+            if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_gopay))) {
+                Intent gopayActivity = new Intent(this, GoPayPaymentActivity.class);
+                startActivityForResult(gopayActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+                if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
+                        && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                    overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                }
+            } else {
+                showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
+            }
+        } else if (isDanamonOnline) {
+            if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_danamon_online))) {
+                Intent danamonOnlineIntent = new Intent(this, DanamonOnlineActivity.class);
+                startActivityForResult(danamonOnlineIntent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+                if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
+                        && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                    overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                }
+            } else {
+                showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
+            }
         } else {
             if (data.isEmpty()) {
                 showErrorAlertDialog(getString(R.string.message_payment_method_empty));
@@ -673,14 +702,14 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_bca_klikpay))) {
-            Intent startBCAKlikPayActivity = new Intent(this, BCAKlikPayActivity.class);
+            Intent startBCAKlikPayActivity = new Intent(this, BcaKlikPayPaymentActivity.class);
             startActivityForResult(startBCAKlikPayActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
             if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                     && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_klik_bca))) {
-            Intent startKlikBcaActivity = new Intent(this, KlikBCAActivity.class);
+            Intent startKlikBcaActivity = new Intent(this, KlikBcaPaymentActivity.class);
             startKlikBcaActivity.putExtra(getString(R.string.position), Constants.PAYMENT_METHOD_KLIKBCA);
             startActivityForResult(startKlikBcaActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
             if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
@@ -715,6 +744,20 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
+        } else if (name.equalsIgnoreCase(getString(R.string.payment_method_gopay))) {
+            Intent gopayIntent = new Intent(this, GoPayPaymentActivity.class);
+            startActivityForResult(gopayIntent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
+                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+            }
+        } else if (name.equalsIgnoreCase(getString(R.string.payment_method_danamon_online))) {
+            Intent danamonOnlineIntent = new Intent(this, DanamonOnlineActivity.class);
+            startActivityForResult(danamonOnlineIntent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
+                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+            }
         } else {
             Toast.makeText(this.getApplicationContext(),
                     "This feature is not implemented yet.", Toast.LENGTH_SHORT).show();
@@ -727,6 +770,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     private void initialiseAdapterData(List<EnabledPayment> enabledPayments) {
         data.clear();
         bankTransfers.clear();
+
         for (EnabledPayment enabledPayment : enabledPayments) {
             if ((enabledPayment.getCategory() != null && enabledPayment.getCategory().equals(getString(R.string.enabled_payment_category_banktransfer)))
                     || enabledPayment.getType().equalsIgnoreCase(getString(R.string.payment_mandiri_bill_payment))) {
@@ -738,6 +782,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 }
             }
         }
+
 
         if (!bankTransfers.isEmpty()) {
             data.add(PaymentMethods.getMethods(this, getString(R.string.payment_bank_transfer), EnabledPayment.STATUS_UP));
@@ -754,6 +799,11 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
         Logger.d(TAG, "in onActivity result : request code is " + requestCode + "," + resultCode);
         Logger.d(TAG, "in onActivity result : data:" + data);
+
+        if (resultCode == UiKitConstants.RESULT_SDK_NOT_AVAILABLE) {
+            finish();
+            return;
+        }
 
         if (requestCode == Constants.RESULT_CODE_PAYMENT_TRANSFER) {
             Logger.d(TAG, "sending result back with code " + requestCode);

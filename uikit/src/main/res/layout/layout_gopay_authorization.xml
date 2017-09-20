@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+
+    android:layout_height="match_parent"
+    android:layout_marginLeft="@dimen/sixteen_dp"
+    android:layout_marginRight="@dimen/sixteen_dp"
+    android:layout_marginTop="@dimen/sixteen_dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        style="@style/RoundedNotification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:id="@+id/text_athorization_info"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/info_gopay_auth" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/thirtytwo_dp"
+        android:orientation="horizontal">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/container_verification_number"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edit_verification_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_gopay_verification_number"
+                android:inputType="text"
+                android:textSize="@dimen/sixteen_sp" />
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
+
+    <com.midtrans.sdk.uikit.widgets.FancyButton
+        android:id="@+id/button_resend"
+        style="@style/ButtonSecondary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/twenty_four_dp"
+        android:paddingEnd="@dimen/sixteen_dp"
+        android:paddingLeft="@dimen/sixteen_dp"
+        android:paddingRight="@dimen/sixteen_dp"
+        android:paddingStart="@dimen/sixteen_dp"
+        app:fb_borderColor="@color/navy_blue.primary_dark"
+        app:fb_iconColor="@color/navy_blue.primary_dark"
+        app:fb_text="@string/verification_code"
+        app:fb_textColor="@color/navy_blue.primary_dark" />
+
+</LinearLayout>
