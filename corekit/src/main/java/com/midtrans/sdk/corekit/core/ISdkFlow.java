@@ -11,9 +11,9 @@ public interface ISdkFlow {
 
     void runUIFlow(Context context);
 
-    void runCreditCard(Context context);
+    void runCreditCard(Context context, String snapToken);
 
-    void runBankTransfer(Context context);
+    void runBankTransfer(Context context, String snapToken);
 
     void runPermataBankTransfer(Context context);
 

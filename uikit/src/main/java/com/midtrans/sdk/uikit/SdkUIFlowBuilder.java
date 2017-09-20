@@ -31,9 +31,53 @@ public class SdkUIFlowBuilder extends BaseSdkBuilder<SdkUIFlowBuilder> {
         this.sdkFlow = new UIFlow();
     }
 
+    private SdkUIFlowBuilder() {
+        this.flow = UI_FLOW;
+        this.sdkFlow = new UIFlow();
+    }
+
+    /**
+     * create sdk builder
+     *
+     * @return SdkUIFlowBuilder
+     */
+    public static SdkUIFlowBuilder init() {
+        return new SdkUIFlowBuilder();
+    }
+
+    /**
+     * this Sdk builder has been deprecated, please use init() method instead
+     *
+     * @param context
+     * @param clientKey
+     * @param merchantServerUrl
+     * @param callback
+     * @return
+     */
+    @Deprecated
     public static SdkUIFlowBuilder init(Context context, String clientKey, String merchantServerUrl, TransactionFinishedCallback callback) {
         return new SdkUIFlowBuilder(context, clientKey, merchantServerUrl, callback);
 
+    }
+
+    public SdkUIFlowBuilder setClientKey(String clientKey) {
+        this.clientKey = clientKey;
+        return this;
+    }
+
+    public SdkUIFlowBuilder setContext(Context context) {
+        this.context = context;
+        return this;
+    }
+
+    public SdkUIFlowBuilder setTransactionFinishedCallback(TransactionFinishedCallback callback) {
+        this.transactionFinishedCallback = callback;
+        return this;
+    }
+
+    public SdkUIFlowBuilder setMerchantBaseUrl(String merchantBaseUrl) {
+        this.merchantServerUrl = merchantBaseUrl;
+        return this;
     }
 
     public SdkUIFlowBuilder setExternalScanner(IScanner externalScanner) {

@@ -1041,7 +1041,7 @@ public class MidtransAndroidSDKTest {
         when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
         midtransSDKSSpy.uiflow = uiflowMock;
         Whitebox.invokeMethod(midtransSDKSSpy, "startBankTransferUIFlow", contextMock);
-        Mockito.verify(midtransSDKSSpy.uiflow).runBankTransfer(contextMock);
+        Mockito.verify(midtransSDKSSpy.uiflow).runBankTransfer(contextMock, snapToken);
     }
 
 
@@ -1600,7 +1600,7 @@ public class MidtransAndroidSDKTest {
         when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
         midtransSDKSSpy.uiflow = uiflowMock;
         Whitebox.invokeMethod(midtransSDKSSpy, "startCreditCardUIFlow", contextMock);
-        Mockito.verify(midtransSDKSSpy.uiflow).runCreditCard(contextMock);
+        Mockito.verify(midtransSDKSSpy.uiflow).runCreditCard(contextMock, snapToken);
     }
 
 

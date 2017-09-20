@@ -7,6 +7,7 @@ import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
 import com.midtrans.sdk.corekit.core.ISdkFlow;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.uikit.activities.UserDetailsActivity;
+import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.views.creditcard.register.CardRegistrationActivity;
 
 /**
@@ -24,17 +25,18 @@ public class UIFlow implements ISdkFlow {
     }
 
     @Override
-    public void runCreditCard(Context context) {
+    public void runCreditCard(Context context, String snapToken) {
         MidtransSDK sdk = MidtransSDK.getInstance();
         if (sdk != null) {
             Intent intent = new Intent(context, UserDetailsActivity.class);
             intent.putExtra(UserDetailsActivity.CREDIT_CARD_ONLY, true);
+            intent.putExtra(UiKitConstants.EXTRA)
             context.startActivity(intent);
         }
     }
 
     @Override
-    public void runBankTransfer(Context context) {
+    public void runBankTransfer(Context context, String snapToken) {
         MidtransSDK sdk = MidtransSDK.getInstance();
         if (sdk != null) {
             Intent intent = new Intent(context, UserDetailsActivity.class);
