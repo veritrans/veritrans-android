@@ -430,6 +430,7 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
         return !TextUtils.isEmpty(bank)
             && bankPoints != null
             && bankPoints.contains(bank)
+            && isSecurePayment()
             && bank.equals(BankType.MANDIRI);
     }
 
