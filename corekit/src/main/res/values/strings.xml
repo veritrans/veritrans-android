@@ -158,7 +158,6 @@
     <string name="bank_atm_transfer_step3">Please complete payment through the Prima(BCA), ATM Bersama(Mandiri), or Alto(Permata) ATM network.</string>
     <string name="bank_atm_transfer_step4">Once payment is complete, you will receive a confirmation email.</string>
     <string name="see_instruction">see instructions</string>
-    <string name="confirm_payment">Confirm Payment</string>
     <string name="copy_payment_code">Copy Payment Code</string>
     <string name="copy_va_number">Copy Virtual Account Number</string>
     <string name="copy_billpay_code">Copy Bill Pay Code</string>
@@ -243,8 +242,6 @@
     <string name="epay_bri">e-Pay BRI</string>
     <string name="bbm_money">BBM Money</string>
     <string name="indosat_dompetku">Indosat Dompetku</string>
-    <string name="klik_bca">Klik BCA</string>
-    <string name="bca_klik">BCA KlikPay</string>
     <string name="indomaret">Indomaret</string>
     <string name="offers">Offers</string>
     <string name="delete">Delete</string>

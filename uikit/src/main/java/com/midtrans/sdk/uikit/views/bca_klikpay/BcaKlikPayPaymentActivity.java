@@ -1,4 +1,4 @@
-package com.midtrans.sdk.uikit.views.danamon_online;
+package com.midtrans.sdk.uikit.views.bca_klikpay;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,63 +10,63 @@ import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentView;
+import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 /**
- * Created by ziahaqi on 9/13/17.
+ * Created by ziahaqi on 9/19/17.
  */
 
-public class DanamonOnlineActivity extends BasePaymentActivity implements BasePaymentView {
+public class BcaKlikPayPaymentActivity extends BasePaymentActivity implements BasePaymentView {
 
-    private FancyButton buttonPrimary;
-
-    private DanamonOnlinePresenter presenter;
+    private FancyButton buttonPayment;
+    private BcaKlikPayPaymentPresenter presenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_danamon_online);
+        setContentView(R.layout.activity_bca_klikpay);
         initProperties();
         initActionButton();
         bindData();
     }
 
     private void bindData() {
-        setPageTitle(getString(R.string.payment_method_danamon_online));
+        setPageTitle(getString(R.string.bca_klik));
+        buttonPayment.setText(getString(R.string.confirm_payment));
     }
 
     private void initActionButton() {
-        buttonPrimary.setOnClickListener(new View.OnClickListener() {
+        buttonPayment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showProgressLayout(getString(R.string.processing_payment));
+                showProgressLayout();
                 presenter.startPayment();
+                presenter.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
             }
         });
     }
 
     private void initProperties() {
-        this.presenter = new DanamonOnlinePresenter(this);
+        this.presenter = new BcaKlikPayPaymentPresenter(this);
     }
-
 
     @Override
     public void bindViews() {
-        buttonPrimary = (FancyButton) findViewById(R.id.button_primary);
+        buttonPayment = (FancyButton) findViewById(R.id.button_primary);
     }
 
     @Override
     public void initTheme() {
-        setPrimaryBackgroundColor(buttonPrimary);
+        setPrimaryBackgroundColor(buttonPayment);
     }
 
     @Override
     public void onPaymentSuccess(TransactionResponse response) {
         hideProgressLayout();
-        showWebViewPaymentPage(response, PaymentType.DANAMON_ONLINE);
+        showWebViewPaymentPage(response, PaymentType.BCA_KLIKPAY);
     }
-
 
     @Override
     public void onPaymentFailure(TransactionResponse response) {
@@ -83,7 +83,6 @@ public class DanamonOnlineActivity extends BasePaymentActivity implements BasePa
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS || requestCode == UiKitConstants.INTENT_WEBVIEW_PAYMENT) {
             finishPayment(RESULT_OK, presenter.getTransactionResponse());
         }

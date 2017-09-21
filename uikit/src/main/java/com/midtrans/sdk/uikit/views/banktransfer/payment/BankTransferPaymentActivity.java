@@ -56,7 +56,6 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
 
     private TextInputLayout containerEmail;
 
-    private DefaultTextView textTitle;
     private DefaultTextView textNotificationToken;
     private DefaultTextView textNotificationOtp;
 
@@ -144,7 +143,6 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
         editEmail = (AppCompatEditText) findViewById(R.id.edit_email);
         buttonPay = (FancyButton) findViewById(R.id.btn_pay_now);
 
-        textTitle = (DefaultTextView) findViewById(R.id.text_page_title);
         textNotificationToken = (DefaultTextView) findViewById(R.id.text_notificationToken);
         textNotificationOtp = (DefaultTextView) findViewById(R.id.text_notificationOtp);
 
@@ -259,10 +257,6 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
     private void initData() {
         editEmail.setText(presenter.getUserEmail());
         editEmail.clearFocus();
-    }
-
-    public void setPageTitle(String pageTitle) {
-        this.textTitle.setText(pageTitle);
     }
 
 
@@ -384,9 +378,7 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
 
     @Override
     public void onPaymentFailure(TransactionResponse response) {
-
         hideProgressLayout();
-
         if (!isFinishing()) {
             MessageInfo messageInfo = MessageUtil.createpaymentFailedMessage(this, response, null);
             SdkUIFlowUtil.showToast(this, messageInfo.detailsMessage);
@@ -399,12 +391,7 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
     @Override
     public void onPaymentError(Throwable error) {
         hideProgressLayout();
-        if (!isFinishing()) {
-            presenter.trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
-            MessageInfo messageInfo = MessageUtil.createMessageOnError(this, error, null);
-
-            SdkUIFlowUtil.showToast(this, "" + messageInfo.detailsMessage);
-        }
+        showOnErrorPaymentStatusmessage(error);
     }
 
     @Override

@@ -1,21 +1,31 @@
 package com.midtrans.sdk.uikit.abstracts;
 
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+
 import com.bumptech.glide.Glide;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.MerchantPreferences;
+import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.snap.MerchantData;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.models.MessageInfo;
+import com.midtrans.sdk.uikit.utilities.MessageUtil;
+import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
+import com.midtrans.sdk.uikit.utilities.UiKitConstants;
+import com.midtrans.sdk.uikit.views.status.PaymentStatusActivity;
+import com.midtrans.sdk.uikit.views.webview.WebViewPaymentActivity;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 
 /**
@@ -110,4 +120,49 @@ public abstract class BasePaymentActivity extends BaseActivity {
         }
     }
 
+    protected void setPageTitle(@NonNull String title) {
+        DefaultTextView textTitle = (DefaultTextView) findViewById(R.id.text_page_title);
+        if (textTitle != null) {
+            textTitle.setText(title);
+        }
+    }
+
+    protected void showPaymentStatusPage(TransactionResponse response, boolean showPaymentStatus) {
+        if (isActivityRunning() && showPaymentStatus) {
+            Intent intent = new Intent(this, PaymentStatusActivity.class);
+            intent.putExtra(PaymentStatusActivity.EXTRA_PAYMENT_RESULT, response);
+            startActivityForResult(intent, UiKitConstants.INTENT_CODE_PAYMENT_STATUS);
+        } else {
+            finishPayment(RESULT_OK, response);
+        }
+    }
+
+    protected void showWebViewPaymentPage(TransactionResponse response, String paymentType) {
+        if (isActivityRunning()) {
+            Intent intent = new Intent(this, WebViewPaymentActivity.class);
+            intent.putExtra(WebViewPaymentActivity.EXTRA_PAYMENT_TYPE, paymentType);
+            intent.putExtra(WebViewPaymentActivity.EXTRA_PAYMENT_URL, response.getRedirectUrl());
+            startActivityForResult(intent, UiKitConstants.INTENT_WEBVIEW_PAYMENT);
+        } else {
+            finishPayment(RESULT_OK, response);
+        }
+    }
+
+    protected void finishPayment(int resultCode, TransactionResponse response) {
+        Intent data = new Intent();
+        data.putExtra(getString(R.string.transaction_response), response);
+        setResult(resultCode, data);
+        finish();
+    }
+
+    protected void showOnErrorPaymentStatusmessage(Throwable error) {
+        showOnErrorPaymentStatusmessage(error, null);
+    }
+
+    protected void showOnErrorPaymentStatusmessage(Throwable error, String defaultmessage) {
+        if (isActivityRunning()) {
+            MessageInfo messageInfo = MessageUtil.createMessageOnError(this, error, defaultmessage);
+            SdkUIFlowUtil.showToast(this, messageInfo.detailsMessage);
+        }
+    }
 }

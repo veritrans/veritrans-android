@@ -1,4 +1,4 @@
-package com.midtrans.sdk.uikit.views.klikbca.status;
+package com.midtrans.sdk.uikit.views.bca_klikbca.status;
 
 import android.content.Intent;
 import android.os.Bundle;

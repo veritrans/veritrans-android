@@ -34,7 +34,6 @@ public class GoPayAuthorizationActivitiy extends BasePaymentActivity implements 
     private TextInputEditText fieldVerificationCode;
 
     private DefaultTextView textInfo;
-    private DefaultTextView textTitle;
 
     private FancyButton buttonContinue;
     private FancyButton buttonResend;
@@ -51,7 +50,7 @@ public class GoPayAuthorizationActivitiy extends BasePaymentActivity implements 
     }
 
     private void initData() {
-        textTitle.setText(getString(R.string.gopay));
+        setPageTitle(getString(R.string.gopay));
     }
 
     private void initProperties() {
@@ -124,7 +123,6 @@ public class GoPayAuthorizationActivitiy extends BasePaymentActivity implements 
         fieldVerificationCode = (TextInputEditText) findViewById(R.id.edit_verification_number);
 
         textInfo = (DefaultTextView) findViewById(R.id.text_athorization_info);
-        textTitle = (DefaultTextView) findViewById(R.id.text_page_title);
 
         buttonContinue = (FancyButton) findViewById(R.id.button_primary);
         buttonResend = (FancyButton) findViewById(R.id.button_resend);

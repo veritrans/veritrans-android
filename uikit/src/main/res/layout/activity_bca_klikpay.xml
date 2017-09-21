@@ -1,62 +1,44 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical">
+    android:background="@android:color/white"
+    android:fitsSystemWindows="true">
 
-    <include
-        android:id="@+id/layout_toolbar_header"
-        layout="@layout/toolbar_custom_header"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <include layout="@layout/appbar_payment" />
 
-    <com.midtrans.sdk.uikit.widgets.FancyButton
-        android:id="@+id/btn_confirm_payment"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/button_size"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:textColor="@color/white"
-        app:fb_defaultColor="@color/gray.primary"
-        app:fb_focusColor="@color/colorAccentLight"
-        app:fb_iconPaddingLeft="0dp"
-        app:fb_iconPaddingRight="0dp"
-        app:fb_text="@string/confirm_payment"
-        app:fb_textGravity="center_vertical"
-        app:fb_textSize="16sp" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/button_size"
-        android:layout_alignParentBottom="true"
-        android:gravity="bottom|end">
-
-        <ImageView
+        <include
+            android:id="@+id/container_item_details"
+            layout="@layout/layout_total_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="@dimen/eight_dp"
-            android:src="@drawable/ic_arrow_right_white" />
-    </LinearLayout>
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true" />
 
-    <FrameLayout
-        android:id="@+id/instruction_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@id/layout_toolbar_header"
-        android:layout_marginBottom="@dimen/fifty_six_dp" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/layout_primary_button"
+            android:layout_below="@id/container_item_details">
 
-    <include
-        layout="@layout/layout_sandbox_badge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-</RelativeLayout>
+            <include layout="@layout/layout_bca_klikpay" />
+
+        </ScrollView>
+
+        <include
+            android:id="@+id/layout_primary_button"
+            layout="@layout/layout_primary_button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_size"
+            android:layout_alignParentBottom="true" />
+    </RelativeLayout>
+
+    <include layout="@layout/layout_loading_and_badge" />
+</android.support.design.widget.CoordinatorLayout>
