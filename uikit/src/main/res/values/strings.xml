@@ -701,16 +701,19 @@
     <string name="error_obtain_promo">Failed to obtain promo.</string>
     <string name="redeem_bni_reward">Redeem BNI Reward Point</string>
     <string name="redeem_mandiri_point">Redeem Fiesta Point</string>
-    <string name="amount_after_discount">Amount to pay after discount</string>
+    <string name="redeem_100_point">100 FIESTAPOIN DISCOUNT</string>
+    <string name="amount_after_discount">AMOUNT TO PAY AFTER DISCOUNT</string>
     <string name="will_be_used_point_here">Will be used point</string>
     <string name="total_point_here">total point here</string>
     <string name="redeem_point">Redeem Point</string>
     <string name="redeem_bank_point_title">Redeem %1$s Point</string>
     <string name="total_point">Your total %1$s Reward Point is %2$s</string>
-    <string name="redeem_bni_title">Redeem BNI Reward Point</string>
-    <string name="redeem_bni_details">You can pay partly through the redemption of BNI Reward Point through your Credit Card.</string>
-    <string name="redeem_mandiri_title">Redeem Fiesta Point</string>
-    <string name="redeem_mandiri_details">You can pay partly through the redemption of Fiesta Point through your Credit Card.</string>
+    <string name="redeem_bni_title">BNI Reward Points</string>
+    <string name="redeem_bni_details">You can pay partly through the redemption of BNI Reward Point through your BNI credit card.</string>
+    <string name="redeem_mandiri_title">Mandiri Fiestapoin</string>
+    <string name="redeem_mandiri_details">You can pay partly through the redemption of Mandiri Fiestpoin through your Mandiri credit / debit card.</string>
+    <string name="pay_with_mandiri_point">Pay with Mandiri Fiestapoin</string>
+    <string name="pay_with_bni_point">Pay with BNI Reward Points</string>
     <string name="klik_bca_continue">Please continue the payment process via KlikBCA by opening <a href="http://klikbca.com/">http://klikbca.com/</a> on your browser.</string>
     <string name="error_delete_message">Failed to delete card</string>
     <string name="mandiri_debit_card">Mandiri Debit Card</string>
@@ -719,11 +722,12 @@
     <string name="undo">Undo</string>
     <string name="delete_this_card">delete this card</string>
 
-    <string name="how_much_point">How much points you want to redeem?</string>
+    <string name="how_much_point">How much points you want to redeem for discount?</string>
     <string name="total_bni_point">Your total BNI points</string>
     <string name="bank_bni">BNI</string>
     <string name="bank_mandiri">Mandiri</string>
     <string name="status_redeemed_point">POINT DISCOUNT</string>
+    <string name="pay_without_bank_point">Pay without %1$s</string>
 
     <!-- bni internet  payment instruction -->
     <string name="bni_internet_instruction_1">Go to <a href="https://ibank.bni.co.id"><b>https://ibank.bni.co.id</b></a> and then click <b>Login</b>.</string>
@@ -795,7 +799,9 @@
     <string name="notification_token_message">Key token device is required for this payment method.</string>
     <string name="notification_otp_message">SMS charges may be applied for this payment method</string>
     <string name="failed_to_get_bank_point">Failed to get bank points</string>
-    <string name="total_bank_point">Your total points</string>
+    <string name="total_bni_reward_point">Current Points: %1$s</string>
+    <string name="total_mandiri_fiestapoint">Current Fiestapoin: %1$s</string>
+
     <string name="status_rba_unsuccessful">Payment has not been made</string>
     <string name="message_error_internal_server">Sorry, there is an internal problem. Please try again or try another payment method</string>
     <string name="mandiri_bill">Mandiri</string>

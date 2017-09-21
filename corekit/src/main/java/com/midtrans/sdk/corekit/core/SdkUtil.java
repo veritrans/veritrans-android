@@ -3,12 +3,12 @@ package com.midtrans.sdk.corekit.core;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-
 import com.midtrans.sdk.corekit.R;
 import com.midtrans.sdk.corekit.models.BCABankTransfer;
 import com.midtrans.sdk.corekit.models.BCAKlikPayDescriptionModel;
 import com.midtrans.sdk.corekit.models.BCAKlikPayModel;
 import com.midtrans.sdk.corekit.models.BankTransfer;
+import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.BillingAddress;
 import com.midtrans.sdk.corekit.models.CIMBClickPayModel;
 import com.midtrans.sdk.corekit.models.CardPaymentDetails;
@@ -50,7 +50,6 @@ import com.midtrans.sdk.corekit.models.snap.payment.GoPayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.MandiriClickPayPaymentRequest;
 import com.midtrans.sdk.corekit.utilities.Installation;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -599,9 +598,11 @@ public class SdkUtil {
                 model.isSavecard(), model.getMaskedCardNumber(), model.getInstallment());
         paymentParams.setPointRedeemed(model.getPointRedeemed());
 
-        CreditCardPaymentRequest paymentRequest = new CreditCardPaymentRequest(PaymentType.CREDIT_CARD, paymentParams, customerDetailRequest);
+        if (model.getBank() != null && model.getBank().equalsIgnoreCase(BankType.MANDIRI)) {
+            paymentParams.setBank(model.getBank());
+        }
 
-        return paymentRequest;
+        return new CreditCardPaymentRequest(PaymentType.CREDIT_CARD, paymentParams, customerDetailRequest);
     }
 
     public static CreditCardPaymentRequest getCreditCardPaymentRequest(String discountToken, CreditCardPaymentModel model, TransactionRequest transactionRequest) {

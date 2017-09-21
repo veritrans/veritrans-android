@@ -1,5 +1,6 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
@@ -18,6 +19,7 @@
             layout="@layout/layout_total_amount" />
 
         <ScrollView
+            android:id="@+id/sv_bank_point"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/btn_redeem_point"
@@ -27,33 +29,56 @@
 
         </ScrollView>
 
+        <RelativeLayout
+            android:id="@+id/container_pay_without_bank_point"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/btn_redeem_point"
+            android:layout_marginBottom="@dimen/sixteen_dp"
+            android:layout_marginTop="@dimen/sixteen_dp"
+            android:gravity="center">
+
+            <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                android:id="@+id/text_pay_without_bank_point"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/icon_pay"
+                android:gravity="center"
+                android:textColor="@color/navy_blue.primary"
+                android:textSize="14sp"
+                tools:text="Bayar tanpa Menggunakan Mandiri Fiestapoin" />
+
+            <ImageView
+                android:id="@+id/icon_pay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/text_pay_without_bank_point"
+                android:layout_alignTop="@id/text_pay_without_bank_point"
+                android:layout_marginRight="@dimen/eight_dp"
+                android:src="@drawable/ic_pay_without_bank_point"/>
+        </RelativeLayout>
+
         <com.midtrans.sdk.uikit.widgets.FancyButton
             android:id="@+id/btn_redeem_point"
             android:layout_width="match_parent"
             android:layout_height="@dimen/button_size"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
             android:textColor="@color/white"
             app:fb_defaultColor="@color/navy_blue.primary"
             app:fb_focusColor="@color/colorAccentLight"
-            app:fb_text="@string/redeem_point"
             app:fb_textGravity="center_vertical"
-            app:fb_textSize="16sp" />
+            app:fb_textSize="14sp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/button_size"
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/btn_redeem_point"
             android:layout_alignParentBottom="true"
-            android:gravity="bottom|end">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="@dimen/eight_dp"
-                android:src="@drawable/ic_arrow_right_white" />
-        </LinearLayout>
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@id/btn_redeem_point"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_arrow_right_white" />
     </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

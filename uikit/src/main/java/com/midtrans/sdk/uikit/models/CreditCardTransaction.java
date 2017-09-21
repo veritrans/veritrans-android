@@ -1,12 +1,10 @@
 package com.midtrans.sdk.uikit.models;
 
 import android.text.TextUtils;
-
 import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 import com.midtrans.sdk.corekit.models.snap.BanksPointResponse;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
-
 import java.util.ArrayList;
 
 /**
@@ -194,6 +192,10 @@ public class CreditCardTransaction {
         cardBankPoint.setData(response, bankType);
     }
 
+    public String getBankName() {
+        return cardBankPoint.getBankType();
+    }
+
     public boolean isBankPointEnabled() {
         return cardBankPoint.isEnabled();
     }
@@ -203,11 +205,11 @@ public class CreditCardTransaction {
     }
 
     public float getBankPointRedeemed() {
-        return cardBankPoint.getpointRedeemed();
+        return cardBankPoint.getPointRedeemed();
     }
 
     public void setBankPointRedeemed(float pointRedeemed) {
-        cardBankPoint.setpointRedeemed(pointRedeemed);
+        cardBankPoint.setPointRedeemed(pointRedeemed);
     }
 
     public boolean checkCardBinValidity(String cardNumber) {

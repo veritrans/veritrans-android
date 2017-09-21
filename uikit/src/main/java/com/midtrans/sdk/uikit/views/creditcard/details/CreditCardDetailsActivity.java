@@ -23,7 +23,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
@@ -49,7 +48,6 @@ import com.midtrans.sdk.uikit.views.status.PaymentStatusActivity;
 import com.midtrans.sdk.uikit.views.webview.WebViewPaymentActivity;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -61,11 +59,9 @@ import java.util.Date;
 
 public class CreditCardDetailsActivity extends BasePaymentActivity implements CreditCardDetailsView {
 
-    private static final String TAG = CreditCardDetailsActivity.class.getSimpleName();
-
     public static final String EXTRA_DELETED_CARD_DETAILS = "card.deleted.details";
     public static final String EXTRA_SAVED_CARD = "extra.card.saved";
-
+    private static final String TAG = CreditCardDetailsActivity.class.getSimpleName();
     private AppCompatEditText fieldCardNumber;
     private AppCompatEditText fieldCardCvv;
     private AppCompatEditText fieldCardExpiry;
@@ -1180,9 +1176,10 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     }
 
 
-    private void startPreCrediCardPayment() {
-        if (isBankPointEnabled()) {
-            presenter.getBankPoint(BankType.BNI);
+    private void startPreCreditCardPayment() {
+        String bankName = presenter.getBankByCardBin(getCardNumberBin());
+        if (isBankPointEnabled() && bankName != null) {
+            presenter.getBankPoint(bankName);
         } else {
             startCreditCardPayment();
         }
@@ -1216,7 +1213,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
         if (resultCode == RESULT_OK) {
             if (requestCode == UiKitConstants.INTENT_CODE_3DS_PAYMENT) {
-                startPreCrediCardPayment();
+                startPreCreditCardPayment();
             } else if (requestCode == UiKitConstants.INTENT_CODE_RBA_AUTHENTICATION) {
                 getPaymentStatus();
             } else if (requestCode == UiKitConstants.INTENT_REQUEST_SCAN_CARD) {
@@ -1238,7 +1235,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             }
         } else if (resultCode == RESULT_CANCELED) {
             if (requestCode == UiKitConstants.INTENT_CODE_3DS_PAYMENT) {
-                startPreCrediCardPayment();
+                startPreCreditCardPayment();
             } else if (requestCode == UiKitConstants.INTENT_CODE_RBA_AUTHENTICATION) {
                 getPaymentStatus();
             } else if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS) {
@@ -1260,7 +1257,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             if (!TextUtils.isEmpty(response.getRedirectUrl())) {
                 start3DSecurePage(response.getRedirectUrl(), UiKitConstants.INTENT_CODE_3DS_PAYMENT);
             } else {
-                startPreCrediCardPayment();
+                startPreCreditCardPayment();
             }
         }
     }

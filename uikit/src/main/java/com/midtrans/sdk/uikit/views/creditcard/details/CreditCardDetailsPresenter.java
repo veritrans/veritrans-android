@@ -3,7 +3,6 @@ package com.midtrans.sdk.uikit.views.creditcard.details;
 import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
-
 import com.midtrans.sdk.corekit.callback.BankBinsCallback;
 import com.midtrans.sdk.corekit.callback.BanksPointCallback;
 import com.midtrans.sdk.corekit.callback.CardTokenCallback;
@@ -33,7 +32,6 @@ import com.midtrans.sdk.uikit.abstracts.BaseCreditCardPresenter;
 import com.midtrans.sdk.uikit.models.CreditCardTransaction;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -241,9 +239,12 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
             paymentModel.setInstallment(installmentBankSeleted + "_" + installmentTermSelected);
         }
 
-        //set bank point
+        //set bank point and bank name (if Mandiri Point is selected)
         if (creditCardTransaction.getBankPointRedeemed() != 0.0f) {
             paymentModel.setPointRedeemed(creditCardTransaction.getBankPointRedeemed());
+            if (creditCardTransaction.getBankName() != null && creditCardTransaction.getBankName().equalsIgnoreCase(BankType.MANDIRI)) {
+                paymentModel.setBank(creditCardTransaction.getBankName());
+            }
         }
     }
 

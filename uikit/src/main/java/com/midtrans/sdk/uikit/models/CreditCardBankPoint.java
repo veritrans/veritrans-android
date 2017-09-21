@@ -24,15 +24,19 @@ public class CreditCardBankPoint {
         return enableStatus;
     }
 
-    public void setpointRedeemed(float pointRedeemed) {
-        this.pointRedeemed = pointRedeemed;
-    }
-
     public boolean isValid() {
         return (bankPoint != null && bankType != null && pointRedeemed > 0);
     }
 
-    public float getpointRedeemed() {
+    public float getPointRedeemed() {
         return pointRedeemed;
+    }
+
+    public void setPointRedeemed(float pointRedeemed) {
+        this.pointRedeemed = pointRedeemed;
+    }
+
+    public String getBankType() {
+        return bankType;
     }
 }
