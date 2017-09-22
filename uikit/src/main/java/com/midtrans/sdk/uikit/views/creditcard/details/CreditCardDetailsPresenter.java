@@ -175,9 +175,10 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
         }
     }
 
-    public void startNormalPayment(boolean saveCard) {
+    public void startNormalPayment(boolean saveCard, boolean fromBankPoint) {
         if (creditCardToken != null) {
             CreditCardPaymentModel model = new CreditCardPaymentModel(creditCardToken.getTokenId(), saveCard);
+            model.setFromBankPoint(fromBankPoint);
             applyPaymentProperties(model);
             startCreditCardPayment(model);
         } else {
@@ -240,11 +241,9 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
         }
 
         //set bank point and bank name (if Mandiri Point is selected)
-        if (creditCardTransaction.getBankPointRedeemed() != 0.0f) {
-            paymentModel.setPointRedeemed(creditCardTransaction.getBankPointRedeemed());
-            if (creditCardTransaction.getBankName() != null && creditCardTransaction.getBankName().equalsIgnoreCase(BankType.MANDIRI)) {
-                paymentModel.setBank(creditCardTransaction.getBankName());
-            }
+        paymentModel.setPointRedeemed(creditCardTransaction.getBankPointRedeemed());
+        if (creditCardTransaction.getBankName() != null && creditCardTransaction.getBankName().equalsIgnoreCase(BankType.MANDIRI)) {
+            paymentModel.setBank(creditCardTransaction.getBankName());
         }
     }
 
@@ -436,7 +435,7 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
 
     public void startBankPointsPayment(float redeemedPoint, boolean isSaveCard) {
         creditCardTransaction.setBankPointRedeemed(redeemedPoint);
-        startNormalPayment(isSaveCard);
+        startNormalPayment(isSaveCard, true);
     }
 
     public boolean isCardBinInWhiteList(String cardBin) {

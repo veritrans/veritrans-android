@@ -15,6 +15,7 @@ public class CreditCardPaymentModel {
     private String maskedCardNumber;
     private String installment;
     private String bank;
+    private transient boolean isFromBankPoint;
     @SerializedName("point")
     private float pointRedeemed;
 
@@ -72,5 +73,13 @@ public class CreditCardPaymentModel {
 
     public void setBank(String bank) {
         this.bank = bank;
+    }
+
+    public boolean isFromBankPoint() {
+        return isFromBankPoint;
+    }
+
+    public void setFromBankPoint(boolean fromBankPoint) {
+        isFromBankPoint = fromBankPoint;
     }
 }

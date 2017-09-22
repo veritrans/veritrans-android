@@ -1187,7 +1187,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
     private void startCreditCardPayment() {
         showProgressLayout(getString(R.string.processing_payment));
-        presenter.startNormalPayment(checkboxSaveCard.isChecked());
+        presenter.startNormalPayment(checkboxSaveCard.isChecked(), false);
     }
 
     private void start3DSecurePage(String redirectUrl, int requestCode) {

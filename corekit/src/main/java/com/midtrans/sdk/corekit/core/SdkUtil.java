@@ -602,6 +602,10 @@ public class SdkUtil {
             paymentParams.setBank(model.getBank());
         }
 
+        //for custom type adapter in gson, omit field point only
+        // if the transaction is not from bank point page
+        paymentParams.setFromBankPoint(model.isFromBankPoint());
+
         return new CreditCardPaymentRequest(PaymentType.CREDIT_CARD, paymentParams, customerDetailRequest);
     }
 
