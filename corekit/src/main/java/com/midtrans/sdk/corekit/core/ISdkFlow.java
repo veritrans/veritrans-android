@@ -9,45 +9,45 @@ import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
  */
 public interface ISdkFlow {
 
-    void runUIFlow(Context context);
+    void runUIFlow(Context context, String snapToken);
 
     void runCreditCard(Context context, String snapToken);
 
     void runBankTransfer(Context context, String snapToken);
 
-    void runPermataBankTransfer(Context context);
+    void runPermataBankTransfer(Context context, String snapToken);
 
-    void runMandiriBankTransfer(Context context);
+    void runMandiriBankTransfer(Context context, String snapToken);
 
-    void runBniBankTransfer(Context context);
+    void runBniBankTransfer(Context context, String snapToken);
 
-    void runBCABankTransfer(Context context);
+    void runBCABankTransfer(Context context, String snapToken);
 
-    void runOtherBankTransfer(Context context);
+    void runOtherBankTransfer(Context context, String snapToken);
 
-    void runBCAKlikPay(Context context);
+    void runBCAKlikPay(Context context, String snapToken);
 
-    void runKlikBCA(Context context);
+    void runKlikBCA(Context context, String snapToken);
 
-    void runMandiriClickpay(Context context);
+    void runMandiriClickpay(Context context, String snapToken);
 
-    void runMandiriECash(Context context);
+    void runMandiriECash(Context context, String snapToken);
 
-    void runCIMBClicks(Context context);
+    void runCIMBClicks(Context context, String snapToken);
 
-    void runBRIEpay(Context context);
+    void runBRIEpay(Context context, String snapToken);
 
-    void runTelkomselCash(Context context);
+    void runTelkomselCash(Context context, String snapToken);
 
-    void runIndosatDompetku(Context context);
+    void runIndosatDompetku(Context context, String snapToken);
 
-    void runXlTunai(Context context);
+    void runXlTunai(Context context, String snapToken);
 
-    void runIndomaret(Context context);
+    void runIndomaret(Context context, String snapToken);
 
-    void runKioson(Context context);
+    void runKioson(Context context, String snapToken);
 
-    void runGci(Context context);
+    void runGci(Context context, String snapToken);
 
     void runCardRegistration(Context context, CardRegistrationCallback callback);
 }

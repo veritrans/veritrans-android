@@ -46,7 +46,7 @@ public class SdkUIFlowBuilder extends BaseSdkBuilder<SdkUIFlowBuilder> {
     }
 
     /**
-     * this Sdk builder has been deprecated, please use init() method instead
+     * This Sdk builder has been deprecated since version 1.10, please use init() method instead
      *
      * @param context
      * @param clientKey

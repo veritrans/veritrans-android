@@ -459,7 +459,11 @@ public class MidtransSDK {
         } else if (paymentMethod.equals(PaymentMethod.GIFT_CARD_INDONESIA)) {
             startGiftCardUIFlow(context, snapToken);
         } else {
-            startPaymentUiFlow(context);
+            if (TextUtils.isEmpty(snapToken)) {
+                startPaymentUiFlow(context);
+            } else {
+                startPaymentUiFlow(context, snapToken);
+            }
         }
     }
 

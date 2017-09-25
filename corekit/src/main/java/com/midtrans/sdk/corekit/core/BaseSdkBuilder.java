@@ -2,6 +2,7 @@ package com.midtrans.sdk.corekit.core;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
 import com.midtrans.sdk.corekit.core.themes.BaseColorTheme;
@@ -69,7 +70,7 @@ public abstract class BaseSdkBuilder<T> {
         }
 
         if (!enableBuiltInTokenStorage && TextUtils.isEmpty(merchantServerUrl)) {
-            String message = "Merchant base url cannot be null or empty. Please set your merchant base url to enable your own token storage";
+            String message = "Merchant base url cannot be null or empty (required) if you implement your own token storage. Please set your merchant base url to enable your own token storage";
             RuntimeException runtimeException = new RuntimeException(message);
             Logger.e(message, runtimeException);
             throw runtimeException;

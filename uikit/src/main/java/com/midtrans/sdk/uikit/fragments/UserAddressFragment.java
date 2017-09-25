@@ -1,6 +1,5 @@
 package com.midtrans.sdk.uikit.fragments;
 
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,7 +10,6 @@ import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.SwitchCompat;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +26,6 @@ import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.UserAddress;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.activities.PaymentMethodsActivity;
 import com.midtrans.sdk.uikit.activities.UserDetailsActivity;
 import com.midtrans.sdk.uikit.adapters.ListCountryAdapter;
 import com.midtrans.sdk.uikit.models.CountryCodeModel;
@@ -40,7 +37,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 public class UserAddressFragment extends Fragment {
-
+    private final String TAG = UserAddressFragment.class.getSimpleName();
     MidtransSDK midtransSDK;
     private TextInputLayout tilAddress;
     private TextInputLayout tilCity;
@@ -313,88 +310,78 @@ public class UserAddressFragment extends Fragment {
 
     private void validateAndSaveAddress() {
         SdkUIFlowUtil.hideKeyboard(getActivity());
-        UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
-        if (userDetail != null) Logger.i("userDetails:" + userDetail.getUserFullName());
 
-        ArrayList<UserAddress> userAddresses = new ArrayList<>();
-        String billingAddress = etAddress.getText().toString().trim();
-        String billingCity = etCity.getText().toString().trim();
-        String zipcode = etZipCode.getText().toString().trim();
-        String country = etCountry.getText().toString().trim();
-        String shippingAddress = etShippingAddress.getText().toString().trim();
-        String shippingCity = etShippingCity.getText().toString().trim();
-        String shippingZipcode = etShippingZipCode.getText().toString().trim();
-        String shippingCountry = etShippingCountry.getText().toString().trim();
+        try {
+            UserDetail userDetail = SdkUIFlowUtil.getSavedUserDetails(getContext());
 
-        if (!TextUtils.isEmpty(zipcode) && zipcode.length() < Constants.ZIPCODE_LENGTH) {
-            SdkUIFlowUtil.showToast(getActivity(), getString(R.string
-                    .validation_billingzipcode_invalid));
-            etZipCode.requestFocus();
-            return;
-        } else if (!TextUtils.isEmpty(country) && !isCountryCodeExist(country, true)) {
-            SdkUIFlowUtil.showToast(getActivity(), getString(R.string
-                    .validation_billingcountry_notexist));
-            etCountry.requestFocus();
-            return;
-        } else if (!cbShippingAddress.isChecked()) {
-            if (!TextUtils.isEmpty(shippingZipcode) && shippingZipcode.length() < Constants.ZIPCODE_LENGTH) {
+            if (userDetail != null) {
+                Logger.i(TAG, "userDetails:" + userDetail.getUserFullName());
+            }
+
+            ArrayList<UserAddress> userAddresses = new ArrayList<>();
+            String billingAddress = etAddress.getText().toString().trim();
+            String billingCity = etCity.getText().toString().trim();
+            String zipcode = etZipCode.getText().toString().trim();
+            String country = etCountry.getText().toString().trim();
+            String shippingAddress = etShippingAddress.getText().toString().trim();
+            String shippingCity = etShippingCity.getText().toString().trim();
+            String shippingZipcode = etShippingZipCode.getText().toString().trim();
+            String shippingCountry = etShippingCountry.getText().toString().trim();
+
+            if (!TextUtils.isEmpty(zipcode) && zipcode.length() < Constants.ZIPCODE_LENGTH) {
                 SdkUIFlowUtil.showToast(getActivity(), getString(R.string
-                        .validation_shippingzipcode_invalid));
-                etShippingZipCode.requestFocus();
+                        .validation_billingzipcode_invalid));
+                etZipCode.requestFocus();
                 return;
-            } else if (!TextUtils.isEmpty(shippingCountry) && !isCountryCodeExist(shippingCountry, false)) {
+            } else if (!TextUtils.isEmpty(country) && !isCountryCodeExist(country, true)) {
                 SdkUIFlowUtil.showToast(getActivity(), getString(R.string
                         .validation_billingcountry_notexist));
                 etCountry.requestFocus();
                 return;
+            } else if (!cbShippingAddress.isChecked()) {
+                if (!TextUtils.isEmpty(shippingZipcode) && shippingZipcode.length() < Constants.ZIPCODE_LENGTH) {
+                    SdkUIFlowUtil.showToast(getActivity(), getString(R.string
+                            .validation_shippingzipcode_invalid));
+                    etShippingZipCode.requestFocus();
+                    return;
+                } else if (!TextUtils.isEmpty(shippingCountry) && !isCountryCodeExist(shippingCountry, false)) {
+                    SdkUIFlowUtil.showToast(getActivity(), getString(R.string
+                            .validation_billingcountry_notexist));
+                    etCountry.requestFocus();
+                    return;
+                }
+
+                UserAddress shippingUserAddress = new UserAddress();
+                shippingUserAddress.setAddress(shippingAddress);
+                shippingUserAddress.setCity(shippingCity);
+                shippingUserAddress.setCountry(shippingCountryCodeSelected);
+                shippingUserAddress.setZipcode(shippingZipcode);
+                shippingUserAddress.setAddressType(Constants.ADDRESS_TYPE_SHIPPING);
+                userAddresses.add(shippingUserAddress);
             }
 
-            UserAddress shippingUserAddress = new UserAddress();
-            shippingUserAddress.setAddress(shippingAddress);
-            shippingUserAddress.setCity(shippingCity);
-            shippingUserAddress.setCountry(shippingCountryCodeSelected);
-            shippingUserAddress.setZipcode(shippingZipcode);
-            shippingUserAddress.setAddressType(Constants.ADDRESS_TYPE_SHIPPING);
-            userAddresses.add(shippingUserAddress);
-        }
-        UserAddress billingUserAddress = new UserAddress();
-        billingUserAddress.setAddress(billingAddress);
-        billingUserAddress.setCity(billingCity);
-        billingUserAddress.setCountry(billingCountryCodeSelected);
-        billingUserAddress.setZipcode(zipcode);
-        if (cbShippingAddress.isChecked()) {
-            billingUserAddress.setAddressType(Constants.ADDRESS_TYPE_BOTH);
-        } else {
-            billingUserAddress.setAddressType(Constants.ADDRESS_TYPE_BILLING);
-        }
-        userAddresses.add(billingUserAddress);
+            UserAddress billingUserAddress = new UserAddress();
+            billingUserAddress.setAddress(billingAddress);
+            billingUserAddress.setCity(billingCity);
+            billingUserAddress.setCountry(billingCountryCodeSelected);
+            billingUserAddress.setZipcode(zipcode);
+            if (cbShippingAddress.isChecked()) {
+                billingUserAddress.setAddressType(Constants.ADDRESS_TYPE_BOTH);
+            } else {
+                billingUserAddress.setAddressType(Constants.ADDRESS_TYPE_BILLING);
+            }
+            userAddresses.add(billingUserAddress);
 
-        try {
             if (userDetail == null) {
                 userDetail = new UserDetail();
             }
+
             userDetail.setUserAddresses(userAddresses);
             LocalDataHandler.saveObject(getString(R.string.user_details), userDetail);
-            Intent selectPaymentIntent = new Intent(getActivity(), PaymentMethodsActivity.class);
-            if (getActivity().getIntent().getBooleanExtra(UserDetailsActivity.CREDIT_CARD_ONLY, false)) {
-                selectPaymentIntent.putExtra(UserDetailsActivity.CREDIT_CARD_ONLY, true);
-            } else if (getActivity().getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_ONLY, false)) {
-                selectPaymentIntent.putExtra(UserDetailsActivity.BANK_TRANSFER_ONLY, true);
-            }
-            startActivity(selectPaymentIntent);
-            if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
-                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
-                getActivity().overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
-            }
-            boolean isEmailNull = userDetail.getEmail() == null;
-            boolean isFullNull = userDetail.getUserFullName() == null;
-            boolean isPhoneNull = userDetail.getPhoneNumber() == null;
-            Log.d("xdetail", "detail>email:" + userDetail.getEmail() + " | " + isEmailNull);
-            Log.d("xdetail", "detail>phone:" + userDetail.getPhoneNumber() + " | " + isPhoneNull);
-            Log.d("xdetail", "detail>name:" + userDetail.getUserFullName() + " | " + isFullNull);
-            getActivity().finish();
-        } catch (Exception e) {
-            e.printStackTrace();
+
+            ((UserDetailsActivity) getActivity()).showPaymentpage();
+        } catch (RuntimeException e) {
+            Logger.e(TAG, "validateAndSaveAddress:" + e.getMessage());
         }
 
     }
