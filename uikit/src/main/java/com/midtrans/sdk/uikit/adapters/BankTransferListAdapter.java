@@ -20,6 +20,7 @@ import java.util.List;
 /**
  * @author rakawm
  */
+@Deprecated
 public class BankTransferListAdapter extends RecyclerView.Adapter<BankTransferListAdapter.BankTransferViewHolder> {
     private static final String TAG = BankTransferListAdapter.class.getSimpleName();
 
