@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
@@ -20,6 +21,8 @@ import com.midtrans.sdk.uikit.widgets.FancyButton;
 public class DanamonOnlineActivity extends BasePaymentActivity implements BasePaymentView {
 
     private FancyButton buttonPrimary;
+    private FancyButton buttonInstruction;
+    private LinearLayout containerInstruction;
 
     private DanamonOnlinePresenter presenter;
 
@@ -34,6 +37,7 @@ public class DanamonOnlineActivity extends BasePaymentActivity implements BasePa
 
     private void bindData() {
         setPageTitle(getString(R.string.payment_method_danamon_online));
+        buttonPrimary.setText(getString(R.string.confirm_payment));
     }
 
     private void initActionButton() {
@@ -44,6 +48,23 @@ public class DanamonOnlineActivity extends BasePaymentActivity implements BasePa
                 presenter.startPayment();
             }
         });
+
+        buttonInstruction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showHideInstruction();
+            }
+        });
+    }
+
+    private void showHideInstruction() {
+        if (containerInstruction.getVisibility() == View.VISIBLE) {
+            containerInstruction.setVisibility(View.GONE);
+            buttonInstruction.setText(getString(R.string.show_instruction));
+        } else {
+            containerInstruction.setVisibility(View.VISIBLE);
+            buttonInstruction.setText(getString(R.string.hide_instruction));
+        }
     }
 
     private void initProperties() {
@@ -54,11 +75,15 @@ public class DanamonOnlineActivity extends BasePaymentActivity implements BasePa
     @Override
     public void bindViews() {
         buttonPrimary = (FancyButton) findViewById(R.id.button_primary);
+        buttonInstruction = (FancyButton) findViewById(R.id.button_toggle_instruction);
+        containerInstruction = (LinearLayout) findViewById(R.id.container_instruction);
     }
 
     @Override
     public void initTheme() {
         setPrimaryBackgroundColor(buttonPrimary);
+        setBorderColor(buttonInstruction);
+        setTextColor(buttonInstruction);
     }
 
     @Override

@@ -835,5 +835,7 @@
     <string name="danamon_online_instruction_step3">Payment confirmation will be displayed and payment is completed. Keep the merchant reference and payment reference no. and klik <b>Next</b> to return to merchant website.</string>
     <string name="status_message_userid_invalid">User ID invalid</string>
     <string name="details_message_userid_invalid">User ID format is invalid</string>
+    <string name="danamon_online_description_1">Danamon Online Banking must be completed through Danamon\'s website.</string>
+    <string name="danamon_online_description_2">Please make sure you have a User ID for Danamon Online Banking before going through the payment.</string>
 
 </resources>
