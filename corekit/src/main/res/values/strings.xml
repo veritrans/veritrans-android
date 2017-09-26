@@ -371,6 +371,7 @@
     <string name="enabled_payment_category_cstore">cstore</string>
     <string name="saved_card_one_click">one_click</string>
     <string name="saved_card_two_click">two_clicks</string>
+    <string name="error_message_empty_merchant_url">Merchant base url is empty. Please set merchant base url on SDK</string>
 
 
 </resources>

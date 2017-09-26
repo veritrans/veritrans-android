@@ -11,10 +11,11 @@ public class TransactionResult {
     public static final String STATUS_INVALID = "invalid";
     public static final String STATUS_FAILED = "failed";
 
-    private  boolean transactionCanceled;
+    private boolean transactionCanceled;
     private TransactionResponse response;
     private String source;
     private String status;
+    private String statusMessage;
 
     public TransactionResult(TransactionResponse response) {
         setResponse(response);
@@ -32,6 +33,11 @@ public class TransactionResult {
 
     public TransactionResult(boolean transactionCanceled) {
         this.transactionCanceled = transactionCanceled;
+    }
+
+    public TransactionResult(String paymentStatus, String statusMessage) {
+        this.status = paymentStatus;
+        this.statusMessage = statusMessage;
     }
 
     public TransactionResponse getResponse() {
@@ -60,5 +66,9 @@ public class TransactionResult {
 
     public boolean isTransactionCanceled() {
         return transactionCanceled;
+    }
+
+    public String getStatusMessage() {
+        return statusMessage;
     }
 }

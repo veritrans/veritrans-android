@@ -151,7 +151,7 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
             Toast.makeText(this, "Transaction Canceled", Toast.LENGTH_LONG).show();
         } else {
             if (result.getStatus().equalsIgnoreCase(TransactionResult.STATUS_INVALID)) {
-                Toast.makeText(this, "Transaction Invalid", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Transaction Invalid : " + result.getStatusMessage(), Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(this, "Transaction Finished with failure.", Toast.LENGTH_LONG).show();
             }

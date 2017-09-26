@@ -10,7 +10,9 @@ import com.midtrans.sdk.corekit.SDKConfigTest;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -38,6 +40,8 @@ public class SDKCoreFlowBuilderTest {
     @InjectMocks
     private SdkCoreFlowBuilder sdkCoreFlowBuilder;
 
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
     @Before
     public void setup() {
         PowerMockito.mockStatic(Log.class);
@@ -51,8 +55,8 @@ public class SDKCoreFlowBuilderTest {
 
     @Test
     public void isValidDataFailedTest() {
-        Assert.assertTrue(sdkCoreFlowBuilder.isValidData());
+        thrown.expect(RuntimeException.class);
         sdkCoreFlowBuilder = SdkCoreFlowBuilder.init(context, null, SDKConfigTest.MERCHANT_BASE_URL);
-        Assert.assertFalse(sdkCoreFlowBuilder.isValidData());
+        sdkCoreFlowBuilder.isValidData();
     }
 }

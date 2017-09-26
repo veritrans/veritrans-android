@@ -848,7 +848,7 @@ public class MidtransAndroidSDKTest {
     @Test
     public void startPaymentUiFLow_whenUsingCreditCard() throws Exception {
         midtransSDKSSpy.startPaymentUiFlow(contextMock, PaymentMethod.CREDIT_CARD);
-        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startCreditCardUIFlow", contextMock);
+        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startCreditCardUIFlow", contextMock, null);
     }
 
     /**
@@ -858,7 +858,7 @@ public class MidtransAndroidSDKTest {
     @Test
     public void startPaymentUiFLow_whenUsingBankTranfer() throws Exception {
         midtransSDKSSpy.startPaymentUiFlow(contextMock, PaymentMethod.BANK_TRANSFER);
-        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startBankTransferUIFlow", contextMock);
+        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startBankTransferUIFlow", contextMock, null);
     }
 
     /**
@@ -868,7 +868,7 @@ public class MidtransAndroidSDKTest {
     @Test
     public void startPaymentUiFLow_whenUsingBcaBankTranfer() throws Exception {
         midtransSDKSSpy.startPaymentUiFlow(contextMock, PaymentMethod.BANK_TRANSFER_BCA);
-        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startBCABankTransferUIFlow", contextMock);
+        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startBCABankTransferUIFlow", contextMock, null);
     }
 
     /**
@@ -878,7 +878,7 @@ public class MidtransAndroidSDKTest {
     @Test
     public void startPaymentUiFLow_whenUsingPermataBankTranfer() throws Exception {
         midtransSDKSSpy.startPaymentUiFlow(contextMock, PaymentMethod.BANK_TRANSFER_PERMATA);
-        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startPermataBankTransferUIFlow", contextMock);
+        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startPermataBankTransferUIFlow", contextMock, null);
     }
 
     /**
@@ -888,7 +888,7 @@ public class MidtransAndroidSDKTest {
     @Test
     public void startPaymentUiFLow_whenUsingMandiriBankTranfer() throws Exception {
         midtransSDKSSpy.startPaymentUiFlow(contextMock, PaymentMethod.BANK_TRANSFER_MANDIRI);
-        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startMandiriBankTransferUIFlow", contextMock);
+        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startMandiriBankTransferUIFlow", contextMock, null);
     }
 
     /**
@@ -898,7 +898,7 @@ public class MidtransAndroidSDKTest {
     @Test
     public void startPaymentUiFLow_whenUsingBniBankTranfer() throws Exception {
         midtransSDKSSpy.startPaymentUiFlow(contextMock, PaymentMethod.BANK_TRANSFER_BNI);
-        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startBniBankTransferUIFlow", contextMock);
+        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startBniBankTransferUIFlow", contextMock, null);
     }
 
     /**
@@ -908,7 +908,7 @@ public class MidtransAndroidSDKTest {
     @Test
     public void startPaymentUiFLow_whenUsingOtherBankTranfer() throws Exception {
         midtransSDKSSpy.startPaymentUiFlow(contextMock, PaymentMethod.BANK_TRANSFER_OTHER);
-        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startOtherBankTransferUIFlow", contextMock);
+        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startOtherBankTransferUIFlow", contextMock, null);
     }
 
     /**
@@ -918,7 +918,7 @@ public class MidtransAndroidSDKTest {
     @Test
     public void startPaymentUiFLow_whenUsingBcaKlikpay() throws Exception {
         midtransSDKSSpy.startPaymentUiFlow(contextMock, PaymentMethod.BANK_TRANSFER_PERMATA);
-        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startBCAKlikPayUIFlow", contextMock);
+        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startBCAKlikPayUIFlow", contextMock, null);
     }
 
     /**
@@ -928,7 +928,7 @@ public class MidtransAndroidSDKTest {
     @Test
     public void startPaymentUiFLow_whenUsingKlikBCA() throws Exception {
         midtransSDKSSpy.startPaymentUiFlow(contextMock, PaymentMethod.KLIKBCA);
-        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startKlikBCAUIFlow", contextMock);
+        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startKlikBCAUIFlow", contextMock, null);
     }
 
     /**
@@ -938,7 +938,7 @@ public class MidtransAndroidSDKTest {
     @Test
     public void startPaymentUiFLow_whenMandiriClickPay() throws Exception {
         midtransSDKSSpy.startPaymentUiFlow(contextMock, PaymentMethod.MANDIRI_CLICKPAY);
-        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startMandiriClickpayUIFlow", contextMock);
+        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startMandiriClickpayUIFlow", contextMock, null);
     }
 
     /**
@@ -948,7 +948,7 @@ public class MidtransAndroidSDKTest {
     @Test
     public void startPaymentUiFLow_whenUsingMandirEcash() throws Exception {
         midtransSDKSSpy.startPaymentUiFlow(contextMock, PaymentMethod.MANDIRI_ECASH);
-        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startMandiriECashUIFlow", contextMock);
+        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startMandiriECashUIFlow", contextMock, null);
     }
 
     /**
@@ -958,7 +958,7 @@ public class MidtransAndroidSDKTest {
     @Test
     public void startPaymentUiFLow_whenUsingBriEpay() throws Exception {
         midtransSDKSSpy.startPaymentUiFlow(contextMock, PaymentMethod.EPAY_BRI);
-        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startBRIEpayUIFlow", contextMock);
+        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startBRIEpayUIFlow", contextMock, null);
     }
 
     /**
@@ -968,7 +968,7 @@ public class MidtransAndroidSDKTest {
     @Test
     public void startPaymentUiFLow_whenCimbClicks() throws Exception {
         midtransSDKSSpy.startPaymentUiFlow(contextMock, PaymentMethod.CIMB_CLICKS);
-        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startCIMBClicksUIFlow", contextMock);
+        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startCIMBClicksUIFlow", contextMock, null);
     }
 
     /**
@@ -978,7 +978,7 @@ public class MidtransAndroidSDKTest {
     @Test
     public void startPaymentUiFLow_whenUsingTCash() throws Exception {
         midtransSDKSSpy.startPaymentUiFlow(contextMock, PaymentMethod.TELKOMSEL_CASH);
-        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startTelkomselCashUIFlow", contextMock);
+        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startTelkomselCashUIFlow", contextMock, null);
     }
 
     /**
@@ -988,7 +988,7 @@ public class MidtransAndroidSDKTest {
     @Test
     public void startPaymentUiFLow_whenUsingIndosatDompetku() throws Exception {
         midtransSDKSSpy.startPaymentUiFlow(contextMock, PaymentMethod.INDOSAT_DOMPETKU);
-        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startIndosatDompetkuUIFlow", contextMock);
+        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startIndosatDompetkuUIFlow", contextMock, null);
     }
 
     /**
@@ -998,7 +998,7 @@ public class MidtransAndroidSDKTest {
     @Test
     public void startPaymentUiFLow_whenUsingXlTunai() throws Exception {
         midtransSDKSSpy.startPaymentUiFlow(contextMock, PaymentMethod.XL_TUNAI);
-        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startXlTunaiUIFlow", contextMock);
+        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startXlTunaiUIFlow", contextMock, null);
     }
 
     /**
@@ -1008,7 +1008,7 @@ public class MidtransAndroidSDKTest {
     @Test
     public void startPaymentUiFLow_whenUsingIndomaret() throws Exception {
         midtransSDKSSpy.startPaymentUiFlow(contextMock, PaymentMethod.INDOMARET);
-        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startIndomaretUIFlow", contextMock);
+        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startIndomaretUIFlow", contextMock, null);
     }
 
     /**
@@ -1018,7 +1018,7 @@ public class MidtransAndroidSDKTest {
     @Test
     public void startPaymentUiFLow_whenUsingKioson() throws Exception {
         midtransSDKSSpy.startPaymentUiFlow(contextMock, PaymentMethod.KIOSON);
-        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startKiosonUIFlow", contextMock);
+        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startKiosonUIFlow", contextMock, null);
     }
 
     /**
@@ -1028,7 +1028,7 @@ public class MidtransAndroidSDKTest {
     @Test
     public void startPaymentUiFLow_whenUsingGci() throws Exception {
         midtransSDKSSpy.startPaymentUiFlow(contextMock, PaymentMethod.GIFT_CARD_INDONESIA);
-        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startGiftCardUIFlow", contextMock);
+        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startGiftCardUIFlow", contextMock, null);
     }
 
     /**
@@ -1040,15 +1040,15 @@ public class MidtransAndroidSDKTest {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
         midtransSDKSSpy.uiflow = uiflowMock;
-        Whitebox.invokeMethod(midtransSDKSSpy, "startBankTransferUIFlow", contextMock);
-        Mockito.verify(midtransSDKSSpy.uiflow).runBankTransfer(contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startBankTransferUIFlow", contextMock, snapTOken);
+        Mockito.verify(midtransSDKSSpy.uiflow).runBankTransfer(contextMock, snapTOken);
     }
 
 
     @Test
     public void startBankTransferUIFlow_whenTransactionRequestNull() throws Exception {
         midtransSDKSSpy.setTransactionRequest(null);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startBankTransferUIFlow", contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startBankTransferUIFlow", contextMock, snapTOken);
         verifyStatic(Mockito.times(2));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1057,7 +1057,7 @@ public class MidtransAndroidSDKTest {
     public void startBankTransferUIFlow_whenSdkIsrunning() throws Exception {
         when(midtransSDKSSpy.isRunning()).thenReturn(true);
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startBankTransferUIFlow", contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startBankTransferUIFlow", contextMock, snapTOken);
         verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1072,15 +1072,15 @@ public class MidtransAndroidSDKTest {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
         midtransSDKSSpy.uiflow = uiflowMock;
-        Whitebox.invokeMethod(midtransSDKSSpy, "startPermataBankTransferUIFlow", contextMock);
-        Mockito.verify(midtransSDKSSpy.uiflow).runPermataBankTransfer(contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startPermataBankTransferUIFlow", contextMock, snapTOken);
+        Mockito.verify(midtransSDKSSpy.uiflow).runPermataBankTransfer(contextMock, snapTOken);
     }
 
 
     @Test
     public void startPermataBankTransferUIFlow_whenTransactionRequestNull() throws Exception {
         midtransSDKSSpy.setTransactionRequest(null);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startPermataBankTransferUIFlow", contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startPermataBankTransferUIFlow", contextMock, snapTOken);
         verifyStatic(Mockito.times(2));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1089,7 +1089,7 @@ public class MidtransAndroidSDKTest {
     public void startPermataBankTransferUIFlow_whenSdkIsrunning() throws Exception {
         when(midtransSDKSSpy.isRunning()).thenReturn(true);
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startPermataBankTransferUIFlow", contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startPermataBankTransferUIFlow", contextMock, snapTOken);
         verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1103,15 +1103,15 @@ public class MidtransAndroidSDKTest {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
         midtransSDKSSpy.uiflow = uiflowMock;
-        Whitebox.invokeMethod(midtransSDKSSpy, "startMandiriBankTransferUIFlow", contextMock);
-        Mockito.verify(midtransSDKSSpy.uiflow).runMandiriBankTransfer(contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startMandiriBankTransferUIFlow", contextMock, snapTOken);
+        Mockito.verify(midtransSDKSSpy.uiflow).runMandiriBankTransfer(contextMock, snapTOken);
     }
 
 
     @Test
     public void startMandiriBankTransferUIFlow_whenTransactionRequestNull() throws Exception {
         midtransSDKSSpy.setTransactionRequest(null);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startMandiriBankTransferUIFlow", contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startMandiriBankTransferUIFlow", contextMock, snapTOken);
         verifyStatic(Mockito.times(2));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1120,7 +1120,7 @@ public class MidtransAndroidSDKTest {
     public void startMandiriBankTransferUIFlow_whenSdkIsrunning() throws Exception {
         when(midtransSDKSSpy.isRunning()).thenReturn(true);
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startMandiriBankTransferUIFlow", contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startMandiriBankTransferUIFlow", contextMock, snapTOken);
         verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1134,15 +1134,15 @@ public class MidtransAndroidSDKTest {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
         midtransSDKSSpy.uiflow = uiflowMock;
-        Whitebox.invokeMethod(midtransSDKSSpy, "startBniBankTransferUIFlow", contextMock);
-        Mockito.verify(midtransSDKSSpy.uiflow).runBniBankTransfer(contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startBniBankTransferUIFlow", contextMock, snapTOken);
+        Mockito.verify(midtransSDKSSpy.uiflow).runBniBankTransfer(contextMock, snapTOken);
     }
 
 
     @Test
     public void startBniBankTransferUIFlow_whenTransactionRequestNull() throws Exception {
         midtransSDKSSpy.setTransactionRequest(null);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startBniBankTransferUIFlow", contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startBniBankTransferUIFlow", contextMock, snapTOken);
         verifyStatic(Mockito.times(2));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1151,7 +1151,7 @@ public class MidtransAndroidSDKTest {
     public void startBniBankTransferUIFlow_whenSdkIsrunning() throws Exception {
         when(midtransSDKSSpy.isRunning()).thenReturn(true);
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startBniBankTransferUIFlow", contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startBniBankTransferUIFlow", contextMock, snapTOken);
         verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1165,15 +1165,15 @@ public class MidtransAndroidSDKTest {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
         midtransSDKSSpy.uiflow = uiflowMock;
-        Whitebox.invokeMethod(midtransSDKSSpy, "startBCABankTransferUIFlow", contextMock);
-        Mockito.verify(midtransSDKSSpy.uiflow).runBCABankTransfer(contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startBCABankTransferUIFlow", contextMock, snapTOken);
+        Mockito.verify(midtransSDKSSpy.uiflow).runBCABankTransfer(contextMock, snapTOken);
     }
 
 
     @Test
     public void startBCABankTransferUIFlow_whenTransactionRequestNull() throws Exception {
         midtransSDKSSpy.setTransactionRequest(null);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startBCABankTransferUIFlow", contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startBCABankTransferUIFlow", contextMock, snapTOken);
         verifyStatic(Mockito.times(2));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1182,7 +1182,7 @@ public class MidtransAndroidSDKTest {
     public void startBCABankTransferUIFlow_whenSdkIsrunning() throws Exception {
         when(midtransSDKSSpy.isRunning()).thenReturn(true);
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startBCABankTransferUIFlow", contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startBCABankTransferUIFlow", contextMock, snapTOken);
         verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1196,15 +1196,15 @@ public class MidtransAndroidSDKTest {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
         midtransSDKSSpy.uiflow = uiflowMock;
-        Whitebox.invokeMethod(midtransSDKSSpy, "startBCAKlikPayUIFlow", contextMock);
-        Mockito.verify(midtransSDKSSpy.uiflow).runBCAKlikPay(contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startBCAKlikPayUIFlow", contextMock, snapTOken);
+        Mockito.verify(midtransSDKSSpy.uiflow).runBCAKlikPay(contextMock, snapTOken);
     }
 
 
     @Test
     public void startBCAKlikPayUIFlow_whenTransactionRequestNull() throws Exception {
         midtransSDKSSpy.setTransactionRequest(null);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startBCAKlikPayUIFlow", contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startBCAKlikPayUIFlow", contextMock, snapTOken);
         verifyStatic(Mockito.times(2));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1213,7 +1213,7 @@ public class MidtransAndroidSDKTest {
     public void startBCAKlikPayUIFlow_whenSdkIsrunning() throws Exception {
         when(midtransSDKSSpy.isRunning()).thenReturn(true);
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startBCAKlikPayUIFlow", contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startBCAKlikPayUIFlow", contextMock, snapTOken);
         verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1227,15 +1227,15 @@ public class MidtransAndroidSDKTest {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
         midtransSDKSSpy.uiflow = uiflowMock;
-        Whitebox.invokeMethod(midtransSDKSSpy, "startKlikBCAUIFlow", contextMock);
-        Mockito.verify(midtransSDKSSpy.uiflow).runKlikBCA(contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startKlikBCAUIFlow", contextMock, snapTOken);
+        Mockito.verify(midtransSDKSSpy.uiflow).runKlikBCA(contextMock, snapTOken);
     }
 
 
     @Test
     public void startKlikBCAUIFlow_whenTransactionRequestNull() throws Exception {
         midtransSDKSSpy.setTransactionRequest(null);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startKlikBCAUIFlow", contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startKlikBCAUIFlow", contextMock, snapTOken);
         verifyStatic(Mockito.times(2));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1244,7 +1244,7 @@ public class MidtransAndroidSDKTest {
     public void startKlikBCAUIFlow_whenSdkIsrunning() throws Exception {
         when(midtransSDKSSpy.isRunning()).thenReturn(true);
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startKlikBCAUIFlow", contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startKlikBCAUIFlow", contextMock, snapTOken);
         verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1258,15 +1258,15 @@ public class MidtransAndroidSDKTest {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
         midtransSDKSSpy.uiflow = uiflowMock;
-        Whitebox.invokeMethod(midtransSDKSSpy, "startMandiriClickpayUIFlow", contextMock);
-        Mockito.verify(midtransSDKSSpy.uiflow).runMandiriClickpay(contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startMandiriClickpayUIFlow", contextMock, snapTOken);
+        Mockito.verify(midtransSDKSSpy.uiflow).runMandiriClickpay(contextMock, snapTOken);
     }
 
 
     @Test
     public void startMandiriClickpayUIFlow_whenTransactionRequestNull() throws Exception {
         midtransSDKSSpy.setTransactionRequest(null);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startMandiriClickpayUIFlow", contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startMandiriClickpayUIFlow", contextMock, snapTOken);
         verifyStatic(Mockito.times(2));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1275,7 +1275,7 @@ public class MidtransAndroidSDKTest {
     public void startMandiriClickpayUIFlow_whenSdkIsrunning() throws Exception {
         when(midtransSDKSSpy.isRunning()).thenReturn(true);
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startMandiriClickpayUIFlow", contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startMandiriClickpayUIFlow", contextMock, snapTOken);
         verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1289,15 +1289,15 @@ public class MidtransAndroidSDKTest {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
         midtransSDKSSpy.uiflow = uiflowMock;
-        Whitebox.invokeMethod(midtransSDKSSpy, "startMandiriECashUIFlow", contextMock);
-        Mockito.verify(midtransSDKSSpy.uiflow).runMandiriECash(contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startMandiriECashUIFlow", contextMock, snapTOken);
+        Mockito.verify(midtransSDKSSpy.uiflow).runMandiriECash(contextMock, snapTOken);
     }
 
 
     @Test
     public void startMandiriECashUIFlow_whenTransactionRequestNull() throws Exception {
         midtransSDKSSpy.setTransactionRequest(null);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startMandiriECashUIFlow", contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startMandiriECashUIFlow", contextMock, snapTOken);
         verifyStatic(Mockito.times(2));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1306,7 +1306,7 @@ public class MidtransAndroidSDKTest {
     public void startMandiriECashUIFlow_whenSdkIsrunning() throws Exception {
         when(midtransSDKSSpy.isRunning()).thenReturn(true);
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startMandiriECashUIFlow", contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startMandiriECashUIFlow", contextMock, snapTOken);
         verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1320,15 +1320,15 @@ public class MidtransAndroidSDKTest {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
         midtransSDKSSpy.uiflow = uiflowMock;
-        Whitebox.invokeMethod(midtransSDKSSpy, "startCIMBClicksUIFlow", contextMock);
-        Mockito.verify(midtransSDKSSpy.uiflow).runCIMBClicks(contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startCIMBClicksUIFlow", contextMock, snapTOken);
+        Mockito.verify(midtransSDKSSpy.uiflow).runCIMBClicks(contextMock, snapTOken);
     }
 
 
     @Test
     public void startCIMBClicksUIFlow_whenTransactionRequestNull() throws Exception {
         midtransSDKSSpy.setTransactionRequest(null);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startCIMBClicksUIFlow", contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startCIMBClicksUIFlow", contextMock, snapTOken);
         verifyStatic(Mockito.times(2));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1337,7 +1337,7 @@ public class MidtransAndroidSDKTest {
     public void startCIMBClicksUIFlow_whenSdkIsrunning() throws Exception {
         when(midtransSDKSSpy.isRunning()).thenReturn(true);
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startCIMBClicksUIFlow", contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startCIMBClicksUIFlow", contextMock, snapTOken);
         verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1351,15 +1351,15 @@ public class MidtransAndroidSDKTest {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
         midtransSDKSSpy.uiflow = uiflowMock;
-        Whitebox.invokeMethod(midtransSDKSSpy, "startTelkomselCashUIFlow", contextMock);
-        Mockito.verify(midtransSDKSSpy.uiflow).runTelkomselCash(contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startTelkomselCashUIFlow", contextMock, snapTOken);
+        Mockito.verify(midtransSDKSSpy.uiflow).runTelkomselCash(contextMock, snapTOken);
     }
 
 
     @Test
     public void startTelkomselCashUIFlow_whenTransactionRequestNull() throws Exception {
         midtransSDKSSpy.setTransactionRequest(null);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startTelkomselCashUIFlow", contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startTelkomselCashUIFlow", contextMock, snapTOken);
         verifyStatic(Mockito.times(2));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1368,7 +1368,7 @@ public class MidtransAndroidSDKTest {
     public void startTelkomselCashUIFlow_whenSdkIsrunning() throws Exception {
         when(midtransSDKSSpy.isRunning()).thenReturn(true);
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startTelkomselCashUIFlow", contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startTelkomselCashUIFlow", contextMock, snapTOken);
         verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1382,15 +1382,15 @@ public class MidtransAndroidSDKTest {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
         midtransSDKSSpy.uiflow = uiflowMock;
-        Whitebox.invokeMethod(midtransSDKSSpy, "startIndosatDompetkuUIFlow", contextMock);
-        Mockito.verify(midtransSDKSSpy.uiflow).runIndosatDompetku(contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startIndosatDompetkuUIFlow", contextMock, snapTOken);
+        Mockito.verify(midtransSDKSSpy.uiflow).runIndosatDompetku(contextMock, snapTOken);
     }
 
 
     @Test
     public void startIndosatDompetkuUIFlow_whenTransactionRequestNull() throws Exception {
         midtransSDKSSpy.setTransactionRequest(null);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startIndosatDompetkuUIFlow", contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startIndosatDompetkuUIFlow", contextMock, snapTOken);
         verifyStatic(Mockito.times(2));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1399,7 +1399,7 @@ public class MidtransAndroidSDKTest {
     public void startIndosatDompetkuUIFlow_whenSdkIsrunning() throws Exception {
         when(midtransSDKSSpy.isRunning()).thenReturn(true);
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startIndosatDompetkuUIFlow", contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startIndosatDompetkuUIFlow", contextMock, snapTOken);
         verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1413,15 +1413,15 @@ public class MidtransAndroidSDKTest {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
         midtransSDKSSpy.uiflow = uiflowMock;
-        Whitebox.invokeMethod(midtransSDKSSpy, "startIndomaretUIFlow", contextMock);
-        Mockito.verify(midtransSDKSSpy.uiflow).runIndomaret(contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startIndomaretUIFlow", contextMock, snapTOken);
+        Mockito.verify(midtransSDKSSpy.uiflow).runIndomaret(contextMock, snapTOken);
     }
 
 
     @Test
     public void startIndomaretUIFlow_whenTransactionRequestNull() throws Exception {
         midtransSDKSSpy.setTransactionRequest(null);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startIndomaretUIFlow", contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startIndomaretUIFlow", contextMock, snapTOken);
         verifyStatic(Mockito.times(2));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1430,7 +1430,7 @@ public class MidtransAndroidSDKTest {
     public void startIndomaretUIFlow_whenSdkIsrunning() throws Exception {
         when(midtransSDKSSpy.isRunning()).thenReturn(true);
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startIndomaretUIFlow", contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startIndomaretUIFlow", contextMock, snapTOken);
         verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1444,15 +1444,15 @@ public class MidtransAndroidSDKTest {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
         midtransSDKSSpy.uiflow = uiflowMock;
-        Whitebox.invokeMethod(midtransSDKSSpy, "startKiosonUIFlow", contextMock);
-        Mockito.verify(midtransSDKSSpy.uiflow).runKioson(contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startKiosonUIFlow", contextMock, snapTOken);
+        Mockito.verify(midtransSDKSSpy.uiflow).runKioson(contextMock, snapTOken);
     }
 
 
     @Test
     public void startKiosonUIFlow_whenTransactionRequestNull() throws Exception {
         midtransSDKSSpy.setTransactionRequest(null);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startKiosonUIFlow", contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startKiosonUIFlow", contextMock, snapTOken);
         verifyStatic(Mockito.times(2));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1461,7 +1461,7 @@ public class MidtransAndroidSDKTest {
     public void startKiosonUIFlow_whenSdkIsrunning() throws Exception {
         when(midtransSDKSSpy.isRunning()).thenReturn(true);
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startKiosonUIFlow", contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startKiosonUIFlow", contextMock, snapTOken);
         verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1475,15 +1475,15 @@ public class MidtransAndroidSDKTest {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
         midtransSDKSSpy.uiflow = uiflowMock;
-        Whitebox.invokeMethod(midtransSDKSSpy, "startXlTunaiUIFlow", contextMock);
-        Mockito.verify(midtransSDKSSpy.uiflow).runXlTunai(contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startXlTunaiUIFlow", contextMock, snapTOken);
+        Mockito.verify(midtransSDKSSpy.uiflow).runXlTunai(contextMock, snapTOken);
     }
 
 
     @Test
     public void startXlTunaiUIFlow_whenTransactionRequestNull() throws Exception {
         midtransSDKSSpy.setTransactionRequest(null);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startXlTunaiUIFlow", contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startXlTunaiUIFlow", contextMock, snapTOken);
         verifyStatic(Mockito.times(2));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1492,7 +1492,7 @@ public class MidtransAndroidSDKTest {
     public void startXlTunaiUIFlow_whenSdkIsrunning() throws Exception {
         when(midtransSDKSSpy.isRunning()).thenReturn(true);
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startXlTunaiUIFlow", contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startXlTunaiUIFlow", contextMock, snapTOken);
         verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1506,15 +1506,15 @@ public class MidtransAndroidSDKTest {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
         midtransSDKSSpy.uiflow = uiflowMock;
-        Whitebox.invokeMethod(midtransSDKSSpy, "startGiftCardUIFlow", contextMock);
-        Mockito.verify(midtransSDKSSpy.uiflow).runGci(contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startGiftCardUIFlow", contextMock, snapTOken);
+        Mockito.verify(midtransSDKSSpy.uiflow).runGci(contextMock, snapTOken);
     }
 
 
     @Test
     public void startGiftCardUIFlow_whenTransactionRequestNull() throws Exception {
         midtransSDKSSpy.setTransactionRequest(null);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startGiftCardUIFlow", contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startGiftCardUIFlow", contextMock, snapTOken);
         verifyStatic(Mockito.times(2));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1523,7 +1523,7 @@ public class MidtransAndroidSDKTest {
     public void startGiftCardUIFlow_whenSdkIsrunning() throws Exception {
         when(midtransSDKSSpy.isRunning()).thenReturn(true);
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startGiftCardUIFlow", contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startGiftCardUIFlow", contextMock, snapTOken);
         verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1537,15 +1537,15 @@ public class MidtransAndroidSDKTest {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
         midtransSDKSSpy.uiflow = uiflowMock;
-        Whitebox.invokeMethod(midtransSDKSSpy, "startBRIEpayUIFlow", contextMock);
-        Mockito.verify(midtransSDKSSpy.uiflow).runBRIEpay(contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startBRIEpayUIFlow", contextMock, snapTOken);
+        Mockito.verify(midtransSDKSSpy.uiflow).runBRIEpay(contextMock, snapTOken);
     }
 
 
     @Test
     public void startBRIEpayUIFlow_whenTransactionRequestNull() throws Exception {
         midtransSDKSSpy.setTransactionRequest(null);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startBRIEpayUIFlow", contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startBRIEpayUIFlow", contextMock, snapTOken);
         verifyStatic(Mockito.times(2));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1554,7 +1554,7 @@ public class MidtransAndroidSDKTest {
     public void startBRIEpayUIFlow_whenSdkIsrunning() throws Exception {
         when(midtransSDKSSpy.isRunning()).thenReturn(true);
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startBRIEpayUIFlow", contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startBRIEpayUIFlow", contextMock, snapTOken);
         verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1568,15 +1568,15 @@ public class MidtransAndroidSDKTest {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
         midtransSDKSSpy.uiflow = uiflowMock;
-        Whitebox.invokeMethod(midtransSDKSSpy, "startOtherBankTransferUIFlow", contextMock);
-        Mockito.verify(midtransSDKSSpy.uiflow).runOtherBankTransfer(contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startOtherBankTransferUIFlow", contextMock, snapTOken);
+        Mockito.verify(midtransSDKSSpy.uiflow).runOtherBankTransfer(contextMock, snapTOken);
     }
 
 
     @Test
     public void startOtherBankTransferUIFlow_whenTransactionRequestNull() throws Exception {
         midtransSDKSSpy.setTransactionRequest(null);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startOtherBankTransferUIFlow", contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startOtherBankTransferUIFlow", contextMock, snapTOken);
         verifyStatic(Mockito.times(2));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1585,7 +1585,7 @@ public class MidtransAndroidSDKTest {
     public void startOtherBankTransferUIFlow_whenSdkIsrunning() throws Exception {
         when(midtransSDKSSpy.isRunning()).thenReturn(true);
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startOtherBankTransferUIFlow", contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startOtherBankTransferUIFlow", contextMock, snapTOken);
         verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1599,15 +1599,15 @@ public class MidtransAndroidSDKTest {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
         midtransSDKSSpy.uiflow = uiflowMock;
-        Whitebox.invokeMethod(midtransSDKSSpy, "startCreditCardUIFlow", contextMock);
-        Mockito.verify(midtransSDKSSpy.uiflow).runCreditCard(contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startCreditCardUIFlow", contextMock, snapTOken);
+        Mockito.verify(midtransSDKSSpy.uiflow).runCreditCard(contextMock, snapTOken);
     }
 
 
     @Test
     public void startCreditCardUIFlow_whenTransactionRequestNull() throws Exception {
         midtransSDKSSpy.setTransactionRequest(null);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startCreditCardUIFlow", contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startCreditCardUIFlow", contextMock, snapTOken);
         verifyStatic(Mockito.times(2));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1616,7 +1616,7 @@ public class MidtransAndroidSDKTest {
     public void startCreditCardUIFlow_whenSdkIsrunning() throws Exception {
         when(midtransSDKSSpy.isRunning()).thenReturn(true);
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startCreditCardUIFlow", contextMock);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startCreditCardUIFlow", contextMock, snapTOken);
         verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }

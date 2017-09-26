@@ -1,10 +1,11 @@
 package com.midtrans.sdk.corekit.core;
 
+import android.text.TextUtils;
+
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.internal.bind.DateTypeAdapter;
-
 import com.jakewharton.retrofit.Ok3Client;
 import com.midtrans.sdk.corekit.models.snap.params.CreditCardPaymentParams;
 import com.midtrans.sdk.corekit.utilities.CustomTypeAdapter;
@@ -57,6 +58,10 @@ public class MidtransRestAdapter {
      * @return Merchant API implementation
      */
     public static MerchantRestAPI getMerchantApiClient(String merchantBaseURL, int timeout) {
+
+        if (TextUtils.isEmpty(merchantBaseURL)) {
+            return null;
+        }
 
         okhttp3.OkHttpClient.Builder okclient = new okhttp3.OkHttpClient.Builder();
         okclient.connectTimeout(timeout, TimeUnit.SECONDS);

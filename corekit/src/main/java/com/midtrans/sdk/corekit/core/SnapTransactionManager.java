@@ -85,6 +85,13 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param callback Checkout Callback
      */
     public void checkout(TokenRequestModel model, final CheckoutCallback callback) {
+        if (merchantPaymentAPI == null) {
+            String errorMessage = context.getString(R.string.error_message_empty_merchant_url);
+            callback.onError(new Throwable(errorMessage));
+            Logger.e(TAG, "checkout():" + errorMessage);
+            return;
+        }
+
         merchantPaymentAPI.checkout(model, new Callback<Token>() {
             @Override
             public void success(Token snapTokenDetailResponse, Response response) {
@@ -1088,9 +1095,9 @@ public class SnapTransactionManager extends BaseTransactionManager {
     /**
      * This method is used for payment using Danamon Online
      *
-     *@param snapToken SnapToken
+     * @param snapToken      SnapToken
      * @param paymentRequest DanamonOnlinePaymentRequest
-     * @param callback TransactionCallback
+     * @param callback       TransactionCallback
      */
     public void paymentUsingDanamonOnline(String snapToken, DanamonOnlinePaymentRequest paymentRequest, final TransactionCallback callback) {
         if (paymentRequest != null) {
@@ -1144,6 +1151,13 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param callback     save card callback
      */
     public void saveCards(String userId, ArrayList<SaveCardRequest> cardRequests, final SaveCardCallback callback) {
+        if (merchantPaymentAPI == null) {
+            String errorMessage = context.getString(R.string.error_message_empty_merchant_url);
+            callback.onError(new Throwable(errorMessage));
+            Logger.e(TAG, "saveCards():" + errorMessage);
+            return;
+        }
+
         if (cardRequests != null) {
             merchantPaymentAPI.saveCards(userId, cardRequests, new Callback<String>() {
                 @Override
@@ -1188,6 +1202,13 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param callback Transaction callback
      */
     public void getCards(String userId, final GetCardCallback callback) {
+        if (merchantPaymentAPI == null) {
+            String errorMessage = context.getString(R.string.error_message_empty_merchant_url);
+            callback.onError(new Throwable(errorMessage));
+            Logger.e(TAG, "getCards():" + errorMessage);
+            return;
+        }
+
         merchantPaymentAPI.getCards(userId, new Callback<ArrayList<SaveCardRequest>>() {
             @Override
             public void success(ArrayList<SaveCardRequest> cardsResponses, Response response) {
