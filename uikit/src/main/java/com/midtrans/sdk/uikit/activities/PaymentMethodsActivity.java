@@ -269,6 +269,14 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
 
         if (!isAlreadyUtilized()) {
+
+            String snapToken = getIntent().getStringExtra(UiKitConstants.EXTRA_SNAP_TOKEN);
+            if (!TextUtils.isEmpty(snapToken)) {
+                LocalDataHandler.saveString(Constants.AUTH_TOKEN, snapToken);
+                getPaymentOptions(snapToken);
+                return;
+            }
+
             midtransSDK.checkout(userDetail.getUserId(), new CheckoutCallback() {
                 @Override
                 public void onSuccess(Token token) {

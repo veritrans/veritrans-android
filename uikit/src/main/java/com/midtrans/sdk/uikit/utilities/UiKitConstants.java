@@ -67,4 +67,5 @@ public class UiKitConstants {
 
     public static final int RESULT_SDK_NOT_AVAILABLE = -999;
 
+    public static final String EXTRA_SNAP_TOKEN = "snap.token";
 }
