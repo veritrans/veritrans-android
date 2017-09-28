@@ -130,19 +130,19 @@ public class WidgetExampleActivity extends AppCompatActivity {
 
 
         String cardClickType;
-        if(clickType == ONECLICK){
+        if (clickType == ONECLICK) {
             cardClickType = getString(R.string.card_click_type_one_click);
             CreditCard creditCard = new CreditCard();
             creditCard.setSaveCard(true);
             creditCard.setSecure(true);
             transactionRequestNew.setCreditCard(creditCard);
 
-        }else if(clickType == TWOCLICK){
+        } else if (clickType == TWOCLICK) {
             cardClickType = getString(R.string.card_click_type_two_click);
             CreditCard creditCard = new CreditCard();
             creditCard.setSaveCard(true);
             transactionRequestNew.setCreditCard(creditCard);
-        } else{
+        } else {
             cardClickType = getString(R.string.card_click_type_none);
         }
 

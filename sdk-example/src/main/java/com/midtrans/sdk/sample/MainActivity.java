@@ -193,9 +193,9 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         if (normal.isChecked()) {
             cardClickType = getString(R.string.card_click_type_none);
             if (secure.isChecked()) {
-                creditCard.setSecure(true);
+                creditCard.setAuthentication(CreditCard.AUTHENTICATION_TYPE_3DS);
             } else {
-                creditCard.setSecure(false);
+                creditCard.setAuthentication(CreditCard.AUTHENTICATION_TYPE_NONE);
             }
             transactionRequestNew.setCreditCard(creditCard);
         } else if (twoClick.isChecked()) {
@@ -205,7 +205,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         } else {
             cardClickType = getString(R.string.card_click_type_one_click);
             creditCard.setSaveCard(true);
-            creditCard.setSecure(true);
+            creditCard.setAuthentication(CreditCard.AUTHENTICATION_TYPE_3DS);
             transactionRequestNew.setCreditCard(creditCard);
         }
 
