@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
-import com.midtrans.sdk.uikit.views.banktransfer.payment.BankTransferPaymentActivity;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 /**

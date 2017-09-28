@@ -1,14 +1,11 @@
 package com.midtrans.sdk.uikit.widgets;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.widget.ImageButton;
-
-import com.midtrans.sdk.uikit.R;
 
 /**
  * Created by ziahaqi on 11/28/16.

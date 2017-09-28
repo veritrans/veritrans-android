@@ -3,10 +3,6 @@ package com.midtrans.sdk.corekit.core;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
-
-import java.util.ArrayList;
-
 /**
  * Created by shivam on 10/20/15.
  * <p/>

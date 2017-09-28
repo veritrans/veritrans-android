@@ -790,10 +790,7 @@ public class CreditCardFlowActivity extends BaseActivity {
 
     public boolean checkIfCreditCardTokensAvailable() {
         List<SavedToken> savedTokens = MidtransSDK.getInstance().getCreditCard().getSavedTokens();
-        if (savedTokens != null && !savedTokens.isEmpty()) {
-            return true;
-        }
-        return false;
+        return savedTokens != null && !savedTokens.isEmpty();
     }
 
     private void clearBackStackFragments() {
