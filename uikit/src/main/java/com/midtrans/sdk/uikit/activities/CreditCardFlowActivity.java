@@ -58,6 +58,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Deprecated, please see {@link com.midtrans.sdk.uikit.views.creditcard.details.CreditCardDetailsActivity}
  * Created by rakawm on 3/7/17.
  */
 

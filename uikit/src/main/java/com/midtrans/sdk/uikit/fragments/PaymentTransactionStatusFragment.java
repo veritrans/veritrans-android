@@ -51,6 +51,7 @@ import java.util.regex.Pattern;
 
 /**
  * Created by shivam on 10/27/15.
+ * Deprecated, please use {@link com.midtrans.sdk.uikit.views.status.PaymentStatusActivity}
  */
 @Deprecated
 public class PaymentTransactionStatusFragment extends Fragment {

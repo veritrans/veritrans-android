@@ -406,7 +406,7 @@ public class SdkUIFlowUtil {
     /**
      * Sorting bank payment method by priority (Ascending)
      * <p>
-     * this method is deprecated, use sortBankTransferMethodsByPriority instead
+     * this method is deprecated, use {@link SdkUIFlowUtil#sortBankTransferMethodsByPriority(List)} instead
      */
     @Deprecated
     public static void sortBankPaymentMethodsByPriority(List<BankTransferModel> paymentMethodsModels) {

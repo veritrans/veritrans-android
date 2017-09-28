@@ -60,6 +60,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+
+/**
+ * Deprecated, please see {@link com.midtrans.sdk.uikit.views.creditcard.register.CardRegistrationActivity}
+ */
 @Deprecated
 public class AddCardDetailsFragment extends Fragment {
 

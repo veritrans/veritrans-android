@@ -143,6 +143,14 @@ public class PaymentMethods {
         return models;
     }
 
+    /**
+     * Get bank transfer model to be shown
+     * It's deprecated now, please use {@link PaymentMethods#createBankTransferModel(Context, String, String)}
+     * @param context context
+     * @param name bank name
+     * @param status whether it is up or down
+     * @return bank transfer model
+     */
     @Deprecated
     public static BankTransferModel getBankTransferModel(Context context, String name, String status) {
         if (name.equals(context.getString(R.string.payment_bca_va))) {
