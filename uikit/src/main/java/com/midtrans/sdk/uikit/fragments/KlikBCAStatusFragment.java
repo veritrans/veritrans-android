@@ -17,6 +17,7 @@ import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 /**
  * Created by rakawm on 2/15/17.
+ * Deprecated, please use {@link com.midtrans.sdk.uikit.views.bca_klikbca.status.KlikBcaStatusActivity}
  */
 
 @Deprecated

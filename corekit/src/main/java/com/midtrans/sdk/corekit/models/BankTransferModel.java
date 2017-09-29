@@ -3,8 +3,10 @@ package com.midtrans.sdk.corekit.models;
 /**
  * Model class to hold information about bank transfer provided by Veritrans.
  *
+ * Deprecated, please use {@link BankTransfer}
  * @author rakawm
  */
+@Deprecated
 public class BankTransferModel {
     private String bankName;
     private int image;

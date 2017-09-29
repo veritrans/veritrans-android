@@ -13,6 +13,7 @@ import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 
 /**
+ * Deprecated, please see {@link com.midtrans.sdk.uikit.views.bca_klikpay.BcaKlikPayPaymentActivity}
  * @author rakawm
  */
 @Deprecated

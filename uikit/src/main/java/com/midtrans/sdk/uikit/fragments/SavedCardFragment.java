@@ -29,6 +29,10 @@ import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * Deprecated, please use {@link com.midtrans.sdk.uikit.views.creditcard.saved.SavedCreditCardActivity}
+ */
 @Deprecated
 public class SavedCardFragment extends Fragment implements SavedCardsAdapter.SavedCardAdapterEventListener {
     private static final String PARAM_CARD_BINS = "param_card_bins";

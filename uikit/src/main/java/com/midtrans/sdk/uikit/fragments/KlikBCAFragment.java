@@ -17,7 +17,7 @@ import java.lang.reflect.Field;
 
 /**
  * Klik BCA payment fragment. Shows user ID text field and payment instructions.
- *
+ * Deprecated, please use {@link com.midtrans.sdk.uikit.views.bca_klikbca.payment.KlikBcaPaymentActivity}
  * @author rakawm
  */
 @Deprecated

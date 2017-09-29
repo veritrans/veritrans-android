@@ -23,6 +23,7 @@ import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 /**
+ * Deprecated, please use {@link com.midtrans.sdk.uikit.views.bca_klikbca.payment.KlikBcaPaymentActivity}
  * @author rakawm
  */
 @Deprecated

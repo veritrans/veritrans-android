@@ -9,7 +9,6 @@ import android.content.res.TypedArray;
 import android.support.annotation.IntDef;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 
 import com.midtrans.sdk.uikit.R;
 

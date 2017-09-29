@@ -38,6 +38,7 @@ import java.util.List;
 
 /**
  * Created by rakawm on 3/7/17.
+ * Deprecated, please see {@link com.midtrans.sdk.uikit.views.creditcard.saved.SavedCreditCardActivity}
  */
 @Deprecated
 public class SavedCardListFragment extends Fragment {
