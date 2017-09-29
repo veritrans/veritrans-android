@@ -204,7 +204,6 @@
     <string name="payment_method_indosat_dompetku">Indosat Dompetku</string>
     <string name="payment_method_indomaret">Indomaret</string>
 
-    <string name="btn_close">Tutup</string>
     <string name="payment_canceled">3D Secure authorization has been cancelled.</string>
     <string name="error_card_unavailable">Kartu Kredit Tidak Tidak <Ada></Ada></string>
     <string name="callback_unimplemented">Callback Belum diimplementasikan</string>

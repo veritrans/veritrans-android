@@ -358,7 +358,6 @@
     <string name="tab_prima">Prima</string>
 
     <string name="error_user_id">Please fill user ID.</string>
-    <string name="btn_close">Close</string>
     <string name="payment_canceled">Otorisasi 3D telah dibatalkan.</string>
     <string name="error_card_unavailable">Card is not available</string>
     <string name="callback_unimplemented">Callback Unimplemented</string>
