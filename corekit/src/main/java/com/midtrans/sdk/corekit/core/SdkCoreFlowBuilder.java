@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class SdkCoreFlowBuilder extends BaseSdkBuilder<SdkCoreFlowBuilder> {
 
     protected SdkCoreFlowBuilder() {
-
+        this.flow = CORE_FLOW;
     }
 
     /**
@@ -32,9 +32,26 @@ public class SdkCoreFlowBuilder extends BaseSdkBuilder<SdkCoreFlowBuilder> {
         this.flow = CORE_FLOW;
     }
 
+    /**
+     * this Sdk builder is deprecated, please use init() method instead
+     *
+     * @param context
+     * @param clientKey
+     * @param merchantServerUrl
+     * @return
+     */
+    @Deprecated
     public static SdkCoreFlowBuilder init(@NonNull Context context, @NonNull String clientKey, @NonNull String merchantServerUrl) {
         return new SdkCoreFlowBuilder(context, clientKey, merchantServerUrl);
     }
+
+    /**
+     * this new Sdk builder for corekit sdk
+     */
+    public static SdkCoreFlowBuilder init() {
+        return new SdkCoreFlowBuilder();
+    }
+
 
     /**
      * controls the log of sdk. Log can help you to debug application. set false to disable log of
@@ -48,8 +65,18 @@ public class SdkCoreFlowBuilder extends BaseSdkBuilder<SdkCoreFlowBuilder> {
         return this;
     }
 
-    public SdkCoreFlowBuilder setSelectedPaymentMethods(ArrayList<PaymentMethodsModel> selectedPaymentMethods) {
-        this.selectedPaymentMethods = selectedPaymentMethods;
+    public SdkCoreFlowBuilder setContext(Context context) {
+        this.context = context;
+        return this;
+    }
+
+    public SdkCoreFlowBuilder setClientKey(String clientKey) {
+        this.clientKey = clientKey;
+        return this;
+    }
+
+    public SdkCoreFlowBuilder setMerchantBaseUrl(String merchantBaseUrl) {
+        this.merchantServerUrl = merchantBaseUrl;
         return this;
     }
 }

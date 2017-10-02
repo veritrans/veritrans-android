@@ -1,5 +1,7 @@
 package com.midtrans.sdk.corekit.models.snap;
 
+import android.text.TextUtils;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -11,6 +13,11 @@ import java.util.List;
 public class CreditCard {
 
     public static final String MIGS = "migs";
+    public static final String AUTHENTICATION_TYPE_RBA = "rba";
+    public static final String AUTHENTICATION_TYPE_3DS = "3ds";
+    public static final String AUTHENTICATION_TYPE_NONE = "none";
+
+    @Deprecated
     public static final String RBA = "rba";
 
     @SerializedName("save_card")
@@ -58,7 +65,13 @@ public class CreditCard {
     }
 
     public void setSecure(boolean secure) {
-        this.secure = secure;
+        if (authentication == null ||
+                !(authentication.equals(AUTHENTICATION_TYPE_RBA)
+                        || authentication.equals(AUTHENTICATION_TYPE_3DS)
+                        || authentication.equals(AUTHENTICATION_TYPE_NONE))) {
+
+            this.secure = secure;
+        }
     }
 
     public String getTokenId() {
@@ -106,6 +119,14 @@ public class CreditCard {
     }
 
     public void setAuthentication(String authentication) {
+        if (!TextUtils.isEmpty(authentication)) {
+            if (authentication.equals(AUTHENTICATION_TYPE_RBA)
+                    || authentication.equals(AUTHENTICATION_TYPE_NONE)) {
+                this.secure = false;
+            } else if (authentication.equals(AUTHENTICATION_TYPE_3DS)) {
+                this.secure = true;
+            }
+        }
         this.authentication = authentication;
     }
 }

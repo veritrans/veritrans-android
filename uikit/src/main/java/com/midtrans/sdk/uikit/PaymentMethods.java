@@ -51,6 +51,10 @@ public class PaymentMethods {
             return getMethodXLTunai(context, 13, status);
         } else if (name.equals(context.getString(R.string.payment_gci))) {
             return getMethodGCI(context, 14, status);
+        } else if (name.equals(context.getString(R.string.payment_gopay))) {
+            return getMethodGopay(context, 15, status);
+        } else if (name.equals(context.getString(R.string.payment_danamon_online))) {
+            return getDanamonOnline(context, 16, status);
         } else {
             return null;
         }
@@ -122,6 +126,14 @@ public class PaymentMethods {
         return new PaymentMethodsModel(context.getString(R.string.payment_method_gci), context.getString(R.string.payment_method_description_gci), R.drawable.ic_gci, Constants.PAYMENT_METHOD_NOT_SELECTED, priority, status);
     }
 
+    private static PaymentMethodsModel getMethodGopay(Context context, int priority, String status) {
+        return new PaymentMethodsModel(context.getString(R.string.payment_method_gopay), context.getString(R.string.payment_method_description_gopay), R.drawable.ic_gopay, Constants.PAYMENT_METHOD_NOT_SELECTED, priority, status);
+    }
+
+    private static PaymentMethodsModel getDanamonOnline(Context context, int priority, String status) {
+        return new PaymentMethodsModel(context.getString(R.string.payment_method_danamon_online), context.getString(R.string.payment_method_description_danamon_online), R.drawable.ic_danamon_online, Constants.PAYMENT_METHOD_NOT_SELECTED, priority, status);
+    }
+
     public static ArrayList<BankTransferModel> getBankTransferList(Context context) {
         ArrayList<BankTransferModel> models = new ArrayList<>();
         models.add(getBankTransferModel(context, context.getString(R.string.payment_bca_va), EnabledPayment.STATUS_DOWN));
@@ -162,6 +174,7 @@ public class PaymentMethods {
         paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_indomaret), context.getString(R.string.enabled_payment_category_cstore)));
         paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_telkomsel_cash), null));
         paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_xl_tunai), null));
+        paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_danamon_online), null));
         return paymentNameList;
     }
 
@@ -206,6 +219,8 @@ public class PaymentMethods {
                 enabledPayments.add(new EnabledPayment(context.getString(R.string.payment_mandiri_bill_payment), context.getString(R.string.payment_bank_transfer)));
             } else if (name.equals(context.getString(R.string.payment_bni_va))) {
                 enabledPayments.add(new EnabledPayment(context.getString(R.string.payment_bni_va), context.getString(R.string.payment_bank_transfer)));
+            } else if (name.equals(context.getString(R.string.payment_danamon_online))) {
+                enabledPayments.add(new EnabledPayment(context.getString(R.string.payment_danamon_online), null));
             }
         }
         return enabledPayments;

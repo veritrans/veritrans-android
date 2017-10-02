@@ -18,9 +18,8 @@ import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 
 public class BankTransferPaymentPresenter extends BasePaymentPresenter<BankTransferPaymentView> {
 
-    private TransactionResponse transactionResponse;
-
     public BankTransferPaymentPresenter(BankTransferPaymentView view) {
+        super();
         this.view = view;
     }
 
@@ -32,10 +31,6 @@ public class BankTransferPaymentPresenter extends BasePaymentPresenter<BankTrans
         return true;
     }
 
-    public TransactionResponse getTransactionResponse() {
-        return transactionResponse;
-    }
-
     public String getUserEmail() {
         String userEmail = "";
         UserDetail userDetail = LocalDataHandler.readObject(UiKitConstants.KEY_USER_DETAILS, UserDetail.class);
@@ -43,10 +38,6 @@ public class BankTransferPaymentPresenter extends BasePaymentPresenter<BankTrans
             userEmail = userDetail.getEmail();
         }
         return userEmail;
-    }
-
-    public void trackEvent(String eventName) {
-        MidtransSDK.getInstance().trackEvent(eventName);
     }
 
     public void startPayment(String bankType, String email) {

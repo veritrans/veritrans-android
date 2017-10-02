@@ -15,6 +15,7 @@ import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 /**
  * @author rakawm
  */
+@Deprecated
 public class BCAKlikPayInstructionFragment extends Fragment {
 
     private DefaultTextView textNotification;

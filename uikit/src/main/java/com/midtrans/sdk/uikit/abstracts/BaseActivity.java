@@ -35,9 +35,8 @@ import java.lang.reflect.Field;
  * Created by ziahaqi on 7/20/17.
  */
 
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity implements BaseView {
 
-    public static final int RESULT_NOT_AVAILABLE = 4;
     private static final String TAG = BaseActivity.class.getSimpleName();
 
 
@@ -63,8 +62,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private void checkSdkInstance() {
         if (MidtransSDK.getInstance() == null) {
-            setResult(RESULT_NOT_AVAILABLE);
-            finish();
+            onNullInstanceSdk();
         }
     }
 
@@ -116,25 +114,25 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    public void setBackgroundTintList(AppCompatEditText editText) {
+    public void setBackgroundTintList(AppCompatEditText editText) throws RuntimeException{
         if (secondaryColor != 0) {
             editText.setSupportBackgroundTintList(new ColorStateList(new int[][]{{0}}, new int[]{secondaryColor}));
         }
     }
 
-    public void setSecondaryBackgroundColor(View view) {
+    public void setSecondaryBackgroundColor(View view) throws RuntimeException{
         if (secondaryColor != 0 && view != null) {
             view.setBackgroundColor(secondaryColor);
         }
     }
 
-    protected void setPrimaryBackgroundColor(View view) {
+    protected void setPrimaryBackgroundColor(View view) throws RuntimeException{
         if (primaryColor != 0 && view != null) {
             view.setBackgroundColor(primaryColor);
         }
     }
 
-    public void setCheckboxStateColor(AppCompatCheckBox checkBox) {
+    public void setCheckboxStateColor(AppCompatCheckBox checkBox) throws RuntimeException{
         if (secondaryColor != 0) {
             int[][] states = new int[][]{
                     new int[]{-android.R.attr.state_checked},
@@ -149,7 +147,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    public void setTextColor(View view) {
+    public void setTextColor(View view) throws RuntimeException{
         if (primaryDarkColor != 0 && view != null) {
             if (view instanceof TextView) {
                 ((TextView) view).setTextColor(primaryDarkColor);
@@ -159,7 +157,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    public void setTextInputlayoutFilter(TextInputLayout textInputLayout) {
+    public void setTextInputlayoutFilter(TextInputLayout textInputLayout) throws RuntimeException{
         if (secondaryColor != 0) {
             try {
                 Field fDefaultTextColor = TextInputLayout.class.getDeclaredField("mDefaultTextColor");
@@ -176,7 +174,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    public void setIconColorFilter(FancyButton fancyButton) {
+    public void setIconColorFilter(FancyButton fancyButton) throws RuntimeException{
         if (primaryDarkColor != 0) {
             fancyButton.setIconColorFilter(primaryDarkColor);
         }
@@ -188,7 +186,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    public void setColorFilter(View view) {
+    public void setColorFilter(View view) throws RuntimeException{
         if (primaryDarkColor != 0 && view != null) {
             if (view instanceof ImageButton) {
                 ((ImageButton) view).setColorFilter(primaryDarkColor, PorterDuff.Mode.SRC_ATOP);
@@ -324,9 +322,15 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_NOT_AVAILABLE) {
+        if (resultCode == UiKitConstants.RESULT_SDK_NOT_AVAILABLE) {
             setResult(resultCode);
             finish();
         }
+    }
+
+    @Override
+    public void onNullInstanceSdk() {
+        setResult(UiKitConstants.RESULT_SDK_NOT_AVAILABLE);
+        finish();
     }
 }

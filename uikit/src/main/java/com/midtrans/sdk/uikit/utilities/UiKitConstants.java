@@ -17,6 +17,8 @@ public class UiKitConstants {
     public static final int INTENT_REQUEST_SCAN_CARD = 101;
     public static final int INTENT_CODE_PAYMENT_STATUS = 210;
     public static final int INTENT_CODE_PAYMENT = 108;
+    public static final int INTENT_VERIFICATION = 110;
+    public static final int INTENT_WEBVIEW_PAYMENT = 111;
 
 
     public static final String KEY_USER_DETAILS = "user_details";
@@ -50,6 +52,11 @@ public class UiKitConstants {
     // webview url callback pattern
     public static final String CALLBACK_PATTERN_RBA = "/token/rba/callback/";
     public static final String CALLBACK_PATTERN_3DS = "/token/callback/";
+    public static final String CALLBACK_DANAMON_ONLINE = "/callback?signature=";
+    public static final String CALLBACK_CIMB_CLICKS = "cimb-clicks/response";
+    public static final String CALLBACK_BRI_EPAY = "briPayment?tid=";
+    public static final String CALLBACK_MANDIRI_ECAH = "notify?id=";
+    public static final String CALLBACK_BCA_KLIKPAY = "?id=";
 
     public static final int MONTH_COUNT = 12;
 
@@ -57,4 +64,8 @@ public class UiKitConstants {
     public static final int ATM_BERSAMA = 0;
     public static final int PRIMA = 1;
     public static final int ALTO = 2;
+
+    public static final int RESULT_SDK_NOT_AVAILABLE = -999;
+
+    public static final String EXTRA_SNAP_TOKEN = "snap.token";
 }

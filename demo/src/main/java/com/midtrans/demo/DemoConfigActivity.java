@@ -2397,10 +2397,12 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     }
 
     private void initMidtransSDK() {
-        SdkUIFlowBuilder.init(this, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL, this)
+        SdkUIFlowBuilder.init()
+                .setContext(this)
+                .setMerchantBaseUrl(BuildConfig.BASE_URL)
+                .setClientKey(BuildConfig.CLIENT_KEY)
                 .setExternalScanner(new ScanCard())
                 .enableLog(true)
-                .useBuiltInTokenStorage(true)
                 .setDefaultText("fonts/SourceSansPro-Regular.ttf")
                 .setBoldText("fonts/SourceSansPro-Bold.ttf")
                 .setSemiBoldText("fonts/SourceSansPro-Semibold.ttf")
@@ -2510,9 +2512,9 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         if (normalSelection.isChecked()) {
             cardClickType = getString(R.string.card_click_type_none);
             if (secureEnabledSelection.isChecked()) {
-                creditCard.setSecure(true);
+                creditCard.setAuthentication(CreditCard.AUTHENTICATION_TYPE_3DS);
             } else {
-                creditCard.setSecure(false);
+                creditCard.setAuthentication(CreditCard.AUTHENTICATION_TYPE_NONE);
             }
             transactionRequestNew.setCreditCard(creditCard);
         } else if (twoClicksSelection.isChecked()) {
@@ -2522,7 +2524,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         } else {
             cardClickType = getString(R.string.card_click_type_one_click);
             creditCard.setSaveCard(true);
-            creditCard.setSecure(true);
+            creditCard.setAuthentication(CreditCard.AUTHENTICATION_TYPE_3DS);
             transactionRequestNew.setCreditCard(creditCard);
         }
 
@@ -2545,11 +2547,15 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         MidtransSDK.getInstance().setUIKitCustomSetting(uiKitCustomSetting);
 
         if (secureEnabledSelection.isChecked()) {
-//            creditCard.setSecure(true);
+            creditCard.setAuthentication(CreditCard.AUTHENTICATION_TYPE_3DS);
+
+            // this method being deprecated, please use creditCard.setAuthentication() method
             transactionRequestNew.setCardPaymentInfo(cardClickType, true);
         } else {
+            creditCard.setAuthentication(CreditCard.AUTHENTICATION_TYPE_NONE);
+
+            // this method being deprecated, please use creditCard.setAuthentication() method
             transactionRequestNew.setCardPaymentInfo(cardClickType, false);
-//            creditCard.setSecure(false);
         }
 
         if (paymentChannelsSelectedSelection.isChecked()) {
@@ -2603,8 +2609,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         // if rba activated
         if (secureRbaSelection.isChecked()) {
             userDetail.setEmail("secure_email_rba@example.com");
-            creditCard.setAuthentication(CreditCard.RBA);
-            creditCard.setSecure(false);
+            creditCard.setAuthentication(CreditCard.AUTHENTICATION_TYPE_RBA);
         }
 
         LocalDataHandler.saveObject(getString(R.string.user_details), userDetail);

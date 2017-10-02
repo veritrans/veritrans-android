@@ -498,6 +498,8 @@
     <string name="payment_method_description_indosat_dompetku">Bayar dengan Indosat Dompetku</string>
     <string name="payment_method_description_kioson">Bayar dari gerai Kioson</string>
     <string name="payment_method_description_gci">Bayar dengan Gift Card</string>
+    <string name="payment_method_description_gopay">Bayar dengan GO-PAY</string>
+    <string name="payment_method_description_danamon_online">Bayar dengan akun Danamon Online Banking anda</string>
 
     <string name="payment_bank_description_bca">Bayar dari ATM BCA atau internet banking</string>
     <string name="payment_bank_description_mandiri">Bayar dari ATM Mandiri atau internet banking</string>
@@ -621,5 +623,28 @@
     <string name="card_registration">Registrasi Kartu</string>
     <string name="error_utilized_orderid">Maaf, order id sudah digunakan</string>
     <string name="processing_card_registration">Proses registrasi kartu</string>
+    <string name="info_gopay_account">Pastikan nomor telpon anda <b>sudah teregistrasi dengan GO-JEK dan memiliki saldo GO-PAY yang cukup</b></string>
+    <string name="country_code">Kode negara</string>
+    <string name="hint_gopay_phone_number">Masukkan nomor telepon yang teregistrasi GO-PAY</string>
+    <string name="payment_continue">Lanjutkan</string>
+    <string name="validation_country_code_empty">Masukkan kode negara</string>
+    <string name="status_message_not_enabled">Metode pembayaran belum diaktifkan</string>
+    <string name="details_message_not_enabled">Maaf, metode pembayaran belum diaktifkan</string>
+    <string name="hint_gopay_verification_number">Masukkan kode verifikasi</string>
+    <string name="info_gopay_auth">Kami telah mengirim <b>sebuah kode verifikasi</b> via sms ke nomor yang telah teregistrasi di GO-PAY <b>%1$s</b></string>
+    <string name="verificaton_code_empty">Masukkan kode verifikasi</string>
+    <string name="verification_code">Kirim Ulang Kode Verifikasi</string>
+    <string name="resend_verification_code">Sedang mengirim ulang kode verifikasi</string>
+    <string name="resend_verification_code_success">Kode verifikasi berhasil dikirim</string>
+    <string name="resend_verification_code_failure">Gagal mengirim kode verifikasi</string>
+    <string name="danamon_online_instruction_step1">Masukkan User ID dan Password Danamon Online Banking Anda dan pilih sumber rekening untuk pembayaran Anda.</string>
+    <string name="danamon_online_instruction_step2">Cek rincian informasi transaksi Anda, masukkan Kode Token, lalu tekan <b>lanjut</b>.</string>
+    <string name="danamon_online_instruction_step3">Konfirmasi transaksi pembayaran akan muncul, pembayaran selesai. Simpan informasi referensi merchant dan referensi pembayaran, tekan <b>Lanjut</b> untuk kembali ke situs merchant.</string>
+    <string name="status_message_userid_invalid">ID pengguna tidak sah</string>
+    <string name="details_message_userid_invalid">Format ID pengguna tidak sah</string>
+    <string name="danamon_online_description_1">Pembayaran melalui Danamon Online Banking harus diselesaikan di website Danamon.</string>
+    <string name="danamon_online_description_2">Pastikan Anda telah memiliki User ID Danamon Online Banking sebelum melakukan pembayaran.</string>
+    <string name="message_sdk_invalid">client_key  dan context tidak boleh kosong. Silakan mendefinisikan client key dan context ke SDK</string>
+    <string name="message_invalid_merchant_url">Merchant base_url tidak boleh kosong, jika anda menggunakan penyimapanan kartu sendiri. Silakan mendefinisikan merchant base url pada SDK</string>
 
 </resources>

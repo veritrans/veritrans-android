@@ -103,10 +103,6 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
         return creditCardTransaction.isMandiriCardDebit(cardBin);
     }
 
-    public void trackEvent(String eventName, String cardPaymentMode) {
-        MidtransSDK.getInstance().trackEvent(eventName, cardPaymentMode);
-    }
-
     public boolean isWhitelistBinsAvailable() {
         return creditCardTransaction.isWhiteListBinsAvailable();
     }

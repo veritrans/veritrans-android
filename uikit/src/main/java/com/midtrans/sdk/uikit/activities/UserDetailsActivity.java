@@ -1,5 +1,6 @@
 package com.midtrans.sdk.uikit.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -8,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -20,6 +22,7 @@ import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.fragments.UserAddressFragment;
 import com.midtrans.sdk.uikit.fragments.UserDetailFragment;
+import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 
 import java.util.ArrayList;
 
@@ -48,7 +51,39 @@ public class UserDetailsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        String invalidMessage = getInvalidPropertiesMessage();
+        if (!TextUtils.isEmpty(invalidMessage)) {
+            showInformationDialog(invalidMessage);
+            return;
+        }
+
         checkUserDetails();
+    }
+
+    private void showInformationDialog(String message) {
+        if (!isFinishing()) {
+            try {
+                AlertDialog dialog = new AlertDialog.Builder(this, R.style.AlertDialogCustom)
+                        .setPositiveButton(R.string.btn_close, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (!isFinishing()) {
+                                    dialog.dismiss();
+                                }
+                                finish();
+                            }
+                        })
+                        .setCancelable(false)
+                        .setMessage(message)
+                        .create();
+                dialog.show();
+            } catch (Exception e) {
+                finish();
+            }
+        } else {
+            finish();
+        }
     }
 
     public void checkUserDetails() {
@@ -61,53 +96,7 @@ public class UserDetailsActivity extends BaseActivity {
 
                 ArrayList<UserAddress> userAddresses = userDetail.getUserAddresses();
                 if (userAddresses != null && !userAddresses.isEmpty()) {
-                    Intent paymentOptionIntent = new Intent(this, PaymentMethodsActivity.class);
-                    if (getIntent().getBooleanExtra(CREDIT_CARD_ONLY, false)) {
-                        paymentOptionIntent.putExtra(CREDIT_CARD_ONLY, true);
-                    } else if (getIntent().getBooleanExtra(BANK_TRANSFER_ONLY, false)) {
-                        paymentOptionIntent.putExtra(BANK_TRANSFER_ONLY, true);
-                        if (getIntent().getBooleanExtra(BANK_TRANSFER_PERMATA, false)) {
-                            paymentOptionIntent.putExtra(BANK_TRANSFER_PERMATA, true);
-                        } else if (getIntent().getBooleanExtra(BANK_TRANSFER_MANDIRI, false)) {
-                            paymentOptionIntent.putExtra(BANK_TRANSFER_MANDIRI, true);
-                        } else if (getIntent().getBooleanExtra(BANK_TRANSFER_BCA, false)) {
-                            paymentOptionIntent.putExtra(BANK_TRANSFER_BCA, true);
-                        } else if (getIntent().getBooleanExtra(BANK_TRANSFER_OTHER, false)) {
-                            paymentOptionIntent.putExtra(BANK_TRANSFER_OTHER, true);
-                        } else if (getIntent().getBooleanExtra(BANK_TRANSFER_BNI, false)) {
-                            paymentOptionIntent.putExtra(BANK_TRANSFER_BNI, true);
-                        }
-                    } else if (getIntent().getBooleanExtra(BCA_KLIKPAY, false)) {
-                        paymentOptionIntent.putExtra(BCA_KLIKPAY, true);
-                    } else if (getIntent().getBooleanExtra(KLIK_BCA, false)) {
-                        paymentOptionIntent.putExtra(KLIK_BCA, true);
-                    } else if (getIntent().getBooleanExtra(MANDIRI_CLICKPAY, false)) {
-                        paymentOptionIntent.putExtra(MANDIRI_CLICKPAY, true);
-                    } else if (getIntent().getBooleanExtra(MANDIRI_ECASH, false)) {
-                        paymentOptionIntent.putExtra(MANDIRI_ECASH, true);
-                    } else if (getIntent().getBooleanExtra(CIMB_CLICKS, false)) {
-                        paymentOptionIntent.putExtra(CIMB_CLICKS, true);
-                    } else if (getIntent().getBooleanExtra(BRI_EPAY, false)) {
-                        paymentOptionIntent.putExtra(BRI_EPAY, true);
-                    } else if (getIntent().getBooleanExtra(TELKOMSEL_CASH, false)) {
-                        paymentOptionIntent.putExtra(TELKOMSEL_CASH, true);
-                    } else if (getIntent().getBooleanExtra(INDOSAT_DOMPETKU, false)) {
-                        paymentOptionIntent.putExtra(INDOSAT_DOMPETKU, true);
-                    } else if (getIntent().getBooleanExtra(XL_TUNAI, false)) {
-                        paymentOptionIntent.putExtra(XL_TUNAI, true);
-                    } else if (getIntent().getBooleanExtra(INDOMARET, false)) {
-                        paymentOptionIntent.putExtra(INDOMARET, true);
-                    } else if (getIntent().getBooleanExtra(KIOSON, false)) {
-                        paymentOptionIntent.putExtra(KIOSON, true);
-                    } else if (getIntent().getBooleanExtra(GIFT_CARD, false)) {
-                        paymentOptionIntent.putExtra(GIFT_CARD, true);
-                    }
-                    startActivity(paymentOptionIntent);
-                    if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
-                            && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
-                        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
-                    }
-                    finish();
+                    showPaymentpage();
                 } else {
                     setView();
                     UserAddressFragment userAddressFragment = UserAddressFragment.newInstance();
@@ -127,6 +116,60 @@ public class UserDetailsActivity extends BaseActivity {
         setView();
         UserDetailFragment userDetailFragment = UserDetailFragment.newInstance();
         replaceFragment(userDetailFragment, false);
+    }
+
+    public void showPaymentpage() {
+        Intent paymentOptionIntent = new Intent(this, PaymentMethodsActivity.class);
+        if (getIntent().getBooleanExtra(CREDIT_CARD_ONLY, false)) {
+            paymentOptionIntent.putExtra(CREDIT_CARD_ONLY, true);
+        } else if (getIntent().getBooleanExtra(BANK_TRANSFER_ONLY, false)) {
+            paymentOptionIntent.putExtra(BANK_TRANSFER_ONLY, true);
+            if (getIntent().getBooleanExtra(BANK_TRANSFER_PERMATA, false)) {
+                paymentOptionIntent.putExtra(BANK_TRANSFER_PERMATA, true);
+            } else if (getIntent().getBooleanExtra(BANK_TRANSFER_MANDIRI, false)) {
+                paymentOptionIntent.putExtra(BANK_TRANSFER_MANDIRI, true);
+            } else if (getIntent().getBooleanExtra(BANK_TRANSFER_BCA, false)) {
+                paymentOptionIntent.putExtra(BANK_TRANSFER_BCA, true);
+            } else if (getIntent().getBooleanExtra(BANK_TRANSFER_OTHER, false)) {
+                paymentOptionIntent.putExtra(BANK_TRANSFER_OTHER, true);
+            } else if (getIntent().getBooleanExtra(BANK_TRANSFER_BNI, false)) {
+                paymentOptionIntent.putExtra(BANK_TRANSFER_BNI, true);
+            }
+        } else if (getIntent().getBooleanExtra(BCA_KLIKPAY, false)) {
+            paymentOptionIntent.putExtra(BCA_KLIKPAY, true);
+        } else if (getIntent().getBooleanExtra(KLIK_BCA, false)) {
+            paymentOptionIntent.putExtra(KLIK_BCA, true);
+        } else if (getIntent().getBooleanExtra(MANDIRI_CLICKPAY, false)) {
+            paymentOptionIntent.putExtra(MANDIRI_CLICKPAY, true);
+        } else if (getIntent().getBooleanExtra(MANDIRI_ECASH, false)) {
+            paymentOptionIntent.putExtra(MANDIRI_ECASH, true);
+        } else if (getIntent().getBooleanExtra(CIMB_CLICKS, false)) {
+            paymentOptionIntent.putExtra(CIMB_CLICKS, true);
+        } else if (getIntent().getBooleanExtra(BRI_EPAY, false)) {
+            paymentOptionIntent.putExtra(BRI_EPAY, true);
+        } else if (getIntent().getBooleanExtra(TELKOMSEL_CASH, false)) {
+            paymentOptionIntent.putExtra(TELKOMSEL_CASH, true);
+        } else if (getIntent().getBooleanExtra(INDOSAT_DOMPETKU, false)) {
+            paymentOptionIntent.putExtra(INDOSAT_DOMPETKU, true);
+        } else if (getIntent().getBooleanExtra(XL_TUNAI, false)) {
+            paymentOptionIntent.putExtra(XL_TUNAI, true);
+        } else if (getIntent().getBooleanExtra(INDOMARET, false)) {
+            paymentOptionIntent.putExtra(INDOMARET, true);
+        } else if (getIntent().getBooleanExtra(KIOSON, false)) {
+            paymentOptionIntent.putExtra(KIOSON, true);
+        } else if (getIntent().getBooleanExtra(GIFT_CARD, false)) {
+            paymentOptionIntent.putExtra(GIFT_CARD, true);
+        }
+
+        paymentOptionIntent.putExtra(UiKitConstants.EXTRA_SNAP_TOKEN,
+                getIntent().getStringExtra(UiKitConstants.EXTRA_SNAP_TOKEN));
+
+        startActivity(paymentOptionIntent);
+        if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
+                && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+            overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+        }
+        finish();
     }
 
     private void setView() {
@@ -188,5 +231,19 @@ public class UserDetailsActivity extends BaseActivity {
             ft.replace(R.id.user_detail_container, fragment);
             ft.commit();
         }
+    }
+
+    public String getInvalidPropertiesMessage() {
+        String sdkErrorValidationMessage = null;
+
+        MidtransSDK midtransSdk = MidtransSDK.getInstance();
+        if (midtransSdk != null) {
+            if (TextUtils.isEmpty(midtransSdk.getClientKey()) || midtransSdk.getContext() == null) {
+                sdkErrorValidationMessage = getString(R.string.message_sdk_invalid);
+            } else if (!midtransSdk.isEnableBuiltInTokenStorage() && TextUtils.isEmpty(midtransSdk.getMerchantServerUrl())) {
+                sdkErrorValidationMessage = getString(R.string.message_invalid_merchant_url);
+            }
+        }
+        return sdkErrorValidationMessage;
     }
 }

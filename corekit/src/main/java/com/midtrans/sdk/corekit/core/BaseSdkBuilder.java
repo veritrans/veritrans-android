@@ -1,6 +1,8 @@
 package com.midtrans.sdk.corekit.core;
 
 import android.content.Context;
+import android.text.TextUtils;
+import android.util.Log;
 
 import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
 import com.midtrans.sdk.corekit.core.themes.BaseColorTheme;
@@ -60,10 +62,18 @@ public abstract class BaseSdkBuilder<T> {
     }
 
     public boolean isValidData() {
-        if (merchantServerUrl == null || clientKey == null || context == null) {
-            Logger.e(TAG, "invalid data supplied to sdk");
-            return false;
+        if (clientKey == null || context == null) {
+            String message = "Client key  and context cannot be null or empty. Please set the client key and context";
+            RuntimeException runtimeException = new RuntimeException(message);
+            Logger.e(message, runtimeException);
         }
+
+        if (!enableBuiltInTokenStorage && TextUtils.isEmpty(merchantServerUrl)) {
+            String message = "Merchant base url cannot be null or empty (required) if you implement your own token storage. Please set your merchant base url to enable your own token storage";
+            RuntimeException runtimeException = new RuntimeException(message);
+            Logger.e(message, runtimeException);
+        }
+
         return true;
     }
 }

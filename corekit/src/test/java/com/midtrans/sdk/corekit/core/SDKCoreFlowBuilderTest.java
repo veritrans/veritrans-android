@@ -8,16 +8,20 @@ import android.util.Log;
 
 import com.midtrans.sdk.corekit.SDKConfigTest;
 
-import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+
+import static org.powermock.api.mockito.PowerMockito.verifyStatic;
 
 /**
  * Created by ziahaqi on 26/06/2016.
@@ -38,6 +42,9 @@ public class SDKCoreFlowBuilderTest {
     @InjectMocks
     private SdkCoreFlowBuilder sdkCoreFlowBuilder;
 
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
     @Before
     public void setup() {
         PowerMockito.mockStatic(Log.class);
@@ -51,8 +58,9 @@ public class SDKCoreFlowBuilderTest {
 
     @Test
     public void isValidDataFailedTest() {
-        Assert.assertTrue(sdkCoreFlowBuilder.isValidData());
         sdkCoreFlowBuilder = SdkCoreFlowBuilder.init(context, null, SDKConfigTest.MERCHANT_BASE_URL);
-        Assert.assertFalse(sdkCoreFlowBuilder.isValidData());
+        sdkCoreFlowBuilder.isValidData();
+        verifyStatic(Mockito.times(1));
+        Log.e(Matchers.anyString(), Matchers.anyString(), Matchers.any(Throwable.class));
     }
 }
