@@ -75,10 +75,10 @@ deployment:
 
 
     bump-manual:
-      branch: release-main
+      branch: release-minor
       owner: veritrans
       commands:
             - source environmentSetup.sh && setGit
             - bmp -c
-            - git checkout master && git merge release
+            - git checkout master && git merge release-minor
             - git push origin master --tag
