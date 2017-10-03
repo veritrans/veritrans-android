@@ -1,5 +1,6 @@
 package com.midtrans.sdk.uikit.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -8,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -49,7 +51,39 @@ public class UserDetailsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        String invalidMessage = getInvalidPropertiesMessage();
+        if (!TextUtils.isEmpty(invalidMessage)) {
+            showInformationDialog(invalidMessage);
+            return;
+        }
+
         checkUserDetails();
+    }
+
+    private void showInformationDialog(String message) {
+        if (!isFinishing()) {
+            try {
+                AlertDialog dialog = new AlertDialog.Builder(this, R.style.AlertDialogCustom)
+                        .setPositiveButton(R.string.btn_close, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (!isFinishing()) {
+                                    dialog.dismiss();
+                                }
+                                finish();
+                            }
+                        })
+                        .setCancelable(false)
+                        .setMessage(message)
+                        .create();
+                dialog.show();
+            } catch (Exception e) {
+                finish();
+            }
+        } else {
+            finish();
+        }
     }
 
     public void checkUserDetails() {
@@ -197,5 +231,19 @@ public class UserDetailsActivity extends BaseActivity {
             ft.replace(R.id.user_detail_container, fragment);
             ft.commit();
         }
+    }
+
+    public String getInvalidPropertiesMessage() {
+        String sdkErrorValidationMessage = null;
+
+        MidtransSDK midtransSdk = MidtransSDK.getInstance();
+        if (midtransSdk != null) {
+            if (TextUtils.isEmpty(midtransSdk.getClientKey()) || midtransSdk.getContext() == null) {
+                sdkErrorValidationMessage = getString(R.string.message_sdk_invalid);
+            } else if (!midtransSdk.isEnableBuiltInTokenStorage() && TextUtils.isEmpty(midtransSdk.getMerchantServerUrl())) {
+                sdkErrorValidationMessage = getString(R.string.message_invalid_merchant_url);
+            }
+        }
+        return sdkErrorValidationMessage;
     }
 }

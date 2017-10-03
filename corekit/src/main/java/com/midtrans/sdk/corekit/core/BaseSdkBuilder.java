@@ -65,14 +65,12 @@ public abstract class BaseSdkBuilder<T> {
             String message = "Client key  and context cannot be null or empty. Please set the client key and context";
             RuntimeException runtimeException = new RuntimeException(message);
             Logger.e(message, runtimeException);
-            throw runtimeException;
         }
 
         if (!enableBuiltInTokenStorage && TextUtils.isEmpty(merchantServerUrl)) {
             String message = "Merchant base url cannot be null or empty (required) if you implement your own token storage. Please set your merchant base url to enable your own token storage";
             RuntimeException runtimeException = new RuntimeException(message);
             Logger.e(message, runtimeException);
-            throw runtimeException;
         }
 
         return true;
