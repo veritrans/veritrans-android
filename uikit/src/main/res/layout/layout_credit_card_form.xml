@@ -38,9 +38,9 @@
         android:id="@+id/container_card_number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/container_offer_status"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/container_offer_status">
 
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
             android:id="@+id/hint_card_number"
@@ -53,16 +53,16 @@
             android:id="@+id/field_card_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/hint_card_number"
             android:digits="0123456789 "
             android:hint="@string/hint_card_number_example"
             android:imeOptions="actionNext"
             android:inputType="number"
             android:maxLength="19"
             android:maxLines="1"
-            android:nextFocusDown="@+id/field_expiry"
-            android:layout_below="@+id/hint_card_number"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:nextFocusDown="@+id/field_expiry" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -342,8 +342,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/four_dp"
-            android:layout_marginRight="@dimen/four_dp"
             android:layout_marginLeft="@dimen/four_dp"
+            android:layout_marginRight="@dimen/four_dp"
             android:layout_marginStart="@dimen/four_dp"
             android:scaleType="centerInside"/>
     </LinearLayout>
@@ -357,8 +357,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="19dp"
         android:visibility="gone"
-        app:fb_borderColor="@color/red"
         app:fb_iconColor="@color/delete_color"
+        app:fb_iconPaddingRight="@dimen/four_dp"
         app:fb_iconResource="@drawable/ic_delete_black"
         app:fb_text="@string/delete_this_card"
         app:fb_textColor="@color/delete_color"
@@ -371,12 +371,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/button_delete"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="19dp"
+        android:layout_marginTop="@dimen/eight_dp"
         android:visibility="gone"
-        app:fb_borderColor="@color/navy_blue.primary_dark"
-        app:fb_iconColor="@color/navy_blue.primary_dark"
+        app:fb_iconPaddingRight="@dimen/four_dp"
         app:fb_iconResource="@drawable/ic_scan_cam"
         app:fb_text="@string/btn_scan_card"
-        app:fb_textColor="@color/navy_blue.primary_dark"
         tools:visibility="visible" />
 </RelativeLayout>

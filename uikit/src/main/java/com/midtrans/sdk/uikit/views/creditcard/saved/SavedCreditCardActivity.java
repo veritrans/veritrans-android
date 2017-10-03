@@ -68,7 +68,6 @@ public class SavedCreditCardActivity extends BasePaymentActivity implements Save
 
     @Override
     public void initTheme() {
-        setBorderColor(buttonAddCard);
         setTextColor(buttonAddCard);
         setIconColorFilter(buttonAddCard);
     }

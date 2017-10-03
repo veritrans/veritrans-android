@@ -101,7 +101,7 @@
         (Anda dapat menerima instruksi via email jika memasukkan alamat email anda pada kolom di atas).</string>
     <string name="bank_atm_transfer_step3">Harap selesaikan pembayaran melalui Prima (BCA), ATM Bersama(Mandiri), or Alto(Permata).</string>
     <string name="bank_atm_transfer_step4">Bila pembayaran sudah selesai, Anda akan menerima email konfirmasi.</string>
-    <string name="see_instruction">Lihat instruksi</string>
+    <string name="see_instruction">Lihat Instruksi</string>
     <string name="download_instruction">Unduh Instruksi</string>
     <string name="confirm_payment">Konfirmasi Pembayaran</string>
     <string name="copy_payment_code">Salin Kode Pembayaran</string>
@@ -319,7 +319,7 @@
     <string name="success">success</string>
     <string name="fetching_cards">Mengambil data kartu</string>
     <string name="btn_save_card">Mendaftarkan Kartu</string>
-    <string name="btn_scan_card">pindai kartu menggunakan kamera</string>
+    <string name="btn_scan_card">Pindai Kartu Menggunakan Kamera</string>
     <string name="offer_applied">Sukses menggunakan penawaran!</string>
     <string name="offer_not_applied">Kartu tidak berlaku untuk promo, coba gunakan kartu lain.</string>
     <string name="no_offers">Tidak ada penawaran</string>
@@ -385,7 +385,7 @@
 
     <!-- instruction atm bersama -->
     <string name="preview_atm_bersama">Bayar melalui <b>semua ATM bank berlogo ATM Bersama</b></string>
-    <string name="expand_link_atm_bersama">Total <u>+</u>83 bank terdaftar</string>
+    <string name="expand_link_atm_bersama">Lihat 83 Bank yang Terdaftar</string>
     <string name="instruction_card_atm_bersama">Pastikan terdapat <b>logo ATM Bersama di belakang kartu ATM</b> Anda.</string>
     <string name="bank_list_header_atm_bersama">Bank terdaftar ATM Bersama</string>
     <string name="instruction_atm_bersama1">Pada menu utama, pilih <b>Transaksi Lainnya</b>.</string>
@@ -398,7 +398,7 @@
     <string name="pay_with_atm_bersama">Bayar melalui ATM berlogo ATM Bersama</string>
 
     <string name="preview_prima">Bayar melalui <b>semua ATM bank berlogo Prima</b></string>
-    <string name="expand_link_prima">Total <u>+</u>64 bank terdaftar</string>
+    <string name="expand_link_prima">Lihat 64 Bank yang Terdaftar</string>
     <string name="instruction_card_prima">Pastikan terdapat <b>logo Prima di belakang kartu ATM</b> Anda.</string>
     <string name="bank_list_header_prima">Bank terdaftar jaringan Prima</string>
     <string name="instruction_prima1">Pada menu utama, pilih <b>Transaksi Lainnya</b>.</string>
@@ -411,7 +411,7 @@
     <string name="pay_with_prima">Bayar melalui ATM berlogo Prima</string>
 
     <string name="preview_alto">Bayar melalui <b>semua ATM bank berlogo Alto</b></string>
-    <string name="expand_link_alto">Total <u>+</u>19 bank terdaftar</string>
+    <string name="expand_link_alto">Lihat 19 Bank yang Terdaftar</string>
     <string name="instruction_card_alto">Pastikan terdapat <b>logo Alto di belakang kartu ATM</b> Anda.</string>
     <string name="bank_list_header_alto">Bank terdaftar jaringan Alto</string>
     <string name="instruction_alto1">Pada menu utama, pilih <b>Transaksi lainnya</b>.</string>
@@ -458,7 +458,7 @@
     <string name="text_price">Harga</string>
     <string name="save_card_info">Detail kartu diatas akan disimpan untuk membantu transaksi anda berikutnya.</string>
     <string name="choose_card">Pilih kartu kredit</string>
-    <string name="add_new_card">bayar dengan kartu baru</string>
+    <string name="add_new_card">Bayar dengan Kartu Baru</string>
     <string name="mandiri_bill_transfer">Bank Mandiri</string>
     <string name="bank_bca_transfer">Bank BCA</string>
     <string name="bank_permata_transfer">Bank Permata</string>
@@ -477,7 +477,7 @@
     <string name="status_due_installment">CICILAN</string>
     <string name="sorry">Maaf!</string>
     <string name="get_challenge_token">Bagaimana saya bisa mendapatkan challenge token?</string>
-    <string name="kioson_instruction">bagaimana saya dapat melakukan pembayaran dengan kioson ?</string>
+    <string name="kioson_instruction">Lihat Instruksi Pembayaran</string>
     <string name="card_bin_invalid">nomor kartu kredit tidak terdapat didalam whitelist bin kartu kredit</string>
     <string name="installment_required">Pembayaran harus menggunakan cicilan</string>
     <string name="complete_payment_kioson">Selesaikan pembayaran di Kioson</string>
@@ -524,7 +524,7 @@
     <string name="bni_debit_online_card">Kartu Debit Online BNI</string>
     <string name="deleted">Dihapus</string>
     <string name="undo">Batalkan</string>
-    <string name="delete_this_card">hapus kartu ini</string>
+    <string name="delete_this_card">Hapus Kartu Ini</string>
     <string name="redeem_bni_reward">Tukarkan poin hadiah BNI</string>
     <string name="amount_after_discount">Jumlah pembayaran setelah diskon</string>
     <string name="redeem_point">Tukar Poin</string>

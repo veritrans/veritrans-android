@@ -29,7 +29,7 @@ public class KlikBcaStatusActivity extends BasePaymentActivity {
     private DefaultTextView textTitle;
     private DefaultTextView textStatusFailed;
 
-    private FancyButton buttonInstuction;
+    private FancyButton buttonInstruction;
     private FancyButton buttonFinish;
 
     @Override
@@ -48,7 +48,7 @@ public class KlikBcaStatusActivity extends BasePaymentActivity {
             }
         });
 
-        buttonInstuction.setOnClickListener(new View.OnClickListener() {
+        buttonInstruction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isActivityRunning()) {
@@ -78,7 +78,7 @@ public class KlikBcaStatusActivity extends BasePaymentActivity {
     @Override
     public void bindViews() {
         buttonFinish = (FancyButton) findViewById(R.id.button_primary);
-        buttonInstuction = (FancyButton) findViewById(R.id.button_instruction);
+        buttonInstruction = (FancyButton) findViewById(R.id.button_instruction);
         textExpiry = (SemiBoldTextView) findViewById(R.id.text_expiry);
         textTitle = (DefaultTextView) findViewById(R.id.text_page_title);
         textStatusFailed = (DefaultTextView) findViewById(R.id.text_status_failed);
@@ -87,7 +87,7 @@ public class KlikBcaStatusActivity extends BasePaymentActivity {
     @Override
     public void initTheme() {
         setPrimaryBackgroundColor(buttonFinish);
-        setTextColor(buttonInstuction);
-        setBorderColor(buttonInstuction);
+        setTextColor(buttonInstruction);
+        setIconColorFilter(buttonInstruction);
     }
 }

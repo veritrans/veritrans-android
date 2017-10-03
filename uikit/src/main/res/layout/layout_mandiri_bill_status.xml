@@ -133,13 +133,15 @@
 
         <com.midtrans.sdk.uikit.widgets.FancyButton
             android:id="@+id/button_download_instruction"
-            style="@style/ButtonDownloadInstruction"
+            style="@style/ButtonSecondary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/sixteen_dp"
             android:layout_marginRight="@dimen/sixteen_dp"
             android:layout_marginTop="@dimen/sixteen_dp"
             android:visibility="visible"
+            app:fb_iconPaddingRight="@dimen/four_dp"
+            app:fb_iconResource="@drawable/ic_download"
             app:fb_text="@string/download_instruction" />
     </LinearLayout>
 

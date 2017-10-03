@@ -24,19 +24,19 @@
             />
 
         <LinearLayout
-            android:gravity="center_vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
             <com.midtrans.sdk.uikit.widgets.DefaultTextView
                 android:id="@+id/text_payment_code"
                 android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/four_dp"
                 android:layout_weight="1"
                 android:background="@color/light_gray"
-                android:layout_height="wrap_content"
                 android:padding="@dimen/eight_dp"
-                android:text="@string/payment_code"
-                android:layout_marginRight="@dimen/four_dp"
                 android:paddingRight="@dimen/four_dp"
+                android:text="@string/payment_code"
                 android:textColor="@color/black"
                 android:textSize="@dimen/header_text_size"
                 />
@@ -61,12 +61,12 @@
         </LinearLayout>
 
         <LinearLayout
-            android:background="@color/faint_yellow"
-            android:layout_marginTop="@dimen/sixteen_dp"
-            android:orientation="horizontal"
-            android:padding="@dimen/sixteen_dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/sixteen_dp"
+            android:background="@color/faint_yellow"
+            android:orientation="horizontal"
+            android:padding="@dimen/sixteen_dp">
             <com.midtrans.sdk.uikit.widgets.DefaultTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -90,21 +90,20 @@
         </LinearLayout>
 
         <com.midtrans.sdk.uikit.widgets.FancyButton
-            android:layout_marginTop="@dimen/twenty_four_dp"
             android:id="@+id/btn_see_instruction"
+            style="@style/ButtonSecondary"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/twenty_four_dp"
             android:padding="@dimen/eight_dp"
             android:visibility="visible"
-            app:fb_borderColor="?attr/colorPrimary"
-            app:fb_borderWidth="1dp"
             app:fb_defaultColor="@android:color/white"
             app:fb_focusColor="@color/colorAccentLight"
-            app:fb_iconColor="?attr/colorPrimary"
+            app:fb_iconPaddingRight="@dimen/four_dp"
+            app:fb_iconResource="@drawable/ic_view"
             app:fb_radius="5dp"
-            app:fb_text="@string/kioson_instruction"
-            app:fb_textColor="?attr/colorPrimary" />
+            app:fb_text="@string/kioson_instruction" />
 
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

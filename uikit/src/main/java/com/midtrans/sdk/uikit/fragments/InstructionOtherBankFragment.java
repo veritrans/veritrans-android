@@ -9,6 +9,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import com.midtrans.sdk.corekit.core.Logger;
+import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
@@ -50,6 +51,13 @@ public class InstructionOtherBankFragment extends Fragment implements OnClickLis
         instructionToggle = (FancyButton) view.findViewById(R.id.instruction_toggle);
         instructionToggle.setOnClickListener(this);
 
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
+        if (midtransSDK != null) {
+            instructionToggle.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+            instructionToggle.setIconColorFilter(midtransSDK.getColorTheme().getPrimaryDarkColor());
+        }
+
+
         return view;
     }
 
@@ -72,6 +80,11 @@ public class InstructionOtherBankFragment extends Fragment implements OnClickLis
                 listener.onInstructionShown(isInstructionShown, getFragmentCode());
             }
             instructionToggle.setText(isInstructionShown ? getText(R.string.hide_instruction).toString() : getText(R.string.show_instruction).toString());
+            instructionToggle.setIconResource(isInstructionShown ? R.drawable.ic_hide : R.drawable.ic_view);
+            MidtransSDK midtransSDK = MidtransSDK.getInstance();
+            if (midtransSDK != null) {
+                instructionToggle.setIconColorFilter(midtransSDK.getColorTheme().getPrimaryDarkColor());
+            }
             instructionLayout.setVisibility(isInstructionShown ? View.VISIBLE : View.GONE);
         }
     }
