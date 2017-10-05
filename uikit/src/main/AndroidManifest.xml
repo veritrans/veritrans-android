@@ -171,6 +171,11 @@
             android:name=".views.webview.WebViewPaymentActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
+
+        <service
+            android:name="com.midtrans.raygun.RaygunPostService"
+            android:exported="false"
+            android:process=":raygunpostservice" />
     </application>
 
 </manifest>
