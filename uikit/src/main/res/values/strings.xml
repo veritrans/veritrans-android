@@ -224,9 +224,12 @@
     <string name="bca_klik_instruction_step6">Your transaction is Done.</string>
 
     <!--KLIK BCA PAYMENT-->
-    <string name="bca_klik_pay_instruction_step1">You will be redirected to BCA KlikPay once you tap <b>Confirm Payment</b> button.</string>
-    <string name="bca_klik_pay_instruction_step2">For payment, you can choose to use KlikBCA Individual Account or BCA credit card.</string>
-    <string name="bca_klik_pay_instruction_step3">For more information about BCA KlikPay please contact Halo BCA at (021) 1500888 or visit <a href="http://klikbca.com/KlikPay/klikpay.html">http://klikbca.com/KlikPay/klikpay.html</a>.</string>
+    <string name="bca_klik_pay_instruction_step1">You will be redirected to BCA KlikPay once you click <b>Confirm Payment</b> button.</string>
+    <string name="bca_klik_pay_instruction_step2">After Login to your BCA Klikpay Account by entering your email address and password, it will display transaction information such as merchant name, transaction time, and amount to be paid. Choose the type of payment KlikBCA or BCA Card for the transaction.</string>
+    <string name="bca_klik_pay_instruction_step3">To authorize payment with BCA KlikPay, press the <b>Send OTP</b> button, and you will receive an OTP (One Time Password) code sent via SMS to your mobile phone. Enter the OTP code in the fields provided.</string>
+    <string name="bca_klik_pay_instruction_step4">If your OTP code is correct, your payment will be processed immediately and your account balance (for KlikBCA payment type) or your BCA Card limit (for BCA Card payment type) will be reduced according to amount of transaction value.</string>
+    <string name="bca_klik_pay_instruction_step5">Your transaction success status will appear on the transaction screen and you will receive a notification email.</string>
+    <string name="bca_klik_pay_instruction_step6">For more information about BCA KlikPay please contact Halo BCA at (021) 1500888 or visit <a href="http://klikbca.com/KlikPay/klikpay.html">http://klikbca.com/KlikPay/klikpay.html</a>.</string>
 
     <!--m-BCA-->
     <string name="bca_mbanking_instruction_step1">Choose <b>m-transfer</b>.</string>
