@@ -44,7 +44,6 @@ public class BankPointsActivity extends BasePaymentActivity {
 
     private TextView textTotalPoints;
     private TextView textAmountToPay;
-    private DefaultTextView textPayWithoutBankPoint;
     private DefaultTextView textTitle;
 
     private ImageView imageBankPointLogo;
@@ -79,25 +78,11 @@ public class BankPointsActivity extends BasePaymentActivity {
         textTotalPoints = (TextView) findViewById(R.id.text_total_point);
         textAmountToPay = (TextView) findViewById(R.id.text_amount_to_pay);
         textTitle = (DefaultTextView) findViewById(R.id.text_page_title);
-        textPayWithoutBankPoint = (DefaultTextView) findViewById(R.id.text_pay_without_bank_point);
 
         imageBankPointLogo = (ImageView) findViewById(R.id.bank_point_logo);
         buttonRedeemPoint = (FancyButton) findViewById(R.id.btn_redeem_point);
         containerAmount = (FancyButton) findViewById(R.id.container_amount);
         containerTotalPoint = (FancyButton) findViewById(R.id.container_total_point);
-
-        fieldRedeemedPoint.getViewTreeObserver().addOnGlobalLayoutListener(
-            new OnGlobalLayoutListener() {
-                @Override
-                public void onGlobalLayout() {
-                    boolean isKeyboardShown = isKeyboardShown(findViewById(android.R.id.content));
-                    if (isKeyboardShown) {
-                        findViewById(R.id.container_pay_without_bank_point).setVisibility(View.GONE);
-                    } else {
-                        findViewById(R.id.container_pay_without_bank_point).setVisibility(View.VISIBLE);
-                    }
-                }
-            });
     }
 
     @Override
@@ -177,7 +162,6 @@ public class BankPointsActivity extends BasePaymentActivity {
                 findViewById(R.id.container_redeemed_point).setVisibility(View.VISIBLE);
                 findViewById(R.id.container_fiestapoin).setVisibility(View.GONE);
                 setFocusForBniPoint();
-                ((DefaultTextView) findViewById(R.id.text_pay_without_bank_point)).setText(getString(R.string.pay_without_bank_point, getString(R.string.redeem_bni_title)));
                 buttonRedeemPoint.setText(getString(R.string.pay_with_bni_point));
                 break;
             case BankType.MANDIRI:
@@ -187,7 +171,6 @@ public class BankPointsActivity extends BasePaymentActivity {
                 findViewById(R.id.container_redeemed_point).setVisibility(View.GONE);
                 findViewById(R.id.container_fiestapoin).setVisibility(View.VISIBLE);
                 setFiestapoinDiscount();
-                ((DefaultTextView) findViewById(R.id.text_pay_without_bank_point)).setText(getString(R.string.pay_without_bank_point, getString(R.string.redeem_mandiri_title)));
                 buttonRedeemPoint.setText(getString(R.string.pay_with_mandiri_point));
                 break;
             default:
@@ -197,8 +180,7 @@ public class BankPointsActivity extends BasePaymentActivity {
     }
 
     private void setFiestapoinDiscount() {
-        // TODO: 9/20/17 apply real conversion here
-        float fiestaDiscount = MANDIRI_FIESTAPOIN_FIXED_AMOUNT * 10;
+        float fiestaDiscount = MANDIRI_FIESTAPOIN_FIXED_AMOUNT;
         presenter.calculateAmount(fiestaDiscount);
         ((DefaultTextView) findViewById(R.id.text_fiestapoin_discount)).setText(getString(R.string.prefix_money_negative, Utils.getFormattedAmount(fiestaDiscount)));
     }
@@ -227,12 +209,6 @@ public class BankPointsActivity extends BasePaymentActivity {
                 redeemPoint();
             }
         });
-        textPayWithoutBankPoint.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                payWithoutRedeem();
-            }
-        });
     }
 
     private void updateAmountToPayText() {
@@ -243,7 +219,11 @@ public class BankPointsActivity extends BasePaymentActivity {
         SdkUIFlowUtil.hideKeyboard(this);
         String strPoint = fieldRedeemedPoint.getText().toString().trim();
         float redeemedPoint = Float.valueOf(strPoint);
-        finishBankPoint(redeemedPoint);
+        if (presenter.getPointBank().equalsIgnoreCase(BankType.MANDIRI)) {
+            finishBankPoint(MANDIRI_FIESTAPOIN_FIXED_AMOUNT);
+        } else {
+            finishBankPoint(redeemedPoint);
+        }
     }
 
     private void finishBankPoint(float redeemedPoint) {
@@ -251,23 +231,6 @@ public class BankPointsActivity extends BasePaymentActivity {
         data.putExtra(EXTRA_DATA_POINT, redeemedPoint);
         setResult(RESULT_OK, data);
         finish();
-    }
-
-    private void payWithoutRedeem() {
-        finishBankPoint(0f);
-    }
-
-    private boolean isKeyboardShown(View rootView) {
-        /* 128dp = 32dp * 4, minimum button height 32dp and generic 4 rows soft keyboard */
-        final int SOFT_KEYBOARD_HEIGHT_DP_THRESHOLD = 128;
-
-        Rect r = new Rect();
-        rootView.getWindowVisibleDisplayFrame(r);
-        DisplayMetrics dm = rootView.getResources().getDisplayMetrics();
-        /* heightDiff = rootView height - status bar height (r.top) - visible frame height (r.bottom - r.top) */
-        int heightDiff = rootView.getBottom() - r.bottom;
-        /* Threshold size: dp to pixels, multiply with display density */
-        return heightDiff > SOFT_KEYBOARD_HEIGHT_DP_THRESHOLD * dm.density;
     }
 
     @Override

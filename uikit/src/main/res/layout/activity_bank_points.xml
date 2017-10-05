@@ -29,35 +29,6 @@
 
         </ScrollView>
 
-        <RelativeLayout
-            android:id="@+id/container_pay_without_bank_point"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/btn_redeem_point"
-            android:layout_marginBottom="@dimen/sixteen_dp"
-            android:layout_marginTop="@dimen/sixteen_dp"
-            android:gravity="center">
-
-            <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                android:id="@+id/text_pay_without_bank_point"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/icon_pay"
-                android:gravity="center"
-                android:textColor="@color/navy_blue.primary"
-                android:textSize="14sp"
-                tools:text="Bayar tanpa Menggunakan Mandiri Fiestapoin" />
-
-            <ImageView
-                android:id="@+id/icon_pay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/text_pay_without_bank_point"
-                android:layout_alignTop="@id/text_pay_without_bank_point"
-                android:layout_marginRight="@dimen/eight_dp"
-                android:src="@drawable/ic_pay_without_bank_point"/>
-        </RelativeLayout>
-
         <com.midtrans.sdk.uikit.widgets.FancyButton
             android:id="@+id/btn_redeem_point"
             android:layout_width="match_parent"
