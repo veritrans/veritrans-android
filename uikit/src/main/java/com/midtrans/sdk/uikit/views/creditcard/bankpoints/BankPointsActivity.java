@@ -180,7 +180,7 @@ public class BankPointsActivity extends BasePaymentActivity {
     }
 
     private void setFiestapoinDiscount() {
-        float fiestaDiscount = MANDIRI_FIESTAPOIN_FIXED_AMOUNT;
+        float fiestaDiscount = presenter.getPointBalance();
         presenter.calculateAmount(fiestaDiscount);
         ((DefaultTextView) findViewById(R.id.text_fiestapoin_discount)).setText(getString(R.string.prefix_money_negative, Utils.getFormattedAmount(fiestaDiscount)));
     }
@@ -219,11 +219,7 @@ public class BankPointsActivity extends BasePaymentActivity {
         SdkUIFlowUtil.hideKeyboard(this);
         String strPoint = fieldRedeemedPoint.getText().toString().trim();
         float redeemedPoint = Float.valueOf(strPoint);
-        if (presenter.getPointBank().equalsIgnoreCase(BankType.MANDIRI)) {
-            finishBankPoint(MANDIRI_FIESTAPOIN_FIXED_AMOUNT);
-        } else {
-            finishBankPoint(redeemedPoint);
-        }
+        finishBankPoint(redeemedPoint);
     }
 
     private void finishBankPoint(float redeemedPoint) {
