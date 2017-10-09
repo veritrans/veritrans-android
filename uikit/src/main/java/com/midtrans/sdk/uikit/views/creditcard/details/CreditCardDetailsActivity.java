@@ -61,11 +61,9 @@ import java.util.Date;
 
 public class CreditCardDetailsActivity extends BasePaymentActivity implements CreditCardDetailsView {
 
-    private static final String TAG = CreditCardDetailsActivity.class.getSimpleName();
-
     public static final String EXTRA_DELETED_CARD_DETAILS = "card.deleted.details";
     public static final String EXTRA_SAVED_CARD = "extra.card.saved";
-
+    private static final String TAG = CreditCardDetailsActivity.class.getSimpleName();
     private AppCompatEditText fieldCardNumber;
     private AppCompatEditText fieldCardCvv;
     private AppCompatEditText fieldCardExpiry;
@@ -314,7 +312,6 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             setColorFilter(buttonCvvHelp);
             setColorFilter(buttonPointHelp);
 
-            setBorderColor(buttonScanCard);
             setTextColor(buttonScanCard);
             setIconColorFilter(buttonScanCard);
             setPrimaryBackgroundColor(buttonPayNow);
