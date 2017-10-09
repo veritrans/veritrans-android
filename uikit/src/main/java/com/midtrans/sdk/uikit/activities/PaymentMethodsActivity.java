@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.midtrans.raygun.RaygunClient;
 import com.midtrans.sdk.corekit.callback.CheckoutCallback;
 import com.midtrans.sdk.corekit.callback.TransactionOptionsCallback;
 import com.midtrans.sdk.corekit.core.Constants;
@@ -34,6 +35,7 @@ import com.midtrans.sdk.corekit.core.themes.ColorTheme;
 import com.midtrans.sdk.corekit.core.themes.CustomColorTheme;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.ItemDetails;
+import com.midtrans.sdk.corekit.models.MerchantPreferences;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.UserDetail;
@@ -42,6 +44,7 @@ import com.midtrans.sdk.corekit.models.snap.Token;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
 import com.midtrans.sdk.corekit.utilities.Utils;
+import com.midtrans.sdk.uikit.BuildConfig;
 import com.midtrans.sdk.uikit.PaymentMethods;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.adapters.ItemDetailsAdapter;
@@ -64,7 +67,9 @@ import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Displays list of available payment methods.
@@ -400,6 +405,8 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
                     // Directly start credit card payment if using credit card mode only
                     initPaymentMethods(transaction.getEnabledPayments());
+
+                    initCustomTrackingProperties();
                 } catch (NullPointerException e) {
                     Logger.e(TAG, e.getMessage());
                 }
@@ -420,6 +427,18 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 showFallbackErrorPage(error, getString(R.string.maintenance_message));
             }
         });
+    }
+
+    private void initCustomTrackingProperties() {
+        if (BuildConfig.FLAVOR.equals(UiKitConstants.ENVIRONMENT_PRODUCTION)) {
+            MerchantPreferences preferences = midtransSDK.getMerchantData().getPreference();
+            if (preferences != null) {
+                Map<String, String> map = new HashMap<>();
+                map.put(UiKitConstants.KEY_TRACKING_MERCHANT_NAME, preferences.getDisplayName());
+                map.put(UiKitConstants.KEY_TRACKING_SDK_VERSION, BuildConfig.VERSION_NAME);
+                RaygunClient.setUserCustomData(map);
+            }
+        }
     }
 
     private void initPaymentMethods(List<EnabledPayment> enabledPayments) {

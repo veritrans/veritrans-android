@@ -68,4 +68,7 @@ public class UiKitConstants {
     public static final int RESULT_SDK_NOT_AVAILABLE = -999;
 
     public static final String EXTRA_SNAP_TOKEN = "snap.token";
+    public static final String KEY_TRACKING_MERCHANT_NAME = "merchant name";
+    public static final String KEY_TRACKING_SDK_VERSION = "sdk version";
+    public static final String KEY_TRACKING_GROUP = "android sdk";
 }

@@ -256,3 +256,7 @@ public static final *** NULL; }
 }
 
 -keep class com.viewpagerindicator.** {*;}
+
+-keep class com.midtrans.raygun.** { *; }
+-keepattributes Exceptions, Signature, InnerClasses, SourceFile, LineNumberTable
+-renamesourcefileattribute SourceFile
