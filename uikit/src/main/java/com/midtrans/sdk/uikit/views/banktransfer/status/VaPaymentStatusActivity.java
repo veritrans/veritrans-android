@@ -98,8 +98,8 @@ public class VaPaymentStatusActivity extends BaseVaPaymentStatusActivity {
         super.initTheme();
         setBorderColor(buttonCopyVa);
         setTextColor(buttonCopyVa);
-        setBorderColor(buttonInstruction);
         setTextColor(buttonInstruction);
+        setIconColorFilter(buttonInstruction);
         setPrimaryBackgroundColor(buttonCompletePayment);
     }
 

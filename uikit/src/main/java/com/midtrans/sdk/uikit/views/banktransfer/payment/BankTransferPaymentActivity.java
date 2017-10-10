@@ -20,6 +20,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
@@ -52,7 +53,7 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
     private ViewPager pagerInstruction;
     private TabLayout tabInstruction;
     private AppCompatEditText editEmail;
-    private FancyButton buttonPay;
+    private FancyButton buttonPay, bankToggle;
 
     private TextInputLayout containerEmail;
 
@@ -64,7 +65,7 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
 
     //for other ATM network
     private ImageView bankPreview;
-    private DefaultTextView bankDescription, bankToggle, cardDescription;
+    private DefaultTextView bankDescription, cardDescription;
     private boolean[] flags;
 
     @Override
@@ -413,7 +414,7 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
                 dialogTitleId = R.string.bank_list_header_atm_bersama;
                 bankPreview.setImageResource(R.drawable.bersama_preview);
                 bankDescription.setText(R.string.preview_atm_bersama);
-                bankToggle.setText(R.string.expand_link_atm_bersama);
+                bankToggle.setText(getString(R.string.expand_link_atm_bersama));
                 cardDescription.setText(R.string.instruction_card_atm_bersama);
                 cardDescription.setCompoundDrawablesWithIntrinsicBounds(R.drawable.bersama_atm, 0, 0, 0);
                 break;
@@ -422,7 +423,7 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
                 dialogTitleId = R.string.bank_list_header_prima;
                 bankPreview.setImageResource(R.drawable.prima_preview);
                 bankDescription.setText(R.string.preview_prima);
-                bankToggle.setText(R.string.expand_link_prima);
+                bankToggle.setText(getString(R.string.expand_link_prima));
                 cardDescription.setText(R.string.instruction_card_prima);
                 cardDescription.setCompoundDrawablesWithIntrinsicBounds(R.drawable.prima_atm, 0, 0, 0);
                 break;
@@ -431,12 +432,17 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
                 dialogTitleId = R.string.bank_list_header_alto;
                 bankPreview.setImageResource(R.drawable.alto_preview);
                 bankDescription.setText(R.string.preview_alto);
-                bankToggle.setText(R.string.expand_link_alto);
+                bankToggle.setText(getString(R.string.expand_link_alto));
                 cardDescription.setText(R.string.instruction_card_alto);
                 cardDescription.setCompoundDrawablesWithIntrinsicBounds(R.drawable.alto_atm, 0, 0, 0);
                 break;
         }
-        bankToggle.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_next, 0);
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
+        if (midtransSDK != null) {
+            bankToggle.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+            bankToggle.setIconColorFilter(midtransSDK.getColorTheme().getPrimaryDarkColor());
+        }
+
         bankToggle.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -473,7 +479,7 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
     private void bindOtherAtmGuidanceView() {
         bankPreview = (ImageView) findViewById(R.id.bank_preview);
         bankDescription = (DefaultTextView) findViewById(R.id.bank_description);
-        bankToggle = (DefaultTextView) findViewById(R.id.bank_toggle);
+        bankToggle = (FancyButton) findViewById(R.id.bank_toggle);
         cardDescription = (DefaultTextView) findViewById(R.id.card_description);
     }
 

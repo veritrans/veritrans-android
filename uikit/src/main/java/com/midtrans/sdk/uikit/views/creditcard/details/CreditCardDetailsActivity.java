@@ -310,7 +310,6 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             setColorFilter(buttonCvvHelp);
             setColorFilter(buttonPointHelp);
 
-            setBorderColor(buttonScanCard);
             setTextColor(buttonScanCard);
             setIconColorFilter(buttonScanCard);
             setPrimaryBackgroundColor(buttonPayNow);

@@ -56,5 +56,8 @@
         android:layout_marginLeft="@dimen/sixteen_dp"
         android:layout_marginRight="@dimen/sixteen_dp"
         android:layout_marginTop="@dimen/sixteen_dp"
-        app:fb_text="@string/see_instruction" />
+        app:fb_iconPaddingRight="@dimen/four_dp"
+        app:fb_iconResource="@drawable/ic_view"
+        app:fb_text="@string/see_instruction"
+        app:fb_textColor="@color/navy_blue.primary_dark"/>
 </LinearLayout>
