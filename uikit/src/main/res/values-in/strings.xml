@@ -530,7 +530,6 @@
     <string name="redeem_100_point">DISKON 100 FIESTAPOIN</string>
     <string name="amount_after_discount">TOTAL PEMBAYARAN SETELAH DISKON</string>
     <string name="delete_this_card">Hapus Kartu Ini</string>
-    <string name="redeem_bni_reward">Tukarkan poin hadiah BNI</string>
     <string name="redeem_point">Tukar Poin</string>
     <string name="redeem_bank_point_title">Gunakan Poin %1$s</string>
     <string name="total_point">Total poin hadiah %1$s Anda adalah %2$s</string>
