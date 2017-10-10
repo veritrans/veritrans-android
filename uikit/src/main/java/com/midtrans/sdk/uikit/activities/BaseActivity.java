@@ -77,6 +77,12 @@ public class BaseActivity extends AppCompatActivity {
         try {
 
             if (mMidtransSDK.getColorTheme() != null && mMidtransSDK.getColorTheme().getPrimaryColor() != 0) {
+                // Set primary button color
+                FancyButton primaryButton = (FancyButton) findViewById(R.id.button_primary);
+                if (primaryButton != null) {
+                    primaryButton.setBackgroundColor(mMidtransSDK.getColorTheme().getPrimaryColor());
+                }
+
                 // Set button confirm color
                 FancyButton confirmPayButton = (FancyButton) findViewById(R.id.btn_confirm_payment);
                 if (confirmPayButton != null) {

@@ -38,6 +38,7 @@ public class DanamonOnlineActivity extends BasePaymentActivity implements BasePa
     private void bindData() {
         setPageTitle(getString(R.string.payment_method_danamon_online));
         buttonPrimary.setText(getString(R.string.confirm_payment));
+        buttonPrimary.setTextBold();
     }
 
     private void initActionButton() {

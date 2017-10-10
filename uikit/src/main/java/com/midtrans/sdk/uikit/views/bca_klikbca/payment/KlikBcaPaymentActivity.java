@@ -69,6 +69,7 @@ public class KlikBcaPaymentActivity extends BasePaymentActivity implements BaseP
     private void bindData() {
         buttonPayment.setText(getString(R.string.confirm_payment));
         textTitle.setText(getString(R.string.klik_bca));
+        buttonPayment.setTextBold();
     }
 
     private void initProperties() {

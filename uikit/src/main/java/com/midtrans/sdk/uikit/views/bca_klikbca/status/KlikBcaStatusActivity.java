@@ -72,6 +72,7 @@ public class KlikBcaStatusActivity extends BasePaymentActivity {
             }
         }
         buttonFinish.setText(getString(R.string.complete_payment_at_klik_bca));
+        buttonFinish.setTextBold();
         textTitle.setText(getString(R.string.klik_bca));
     }
 

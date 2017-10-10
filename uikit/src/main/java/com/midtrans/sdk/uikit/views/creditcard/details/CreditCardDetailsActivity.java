@@ -493,6 +493,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     }
 
     private void intPaymentButton() {
+        buttonPayNow.setTextBold();
         buttonPayNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -702,7 +703,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
         buttonScanCard = (FancyButton) findViewById(R.id.button_scan_card);
         buttonDeleteCard = (FancyButton) findViewById(R.id.button_delete);
-        buttonPayNow = (FancyButton) findViewById(R.id.btn_pay_now);
+        buttonPayNow = (FancyButton) findViewById(R.id.button_primary);
         buttonDecreaseInstallment = (FancyButton) findViewById(R.id.button_installment_decrease);
         buttonIncreaseInstallment = (FancyButton) findViewById(R.id.button_installment_increase);
 

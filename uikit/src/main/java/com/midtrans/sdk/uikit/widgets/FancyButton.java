@@ -803,6 +803,12 @@ public class FancyButton extends LinearLayout {
             mTextView.setText(text);
     }
 
+    public void setTextBold() {
+        if (mTextView != null && mTextTypeFace != null) {
+            mTextView.setTypeface(mTextTypeFace, Typeface.BOLD);
+        }
+    }
+
     /**
      * Return TextView Object of the FancyButton
      * @return TextView Object

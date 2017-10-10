@@ -32,12 +32,15 @@
 
         </ScrollView>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/two_dp"
+            android:layout_above="@+id/layout_primary_button"
+            android:background="@color/light_gray" />
+
         <include
             android:id="@+id/layout_primary_button"
-            layout="@layout/layout_primary_button"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/button_size"
-            android:layout_alignParentBottom="true" />
+            layout="@layout/layout_primary_button" />
     </RelativeLayout>
 
     <include layout="@layout/layout_loading_and_badge" />

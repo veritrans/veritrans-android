@@ -5,6 +5,7 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
 
 import com.midtrans.sdk.corekit.core.PaymentType;
@@ -56,7 +57,7 @@ public abstract class BaseVaPaymentStatusActivity extends BasePaymentActivity {
     @Override
     public void bindViews() {
         textTitle = (DefaultTextView) findViewById(R.id.text_page_title);
-        buttonCompletePayment = (FancyButton) findViewById(R.id.button_complete_payment);
+        buttonCompletePayment = (FancyButton) findViewById(R.id.button_primary);
 
         tabInstruction = (TabLayout) findViewById(R.id.tab_instructions);
         pagerInstruction = (MagicViewPager) findViewById(R.id.pager_instruction);
@@ -133,7 +134,7 @@ public abstract class BaseVaPaymentStatusActivity extends BasePaymentActivity {
         }
 
         pagerInstruction.clearOnPageChangeListeners();
-        pagerInstruction.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        final OnPageChangeListener onPageChangeListener = new OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -147,6 +148,13 @@ public abstract class BaseVaPaymentStatusActivity extends BasePaymentActivity {
             @Override
             public void onPageScrollStateChanged(int state) {
 
+            }
+        };
+        pagerInstruction.addOnPageChangeListener(onPageChangeListener);
+        pagerInstruction.post(new Runnable() {
+            @Override
+            public void run() {
+                onPageChangeListener.onPageSelected(pagerInstruction.getCurrentItem());
             }
         });
     }
@@ -212,6 +220,7 @@ public abstract class BaseVaPaymentStatusActivity extends BasePaymentActivity {
                 buttonCompletePayment.setText(getString(R.string.complete_payment_at_atm));
                 break;
         }
+        buttonCompletePayment.setTextBold();
     }
 
     protected void setTitle() {
