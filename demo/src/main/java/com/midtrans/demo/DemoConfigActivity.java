@@ -76,6 +76,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private static final String INSTALLMENT_TYPE = "config.installment";
     private static final String INSTALLMENT_REQUIRED = "config.installment.required";
     private static final String BNI_POINT_TYPE = "config.bni.point";
+    private static final String MANDIRI_POINT_TYPE = "config.mandiri.point";
     private static final String PAYMENT_CHANNELS_TYPE = "config.channels";
     private static final String AUTO_READ_SMS_TYPE = "config.auto.otp";
 
@@ -101,6 +102,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private TextView customBniVaTitle;
     private TextView installmentTitle;
     private TextView bniPointTitle;
+    private TextView mandiriPointTitle;
     private TextView paymentChannelsTitle;
     private TextView autoReadSmsTitle;
 
@@ -120,6 +122,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private LinearLayout customBniVaContainer;
     private RadioGroup installmentContainer;
     private RadioGroup bniPointContainer;
+    private RadioGroup mandiriPointContainer;
     private LinearLayout paymentChannelsContainer;
     private LinearLayout changeInstallmentContainer;
     private RadioGroup autoReadSmsContainer;
@@ -138,6 +141,11 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
      */
     private AppCompatRadioButton bniPointOnlyEnabledSelection;
     private AppCompatRadioButton bniPointOnlyDisabledSelection;
+    /**
+     * Radio Button selection for Mandiri Point
+     */
+    private AppCompatRadioButton mandiriPointOnlyEnabledSelection;
+    private AppCompatRadioButton mandiriPointOnlyDisabledSelection;
     /**
      * Radio Button Selection for Card Click
      **/
@@ -256,6 +264,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         initInstallmentSelection();
         initChangeInstallmentOption();
         initBniPointSelection();
+        initMandiriPointSelection();
         initAutoReadOtpSelection();
         initTitleClicks();
         initNextButton();
@@ -283,6 +292,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         customBniVaTitle = (TextView) findViewById(R.id.title_custom_bni_va);
         installmentTitle = (TextView) findViewById(R.id.title_installment_type);
         bniPointTitle = (TextView) findViewById(R.id.title_bni_point_type);
+        mandiriPointTitle = (TextView) findViewById(R.id.title_mandiri_point_type);
         paymentChannelsTitle = (TextView) findViewById(R.id.title_custom_payment_channels);
         autoReadSmsTitle = (TextView) findViewById(R.id.title_auto_read_type);
 
@@ -302,6 +312,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         installmentContainer = (RadioGroup) findViewById(R.id.enable_installment_container);
         changeInstallmentContainer = (LinearLayout) findViewById(R.id.change_installment_container);
         bniPointContainer = (RadioGroup) findViewById(R.id.bni_point_type_container);
+        mandiriPointContainer = (RadioGroup) findViewById(R.id.mandiri_point_type_container);
         paymentChannelsContainer = (LinearLayout) findViewById(R.id.payment_channels_type_container);
         autoReadSmsContainer = (RadioGroup) findViewById(R.id.auto_read_type_container);
 
@@ -359,6 +370,9 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
 
         bniPointOnlyEnabledSelection = (AppCompatRadioButton) findViewById(R.id.type_bni_point_enabled);
         bniPointOnlyDisabledSelection = (AppCompatRadioButton) findViewById(R.id.type_bni_point_disabled);
+
+        mandiriPointOnlyEnabledSelection = (AppCompatRadioButton) findViewById(R.id.type_mandiri_point_enabled);
+        mandiriPointOnlyDisabledSelection = (AppCompatRadioButton) findViewById(R.id.type_mandiri_point_disabled);
 
         paymentChannelsAllSelection = (AppCompatRadioButton) findViewById(R.id.type_payment_channels_show_all);
         paymentChannelsSelectedSelection = (AppCompatRadioButton) findViewById(R.id.type_payment_channels_show_selected);
@@ -702,6 +716,29 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             }
         });
 
+        mandiriPointTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!mandiriPointTitle.isSelected()) {
+                            unselectAllTitles();
+                            hideAllSelections();
+                            mandiriPointTitle.setSelected(true);
+                            setTextViewSelectedColor(mandiriPointTitle);
+                            setTextViewDrawableLeftColorFilter(mandiriPointTitle);
+                            // Show pre auth container
+                            mandiriPointContainer.setVisibility(View.VISIBLE);
+                        } else {
+                            unselectAllTitles();
+                            hideAllSelections();
+                        }
+                    }
+                }, DELAY);
+            }
+        });
+
         autoReadSmsTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -848,6 +885,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     oneClickSelection.setChecked(true);
                     resetInstallmentSelection();
                     resetBniPointSelection();
+                    resetMandiriPointSelection();
                     break;
                 default:
                     cardClickTitle.setText(R.string.credit_card_type_normal);
@@ -886,6 +924,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     secureEnabledSelection.setChecked(true);
                     resetInstallmentSelection();
                     resetBniPointSelection();
+                    resetMandiriPointSelection();
                 }
             }
         });
@@ -1563,6 +1602,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     installmentTitle.setText(bniTitle);
                     installmentBniSelection.setChecked(true);
                     resetBniPointSelection();
+                    resetMandiriPointSelection();
                     updateSelectedInstallment();
                     showEditInstallmentBniOption();
                     resetAcquiringBank();
@@ -1573,6 +1613,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     installmentTitle.setText(mandiriTitle);
                     installmentMandiriSelection.setChecked(true);
                     resetBniPointSelection();
+                    resetMandiriPointSelection();
                     updateSelectedInstallment();
                     showEditInstallmentMandiriOption();
                     resetAcquiringBank();
@@ -1583,6 +1624,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     installmentTitle.setText(bcaTitle);
                     installmentMandiriSelection.setChecked(true);
                     resetBniPointSelection();
+                    resetMandiriPointSelection();
                     updateSelectedInstallment();
                     showEditInstallmentBcaOption();
                     setBcaAcquiringBank();
@@ -1593,6 +1635,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     installmentTitle.setText(briTitle);
                     installmentBriSelection.setChecked(true);
                     resetBniPointSelection();
+                    resetMandiriPointSelection();
                     updateSelectedInstallment();
                     showEditInstallmentBriOption();
                     setBriAcquiringBank();
@@ -1604,6 +1647,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     installmentTitle.setText(cimbTitle);
                     installmentBriSelection.setChecked(true);
                     resetBniPointSelection();
+                    resetMandiriPointSelection();
                     updateSelectedInstallment();
                     showEditInstallmentCimbOption();
                     setCimbAcquiringBank();
@@ -1646,6 +1690,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     installmentBniSelection.setChecked(true);
                     hideEditInstallmentOption();
                     resetBniPointSelection();
+                    resetMandiriPointSelection();
                     showInstallmentDialog(false);
                     showEditInstallmentBniOption();
                     resetAcquiringBank();
@@ -1663,6 +1708,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     installmentMandiriSelection.setChecked(true);
                     hideEditInstallmentOption();
                     resetBniPointSelection();
+                    resetMandiriPointSelection();
                     showInstallmentDialog(false);
                     showEditInstallmentMandiriOption();
                     resetAcquiringBank();
@@ -1680,6 +1726,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     installmentBcaSelection.setChecked(true);
                     hideEditInstallmentOption();
                     resetBniPointSelection();
+                    resetMandiriPointSelection();
                     showInstallmentDialog(false);
                     showEditInstallmentBcaOption();
                     setBcaAcquiringBank();
@@ -1697,6 +1744,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     installmentBriSelection.setChecked(true);
                     hideEditInstallmentOption();
                     resetBniPointSelection();
+                    resetMandiriPointSelection();
                     showInstallmentDialog(false);
                     showEditInstallmentBriOption();
                     setBriAcquiringBank();
@@ -1714,6 +1762,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     installmentCimbSelection.setChecked(true);
                     hideEditInstallmentOption();
                     resetBniPointSelection();
+                    resetMandiriPointSelection();
                     showInstallmentDialog(false);
                     showEditInstallmentCimbOption();
                     setCimbAcquiringBank();
@@ -1845,6 +1894,10 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         bniPointOnlyDisabledSelection.setChecked(true);
     }
 
+    private void resetMandiriPointSelection() {
+        mandiriPointOnlyDisabledSelection.setChecked(true);
+    }
+
 
     private void initBniPointSelection() {
         final boolean bniPointEnabled = DemoPreferenceHelper.getBooleanPreference(this, BNI_POINT_TYPE, false);
@@ -1865,6 +1918,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     bniPointTitle.setText(R.string.bni_point_only_enabled);
                     resetInstallmentSelection();
                     resetOneClickSelection();
+                    resetMandiriPointSelection();
                 }
             }
         });
@@ -1874,6 +1928,41 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 if (checked) {
                     bniPointTitle.setText(R.string.bni_point_only_disabled);
+                }
+            }
+        });
+    }
+
+    private void initMandiriPointSelection() {
+        final boolean mandiriPointEnabled = DemoPreferenceHelper.getBooleanPreference(this, MANDIRI_POINT_TYPE, false);
+        if (mandiriPointEnabled) {
+            mandiriPointTitle.setText(R.string.mandiri_point_only_enabled);
+            mandiriPointOnlyEnabledSelection.setChecked(true);
+            resetInstallmentSelection();
+            resetOneClickSelection();
+        } else {
+            mandiriPointTitle.setText(R.string.mandiri_point_only_disabled);
+            mandiriPointOnlyDisabledSelection.setChecked(true);
+        }
+
+        mandiriPointOnlyEnabledSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    mandiriPointTitle.setText(R.string.mandiri_point_only_enabled);
+                    resetInstallmentSelection();
+                    resetOneClickSelection();
+                    resetBniPointSelection();
+                    secureEnabledSelection.setChecked(true);
+                }
+            }
+        });
+
+        mandiriPointOnlyDisabledSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    mandiriPointTitle.setText(R.string.mandiri_point_only_disabled);
                 }
             }
         });
@@ -1935,6 +2024,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 savePreAuthSelection();
                 saveInstallmentSelection();
                 saveBniPointSelection();
+                saveMandiriPointSelection();
                 saveAutoReadSmsSelection();
                 saveEnabledPayments();
 
@@ -1963,6 +2053,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 promoDisabledSelection.setChecked(true);
                 preAuthDisabledSelection.setChecked(true);
                 bniPointOnlyDisabledSelection.setChecked(true);
+                mandiriPointOnlyDisabledSelection.setChecked(true);
                 autoReadSmsDisabledSelection.setChecked(true);
                 Toast.makeText(DemoConfigActivity.this, getString(R.string.reset_setting_notification), Toast.LENGTH_SHORT).show();
             }
@@ -2115,6 +2206,14 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         }
     }
 
+    private void saveMandiriPointSelection() {
+        if (mandiriPointOnlyEnabledSelection.isChecked()) {
+            DemoPreferenceHelper.setBooleanPreference(this, MANDIRI_POINT_TYPE, true);
+        } else {
+            DemoPreferenceHelper.setBooleanPreference(this, MANDIRI_POINT_TYPE, false);
+        }
+    }
+
     private void saveAutoReadSmsSelection() {
         if (autoReadSmsEnabledSelection.isChecked()) {
             DemoPreferenceHelper.setBooleanPreference(this, AUTO_READ_SMS_TYPE, true);
@@ -2163,6 +2262,9 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         bniPointTitle.setSelected(false);
         bniPointTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
         clearTextViewDrawableLeftColorFilter(bniPointTitle);
+        mandiriPointTitle.setSelected(false);
+        mandiriPointTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
+        clearTextViewDrawableLeftColorFilter(mandiriPointTitle);
         paymentChannelsTitle.setSelected(false);
         paymentChannelsTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
         clearTextViewDrawableLeftColorFilter(paymentChannelsTitle);
@@ -2186,6 +2288,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         installmentContainer.setVisibility(View.GONE);
         changeInstallmentContainer.setVisibility(View.GONE);
         bniPointContainer.setVisibility(View.GONE);
+        mandiriPointContainer.setVisibility(View.GONE);
         paymentChannelsContainer.setVisibility(View.GONE);
         autoReadSmsContainer.setVisibility(View.GONE);
     }
@@ -2389,6 +2492,9 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         bniPointOnlyEnabledSelection.setSupportButtonTintList(colorStateList);
         bniPointOnlyDisabledSelection.setSupportButtonTintList(colorStateList);
 
+        mandiriPointOnlyEnabledSelection.setSupportButtonTintList(colorStateList);
+        mandiriPointOnlyDisabledSelection.setSupportButtonTintList(colorStateList);
+
         paymentChannelsAllSelection.setSupportButtonTintList(colorStateList);
         paymentChannelsSelectedSelection.setSupportButtonTintList(colorStateList);
 
@@ -2471,6 +2577,9 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
 
         // set creditcard payment by BNI only
         setBniPointOption(creditCard);
+
+        // set creditcard payment by Mandiri only
+        setMandiriPointOption(creditCard);
 
         // set bank and channel on creditcard
         if (bankMandiriSelection.isChecked()) {
@@ -2675,6 +2784,68 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             //add bni bin number for normal payment and 3DS
             whiteListBins.add("410505");
             whiteListBins.add("526422");
+            creditCard.setWhiteListBins(whiteListBins);
+        }
+    }
+
+    private void setMandiriPointOption(CreditCard creditCard) {
+        if (mandiriPointOnlyEnabledSelection.isChecked()) {
+            ArrayList<String> whiteListBins = new ArrayList<>();
+            //add mandiri bin number
+            whiteListBins.add("400376");
+            whiteListBins.add("400378");
+            whiteListBins.add("400385");
+            whiteListBins.add("400479");
+            whiteListBins.add("400481");
+            whiteListBins.add("405651");
+            whiteListBins.add("409766");
+            whiteListBins.add("413718");
+            whiteListBins.add("413719");
+            whiteListBins.add("414931");
+            whiteListBins.add("415016");
+            whiteListBins.add("415017");
+            whiteListBins.add("415018");
+            whiteListBins.add("415030");
+            whiteListBins.add("415031");
+            whiteListBins.add("415032");
+            whiteListBins.add("416230");
+            whiteListBins.add("416231");
+            whiteListBins.add("416232");
+            whiteListBins.add("421057");
+            whiteListBins.add("421195");
+            whiteListBins.add("421197");
+            whiteListBins.add("421313");
+            whiteListBins.add("425945");
+            whiteListBins.add("434075");
+            whiteListBins.add("437527");
+            whiteListBins.add("437528");
+            whiteListBins.add("437529");
+            whiteListBins.add("445076");
+            whiteListBins.add("450183");
+            whiteListBins.add("450184");
+            whiteListBins.add("450185");
+            whiteListBins.add("461699");
+            whiteListBins.add("461700");
+            whiteListBins.add("463199");
+            whiteListBins.add("468748");
+            whiteListBins.add("468749");
+            whiteListBins.add("468984");
+            whiteListBins.add("483795");
+            whiteListBins.add("483796");
+            whiteListBins.add("486682");
+            whiteListBins.add("489594");
+            whiteListBins.add("489764");
+            whiteListBins.add("490283");
+            whiteListBins.add("490284");
+            whiteListBins.add("512676");
+            whiteListBins.add("512724");
+            whiteListBins.add("523536");
+            whiteListBins.add("524325");
+            whiteListBins.add("537793");
+            whiteListBins.add("550615");
+            whiteListBins.add("557338");
+            whiteListBins.add("467840");
+            whiteListBins.add("409790");
             creditCard.setWhiteListBins(whiteListBins);
         }
     }
