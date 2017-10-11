@@ -88,7 +88,7 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
     private void initializeView() {
         textViewAmount = (TextView) findViewById(R.id.text_amount);
         textViewTitle = (TextView) findViewById(R.id.text_title);
-        buttonConfirmPayment = (FancyButton) findViewById(R.id.btn_confirm_payment);
+        buttonConfirmPayment = (FancyButton) findViewById(R.id.button_primary);
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
 
         initializeTheme();
@@ -124,6 +124,8 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
 
     private void bindDataToView() {
         textViewTitle.setText(getString(R.string.xl_tunai));
+        buttonConfirmPayment.setText(getString(R.string.confirm_payment));
+        buttonConfirmPayment.setTextBold();
         if (midtransSDK != null) {
             textViewAmount.setText(getString(R.string.prefix_money,
                     Utils.getFormattedAmount(midtransSDK.getTransactionRequest().getAmount())));
@@ -137,7 +139,7 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onClick(View view) {
 
-        if (view.getId() == R.id.btn_confirm_payment) {
+        if (view.getId() == R.id.button_primary) {
             if (currentFragment.equalsIgnoreCase(HOME_FRAGMENT)) {
                 performTransaction();
             } else {

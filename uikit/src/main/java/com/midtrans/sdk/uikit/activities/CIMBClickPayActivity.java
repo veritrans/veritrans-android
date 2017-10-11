@@ -64,7 +64,7 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void initializeViews() {
-        buttonConfirmPayment = (FancyButton) findViewById(R.id.btn_confirm_payment);
+        buttonConfirmPayment = (FancyButton) findViewById(R.id.button_primary);
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         logo = (ImageView) findViewById(R.id.merchant_logo);
         textTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
@@ -107,10 +107,9 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
 
     private void bindData() {
         textTitle.setText(getString(R.string.cimb_clicks));
+        buttonConfirmPayment.setText(getString(R.string.confirm_payment));
+        buttonConfirmPayment.setTextBold();
         if (mMidtransSDK != null) {
-            if (mMidtransSDK.getSemiBoldText() != null) {
-                buttonConfirmPayment.setCustomTextFont(mMidtransSDK.getSemiBoldText());
-            }
             textTotalAmount.setText(getString(R.string.prefix_money,
                     Utils.getFormattedAmount(mMidtransSDK.getTransactionRequest().getAmount())));
         }
@@ -127,7 +126,7 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.btn_confirm_payment) {
+        if (view.getId() == R.id.button_primary) {
             makeTransaction();
         }
     }

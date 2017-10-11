@@ -74,7 +74,7 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
 
     private void initializeViews() {
 
-        mButtonConfirmPayment = (FancyButton) findViewById(R.id.btn_confirm_payment);
+        mButtonConfirmPayment = (FancyButton) findViewById(R.id.button_primary);
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         mTextTitle = (DefaultTextView) findViewById(R.id.text_title);
         mTextTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
@@ -110,10 +110,9 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
 
     private void bindDataToView() {
         mTextTitle.setText(getString(R.string.mandiri_click_pay));
+        mButtonConfirmPayment.setText(getString(R.string.confirm_payment));
+        mButtonConfirmPayment.setTextBold();
         if (mMidtransSDK != null) {
-            if (mMidtransSDK.getSemiBoldText() != null) {
-                mButtonConfirmPayment.setCustomTextFont(mMidtransSDK.getSemiBoldText());
-            }
             mTextTotalAmount.setText(getString(R.string.prefix_money,
                     Utils.getFormattedAmount(mMidtransSDK.getTransactionRequest().getAmount())));
         }
@@ -148,7 +147,7 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
     @Override
     public void onClick(View view) {
 
-        if (view.getId() == R.id.btn_confirm_payment) {
+        if (view.getId() == R.id.button_primary) {
 
             if (currentFragment.equalsIgnoreCase(HOME_FRAGMENT)) {
 

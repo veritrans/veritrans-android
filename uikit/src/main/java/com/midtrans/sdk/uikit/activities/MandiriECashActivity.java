@@ -72,19 +72,18 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void initializeViews() {
-        buttonConfirmPayment = (FancyButton) findViewById(R.id.btn_confirm_payment);
+        buttonConfirmPayment = (FancyButton) findViewById(R.id.button_primary);
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         textTitle = (DefaultTextView) findViewById(R.id.text_title);
         textTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
 
         initializeTheme();
         if (mMidtransSDK != null) {
-            if (mMidtransSDK.getSemiBoldText() != null) {
-                buttonConfirmPayment.setCustomTextFont(mMidtransSDK.getSemiBoldText());
-            }
             textTotalAmount.setText(getString(R.string.prefix_money,
                     Utils.getFormattedAmount(mMidtransSDK.getTransactionRequest().getAmount())));
         }
+        buttonConfirmPayment.setText(getString(R.string.confirm_payment));
+        buttonConfirmPayment.setTextBold();
         textTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         textTitle.setText(getString(R.string.mandiri_e_cash));
         mToolbar.setTitle("");
@@ -127,7 +126,7 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.btn_confirm_payment) {
+        if (view.getId() == R.id.button_primary) {
             makeTransaction();
         }
     }
