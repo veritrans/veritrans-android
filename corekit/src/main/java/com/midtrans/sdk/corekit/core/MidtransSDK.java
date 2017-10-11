@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
-
 import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.BuildConfig;
 import com.midtrans.sdk.corekit.R;
@@ -40,7 +39,6 @@ import com.midtrans.sdk.corekit.models.snap.payment.BasePaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.IndosatDompetkuPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.TelkomselEcashPaymentRequest;
 import com.midtrans.sdk.corekit.utilities.Utils;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -162,10 +160,6 @@ public class MidtransSDK {
         return midtransSDK;
     }
 
-    public boolean isSdkNotAvailable() {
-        return sdkNotAvailable;
-    }
-
     /**
      * Get Veritrans SDK share preferences instance
      *
@@ -180,6 +174,10 @@ public class MidtransSDK {
      */
     static void setmPreferences(SharedPreferences preferences) {
         mPreferences = preferences;
+    }
+
+    public boolean isSdkNotAvailable() {
+        return sdkNotAvailable;
     }
 
     private String getFlow(String flow) {
@@ -1789,7 +1787,7 @@ public class MidtransSDK {
 
 
     /**
-     * it will get bni points from snap backend
+     * it will get bank points (BNI or Mandiri) from snap backend
      *
      * @param cardToken credit card token
      * @param callback  bni point callback instance
@@ -2004,17 +2002,17 @@ public class MidtransSDK {
         return transaction.getMerchantData();
     }
 
-    public void setTransaction(Transaction transaction) {
-        if (transaction != null) {
-            this.transaction = transaction;
-        }
-    }
-
     public Transaction getTransaction() {
         if (this.transaction == null) {
             this.transaction = new Transaction();
         }
         return this.transaction;
+    }
+
+    public void setTransaction(Transaction transaction) {
+        if (transaction != null) {
+            this.transaction = transaction;
+        }
     }
 
     public CardRegistrationCallback getUiCardRegistrationCallback() {

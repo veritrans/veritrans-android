@@ -524,18 +524,28 @@
     <string name="bni_debit_online_card">Kartu Debit Online BNI</string>
     <string name="deleted">Dihapus</string>
     <string name="undo">Batalkan</string>
+
+    <string name="redeem_bni_reward">Tukarkan BNI Reward Points</string>
+    <string name="redeem_mandiri_point">Tukarkan Fiestapoin</string>
+    <string name="redeem_100_point">DISKON 100 FIESTAPOIN</string>
+    <string name="amount_after_discount">TOTAL PEMBAYARAN SETELAH DISKON</string>
     <string name="delete_this_card">Hapus Kartu Ini</string>
-    <string name="redeem_bni_reward">Tukarkan poin hadiah BNI</string>
-    <string name="amount_after_discount">Jumlah pembayaran setelah diskon</string>
     <string name="redeem_point">Tukar Poin</string>
     <string name="redeem_bank_point_title">Gunakan Poin %1$s</string>
     <string name="total_point">Total poin hadiah %1$s Anda adalah %2$s</string>
-    <string name="redeem_bni_title">Tukar Poin Hadiah BNI</string>
-    <string name="redeem_bni_details">Anda dapat membayar sebagian dengan Poin Reward BNI melalui Kartu Kredit Anda.</string>
+    <string name="redeem_bni_title">BNI Reward Points</string>
+    <string name="redeem_bni_details">Anda dapat membayar sebagian dengan BNI Reward Points melalui kartu kredit BNI Anda.</string>
+    <string name="redeem_mandiri_title">Mandiri Fiestapoin</string>
+    <string name="redeem_mandiri_details">Anda dapat membayar sebagian dengan Mandiri Fiestapoin melalui kartu kredit / debit Mandiri Anda.</string>
 
-    <string name="how_much_point">Berapa poin yang ingin anda tukarkan?</string>
+    <string name="how_much_point">Berapa poin yang ingin anda tukarkan diskon?</string>
     <string name="total_bni_point">Total poin BNI anda</string>
     <string name="status_redeemed_point">DISKON POIN</string>
+    <string name="total_bni_reward_point">Jumlah Point: %1$s</string>
+    <string name="total_mandiri_fiestapoint">Jumlah Fiestapoin: %1$s</string>
+    <string name="pay_without_bank_point">Bayar tanpa Menggunakan %1$s</string>
+    <string name="pay_with_mandiri_point">Bayar Menggunakan Mandiri Fiestapoin</string>
+    <string name="pay_with_bni_point">Bayar Menggunakan BNI Reward Points</string>
 
     <!-- BNI internet banking payment instruction -->
     <string name="bni_internet_instruction_1">Ketik alamat <a href="https://ibank.bni.co.id"><b>https://ibank.bni.co.id</b></a> kemudian klik <b>Masuk</b></string>
@@ -602,7 +612,6 @@
     <string name="notification_token_message">Perangkat token key dibutuhkan untuk cara pembayaran ini.</string>
     <string name="notification_otp_message">Biaya SMS mungkin akan dikenakan untuk cara pembayaran ini.</string>
     <string name="failed_to_get_bank_point">Gagal mengambil bank point</string>
-    <string name="total_bank_point">Total poin anda</string>
     <string name="status_rba_unsuccessful">Pembayaran belum dilakukan</string>
     <string name="message_error_internal_server">Maaf, terdapat masalah internal. Silakan ulangi lagi, atau coba dengan metode pembayaran lain.</string>
     <string name="message_virtual_account">Nomor Virtual Account</string>

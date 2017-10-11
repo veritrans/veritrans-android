@@ -1,13 +1,10 @@
 package com.midtrans.sdk.corekit.utilities;
 
+import android.text.TextUtils;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
-import android.text.TextUtils;
-
 import com.midtrans.sdk.corekit.models.snap.params.CreditCardPaymentParams;
-
 import java.io.IOException;
 
 /**
@@ -37,7 +34,7 @@ public class CustomTypeAdapter extends TypeAdapter<CreditCardPaymentParams> {
 
         out.name("save_card").value(value.isSaveCard());
 
-        if (value.getPointRedeemed() != 0.0f) {
+        if (value.isFromBankPoint()) {
             out.name("point").value(value.getPointRedeemed());
         }
 
