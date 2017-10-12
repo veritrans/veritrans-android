@@ -162,11 +162,8 @@ public class PaymentTransactionStatusFragment extends Fragment {
                 actionBt.setBackgroundColor(midtransSDK.getColorTheme().getPrimaryColor());
             }
 
-            if (midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
-                // Set instruction color
-                buttonInstruction.setBorderColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
-                buttonInstruction.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
-            }
+            buttonInstruction.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+            buttonInstruction.setIconColorFilter(ContextCompat.getColor(getContext(), R.color.white));
         }
     }
 

@@ -179,6 +179,9 @@ public class PaymentStatusActivity extends BaseActivity {
                 break;
         }
 
+        buttonInstruction.setTextColor(ContextCompat.getColor(this, R.color.white));
+        buttonInstruction.setIconColorFilter(ContextCompat.getColor(this, R.color.white));
+
         setPrimaryBackgroundColor(buttonFinish);
     }
 
