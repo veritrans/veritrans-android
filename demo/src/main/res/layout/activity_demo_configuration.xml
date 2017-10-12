@@ -821,6 +821,58 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:scaleType="center"
+                    android:src="@drawable/ic_mandiri_fp" />
+
+                <com.midtrans.demo.widgets.DemoTextView
+                    android:id="@+id/title_mandiri_point_type"
+                    style="@style/ConfigItemTextTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/bni_point_only_disabled" />
+
+            </LinearLayout>
+
+
+            <RadioGroup
+                android:id="@+id/mandiri_point_type_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/thirtytwo_dp"
+                android:paddingRight="@dimen/thirtytwo_dp"
+                android:visibility="gone">
+
+                <com.midtrans.demo.widgets.DemoRadioButton
+                    android:id="@+id/type_mandiri_point_disabled"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:checked="true"
+                    android:gravity="center_vertical"
+                    android:text="@string/disabled" />
+
+                <com.midtrans.demo.widgets.DemoRadioButton
+                    android:id="@+id/type_mandiri_point_enabled"
+                    style="@style/CustomRadioButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginStart="@dimen/eight_dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/enabled" />
+            </RadioGroup>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:scaleType="center"
                     android:src="@drawable/ic_otp" />
 
                 <com.midtrans.demo.widgets.DemoTextView
