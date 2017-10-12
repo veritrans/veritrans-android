@@ -1,11 +1,11 @@
-<RelativeLayout android:id="@+id/btn_pay_container"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/btn_pay_container"
     android:layout_width="match_parent"
     android:layout_height="@dimen/button_size"
     android:layout_alignParentBottom="true"
     android:clipToPadding="false"
-    android:padding="6dp"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:padding="6dp">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
@@ -26,6 +26,7 @@
             app:fb_textSize="15sp" />
 
         <ImageView
+            android:id="@+id/button_chevron"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="right"

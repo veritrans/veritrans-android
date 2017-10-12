@@ -380,7 +380,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         autoReadSmsDisabledSelection = (AppCompatRadioButton) findViewById(R.id.type_auto_read_disabled);
         autoReadSmsEnabledSelection = (AppCompatRadioButton) findViewById(R.id.type_auto_read_enabled);
 
-        nextButton = (FancyButton) findViewById(R.id.btn_launch_app);
+        nextButton = (FancyButton) findViewById(R.id.button_primary);
         editBcaVaButton = (ImageButton) findViewById(R.id.btn_edit_bca_va);
         editPermataVaButton = (ImageButton) findViewById(R.id.btn_edit_permata_va);
         editPaymentChannels = (ImageButton) findViewById(R.id.btn_edit_payment_method);
@@ -2376,6 +2376,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 break;
         }
         nextButton.setBackgroundColor(color);
+        nextButton.setText(getString(R.string.btn_launch_demo));
+        nextButton.setTextBold();
         resetSetting.setTextColor(color);
     }
 
