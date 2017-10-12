@@ -317,18 +317,17 @@
 
                 <com.midtrans.sdk.uikit.widgets.FancyButton
                     android:id="@+id/btn_see_instruction"
+                    style="@style/ButtonSecondary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/twenty_dp"
-                    android:padding="@dimen/eight_dp"
                     android:visibility="visible"
-                    app:fb_borderColor="@color/white"
-                    app:fb_borderWidth="1dp"
+                    app:fb_iconPaddingRight="@dimen/four_dp"
+                    app:fb_iconResource="@drawable/ic_view"
                     app:fb_defaultColor="@android:color/transparent"
                     app:fb_focusColor="@color/colorAccentLight"
                     app:fb_iconColor="?attr/colorPrimary"
-                    app:fb_radius="5dp"
                     app:fb_text="@string/see_instruction"
                     app:fb_textColor="@color/white" />
 
