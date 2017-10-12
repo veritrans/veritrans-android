@@ -29,8 +29,13 @@ public class DefaultTextView extends TextViewWithImages {
     private void init() {
         MidtransSDK paymentSdk = MidtransSDK.getInstance();
         if (paymentSdk != null) {
-            if (paymentSdk.getDefaultText() != null) {
-                Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), paymentSdk.getDefaultText());
+            if (paymentSdk.getDefaultText() != null && !paymentSdk.getDefaultText().isEmpty()) {
+                Typeface typeface = null;
+                try {
+                    typeface = Typeface.createFromAsset(getContext().getAssets(), paymentSdk.getDefaultText());
+                } catch (RuntimeException exception) {
+                    exception.printStackTrace();
+                }
                 if (typeface != null) {
                     setTypeface(typeface);
                 }
