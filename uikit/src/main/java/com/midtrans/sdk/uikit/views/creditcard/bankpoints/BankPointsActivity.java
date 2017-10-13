@@ -38,7 +38,6 @@ public class BankPointsActivity extends BasePaymentActivity {
 
     public static final String EXTRA_DATA_POINT = "point.redeemed";
     private static final String TAG = BankPointsActivity.class.getSimpleName();
-    private static final int MANDIRI_FIESTAPOIN_FIXED_AMOUNT = 100;
 
     private EditText fieldRedeemedPoint;
 
@@ -80,7 +79,7 @@ public class BankPointsActivity extends BasePaymentActivity {
         textTitle = (DefaultTextView) findViewById(R.id.text_page_title);
 
         imageBankPointLogo = (ImageView) findViewById(R.id.bank_point_logo);
-        buttonRedeemPoint = (FancyButton) findViewById(R.id.btn_redeem_point);
+        buttonRedeemPoint = (FancyButton) findViewById(R.id.button_primary);
         containerAmount = (FancyButton) findViewById(R.id.container_amount);
         containerTotalPoint = (FancyButton) findViewById(R.id.container_total_point);
     }
@@ -88,17 +87,10 @@ public class BankPointsActivity extends BasePaymentActivity {
     @Override
     public void initTheme() {
         setPrimaryBackgroundColor(buttonRedeemPoint);
-        setPrimaryBackgroundColor(buttonRedeemPoint);
         setSecondaryBackgroundColor(containerAmount);
         containerAmount.setAlpha(0.5f);
         setSecondaryBackgroundColor(containerTotalPoint);
         containerTotalPoint.setAlpha(0.5f);
-
-        // Set font into pay now button
-        String fonthPath = presenter.getSemiBoldFontPath();
-        if (!TextUtils.isEmpty(fonthPath)) {
-            buttonRedeemPoint.setCustomTextFont(fonthPath);
-        }
     }
 
     private void initRedeemedPointsField() {
@@ -163,6 +155,7 @@ public class BankPointsActivity extends BasePaymentActivity {
                 findViewById(R.id.container_fiestapoin).setVisibility(View.GONE);
                 setFocusForBniPoint();
                 buttonRedeemPoint.setText(getString(R.string.pay_with_bni_point));
+                buttonRedeemPoint.setTextBold();
                 break;
             case BankType.MANDIRI:
                 setHeaderTitle(getString(R.string.redeem_mandiri_title));
@@ -172,6 +165,7 @@ public class BankPointsActivity extends BasePaymentActivity {
                 findViewById(R.id.container_fiestapoin).setVisibility(View.VISIBLE);
                 setFiestapoinDiscount();
                 buttonRedeemPoint.setText(getString(R.string.pay_with_mandiri_point));
+                buttonRedeemPoint.setTextBold();
                 break;
             default:
                 break;

@@ -467,7 +467,7 @@ public class FancyButton extends LinearLayout {
         this.setClickable(true);
         this.setFocusable(true);
         if (mIconResource == null && mFontIcon == null && getPaddingLeft() == 0 && getPaddingRight() == 0 && getPaddingTop() == 0 && getPaddingBottom() == 0) {
-            this.setPadding(20, 20, 20, 20);
+            this.setPadding(10, 10, 10, 10);
         }
     }
 
