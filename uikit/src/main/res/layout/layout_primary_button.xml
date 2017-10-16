@@ -23,7 +23,7 @@
             app:fb_radius="@dimen/two_dp"
             app:fb_text="@string/pay_now"
             app:fb_textGravity="center_vertical"
-            app:fb_textSize="15sp" />
+            app:fb_textSize="@dimen/button_primary_text_size" />
 
         <ImageView
             android:id="@+id/button_chevron"
