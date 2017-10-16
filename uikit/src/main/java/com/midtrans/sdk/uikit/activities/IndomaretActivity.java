@@ -101,7 +101,7 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
     private void initializeView() {
         textViewAmount = (TextView) findViewById(R.id.text_amount);
         textViewTitle = (TextView) findViewById(R.id.text_title);
-        buttonConfirmPayment = (FancyButton) findViewById(R.id.btn_confirm_payment);
+        buttonConfirmPayment = (FancyButton) findViewById(R.id.button_primary);
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
 
         initializeTheme();
@@ -136,12 +136,11 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
 
     private void bindDataToView() {
         textViewTitle.setText(getString(R.string.indomaret));
+        buttonConfirmPayment.setText(getString(R.string.confirm_payment));
+        buttonConfirmPayment.setTextBold();
         if (midtransSDK != null) {
             textViewAmount.setText(getString(R.string.prefix_money,
                     Utils.getFormattedAmount(midtransSDK.getTransactionRequest().getAmount())));
-            if (midtransSDK.getSemiBoldText() != null) {
-                buttonConfirmPayment.setCustomTextFont(midtransSDK.getSemiBoldText());
-            }
             buttonConfirmPayment.setOnClickListener(this);
         }
     }
@@ -150,7 +149,7 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
 
-        if (view.getId() == R.id.btn_confirm_payment) {
+        if (view.getId() == R.id.button_primary) {
             if (currentFragment.equalsIgnoreCase(HOME_FRAGMENT)) {
                 performTransaction();
             } else {

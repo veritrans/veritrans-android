@@ -10,10 +10,10 @@
         android:layout_height="wrap_content">
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
-            android:background="@color/white"
             style="@style/ThemeOverlay.AppCompat.ActionBar"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
+            android:background="@color/white"
             app:contentInsetLeft="0dp"
             app:contentInsetStart="0dp"
             app:contentInsetStartWithNavigation="0dp"
@@ -38,10 +38,10 @@
     </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
-        android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/appbar"
+        android:layout_marginTop="16dp"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -174,34 +174,15 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <com.midtrans.sdk.uikit.widgets.FancyButton
-                android:id="@+id/btn_buy"
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/button_size"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:textColor="@color/white"
-                app:fb_defaultColor="@color/gray.primary"
-                app:fb_focusColor="@color/colorAccentLight"
-                app:fb_text="@string/btn_buy"
-                app:fb_textFont="fonts/SourceSansPro-Semibold.ttf"
-                app:fb_textGravity="center_vertical"
-                app:fb_textSize="16sp" />
+                android:layout_height="@dimen/two_dp"
+                android:layout_above="@+id/btn_pay_container"
+                android:background="@color/light_gray" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/button_size"
-                android:layout_alignParentBottom="true"
-                android:gravity="bottom|end">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="@dimen/eight_dp"
-                    android:layout_marginRight="@dimen/eight_dp"
-                    android:src="@drawable/ic_arrow_right_white" />
-            </LinearLayout>
+            <include
+                android:id="@+id/btn_pay_container"
+                layout="@layout/layout_primary_button"/>
         </RelativeLayout>
     </LinearLayout>
 </RelativeLayout>

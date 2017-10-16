@@ -105,7 +105,7 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
     private void initializeView() {
 
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        mButtonConfirmPayment = (FancyButton) findViewById(R.id.btn_confirm_payment);
+        mButtonConfirmPayment = (FancyButton) findViewById(R.id.button_primary);
         textTitle = (DefaultTextView) findViewById(R.id.text_title);
         textTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
         initializeTheme();
@@ -148,10 +148,9 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
      */
     private void bindDataToView() {
         textTitle.setText(getString(R.string.indosat_dompetku));
+        mButtonConfirmPayment.setText(getString(R.string.confirm_payment));
+        mButtonConfirmPayment.setTextBold();
         if (mMidtransSDK != null) {
-            if (mMidtransSDK.getSemiBoldText() != null) {
-                mButtonConfirmPayment.setCustomTextFont(mMidtransSDK.getSemiBoldText());
-            }
             mButtonConfirmPayment.setOnClickListener(this);
             textTotalAmount.setText(getString(R.string.prefix_money,
                     Utils.getFormattedAmount(mMidtransSDK.getTransactionRequest().getAmount())));
@@ -176,7 +175,7 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
     @Override
     public void onClick(View view) {
 
-        if (view.getId() == R.id.btn_confirm_payment) {
+        if (view.getId() == R.id.button_primary) {
 
             if (currentFragment.equalsIgnoreCase(HOME_FRAGMENT)) {
                 performTransaction();

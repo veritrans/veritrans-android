@@ -142,7 +142,7 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
         pagerInstruction = (ViewPager) findViewById(R.id.tab_view_pager);
         tabInstruction = (TabLayout) findViewById(R.id.tab_instructions);
         editEmail = (AppCompatEditText) findViewById(R.id.edit_email);
-        buttonPay = (FancyButton) findViewById(R.id.btn_pay_now);
+        buttonPay = (FancyButton) findViewById(R.id.button_primary);
 
         textNotificationToken = (DefaultTextView) findViewById(R.id.text_notificationToken);
         textNotificationOtp = (DefaultTextView) findViewById(R.id.text_notificationOtp);
@@ -485,6 +485,7 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
 
     private void setButtonPayText(String text) {
         buttonPay.setText(text);
+        buttonPay.setTextBold();
     }
 
     private void showEmailForm() {

@@ -109,7 +109,7 @@
     <string name="hint_cvv">CVV</string>
     <string name="save_card_message">Save card for later reuse</string>
     <string name="save_card_dialog">We will securely save your card details so you can reuse them later.</string>
-    <string name="pay_now">Pay now</string>
+    <string name="pay_now">Pay Now</string>
     <string name="pay_with_instalments">Pay with instalment ?</string>
     <string name="validatation_message_card_holder_name">Please enter card holder name</string>
     <string name="hint_expiry_date">Expiry(mm/yy)</string>

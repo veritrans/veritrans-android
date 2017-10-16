@@ -62,7 +62,7 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void initializeViews() {
-        btConfirmPayment = (FancyButton) findViewById(R.id.btn_confirm_payment);
+        btConfirmPayment = (FancyButton) findViewById(R.id.button_primary);
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         textTitle = (DefaultTextView) findViewById(R.id.text_title);
         textTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
@@ -101,6 +101,8 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
 
     private void bindData() {
         textTitle.setText(getString(R.string.epay_bri));
+        btConfirmPayment.setText(getString(R.string.confirm_payment));
+        btConfirmPayment.setTextBold();
         if (midtransSDK != null) {
             if (midtransSDK.getSemiBoldText() != null) {
                 btConfirmPayment.setCustomTextFont(midtransSDK.getSemiBoldText());
@@ -121,7 +123,7 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.btn_confirm_payment) {
+        if (view.getId() == R.id.button_primary) {
             makeTransaction();
         }
     }

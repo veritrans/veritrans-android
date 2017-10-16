@@ -45,7 +45,7 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
     }
 
     private void bindViews() {
-        payBtn = (FancyButton) findViewById(R.id.btn_buy);
+        payBtn = (FancyButton) findViewById(R.id.button_primary);
         amountContainer = (RelativeLayout) findViewById(R.id.amount_container);
         amountText = (TextView) findViewById(R.id.product_price_amount);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -116,6 +116,8 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
     }
 
     private void initPayButton() {
+        payBtn.setText(getString(R.string.btn_pay_20000));
+        payBtn.setTextBold();
         payBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

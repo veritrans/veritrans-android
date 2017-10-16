@@ -35,6 +35,7 @@ public class BcaKlikPayPaymentActivity extends BasePaymentActivity implements Ba
     private void bindData() {
         setPageTitle(getString(R.string.bca_klik));
         buttonPayment.setText(getString(R.string.confirm_payment));
+        buttonPayment.setTextBold();
     }
 
     private void initActionButton() {

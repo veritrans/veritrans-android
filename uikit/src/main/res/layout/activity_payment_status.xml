@@ -160,9 +160,9 @@
                     android:id="@+id/layout_status_point_amount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="vertical"
                     android:visibility="gone"
-                    tools:visibility="visible"
-                    android:orientation="vertical">
+                    tools:visibility="visible">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -386,15 +386,16 @@
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
-    <com.midtrans.sdk.uikit.widgets.FancyButton
-        android:id="@+id/button_status_finish"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/button_size"
-        android:layout_gravity="center_horizontal|bottom"
-        android:textColor="@color/white"
-        app:fb_defaultColor="@color/gray.primary"
-        app:fb_focusColor="@color/colorAccentLight"
-        app:fb_text="@string/done"
-        app:fb_textGravity="center_vertical"
-        app:fb_textSize="16sp" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom">
+
+        <include
+            android:id="@+id/btn_pay_container"
+            layout="@layout/layout_primary_button" />
+
+    </LinearLayout>
+
+
 </FrameLayout>
