@@ -30,8 +30,13 @@ public class SemiBoldTextView extends AppCompatTextView {
     private void init() {
         MidtransSDK paymentSdk = MidtransSDK.getInstance();
         if (paymentSdk != null) {
-            if (paymentSdk.getSemiBoldText() != null) {
-                Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), paymentSdk.getSemiBoldText());
+            if (paymentSdk.getSemiBoldText() != null && !paymentSdk.getSemiBoldText().isEmpty()) {
+                Typeface typeface = null;
+                try {
+                    typeface = Typeface.createFromAsset(getContext().getAssets(), paymentSdk.getSemiBoldText());
+                } catch (RuntimeException exception) {
+                    exception.printStackTrace();
+                }
                 if (typeface != null) {
                     setTypeface(typeface);
                 }
