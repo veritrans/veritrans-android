@@ -483,6 +483,9 @@
     <string name="complete_payment_kioson">Selesaikan pembayaran di Kioson</string>
     <string name="complete_payment_indomaret">Selesaikan pembayaran di Indomaret</string>
     <string name="payment_not_enabled_message">Tidak dapat membuka halaman ini, silakan aktifkan channel pembayaran ini.</string>
+    <string name="item_header">BARANG</string>
+    <string name="quantity_header">JLH</string>
+    <string name="price_header">HARGA</string>
 
     <string name="payment_method_description_credit_card">Bayar dengan VISA, MasterCard, JCB atau AMEX</string>
     <string name="payment_method_description_credit_card_2">Bayar dengan VISA atau MasterCard</string>

@@ -37,4 +37,6 @@
 
     <color name="delete_color">#D4385C</color>
     <color name="disable">#F1F1F2</color>
+
+    <color name="dim_background">#80323232</color>
 </resources>

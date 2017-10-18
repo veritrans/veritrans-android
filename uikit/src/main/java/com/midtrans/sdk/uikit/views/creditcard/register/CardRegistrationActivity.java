@@ -12,7 +12,6 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.CardRegistrationResponse;
@@ -23,9 +22,8 @@ import com.midtrans.sdk.uikit.scancard.ExternalScanner;
 import com.midtrans.sdk.uikit.scancard.ScannerModel;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
-import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
-
+import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -36,9 +34,8 @@ import java.util.Date;
 
 public class CardRegistrationActivity extends BaseActivity implements CardRegistrationView {
 
-    private static final String TAG = CardRegistrationActivity.class.getSimpleName();
     public static final String EXTRA_CALLBACK = "extra.callback";
-
+    private static final String TAG = CardRegistrationActivity.class.getSimpleName();
     private TextInputLayout containerCardNumber;
     private TextInputLayout containerCardCvv;
     private TextInputLayout containerCardExpiry;
@@ -53,7 +50,7 @@ public class CardRegistrationActivity extends BaseActivity implements CardRegist
     private ImageView imageBankLogo;
     private ImageView imageCardLogo;
 
-    private DefaultTextView textTitle;
+    private SemiBoldTextView textTitle;
 
     private CardRegistrationPresenter presenter;
     private String lastExpDate = "";
@@ -480,7 +477,7 @@ public class CardRegistrationActivity extends BaseActivity implements CardRegist
         buttonSaveCard = (FancyButton) findViewById(R.id.button_save_card);
         buttonScanCard = (FancyButton) findViewById(R.id.button_scan_card);
 
-        textTitle = (DefaultTextView) findViewById(R.id.text_page_title);
+        textTitle = (SemiBoldTextView) findViewById(R.id.text_page_title);
     }
 
     @Override

@@ -20,7 +20,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
-
 import com.bumptech.glide.Glide;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
@@ -31,6 +30,7 @@ import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
+import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 
 /**
  * Created by ziahaqi on 8/23/17.
@@ -38,20 +38,60 @@ import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 
 public class WebViewPaymentActivity extends BasePaymentActivity {
 
-    private static final String TAG = WebViewPaymentActivity.class.getSimpleName();
-
     public static final String EXTRA_PAYMENT_TYPE = "extra.paymentType";
     public static final String EXTRA_PAYMENT_URL = "extra.url";
-
+    private static final String TAG = WebViewPaymentActivity.class.getSimpleName();
     private WebView webviewContainer;
     private Toolbar toolbar;
 
     private DefaultTextView textMerchantName;
-    private DefaultTextView textTitle;
+    private SemiBoldTextView textTitle;
     private ImageView imageMerchantLogo;
 
     private String webUrl;
     private String paymentType;
+
+    private static void showCancelConfirmationDialog(final WebViewPaymentActivity activity) {
+        if (activity != null) {
+            if (!activity.isFinishing()) {
+                try {
+                    AlertDialog dialog = new AlertDialog.Builder(activity, R.style.AlertDialogCustom)
+                            .setPositiveButton(R.string.text_yes, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if (activity != null && !activity.isFinishing()) {
+                                        dialog.dismiss();
+                                        finishWebViewPayment(activity, RESULT_CANCELED);
+                                    }
+                                }
+                            })
+                            .setNegativeButton(R.string.text_no, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if (!activity.isFinishing()) {
+                                        dialog.dismiss();
+                                    }
+                                }
+                            })
+                            .setTitle(R.string.cancel_transaction)
+                            .setMessage(R.string.cancel_transaction_message)
+                            .create();
+                    dialog.show();
+                } catch (Exception e) {
+                    Logger.e(TAG, "showDialog:" + e.getMessage());
+                }
+            } else {
+                activity.finish();
+            }
+        }
+    }
+
+    private static void finishWebViewPayment(WebViewPaymentActivity activity, int resultCode) {
+        Intent returnIntent = new Intent();
+        activity.setResult(resultCode, returnIntent);
+        activity.finish();
+        activity.overrideBackAnimation();
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -119,7 +159,7 @@ public class WebViewPaymentActivity extends BasePaymentActivity {
         webviewContainer = (WebView) findViewById(R.id.webview_container);
         imageMerchantLogo = (ImageView) findViewById(R.id.merchant_logo);
 
-        textTitle = (DefaultTextView) findViewById(R.id.text_page_title);
+        textTitle = (SemiBoldTextView) findViewById(R.id.text_page_title);
         textMerchantName = (DefaultTextView) findViewById(R.id.text_page_merchant_name);
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
     }
@@ -132,7 +172,6 @@ public class WebViewPaymentActivity extends BasePaymentActivity {
         }
         toolbar.setNavigationIcon(backIcon);
     }
-
 
     protected void initMerchantLogo() {
         try {
@@ -184,40 +223,9 @@ public class WebViewPaymentActivity extends BasePaymentActivity {
         }
     }
 
-
-    private static void showCancelConfirmationDialog(final WebViewPaymentActivity activity) {
-        if (activity != null) {
-            if (!activity.isFinishing()) {
-                try {
-                    AlertDialog dialog = new AlertDialog.Builder(activity, R.style.AlertDialogCustom)
-                            .setPositiveButton(R.string.text_yes, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    if (activity != null && !activity.isFinishing()) {
-                                        dialog.dismiss();
-                                        finishWebViewPayment(activity, RESULT_CANCELED);
-                                    }
-                                }
-                            })
-                            .setNegativeButton(R.string.text_no, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    if (!activity.isFinishing()) {
-                                        dialog.dismiss();
-                                    }
-                                }
-                            })
-                            .setTitle(R.string.cancel_transaction)
-                            .setMessage(R.string.cancel_transaction_message)
-                            .create();
-                    dialog.show();
-                } catch (Exception e) {
-                    Logger.e(TAG, "showDialog:" + e.getMessage());
-                }
-            } else {
-                activity.finish();
-            }
-        }
+    @Override
+    public void onBackPressed() {
+        showCancelConfirmationDialog(this);
     }
 
     private static class MidtransWebViewClient extends WebViewClient {
@@ -278,17 +286,5 @@ public class WebViewPaymentActivity extends BasePaymentActivity {
             }
         }
 
-    }
-
-    private static void finishWebViewPayment(WebViewPaymentActivity activity, int resultCode) {
-        Intent returnIntent = new Intent();
-        activity.setResult(resultCode, returnIntent);
-        activity.finish();
-        activity.overrideBackAnimation();
-    }
-
-    @Override
-    public void onBackPressed() {
-        showCancelConfirmationDialog(this);
     }
 }
