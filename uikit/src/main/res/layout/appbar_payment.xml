@@ -50,13 +50,10 @@
                 android:id="@+id/text_page_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/four_dp"
                 android:textColor="@color/dark_gray"
                 android:textSize="@dimen/tool_bar_title_size"
                 tools:text="@string/payment_info"
                 tools:visibility="visible" />
-
         </LinearLayout>
-
     </android.support.v7.widget.Toolbar>
 </android.support.design.widget.AppBarLayout>

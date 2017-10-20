@@ -14,18 +14,13 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
-import com.bumptech.glide.Glide;
 import com.midtrans.sdk.corekit.core.Logger;
-import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.PaymentType;
-import com.midtrans.sdk.corekit.models.MerchantPreferences;
-import com.midtrans.sdk.corekit.models.snap.MerchantData;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
@@ -99,8 +94,6 @@ public class WebViewPaymentActivity extends BasePaymentActivity {
         initProperties();
         setContentView(R.layout.activity_webview_payment);
         initWebViewContainer();
-        initToolbarBackButton();
-        initMerchantLogo();
         initPageTitle();
     }
 
@@ -173,55 +166,52 @@ public class WebViewPaymentActivity extends BasePaymentActivity {
         toolbar.setNavigationIcon(backIcon);
     }
 
-    protected void initMerchantLogo() {
-        try {
-            MerchantData merchantData = MidtransSDK.getInstance().getMerchantData();
-
-            if (merchantData != null) {
-                MerchantPreferences preferences = merchantData.getPreference();
-                if (preferences != null) {
-                    String merchantName = preferences.getDisplayName();
-                    String merchantLogoUrl = preferences.getLogoUrl();
-                    if (!TextUtils.isEmpty(merchantLogoUrl)) {
-                        if (imageMerchantLogo != null) {
-                            Glide.with(this)
-                                    .load(merchantLogoUrl)
-                                    .into(imageMerchantLogo);
-                        }
-                    } else {
-                        if (merchantName != null) {
-                            if (textMerchantName != null && !TextUtils.isEmpty(merchantName)) {
-                                textMerchantName.setVisibility(View.VISIBLE);
-                                textMerchantName.setText(merchantName);
-                                if (imageMerchantLogo != null) {
-                                    imageMerchantLogo.setVisibility(View.GONE);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        } catch (RuntimeException e) {
-            Logger.e(TAG, "initMerchantLogo:" + e.getMessage());
-        }
-    }
-
-    protected void initToolbarBackButton() {
-        try {
-            if (toolbar != null) {
-                toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (isActivityRunning()) {
-                            showCancelConfirmationDialog(WebViewPaymentActivity.this);
-                        }
-                    }
-                });
-            }
-        } catch (RuntimeException e) {
-            Logger.e(TAG, "initToolbarBackButton:" + e.getMessage());
-        }
-    }
+//    protected void initMerchantLogo() {
+//        try {
+//            MerchantData merchantData = MidtransSDK.getInstance().getMerchantData();
+//
+//            if (merchantData != null) {
+//                MerchantPreferences preferences = merchantData.getPreference();
+//                if (preferences != null) {
+//                    String merchantName = preferences.getDisplayName();
+//                    String merchantLogoUrl = preferences.getLogoUrl();
+//                    if (!TextUtils.isEmpty(merchantLogoUrl)) {
+//                        if (imageMerchantLogo != null) {
+//                            Glide.with(this)
+//                                    .load(merchantLogoUrl)
+//                                    .into(imageMerchantLogo);
+//                        }
+//                    } else {
+//                        if (merchantName != null) {
+//                            if (textMerchantName != null && !TextUtils.isEmpty(merchantName)) {
+//                                textMerchantName.setVisibility(View.VISIBLE);
+//                                textMerchantName.setText(merchantName);
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        } catch (RuntimeException e) {
+//            Logger.e(TAG, "initMerchantLogo:" + e.getMessage());
+//        }
+//    }
+//
+//    protected void initToolbarBackButton() {
+//        try {
+//            if (toolbar != null) {
+//                toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        if (isActivityRunning()) {
+//                            showCancelConfirmationDialog(WebViewPaymentActivity.this);
+//                        }
+//                    }
+//                });
+//            }
+//        } catch (RuntimeException e) {
+//            Logger.e(TAG, "initToolbarBackButton:" + e.getMessage());
+//        }
+//    }
 
     @Override
     public void onBackPressed() {

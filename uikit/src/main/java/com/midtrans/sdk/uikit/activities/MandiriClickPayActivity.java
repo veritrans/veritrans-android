@@ -10,21 +10,19 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.MandiriClickPayModel;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
-import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.MandiriClickPayFragment;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
-import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
+import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 
 /**
  * Created by shivam on 11/3/15.
@@ -40,7 +38,7 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
     private MandiriClickPayFragment mMandiriClickPayFragment = null;
     private FancyButton mButtonConfirmPayment = null;
     private Toolbar mToolbar = null;
-    private DefaultTextView mTextTitle, mTextTotalAmount;
+    private SemiBoldTextView mTextTitle;
     private MidtransSDK mMidtransSDK = null;
     // for result
     private TransactionResponse transactionResponse = null;
@@ -76,14 +74,12 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
 
         mButtonConfirmPayment = (FancyButton) findViewById(R.id.button_primary);
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        mTextTitle = (DefaultTextView) findViewById(R.id.text_title);
-        mTextTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
+        mTextTitle = (SemiBoldTextView) findViewById(R.id.text_page_title);
         initializeTheme();
 
-        mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
         prepareToolbar();
-        mButtonConfirmPayment.setOnClickListener(this);
+
     }
 
     private void prepareToolbar() {
@@ -112,10 +108,7 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
         mTextTitle.setText(getString(R.string.mandiri_click_pay));
         mButtonConfirmPayment.setText(getString(R.string.confirm_payment));
         mButtonConfirmPayment.setTextBold();
-        if (mMidtransSDK != null) {
-            mTextTotalAmount.setText(getString(R.string.prefix_money,
-                    Utils.getFormattedAmount(mMidtransSDK.getTransactionRequest().getAmount())));
-        }
+        mButtonConfirmPayment.setOnClickListener(this);
     }
 
     private void setUpHomeFragment() {
@@ -312,7 +305,9 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
 
     @Override
     public void onBackPressed() {
-        if (currentFragment.equals(STATUS_FRAGMENT)) {
+        if (isDetailShown) {
+            displayOrHideItemDetails();
+        } else if (currentFragment.equals(STATUS_FRAGMENT)) {
             if (mButtonConfirmPayment.getText().toString().equalsIgnoreCase(getString(R.string.retry))) {
                 Logger.i("on retry pressed");
                 setResultAndFinish();

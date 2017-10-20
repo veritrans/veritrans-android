@@ -27,7 +27,8 @@
         <activity
             android:name="com.midtrans.sdk.uikit.activities.MandiriClickPayActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name="com.midtrans.sdk.uikit.activities.EpayBriActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"

@@ -10,14 +10,10 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
-
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
-import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.InstructionXLTunaiFragment;
@@ -25,6 +21,7 @@ import com.midtrans.sdk.uikit.fragments.XLTunaiPaymentFragment;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
+import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 
 /**
  * @author rakawm
@@ -37,9 +34,8 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
 
     public String currentFragment = "home";
 
-    private TextView textViewAmount = null;
     private FancyButton buttonConfirmPayment = null;
-    private TextView textViewTitle = null;
+    private SemiBoldTextView textViewTitle = null;
 
     private MidtransSDK midtransSDK = null;
     private Toolbar toolbar = null;
@@ -86,14 +82,12 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void initializeView() {
-        textViewAmount = (TextView) findViewById(R.id.text_amount);
-        textViewTitle = (TextView) findViewById(R.id.text_title);
+        textViewTitle = (SemiBoldTextView) findViewById(R.id.text_page_title);
         buttonConfirmPayment = (FancyButton) findViewById(R.id.button_primary);
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
 
         initializeTheme();
 
-        toolbar.setTitle(""); // disable default Text
         setSupportActionBar(toolbar);
         prepareToolbar();
     }
@@ -127,11 +121,6 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
         buttonConfirmPayment.setText(getString(R.string.confirm_payment));
         buttonConfirmPayment.setTextBold();
         if (midtransSDK != null) {
-            textViewAmount.setText(getString(R.string.prefix_money,
-                    Utils.getFormattedAmount(midtransSDK.getTransactionRequest().getAmount())));
-            if (midtransSDK.getSemiBoldText() != null) {
-                buttonConfirmPayment.setCustomTextFont(midtransSDK.getSemiBoldText());
-            }
             buttonConfirmPayment.setOnClickListener(this);
         }
     }
@@ -177,10 +166,6 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
             fragmentTransaction.addToBackStack(PAYMENT_FRAGMENT);
             fragmentTransaction.commit();
             buttonConfirmPayment.setText(getString(R.string.complete_payment_via_xl_tunai));
-            ImageView merchantLogo = (ImageView) findViewById(R.id.merchant_logo);
-            if (merchantLogo != null) {
-                merchantLogo.setVisibility(View.INVISIBLE);
-            }
             currentFragment = PAYMENT_FRAGMENT;
         } else {
             SdkUIFlowUtil.showToast(XLTunaiActivity.this, getString(R.string.error_something_wrong));
@@ -256,7 +241,9 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void onBackPressed() {
-        if (currentFragment.equals(STATUS_FRAGMENT) || currentFragment.equals(PAYMENT_FRAGMENT)) {
+        if (isDetailShown) {
+            displayOrHideItemDetails();
+        } else if (currentFragment.equals(STATUS_FRAGMENT) || currentFragment.equals(PAYMENT_FRAGMENT)) {
             setResultCode(RESULT_OK);
             setResultAndFinish();
             return;
