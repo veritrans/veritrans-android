@@ -1,5 +1,6 @@
 package com.midtrans.sdk.uikit.activities;
 
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.MandiriClickPayFragment;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
+import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 
@@ -42,6 +44,7 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
     private MidtransSDK mMidtransSDK = null;
     // for result
     private TransactionResponse transactionResponse = null;
+    private int attempt;
     private String errorMessage = null;
 
     @Override
@@ -239,16 +242,23 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
                         MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
 
                         SdkUIFlowUtil.hideProgressDialog();
+
                         MandiriClickPayActivity.this.transactionResponse = response;
                         String errorMessage = MessageUtil.createpaymentFailedMessage(MandiriClickPayActivity.this, response.getStatusCode(),
                                 response.getStatusMessage(), getString(R.string.payment_failed));
                         MandiriClickPayActivity.this.errorMessage = errorMessage;
-                        SdkUIFlowUtil.showToast(MandiriClickPayActivity.this, errorMessage);
-                        if (transactionResponse != null && (transactionResponse.getStatusCode().contains(DENY)
-                                || transactionResponse.getStatusCode().equals(getString(R.string.failed_code_400))
-                        )) {
-                            setUpTransactionStatusFragment(transactionResponse);
+                        if (transactionResponse != null && (transactionResponse.getStatusCode().contains(DENY) || transactionResponse.getStatusCode().equals(getString(R.string.failed_code_400)))) {
+                            if (attempt < UiKitConstants.MAX_ATTEMPT) {
+                                attempt += 1;
+                                SdkUIFlowUtil.showApiFailedMessage(MandiriClickPayActivity.this, errorMessage);
+                            } else {
+                                setUpTransactionStatusFragment(transactionResponse);
+                            }
                         }
+
+
+
+
                     }
 
                     @Override
@@ -284,6 +294,14 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
         initPaymentStatus(transactionResponse, errorMessage, Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY, false);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS)
+            if (resultCode == RESULT_CANCELED || resultCode == RESULT_OK) {
+                setResultAndFinish();
+            }
+    }
 
     /**
      * send result back to  {@link PaymentMethodsActivity} and finish current activity.

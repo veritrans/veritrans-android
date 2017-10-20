@@ -1,5 +1,6 @@
 package com.midtrans.sdk.uikit.activities;
 
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import com.midtrans.sdk.uikit.fragments.BankTransferFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionTelkomselCashFragment;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
+import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 
@@ -44,6 +46,7 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
     private TransactionResponse mTransactionResponse = null;
     private String errorMessage = null;
     private String telkomselToken = null;
+    private int attempt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -210,10 +213,13 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
                         mTransactionResponse = response;
                         errorMessage = getString(R.string.error_message_invalid_input_telkomsel);
 
-                        if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
-                            setUpTransactionStatusFragment(response);
+                        if (attempt < UiKitConstants.MAX_ATTEMPT) {
+                            attempt += 1;
+                            SdkUIFlowUtil.showApiFailedMessage(TelkomselCashActivity.this, errorMessage);
                         } else {
-                            SdkUIFlowUtil.showToast(TelkomselCashActivity.this, getString(R.string.error_message_invalid_input_telkomsel));
+                            if (mTransactionResponse != null) {
+                                setUpTransactionStatusFragment(mTransactionResponse);
+                            }
                         }
                     }
 
@@ -251,6 +257,15 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
 
         if (mButtonConfirmPayment != null) {
             mButtonConfirmPayment.setText(getResources().getString(R.string.retry));
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS)
+            if (resultCode == RESULT_CANCELED || resultCode == RESULT_OK) {
+            setResultAndFinish();
         }
     }
 

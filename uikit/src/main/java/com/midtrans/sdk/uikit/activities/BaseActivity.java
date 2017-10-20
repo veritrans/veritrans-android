@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
+import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.ItemDetails;
@@ -32,6 +33,8 @@ import com.midtrans.sdk.uikit.BuildConfig;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.adapters.TransactionDetailsAdapter;
 import com.midtrans.sdk.uikit.fragments.PaymentTransactionStatusFragment;
+import com.midtrans.sdk.uikit.utilities.UiKitConstants;
+import com.midtrans.sdk.uikit.views.status.PaymentStatusActivity;
 import com.midtrans.sdk.uikit.widgets.BoldTextView;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
@@ -209,12 +212,6 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-    private void hideTotalAmount() {
-        findViewById(R.id.container_item_details).setVisibility(View.GONE);
-        findViewById(R.id.btn_pay_separator).setVisibility(View.GONE);
-        findViewById(R.id.btn_pay_container).setVisibility(View.GONE);
-    }
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -312,10 +309,16 @@ public class BaseActivity extends AppCompatActivity {
 
     protected void initPaymentStatus(TransactionResponse transactionResponse, String errorMessage, int paymentMethod, boolean addToBackStack) {
         if (MidtransSDK.getInstance().getUIKitCustomSetting().isShowPaymentStatus()) {
-            PaymentTransactionStatusFragment paymentTransactionStatusFragment =
+            if (paymentMethod == Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY || paymentMethod == Constants.PAYMENT_METHOD_TELKOMSEL_CASH) {
+                Intent intent = new Intent(this, PaymentStatusActivity.class);
+                intent.putExtra(PaymentStatusActivity.EXTRA_PAYMENT_RESULT, transactionResponse);
+                startActivityForResult(intent, UiKitConstants.INTENT_CODE_PAYMENT_STATUS);
+            } else {
+                PaymentTransactionStatusFragment paymentTransactionStatusFragment =
                     PaymentTransactionStatusFragment.newInstance(transactionResponse, paymentMethod);
-            replaceFragment(paymentTransactionStatusFragment, R.id.instruction_container, addToBackStack, false);
-//            hideTotalAmount();
+                replaceFragment(paymentTransactionStatusFragment, R.id.instruction_container,
+                    addToBackStack, false);
+            }
         } else {
             setResultCode(RESULT_OK);
             setResultAndFinish(transactionResponse, errorMessage);
