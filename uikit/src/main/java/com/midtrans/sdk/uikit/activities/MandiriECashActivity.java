@@ -227,8 +227,9 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
             setResultCode(RESULT_OK);
             setResultAndFinish();
             return;
+        } else {
+            super.onBackPressed();
         }
-        super.onBackPressed();
     }
 }
 

@@ -321,7 +321,8 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
             setResultCode(RESULT_OK);
             setResultAndFinish();
             return;
+        } else {
+            super.onBackPressed();
         }
-        super.onBackPressed();
     }
 }

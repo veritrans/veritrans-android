@@ -246,8 +246,8 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
         } else if (currentFragment.equals(STATUS_FRAGMENT) || currentFragment.equals(PAYMENT_FRAGMENT)) {
             setResultCode(RESULT_OK);
             setResultAndFinish();
-            return;
+        } else {
+            super.onBackPressed();
         }
-        super.onBackPressed();
     }
 }
