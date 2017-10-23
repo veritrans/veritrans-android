@@ -4,19 +4,17 @@ import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
-
 import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.adapters.InstructionPagerAdapter;
 import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.views.banktransfer.status.BankTransferStatusPresenter;
-import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 import com.midtrans.sdk.uikit.widgets.MagicViewPager;
+import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 
 /**
  * Created by ziahaqi on 8/15/17.
@@ -33,11 +31,9 @@ public abstract class BaseVaPaymentStatusActivity extends BasePaymentActivity {
 
     protected TabLayout tabInstruction;
     protected MagicViewPager pagerInstruction;
-    private DefaultTextView textTitle;
     protected FancyButton buttonCompletePayment;
-
     protected BankTransferStatusPresenter presenter;
-
+    private SemiBoldTextView textTitle;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,7 +52,7 @@ public abstract class BaseVaPaymentStatusActivity extends BasePaymentActivity {
 
     @Override
     public void bindViews() {
-        textTitle = (DefaultTextView) findViewById(R.id.text_page_title);
+        textTitle = (SemiBoldTextView) findViewById(R.id.text_page_title);
         buttonCompletePayment = (FancyButton) findViewById(R.id.button_primary);
 
         tabInstruction = (TabLayout) findViewById(R.id.tab_instructions);

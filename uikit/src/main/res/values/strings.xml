@@ -653,6 +653,9 @@
     <string name="number_instruction7">7.</string>
     <string name="number_instruction8">8.</string>
     <string name="number_instruction9">9.</string>
+    <string name="item_header">ITEM(S)</string>
+    <string name="quantity_header">QTY</string>
+    <string name="price_header">PRICE</string>
 
     <string name="get_challenge_token">How can i get a challenge token?</string>
     <string name="kioson_instruction">See Payment Instruction</string>

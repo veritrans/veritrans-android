@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
-
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
@@ -26,7 +25,7 @@ public class KlikBcaStatusActivity extends BasePaymentActivity {
     public static final String EXTRA_PAYMENT_STATUS = "extra.status";
 
     private SemiBoldTextView textExpiry;
-    private DefaultTextView textTitle;
+    private SemiBoldTextView textTitle;
     private DefaultTextView textStatusFailed;
 
     private FancyButton buttonInstruction;
@@ -81,7 +80,7 @@ public class KlikBcaStatusActivity extends BasePaymentActivity {
         buttonFinish = (FancyButton) findViewById(R.id.button_primary);
         buttonInstruction = (FancyButton) findViewById(R.id.button_instruction);
         textExpiry = (SemiBoldTextView) findViewById(R.id.text_expiry);
-        textTitle = (DefaultTextView) findViewById(R.id.text_page_title);
+        textTitle = (SemiBoldTextView) findViewById(R.id.text_page_title);
         textStatusFailed = (DefaultTextView) findViewById(R.id.text_status_failed);
     }
 

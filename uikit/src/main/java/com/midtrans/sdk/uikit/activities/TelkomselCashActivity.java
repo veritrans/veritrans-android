@@ -1,5 +1,6 @@
 package com.midtrans.sdk.uikit.activities;
 
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -10,21 +11,20 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
-import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.BankTransferFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionTelkomselCashFragment;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
-import com.midtrans.sdk.uikit.widgets.DefaultTextView;
+import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
+import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 
 /**
  * @author rakawm
@@ -41,11 +41,12 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
 
     private MidtransSDK mMidtransSDK = null;
     private Toolbar mToolbar = null;
-    private DefaultTextView textTitle, textTotalAmount;
+    private SemiBoldTextView textTitle;
     private InstructionTelkomselCashFragment telkomselCashFragment = null;
     private TransactionResponse mTransactionResponse = null;
     private String errorMessage = null;
     private String telkomselToken = null;
+    private int attempt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,12 +91,10 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
 
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         mButtonConfirmPayment = (FancyButton) findViewById(R.id.button_primary);
-        textTitle = (DefaultTextView) findViewById(R.id.text_title);
-        textTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
+        textTitle = (SemiBoldTextView) findViewById(R.id.text_page_title);
 
         initializeTheme();
         //setup tool bar
-        mToolbar.setTitle(""); // disable default Text
         setSupportActionBar(mToolbar);
         prepareToolbar();
     }
@@ -133,8 +132,6 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
         mButtonConfirmPayment.setTextBold();
         if (mMidtransSDK != null) {
             mButtonConfirmPayment.setOnClickListener(this);
-            textTotalAmount.setText(getString(R.string.prefix_money,
-                    Utils.getFormattedAmount(mMidtransSDK.getTransactionRequest().getAmount())));
         } else {
             SdkUIFlowUtil.showToast(TelkomselCashActivity.this, getString(R.string.error_something_wrong));
             finish();
@@ -216,10 +213,13 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
                         mTransactionResponse = response;
                         errorMessage = getString(R.string.error_message_invalid_input_telkomsel);
 
-                        if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
-                            setUpTransactionStatusFragment(response);
+                        if (attempt < UiKitConstants.MAX_ATTEMPT) {
+                            attempt += 1;
+                            SdkUIFlowUtil.showApiFailedMessage(TelkomselCashActivity.this, errorMessage);
                         } else {
-                            SdkUIFlowUtil.showToast(TelkomselCashActivity.this, getString(R.string.error_message_invalid_input_telkomsel));
+                            if (mTransactionResponse != null) {
+                                setUpTransactionStatusFragment(mTransactionResponse);
+                            }
                         }
                     }
 
@@ -260,6 +260,15 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS)
+            if (resultCode == RESULT_CANCELED || resultCode == RESULT_OK) {
+            setResultAndFinish();
+        }
+    }
+
     /**
      * send result back to  {@link PaymentMethodsActivity} and finish current activity.
      */
@@ -269,7 +278,9 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
 
     @Override
     public void onBackPressed() {
-        if (currentFragment.equals(STATUS_FRAGMENT)) {
+        if (isDetailShown) {
+            displayOrHideItemDetails();
+        } else if (currentFragment.equals(STATUS_FRAGMENT)) {
             setResultCode(RESULT_OK);
             setResultAndFinish();
         } else {

@@ -10,15 +10,11 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
-
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
-import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.BankTransferFragment;
@@ -27,6 +23,7 @@ import com.midtrans.sdk.uikit.fragments.KiosonPaymentFragment;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
+import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 
 /**
  * Created by ziahaqi on 8/26/16.
@@ -38,9 +35,8 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
     public static final String SOMETHING_WENT_WRONG = "Something went wrong";
     public String currentFragment = "home";
 
-    private TextView textViewAmount = null;
     private FancyButton buttonConfirmPayment = null;
-    private TextView textViewTitle = null;
+    private SemiBoldTextView textViewTitle = null;
     private MidtransSDK midtransSDK = null;
     private Toolbar toolbar = null;
     private InstructionKiosonFragment instructionKiosonFragment = null;
@@ -98,14 +94,12 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void initializeView() {
-        textViewAmount = (TextView) findViewById(R.id.text_amount);
-        textViewTitle = (TextView) findViewById(R.id.text_title);
+        textViewTitle = (SemiBoldTextView) findViewById(R.id.text_page_title);
         buttonConfirmPayment = (FancyButton) findViewById(R.id.button_primary);
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
 
         initializeTheme();
         //setup tool bar
-        toolbar.setTitle(""); // disable default Text
         setSupportActionBar(toolbar);
         prepareToolbar();
     }
@@ -129,12 +123,7 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (currentFragment.equals(STATUS_FRAGMENT) || currentFragment.equals(PAYMENT_FRAGMENT)) {
-                    setResultCode(RESULT_OK);
-                    setResultAndFinish();
-                } else {
-                    onBackPressed();
-                }
+                onBackPressed();
             }
         });
     }
@@ -144,8 +133,6 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
         buttonConfirmPayment.setText(getString(R.string.confirm_payment));
         buttonConfirmPayment.setTextBold();
         if (midtransSDK != null) {
-            textViewAmount.setText(getString(R.string.prefix_money,
-                    Utils.getFormattedAmount(midtransSDK.getTransactionRequest().getAmount())));
             buttonConfirmPayment.setOnClickListener(this);
         }
     }
@@ -199,10 +186,6 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
             fragmentTransaction.addToBackStack(PAYMENT_FRAGMENT);
             fragmentTransaction.commit();
             buttonConfirmPayment.setText(getString(R.string.complete_payment_kioson));
-            ImageView merchantLogo = (ImageView) findViewById(R.id.merchant_logo);
-            if (merchantLogo != null) {
-                merchantLogo.setVisibility(View.INVISIBLE);
-            }
             currentFragment = PAYMENT_FRAGMENT;
         } else {
             SdkUIFlowUtil.showToast(KiosonActivity.this, SOMETHING_WENT_WRONG);
@@ -296,11 +279,13 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     public void onBackPressed() {
-        if (currentFragment.equals(STATUS_FRAGMENT)) {
+        if (isDetailShown) {
+            displayOrHideItemDetails();
+        } else if (currentFragment.equals(STATUS_FRAGMENT) || currentFragment.equals(PAYMENT_FRAGMENT)) {
             setResultCode(RESULT_OK);
             setResultAndFinish();
-            return;
+        } else {
+            super.onBackPressed();
         }
-        super.onBackPressed();
     }
 }

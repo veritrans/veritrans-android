@@ -1,5 +1,6 @@
 package com.midtrans.sdk.uikit.activities;
 
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -10,21 +11,20 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.MandiriClickPayModel;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
-import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.MandiriClickPayFragment;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
-import com.midtrans.sdk.uikit.widgets.DefaultTextView;
+import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
+import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 
 /**
  * Created by shivam on 11/3/15.
@@ -40,10 +40,11 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
     private MandiriClickPayFragment mMandiriClickPayFragment = null;
     private FancyButton mButtonConfirmPayment = null;
     private Toolbar mToolbar = null;
-    private DefaultTextView mTextTitle, mTextTotalAmount;
+    private SemiBoldTextView mTextTitle;
     private MidtransSDK mMidtransSDK = null;
     // for result
     private TransactionResponse transactionResponse = null;
+    private int attempt;
     private String errorMessage = null;
 
     @Override
@@ -76,14 +77,12 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
 
         mButtonConfirmPayment = (FancyButton) findViewById(R.id.button_primary);
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        mTextTitle = (DefaultTextView) findViewById(R.id.text_title);
-        mTextTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
+        mTextTitle = (SemiBoldTextView) findViewById(R.id.text_page_title);
         initializeTheme();
 
-        mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
         prepareToolbar();
-        mButtonConfirmPayment.setOnClickListener(this);
+
     }
 
     private void prepareToolbar() {
@@ -112,10 +111,7 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
         mTextTitle.setText(getString(R.string.mandiri_click_pay));
         mButtonConfirmPayment.setText(getString(R.string.confirm_payment));
         mButtonConfirmPayment.setTextBold();
-        if (mMidtransSDK != null) {
-            mTextTotalAmount.setText(getString(R.string.prefix_money,
-                    Utils.getFormattedAmount(mMidtransSDK.getTransactionRequest().getAmount())));
-        }
+        mButtonConfirmPayment.setOnClickListener(this);
     }
 
     private void setUpHomeFragment() {
@@ -246,16 +242,23 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
                         MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
 
                         SdkUIFlowUtil.hideProgressDialog();
+
                         MandiriClickPayActivity.this.transactionResponse = response;
                         String errorMessage = MessageUtil.createpaymentFailedMessage(MandiriClickPayActivity.this, response.getStatusCode(),
                                 response.getStatusMessage(), getString(R.string.payment_failed));
                         MandiriClickPayActivity.this.errorMessage = errorMessage;
-                        SdkUIFlowUtil.showToast(MandiriClickPayActivity.this, errorMessage);
-                        if (transactionResponse != null && (transactionResponse.getStatusCode().contains(DENY)
-                                || transactionResponse.getStatusCode().equals(getString(R.string.failed_code_400))
-                        )) {
-                            setUpTransactionStatusFragment(transactionResponse);
+                        if (transactionResponse != null && (transactionResponse.getStatusCode().contains(DENY) || transactionResponse.getStatusCode().equals(getString(R.string.failed_code_400)))) {
+                            if (attempt < UiKitConstants.MAX_ATTEMPT) {
+                                attempt += 1;
+                                SdkUIFlowUtil.showApiFailedMessage(MandiriClickPayActivity.this, errorMessage);
+                            } else {
+                                setUpTransactionStatusFragment(transactionResponse);
+                            }
                         }
+
+
+
+
                     }
 
                     @Override
@@ -291,6 +294,14 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
         initPaymentStatus(transactionResponse, errorMessage, Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY, false);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS)
+            if (resultCode == RESULT_CANCELED || resultCode == RESULT_OK) {
+                setResultAndFinish();
+            }
+    }
 
     /**
      * send result back to  {@link PaymentMethodsActivity} and finish current activity.
@@ -312,7 +323,9 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
 
     @Override
     public void onBackPressed() {
-        if (currentFragment.equals(STATUS_FRAGMENT)) {
+        if (isDetailShown) {
+            displayOrHideItemDetails();
+        } else if (currentFragment.equals(STATUS_FRAGMENT)) {
             if (mButtonConfirmPayment.getText().toString().equalsIgnoreCase(getString(R.string.retry))) {
                 Logger.i("on retry pressed");
                 setResultAndFinish();
