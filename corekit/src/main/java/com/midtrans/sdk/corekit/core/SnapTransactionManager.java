@@ -42,6 +42,7 @@ import com.midtrans.sdk.corekit.models.snap.payment.GoPayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.IndosatDompetkuPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.MandiriClickPayPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.NewMandiriClickPayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.TelkomselEcashPaymentRequest;
 
 import java.security.cert.CertPathValidatorException;
@@ -504,41 +505,51 @@ public class SnapTransactionManager extends BaseTransactionManager {
     /**
      * This method is used for payment using Mandiri Click Pay.
      *
+     * Deprecated, please see {@link com.midtrans.sdk.corekit.core.SnapTransactionManager#paymentUsingMandiriClickPay(String, NewMandiriClickPayPaymentRequest, TransactionCallback)}
+     *
      * @param authenticationToken
      * @param paymentRequest      payment request for Mandiri Click Pay
      * @param callback            transaction callback
      */
+    @Deprecated
     public void paymentUsingMandiriClickPay(final String authenticationToken, MandiriClickPayPaymentRequest paymentRequest, final TransactionCallback callback) {
+        if (paymentRequest != null) {
+            snapRestAPI.paymentUsingMandiriClickPay(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
+                @Override
+                public void success(TransactionResponse transactionResponse, Response response) {
+                    actionOnPaymentResponseSuccess(transactionResponse, response, callback);
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    actionOnPaymentResponseFailure(error, callback);
+                }
+            });
+        } else {
+            releaseResources();
+            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+        }
+    }
+
+    /**
+     * This method is used for payment using new flow of Mandiri Click Pay.
+     *
+     * @param authenticationToken
+     * @param paymentRequest      payment request for Mandiri Click Pay
+     * @param callback            transaction callback
+     */
+    public void paymentUsingMandiriClickPay(final String authenticationToken, NewMandiriClickPayPaymentRequest paymentRequest, final TransactionCallback callback) {
         final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
             snapRestAPI.paymentUsingMandiriClickPay(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
                 @Override
                 public void success(TransactionResponse transactionResponse, Response response) {
-                    releaseResources();
-                    long end = System.currentTimeMillis();
-                    if (isSDKLogEnabled) {
-                        displayResponse(transactionResponse);
-                    }
-                    if (transactionResponse != null) {
-                        if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
-                                || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
-                            callback.onSuccess(transactionResponse);
-                        } else {
-                            actionFailedTransaction(callback, transactionResponse);
-                        }
-                    } else {
-                        callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
-                    }
+                    actionOnPaymentResponseSuccess(transactionResponse, response, callback);
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-                    releaseResources();
-                    long end = System.currentTimeMillis();
-                    if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
-                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
-                    }
-                    callback.onError(new Throwable(error.getMessage(), error.getCause()));
+                    actionOnPaymentResponseFailure(error, callback);
                 }
             });
         } else {

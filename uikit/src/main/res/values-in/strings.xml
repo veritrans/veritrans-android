@@ -658,5 +658,7 @@
     <string name="danamon_online_description_2">Pastikan Anda telah memiliki User ID Danamon Online Banking sebelum melakukan pembayaran.</string>
     <string name="message_sdk_invalid">client_key  dan context tidak boleh kosong. Silakan mendefinisikan client key dan context ke SDK</string>
     <string name="message_invalid_merchant_url">Merchant base_url tidak boleh kosong, jika anda menggunakan penyimapanan kartu sendiri. Silakan mendefinisikan merchant base url pada SDK</string>
+    <string name="empty_card_number">Silakan Masukkan Nomor Kartu</string>
+    <string name="empty_challange_token">Silakan Masukkan Challange Token</string>
 
 </resources>
