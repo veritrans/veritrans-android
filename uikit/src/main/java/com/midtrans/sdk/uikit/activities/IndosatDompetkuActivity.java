@@ -10,21 +10,19 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
-import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.BankTransferFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionIndosatFragment;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
-import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
+import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 
 /**
  * Created to show and handle bank transfer and mandiri bill pay details. To handle these two
@@ -51,7 +49,7 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
     public String currentFragment = "home";
 
     private FancyButton mButtonConfirmPayment = null;
-    private DefaultTextView textTitle, textTotalAmount;
+    private SemiBoldTextView textTitle;
 
     private MidtransSDK mMidtransSDK = null;
     private Toolbar mToolbar = null;
@@ -106,8 +104,7 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
 
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         mButtonConfirmPayment = (FancyButton) findViewById(R.id.button_primary);
-        textTitle = (DefaultTextView) findViewById(R.id.text_title);
-        textTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
+        textTitle = (SemiBoldTextView) findViewById(R.id.text_page_title);
         initializeTheme();
         //setup tool bar
         setSupportActionBar(mToolbar);
@@ -152,8 +149,6 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
         mButtonConfirmPayment.setTextBold();
         if (mMidtransSDK != null) {
             mButtonConfirmPayment.setOnClickListener(this);
-            textTotalAmount.setText(getString(R.string.prefix_money,
-                    Utils.getFormattedAmount(mMidtransSDK.getTransactionRequest().getAmount())));
         } else {
             SdkUIFlowUtil.showToast(IndosatDompetkuActivity.this, getString(R.string.error_something_wrong));
             Logger.e(IndosatDompetkuActivity.class.getSimpleName(), Constants
@@ -320,11 +315,14 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
 
     @Override
     public void onBackPressed() {
-        if (currentFragment.equals(STATUS_FRAGMENT)) {
+        if (isDetailShown) {
+            displayOrHideItemDetails();
+        } else if (currentFragment.equals(STATUS_FRAGMENT)) {
             setResultCode(RESULT_OK);
             setResultAndFinish();
             return;
+        } else {
+            super.onBackPressed();
         }
-        super.onBackPressed();
     }
 }

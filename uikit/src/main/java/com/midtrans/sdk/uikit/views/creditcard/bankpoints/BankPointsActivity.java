@@ -2,18 +2,14 @@ package com.midtrans.sdk.uikit.views.creditcard.bankpoints;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatEditText;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -26,6 +22,7 @@ import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
+import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 import java.util.Locale;
 
 /**
@@ -43,7 +40,7 @@ public class BankPointsActivity extends BasePaymentActivity {
 
     private TextView textTotalPoints;
     private TextView textAmountToPay;
-    private DefaultTextView textTitle;
+    private SemiBoldTextView textTitle;
 
     private ImageView imageBankPointLogo;
 
@@ -76,7 +73,7 @@ public class BankPointsActivity extends BasePaymentActivity {
         fieldRedeemedPoint = (AppCompatEditText) findViewById(R.id.redeemed_point_field);
         textTotalPoints = (TextView) findViewById(R.id.text_total_point);
         textAmountToPay = (TextView) findViewById(R.id.text_amount_to_pay);
-        textTitle = (DefaultTextView) findViewById(R.id.text_page_title);
+        textTitle = (SemiBoldTextView) findViewById(R.id.text_page_title);
 
         imageBankPointLogo = (ImageView) findViewById(R.id.bank_point_logo);
         buttonRedeemPoint = (FancyButton) findViewById(R.id.button_primary);

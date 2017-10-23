@@ -9,19 +9,17 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.TextView;
-
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
-import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.GCIPaymentFragment;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
+import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 
 /**
  * Created by ziahaqi on 12/7/16.
@@ -33,9 +31,8 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
     public static final String STATUS_FRAGMENT = "transaction_status";
     public String currentFragment = "home";
 
-    private TextView textViewAmount = null;
     private FancyButton buttonConfirmPayment = null;
-    private TextView textViewTitle = null;
+    private SemiBoldTextView textViewTitle = null;
     private GCIPaymentFragment paymentFragment;
     private MidtransSDK midtransSDK = null;
     private Toolbar toolbar = null;
@@ -86,14 +83,12 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void initializeView() {
-        textViewAmount = (TextView) findViewById(R.id.text_amount);
-        textViewTitle = (TextView) findViewById(R.id.text_title);
+        textViewTitle = (SemiBoldTextView) findViewById(R.id.text_page_title);
         buttonConfirmPayment = (FancyButton) findViewById(R.id.button_primary);
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
 
         initializeTheme();
         //setup tool bar
-        toolbar.setTitle(""); // disable default Text
         setSupportActionBar(toolbar);
         prepareToolbar();
     }
@@ -113,6 +108,7 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
                 onBackPressed();
             }
         });
+
     }
 
     private void bindDataToView() {
@@ -120,8 +116,6 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
         buttonConfirmPayment.setText(getString(R.string.confirm_payment));
         buttonConfirmPayment.setTextBold();
         if (midtransSDK != null) {
-            textViewAmount.setText(getString(R.string.prefix_money,
-                    Utils.getFormattedAmount(midtransSDK.getTransactionRequest().getAmount())));
             buttonConfirmPayment.setOnClickListener(this);
         }
     }
@@ -234,7 +228,9 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     public void onBackPressed() {
-        if (currentFragment.equals(STATUS_FRAGMENT)) {
+        if (isDetailShown) {
+            displayOrHideItemDetails();
+        } else if (currentFragment.equals(STATUS_FRAGMENT)) {
             setResultCode(RESULT_OK);
             setResultAndFinish();
         } else {

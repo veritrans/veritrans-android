@@ -5,14 +5,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
 import com.midtrans.sdk.uikit.models.BankTransfer;
 import com.midtrans.sdk.uikit.models.EnabledPayments;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.views.banktransfer.payment.BankTransferPaymentActivity;
-import com.midtrans.sdk.uikit.widgets.DefaultTextView;
+import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 
 /**
  * Created by ziahaqi on 8/10/17.
@@ -23,7 +22,7 @@ public class BankTransferListActivity extends BasePaymentActivity implements Ban
     public static final String EXTRA_BANK_LIST = "extra.bank.list";
 
     private RecyclerView listBankTransfers;
-    private DefaultTextView textTitle;
+    private SemiBoldTextView textTitle;
 
     private BankTransferListAdapter adapter;
 
@@ -44,7 +43,7 @@ public class BankTransferListActivity extends BasePaymentActivity implements Ban
     @Override
     public void bindViews() {
         listBankTransfers = (RecyclerView) findViewById(R.id.rv_bank_list);
-        textTitle = (DefaultTextView) findViewById(R.id.text_page_title);
+        textTitle = (SemiBoldTextView) findViewById(R.id.text_page_title);
     }
 
     @Override

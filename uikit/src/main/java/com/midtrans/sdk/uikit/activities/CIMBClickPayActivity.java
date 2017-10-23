@@ -10,21 +10,19 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
-import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.InstructionCIMBFragment;
 import com.midtrans.sdk.uikit.fragments.WebviewFragment;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
-import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
+import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 
 /**
  * Created by Ankit on 11/26/15.
@@ -45,8 +43,7 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
 
     private String currentFragmentName = HOME_FRAGMENT;
     private TransactionResponse transactionResponseFromMerchant;
-    private DefaultTextView textTotalAmount, textTitle;
-
+    private SemiBoldTextView textTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,8 +64,7 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
         buttonConfirmPayment = (FancyButton) findViewById(R.id.button_primary);
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         logo = (ImageView) findViewById(R.id.merchant_logo);
-        textTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
-        textTitle = (DefaultTextView) findViewById(R.id.text_title);
+        textTitle = (SemiBoldTextView) findViewById(R.id.text_page_title);
         initializeTheme();
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
@@ -109,10 +105,6 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
         textTitle.setText(getString(R.string.cimb_clicks));
         buttonConfirmPayment.setText(getString(R.string.confirm_payment));
         buttonConfirmPayment.setTextBold();
-        if (mMidtransSDK != null) {
-            textTotalAmount.setText(getString(R.string.prefix_money,
-                    Utils.getFormattedAmount(mMidtransSDK.getTransactionRequest().getAmount())));
-        }
     }
 
     private void setUpFragment() {
@@ -229,6 +221,10 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        if (isDetailShown) {
+            displayOrHideItemDetails();
+        } else {
+            super.onBackPressed();
+        }
     }
 }

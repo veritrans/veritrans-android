@@ -7,7 +7,6 @@ import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.text.TextUtils;
 import android.view.View;
-
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
@@ -16,8 +15,8 @@ import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.views.bca_klikbca.status.KlikBcaStatusActivity;
-import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
+import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 
 /**
  * Created by ziahaqi on 9/18/17.
@@ -27,7 +26,7 @@ public class KlikBcaPaymentActivity extends BasePaymentActivity implements BaseP
     private TextInputEditText fieldUserId;
     private TextInputLayout containerUserId;
     private FancyButton buttonPayment;
-    private DefaultTextView textTitle;
+    private SemiBoldTextView textTitle;
 
     private KlikBcaPaymentPresenter presenter;
 
@@ -81,7 +80,7 @@ public class KlikBcaPaymentActivity extends BasePaymentActivity implements BaseP
         buttonPayment = (FancyButton) findViewById(R.id.button_primary);
         fieldUserId = (TextInputEditText) findViewById(R.id.edit_user_id);
         containerUserId = (TextInputLayout) findViewById(R.id.container_user_id);
-        textTitle = (DefaultTextView) findViewById(R.id.text_page_title);
+        textTitle = (SemiBoldTextView) findViewById(R.id.text_page_title);
     }
 
     @Override

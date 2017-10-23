@@ -48,6 +48,7 @@ import com.midtrans.sdk.uikit.views.status.PaymentStatusActivity;
 import com.midtrans.sdk.uikit.views.webview.WebViewPaymentActivity;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
+import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -76,7 +77,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     private TextView textCardExpiryError;
     private TextView textInstallmentTerm;
     private TextView textTitleInstallment;
-    private DefaultTextView textTitle;
+    private SemiBoldTextView textTitle;
 
     private ImageView imageCardLogo;
     private ImageView imageBankLogo;
@@ -683,7 +684,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
         textInstallmentTerm = (TextView) findViewById(R.id.text_installment_term);
         textTitleInstallment = (TextView) findViewById(R.id.title_installment);
-        textTitle = (DefaultTextView) findViewById(R.id.text_page_title);
+        textTitle = (SemiBoldTextView) findViewById(R.id.text_page_title);
         textCardNumberHint = (DefaultTextView) findViewById(R.id.hint_card_number);
         textExpriyHint = (DefaultTextView) findViewById(R.id.hint_card_expiry);
         textCvvHint = (DefaultTextView) findViewById(R.id.hint_card_cvv);
