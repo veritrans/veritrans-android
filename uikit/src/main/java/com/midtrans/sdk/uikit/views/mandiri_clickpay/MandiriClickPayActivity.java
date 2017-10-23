@@ -49,7 +49,7 @@ public class MandiriClickPayActivity extends BasePaymentActivity implements Mand
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activiy_mandiri_clickpay);
+        setContentView(R.layout.activity_new_mandiri_clickpay);
         initProperties();
         initEditCardTextWatcher();
         initActionButton();
