@@ -855,5 +855,5 @@
     <string name="message_sdk_invalid">Client key  and context cannot be null or empty. Please set the client key and context to SDK</string>
     <string name="message_invalid_merchant_url">Merchant base url cannot be null or empty, if you implement your own token storage. Please set merchant base_url to SDK</string>
     <string name="empty_card_number">Please enter card number</string>
-    <string name="empty_challange_token">Please enter challange token</string>
+    <string name="empty_challenge_token">Please enter challange token</string>
 </resources>

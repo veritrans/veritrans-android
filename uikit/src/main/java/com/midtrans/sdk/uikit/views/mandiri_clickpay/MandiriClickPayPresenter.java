@@ -43,9 +43,9 @@ public class MandiriClickPayPresenter extends BasePaymentPresenter<MandiriClickP
                 });
     }
 
-    public void startPayment(String tokenId, String token, String input3) {
+    public void startPayment(String tokenId, String challangeToken, String input3) {
         String snapToken = getMidtransSDK().readAuthenticationToken();
-        NewMandiriClickPaymentParams paymentParams = new NewMandiriClickPaymentParams(tokenId, token, input3);
+        NewMandiriClickPaymentParams paymentParams = new NewMandiriClickPaymentParams(tokenId, challangeToken, input3);
         MidtransSDK.getInstance().paymentUsingMandiriClickPay(snapToken, paymentParams, new TransactionCallback() {
             @Override
             public void onSuccess(TransactionResponse response) {

@@ -539,7 +539,6 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param callback            transaction callback
      */
     public void paymentUsingMandiriClickPay(final String authenticationToken, NewMandiriClickPayPaymentRequest paymentRequest, final TransactionCallback callback) {
-        final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
             snapRestAPI.paymentUsingMandiriClickPay(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
                 @Override

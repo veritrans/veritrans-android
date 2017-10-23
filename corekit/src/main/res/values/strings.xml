@@ -225,7 +225,6 @@
     <string name="input_1">Input 1</string>
     <string name="input_2">Input 2</string>
     <string name="input_3">Input 3</string>
-    <string name="mandiri_click_pay">Mandiri Clickpay</string>
     <string name="hint_mandiri_debit_card_no">Mandiri Debit Card Number</string>
     <string name="hint_challenge_token">Challenge Token</string>
     <string name="company_code">Company Code</string>
