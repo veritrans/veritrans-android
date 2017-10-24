@@ -126,6 +126,7 @@ public class KiosonActivity extends BaseActivity implements View.OnClickListener
                 onBackPressed();
             }
         });
+        adjustToolbarSize();
     }
 
     private void bindDataToView() {

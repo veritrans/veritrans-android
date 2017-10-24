@@ -28,7 +28,7 @@
             android:name="com.midtrans.sdk.uikit.activities.MandiriClickPayActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name="com.midtrans.sdk.uikit.views.mandiri_clickpay.MandiriClickPayActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -77,7 +77,7 @@
             android:name="com.midtrans.sdk.uikit.activities.TelkomselCashActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name="com.midtrans.sdk.uikit.activities.XLTunaiActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -93,7 +93,8 @@
         <activity
             android:name="com.midtrans.sdk.uikit.activities.GCIActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".activities.KlikBCAInstructionActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -102,7 +103,9 @@
         <activity
             android:name=".views.creditcard.details.CreditCardDetailsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+
         <activity
             android:name=".views.status.PaymentStatusActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -127,7 +130,8 @@
         <activity
             android:name=".views.banktransfer.payment.BankTransferPaymentActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <activity
             android:name=".views.banktransfer.status.VaPaymentStatusActivity"
@@ -142,7 +146,8 @@
         <activity
             android:name=".views.creditcard.register.CardRegistrationActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <activity
             android:name=".views.gopay.payment.GoPayPaymentActivity"
@@ -162,7 +167,8 @@
         <activity
             android:name=".views.bca_klikbca.payment.KlikBcaPaymentActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <activity
             android:name=".views.bca_klikbca.status.KlikBcaStatusActivity"

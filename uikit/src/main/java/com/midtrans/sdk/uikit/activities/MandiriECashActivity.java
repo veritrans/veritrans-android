@@ -102,6 +102,7 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
                 onBackPressed();
             }
         });
+        adjustToolbarSize();
     }
 
     private void setUpFragment() {

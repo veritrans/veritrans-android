@@ -114,6 +114,7 @@ public class XLTunaiActivity extends BaseActivity implements View.OnClickListene
                 onBackPressed();
             }
         });
+        adjustToolbarSize();
     }
 
     private void bindDataToView() {

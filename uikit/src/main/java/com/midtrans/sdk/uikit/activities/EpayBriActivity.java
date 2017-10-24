@@ -94,6 +94,7 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
                 onBackPressed();
             }
         });
+        adjustToolbarSize();
     }
 
     private void bindData() {

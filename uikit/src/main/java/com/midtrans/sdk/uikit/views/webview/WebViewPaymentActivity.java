@@ -166,53 +166,6 @@ public class WebViewPaymentActivity extends BasePaymentActivity {
         toolbar.setNavigationIcon(backIcon);
     }
 
-//    protected void initMerchantLogo() {
-//        try {
-//            MerchantData merchantData = MidtransSDK.getInstance().getMerchantData();
-//
-//            if (merchantData != null) {
-//                MerchantPreferences preferences = merchantData.getPreference();
-//                if (preferences != null) {
-//                    String merchantName = preferences.getDisplayName();
-//                    String merchantLogoUrl = preferences.getLogoUrl();
-//                    if (!TextUtils.isEmpty(merchantLogoUrl)) {
-//                        if (imageMerchantLogo != null) {
-//                            Glide.with(this)
-//                                    .load(merchantLogoUrl)
-//                                    .into(imageMerchantLogo);
-//                        }
-//                    } else {
-//                        if (merchantName != null) {
-//                            if (textMerchantName != null && !TextUtils.isEmpty(merchantName)) {
-//                                textMerchantName.setVisibility(View.VISIBLE);
-//                                textMerchantName.setText(merchantName);
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        } catch (RuntimeException e) {
-//            Logger.e(TAG, "initMerchantLogo:" + e.getMessage());
-//        }
-//    }
-//
-//    protected void initToolbarBackButton() {
-//        try {
-//            if (toolbar != null) {
-//                toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        if (isActivityRunning()) {
-//                            showCancelConfirmationDialog(WebViewPaymentActivity.this);
-//                        }
-//                    }
-//                });
-//            }
-//        } catch (RuntimeException e) {
-//            Logger.e(TAG, "initToolbarBackButton:" + e.getMessage());
-//        }
-//    }
-
     @Override
     public void onBackPressed() {
         showCancelConfirmationDialog(this);
