@@ -127,6 +127,7 @@ public class IndomaretActivity extends BaseActivity implements View.OnClickListe
                 onBackPressed();
             }
         });
+        adjustToolbarSize();
     }
 
     private void bindDataToView() {

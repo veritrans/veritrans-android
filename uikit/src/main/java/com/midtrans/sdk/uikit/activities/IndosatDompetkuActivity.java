@@ -138,6 +138,7 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
                 }
             }
         });
+        adjustToolbarSize();
     }
 
     /**

@@ -126,6 +126,7 @@ public class MandiriClickPayActivity extends BasePaymentActivity implements Mand
     }
 
     private void initActionButton() {
+        buttonPayment.setTextBold();
         buttonPayment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

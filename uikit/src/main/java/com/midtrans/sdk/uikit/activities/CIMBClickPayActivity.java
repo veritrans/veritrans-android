@@ -99,6 +99,7 @@ public class CIMBClickPayActivity extends BaseActivity implements View.OnClickLi
                 }
             }
         });
+        adjustToolbarSize();
     }
 
     private void bindData() {

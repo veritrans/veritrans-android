@@ -60,6 +60,7 @@ public class KlikBCAInstructionActivity extends BaseActivity {
         mToolbar.setNavigationIcon(closeIcon);
         setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        adjustToolbarSize();
     }
 
 }

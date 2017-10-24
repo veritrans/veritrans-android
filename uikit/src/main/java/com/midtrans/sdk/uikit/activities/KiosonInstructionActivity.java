@@ -61,6 +61,7 @@ public class KiosonInstructionActivity extends BaseActivity {
         mToolbar.setNavigationIcon(closeIcon);
         setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        adjustToolbarSize();
 
         //track page kioson
         MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_KIOSON_OVERVIEW);

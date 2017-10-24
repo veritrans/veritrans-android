@@ -2,19 +2,17 @@ package com.midtrans.sdk.uikit.abstracts;
 
 import android.content.Intent;
 import android.graphics.PorterDuff;
-import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -49,6 +47,7 @@ public abstract class BasePaymentActivity extends BaseActivity {
     private static final String TAG = BasePaymentActivity.class.getSimpleName();
 
     private boolean isDetailShown = false;
+    private boolean hasMerchantLogo = false;
 
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
@@ -98,15 +97,6 @@ public abstract class BasePaymentActivity extends BaseActivity {
                 displayOrHideItemDetails();
             }
         });
-        //hide total amount if virtual keyboard appeared
-        findViewById(R.id.button_primary).getViewTreeObserver().addOnGlobalLayoutListener(
-            new OnGlobalLayoutListener() {
-                @Override
-                public void onGlobalLayout() {
-                    boolean isKeyboardShown = isKeyboardShown(findViewById(android.R.id.content));
-                    amountContainer.setVisibility(isKeyboardShown ? View.GONE : View.VISIBLE);
-                }
-            });
     }
 
     private void initTransactionDetail(List<ItemDetails> details) {
@@ -118,20 +108,6 @@ public abstract class BasePaymentActivity extends BaseActivity {
             recyclerView.setAdapter(adapter);
         }
     }
-
-    private boolean isKeyboardShown(View rootView) {
-        /* 128dp = 32dp * 4, minimum button height 32dp and generic 4 rows soft keyboard */
-        final int SOFT_KEYBOARD_HEIGHT_DP_THRESHOLD = 128;
-
-        Rect r = new Rect();
-        rootView.getWindowVisibleDisplayFrame(r);
-        DisplayMetrics dm = rootView.getResources().getDisplayMetrics();
-        /* heightDiff = rootView height - status bar height (r.top) - visible frame height (r.bottom - r.top) */
-        int heightDiff = rootView.getBottom() - r.bottom;
-        /* Threshold size: dp to pixels, multiply with display density */
-        return heightDiff > SOFT_KEYBOARD_HEIGHT_DP_THRESHOLD * dm.density;
-    }
-
 
     private void displayOrHideItemDetails() {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv_transaction_detail);
@@ -163,6 +139,7 @@ public abstract class BasePaymentActivity extends BaseActivity {
                 String merchantLogoUrl = preferences.getLogoUrl();
                 if (!TextUtils.isEmpty(merchantLogoUrl)) {
                     if (merchantLogo != null) {
+                        hasMerchantLogo = true;
                         Glide.with(this)
                                 .load(merchantLogoUrl)
                                 .into(merchantLogo);
@@ -171,6 +148,7 @@ public abstract class BasePaymentActivity extends BaseActivity {
                 } else {
                     if (merchantName != null) {
                         if (merchantNameText != null && !TextUtils.isEmpty(merchantName)) {
+                            hasMerchantLogo = true;
                             merchantNameText.setVisibility(View.VISIBLE);
                             merchantNameText.setText(merchantName);
                             if (merchantLogo != null) {
@@ -181,7 +159,6 @@ public abstract class BasePaymentActivity extends BaseActivity {
                 }
             }
         }
-
     }
 
     protected void initToolbarBackButton() {
@@ -199,6 +176,15 @@ public abstract class BasePaymentActivity extends BaseActivity {
                     onBackPressed();
                 }
             });
+            adjustToolbarSize(toolbar);
+        }
+    }
+
+    protected void adjustToolbarSize(Toolbar toolbar) {
+        if (hasMerchantLogo) {
+            AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams)toolbar.getLayoutParams();
+            params.height = params.height + (int) getResources().getDimension(R.dimen.toolbar_expansion_size);
+            toolbar.setLayoutParams(params);
         }
     }
 

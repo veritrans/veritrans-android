@@ -1,8 +1,8 @@
 package com.midtrans.sdk.uikit.activities;
 
 import android.content.Intent;
-import android.graphics.Rect;
 import android.support.annotation.LayoutRes;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,12 +10,11 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -49,6 +48,7 @@ public class BaseActivity extends AppCompatActivity {
     protected String currentFragmentName;
     protected Fragment currentFragment = null;
     protected boolean saveCurrentFragment = false;
+    protected boolean hasMerchantLogo;
     protected int RESULT_CODE = RESULT_CANCELED;
     protected boolean isDetailShown = false;
 
@@ -68,19 +68,6 @@ public class BaseActivity extends AppCompatActivity {
 
         MidtransSDK mMidtransSDK = MidtransSDK.getInstance();
         if (mMidtransSDK != null) {
-            ImageView logo = (ImageView) findViewById(R.id.merchant_logo);
-            TextView name = (TextView) findViewById(R.id.merchant_name);
-            if (logo != null) {
-                if (mMidtransSDK.getMerchantLogo() != null) {
-                    if (name != null) {
-                        name.setVisibility(View.GONE);
-                    }
-                    Glide.with(this)
-                            .load(mMidtransSDK.getMerchantLogo())
-                            .into(logo);
-                }
-            }
-
             updateColorTheme(mMidtransSDK);
         }
     }
@@ -107,6 +94,7 @@ public class BaseActivity extends AppCompatActivity {
                 String merchantLogoUrl = preferences.getLogoUrl();
                 if (!TextUtils.isEmpty(merchantLogoUrl)) {
                     if (merchantLogo != null) {
+                        hasMerchantLogo = true;
                         Glide.with(this)
                             .load(merchantLogoUrl)
                             .into(merchantLogo);
@@ -115,6 +103,7 @@ public class BaseActivity extends AppCompatActivity {
                 } else {
                     if (merchantName != null) {
                         if (merchantNameText != null && !TextUtils.isEmpty(merchantName)) {
+                            hasMerchantLogo = true;
                             merchantNameText.setVisibility(View.VISIBLE);
                             merchantNameText.setText(merchantName);
                             if (merchantLogo != null) {
@@ -125,7 +114,17 @@ public class BaseActivity extends AppCompatActivity {
                 }
             }
         }
+    }
 
+    protected void adjustToolbarSize() {
+        if (hasMerchantLogo) {
+            Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+            if (toolbar != null) {
+                AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams)toolbar.getLayoutParams();
+                params.height = params.height + (int) getResources().getDimension(R.dimen.toolbar_expansion_size);
+                toolbar.setLayoutParams(params);
+            }
+        }
     }
 
     private void initItemDetails() {
@@ -161,15 +160,6 @@ public class BaseActivity extends AppCompatActivity {
                 displayOrHideItemDetails();
             }
         });
-        //hide total amount if virtual keyboard appeared
-        findViewById(R.id.button_primary).getViewTreeObserver().addOnGlobalLayoutListener(
-            new OnGlobalLayoutListener() {
-                @Override
-                public void onGlobalLayout() {
-                    boolean isKeyboardShown = isKeyboardShown(findViewById(android.R.id.content));
-                    amountContainer.setVisibility(isKeyboardShown ? View.GONE : View.VISIBLE);
-                }
-            });
     }
 
     private void initTransactionDetail(List<ItemDetails> details) {
@@ -180,19 +170,6 @@ public class BaseActivity extends AppCompatActivity {
             TransactionDetailsAdapter adapter = new TransactionDetailsAdapter(details);
             recyclerView.setAdapter(adapter);
         }
-    }
-
-    private boolean isKeyboardShown(View rootView) {
-        /* 128dp = 32dp * 4, minimum button height 32dp and generic 4 rows soft keyboard */
-        final int SOFT_KEYBOARD_HEIGHT_DP_THRESHOLD = 128;
-
-        Rect r = new Rect();
-        rootView.getWindowVisibleDisplayFrame(r);
-        DisplayMetrics dm = rootView.getResources().getDisplayMetrics();
-        /* heightDiff = rootView height - status bar height (r.top) - visible frame height (r.bottom - r.top) */
-        int heightDiff = rootView.getBottom() - r.bottom;
-        /* Threshold size: dp to pixels, multiply with display density */
-        return heightDiff > SOFT_KEYBOARD_HEIGHT_DP_THRESHOLD * dm.density;
     }
 
     protected void displayOrHideItemDetails() {

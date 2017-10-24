@@ -105,6 +105,7 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
                 onBackPressed();
             }
         });
+        adjustToolbarSize();
     }
 
     private void bindDataToView() {

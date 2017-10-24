@@ -108,7 +108,7 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
                 onBackPressed();
             }
         });
-
+        adjustToolbarSize();
     }
 
     private void bindDataToView() {

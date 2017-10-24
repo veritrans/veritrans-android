@@ -121,6 +121,7 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
                 onBackPressed();
             }
         });
+        adjustToolbarSize();
     }
 
     /**
