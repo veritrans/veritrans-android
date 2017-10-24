@@ -31,7 +31,9 @@
             android:hint="@string/hint_mandiri_debit_card_no"
             android:inputType="number"
             android:maxLength="19"
-            android:maxLines="1" />
+            android:maxLines="1"
+            android:imeOptions="actionNext"
+            android:nextFocusDown="@+id/edit_challenge_token"/>
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -221,11 +223,12 @@
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/four_dp"
+                    android:paddingTop="@dimen/two_dp"
                     android:background="@color/light_gray"
                     android:lineSpacingExtra="2dp"
                     android:paddingLeft="@dimen/sixteen_dp"
                     android:paddingRight="@dimen/sixteen_dp"
+                    android:paddingBottom="@dimen/two_dp"
                     android:text="@string/mandiri_click_pay_instruction_step1"
                     android:textColor="@color/black"
                     android:textSize="@dimen/secondary_text_size" />
@@ -233,10 +236,11 @@
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/eight_dp"
+                    android:paddingTop="@dimen/two_dp"
                     android:lineSpacingExtra="2dp"
                     android:paddingLeft="@dimen/sixteen_dp"
                     android:paddingRight="@dimen/sixteen_dp"
+                    android:paddingBottom="@dimen/two_dp"
                     android:text="@string/mandiri_click_pay_instruction_step2"
                     android:textColor="@color/black"
                     android:textSize="@dimen/secondary_text_size" />
@@ -244,10 +248,10 @@
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/eight_dp"
+                    android:paddingTop="@dimen/two_dp"
                     android:background="@color/light_gray"
                     android:lineSpacingExtra="2dp"
-                    android:paddingBottom="@dimen/five_dp"
+                    android:paddingBottom="@dimen/two_dp"
                     android:paddingLeft="@dimen/sixteen_dp"
                     android:paddingRight="@dimen/sixteen_dp"
                     android:text="@string/mandiri_click_pay_instruction_step3"
@@ -260,7 +264,8 @@
                     android:lineSpacingExtra="2dp"
                     android:paddingLeft="@dimen/sixteen_dp"
                     android:paddingRight="@dimen/sixteen_dp"
-                    android:paddingTop="@dimen/eight_dp"
+                    android:paddingBottom="@dimen/two_dp"
+                    android:paddingTop="@dimen/two_dp"
                     android:text="@string/mandiri_click_pay_instruction_step4"
                     android:textColor="@color/black"
                     android:textSize="@dimen/secondary_text_size" />
@@ -272,7 +277,8 @@
                     android:lineSpacingExtra="2dp"
                     android:paddingLeft="@dimen/sixteen_dp"
                     android:paddingRight="@dimen/sixteen_dp"
-                    android:paddingTop="@dimen/eight_dp"
+                    android:paddingBottom="@dimen/two_dp"
+                    android:paddingTop="@dimen/two_dp"
                     android:text="@string/mandiri_click_pay_instruction_step5"
                     android:textColor="@color/black"
                     android:textSize="@dimen/secondary_text_size" />
@@ -283,7 +289,8 @@
                     android:lineSpacingExtra="2dp"
                     android:paddingLeft="@dimen/sixteen_dp"
                     android:paddingRight="@dimen/sixteen_dp"
-                    android:paddingTop="@dimen/eight_dp"
+                    android:paddingBottom="@dimen/two_dp"
+                    android:paddingTop="@dimen/two_dp"
                     android:text="@string/mandiri_click_pay_instruction_step6"
                     android:textColor="@color/black"
                     android:textSize="@dimen/secondary_text_size" />
@@ -294,10 +301,10 @@
                     android:layout_marginTop="@dimen/eight_dp"
                     android:background="@color/light_gray"
                     android:lineSpacingExtra="2dp"
-                    android:paddingBottom="@dimen/five_dp"
+                    android:paddingBottom="@dimen/two_dp"
                     android:paddingLeft="@dimen/sixteen_dp"
                     android:paddingRight="@dimen/sixteen_dp"
-                    android:paddingTop="@dimen/five_dp"
+                    android:paddingTop="@dimen/two_dp"
                     android:text="@string/mandiri_click_pay_instruction_step7"
                     android:textColor="@color/black"
                     android:textSize="@dimen/secondary_text_size" />

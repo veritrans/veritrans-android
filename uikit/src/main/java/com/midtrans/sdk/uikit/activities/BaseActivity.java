@@ -121,7 +121,7 @@ public class BaseActivity extends AppCompatActivity {
             Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
             if (toolbar != null) {
                 AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams)toolbar.getLayoutParams();
-                params.height = params.height + (int) getResources().getDimension(R.dimen.twelve_dp);
+                params.height = params.height + (int) getResources().getDimension(R.dimen.toolbar_expansion_size);
                 toolbar.setLayoutParams(params);
             }
         }

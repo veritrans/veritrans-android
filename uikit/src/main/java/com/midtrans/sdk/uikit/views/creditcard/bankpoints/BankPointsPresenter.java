@@ -75,8 +75,4 @@ public class BankPointsPresenter extends BasePaymentPresenter {
     public String getPointBank() {
         return pointBank;
     }
-
-    public String getSemiBoldFontPath() {
-        return getMidtransSDK().getSemiBoldText();
-    }
 }

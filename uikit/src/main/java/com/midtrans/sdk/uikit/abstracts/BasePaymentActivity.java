@@ -183,7 +183,7 @@ public abstract class BasePaymentActivity extends BaseActivity {
     protected void adjustToolbarSize(Toolbar toolbar) {
         if (hasMerchantLogo) {
             AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams)toolbar.getLayoutParams();
-            params.height = params.height + (int) getResources().getDimension(R.dimen.twelve_dp);
+            params.height = params.height + (int) getResources().getDimension(R.dimen.toolbar_expansion_size);
             toolbar.setLayoutParams(params);
         }
     }
