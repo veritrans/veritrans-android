@@ -20,11 +20,9 @@ import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.UserAddress;
 import com.midtrans.sdk.corekit.models.UserDetail;
-import com.midtrans.sdk.uikit.BuildConfig;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.fragments.UserAddressFragment;
 import com.midtrans.sdk.uikit.fragments.UserDetailFragment;
-import com.midtrans.sdk.uikit.utilities.RaygunBeforeSend;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 
 import java.util.ArrayList;
@@ -67,11 +65,8 @@ public class UserDetailsActivity extends BaseActivity {
     }
 
     private void initIssueTracker() {
-        if (BuildConfig.FLAVOR.equals(UiKitConstants.ENVIRONMENT_PRODUCTION)) {
-            RaygunClient.init(getApplicationContext(), getString(R.string.ISSUE_TRACKER_API_KEY));
-            RaygunClient.setOnBeforeSend(new RaygunBeforeSend());
-            RaygunClient.attachExceptionHandler();
-        }
+        RaygunClient.init(getApplicationContext(), getString(R.string.ISSUE_TRACKER_API_KEY));
+        RaygunClient.attachExceptionHandler();
     }
 
     private void showInformationDialog(String message) {
@@ -260,6 +255,5 @@ public class UserDetailsActivity extends BaseActivity {
         }
         return sdkErrorValidationMessage;
     }
-
 
 }
