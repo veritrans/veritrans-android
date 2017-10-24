@@ -467,6 +467,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     map.put(UiKitConstants.KEY_TRACKING_SDK_VERSION, BuildConfig.VERSION_NAME);
                     map.put(UiKitConstants.KEY_TRACKING_CPU_USAGE, DeviceUtils.getTotalCpuUsage());
                     map.put(UiKitConstants.KEY_TRACKING_MEMORY_USAGE, DeviceUtils.getMemoryUsage());
+                    map.put(UiKitConstants.KEY_TRACKING_ENVIRONMENT, BuildConfig.FLAVOR);
 
                     details.setUserCustomData(map);
 

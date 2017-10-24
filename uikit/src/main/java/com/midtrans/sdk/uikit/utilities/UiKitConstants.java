@@ -85,5 +85,6 @@ public class UiKitConstants {
     public static final String VALUE_TRACKING_PLATFORM = "Android";
     public static final String KEY_TRACKING_CPU_USAGE = "CPU Usage";
     public static final String KEY_TRACKING_MEMORY_USAGE = "Memory Usage";
-    public static String KEY_TRACKING_HOST_APP_VERSION = "Host App Version";
+    public static final String KEY_TRACKING_HOST_APP_VERSION = "Host App Version";
+    public static final String KEY_TRACKING_ENVIRONMENT = "Environment";
 }
