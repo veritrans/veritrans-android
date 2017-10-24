@@ -32,7 +32,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:gravity="center_horizontal"
-                    android:text="@string/product_details" />
+                    android:text="@string/order_review" />
             </RelativeLayout>
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
@@ -41,7 +41,7 @@
         android:id="@+id/amount_container"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:layout_below="@id/toolbar"
+        android:layout_below="@id/appbar"
         android:background="@color/navy_blue.primary"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/sixteen_dp"
