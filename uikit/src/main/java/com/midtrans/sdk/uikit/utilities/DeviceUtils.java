@@ -58,9 +58,7 @@ public class DeviceUtils {
     public static String getMemoryUsage() {
         final Runtime runtime = Runtime.getRuntime();
         final long usedMemInMB = (runtime.totalMemory() - runtime.freeMemory()) / 1048576L;
-        final long maxHeapSizeInMB = runtime.maxMemory() / 1048576L;
-        final long availHeapSizeInMB = maxHeapSizeInMB - usedMemInMB;
-        return availHeapSizeInMB + "MB";
+        return usedMemInMB + "MB";
     }
 
 
