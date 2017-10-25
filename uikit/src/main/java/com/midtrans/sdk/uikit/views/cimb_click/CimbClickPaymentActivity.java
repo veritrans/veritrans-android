@@ -1,4 +1,4 @@
-package com.midtrans.sdk.uikit.views.bri_epay;
+package com.midtrans.sdk.uikit.views.cimb_click;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,22 +17,22 @@ import com.midtrans.sdk.uikit.widgets.FancyButton;
  * Created by Fajar on 25/10/17.
  */
 
-public class BriEpayPaymentActivity extends BasePaymentActivity implements BasePaymentView {
+public class CimbClickPaymentActivity extends BasePaymentActivity implements BasePaymentView {
 
     private FancyButton buttonPayment;
-    private BriEpayPaymentPresenter presenter;
+    private CimbClickPaymentPresenter presenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bri_epay);
+        setContentView(R.layout.activity_cimb_click);
         initProperties();
         initActionButton();
         bindData();
     }
 
     private void bindData() {
-        setPageTitle(getString(R.string.payment_method_bri_epay));
+        setPageTitle(getString(R.string.cimb_clicks));
         buttonPayment.setText(getString(R.string.confirm_payment));
         buttonPayment.setTextBold();
     }
@@ -49,7 +49,7 @@ public class BriEpayPaymentActivity extends BasePaymentActivity implements BaseP
     }
 
     private void initProperties() {
-        this.presenter = new BriEpayPaymentPresenter(this);
+        this.presenter = new CimbClickPaymentPresenter(this);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class BriEpayPaymentActivity extends BasePaymentActivity implements BaseP
     @Override
     public void onPaymentSuccess(TransactionResponse response) {
         hideProgressLayout();
-        showWebViewPaymentPage(response, PaymentType.BRI_EPAY);
+        showWebViewPaymentPage(response, PaymentType.CIMB_CLICKS);
     }
 
     @Override

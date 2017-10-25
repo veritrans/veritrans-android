@@ -21,7 +21,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
 import com.midtrans.raygun.RaygunClient;
 import com.midtrans.raygun.RaygunOnBeforeSend;
@@ -65,6 +64,7 @@ import com.midtrans.sdk.uikit.views.banktransfer.list.BankTransferListActivity;
 import com.midtrans.sdk.uikit.views.bca_klikbca.payment.KlikBcaPaymentActivity;
 import com.midtrans.sdk.uikit.views.bca_klikpay.BcaKlikPayPaymentActivity;
 import com.midtrans.sdk.uikit.views.bri_epay.BriEpayPaymentActivity;
+import com.midtrans.sdk.uikit.views.cimb_click.CimbClickPaymentActivity;
 import com.midtrans.sdk.uikit.views.creditcard.saved.SavedCreditCardActivity;
 import com.midtrans.sdk.uikit.views.danamon_online.DanamonOnlineActivity;
 import com.midtrans.sdk.uikit.views.gopay.payment.GoPayPaymentActivity;
@@ -72,7 +72,6 @@ import com.midtrans.sdk.uikit.views.mandiri_clickpay.MandiriClickPayActivity;
 import com.midtrans.sdk.uikit.widgets.BoldTextView;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -591,7 +590,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             }
         } else if (isCIMBClicks) {
             if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_mandiri_clickpay))) {
-                Intent startCIMBClickpay = new Intent(this, CIMBClickPayActivity.class);
+                Intent startCIMBClickpay = new Intent(this, CimbClickPaymentActivity.class);
                 startActivityForResult(startCIMBClickpay, Constants.RESULT_CODE_PAYMENT_TRANSFER);
             } else {
                 showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
@@ -742,7 +741,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_cimb_clicks))) {
-            Intent startCIMBClickpay = new Intent(this, CIMBClickPayActivity.class);
+            Intent startCIMBClickpay = new Intent(this, CimbClickPaymentActivity.class);
             startActivityForResult(startCIMBClickpay, Constants.RESULT_CODE_PAYMENT_TRANSFER);
             if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                     && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.midtrans.sdk.uikit.widgets.DefaultTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/sixteen_dp"
+        android:paddingLeft="@dimen/sixteen_dp"
+        android:paddingRight="@dimen/sixteen_dp"
+        android:text="@string/instruction"
+        android:textColor="@color/dark_gray"
+        android:textSize="@dimen/primary_text_size" />
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/eight_dp"
+        android:paddingBottom="@dimen/five_dp"
+        android:paddingLeft="@dimen/sixteen_dp"
+        android:paddingRight="@dimen/sixteen_dp"
+        android:paddingTop="@dimen/five_dp"
+        android:background="@color/light_gray"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="1."
+            android:layout_width="@dimen/twenty_four_dp"
+            android:layout_height="wrap_content" />
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="2dp"
+            android:background="@color/light_gray"
+            android:text="@string/cimb_instruction_step1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/secondary_text_size"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/eight_dp"
+        android:paddingBottom="@dimen/five_dp"
+        android:paddingLeft="@dimen/sixteen_dp"
+        android:paddingRight="@dimen/sixteen_dp"
+        android:paddingTop="@dimen/five_dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="2."
+            android:layout_width="@dimen/twenty_four_dp"
+            android:layout_height="wrap_content" />
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="2dp"
+            android:text="@string/cimb_instruction_step2"
+            android:textColor="@color/black"
+            android:textSize="@dimen/secondary_text_size"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:background="@color/light_gray"
+        android:layout_marginTop="@dimen/eight_dp"
+        android:paddingBottom="@dimen/five_dp"
+        android:paddingLeft="@dimen/sixteen_dp"
+        android:paddingRight="@dimen/sixteen_dp"
+        android:paddingTop="@dimen/five_dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="3."
+            android:layout_width="@dimen/twenty_four_dp"
+            android:layout_height="wrap_content" />
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="2dp"
+            android:text="@string/cimb_instruction_step3"
+            android:textColor="@color/black"
+            android:textSize="@dimen/secondary_text_size" />
+    </LinearLayout>
+</LinearLayout>

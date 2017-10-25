@@ -46,6 +46,10 @@
             android:name="com.midtrans.sdk.uikit.activities.CIMBClickPayActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.uikit.views.cimb_click.CimbClickPaymentActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name="com.midtrans.sdk.uikit.activities.MandiriECashActivity"
