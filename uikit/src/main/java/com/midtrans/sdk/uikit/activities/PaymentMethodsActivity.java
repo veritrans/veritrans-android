@@ -64,6 +64,7 @@ import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.views.banktransfer.list.BankTransferListActivity;
 import com.midtrans.sdk.uikit.views.bca_klikbca.payment.KlikBcaPaymentActivity;
 import com.midtrans.sdk.uikit.views.bca_klikpay.BcaKlikPayPaymentActivity;
+import com.midtrans.sdk.uikit.views.bri_epay.BriEpayPaymentActivity;
 import com.midtrans.sdk.uikit.views.creditcard.saved.SavedCreditCardActivity;
 import com.midtrans.sdk.uikit.views.danamon_online.DanamonOnlineActivity;
 import com.midtrans.sdk.uikit.views.gopay.payment.GoPayPaymentActivity;
@@ -597,7 +598,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             }
         } else if (isBRIEpay) {
             if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_epay_bri))) {
-                Intent startEpayBri = new Intent(this, EpayBriActivity.class);
+                Intent startEpayBri = new Intent(this, BriEpayPaymentActivity.class);
                 startActivityForResult(startEpayBri, Constants.RESULT_CODE_PAYMENT_TRANSFER);
                 if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                         && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
@@ -734,7 +735,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_bri_epay))) {
-            Intent startEpayBri = new Intent(this, EpayBriActivity.class);
+            Intent startEpayBri = new Intent(this, BriEpayPaymentActivity.class);
             startActivityForResult(startEpayBri, Constants.RESULT_CODE_PAYMENT_TRANSFER);
             if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                     && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {

@@ -23,6 +23,10 @@ import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 
+/**
+ * Deprecated, please use {@link com.midtrans.sdk.uikit.views.bri_epay.BriEpayPaymentActivity} instead
+ */
+@Deprecated
 public class EpayBriActivity extends BaseActivity implements View.OnClickListener {
 
     private static final int PAYMENT_WEB_INTENT = 150;
