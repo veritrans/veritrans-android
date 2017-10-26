@@ -96,7 +96,15 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
+            android:name="com.midtrans.sdk.uikit.views.kioson.payment.KiosonPaymentActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
             android:name="com.midtrans.sdk.uikit.activities.KiosonInstructionActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.uikit.views.kioson.status.KiosonStatusActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity

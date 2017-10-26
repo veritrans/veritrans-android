@@ -480,7 +480,7 @@
     <string name="kioson_instruction">Lihat Instruksi Pembayaran</string>
     <string name="card_bin_invalid">nomor kartu kredit tidak terdapat didalam whitelist bin kartu kredit</string>
     <string name="installment_required">Pembayaran harus menggunakan cicilan</string>
-    <string name="complete_payment_kioson">Selesaikan pembayaran di Kioson</string>
+    <string name="complete_payment_kioson">Selesaikan Pembayaran di Kioson</string>
     <string name="complete_payment_indomaret">Selesaikan pembayaran di Indomaret</string>
     <string name="payment_not_enabled_message">Tidak dapat membuka halaman ini, silakan aktifkan channel pembayaran ini.</string>
     <string name="item_header">BARANG</string>

@@ -6,12 +6,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.midtrans.sdk.uikit.R;
 
 /**
  * Created by ziahaqi on 8/26/16.
+ * Deprecated, please refer to {@link com.midtrans.sdk.uikit.views.kioson.payment.KiosonPaymentActivity}
  */
+@Deprecated
 public class InstructionKiosonFragment extends Fragment {
 
     @Nullable

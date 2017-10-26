@@ -68,6 +68,7 @@ import com.midtrans.sdk.uikit.views.cimb_click.CimbClickPaymentActivity;
 import com.midtrans.sdk.uikit.views.creditcard.saved.SavedCreditCardActivity;
 import com.midtrans.sdk.uikit.views.danamon_online.DanamonOnlineActivity;
 import com.midtrans.sdk.uikit.views.gopay.payment.GoPayPaymentActivity;
+import com.midtrans.sdk.uikit.views.kioson.payment.KiosonPaymentActivity;
 import com.midtrans.sdk.uikit.views.mandiri_clickpay.MandiriClickPayActivity;
 import com.midtrans.sdk.uikit.widgets.BoldTextView;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
@@ -652,7 +653,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             }
         } else if (isKioson) {
             if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_kioson))) {
-                Intent kiosanActvity = new Intent(this, KiosonActivity.class);
+                Intent kiosanActvity = new Intent(this, KiosonPaymentActivity.class);
                 startActivityForResult(kiosanActvity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
                 if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                         && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
@@ -798,7 +799,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_kioson))) {
-            Intent kiosanActvity = new Intent(this, KiosonActivity.class);
+            Intent kiosanActvity = new Intent(this, KiosonPaymentActivity.class);
             startActivityForResult(kiosanActvity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
             if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                     && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
@@ -1087,12 +1088,11 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         midtransSDK.trackEvent(AnalyticsEventName.PAGE_ORDER_SUMMARY);
     }
 
+    public boolean isAlreadyUtilized() {
+        return alreadyUtilized;
+    }
 
     public void setAlreadyUtilized(boolean alreadyUtilized) {
         this.alreadyUtilized = alreadyUtilized;
-    }
-
-    public boolean isAlreadyUtilized() {
-        return alreadyUtilized;
     }
 }
