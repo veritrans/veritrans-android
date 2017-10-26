@@ -26,7 +26,9 @@ import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 
 /**
  * Created by Ankit on 11/26/15.
+ * Deprecated, please use {@link com.midtrans.sdk.uikit.views.cimb_click.CimbClickPaymentActivity} instead
  */
+@Deprecated
 public class CIMBClickPayActivity extends BaseActivity implements View.OnClickListener {
 
     private static final int PAYMENT_WEB_INTENT = 151;
