@@ -260,6 +260,7 @@
 
 
     <!-- Indomaret Instruction-->
+    <string name="indomaret_payment_instruction">Indomaret Payment Instruction</string>
     <string name="indomaret_instruction_step1">After confirming your payment, we will issue you a unique Payment Code number.</string>
     <string name="indomaret_instruction_step2">Note down your Payment Code and total amount.
         Don\'t worry, we will also mail you a copy of the payment instructions.</string>

@@ -199,6 +199,7 @@
         OTP sudah kadaluarsa, klik <b>Batal</b> dan ulangi transaksi.</string>
 
     <!-- Indomaret Instruction-->
+    <string name="indomaret_payment_instruction">Instruksi Pembayaran Indomaret</string>
     <string name="indomaret_instruction_step1">Setelah melakukan <b>Konfirmasi Pembayaran</b>, Anda akan diberikan Kode Pembayaran yang unik.</string>
     <string name="indomaret_instruction_step2">Salinlah Kode Pembayaran Anda dan jumlah pembayaran yang akan dibayarkan.
        Jangan khawatir, Kami juga akan mengirimkan salinan kode pembayaran dan instruksi pembayaran melalui email.</string>
