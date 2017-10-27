@@ -18,6 +18,7 @@ import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.GCIPaymentFragment;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
+import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 
@@ -134,9 +135,7 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
-    private void setUpTransactionStatusFragment(final TransactionResponse
-                                                        transactionResponse) {
-
+    private void setUpTransactionStatusFragment(final TransactionResponse transactionResponse) {
         currentFragment = STATUS_FRAGMENT;
         buttonConfirmPayment.setText(getString(R.string.done));
 
@@ -237,5 +236,15 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
             super.onBackPressed();
         }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS)
+            if (resultCode == RESULT_CANCELED || resultCode == RESULT_OK) {
+                setResultAndFinish();
+            }
+    }
+
 
 }
