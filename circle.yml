@@ -84,3 +84,10 @@ deployment:
             - bmp -c
             - git checkout master && git merge release-minor
             - git push origin master --tag
+
+
+    develop:
+        branch: release-*
+        owner: veritrans
+        commands:
+            - ./gradlew :demo:assembleDevelopmentRelease :demo:crashlyticsUploadDistributionDevelopmentRelease
