@@ -25,7 +25,9 @@ import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 
 /**
  * @author rakawm
+ * Deprecated, please use {@link com.midtrans.sdk.uikit.views.xl_tunai.payment.XlTunaiPaymentActivity} instead
  */
+@Deprecated
 public class XLTunaiActivity extends BaseActivity implements View.OnClickListener {
     public static final String HOME_FRAGMENT = "home";
     public static final String PAYMENT_FRAGMENT = "payment";

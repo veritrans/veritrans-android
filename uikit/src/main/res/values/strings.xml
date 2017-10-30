@@ -360,6 +360,8 @@
     <string name="telkomsel_instruction_step2">Input the token sent from Telkomsel\'s reply into T-CASH TOKEN field.</string>
     <string name="telkomsel_instruction_step3">Your transaction will expire unless you complete your payment in 30 minutes.</string>
 
+    <!--xl tunai payment instruction-->
+    <string name="xl_tunai_payment_instruction">XL Tunai Payment Instruction</string>
     <string name="xl_instruction_step1">Dial *123*120# with a registered XL phone number.</string>
     <string name="xl_instruction_step2">Reply <b>4</b> for <b>Belanja Online</b>.</string>
     <string name="xl_instruction_step3">Input XL Tunai Merchant Code.</string>

@@ -365,6 +365,8 @@
     <string name="error_invalid_phone_number">Nomor telepon tidak benar.</string>
     <string name="error_something_wrong">Sedang terjadi kesalahan, silakan ulangi lagi!</string>
 
+    <!--xl tunai payment instruction-->
+    <string name="xl_tunai_payment_instruction">Instruksi Pembayaran XL Tunai</string>
     <string name="xl_instruction_step1">Hubungi *123*120# dengan nomor XL yang sudah terdaftar.</string>
     <string name="xl_instruction_step2">Balas <b>4</b> untuk <b>Belanja Online</b>.</string>
     <string name="xl_instruction_step3">Masukkan Kode Penjual XL Tunai.</string>
