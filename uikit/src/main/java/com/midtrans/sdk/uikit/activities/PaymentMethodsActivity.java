@@ -72,6 +72,7 @@ import com.midtrans.sdk.uikit.views.gopay.payment.GoPayPaymentActivity;
 import com.midtrans.sdk.uikit.views.indomaret.payment.IndomaretPaymentActivity;
 import com.midtrans.sdk.uikit.views.kioson.payment.KiosonPaymentActivity;
 import com.midtrans.sdk.uikit.views.mandiri_clickpay.MandiriClickPayActivity;
+import com.midtrans.sdk.uikit.views.tsel_cash.TelkomselCashPaymentActivity;
 import com.midtrans.sdk.uikit.widgets.BoldTextView;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
@@ -611,7 +612,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             }
         } else if (isTelkomselCash) {
             if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_telkomsel_cash))) {
-                Intent telkomselCashActivity = new Intent(this, TelkomselCashActivity.class);
+                Intent telkomselCashActivity = new Intent(this, TelkomselCashPaymentActivity.class);
                 startActivityForResult(telkomselCashActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
                 if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                         && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
@@ -787,7 +788,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_telkomsel_cash))) {
-            Intent telkomselCashActivity = new Intent(this, TelkomselCashActivity.class);
+            Intent telkomselCashActivity = new Intent(this, TelkomselCashPaymentActivity.class);
             startActivityForResult(telkomselCashActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
             if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                     && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {

@@ -9,15 +9,15 @@ import android.support.v7.widget.AppCompatEditText;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.uikit.R;
-
 import java.lang.reflect.Field;
 
 /**
  * @author rakawm
+ * Deprecated, please refer to {@link com.midtrans.sdk.uikit.views.tsel_cash.TelkomselCashPaymentActivity}
  */
+@Deprecated
 public class InstructionTelkomselCashFragment extends Fragment {
 
     private TextInputLayout telkomselTokenTextInputLayout = null;

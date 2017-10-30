@@ -28,7 +28,9 @@ import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 
 /**
  * @author rakawm
+ * Deprecated, please use {@link com.midtrans.sdk.uikit.views.tsel_cash.TelkomselCashPaymentActivity} instead
  */
+@Deprecated
 public class TelkomselCashActivity extends BaseActivity implements View.OnClickListener {
 
     public static final String HOME_FRAGMENT = "home";
