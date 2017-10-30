@@ -8,20 +8,20 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 
 /**
- * Created by ziahaqi on 8/26/16.
+ * Created by Fajar on 26/10/17.
  */
-public class KiosonInstructionActivity extends BaseActivity {
+
+public class IndomaretInstructionActivity extends BaseActivity {
 
     private Toolbar mToolbar = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_instruction_kioson);
+        setContentView(R.layout.activity_instruction_indomaret);
         initializeViews();
     }
 
@@ -38,7 +38,7 @@ public class KiosonInstructionActivity extends BaseActivity {
             //close activity on click of cross button.
             finish();
             if (MidtransSDK.getInstance().getUIKitCustomSetting()!=null
-                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                 overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
             }
         }
@@ -56,14 +56,12 @@ public class KiosonInstructionActivity extends BaseActivity {
         Drawable closeIcon = ContextCompat.getDrawable(this, R.drawable.ic_close);
         closeIcon.setColorFilter(ContextCompat.getColor(this, R.color.dark_gray), PorterDuff.Mode.MULTIPLY);
         SemiBoldTextView pageTitle = (SemiBoldTextView) findViewById(R.id.text_page_title);
-        pageTitle.setText(getString(R.string.kioson_payment_instruction));
+        pageTitle.setText(getString(R.string.indomaret_payment_instruction));
         mToolbar.setNavigationIcon(closeIcon);
         setSupportActionBar(mToolbar);
-        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         adjustToolbarSize();
-
-        //track page kioson
-        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_KIOSON_OVERVIEW);
     }
-
 }

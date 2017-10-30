@@ -12,16 +12,15 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.uikit.R;
-
 import java.lang.reflect.Field;
 
 /**
  * Created by ziahaqi on 12/7/16.
+ * Deprecated, please refer to {@link com.midtrans.sdk.uikit.views.gci.GciPaymentActivity}
  */
-
+@Deprecated
 public class GCIPaymentFragment extends Fragment {
     private AppCompatEditText editGiftCardNumber, editGiftCardPassword;
     private TextInputLayout cardNumberContainer, passwordContainer;

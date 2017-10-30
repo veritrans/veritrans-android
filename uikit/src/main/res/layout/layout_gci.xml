@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/card_number_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/sixteen_dp"
+        android:paddingRight="@dimen/sixteen_dp"
+        android:paddingTop="@dimen/sixteen_dp">
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/edit_gci_card_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:digits="0123456789 "
+            android:hint="@string/hint_giftcard_number"
+            android:imeOptions="actionNext"
+            android:inputType="number"
+            android:lines="1"
+            android:maxLength="19" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/password_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/sixteen_dp"
+        android:paddingRight="@dimen/sixteen_dp"
+        android:paddingTop="@dimen/sixteen_dp">
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/edit_gci_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_giftcard_password"
+            android:imeOptions="actionDone"
+            android:inputType="numberPassword"
+            android:maxLength="6"
+            android:maxLines="1" />
+    </android.support.design.widget.TextInputLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/sixteen_dp"
+        android:background="@color/faint_yellow"
+        android:padding="@dimen/eight_dp"
+        android:text="@string/info_gci_payment" />
+
+</LinearLayout>

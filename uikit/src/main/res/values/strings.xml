@@ -260,6 +260,7 @@
 
 
     <!-- Indomaret Instruction-->
+    <string name="indomaret_payment_instruction">Indomaret Payment Instruction</string>
     <string name="indomaret_instruction_step1">After confirming your payment, we will issue you a unique Payment Code number.</string>
     <string name="indomaret_instruction_step2">Note down your Payment Code and total amount.
         Don\'t worry, we will also mail you a copy of the payment instructions.</string>
@@ -663,7 +664,7 @@
     <string name="card_bin_invalid">credit card number does not match with the list of credit card bins</string>
     <string name="installment_required">Payment have to use installment</string>
 
-    <string name="complete_payment_kioson">Complete payment at Kioson</string>
+    <string name="complete_payment_kioson">Complete Payment at Kioson</string>
     <string name="complete_payment_indomaret">Complete payment at Indomaret</string>
     <string name="payment_not_enabled_message">Can\'t open the page, please enable the payment channel.</string>
 

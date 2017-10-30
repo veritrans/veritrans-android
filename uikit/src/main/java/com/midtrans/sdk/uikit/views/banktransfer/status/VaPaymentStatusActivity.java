@@ -1,14 +1,10 @@
 package com.midtrans.sdk.uikit.views.banktransfer.status;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
-
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BaseVaPaymentStatusActivity;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
@@ -54,15 +50,11 @@ public class VaPaymentStatusActivity extends BaseVaPaymentStatusActivity {
     }
 
     private void copyVaNumber() {
-        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clip = ClipData.newPlainText(getString(R.string.message_virtual_account), textVaNumber.getText().toString());
-        clipboard.setPrimaryClip(clip);
-        SdkUIFlowUtil.showToast(this, getString(R.string.copied_to_clipboard));
+        boolean copySuccess = copyToClipboard(getString(R.string.message_virtual_account), textVaNumber.getText().toString());
+        SdkUIFlowUtil.showToast(this, copySuccess ? getString(R.string.copied_to_clipboard) : getString(R.string.failed_to_copy));
     }
 
-
     private void initData() {
-
         if (presenter.isPaymentFailed()) {
             textValidity.setBackgroundColor(ContextCompat.getColor(this, R.color.bg_offer_failure));
             textValidity.setText(getString(R.string.payment_failed));
@@ -79,7 +71,6 @@ public class VaPaymentStatusActivity extends BaseVaPaymentStatusActivity {
         }
 
     }
-
 
     @Override
     public void bindViews() {
@@ -102,7 +93,6 @@ public class VaPaymentStatusActivity extends BaseVaPaymentStatusActivity {
         setIconColorFilter(buttonInstruction);
         setPrimaryBackgroundColor(buttonCompletePayment);
     }
-
 
     @Override
     public void onBackPressed() {

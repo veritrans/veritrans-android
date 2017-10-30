@@ -63,7 +63,18 @@
             android:name="com.midtrans.sdk.uikit.activities.IndomaretActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
-
+        <activity
+            android:name="com.midtrans.sdk.uikit.views.indomaret.payment.IndomaretPaymentActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.uikit.views.indomaret.status.IndomaretStatusActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.uikit.activities.IndomaretInstructionActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.midtrans.sdk.uikit.activities.MandiriClickPayInstructionActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -96,11 +107,24 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
+            android:name="com.midtrans.sdk.uikit.views.kioson.payment.KiosonPaymentActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
             android:name="com.midtrans.sdk.uikit.activities.KiosonInstructionActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
+            android:name="com.midtrans.sdk.uikit.views.kioson.status.KiosonStatusActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
             android:name="com.midtrans.sdk.uikit.activities.GCIActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name="com.midtrans.sdk.uikit.views.gci.GciPaymentActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
