@@ -286,7 +286,7 @@ public class BaseActivity extends AppCompatActivity {
 
     protected void initPaymentStatus(TransactionResponse transactionResponse, String errorMessage, int paymentMethod, boolean addToBackStack) {
         if (MidtransSDK.getInstance().getUIKitCustomSetting().isShowPaymentStatus()) {
-            if (paymentMethod == Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY || paymentMethod == Constants.PAYMENT_METHOD_TELKOMSEL_CASH || paymentMethod == Constants.PAYMENT_METHOD_GCI) {
+            if (paymentMethod == Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY || paymentMethod == Constants.PAYMENT_METHOD_TELKOMSEL_CASH || paymentMethod == Constants.PAYMENT_METHOD_GCI || paymentMethod == Constants.PAYMENT_METHOD_INDOSAT_DOMPETKU) {
                 Intent intent = new Intent(this, PaymentStatusActivity.class);
                 intent.putExtra(PaymentStatusActivity.EXTRA_PAYMENT_RESULT, transactionResponse);
                 startActivityForResult(intent, UiKitConstants.INTENT_CODE_PAYMENT_STATUS);
