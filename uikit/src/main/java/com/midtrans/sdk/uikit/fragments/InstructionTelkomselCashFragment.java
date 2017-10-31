@@ -15,7 +15,7 @@ import java.lang.reflect.Field;
 
 /**
  * @author rakawm
- * Deprecated, please refer to {@link com.midtrans.sdk.uikit.views.tsel_cash.TelkomselCashPaymentActivity}
+ * Deprecated, please refer to {@link com.midtrans.sdk.uikit.views.telkomsel_cash.TelkomselCashPaymentActivity}
  */
 @Deprecated
 public class InstructionTelkomselCashFragment extends Fragment {

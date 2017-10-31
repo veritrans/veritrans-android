@@ -72,7 +72,7 @@ import com.midtrans.sdk.uikit.views.gopay.payment.GoPayPaymentActivity;
 import com.midtrans.sdk.uikit.views.indomaret.payment.IndomaretPaymentActivity;
 import com.midtrans.sdk.uikit.views.kioson.payment.KiosonPaymentActivity;
 import com.midtrans.sdk.uikit.views.mandiri_clickpay.MandiriClickPayActivity;
-import com.midtrans.sdk.uikit.views.tsel_cash.TelkomselCashPaymentActivity;
+import com.midtrans.sdk.uikit.views.telkomsel_cash.TelkomselCashPaymentActivity;
 import com.midtrans.sdk.uikit.views.xl_tunai.payment.XlTunaiPaymentActivity;
 import com.midtrans.sdk.uikit.widgets.BoldTextView;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;

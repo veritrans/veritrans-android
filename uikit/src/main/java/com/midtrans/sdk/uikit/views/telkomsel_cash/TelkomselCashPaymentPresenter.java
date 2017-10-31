@@ -1,4 +1,4 @@
-package com.midtrans.sdk.uikit.views.tsel_cash;
+package com.midtrans.sdk.uikit.views.telkomsel_cash;
 
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.models.TransactionResponse;

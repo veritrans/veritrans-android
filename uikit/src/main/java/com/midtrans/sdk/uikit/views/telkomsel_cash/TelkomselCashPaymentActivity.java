@@ -1,4 +1,4 @@
-package com.midtrans.sdk.uikit.views.tsel_cash;
+package com.midtrans.sdk.uikit.views.telkomsel_cash;
 
 import android.content.Intent;
 import android.os.Bundle;

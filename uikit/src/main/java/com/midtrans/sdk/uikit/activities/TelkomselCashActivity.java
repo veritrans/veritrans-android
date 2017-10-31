@@ -28,7 +28,7 @@ import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 
 /**
  * @author rakawm
- * Deprecated, please use {@link com.midtrans.sdk.uikit.views.tsel_cash.TelkomselCashPaymentActivity} instead
+ * Deprecated, please use {@link com.midtrans.sdk.uikit.views.telkomsel_cash.TelkomselCashPaymentActivity} instead
  */
 @Deprecated
 public class TelkomselCashActivity extends BaseActivity implements View.OnClickListener {
