@@ -70,6 +70,7 @@ import com.midtrans.sdk.uikit.views.danamon_online.DanamonOnlineActivity;
 import com.midtrans.sdk.uikit.views.gci.GciPaymentActivity;
 import com.midtrans.sdk.uikit.views.gopay.payment.GoPayPaymentActivity;
 import com.midtrans.sdk.uikit.views.indomaret.payment.IndomaretPaymentActivity;
+import com.midtrans.sdk.uikit.views.indosat_dompetku.IndosatDompetkuPaymentActivity;
 import com.midtrans.sdk.uikit.views.kioson.payment.KiosonPaymentActivity;
 import com.midtrans.sdk.uikit.views.mandiri_clickpay.MandiriClickPayActivity;
 import com.midtrans.sdk.uikit.views.mandiri_ecash.MandiriEcashPaymentActivity;
@@ -625,7 +626,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             }
         } else if (isIndosatDompetku) {
             if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_indosat_dompetku))) {
-                Intent startIndosatPaymentActivity = new Intent(this, IndosatDompetkuActivity.class);
+                Intent startIndosatPaymentActivity = new Intent(this, IndosatDompetkuPaymentActivity.class);
                 startActivityForResult(startIndosatPaymentActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
                 if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                         && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
@@ -761,7 +762,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_indosat_dompetku))) {
-            Intent startIndosatPaymentActivity = new Intent(this, IndosatDompetkuActivity.class);
+            Intent startIndosatPaymentActivity = new Intent(this, IndosatDompetkuPaymentActivity.class);
             startActivityForResult(startIndosatPaymentActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
             if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                     && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {

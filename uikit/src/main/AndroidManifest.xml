@@ -62,7 +62,13 @@
         <activity
             android:name="com.midtrans.sdk.uikit.activities.IndosatDompetkuActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name="com.midtrans.sdk.uikit.views.indosat_dompetku.IndosatDompetkuPaymentActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name="com.midtrans.sdk.uikit.activities.IndomaretActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"

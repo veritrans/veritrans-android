@@ -299,6 +299,7 @@
     <string name="indosat_instruction_step4">Anda akan menerima pesan USSD dari Indosat untuk menyelesaikan transaksi melalui Dompetku app.</string>
     <string name="indosat_instruction_step5">Masukkan PIN Anda.</string>
     <string name="indosat_instruction_step6">Pembayaran Selesai.</string>
+    <string name="indosat_error_empty_number">Nomor Indosat tidak boleh kosong.</string>
 
     <string name="telkomsel_instruction_step1">Kirim pesan singkat (SMS) ke Telkomsel, ketik TOKEN &#60;PIN&#62;, kirim ke 2828.</string>
     <string name="telkomsel_instruction_step2">Masukkan token yang berasal dari balasan SMS oleh Telkomsel kolom Token T-Cash.</string>
