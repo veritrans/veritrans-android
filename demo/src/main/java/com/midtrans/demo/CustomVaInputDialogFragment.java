@@ -6,6 +6,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.text.InputFilter;
+import android.text.InputFilter.LengthFilter;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,7 +38,8 @@ public class CustomVaInputDialogFragment extends DialogFragment {
 
     private String vaTitle;
 
-    public static CustomVaInputDialogFragment newInstance(String title, int color, CustomVaDialogListener listener) {
+    public static CustomVaInputDialogFragment newInstance(String title, int color,
+        CustomVaDialogListener listener) {
         CustomVaInputDialogFragment fragment = new CustomVaInputDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable(ARG_LISTENER, listener);
@@ -47,7 +49,8 @@ public class CustomVaInputDialogFragment extends DialogFragment {
         return fragment;
     }
 
-    public static CustomVaInputDialogFragment newInstance(String number, String title, int color, CustomVaDialogListener listener) {
+    public static CustomVaInputDialogFragment newInstance(String number, String title, int color,
+        CustomVaDialogListener listener) {
         CustomVaInputDialogFragment fragment = new CustomVaInputDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable(ARG_LISTENER, listener);
@@ -60,7 +63,8 @@ public class CustomVaInputDialogFragment extends DialogFragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+        @Nullable Bundle savedInstanceState) {
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         return inflater.inflate(R.layout.fragment_custom_bca_va, container, false);
     }
@@ -142,14 +146,16 @@ public class CustomVaInputDialogFragment extends DialogFragment {
     }
 
     private void initInputFilter() {
-        InputFilter[] FilterArray = new InputFilter[1];
+        InputFilter[] filterArray = new InputFilter[1];
 
         if (vaTitle.equalsIgnoreCase(getString(R.string.bni_va_title))) {
-            FilterArray[0] = new InputFilter.LengthFilter(8);
+            filterArray[0] = new InputFilter.LengthFilter(8);
         } else if (vaTitle.equalsIgnoreCase(getString(R.string.bca_va_title))) {
-            FilterArray[0] = new InputFilter.LengthFilter(11);
+            filterArray[0] = new InputFilter.LengthFilter(11);
+        } else if (vaTitle.equalsIgnoreCase(getString(R.string.subcompany_bca_va_title))) {
+            filterArray[0] = new LengthFilter(5);
         }
 
-        customVAField.setFilters(FilterArray);
+        customVAField.setFilters(filterArray);
     }
 }
