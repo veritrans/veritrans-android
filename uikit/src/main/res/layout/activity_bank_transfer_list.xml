@@ -14,17 +14,45 @@
         android:visibility="visible"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <include
-            android:id="@+id/container_item_details"
-            layout="@layout/layout_total_amount" />
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_bank_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/container_item_details">
+            android:layout_above="@+id/container_item_details"
+            android:layout_alignParentTop="true"
+            android:layout_below="@id/container_item_details" />
 
-        </android.support.v7.widget.RecyclerView>
+        <View
+            android:id="@+id/background_dim"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/container_item_details"
+            android:background="@color/dim_background"
+            android:visibility="gone"/>
+
+        <LinearLayout
+            android:id="@+id/container_item_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_transaction_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/two_dp"
+                android:background="@color/light_gray" />
+
+            <include
+                layout="@layout/layout_total_amount" />
+
+        </LinearLayout>
+
     </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

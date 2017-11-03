@@ -19,6 +19,7 @@ public class CreditCardPaymentParams {
     private boolean saveCard;
     @SerializedName("point")
     private float pointRedeemed;
+    private transient boolean isFromBankPoint;
 
     public CreditCardPaymentParams(String cardToken, Boolean saveCard, String maskedCardNumber) {
         this.cardToken = cardToken;
@@ -79,5 +80,13 @@ public class CreditCardPaymentParams {
 
     public void setPointRedeemed(float pointRedeemed) {
         this.pointRedeemed = pointRedeemed;
+    }
+
+    public boolean isFromBankPoint() {
+        return isFromBankPoint;
+    }
+
+    public void setFromBankPoint(boolean fromBankPoint) {
+        isFromBankPoint = fromBankPoint;
     }
 }

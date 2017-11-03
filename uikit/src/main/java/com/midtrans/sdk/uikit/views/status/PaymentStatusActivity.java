@@ -148,7 +148,7 @@ public class PaymentStatusActivity extends BaseActivity {
         imageStatusLogo = (ImageView) findViewById(R.id.image_status_payment);
 
         buttonInstruction = (FancyButton) findViewById(R.id.button_status_see_instruction);
-        buttonFinish = (FancyButton) findViewById(R.id.button_status_finish);
+        buttonFinish = (FancyButton) findViewById(R.id.button_primary);
     }
 
     @Override
@@ -179,7 +179,13 @@ public class PaymentStatusActivity extends BaseActivity {
                 break;
         }
 
+        buttonInstruction.setTextColor(ContextCompat.getColor(this, R.color.white));
+        buttonInstruction.setIconColorFilter(ContextCompat.getColor(this, R.color.white));
+
         setPrimaryBackgroundColor(buttonFinish);
+        buttonFinish.setText(getString(R.string.done));
+        buttonFinish.setTextBold();
+        findViewById(R.id.button_chevron).setVisibility(View.GONE);
     }
 
     private void bindData() {

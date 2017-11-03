@@ -59,6 +59,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
+ * Deprecated, please use {@link com.midtrans.sdk.uikit.views.creditcard.details.CreditCardDetailsActivity}
  * Created by rakawm on 3/7/17.
  */
 @Deprecated

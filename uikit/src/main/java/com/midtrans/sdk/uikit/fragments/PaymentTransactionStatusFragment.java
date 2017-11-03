@@ -51,7 +51,9 @@ import java.util.regex.Pattern;
 
 /**
  * Created by shivam on 10/27/15.
+ * Deprecated, please use {@link com.midtrans.sdk.uikit.views.status.PaymentStatusActivity}
  */
+@Deprecated
 public class PaymentTransactionStatusFragment extends Fragment {
 
     private static final String TRANSACTION_RESPONSE_PARAM = "transaction_response_param";
@@ -134,8 +136,7 @@ public class PaymentTransactionStatusFragment extends Fragment {
         amountTextView = (TextView) view.findViewById(R.id.text_status_amount);
         orderIdTextView = (TextView) view.findViewById(R.id.text_order_id);
         paymentTypeTextView = (TextView) view.findViewById(R.id.text_payment_type);
-        actionBt = (FancyButton) view.findViewById(R.id.btn_action);
-        actionBt.setCustomTextFont(MidtransSDK.getInstance().getSemiBoldText());
+        actionBt = (FancyButton) view.findViewById(R.id.button_primary);
         paymentIv = (ImageView) view.findViewById(R.id.image_payment);
         paymentStatusTv = (TextView) view.findViewById(R.id.text_payment_status);
         paymentMessageTv = (TextView) view.findViewById(R.id.text_payment_message);
@@ -153,6 +154,9 @@ public class PaymentTransactionStatusFragment extends Fragment {
         layoutRedeemedPoint = (RelativeLayout) view.findViewById(R.id.layout_status_point_amount);
         textRedeemedPoint = (TextView) view.findViewById(R.id.text_point_amount);
 
+        // hide chevron image
+        view.findViewById(R.id.button_chevron).setVisibility(View.GONE);
+
         MidtransSDK midtransSDK = MidtransSDK.getInstance();
         if (midtransSDK != null && midtransSDK.getColorTheme() != null) {
             if (midtransSDK.getColorTheme().getPrimaryColor() != 0) {
@@ -160,11 +164,8 @@ public class PaymentTransactionStatusFragment extends Fragment {
                 actionBt.setBackgroundColor(midtransSDK.getColorTheme().getPrimaryColor());
             }
 
-            if (midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
-                // Set instruction color
-                buttonInstruction.setBorderColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
-                buttonInstruction.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
-            }
+            buttonInstruction.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+            buttonInstruction.setIconColorFilter(ContextCompat.getColor(getContext(), R.color.white));
         }
     }
 
@@ -321,6 +322,9 @@ public class PaymentTransactionStatusFragment extends Fragment {
                 showInstruction();
             }
         });
+
+        actionBt.setText(getString(R.string.done));
+        actionBt.setTextBold();
 
         actionBt.setOnClickListener(new View.OnClickListener() {
             @Override

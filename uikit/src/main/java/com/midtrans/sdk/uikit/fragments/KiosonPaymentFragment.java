@@ -78,8 +78,8 @@ public class KiosonPaymentFragment extends Fragment {
         MidtransSDK midtransSDK = MidtransSDK.getInstance();
         if (midtransSDK != null && midtransSDK.getColorTheme() != null) {
             if (midtransSDK.getColorTheme().getPrimaryDarkColor() != 0) {
-                btnSeeInstruction.setBorderColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
                 btnSeeInstruction.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+                btnSeeInstruction.setIconColorFilter(midtransSDK.getColorTheme().getPrimaryDarkColor());
                 btnCopyToClipboard.setBorderColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
                 btnCopyToClipboard.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
             }

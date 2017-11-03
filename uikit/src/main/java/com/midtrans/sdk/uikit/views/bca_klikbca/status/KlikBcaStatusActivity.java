@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
-
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
@@ -26,10 +25,10 @@ public class KlikBcaStatusActivity extends BasePaymentActivity {
     public static final String EXTRA_PAYMENT_STATUS = "extra.status";
 
     private SemiBoldTextView textExpiry;
-    private DefaultTextView textTitle;
+    private SemiBoldTextView textTitle;
     private DefaultTextView textStatusFailed;
 
-    private FancyButton buttonInstuction;
+    private FancyButton buttonInstruction;
     private FancyButton buttonFinish;
 
     @Override
@@ -48,7 +47,7 @@ public class KlikBcaStatusActivity extends BasePaymentActivity {
             }
         });
 
-        buttonInstuction.setOnClickListener(new View.OnClickListener() {
+        buttonInstruction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isActivityRunning()) {
@@ -72,22 +71,23 @@ public class KlikBcaStatusActivity extends BasePaymentActivity {
             }
         }
         buttonFinish.setText(getString(R.string.complete_payment_at_klik_bca));
+        buttonFinish.setTextBold();
         textTitle.setText(getString(R.string.klik_bca));
     }
 
     @Override
     public void bindViews() {
         buttonFinish = (FancyButton) findViewById(R.id.button_primary);
-        buttonInstuction = (FancyButton) findViewById(R.id.button_instruction);
+        buttonInstruction = (FancyButton) findViewById(R.id.button_instruction);
         textExpiry = (SemiBoldTextView) findViewById(R.id.text_expiry);
-        textTitle = (DefaultTextView) findViewById(R.id.text_page_title);
+        textTitle = (SemiBoldTextView) findViewById(R.id.text_page_title);
         textStatusFailed = (DefaultTextView) findViewById(R.id.text_status_failed);
     }
 
     @Override
     public void initTheme() {
         setPrimaryBackgroundColor(buttonFinish);
-        setTextColor(buttonInstuction);
-        setBorderColor(buttonInstuction);
+        setTextColor(buttonInstruction);
+        setIconColorFilter(buttonInstruction);
     }
 }

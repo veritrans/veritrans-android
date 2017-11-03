@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="@dimen/sixteen_dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/sixteen_dp">
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tab_instructions"
@@ -58,7 +58,7 @@
 
             <com.midtrans.sdk.uikit.widgets.FancyButton
                 android:id="@+id/button_copy_va"
-                style="@style/ButtonSecondary"
+                style="@style/ButtonTertiary"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
@@ -91,12 +91,14 @@
         <com.midtrans.sdk.uikit.widgets.FancyButton
             android:id="@+id/button_download_instruction"
             style="@style/ButtonSecondary"
-            app:fb_text="@string/download_instruction"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/sixteen_dp"
             android:layout_marginRight="@dimen/sixteen_dp"
             android:layout_marginTop="@dimen/sixteen_dp"
-            android:visibility="visible" />
+            android:visibility="visible"
+            app:fb_iconPaddingRight="@dimen/four_dp"
+            app:fb_iconResource="@drawable/ic_download"
+            app:fb_text="@string/download_instruction" />
     </LinearLayout>
 </LinearLayout>

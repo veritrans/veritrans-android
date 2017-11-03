@@ -226,9 +226,14 @@ public class Utils {
     }
 
     public static String formatDouble(double d) {
-        if (d == (long) d)
-            return String.format("%d", (long) d);
-        else
-            return String.format("%s", d);
+        String result = "0";
+        try {
+            result = d == (long) d ? String.format("%d", (long) d) : String.format("%s", d);
+
+        } catch (RuntimeException e) {
+            Logger.e("formatDouble():" + e.getMessage());
+        }
+
+        return result;
     }
 }

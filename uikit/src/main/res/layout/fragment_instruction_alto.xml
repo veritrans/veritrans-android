@@ -292,13 +292,15 @@
 
         <com.midtrans.sdk.uikit.widgets.FancyButton
             android:id="@+id/instruction_toggle"
-            style="@style/ButtonBankTransferInstruction"
+            style="@style/ButtonSecondary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="@dimen/sixteen_dp"
             android:layout_marginRight="@dimen/sixteen_dp"
             android:layout_marginTop="@dimen/sixteen_dp"
-            app:fb_text="@string/show_instruction" />
+            app:fb_iconPaddingRight="@dimen/four_dp"
+            app:fb_iconResource="@drawable/ic_view"
+            app:fb_text="@string/show_instruction" /> />
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

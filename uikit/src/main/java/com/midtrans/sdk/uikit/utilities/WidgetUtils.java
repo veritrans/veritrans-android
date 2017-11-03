@@ -13,6 +13,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @deprecated please use {@link com.midtrans.sdk.uikit.widgets.Utils} instead
+ */
+@Deprecated
 public class WidgetUtils {
 
 	private static Map<String, Typeface> cachedFontMap = new HashMap<String, Typeface>();

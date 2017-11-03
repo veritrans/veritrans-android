@@ -28,48 +28,56 @@
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <include
-            android:id="@+id/container_item_details"
-            layout="@layout/layout_total_amount" />
-
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/button_complete_payment"
-            android:layout_below="@id/container_item_details">
+            android:layout_above="@+id/container_item_details"
+            android:layout_alignParentTop="true">
 
             <include layout="@layout/layout_mandiri_bill_status" />
 
         </ScrollView>
 
-        <com.midtrans.sdk.uikit.widgets.FancyButton
-            android:id="@+id/button_complete_payment"
+        <View
+            android:id="@+id/background_dim"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/button_size"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingStart="@dimen/activity_horizontal_margin"
-            android:textColor="@color/white"
-            app:fb_defaultColor="@color/gray.primary"
-            app:fb_focusColor="@color/colorAccentLight"
-            app:fb_text="@string/complete_payment_at_atm"
-            app:fb_textGravity="center_vertical"
-            app:fb_textSize="14sp" />
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/container_item_details"
+            android:background="@color/dim_background"
+            android:visibility="gone"/>
 
         <LinearLayout
+            android:id="@+id/container_item_details"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/button_size"
-            android:layout_alignParentBottom="true"
-            android:gravity="bottom|end">
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/button_complete_payment"
+            android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="wrap_content"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_transaction_detail"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="@dimen/eight_dp"
-                android:src="@drawable/ic_arrow_right_white" />
+                android:visibility="gone"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/two_dp"
+                android:background="@color/light_gray" />
+
+            <include
+                layout="@layout/layout_total_amount" />
+
         </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/two_dp"
+            android:layout_above="@+id/button_complete_payment"
+            android:background="@color/light_gray" />
+
+        <include
+            android:id="@+id/button_complete_payment"
+            layout="@layout/layout_primary_button"/>
     </RelativeLayout>
 
     <include

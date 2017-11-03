@@ -43,9 +43,10 @@
                 <ImageView
                     android:layout_centerInParent="true"
                     android:id="@+id/merchant_logo"
-                    android:layout_width="@dimen/logo_width"
-                    android:layout_height="@dimen/logo_height"
-                    android:scaleType="centerInside"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/main_logo_height"
+                    android:scaleType="fitStart"
+                    android:adjustViewBounds="true"
                     tools:src="@drawable/ic_veritrans" />
             </RelativeLayout>
 

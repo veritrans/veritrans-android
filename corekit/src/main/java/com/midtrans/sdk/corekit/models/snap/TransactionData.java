@@ -5,6 +5,7 @@ import java.util.List;
 /**
  * @author rakawm
  */
+@Deprecated
 public class TransactionData {
     private String id;
     private String transactionId;

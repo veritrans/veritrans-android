@@ -26,6 +26,7 @@ import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 /**
+ * Deprecated, please use {@link com.midtrans.sdk.uikit.views.bca_klikpay.BcaKlikPayPaymentActivity}
  * @author rakawm
  */
 @Deprecated

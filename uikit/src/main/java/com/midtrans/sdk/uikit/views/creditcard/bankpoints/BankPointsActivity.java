@@ -7,14 +7,13 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatEditText;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.utilities.Utils;
@@ -23,7 +22,7 @@ import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
-
+import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 import java.util.Locale;
 
 /**
@@ -41,7 +40,7 @@ public class BankPointsActivity extends BasePaymentActivity {
 
     private TextView textTotalPoints;
     private TextView textAmountToPay;
-    private DefaultTextView textTitle;
+    private SemiBoldTextView textTitle;
 
     private ImageView imageBankPointLogo;
 
@@ -59,8 +58,8 @@ public class BankPointsActivity extends BasePaymentActivity {
         initRedeemedPointsField();
         bindValues();
         updateAmountToPayText();
-        initRedeemPointButton();
-        initBankPointLogoAndTitle();
+        initButtons();
+        initBankPointPage();
     }
 
     private void initPresenter() {
@@ -69,35 +68,26 @@ public class BankPointsActivity extends BasePaymentActivity {
         presenter = new BankPointsPresenter(pointBalance, pointBank);
     }
 
-
     @Override
     public void bindViews() {
         fieldRedeemedPoint = (AppCompatEditText) findViewById(R.id.redeemed_point_field);
         textTotalPoints = (TextView) findViewById(R.id.text_total_point);
         textAmountToPay = (TextView) findViewById(R.id.text_amount_to_pay);
-        textTitle = (DefaultTextView) findViewById(R.id.text_page_title);
+        textTitle = (SemiBoldTextView) findViewById(R.id.text_page_title);
 
         imageBankPointLogo = (ImageView) findViewById(R.id.bank_point_logo);
-        buttonRedeemPoint = (FancyButton) findViewById(R.id.btn_redeem_point);
+        buttonRedeemPoint = (FancyButton) findViewById(R.id.button_primary);
         containerAmount = (FancyButton) findViewById(R.id.container_amount);
         containerTotalPoint = (FancyButton) findViewById(R.id.container_total_point);
-
     }
 
     @Override
     public void initTheme() {
         setPrimaryBackgroundColor(buttonRedeemPoint);
-        setPrimaryBackgroundColor(buttonRedeemPoint);
         setSecondaryBackgroundColor(containerAmount);
         containerAmount.setAlpha(0.5f);
         setSecondaryBackgroundColor(containerTotalPoint);
         containerTotalPoint.setAlpha(0.5f);
-
-        // Set font into pay now button
-        String fonthPath = presenter.getSemiBoldFontPath();
-        if (!TextUtils.isEmpty(fonthPath)) {
-            buttonRedeemPoint.setCustomTextFont(fonthPath);
-        }
     }
 
     private void initRedeemedPointsField() {
@@ -137,16 +127,6 @@ public class BankPointsActivity extends BasePaymentActivity {
             }
         });
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // Request focus for edit text
-                fieldRedeemedPoint.requestFocus();
-                fieldRedeemedPoint.setSelection(fieldRedeemedPoint.getText().toString().length());
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(fieldRedeemedPoint, InputMethodManager.SHOW_IMPLICIT);
-            }
-        }, 500);
     }
 
     private void bindValues() {
@@ -159,28 +139,62 @@ public class BankPointsActivity extends BasePaymentActivity {
         presenter.setLatestValidPoint(formattedBalance);
         presenter.calculateAmount(presenter.getPointBalance());
         fieldRedeemedPoint.setText(formattedBalance);
-        textTotalPoints.setText(formattedBalance);
-        textAmountToPay.setText(getString(R.string.prefix_money, Utils.getFormattedAmount(presenter.getAmountToPay())));
     }
 
-    private void initBankPointLogoAndTitle() {
+    private void initBankPointPage() {
         String bank = presenter.getPointBank();
         switch (bank) {
             case BankType.BNI:
-                setHeaderTitle(getString(R.string.redeem_bank_point_title, getString(R.string.bank_bni)));
+                setHeaderTitle(getString(R.string.redeem_bni_title));
                 imageBankPointLogo.setImageResource(R.drawable.bni_badge);
+                textTotalPoints.setText(getString(R.string.total_bni_reward_point, Utils.getFormattedAmount(presenter.getPointBalance())));
+                findViewById(R.id.container_redeemed_point).setVisibility(View.VISIBLE);
+                findViewById(R.id.container_fiestapoin).setVisibility(View.GONE);
+                setFocusForBniPoint();
+                buttonRedeemPoint.setText(getString(R.string.pay_with_bni_point));
+                buttonRedeemPoint.setTextBold();
+                break;
+            case BankType.MANDIRI:
+                setHeaderTitle(getString(R.string.redeem_mandiri_title));
+                imageBankPointLogo.setImageResource(R.drawable.mandiri_badge);
+                textTotalPoints.setText(getString(R.string.total_mandiri_fiestapoint, Utils.getFormattedAmount(presenter.getPointBalance())));
+                findViewById(R.id.container_redeemed_point).setVisibility(View.GONE);
+                findViewById(R.id.container_fiestapoin).setVisibility(View.VISIBLE);
+                setFiestapoinDiscount();
+                buttonRedeemPoint.setText(getString(R.string.pay_with_mandiri_point));
+                buttonRedeemPoint.setTextBold();
                 break;
             default:
                 break;
         }
+        updateAmountToPayText();
+    }
+
+    private void setFiestapoinDiscount() {
+        float fiestaDiscount = presenter.getPointBalance();
+        presenter.calculateAmount(fiestaDiscount);
+        ((DefaultTextView) findViewById(R.id.text_fiestapoin_discount)).setText(getString(R.string.prefix_money_negative, Utils.getFormattedAmount(fiestaDiscount)));
+    }
+
+    private void setFocusForBniPoint() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Request focus for edit text
+                fieldRedeemedPoint.requestFocus();
+                fieldRedeemedPoint.setSelection(fieldRedeemedPoint.getText().toString().length());
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(fieldRedeemedPoint, InputMethodManager.SHOW_IMPLICIT);
+            }
+        }, 500);
     }
 
     private void setHeaderTitle(String title) {
         textTitle.setText(title);
     }
 
-    private void initRedeemPointButton() {
-        buttonRedeemPoint.setOnClickListener(new View.OnClickListener() {
+    private void initButtons() {
+        buttonRedeemPoint.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 redeemPoint();

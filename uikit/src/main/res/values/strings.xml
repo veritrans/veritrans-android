@@ -109,7 +109,7 @@
     <string name="hint_cvv">CVV</string>
     <string name="save_card_message">Save card for later reuse</string>
     <string name="save_card_dialog">We will securely save your card details so you can reuse them later.</string>
-    <string name="pay_now">Pay now</string>
+    <string name="pay_now">Pay Now</string>
     <string name="pay_with_instalments">Pay with instalment ?</string>
     <string name="validatation_message_card_holder_name">Please enter card holder name</string>
     <string name="hint_expiry_date">Expiry(mm/yy)</string>
@@ -159,7 +159,7 @@
 
     <string name="bank_atm_transfer_step3">Please complete payment through the Prima(BCA), ATM Bersama(Mandiri), or Alto(Permata) ATM network.</string>
     <string name="bank_atm_transfer_step4">Once payment is complete, you will receive a confirmation email.</string>
-    <string name="see_instruction">see instructions</string>
+    <string name="see_instruction">View Instruction</string>
     <string name="download_instruction">Download Instructions</string>
     <string name="confirm_payment">Confirm Payment</string>
     <string name="copy_payment_code">Copy Payment Code</string>
@@ -224,9 +224,12 @@
     <string name="bca_klik_instruction_step6">Your transaction is Done.</string>
 
     <!--KLIK BCA PAYMENT-->
-    <string name="bca_klik_pay_instruction_step1">You will be redirected to BCA KlikPay once you tap <b>Confirm Payment</b> button.</string>
-    <string name="bca_klik_pay_instruction_step2">For payment, you can choose to use KlikBCA Individual Account or BCA credit card.</string>
-    <string name="bca_klik_pay_instruction_step3">For more information about BCA KlikPay please contact Halo BCA at (021) 1500888 or visit <a href="http://klikbca.com/KlikPay/klikpay.html">http://klikbca.com/KlikPay/klikpay.html</a>.</string>
+    <string name="bca_klik_pay_instruction_step1">You will be redirected to BCA KlikPay once you click <b>Confirm Payment</b> button.</string>
+    <string name="bca_klik_pay_instruction_step2">After Login to your BCA Klikpay Account by entering your email address and password, it will display transaction information such as merchant name, transaction time, and amount to be paid. Choose the type of payment KlikBCA or BCA Card for the transaction.</string>
+    <string name="bca_klik_pay_instruction_step3">To authorize payment with BCA KlikPay, press the <b>Send OTP</b> button, and you will receive an OTP (One Time Password) code sent via SMS to your mobile phone. Enter the OTP code in the fields provided.</string>
+    <string name="bca_klik_pay_instruction_step4">If your OTP code is correct, your payment will be processed immediately and your account balance (for KlikBCA payment type) or your BCA Card limit (for BCA Card payment type) will be reduced according to amount of transaction value.</string>
+    <string name="bca_klik_pay_instruction_step5">Your transaction success status will appear on the transaction screen and you will receive a notification email.</string>
+    <string name="bca_klik_pay_instruction_step6">For more information about BCA KlikPay please contact Halo BCA at (021) 1500888 or visit <a href="http://klikbca.com/KlikPay/klikpay.html">http://klikbca.com/KlikPay/klikpay.html</a>.</string>
 
     <!--m-BCA-->
     <string name="bca_mbanking_instruction_step1">Choose <b>m-transfer</b>.</string>
@@ -368,7 +371,7 @@
     <!-- mandiri clickpay -->
     <string name="mandiri_click_pay_instruction_step1">1.\tActivate your Mandiri token by pressing [img src=ic_mandiri_instrcn/].</string>
     <string name="mandiri_click_pay_instruction_step2">2.\tEnter your Mandiri token password.</string>
-    <string name="mandiri_click_pay_instruction_step3">3.\tPress <b>3</b> when it displays <b>APPLI</b></string>
+    <string name="mandiri_click_pay_instruction_step3">3.\tPress <b>3</b> when it displays <b>APPLI</b>.</string>
     <string name="mandiri_click_pay_instruction_step4">4.\tEnter <b>input 1</b> and press [img src=ic_mandiri_instrcn/] for 3 seconds.</string>
     <string name="mandiri_click_pay_instruction_step5">5.\tEnter <b>input 2</b> and press [img src=ic_mandiri_instrcn/] for 3 seconds.</string>
     <string name="mandiri_click_pay_instruction_step6">6.\tEnter <b>input 3</b> and press [img src=ic_mandiri_instrcn/] for 3 seconds.</string>
@@ -379,7 +382,7 @@
     <string name="success">success</string>
     <string name="fetching_cards">Fetching cards</string>
     <string name="btn_save_card">Register Card</string>
-    <string name="btn_scan_card">scan card using camera</string>
+    <string name="btn_scan_card">Scan Card Using Camera</string>
     <string name="offer_applied">Offer Applied Successfully !</string>
     <string name="offer_not_applied">This card is not applicable for this promotion, please use another one.</string>
     <string name="no_offers">No offers found</string>
@@ -516,7 +519,7 @@
 
     <!-- instruction atm bersama -->
     <string name="preview_atm_bersama">Pay through <b>all bank ATMs with ATM Bersama logo</b></string>
-    <string name="expand_link_atm_bersama">Total <u>+</u>83 registered banks</string>
+    <string name="expand_link_atm_bersama">View 83 Registered Banks</string>
     <string name="instruction_card_atm_bersama">Ensure there is <b>ATM Bersama logo in the back of your ATM card.</b></string>
     <string name="bank_list_header_atm_bersama">Banks registered with ATM Bersama</string>
     <string name="instruction_atm_bersama1">On the main menu, choose <b>Others</b>.</string>
@@ -529,7 +532,7 @@
     <string name="pay_with_atm_bersama">Pay through ATM with ATM Bersama logo</string>
 
     <string name="preview_prima">Pay through <b>all bank ATMs with Prima logo</b></string>
-    <string name="expand_link_prima">Total <u>+</u>64 registered banks</string>
+    <string name="expand_link_prima">View 64 Registered Banks</string>
     <string name="instruction_card_prima">Ensure there is <b>Prima logo in the back of your ATM card.</b></string>
     <string name="bank_list_header_prima">Banks registered with Prima network</string>
     <string name="instruction_prima1">On the main menu, choose <b>Other Transaction</b>.</string>
@@ -542,7 +545,7 @@
     <string name="pay_with_prima">Pay through ATM with Prima logo</string>
 
     <string name="preview_alto">Pay through <b>all bank ATMs with Alto logo</b></string>
-    <string name="expand_link_alto">Total <u>+</u>19 registered banks</string>
+    <string name="expand_link_alto">View 19 Registered Banks</string>
     <string name="instruction_card_alto">Ensure there is <b>Alto logo in the back of your ATM card</b></string>
     <string name="bank_list_header_alto">Banks registered with Alto network</string>
     <string name="instruction_alto1">On the main menu, choose <b>Other Transaction</b>.</string>
@@ -618,7 +621,7 @@
     <string name="text_price">Price</string>
     <string name="save_card_info">Card details above will be saved to help your future transactions.</string>
     <string name="choose_card">Choose credit card</string>
-    <string name="add_new_card">pay with new card</string>
+    <string name="add_new_card">Pay with New Card</string>
     <string name="mandiri_bill_transfer">Bank Mandiri</string>
     <string name="bank_bca_transfer">Bank BCA</string>
     <string name="bank_permata_transfer">Bank Permata</string>
@@ -650,9 +653,12 @@
     <string name="number_instruction7">7.</string>
     <string name="number_instruction8">8.</string>
     <string name="number_instruction9">9.</string>
+    <string name="item_header">ITEM(S)</string>
+    <string name="quantity_header">QTY</string>
+    <string name="price_header">PRICE</string>
 
     <string name="get_challenge_token">How can i get a challenge token?</string>
-    <string name="kioson_instruction">how can i pay with kioson payment ?</string>
+    <string name="kioson_instruction">See Payment Instruction</string>
     <string name="cstore_payment">cstore</string>
     <string name="card_bin_invalid">credit card number does not match with the list of credit card bins</string>
     <string name="installment_required">Payment have to use installment</string>
@@ -697,27 +703,34 @@
     <string name="promo_dialog_message">With this card, you will get Rp. %1$s discount from %2$s.</string>
     <string name="error_obtain_promo">Failed to obtain promo.</string>
     <string name="redeem_bni_reward">Redeem BNI Reward Point</string>
-    <string name="amount_after_discount">Amount to pay after discount</string>
+    <string name="redeem_mandiri_point">Redeem Fiesta Point</string>
+    <string name="redeem_100_point">FIESTAPOIN DISCOUNT</string>
+    <string name="amount_after_discount">AMOUNT TO PAY AFTER DISCOUNT</string>
     <string name="will_be_used_point_here">Will be used point</string>
     <string name="total_point_here">total point here</string>
     <string name="redeem_point">Redeem Point</string>
     <string name="redeem_bank_point_title">Redeem %1$s Point</string>
     <string name="total_point">Your total %1$s Reward Point is %2$s</string>
-    <string name="redeem_bni_title">Redeem BNI Reward Point</string>
-    <string name="redeem_bni_details">You can pay partly through the redemption of BNI Reward Point through your Credit Card.</string>
+    <string name="redeem_bni_title">BNI Reward Points</string>
+    <string name="redeem_bni_details">You can pay partly through the redemption of BNI Reward Point through your BNI credit card.</string>
+    <string name="redeem_mandiri_title">Mandiri Fiestapoin</string>
+    <string name="redeem_mandiri_details">You can pay partly through the redemption of Mandiri Fiestpoin through your Mandiri credit / debit card.</string>
+    <string name="pay_with_mandiri_point">Pay with Mandiri Fiestapoin</string>
+    <string name="pay_with_bni_point">Pay with BNI Reward Points</string>
     <string name="klik_bca_continue">Please continue the payment process via KlikBCA by opening <a href="http://klikbca.com/">http://klikbca.com/</a> on your browser.</string>
     <string name="error_delete_message">Failed to delete card</string>
     <string name="mandiri_debit_card">Mandiri Debit Card</string>
     <string name="bni_debit_online_card">BNI Debit Online Card</string>
     <string name="deleted">Deleted</string>
     <string name="undo">Undo</string>
-    <string name="delete_this_card">delete this card</string>
+    <string name="delete_this_card">Delete This Card</string>
 
-    <string name="how_much_point">How much points you want to redeem?</string>
+    <string name="how_much_point">How much points you want to redeem for discount?</string>
     <string name="total_bni_point">Your total BNI points</string>
     <string name="bank_bni">BNI</string>
     <string name="bank_mandiri">Mandiri</string>
     <string name="status_redeemed_point">POINT DISCOUNT</string>
+    <string name="pay_without_bank_point">Pay without %1$s</string>
 
     <!-- bni internet  payment instruction -->
     <string name="bni_internet_instruction_1">Go to <a href="https://ibank.bni.co.id"><b>https://ibank.bni.co.id</b></a> and then click <b>Login</b>.</string>
@@ -789,7 +802,9 @@
     <string name="notification_token_message">Key token device is required for this payment method.</string>
     <string name="notification_otp_message">SMS charges may be applied for this payment method</string>
     <string name="failed_to_get_bank_point">Failed to get bank points</string>
-    <string name="total_bank_point">Your total points</string>
+    <string name="total_bni_reward_point">Current Points: %1$s</string>
+    <string name="total_mandiri_fiestapoint">Current Fiestapoin: %1$s</string>
+
     <string name="status_rba_unsuccessful">Payment has not been made</string>
     <string name="message_error_internal_server">Sorry, there is an internal problem. Please try again or try another payment method</string>
     <string name="mandiri_bill">Mandiri</string>
@@ -839,5 +854,6 @@
     <string name="danamon_online_description_2">Please make sure you have a User ID for Danamon Online Banking before going through the payment.</string>
     <string name="message_sdk_invalid">Client key  and context cannot be null or empty. Please set the client key and context to SDK</string>
     <string name="message_invalid_merchant_url">Merchant base url cannot be null or empty, if you implement your own token storage. Please set merchant base_url to SDK</string>
-
+    <string name="empty_card_number">Please enter card number</string>
+    <string name="empty_challenge_token">Please enter challenge token</string>
 </resources>

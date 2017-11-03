@@ -25,10 +25,7 @@ public class BankTransferPaymentPresenter extends BasePaymentPresenter<BankTrans
 
 
     public boolean isEmailValid(String email) {
-        if (!TextUtils.isEmpty(email) && !SdkUIFlowUtil.isEmailValid(email)) {
-            return false;
-        }
-        return true;
+        return !(!TextUtils.isEmpty(email) && !SdkUIFlowUtil.isEmailValid(email));
     }
 
     public String getUserEmail() {

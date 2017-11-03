@@ -38,6 +38,7 @@ public class DanamonOnlineActivity extends BasePaymentActivity implements BasePa
     private void bindData() {
         setPageTitle(getString(R.string.payment_method_danamon_online));
         buttonPrimary.setText(getString(R.string.confirm_payment));
+        buttonPrimary.setTextBold();
     }
 
     private void initActionButton() {
@@ -61,10 +62,13 @@ public class DanamonOnlineActivity extends BasePaymentActivity implements BasePa
         if (containerInstruction.getVisibility() == View.VISIBLE) {
             containerInstruction.setVisibility(View.GONE);
             buttonInstruction.setText(getString(R.string.show_instruction));
+            buttonInstruction.setIconResource(R.drawable.ic_view);
         } else {
             containerInstruction.setVisibility(View.VISIBLE);
             buttonInstruction.setText(getString(R.string.hide_instruction));
+            buttonInstruction.setIconResource(R.drawable.ic_hide);
         }
+        setIconColorFilter(buttonInstruction);
     }
 
     private void initProperties() {
@@ -82,8 +86,8 @@ public class DanamonOnlineActivity extends BasePaymentActivity implements BasePa
     @Override
     public void initTheme() {
         setPrimaryBackgroundColor(buttonPrimary);
-        setBorderColor(buttonInstruction);
         setTextColor(buttonInstruction);
+        setIconColorFilter(buttonInstruction);
     }
 
     @Override

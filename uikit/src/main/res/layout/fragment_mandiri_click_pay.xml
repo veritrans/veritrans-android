@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/sixteen_dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <com.midtrans.sdk.uikit.widgets.DefaultTextView
@@ -29,6 +28,8 @@
             android:hint="@string/hint_mandiri_debit_card_no"
             android:inputType="number"
             android:maxLength="19"
+            android:imeOptions="actionNext"
+            android:nextFocusDown="@+id/et_challenge_token"
             android:maxLines="1" />
     </android.support.design.widget.TextInputLayout>
 

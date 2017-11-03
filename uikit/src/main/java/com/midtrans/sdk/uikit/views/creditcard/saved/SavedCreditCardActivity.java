@@ -8,7 +8,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
@@ -17,9 +16,8 @@ import com.midtrans.sdk.uikit.adapters.SavedCardsAdapter;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.views.creditcard.details.CreditCardDetailsActivity;
-import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
-
+import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +29,7 @@ public class SavedCreditCardActivity extends BasePaymentActivity implements Save
 
     private RecyclerView listCard;
     private FancyButton buttonAddCard;
-    private DefaultTextView textTitle;
+    private SemiBoldTextView textTitle;
 
     private SavedCreditCardPresenter presenter;
     private SavedCardsAdapter adapter;
@@ -68,7 +66,6 @@ public class SavedCreditCardActivity extends BasePaymentActivity implements Save
 
     @Override
     public void initTheme() {
-        setBorderColor(buttonAddCard);
         setTextColor(buttonAddCard);
         setIconColorFilter(buttonAddCard);
     }
@@ -120,7 +117,7 @@ public class SavedCreditCardActivity extends BasePaymentActivity implements Save
 
     @Override
     public void bindViews() {
-        textTitle = (DefaultTextView) findViewById(R.id.text_page_title);
+        textTitle = (SemiBoldTextView) findViewById(R.id.text_page_title);
         buttonAddCard = (FancyButton) findViewById(R.id.btn_add_card);
         listCard = (RecyclerView) findViewById(R.id.container_saved_card);
     }
