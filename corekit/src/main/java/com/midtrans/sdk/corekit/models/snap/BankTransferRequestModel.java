@@ -1,5 +1,6 @@
 package com.midtrans.sdk.corekit.models.snap;
 
+import android.text.TextUtils;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -31,6 +32,8 @@ public class BankTransferRequestModel implements Serializable {
     }
 
     public void setSubCompanyCode(String subCompanyCode) {
-        this.subCompanyCode = subCompanyCode;
+        if (!TextUtils.isEmpty(vaNumber)) {
+            this.subCompanyCode = subCompanyCode;
+        }
     }
 }

@@ -1379,6 +1379,9 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 if (checked) {
                     customBcaVaTitle.setText(R.string.custom_bca_va_disabled);
+                    if (subCompanyBcaVaContainer != null) {
+                        subCompanyBcaVaDisabledSelection.setChecked(true);
+                    }
                 }
             }
         });
