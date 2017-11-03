@@ -5,3 +5,4 @@ files:
   corekit/build.gradle: version = '%.%.%'
   uikit/build.gradle: version = '%.%.%'
   scancard/build.gradle: version = '%.%.%'
+  issuetracker/build.gradle: version = '%.%.%'
