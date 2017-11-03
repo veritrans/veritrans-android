@@ -467,7 +467,7 @@ public class FancyButton extends LinearLayout {
         this.setClickable(true);
         this.setFocusable(true);
         if (mIconResource == null && mFontIcon == null && getPaddingLeft() == 0 && getPaddingRight() == 0 && getPaddingTop() == 0 && getPaddingBottom() == 0) {
-            this.setPadding(20, 20, 20, 20);
+            this.setPadding(10, 10, 10, 10);
         }
     }
 
@@ -801,6 +801,12 @@ public class FancyButton extends LinearLayout {
             initializeFancyButton();
         else
             mTextView.setText(text);
+    }
+
+    public void setTextBold() {
+        if (mTextView != null && mTextTypeFace != null) {
+            mTextView.setTypeface(mTextTypeFace, Typeface.BOLD);
+        }
     }
 
     /**

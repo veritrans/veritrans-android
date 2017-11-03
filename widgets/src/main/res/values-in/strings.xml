@@ -9,6 +9,7 @@
     <string name="cvv_hint_title">Apa itu CVV?</string>
     <string name="cvv_hint_message">CVV adalah 3 or 4 digit nomor yang tercetak di bagian belakang kartu.</string>
     <string name="cvv_hint_got_it">Mengerti</string>
+    <string name="btn_close">Tutup</string>
     <string name="error_client_key_missing">Veritrans Client key dibutuhkan untuk membayar menggunakan Veritrans.</string>
     <string name="error_merchant_url_missing">Merchant URL dibutuhkan untuk membayar menggunakan Veritrans.</string>
     <string name="error_transaction_request_missing">Transaction Request dibutuhkan untuk membayar menggunakan Veritrans.</string>

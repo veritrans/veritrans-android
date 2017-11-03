@@ -2,7 +2,6 @@ package com.midtrans.sdk.corekit.core;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
 import com.midtrans.sdk.corekit.core.themes.BaseColorTheme;

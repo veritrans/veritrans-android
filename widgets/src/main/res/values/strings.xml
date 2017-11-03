@@ -9,6 +9,7 @@
     <string name="cvv_hint_title">What is CVV?</string>
     <string name="cvv_hint_message">CVV is 3 or 4 digits number printed at the back side of the card.</string>
     <string name="cvv_hint_got_it">Got it</string>
+    <string name="btn_close">Close</string>
 
     <string name="error_client_key_missing">Veritrans Client key is needed to pay using Veritrans.</string>
     <string name="error_merchant_url_missing">Merchant URL is needed to pay using Veritrans.</string>

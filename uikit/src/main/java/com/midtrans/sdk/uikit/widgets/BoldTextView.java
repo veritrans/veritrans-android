@@ -30,8 +30,13 @@ public class BoldTextView extends AppCompatTextView {
     private void init() {
         MidtransSDK paymentSdk = MidtransSDK.getInstance();
         if (paymentSdk != null) {
-            if (paymentSdk.getBoldText() != null) {
-                Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), paymentSdk.getBoldText());
+            if (paymentSdk.getBoldText() != null && !paymentSdk.getBoldText().isEmpty()) {
+                Typeface typeface = null;
+                try {
+                    typeface = Typeface.createFromAsset(getContext().getAssets(), paymentSdk.getBoldText());
+                } catch (RuntimeException exception) {
+                    exception.printStackTrace();
+                }
                 if (typeface != null) {
                     setTypeface(typeface);
                 }

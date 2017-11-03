@@ -68,4 +68,23 @@ public class UiKitConstants {
     public static final int RESULT_SDK_NOT_AVAILABLE = -999;
 
     public static final String EXTRA_SNAP_TOKEN = "snap.token";
+
+    public static final String KEY_TRACKING_GROUP = "Android SDK";
+    public static final String KEY_TRACKING_DEVICE_ID = "Device ID";
+    public static final String KEY_TRACKING_LANGUAGE = "Device Language";
+    public static final String KEY_TRACKING_DEVICE_MODEL = "Device Model";
+    public static final String KEY_TRACKING_DEVICE_TYPE = "Device Type";
+    public static final String KEY_TRACKING_TIME_STAMP = "Timestamp";
+    public static final String KEY_TRACKING_HOST_APP = "Host App Name";
+    public static final String KEY_TRACKING_NETWORK = "Network";
+    public static final String KEY_TRACKING_OS_VERSION = "OS Version";
+    public static final String KEY_TRACKING_PLATFORM = "Platform";
+    public static final String KEY_TRACKING_SCREEN_SIZE = "Screen Size";
+    public static final String KEY_TRACKING_MERCHANT_NAME = "Merchant Name";
+    public static final String KEY_TRACKING_SDK_VERSION = "SDK Version";
+    public static final String VALUE_TRACKING_PLATFORM = "Android";
+    public static final String KEY_TRACKING_CPU_USAGE = "CPU Usage";
+    public static final String KEY_TRACKING_MEMORY_USAGE = "Memory Usage";
+    public static final String KEY_TRACKING_HOST_APP_VERSION = "Host App Version";
+    public static final String KEY_TRACKING_ENVIRONMENT = "Environment";
 }

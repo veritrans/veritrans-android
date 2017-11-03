@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <com.midtrans.sdk.uikit.widgets.DefaultTextView
+        android:id="@+id/item_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="5"
+        android:ellipsize="end"
+        android:padding="@dimen/eight_dp"
+        android:singleLine="true"
+        android:textColor="@color/black"
+        tools:text="Sirup Kurma Cap Payung"/>
+
+    <com.midtrans.sdk.uikit.widgets.DefaultTextView
+        android:id="@+id/item_quantity"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:gravity="center_horizontal"
+        android:paddingBottom="@dimen/eight_dp"
+        android:paddingTop="@dimen/eight_dp"
+        android:textColor="@color/black"
+        tools:text="12"/>
+
+    <com.midtrans.sdk.uikit.widgets.BoldTextView
+        android:id="@+id/item_price"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:ellipsize="end"
+        android:gravity="right"
+        android:padding="@dimen/eight_dp"
+        android:singleLine="true"
+        android:textColor="@color/black"
+        tools:text="Rp 240.000"/>
+
+</LinearLayout>

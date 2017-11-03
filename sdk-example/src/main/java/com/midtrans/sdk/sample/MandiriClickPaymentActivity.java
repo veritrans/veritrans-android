@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
-import com.midtrans.sdk.corekit.models.MandiriClickPayModel;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 
 public class MandiriClickPaymentActivity extends AppCompatActivity {

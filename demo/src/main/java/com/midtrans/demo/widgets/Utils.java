@@ -6,8 +6,6 @@ import android.graphics.Typeface;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.midtrans.sdk.uikit.widgets.FancyButton;
-
 import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;

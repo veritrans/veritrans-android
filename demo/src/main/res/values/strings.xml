@@ -151,6 +151,10 @@
     <string name="bni_point_only_disabled">BNI Point Only Disabled</string>
     <string name="bni_point_only_enabled">BNI Point Only Enabled</string>
 
+    <!-- Mandiri Point -->
+    <string name="mandiri_point_only_disabled">Mandiri Fiestapoin Only Disabled</string>
+    <string name="mandiri_point_only_enabled">Mandiri Fiestapoin Only Enabled</string>
+
     <!-- Demo Product List -->
     <string name="midtrans_pillow">Midtrans Pillow</string>
     <string name="midtrans_pillow_1">Midtrans Pillow I</string>

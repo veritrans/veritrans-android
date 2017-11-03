@@ -9,19 +9,18 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.TextView;
-
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
-import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.GCIPaymentFragment;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
+import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
+import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 
 /**
  * Created by ziahaqi on 12/7/16.
@@ -33,9 +32,8 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
     public static final String STATUS_FRAGMENT = "transaction_status";
     public String currentFragment = "home";
 
-    private TextView textViewAmount = null;
     private FancyButton buttonConfirmPayment = null;
-    private TextView textViewTitle = null;
+    private SemiBoldTextView textViewTitle = null;
     private GCIPaymentFragment paymentFragment;
     private MidtransSDK midtransSDK = null;
     private Toolbar toolbar = null;
@@ -86,14 +84,12 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void initializeView() {
-        textViewAmount = (TextView) findViewById(R.id.text_amount);
-        textViewTitle = (TextView) findViewById(R.id.text_title);
-        buttonConfirmPayment = (FancyButton) findViewById(R.id.btn_confirm_payment);
+        textViewTitle = (SemiBoldTextView) findViewById(R.id.text_page_title);
+        buttonConfirmPayment = (FancyButton) findViewById(R.id.button_primary);
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
 
         initializeTheme();
         //setup tool bar
-        toolbar.setTitle(""); // disable default Text
         setSupportActionBar(toolbar);
         prepareToolbar();
     }
@@ -113,16 +109,14 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
                 onBackPressed();
             }
         });
+        adjustToolbarSize();
     }
 
     private void bindDataToView() {
         textViewTitle.setText(getString(R.string.title_gci));
+        buttonConfirmPayment.setText(getString(R.string.confirm_payment));
+        buttonConfirmPayment.setTextBold();
         if (midtransSDK != null) {
-            textViewAmount.setText(getString(R.string.prefix_money,
-                    Utils.getFormattedAmount(midtransSDK.getTransactionRequest().getAmount())));
-            if (midtransSDK.getSemiBoldText() != null) {
-                buttonConfirmPayment.setCustomTextFont(midtransSDK.getSemiBoldText());
-            }
             buttonConfirmPayment.setOnClickListener(this);
         }
     }
@@ -131,7 +125,7 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
     @Override
     public void onClick(View view) {
 
-        if (view.getId() == R.id.btn_confirm_payment) {
+        if (view.getId() == R.id.button_primary) {
             if (currentFragment.equalsIgnoreCase(STATUS_FRAGMENT)) {
                 setResultCode(RESULT_OK);
                 setResultAndFinish();
@@ -141,9 +135,7 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
-    private void setUpTransactionStatusFragment(final TransactionResponse
-                                                        transactionResponse) {
-
+    private void setUpTransactionStatusFragment(final TransactionResponse transactionResponse) {
         currentFragment = STATUS_FRAGMENT;
         buttonConfirmPayment.setText(getString(R.string.done));
 
@@ -235,12 +227,24 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     public void onBackPressed() {
-        if (currentFragment.equals(STATUS_FRAGMENT)) {
+        if (isDetailShown) {
+            displayOrHideItemDetails();
+        } else if (currentFragment.equals(STATUS_FRAGMENT)) {
             setResultCode(RESULT_OK);
             setResultAndFinish();
         } else {
             super.onBackPressed();
         }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS)
+            if (resultCode == RESULT_CANCELED || resultCode == RESULT_OK) {
+                setResultAndFinish();
+            }
+    }
+
 
 }

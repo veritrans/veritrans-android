@@ -31,7 +31,8 @@
     <dimen name="header_text_size">20sp</dimen>
     <dimen name="primary_text_size">16sp</dimen>
     <dimen name="seventeen_sp">17sp</dimen>
-    <dimen name="tool_bar_title_size">18sp</dimen>
+    <dimen name="tool_bar_title_size">20sp</dimen>
+    <dimen name="tool_bar_merchant_name_size">14sp</dimen>
 
     <dimen name="secondary_text_size">14sp</dimen>
     <dimen name="tertiary_text_size">12sp</dimen>
@@ -56,7 +57,8 @@
     <dimen name="seventy_two_dp">72dp</dimen>
 
     <dimen name="logo_width">50dp</dimen>
-    <dimen name="logo_height">50dp</dimen>
+    <dimen name="logo_height">20dp</dimen>
+    <dimen name="main_logo_height">30dp</dimen>
     <dimen name="twenty_two_sp">22sp</dimen>
     <dimen name="thirtytwo_sp">32sp</dimen>
     <dimen name="eighteen_sp">18sp</dimen>
@@ -64,5 +66,7 @@
     <dimen name="promo_logo_size">20dp</dimen>
     <dimen name="bank_logo_size">36dp</dimen>
 
-    <dimen name="button_size">48dp</dimen>
+    <dimen name="button_size">60dp</dimen>
+    <dimen name="button_primary_text_size">15sp</dimen>
+    <dimen name="toolbar_expansion_size">8dp</dimen>
 </resources>

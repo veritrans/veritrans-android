@@ -8,24 +8,20 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
-
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
-import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.InstructionMandiriECashFragment;
 import com.midtrans.sdk.uikit.fragments.WebviewFragment;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
-import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
-
+import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
@@ -42,7 +38,7 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
     private InstructionMandiriECashFragment mandiriECashFragment = null;
     private FancyButton buttonConfirmPayment = null;
     private Toolbar mToolbar = null;
-    private DefaultTextView textTitle, textTotalAmount;
+    private SemiBoldTextView textTitle;
 
     private MidtransSDK mMidtransSDK = null;
     private TransactionResponse transactionResponse = null;
@@ -72,22 +68,14 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void initializeViews() {
-        buttonConfirmPayment = (FancyButton) findViewById(R.id.btn_confirm_payment);
+        buttonConfirmPayment = (FancyButton) findViewById(R.id.button_primary);
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        textTitle = (DefaultTextView) findViewById(R.id.text_title);
-        textTotalAmount = (DefaultTextView) findViewById(R.id.text_amount);
+        textTitle = (SemiBoldTextView) findViewById(R.id.text_page_title);
 
         initializeTheme();
-        if (mMidtransSDK != null) {
-            if (mMidtransSDK.getSemiBoldText() != null) {
-                buttonConfirmPayment.setCustomTextFont(mMidtransSDK.getSemiBoldText());
-            }
-            textTotalAmount.setText(getString(R.string.prefix_money,
-                    Utils.getFormattedAmount(mMidtransSDK.getTransactionRequest().getAmount())));
-        }
-        textTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        buttonConfirmPayment.setText(getString(R.string.confirm_payment));
+        buttonConfirmPayment.setTextBold();
         textTitle.setText(getString(R.string.mandiri_e_cash));
-        mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
         prepareToolbar();
         buttonConfirmPayment.setOnClickListener(this);
@@ -114,6 +102,7 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
                 onBackPressed();
             }
         });
+        adjustToolbarSize();
     }
 
     private void setUpFragment() {
@@ -127,7 +116,7 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.btn_confirm_payment) {
+        if (view.getId() == R.id.button_primary) {
             makeTransaction();
         }
     }
@@ -233,12 +222,15 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onBackPressed() {
-        if (currentFragmentName.equals(STATUS_FRAGMENT)) {
+        if (isDetailShown) {
+            displayOrHideItemDetails();
+        } else if (currentFragmentName.equals(STATUS_FRAGMENT)) {
             setResultCode(RESULT_OK);
             setResultAndFinish();
             return;
+        } else {
+            super.onBackPressed();
         }
-        super.onBackPressed();
     }
 }
 

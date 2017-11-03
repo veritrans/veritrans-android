@@ -16,6 +16,7 @@ import com.midtrans.sdk.corekit.models.snap.payment.GoPayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.IndosatDompetkuPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.MandiriClickPayPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.NewMandiriClickPayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.TelkomselEcashPaymentRequest;
 
 import java.util.ArrayList;
@@ -94,12 +95,26 @@ public interface SnapRestAPI {
     /**
      * Charge payment using mandiri click pay.
      *
+     * Deprecated, please see {@link com.midtrans.sdk.corekit.core.SnapRestAPI#paymentUsingMandiriClickPay(String, NewMandiriClickPayPaymentRequest, Callback)}
+     *
+     * @param authenticationToken
+     * @param request                     MandiriClickPayPaymentRequest model
+     * @param transactionResponseCallback Callback.
+     */
+    @Deprecated
+    @POST("/v1/transactions/{token}/pay")
+    void paymentUsingMandiriClickPay(@Path("token") String authenticationToken, @Body MandiriClickPayPaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
+
+    /**
+     * Charge payment using new flow mandiri click pay.
+     *
      * @param authenticationToken
      * @param request                     MandiriClickPayPaymentRequest model
      * @param transactionResponseCallback Callback.
      */
     @POST("/v1/transactions/{token}/pay")
-    void paymentUsingMandiriClickPay(@Path("token") String authenticationToken, @Body MandiriClickPayPaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
+    void paymentUsingMandiriClickPay(@Path("token") String authenticationToken, @Body NewMandiriClickPayPaymentRequest request, Callback<TransactionResponse> transactionResponseCallback);
+
 
     /**
      * Charge payment using cimb clicks.

@@ -15,6 +15,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
+import com.midtrans.raygun.RaygunClient;
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.UserAddress;
@@ -51,6 +52,8 @@ public class UserDetailsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initIssueTracker();
+//        initRealIssueTracker();
 
         String invalidMessage = getInvalidPropertiesMessage();
         if (!TextUtils.isEmpty(invalidMessage)) {
@@ -59,6 +62,11 @@ public class UserDetailsActivity extends BaseActivity {
         }
 
         checkUserDetails();
+    }
+
+    private void initIssueTracker() {
+        RaygunClient.init(getApplicationContext(), getString(R.string.ISSUE_TRACKER_API_KEY));
+        RaygunClient.attachExceptionHandler();
     }
 
     private void showInformationDialog(String message) {
@@ -86,7 +94,8 @@ public class UserDetailsActivity extends BaseActivity {
         }
     }
 
-    public void checkUserDetails() {
+    public void checkUserDetails() throws RuntimeException {
+
         try {
             UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
 
@@ -246,4 +255,5 @@ public class UserDetailsActivity extends BaseActivity {
         }
         return sdkErrorValidationMessage;
     }
+
 }

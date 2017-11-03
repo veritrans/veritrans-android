@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
-
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.utilities.Utils;
@@ -23,14 +22,13 @@ import com.midtrans.sdk.uikit.activities.CreditCardFlowActivity;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
-
 import java.util.Locale;
 import java.util.TimerTask;
 
 /**
  * Created by ziahaqi on 1/16/17.
  */
-
+@Deprecated
 public class BanksPointFragment extends Fragment implements View.OnClickListener {
 
     private static final String ARGS_POINT = "point_balance";

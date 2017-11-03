@@ -58,6 +58,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Deprecated, please see {@link com.midtrans.sdk.uikit.views.creditcard.details.CreditCardDetailsActivity}
  * Created by rakawm on 3/7/17.
  */
 
@@ -789,10 +790,7 @@ public class CreditCardFlowActivity extends BaseActivity {
 
     public boolean checkIfCreditCardTokensAvailable() {
         List<SavedToken> savedTokens = MidtransSDK.getInstance().getCreditCard().getSavedTokens();
-        if (savedTokens != null && !savedTokens.isEmpty()) {
-            return true;
-        }
-        return false;
+        return savedTokens != null && !savedTokens.isEmpty();
     }
 
     private void clearBackStackFragments() {

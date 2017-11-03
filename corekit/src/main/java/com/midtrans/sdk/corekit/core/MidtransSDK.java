@@ -35,9 +35,11 @@ import com.midtrans.sdk.corekit.models.snap.PromoResponse;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
 import com.midtrans.sdk.corekit.models.snap.params.IndosatDompetkuPaymentParams;
+import com.midtrans.sdk.corekit.models.snap.params.NewMandiriClickPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.params.TelkomselCashPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.payment.BasePaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.IndosatDompetkuPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.NewMandiriClickPayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.TelkomselEcashPaymentRequest;
 import com.midtrans.sdk.corekit.utilities.Utils;
 
@@ -162,10 +164,6 @@ public class MidtransSDK {
         return midtransSDK;
     }
 
-    public boolean isSdkNotAvailable() {
-        return sdkNotAvailable;
-    }
-
     /**
      * Get Veritrans SDK share preferences instance
      *
@@ -180,6 +178,10 @@ public class MidtransSDK {
      */
     static void setmPreferences(SharedPreferences preferences) {
         mPreferences = preferences;
+    }
+
+    public boolean isSdkNotAvailable() {
+        return sdkNotAvailable;
     }
 
     private String getFlow(String flow) {
@@ -1310,6 +1312,8 @@ public class MidtransSDK {
 
     /**
      * It will run backround task to charge payment Mandiri Click Pay
+     * <p>
+     * Deprecated, please see {@link com.midtrans.sdk.corekit.core.MidtransSDK#paymentUsingMandiriClickPay(String, NewMandiriClickPaymentParams, TransactionCallback)} (String, NewMandiriClickPayPaymentRequest, TransactionCallback)}
      *
      * @param authenticationToken authentication token
      * @param mandiriCardNumber   number of mandiri card
@@ -1317,6 +1321,7 @@ public class MidtransSDK {
      * @param tokenResponse       token
      * @param callback            transaction callback
      */
+    @Deprecated
     public void paymentUsingMandiriClickPay(@NonNull String authenticationToken, @NonNull String mandiriCardNumber,
                                             @NonNull String tokenResponse, @NonNull String input3, TransactionCallback callback) {
         if (callback == null) {
@@ -1329,6 +1334,34 @@ public class MidtransSDK {
                 isRunning = true;
                 mSnapTransactionManager.paymentUsingMandiriClickPay(authenticationToken, SdkUtil.getMandiriClickPaymentRequest(
                         mandiriCardNumber, tokenResponse, input3, PaymentType.MANDIRI_CLICKPAY), callback);
+            } else {
+                isRunning = false;
+                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+            }
+        } else {
+            isRunning = false;
+            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+        }
+    }
+
+    /**
+     * It will run backround task to charge payment Mandiri Click Pay
+     *
+     * @param snapToken     snap token
+     * @param paymentParams mandiri clickpay payment params
+     * @param callback      transaction callback
+     */
+    public void paymentUsingMandiriClickPay(String snapToken, NewMandiriClickPaymentParams paymentParams, TransactionCallback callback) {
+        if (callback == null) {
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
+
+        if (transactionRequest != null) {
+            if (Utils.isNetworkAvailable(context)) {
+                isRunning = true;
+                mSnapTransactionManager.paymentUsingMandiriClickPay(snapToken, new NewMandiriClickPayPaymentRequest(PaymentType.MANDIRI_CLICKPAY, paymentParams), callback)
+                ;
             } else {
                 isRunning = false;
                 callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
@@ -1789,7 +1822,7 @@ public class MidtransSDK {
 
 
     /**
-     * it will get bni points from snap backend
+     * it will get bank points (BNI or Mandiri) from snap backend
      *
      * @param cardToken credit card token
      * @param callback  bni point callback instance
@@ -2004,17 +2037,17 @@ public class MidtransSDK {
         return transaction.getMerchantData();
     }
 
-    public void setTransaction(Transaction transaction) {
-        if (transaction != null) {
-            this.transaction = transaction;
-        }
-    }
-
     public Transaction getTransaction() {
         if (this.transaction == null) {
             this.transaction = new Transaction();
         }
         return this.transaction;
+    }
+
+    public void setTransaction(Transaction transaction) {
+        if (transaction != null) {
+            this.transaction = transaction;
+        }
     }
 
     public CardRegistrationCallback getUiCardRegistrationCallback() {

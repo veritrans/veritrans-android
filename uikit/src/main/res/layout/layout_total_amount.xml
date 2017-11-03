@@ -3,32 +3,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/gray.primary"
+    android:layout_alignParentBottom="true"
     android:gravity="center_vertical"
-    android:paddingBottom="@dimen/sixteen_dp"
-    android:paddingLeft="@dimen/sixteen_dp"
-    android:paddingRight="@dimen/sixteen_dp"
-    android:paddingTop="@dimen/sixteen_dp"
-    tools:background="@color/gray.primary">
+    android:paddingBottom="@dimen/eight_dp"
+    android:paddingLeft="@dimen/eight_dp"
+    android:paddingRight="@dimen/eight_dp"
+    android:paddingTop="6dp">
 
     <com.midtrans.sdk.uikit.widgets.DefaultTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:text="@string/payable_amount"
-        android:textColor="@color/white"
-        android:textSize="@dimen/primary_text_size"
-        android:textStyle="bold" />
+        android:textColor="@color/black"
+        android:textSize="@dimen/primary_text_size" />
 
-    <com.midtrans.sdk.uikit.widgets.DefaultTextView
+    <com.midtrans.sdk.uikit.widgets.BoldTextView
         android:id="@+id/text_amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:text="@string/text_amount_here"
-        android:textColor="@color/white"
+        android:drawablePadding="@dimen/eight_dp"
+        android:drawableRight="@drawable/ic_amount_detail"
+        android:textColor="@color/black"
         android:textSize="@dimen/header_text_size"
-        android:textStyle="bold" />
+        tools:text="Rp 170.845" />
 </RelativeLayout>

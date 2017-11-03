@@ -3,7 +3,6 @@ package com.midtrans.sdk.uikit.views.creditcard.details;
 import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
-
 import com.midtrans.sdk.corekit.callback.BankBinsCallback;
 import com.midtrans.sdk.corekit.callback.BanksPointCallback;
 import com.midtrans.sdk.corekit.callback.CardTokenCallback;
@@ -33,7 +32,6 @@ import com.midtrans.sdk.uikit.abstracts.BaseCreditCardPresenter;
 import com.midtrans.sdk.uikit.models.CreditCardTransaction;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -177,9 +175,10 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
         }
     }
 
-    public void startNormalPayment(boolean saveCard) {
+    public void startNormalPayment(boolean saveCard, boolean fromBankPoint) {
         if (creditCardToken != null) {
             CreditCardPaymentModel model = new CreditCardPaymentModel(creditCardToken.getTokenId(), saveCard);
+            model.setFromBankPoint(fromBankPoint);
             applyPaymentProperties(model);
             startCreditCardPayment(model);
         } else {
@@ -241,9 +240,10 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
             paymentModel.setInstallment(installmentBankSeleted + "_" + installmentTermSelected);
         }
 
-        //set bank point
-        if (creditCardTransaction.getBankPointRedeemed() != 0.0f) {
-            paymentModel.setPointRedeemed(creditCardTransaction.getBankPointRedeemed());
+        //set bank point and bank name (if Mandiri Point is selected)
+        paymentModel.setPointRedeemed(creditCardTransaction.getBankPointRedeemed());
+        if (creditCardTransaction.getBankName() != null && creditCardTransaction.getBankName().equalsIgnoreCase(BankType.MANDIRI)) {
+            paymentModel.setBank(creditCardTransaction.getBankName());
         }
     }
 
@@ -412,7 +412,7 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
         return installmentTotalPositions;
     }
 
-    public boolean isBankPointAvailable(String cardBin) {
+    public boolean isBniPointAvailable(String cardBin) {
         String bank = creditCardTransaction.getBankByBin(cardBin);
         List<String> bankPoints = MidtransSDK.getInstance().getBanksPointEnabled();
 
@@ -422,9 +422,20 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
                 && bank.equals(BankType.BNI);
     }
 
+    public boolean isMandiriPointAvailable(String cardBin) {
+        String bank = creditCardTransaction.getBankByBin(cardBin);
+        List<String> bankPoints = MidtransSDK.getInstance().getBanksPointEnabled();
+
+        return !TextUtils.isEmpty(bank)
+            && bankPoints != null
+            && bankPoints.contains(bank)
+            && isSecurePayment()
+            && bank.equals(BankType.MANDIRI);
+    }
+
     public void startBankPointsPayment(float redeemedPoint, boolean isSaveCard) {
         creditCardTransaction.setBankPointRedeemed(redeemedPoint);
-        startNormalPayment(isSaveCard);
+        startNormalPayment(isSaveCard, true);
     }
 
     public boolean isCardBinInWhiteList(String cardBin) {

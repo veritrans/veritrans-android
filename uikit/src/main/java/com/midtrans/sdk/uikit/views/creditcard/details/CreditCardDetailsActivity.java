@@ -23,7 +23,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
@@ -49,7 +48,7 @@ import com.midtrans.sdk.uikit.views.status.PaymentStatusActivity;
 import com.midtrans.sdk.uikit.views.webview.WebViewPaymentActivity;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
-
+import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -61,11 +60,9 @@ import java.util.Date;
 
 public class CreditCardDetailsActivity extends BasePaymentActivity implements CreditCardDetailsView {
 
-    private static final String TAG = CreditCardDetailsActivity.class.getSimpleName();
-
     public static final String EXTRA_DELETED_CARD_DETAILS = "card.deleted.details";
     public static final String EXTRA_SAVED_CARD = "extra.card.saved";
-
+    private static final String TAG = CreditCardDetailsActivity.class.getSimpleName();
     private AppCompatEditText fieldCardNumber;
     private AppCompatEditText fieldCardCvv;
     private AppCompatEditText fieldCardExpiry;
@@ -80,7 +77,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     private TextView textCardExpiryError;
     private TextView textInstallmentTerm;
     private TextView textTitleInstallment;
-    private DefaultTextView textTitle;
+    private SemiBoldTextView textTitle;
 
     private ImageView imageCardLogo;
     private ImageView imageBankLogo;
@@ -314,7 +311,6 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             setColorFilter(buttonCvvHelp);
             setColorFilter(buttonPointHelp);
 
-            setBorderColor(buttonScanCard);
             setTextColor(buttonScanCard);
             setIconColorFilter(buttonScanCard);
             setPrimaryBackgroundColor(buttonPayNow);
@@ -498,6 +494,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     }
 
     private void intPaymentButton() {
+        buttonPayNow.setTextBold();
         buttonPayNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -530,29 +527,6 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             }
         });
 
-        buttonPointHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                buttonPointHelp.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        AlertDialog alertDialog = new AlertDialog.Builder(CreditCardDetailsActivity.this)
-                                .setTitle(R.string.redeem_bni_title)
-                                .setMessage(R.string.redeem_bni_details)
-                                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        dialogInterface.dismiss();
-                                    }
-                                })
-                                .create();
-                        alertDialog.show();
-                        changeDialogButtonColor(alertDialog);
-                    }
-                });
-            }
-        });
-
         buttonSaveCardHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -567,6 +541,36 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                             }
                         })
                         .create();
+                alertDialog.show();
+                changeDialogButtonColor(alertDialog);
+            }
+        });
+    }
+
+    private void initBankPointHelp(final String bankName) {
+        buttonPointHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int titleId = 0, detailId = 0;
+
+                if (bankName.equalsIgnoreCase(BankType.BNI)) {
+                    titleId = R.string.redeem_bni_title;
+                    detailId = R.string.redeem_bni_details;
+                } else if (bankName.equalsIgnoreCase(BankType.MANDIRI)) {
+                    titleId = R.string.redeem_mandiri_title;
+                    detailId = R.string.redeem_mandiri_details;
+                }
+
+                AlertDialog alertDialog = new AlertDialog.Builder(CreditCardDetailsActivity.this)
+                    .setTitle(titleId)
+                    .setMessage(detailId)
+                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    })
+                    .create();
                 alertDialog.show();
                 changeDialogButtonColor(alertDialog);
             }
@@ -660,13 +664,15 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     private void checkBankPoint() {
         String cardBin = getCardNumberBin();
         if (!TextUtils.isEmpty(cardBin)) {
-            if (presenter.isBankPointAvailable(cardBin)) {
-                showBniPointLayout(true);
+            if (presenter.isBniPointAvailable(cardBin)) {
+                showBankPointLayout(BankType.BNI, true);
+            } else if (presenter.isMandiriPointAvailable(cardBin)) {
+                showBankPointLayout(BankType.MANDIRI, true);
             } else {
-                showBniPointLayout(false);
+                showBankPointLayout("", false);
             }
         } else {
-            showBniPointLayout(false);
+            showBankPointLayout("", false);
         }
     }
 
@@ -678,7 +684,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
         textInstallmentTerm = (TextView) findViewById(R.id.text_installment_term);
         textTitleInstallment = (TextView) findViewById(R.id.title_installment);
-        textTitle = (DefaultTextView) findViewById(R.id.text_page_title);
+        textTitle = (SemiBoldTextView) findViewById(R.id.text_page_title);
         textCardNumberHint = (DefaultTextView) findViewById(R.id.hint_card_number);
         textExpriyHint = (DefaultTextView) findViewById(R.id.hint_card_expiry);
         textCvvHint = (DefaultTextView) findViewById(R.id.hint_card_cvv);
@@ -698,7 +704,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
         buttonScanCard = (FancyButton) findViewById(R.id.button_scan_card);
         buttonDeleteCard = (FancyButton) findViewById(R.id.button_delete);
-        buttonPayNow = (FancyButton) findViewById(R.id.btn_pay_now);
+        buttonPayNow = (FancyButton) findViewById(R.id.button_primary);
         buttonDecreaseInstallment = (FancyButton) findViewById(R.id.button_installment_decrease);
         buttonIncreaseInstallment = (FancyButton) findViewById(R.id.button_installment_increase);
 
@@ -998,8 +1004,17 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         }
     }
 
-    private void showBniPointLayout(boolean show) {
+    private void showBankPointLayout(String bankName, boolean show) {
         if (show) {
+            initBankPointHelp(bankName);
+            switch (bankName) {
+                case BankType.BNI:
+                    checkboxPointEnabled.setText(getString(R.string.redeem_bni_reward));
+                    break;
+                case BankType.MANDIRI:
+                    checkboxPointEnabled.setText(getString(R.string.redeem_mandiri_point));
+                    break;
+            }
             containerPoint.setVisibility(View.VISIBLE);
         } else {
             checkboxPointEnabled.setChecked(false);
@@ -1100,7 +1115,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         if (presenter.getInstallmentCurrentPosition() == 0) {
             checkBankPoint();
         } else {
-            showBniPointLayout(false);
+            showBankPointLayout("", false);
         }
     }
 
@@ -1162,9 +1177,10 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     }
 
 
-    private void startPreCrediCardPayment() {
-        if (isBankPointEnabled()) {
-            presenter.getBankPoint(BankType.BNI);
+    private void startPreCreditCardPayment() {
+        String bankName = presenter.getBankByCardBin(getCardNumberBin());
+        if (isBankPointEnabled() && bankName != null) {
+            presenter.getBankPoint(bankName);
         } else {
             startCreditCardPayment();
         }
@@ -1172,7 +1188,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
     private void startCreditCardPayment() {
         showProgressLayout(getString(R.string.processing_payment));
-        presenter.startNormalPayment(checkboxSaveCard.isChecked());
+        presenter.startNormalPayment(checkboxSaveCard.isChecked(), false);
     }
 
     private void start3DSecurePage(String redirectUrl, int requestCode) {
@@ -1198,7 +1214,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
         if (resultCode == RESULT_OK) {
             if (requestCode == UiKitConstants.INTENT_CODE_3DS_PAYMENT) {
-                startPreCrediCardPayment();
+                startPreCreditCardPayment();
             } else if (requestCode == UiKitConstants.INTENT_CODE_RBA_AUTHENTICATION) {
                 getPaymentStatus();
             } else if (requestCode == UiKitConstants.INTENT_REQUEST_SCAN_CARD) {
@@ -1220,7 +1236,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             }
         } else if (resultCode == RESULT_CANCELED) {
             if (requestCode == UiKitConstants.INTENT_CODE_3DS_PAYMENT) {
-                startPreCrediCardPayment();
+                startPreCreditCardPayment();
             } else if (requestCode == UiKitConstants.INTENT_CODE_RBA_AUTHENTICATION) {
                 getPaymentStatus();
             } else if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS) {
@@ -1242,7 +1258,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             if (!TextUtils.isEmpty(response.getRedirectUrl())) {
                 start3DSecurePage(response.getRedirectUrl(), UiKitConstants.INTENT_CODE_3DS_PAYMENT);
             } else {
-                startPreCrediCardPayment();
+                startPreCreditCardPayment();
             }
         }
     }

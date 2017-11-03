@@ -41,7 +41,7 @@ public class DemoProductPageActivity extends AppCompatActivity {
 
     private void bindViews() {
         productPrice = (TextView) findViewById(R.id.product_price);
-        buyBtn = (FancyButton) findViewById(R.id.btn_buy);
+        buyBtn = (FancyButton) findViewById(R.id.button_primary);
         viewPager = (ViewPager) findViewById(R.id.image_view_pager);
         indicator = (CirclePageIndicator) findViewById(R.id.image_indicator);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -125,6 +125,8 @@ public class DemoProductPageActivity extends AppCompatActivity {
     }
 
     private void initBuyButton() {
+        buyBtn.setText(getString(R.string.btn_buy));
+        buyBtn.setTextBold();
         buyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

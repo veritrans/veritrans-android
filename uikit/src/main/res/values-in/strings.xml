@@ -101,7 +101,7 @@
         (Anda dapat menerima instruksi via email jika memasukkan alamat email anda pada kolom di atas).</string>
     <string name="bank_atm_transfer_step3">Harap selesaikan pembayaran melalui Prima (BCA), ATM Bersama(Mandiri), or Alto(Permata).</string>
     <string name="bank_atm_transfer_step4">Bila pembayaran sudah selesai, Anda akan menerima email konfirmasi.</string>
-    <string name="see_instruction">Lihat instruksi</string>
+    <string name="see_instruction">Lihat Instruksi</string>
     <string name="download_instruction">Unduh Instruksi</string>
     <string name="confirm_payment">Konfirmasi Pembayaran</string>
     <string name="copy_payment_code">Salin Kode Pembayaran</string>
@@ -165,9 +165,12 @@
     <string name="bca_klik_instruction_step6">Transaksi Anda selesai.</string>
 
     <!--BCA KlikPay -->
-    <string name="bca_klik_pay_instruction_step1">Anda akan diarahkan ke halaman BCA KlikPay setelah menekan tombol <b>Konfirmasi Pembayaran</b>.</string>
-    <string name="bca_klik_pay_instruction_step2">Untuk pembayaran, Anda dapat memilih akun KlikBCA Individu atau kartu kredit BCA.</string>
-    <string name="bca_klik_pay_instruction_step3">Untuk informasi lebih lanjut mengenai BCA KlikPay harap kontak Halo BCA di (021) 1500888 atau kunjungi <a href="http://klikbca.com/KlikPay/klikpay.html">http://klikbca.com/KlikPay/klikpay.html</a>.</string>
+    <string name="bca_klik_pay_instruction_step1">Setelah Anda menekan tombol <b>Konfirmasi Pembayaran</b>, Anda akan diarahkan ke halaman pembayaran BCA KlikPay.</string>
+    <string name="bca_klik_pay_instruction_step2">Setelah Login ke Akun BCA Klikpay Anda dengan memasukkan alamat email dan password, maka akan tampil informasi data transaksi seperti nama merchant, waktu transaksi, dan jumlah yang harus dibayar. Pilihlah jenis pembayaran KlikBCA atau BCA Card untuk transaksi tersebut.</string>
+    <string name="bca_klik_pay_instruction_step3">Untuk otorisasi pembayaran dengan BCA KlikPay, tekan tombol <b>Kirim OTP</b>, dan Anda akan menerima kode OTP (One Time Password) yang dikirim melalui SMS ke handphone Anda. Masukkan kode OTP tersebut pada kolom yang tersedia.</string>
+    <string name="bca_klik_pay_instruction_step4">Apabila kode OTP yang Anda masukkan benar, transaksi pembayaran akan langsung diproses dan saldo rekening Anda (untuk jenis pembayaran KlikBCA) atau limit BCA Card Anda (untuk jenis pembayaran BCA Card) akan berkurang sejumlah nilai transaksi.</string>
+    <string name="bca_klik_pay_instruction_step5">Status keberhasilan transaksi Anda akan tampil pada layar transaksi dan Anda akan menerima email notifikasi.</string>
+    <string name="bca_klik_pay_instruction_step6">Informasi lebih lanjut tentang BCA KlikPay dapat hubungi Halo BCA di (021) 1500888 atau kunjungi <a href="http://klikbca.com/KlikPay/klikpay.html">http://klikbca.com/KlikPay/klikpay.html</a>.</string>
 
     <!--m-BCA-->
     <string name="bca_mbanking_instruction_step1">Pilih <b>m-Transfer</b>.</string>
@@ -304,7 +307,7 @@
 
     <string name="mandiri_click_pay_instruction_step1">1.\tAktifkan token Mandiri Anda dengan menekan [img src=ic_mandiri_instrcn/].</string>
     <string name="mandiri_click_pay_instruction_step2">2.\tMasukkan password token Mandiri Anda.</string>
-    <string name="mandiri_click_pay_instruction_step3">3.\tTekan <b>3</b> ketika <b>APPLI</b> ditampilkan</string>
+    <string name="mandiri_click_pay_instruction_step3">3.\tTekan <b>3</b> ketika <b>APPLI</b> ditampilkan.</string>
     <string name="mandiri_click_pay_instruction_step4">4.\tMasukkan <b>masukan 1</b> dan tekan [img src=ic_mandiri_instrcn/] selama 3 detik.</string>
     <string name="mandiri_click_pay_instruction_step5">5.\tMasukkan <b>masukan 2</b> dan tekan [img src=ic_mandiri_instrcn/] selama 3 detik.</string>
     <string name="mandiri_click_pay_instruction_step6">6.\tMasukkan <b>masukan 3</b> dan tekan [img src=ic_mandiri_instrcn/] selama 3 detik.</string>
@@ -316,7 +319,7 @@
     <string name="success">success</string>
     <string name="fetching_cards">Mengambil data kartu</string>
     <string name="btn_save_card">Mendaftarkan Kartu</string>
-    <string name="btn_scan_card">pindai kartu menggunakan kamera</string>
+    <string name="btn_scan_card">Pindai Kartu Menggunakan Kamera</string>
     <string name="offer_applied">Sukses menggunakan penawaran!</string>
     <string name="offer_not_applied">Kartu tidak berlaku untuk promo, coba gunakan kartu lain.</string>
     <string name="no_offers">Tidak ada penawaran</string>
@@ -382,7 +385,7 @@
 
     <!-- instruction atm bersama -->
     <string name="preview_atm_bersama">Bayar melalui <b>semua ATM bank berlogo ATM Bersama</b></string>
-    <string name="expand_link_atm_bersama">Total <u>+</u>83 bank terdaftar</string>
+    <string name="expand_link_atm_bersama">Lihat 83 Bank yang Terdaftar</string>
     <string name="instruction_card_atm_bersama">Pastikan terdapat <b>logo ATM Bersama di belakang kartu ATM</b> Anda.</string>
     <string name="bank_list_header_atm_bersama">Bank terdaftar ATM Bersama</string>
     <string name="instruction_atm_bersama1">Pada menu utama, pilih <b>Transaksi Lainnya</b>.</string>
@@ -395,7 +398,7 @@
     <string name="pay_with_atm_bersama">Bayar melalui ATM berlogo ATM Bersama</string>
 
     <string name="preview_prima">Bayar melalui <b>semua ATM bank berlogo Prima</b></string>
-    <string name="expand_link_prima">Total <u>+</u>64 bank terdaftar</string>
+    <string name="expand_link_prima">Lihat 64 Bank yang Terdaftar</string>
     <string name="instruction_card_prima">Pastikan terdapat <b>logo Prima di belakang kartu ATM</b> Anda.</string>
     <string name="bank_list_header_prima">Bank terdaftar jaringan Prima</string>
     <string name="instruction_prima1">Pada menu utama, pilih <b>Transaksi Lainnya</b>.</string>
@@ -408,7 +411,7 @@
     <string name="pay_with_prima">Bayar melalui ATM berlogo Prima</string>
 
     <string name="preview_alto">Bayar melalui <b>semua ATM bank berlogo Alto</b></string>
-    <string name="expand_link_alto">Total <u>+</u>19 bank terdaftar</string>
+    <string name="expand_link_alto">Lihat 19 Bank yang Terdaftar</string>
     <string name="instruction_card_alto">Pastikan terdapat <b>logo Alto di belakang kartu ATM</b> Anda.</string>
     <string name="bank_list_header_alto">Bank terdaftar jaringan Alto</string>
     <string name="instruction_alto1">Pada menu utama, pilih <b>Transaksi lainnya</b>.</string>
@@ -455,7 +458,7 @@
     <string name="text_price">Harga</string>
     <string name="save_card_info">Detail kartu diatas akan disimpan untuk membantu transaksi anda berikutnya.</string>
     <string name="choose_card">Pilih kartu kredit</string>
-    <string name="add_new_card">bayar dengan kartu baru</string>
+    <string name="add_new_card">Bayar dengan Kartu Baru</string>
     <string name="mandiri_bill_transfer">Bank Mandiri</string>
     <string name="bank_bca_transfer">Bank BCA</string>
     <string name="bank_permata_transfer">Bank Permata</string>
@@ -474,12 +477,15 @@
     <string name="status_due_installment">CICILAN</string>
     <string name="sorry">Maaf!</string>
     <string name="get_challenge_token">Bagaimana saya bisa mendapatkan challenge token?</string>
-    <string name="kioson_instruction">bagaimana saya dapat melakukan pembayaran dengan kioson ?</string>
+    <string name="kioson_instruction">Lihat Instruksi Pembayaran</string>
     <string name="card_bin_invalid">nomor kartu kredit tidak terdapat didalam whitelist bin kartu kredit</string>
     <string name="installment_required">Pembayaran harus menggunakan cicilan</string>
     <string name="complete_payment_kioson">Selesaikan pembayaran di Kioson</string>
     <string name="complete_payment_indomaret">Selesaikan pembayaran di Indomaret</string>
     <string name="payment_not_enabled_message">Tidak dapat membuka halaman ini, silakan aktifkan channel pembayaran ini.</string>
+    <string name="item_header">BARANG</string>
+    <string name="quantity_header">JLH</string>
+    <string name="price_header">HARGA</string>
 
     <string name="payment_method_description_credit_card">Bayar dengan VISA, MasterCard, JCB atau AMEX</string>
     <string name="payment_method_description_credit_card_2">Bayar dengan VISA atau MasterCard</string>
@@ -521,18 +527,28 @@
     <string name="bni_debit_online_card">Kartu Debit Online BNI</string>
     <string name="deleted">Dihapus</string>
     <string name="undo">Batalkan</string>
-    <string name="delete_this_card">hapus kartu ini</string>
-    <string name="redeem_bni_reward">Tukarkan poin hadiah BNI</string>
-    <string name="amount_after_discount">Jumlah pembayaran setelah diskon</string>
+
+    <string name="redeem_bni_reward">Tukarkan BNI Reward Points</string>
+    <string name="redeem_mandiri_point">Tukarkan Fiestapoin</string>
+    <string name="redeem_100_point">DISKON FIESTAPOIN</string>
+    <string name="amount_after_discount">TOTAL PEMBAYARAN SETELAH DISKON</string>
+    <string name="delete_this_card">Hapus Kartu Ini</string>
     <string name="redeem_point">Tukar Poin</string>
     <string name="redeem_bank_point_title">Gunakan Poin %1$s</string>
     <string name="total_point">Total poin hadiah %1$s Anda adalah %2$s</string>
-    <string name="redeem_bni_title">Tukar Poin Hadiah BNI</string>
-    <string name="redeem_bni_details">Anda dapat membayar sebagian dengan Poin Reward BNI melalui Kartu Kredit Anda.</string>
+    <string name="redeem_bni_title">BNI Reward Points</string>
+    <string name="redeem_bni_details">Anda dapat membayar sebagian dengan BNI Reward Points melalui kartu kredit BNI Anda.</string>
+    <string name="redeem_mandiri_title">Mandiri Fiestapoin</string>
+    <string name="redeem_mandiri_details">Anda dapat membayar sebagian dengan Mandiri Fiestapoin melalui kartu kredit / debit Mandiri Anda.</string>
 
-    <string name="how_much_point">Berapa poin yang ingin anda tukarkan?</string>
+    <string name="how_much_point">Berapa poin yang ingin anda tukarkan diskon?</string>
     <string name="total_bni_point">Total poin BNI anda</string>
     <string name="status_redeemed_point">DISKON POIN</string>
+    <string name="total_bni_reward_point">Jumlah Point: %1$s</string>
+    <string name="total_mandiri_fiestapoint">Jumlah Fiestapoin: %1$s</string>
+    <string name="pay_without_bank_point">Bayar tanpa Menggunakan %1$s</string>
+    <string name="pay_with_mandiri_point">Bayar Menggunakan Mandiri Fiestapoin</string>
+    <string name="pay_with_bni_point">Bayar Menggunakan BNI Reward Points</string>
 
     <!-- BNI internet banking payment instruction -->
     <string name="bni_internet_instruction_1">Ketik alamat <a href="https://ibank.bni.co.id"><b>https://ibank.bni.co.id</b></a> kemudian klik <b>Masuk</b></string>
@@ -599,7 +615,6 @@
     <string name="notification_token_message">Perangkat token key dibutuhkan untuk cara pembayaran ini.</string>
     <string name="notification_otp_message">Biaya SMS mungkin akan dikenakan untuk cara pembayaran ini.</string>
     <string name="failed_to_get_bank_point">Gagal mengambil bank point</string>
-    <string name="total_bank_point">Total poin anda</string>
     <string name="status_rba_unsuccessful">Pembayaran belum dilakukan</string>
     <string name="message_error_internal_server">Maaf, terdapat masalah internal. Silakan ulangi lagi, atau coba dengan metode pembayaran lain.</string>
     <string name="message_virtual_account">Nomor Virtual Account</string>
@@ -646,5 +661,7 @@
     <string name="danamon_online_description_2">Pastikan Anda telah memiliki User ID Danamon Online Banking sebelum melakukan pembayaran.</string>
     <string name="message_sdk_invalid">client_key  dan context tidak boleh kosong. Silakan mendefinisikan client key dan context ke SDK</string>
     <string name="message_invalid_merchant_url">Merchant base_url tidak boleh kosong, jika anda menggunakan penyimapanan kartu sendiri. Silakan mendefinisikan merchant base url pada SDK</string>
+    <string name="empty_card_number">Silakan Masukkan Nomor Kartu</string>
+    <string name="empty_challenge_token">Silakan Masukkan Challange Token</string>
 
 </resources>

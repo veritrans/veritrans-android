@@ -121,8 +121,8 @@ public class MandiriBillStatusActivity extends BaseVaPaymentStatusActivity {
         setTextColor(buttonCopyBillPayCode);
         setBorderColor(buttonCopyCompanyCode);
         setTextColor(buttonCopyCompanyCode);
-        setBorderColor(buttonInstruction);
         setTextColor(buttonInstruction);
+        setIconColorFilter(buttonInstruction);
         setPrimaryBackgroundColor(buttonCompletePayment);
     }
 

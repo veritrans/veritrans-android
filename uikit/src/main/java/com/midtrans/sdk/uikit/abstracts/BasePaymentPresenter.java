@@ -49,12 +49,9 @@ public class BasePaymentPresenter<V extends BaseView> extends BasePresenter<V> {
      * @return boolean
      */
     public boolean isShowPaymentStatusPage() {
-        if (getMidtransSDK() != null && getMidtransSDK().getUIKitCustomSetting() != null
-                && getMidtransSDK().getUIKitCustomSetting().isShowPaymentStatus()) {
-            return true;
-        }
+        return getMidtransSDK() != null && getMidtransSDK().getUIKitCustomSetting() != null
+            && getMidtransSDK().getUIKitCustomSetting().isShowPaymentStatus();
 
-        return false;
     }
 
     public TransactionResponse getTransactionResponse() {
