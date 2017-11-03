@@ -56,9 +56,19 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.midtrans.sdk.uikit.activities.IndosatDompetkuActivity"
+            android:name="com.midtrans.sdk.uikit.views.mandiri_ecash.MandiriEcashPaymentActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.uikit.activities.IndosatDompetkuActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name="com.midtrans.sdk.uikit.views.indosat_dompetku.IndosatDompetkuPaymentActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name="com.midtrans.sdk.uikit.activities.IndomaretActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -99,7 +109,24 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
+            android:name="com.midtrans.sdk.uikit.views.telkomsel_cash.TelkomselCashPaymentActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
             android:name="com.midtrans.sdk.uikit.activities.XLTunaiActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.uikit.views.xl_tunai.payment.XlTunaiPaymentActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.uikit.views.xl_tunai.status.XlTunaiStatusActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.midtrans.sdk.uikit.views.xl_tunai.XlTunaiInstructionActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity

@@ -70,8 +70,12 @@ import com.midtrans.sdk.uikit.views.danamon_online.DanamonOnlineActivity;
 import com.midtrans.sdk.uikit.views.gci.GciPaymentActivity;
 import com.midtrans.sdk.uikit.views.gopay.payment.GoPayPaymentActivity;
 import com.midtrans.sdk.uikit.views.indomaret.payment.IndomaretPaymentActivity;
+import com.midtrans.sdk.uikit.views.indosat_dompetku.IndosatDompetkuPaymentActivity;
 import com.midtrans.sdk.uikit.views.kioson.payment.KiosonPaymentActivity;
 import com.midtrans.sdk.uikit.views.mandiri_clickpay.MandiriClickPayActivity;
+import com.midtrans.sdk.uikit.views.mandiri_ecash.MandiriEcashPaymentActivity;
+import com.midtrans.sdk.uikit.views.telkomsel_cash.TelkomselCashPaymentActivity;
+import com.midtrans.sdk.uikit.views.xl_tunai.payment.XlTunaiPaymentActivity;
 import com.midtrans.sdk.uikit.widgets.BoldTextView;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
@@ -582,7 +586,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             }
         } else if (isMandiriECash) {
             if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_mandiri_ecash))) {
-                Intent startMandiriECash = new Intent(this, MandiriECashActivity.class);
+                Intent startMandiriECash = new Intent(this, MandiriEcashPaymentActivity.class);
                 startActivityForResult(startMandiriECash, Constants.RESULT_CODE_PAYMENT_TRANSFER);
                 if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                         && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
@@ -611,7 +615,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             }
         } else if (isTelkomselCash) {
             if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_telkomsel_cash))) {
-                Intent telkomselCashActivity = new Intent(this, TelkomselCashActivity.class);
+                Intent telkomselCashActivity = new Intent(this, TelkomselCashPaymentActivity.class);
                 startActivityForResult(telkomselCashActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
                 if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                         && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
@@ -622,7 +626,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             }
         } else if (isIndosatDompetku) {
             if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_indosat_dompetku))) {
-                Intent startIndosatPaymentActivity = new Intent(this, IndosatDompetkuActivity.class);
+                Intent startIndosatPaymentActivity = new Intent(this, IndosatDompetkuPaymentActivity.class);
                 startActivityForResult(startIndosatPaymentActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
                 if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                         && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
@@ -633,7 +637,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             }
         } else if (isXlTunai) {
             if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_xl_tunai))) {
-                Intent xlTunaiActivity = new Intent(this, XLTunaiActivity.class);
+                Intent xlTunaiActivity = new Intent(this, XlTunaiPaymentActivity.class);
                 startActivityForResult(xlTunaiActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
                 if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                         && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
@@ -751,14 +755,14 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_mandiri_ecash))) {
-            Intent startMandiriECash = new Intent(this, MandiriECashActivity.class);
+            Intent startMandiriECash = new Intent(this, MandiriEcashPaymentActivity.class);
             startActivityForResult(startMandiriECash, Constants.RESULT_CODE_PAYMENT_TRANSFER);
             if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                     && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_indosat_dompetku))) {
-            Intent startIndosatPaymentActivity = new Intent(this, IndosatDompetkuActivity.class);
+            Intent startIndosatPaymentActivity = new Intent(this, IndosatDompetkuPaymentActivity.class);
             startActivityForResult(startIndosatPaymentActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
             if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                     && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
@@ -787,14 +791,14 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_telkomsel_cash))) {
-            Intent telkomselCashActivity = new Intent(this, TelkomselCashActivity.class);
+            Intent telkomselCashActivity = new Intent(this, TelkomselCashPaymentActivity.class);
             startActivityForResult(telkomselCashActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
             if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                     && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_xl_tunai))) {
-            Intent xlTunaiActivity = new Intent(this, XLTunaiActivity.class);
+            Intent xlTunaiActivity = new Intent(this, XlTunaiPaymentActivity.class);
             startActivityForResult(xlTunaiActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
             if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                     && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {

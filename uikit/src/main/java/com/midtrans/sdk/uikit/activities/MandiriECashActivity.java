@@ -28,7 +28,9 @@ import java.util.UUID;
 
 /**
  * Created by Ankit on 11/30/15.
+ * Deprecated, please use {@link com.midtrans.sdk.uikit.views.mandiri_ecash.MandiriEcashPaymentActivity} instead
  */
+@Deprecated
 public class MandiriECashActivity extends BaseActivity implements View.OnClickListener {
 
     private static final int PAYMENT_WEB_INTENT = 152;
