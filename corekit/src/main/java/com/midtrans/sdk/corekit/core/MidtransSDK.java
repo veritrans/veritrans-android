@@ -1,5 +1,6 @@
 package com.midtrans.sdk.corekit.core;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
@@ -122,7 +123,11 @@ public class MidtransSDK {
         this.mSnapTransactionManager = new SnapTransactionManager(sdkBuilder.context, MidtransRestAdapter.getSnapRestAPI(sdkBaseUrl, requestTimeOut),
                 MidtransRestAdapter.getMerchantApiClient(merchantServerUrl, requestTimeOut),
                 MidtransRestAdapter.getVeritransApiClient(BuildConfig.BASE_URL, requestTimeOut));
-        this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), clientKey, getFlow(flow));
+        String deviceType = null;
+        if (context instanceof Activity) {
+            deviceType = Utils.getDeviceType((Activity) context);
+        }
+        this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), merchantName, getFlow(flow), deviceType == null ? "" : deviceType);
         this.mSnapTransactionManager.setSDKLogEnabled(isLogEnabled);
     }
 
@@ -217,7 +222,6 @@ public class MidtransSDK {
 
     public void setMerchantName(String merchantName) {
         this.merchantName = merchantName;
-        this.mMixpanelAnalyticsManager.setMerchantName(merchantName);
     }
 
     public String getMerchantLogo() {
@@ -266,7 +270,11 @@ public class MidtransSDK {
 
     public MixpanelAnalyticsManager getmMixpanelAnalyticsManager() {
         if (mSnapTransactionManager == null) {
-            this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), clientKey, getFlow(flow));
+            String deviceType = null;
+            if (context instanceof Activity) {
+                deviceType = Utils.getDeviceType((Activity) context);
+            }
+            this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), merchantName, getFlow(flow), deviceType == null ? "" : deviceType);
         }
         return mMixpanelAnalyticsManager;
     }

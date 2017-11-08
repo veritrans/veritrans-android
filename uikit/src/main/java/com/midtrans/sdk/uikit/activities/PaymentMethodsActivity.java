@@ -394,8 +394,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     }
                     // Set color themes on item details
                     itemDetailsView.setBackgroundColor(midtransSDK.getColorTheme().getPrimaryColor());
-
-                    midtransSDK.getmMixpanelAnalyticsManager().setDeviceType(SdkUIFlowUtil.getDeviceType(PaymentMethodsActivity.this));
+                    
                     showLogo(logoUrl);
                     if (TextUtils.isEmpty(logoUrl)) {
                         showName(merchantName);
