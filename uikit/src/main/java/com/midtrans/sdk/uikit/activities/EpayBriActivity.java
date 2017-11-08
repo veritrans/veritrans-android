@@ -15,7 +15,6 @@ import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.InstructionEpayBriFragment;
 import com.midtrans.sdk.uikit.fragments.WebviewFragment;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
@@ -108,9 +107,6 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void setUpFragment() {
-        //track page BRI Epay
-        midtransSDK.trackEvent(AnalyticsEventName.PAGE_BRI_EPAY);
-
         // setup  fragment
         instructionEpayBriFragment = new InstructionEpayBriFragment();
         replaceFragment(instructionEpayBriFragment, R.id.instruction_container, false, false);
@@ -124,16 +120,10 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void makeTransaction() {
-        //track BRI Epay confirm payment
-        midtransSDK.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
-
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
         midtransSDK.paymentUsingEpayBRI(midtransSDK.readAuthenticationToken(), new TransactionCallback() {
             @Override
             public void onSuccess(TransactionResponse response) {
-                //track page status pending
-                MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_PENDING);
-
                 SdkUIFlowUtil.hideProgressDialog();
                 if (response != null &&
                         !TextUtils.isEmpty(response.getRedirectUrl())) {
@@ -153,9 +143,6 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
 
             @Override
             public void onFailure(TransactionResponse response, String reason) {
-                //track page status failed
-                MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
-
                 SdkUIFlowUtil.hideProgressDialog();
                 EpayBriActivity.this.errorMessage = getString(R.string.message_payment_failed);
                 if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
@@ -168,9 +155,6 @@ public class EpayBriActivity extends BaseActivity implements View.OnClickListene
 
             @Override
             public void onError(Throwable error) {
-                //track page status failed
-                MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
-
                 SdkUIFlowUtil.hideProgressDialog();
                 String message = MessageUtil.createPaymentErrorMessage(EpayBriActivity.this, error.getMessage(), null);
 

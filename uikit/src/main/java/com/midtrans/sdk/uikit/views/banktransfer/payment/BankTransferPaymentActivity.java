@@ -19,7 +19,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
@@ -27,7 +26,6 @@ import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
 import com.midtrans.sdk.uikit.adapters.InstructionPagerAdapter;
 import com.midtrans.sdk.uikit.adapters.ListBankAdapter;
-import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.BankTransferFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionOtherBankFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionOtherBankFragment.OnInstructionShownListener;
@@ -118,24 +116,9 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
 
     private void trackPage() {
         switch (paymentType) {
-            case PaymentType.BCA_VA:
-                presenter.trackEvent(AnalyticsEventName.PAGE_BCA_VA);
-                break;
-            case PaymentType.PERMATA_VA:
-                presenter.trackEvent(AnalyticsEventName.PAGE_PERMATA_VA);
-                break;
-            case PaymentType.ALL_VA:
-                presenter.trackEvent(AnalyticsEventName.PAGE_PERMATA_VA);
-                break;
-            case PaymentType.E_CHANNEL:
-                presenter.trackEvent(AnalyticsEventName.PAGE_MANDIRI_BILL);
-                break;
-            case PaymentType.BNI_VA:
-                presenter.trackEvent(AnalyticsEventName.PAGE_BNI_VA);
-                break;
+
         }
     }
-
 
     @Override
     public void bindViews() {
@@ -171,39 +154,24 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
             case PaymentType.BCA_VA:
                 title = getString(R.string.bank_bca_transfer);
                 pageNumber = 3;
-
-                //track page bca va overview
-                presenter.trackEvent(AnalyticsEventName.PAGE_BCA_VA_OVERVIEW);
                 break;
             case PaymentType.E_CHANNEL:
                 title = getString(R.string.mandiri_bill_transfer);
                 pageNumber = 2;
-
-                //track page mandiri bill overview
-                presenter.trackEvent(AnalyticsEventName.PAGE_MANDIRI_BILL_OVERVIEW);
                 break;
             case PaymentType.PERMATA_VA:
                 title = getString(R.string.bank_permata_transfer);
                 pageNumber = 2;
                 flags = new boolean[pageNumber];
-
-                //track page permata va overview
-                presenter.trackEvent(AnalyticsEventName.PAGE_PERMATA_VA_OVERVIEW);
                 break;
             case PaymentType.ALL_VA:
                 title = getString(R.string.other_bank_transfer);
                 pageNumber = 3;
                 flags = new boolean[pageNumber];
-
-                //track page other bank va overview
-                presenter.trackEvent(AnalyticsEventName.PAGE_OTHER_BANK_VA_OVERVIEW);
                 break;
             case PaymentType.BNI_VA:
                 title = getString(R.string.bank_bni_transfer);
                 pageNumber = 3;
-
-                // track page bni va overview
-                presenter.trackEvent(AnalyticsEventName.PAGE_OTHER_BANK_VA_OVERVIEW);
                 break;
             default:
                 title = getString(R.string.bank_transfer);
@@ -370,7 +338,6 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
 
         hideProgressLayout();
         if (!isFinishing()) {
-            presenter.trackEvent(AnalyticsEventName.PAGE_STATUS_PENDING);
             initPaymentStatus(response);
         } else {
             finishPayment(RESULT_OK);
@@ -384,7 +351,6 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
             MessageInfo messageInfo = MessageUtil.createpaymentFailedMessage(this, response, null);
             SdkUIFlowUtil.showToast(this, messageInfo.detailsMessage);
 
-            presenter.trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
             initPaymentStatus(response);
         }
     }

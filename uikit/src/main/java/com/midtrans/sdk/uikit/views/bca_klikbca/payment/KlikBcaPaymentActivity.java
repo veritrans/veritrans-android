@@ -11,7 +11,6 @@ import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentView;
-import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.views.bca_klikbca.status.KlikBcaStatusActivity;
@@ -49,9 +48,6 @@ public class KlikBcaPaymentActivity extends BasePaymentActivity implements BaseP
                     showProgressLayout(getString(R.string.processing_payment));
                     presenter.startPayment(userId);
                 }
-
-                //track event
-                presenter.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
             }
         });
     }

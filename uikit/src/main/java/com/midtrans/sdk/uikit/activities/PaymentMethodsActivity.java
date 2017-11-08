@@ -52,7 +52,6 @@ import com.midtrans.sdk.uikit.PaymentMethods;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.adapters.ItemDetailsAdapter;
 import com.midtrans.sdk.uikit.adapters.PaymentMethodsAdapter;
-import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.models.EnabledPayments;
 import com.midtrans.sdk.uikit.models.ItemViewDetails;
 import com.midtrans.sdk.uikit.models.MessageInfo;
@@ -394,7 +393,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     }
                     // Set color themes on item details
                     itemDetailsView.setBackgroundColor(midtransSDK.getColorTheme().getPrimaryColor());
-                    
+
                     showLogo(logoUrl);
                     if (TextUtils.isEmpty(logoUrl)) {
                         showName(merchantName);
@@ -708,9 +707,6 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             } else {
                 progressContainer.setVisibility(View.GONE);
                 paymentMethodsAdapter.setData(data);
-
-                //track page select paymentpage
-                midtransSDK.trackEvent(AnalyticsEventName.PAGE_SELECT_PAYMENT);
             }
         }
     }
@@ -1088,16 +1084,16 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         }
     }
 
-    @Override
-    public void onItemShown() {
-        midtransSDK.trackEvent(AnalyticsEventName.PAGE_ORDER_SUMMARY);
-    }
-
     public boolean isAlreadyUtilized() {
         return alreadyUtilized;
     }
 
     public void setAlreadyUtilized(boolean alreadyUtilized) {
         this.alreadyUtilized = alreadyUtilized;
+    }
+
+    @Override
+    public void onItemShown() {
+
     }
 }

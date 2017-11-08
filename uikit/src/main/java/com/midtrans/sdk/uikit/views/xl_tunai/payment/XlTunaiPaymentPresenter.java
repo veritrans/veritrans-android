@@ -1,10 +1,9 @@
-package com.midtrans.sdk.uikit.views.xl_tunai;
+package com.midtrans.sdk.uikit.views.xl_tunai.payment;
 
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentPresenter;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentView;
-import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 
 /**
  * Created by Fajar on 30/10/17.
@@ -23,14 +22,12 @@ public class XlTunaiPaymentPresenter extends BasePaymentPresenter<BasePaymentVie
                 public void onSuccess(TransactionResponse response) {
                     transactionResponse = response;
                     view.onPaymentSuccess(response);
-                    trackEvent(AnalyticsEventName.PAGE_STATUS_PENDING);
                 }
 
                 @Override
                 public void onFailure(TransactionResponse response, String reason) {
                     transactionResponse = response;
                     view.onPaymentFailure(response);
-                    trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
                 }
 
                 @Override

@@ -1,5 +1,7 @@
 package com.midtrans.sdk.uikit.activities;
 
+import static com.midtrans.sdk.uikit.utilities.ReadBankDetailTask.ReadBankDetailCallback;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -21,7 +23,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.midtrans.sdk.corekit.callback.BankBinsCallback;
 import com.midtrans.sdk.corekit.callback.BanksPointCallback;
 import com.midtrans.sdk.corekit.callback.CardTokenCallback;
@@ -50,7 +51,6 @@ import com.midtrans.sdk.corekit.models.snap.PromoResponse;
 import com.midtrans.sdk.corekit.models.snap.SavedToken;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.AddCardDetailsFragment;
 import com.midtrans.sdk.uikit.fragments.BanksPointFragment;
 import com.midtrans.sdk.uikit.fragments.PaymentTransactionStatusFragment;
@@ -62,15 +62,12 @@ import com.midtrans.sdk.uikit.scancard.ScannerModel;
 import com.midtrans.sdk.uikit.utilities.ReadBankDetailTask;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
-import static com.midtrans.sdk.uikit.utilities.ReadBankDetailTask.ReadBankDetailCallback;
 
 /**
  * Deprecated, please see {@link com.midtrans.sdk.uikit.views.creditcard.details.CreditCardDetailsActivity}
@@ -408,25 +405,11 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                             }
                             if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
                                 Log.d("3dserror", "1>400:" + response.getValidationMessages().get(0));
-
-                                if (response.getValidationMessages() != null && response.getValidationMessages().get(0) != null) {
-                                    if (response.getValidationMessages().get(0).contains("3d")) {
-                                        //track page bca va overview
-                                        midtransSDK.trackEvent(AnalyticsEventName.CREDIT_CARD_3DS_ERROR);
-                                    }
-                                }
                             }
-
-                            //track page status failed
-                            MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
                         }
 
                         @Override
                         public void onError(Throwable error) {
-                            //track page status failed
-                            MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
-
-
                             SdkUIFlowUtil.hideProgressDialog();
                             showErrorMessage(getString(R.string.message_payment_failed));
                         }
@@ -462,23 +445,11 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
 
                             if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
                                 Log.d("3dserror", "400:" + response.getValidationMessages().get(0));
-                                if (response.getValidationMessages() != null && response.getValidationMessages().get(0) != null) {
-                                    if (response.getValidationMessages().get(0).contains("3d")) {
-                                        //track page bca va overview
-                                        midtransSDK.trackEvent(AnalyticsEventName.CREDIT_CARD_3DS_ERROR);
-                                    }
-                                }
                             }
-
-                            //track page status failed
-                            MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
                         }
 
                         @Override
                         public void onError(Throwable error) {
-                            //track page status failed
-                            MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
-
                             SdkUIFlowUtil.hideProgressDialog();
                             showErrorMessage(getString(R.string.message_payment_failed));
 
@@ -488,9 +459,6 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
     }
 
     private void actionPaymentSuccess(TransactionResponse response) {
-        //track page status success
-        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_SUCCESS);
-
         TransactionResponse cardPaymentResponse = response;
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {

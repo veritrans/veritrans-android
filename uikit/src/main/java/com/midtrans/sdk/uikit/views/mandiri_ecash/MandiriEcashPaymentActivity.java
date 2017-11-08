@@ -9,7 +9,6 @@ import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentView;
-import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
@@ -42,7 +41,6 @@ public class MandiriEcashPaymentActivity extends BasePaymentActivity implements 
             public void onClick(View v) {
                 showProgressLayout();
                 presenter.startPayment();
-                presenter.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
             }
         });
     }

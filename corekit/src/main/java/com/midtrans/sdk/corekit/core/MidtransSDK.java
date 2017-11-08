@@ -1972,41 +1972,6 @@ public class MidtransSDK {
         }
     }
 
-    /**
-     * tracking sdk events
-     * don't use this method, for new uikit payment pattern (inside views package)
-     * use tracker in base payment presenter instead
-     *
-     * @param eventName
-     */
-    @Deprecated
-    public void trackEvent(String eventName) {
-        try {
-            this.mMixpanelAnalyticsManager.trackMixpanel(readAuthenticationToken(), eventName);
-        } catch (NullPointerException e) {
-            Logger.e(TAG, "trackEvent():" + e.getMessage());
-        }
-    }
-
-    /**
-     * tracking sdk events
-     * <p>
-     * don't use this method, for new uikit payment pattern (inside views package)
-     * use tracker in base payment presenter instead
-     *
-     * @param eventName
-     * @param cardPaymentMode
-     */
-    @Deprecated
-    public void trackEvent(String eventName, String cardPaymentMode) {
-        try {
-            this.mMixpanelAnalyticsManager.trackMixpanel(readAuthenticationToken(), eventName, cardPaymentMode);
-        } catch (NullPointerException e) {
-            Logger.e(TAG, "trackEvent():" + e.getMessage());
-        }
-    }
-
-
     public List<PromoResponse> getPromoResponses() {
         return promoResponses;
     }

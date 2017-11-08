@@ -8,10 +8,8 @@ import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentView;
-import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
-import com.midtrans.sdk.uikit.views.xl_tunai.XlTunaiPaymentPresenter;
 import com.midtrans.sdk.uikit.views.xl_tunai.status.XlTunaiStatusActivity;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
@@ -43,9 +41,6 @@ public class XlTunaiPaymentActivity extends BasePaymentActivity implements BaseP
                 SdkUIFlowUtil.hideKeyboard(XlTunaiPaymentActivity.this);
                 showProgressLayout(getString(R.string.processing_payment));
                 presenter.startPayment();
-
-                //track event
-                presenter.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
             }
         });
     }

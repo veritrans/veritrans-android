@@ -10,7 +10,6 @@ import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.adapters.InstructionPagerAdapter;
-import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.views.banktransfer.status.BankTransferStatusPresenter;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 import com.midtrans.sdk.uikit.widgets.MagicViewPager;
@@ -90,33 +89,18 @@ public abstract class BaseVaPaymentStatusActivity extends BasePaymentActivity {
         switch (presenter.getBankType()) {
             case PaymentType.BCA_VA:
                 pageNumber = 3;
-                //track page bca va overview
-                presenter.trackEvent(AnalyticsEventName.PAGE_BCA_VA_OVERVIEW);
-
                 break;
             case PaymentType.PERMATA_VA:
                 pageNumber = 2;
-
-                //track page permata va overview
-                presenter.trackEvent(AnalyticsEventName.PAGE_PERMATA_VA_OVERVIEW);
                 break;
             case PaymentType.BNI_VA:
                 pageNumber = 3;
-
-                //track page permata va overview
-                presenter.trackEvent(AnalyticsEventName.PAGE_BNI_VA_OVERVIEW);
                 break;
             case PaymentType.E_CHANNEL:
                 pageNumber = 2;
-
-                //track page mandiri bill overview
-                presenter.trackEvent(AnalyticsEventName.PAGE_MANDIRI_BILL_OVERVIEW);
                 break;
             case PaymentType.ALL_VA:
                 pageNumber = 3;
-
-                //track page other bank va overview
-                presenter.trackEvent(AnalyticsEventName.PAGE_OTHER_BANK_VA_OVERVIEW);
                 break;
             default:
                 pageNumber = 0;

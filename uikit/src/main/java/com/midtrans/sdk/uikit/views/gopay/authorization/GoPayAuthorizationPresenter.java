@@ -5,7 +5,6 @@ import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.models.GoPayResendAuthorizationResponse;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentPresenter;
-import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 
 /**
  * Created by ziahaqi on 9/11/17.
@@ -25,7 +24,6 @@ public class GoPayAuthorizationPresenter extends BasePaymentPresenter<GoPayAutho
             public void onSuccess(TransactionResponse response) {
                 transactionResponse = response;
                 view.onVerificationCodeSuccess(response);
-                trackEvent(AnalyticsEventName.PAGE_STATUS_SUCCESS);
 
             }
 
@@ -33,7 +31,6 @@ public class GoPayAuthorizationPresenter extends BasePaymentPresenter<GoPayAutho
             public void onFailure(TransactionResponse response, String reason) {
                 transactionResponse = response;
                 view.onVerificationCodeFailure(response);
-                trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
             }
 
             @Override
