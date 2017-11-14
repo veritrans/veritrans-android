@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.text.TextUtils;
 import android.view.View;
@@ -73,6 +74,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private static final String CUSTOM_BCA_VA_NUMBER = "config.va.bca";
     private static final String CUSTOM_PERMATA_VA_NUMBER = "config.va.permata";
     private static final String CUSTOM_BNI_VA_NUMBER = "config.va.bni";
+    private static final String SUBCOMPANY_BCA_VA_NUMBER = "config.subcompany.va.bca";
     private static final String INSTALLMENT_TYPE = "config.installment";
     private static final String INSTALLMENT_REQUIRED = "config.installment.required";
     private static final String BNI_POINT_TYPE = "config.bni.point";
@@ -100,6 +102,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private TextView customPermataVaTitle;
     private TextView customBcaVaTitle;
     private TextView customBniVaTitle;
+    private TextView subCompanyBcaVaTitle;
     private TextView installmentTitle;
     private TextView bniPointTitle;
     private TextView mandiriPointTitle;
@@ -120,6 +123,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private LinearLayout customBcaVaContainer;
     private LinearLayout customPermataVaContainer;
     private LinearLayout customBniVaContainer;
+    private LinearLayout subCompanyBcaVaContainer;
     private RadioGroup installmentContainer;
     private RadioGroup bniPointContainer;
     private RadioGroup mandiriPointContainer;
@@ -193,11 +197,15 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private AppCompatRadioButton customPermataVaDisabledSelection;
 
     /**
-     * Radio Button Selection for Custom BCA VA
+     * Radio Button Selection for Custom BNI VA
      */
     private AppCompatRadioButton customBniVaEnabledSelection;
     private AppCompatRadioButton customBniVaDisabledSelection;
-
+    /**
+     * Radio Button Selection for Subcompany BCA VA
+     */
+    private AppCompatRadioButton subCompanyBcaVaEnabledSelection;
+    private AppCompatRadioButton subCompanyBcaVaDisabledSelection;
     /**
      * Radio Button Selection for Promo
      **/
@@ -232,6 +240,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private ImageButton editBcaVaButton;
     private ImageButton editPermataVaButton;
     private ImageButton editBniVaButton;
+    private ImageButton editSubCompanyBcaVaButton;
     private ImageButton editPaymentChannels;
     private ImageButton editInstallmentMandiri;
     private ImageButton editInstallmentBca;
@@ -259,6 +268,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         initCustomBcaVaSelection();
         initCustomPermataVaSelection();
         initCustomBniVaSelection();
+        initSubCompanyBcaVaSelection();
         initPromoSelection();
         initPreAuthSelection();
         initInstallmentSelection();
@@ -290,6 +300,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         customPermataVaTitle = (TextView) findViewById(R.id.title_custom_permata_va);
         customBcaVaTitle = (TextView) findViewById(R.id.title_custom_bca_va);
         customBniVaTitle = (TextView) findViewById(R.id.title_custom_bni_va);
+        subCompanyBcaVaTitle = (TextView) findViewById(R.id.title_subcompany_bca_va);
         installmentTitle = (TextView) findViewById(R.id.title_installment_type);
         bniPointTitle = (TextView) findViewById(R.id.title_bni_point_type);
         mandiriPointTitle = (TextView) findViewById(R.id.title_mandiri_point_type);
@@ -309,6 +320,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         customBcaVaContainer = (LinearLayout) findViewById(R.id.custom_bca_va_type_container);
         customPermataVaContainer = (LinearLayout) findViewById(R.id.custom_permata_va_type_container);
         customBniVaContainer = (LinearLayout) findViewById(R.id.custom_bni_va_type_container);
+        subCompanyBcaVaContainer = (LinearLayout) findViewById(R.id.subcompany_bca_va_type_container);
         installmentContainer = (RadioGroup) findViewById(R.id.enable_installment_container);
         changeInstallmentContainer = (LinearLayout) findViewById(R.id.change_installment_container);
         bniPointContainer = (RadioGroup) findViewById(R.id.bni_point_type_container);
@@ -356,6 +368,9 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         customBniVaEnabledSelection = (AppCompatRadioButton) findViewById(R.id.type_bni_va_enabled);
         customBniVaDisabledSelection = (AppCompatRadioButton) findViewById(R.id.type_bni_va_disabled);
 
+        subCompanyBcaVaDisabledSelection = (AppCompatRadioButton) findViewById(R.id.type_subcompany_bca_va_disabled);
+        subCompanyBcaVaEnabledSelection = (AppCompatRadioButton) findViewById(R.id.type_subcompany_bca_va_enabled);
+
         promoDisabledSelection = (AppCompatRadioButton) findViewById(R.id.type_promo_disabled);
         promoEnabledSelection = (AppCompatRadioButton) findViewById(R.id.type_promo_enabled);
 
@@ -385,6 +400,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         editPermataVaButton = (ImageButton) findViewById(R.id.btn_edit_permata_va);
         editPaymentChannels = (ImageButton) findViewById(R.id.btn_edit_payment_method);
         editBniVaButton = (ImageButton) findViewById(R.id.btn_edit_bni_va);
+        editSubCompanyBcaVaButton = (ImageButton) findViewById(R.id.btn_edit_subcompany_bca_va);
         editInstallmentMandiri = (ImageButton) findViewById(R.id.button_mandiri_installment_edit);
         editInstallmentBca = (ImageButton) findViewById(R.id.button_bca_installment_edit);
         editInstallmentBni = (ImageButton) findViewById(R.id.button_bni_installment_edit);
@@ -591,6 +607,29 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                             setTextViewDrawableLeftColorFilter(customBcaVaTitle);
                             // Show color theme container
                             customBcaVaContainer.setVisibility(View.VISIBLE);
+                        } else {
+                            unselectAllTitles();
+                            hideAllSelections();
+                        }
+                    }
+                }, DELAY);
+            }
+        });
+
+        subCompanyBcaVaTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!subCompanyBcaVaTitle.isSelected()) {
+                            unselectAllTitles();
+                            hideAllSelections();
+                            subCompanyBcaVaTitle.setSelected(true);
+                            setTextViewSelectedColor(subCompanyBcaVaTitle);
+                            setTextViewDrawableLeftColorFilter(subCompanyBcaVaTitle);
+                            // Show color theme container
+                            subCompanyBcaVaContainer.setVisibility(View.VISIBLE);
                         } else {
                             unselectAllTitles();
                             hideAllSelections();
@@ -1340,6 +1379,9 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 if (checked) {
                     customBcaVaTitle.setText(R.string.custom_bca_va_disabled);
+                    if (subCompanyBcaVaContainer != null) {
+                        subCompanyBcaVaDisabledSelection.setChecked(true);
+                    }
                 }
             }
         });
@@ -1443,6 +1485,55 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         });
     }
 
+    private void initSubCompanyBcaVaSelection() {
+        String subCompanyBcaVaNumber = DemoPreferenceHelper.getStringPreference(this, SUBCOMPANY_BCA_VA_NUMBER);
+        if (!TextUtils.isEmpty(subCompanyBcaVaNumber)) {
+            subCompanyBcaVaTitle.setText(getString(R.string.subcompany_bca_va_enabled));
+            subCompanyBcaVaEnabledSelection.setChecked(true);
+            subCompanyBcaVaEnabledSelection.setText(getString(R.string.custom_va_enabled_format, subCompanyBcaVaNumber));
+            initEditSubCompanyBcaVaButton();
+        } else {
+            subCompanyBcaVaTitle.setText(getString(R.string.subcompany_bca_va_disabled));
+            subCompanyBcaVaDisabledSelection.setChecked(true);
+            subCompanyBcaVaEnabledSelection.setText(getString(R.string.enabled));
+            disableEditSubCompanyBcaVa();
+        }
+
+        subCompanyBcaVaEnabledSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    if (editSubCompanyBcaVaButton.getVisibility() != View.VISIBLE) {
+                        final CustomVaInputDialogFragment fragment = CustomVaInputDialogFragment.newInstance(getString(R.string.subcompany_bca_va_title), getSelectedColorPrimaryDark(), new CustomVaDialogListener() {
+                            @Override
+                            public void onOkClicked(String input) {
+                                subCompanyBcaVaTitle.setText(R.string.subcompany_bca_va_enabled);
+                                subCompanyBcaVaEnabledSelection.setText(getString(R.string.custom_va_enabled_format, input));
+                                saveSubCompanyBcaVaNumber();
+                                initEditSubCompanyBcaVaButton();
+                            }
+
+                            @Override
+                            public void onCancelClicked() {
+                                subCompanyBcaVaDisabledSelection.setChecked(true);
+                            }
+                        });
+                        fragment.show(getSupportFragmentManager(), "");
+                    }
+                }
+            }
+        });
+
+        subCompanyBcaVaDisabledSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    subCompanyBcaVaTitle.setText(R.string.subcompany_bca_va_disabled);
+                }
+            }
+        });
+    }
+
     private void initEditBcaVaButton() {
         editBcaVaButton.setVisibility(View.VISIBLE);
         editBcaVaButton.setOnClickListener(new View.OnClickListener() {
@@ -1530,6 +1621,35 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private void disableEditBniVa() {
         editBniVaButton.setVisibility(View.GONE);
         editBniVaButton.setOnClickListener(null);
+    }
+
+    private void initEditSubCompanyBcaVaButton() {
+        editSubCompanyBcaVaButton.setVisibility(View.VISIBLE);
+        editSubCompanyBcaVaButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String subCompany = DemoPreferenceHelper.getStringPreference(DemoConfigActivity.this, SUBCOMPANY_BCA_VA_NUMBER);
+                final CustomVaInputDialogFragment fragment = CustomVaInputDialogFragment.newInstance(subCompany, getString(R.string.subcompany_bca_va_title), getSelectedColorPrimaryDark(), new CustomVaDialogListener() {
+                    @Override
+                    public void onOkClicked(String input) {
+                        subCompanyBcaVaTitle.setText(R.string.subcompany_bca_va_enabled);
+                        subCompanyBcaVaEnabledSelection.setText(getString(R.string.custom_va_enabled_format, input));
+                        saveSubCompanyBcaVaNumber();
+                    }
+
+                    @Override
+                    public void onCancelClicked() {
+                        // Do nothing
+                    }
+                });
+                fragment.show(getSupportFragmentManager(), "");
+            }
+        });
+    }
+
+    private void disableEditSubCompanyBcaVa() {
+        editSubCompanyBcaVaButton.setVisibility(View.INVISIBLE);
+        editSubCompanyBcaVaButton.setOnClickListener(null);
     }
 
     private void initPromoSelection() {
@@ -2050,6 +2170,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 paymentChannelsAllSelection.setChecked(true);
                 customBcaVaDisabledSelection.setChecked(true);
                 customPermataVaDisabledSelection.setChecked(true);
+                subCompanyBcaVaDisabledSelection.setChecked(true);
                 promoDisabledSelection.setChecked(true);
                 preAuthDisabledSelection.setChecked(true);
                 bniPointOnlyDisabledSelection.setChecked(true);
@@ -2165,6 +2286,15 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         }
     }
 
+    private void saveSubCompanyBcaVaNumber() {
+        if (subCompanyBcaVaEnabledSelection.isChecked()) {
+            String subCompany = subCompanyBcaVaEnabledSelection.getText().toString().split(" - ")[1];
+            DemoPreferenceHelper.setStringPreference(this, SUBCOMPANY_BCA_VA_NUMBER, subCompany);
+        } else {
+            DemoPreferenceHelper.setStringPreference(this, SUBCOMPANY_BCA_VA_NUMBER, "");
+        }
+    }
+
     private void savePromoSelection() {
         if (promoEnabledSelection.isChecked()) {
             DemoPreferenceHelper.setBooleanPreference(this, PROMO_TYPE, true);
@@ -2255,7 +2385,10 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         clearTextViewDrawableLeftColorFilter(customPermataVaTitle);
         customBniVaTitle.setSelected(false);
         customBniVaTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
-        clearTextViewDrawableLeftColorFilter(customBcaVaTitle);
+        clearTextViewDrawableLeftColorFilter(customBniVaTitle);
+        subCompanyBcaVaTitle.setSelected(false);
+        subCompanyBcaVaTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
+        clearTextViewDrawableLeftColorFilter(subCompanyBcaVaTitle);
         installmentTitle.setSelected(false);
         installmentTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
         clearTextViewDrawableLeftColorFilter(installmentTitle);
@@ -2285,6 +2418,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         customBcaVaContainer.setVisibility(View.GONE);
         customPermataVaContainer.setVisibility(View.GONE);
         customBniVaContainer.setVisibility(View.GONE);
+        subCompanyBcaVaContainer.setVisibility(View.GONE);
         installmentContainer.setVisibility(View.GONE);
         changeInstallmentContainer.setVisibility(View.GONE);
         bniPointContainer.setVisibility(View.GONE);
@@ -2472,6 +2606,9 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
 
         customBniVaEnabledSelection.setSupportButtonTintList(colorStateList);
         customBniVaDisabledSelection.setSupportButtonTintList(colorStateList);
+
+        subCompanyBcaVaEnabledSelection.setSupportButtonTintList(colorStateList);
+        subCompanyBcaVaDisabledSelection.setSupportButtonTintList(colorStateList);
 
         promoDisabledSelection.setSupportButtonTintList(colorStateList);
         promoEnabledSelection.setSupportButtonTintList(colorStateList);
@@ -2731,13 +2868,16 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             );
         }
 
+        //add custom VA and subcompany for BCA
         if (customBcaVaEnabledSelection.isChecked()) {
             // set free text on BCA VA Payment
             FreeText freeText = createSampleBcaFreeText();
             String vaNumber = customBcaVaEnabledSelection.getText().toString().split(" - ")[1];
-            transactionRequestNew.setBcaVa(
-                    new BcaBankTransferRequestModel(vaNumber, freeText)
-            );
+            BcaBankTransferRequestModel requestModel = new BcaBankTransferRequestModel(vaNumber, freeText);
+            if (subCompanyBcaVaEnabledSelection.isChecked()) {
+                requestModel.setSubCompanyCode(subCompanyBcaVaEnabledSelection.getText().toString().split(" - ")[1]);
+            }
+            transactionRequestNew.setBcaVa(requestModel);
         }
 
         if (customBniVaEnabledSelection.isChecked()) {

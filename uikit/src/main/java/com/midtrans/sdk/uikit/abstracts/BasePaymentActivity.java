@@ -1,5 +1,8 @@
 package com.midtrans.sdk.uikit.abstracts;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -231,6 +234,17 @@ public abstract class BasePaymentActivity extends BaseActivity {
         if (isActivityRunning()) {
             MessageInfo messageInfo = MessageUtil.createMessageOnError(this, error, defaultmessage);
             SdkUIFlowUtil.showToast(this, messageInfo.detailsMessage);
+        }
+    }
+
+    protected boolean copyToClipboard(String label, String text) {
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText(label, text);
+        if (clipboard != null) {
+            clipboard.setPrimaryClip(clip);
+            return true;
+        } else {
+            return false;
         }
     }
 

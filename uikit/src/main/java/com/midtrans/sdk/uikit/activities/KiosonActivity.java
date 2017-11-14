@@ -27,7 +27,9 @@ import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 
 /**
  * Created by ziahaqi on 8/26/16.
+ * Deprecated, please use {@link com.midtrans.sdk.uikit.views.kioson.payment.KiosonPaymentActivity} instead
  */
+@Deprecated
 public class KiosonActivity extends BaseActivity implements View.OnClickListener {
     public static final String HOME_FRAGMENT = "home";
     public static final String PAYMENT_FRAGMENT = "payment";

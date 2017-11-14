@@ -1,15 +1,10 @@
 package com.midtrans.sdk.uikit.views.banktransfer.status;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Toast;
-
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BaseVaPaymentStatusActivity;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
@@ -70,30 +65,22 @@ public class MandiriBillStatusActivity extends BaseVaPaymentStatusActivity {
         buttonCopyBillPayCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText(LABEL_BILL_CODE, textBillPayCode.getText().toString());
-                clipboard.setPrimaryClip(clip);
-
-                Toast.makeText(MandiriBillStatusActivity.this, R.string.copied_bill_code, Toast.LENGTH_SHORT).show();
+                boolean copyBillCodeSuccess = copyToClipboard(LABEL_BILL_CODE, textBillPayCode.getText().toString());
+                SdkUIFlowUtil.showToast(MandiriBillStatusActivity.this, copyBillCodeSuccess ? getString(R.string.copied_bill_code) : getString(R.string.failed_to_copy));
             }
         });
 
         buttonCopyCompanyCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText(LABEL_COMPANY_CODE, textCompanyCode.getText().toString());
-                clipboard.setPrimaryClip(clip);
-
-                Toast.makeText(MandiriBillStatusActivity.this, R.string.copied_company_code, Toast.LENGTH_SHORT).show();
+                boolean copyCompanyCodeSuccess = copyToClipboard(LABEL_COMPANY_CODE, textCompanyCode.getText().toString());
+                SdkUIFlowUtil.showToast(MandiriBillStatusActivity.this, copyCompanyCodeSuccess ? getString(R.string.copied_company_code) : getString(R.string.failed_to_copy));
             }
         });
 
         buttonInstruction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 String instructionUrl = presenter.getInstructionUrl();
                 SdkUIFlowUtil.startWebIntent(MandiriBillStatusActivity.this, instructionUrl);
             }
