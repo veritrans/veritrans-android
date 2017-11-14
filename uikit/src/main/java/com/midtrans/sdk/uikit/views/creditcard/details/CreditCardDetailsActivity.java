@@ -103,6 +103,8 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     private CreditCardDetailsPresenter presenter;
     private SaveCardRequest savedCard;
     private String lastExpDate = "";
+    private String redirectUrl = null;
+    private float redeemedPoint = 0f;
     private int attempt = 0;
 
 
@@ -1176,13 +1178,16 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         finish();
     }
 
-
     private void startPreCreditCardPayment() {
         String bankName = presenter.getBankByCardBin(getCardNumberBin());
         if (isBankPointEnabled() && bankName != null) {
             presenter.getBankPoint(bankName);
         } else {
-            startCreditCardPayment();
+            if (TextUtils.isEmpty(redirectUrl)) {
+                startCreditCardPayment();
+            } else {
+                start3DSecurePage(redirectUrl, UiKitConstants.INTENT_CODE_3DS_PAYMENT);
+            }
         }
     }
 
@@ -1214,7 +1219,10 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
         if (resultCode == RESULT_OK) {
             if (requestCode == UiKitConstants.INTENT_CODE_3DS_PAYMENT) {
-                startPreCreditCardPayment();
+                //change flow
+                startCreditCardPayment();
+            } else if (requestCode == UiKitConstants.INTENT_CODE_3DS_BANK_POINT) {
+                initBanksPointPayment(redeemedPoint);
             } else if (requestCode == UiKitConstants.INTENT_CODE_RBA_AUTHENTICATION) {
                 getPaymentStatus();
             } else if (requestCode == UiKitConstants.INTENT_REQUEST_SCAN_CARD) {
@@ -1229,14 +1237,19 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             } else if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS) {
                 finishPayment(resultCode);
             } else if (requestCode == UiKitConstants.INTENT_BANK_POINT) {
+                //change flow
                 if (data != null) {
-                    float redeemedPoint = data.getFloatExtra(BankPointsActivity.EXTRA_DATA_POINT, 0f);
+                    redeemedPoint  = data.getFloatExtra(BankPointsActivity.EXTRA_DATA_POINT, 0f);
+                }
+                if (!TextUtils.isEmpty(redirectUrl)) {
+                    start3DSecurePage(redirectUrl, UiKitConstants.INTENT_CODE_3DS_BANK_POINT);
+                } else {
                     initBanksPointPayment(redeemedPoint);
                 }
             }
         } else if (resultCode == RESULT_CANCELED) {
             if (requestCode == UiKitConstants.INTENT_CODE_3DS_PAYMENT) {
-                startPreCreditCardPayment();
+                hideProgressLayout();
             } else if (requestCode == UiKitConstants.INTENT_CODE_RBA_AUTHENTICATION) {
                 getPaymentStatus();
             } else if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS) {
@@ -1255,11 +1268,12 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     public void onGetCardTokenSuccess(TokenDetailsResponse response) {
         if (isActivityRunning()) {
             SdkUIFlowUtil.hideKeyboard(this);
+
+            //change flow
             if (!TextUtils.isEmpty(response.getRedirectUrl())) {
-                start3DSecurePage(response.getRedirectUrl(), UiKitConstants.INTENT_CODE_3DS_PAYMENT);
-            } else {
-                startPreCreditCardPayment();
+                redirectUrl = response.getRedirectUrl();
             }
+            startPreCreditCardPayment();
         }
     }
 
