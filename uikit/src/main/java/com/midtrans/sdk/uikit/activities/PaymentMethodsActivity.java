@@ -424,9 +424,6 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 } catch (NullPointerException e) {
                     Logger.e(TAG, e.getMessage());
                 }
-
-                //track page view
-                midtransSDK.getmMixpanelAnalyticsManager().trackPageViewed(midtransSDK.readAuthenticationToken(), PAGE_NAME, true);
             }
 
             @Override
@@ -713,6 +710,8 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             } else {
                 progressContainer.setVisibility(View.GONE);
                 paymentMethodsAdapter.setData(data);
+                //track page view here, since we know the list contains at least 2 payment channel
+                midtransSDK.getmMixpanelAnalyticsManager().trackPageViewed(midtransSDK.readAuthenticationToken(), PAGE_NAME, true);
             }
         }
     }
