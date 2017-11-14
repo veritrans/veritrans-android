@@ -5,7 +5,6 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.view.View;
 import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
@@ -69,14 +68,7 @@ public abstract class BaseVaPaymentStatusActivity extends BasePaymentActivity {
         presenter = new BankTransferStatusPresenter(response, bankType == null ? "" : bankType);
     }
 
-    private void initCompletePaymentButton() {
-        buttonCompletePayment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finishPaymentStatus();
-            }
-        });
-    }
+    protected abstract void initCompletePaymentButton();
 
     protected void finishPaymentStatus() {
         setResult(RESULT_OK);

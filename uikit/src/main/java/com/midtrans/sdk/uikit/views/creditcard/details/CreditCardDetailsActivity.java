@@ -60,6 +60,9 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     public static final String EXTRA_DELETED_CARD_DETAILS = "card.deleted.details";
     public static final String EXTRA_SAVED_CARD = "extra.card.saved";
     private static final String TAG = CreditCardDetailsActivity.class.getSimpleName();
+    private final String PAGE_NAME = "CC Card Details";
+    private final String BUTTON_CONFIRM_NAME = "Confirm Payment Credit Card";
+    private final String BUTTON_RETRY_NAME = "Retry Credit Card";
     private AppCompatEditText fieldCardNumber;
     private AppCompatEditText fieldCardCvv;
     private AppCompatEditText fieldCardExpiry;
@@ -248,6 +251,10 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                 ccBadge.setImageResource(R.drawable.badge_default);
 
         }
+
+        //track page view after page properly loaded
+        boolean isFirstPage = getIntent().getBooleanExtra(USE_DEEP_LINK, true);
+        presenter.trackPageView(PAGE_NAME, isFirstPage);
 
     }
 
@@ -491,6 +498,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                 SdkUIFlowUtil.hideKeyboard(CreditCardDetailsActivity.this);
                 if (checkCardValidity()) {
                     if (checkPaymentValidity()) {
+                        presenter.trackButtonClick(attempt == 0 ? BUTTON_CONFIRM_NAME : BUTTON_RETRY_NAME, PAGE_NAME);
                         TokenizeCreditCard();
                     }
                 }
@@ -1355,5 +1363,13 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         if (isActivityRunning()) {
             initPaymentStatus(transactionResponse);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (presenter != null) {
+            presenter.trackBackButtonClick(PAGE_NAME);
+        }
+        super.onBackPressed();
     }
 }

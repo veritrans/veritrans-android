@@ -18,6 +18,8 @@ import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 public class CimbClickPaymentActivity extends BasePaymentActivity implements BasePaymentView {
 
+    private final String PAGE_NAME = "CIMB Clicks";
+    private final String BUTTON_CONFIRM_NAME = "Confirm Payment CIMB Clicks";
     private FancyButton buttonPayment;
     private CimbClickPaymentPresenter presenter;
 
@@ -34,6 +36,10 @@ public class CimbClickPaymentActivity extends BasePaymentActivity implements Bas
         setPageTitle(getString(R.string.cimb_clicks));
         buttonPayment.setText(getString(R.string.confirm_payment));
         buttonPayment.setTextBold();
+
+        //track page view after page properly loaded
+        boolean isFirstPage = getIntent().getBooleanExtra(USE_DEEP_LINK, true);
+        presenter.trackPageView(PAGE_NAME, isFirstPage);
     }
 
     private void initActionButton() {
@@ -41,6 +47,7 @@ public class CimbClickPaymentActivity extends BasePaymentActivity implements Bas
             @Override
             public void onClick(View v) {
                 showProgressLayout();
+                presenter.trackButtonClick(BUTTON_CONFIRM_NAME, PAGE_NAME);
                 presenter.startPayment();
             }
         });
@@ -84,5 +91,13 @@ public class CimbClickPaymentActivity extends BasePaymentActivity implements Bas
         if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS || requestCode == UiKitConstants.INTENT_WEBVIEW_PAYMENT) {
             finishPayment(RESULT_OK, presenter.getTransactionResponse());
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (presenter != null) {
+            presenter.trackBackButtonClick(PAGE_NAME);
+        }
+        super.onBackPressed();
     }
 }

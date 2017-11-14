@@ -18,6 +18,8 @@ import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 public class BcaKlikPayPaymentActivity extends BasePaymentActivity implements BasePaymentView {
 
+    private final String PAGE_NAME = "BCA KlikPay";
+    private final String BUTTON_CONFIRM_NAME = "Confirm Payment BCA KlikPay";
     private FancyButton buttonPayment;
     private BcaKlikPayPaymentPresenter presenter;
 
@@ -34,6 +36,9 @@ public class BcaKlikPayPaymentActivity extends BasePaymentActivity implements Ba
         setPageTitle(getString(R.string.bca_klik));
         buttonPayment.setText(getString(R.string.confirm_payment));
         buttonPayment.setTextBold();
+        //track page view after page properly loaded
+        boolean isFirstPage = getIntent().getBooleanExtra(USE_DEEP_LINK, true);
+        presenter.trackPageView(PAGE_NAME, isFirstPage);
     }
 
     private void initActionButton() {
@@ -41,6 +46,7 @@ public class BcaKlikPayPaymentActivity extends BasePaymentActivity implements Ba
             @Override
             public void onClick(View v) {
                 showProgressLayout();
+                presenter.trackButtonClick(BUTTON_CONFIRM_NAME, PAGE_NAME);
                 presenter.startPayment();
             }
         });
@@ -84,5 +90,13 @@ public class BcaKlikPayPaymentActivity extends BasePaymentActivity implements Ba
         if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS || requestCode == UiKitConstants.INTENT_WEBVIEW_PAYMENT) {
             finishPayment(RESULT_OK, presenter.getTransactionResponse());
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (presenter != null) {
+            presenter.trackBackButtonClick(PAGE_NAME);
+        }
+        super.onBackPressed();
     }
 }

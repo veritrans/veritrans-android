@@ -145,6 +145,9 @@ public class SavedCreditCardActivity extends BasePaymentActivity implements Save
         if (savedCard != null) {
             intent.putExtra(CreditCardDetailsActivity.EXTRA_SAVED_CARD, savedCard);
         }
+        //pass deep link flag to credit card detail page
+        boolean isFirstPage = getIntent().getBooleanExtra(USE_DEEP_LINK, true);
+        intent.putExtra(CreditCardDetailsActivity.USE_DEEP_LINK, isFirstPage);
         startActivityForResult(intent, UiKitConstants.INTENT_CARD_DETAILS);
     }
 

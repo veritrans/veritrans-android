@@ -22,6 +22,10 @@ import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
  */
 
 public class KlikBcaPaymentActivity extends BasePaymentActivity implements BasePaymentView {
+
+    private final String PAGE_NAME = "KlikBCA Instructions";
+    private final String BUTTON_CONFIRM_NAME = "Confirm Payment KlikBCA";
+
     private TextInputEditText fieldUserId;
     private TextInputLayout containerUserId;
     private FancyButton buttonPayment;
@@ -46,6 +50,7 @@ public class KlikBcaPaymentActivity extends BasePaymentActivity implements BaseP
                 String userId = fieldUserId.getText().toString().trim();
                 if (isValidUserId(userId)) {
                     showProgressLayout(getString(R.string.processing_payment));
+                    presenter.trackButtonClick(BUTTON_CONFIRM_NAME, PAGE_NAME);
                     presenter.startPayment(userId);
                 }
             }
@@ -65,6 +70,10 @@ public class KlikBcaPaymentActivity extends BasePaymentActivity implements BaseP
         buttonPayment.setText(getString(R.string.confirm_payment));
         textTitle.setText(getString(R.string.klik_bca));
         buttonPayment.setTextBold();
+
+        //track page view after page properly loaded
+        boolean isFirstPage = getIntent().getBooleanExtra(USE_DEEP_LINK, true);
+        presenter.trackPageView(PAGE_NAME, isFirstPage);
     }
 
     private void initProperties() {
@@ -117,5 +126,13 @@ public class KlikBcaPaymentActivity extends BasePaymentActivity implements BaseP
         if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS) {
             finishPayment(RESULT_OK, presenter.getTransactionResponse());
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (presenter != null) {
+            presenter.trackBackButtonClick(PAGE_NAME);
+        }
+        super.onBackPressed();
     }
 }

@@ -20,6 +20,8 @@ import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 
 public class XlTunaiPaymentActivity extends BasePaymentActivity implements BasePaymentView {
 
+    private final String PAGE_NAME = "XL Tunai Overview";
+
     private FancyButton buttonPayment;
     private SemiBoldTextView textTitle;
 
@@ -49,6 +51,10 @@ public class XlTunaiPaymentActivity extends BasePaymentActivity implements BaseP
         buttonPayment.setText(getString(R.string.confirm_payment));
         textTitle.setText(getString(R.string.xl_tunai));
         buttonPayment.setTextBold();
+
+        //track page view after page properly loaded
+        boolean isFirstPage = getIntent().getBooleanExtra(USE_DEEP_LINK, true);
+        presenter.trackPageView(PAGE_NAME, isFirstPage);
     }
 
     private void initProperties() {
@@ -97,5 +103,13 @@ public class XlTunaiPaymentActivity extends BasePaymentActivity implements BaseP
         if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS) {
             finishPayment(RESULT_OK, presenter.getTransactionResponse());
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (presenter != null) {
+            presenter.trackBackButtonClick(PAGE_NAME);
+        }
+        super.onBackPressed();
     }
 }

@@ -21,6 +21,10 @@ import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
  */
 
 public class TelkomselCashPaymentActivity extends BasePaymentActivity implements BasePaymentView {
+
+    private final String PAGE_NAME = "Telkomsel Cash Overview";
+    private final String BUTTON_CONFIRM_NAME = "Confirm Payment Telkomsel Cash";
+
     private AppCompatEditText tCashToken;
     private TextInputLayout containerTCashToken;
     private FancyButton buttonPayment;
@@ -44,6 +48,7 @@ public class TelkomselCashPaymentActivity extends BasePaymentActivity implements
             @Override
             public void onClick(View v) {
                 SdkUIFlowUtil.hideKeyboard(TelkomselCashPaymentActivity.this);
+                presenter.trackButtonClick(BUTTON_CONFIRM_NAME, PAGE_NAME);
                 String token = tCashToken.getText().toString().trim();
                 if (isValidUserId(token)) {
                     showProgressLayout(getString(R.string.processing_payment));
@@ -66,6 +71,10 @@ public class TelkomselCashPaymentActivity extends BasePaymentActivity implements
         buttonPayment.setText(getString(R.string.confirm_payment));
         textTitle.setText(getString(R.string.telkomsel_cash));
         buttonPayment.setTextBold();
+
+        //track page view after page properly loaded
+        boolean isFirstPage = getIntent().getBooleanExtra(USE_DEEP_LINK, true);
+        presenter.trackPageView(PAGE_NAME, isFirstPage);
     }
 
     private void initProperties() {
@@ -120,5 +129,13 @@ public class TelkomselCashPaymentActivity extends BasePaymentActivity implements
         if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS) {
             finishPayment(RESULT_OK, presenter.getTransactionResponse());
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (presenter != null) {
+            presenter.trackBackButtonClick(PAGE_NAME);
+        }
+        super.onBackPressed();
     }
 }

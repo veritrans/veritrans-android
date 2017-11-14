@@ -21,6 +21,9 @@ import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
  */
 
 public class IndosatDompetkuPaymentActivity extends BasePaymentActivity implements BasePaymentView {
+
+    private final String PAGE_NAME = "Indosat Dompetku";
+
     private AppCompatEditText indosatNumber;
     private TextInputLayout containerIndosatNumber;
     private FancyButton buttonPayment;
@@ -69,6 +72,10 @@ public class IndosatDompetkuPaymentActivity extends BasePaymentActivity implemen
         buttonPayment.setText(getString(R.string.confirm_payment));
         textTitle.setText(getString(R.string.indosat_dompetku));
         buttonPayment.setTextBold();
+
+        //track page view after page properly loaded
+        boolean isFirstPage = getIntent().getBooleanExtra(USE_DEEP_LINK, true);
+        presenter.trackPageView(PAGE_NAME, isFirstPage);
     }
 
     private void initProperties() {
@@ -123,5 +130,13 @@ public class IndosatDompetkuPaymentActivity extends BasePaymentActivity implemen
         if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS) {
             finishPayment(RESULT_OK, presenter.getTransactionResponse());
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (presenter != null) {
+            presenter.trackBackButtonClick(PAGE_NAME);
+        }
+        super.onBackPressed();
     }
 }

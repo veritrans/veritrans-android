@@ -47,8 +47,9 @@ import java.util.List;
 
 public abstract class BasePaymentActivity extends BaseActivity {
 
+    //for tracking first page
+    public final static String USE_DEEP_LINK = "First Page";
     private static final String TAG = BasePaymentActivity.class.getSimpleName();
-
     private boolean isDetailShown = false;
     private boolean hasMerchantLogo = false;
 

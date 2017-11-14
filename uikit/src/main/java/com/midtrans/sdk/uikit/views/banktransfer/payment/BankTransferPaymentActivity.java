@@ -58,8 +58,8 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
     private DefaultTextView textNotificationToken;
     private DefaultTextView textNotificationOtp;
 
-
     private String paymentType;
+    private String pageName, buttonName;
 
     //for other ATM network
     private ImageView bankPreview;
@@ -71,8 +71,8 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bank_transfer_payment);
         initProperties();
-        trackPage();
         initTabPager();
+        trackPage();
         initPaymentButton();
         initData();
         bindOtherAtmGuidanceView();
@@ -87,6 +87,9 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
                 String email = editEmail.getText().toString().trim();
                 if (checkEmailValidity(email)) {
                     showProgressLayout();
+                    if (!TextUtils.isEmpty(buttonName)) {
+                        presenter.trackButtonClick(buttonName, pageName);
+                    }
                     presenter.startPayment(paymentType, email);
                 } else {
                     Toast.makeText(BankTransferPaymentActivity.this, getString(R.string.error_invalid_email_id), Toast.LENGTH_SHORT).show();
@@ -115,8 +118,31 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
     }
 
     private void trackPage() {
+        // TODO: 14/11/17 update isFirstPage
         switch (paymentType) {
-
+            case PaymentType.BCA_VA:
+                buttonName = "Confirm Payment Bank Transfer BCA";
+                pageName = "Bank Transfer BCA Overview";
+                presenter.trackPageView(pageName, false);
+                break;
+            case PaymentType.BNI_VA:
+                pageName = "Bank Transfer BNI Overview";
+                presenter.trackPageView(pageName, false);
+                break;
+            case PaymentType.E_CHANNEL:
+                buttonName = "Confirm Payment Mandiri Bill";
+                pageName = "Bank Transfer Mandiri Overview";
+                presenter.trackPageView(pageName, false);
+                break;
+            case PaymentType.PERMATA_VA:
+                buttonName = "Confirm Payment Bank Transfer Permata";
+                pageName = "Bank Transfer Permata Overview";
+                presenter.trackPageView(pageName, false);
+                break;
+            case PaymentType.ALL_VA:
+                buttonName = "Confirm Payment Bank Transfer All Bank";
+                pageName = "Bank Transfer Other Overview";
+                presenter.trackPageView(pageName, false);
         }
     }
 
@@ -478,5 +504,13 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
                 hideEmailForm();
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (presenter != null && !TextUtils.isEmpty(pageName)) {
+            presenter.trackBackButtonClick(pageName);
+        }
+        super.onBackPressed();
     }
 }
