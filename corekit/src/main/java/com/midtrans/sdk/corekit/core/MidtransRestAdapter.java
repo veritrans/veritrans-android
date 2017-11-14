@@ -125,7 +125,7 @@ public class MidtransRestAdapter {
         return new RequestInterceptor() {
             @Override
             public void intercept(RequestFacade request) {
-                request.addHeader("X-Source", "mobile");
+                request.addHeader("X-Source", "mobile-android");
                 request.addHeader("Accept", "application/json");
                 request.addHeader("Content-Type", "application/json");
             }
