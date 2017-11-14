@@ -3,6 +3,7 @@ package com.midtrans.sdk.uikit.views.creditcard.details;
 import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
+
 import com.midtrans.sdk.corekit.callback.BankBinsCallback;
 import com.midtrans.sdk.corekit.callback.BanksPointCallback;
 import com.midtrans.sdk.corekit.callback.CardTokenCallback;
@@ -32,6 +33,7 @@ import com.midtrans.sdk.uikit.abstracts.BaseCreditCardPresenter;
 import com.midtrans.sdk.uikit.models.CreditCardTransaction;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,22 +60,27 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
     }
 
     private void fetchBankBins() {
-        MidtransSDK.getInstance().getBankBins(new BankBinsCallback() {
-            @Override
-            public void onSuccess(ArrayList<BankBinsResponse> response) {
-                creditCardTransaction.setBankBins(response);
-            }
+        try {
+            MidtransSDK.getInstance().getBankBins(new BankBinsCallback() {
+                @Override
+                public void onSuccess(ArrayList<BankBinsResponse> response) {
+                    creditCardTransaction.setBankBins(response);
+                }
 
-            @Override
-            public void onFailure(String reason) {
-                // do nothing
-            }
+                @Override
+                public void onFailure(String reason) {
+                    // do nothing
+                }
 
-            @Override
-            public void onError(Throwable error) {
-                // do nothing
-            }
-        });
+                @Override
+                public void onError(Throwable error) {
+                    // do nothing
+                }
+            });
+
+        } catch (RuntimeException e) {
+            Logger.d(TAG, "fetchBankBins" + e.getMessage());
+        }
     }
 
     public boolean isSecurePayment() {
@@ -427,10 +434,10 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
         List<String> bankPoints = MidtransSDK.getInstance().getBanksPointEnabled();
 
         return !TextUtils.isEmpty(bank)
-            && bankPoints != null
-            && bankPoints.contains(bank)
-            && isSecurePayment()
-            && bank.equals(BankType.MANDIRI);
+                && bankPoints != null
+                && bankPoints.contains(bank)
+                && isSecurePayment()
+                && bank.equals(BankType.MANDIRI);
     }
 
     public void startBankPointsPayment(float redeemedPoint, boolean isSaveCard) {
