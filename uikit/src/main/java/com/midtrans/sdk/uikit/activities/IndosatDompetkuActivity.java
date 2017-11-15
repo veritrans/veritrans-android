@@ -1,5 +1,6 @@
 package com.midtrans.sdk.uikit.activities;
 
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import com.midtrans.sdk.uikit.fragments.BankTransferFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionIndosatFragment;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
+import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 
@@ -328,4 +330,14 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
             super.onBackPressed();
         }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS)
+            if (resultCode == RESULT_CANCELED || resultCode == RESULT_OK) {
+                setResultAndFinish();
+            }
+    }
+
 }
