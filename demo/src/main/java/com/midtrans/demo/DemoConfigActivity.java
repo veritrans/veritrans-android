@@ -1379,9 +1379,6 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 if (checked) {
                     customBcaVaTitle.setText(R.string.custom_bca_va_disabled);
-                    if (subCompanyBcaVaContainer != null) {
-                        subCompanyBcaVaDisabledSelection.setChecked(true);
-                    }
                 }
             }
         });
@@ -2868,15 +2865,23 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             );
         }
 
-        //add custom VA and subcompany for BCA
+        BcaBankTransferRequestModel requestModel = null;
         if (customBcaVaEnabledSelection.isChecked()) {
             // set free text on BCA VA Payment
             FreeText freeText = createSampleBcaFreeText();
             String vaNumber = customBcaVaEnabledSelection.getText().toString().split(" - ")[1];
-            BcaBankTransferRequestModel requestModel = new BcaBankTransferRequestModel(vaNumber, freeText);
-            if (subCompanyBcaVaEnabledSelection.isChecked()) {
-                requestModel.setSubCompanyCode(subCompanyBcaVaEnabledSelection.getText().toString().split(" - ")[1]);
+            requestModel = new BcaBankTransferRequestModel(vaNumber, freeText);
+            if (subCompanyBcaVaDisabledSelection.isChecked()) {
+                transactionRequestNew.setBcaVa(requestModel);
             }
+        }
+
+        //add custom VA and subcompany for BCA
+        if (subCompanyBcaVaEnabledSelection.isChecked()) {
+            if (requestModel == null) {
+                requestModel = new BcaBankTransferRequestModel();
+            }
+            requestModel.setSubCompanyCode(subCompanyBcaVaEnabledSelection.getText().toString().split(" - ")[1]);
             transactionRequestNew.setBcaVa(requestModel);
         }
 
