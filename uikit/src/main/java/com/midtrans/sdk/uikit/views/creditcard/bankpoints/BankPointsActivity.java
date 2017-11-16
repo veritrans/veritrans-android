@@ -169,6 +169,7 @@ public class BankPointsActivity extends BasePaymentActivity {
                 setFiestapoinDiscount();
                 buttonRedeemPoint.setText(getString(R.string.pay_with_mandiri_point));
                 buttonRedeemPoint.setTextBold();
+                buttonPayWithoutPoint.setVisibility(View.VISIBLE);
                 break;
             default:
                 break;

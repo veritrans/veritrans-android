@@ -32,10 +32,11 @@
             android:visibility="gone"/>
 
         <com.midtrans.sdk.uikit.widgets.FancyButton
+            android:visibility="gone"
             android:id="@+id/button_pay_without_point"
             android:layout_centerHorizontal="true"
             app:fb_iconResource="@drawable/ic_pay_without_bank_point"
-            app:fb_text="@string/pay_without_bank_point"
+            app:fb_text="@string/pay_without_fiesta_poin"
             android:layout_marginBottom="@dimen/sixteen_dp"
             style="@style/ButtonSecondary"
             android:layout_above="@id/container_item_details"

@@ -667,5 +667,6 @@
     <string name="message_invalid_merchant_url">Merchant base_url tidak boleh kosong, jika anda menggunakan penyimapanan kartu sendiri. Silakan mendefinisikan merchant base url pada SDK</string>
     <string name="empty_card_number">Silakan Masukkan Nomor Kartu</string>
     <string name="empty_challenge_token">Silakan Masukkan Challange Token</string>
+    <string name="pay_without_fiesta_poin">Bayar Tanpa Gunakan Fiestapoin</string>
 
 </resources>
