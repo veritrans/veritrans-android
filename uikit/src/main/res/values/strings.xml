@@ -588,6 +588,19 @@
     <string name="kioson_instruction_step8">Submit payment and print the receipt.</string>
     <string name="kioson_instruction_step9">Your transaction is successful! You should be receiving an email confirming your payment. Please keep your payment receipt just in case you need help via support.</string>
 
+    <!--Go-Pay Instruction-->
+    <string name="gopay_instruction_step1">Tap <b>Confirm Payment</b>.</string>
+    <string name="gopay_instruction_step2">Tap <b>Pay using GO-PAY</b>.</string>
+    <string name="gopay_instruction_step3">You will be redirected to <b>GO-PAY app</b>.</string>
+    <string name="gopay_instruction_step4">Check your payment details then tap <b>Pay</b>.</string>
+    <string name="gopay_instruction_step5">Your transaction is <b>Done</b>.</string>
+
+    <!--Go-Pay related-->
+    <string name="notification_gojek_app">GO-JEK app is required for this payment method.</string>
+    <string name="install_gojek_message">Install GO-JEK App from Play Store</string>
+    <string name="whoops" translatable="false">Whoops!</string>
+    <string name="no_gojek_message">Unfortunately, we couldn\'t find GO-JEK app installed on your phone.</string>
+
     <string name="error_message_invalid_input_telkomsel">Transaction failed. Your transaction got declined by T-Cash.</string>
     <string name="kioson">Kioson</string>
     <string name="kioson_valid">Please complete your payment at Kioson Outlet Before : %1$s</string>

@@ -154,5 +154,10 @@
         <item name="android:text">@string/notification_otp_message</item>
     </style>
 
+    <style name="GojekNotification" parent="Notification">
+        <item name="android:drawableLeft">@drawable/ic_gojek</item>
+        <item name="android:text">@string/notification_gojek_app</item>
+    </style>
+
 
 </resources>

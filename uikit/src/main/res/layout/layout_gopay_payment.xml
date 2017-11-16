@@ -2,63 +2,129 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="@dimen/sixteen_dp"
-    android:layout_marginRight="@dimen/sixteen_dp"
-    android:layout_marginTop="@dimen/sixteen_dp"
     android:orientation="vertical">
 
-    <LinearLayout
-        style="@style/RoundedNotification"
+    <com.midtrans.sdk.uikit.widgets.DefaultTextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/info_gopay_account" />
-    </LinearLayout>
-
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/sixteen_dp"
+        android:paddingLeft="@dimen/sixteen_dp"
+        android:paddingRight="@dimen/sixteen_dp"
+        android:text="@string/instruction"
+        android:textColor="@color/dark_gray"
+        android:textSize="@dimen/primary_text_size" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/thirtytwo_dp"
-        android:orientation="horizontal">
+        android:layout_marginTop="@dimen/sixteen_dp"
+        android:background="@color/light_gray"
+        android:paddingBottom="@dimen/four_dp"
+        android:paddingLeft="@dimen/sixteen_dp"
+        android:paddingRight="@dimen/sixteen_dp"
+        android:paddingTop="@dimen/four_dp">
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/container_input_country_code"
-            android:layout_width="0dp"
+        <TextView
+            android:layout_width="@dimen/twenty_four_dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
+            android:text="@string/number_instruction1" />
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/edit_country_code"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:digits="0123456789+"
-                android:hint="@string/country_code"
-                android:inputType="number"
-                android:text="@string/country_code_default"
-                android:textSize="@dimen/sixteen_sp" />
-        </android.support.design.widget.TextInputLayout>
-
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/container_input_phone_number"
-            android:layout_width="0dp"
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:focusable="true"
-            android:focusableInTouchMode="true">
+            android:text="@string/gopay_instruction_step1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/secondary_text_size" />
+    </LinearLayout>
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/edit_phone_number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/hint_gopay_phone_number"
-                android:inputType="number"
-                android:textSize="@dimen/sixteen_sp" />
-        </android.support.design.widget.TextInputLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="2dp"
+        android:paddingBottom="@dimen/four_dp"
+        android:paddingLeft="@dimen/sixteen_dp"
+        android:paddingRight="@dimen/sixteen_dp"
+        android:paddingTop="@dimen/four_dp">
+
+        <TextView
+            android:layout_width="@dimen/twenty_four_dp"
+            android:layout_height="wrap_content"
+            android:text="@string/number_instruction2" />
+
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/gopay_instruction_step2"
+            android:textColor="@color/black"
+            android:textSize="@dimen/secondary_text_size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/light_gray"
+        android:lineSpacingExtra="2dp"
+        android:paddingBottom="@dimen/four_dp"
+        android:paddingLeft="@dimen/sixteen_dp"
+        android:paddingRight="@dimen/sixteen_dp"
+        android:paddingTop="@dimen/four_dp">
+
+        <TextView
+            android:layout_width="@dimen/twenty_four_dp"
+            android:layout_height="wrap_content"
+            android:text="@string/number_instruction3" />
+
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/gopay_instruction_step3"
+            android:textColor="@color/black"
+            android:textSize="@dimen/secondary_text_size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="2dp"
+        android:paddingBottom="@dimen/four_dp"
+        android:paddingLeft="@dimen/sixteen_dp"
+        android:paddingRight="@dimen/sixteen_dp"
+        android:paddingTop="@dimen/four_dp">
+
+        <TextView
+            android:layout_width="@dimen/twenty_four_dp"
+            android:layout_height="wrap_content"
+            android:text="@string/number_instruction4" />
+
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/gopay_instruction_step4"
+            android:textColor="@color/black"
+            android:textSize="@dimen/secondary_text_size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/light_gray"
+        android:lineSpacingExtra="2dp"
+        android:paddingBottom="@dimen/four_dp"
+        android:paddingLeft="@dimen/sixteen_dp"
+        android:paddingRight="@dimen/sixteen_dp"
+        android:paddingTop="@dimen/four_dp">
+
+        <TextView
+            android:layout_width="@dimen/twenty_four_dp"
+            android:layout_height="wrap_content"
+            android:text="@string/number_instruction5" />
+
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/gopay_instruction_step5"
+            android:textColor="@color/black"
+            android:textSize="@dimen/secondary_text_size" />
     </LinearLayout>
 
 </LinearLayout>
