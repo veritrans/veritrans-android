@@ -600,6 +600,7 @@
     <string name="install_gojek_message">Install GO-JEK App from Play Store</string>
     <string name="whoops" translatable="false">Whoops!</string>
     <string name="no_gojek_message">Unfortunately, we couldn\'t find GO-JEK app installed on your phone.</string>
+    <string name="gopay_instruction">Tap <b>Pay using GO-PAY</b> to continue payment in GO-JEK app.</string>
 
     <string name="error_message_invalid_input_telkomsel">Transaction failed. Your transaction got declined by T-Cash.</string>
     <string name="kioson">Kioson</string>
@@ -701,7 +702,7 @@
     <string name="payment_method_description_indosat_dompetku">Pay with Indosat Dompetku</string>
     <string name="payment_method_description_kioson">Pay from Kioson Outlet</string>
     <string name="payment_method_description_gci">Pay with Gift Cards</string>
-    <string name="payment_method_description_gopay">Pay with GO-PAY</string>
+    <string name="payment_method_description_gopay">Pay using GO-PAY</string>
     <string name="payment_method_description_danamon_online">Pay with your Danamon Online Banking Account</string>
 
     <string name="payment_bank_description_bca">Pay from BCA ATMs or internet banking</string>

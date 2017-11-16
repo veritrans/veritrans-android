@@ -247,6 +247,7 @@
     <string name="notification_gojek_app">Aplikasi GO-JEK diperlukan untuk metode pembayaran ini.</string>
     <string name="install_gojek_message">Install aplikasi GO-JEK dari Play Store</string>
     <string name="no_gojek_message">Mohon maaf, kami tidak dapat mendeteksi aplikasi GO-JEK di perangkat Anda.</string>
+    <string name="gopay_instruction">Tap <b>Bayar dengan GO-PAY</b> untuk melanjutkan pembayaran di aplikasi GO-JEK.</string>
 
     <!--credit card -->
     <string name="add_card_message">Anda bisa membayar dengan kartu baru disini</string>

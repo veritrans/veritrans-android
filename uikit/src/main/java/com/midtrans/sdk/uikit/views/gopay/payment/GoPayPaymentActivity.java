@@ -15,6 +15,7 @@ import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.views.gopay.authorization.GoPayAuthorizationActivitiy;
+import com.midtrans.sdk.uikit.views.gopay.status.GoPayStatusActivity;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 import com.midtrans.sdk.uikit.widgets.Utils;
 
@@ -96,7 +97,8 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
     private void startGoPayPayment() {
         SdkUIFlowUtil.hideKeyboard(this);
         showProgressLayout();
-        presenter.startGoPayPayment(fullPhoneNumber);
+        // TODO: 16/11/17 use startActivityForResult 
+        startActivity(new Intent(this, GoPayStatusActivity.class));
     }
 
     @Override
