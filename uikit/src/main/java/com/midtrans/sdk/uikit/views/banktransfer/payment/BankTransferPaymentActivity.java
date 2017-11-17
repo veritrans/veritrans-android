@@ -118,7 +118,6 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
     }
 
     private void trackPage() {
-        // TODO: 14/11/17 update isFirstPage
         switch (paymentType) {
             case PaymentType.BCA_VA:
                 buttonName = "Confirm Payment Bank Transfer BCA";
