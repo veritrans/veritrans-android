@@ -11,7 +11,6 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.text.TextUtils;
 import android.view.View;
@@ -1501,7 +1500,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 if (checked) {
                     if (editSubCompanyBcaVaButton.getVisibility() != View.VISIBLE) {
-                        final CustomVaInputDialogFragment fragment = CustomVaInputDialogFragment.newInstance(getString(R.string.subcompany_bca_va_title), getSelectedColorPrimaryDark(), new CustomVaDialogListener() {
+                        final CustomVaInputDialogFragment fragment = CustomVaInputDialogFragment.newInstance(getString(R.string.subcompany_bca_va_title), getSelectedColorPrimaryDark(), true, new CustomVaDialogListener() {
                             @Override
                             public void onOkClicked(String input) {
                                 subCompanyBcaVaTitle.setText(R.string.subcompany_bca_va_enabled);
@@ -1626,7 +1625,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             @Override
             public void onClick(View view) {
                 String subCompany = DemoPreferenceHelper.getStringPreference(DemoConfigActivity.this, SUBCOMPANY_BCA_VA_NUMBER);
-                final CustomVaInputDialogFragment fragment = CustomVaInputDialogFragment.newInstance(subCompany, getString(R.string.subcompany_bca_va_title), getSelectedColorPrimaryDark(), new CustomVaDialogListener() {
+                final CustomVaInputDialogFragment fragment = CustomVaInputDialogFragment.newInstance(subCompany, getString(R.string.subcompany_bca_va_title), getSelectedColorPrimaryDark(), true, new CustomVaDialogListener() {
                     @Override
                     public void onOkClicked(String input) {
                         subCompanyBcaVaTitle.setText(R.string.subcompany_bca_va_enabled);
