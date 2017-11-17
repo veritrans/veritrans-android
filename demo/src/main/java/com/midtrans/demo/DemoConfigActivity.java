@@ -11,7 +11,6 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.text.TextUtils;
 import android.view.View;
@@ -2805,6 +2804,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
 
         if (paymentChannelsSelectedSelection.isChecked()) {
             transactionRequestNew.setEnabledPayments(mapEnabledPayments());
+        } else {
+            transactionRequestNew.setEnabledPayments(initActivePaymentMethods());
         }
 
         // set expiry time
@@ -3046,10 +3047,36 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
 
         if (enabledPayments != null) {
             for (SelectPaymentMethodViewModel model : enabledPayments) {
+
                 if (model.getMethodType().equalsIgnoreCase(getString(R.string.payment_bank_transfer))) {
                     mappedPayments.add(getString(R.string.payment_mandiri_bill_payment));
                 }
-                mappedPayments.add(model.getMethodType());
+
+                if (AppUtils.isActivePaymentChannel(this, model)) {
+                    mappedPayments.add(model.getMethodType());
+                }
+            }
+        }
+
+        return mappedPayments;
+    }
+
+    private List<String> initActivePaymentMethods() {
+        List<String> mappedPayments = new ArrayList<>();
+
+        List<EnabledPayment> defaultPayment = PaymentMethods.getDefaultPaymentList(this);
+        enabledPayments = mapPaymentMethods(defaultPayment);
+
+        if (enabledPayments != null) {
+            for (SelectPaymentMethodViewModel model : enabledPayments) {
+
+                if (model.getMethodType().equalsIgnoreCase(getString(R.string.payment_bank_transfer))) {
+                    mappedPayments.add(getString(R.string.payment_mandiri_bill_payment));
+                }
+
+                if (AppUtils.isActivePaymentChannel(this, model)) {
+                    mappedPayments.add(model.getMethodType());
+                }
             }
         }
 
