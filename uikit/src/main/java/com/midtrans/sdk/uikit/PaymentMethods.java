@@ -172,6 +172,7 @@ public class PaymentMethods {
         List<EnabledPayment> paymentNameList = new ArrayList<>();
         paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_credit_debit), null));
         paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_bank_transfer), context.getString(R.string.enabled_payment_category_banktransfer)));
+        paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_gopay), null));
         paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_klik_bca), null));
         paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_bca_click), null));
         paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_mandiri_clickpay), null));
@@ -184,7 +185,6 @@ public class PaymentMethods {
         paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_telkomsel_cash), null));
         paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_xl_tunai), null));
         paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_gci), null));
-        paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_gopay), null));
         paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_danamon_online), null));
         return paymentNameList;
     }
