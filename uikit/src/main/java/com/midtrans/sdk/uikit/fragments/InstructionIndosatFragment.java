@@ -10,14 +10,16 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.uikit.R;
-
 import java.lang.reflect.Field;
 
+/**
+ * Deprecated, please refer to {@link com.midtrans.sdk.uikit.views.indosat_dompetku.IndosatDompetkuPaymentActivity}
+ */
+@Deprecated
 public class InstructionIndosatFragment extends Fragment {
     private TextInputLayout mTextInputLayoutPhoneNumber = null;
     private AppCompatEditText mEditTextPhoneNumber = null;

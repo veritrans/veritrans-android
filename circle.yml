@@ -65,29 +65,29 @@ deployment:
             - ./gradlew :demo:assembleDevelopmentRelease :demo:crashlyticsUploadDistributionDevelopmentRelease
 
 
+    bump-hotfix:
+      branch: release-hotfix
+      owner: veritrans
+      commands:
+            - bmp -p
+            - source environmentSetup.sh && setGit
+            - bmp -c
+            - git checkout master && git merge release-hotfix
+            - git push origin master --tag
+
+
     bump:
       branch: release
       owner: veritrans
       commands:
-            - bmp -p
             - source environmentSetup.sh && setGit
             - bmp -c
             - git checkout master && git merge release
             - git push origin master --tag
 
 
-    bump-manual:
-      branch: release-minor
+    release-candidate:
+      branch: release-.*
       owner: veritrans
       commands:
-            - source environmentSetup.sh && setGit
-            - bmp -c
-            - git checkout master && git merge release-minor
-            - git push origin master --tag
-
-
-    develop:
-        branch: release-*
-        owner: veritrans
-        commands:
             - ./gradlew :demo:assembleDevelopmentRelease :demo:crashlyticsUploadDistributionDevelopmentRelease

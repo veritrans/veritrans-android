@@ -16,7 +16,6 @@ import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
  */
 public class KiosonInstructionActivity extends BaseActivity {
 
-
     private Toolbar mToolbar = null;
 
     @Override

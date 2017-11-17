@@ -12,6 +12,10 @@ import android.view.animation.AnimationUtils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 
+/**
+ * Deprecated, please see {@link com.midtrans.sdk.uikit.views.bri_epay.BriEpayPaymentActivity}
+ */
+@Deprecated
 public class InstructionEpayBriFragment extends Fragment {
 
     private DefaultTextView textNotification;

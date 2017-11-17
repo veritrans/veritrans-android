@@ -41,7 +41,9 @@ import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
  * payment.
  * <p/>
  * Created by shivam on 11/30/15.
+ * Deprecated, please use {@link com.midtrans.sdk.uikit.views.indosat_dompetku.IndosatDompetkuPaymentActivity} instead
  */
+@Deprecated
 public class IndosatDompetkuActivity extends BaseActivity implements View.OnClickListener {
 
     public static final String HOME_FRAGMENT = "home";

@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
@@ -23,7 +22,9 @@ import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 /**
  * Created by ziahaqi on 8/26/16.
+ * Deprecated, please see {@link com.midtrans.sdk.uikit.views.kioson.payment.KiosonPaymentActivity}
  */
+@Deprecated
 public class KiosonPaymentFragment extends Fragment {
     public static final String KEY_ARG = "arg";
     private static final String LABEL_PAYMENT_CODE = "Payment Code";

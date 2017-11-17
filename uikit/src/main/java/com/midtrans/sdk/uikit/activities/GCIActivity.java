@@ -24,8 +24,9 @@ import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 
 /**
  * Created by ziahaqi on 12/7/16.
+ * Deprecated, please use {@link com.midtrans.sdk.uikit.views.gci.GciPaymentActivity} instead
  */
-
+@Deprecated
 public class GCIActivity extends BaseActivity implements View.OnClickListener {
 
     public static final String PAYMENT_FRAGMENT = "payment";

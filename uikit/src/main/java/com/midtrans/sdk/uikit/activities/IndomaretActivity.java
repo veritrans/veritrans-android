@@ -27,7 +27,9 @@ import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 
 /**
  * Created by ziahaqi on 01/08/16.
+ * Deprecated, please use {@link com.midtrans.sdk.uikit.views.indomaret.payment.IndomaretPaymentActivity} instead
  */
+@Deprecated
 public class IndomaretActivity extends BaseActivity implements View.OnClickListener {
 
     public static final String HOME_FRAGMENT = "home";

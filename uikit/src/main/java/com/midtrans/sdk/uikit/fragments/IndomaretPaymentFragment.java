@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
@@ -23,7 +22,9 @@ import com.midtrans.sdk.uikit.widgets.FancyButton;
  * Displays status information about bank transfer's api call .
  *
  * Created by shivam on 10/27/15.
+ * Deprecated, please refer to {@link com.midtrans.sdk.uikit.views.indomaret.payment.IndomaretPaymentActivity}
  */
+@Deprecated
 public class IndomaretPaymentFragment extends Fragment {
 
     public static final String KEY_ARG = "arg";

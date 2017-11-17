@@ -6,12 +6,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.midtrans.sdk.uikit.R;
 
 /**
  * Created by Ankit on 11/30/15.
+ * Deprecated, please refer to {@link com.midtrans.sdk.uikit.views.mandiri_ecash.MandiriEcashPaymentActivity}
  */
+@Deprecated
 public class InstructionMandiriECashFragment extends Fragment {
 
     @Nullable

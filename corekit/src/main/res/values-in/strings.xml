@@ -101,6 +101,7 @@
     <string name="copy_va_number">Salin Nomor Akun Virtual</string>
     <string name="copy_billpay_code">Salin Kode Tagihan</string>
     <string name="copy_company_code">Salin Kode Perusahaan</string>
+    <string name="failed_to_copy">Gagal menyalin ke clipboard</string>
     <string name="copied_to_clipboard">Sudah disalin ke clipboard</string>
     <string name="copied_bill_code">Kode tagihan sudah disalin ke clipboard</string>
     <string name="copied_company_code">Kode perusahaan sudah disalin ke clipboard</string>

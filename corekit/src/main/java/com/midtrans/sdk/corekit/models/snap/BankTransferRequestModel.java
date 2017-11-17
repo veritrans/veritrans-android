@@ -12,6 +12,8 @@ public class BankTransferRequestModel implements Serializable {
     @SerializedName("va_number")
     private String vaNumber;
 
+    public BankTransferRequestModel() {}
+
     public BankTransferRequestModel(String vaNumber) {
         setVaNumber(vaNumber);
     }
@@ -23,5 +25,4 @@ public class BankTransferRequestModel implements Serializable {
     public void setVaNumber(String vaNumber) {
         this.vaNumber = vaNumber;
     }
-
 }

@@ -11,7 +11,9 @@ import com.midtrans.sdk.uikit.R;
 
 /**
  * Created by shivam on 10/28/15.
+ * Deprecated, please see {@link com.midtrans.sdk.uikit.views.cimb_click.CimbClickPaymentActivity}
  */
+@Deprecated
 public class InstructionCIMBFragment extends Fragment {
 
     @Nullable
