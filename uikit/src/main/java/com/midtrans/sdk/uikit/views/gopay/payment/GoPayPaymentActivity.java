@@ -98,7 +98,7 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
         SdkUIFlowUtil.hideKeyboard(this);
         showProgressLayout();
         // TODO: 16/11/17 use startActivityForResult 
-        startActivity(new Intent(this, GoPayStatusActivity.class));
+        startActivityForResult(new Intent(this, GoPayStatusActivity.class), UiKitConstants.INTENT_CODE_PAYMENT_STATUS);
     }
 
     @Override
@@ -167,7 +167,8 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
             }
         } else if (resultCode == RESULT_CANCELED) {
             if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS) {
-                finishPayment(RESULT_OK, presenter.getTransactionResponse());
+//                finishPayment(RESULT_OK, presenter.getTransactionResponse());
+                hideProgressLayout();
             }
         }
     }

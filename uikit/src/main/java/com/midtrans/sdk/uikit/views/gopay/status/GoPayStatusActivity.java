@@ -1,5 +1,7 @@
 package com.midtrans.sdk.uikit.views.gopay.status;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -35,7 +37,9 @@ public class GoPayStatusActivity extends BasePaymentActivity {
             @Override
             public void onClick(View v) {
                 // TODO: 16/11/17 wait for back-end
-                Toast.makeText(GoPayStatusActivity.this, "Will be implemented soon!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(GoPayStatusActivity.this, "Opening GOJEK app...", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("gojek://"));
+                startActivity(intent);
             }
         });
     }
