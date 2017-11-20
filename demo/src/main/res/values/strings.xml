@@ -77,6 +77,7 @@
     <!--SUBCOMPANY-->
     <string name="subcompany_bca_va_disabled">Subcompany for BCA VA Disabled</string>
     <string name="subcompany_bca_va_enabled">Subcompany for BCA VA Enabled</string>
+    <string name="subcompany_error_message">Subcompany code must be 5 digits number</string>
 
     <!--PROMO ENABLED TITLE-->
     <string name="default_promo_enabled">Promo Enabled</string>
