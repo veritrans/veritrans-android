@@ -6,10 +6,13 @@ import android.text.Spannable;
 import android.text.style.ImageSpan;
 import android.util.AttributeSet;
 
+import com.midtrans.sdk.corekit.core.Logger;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-public class TextViewWithImages extends AppCompatTextView {
 
+public class TextViewWithImages extends AppCompatTextView {
+    private final String TAG = TextViewWithImages.class.getSimpleName();
 
     private static final Spannable.Factory spannableFactory = Spannable.Factory.getInstance();
 
@@ -65,7 +68,11 @@ public class TextViewWithImages extends AppCompatTextView {
 
     @Override
     public void setText(CharSequence text, BufferType type) {
-        Spannable s = getTextWithImages(getContext(), text);
-        super.setText(s, BufferType.SPANNABLE);
+        try {
+            Spannable s = getTextWithImages(getContext(), text);
+            super.setText(s, BufferType.SPANNABLE);
+        } catch (RuntimeException e) {
+            Logger.e(TAG, "setText:" + e.getMessage());
+        }
     }
 }
