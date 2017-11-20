@@ -12,7 +12,7 @@
 
     <!--SECURE TYPE TITLE-->
     <string name="secure_type_enabled">3D Secure Enabled</string>
-    <string name="secure_type_disabled">3D Secure Disabled</string>
+    <string name="secure_type_disabled">Authentication Disabled</string>
     <string name="secure_type_rba">RBA Enabled</string>
 
     <!--ISSUING BANK TITLE-->
@@ -192,6 +192,6 @@
     <string name="subcompany_bca_va_title">Subcompany BCA VA</string>
     <string name="bank_mega">Mega</string>
     <string name="secure_3ds">3ds</string>
-    <string name="rba">rba</string>
+    <string name="rba">Enable RBA</string>
     <string name="enable_3ds">Enable 3ds</string>
 </resources>

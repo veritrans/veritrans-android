@@ -11,7 +11,6 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.text.TextUtils;
 import android.view.View;
@@ -84,6 +83,9 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
 
     private static final String LABEL_INSTALLMENT_REQUIRED = " - Required";
     private static final String LABEL_INSTALLMENT_OPTIONAL = " - optional";
+    private static final int AUTH_TYPE_3DS = 1;
+    private static final int AUTH_TYPE_RBA = 2;
+    private static final int AUTH_TYPE_NONE = 0;
 
     private static int DELAY = 200;
     private String selectedColor = DemoThemeConstants.BLUE_THEME;
@@ -970,11 +972,14 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     }
 
     private void initSecureSelection() {
-        boolean secureEnabled = DemoPreferenceHelper.getBooleanPreference(this, SECURE_TYPE, false);
+        int authenticationType = DemoPreferenceHelper.getIntegerPreference(this, SECURE_TYPE, 0);
 
-        if (secureEnabled) {
+        if (authenticationType == AUTH_TYPE_3DS) {
             secureTitle.setText(R.string.secure_type_enabled);
             secureEnabledSelection.setChecked(true);
+        } else if (authenticationType == AUTH_TYPE_RBA) {
+            secureTitle.setText(R.string.secure_type_rba);
+            secureRbaSelection.setChecked(true);
         } else {
             secureTitle.setText(R.string.secure_type_disabled);
             secureDisabledSelection.setChecked(true);
@@ -2204,9 +2209,11 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
 
     private void saveSecureTypeSelection() {
         if (secureEnabledSelection.isChecked()) {
-            DemoPreferenceHelper.setBooleanPreference(this, SECURE_TYPE, true);
+            DemoPreferenceHelper.setIntegerPreference(this, SECURE_TYPE, AUTH_TYPE_3DS);
+        } else if (secureRbaSelection.isChecked()) {
+            DemoPreferenceHelper.setIntegerPreference(this, SECURE_TYPE, AUTH_TYPE_RBA);
         } else {
-            DemoPreferenceHelper.setBooleanPreference(this, SECURE_TYPE, false);
+            DemoPreferenceHelper.setIntegerPreference(this, SECURE_TYPE, AUTH_TYPE_NONE);
         }
     }
 
@@ -2758,9 +2765,12 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             cardClickType = getString(R.string.card_click_type_none);
             if (secureEnabledSelection.isChecked()) {
                 creditCard.setAuthentication(CreditCard.AUTHENTICATION_TYPE_3DS);
+            } else if (secureRbaSelection.isChecked()) {
+                creditCard.setAuthentication(CreditCard.AUTHENTICATION_TYPE_RBA);
             } else {
                 creditCard.setAuthentication(CreditCard.AUTHENTICATION_TYPE_NONE);
             }
+
             transactionRequestNew.setCreditCard(creditCard);
         } else if (twoClicksSelection.isChecked()) {
             cardClickType = getString(R.string.card_click_type_two_click);
