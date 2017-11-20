@@ -180,8 +180,11 @@ public class PaymentMethods {
         paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_cimb_clicks), null));
         paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_indosat_dompetku), null));
         paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_indomaret), context.getString(R.string.enabled_payment_category_cstore)));
+        paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_kioson), context.getString(R.string.enabled_payment_category_cstore)));
         paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_telkomsel_cash), null));
         paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_xl_tunai), null));
+        paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_gci), null));
+        paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_gopay), null));
         paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_danamon_online), null));
         return paymentNameList;
     }
