@@ -83,6 +83,10 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
 
     private static final String LABEL_INSTALLMENT_REQUIRED = " - Required";
     private static final String LABEL_INSTALLMENT_OPTIONAL = " - optional";
+    private static final int AUTH_TYPE_3DS = 1;
+    private static final int AUTH_TYPE_RBA = 2;
+    private static final int AUTH_TYPE_RBA_NON_3DS = 3;
+    private static final int AUTH_TYPE_NONE = 0;
 
     private static int DELAY = 200;
     private String selectedColor = DemoThemeConstants.BLUE_THEME;
@@ -161,7 +165,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
      **/
     private AppCompatRadioButton secureDisabledSelection;
     private AppCompatRadioButton secureEnabledSelection;
-    private AppCompatRadioButton secureRbaSelection;
+    private AppCompatRadioButton secureRbaWith3dsSelection;
+    private AppCompatRadioButton secureRbaNon3dsSelection;
     /**
      * Radio Button Selection for Issuing Bank
      **/
@@ -340,7 +345,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
 
         secureDisabledSelection = (AppCompatRadioButton) findViewById(R.id.type_secure_disabled);
         secureEnabledSelection = (AppCompatRadioButton) findViewById(R.id.type_secure_enabled);
-        secureRbaSelection = (AppCompatRadioButton) findViewById(R.id.type_secure_rba);
+        secureRbaWith3dsSelection = (AppCompatRadioButton) findViewById(R.id.type_secure_rba);
+        secureRbaNon3dsSelection = (AppCompatRadioButton) findViewById(R.id.type_secure_rba_non_3ds);
 
         bankNoneSelection = (AppCompatRadioButton) findViewById(R.id.type_bank_none);
         bankBniSelection = (AppCompatRadioButton) findViewById(R.id.type_bank_bni);
@@ -969,11 +975,17 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     }
 
     private void initSecureSelection() {
-        boolean secureEnabled = DemoPreferenceHelper.getBooleanPreference(this, SECURE_TYPE, false);
+        int authenticationType = DemoPreferenceHelper.getIntegerPreference(this, SECURE_TYPE, 0);
 
-        if (secureEnabled) {
+        if (authenticationType == AUTH_TYPE_3DS) {
             secureTitle.setText(R.string.secure_type_enabled);
             secureEnabledSelection.setChecked(true);
+        } else if (authenticationType == AUTH_TYPE_RBA) {
+            secureTitle.setText(R.string.secure_type_rba_with_3ds);
+            secureRbaWith3dsSelection.setChecked(true);
+        } else if (authenticationType == AUTH_TYPE_RBA_NON_3DS) {
+            secureTitle.setText(R.string.secure_type_rba_non_3ds);
+            secureRbaNon3dsSelection.setChecked(true);
         } else {
             secureTitle.setText(R.string.secure_type_disabled);
             secureDisabledSelection.setChecked(true);
@@ -998,11 +1010,23 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         });
 
 
-        secureRbaSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        secureRbaWith3dsSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 if (checked) {
-                    secureTitle.setText(R.string.secure_type_rba);
+                    secureTitle.setText(R.string.secure_type_rba_with_3ds);
+                    if (oneClickSelection.isChecked()) {
+                        normalSelection.setChecked(true);
+                    }
+                }
+            }
+        });
+
+        secureRbaNon3dsSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    secureTitle.setText(R.string.secure_type_rba_non_3ds);
                     if (oneClickSelection.isChecked()) {
                         normalSelection.setChecked(true);
                     }
@@ -2203,9 +2227,13 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
 
     private void saveSecureTypeSelection() {
         if (secureEnabledSelection.isChecked()) {
-            DemoPreferenceHelper.setBooleanPreference(this, SECURE_TYPE, true);
+            DemoPreferenceHelper.setIntegerPreference(this, SECURE_TYPE, AUTH_TYPE_3DS);
+        } else if (secureRbaWith3dsSelection.isChecked()) {
+            DemoPreferenceHelper.setIntegerPreference(this, SECURE_TYPE, AUTH_TYPE_RBA);
+        } else if (secureRbaNon3dsSelection.isChecked()) {
+            DemoPreferenceHelper.setIntegerPreference(this, SECURE_TYPE, AUTH_TYPE_RBA_NON_3DS);
         } else {
-            DemoPreferenceHelper.setBooleanPreference(this, SECURE_TYPE, false);
+            DemoPreferenceHelper.setIntegerPreference(this, SECURE_TYPE, AUTH_TYPE_NONE);
         }
     }
 
@@ -2757,9 +2785,13 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             cardClickType = getString(R.string.card_click_type_none);
             if (secureEnabledSelection.isChecked()) {
                 creditCard.setAuthentication(CreditCard.AUTHENTICATION_TYPE_3DS);
+            } else if (secureRbaWith3dsSelection.isChecked()
+                    || secureRbaNon3dsSelection.isChecked()) {
+                creditCard.setAuthentication(CreditCard.AUTHENTICATION_TYPE_RBA);
             } else {
                 creditCard.setAuthentication(CreditCard.AUTHENTICATION_TYPE_NONE);
             }
+
             transactionRequestNew.setCreditCard(creditCard);
         } else if (twoClicksSelection.isChecked()) {
             cardClickType = getString(R.string.card_click_type_two_click);
@@ -2853,8 +2885,11 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         }
 
         // if rba activated
-        if (secureRbaSelection.isChecked()) {
+        if (secureRbaWith3dsSelection.isChecked()) {
             userDetail.setEmail("secure_email_rba@example.com");
+            creditCard.setAuthentication(CreditCard.AUTHENTICATION_TYPE_RBA);
+        } else if (secureRbaNon3dsSelection.isChecked()) {
+            userDetail.setEmail("not_secure_email_rba@example.com");
             creditCard.setAuthentication(CreditCard.AUTHENTICATION_TYPE_RBA);
         }
 
