@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
-
 import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.BuildConfig;
 import com.midtrans.sdk.corekit.R;
@@ -43,7 +42,6 @@ import com.midtrans.sdk.corekit.models.snap.payment.IndosatDompetkuPaymentReques
 import com.midtrans.sdk.corekit.models.snap.payment.NewMandiriClickPayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.TelkomselEcashPaymentRequest;
 import com.midtrans.sdk.corekit.utilities.Utils;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -1654,10 +1652,9 @@ public class MidtransSDK {
     /**
      * It will run backround task to charge payment using GoPay
      *
-     * @param phoneNumber
      * @param snapToken
      */
-    public void paymentUsingGoPay(String snapToken, String phoneNumber, TransactionCallback callback) {
+    public void paymentUsingGoPay(String snapToken, TransactionCallback callback) {
         if (callback == null) {
             Logger.e(TAG, context.getString(R.string.callback_unimplemented));
             return;
@@ -1665,7 +1662,7 @@ public class MidtransSDK {
 
         if (isNetworkAvailable()) {
             isRunning = true;
-            mSnapTransactionManager.paymentUsingGoPay(snapToken, SdkUtil.getGoPayPaymentRequest(phoneNumber), callback);
+            mSnapTransactionManager.paymentUsingGoPay(snapToken, SdkUtil.getGoPayPaymentRequest(), callback);
         } else {
             isRunning = false;
             callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));

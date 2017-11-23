@@ -1,0 +1,23 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:padding="@dimen/sixteen_dp"
+        android:src="@drawable/ic_gopay_big"/>
+
+    <com.midtrans.sdk.uikit.widgets.DefaultTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/sixteen_dp"
+        android:gravity="center_horizontal"
+        android:paddingLeft="@dimen/forty_dp"
+        android:paddingRight="@dimen/forty_dp"
+        android:text="@string/gopay_instruction"/>
+</LinearLayout>

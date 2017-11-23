@@ -12,28 +12,18 @@
         android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/eighty_dp"
-            android:gravity="center"
-            android:orientation="vertical">
+            android:layout_above="@+id/container_item_details"
+            android:layout_alignParentTop="true"
+            android:fillViewport="true">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/sixteen_dp"
-                android:src="@drawable/ic_gopay"/>
-
-            <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            <ViewStub
+                android:id="@+id/gopay_layout_stub"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:layout_marginTop="@dimen/sixteen_dp"
-                android:paddingRight="@dimen/forty_dp"
-                android:paddingLeft="@dimen/forty_dp"
-                android:text="@string/gopay_instruction"/>
-        </LinearLayout>
+                android:layout_height="wrap_content"/>
+        </ScrollView>
 
         <View
             android:id="@+id/background_dim"
@@ -67,6 +57,7 @@
         </LinearLayout>
 
         <View
+            android:id="@+id/primary_button_separator"
             android:layout_width="match_parent"
             android:layout_height="@dimen/two_dp"
             android:layout_above="@+id/layout_primary_button"

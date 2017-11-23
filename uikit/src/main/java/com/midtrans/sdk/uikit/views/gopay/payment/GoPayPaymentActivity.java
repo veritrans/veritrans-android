@@ -14,7 +14,6 @@ import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
-import com.midtrans.sdk.uikit.views.gopay.authorization.GoPayAuthorizationActivitiy;
 import com.midtrans.sdk.uikit.views.gopay.status.GoPayStatusActivity;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 import com.midtrans.sdk.uikit.widgets.Utils;
@@ -33,7 +32,7 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
     private View buttonPrimaryLayout;
 
     private GopayPaymentPresenter presenter;
-    private String fullPhoneNumber = "";
+    private boolean isTablet;
     private boolean isGojekInstalled;
     private Boolean isGojekInstalledWhenPaused;
 
@@ -42,6 +41,7 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         showProgressLayout();
+        isTablet = SdkUIFlowUtil.getDeviceType(this).equals("TABLET");
         isGojekInstalled = Utils.isAppInstalled(this, GOJEK_PACKAGE_NAME);
         setContentView(R.layout.activity_gopay_payment);
         initProperties();
@@ -53,7 +53,12 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
 
     private void initLayout() {
         ViewStub stub = (ViewStub) findViewById(R.id.gopay_layout_stub);
-        stub.setLayoutResource(isGojekInstalled ? R.layout.layout_gopay_payment : R.layout.layout_install_gopay);
+        if (isTablet) {
+            stub.setLayoutResource(R.layout.layout_gopay_payment_tablet);
+        } else {
+            stub.setLayoutResource(
+                isGojekInstalled ? R.layout.layout_gopay_payment : R.layout.layout_install_gopay);
+        }
         stub.inflate();
     }
 
@@ -66,13 +71,14 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
     }
 
     private void initActionButton() {
-        if (isGojekInstalled) {
+        if (isGojekInstalled || isTablet) {
             buttonPrimary.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     startGoPayPayment();
                 }
             });
+            buttonPrimary.setTextBold();
         } else {
             //hide confirm button and adjust item details to bottom of screen
             buttonPrimaryLayout.setVisibility(View.GONE);
@@ -95,10 +101,8 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
     }
 
     private void startGoPayPayment() {
-        SdkUIFlowUtil.hideKeyboard(this);
         showProgressLayout();
-        // TODO: 16/11/17 use startActivityForResult 
-        startActivityForResult(new Intent(this, GoPayStatusActivity.class), UiKitConstants.INTENT_CODE_PAYMENT_STATUS);
+        presenter.startGoPayPayment();
     }
 
     @Override
@@ -133,12 +137,11 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
 
     @Override
     public void onPaymentSuccess(TransactionResponse response) {
-        // TODO: 15/11/17 need to check this
         hideProgressLayout();
         if (isActivityRunning()) {
-            Intent intent = new Intent(this, GoPayAuthorizationActivitiy.class);
-            intent.putExtra(GoPayAuthorizationActivitiy.EXTRA_PHONE_NUMBER, fullPhoneNumber);
-            startActivityForResult(intent, UiKitConstants.INTENT_VERIFICATION);
+            Intent intent = new Intent(this, GoPayStatusActivity.class);
+            intent.putExtra(GoPayStatusActivity.EXTRA_PAYMENT_STATUS, response);
+            startActivityForResult(intent, UiKitConstants.INTENT_CODE_PAYMENT_STATUS);
         } else {
             finishPayment(RESULT_OK, presenter.getTransactionResponse());
         }
@@ -159,23 +162,10 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
+        if (resultCode == RESULT_CANCELED) {
             if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS) {
                 finishPayment(RESULT_OK, presenter.getTransactionResponse());
-            } else if (requestCode == UiKitConstants.INTENT_VERIFICATION) {
-                finishPayment(RESULT_OK, data);
-            }
-        } else if (resultCode == RESULT_CANCELED) {
-            if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS) {
-//                finishPayment(RESULT_OK, presenter.getTransactionResponse());
-                hideProgressLayout();
             }
         }
     }
-
-    private void finishPayment(int resultCode, Intent data) {
-        setResult(resultCode, data);
-        finish();
-    }
-
 }

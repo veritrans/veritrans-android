@@ -239,15 +239,24 @@
     <!--Go-Pay Instruction-->
     <string name="gopay_instruction_step1">Tap <b>Konfirmasi Pembayaran</b>.</string>
     <string name="gopay_instruction_step2">Tap <b>Bayar menggunakan GO-PAY</b>.</string>
-    <string name="gopay_instruction_step3">Anda akan diarahkan ke <b>aplikasi GO-PAY</b>.</string>
-    <string name="gopay_instruction_step4">Cek detail pembayaran Anda lalu tap <b>Pay</b>.</string>
+    <string name="gopay_instruction_step3">Aplikasi <b>GO-JEK</b> akan terbuka.</string>
+    <string name="gopay_instruction_step4">Periksa rincian pembayaran Anda lalu tap <b>Pay</b>.</string>
     <string name="gopay_instruction_step5">Transaksi Anda <b>selesai</b>.</string>
 
     <!--Go-Pay related-->
     <string name="notification_gojek_app">Aplikasi GO-JEK diperlukan untuk metode pembayaran ini.</string>
+    <string name="notification_gojek_app_tablet">Pastikan app GO-JEK telah terinstal pada smartphone Anda.</string>
     <string name="install_gojek_message">Install aplikasi GO-JEK dari Play Store</string>
     <string name="no_gojek_message">Mohon maaf, kami tidak dapat mendeteksi aplikasi GO-JEK di perangkat Anda.</string>
     <string name="gopay_instruction">Tap <b>Bayar dengan GO-PAY</b> untuk melanjutkan pembayaran di aplikasi GO-JEK.</string>
+
+    <!--Go-Pay Instruction in Tablet-->
+    <string name="gopay_instruction_tablet_step1">Tap <b>Bayar menggunakan GO-PAY</b>.</string>
+    <string name="gopay_instruction_tablet_step2">Di halaman selanjutnya akan muncul <b>QR code</b> yang nantinya akan di-scan.</string>
+    <string name="gopay_instruction_tablet_step3">Buka <b>app GO-JEK</b> di smartphone Anda.</string>
+    <string name="gopay_instruction_tablet_step4">Tap <b>Scan QR</b> lalu arahkan kamera smartphone Anda ke <b>QR code</b>.</string>
+    <string name="gopay_instruction_tablet_step5">Cek detail pembayaran Anda di app GO-JEK lalu tap <b>Bayar</b>.</string>
+    <string name="gopay_instruction_tablet_step6">Transaksi Anda <b>selesai</b>.</string>
 
     <!--credit card -->
     <string name="add_card_message">Anda bisa membayar dengan kartu baru disini</string>

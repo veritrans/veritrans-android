@@ -8,7 +8,8 @@
         android:id="@+id/text_notification"
         style="@style/GojekNotification"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="@string/notification_gojek_app"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,8 +27,8 @@
         <com.midtrans.sdk.uikit.widgets.BoldTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/whoops"
             android:padding="@dimen/eight_dp"
+            android:text="@string/whoops"
             android:textSize="@dimen/twenty_two_sp"/>
 
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
@@ -42,9 +43,9 @@
     <com.midtrans.sdk.uikit.widgets.FancyButton
         android:id="@+id/button_download_gojek"
         style="@style/ButtonSecondary"
-        android:layout_alignParentBottom="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/sixteen_dp"
         app:fb_iconPaddingRight="@dimen/four_dp"
