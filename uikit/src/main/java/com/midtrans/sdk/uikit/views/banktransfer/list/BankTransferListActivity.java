@@ -20,6 +20,7 @@ import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 public class BankTransferListActivity extends BasePaymentActivity implements BankTransferListAdapter.BankTransferAdapterListener {
 
     public static final String EXTRA_BANK_LIST = "extra.bank.list";
+    private final String PAGE_NAME = "Select Bank Transfer";
 
     private RecyclerView listBankTransfers;
     private SemiBoldTextView textTitle;
@@ -38,6 +39,10 @@ public class BankTransferListActivity extends BasePaymentActivity implements Ban
 
     private void bindData() {
         textTitle.setText(getString(R.string.activity_select_bank));
+
+        //track page view after page properly loaded
+        boolean isFirstPage = getIntent().getBooleanExtra(USE_DEEP_LINK, true);
+        presenter.trackPageView(PAGE_NAME, isFirstPage);
     }
 
     @Override
@@ -89,5 +94,13 @@ public class BankTransferListActivity extends BasePaymentActivity implements Ban
     private void finishPayment(int resultCode, Intent data) {
         setResult(resultCode, data);
         finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (presenter != null) {
+            presenter.trackBackButtonClick(PAGE_NAME);
+        }
+        super.onBackPressed();
     }
 }

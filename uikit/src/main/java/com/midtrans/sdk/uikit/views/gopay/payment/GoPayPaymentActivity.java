@@ -9,12 +9,10 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
-
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
-import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.views.gopay.authorization.GoPayAuthorizationActivitiy;
@@ -107,8 +105,6 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
             fullPhoneNumber = countryCode + phoneNumber;
             presenter.startGoPayPayment(fullPhoneNumber);
         }
-
-        presenter.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
     }
 
     private boolean phoneNumberValid(String countryCode, String phoneNumber) {

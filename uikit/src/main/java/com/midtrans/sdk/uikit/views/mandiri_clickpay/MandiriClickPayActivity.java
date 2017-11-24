@@ -9,7 +9,6 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
-
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
@@ -30,6 +29,10 @@ import com.midtrans.sdk.uikit.widgets.FancyButton;
 public class MandiriClickPayActivity extends BasePaymentActivity implements MandiriClickPayView {
 
     private static final String TAG = MandiriClickPayActivity.class.getSimpleName();
+    private final String PAGE_NAME = "Mandiri Clickpay Overview";
+    private final String BUTTON_CONFIRM_NAME = "Confirm Payment Mandiri Clickpay";
+    private final String BUTTON_RETRY_NAME = "Retry Mandiri Clickpay";
+
     private DefaultTextView textInput1;
     private DefaultTextView textInput2;
     private DefaultTextView textInput3;
@@ -45,6 +48,7 @@ public class MandiriClickPayActivity extends BasePaymentActivity implements Mand
     private MandiriClickPayPresenter presenter;
     private String input3;
     private String challengeToken;
+    private int attempt = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,6 +69,10 @@ public class MandiriClickPayActivity extends BasePaymentActivity implements Mand
         }
 
         textInput3.setText(String.valueOf(SdkUIFlowUtil.generateRandomNumber()));
+
+        //track page view after page properly loaded
+        boolean isFirstPage = getIntent().getBooleanExtra(USE_DEEP_LINK, true);
+        presenter.trackPageView(PAGE_NAME, isFirstPage);
     }
 
     private void initEditCardTextWatcher() {
@@ -146,6 +154,7 @@ public class MandiriClickPayActivity extends BasePaymentActivity implements Mand
             String cleanCardNumber = getCleanCardNumber(cardNumber);
             this.challengeToken = challengeToken;
             this.input3 = textInput3.getText().toString().trim();
+            presenter.trackButtonClick(attempt == 0 ? BUTTON_CONFIRM_NAME : BUTTON_RETRY_NAME, PAGE_NAME);
             presenter.getCardToken(cleanCardNumber);
         }
     }
@@ -223,7 +232,14 @@ public class MandiriClickPayActivity extends BasePaymentActivity implements Mand
     @Override
     public void onPaymentFailure(TransactionResponse response) {
         hideProgressLayout();
-        showPaymentStatusPage(response, presenter.isShowPaymentStatusPage());
+        if (attempt < UiKitConstants.MAX_ATTEMPT) {
+            attempt += 1;
+            SdkUIFlowUtil.showToast(MandiriClickPayActivity.this, getString(R.string.message_payment_failed));
+        } else {
+            if (response != null) {
+                showPaymentStatusPage(response, presenter.isShowPaymentStatusPage());
+            }
+        }
     }
 
     @Override
@@ -260,5 +276,13 @@ public class MandiriClickPayActivity extends BasePaymentActivity implements Mand
         if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS) {
             finishPayment(RESULT_OK, presenter.getTransactionResponse());
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (presenter != null) {
+            presenter.trackBackButtonClick(PAGE_NAME);
+        }
+        super.onBackPressed();
     }
 }

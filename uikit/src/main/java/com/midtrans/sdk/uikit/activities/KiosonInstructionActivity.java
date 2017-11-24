@@ -8,7 +8,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 
 /**
@@ -61,9 +60,6 @@ public class KiosonInstructionActivity extends BaseActivity {
         setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         adjustToolbarSize();
-
-        //track page kioson
-        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_KIOSON_OVERVIEW);
     }
 
 }

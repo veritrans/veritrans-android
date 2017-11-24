@@ -23,9 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.core.Logger;
-import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
@@ -35,7 +33,6 @@ import com.midtrans.sdk.corekit.models.snap.BanksPointResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
-import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.models.CreditCardType;
 import com.midtrans.sdk.uikit.models.MessageInfo;
 import com.midtrans.sdk.uikit.scancard.ExternalScanner;
@@ -63,6 +60,9 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     public static final String EXTRA_DELETED_CARD_DETAILS = "card.deleted.details";
     public static final String EXTRA_SAVED_CARD = "extra.card.saved";
     private static final String TAG = CreditCardDetailsActivity.class.getSimpleName();
+    private final String PAGE_NAME = "CC Card Details";
+    private final String BUTTON_CONFIRM_NAME = "Confirm Payment Credit Card";
+    private final String BUTTON_RETRY_NAME = "Retry Credit Card";
     private AppCompatEditText fieldCardNumber;
     private AppCompatEditText fieldCardCvv;
     private AppCompatEditText fieldCardExpiry;
@@ -226,23 +226,14 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                 fieldCardCvv.setFilters(filterArray);
                 fieldCardCvv.setText(SdkUIFlowUtil.getMaskedCardCvv());
                 fieldCardCvv.setEnabled(false);
-
-                // Track page cc one click
-                presenter.trackEvent(AnalyticsEventName.PAGE_CREDIT_CARD_DETAILS, MixpanelAnalyticsManager.CARD_MODE_ONE_CLICK);
             } else {
                 checkInstallment();
                 checkBankPoint();
                 checkBinLockingValidity();
-
-                //track page cc two clicks
-                presenter.trackEvent(AnalyticsEventName.PAGE_CREDIT_CARD_DETAILS, MixpanelAnalyticsManager.CARD_MODE_TWO_CLICK);
             }
 
             setBankType();
             setCardType();
-        } else {
-            //track page cc detail
-            presenter.trackEvent(AnalyticsEventName.PAGE_CREDIT_CARD_DETAILS, MixpanelAnalyticsManager.CARD_MODE_NORMAL);
         }
 
         int badgeCode = presenter.getCcBadge();
@@ -260,6 +251,10 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                 ccBadge.setImageResource(R.drawable.badge_default);
 
         }
+
+        //track page view after page properly loaded
+        boolean isFirstPage = getIntent().getBooleanExtra(USE_DEEP_LINK, true);
+        presenter.trackPageView(PAGE_NAME, isFirstPage);
 
     }
 
@@ -503,6 +498,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                 SdkUIFlowUtil.hideKeyboard(CreditCardDetailsActivity.this);
                 if (checkCardValidity()) {
                     if (checkPaymentValidity()) {
+                        presenter.trackButtonClick(attempt == 0 ? BUTTON_CONFIRM_NAME : BUTTON_RETRY_NAME, PAGE_NAME);
                         TokenizeCreditCard();
                     }
                 }
@@ -815,10 +811,6 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         } else {
             hideValidationError(textCardNumberError);
         }
-        if (!isValid) {
-            //track invalid cc number
-            presenter.trackEvent(AnalyticsEventName.CREDIT_CARD_NUMBER_VALIDATION, MixpanelAnalyticsManager.CARD_MODE_NORMAL);
-        }
         return isValid;
     }
 
@@ -884,11 +876,6 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                 hideValidationError(textCardExpiryError);
             }
         }
-
-        if (!isValid) {
-            // Track invalid expiry
-            presenter.trackEvent(AnalyticsEventName.CREDIT_CARD_EXPIRY_VALIDATION, MixpanelAnalyticsManager.CARD_MODE_NORMAL);
-        }
         return isValid;
     }
 
@@ -910,14 +897,6 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             } else {
                 hideValidationError(textCardCvvError);
             }
-        }
-
-        if (!isValid) {
-            // Track invalid cvv
-            presenter.trackEvent(
-                    AnalyticsEventName.CREDIT_CARD_CVV_VALIDATION,
-                    isTwoClicksMode() ? MixpanelAnalyticsManager.CARD_MODE_TWO_CLICK : MixpanelAnalyticsManager.CARD_MODE_NORMAL
-            );
         }
         return isValid;
     }
@@ -1205,8 +1184,6 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
     private void initPaymentError(Throwable error) {
         if (isActivityRunning()) {
-            MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
-            presenter.trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
             hideProgressLayout();
             showErrorMessage(error);
         }
@@ -1329,16 +1306,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
             if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
                 Logger.d("3dserror", "400:" + response.getValidationMessages().get(0));
-                if (response.getValidationMessages() != null && response.getValidationMessages().get(0) != null) {
-                    if (response.getValidationMessages().get(0).contains("3d")) {
-                        //track page bca va overview
-                        presenter.trackEvent(AnalyticsEventName.CREDIT_CARD_3DS_ERROR);
-                    }
-                }
             }
-
-            //track page status failed
-            presenter.trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
         }
     }
 
@@ -1395,5 +1363,13 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         if (isActivityRunning()) {
             initPaymentStatus(transactionResponse);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (presenter != null) {
+            presenter.trackBackButtonClick(PAGE_NAME);
+        }
+        super.onBackPressed();
     }
 }
