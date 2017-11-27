@@ -15,8 +15,8 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
@@ -83,20 +83,16 @@ public class GoPayStatusActivity extends BasePaymentActivity {
                 });
 
                 //process qr code
-                String qrCodeUrl = response.getQrCodeUrl();
+                final String qrCodeUrl = response.getQrCodeUrl();
                 final ImageView qrImage = (ImageView) findViewById(R.id.gopay_qr_code);
-                SimpleTarget<GlideDrawable> target = new SimpleTarget<GlideDrawable>() {
+                qrImage.setOnClickListener(new OnClickListener() {
                     @Override
-                    public void onResourceReady(GlideDrawable resource,
-                        GlideAnimation<? super GlideDrawable> glideAnimation) {
-                        hideProgressLayout();
-                        qrImage.setImageDrawable(resource);
+                    public void onClick(View v) {
+                        showProgressLayout();
+                        loadQrCode(qrCodeUrl, qrImage);
                     }
-                };
-
-                Glide.with(this)
-                    .load(qrCodeUrl)
-                    .into(target);
+                });
+                loadQrCode(qrCodeUrl, qrImage);
             } else {
                 //process deeplink
                 buttonPrimary.setText(getString(R.string.payment_method_description_gopay));
@@ -104,8 +100,8 @@ public class GoPayStatusActivity extends BasePaymentActivity {
                 buttonPrimary.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        // TODO: 16/11/17 wait for back-end
-                        Toast.makeText(GoPayStatusActivity.this, "Redirecting to GO-JEK app...", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(GoPayStatusActivity.this, getString(R.string.redirecting_to_gopay), Toast.LENGTH_SHORT)
+                            .show();
                         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(response.getDeeplinkUrl()));
                         startActivity(intent);
                     }
@@ -126,9 +122,39 @@ public class GoPayStatusActivity extends BasePaymentActivity {
         setPrimaryBackgroundColor(buttonPrimary);
     }
 
-    @Override
-    public void onBackPressed() {
+    /**
+     * A method for loading QR code based on url that is part of GO-PAY payment response
+     * We use Glide listener in order to detect whether image downloading is good or not
+     * If it is good, then display the QR code; else display reload icon so this method is
+     * called once again.
+     * @param url location of QR code to be downloaded
+     * @param container view to display the image
+     */
+    private void loadQrCode(String url, final ImageView container) {
+        Glide.with(this)
+            .load(url)
+            .listener(new RequestListener<String, GlideDrawable>() {
+                @Override
+                public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                    hideProgressLayout();
+                    container.setClickable(true);
+                    container.setImageResource(R.drawable.ic_refresh);
+                    int padding = (int) (80f * getResources().getDisplayMetrics().density);
+                    container.setPadding(padding, padding, padding, padding);
+                    Toast.makeText(GoPayStatusActivity.this, getString(R.string.error_qr_code), Toast.LENGTH_SHORT)
+                        .show();
+                    return true;
+                }
 
-        super.onBackPressed();
+                @Override
+                public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                    hideProgressLayout();
+                    container.setClickable(false);
+                    int padding = (int) (16f * getResources().getDisplayMetrics().density);
+                    container.setPadding(padding, padding, padding, padding);
+                    return false;
+                }
+            })
+            .into(container);
     }
 }

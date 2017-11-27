@@ -3,6 +3,7 @@ package com.midtrans.sdk.uikit.views.gopay.payment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -46,8 +47,8 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
         setContentView(R.layout.activity_gopay_payment);
         initProperties();
         initLayout();
-        initActionButton();
         initData();
+        initActionButton();
         hideProgressLayout();
     }
 
@@ -79,6 +80,9 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
                 }
             });
             buttonPrimary.setTextBold();
+            if (isTablet) {
+                buttonPrimary.setText(getString(R.string.payment_method_description_gopay));
+            }
         } else {
             //hide confirm button and adjust item details to bottom of screen
             buttonPrimaryLayout.setVisibility(View.GONE);
@@ -139,12 +143,37 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
     public void onPaymentSuccess(TransactionResponse response) {
         hideProgressLayout();
         if (isActivityRunning()) {
-            Intent intent = new Intent(this, GoPayStatusActivity.class);
-            intent.putExtra(GoPayStatusActivity.EXTRA_PAYMENT_STATUS, response);
-            startActivityForResult(intent, UiKitConstants.INTENT_CODE_PAYMENT_STATUS);
+            if (isResponseValid(response)) {
+                Intent intent = new Intent(this, GoPayStatusActivity.class);
+                intent.putExtra(GoPayStatusActivity.EXTRA_PAYMENT_STATUS, response);
+                startActivityForResult(intent, UiKitConstants.INTENT_CODE_PAYMENT_STATUS);
+            } else {
+                onPaymentFailure(response);
+            }
         } else {
             finishPayment(RESULT_OK, presenter.getTransactionResponse());
         }
+    }
+
+    /**
+     * Check whether the transaction response from server is valid or not
+     * Valid if both deeplink URL and qr code URL aren't empty, or at least one of them is not,
+     * depending on which one that will be used
+     * @param response transaction response
+     * @return validity of response
+     */
+    private boolean isResponseValid(TransactionResponse response) {
+        if (response == null) {
+            return false;
+        } else {
+            if (TextUtils.isEmpty(response.getDeeplinkUrl()) && !isTablet) {
+                return false;
+            }
+            if (TextUtils.isEmpty(response.getQrCodeUrl()) && isTablet) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override

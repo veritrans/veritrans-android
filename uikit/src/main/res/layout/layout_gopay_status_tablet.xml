@@ -7,8 +7,8 @@
 
     <ImageView
         android:id="@+id/gopay_qr_code"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/thirtytwo_dp"
         android:padding="@dimen/sixteen_dp"/>

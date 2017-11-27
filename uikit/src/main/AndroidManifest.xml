@@ -220,11 +220,6 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".views.gopay.authorization.GoPayAuthorizationActivitiy"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait" />
-
-        <activity
             android:name=".views.danamon_online.DanamonOnlineActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
