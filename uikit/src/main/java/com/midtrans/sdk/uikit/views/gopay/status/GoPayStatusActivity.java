@@ -36,7 +36,7 @@ public class GoPayStatusActivity extends BasePaymentActivity {
     private FancyButton buttonPrimary;
     private SemiBoldTextView textTitle;
     private ImageView qrCodeContainer;
-    private DefaultTextView qrCodeRefresh;
+    private FancyButton qrCodeRefresh;
 
     private boolean isTablet, isInstructionShown;
 
@@ -87,18 +87,20 @@ public class GoPayStatusActivity extends BasePaymentActivity {
                 //process qr code
                 final String qrCodeUrl = response.getQrCodeUrl();
                 qrCodeContainer = (ImageView) findViewById(R.id.gopay_qr_code);
-                qrCodeRefresh = (DefaultTextView) findViewById(R.id.gopay_reload_qr_button);
+                qrCodeRefresh = (FancyButton) findViewById(R.id.gopay_reload_qr_button);
+                setTextColor(qrCodeRefresh);
+                setIconColorFilter(qrCodeRefresh);
                 qrCodeRefresh.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         showProgressLayout();
-                        loadQrCode(qrCodeUrl, qrCodeContainer);
+                        loadQrCode("https://i.imgur.com/UIHjjU0.png", qrCodeContainer);
                     }
                 });
                 loadQrCode(qrCodeUrl, qrCodeContainer);
             } else {
                 //process deeplink
-                buttonPrimary.setText(getString(R.string.payment_method_description_gopay));
+                buttonPrimary.setText(getString(R.string.gopay_confirm_button));
                 buttonPrimary.setTextBold();
                 buttonPrimary.setOnClickListener(new OnClickListener() {
                     @Override
