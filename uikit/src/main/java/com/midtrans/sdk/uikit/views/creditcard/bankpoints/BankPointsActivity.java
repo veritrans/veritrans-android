@@ -14,6 +14,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.utilities.Utils;
@@ -23,6 +24,7 @@ import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
+
 import java.util.Locale;
 
 /**
@@ -203,7 +205,11 @@ public class BankPointsActivity extends BasePaymentActivity {
     }
 
     private void updateAmountToPayText() {
-        textAmountToPay.setText(getString(R.string.prefix_money, Utils.getFormattedAmount(presenter.getAmountToPay())));
+        String amountToPay = getString(R.string.prefix_money, Utils.getFormattedAmount(presenter.getAmountToPay()));
+        textAmountToPay.setText(amountToPay);
+        if (textTotalAmount != null) {
+            textTotalAmount.setText(amountToPay);
+        }
     }
 
     private void redeemPoint() {
