@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -34,7 +35,8 @@ public class GoPayStatusActivity extends BasePaymentActivity {
 
     private FancyButton buttonPrimary;
     private SemiBoldTextView textTitle;
-    private DefaultTextView instructionToggle;
+    private ImageView qrCodeContainer;
+    private DefaultTextView qrCodeRefresh;
 
     private boolean isTablet, isInstructionShown;
 
@@ -67,7 +69,7 @@ public class GoPayStatusActivity extends BasePaymentActivity {
                 itemDetail.setLayoutParams(layoutParams);
 
                 final LinearLayout instructionLayout = (LinearLayout) findViewById(R.id.gopay_instruction_layout);
-                instructionToggle = (DefaultTextView) findViewById(R.id.gopay_instruction_toggle);
+                final DefaultTextView instructionToggle = (DefaultTextView) findViewById(R.id.gopay_instruction_toggle);
                 instructionToggle.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -84,15 +86,16 @@ public class GoPayStatusActivity extends BasePaymentActivity {
 
                 //process qr code
                 final String qrCodeUrl = response.getQrCodeUrl();
-                final ImageView qrImage = (ImageView) findViewById(R.id.gopay_qr_code);
-                qrImage.setOnClickListener(new OnClickListener() {
+                qrCodeContainer = (ImageView) findViewById(R.id.gopay_qr_code);
+                qrCodeRefresh = (DefaultTextView) findViewById(R.id.gopay_reload_qr_button);
+                qrCodeRefresh.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         showProgressLayout();
-                        loadQrCode(qrCodeUrl, qrImage);
+                        loadQrCode(qrCodeUrl, qrCodeContainer);
                     }
                 });
-                loadQrCode(qrCodeUrl, qrImage);
+                loadQrCode(qrCodeUrl, qrCodeContainer);
             } else {
                 //process deeplink
                 buttonPrimary.setText(getString(R.string.payment_method_description_gopay));
@@ -125,7 +128,7 @@ public class GoPayStatusActivity extends BasePaymentActivity {
     /**
      * A method for loading QR code based on url that is part of GO-PAY payment response
      * We use Glide listener in order to detect whether image downloading is good or not
-     * If it is good, then display the QR code; else display reload icon so this method is
+     * If it is good, then display the QR code; else display reload button so this method is
      * called once again.
      * @param url location of QR code to be downloaded
      * @param container view to display the image
@@ -136,11 +139,10 @@ public class GoPayStatusActivity extends BasePaymentActivity {
             .listener(new RequestListener<String, GlideDrawable>() {
                 @Override
                 public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                    FrameLayout frameLayout = (FrameLayout) findViewById(R.id.gopay_qr_code_frame);
+                    frameLayout.setBackgroundColor(getResources().getColor(R.color.light_gray));
+                    qrCodeRefresh.setVisibility(View.VISIBLE);
                     hideProgressLayout();
-                    container.setClickable(true);
-                    container.setImageResource(R.drawable.ic_refresh);
-                    int padding = (int) (80f * getResources().getDisplayMetrics().density);
-                    container.setPadding(padding, padding, padding, padding);
                     Toast.makeText(GoPayStatusActivity.this, getString(R.string.error_qr_code), Toast.LENGTH_SHORT)
                         .show();
                     return true;
@@ -148,10 +150,10 @@ public class GoPayStatusActivity extends BasePaymentActivity {
 
                 @Override
                 public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                    FrameLayout frameLayout = (FrameLayout) findViewById(R.id.gopay_qr_code_frame);
+                    frameLayout.setBackgroundColor(0);
+                    qrCodeRefresh.setVisibility(View.GONE);
                     hideProgressLayout();
-                    container.setClickable(false);
-                    int padding = (int) (16f * getResources().getDisplayMetrics().density);
-                    container.setPadding(padding, padding, padding, padding);
                     return false;
                 }
             })

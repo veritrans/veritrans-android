@@ -5,13 +5,30 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/gopay_qr_code"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
+    <FrameLayout
+        android:id="@+id/gopay_qr_code_frame"
+        android:layout_width="@dimen/qr_code_size"
+        android:layout_height="@dimen/qr_code_size"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/thirtytwo_dp"
-        android:padding="@dimen/sixteen_dp"/>
+        android:padding="@dimen/sixteen_dp">
+
+        <ImageView
+            android:id="@+id/gopay_qr_code"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:id="@+id/gopay_reload_qr_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:text="@string/reload_qr_code"
+            android:drawablePadding="@dimen/eight_dp"
+            android:drawableLeft="@drawable/ic_reload"
+            android:visibility="gone"/>
+    </FrameLayout>
 
     <com.midtrans.sdk.uikit.widgets.DefaultTextView
         android:id="@+id/gopay_instruction_toggle"

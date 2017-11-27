@@ -191,10 +191,8 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_CANCELED) {
-            if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS) {
-                finishPayment(RESULT_OK, presenter.getTransactionResponse());
-            }
+        if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS) {
+            finishPayment(RESULT_OK, presenter.getTransactionResponse());
         }
     }
 }
