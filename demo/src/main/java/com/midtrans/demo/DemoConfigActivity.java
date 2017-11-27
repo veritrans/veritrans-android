@@ -3099,7 +3099,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private List<String> initActivePaymentMethods() {
         List<String> mappedPayments = new ArrayList<>();
 
-        List<EnabledPayment> defaultPayment = PaymentMethods.getDefaultPaymentList(this);
+        List<EnabledPayment> defaultPayment = AppUtils.getDefaultPaymentList();
         enabledPayments = mapPaymentMethods(defaultPayment);
 
         if (enabledPayments != null) {
@@ -3122,7 +3122,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         List<SelectPaymentMethodViewModel> viewModels = new ArrayList<>();
         for (int i = 0; i < enabledPayments.size(); i++) {
             EnabledPayment enabledPayment = enabledPayments.get(i);
-            PaymentMethodsModel model = PaymentMethods.getMethods(this, enabledPayment.getType(), enabledPayment.getStatus());
+            PaymentMethodsModel model = AppUtils.getMethods(this, enabledPayment.getType(), enabledPayment.getStatus());
             if (model != null) {
                 viewModels.add(new SelectPaymentMethodViewModel(model.getName(), enabledPayment.getType(), true));
             }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
 import com.midtrans.sdk.uikit.models.BankTransfer;
@@ -43,6 +44,10 @@ public class BankTransferListActivity extends BasePaymentActivity implements Ban
         //track page view after page properly loaded
         boolean isFirstPage = getIntent().getBooleanExtra(USE_DEEP_LINK, true);
         presenter.trackPageView(PAGE_NAME, isFirstPage);
+
+        if (presenter.getBankList().size() == 1) {
+            startBankTransferPayment(presenter.getBankList().get(0));
+        }
     }
 
     @Override
@@ -78,9 +83,12 @@ public class BankTransferListActivity extends BasePaymentActivity implements Ban
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT) {
             if (resultCode == RESULT_OK && data != null) {
                 finishPayment(RESULT_OK, data);
+            } else if (presenter != null && presenter.getBankList().size() == 1) {
+                finish();
             }
         }
     }

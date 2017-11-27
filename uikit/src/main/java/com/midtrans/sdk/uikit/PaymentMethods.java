@@ -146,9 +146,10 @@ public class PaymentMethods {
     /**
      * Get bank transfer model to be shown
      * It's deprecated now, please use {@link PaymentMethods#createBankTransferModel(Context, String, String)}
+     *
      * @param context context
-     * @param name bank name
-     * @param status whether it is up or down
+     * @param name    bank name
+     * @param status  whether it is up or down
      * @return bank transfer model
      */
     @Deprecated
