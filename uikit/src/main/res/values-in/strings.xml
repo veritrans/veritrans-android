@@ -250,9 +250,10 @@
     <string name="install_gojek_message">Install aplikasi GO-JEK dari Play Store</string>
     <string name="no_gojek_message">Mohon maaf, kami tidak dapat mendeteksi aplikasi GO-JEK di perangkat Anda.</string>
     <string name="gopay_instruction">Tap <b>Bayar dengan GO-PAY</b> untuk melanjutkan pembayaran di aplikasi GO-JEK.</string>
-    <string name="redirecting_to_gopay">Mengarahkan ke app GO-JEK…</string>
+    <string name="redirecting_to_gopay">Mengarahkan ke aplikasi GO-JEK…</string>
     <string name="error_qr_code">Gagal memuat kode QR. Mohon coba lagi.</string>
     <string name="reload_qr_code">Muat Ulang Kode QR</string>
+    <string name="error_gopay_transaction">Transaksi Anda tidak dapat diproses. Silakan ulangi lagi, atau coba dengan metode pembayaran lain.</string>
 
     <!--Go-Pay Instruction in Tablet-->
     <string name="gopay_instruction_tablet_step1">Tap <b>Bayar dengan GO-PAY</b>.</string>

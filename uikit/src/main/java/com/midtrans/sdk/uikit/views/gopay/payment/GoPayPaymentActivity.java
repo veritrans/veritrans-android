@@ -36,6 +36,7 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
     private boolean isTablet;
     private boolean isGojekInstalled;
     private Boolean isGojekInstalledWhenPaused;
+    private int attempt;
 
 
     @Override
@@ -179,7 +180,14 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
     @Override
     public void onPaymentFailure(TransactionResponse response) {
         hideProgressLayout();
-        showPaymentStatusPage(response, presenter.isShowPaymentStatusPage());
+        if (attempt < UiKitConstants.MAX_ATTEMPT) {
+            attempt += 1;
+            SdkUIFlowUtil.showToast(GoPayPaymentActivity.this, getString(R.string.error_gopay_transaction));
+        } else {
+            if (response != null) {
+                showPaymentStatusPage(response, presenter.isShowPaymentStatusPage());
+            }
+        }
     }
 
     @Override
