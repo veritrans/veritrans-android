@@ -54,6 +54,7 @@ public abstract class BasePaymentActivity extends BaseActivity {
     private boolean hasMerchantLogo = false;
 
     protected BoldTextView textTotalAmount;
+    protected TransactionDetailsAdapter transactionDetailAdapter;
 
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
@@ -110,8 +111,8 @@ public abstract class BasePaymentActivity extends BaseActivity {
         if (recyclerView != null) {
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            TransactionDetailsAdapter adapter = new TransactionDetailsAdapter(details);
-            recyclerView.setAdapter(adapter);
+             transactionDetailAdapter = new TransactionDetailsAdapter(details);
+            recyclerView.setAdapter(transactionDetailAdapter);
         }
     }
 
