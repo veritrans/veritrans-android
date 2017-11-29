@@ -2284,8 +2284,14 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     }
 
     private void saveBcaVaNumber() {
-        if (customBcaVaEnabledSelection.isChecked()) {
-            String vaNumber = customBcaVaEnabledSelection.getText().toString().split(" - ")[1];
+        String vaNumber = "";
+
+        try {
+            vaNumber = customBcaVaEnabledSelection.getText().toString().split(" - ")[1];
+        } catch (ArrayIndexOutOfBoundsException e) {
+        }
+
+        if (customBcaVaEnabledSelection.isChecked() && !TextUtils.isEmpty(vaNumber)) {
             DemoPreferenceHelper.setStringPreference(this, CUSTOM_BCA_VA_NUMBER, vaNumber);
         } else {
             DemoPreferenceHelper.setStringPreference(this, CUSTOM_BCA_VA_NUMBER, "");
@@ -2293,8 +2299,14 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     }
 
     private void savePermataVaNumber() {
-        if (customPermataVaEnabledSelection.isChecked()) {
-            String vaNumber = customPermataVaEnabledSelection.getText().toString().split(" - ")[1];
+        String vaNumber = "";
+
+        try {
+            vaNumber = customPermataVaEnabledSelection.getText().toString().split(" - ")[1];
+        } catch (ArrayIndexOutOfBoundsException e) {
+        }
+
+        if (customPermataVaEnabledSelection.isChecked() && !TextUtils.isEmpty(vaNumber)) {
             DemoPreferenceHelper.setStringPreference(this, CUSTOM_PERMATA_VA_NUMBER, vaNumber);
         } else {
             DemoPreferenceHelper.setStringPreference(this, CUSTOM_PERMATA_VA_NUMBER, "");
@@ -2302,8 +2314,14 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     }
 
     private void saveBniVaNumber() {
-        if (customBniVaEnabledSelection.isChecked()) {
-            String vaNumber = customBniVaEnabledSelection.getText().toString().split(" - ")[1];
+        String vaNumber = "";
+
+        try {
+            vaNumber = customBniVaEnabledSelection.getText().toString().split(" - ")[1];
+        } catch (ArrayIndexOutOfBoundsException e) {
+        }
+
+        if (customBniVaEnabledSelection.isChecked() && !TextUtils.isEmpty(vaNumber)) {
             DemoPreferenceHelper.setStringPreference(this, CUSTOM_BNI_VA_NUMBER, vaNumber);
         } else {
             DemoPreferenceHelper.setStringPreference(this, CUSTOM_BNI_VA_NUMBER, "");
@@ -2311,8 +2329,14 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     }
 
     private void saveSubCompanyBcaVaNumber() {
+        String subCompany = "";
+
+        try {
+            subCompany = subCompanyBcaVaEnabledSelection.getText().toString().split(" - ")[1];
+        } catch (ArrayIndexOutOfBoundsException e) {
+        }
+
         if (subCompanyBcaVaEnabledSelection.isChecked()) {
-            String subCompany = subCompanyBcaVaEnabledSelection.getText().toString().split(" - ")[1];
             DemoPreferenceHelper.setStringPreference(this, SUBCOMPANY_BCA_VA_NUMBER, subCompany);
         } else {
             DemoPreferenceHelper.setStringPreference(this, SUBCOMPANY_BCA_VA_NUMBER, "");
@@ -2895,7 +2919,13 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
 
         LocalDataHandler.saveObject(getString(R.string.user_details), userDetail);
         if (customPermataVaEnabledSelection.isChecked()) {
-            String vaNumber = customPermataVaEnabledSelection.getText().toString().split(" - ")[1];
+            String vaNumber = "";
+            try {
+                vaNumber = customPermataVaEnabledSelection.getText().toString().split(" - ")[1];
+
+            } catch (RuntimeException e) {
+
+            }
             transactionRequestNew.setPermataVa(
                     new BankTransferRequestModel(vaNumber)
             );
@@ -2905,7 +2935,13 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         if (customBcaVaEnabledSelection.isChecked()) {
             // set free text on BCA VA Payment
             FreeText freeText = createSampleBcaFreeText();
-            String vaNumber = customBcaVaEnabledSelection.getText().toString().split(" - ")[1];
+            String vaNumber = "";
+            try {
+                vaNumber = customBcaVaEnabledSelection.getText().toString().split(" - ")[1];
+
+            } catch (RuntimeException e) {
+
+            }
             requestModel = new BcaBankTransferRequestModel(vaNumber, freeText);
             if (subCompanyBcaVaDisabledSelection.isChecked()) {
                 transactionRequestNew.setBcaVa(requestModel);
@@ -2917,12 +2953,25 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             if (requestModel == null) {
                 requestModel = new BcaBankTransferRequestModel();
             }
-            requestModel.setSubCompanyCode(subCompanyBcaVaEnabledSelection.getText().toString().split(" - ")[1]);
+
+            String subCompanyCode = "";
+            try {
+                subCompanyCode = subCompanyBcaVaEnabledSelection.getText().toString().split(" - ")[1];
+            } catch (RuntimeException e) {
+
+            }
+
+            requestModel.setSubCompanyCode(subCompanyCode);
             transactionRequestNew.setBcaVa(requestModel);
         }
 
         if (customBniVaEnabledSelection.isChecked()) {
-            String vaNumber = customBniVaEnabledSelection.getText().toString().split(" - ")[1];
+            String vaNumber = "";
+            try {
+                vaNumber = customBniVaEnabledSelection.getText().toString().split(" - ")[1];
+            } catch (RuntimeException e) {
+
+            }
             transactionRequestNew.setBniVa(
                     new BankTransferRequestModel(vaNumber)
             );
