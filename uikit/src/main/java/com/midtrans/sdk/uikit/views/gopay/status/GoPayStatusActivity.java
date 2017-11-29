@@ -94,7 +94,7 @@ public class GoPayStatusActivity extends BasePaymentActivity {
                     @Override
                     public void onClick(View v) {
                         showProgressLayout();
-                        loadQrCode("https://i.imgur.com/UIHjjU0.png", qrCodeContainer);
+                        loadQrCode(qrCodeUrl, qrCodeContainer);
                     }
                 });
                 loadQrCode(qrCodeUrl, qrCodeContainer);

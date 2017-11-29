@@ -63,6 +63,9 @@ import java.util.regex.Pattern;
  */
 public class SdkUIFlowUtil {
 
+    public static final String TYPE_PHONE = "PHONE";
+    public static final String TYPE_TABLET = "TABLET";
+
     private static final String TAG = SdkUIFlowUtil.class.getSimpleName();
     private static MidtransProgressDialogFragment progressDialogFragment;
     private static int maskedExpDate;
@@ -484,9 +487,9 @@ public class SdkUIFlowUtil {
         double diagonalInches = Math.sqrt(xInches * xInches + yInches * yInches);
 
         if (diagonalInches >= 6.5) {
-            deviceType = "TABLET";
+            deviceType = TYPE_TABLET;
         } else {
-            deviceType = "PHONE";
+            deviceType = TYPE_PHONE;
         }
 
         return deviceType;

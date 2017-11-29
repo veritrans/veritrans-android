@@ -43,7 +43,7 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         showProgressLayout();
-        isTablet = SdkUIFlowUtil.getDeviceType(this).equals("TABLET");
+        isTablet = SdkUIFlowUtil.getDeviceType(this).equals(SdkUIFlowUtil.TYPE_TABLET);
         isGojekInstalled = Utils.isAppInstalled(this, GOJEK_PACKAGE_NAME);
         setContentView(R.layout.activity_gopay_payment);
         initProperties();
