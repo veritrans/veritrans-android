@@ -254,6 +254,9 @@
     <string name="error_qr_code">Gagal memuat kode QR. Mohon coba lagi.</string>
     <string name="reload_qr_code">Muat Ulang Kode QR</string>
     <string name="error_gopay_transaction">Transaksi Anda tidak dapat diproses. Silakan ulangi lagi, atau coba dengan metode pembayaran lain.</string>
+    <string name="confirm_gopay_title">Konfirmasi</string>
+    <string name="confirm_gopay_qr_scan_tablet">Pastikan kode QR berhasil di-scan dan pembayaran telah diselesaikan di dalam aplikasi GO-JEK.</string>
+    <string name="confirm_gopay_qr_scan">Pastikan pembayaran telah diselesaikan di dalam aplikasi GO-JEK.</string>
 
     <!--Go-Pay Instruction in Tablet-->
     <string name="gopay_instruction_tablet_step1">Tap <b>Bayar dengan GO-PAY</b>.</string>

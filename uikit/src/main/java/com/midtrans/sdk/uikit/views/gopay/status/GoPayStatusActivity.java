@@ -1,23 +1,23 @@
 package com.midtrans.sdk.uikit.views.gopay.status;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
@@ -31,6 +31,9 @@ import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
  */
 
 public class GoPayStatusActivity extends BasePaymentActivity {
+
+    private static final String TAG = GoPayStatusActivity.class.getSimpleName();
+
     public static final String EXTRA_PAYMENT_STATUS = "extra.status";
 
     private FancyButton buttonPrimary;
@@ -60,13 +63,6 @@ public class GoPayStatusActivity extends BasePaymentActivity {
         if (response != null) {
             if (isTablet) {
                 showProgressLayout();
-                //hide confirm button and adjust item details to bottom of screen
-                findViewById(R.id.layout_primary_button).setVisibility(View.GONE);
-                findViewById(R.id.primary_button_separator).setVisibility(View.GONE);
-                View itemDetail = findViewById(R.id.container_item_details);
-                RelativeLayout.LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-                itemDetail.setLayoutParams(layoutParams);
 
                 final LinearLayout instructionLayout = (LinearLayout) findViewById(R.id.gopay_instruction_layout);
                 final DefaultTextView instructionToggle = (DefaultTextView) findViewById(R.id.gopay_instruction_toggle);
@@ -98,20 +94,29 @@ public class GoPayStatusActivity extends BasePaymentActivity {
                     }
                 });
                 loadQrCode(qrCodeUrl, qrCodeContainer);
+
+                buttonPrimary.setText(getString(R.string.done));
+                buttonPrimary.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        showConfirmationDialog(getString(isTablet ? R.string.confirm_gopay_qr_scan_tablet : R.string.confirm_gopay_qr_scan));
+                    }
+                });
             } else {
                 //process deeplink
                 buttonPrimary.setText(getString(R.string.gopay_confirm_button));
-                buttonPrimary.setTextBold();
                 buttonPrimary.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Toast.makeText(GoPayStatusActivity.this, getString(R.string.redirecting_to_gopay), Toast.LENGTH_SHORT)
                             .show();
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(response.getDeeplinkUrl()));
+                        // TODO: 29/11/2017 replace with real deeplink, this is just for demo purpose of overall flow
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("gojek://gopay/merchanttransfer?tref=Uch69wsg0y\\u0026amount=20000\\u0026activity=GP:RR"));
                         startActivity(intent);
                     }
                 });
             }
+            buttonPrimary.setTextBold();
         }
         textTitle.setText(getString(R.string.payment_method_description_gopay));
     }
@@ -160,5 +165,43 @@ public class GoPayStatusActivity extends BasePaymentActivity {
                 }
             })
             .into(container);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isDetailShown) {
+            displayOrHideItemDetails();
+        } else {
+            showConfirmationDialog(getString(isTablet ? R.string.confirm_gopay_qr_scan_tablet : R.string.confirm_gopay_qr_scan));
+        }
+    }
+
+    private void showConfirmationDialog(String message) {
+        try {
+            AlertDialog dialog = new AlertDialog.Builder(GoPayStatusActivity.this, R.style.AlertDialogCustom)
+                    .setPositiveButton(R.string.text_yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (!GoPayStatusActivity.this.isFinishing()) {
+                                dialog.dismiss();
+                                finish();
+                            }
+                        }
+                    })
+                    .setNegativeButton(R.string.text_no, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (!GoPayStatusActivity.this.isFinishing()) {
+                                dialog.dismiss();
+                            }
+                        }
+                    })
+                    .setTitle(R.string.cancel_transaction)
+                    .setMessage(message)
+                    .create();
+            dialog.show();
+        } catch (Exception e) {
+            Logger.e(TAG, "showDialog:" + e.getMessage());
+        }
     }
 }

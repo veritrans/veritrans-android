@@ -50,7 +50,7 @@ public abstract class BasePaymentActivity extends BaseActivity {
     //for tracking first page
     public final static String USE_DEEP_LINK = "First Page";
     private static final String TAG = BasePaymentActivity.class.getSimpleName();
-    private boolean isDetailShown = false;
+    protected boolean isDetailShown = false;
     private boolean hasMerchantLogo = false;
 
     @Override
@@ -113,7 +113,7 @@ public abstract class BasePaymentActivity extends BaseActivity {
         }
     }
 
-    private void displayOrHideItemDetails() {
+    protected void displayOrHideItemDetails() {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv_transaction_detail);
         View dimView = findViewById(R.id.background_dim);
         if (recyclerView != null && dimView != null) {
