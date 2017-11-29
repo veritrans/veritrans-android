@@ -1,6 +1,5 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
@@ -9,24 +8,21 @@
     <include layout="@layout/appbar_payment" />
 
     <RelativeLayout
-        android:id="@+id/main_content_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/container_item_details"
-            android:fillViewport="true"
-            android:layout_alignParentTop="true">
+            android:layout_alignParentTop="true"
+            android:fillViewport="true">
 
             <ViewStub
                 android:id="@+id/gopay_layout_stub"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-
         </ScrollView>
 
         <View
@@ -72,24 +68,5 @@
             layout="@layout/layout_primary_button" />
     </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/progress_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:alpha="0.93"
-        android:background="@color/white"
-        android:gravity="center_vertical|center_horizontal"
-        android:orientation="vertical"
-        android:visibility="gone"
-        tools:visibility="gone">
-
-        <include layout="@layout/layout_midtrans_progress" />
-    </LinearLayout>
-
-    <include
-        layout="@layout/layout_sandbox_badge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|start" />
-
+    <include layout="@layout/layout_loading_and_badge" />
 </android.support.design.widget.CoordinatorLayout>
