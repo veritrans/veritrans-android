@@ -169,27 +169,6 @@ public class PaymentMethods {
         }
     }
 
-    public static List<EnabledPayment> getDefaultPaymentList(Context context) {
-        List<EnabledPayment> paymentNameList = new ArrayList<>();
-        paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_credit_debit), null));
-        paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_bank_transfer), context.getString(R.string.enabled_payment_category_banktransfer)));
-        paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_klik_bca), null));
-        paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_bca_click), null));
-        paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_mandiri_clickpay), null));
-        paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_mandiri_ecash), null));
-        paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_epay_bri), null));
-        paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_cimb_clicks), null));
-        paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_indosat_dompetku), null));
-        paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_indomaret), context.getString(R.string.enabled_payment_category_cstore)));
-        paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_kioson), context.getString(R.string.enabled_payment_category_cstore)));
-        paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_telkomsel_cash), null));
-        paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_xl_tunai), null));
-        paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_gci), null));
-        paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_gopay), null));
-        paymentNameList.add(new EnabledPayment(context.getString(R.string.payment_danamon_online), null));
-        return paymentNameList;
-    }
-
     public static List<EnabledPayment> getPaymentList(Context context, List<String> methods) {
         List<EnabledPayment> enabledPayments = new ArrayList<>();
         for (String name : methods) {
