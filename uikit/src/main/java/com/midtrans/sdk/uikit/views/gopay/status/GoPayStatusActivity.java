@@ -13,6 +13,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
@@ -109,9 +110,9 @@ public class GoPayStatusActivity extends BasePaymentActivity {
                     @Override
                     public void onClick(View v) {
                         Toast.makeText(GoPayStatusActivity.this, getString(R.string.redirecting_to_gopay), Toast.LENGTH_SHORT)
-                            .show();
+                                .show();
                         // TODO: 29/11/2017 replace with real deeplink, this is just for demo purpose of overall flow
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("gojek://gopay/merchanttransfer?tref=Uch69wsg0y\\u0026amount=20000\\u0026activity=GP:RR"));
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(response.getDeeplinkUrl()));
                         startActivity(intent);
                     }
                 });
@@ -137,34 +138,35 @@ public class GoPayStatusActivity extends BasePaymentActivity {
      * We use Glide listener in order to detect whether image downloading is good or not
      * If it is good, then display the QR code; else display reload button so this method is
      * called once again.
-     * @param url location of QR code to be downloaded
+     *
+     * @param url       location of QR code to be downloaded
      * @param container view to display the image
      */
     private void loadQrCode(String url, final ImageView container) {
         Glide.with(this)
-            .load(url)
-            .listener(new RequestListener<String, GlideDrawable>() {
-                @Override
-                public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                    FrameLayout frameLayout = (FrameLayout) findViewById(R.id.gopay_qr_code_frame);
-                    frameLayout.setBackgroundColor(getResources().getColor(R.color.light_gray));
-                    qrCodeRefresh.setVisibility(View.VISIBLE);
-                    hideProgressLayout();
-                    Toast.makeText(GoPayStatusActivity.this, getString(R.string.error_qr_code), Toast.LENGTH_SHORT)
-                        .show();
-                    return true;
-                }
+                .load(url)
+                .listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        FrameLayout frameLayout = (FrameLayout) findViewById(R.id.gopay_qr_code_frame);
+                        frameLayout.setBackgroundColor(getResources().getColor(R.color.light_gray));
+                        qrCodeRefresh.setVisibility(View.VISIBLE);
+                        hideProgressLayout();
+                        Toast.makeText(GoPayStatusActivity.this, getString(R.string.error_qr_code), Toast.LENGTH_SHORT)
+                                .show();
+                        return true;
+                    }
 
-                @Override
-                public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                    FrameLayout frameLayout = (FrameLayout) findViewById(R.id.gopay_qr_code_frame);
-                    frameLayout.setBackgroundColor(0);
-                    qrCodeRefresh.setVisibility(View.GONE);
-                    hideProgressLayout();
-                    return false;
-                }
-            })
-            .into(container);
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        FrameLayout frameLayout = (FrameLayout) findViewById(R.id.gopay_qr_code_frame);
+                        frameLayout.setBackgroundColor(0);
+                        qrCodeRefresh.setVisibility(View.GONE);
+                        hideProgressLayout();
+                        return false;
+                    }
+                })
+                .into(container);
     }
 
     @Override
