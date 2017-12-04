@@ -116,7 +116,7 @@ public class GoPayStatusActivity extends BasePaymentActivity {
             } else {
                 //process deeplink
                 buttonPrimary.setText(getString(R.string.gopay_confirm_button));
-                buttonPrimary.setOnClickListener(new OnClickListener() {
+                OnClickListener listener = new OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Toast.makeText(GoPayStatusActivity.this, getString(R.string.redirecting_to_gopay), Toast.LENGTH_SHORT)
@@ -124,7 +124,10 @@ public class GoPayStatusActivity extends BasePaymentActivity {
                         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(response.getDeeplinkUrl()));
                         startActivity(intent);
                     }
-                });
+                };
+                buttonPrimary.setOnClickListener(listener);
+
+                findViewById(R.id.gopay_logo_layout).setOnClickListener(listener);
             }
             buttonPrimary.setTextBold();
         }

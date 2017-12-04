@@ -35,6 +35,7 @@ public class UserDetailsActivity extends BaseActivity {
     public static final String BANK_TRANSFER_PERMATA = "bt_permata";
     public static final String BANK_TRANSFER_BNI = "bt_bni";
     public static final String BANK_TRANSFER_OTHER = "bt_other";
+    public static final String GO_PAY = "gopay";
     public static final String BCA_KLIKPAY = "bcaklikpay";
     public static final String KLIK_BCA = "klikbca";
     public static final String MANDIRI_CLICKPAY = "mandiriclickpay";
@@ -144,6 +145,8 @@ public class UserDetailsActivity extends BaseActivity {
             } else if (getIntent().getBooleanExtra(BANK_TRANSFER_BNI, false)) {
                 paymentOptionIntent.putExtra(BANK_TRANSFER_BNI, true);
             }
+        } else if (getIntent().getBooleanExtra(GO_PAY, false)) {
+            paymentOptionIntent.putExtra(GO_PAY, true);
         } else if (getIntent().getBooleanExtra(BCA_KLIKPAY, false)) {
             paymentOptionIntent.putExtra(BCA_KLIKPAY, true);
         } else if (getIntent().getBooleanExtra(KLIK_BCA, false)) {
