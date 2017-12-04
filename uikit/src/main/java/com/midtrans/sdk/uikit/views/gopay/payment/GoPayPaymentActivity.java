@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
+
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
@@ -26,7 +27,7 @@ import com.midtrans.sdk.uikit.widgets.Utils;
 public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPaymentView {
 
     private static final String TAG = GoPayPaymentActivity.class.getSimpleName();
-    private final String GOJEK_PACKAGE_NAME = "com.gojek.app";
+    private final String GOJEK_PACKAGE_NAME = "com.gojek.app.staging";
 
     private FancyButton buttonPrimary;
     private FancyButton buttonDownload;
@@ -59,7 +60,7 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
             stub.setLayoutResource(R.layout.layout_gopay_payment_tablet);
         } else {
             stub.setLayoutResource(
-                isGojekInstalled ? R.layout.layout_gopay_payment : R.layout.layout_install_gopay);
+                    isGojekInstalled ? R.layout.layout_gopay_payment : R.layout.layout_install_gopay);
         }
         stub.inflate();
     }
@@ -160,6 +161,7 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
      * Check whether the transaction response from server is valid or not
      * Valid if both deeplink URL and qr code URL aren't empty, or at least one of them is not,
      * depending on which one that will be used
+     *
      * @param response transaction response
      * @return validity of response
      */
