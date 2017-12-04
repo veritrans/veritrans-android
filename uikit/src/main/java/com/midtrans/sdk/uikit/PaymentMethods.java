@@ -169,53 +169,6 @@ public class PaymentMethods {
         }
     }
 
-    public static List<EnabledPayment> getPaymentList(Context context, List<String> methods) {
-        List<EnabledPayment> enabledPayments = new ArrayList<>();
-        for (String name : methods) {
-            if (name.equals(context.getString(R.string.payment_credit_debit))) {
-                enabledPayments.add(new EnabledPayment(context.getString(R.string.payment_credit_debit), null));
-            } else if (name.equals(context.getString(R.string.payment_bank_transfer))) {
-                enabledPayments.add(new EnabledPayment(context.getString(R.string.payment_bank_transfer), context.getString(R.string.enabled_payment_category_banktransfer)));
-            } else if (name.equals(context.getString(R.string.payment_bca_click))) {
-                enabledPayments.add(new EnabledPayment(context.getString(R.string.payment_bca_click), null));
-            } else if (name.equals(context.getString(R.string.payment_klik_bca))) {
-                enabledPayments.add(new EnabledPayment(context.getString(R.string.payment_klik_bca), null));
-            } else if (name.equals(context.getString(R.string.payment_epay_bri))) {
-                enabledPayments.add(new EnabledPayment(context.getString(R.string.payment_epay_bri), null));
-            } else if (name.equals(context.getString(R.string.payment_cimb_clicks))) {
-                enabledPayments.add(new EnabledPayment(context.getString(R.string.payment_cimb_clicks), null));
-            } else if (name.equals(context.getString(R.string.payment_mandiri_clickpay))) {
-                enabledPayments.add(new EnabledPayment(context.getString(R.string.payment_mandiri_clickpay), null));
-            } else if (name.equals(context.getString(R.string.payment_indomaret))) {
-                enabledPayments.add(new EnabledPayment(context.getString(R.string.payment_indomaret), context.getString(R.string.enabled_payment_category_cstore)));
-            } else if (name.equals(context.getString(R.string.payment_kioson))) {
-                enabledPayments.add(new EnabledPayment(context.getString(R.string.payment_kioson), context.getString(R.string.enabled_payment_category_cstore)));
-            } else if (name.equals(context.getString(R.string.payment_telkomsel_cash))) {
-                enabledPayments.add(new EnabledPayment(context.getString(R.string.payment_telkomsel_cash), null));
-            } else if (name.equals(context.getString(R.string.payment_mandiri_ecash))) {
-                enabledPayments.add(new EnabledPayment(context.getString(R.string.payment_mandiri_ecash), null));
-            } else if (name.equals(context.getString(R.string.payment_indosat_dompetku))) {
-                enabledPayments.add(new EnabledPayment(context.getString(R.string.payment_indosat_dompetku), null));
-            } else if (name.equals(context.getString(R.string.payment_xl_tunai))) {
-                enabledPayments.add(new EnabledPayment(context.getString(R.string.payment_xl_tunai), null));
-            } else if (name.equals(context.getString(R.string.payment_gci))) {
-                enabledPayments.add(new EnabledPayment(context.getString(R.string.payment_gci), null));
-            } else if (name.equals(context.getString(R.string.payment_bca_va))) {
-                enabledPayments.add(new EnabledPayment(context.getString(R.string.payment_bca_va), context.getString(R.string.payment_bank_transfer)));
-            } else if (name.equals(context.getString(R.string.payment_permata_va))) {
-                enabledPayments.add(new EnabledPayment(context.getString(R.string.payment_permata_va), context.getString(R.string.payment_bank_transfer)));
-            } else if (name.equals(context.getString(R.string.payment_all_va))) {
-                enabledPayments.add(new EnabledPayment(context.getString(R.string.payment_all_va), context.getString(R.string.payment_bank_transfer)));
-            } else if (name.equals(context.getString(R.string.payment_mandiri_bill_payment))) {
-                enabledPayments.add(new EnabledPayment(context.getString(R.string.payment_mandiri_bill_payment), context.getString(R.string.payment_bank_transfer)));
-            } else if (name.equals(context.getString(R.string.payment_bni_va))) {
-                enabledPayments.add(new EnabledPayment(context.getString(R.string.payment_bni_va), context.getString(R.string.payment_bank_transfer)));
-            } else if (name.equals(context.getString(R.string.payment_danamon_online))) {
-                enabledPayments.add(new EnabledPayment(context.getString(R.string.payment_danamon_online), null));
-            }
-        }
-        return enabledPayments;
-    }
 
     public static BankTransfer createBankTransferModel(Context context, String type, String status) {
         BankTransfer bankTransfer = null;
