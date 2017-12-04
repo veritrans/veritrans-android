@@ -101,12 +101,6 @@ public class GoPayStatusActivity extends BasePaymentActivity {
                 });
                 loadQrCode(qrCodeUrl, qrCodeContainer);
 
-                //set merchant name
-                MidtransSDK midtransSDK = MidtransSDK.getInstance();
-                if (midtransSDK != null && TextUtils.isEmpty(midtransSDK.getMerchantName())) {
-
-                }
-
                 buttonPrimary.setText(getString(R.string.done));
                 buttonPrimary.setOnClickListener(new OnClickListener() {
                     @Override
