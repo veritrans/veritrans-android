@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewStub;
@@ -18,10 +19,12 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.midtrans.sdk.corekit.core.Logger;
+import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
+import com.midtrans.sdk.uikit.widgets.BoldTextView;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
@@ -38,10 +41,11 @@ public class GoPayStatusActivity extends BasePaymentActivity {
 
     private FancyButton buttonPrimary;
     private SemiBoldTextView textTitle;
+    private BoldTextView merchantName;
     private ImageView qrCodeContainer;
     private FancyButton qrCodeRefresh;
 
-    private boolean isTablet, isInstructionShown;
+    private boolean isTablet, isInstructionShown = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,6 +69,7 @@ public class GoPayStatusActivity extends BasePaymentActivity {
                 showProgressLayout();
 
                 final LinearLayout instructionLayout = (LinearLayout) findViewById(R.id.gopay_instruction_layout);
+                merchantName = (BoldTextView) findViewById(R.id.gopay_merchant_name);
                 final DefaultTextView instructionToggle = (DefaultTextView) findViewById(R.id.gopay_instruction_toggle);
                 instructionToggle.setOnClickListener(new OnClickListener() {
                     @Override
@@ -95,6 +100,12 @@ public class GoPayStatusActivity extends BasePaymentActivity {
                 });
                 loadQrCode(qrCodeUrl, qrCodeContainer);
 
+                //set merchant name
+                MidtransSDK midtransSDK = MidtransSDK.getInstance();
+                if (midtransSDK != null && TextUtils.isEmpty(midtransSDK.getMerchantName())) {
+
+                }
+
                 buttonPrimary.setText(getString(R.string.done));
                 buttonPrimary.setOnClickListener(new OnClickListener() {
                     @Override
@@ -105,16 +116,18 @@ public class GoPayStatusActivity extends BasePaymentActivity {
             } else {
                 //process deeplink
                 buttonPrimary.setText(getString(R.string.gopay_confirm_button));
-                buttonPrimary.setOnClickListener(new OnClickListener() {
+                OnClickListener listener = new OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Toast.makeText(GoPayStatusActivity.this, getString(R.string.redirecting_to_gopay), Toast.LENGTH_SHORT)
                             .show();
-                        // TODO: 29/11/2017 replace with real deeplink, this is just for demo purpose of overall flow
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("gojek://gopay/merchanttransfer?tref=Uch69wsg0y\\u0026amount=20000\\u0026activity=GP:RR"));
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(response.getDeeplinkUrl()));
                         startActivity(intent);
                     }
-                });
+                };
+                buttonPrimary.setOnClickListener(listener);
+
+                findViewById(R.id.gopay_logo_layout).setOnClickListener(listener);
             }
             buttonPrimary.setTextBold();
         }
@@ -149,6 +162,7 @@ public class GoPayStatusActivity extends BasePaymentActivity {
                     FrameLayout frameLayout = (FrameLayout) findViewById(R.id.gopay_qr_code_frame);
                     frameLayout.setBackgroundColor(getResources().getColor(R.color.light_gray));
                     qrCodeRefresh.setVisibility(View.VISIBLE);
+                    setMerchantName(false);
                     hideProgressLayout();
                     Toast.makeText(GoPayStatusActivity.this, getString(R.string.error_qr_code), Toast.LENGTH_SHORT)
                         .show();
@@ -160,6 +174,7 @@ public class GoPayStatusActivity extends BasePaymentActivity {
                     FrameLayout frameLayout = (FrameLayout) findViewById(R.id.gopay_qr_code_frame);
                     frameLayout.setBackgroundColor(0);
                     qrCodeRefresh.setVisibility(View.GONE);
+                    setMerchantName(true);
                     hideProgressLayout();
                     return false;
                 }
@@ -202,6 +217,20 @@ public class GoPayStatusActivity extends BasePaymentActivity {
             dialog.show();
         } catch (Exception e) {
             Logger.e(TAG, "showDialog:" + e.getMessage());
+        }
+    }
+
+    private void setMerchantName(boolean isQrLoaded) {
+        if (isQrLoaded) {
+            MidtransSDK midtransSDK = MidtransSDK.getInstance();
+            if (midtransSDK != null && !TextUtils.isEmpty(midtransSDK.getMerchantName())) {
+                merchantName.setText(midtransSDK.getMerchantName());
+                merchantName.setVisibility(View.VISIBLE);
+            } else {
+                merchantName.setVisibility(View.GONE);
+            }
+        } else {
+            merchantName.setVisibility(View.GONE);
         }
     }
 }

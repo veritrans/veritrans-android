@@ -9,10 +9,9 @@
     <FrameLayout
         android:id="@+id/gopay_qr_code_frame"
         android:layout_width="@dimen/qr_code_size"
-        android:layout_height="@dimen/qr_code_size"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/thirtytwo_dp"
-        android:padding="@dimen/sixteen_dp">
+        android:layout_height= "@dimen/qr_code_size"
+        android:layout_marginTop="@dimen/sixteen_dp"
+        android:layout_gravity="center_horizontal">
 
         <ImageView
             android:id="@+id/gopay_qr_code"
@@ -32,11 +31,19 @@
             tools:visibility="visible" />
     </FrameLayout>
 
+    <com.midtrans.sdk.uikit.widgets.BoldTextView
+        android:id="@+id/gopay_merchant_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/twenty_two_sp"
+        android:layout_margin="@dimen/eight_dp"
+        android:layout_gravity="center_horizontal" />
+
     <com.midtrans.sdk.uikit.widgets.DefaultTextView
         android:id="@+id/gopay_instruction_toggle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableRight="@drawable/ic_chevron_down"
+        android:drawableRight="@drawable/ic_chevron_up"
         android:padding="@dimen/sixteen_dp"
         android:text="@string/instruction"
         android:textColor="@color/dark_gray"
@@ -46,8 +53,7 @@
         android:id="@+id/gopay_instruction_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"

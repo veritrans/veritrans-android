@@ -141,6 +141,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         setContentView(R.layout.activity_payments_method);
         isCreditCardOnly = getIntent().getBooleanExtra(UserDetailsActivity.CREDIT_CARD_ONLY, false);
         isBankTransferOnly = getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_ONLY, false);
+        isGopay = getIntent().getBooleanExtra(UserDetailsActivity.GO_PAY, false);
         isBCAKlikpay = getIntent().getBooleanExtra(UserDetailsActivity.BCA_KLIKPAY, false);
         isKlikBCA = getIntent().getBooleanExtra(UserDetailsActivity.KLIK_BCA, false);
         isMandiriClickPay = getIntent().getBooleanExtra(UserDetailsActivity.MANDIRI_CLICKPAY, false);

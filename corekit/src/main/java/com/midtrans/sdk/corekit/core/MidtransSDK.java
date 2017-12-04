@@ -442,6 +442,8 @@ public class MidtransSDK {
             startBniBankTransferUIFlow(context, snapToken);
         } else if (paymentMethod.equals(PaymentMethod.BANK_TRANSFER_OTHER)) {
             startOtherBankTransferUIFlow(context, snapToken);
+        } else if (paymentMethod.equals(PaymentMethod.GO_PAY)) {
+            startGoPayUIFlow(context, snapToken);
         } else if (paymentMethod.equals(PaymentMethod.BCA_KLIKPAY)) {
             startBCAKlikPayUIFlow(context, snapToken);
         } else if (paymentMethod.equals(PaymentMethod.KLIKBCA)) {
@@ -704,6 +706,31 @@ public class MidtransSDK {
                 transactionRequest.enableUi(true);
                 if (uiflow != null) {
                     uiflow.runOtherBankTransfer(context, snapToken);
+                }
+            }
+
+        } else {
+            if (transactionRequest == null) {
+                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
+            } else {
+                Logger.e(TAG, context.getString(R.string.error_already_running));
+            }
+        }
+    }
+
+    /**
+     * This will start actual execution of GO-PAY UI Flow.
+     *
+     * @param context   activity context.
+     * @param snapToken checkout token
+     */
+    private void startGoPayUIFlow(@NonNull Context context, String snapToken) {
+        if (transactionRequest != null && !isRunning()) {
+
+            if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
+                transactionRequest.enableUi(true);
+                if (uiflow != null) {
+                    uiflow.runGoPay(context, snapToken);
                 }
             }
 
