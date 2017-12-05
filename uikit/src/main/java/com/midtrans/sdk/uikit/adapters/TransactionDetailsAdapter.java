@@ -25,7 +25,11 @@ public class TransactionDetailsAdapter extends RecyclerView.Adapter<RecyclerView
     private List<ItemDetails> itemDetails;
 
     public TransactionDetailsAdapter(List<ItemDetails> itemDetails) {
-        this.itemDetails = itemDetails;
+        this.itemDetails = new ArrayList<>();
+        if (itemDetails != null) {
+            this.itemDetails.addAll(itemDetails);
+        }
+
         if (this.itemDetails.get(0) != null) {
             this.itemDetails.add(0, null);
         }

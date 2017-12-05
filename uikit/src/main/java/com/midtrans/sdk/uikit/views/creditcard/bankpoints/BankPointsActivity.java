@@ -238,6 +238,6 @@ public class BankPointsActivity extends BasePaymentActivity {
     @Override
     public void onBackPressed() {
         setResult(RESULT_CANCELED);
-        finish();
+        super.onBackPressed();
     }
 }
