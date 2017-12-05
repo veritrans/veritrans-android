@@ -19,7 +19,7 @@ import com.midtrans.sdk.uikit.fragments.InstructionAtmBniFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionBCAFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionBCAKlikFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionBCAMobileFragment;
-import com.midtrans.sdk.uikit.fragments.InstructionBniInternetFragment;
+import com.midtrans.sdk.uikit.fragments.InstructionBniVaFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionBniMobileFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionMandiriFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionMandiriInternetFragment;
@@ -75,7 +75,7 @@ public class InstructionFragmentPagerAdapter extends FragmentStatePagerAdapter {
             } else if (position == 1) {
                 fragment = new InstructionBniMobileFragment();
             }else{
-                fragment = new InstructionBniInternetFragment();
+                fragment = new InstructionBniVaFragment();
             }
         } else {
             if (position == 0) {
