@@ -15,9 +15,9 @@ public class GopayPaymentPresenter extends BasePaymentPresenter<GoPayPaymentView
         this.view = view;
     }
 
-    public void startGoPayPayment(String phoneNumber) {
+    public void startGoPayPayment() {
         String snapToken = getMidtransSDK().readAuthenticationToken();
-        getMidtransSDK().paymentUsingGoPay(snapToken, phoneNumber, new TransactionCallback() {
+        getMidtransSDK().paymentUsingGoPay(snapToken, new TransactionCallback() {
             @Override
             public void onSuccess(TransactionResponse response) {
                 transactionResponse = response;
@@ -36,5 +36,4 @@ public class GopayPaymentPresenter extends BasePaymentPresenter<GoPayPaymentView
             }
         });
     }
-
 }

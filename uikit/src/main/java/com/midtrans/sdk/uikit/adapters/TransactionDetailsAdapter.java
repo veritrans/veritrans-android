@@ -5,9 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import com.midtrans.sdk.corekit.models.ItemDetails;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,10 +25,40 @@ public class TransactionDetailsAdapter extends RecyclerView.Adapter<RecyclerView
     private List<ItemDetails> itemDetails;
 
     public TransactionDetailsAdapter(List<ItemDetails> itemDetails) {
-        this.itemDetails = itemDetails;
+        this.itemDetails = new ArrayList<>();
+        if (itemDetails != null) {
+            this.itemDetails.addAll(itemDetails);
+        }
+
         if (this.itemDetails.get(0) != null) {
             this.itemDetails.add(0, null);
         }
+    }
+
+    public void addItemDetails(ItemDetails newItem) {
+        if (itemDetails == null) {
+            itemDetails = new ArrayList<>();
+        }
+
+        if (newItem != null) {
+            ItemDetails currentItem = findItemDetailByName(newItem.getName());
+            if (currentItem == null) {
+                itemDetails.add(newItem);
+            } else {
+                currentItem.setPrice(newItem.getPrice());
+            }
+
+            notifyDataSetChanged();
+        }
+    }
+
+    private ItemDetails findItemDetailByName(String name) {
+        for (ItemDetails item : itemDetails) {
+            if (item != null && item.getName().equals(name)) {
+                return item;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -52,7 +85,7 @@ public class TransactionDetailsAdapter extends RecyclerView.Adapter<RecyclerView
                 ItemDetails item = itemDetails.get(position);
                 itemDetailsViewHolder.item.setText(item.getName());
                 itemDetailsViewHolder.quantity.setText(item.getQuantity() == 0 ? "" : String.valueOf(item.getQuantity()));
-                itemDetailsViewHolder.price.setText("Rp " + Utils.getFormattedAmount(item.getPrice()*item.getQuantity()));
+                itemDetailsViewHolder.price.setText("Rp " + Utils.getFormattedAmount(item.getPrice() * item.getQuantity()));
                 if (position % 2 != 0) {
                     itemDetailsViewHolder.itemView.setBackgroundResource(R.color.light_gray);
                 }

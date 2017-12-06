@@ -64,6 +64,12 @@ deployment:
         commands:
             - ./gradlew :demo:assembleDevelopmentRelease :demo:crashlyticsUploadDistributionDevelopmentRelease
 
+    uat:
+        branch: uat
+        owner: veritrans
+        commands:
+            - ./gradlew :demo:assembleDevelopmentRelease :demo:crashlyticsUploadDistributionDevelopmentRelease
+
 
     bump-hotfix:
       branch: release-hotfix

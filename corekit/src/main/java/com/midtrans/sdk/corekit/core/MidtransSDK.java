@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
-
 import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.BuildConfig;
 import com.midtrans.sdk.corekit.R;
@@ -43,7 +42,6 @@ import com.midtrans.sdk.corekit.models.snap.payment.IndosatDompetkuPaymentReques
 import com.midtrans.sdk.corekit.models.snap.payment.NewMandiriClickPayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.TelkomselEcashPaymentRequest;
 import com.midtrans.sdk.corekit.utilities.Utils;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -444,6 +442,8 @@ public class MidtransSDK {
             startBniBankTransferUIFlow(context, snapToken);
         } else if (paymentMethod.equals(PaymentMethod.BANK_TRANSFER_OTHER)) {
             startOtherBankTransferUIFlow(context, snapToken);
+        } else if (paymentMethod.equals(PaymentMethod.GO_PAY)) {
+            startGoPayUIFlow(context, snapToken);
         } else if (paymentMethod.equals(PaymentMethod.BCA_KLIKPAY)) {
             startBCAKlikPayUIFlow(context, snapToken);
         } else if (paymentMethod.equals(PaymentMethod.KLIKBCA)) {
@@ -706,6 +706,31 @@ public class MidtransSDK {
                 transactionRequest.enableUi(true);
                 if (uiflow != null) {
                     uiflow.runOtherBankTransfer(context, snapToken);
+                }
+            }
+
+        } else {
+            if (transactionRequest == null) {
+                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
+            } else {
+                Logger.e(TAG, context.getString(R.string.error_already_running));
+            }
+        }
+    }
+
+    /**
+     * This will start actual execution of GO-PAY UI Flow.
+     *
+     * @param context   activity context.
+     * @param snapToken checkout token
+     */
+    private void startGoPayUIFlow(@NonNull Context context, String snapToken) {
+        if (transactionRequest != null && !isRunning()) {
+
+            if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
+                transactionRequest.enableUi(true);
+                if (uiflow != null) {
+                    uiflow.runGoPay(context, snapToken);
                 }
             }
 
@@ -1654,10 +1679,9 @@ public class MidtransSDK {
     /**
      * It will run backround task to charge payment using GoPay
      *
-     * @param phoneNumber
      * @param snapToken
      */
-    public void paymentUsingGoPay(String snapToken, String phoneNumber, TransactionCallback callback) {
+    public void paymentUsingGoPay(String snapToken, TransactionCallback callback) {
         if (callback == null) {
             Logger.e(TAG, context.getString(R.string.callback_unimplemented));
             return;
@@ -1665,7 +1689,7 @@ public class MidtransSDK {
 
         if (isNetworkAvailable()) {
             isRunning = true;
-            mSnapTransactionManager.paymentUsingGoPay(snapToken, SdkUtil.getGoPayPaymentRequest(phoneNumber), callback);
+            mSnapTransactionManager.paymentUsingGoPay(snapToken, SdkUtil.getGoPayPaymentRequest(), callback);
         } else {
             isRunning = false;
             callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));

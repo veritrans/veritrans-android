@@ -43,7 +43,7 @@ public class CustomVaInputDialogFragment extends DialogFragment {
     private boolean isSubcompany;
 
     public static CustomVaInputDialogFragment newInstance(String title, int color,
-        CustomVaDialogListener listener) {
+                                                          CustomVaDialogListener listener) {
         CustomVaInputDialogFragment fragment = new CustomVaInputDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable(ARG_LISTENER, listener);
@@ -65,7 +65,7 @@ public class CustomVaInputDialogFragment extends DialogFragment {
     }
 
     public static CustomVaInputDialogFragment newInstance(String number, String title, int color,
-        CustomVaDialogListener listener) {
+                                                          CustomVaDialogListener listener) {
         CustomVaInputDialogFragment fragment = new CustomVaInputDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable(ARG_LISTENER, listener);
@@ -77,7 +77,7 @@ public class CustomVaInputDialogFragment extends DialogFragment {
     }
 
     public static CustomVaInputDialogFragment newInstance(String number, String title, int color, boolean isSubcompany,
-        CustomVaDialogListener listener) {
+                                                          CustomVaDialogListener listener) {
         CustomVaInputDialogFragment fragment = new CustomVaInputDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable(ARG_LISTENER, listener);
@@ -92,7 +92,7 @@ public class CustomVaInputDialogFragment extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-        @Nullable Bundle savedInstanceState) {
+                             @Nullable Bundle savedInstanceState) {
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         return inflater.inflate(R.layout.fragment_custom_bca_va, container, false);
     }
@@ -142,6 +142,12 @@ public class CustomVaInputDialogFragment extends DialogFragment {
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String vaNumber = customVAField.getText().toString();
+                if (TextUtils.isEmpty(vaNumber)) {
+                    customVaContainer.setError(getString(R.string.error_empty));
+                    return;
+                }
+
                 dismiss();
                 if (listener != null) {
                     listener.onOkClicked(customVAField.getText().toString());

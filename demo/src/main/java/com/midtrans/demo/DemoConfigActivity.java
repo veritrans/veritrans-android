@@ -2929,7 +2929,13 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
 
         LocalDataHandler.saveObject(getString(R.string.user_details), userDetail);
         if (customPermataVaEnabledSelection.isChecked()) {
-            String vaNumber = customPermataVaEnabledSelection.getText().toString().split(" - ")[1];
+            String vaNumber = "";
+            try {
+                vaNumber = customPermataVaEnabledSelection.getText().toString().split(" - ")[1];
+
+            } catch (RuntimeException e) {
+
+            }
             transactionRequestNew.setPermataVa(
                     new BankTransferRequestModel(vaNumber)
             );
@@ -2939,7 +2945,13 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         if (customBcaVaEnabledSelection.isChecked()) {
             // set free text on BCA VA Payment
             FreeText freeText = createSampleBcaFreeText();
-            String vaNumber = customBcaVaEnabledSelection.getText().toString().split(" - ")[1];
+            String vaNumber = "";
+            try {
+                vaNumber = customBcaVaEnabledSelection.getText().toString().split(" - ")[1];
+
+            } catch (RuntimeException e) {
+
+            }
             requestModel = new BcaBankTransferRequestModel(vaNumber, freeText);
             if (subCompanyBcaVaDisabledSelection.isChecked()) {
                 transactionRequestNew.setBcaVa(requestModel);
@@ -2951,12 +2963,25 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             if (requestModel == null) {
                 requestModel = new BcaBankTransferRequestModel();
             }
-            requestModel.setSubCompanyCode(subCompanyBcaVaEnabledSelection.getText().toString().split(" - ")[1]);
+
+            String subCompanyCode = "";
+            try {
+                subCompanyCode = subCompanyBcaVaEnabledSelection.getText().toString().split(" - ")[1];
+            } catch (RuntimeException e) {
+
+            }
+
+            requestModel.setSubCompanyCode(subCompanyCode);
             transactionRequestNew.setBcaVa(requestModel);
         }
 
         if (customBniVaEnabledSelection.isChecked()) {
-            String vaNumber = customBniVaEnabledSelection.getText().toString().split(" - ")[1];
+            String vaNumber = "";
+            try {
+                vaNumber = customBniVaEnabledSelection.getText().toString().split(" - ")[1];
+            } catch (RuntimeException e) {
+
+            }
             transactionRequestNew.setBniVa(
                     new BankTransferRequestModel(vaNumber)
             );
