@@ -54,7 +54,6 @@ public class UserDetailsActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initIssueTracker();
-//        initRealIssueTracker();
 
         String invalidMessage = getInvalidPropertiesMessage();
         if (!TextUtils.isEmpty(invalidMessage)) {

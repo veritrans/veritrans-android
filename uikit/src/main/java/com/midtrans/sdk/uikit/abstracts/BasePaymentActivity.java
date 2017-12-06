@@ -53,6 +53,9 @@ public abstract class BasePaymentActivity extends BaseActivity {
     protected boolean isDetailShown = false;
     private boolean hasMerchantLogo = false;
 
+    protected BoldTextView textTotalAmount;
+    protected TransactionDetailsAdapter transactionDetailAdapter;
+
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
@@ -76,7 +79,7 @@ public abstract class BasePaymentActivity extends BaseActivity {
     private void initTotalAmount() {
         final Transaction transaction = MidtransSDK.getInstance().getTransaction();
         if (transaction.getTransactionDetails() != null) {
-            BoldTextView textTotalAmount = (BoldTextView) findViewById(R.id.text_amount);
+            textTotalAmount = (BoldTextView) findViewById(R.id.text_amount);
             if (textTotalAmount != null) {
                 String totalAmount = getString(R.string.prefix_money, Utils.getFormattedAmount(transaction.getTransactionDetails().getAmount()));
                 textTotalAmount.setText(totalAmount);
@@ -108,8 +111,8 @@ public abstract class BasePaymentActivity extends BaseActivity {
         if (recyclerView != null) {
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            TransactionDetailsAdapter adapter = new TransactionDetailsAdapter(details);
-            recyclerView.setAdapter(adapter);
+             transactionDetailAdapter = new TransactionDetailsAdapter(details);
+            recyclerView.setAdapter(transactionDetailAdapter);
         }
     }
 
@@ -186,7 +189,7 @@ public abstract class BasePaymentActivity extends BaseActivity {
 
     protected void adjustToolbarSize(Toolbar toolbar) {
         if (hasMerchantLogo) {
-            AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams)toolbar.getLayoutParams();
+            AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
             params.height = params.height + (int) getResources().getDimension(R.dimen.toolbar_expansion_size);
             toolbar.setLayoutParams(params);
         }
