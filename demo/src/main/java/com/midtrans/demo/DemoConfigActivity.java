@@ -1254,7 +1254,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         if (listViewModel != null
                 && listViewModel.getEnabledPayments() != null
                 && !listViewModel.getEnabledPayments().isEmpty()) {
-            enabledPayments = mapPaymentMethods(listViewModel.getEnabledPayments());
+            enabledPayments = AppUtils.mapPaymentMethods(this, listViewModel.getEnabledPayments());
             paymentChannelsTitle.setText(R.string.payment_channels_selected);
             if (isContainEChannel(enabledPayments)) {
                 paymentChannelsSelectedSelection.setText(getString(R.string.payment_channels_selection_show_selected_format, enabledPayments.size() - 1));
@@ -1262,7 +1262,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 paymentChannelsSelectedSelection.setText(getString(R.string.payment_channels_selection_show_selected_format, enabledPayments.size()));
             }
             paymentChannelsSelectedSelection.setChecked(true);
-            initEditPaymentButton(PaymentMethods.getPaymentList(DemoConfigActivity.this, mapEnabledPayments()));
+            initEditPaymentButton(AppUtils.getPaymentList(DemoConfigActivity.this, mapEnabledPayments()));
         } else {
             paymentChannelsTitle.setText(R.string.payment_channels_show_all);
             paymentChannelsAllSelection.setText(R.string.payment_channels_selection_show_all);
@@ -1274,6 +1274,9 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 if (checked) {
+                    List<EnabledPayment> enabledPayments = AppUtils.getDefaultPaymentList();
+                    DemoConfigActivity.this.enabledPayments = AppUtils.mapPaymentMethods(DemoConfigActivity.this, enabledPayments);
+                    resetSelectedPaymentChannels();
                     paymentChannelsTitle.setText(R.string.payment_channels_show_all);
                 }
             }
@@ -1295,7 +1298,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                                 DemoConfigActivity.this.enabledPayments = enabledPayments;
                                 paymentChannelsTitle.setText(R.string.payment_channels_selected);
                                 paymentChannelsSelectedSelection.setText(getString(R.string.payment_channels_selection_show_selected_format, enabledPayments.size()));
-                                initEditPaymentButton(PaymentMethods.getPaymentList(DemoConfigActivity.this, mapEnabledPayments()));
+                                initEditPaymentButton(AppUtils.getPaymentList(DemoConfigActivity.this, mapEnabledPayments()));
 
                             }
 
@@ -1303,6 +1306,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                             public void onSelectAll(List<SelectPaymentMethodViewModel> enabledPayments) {
                                 paymentChannelsTitle.setText(R.string.payment_channels_show_all);
                                 paymentChannelsAllSelection.setChecked(true);
+                                resetSelectedPaymentChannels();
                                 disableEditPaymentChannels();
                             }
                         });
@@ -1338,19 +1342,24 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                         DemoConfigActivity.this.enabledPayments = enabledPayments;
                         paymentChannelsTitle.setText(R.string.payment_channels_selected);
                         paymentChannelsSelectedSelection.setText(getString(R.string.payment_channels_selection_show_selected_format, enabledPayments.size()));
-                        initEditPaymentButton(PaymentMethods.getPaymentList(DemoConfigActivity.this, mapEnabledPayments()));
+                        initEditPaymentButton(AppUtils.getPaymentList(DemoConfigActivity.this, mapEnabledPayments()));
                     }
 
                     @Override
                     public void onSelectAll(List<SelectPaymentMethodViewModel> enabledPayments) {
                         paymentChannelsTitle.setText(R.string.payment_channels_show_all);
                         paymentChannelsAllSelection.setChecked(true);
+                        resetSelectedPaymentChannels();
                         disableEditPaymentChannels();
                     }
                 });
                 fragment.show(getSupportFragmentManager(), "");
             }
         });
+    }
+
+    private void resetSelectedPaymentChannels() {
+        paymentChannelsSelectedSelection.setText(getString(R.string.payment_channels_selection_show_selected));
     }
 
     private void disableEditPaymentChannels() {
@@ -2279,7 +2288,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         if (paymentChannelsAllSelection.isChecked()) {
             LocalDataHandler.saveString(PAYMENT_CHANNELS_TYPE, "{}");
         } else {
-            LocalDataHandler.saveObject(PAYMENT_CHANNELS_TYPE, new SelectPaymentMethodListViewModel(PaymentMethods.getPaymentList(this, mapEnabledPayments())));
+            LocalDataHandler.saveObject(PAYMENT_CHANNELS_TYPE, new SelectPaymentMethodListViewModel(AppUtils.getPaymentList(this, mapEnabledPayments())));
         }
     }
 
@@ -2314,6 +2323,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     }
 
     private void saveBniVaNumber() {
+
         String vaNumber = "";
 
         try {
@@ -3148,8 +3158,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private List<String> initActivePaymentMethods() {
         List<String> mappedPayments = new ArrayList<>();
 
-        List<EnabledPayment> defaultPayment = PaymentMethods.getDefaultPaymentList(this);
-        enabledPayments = mapPaymentMethods(defaultPayment);
+        List<EnabledPayment> defaultPayment = AppUtils.getDefaultPaymentList();
+        enabledPayments = AppUtils.mapPaymentMethods(this, defaultPayment);
 
         if (enabledPayments != null) {
             for (SelectPaymentMethodViewModel model : enabledPayments) {
@@ -3167,15 +3177,4 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         return mappedPayments;
     }
 
-    private List<SelectPaymentMethodViewModel> mapPaymentMethods(List<EnabledPayment> enabledPayments) {
-        List<SelectPaymentMethodViewModel> viewModels = new ArrayList<>();
-        for (int i = 0; i < enabledPayments.size(); i++) {
-            EnabledPayment enabledPayment = enabledPayments.get(i);
-            PaymentMethodsModel model = PaymentMethods.getMethods(this, enabledPayment.getType(), enabledPayment.getStatus());
-            if (model != null) {
-                viewModels.add(new SelectPaymentMethodViewModel(model.getName(), enabledPayment.getType(), true));
-            }
-        }
-        return viewModels;
-    }
 }

@@ -18,6 +18,7 @@ public class PaymentType {
     public static final String BCA_VA = "bca_va";
     public static final String BNI_VA = "bni_va";
     public static final String ALL_VA = "other_va";
+    public static final String E_CHANNEL = "echannel";
     public static final String KLIK_BCA = "bca_klikbca";
     public static final String BCA_KLIKPAY = "bca_klikpay";
     public static final String CIMB_CLICKS = "cimb_clicks";
@@ -27,7 +28,6 @@ public class PaymentType {
     public static final String XL_TUNAI = "xl_tunai";
     public static final String BBM_MONEY = "bbm_money";
     public static final String MANDIRI_ECASH = "mandiri_ecash";
-    public static final String E_CHANNEL = "echannel";
     public static final String INDOMARET = "indomaret";
     public static final String INDOSAT_DOMPETKU = "indosat_dompetku";
     public static final String KIOSON = "kioson";
