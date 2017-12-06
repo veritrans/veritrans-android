@@ -7,20 +7,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.text.TextUtils;
 import android.view.ViewGroup;
+
 import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.fragments.InstructionAltoFragment;
-import com.midtrans.sdk.uikit.fragments.InstructionAtmBniFragment;
-import com.midtrans.sdk.uikit.fragments.InstructionBCAFragment;
-import com.midtrans.sdk.uikit.fragments.InstructionBCAKlikFragment;
-import com.midtrans.sdk.uikit.fragments.InstructionBCAMobileFragment;
-import com.midtrans.sdk.uikit.fragments.InstructionBniVaFragment;
-import com.midtrans.sdk.uikit.fragments.InstructionBniMobileFragment;
-import com.midtrans.sdk.uikit.fragments.InstructionMandiriFragment;
-import com.midtrans.sdk.uikit.fragments.InstructionMandiriInternetFragment;
-import com.midtrans.sdk.uikit.fragments.InstructionOtherBankFragment;
-import com.midtrans.sdk.uikit.fragments.InstructionPermataFragment;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
+import com.midtrans.sdk.uikit.views.banktransfer.instruction.InstructionBcaVaFragment;
+import com.midtrans.sdk.uikit.views.banktransfer.instruction.InstructionBniVaFragment;
+import com.midtrans.sdk.uikit.views.banktransfer.instruction.InstructionMandiriVaFragment;
+import com.midtrans.sdk.uikit.views.banktransfer.instruction.InstructionOtherBankFragment;
+import com.midtrans.sdk.uikit.views.banktransfer.instruction.InstructionPermataVaFragment;
 import com.midtrans.sdk.uikit.widgets.MagicViewPager;
 
 /**
@@ -45,49 +40,27 @@ public class InstructionPagerAdapter extends FragmentStatePagerAdapter {
         Fragment fragment;
 
         if (TextUtils.isEmpty(paymentType)) {
-            fragment = new InstructionAltoFragment();
+            fragment = InstructionOtherBankFragment.newInstance(UiKitConstants.INSTRUCTION_THIRD_POSITION);
         } else {
             switch (paymentType) {
                 case PaymentType.BCA_VA:
-                    if (position == 0) {
-                        fragment = new InstructionBCAFragment();
-                    } else if (position == 1) {
-                        fragment = new InstructionBCAKlikFragment();
-                    } else {
-                        fragment = new InstructionBCAMobileFragment();
-                    }
+                    fragment = InstructionBcaVaFragment.newInstance(position);
                     break;
                 case PaymentType.PERMATA_VA:
-                    if (position == 0) {
-                        fragment = new InstructionPermataFragment();
-                    } else {
-                        fragment = InstructionOtherBankFragment.newInstance(UiKitConstants.ALTO);
-                    }
+                    fragment = InstructionPermataVaFragment.newInstance(position);
                     break;
                 case PaymentType.E_CHANNEL:
-                    if (position == 0) {
-                        fragment = new InstructionMandiriFragment();
-
-                    } else {
-                        fragment = new InstructionMandiriInternetFragment();
-                    }
+                    fragment = InstructionMandiriVaFragment.newInstance(position);
                     break;
                 case PaymentType.BNI_VA:
-                    if (position == 0) {
-                        fragment = new InstructionAtmBniFragment();
-
-                    } else if (position == 1) {
-                        fragment = new InstructionBniMobileFragment();
-
-                    } else {
-                        fragment = new InstructionBniVaFragment();
-                    }
+                    fragment = InstructionBniVaFragment.newInstance(position);
                     break;
                 default:
                     fragment = InstructionOtherBankFragment.newInstance(position);
                     break;
             }
         }
+
         return fragment;
     }
 
@@ -170,6 +143,7 @@ public class InstructionPagerAdapter extends FragmentStatePagerAdapter {
 
     /**
      * Get payment button text for other ATM network such as ATM Bersama, Prima, and Alto
+     *
      * @param position to recognize which text should be displayed, -1 for default text
      */
     public String getPayButtonText(int position) {

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.views.banktransfer.instruction.InstructionBniVaFragment;
 
 
 /**
@@ -17,6 +18,8 @@ import com.midtrans.sdk.uikit.R;
  */
 public class InstructionMandiriFragment extends Fragment {
 
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
@@ -25,4 +28,6 @@ public class InstructionMandiriFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_instruction_mandiri, container, false);
         return view;
     }
+
+
 }

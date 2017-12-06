@@ -1,4 +1,4 @@
-package com.midtrans.sdk.uikit.fragments;
+package com.midtrans.sdk.uikit.views.banktransfer.instruction;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -41,6 +41,7 @@ public class InstructionOtherBankFragment extends Fragment implements OnClickLis
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
         Bundle savedInstanceState) {
+
         if (getArguments() != null) {
             int fragmentCode = getArguments().getInt(CODE);
             initValue(fragmentCode);

@@ -301,6 +301,6 @@
             android:layout_marginTop="@dimen/sixteen_dp"
             app:fb_iconPaddingRight="@dimen/four_dp"
             app:fb_iconResource="@drawable/ic_view"
-            app:fb_text="@string/show_instruction" /> />
+            app:fb_text="@string/show_instruction" />
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

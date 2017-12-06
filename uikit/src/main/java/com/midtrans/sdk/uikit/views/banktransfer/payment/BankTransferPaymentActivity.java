@@ -27,8 +27,8 @@ import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
 import com.midtrans.sdk.uikit.adapters.InstructionPagerAdapter;
 import com.midtrans.sdk.uikit.adapters.ListBankAdapter;
 import com.midtrans.sdk.uikit.fragments.BankTransferFragment;
-import com.midtrans.sdk.uikit.fragments.InstructionOtherBankFragment;
-import com.midtrans.sdk.uikit.fragments.InstructionOtherBankFragment.OnInstructionShownListener;
+import com.midtrans.sdk.uikit.views.banktransfer.instruction.InstructionOtherBankFragment;
+import com.midtrans.sdk.uikit.views.banktransfer.instruction.InstructionOtherBankFragment.OnInstructionShownListener;
 import com.midtrans.sdk.uikit.models.MessageInfo;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
@@ -491,18 +491,7 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
 
     @Override
     public void onInstructionShown(boolean isShown, int fragmentCode) {
-        if (flags != null) {
-            if (flags.length == 3) { //for all ATM network
-                flags[fragmentCode] = isShown;
-            } else if (flags.length == 2) { //for Permata
-                flags[fragmentCode - 1] = isShown; //Alto code is 2, while in Permata VA its index is 1
-            }
-            if (isShown) {
-                showEmailForm();
-            } else {
-                hideEmailForm();
-            }
-        }
+        //do nothing
     }
 
     @Override

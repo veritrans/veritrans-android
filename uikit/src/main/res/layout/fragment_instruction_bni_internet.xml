@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
@@ -12,10 +13,12 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:visibility="gone"
-            android:orientation="vertical"
+            android:id="@+id/instruction_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+
             <com.midtrans.sdk.uikit.widgets.DefaultTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -211,6 +214,11 @@
                 android:paddingRight="@dimen/eight_dp"
                 android:paddingTop="@dimen/five_dp">
 
+                <TextView
+                    android:layout_width="@dimen/twenty_four_dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/number_instruction8" />
+
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
                     android:id="@+id/defaultTextView2"
                     android:layout_width="match_parent"
@@ -220,10 +228,6 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/secondary_text_size" />
 
-                <TextView
-                    android:layout_width="@dimen/twenty_four_dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/number_instruction8" />
 
             </LinearLayout>
 

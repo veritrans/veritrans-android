@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="VeritransAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -91,6 +91,31 @@
         <item name="fb_textSize">12sp</item>
         <item name="fb_defaultColor">@color/white</item>
     </style>
+
+    <style name="ButtonSecondaryExpandable" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:layout_marginTop">@dimen/four_dp</item>
+        <item name="android:layout_marginBottom">@dimen/four_dp</item>
+        <item name="android:paddingLeft">@dimen/eight_dp</item>
+        <item name="android:paddingRight">@dimen/eight_dp</item>
+        <item name="android:paddingTop">@dimen/eight_dp</item>
+        <item name="android:paddingBottom">@dimen/eight_dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="fb_focusColor">@color/colorAccentLight</item>
+        <item name="fb_iconPaddingLeft">0dp</item>
+        <item name="fb_iconPaddingRight">0dp</item>
+        <item name="fb_iconPosition">left</item>
+        <item name="fb_radius">5dp</item>
+        <item name="fb_textSize">12sp</item>
+        <item name="android:drawableRight">@drawable/style_expandable</item>
+        <item name="android:drawableEnd" tools:targetApi="ice_cream_sandwich">
+            @drawable/style_expandable
+        </item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:background">?selectableItemBackground</item>
+    </style>
+
 
     <style name="ButtonBankListExpand" parent="ButtonSecondary">
         <item name="fb_defaultColor">@color/light_gray</item>

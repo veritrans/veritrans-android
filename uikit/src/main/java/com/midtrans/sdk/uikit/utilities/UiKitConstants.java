@@ -66,6 +66,11 @@ public class UiKitConstants {
     public static final int PRIMA = 1;
     public static final int ALTO = 2;
 
+    public static final int INSTRUCTION_FIRST_POSITION = 0;
+    public static final int INSTRUCTION_SECOND_POSITION = 1;
+    public static final int INSTRUCTION_THIRD_POSITION = 2;
+
+
     public static final int RESULT_SDK_NOT_AVAILABLE = -999;
 
     public static final String EXTRA_SNAP_TOKEN = "snap.token";
