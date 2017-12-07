@@ -16,7 +16,7 @@ public class InstructionMandiriVaFragment extends VaInstructionFragment {
     public static InstructionMandiriVaFragment newInstance(int position) {
         InstructionMandiriVaFragment fragment = new InstructionMandiriVaFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt(CODE, position);
+        bundle.putInt(INSTRUCTION_POSITION, position);
         fragment.setArguments(bundle);
         return fragment;
     }

@@ -11,15 +11,16 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <Button
-            style="@style/ButtonSecondaryExpandable"
+        <android.support.v7.widget.AppCompatButton
             android:id="@+id/instruction_toggle"
+            style="@style/ButtonSecondaryExpandable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="@dimen/sixteen_dp"
             android:layout_marginRight="@dimen/sixteen_dp"
-            android:layout_marginTop="@dimen/sixteen_dp"  />
+            android:layout_marginTop="@dimen/sixteen_dp"
+            android:text="@string/show_instruction" />
 
         <LinearLayout
             android:id="@+id/instruction_layout"

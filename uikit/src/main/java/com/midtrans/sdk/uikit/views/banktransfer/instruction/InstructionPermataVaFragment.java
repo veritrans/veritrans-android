@@ -15,7 +15,7 @@ public class InstructionPermataVaFragment extends VaInstructionFragment {
         public static InstructionPermataVaFragment newInstance(int code) {
             InstructionPermataVaFragment fragment = new InstructionPermataVaFragment();
             Bundle bundle = new Bundle();
-            bundle.putInt(CODE, code);
+            bundle.putInt(INSTRUCTION_POSITION, code);
             fragment.setArguments(bundle);
             return fragment;
         }

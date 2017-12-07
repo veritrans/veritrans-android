@@ -15,7 +15,7 @@ public class InstructionBcaVaFragment extends VaInstructionFragment {
     public static InstructionBcaVaFragment newInstance(int code) {
         InstructionBcaVaFragment fragment = new InstructionBcaVaFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt(CODE, code);
+        bundle.putInt(INSTRUCTION_POSITION, code);
         fragment.setArguments(bundle);
         return fragment;
     }
