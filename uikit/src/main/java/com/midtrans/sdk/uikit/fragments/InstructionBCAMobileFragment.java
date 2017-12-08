@@ -14,6 +14,13 @@ import com.midtrans.sdk.uikit.R;
  *
  * @author rakawm
  */
+
+/**
+ * Displays ATM bersama payment instruction.
+ * @author rakawm
+ * Deprecated, use {@link com.midtrans.sdk.uikit.views.banktransfer.instruction.InstructionBcaVaFragment} instead
+ */
+@Deprecated
 public class InstructionBCAMobileFragment extends Fragment {
 
     @Nullable

@@ -16,6 +16,13 @@ import com.midtrans.sdk.uikit.views.banktransfer.instruction.InstructionBniVaFra
  *
  * Created by shivam on 10/28/15.
  */
+
+/**
+ * Displays ATM bersama payment instruction.
+ * @author rakawm
+ * Deprecated, use {@link com.midtrans.sdk.uikit.views.banktransfer.instruction.InstructionMandiriVaFragment} instead
+ */
+@Deprecated
 public class InstructionMandiriFragment extends Fragment {
 
 
