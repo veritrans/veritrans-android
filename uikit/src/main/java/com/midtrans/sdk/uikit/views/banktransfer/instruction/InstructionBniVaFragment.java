@@ -11,10 +11,11 @@ import com.midtrans.sdk.uikit.utilities.UiKitConstants;
  */
 public class InstructionBniVaFragment extends VaInstructionFragment {
 
-    public static InstructionBniVaFragment newInstance(int position) {
+    public static InstructionBniVaFragment newInstance(int position, String title) {
         InstructionBniVaFragment fragment = new InstructionBniVaFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(INSTRUCTION_POSITION, position);
+        bundle.putString(INSTRUCTION_TITLE, title);
         fragment.setArguments(bundle);
         return fragment;
     }

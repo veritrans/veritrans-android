@@ -37,31 +37,46 @@ public class InstructionPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
+        String title = getPageTitle(position).toString();
         Fragment fragment;
 
         if (TextUtils.isEmpty(paymentType)) {
-            fragment = InstructionOtherBankFragment.newInstance(UiKitConstants.INSTRUCTION_THIRD_POSITION);
+            title = changeTitleIfTypeAltoOrPrima(title);
+            fragment = InstructionOtherBankFragment.newInstance(UiKitConstants.INSTRUCTION_THIRD_POSITION, title);
         } else {
             switch (paymentType) {
                 case PaymentType.BCA_VA:
-                    fragment = InstructionBcaVaFragment.newInstance(position);
+                    fragment = InstructionBcaVaFragment.newInstance(position, title);
                     break;
                 case PaymentType.PERMATA_VA:
-                    fragment = InstructionPermataVaFragment.newInstance(position);
+                    title = changeTitleIfTypeAltoOrPrima(title);
+                    fragment = InstructionPermataVaFragment.newInstance(position, title);
                     break;
                 case PaymentType.E_CHANNEL:
-                    fragment = InstructionMandiriVaFragment.newInstance(position);
+                    fragment = InstructionMandiriVaFragment.newInstance(position, title);
                     break;
                 case PaymentType.BNI_VA:
-                    fragment = InstructionBniVaFragment.newInstance(position);
+                    fragment = InstructionBniVaFragment.newInstance(position, title);
                     break;
                 default:
-                    fragment = InstructionOtherBankFragment.newInstance(position);
+                    title = changeTitleIfTypeAltoOrPrima(title);
+                    fragment = InstructionOtherBankFragment.newInstance(position, title);
                     break;
             }
         }
 
         return fragment;
+    }
+
+    private String changeTitleIfTypeAltoOrPrima(String title) {
+        String newTitle = title;
+        if (!TextUtils.isEmpty(title)) {
+            if (newTitle.equalsIgnoreCase(context.getString(R.string.tab_alto)) ||
+                    newTitle.equalsIgnoreCase(context.getString(R.string.tab_prima))) {
+                newTitle = context.getString(R.string.instruction_atm_with, title);
+            }
+        }
+        return newTitle;
     }
 
     @Override
@@ -78,7 +93,6 @@ public class InstructionPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-
         String pageTitle;
 
         if (TextUtils.isEmpty(paymentType)) {
@@ -122,7 +136,6 @@ public class InstructionPagerAdapter extends FragmentStatePagerAdapter {
                     } else {
                         pageTitle = context.getString(R.string.tab_bni_internet);
                     }
-
                     break;
 
                 default:

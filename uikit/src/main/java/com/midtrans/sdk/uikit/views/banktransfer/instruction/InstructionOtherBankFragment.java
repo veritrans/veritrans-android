@@ -31,10 +31,11 @@ public class InstructionOtherBankFragment extends VaInstructionFragment {
         return layoutId;
     }
 
-    public static InstructionOtherBankFragment newInstance(int position) {
+    public static InstructionOtherBankFragment newInstance(int position, String title) {
         InstructionOtherBankFragment fragment = new InstructionOtherBankFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(INSTRUCTION_POSITION, position);
+        bundle.putString(INSTRUCTION_TITLE, title);
         fragment.setArguments(bundle);
         return fragment;
     }

@@ -23,6 +23,7 @@ import com.midtrans.sdk.uikit.R;
 public abstract class VaInstructionFragment extends Fragment implements View.OnClickListener {
 
     public static final String INSTRUCTION_POSITION = "instruction.position";
+    public static final String INSTRUCTION_TITLE = "instruction.title";
 
     protected OnInstructionShownListener listener;
     protected int layoutId = 0;
@@ -43,14 +44,16 @@ public abstract class VaInstructionFragment extends Fragment implements View.OnC
         View view = inflater.inflate(layoutId, container, false);
         instructionLayout = (LinearLayout) view.findViewById(R.id.instruction_layout);
         instructionToggle = (AppCompatButton) view.findViewById(R.id.instruction_toggle);
-        instructionToggle.setOnClickListener(this);
-        colorPrimary = ((BaseActivity) getActivity()).getPrimaryColor();
-        int colorPrimaryDark = ((BaseActivity) getActivity()).getPrimaryDarkColor();
 
-        filterInstructionToggle();
+        instructionToggle.setOnClickListener(this);
+        instructionToggle.setText(getString(R.string.payment_instruction, getFragmentTitle()));
+        colorPrimary = ((BaseActivity) getActivity()).getPrimaryColor();
+
+        int colorPrimaryDark = ((BaseActivity) getActivity()).getPrimaryDarkColor();
         if (colorPrimaryDark != 0) {
             instructionToggle.setTextColor(colorPrimaryDark);
         }
+        filterInstructionToggle();
 
         return view;
     }
@@ -95,11 +98,9 @@ public abstract class VaInstructionFragment extends Fragment implements View.OnC
 
             if (isInstructionShown) {
                 instructionToggle.setSelected(true);
-                instructionToggle.setText(getText(R.string.hide_instruction).toString());
                 instructionLayout.setVisibility(View.VISIBLE);
             } else {
                 instructionToggle.setSelected(false);
-                instructionToggle.setText(getText(R.string.show_instruction).toString());
                 instructionLayout.setVisibility(View.GONE);
             }
             filterInstructionToggle();
@@ -108,6 +109,10 @@ public abstract class VaInstructionFragment extends Fragment implements View.OnC
 
     public int getFragmentCode() {
         return getArguments() == null ? 0 : getArguments().getInt(INSTRUCTION_POSITION);
+    }
+
+    public String getFragmentTitle() {
+        return getArguments() == null ? "" : getArguments().getString(INSTRUCTION_TITLE, "");
     }
 
     public abstract int initLayoutId();

@@ -80,6 +80,8 @@ public class MandiriClickPayActivity extends BasePaymentActivity implements Mand
 
         textInput3.setText(String.valueOf(SdkUIFlowUtil.generateRandomNumber()));
 
+        toggleInstruction.setText(getString(R.string.payment_instruction, getString(R.string.mandiri_click_pay)));
+
         //track page view after page properly loaded
         boolean isFirstPage = getIntent().getBooleanExtra(USE_DEEP_LINK, true);
         presenter.trackPageView(PAGE_NAME, isFirstPage);
@@ -166,11 +168,9 @@ public class MandiriClickPayActivity extends BasePaymentActivity implements Mand
             Drawable drawable;
             if (containerInstruction.getVisibility() == View.VISIBLE) {
                 drawable = ContextCompat.getDrawable(this, R.drawable.ic_expand_less);
-                toggleInstruction.setText(getText(R.string.show_instruction).toString());
                 containerInstruction.setVisibility(View.GONE);
             } else {
                 drawable = ContextCompat.getDrawable(this, R.drawable.ic_expand_more);
-                toggleInstruction.setText(getText(R.string.hide_instruction).toString());
                 containerInstruction.setVisibility(View.VISIBLE);
             }
 
