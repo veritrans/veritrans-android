@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.midtrans.sdk.corekit.core.Logger;
-import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.uikit.R;
 
 /**
@@ -46,22 +45,13 @@ public abstract class VaInstructionFragment extends Fragment implements View.OnC
         instructionToggle = (AppCompatButton) view.findViewById(R.id.instruction_toggle);
         instructionToggle.setOnClickListener(this);
         colorPrimary = ((BaseActivity) getActivity()).getPrimaryColor();
+        int colorPrimaryDark = ((BaseActivity) getActivity()).getPrimaryDarkColor();
 
         filterInstructionToggle();
-        MidtransSDK midtransSDK = MidtransSDK.getInstance();
-        if (midtransSDK != null) {
-            ((BaseActivity) getActivity()).setColorFilter(instructionToggle);
-            instructionToggle.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
+        if (colorPrimaryDark != 0) {
+            instructionToggle.setTextColor(colorPrimaryDark);
         }
 
-        int colorPrimary = ((BaseActivity) getActivity()).getPrimaryColor();
-        if (colorPrimary != 0) {
-            Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_expand_more);
-            if (drawable != null) {
-                drawable.setColorFilter(colorPrimary, PorterDuff.Mode.SRC_IN);
-                instructionToggle.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null);
-            }
-        }
         return view;
     }
 

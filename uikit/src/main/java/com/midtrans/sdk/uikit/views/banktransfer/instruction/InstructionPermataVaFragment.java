@@ -12,13 +12,13 @@ import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 
 public class InstructionPermataVaFragment extends VaInstructionFragment {
 
-        public static InstructionPermataVaFragment newInstance(int code) {
-            InstructionPermataVaFragment fragment = new InstructionPermataVaFragment();
-            Bundle bundle = new Bundle();
-            bundle.putInt(INSTRUCTION_POSITION, code);
-            fragment.setArguments(bundle);
-            return fragment;
-        }
+    public static InstructionPermataVaFragment newInstance(int code) {
+        InstructionPermataVaFragment fragment = new InstructionPermataVaFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(INSTRUCTION_POSITION, code);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
 
     @Override
     public int initLayoutId() {
