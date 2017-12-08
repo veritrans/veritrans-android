@@ -25,8 +25,6 @@ import com.midtrans.sdk.uikit.views.banktransfer.instruction.InstructionBniVaFra
 @Deprecated
 public class InstructionMandiriFragment extends Fragment {
 
-
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
