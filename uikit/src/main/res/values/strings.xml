@@ -891,4 +891,6 @@
     <string name="message_invalid_merchant_url">Merchant base url cannot be null or empty, if you implement your own token storage. Please set merchant base_url to SDK</string>
     <string name="empty_card_number">Please enter card number</string>
     <string name="empty_challenge_token">Please enter challenge token</string>
+    <string name="payment_instruction">Payment Instruction %1$s</string>
+    <string name="instruction_atm_with">ATM with %1$s logo</string>
 </resources>

@@ -19,20 +19,21 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.Toast;
+
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
+import com.midtrans.sdk.uikit.abstracts.VaInstructionFragment.OnInstructionShownListener;
 import com.midtrans.sdk.uikit.adapters.InstructionPagerAdapter;
 import com.midtrans.sdk.uikit.adapters.ListBankAdapter;
 import com.midtrans.sdk.uikit.fragments.BankTransferFragment;
-import com.midtrans.sdk.uikit.fragments.InstructionOtherBankFragment;
-import com.midtrans.sdk.uikit.fragments.InstructionOtherBankFragment.OnInstructionShownListener;
 import com.midtrans.sdk.uikit.models.MessageInfo;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
+import com.midtrans.sdk.uikit.views.banktransfer.instruction.InstructionOtherBankFragment;
 import com.midtrans.sdk.uikit.views.banktransfer.status.MandiriBillStatusActivity;
 import com.midtrans.sdk.uikit.views.banktransfer.status.VaPaymentStatusActivity;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
@@ -219,16 +220,9 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
                 Fragment fragment = adapter.getItem(position);
                 if (fragment instanceof InstructionOtherBankFragment && flags != null) {
                     showOtherAtmGuidance(((InstructionOtherBankFragment) fragment).getFragmentCode());
-                    boolean isInstructionShown = flags[position];
-                    if (isInstructionShown) {
-                        showEmailForm();
-                    } else {
-                        hideEmailForm();
-                    }
                     setButtonPayText(adapter.getPayButtonText(((InstructionOtherBankFragment) fragment).getFragmentCode()));
                 } else {
                     hideOtherAtmGuidance();
-                    showEmailForm();
                     setButtonPayText(adapter.getPayButtonText(-1));
                 }
             }
@@ -479,30 +473,9 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
         buttonPay.setTextBold();
     }
 
-    private void showEmailForm() {
-        findViewById(R.id.container_email).setVisibility(View.VISIBLE);
-        findViewById(R.id.email_description).setVisibility(View.VISIBLE);
-    }
-
-    private void hideEmailForm() {
-        findViewById(R.id.container_email).setVisibility(View.GONE);
-        findViewById(R.id.email_description).setVisibility(View.GONE);
-    }
-
     @Override
     public void onInstructionShown(boolean isShown, int fragmentCode) {
-        if (flags != null) {
-            if (flags.length == 3) { //for all ATM network
-                flags[fragmentCode] = isShown;
-            } else if (flags.length == 2) { //for Permata
-                flags[fragmentCode - 1] = isShown; //Alto code is 2, while in Permata VA its index is 1
-            }
-            if (isShown) {
-                showEmailForm();
-            } else {
-                hideEmailForm();
-            }
-        }
+        //do nothing
     }
 
     @Override

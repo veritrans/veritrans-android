@@ -11,238 +11,259 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/instruction_toggle"
+            style="@style/ButtonSecondaryExpandable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/sixteen_dp"
+            android:layout_gravity="center"
+            android:gravity="start"
             android:layout_marginLeft="@dimen/sixteen_dp"
+            android:layout_marginRight="@dimen/sixteen_dp"
             android:layout_marginTop="@dimen/sixteen_dp"
-            android:paddingRight="@dimen/sixteen_dp"
-            android:text="@string/title_instruction_mandiri"
-            android:textColor="@color/dark_gray"
-            android:textSize="@dimen/primary_text_size" />
+            android:text="@string/show_instruction" />
 
         <LinearLayout
+            android:id="@+id/instruction_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/light_gray"
-            android:gravity="top"
-            android:orientation="horizontal"
-            android:paddingBottom="@dimen/eight_dp"
-            android:paddingTop="@dimen/eight_dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/five_dp"
-                android:paddingLeft="@dimen/eight_dp"
-                android:paddingRight="@dimen/eight_dp"
-                android:paddingTop="@dimen/five_dp"
-                android:text="@string/instruction_1"
-                android:textColor="@color/black"
-                android:textSize="@dimen/secondary_text_size" />
+                android:layout_marginBottom="@dimen/sixteen_dp"
+                android:layout_marginLeft="@dimen/sixteen_dp"
+                android:layout_marginTop="@dimen/sixteen_dp"
+                android:paddingRight="@dimen/sixteen_dp"
+                android:text="@string/title_instruction_mandiri"
+                android:textColor="@color/dark_gray"
+                android:textSize="@dimen/primary_text_size" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/instruction_mandiri_1" />
-
-            <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/light_gray"
-                android:paddingBottom="@dimen/five_dp"
-                android:paddingLeft="@dimen/sixteen_dp"
-                android:paddingRight="@dimen/sixteen_dp"
-                android:paddingTop="@dimen/five_dp"
-                android:text="@string/mandiri_instruction_step1"
-                android:textColor="@color/black"
-                android:textSize="@dimen/secondary_text_size" />
-        </LinearLayout>
+                android:gravity="top"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/eight_dp"
+                android:paddingTop="@dimen/eight_dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="@dimen/eight_dp"
-            android:paddingTop="@dimen/eight_dp">
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/five_dp"
+                    android:paddingLeft="@dimen/eight_dp"
+                    android:paddingRight="@dimen/eight_dp"
+                    android:paddingTop="@dimen/five_dp"
+                    android:text="@string/instruction_1"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/secondary_text_size" />
 
-            <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/five_dp"
-                android:paddingLeft="@dimen/eight_dp"
-                android:paddingRight="@dimen/eight_dp"
-                android:paddingTop="@dimen/five_dp"
-                android:text="@string/instruction_2"
-                android:textColor="@color/black"
-                android:textSize="@dimen/secondary_text_size" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/instruction_mandiri_1" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/instruction_mandiri_2" />
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/light_gray"
+                    android:paddingBottom="@dimen/five_dp"
+                    android:paddingLeft="@dimen/sixteen_dp"
+                    android:paddingRight="@dimen/sixteen_dp"
+                    android:paddingTop="@dimen/five_dp"
+                    android:text="@string/mandiri_instruction_step1"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/secondary_text_size" />
+            </LinearLayout>
 
-            <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:lineSpacingExtra="2dp"
-                android:paddingLeft="@dimen/sixteen_dp"
-                android:paddingRight="@dimen/sixteen_dp"
-                android:text="@string/mandiri_instruction_step2"
-                android:textColor="@color/black"
-                android:textSize="@dimen/secondary_text_size" />
-        </LinearLayout>
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/eight_dp"
+                android:paddingTop="@dimen/eight_dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/light_gray"
-            android:orientation="horizontal"
-            android:paddingBottom="@dimen/eight_dp"
-            android:paddingTop="@dimen/eight_dp">
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/five_dp"
+                    android:paddingLeft="@dimen/eight_dp"
+                    android:paddingRight="@dimen/eight_dp"
+                    android:paddingTop="@dimen/five_dp"
+                    android:text="@string/instruction_2"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/secondary_text_size" />
 
-            <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/five_dp"
-                android:paddingLeft="@dimen/eight_dp"
-                android:paddingRight="@dimen/eight_dp"
-                android:paddingTop="@dimen/five_dp"
-                android:text="@string/instruction_3"
-                android:textColor="@color/black"
-                android:textSize="@dimen/secondary_text_size" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/instruction_mandiri_2" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/instruction_mandiri_3" />
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="2dp"
+                    android:paddingLeft="@dimen/sixteen_dp"
+                    android:paddingRight="@dimen/sixteen_dp"
+                    android:text="@string/mandiri_instruction_step2"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/secondary_text_size" />
+            </LinearLayout>
 
-            <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:lineSpacingExtra="2dp"
-                android:paddingBottom="@dimen/five_dp"
-                android:paddingLeft="@dimen/sixteen_dp"
-                android:paddingRight="@dimen/sixteen_dp"
-                android:paddingTop="@dimen/five_dp"
-                android:text="@string/mandiri_instruction_step3"
-                android:textColor="@color/black"
-                android:textSize="@dimen/secondary_text_size" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="@dimen/eight_dp"
-            android:paddingTop="@dimen/eight_dp">
-
-            <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/five_dp"
-                android:paddingLeft="@dimen/eight_dp"
-                android:paddingRight="@dimen/eight_dp"
-                android:paddingTop="@dimen/five_dp"
-                android:text="@string/instruction_4"
-                android:textColor="@color/black"
-                android:textSize="@dimen/secondary_text_size" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/instruction_mandiri_4" />
-
-            <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:lineSpacingExtra="2dp"
-                android:paddingLeft="@dimen/sixteen_dp"
-                android:paddingRight="@dimen/sixteen_dp"
-                android:text="@string/mandiri_instruction_step4"
-                android:textColor="@color/black"
-                android:textSize="@dimen/secondary_text_size" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/light_gray"
-            android:orientation="horizontal"
-            android:paddingBottom="@dimen/eight_dp"
-            android:paddingTop="@dimen/eight_dp">
-
-            <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/light_gray"
-                android:paddingBottom="@dimen/five_dp"
-                android:paddingLeft="@dimen/eight_dp"
-                android:paddingRight="@dimen/eight_dp"
-                android:paddingTop="@dimen/five_dp"
-                android:text="@string/instruction_5"
-                android:textColor="@color/black"
-                android:textSize="@dimen/secondary_text_size" />
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/eight_dp"
+                android:paddingTop="@dimen/eight_dp">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/instruction_mandiri_5" />
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/five_dp"
+                    android:paddingLeft="@dimen/eight_dp"
+                    android:paddingRight="@dimen/eight_dp"
+                    android:paddingTop="@dimen/five_dp"
+                    android:text="@string/instruction_3"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/secondary_text_size" />
 
-            <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/instruction_mandiri_3" />
+
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="2dp"
+                    android:paddingBottom="@dimen/five_dp"
+                    android:paddingLeft="@dimen/sixteen_dp"
+                    android:paddingRight="@dimen/sixteen_dp"
+                    android:paddingTop="@dimen/five_dp"
+                    android:text="@string/mandiri_instruction_step3"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/secondary_text_size" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/eight_dp"
-                android:lineSpacingExtra="2dp"
-                android:paddingBottom="@dimen/five_dp"
-                android:paddingLeft="@dimen/sixteen_dp"
-                android:paddingRight="@dimen/sixteen_dp"
-                android:paddingTop="@dimen/five_dp"
-                android:text="@string/mandiri_instruction_step5"
-                android:textColor="@color/black"
-                android:textSize="@dimen/secondary_text_size" />
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/eight_dp"
+                android:paddingTop="@dimen/eight_dp">
+
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/five_dp"
+                    android:paddingLeft="@dimen/eight_dp"
+                    android:paddingRight="@dimen/eight_dp"
+                    android:paddingTop="@dimen/five_dp"
+                    android:text="@string/instruction_4"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/secondary_text_size" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/instruction_mandiri_4" />
+
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="2dp"
+                    android:paddingLeft="@dimen/sixteen_dp"
+                    android:paddingRight="@dimen/sixteen_dp"
+                    android:text="@string/mandiri_instruction_step4"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/secondary_text_size" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/light_gray"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/eight_dp"
+                android:paddingTop="@dimen/eight_dp">
+
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/light_gray"
+                    android:paddingBottom="@dimen/five_dp"
+                    android:paddingLeft="@dimen/eight_dp"
+                    android:paddingRight="@dimen/eight_dp"
+                    android:paddingTop="@dimen/five_dp"
+                    android:text="@string/instruction_5"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/secondary_text_size" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/instruction_mandiri_5" />
+
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/eight_dp"
+                    android:lineSpacingExtra="2dp"
+                    android:paddingBottom="@dimen/five_dp"
+                    android:paddingLeft="@dimen/sixteen_dp"
+                    android:paddingRight="@dimen/sixteen_dp"
+                    android:paddingTop="@dimen/five_dp"
+                    android:text="@string/mandiri_instruction_step5"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/secondary_text_size" />
+            </LinearLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/eight_dp"
+                android:paddingTop="@dimen/eight_dp">
+
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:id="@+id/no_six_instruction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/five_dp"
+                    android:paddingLeft="@dimen/eight_dp"
+                    android:paddingRight="@dimen/eight_dp"
+                    android:paddingTop="@dimen/five_dp"
+                    android:text="@string/instruction_6"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/secondary_text_size" />
+
+                <ImageView
+                    android:id="@+id/sixth_image_instruction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/no_six_instruction"
+                    android:layout_toRightOf="@id/no_six_instruction"
+                    android:src="@drawable/instruction_mandiri_6" />
+
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toEndOf="@id/sixth_image_instruction"
+                    android:layout_toRightOf="@id/sixth_image_instruction"
+                    android:gravity="center_vertical"
+                    android:lineSpacingExtra="2dp"
+                    android:paddingLeft="@dimen/sixteen_dp"
+                    android:paddingRight="@dimen/sixteen_dp"
+                    android:text="@string/mandiri_instruction_step6"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/secondary_text_size" />
+            </RelativeLayout>
+
         </LinearLayout>
-
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/eight_dp"
-            android:paddingTop="@dimen/eight_dp">
-
-            <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                android:id="@+id/no_six_instruction"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/five_dp"
-                android:paddingLeft="@dimen/eight_dp"
-                android:paddingRight="@dimen/eight_dp"
-                android:paddingTop="@dimen/five_dp"
-                android:text="@string/instruction_6"
-                android:textColor="@color/black"
-                android:textSize="@dimen/secondary_text_size" />
-
-            <ImageView
-                android:id="@+id/sixth_image_instruction"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/no_six_instruction"
-                android:layout_toRightOf="@id/no_six_instruction"
-                android:src="@drawable/instruction_mandiri_6" />
-
-            <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_toEndOf="@id/sixth_image_instruction"
-                android:layout_toRightOf="@id/sixth_image_instruction"
-                android:gravity="center_vertical"
-                android:lineSpacingExtra="2dp"
-                android:paddingLeft="@dimen/sixteen_dp"
-                android:paddingRight="@dimen/sixteen_dp"
-                android:text="@string/mandiri_instruction_step6"
-                android:textColor="@color/black"
-                android:textSize="@dimen/secondary_text_size" />
-        </RelativeLayout>
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>
