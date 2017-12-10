@@ -1,6 +1,7 @@
 package com.midtrans.sdk.uikit.views.gopay.payment;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
+import android.widget.Toast;
 
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
@@ -67,10 +69,6 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
 
     private void initData() {
         setPageTitle(getString(R.string.gopay));
-        if (isGojekInstalled) {
-            buttonPrimary.setText(getString(R.string.confirm_payment));
-            buttonPrimary.setTextBold();
-        }
     }
 
     private void initActionButton() {
@@ -82,9 +80,7 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
                 }
             });
             buttonPrimary.setTextBold();
-            if (isTablet) {
-                buttonPrimary.setText(getString(R.string.payment_method_description_gopay));
-            }
+            buttonPrimary.setText(getString(R.string.gopay_confirm_button));
         } else {
             //hide confirm button and adjust item details to bottom of screen
             buttonPrimaryLayout.setVisibility(View.GONE);
@@ -146,9 +142,17 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
         hideProgressLayout();
         if (isActivityRunning()) {
             if (isResponseValid(response)) {
-                Intent intent = new Intent(this, GoPayStatusActivity.class);
-                intent.putExtra(GoPayStatusActivity.EXTRA_PAYMENT_STATUS, response);
-                startActivityForResult(intent, UiKitConstants.INTENT_CODE_PAYMENT_STATUS);
+                if (isTablet) {
+                    Intent intent = new Intent(this, GoPayStatusActivity.class);
+                    intent.putExtra(GoPayStatusActivity.EXTRA_PAYMENT_STATUS, response);
+                    startActivityForResult(intent, UiKitConstants.INTENT_CODE_PAYMENT_STATUS);
+                } else {
+                    //new flow for smartphone, instead of status page, go directly to GO-JEK app
+                    Toast.makeText(this, getString(R.string.redirecting_to_gopay), Toast.LENGTH_SHORT)
+                            .show();
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(response.getDeeplinkUrl()));
+                    startActivity(intent);
+                }
             } else {
                 onPaymentFailure(response);
             }

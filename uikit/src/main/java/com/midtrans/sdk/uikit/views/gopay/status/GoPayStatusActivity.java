@@ -46,84 +46,59 @@ public class GoPayStatusActivity extends BasePaymentActivity {
     private ImageView qrCodeContainer;
     private FancyButton qrCodeRefresh;
 
-    private boolean isTablet, isInstructionShown = true;
+    private boolean isInstructionShown = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        isTablet = SdkUIFlowUtil.getDeviceType(this).equals("TABLET");
         setContentView(R.layout.activity_gopay_status);
-        initLayout();
         bindData();
-    }
-
-    private void initLayout() {
-        ViewStub stub = (ViewStub) findViewById(R.id.gopay_layout_stub);
-        stub.setLayoutResource(isTablet ? R.layout.layout_gopay_status_tablet : R.layout.layout_gopay_status);
-        stub.inflate();
     }
 
     private void bindData() {
         final TransactionResponse response = (TransactionResponse) getIntent().getSerializableExtra(EXTRA_PAYMENT_STATUS);
         if (response != null) {
-            if (isTablet) {
-                showProgressLayout();
+            showProgressLayout();
 
-                final LinearLayout instructionLayout = (LinearLayout) findViewById(R.id.gopay_instruction_layout);
-                merchantName = (BoldTextView) findViewById(R.id.gopay_merchant_name);
-                final DefaultTextView instructionToggle = (DefaultTextView) findViewById(R.id.gopay_instruction_toggle);
-                instructionToggle.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        isInstructionShown = !isInstructionShown;
-                        if (isInstructionShown) {
-                            instructionToggle.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_chevron_up, 0);
-                            instructionLayout.setVisibility(View.VISIBLE);
-                        } else {
-                            instructionToggle.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_chevron_down, 0);
-                            instructionLayout.setVisibility(View.GONE);
-                        }
+            final LinearLayout instructionLayout = (LinearLayout) findViewById(R.id.gopay_instruction_layout);
+            merchantName = (BoldTextView) findViewById(R.id.gopay_merchant_name);
+            final DefaultTextView instructionToggle = (DefaultTextView) findViewById(R.id.gopay_instruction_toggle);
+            instructionToggle.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    isInstructionShown = !isInstructionShown;
+                    if (isInstructionShown) {
+                        instructionToggle.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_chevron_up, 0);
+                        instructionLayout.setVisibility(View.VISIBLE);
+                    } else {
+                        instructionToggle.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_chevron_down, 0);
+                        instructionLayout.setVisibility(View.GONE);
                     }
-                });
+                }
+            });
 
-                //process qr code
-                final String qrCodeUrl = response.getQrCodeUrl();
-                qrCodeContainer = (ImageView) findViewById(R.id.gopay_qr_code);
-                qrCodeRefresh = (FancyButton) findViewById(R.id.gopay_reload_qr_button);
-                setTextColor(qrCodeRefresh);
-                setIconColorFilter(qrCodeRefresh);
-                qrCodeRefresh.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        showProgressLayout();
-                        loadQrCode(qrCodeUrl, qrCodeContainer);
-                    }
-                });
-                loadQrCode(qrCodeUrl, qrCodeContainer);
+            //process qr code
+            final String qrCodeUrl = response.getQrCodeUrl();
+            qrCodeContainer = (ImageView) findViewById(R.id.gopay_qr_code);
+            qrCodeRefresh = (FancyButton) findViewById(R.id.gopay_reload_qr_button);
+            setTextColor(qrCodeRefresh);
+            setIconColorFilter(qrCodeRefresh);
+            qrCodeRefresh.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showProgressLayout();
+                    loadQrCode(qrCodeUrl, qrCodeContainer);
+                }
+            });
+            loadQrCode(qrCodeUrl, qrCodeContainer);
 
-                buttonPrimary.setText(getString(R.string.done));
-                buttonPrimary.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        showConfirmationDialog(getString(isTablet ? R.string.confirm_gopay_qr_scan_tablet : R.string.confirm_gopay_qr_scan));
-                    }
-                });
-            } else {
-                //process deeplink
-                buttonPrimary.setText(getString(R.string.gopay_confirm_button));
-                OnClickListener listener = new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(GoPayStatusActivity.this, getString(R.string.redirecting_to_gopay), Toast.LENGTH_SHORT)
-                                .show();
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(response.getDeeplinkUrl()));
-                        startActivity(intent);
-                    }
-                };
-                buttonPrimary.setOnClickListener(listener);
-
-                findViewById(R.id.gopay_logo_layout).setOnClickListener(listener);
-            }
+            buttonPrimary.setText(getString(R.string.done));
+            buttonPrimary.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showConfirmationDialog(getString(R.string.confirm_gopay_qr_scan_tablet));
+                }
+            });
             buttonPrimary.setTextBold();
         }
         textTitle.setText(getString(R.string.payment_method_description_gopay));
@@ -158,6 +133,7 @@ public class GoPayStatusActivity extends BasePaymentActivity {
                         FrameLayout frameLayout = (FrameLayout) findViewById(R.id.gopay_qr_code_frame);
                         frameLayout.setBackgroundColor(getResources().getColor(R.color.light_gray));
                         qrCodeRefresh.setVisibility(View.VISIBLE);
+                        Logger.e(TAG, e.getMessage());
                         setMerchantName(false);
                         hideProgressLayout();
                         Toast.makeText(GoPayStatusActivity.this, getString(R.string.error_qr_code), Toast.LENGTH_SHORT)
@@ -183,7 +159,7 @@ public class GoPayStatusActivity extends BasePaymentActivity {
         if (isDetailShown) {
             displayOrHideItemDetails();
         } else {
-            showConfirmationDialog(getString(isTablet ? R.string.confirm_gopay_qr_scan_tablet : R.string.confirm_gopay_qr_scan));
+            showConfirmationDialog(getString(R.string.confirm_gopay_qr_scan_tablet));
         }
     }
 

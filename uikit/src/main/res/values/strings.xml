@@ -589,19 +589,17 @@
     <string name="kioson_instruction_step9">Your transaction is successful! You should be receiving an email confirming your payment. Please keep your payment receipt just in case you need help via support.</string>
 
     <!--Go-Pay Instruction-->
-    <string name="gopay_instruction_step1">Tap <b>Confirm Payment</b>.</string>
-    <string name="gopay_instruction_step2">Tap <b>Pay Now with GO-PAY</b>.</string>
-    <string name="gopay_instruction_step3">You will be redirected to the <b>GO-JEK</b> app.</string>
-    <string name="gopay_instruction_step4">Check your payment details then tap <b>PAY</b>.</string>
-    <string name="gopay_instruction_step5">Done.</string>
+    <string name="gopay_instruction_step1">Tap <b>Pay Now with GO-PAY</b>.</string>
+    <string name="gopay_instruction_step2">You will be redirected to the <b>GO-JEK</b> app.</string>
+    <string name="gopay_instruction_step3">Check your payment details then tap <b>PAY</b>.</string>
+    <string name="gopay_instruction_step4">Done.</string>
 
     <!--Go-Pay Instruction in Tablet-->
-    <string name="gopay_instruction_tablet_step1">Tap <b>Pay using GO-PAY</b>.</string>
-    <string name="gopay_instruction_tablet_step2"><b>QR code</b> will appear on the next page to be scanned.</string>
-    <string name="gopay_instruction_tablet_step3">Open <b>GO-JEK</b> app on your mobile phone.</string>
-    <string name="gopay_instruction_tablet_step4">Tap <b>Scan QR</b>, then point your camera phone to the <b>QR code</b>.</string>
-    <string name="gopay_instruction_tablet_step5">Check your payment details in <b>GO-JEK</b> app and then tap <b>Pay</b>.</string>
-    <string name="gopay_instruction_tablet_step6">Your transaction is done.</string>
+    <string name="gopay_instruction_tablet_step1">Tap <b>Pay Now with GO-PAY</b>.</string>
+    <string name="gopay_instruction_tablet_step2">Open <b>GO-JEK</b> app on your phone.</string>
+    <string name="gopay_instruction_tablet_step3">Tap <b>Scan QR</b>, then point your camera to the <b>QR Code</b>.</string>
+    <string name="gopay_instruction_tablet_step4">Check your payment details in <b>GO-JEK</b> app and then tap <b>Pay</b>.</string>
+    <string name="gopay_instruction_tablet_step5">Your transaction is done.</string>
 
     <!--Go-Pay related-->
     <string name="gopay_confirm_button">Pay Now with GO-PAY</string>
@@ -719,7 +717,7 @@
     <string name="payment_method_description_indosat_dompetku">Pay with Indosat Dompetku</string>
     <string name="payment_method_description_kioson">Pay from Kioson Outlet</string>
     <string name="payment_method_description_gci">Pay with Gift Cards</string>
-    <string name="payment_method_description_gopay">Pay using GO-PAY</string>
+    <string name="payment_method_description_gopay">Pay with your GO-PAY wallet</string>
     <string name="payment_method_description_danamon_online">Pay with your Danamon Online Banking Account</string>
 
     <string name="payment_bank_description_bca">Pay from BCA ATMs or internet banking</string>
