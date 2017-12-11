@@ -3,14 +3,16 @@ package com.midtrans.sdk.uikit.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+
 import com.midtrans.sdk.corekit.core.Logger;
-import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.abstracts.BaseActivity;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
@@ -21,6 +23,7 @@ import com.midtrans.sdk.uikit.widgets.FancyButton;
 public class InstructionOtherBankFragment extends Fragment implements OnClickListener {
 
     private static final String CODE = "ATM_CODE";
+    private static final String TAG = InstructionOtherBankFragment.class.getSimpleName();
 
     private int layoutId = 0;
 
@@ -29,6 +32,8 @@ public class InstructionOtherBankFragment extends Fragment implements OnClickLis
     private LinearLayout instructionLayout;
     private boolean isInstructionShown = false;
     private OnInstructionShownListener listener;
+    private int colorPrimary = 0;
+    private int colorPrimaryDark = 0;
 
     public static InstructionOtherBankFragment newInstance(int code) {
         InstructionOtherBankFragment fragment = new InstructionOtherBankFragment();
@@ -40,7 +45,7 @@ public class InstructionOtherBankFragment extends Fragment implements OnClickLis
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-        Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         if (getArguments() != null) {
             int fragmentCode = getArguments().getInt(CODE);
             initValue(fragmentCode);
@@ -51,12 +56,21 @@ public class InstructionOtherBankFragment extends Fragment implements OnClickLis
         instructionToggle = (FancyButton) view.findViewById(R.id.instruction_toggle);
         instructionToggle.setOnClickListener(this);
 
-        MidtransSDK midtransSDK = MidtransSDK.getInstance();
-        if (midtransSDK != null) {
-            instructionToggle.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
-            instructionToggle.setIconColorFilter(midtransSDK.getColorTheme().getPrimaryDarkColor());
-        }
+        try {
+            colorPrimary = ((BaseActivity) getActivity()).getPrimaryColor();
+            colorPrimaryDark = ((BaseActivity) getActivity()).getPrimaryDarkColor();
 
+            if (colorPrimary != 0) {
+                instructionToggle.setTextColor(colorPrimary);
+            }
+
+            if (colorPrimaryDark != 0) {
+                instructionToggle.setIconColorFilter(colorPrimaryDark);
+            }
+
+        } catch (RuntimeException e) {
+            Log.e(TAG, "sdkColor:" + e.getMessage());
+        }
 
         return view;
     }
@@ -81,9 +95,9 @@ public class InstructionOtherBankFragment extends Fragment implements OnClickLis
             }
             instructionToggle.setText(isInstructionShown ? getText(R.string.hide_instruction).toString() : getText(R.string.show_instruction).toString());
             instructionToggle.setIconResource(isInstructionShown ? R.drawable.ic_hide : R.drawable.ic_view);
-            MidtransSDK midtransSDK = MidtransSDK.getInstance();
-            if (midtransSDK != null) {
-                instructionToggle.setIconColorFilter(midtransSDK.getColorTheme().getPrimaryDarkColor());
+
+            if (colorPrimaryDark != 0) {
+                instructionToggle.setIconColorFilter(colorPrimaryDark);
             }
             instructionLayout.setVisibility(isInstructionShown ? View.VISIBLE : View.GONE);
         }
