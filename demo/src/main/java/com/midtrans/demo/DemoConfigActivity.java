@@ -20,7 +20,6 @@ import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.midtrans.demo.widgets.DemoRadioButton;
 import com.midtrans.demo.widgets.DemoTextView;
 import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
@@ -37,7 +36,6 @@ import com.midtrans.sdk.corekit.models.ExpiryModel;
 import com.midtrans.sdk.corekit.models.FreeText;
 import com.midtrans.sdk.corekit.models.FreeTextLanguage;
 import com.midtrans.sdk.corekit.models.ItemDetails;
-import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 import com.midtrans.sdk.corekit.models.UserAddress;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.BankTransferRequestModel;
@@ -47,10 +45,8 @@ import com.midtrans.sdk.corekit.models.snap.Installment;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.scancard.ScanCard;
-import com.midtrans.sdk.uikit.PaymentMethods;
 import com.midtrans.sdk.uikit.SdkUIFlowBuilder;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -2908,6 +2904,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             userAddress.setAddress(getString(R.string.order_review_delivery_address_sample));
             userAddress.setCity(getString(R.string.order_review_delivery_address_city_sample));
             userAddress.setAddressType(com.midtrans.sdk.corekit.core.Constants.ADDRESS_TYPE_BOTH);
+            userAddress.setZipcode("10220");
+            userAddress.setCountry("Indonesia");
             userAddresses.add(userAddress);
             userDetail.setUserAddresses(userAddresses);
         } else {
