@@ -45,7 +45,7 @@
         android:layout_height="wrap_content"
         android:drawableRight="@drawable/ic_chevron_up"
         android:padding="@dimen/sixteen_dp"
-        android:text="@string/instruction"
+        android:text= "@string/gopay_instruction"
         android:textColor="@color/dark_gray"
         android:textSize="@dimen/primary_text_size" />
 
@@ -73,7 +73,7 @@
             <com.midtrans.sdk.uikit.widgets.DefaultTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/gopay_instruction_tablet_step3"
+                android:text="@string/gopay_instruction_tablet_step2"
                 android:textColor="@color/black"
                 android:textSize="@dimen/secondary_text_size" />
         </LinearLayout>
@@ -95,7 +95,7 @@
             <com.midtrans.sdk.uikit.widgets.DefaultTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/gopay_instruction_tablet_step4"
+                android:text="@string/gopay_instruction_tablet_step3"
                 android:textColor="@color/black"
                 android:textSize="@dimen/secondary_text_size" />
         </LinearLayout>
@@ -134,7 +134,7 @@
             <com.midtrans.sdk.uikit.widgets.DefaultTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/gopay_instruction_tablet_step5"
+                android:text="@string/gopay_instruction_tablet_step4"
                 android:textColor="@color/black"
                 android:textSize="@dimen/secondary_text_size" />
         </LinearLayout>
@@ -156,7 +156,7 @@
             <com.midtrans.sdk.uikit.widgets.DefaultTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/gopay_instruction_tablet_step6"
+                android:text="@string/gopay_instruction_tablet_step5"
                 android:textColor="@color/black"
                 android:textSize="@dimen/secondary_text_size" />
         </LinearLayout>

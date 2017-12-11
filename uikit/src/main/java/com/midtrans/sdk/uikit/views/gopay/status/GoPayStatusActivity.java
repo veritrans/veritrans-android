@@ -101,7 +101,7 @@ public class GoPayStatusActivity extends BasePaymentActivity {
             });
             buttonPrimary.setTextBold();
         }
-        textTitle.setText(getString(R.string.payment_method_description_gopay));
+        textTitle.setText(getString(R.string.gopay_status_title));
     }
 
     @Override

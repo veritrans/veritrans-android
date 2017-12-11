@@ -591,24 +591,24 @@
     <!--Go-Pay Instruction-->
     <string name="gopay_instruction_step1">Tap <b>Pay Now with GO-PAY</b>.</string>
     <string name="gopay_instruction_step2">You will be redirected to the <b>GO-JEK</b> app.</string>
-    <string name="gopay_instruction_step3">Check your payment details then tap <b>PAY</b>.</string>
+    <string name="gopay_instruction_step3">Check your payment details in the <b>GO-JEK</b> app then tap <b>PAY</b>.</string>
     <string name="gopay_instruction_step4">Done.</string>
 
     <!--Go-Pay Instruction in Tablet-->
     <string name="gopay_instruction_tablet_step1">Tap <b>Pay Now with GO-PAY</b>.</string>
     <string name="gopay_instruction_tablet_step2">Open <b>GO-JEK</b> app on your phone.</string>
-    <string name="gopay_instruction_tablet_step3">Tap <b>Scan QR</b>, then point your camera to the <b>QR Code</b>.</string>
-    <string name="gopay_instruction_tablet_step4">Check your payment details in <b>GO-JEK</b> app and then tap <b>Pay</b>.</string>
+    <string name="gopay_instruction_tablet_step3">Tap <b>SCAN QR</b>, then point your camera to the <b>QR Code</b>.</string>
+    <string name="gopay_instruction_tablet_step4">Check your payment details in <b>GO-JEK</b> app and then tap <b>PAY</b>.</string>
     <string name="gopay_instruction_tablet_step5">Your transaction is done.</string>
 
     <!--Go-Pay related-->
+    <string name="gopay_status_title">Pay with GO-PAY</string>
     <string name="gopay_confirm_button">Pay Now with GO-PAY</string>
     <string name="notification_gojek_app">GO-JEK app is required for this payment method.</string>
-    <string name="notification_gojek_app_tablet">Make sure GO-JEK app is installed on your mobile phone.</string>
+    <string name="notification_gojek_app_tablet">Please complete your <b>GO-PAY</b> payment via <b>GO-JEK</b> app.</string>
     <string name="install_gojek_message">Install GO-JEK App from Play Store</string>
     <string name="whoops" translatable="false">Whoops!</string>
     <string name="no_gojek_message">Unfortunately, we couldn\'t find GO-JEK app installed on your phone.</string>
-    <string name="gopay_instruction">Tap <b>Pay Now with GO-PAY</b> to continue payment in GO-JEK app.</string>
     <string name="redirecting_to_gopay">Redirecting to GO-JEK app…</string>
     <string name="error_qr_code">Failed to load QR code. Please try again.</string>
     <string name="reload_qr_code">Reload QR Code</string>
@@ -616,6 +616,7 @@
     <string name="confirm_gopay_title">Confirm</string>
     <string name="confirm_gopay_qr_scan_tablet">Make sure the QR code successfully scanned and payment has been completed within the GO-JEK app.</string>
     <string name="confirm_gopay_qr_scan">Make sure payment has been completed within the GO-JEK app.</string>
+    <string name="gopay_instruction">How to Pay?</string>
 
     <string name="error_message_invalid_input_telkomsel">Transaction failed. Your transaction got declined by T-Cash.</string>
     <string name="kioson">Kioson</string>
@@ -862,16 +863,13 @@
     <string name="card_registration">Card Registration</string>
     <string name="error_utilized_orderid">Sorry, the order id already utilized</string>
     <string name="processing_card_registration">Processing card registration</string>
-    <string name="info_gopay_account">Make sure your phone number is <b>registered with GO-JEK and has sufficient GO-PAY balance</b></string>
     <string name="country_code">Country code</string>
     <string name="country_code_default">+62</string>
-    <string name="hint_gopay_phone_number">Enter GO-PAY Registered Phone Number</string>
     <string name="payment_continue">Continue</string>
     <string name="validation_country_code_empty">Please enter country code</string>
     <string name="status_message_not_enabled">Payment method is not enabled</string>
     <string name="details_message_not_enabled">Sorry, payment method is not enabled</string>
     <string name="hint_gopay_verification_number">Enter verification code</string>
-    <string name="info_gopay_auth">We sent a <b>verification code</b> via sms to your GO-PAY registered phone number <b>%1$s</b></string>
     <string name="verificaton_code_empty">Please enter verification code</string>
     <string name="verification_code">Resend Verification Code</string>
     <string name="resend_verification_code">Resending verification code</string>
