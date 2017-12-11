@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.bumptech.glide.Glide;
 import com.midtrans.raygun.RaygunClient;
 import com.midtrans.raygun.RaygunOnBeforeSend;
@@ -79,6 +80,7 @@ import com.midtrans.sdk.uikit.views.xl_tunai.payment.XlTunaiPaymentActivity;
 import com.midtrans.sdk.uikit.widgets.BoldTextView;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -883,21 +885,27 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             Logger.d(TAG, "sending result back with code " + requestCode);
 
             if (resultCode == RESULT_OK) {
-                TransactionResponse response = (TransactionResponse) data.getSerializableExtra(getString(R.string.transaction_response));
 
-                if (response != null) {
-                    if (response.getStatusCode().equals(getString(R.string.success_code_200))) {
-                        midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_SUCCESS));
-                        setAlreadyUtilized(true);
-                    } else if (response.getStatusCode().equals(getString(R.string.success_code_201))) {
-                        midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_PENDING));
-                        setAlreadyUtilized(true);
+                if (data != null) {
+                    TransactionResponse response = (TransactionResponse) data.getSerializableExtra(getString(R.string.transaction_response));
+
+                    if (response != null) {
+                        if (response.getStatusCode().equals(getString(R.string.success_code_200))) {
+                            midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_SUCCESS));
+                            setAlreadyUtilized(true);
+                        } else if (response.getStatusCode().equals(getString(R.string.success_code_201))) {
+                            midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_PENDING));
+                            setAlreadyUtilized(true);
+                        } else {
+                            midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_FAILED));
+                        }
                     } else {
-                        midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_FAILED));
+                        midtransSDK.notifyTransactionFinished(new TransactionResult(null, null, TransactionResult.STATUS_INVALID));
                     }
                 } else {
                     midtransSDK.notifyTransactionFinished(new TransactionResult(null, null, TransactionResult.STATUS_INVALID));
                 }
+
                 finish();
 
             } else if (resultCode == RESULT_CANCELED) {
