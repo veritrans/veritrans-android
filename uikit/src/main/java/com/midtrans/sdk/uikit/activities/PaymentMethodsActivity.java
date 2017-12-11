@@ -887,7 +887,14 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             if (resultCode == RESULT_OK) {
 
                 if (data != null) {
-                    TransactionResponse response = (TransactionResponse) data.getSerializableExtra(getString(R.string.transaction_response));
+
+                    TransactionResponse response = null;
+                    try {
+                        response = (TransactionResponse) data.getSerializableExtra(getString(R.string.transaction_response));
+
+                    } catch (RuntimeException e) {
+                        Logger.d(TAG, "failed to get transaction response:" + e.getMessage());
+                    }
 
                     if (response != null) {
                         if (response.getStatusCode().equals(getString(R.string.success_code_200))) {
