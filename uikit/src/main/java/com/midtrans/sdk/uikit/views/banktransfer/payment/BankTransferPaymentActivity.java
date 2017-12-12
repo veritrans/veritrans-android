@@ -36,6 +36,7 @@ import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.views.banktransfer.instruction.InstructionOtherBankFragment;
 import com.midtrans.sdk.uikit.views.banktransfer.status.MandiriBillStatusActivity;
 import com.midtrans.sdk.uikit.views.banktransfer.status.VaPaymentStatusActivity;
+import com.midtrans.sdk.uikit.widgets.BoldTextView;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
@@ -64,7 +65,8 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
 
     //for other ATM network
     private ImageView bankPreview;
-    private DefaultTextView bankDescription, cardDescription;
+    private BoldTextView bankDescription;
+    private DefaultTextView cardDescription;
     private boolean[] flags;
 
     @Override
@@ -463,7 +465,7 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
 
     private void bindOtherAtmGuidanceView() {
         bankPreview = (ImageView) findViewById(R.id.bank_preview);
-        bankDescription = (DefaultTextView) findViewById(R.id.bank_description);
+        bankDescription = (BoldTextView) findViewById(R.id.bank_description);
         bankToggle = (FancyButton) findViewById(R.id.bank_toggle);
         cardDescription = (DefaultTextView) findViewById(R.id.card_description);
     }
