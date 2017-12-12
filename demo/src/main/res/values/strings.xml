@@ -129,10 +129,19 @@
     <string name="order_review_customer_details_hint_email">Email</string>
     <string name="order_review_customer_details_phone">081808466410</string>
     <string name="order_review_customer_details_hint_phone">Phone Number</string>
-    <string name="order_review_delivery_address_sample">Midplaza 2, 4th Floor Jl. Jend. Sudirman\nKav.10-11, Jakarta - 10220\nIndonesia</string>
+    <string name="order_review_delivery_address_sample">Midplaza 2, 4th Floor Jl. Jend. Sudirman Kav.10-11</string>
     <string name="order_review_delivery_address_city_sample">Jakarta</string>
     <string name="order_review_delivery_options">ORDER REVIEW &amp; DELIVERY OPTIONS</string>
     <string name="order_review_quantity">Qty 1</string>
+    <string name="order_review_city">City : %1$s</string>
+    <string name="order_review_postal_code">Postal Code : %1$s</string>
+    <string name="delivery_address_title">Delivery Address</string>
+    <string name="delivery_address_save">Update Delivery Address</string>
+    <string name="hint_edit_address">Address</string>
+    <string name="hint_edit_city">City</string>
+    <string name="hint_edit_zip_code">Zipcode</string>
+    <string name="hint_edit_country">Country</string>
+    <string name="hint_error_zip_code">Zipcode should be 5 digits</string>
     <!--BUTTON-->
     <string name="btn_launch_demo">Launch Demo App</string>
     <string name="btn_buy">Buy</string>
