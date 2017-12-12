@@ -10,6 +10,7 @@ public class UIKitCustomSetting {
     private boolean saveCardChecked = false;
     private boolean enabledAnimation = true;
     private boolean enableAutoReadSms = false;
+    private boolean skipCustomerDetailsPages = false;
 
     public boolean isShowPaymentStatus() {
         return showPaymentStatus;
@@ -41,5 +42,13 @@ public class UIKitCustomSetting {
 
     public void setEnableAutoReadSms(boolean enableAutoReadSms) {
         this.enableAutoReadSms = enableAutoReadSms;
+    }
+
+    public boolean isSkipCustomerDetailsPages() {
+        return skipCustomerDetailsPages;
+    }
+
+    public void setSkipCustomerDetailsPages(boolean skipCustomerDetailsPages) {
+        this.skipCustomerDetailsPages = skipCustomerDetailsPages;
     }
 }

@@ -16,13 +16,14 @@ import android.util.Log;
 import android.view.View;
 
 import com.midtrans.raygun.RaygunClient;
-import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
 import com.midtrans.sdk.corekit.models.UserAddress;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.fragments.UserAddressFragment;
 import com.midtrans.sdk.uikit.fragments.UserDetailFragment;
+import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 
 import java.util.ArrayList;
@@ -61,7 +62,7 @@ public class UserDetailsActivity extends BaseActivity {
             return;
         }
 
-        checkUserDetails();
+        initializeSdkFlow();
     }
 
     private void initIssueTracker() {
@@ -94,37 +95,55 @@ public class UserDetailsActivity extends BaseActivity {
         }
     }
 
-    public void checkUserDetails() throws RuntimeException {
+    public void initializeSdkFlow() throws RuntimeException {
 
         try {
-            UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
+            MidtransSDK midtransSDK = MidtransSDK.getInstance();
 
-            if (userDetail != null && !TextUtils.isEmpty(userDetail.getUserFullName())) {
-                //TODO check user have address filled
-                //if no take user to select address
+            if (midtransSDK != null) {
+                UIKitCustomSetting setting = midtransSDK.getUIKitCustomSetting();
+                if (setting != null && setting.isSkipCustomerDetailsPages()) {
 
-                ArrayList<UserAddress> userAddresses = userDetail.getUserAddresses();
-                if (userAddresses != null && !userAddresses.isEmpty()) {
+                    SdkUIFlowUtil.saveUserDetails();
+
                     showPaymentpage();
-                } else {
-                    setView();
-                    UserAddressFragment userAddressFragment = UserAddressFragment.newInstance();
-                    replaceFragment(userAddressFragment, false);
                     return;
                 }
-            } else {
-                setView();
-                UserDetailFragment userDetailFragment = UserDetailFragment.newInstance();
-                replaceFragment(userDetailFragment, false);
-                return;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-        setView();
-        UserDetailFragment userDetailFragment = UserDetailFragment.newInstance();
-        replaceFragment(userDetailFragment, false);
+                UserDetail userDetail = SdkUIFlowUtil.getSavedUserDetails(this);
+
+                if (userDetail != null) {
+                    if (!TextUtils.isEmpty(userDetail.getUserFullName())) {
+                        //TODO check user have address filled
+                        //if no take user to select address
+
+                        ArrayList<UserAddress> userAddresses = userDetail.getUserAddresses();
+                        if (userAddresses != null && !userAddresses.isEmpty()) {
+                            showPaymentpage();
+                        } else {
+                            setView();
+                            UserAddressFragment userAddressFragment = UserAddressFragment.newInstance();
+                            replaceFragment(userAddressFragment, false);
+                        }
+                    } else {
+                        setView();
+                        UserDetailFragment userDetailFragment = UserDetailFragment.newInstance();
+                        replaceFragment(userDetailFragment, false);
+                    }
+                }
+            } else {
+                String errorMessage = getString(R.string.error_sdk_not_initialized);
+                Log.e(TAG, errorMessage);
+                SdkUIFlowUtil.showToast(this, errorMessage);
+                finish();
+            }
+
+        } catch (Exception e) {
+            String errorMessage = "invalid customerDetails info:" + e.getMessage();
+            Log.e(TAG, errorMessage);
+            SdkUIFlowUtil.showToast(this, errorMessage);
+            finish();
+        }
     }
 
     public void showPaymentpage() {

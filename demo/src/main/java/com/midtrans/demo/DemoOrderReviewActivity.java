@@ -60,8 +60,9 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
         retrieveCountryCode();
         setContentView(R.layout.activity_order_review);
         bindViews();
-        bindData();
-        bindAddress();
+        // todo init customer details should be enabled
+//        bindData();
+//        bindAddress();
         bindThemes();
         initPayButton();
         initEditButton();

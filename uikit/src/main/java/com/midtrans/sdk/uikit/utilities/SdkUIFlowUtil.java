@@ -53,6 +53,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -668,5 +669,22 @@ public class SdkUIFlowUtil {
 
     public static UserDetail getSavedUserDetails(Context context) throws RuntimeException {
         return LocalDataHandler.readObject(context.getString(R.string.user_details), UserDetail.class);
+    }
+
+    public static void saveUserDetails() throws RuntimeException {
+        UserDetail userDetail = LocalDataHandler.readObject(UiKitConstants.KEY_USER_DETAILS, UserDetail.class);
+        saveUserDetails(userDetail);
+    }
+
+    public static void saveUserDetails(UserDetail userDetail) throws RuntimeException {
+        if (userDetail == null) {
+            userDetail = new UserDetail();
+        }
+
+        if (TextUtils.isEmpty(userDetail.getUserId())) {
+            userDetail.setUserId(UUID.randomUUID().toString());
+        }
+
+        LocalDataHandler.saveObject(UiKitConstants.KEY_USER_DETAILS, userDetail);
     }
 }
