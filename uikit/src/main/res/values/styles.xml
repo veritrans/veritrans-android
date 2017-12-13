@@ -113,6 +113,7 @@
 
 
     <style name="ButtonBankListExpand" parent="ButtonSecondary">
+        <item name="fb_radius">0dp</item>
         <item name="fb_defaultColor">@color/light_gray</item>
     </style>
 
