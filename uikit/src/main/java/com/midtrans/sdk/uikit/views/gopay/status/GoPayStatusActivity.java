@@ -95,7 +95,7 @@ public class GoPayStatusActivity extends BasePaymentActivity {
 
             //process expiration
             expirationText = (BoldTextView) findViewById(R.id.gopay_expiration_text);
-            String expirationTime = getExpiryTime(response.getTransactionTime());
+            String expirationTime = TextUtils.isEmpty(response.getExpiry()) ? getExpiryTime(response.getTransactionTime()) : response.getExpiry();
             if (TextUtils.isEmpty(expirationTime)) {
                 expirationText.setVisibility(View.GONE);
             } else {
