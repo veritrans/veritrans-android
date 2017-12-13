@@ -14,10 +14,10 @@ import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.GCIPaymentFragment;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
+import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 
@@ -70,9 +70,6 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
      * set up {@link } to display payment instructions.
      */
     private void setUpHomeFragment() {
-        //track page telkomsel cash
-        midtransSDK.trackEvent(AnalyticsEventName.PAGE_GCI);
-
         // setup home fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -135,9 +132,7 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
-    private void setUpTransactionStatusFragment(final TransactionResponse
-                                                        transactionResponse) {
-
+    private void setUpTransactionStatusFragment(final TransactionResponse transactionResponse) {
         currentFragment = STATUS_FRAGMENT;
         buttonConfirmPayment.setText(getString(R.string.done));
 
@@ -146,10 +141,6 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
 
 
     private void performTransaction() {
-        //track page telkomsel cash
-        midtransSDK.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
-
-
         if (paymentFragment.checkFormValidity()) {
             SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment),
                     false);
@@ -161,9 +152,6 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
             midtransSDK.paymentUsingGCI(midtransSDK.readAuthenticationToken(), cardNumber, password, new TransactionCallback() {
                 @Override
                 public void onSuccess(TransactionResponse response) {
-                    //track page status success
-                    MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_SUCCESS);
-
                     SdkUIFlowUtil.hideProgressDialog();
                     if (response != null) {
                         transactionResponse = response;
@@ -175,9 +163,6 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
 
                 @Override
                 public void onFailure(TransactionResponse response, String reason) {
-                    //track page status failed
-                    MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
-
                     errorMessage = getString(R.string.message_payment_failed);
                     transactionResponse = response;
                     SdkUIFlowUtil.hideProgressDialog();
@@ -192,9 +177,6 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
 
                 @Override
                 public void onError(Throwable error) {
-                    //track page status failed
-                    MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
-
                     SdkUIFlowUtil.hideProgressDialog();
                     String message = MessageUtil.createPaymentErrorMessage(GCIActivity.this, error.getMessage(), null);
 
@@ -238,5 +220,15 @@ public class GCIActivity extends BaseActivity implements View.OnClickListener {
             super.onBackPressed();
         }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS)
+            if (resultCode == RESULT_CANCELED || resultCode == RESULT_OK) {
+                setResultAndFinish();
+            }
+    }
+
 
 }

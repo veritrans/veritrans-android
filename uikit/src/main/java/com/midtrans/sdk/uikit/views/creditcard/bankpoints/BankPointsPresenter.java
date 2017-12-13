@@ -1,7 +1,10 @@
 package com.midtrans.sdk.uikit.views.creditcard.bankpoints;
 
+import android.text.TextUtils;
 import android.util.Log;
 
+import com.midtrans.sdk.corekit.models.BankType;
+import com.midtrans.sdk.corekit.models.ItemDetails;
 import com.midtrans.sdk.corekit.models.snap.TransactionDetails;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentPresenter;
 
@@ -10,12 +13,15 @@ import com.midtrans.sdk.uikit.abstracts.BasePaymentPresenter;
  */
 
 public class BankPointsPresenter extends BasePaymentPresenter {
+    private static final String BNI_POINT_ID = "bni_point";
+    private static final String MANDIRI_POIN_ID = "mandiri_point";
     private String pointBank;
     private float pointBalance;
     private double totalAmount;
     private double amountToPay;
     private float pointRedeemed;
     private String latestValidPoint;
+    private String itemDetailsName;
 
     public BankPointsPresenter(float pointBalance, String pointBank) {
         super();
@@ -74,5 +80,32 @@ public class BankPointsPresenter extends BasePaymentPresenter {
 
     public String getPointBank() {
         return pointBank;
+    }
+
+    public ItemDetails createBankPointItemDetails() {
+        ItemDetails newItemDetails = null;
+
+        if (!TextUtils.isEmpty(pointBank) && !TextUtils.isEmpty(itemDetailsName)) {
+
+            int newPrice = (int) pointRedeemed * -1;
+            int quantity = 1;
+
+            switch (pointBank) {
+                case BankType.BNI:
+                    newItemDetails = new ItemDetails(BNI_POINT_ID, newPrice, quantity, itemDetailsName);
+                    break;
+
+                case BankType.MANDIRI:
+                    newItemDetails = new ItemDetails(MANDIRI_POIN_ID, newPrice, quantity, itemDetailsName);
+                    break;
+            }
+        }
+
+        return newItemDetails;
+    }
+
+
+    public void setItemDetailsName(String itemDetailsName) {
+        this.itemDetailsName = itemDetailsName;
     }
 }

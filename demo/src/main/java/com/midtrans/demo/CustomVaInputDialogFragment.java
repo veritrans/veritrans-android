@@ -5,9 +5,11 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
+import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputFilter.LengthFilter;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +28,7 @@ public class CustomVaInputDialogFragment extends DialogFragment {
     private static final String ARG_COLOR = "arg.color";
     private static final String ARG_NUMBER = "arg.number";
     private static final String ARG_TITLE = "arg.title";
+    private static final String ARG_SUBCOMPANY_FLAG = "arg.subcompany";
 
     private String number;
     private int color;
@@ -37,9 +40,10 @@ public class CustomVaInputDialogFragment extends DialogFragment {
     private TextView title;
 
     private String vaTitle;
+    private boolean isSubcompany;
 
     public static CustomVaInputDialogFragment newInstance(String title, int color,
-        CustomVaDialogListener listener) {
+                                                          CustomVaDialogListener listener) {
         CustomVaInputDialogFragment fragment = new CustomVaInputDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable(ARG_LISTENER, listener);
@@ -49,8 +53,19 @@ public class CustomVaInputDialogFragment extends DialogFragment {
         return fragment;
     }
 
+    public static CustomVaInputDialogFragment newInstance(String title, int color, boolean isSubcompany, CustomVaDialogListener listener) {
+        CustomVaInputDialogFragment fragment = new CustomVaInputDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ARG_LISTENER, listener);
+        bundle.putInt(ARG_COLOR, color);
+        bundle.putString(ARG_TITLE, title);
+        bundle.putBoolean(ARG_SUBCOMPANY_FLAG, isSubcompany);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
     public static CustomVaInputDialogFragment newInstance(String number, String title, int color,
-        CustomVaDialogListener listener) {
+                                                          CustomVaDialogListener listener) {
         CustomVaInputDialogFragment fragment = new CustomVaInputDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable(ARG_LISTENER, listener);
@@ -61,10 +76,23 @@ public class CustomVaInputDialogFragment extends DialogFragment {
         return fragment;
     }
 
+    public static CustomVaInputDialogFragment newInstance(String number, String title, int color, boolean isSubcompany,
+                                                          CustomVaDialogListener listener) {
+        CustomVaInputDialogFragment fragment = new CustomVaInputDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ARG_LISTENER, listener);
+        bundle.putInt(ARG_COLOR, color);
+        bundle.putString(ARG_NUMBER, number);
+        bundle.putString(ARG_TITLE, title);
+        bundle.putBoolean(ARG_SUBCOMPANY_FLAG, isSubcompany);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-        @Nullable Bundle savedInstanceState) {
+                             @Nullable Bundle savedInstanceState) {
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         return inflater.inflate(R.layout.fragment_custom_bca_va, container, false);
     }
@@ -76,6 +104,10 @@ public class CustomVaInputDialogFragment extends DialogFragment {
         initExtras();
         initThemes();
         initButtons();
+        if (isSubcompany) {
+            okButton.setClickable(false);
+            initEditText();
+        }
     }
 
     private void initViews(View view) {
@@ -101,6 +133,7 @@ public class CustomVaInputDialogFragment extends DialogFragment {
             initNumber(number);
         }
         this.vaTitle = getArguments().getString(ARG_TITLE);
+        this.isSubcompany = getArguments().getBoolean(ARG_SUBCOMPANY_FLAG, false);
         setTitle(vaTitle);
         initInputFilter();
     }
@@ -109,6 +142,12 @@ public class CustomVaInputDialogFragment extends DialogFragment {
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String vaNumber = customVAField.getText().toString();
+                if (TextUtils.isEmpty(vaNumber)) {
+                    customVaContainer.setError(getString(R.string.error_empty));
+                    return;
+                }
+
                 dismiss();
                 if (listener != null) {
                     listener.onOkClicked(customVAField.getText().toString());
@@ -125,6 +164,32 @@ public class CustomVaInputDialogFragment extends DialogFragment {
                 }
             }
         });
+    }
+
+    private void initEditText() {
+        if (customVAField != null) {
+            customVAField.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if (s.toString().length() == 5) {
+                        customVaContainer.setError("");
+                        okButton.setClickable(true);
+                    } else {
+                        customVaContainer.setError(getString(R.string.subcompany_error_message));
+                    }
+                }
+            });
+        }
     }
 
     private void initNumber(String number) {
@@ -157,5 +222,17 @@ public class CustomVaInputDialogFragment extends DialogFragment {
         }
 
         customVAField.setFilters(filterArray);
+    }
+
+    public void setErrorMessage(String message) {
+        if (customVaContainer != null) {
+            customVaContainer.setError(message);
+        }
+    }
+
+    public void clearErrorMessage() {
+        if (customVaContainer != null) {
+            customVaContainer.setError("");
+        }
     }
 }

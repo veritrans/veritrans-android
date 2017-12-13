@@ -4,6 +4,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
+    <com.midtrans.sdk.uikit.widgets.DefaultTextView
+        android:id="@+id/card_description"
+        style="@style/AtmBersamaNotification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/sixteen_dp"
+        android:drawablePadding="@dimen/twenty_dp"
+        android:paddingBottom="@dimen/four_dp"
+        android:paddingEnd="@dimen/twelve_dp"
+        android:paddingLeft="@dimen/twelve_dp"
+        android:paddingRight="@dimen/twelve_dp"
+        android:paddingStart="@dimen/twelve_dp"
+        android:paddingTop="@dimen/four_dp"
+        android:textColor="@color/black" />
+
+    <com.midtrans.sdk.uikit.widgets.BoldTextView
+        android:id="@+id/bank_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/four_dp"
+        android:layout_marginEnd="@dimen/twelve_dp"
+        android:layout_marginLeft="@dimen/twelve_dp"
+        android:layout_marginRight="@dimen/twelve_dp"
+        android:layout_marginStart="@dimen/twelve_dp"
+        android:layout_marginTop="@dimen/four_dp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/tertiary_text_size"
+        android:textStyle="bold"
+        app:textAllCaps="true" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,16 +48,6 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/eight_dp" />
 
-        <com.midtrans.sdk.uikit.widgets.DefaultTextView
-            android:id="@+id/bank_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/four_dp"
-            android:layout_marginTop="@dimen/four_dp"
-            android:gravity="center"
-            android:textColor="@color/black"
-            android:textSize="@dimen/secondary_text_size" />
-
         <com.midtrans.sdk.uikit.widgets.FancyButton
             android:id="@+id/bank_toggle"
             style="@style/ButtonBankListExpand"
@@ -36,16 +57,6 @@
             android:layout_marginBottom="@dimen/four_dp"
             android:drawablePadding="@dimen/two_dp"
             app:fb_iconPaddingRight="@dimen/four_dp"
-            app:fb_iconResource="@drawable/ic_view"/>
+            app:fb_iconResource="@drawable/ic_view" />
     </LinearLayout>
-
-    <com.midtrans.sdk.uikit.widgets.DefaultTextView
-        android:id="@+id/card_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginLeft="@dimen/twenty_dp"
-        android:layout_marginRight="@dimen/twelve_dp"
-        android:drawablePadding="@dimen/twenty_dp"
-        android:textColor="@color/black" />
 </LinearLayout>

@@ -31,8 +31,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.callback.ObtainPromoCallback;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
@@ -46,13 +44,11 @@ import com.midtrans.sdk.corekit.models.snap.PromoResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.activities.CreditCardFlowActivity;
-import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.widgets.AspectRatioImageView;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -316,10 +312,6 @@ public class CardDetailsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 MidtransSDK midtransSDK = MidtransSDK.getInstance();
-
-                // Track event pay now
-                midtransSDK.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
-
                 setPaymentInstallment();
 
                 if (checkCardValidity()) {
@@ -419,29 +411,16 @@ public class CardDetailsFragment extends Fragment {
                     cardCvv.setEnabled(false);
 
                     ((CreditCardFlowActivity) getActivity()).setInstallmentAvailableStatus(false);
-
-                    // Track page cc one click
-                    midtransSDK.trackEvent(AnalyticsEventName.PAGE_CREDIT_CARD_DETAILS, MixpanelAnalyticsManager.CARD_MODE_ONE_CLICK);
                 } else {
                     initCardInstallment();
                     initBNIPoints(checkCardNumberValidity());
-
-                    //track page cc two clicks
-                    midtransSDK.trackEvent(AnalyticsEventName.PAGE_CREDIT_CARD_DETAILS, MixpanelAnalyticsManager.CARD_MODE_TWO_CLICK);
                 }
 
                 setBankType();
                 setCardType();
-            } else {
-                //track page cc detail
-                midtransSDK.trackEvent(AnalyticsEventName.PAGE_CREDIT_CARD_DETAILS, MixpanelAnalyticsManager.CARD_MODE_NORMAL);
             }
-        } else {
-            //track page cc detail
-            midtransSDK.trackEvent(AnalyticsEventName.PAGE_CREDIT_CARD_DETAILS, MixpanelAnalyticsManager.CARD_MODE_NORMAL);
         }
     }
-
 
     private void bindViews(View view) {
         deleteCardBtn = (FancyButton) view.findViewById(R.id.image_saved_card_delete);
@@ -656,11 +635,6 @@ public class CardDetailsFragment extends Fragment {
                 cardCvvNumberContainer.setError(null);
             }
         }
-
-        if (!isValid) {
-            //track invalid cc cvv
-            MidtransSDK.getInstance().trackEvent(AnalyticsEventName.CREDIT_CARD_CVV_VALIDATION, MixpanelAnalyticsManager.CARD_MODE_NORMAL);
-        }
         return isValid;
     }
 
@@ -684,10 +658,6 @@ public class CardDetailsFragment extends Fragment {
             isValid = false;
         } else {
             cardNumberContainer.setError(null);
-        }
-        if (!isValid) {
-            //track invalid cc number
-            MidtransSDK.getInstance().trackEvent(AnalyticsEventName.CREDIT_CARD_NUMBER_VALIDATION, MixpanelAnalyticsManager.CARD_MODE_NORMAL);
         }
         return isValid;
     }
@@ -906,11 +876,6 @@ public class CardDetailsFragment extends Fragment {
             } else {
                 cardExpiryContainer.setError(null);
             }
-        }
-
-        if (!isValid) {
-            //track invalid cc expiry
-            MidtransSDK.getInstance().trackEvent(AnalyticsEventName.CREDIT_CARD_EXPIRY_VALIDATION, MixpanelAnalyticsManager.CARD_MODE_NORMAL);
         }
         return isValid;
     }

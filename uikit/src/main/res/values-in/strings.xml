@@ -236,6 +236,35 @@
     <string name="kioson_instruction_step8">Konfirmasi pembayaran  Anda dan cetak bukti pembayarannya.</string>
     <string name="kioson_instruction_step9">Transaksi Anda berhasil! Anda akan menerima email konfirmasi pembayaran. Harap simpan struk pembayaran Kioson Anda, apabila Anda memerlukan bantuan via support.</string>
 
+    <!--Go-Pay Instruction-->
+    <string name="gopay_instruction_step1">Tap <b>Konfirmasi Pembayaran</b>.</string>
+    <string name="gopay_instruction_step2">Tap <b>Bayar dengan GO-PAY</b>.</string>
+    <string name="gopay_instruction_step3">Aplikasi <b>GO-JEK</b> akan terbuka.</string>
+    <string name="gopay_instruction_step4">Periksa rincian pembayaran Anda lalu tap <b>PAY</b>.</string>
+    <string name="gopay_instruction_step5">Selesai.</string>
+
+    <!--Go-Pay related-->
+    <string name="gopay_confirm_button">Bayar dengan GO-PAY</string>
+    <string name="notification_gojek_app">Aplikasi GO-JEK diperlukan untuk metode pembayaran ini.</string>
+    <string name="notification_gojek_app_tablet">Pastikan aplikasi GO-JEK telah terinstal pada HP Anda.</string>
+    <string name="install_gojek_message">Install aplikasi GO-JEK dari Play Store</string>
+    <string name="no_gojek_message">Mohon maaf, kami tidak dapat mendeteksi aplikasi GO-JEK di perangkat Anda.</string>
+    <string name="gopay_instruction">Tap <b>Bayar dengan GO-PAY</b> untuk melanjutkan pembayaran di aplikasi GO-JEK.</string>
+    <string name="redirecting_to_gopay">Mengarahkan ke aplikasi GO-JEK…</string>
+    <string name="error_qr_code">Gagal memuat kode QR. Mohon coba lagi.</string>
+    <string name="reload_qr_code">Muat Ulang Kode QR</string>
+    <string name="error_gopay_transaction">Transaksi Anda tidak dapat diproses. Silakan ulangi lagi, atau coba dengan metode pembayaran lain.</string>
+    <string name="confirm_gopay_title">Konfirmasi</string>
+    <string name="confirm_gopay_qr_scan_tablet">Pastikan kode QR berhasil di-scan dan pembayaran telah diselesaikan di dalam aplikasi GO-JEK.</string>
+    <string name="confirm_gopay_qr_scan">Pastikan pembayaran telah diselesaikan di dalam aplikasi GO-JEK.</string>
+
+    <!--Go-Pay Instruction in Tablet-->
+    <string name="gopay_instruction_tablet_step1">Tap <b>Bayar dengan GO-PAY</b>.</string>
+    <string name="gopay_instruction_tablet_step2"><b>Kode QR</b> akan muncul di halaman selanjutnya untuk di-scan.</string>
+    <string name="gopay_instruction_tablet_step3">Buka aplikasi <b>GO-JEK</b> di HP Anda.</string>
+    <string name="gopay_instruction_tablet_step4">Tap <b>Scan QR</b>, lalu arahkan kamera HP Anda ke <b>kode QR</b>.</string>
+    <string name="gopay_instruction_tablet_step5">Cek detail pembayaran Anda di aplikasi <b>GO-JEK</b> lalu tap <b>PAY</b>.</string>
+    <string name="gopay_instruction_tablet_step6">Transaksi Anda selesai.</string>
 
     <!--credit card -->
     <string name="add_card_message">Anda bisa membayar dengan kartu baru disini</string>
@@ -668,5 +697,7 @@
     <string name="empty_card_number">Silakan Masukkan Nomor Kartu</string>
     <string name="empty_challenge_token">Silakan Masukkan Challange Token</string>
     <string name="pay_without_fiesta_poin">Bayar Tanpa Gunakan Fiestapoin</string>
+    <string name="payment_instruction">Instruksi Pembayaran %1$s</string>
+    <string name="instruction_atm_with">ATM berlogo %1$s</string>
 
 </resources>

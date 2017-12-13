@@ -5,6 +5,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.View.OnClickListener;
+import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BaseVaPaymentStatusActivity;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
@@ -23,12 +25,15 @@ public class VaPaymentStatusActivity extends BaseVaPaymentStatusActivity {
     private FancyButton buttonCopyVa;
     private FancyButton buttonInstruction;
 
+    private String pageName, buttonName;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bank_transfer_status);
         initActionButton();
         initData();
+        trackPage();
     }
 
     private void initActionButton() {
@@ -72,6 +77,39 @@ public class VaPaymentStatusActivity extends BaseVaPaymentStatusActivity {
 
     }
 
+    private void trackPage() {
+        String bankType = presenter.getBankType();
+        switch (bankType) {
+            case PaymentType.BCA_VA:
+                buttonName = "Done Bank Transfer BCA";
+                pageName = "Bank Transfer BCA Charge";
+                presenter.trackPageView(pageName, false);
+                break;
+            case PaymentType.PERMATA_VA:
+                buttonName = "Done Bank Transfer Permata";
+                pageName = "Bank Transfer Permata Charge";
+                presenter.trackPageView(pageName, false);
+                break;
+            case PaymentType.ALL_VA:
+                buttonName = "Done Bank Transfer All Bank";
+                pageName = "Bank Transfer Other Charge";
+                presenter.trackPageView(pageName, false);
+        }
+    }
+
+    @Override
+    protected void initCompletePaymentButton() {
+        buttonCompletePayment.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!TextUtils.isEmpty(pageName) && !TextUtils.isEmpty(buttonName)) {
+                    presenter.trackButtonClick(buttonName, pageName);
+                    finishPaymentStatus();
+                }
+            }
+        });
+    }
+
     @Override
     public void bindViews() {
         super.bindViews();
@@ -96,6 +134,9 @@ public class VaPaymentStatusActivity extends BaseVaPaymentStatusActivity {
 
     @Override
     public void onBackPressed() {
+        if (presenter != null && !TextUtils.isEmpty(pageName)) {
+            presenter.trackBackButtonClick(pageName);
+        }
         finishPaymentStatus();
     }
 }

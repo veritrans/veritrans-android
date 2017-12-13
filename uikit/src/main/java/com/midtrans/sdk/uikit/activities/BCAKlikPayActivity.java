@@ -9,7 +9,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
@@ -17,7 +16,6 @@ import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.BCAKlikPayInstructionFragment;
 import com.midtrans.sdk.uikit.fragments.WebviewFragment;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
@@ -119,9 +117,6 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
         // setup  fragment
         bcaKlikPayInstructionFragment = new BCAKlikPayInstructionFragment();
         replaceFragment(bcaKlikPayInstructionFragment, R.id.instruction_container, false, false);
-
-        //track page BCA Klik Pay
-        mMidtransSDK.trackEvent(AnalyticsEventName.PAGE_BCA_KLIKPAY);
     }
 
 
@@ -143,17 +138,11 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
     }
 
     private void makeTransaction() {
-        //track page BCA Klik pay
-        mMidtransSDK.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
-
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
         mMidtransSDK.paymentUsingBCAKlikpay(mMidtransSDK.readAuthenticationToken(), new TransactionCallback() {
             @Override
             public void onSuccess(TransactionResponse response) {
                 SdkUIFlowUtil.hideProgressDialog();
-
-                //track page status pending
-                MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_PENDING);
 
                 if (response != null &&
                         !TextUtils.isEmpty(response.getRedirectUrl())) {
@@ -182,9 +171,6 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
                     BCAKlikPayActivity.this.transactionResponse = response;
                     SdkUIFlowUtil.hideProgressDialog();
 
-                    //track page status failed
-                    MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
-
                     if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
                         transactionResponseFromMerchant = response;
                         setResultCode(RESULT_OK);
@@ -204,9 +190,6 @@ public class BCAKlikPayActivity extends BaseActivity implements View.OnClickList
                 errorMessage = message;
                 SdkUIFlowUtil.hideProgressDialog();
                 SdkUIFlowUtil.showToast(BCAKlikPayActivity.this, "" + errorMessage);
-
-                //track page status failed
-                MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
             }
         });
     }

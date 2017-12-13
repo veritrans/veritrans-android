@@ -24,6 +24,7 @@ import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
+import com.midtrans.sdk.uikit.views.status.PaymentStatusPresenter;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 
@@ -45,6 +46,8 @@ public class WebViewPaymentActivity extends BasePaymentActivity {
 
     private String webUrl;
     private String paymentType;
+
+    private PaymentStatusPresenter presenter;
 
     private static void showCancelConfirmationDialog(final WebViewPaymentActivity activity) {
         if (activity != null) {
@@ -95,6 +98,10 @@ public class WebViewPaymentActivity extends BasePaymentActivity {
         setContentView(R.layout.activity_webview_payment);
         initWebViewContainer();
         initPageTitle();
+
+        if (paymentType != null && paymentType.equalsIgnoreCase(PaymentType.CREDIT_CARD)) {
+            presenter.trackPageView("CC 3DS", false);
+        }
     }
 
     private void initPageTitle() {
@@ -128,6 +135,7 @@ public class WebViewPaymentActivity extends BasePaymentActivity {
             webUrl = intent.getStringExtra(EXTRA_PAYMENT_URL);
             paymentType = intent.getStringExtra(EXTRA_PAYMENT_TYPE);
         }
+        presenter = new PaymentStatusPresenter();
     }
 
     @SuppressLint("AddJavascriptInterface")
@@ -168,6 +176,9 @@ public class WebViewPaymentActivity extends BasePaymentActivity {
 
     @Override
     public void onBackPressed() {
+        if (presenter != null && paymentType != null && paymentType.equalsIgnoreCase(PaymentType.CREDIT_CARD)) {
+            presenter.trackBackButtonClick("CC 3DS");
+        }
         showCancelConfirmationDialog(this);
     }
 

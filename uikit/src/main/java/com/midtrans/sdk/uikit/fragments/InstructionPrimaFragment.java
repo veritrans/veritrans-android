@@ -7,10 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.views.banktransfer.instruction.InstructionOtherBankFragment;
 
 /**
  * Displays Prima bank instruction.
- * Deprecated, use {@link com.midtrans.sdk.uikit.fragments.InstructionOtherBankFragment} instead
+ * Deprecated, use {@link InstructionOtherBankFragment} instead
  */
 @Deprecated
 public class InstructionPrimaFragment extends Fragment {

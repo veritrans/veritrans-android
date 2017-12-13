@@ -23,7 +23,6 @@ import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.activities.BankTransferActivity;
 import com.midtrans.sdk.uikit.adapters.InstructionFragmentPagerAdapter;
-import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 import com.midtrans.sdk.uikit.widgets.MagicViewPager;
 
@@ -218,8 +217,6 @@ public class MandiriBillPayFragment extends Fragment {
     private void setUpViewPager() {
         MidtransSDK midtransSDK = MidtransSDK.getInstance();
         instructionViewPager.setPageMargin(PAGE_MARGIN);
-        //track page mandiri bill overview
-        midtransSDK.trackEvent(AnalyticsEventName.PAGE_MANDIRI_BILL_OVERVIEW);
 
         InstructionFragmentPagerAdapter adapter = new InstructionFragmentPagerAdapter(getContext(), TYPE_MANDIRI_BILL, getChildFragmentManager(), 2);
         instructionViewPager.setAdapter(adapter);

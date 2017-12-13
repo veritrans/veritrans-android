@@ -6,6 +6,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -13,34 +14,57 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.midtrans.demo.widgets.DemoTextView;
 import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
+import com.midtrans.sdk.corekit.core.Constants;
+import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.models.UserAddress;
+import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
+import com.midtrans.sdk.uikit.models.CountryCodeModel;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
+import java.io.InputStream;
+import java.util.ArrayList;
 
 /**
  * Created by rakawm on 3/16/17.
  */
 
-public class DemoOrderReviewActivity extends AppCompatActivity implements TransactionFinishedCallback {
+public class DemoOrderReviewActivity extends AppCompatActivity implements TransactionFinishedCallback,
+    OnClickListener {
 
     private static final long DELAY = 300;
+    private final int EDIT_SHIPPING_ADDRESS = 1;
+    private UserDetail userDetail;
     private RelativeLayout amountContainer;
     private TextView amountText;
     private FancyButton payBtn;
     private Toolbar toolbar;
+    private ImageView editCustBtn, saveCustBtn, cancelCustBtn, editDelivBtn;
+    private TextInputEditText editName, editEmail, editPhone;
+    private DemoTextView deliveryAddress, cityAddress, postalCodeAddress;
+    private boolean isInEditMode;
+    private ArrayList<CountryCodeModel> countryCodeList = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        retrieveCountryCode();
         setContentView(R.layout.activity_order_review);
         bindViews();
+        bindData();
+        bindAddress();
         bindThemes();
         initPayButton();
+        initEditButton();
         initMidtransSDK();
     }
 
@@ -49,6 +73,47 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
         amountContainer = (RelativeLayout) findViewById(R.id.amount_container);
         amountText = (TextView) findViewById(R.id.product_price_amount);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        editCustBtn = (ImageView) findViewById(R.id.button_edit_customer_detail);
+        saveCustBtn = (ImageView) findViewById(R.id.button_save_customer_detail);
+        cancelCustBtn = (ImageView) findViewById(R.id.button_cancel_customer_detail);
+        editDelivBtn = (ImageView) findViewById(R.id.button_edit_delivery_address);
+        editName = (TextInputEditText) findViewById(R.id.edit_customer_name);
+        editEmail = (TextInputEditText) findViewById(R.id.edit_customer_email);
+        editPhone = (TextInputEditText) findViewById(R.id.edit_customer_phone);
+        deliveryAddress = (DemoTextView) findViewById(R.id.delivery_address);
+        cityAddress = (DemoTextView) findViewById(R.id.city_address);
+        postalCodeAddress = (DemoTextView) findViewById(R.id.zip_address);
+    }
+
+    private void bindData() {
+        userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
+        if (userDetail != null) {
+            editName.setText(userDetail.getUserFullName());
+            editEmail.setText(userDetail.getEmail());
+            editPhone.setText(userDetail.getPhoneNumber());
+        }
+    }
+
+    private void bindAddress() {
+        UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
+        if (userDetail != null) {
+            ArrayList<UserAddress> addresses = userDetail.getUserAddresses();
+            if (addresses != null && !addresses.isEmpty()) {
+                for (UserAddress address : addresses) {
+                    if (address.getAddressType() == Constants.ADDRESS_TYPE_BOTH
+                        || address.getAddressType() == Constants.ADDRESS_TYPE_SHIPPING) {
+                        String countryName = getCountryFullName(address.getCountry());
+                        if (countryName.length() == 0) {
+                            deliveryAddress.setText(address.getAddress());
+                        } else {
+                            deliveryAddress.setText(address.getAddress() + ", " + countryName);
+                        }
+                        cityAddress.setText(getString(R.string.order_review_city, address.getCity()));
+                        postalCodeAddress.setText(getString(R.string.order_review_postal_code, address.getZipcode()));
+                    }
+                }
+            }
+        }
     }
 
     private void bindThemes() {
@@ -118,13 +183,14 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
     private void initPayButton() {
         payBtn.setText(getString(R.string.btn_pay_20000));
         payBtn.setTextBold();
-        payBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                MidtransSDK.getInstance().startPaymentUiFlow(DemoOrderReviewActivity.this);
-                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
-            }
-        });
+        payBtn.setOnClickListener(this);
+    }
+
+    private void initEditButton() {
+        editCustBtn.setOnClickListener(this);
+        saveCustBtn.setOnClickListener(this);
+        cancelCustBtn.setOnClickListener(this);
+        editDelivBtn.setOnClickListener(this);
     }
 
     private void initMidtransSDK() {
@@ -165,5 +231,111 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
         taskStackBuilder.addNextIntent(intent);
         taskStackBuilder.startActivities();
         startActivity(intent);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.button_edit_customer_detail:
+                editCustBtn.setVisibility(View.GONE);
+                saveCustBtn.setVisibility(View.VISIBLE);
+                cancelCustBtn.setVisibility(View.VISIBLE);
+                openField(true);
+                break;
+            case R.id.button_save_customer_detail:
+                userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
+                if (userDetail != null) {
+                    userDetail.setUserFullName(editName.getText().toString());
+                    userDetail.setEmail(editEmail.getText().toString());
+                    userDetail.setPhoneNumber(editPhone.getText().toString());
+                    LocalDataHandler.saveObject(getString(R.string.user_details), userDetail);
+                }
+                openField(false);
+                editCustBtn.setVisibility(View.VISIBLE);
+                saveCustBtn.setVisibility(View.GONE);
+                cancelCustBtn.setVisibility(View.GONE);
+                break;
+            case R.id.button_cancel_customer_detail:
+                bindData();
+                openField(false);
+                editCustBtn.setVisibility(View.VISIBLE);
+                saveCustBtn.setVisibility(View.GONE);
+                cancelCustBtn.setVisibility(View.GONE);
+                break;
+            case R.id.button_edit_delivery_address:
+                Intent intent = new Intent(DemoOrderReviewActivity.this, UserAddressActivity.class);
+                startActivityForResult(intent, EDIT_SHIPPING_ADDRESS);
+                break;
+            case R.id.button_primary:
+                if (isInEditMode) {
+                    Toast.makeText(this, "Please save or cancel your information changes first!", Toast.LENGTH_SHORT).show();
+                } else {
+                    MidtransSDK.getInstance().startPaymentUiFlow(DemoOrderReviewActivity.this);
+                    overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                }
+                break;
+        }
+    }
+
+    private void openField(boolean isEditable) {
+        if (isEditable) {
+            isInEditMode = true;
+            editName.setEnabled(true);
+            editName.setFocusable(true);
+            editName.setFocusableInTouchMode(true);
+            editEmail.setEnabled(true);
+            editEmail.setFocusable(true);
+            editEmail.setFocusableInTouchMode(true);
+            editPhone.setEnabled(true);
+            editPhone.setFocusable(true);
+            editPhone.setFocusableInTouchMode(true);
+        } else {
+            isInEditMode = false;
+            editName.setEnabled(false);
+            editName.setFocusable(false);
+            editEmail.setEnabled(false);
+            editEmail.setFocusable(false);
+            editPhone.setEnabled(false);
+            editPhone.setFocusable(false);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            bindAddress();
+        }
+    }
+
+    private void retrieveCountryCode() {
+        ArrayList<CountryCodeModel> list;
+        String data;
+        try {
+            InputStream is = this.getAssets().open("country_code.json");
+            byte[] buffer = new byte[is.available()];
+            is.read(buffer);
+            is.close();
+            data = new String(buffer, "UTF-8");
+
+            Gson gson = new Gson();
+            list = gson.fromJson(data, new TypeToken<ArrayList<CountryCodeModel>>() {
+            }.getType());
+            if (list != null) {
+                this.countryCodeList = list;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String getCountryFullName(String countryCode) {
+        for (CountryCodeModel country : countryCodeList) {
+            if (country.getCountryCodeAlpha().equalsIgnoreCase(countryCode)) {
+                return country.getName();
+            }
+        }
+        return "";
     }
 }

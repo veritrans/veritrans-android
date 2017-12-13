@@ -12,6 +12,7 @@ import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
 import com.midtrans.sdk.uikit.activities.IndomaretInstructionActivity;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
+import com.midtrans.sdk.uikit.views.status.PaymentStatusPresenter;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
@@ -23,6 +24,8 @@ import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 public class IndomaretStatusActivity extends BasePaymentActivity {
     public static final String EXTRA_PAYMENT_STATUS = "extra.status";
     private static final String LABEL_PAYMENT_CODE = "Payment Code";
+    private final String PAGE_NAME = "Indomaret Payment Code";
+    private final String BUTTON_CONFIRM_NAME = "Done Indomaret";
 
     private SemiBoldTextView textExpiry;
     private SemiBoldTextView textTitle;
@@ -32,10 +35,13 @@ public class IndomaretStatusActivity extends BasePaymentActivity {
     private FancyButton buttonFinish;
     private FancyButton buttonCopyVa;
 
+    private PaymentStatusPresenter presenter;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_indomaret_status);
+        presenter = new PaymentStatusPresenter();
         initActionButton();
         bindData();
     }
@@ -53,6 +59,7 @@ public class IndomaretStatusActivity extends BasePaymentActivity {
         buttonFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                presenter.trackButtonClick(BUTTON_CONFIRM_NAME, PAGE_NAME);
                 finish();
             }
         });
@@ -82,6 +89,9 @@ public class IndomaretStatusActivity extends BasePaymentActivity {
         buttonFinish.setText(getString(R.string.complete_payment_indomaret));
         buttonFinish.setTextBold();
         textTitle.setText(getString(R.string.indomaret));
+
+        //track page view after page properly loaded
+        presenter.trackPageView(PAGE_NAME, false);
     }
 
     @Override
@@ -101,5 +111,13 @@ public class IndomaretStatusActivity extends BasePaymentActivity {
         setIconColorFilter(buttonInstruction);
         setBorderColor(buttonCopyVa);
         setTextColor(buttonCopyVa);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (presenter != null) {
+            presenter.trackBackButtonClick(PAGE_NAME);
+        }
+        super.onBackPressed();
     }
 }

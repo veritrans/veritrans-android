@@ -588,6 +588,37 @@
     <string name="kioson_instruction_step8">Submit payment and print the receipt.</string>
     <string name="kioson_instruction_step9">Your transaction is successful! You should be receiving an email confirming your payment. Please keep your payment receipt just in case you need help via support.</string>
 
+    <!--Go-Pay Instruction-->
+    <string name="gopay_instruction_step1">Tap <b>Confirm Payment</b>.</string>
+    <string name="gopay_instruction_step2">Tap <b>Pay Now with GO-PAY</b>.</string>
+    <string name="gopay_instruction_step3">You will be redirected to the <b>GO-JEK</b> app.</string>
+    <string name="gopay_instruction_step4">Check your payment details then tap <b>PAY</b>.</string>
+    <string name="gopay_instruction_step5">Done.</string>
+
+    <!--Go-Pay Instruction in Tablet-->
+    <string name="gopay_instruction_tablet_step1">Tap <b>Pay using GO-PAY</b>.</string>
+    <string name="gopay_instruction_tablet_step2"><b>QR code</b> will appear on the next page to be scanned.</string>
+    <string name="gopay_instruction_tablet_step3">Open <b>GO-JEK</b> app on your mobile phone.</string>
+    <string name="gopay_instruction_tablet_step4">Tap <b>Scan QR</b>, then point your camera phone to the <b>QR code</b>.</string>
+    <string name="gopay_instruction_tablet_step5">Check your payment details in <b>GO-JEK</b> app and then tap <b>Pay</b>.</string>
+    <string name="gopay_instruction_tablet_step6">Your transaction is done.</string>
+
+    <!--Go-Pay related-->
+    <string name="gopay_confirm_button">Pay Now with GO-PAY</string>
+    <string name="notification_gojek_app">GO-JEK app is required for this payment method.</string>
+    <string name="notification_gojek_app_tablet">Make sure GO-JEK app is installed on your mobile phone.</string>
+    <string name="install_gojek_message">Install GO-JEK App from Play Store</string>
+    <string name="whoops" translatable="false">Whoops!</string>
+    <string name="no_gojek_message">Unfortunately, we couldn\'t find GO-JEK app installed on your phone.</string>
+    <string name="gopay_instruction">Tap <b>Pay Now with GO-PAY</b> to continue payment in GO-JEK app.</string>
+    <string name="redirecting_to_gopay">Redirecting to GO-JEK app…</string>
+    <string name="error_qr_code">Failed to load QR code. Please try again.</string>
+    <string name="reload_qr_code">Reload QR Code</string>
+    <string name="error_gopay_transaction">Transaction cannot be proccessed. Please try again or try another payment method.</string>
+    <string name="confirm_gopay_title">Confirm</string>
+    <string name="confirm_gopay_qr_scan_tablet">Make sure the QR code successfully scanned and payment has been completed within the GO-JEK app.</string>
+    <string name="confirm_gopay_qr_scan">Make sure payment has been completed within the GO-JEK app.</string>
+
     <string name="error_message_invalid_input_telkomsel">Transaction failed. Your transaction got declined by T-Cash.</string>
     <string name="kioson">Kioson</string>
     <string name="kioson_valid">Please complete your payment at Kioson Outlet Before : %1$s</string>
@@ -688,7 +719,7 @@
     <string name="payment_method_description_indosat_dompetku">Pay with Indosat Dompetku</string>
     <string name="payment_method_description_kioson">Pay from Kioson Outlet</string>
     <string name="payment_method_description_gci">Pay with Gift Cards</string>
-    <string name="payment_method_description_gopay">Pay with GO-PAY</string>
+    <string name="payment_method_description_gopay">Pay using GO-PAY</string>
     <string name="payment_method_description_danamon_online">Pay with your Danamon Online Banking Account</string>
 
     <string name="payment_bank_description_bca">Pay from BCA ATMs or internet banking</string>
@@ -861,4 +892,6 @@
     <string name="empty_card_number">Please enter card number</string>
     <string name="empty_challenge_token">Please enter challenge token</string>
     <string name="pay_without_fiesta_poin">Pay Without Fiestapoin</string>
+    <string name="payment_instruction">Payment Instruction %1$s</string>
+    <string name="instruction_atm_with">ATM with %1$s logo</string>
 </resources>

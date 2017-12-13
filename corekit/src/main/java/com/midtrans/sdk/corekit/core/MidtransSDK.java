@@ -1,11 +1,11 @@
 package com.midtrans.sdk.corekit.core;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
-
 import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.BuildConfig;
 import com.midtrans.sdk.corekit.R;
@@ -42,7 +42,6 @@ import com.midtrans.sdk.corekit.models.snap.payment.IndosatDompetkuPaymentReques
 import com.midtrans.sdk.corekit.models.snap.payment.NewMandiriClickPayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.TelkomselEcashPaymentRequest;
 import com.midtrans.sdk.corekit.utilities.Utils;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -122,7 +121,11 @@ public class MidtransSDK {
         this.mSnapTransactionManager = new SnapTransactionManager(sdkBuilder.context, MidtransRestAdapter.getSnapRestAPI(sdkBaseUrl, requestTimeOut),
                 MidtransRestAdapter.getMerchantApiClient(merchantServerUrl, requestTimeOut),
                 MidtransRestAdapter.getVeritransApiClient(BuildConfig.BASE_URL, requestTimeOut));
-        this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), clientKey, getFlow(flow));
+        String deviceType = null;
+        if (context instanceof Activity) {
+            deviceType = Utils.getDeviceType((Activity) context);
+        }
+        this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), merchantName, getFlow(flow), deviceType == null ? "" : deviceType);
         this.mSnapTransactionManager.setSDKLogEnabled(isLogEnabled);
     }
 
@@ -217,7 +220,6 @@ public class MidtransSDK {
 
     public void setMerchantName(String merchantName) {
         this.merchantName = merchantName;
-        this.mMixpanelAnalyticsManager.setMerchantName(merchantName);
     }
 
     public String getMerchantLogo() {
@@ -266,7 +268,11 @@ public class MidtransSDK {
 
     public MixpanelAnalyticsManager getmMixpanelAnalyticsManager() {
         if (mSnapTransactionManager == null) {
-            this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), clientKey, getFlow(flow));
+            String deviceType = null;
+            if (context instanceof Activity) {
+                deviceType = Utils.getDeviceType((Activity) context);
+            }
+            this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), merchantName, getFlow(flow), deviceType == null ? "" : deviceType);
         }
         return mMixpanelAnalyticsManager;
     }
@@ -436,6 +442,8 @@ public class MidtransSDK {
             startBniBankTransferUIFlow(context, snapToken);
         } else if (paymentMethod.equals(PaymentMethod.BANK_TRANSFER_OTHER)) {
             startOtherBankTransferUIFlow(context, snapToken);
+        } else if (paymentMethod.equals(PaymentMethod.GO_PAY)) {
+            startGoPayUIFlow(context, snapToken);
         } else if (paymentMethod.equals(PaymentMethod.BCA_KLIKPAY)) {
             startBCAKlikPayUIFlow(context, snapToken);
         } else if (paymentMethod.equals(PaymentMethod.KLIKBCA)) {
@@ -698,6 +706,31 @@ public class MidtransSDK {
                 transactionRequest.enableUi(true);
                 if (uiflow != null) {
                     uiflow.runOtherBankTransfer(context, snapToken);
+                }
+            }
+
+        } else {
+            if (transactionRequest == null) {
+                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
+            } else {
+                Logger.e(TAG, context.getString(R.string.error_already_running));
+            }
+        }
+    }
+
+    /**
+     * This will start actual execution of GO-PAY UI Flow.
+     *
+     * @param context   activity context.
+     * @param snapToken checkout token
+     */
+    private void startGoPayUIFlow(@NonNull Context context, String snapToken) {
+        if (transactionRequest != null && !isRunning()) {
+
+            if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
+                transactionRequest.enableUi(true);
+                if (uiflow != null) {
+                    uiflow.runGoPay(context, snapToken);
                 }
             }
 
@@ -1646,10 +1679,9 @@ public class MidtransSDK {
     /**
      * It will run backround task to charge payment using GoPay
      *
-     * @param phoneNumber
      * @param snapToken
      */
-    public void paymentUsingGoPay(String snapToken, String phoneNumber, TransactionCallback callback) {
+    public void paymentUsingGoPay(String snapToken, TransactionCallback callback) {
         if (callback == null) {
             Logger.e(TAG, context.getString(R.string.callback_unimplemented));
             return;
@@ -1657,7 +1689,7 @@ public class MidtransSDK {
 
         if (isNetworkAvailable()) {
             isRunning = true;
-            mSnapTransactionManager.paymentUsingGoPay(snapToken, SdkUtil.getGoPayPaymentRequest(phoneNumber), callback);
+            mSnapTransactionManager.paymentUsingGoPay(snapToken, SdkUtil.getGoPayPaymentRequest(), callback);
         } else {
             isRunning = false;
             callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
@@ -1963,41 +1995,6 @@ public class MidtransSDK {
             getTransaction().setCreditCard(creditCard);
         }
     }
-
-    /**
-     * tracking sdk events
-     * don't use this method, for new uikit payment pattern (inside views package)
-     * use tracker in base payment presenter instead
-     *
-     * @param eventName
-     */
-    @Deprecated
-    public void trackEvent(String eventName) {
-        try {
-            this.mMixpanelAnalyticsManager.trackMixpanel(readAuthenticationToken(), eventName);
-        } catch (NullPointerException e) {
-            Logger.e(TAG, "trackEvent():" + e.getMessage());
-        }
-    }
-
-    /**
-     * tracking sdk events
-     * <p>
-     * don't use this method, for new uikit payment pattern (inside views package)
-     * use tracker in base payment presenter instead
-     *
-     * @param eventName
-     * @param cardPaymentMode
-     */
-    @Deprecated
-    public void trackEvent(String eventName, String cardPaymentMode) {
-        try {
-            this.mMixpanelAnalyticsManager.trackMixpanel(readAuthenticationToken(), eventName, cardPaymentMode);
-        } catch (NullPointerException e) {
-            Logger.e(TAG, "trackEvent():" + e.getMessage());
-        }
-    }
-
 
     public List<PromoResponse> getPromoResponses() {
         return promoResponses;

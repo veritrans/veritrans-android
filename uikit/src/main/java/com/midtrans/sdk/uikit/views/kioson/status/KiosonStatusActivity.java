@@ -12,6 +12,7 @@ import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
 import com.midtrans.sdk.uikit.activities.KiosonInstructionActivity;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
+import com.midtrans.sdk.uikit.views.status.PaymentStatusPresenter;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
@@ -24,6 +25,8 @@ public class KiosonStatusActivity extends BasePaymentActivity {
 
     public static final String EXTRA_PAYMENT_STATUS = "extra.status";
     private static final String LABEL_PAYMENT_CODE = "Payment Code";
+    private final String PAGE_NAME = "Kioson Payment Code";
+    private final String BUTTON_CONFIRM_NAME = "Done Kioson";
 
     private SemiBoldTextView textExpiry;
     private SemiBoldTextView textTitle;
@@ -33,10 +36,13 @@ public class KiosonStatusActivity extends BasePaymentActivity {
     private FancyButton buttonFinish;
     private FancyButton buttonCopyVa;
 
+    private PaymentStatusPresenter presenter;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kioson_status);
+        presenter = new PaymentStatusPresenter();
         initActionButton();
         bindData();
     }
@@ -54,6 +60,7 @@ public class KiosonStatusActivity extends BasePaymentActivity {
         buttonFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                presenter.trackButtonClick(BUTTON_CONFIRM_NAME, PAGE_NAME);
                 finish();
             }
         });
@@ -82,6 +89,10 @@ public class KiosonStatusActivity extends BasePaymentActivity {
         buttonFinish.setText(getString(R.string.complete_payment_kioson));
         buttonFinish.setTextBold();
         textTitle.setText(getString(R.string.kioson));
+
+        //track page view after page properly loaded
+        boolean isFirstPage = getIntent().getBooleanExtra(USE_DEEP_LINK, true);
+        presenter.trackPageView(PAGE_NAME, isFirstPage);
     }
 
     @Override
@@ -101,5 +112,13 @@ public class KiosonStatusActivity extends BasePaymentActivity {
         setIconColorFilter(buttonInstruction);
         setBorderColor(buttonCopyVa);
         setTextColor(buttonCopyVa);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (presenter != null) {
+            presenter.trackBackButtonClick(PAGE_NAME);
+        }
+        super.onBackPressed();
     }
 }

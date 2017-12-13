@@ -14,7 +14,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-
 import com.midtrans.sdk.corekit.callback.BankBinsCallback;
 import com.midtrans.sdk.corekit.callback.BanksPointCallback;
 import com.midtrans.sdk.corekit.callback.CardTokenCallback;
@@ -42,7 +41,6 @@ import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
 import com.midtrans.sdk.corekit.models.snap.SavedToken;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.BanksPointFragment;
 import com.midtrans.sdk.uikit.fragments.CardDetailsFragment;
 import com.midtrans.sdk.uikit.fragments.PaymentTransactionStatusFragment;
@@ -53,7 +51,6 @@ import com.midtrans.sdk.uikit.scancard.ExternalScanner;
 import com.midtrans.sdk.uikit.scancard.ScannerModel;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -605,8 +602,6 @@ public class CreditCardFlowActivity extends BaseActivity {
 
     private void actionPaymentSuccess(TransactionResponse response) {
         this.transactionResponse = response;
-        // Track page status success
-        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_SUCCESS);
         Logger.i(TAG, "paymentResponse:" + response.getStatusCode());
 
         if (response.getStatusCode().equalsIgnoreCase(getString(R.string.success_code_200)) ||
@@ -668,21 +663,10 @@ public class CreditCardFlowActivity extends BaseActivity {
 
         if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
             Log.d("3dserror", "400:" + response.getValidationMessages().get(0));
-            if (response.getValidationMessages() != null && response.getValidationMessages().get(0) != null) {
-                if (response.getValidationMessages().get(0).contains("3d")) {
-                    //track page bca va overview
-                    MidtransSDK.getInstance().trackEvent(AnalyticsEventName.CREDIT_CARD_3DS_ERROR);
-                }
-            }
         }
-
-        //track page status failed
-        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
     }
 
     private void actionPaymentError(Throwable throwable) {
-        //track page status failed
-        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
         String errorMessage = MessageUtil.createPaymentErrorMessage(this, throwable.getMessage(), getString(R.string.message_payment_failed));
         SdkUIFlowUtil.hideProgressDialog();
         showErrorMessage(errorMessage);

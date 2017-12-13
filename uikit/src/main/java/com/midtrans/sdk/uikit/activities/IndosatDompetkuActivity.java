@@ -1,5 +1,6 @@
 package com.midtrans.sdk.uikit.activities;
 
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -16,11 +17,11 @@ import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.BankTransferFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionIndosatFragment;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
+import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 
@@ -85,9 +86,6 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
      * set up {@link BankTransferFragment} to display payment instructions.
      */
     private void setUpHomeFragment() {
-        //track page indosat dompetku
-        mMidtransSDK.trackEvent(AnalyticsEventName.PAGE_INDOSAT_DOMPETKU);
-
         // setup home fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -190,9 +188,6 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
      * indosat dompetku payment procedure.
      */
     private void performTransaction() {
-        //track indosat dompetku confirm payment
-        mMidtransSDK.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
-
         if (mIndosatFragment != null && !mIndosatFragment.isDetached()) {
 
             phoneNumber = mIndosatFragment.getPhoneNumber();
@@ -233,9 +228,6 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
                 phoneNumber, new TransactionCallback() {
                     @Override
                     public void onSuccess(TransactionResponse response) {
-                        //track page status success
-                        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_SUCCESS);
-
                         SdkUIFlowUtil.hideProgressDialog();
                         mTransactionResponse = response;
                         if (response != null) {
@@ -248,9 +240,6 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
 
                     @Override
                     public void onFailure(TransactionResponse response, String reason) {
-                        //track page status failed
-                        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
-
                         mTransactionResponse = response;
                         IndosatDompetkuActivity.this.errorMessage = getString(R.string.message_payment_denied);
                         SdkUIFlowUtil.hideProgressDialog();
@@ -268,9 +257,6 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
 
                     @Override
                     public void onError(Throwable error) {
-                        //track page status failed
-                        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
-
                         try {
                             String message = MessageUtil.createPaymentErrorMessage(IndosatDompetkuActivity.this, error.getMessage(), null);
 
@@ -328,4 +314,14 @@ public class IndosatDompetkuActivity extends BaseActivity implements View.OnClic
             super.onBackPressed();
         }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS)
+            if (resultCode == RESULT_CANCELED || resultCode == RESULT_OK) {
+                setResultAndFinish();
+            }
+    }
+
 }

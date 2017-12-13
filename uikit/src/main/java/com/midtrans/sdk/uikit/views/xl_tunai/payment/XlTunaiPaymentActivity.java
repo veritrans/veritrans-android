@@ -8,10 +8,8 @@ import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentView;
-import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
-import com.midtrans.sdk.uikit.views.xl_tunai.XlTunaiPaymentPresenter;
 import com.midtrans.sdk.uikit.views.xl_tunai.status.XlTunaiStatusActivity;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
@@ -21,6 +19,8 @@ import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
  */
 
 public class XlTunaiPaymentActivity extends BasePaymentActivity implements BasePaymentView {
+
+    private final String PAGE_NAME = "XL Tunai Overview";
 
     private FancyButton buttonPayment;
     private SemiBoldTextView textTitle;
@@ -43,9 +43,6 @@ public class XlTunaiPaymentActivity extends BasePaymentActivity implements BaseP
                 SdkUIFlowUtil.hideKeyboard(XlTunaiPaymentActivity.this);
                 showProgressLayout(getString(R.string.processing_payment));
                 presenter.startPayment();
-
-                //track event
-                presenter.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
             }
         });
     }
@@ -54,6 +51,10 @@ public class XlTunaiPaymentActivity extends BasePaymentActivity implements BaseP
         buttonPayment.setText(getString(R.string.confirm_payment));
         textTitle.setText(getString(R.string.xl_tunai));
         buttonPayment.setTextBold();
+
+        //track page view after page properly loaded
+        boolean isFirstPage = getIntent().getBooleanExtra(USE_DEEP_LINK, true);
+        presenter.trackPageView(PAGE_NAME, isFirstPage);
     }
 
     private void initProperties() {
@@ -102,5 +103,13 @@ public class XlTunaiPaymentActivity extends BasePaymentActivity implements BaseP
         if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS) {
             finishPayment(RESULT_OK, presenter.getTransactionResponse());
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (presenter != null) {
+            presenter.trackBackButtonClick(PAGE_NAME);
+        }
+        super.onBackPressed();
     }
 }

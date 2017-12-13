@@ -19,14 +19,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.activities.BankTransferActivity;
 import com.midtrans.sdk.uikit.activities.BankTransferInstructionActivity;
 import com.midtrans.sdk.uikit.adapters.InstructionFragmentPagerAdapter;
-import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 import com.midtrans.sdk.uikit.widgets.MagicViewPager;
 
@@ -215,36 +213,21 @@ public class BankTransferPaymentFragment extends Fragment {
         switch (getArguments().getString(BankTransferInstructionActivity.BANK)) {
             case TYPE_BCA:
                 pageNumber = 3;
-                //track page bca va overview
-                midtransSDK.trackEvent(AnalyticsEventName.PAGE_BCA_VA_OVERVIEW);
-
                 break;
             case TYPE_PERMATA:
                 pageNumber = 2;
-
-                //track page permata va overview
-                midtransSDK.trackEvent(AnalyticsEventName.PAGE_PERMATA_VA_OVERVIEW);
                 break;
             case TYPE_BNI:
                 pageNumber = 3;
-
-                //track page permata va overview
-                midtransSDK.trackEvent(AnalyticsEventName.PAGE_BNI_VA_OVERVIEW);
                 break;
             case TYPE_MANDIRI:
                 pageNumber = 2;
                 break;
             case TYPE_MANDIRI_BILL:
                 pageNumber = 2;
-
-                //track page mandiri bill overview
-                midtransSDK.trackEvent(AnalyticsEventName.PAGE_MANDIRI_BILL_OVERVIEW);
                 break;
             case TYPE_ALL_BANK:
                 pageNumber = 3;
-
-                //track page other bank va overview
-                midtransSDK.trackEvent(AnalyticsEventName.PAGE_OTHER_BANK_VA_OVERVIEW);
                 break;
             default:
                 pageNumber = 0;
