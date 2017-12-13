@@ -1,20 +1,19 @@
 package com.midtrans.sdk.uikit.views.gopay.status;
 
+import static com.midtrans.sdk.corekit.utilities.Utils.getMonth;
+
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewStub;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
@@ -24,11 +23,13 @@ import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
-import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.BoldTextView;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 /**
  * Created by Fajar on 16/11/17.
@@ -36,11 +37,11 @@ import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 
 public class GoPayStatusActivity extends BasePaymentActivity {
 
-    private static final String TAG = GoPayStatusActivity.class.getSimpleName();
-
     public static final String EXTRA_PAYMENT_STATUS = "extra.status";
-
+    private static final String TAG = GoPayStatusActivity.class.getSimpleName();
+    private final int DEFAULT_EXPIRATION_IN_MINUTE = 15;
     private FancyButton buttonPrimary;
+    private BoldTextView expirationText;
     private SemiBoldTextView textTitle;
     private BoldTextView merchantName;
     private ImageView qrCodeContainer;
@@ -91,6 +92,15 @@ public class GoPayStatusActivity extends BasePaymentActivity {
                 }
             });
             loadQrCode(qrCodeUrl, qrCodeContainer);
+
+            //process expiration
+            expirationText = (BoldTextView) findViewById(R.id.gopay_expiration_text);
+            String expirationTime = getExpiryTime(response.getTransactionTime());
+            if (TextUtils.isEmpty(expirationTime)) {
+                expirationText.setVisibility(View.GONE);
+            } else {
+                expirationText.setText(" " + expirationTime);
+            }
 
             buttonPrimary.setText(getString(R.string.done));
             buttonPrimary.setOnClickListener(new OnClickListener() {
@@ -204,5 +214,34 @@ public class GoPayStatusActivity extends BasePaymentActivity {
         } else {
             merchantName.setVisibility(View.GONE);
         }
+    }
+
+    /**
+     * Get default expiry time for GO-PAY transaction
+     * @param transactionTime when transaction started
+     * @return formatted time that already added with 15 minutes
+     */
+    private String getExpiryTime(String transactionTime) {
+        if (transactionTime != null && transactionTime.split(" ").length > 1) {
+            try {
+                @SuppressLint("SimpleDateFormat")
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(simpleDateFormat.parse(transactionTime));
+                calendar.add(Calendar.MINUTE, DEFAULT_EXPIRATION_IN_MINUTE);
+                String date = simpleDateFormat.format(calendar.getTime());
+
+                String time = date.split(" ")[1] + " WIB";
+
+                String splitedDate[] = date.split(" ")[0].split("-");
+                String month = getMonth(Integer.parseInt(splitedDate[1]));
+
+                return splitedDate[2] + " " + month + " " + splitedDate[0] + ", " + time;
+            } catch (ParseException | RuntimeException ex) {
+                Logger.e("Error while parsing date : " + ex.getMessage());
+                return "";
+            }
+        }
+        return transactionTime;
     }
 }

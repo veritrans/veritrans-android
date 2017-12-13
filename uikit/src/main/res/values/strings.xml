@@ -615,8 +615,9 @@
     <string name="error_gopay_transaction">Transaction cannot be proccessed. Please try again or try another payment method.</string>
     <string name="confirm_gopay_title">Confirm</string>
     <string name="confirm_gopay_qr_scan_tablet">Make sure the QR code successfully scanned and payment has been completed within the GO-JEK app.</string>
-    <string name="confirm_gopay_qr_scan">Make sure payment has been completed within the GO-JEK app.</string>
+    <string name="confirm_gopay_deeplink">Make sure payment has been completed within the GO-JEK app.</string>
     <string name="gopay_instruction">How to Pay?</string>
+    <string name="gopay_expiration_message">Please complete your payment before</string>
 
     <string name="error_message_invalid_input_telkomsel">Transaction failed. Your transaction got declined by T-Cash.</string>
     <string name="kioson">Kioson</string>

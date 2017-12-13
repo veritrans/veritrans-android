@@ -1,9 +1,11 @@
 package com.midtrans.sdk.uikit.views.gopay.payment;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -13,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.Toast;
 
+import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
@@ -36,8 +39,7 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
     private View buttonPrimaryLayout;
 
     private GopayPaymentPresenter presenter;
-    private boolean isTablet;
-    private boolean isGojekInstalled;
+    private boolean isTablet, isGojekInstalled, isAlreadyGotResponse;
     private Boolean isGojekInstalledWhenPaused;
     private int attempt;
 
@@ -76,7 +78,12 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
             buttonPrimary.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startGoPayPayment();
+                    //to prevent "payment has been paid"
+                    if (isAlreadyGotResponse) {
+                        openDeeplink(presenter.getTransactionResponse().getDeeplinkUrl());
+                    } else {
+                        startGoPayPayment();
+                    }
                 }
             });
             buttonPrimary.setTextBold();
@@ -138,7 +145,7 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
     }
 
     @Override
-    public void onPaymentSuccess(TransactionResponse response) {
+    public void onPaymentSuccess(final TransactionResponse response) {
         hideProgressLayout();
         if (isActivityRunning()) {
             if (isResponseValid(response)) {
@@ -147,11 +154,9 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
                     intent.putExtra(GoPayStatusActivity.EXTRA_PAYMENT_STATUS, response);
                     startActivityForResult(intent, UiKitConstants.INTENT_CODE_PAYMENT_STATUS);
                 } else {
-                    //new flow for smartphone, instead of status page, go directly to GO-JEK app
-                    Toast.makeText(this, getString(R.string.redirecting_to_gopay), Toast.LENGTH_SHORT)
-                            .show();
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(response.getDeeplinkUrl()));
-                    startActivity(intent);
+                    isAlreadyGotResponse = true;
+
+                    openDeeplink(response.getDeeplinkUrl());
                 }
             } else {
                 onPaymentFailure(response);
@@ -207,6 +212,53 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS) {
             finishPayment(RESULT_OK, presenter.getTransactionResponse());
+        }
+    }
+
+    private void openDeeplink(String deeplinkUrl) {
+        Toast.makeText(this, getString(R.string.redirecting_to_gopay), Toast.LENGTH_SHORT)
+            .show();
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(deeplinkUrl));
+        startActivity(intent);
+    }
+
+    private void showConfirmationDialog(String message) {
+        try {
+            AlertDialog dialog = new AlertDialog.Builder(GoPayPaymentActivity.this, R.style.AlertDialogCustom)
+                .setPositiveButton(R.string.text_yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (!GoPayPaymentActivity.this.isFinishing()) {
+                            dialog.dismiss();
+                            finishPayment(RESULT_CANCELED, presenter.getTransactionResponse());
+                        }
+                    }
+                })
+                .setNegativeButton(R.string.text_no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (!GoPayPaymentActivity.this.isFinishing()) {
+                            dialog.dismiss();
+                        }
+                    }
+                })
+                .setTitle(R.string.cancel_transaction)
+                .setMessage(message)
+                .create();
+            dialog.show();
+        } catch (Exception e) {
+            Logger.e(TAG, "showDialog:" + e.getMessage());
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isDetailShown) {
+            displayOrHideItemDetails();
+        } else if (isAlreadyGotResponse) {
+            showConfirmationDialog(getString(R.string.confirm_gopay_deeplink));
+        } else {
+            super.onBackPressed();
         }
     }
 }
