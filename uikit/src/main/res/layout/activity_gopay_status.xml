@@ -19,10 +19,8 @@
             android:layout_alignParentTop="true"
             android:fillViewport="true">
 
-            <ViewStub
-                android:id="@+id/gopay_layout_stub"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+            <include
+                layout="@layout/layout_gopay_status_tablet" />
         </ScrollView>
 
         <View
