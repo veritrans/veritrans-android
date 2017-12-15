@@ -65,7 +65,7 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
 
     //for other ATM network
     private ImageView bankPreview;
-    private BoldTextView bankDescription;
+    private DefaultTextView bankDescription;
     private DefaultTextView cardDescription;
     private boolean[] flags;
 
@@ -465,7 +465,7 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
 
     private void bindOtherAtmGuidanceView() {
         bankPreview = (ImageView) findViewById(R.id.bank_preview);
-        bankDescription = (BoldTextView) findViewById(R.id.bank_description);
+        bankDescription = (DefaultTextView) findViewById(R.id.bank_description);
         bankToggle = (FancyButton) findViewById(R.id.bank_toggle);
         cardDescription = (DefaultTextView) findViewById(R.id.card_description);
     }

@@ -2931,8 +2931,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             userDetail.setEmail("not_secure_email_rba@example.com");
             creditCard.setAuthentication(CreditCard.AUTHENTICATION_TYPE_RBA);
         }
-// todo save customer details should be enabled
-//        LocalDataHandler.saveObject(getString(R.string.user_details), userDetail);
+        LocalDataHandler.saveObject(getString(R.string.user_details), userDetail);
         if (customPermataVaEnabledSelection.isChecked()) {
             String vaNumber = "";
             try {
