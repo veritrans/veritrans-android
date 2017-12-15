@@ -16,8 +16,7 @@
             style="@style/ButtonSecondaryExpandable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="start"
+            android:gravity="center_vertical"
             android:layout_marginLeft="@dimen/sixteen_dp"
             android:layout_marginRight="@dimen/sixteen_dp"
             android:layout_marginTop="@dimen/sixteen_dp"
@@ -29,17 +28,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:visibility="gone">
-
-            <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/sixteen_dp"
-                android:layout_marginLeft="@dimen/sixteen_dp"
-                android:layout_marginTop="@dimen/sixteen_dp"
-                android:paddingRight="@dimen/sixteen_dp"
-                android:text="@string/title_instruction_mandiri"
-                android:textColor="@color/dark_gray"
-                android:textSize="@dimen/primary_text_size" />
 
             <LinearLayout
                 android:layout_width="match_parent"

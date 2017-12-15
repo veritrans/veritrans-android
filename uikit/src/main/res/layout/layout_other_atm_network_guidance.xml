@@ -29,6 +29,7 @@
         android:layout_marginRight="@dimen/twelve_dp"
         android:layout_marginStart="@dimen/twelve_dp"
         android:layout_marginTop="@dimen/four_dp"
+        android:textColor="@color/dark_gray"
         android:textSize="@dimen/tertiary_text_size"
         app:textAllCaps="true" />
 
@@ -36,7 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/twelve_dp"
-        android:background="@color/light_gray"
+        android:background="@color/lighter_gray"
         android:orientation="vertical">
 
         <ImageView
@@ -48,10 +49,9 @@
         <com.midtrans.sdk.uikit.widgets.FancyButton
             android:id="@+id/bank_toggle"
             style="@style/ButtonBankListExpand"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/four_dp"
             android:drawablePadding="@dimen/two_dp"
             app:fb_iconPaddingRight="@dimen/four_dp"
             app:fb_iconResource="@drawable/ic_view" />
