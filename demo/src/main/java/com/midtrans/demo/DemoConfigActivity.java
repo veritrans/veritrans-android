@@ -2699,16 +2699,12 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
 
     private void initMidtransSDK() {
 
-        UIKitCustomSetting setting = new UIKitCustomSetting();
-        setting.setSkipCustomerDetailsPages(true);
-
         SdkUIFlowBuilder.init()
                 .setContext(this)
                 .setMerchantBaseUrl(BuildConfig.BASE_URL)
                 .setClientKey(BuildConfig.CLIENT_KEY)
                 .setExternalScanner(new ScanCard())
                 .enableLog(true)
-                .setUIkitCustomSetting(setting)
                 .setDefaultText("fonts/SourceSansPro-Regular.ttf")
                 .setBoldText("fonts/SourceSansPro-Bold.ttf")
                 .setSemiBoldText("fonts/SourceSansPro-Semibold.ttf")
