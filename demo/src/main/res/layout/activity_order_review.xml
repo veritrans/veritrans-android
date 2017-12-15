@@ -131,7 +131,7 @@
                     android:layout_centerVertical="true"
                     android:text="@string/product_price_sample"
                     android:textColor="@color/navy_blue.primary_dark"
-                    android:textSize="10sp" />
+                    android:textSize="12sp" />
             </RelativeLayout>
 
             <View

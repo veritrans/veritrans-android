@@ -215,12 +215,10 @@
                     style="@style/ButtonSecondaryExpandable"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                    android:gravity="center_vertical"
                     android:layout_marginLeft="@dimen/sixteen_dp"
                     android:layout_marginRight="@dimen/sixteen_dp"
-                    android:layout_marginTop="@dimen/sixteen_dp"
                     android:text="@string/show_instruction" />
-
 
                 <LinearLayout
                     android:id="@+id/instruction_layout"
@@ -228,16 +226,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:visibility="gone">
-
-                    <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/sixteen_dp"
-                        android:paddingLeft="@dimen/sixteen_dp"
-                        android:paddingRight="@dimen/sixteen_dp"
-                        android:text="@string/instruction"
-                        android:textColor="@color/dark_gray"
-                        android:textSize="@dimen/primary_text_size" />
 
                     <com.midtrans.sdk.uikit.widgets.DefaultTextView
                         android:layout_width="match_parent"
