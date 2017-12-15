@@ -245,15 +245,20 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
             case R.id.button_save_customer_detail:
                 userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
                 if (userDetail != null) {
-                    userDetail.setUserFullName(editName.getText().toString());
-                    userDetail.setEmail(editEmail.getText().toString());
-                    userDetail.setPhoneNumber(editPhone.getText().toString());
-                    LocalDataHandler.saveObject(getString(R.string.user_details), userDetail);
+                    if (isValid()) {
+                        userDetail.setUserFullName(editName.getText().toString().trim());
+                        userDetail.setEmail(editEmail.getText().toString().trim());
+                        userDetail.setPhoneNumber(editPhone.getText().toString().trim());
+                        LocalDataHandler.saveObject(getString(R.string.user_details), userDetail);
+
+                        openField(false);
+                        editCustBtn.setVisibility(View.VISIBLE);
+                        saveCustBtn.setVisibility(View.GONE);
+                        cancelCustBtn.setVisibility(View.GONE);
+                    } else {
+                        Toast.makeText(this, "Unable to save change(s). Please make sure there's no empty field or discard change(s).", Toast.LENGTH_SHORT).show();
+                    }
                 }
-                openField(false);
-                editCustBtn.setVisibility(View.VISIBLE);
-                saveCustBtn.setVisibility(View.GONE);
-                cancelCustBtn.setVisibility(View.GONE);
                 break;
             case R.id.button_cancel_customer_detail:
                 bindData();
@@ -298,6 +303,11 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
             editPhone.setEnabled(false);
             editPhone.setFocusable(false);
         }
+    }
+
+    private boolean isValid() {
+        return !TextUtils.isEmpty(editName.getText().toString()) && !TextUtils.isEmpty(editEmail.getText().toString())
+            && !TextUtils.isEmpty(editPhone.getText().toString());
     }
 
     @Override

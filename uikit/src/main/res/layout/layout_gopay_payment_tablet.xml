@@ -18,7 +18,7 @@
         android:layout_marginTop="@dimen/sixteen_dp"
         android:paddingLeft="@dimen/sixteen_dp"
         android:paddingRight="@dimen/sixteen_dp"
-        android:text="@string/instruction"
+        android:text="@string/gopay_instruction"
         android:textColor="@color/dark_gray"
         android:textSize="@dimen/primary_text_size" />
 
@@ -147,28 +147,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/gopay_instruction_tablet_step5"
-            android:textColor="@color/black"
-            android:textSize="@dimen/secondary_text_size" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:lineSpacingExtra="2dp"
-        android:paddingBottom="@dimen/eight_dp"
-        android:paddingLeft="@dimen/sixteen_dp"
-        android:paddingRight="@dimen/sixteen_dp"
-        android:paddingTop="@dimen/eight_dp">
-
-        <TextView
-            android:layout_width="@dimen/twenty_four_dp"
-            android:layout_height="wrap_content"
-            android:text="@string/number_instruction6" />
-
-        <com.midtrans.sdk.uikit.widgets.DefaultTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/gopay_instruction_tablet_step6"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size" />
     </LinearLayout>

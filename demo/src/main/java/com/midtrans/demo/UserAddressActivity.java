@@ -119,7 +119,11 @@ public class UserAddressActivity extends AppCompatActivity {
         saveBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveData();
+                if (isValid()) {
+                    saveData();
+                } else {
+                    Toast.makeText(UserAddressActivity.this, "Unable to save change(s). Please make sure there's no empty field or discard change(s).", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -226,6 +230,11 @@ public class UserAddressActivity extends AppCompatActivity {
             Logger.e("UserAddressActivity", "validateAndSaveAddress:" + e.getMessage());
         }
 
+    }
+
+    private boolean isValid() {
+        return !TextUtils.isEmpty(etAddress.getText().toString().trim()) && !TextUtils.isEmpty(etCity.getText().toString().trim())
+            && !TextUtils.isEmpty(etZipCode.getText().toString().trim()) && !TextUtils.isEmpty(etCountry.getText().toString().trim());
     }
 
     private boolean isCountryCodeExist(String countryName) {
