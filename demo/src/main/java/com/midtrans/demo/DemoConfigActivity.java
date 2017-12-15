@@ -2905,7 +2905,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             userAddress.setCity(getString(R.string.order_review_delivery_address_city_sample));
             userAddress.setAddressType(com.midtrans.sdk.corekit.core.Constants.ADDRESS_TYPE_BOTH);
             userAddress.setZipcode("10220");
-            userAddress.setCountry("Indonesia");
+            userAddress.setCountry("IDN");
             userAddresses.add(userAddress);
             userDetail.setUserAddresses(userAddresses);
         } else {
