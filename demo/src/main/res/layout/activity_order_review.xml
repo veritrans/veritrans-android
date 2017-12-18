@@ -209,7 +209,9 @@
                         android:enabled="false"
                         android:focusable="false"
                         android:hint="@string/order_review_customer_details_hint_name"
-                        android:inputType="text"
+                        android:inputType="textPersonName"
+                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+                        android:maxLength="64"
                         android:textSize="16sp" />
                 </android.support.design.widget.TextInputLayout>
                 <android.support.design.widget.TextInputLayout
@@ -222,6 +224,7 @@
                         android:enabled="false"
                         android:focusable="false"
                         android:hint="@string/order_review_customer_details_hint_email"
+                        android:maxLength="128"
                         android:inputType="textEmailAddress"
                         android:textSize="16sp" />
                 </android.support.design.widget.TextInputLayout>
@@ -236,6 +239,8 @@
                         android:focusable="false"
                         android:hint="@string/order_review_customer_details_hint_phone"
                         android:inputType="phone"
+                        android:digits="0123456789+"
+                        android:maxLength="15"
                         android:textSize="16sp" />
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>

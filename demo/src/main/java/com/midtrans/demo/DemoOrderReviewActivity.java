@@ -33,6 +33,8 @@ import com.midtrans.sdk.uikit.models.CountryCodeModel;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by rakawm on 3/16/17.
@@ -245,18 +247,25 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
             case R.id.button_save_customer_detail:
                 userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
                 if (userDetail != null) {
-                    if (isValid()) {
-                        userDetail.setUserFullName(editName.getText().toString().trim());
-                        userDetail.setEmail(editEmail.getText().toString().trim());
-                        userDetail.setPhoneNumber(editPhone.getText().toString().trim());
-                        LocalDataHandler.saveObject(getString(R.string.user_details), userDetail);
-
-                        openField(false);
-                        editCustBtn.setVisibility(View.VISIBLE);
-                        saveCustBtn.setVisibility(View.GONE);
-                        cancelCustBtn.setVisibility(View.GONE);
+                    if (!isEmailValid(editEmail.getText().toString())) {
+                        Toast.makeText(this, "Unable to save change(s). Please make sure the email is valid.", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(this, "Unable to save change(s). Please make sure there's no empty field or discard change(s).", Toast.LENGTH_SHORT).show();
+                        if (isValid()) {
+                            userDetail.setUserFullName(editName.getText().toString().trim());
+                            userDetail.setEmail(editEmail.getText().toString().trim());
+                            userDetail.setPhoneNumber(editPhone.getText().toString().trim());
+                            LocalDataHandler
+                                .saveObject(getString(R.string.user_details), userDetail);
+
+                            openField(false);
+                            editCustBtn.setVisibility(View.VISIBLE);
+                            saveCustBtn.setVisibility(View.GONE);
+                            cancelCustBtn.setVisibility(View.GONE);
+                        } else {
+                            Toast.makeText(this,
+                                "Unable to save change(s). Please make sure there's no empty field or discard change(s).",
+                                Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
                 break;
@@ -306,8 +315,19 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
     }
 
     private boolean isValid() {
-        return !TextUtils.isEmpty(editName.getText().toString()) && !TextUtils.isEmpty(editEmail.getText().toString())
+        return !TextUtils.isEmpty(editName.getText().toString())
             && !TextUtils.isEmpty(editPhone.getText().toString());
+    }
+
+    private boolean isEmailValid(String email) {
+        if (!TextUtils.isEmpty(email)) {
+            Pattern pattern = Pattern.compile(Constants.EMAIL_PATTERN, Pattern.CASE_INSENSITIVE);
+            if (pattern != null) {
+                Matcher matcher = pattern.matcher(email.trim());
+                return matcher.matches();
+            }
+        }
+        return false;
     }
 
     @Override
