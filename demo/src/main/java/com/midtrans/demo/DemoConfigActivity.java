@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.midtrans.demo.widgets.DemoRadioButton;
 import com.midtrans.demo.widgets.DemoTextView;
 import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
@@ -47,6 +48,7 @@ import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.scancard.ScanCard;
 import com.midtrans.sdk.uikit.SdkUIFlowBuilder;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -2696,6 +2698,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     }
 
     private void initMidtransSDK() {
+
         SdkUIFlowBuilder.init()
                 .setContext(this)
                 .setMerchantBaseUrl(BuildConfig.BASE_URL)
@@ -2924,7 +2927,6 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             userDetail.setEmail("not_secure_email_rba@example.com");
             creditCard.setAuthentication(CreditCard.AUTHENTICATION_TYPE_RBA);
         }
-
         LocalDataHandler.saveObject(getString(R.string.user_details), userDetail);
         if (customPermataVaEnabledSelection.isChecked()) {
             String vaNumber = "";

@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.bumptech.glide.Glide;
 import com.midtrans.raygun.RaygunClient;
 import com.midtrans.raygun.RaygunOnBeforeSend;
@@ -78,11 +79,13 @@ import com.midtrans.sdk.uikit.views.xl_tunai.payment.XlTunaiPaymentActivity;
 import com.midtrans.sdk.uikit.widgets.BoldTextView;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Displays list of available payment methods.
@@ -157,34 +160,61 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
         midtransSDK = MidtransSDK.getInstance();
         initializeTheme();
-        UserDetail userDetail = null;
-        try {
-            userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        UserDetail userDetail = getUserDetails();
+
         TransactionRequest transactionRequest = null;
         if (midtransSDK != null) {
             transactionRequest = midtransSDK.getTransactionRequest();
             if (transactionRequest != null) {
-                CustomerDetails customerDetails = null;
+
                 if (userDetail != null) {
-                    customerDetails = new CustomerDetails(userDetail.getUserFullName(), null,
-                            userDetail.getEmail(), userDetail.getPhoneNumber());
-                    transactionRequest.setCustomerDetails(customerDetails);
-                    Logger.d(String.format("Customer name: %s, Customer email: %s, Customer phone: %s", userDetail.getUserFullName(), userDetail.getEmail(), userDetail.getPhoneNumber()));
+                    transactionRequest.setCustomerDetails(createCustomerDetails(userDetail));
+                } else {
+                    SdkUIFlowUtil.saveUserDetails();
                 }
+
                 setUpPaymentMethods();
                 setupRecyclerView();
 
             } else {
                 showErrorAlertDialog(getString(R.string.error_transaction_empty));
             }
+
         } else {
             Logger.e("Veritrans SDK is not started.");
             finish();
         }
     }
+
+    private CustomerDetails createCustomerDetails(UserDetail userDetail) {
+        CustomerDetails customerDetails = new CustomerDetails(userDetail.getUserFullName(), null,
+                userDetail.getEmail(), userDetail.getPhoneNumber());
+        Logger.d(String.format("Customer name: %s, Customer email: %s, Customer phone: %s", userDetail.getUserFullName(), userDetail.getEmail(), userDetail.getPhoneNumber()));
+        return customerDetails;
+    }
+
+    private UserDetail getUserDetails() {
+        UserDetail userDetail = null;
+
+        try {
+            userDetail = SdkUIFlowUtil.getSavedUserDetails(this);
+
+            if (userDetail == null) {
+                userDetail = new UserDetail();
+            }
+
+            if (TextUtils.isEmpty(userDetail.getUserId())) {
+                userDetail.setUserId(UUID.randomUUID().toString());
+            }
+
+            SdkUIFlowUtil.saveUserDetails(userDetail);
+        } catch (RuntimeException ex) {
+            ex.printStackTrace();
+        }
+
+        return userDetail;
+    }
+
 
     /**
      * bind views , initializes adapter and set it to recycler view.
@@ -287,7 +317,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     private void getPaymentPages() {
         progressContainer.setVisibility(View.VISIBLE);
         enableButtonBack(false);
-        UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
+        UserDetail userDetail = getUserDetails();
 
         if (!isAlreadyUtilized()) {
 
@@ -295,6 +325,12 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             if (!TextUtils.isEmpty(snapToken)) {
                 LocalDataHandler.saveString(Constants.AUTH_TOKEN, snapToken);
                 getPaymentOptions(snapToken);
+                return;
+            }
+
+            if (userDetail == null || TextUtils.isEmpty(userDetail.getUserId())) {
+                midtransSDK.notifyTransactionFinished(new TransactionResult(null, null, TransactionResult.STATUS_INVALID));
+                finish();
                 return;
             }
 

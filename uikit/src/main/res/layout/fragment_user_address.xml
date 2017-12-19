@@ -154,6 +154,7 @@
                         android:id="@+id/shipping_address_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:paddingBottom="@dimen/button_size"
                         android:layout_below="@id/cb_shipping_address"
                         android:visibility="gone">
 

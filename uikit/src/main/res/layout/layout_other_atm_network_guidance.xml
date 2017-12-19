@@ -17,10 +17,9 @@
         android:paddingLeft="@dimen/twelve_dp"
         android:paddingRight="@dimen/twelve_dp"
         android:paddingStart="@dimen/twelve_dp"
-        android:paddingTop="@dimen/four_dp"
-        android:textColor="@color/black" />
+        android:paddingTop="@dimen/four_dp"  />
 
-    <com.midtrans.sdk.uikit.widgets.BoldTextView
+    <com.midtrans.sdk.uikit.widgets.DefaultTextView
         android:id="@+id/bank_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
