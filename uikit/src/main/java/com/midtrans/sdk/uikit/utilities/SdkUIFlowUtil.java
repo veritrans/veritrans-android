@@ -113,7 +113,12 @@ public class SdkUIFlowUtil {
      * @param message  message to display on snackbar.
      */
     public static void showToast(Activity activity, String message) {
-        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+        try {
+            Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+
+        } catch (RuntimeException e) {
+            Log.e("showToast", "message:" + e.getMessage());
+        }
     }
 
 
@@ -250,7 +255,7 @@ public class SdkUIFlowUtil {
             } else {
                 Toast.makeText(activity, activity.getString(R.string.api_fail_message), Toast.LENGTH_SHORT).show();
             }
-        } catch (NullPointerException e) {
+        } catch (RuntimeException e) {
             Logger.i("Nullpointer:" + e.getMessage());
         }
     }
