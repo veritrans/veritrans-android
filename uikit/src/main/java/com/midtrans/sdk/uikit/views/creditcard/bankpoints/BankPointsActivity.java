@@ -47,6 +47,7 @@ public class BankPointsActivity extends BasePaymentActivity {
     private ImageView imageBankPointLogo;
 
     private FancyButton buttonRedeemPoint;
+    private FancyButton buttonPayWithoutPoint;
     private FancyButton containerAmount;
     private FancyButton containerTotalPoint;
 
@@ -79,6 +80,7 @@ public class BankPointsActivity extends BasePaymentActivity {
 
         imageBankPointLogo = (ImageView) findViewById(R.id.bank_point_logo);
         buttonRedeemPoint = (FancyButton) findViewById(R.id.button_primary);
+        buttonPayWithoutPoint = (FancyButton) findViewById(R.id.button_pay_without_point);
         containerAmount = (FancyButton) findViewById(R.id.container_amount);
         containerTotalPoint = (FancyButton) findViewById(R.id.container_total_point);
     }
@@ -90,6 +92,8 @@ public class BankPointsActivity extends BasePaymentActivity {
         containerAmount.setAlpha(0.5f);
         setSecondaryBackgroundColor(containerTotalPoint);
         containerTotalPoint.setAlpha(0.5f);
+        setTextColor(buttonPayWithoutPoint);
+        setIconColorFilter(buttonPayWithoutPoint);
     }
 
     private void initRedeemedPointsField() {
@@ -169,6 +173,7 @@ public class BankPointsActivity extends BasePaymentActivity {
                 setFiestapoinDiscount();
                 buttonRedeemPoint.setText(getString(R.string.pay_with_mandiri_point));
                 buttonRedeemPoint.setTextBold();
+                buttonPayWithoutPoint.setVisibility(View.VISIBLE);
                 break;
             default:
                 break;
@@ -204,7 +209,14 @@ public class BankPointsActivity extends BasePaymentActivity {
         buttonRedeemPoint.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                redeemPoint();
+                redeemPoint(true);
+            }
+        });
+
+        buttonPayWithoutPoint.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                redeemPoint(false);
             }
         });
     }
@@ -221,9 +233,13 @@ public class BankPointsActivity extends BasePaymentActivity {
         }
     }
 
-    private void redeemPoint() {
+    private void redeemPoint(boolean withPoint) {
         SdkUIFlowUtil.hideKeyboard(this);
-        String strPoint = fieldRedeemedPoint.getText().toString().trim();
+
+        String strPoint = "0";
+        if (withPoint) {
+            strPoint = fieldRedeemedPoint.getText().toString().trim();
+        }
         float redeemedPoint = Float.valueOf(strPoint);
         finishBankPoint(redeemedPoint);
     }
