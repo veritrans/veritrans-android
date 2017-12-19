@@ -35,7 +35,11 @@ public class CustomTypeAdapter extends TypeAdapter<CreditCardPaymentParams> {
         out.name("save_card").value(value.isSaveCard());
 
         if (value.isFromBankPoint()) {
-            out.name("point").value(value.getPointRedeemed());
+            if(value.getPointRedeemed() == 0.0f){
+                out.name("point").value(0);
+            }else{
+                out.name("point").value(value.getPointRedeemed());
+            }
         }
 
         out.endObject();

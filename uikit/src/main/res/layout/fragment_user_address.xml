@@ -113,7 +113,6 @@
                             android:maxLines="1" />
                     </android.support.design.widget.TextInputLayout>
 
-
                 </RelativeLayout>
             </android.support.v7.widget.CardView>
 

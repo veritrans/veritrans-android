@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
@@ -20,6 +21,7 @@ import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
+
 import java.util.regex.Pattern;
 
 /**
@@ -40,7 +42,6 @@ public class PaymentStatusActivity extends BaseActivity {
     private DefaultTextView textTotalAmount;
     private DefaultTextView textOrderId;
     private DefaultTextView textPaymentType;
-    private DefaultTextView textBank;
     private DefaultTextView textDueInstallment;
     private DefaultTextView textStatusTitle;
     private DefaultTextView textTotalDueAmount;
@@ -49,7 +50,6 @@ public class PaymentStatusActivity extends BaseActivity {
     private LinearLayout layoutTotalAmount;
     private LinearLayout layoutTotalDueAmount;
     private LinearLayout layoutInstallmentTerm;
-    private LinearLayout layoutBank;
     private LinearLayout layoutOrderId;
     private LinearLayout layoutPaymentType;
     private LinearLayout layoutPointAmount;
@@ -170,7 +170,6 @@ public class PaymentStatusActivity extends BaseActivity {
         textTotalAmount = (DefaultTextView) findViewById(R.id.text_status_amount);
         textTotalDueAmount = (DefaultTextView) findViewById(R.id.text_status_due_amount);
         textDueInstallment = (DefaultTextView) findViewById(R.id.text_status_due_installment);
-        textBank = (DefaultTextView) findViewById(R.id.text_status_bank);
         textPaymentType = (DefaultTextView) findViewById(R.id.text_payment_type);
         textPointAmount = (DefaultTextView) findViewById(R.id.text_point_amount);
 
@@ -178,7 +177,6 @@ public class PaymentStatusActivity extends BaseActivity {
         layoutTotalAmount = (LinearLayout) findViewById(R.id.layout_status_total_amount);
         layoutTotalDueAmount = (LinearLayout) findViewById(R.id.layout_status_due_amount);
         layoutInstallmentTerm = (LinearLayout) findViewById(R.id.layout_status_due_installment);
-        layoutBank = (LinearLayout) findViewById(R.id.layout_status_bank);
         layoutPaymentType = (LinearLayout) findViewById(R.id.layout_status_payment_type);
         layoutMain = (FrameLayout) findViewById(R.id.layout_main);
         layoutDetails = (LinearLayout) findViewById(R.id.layout_status_details);
@@ -355,11 +353,6 @@ public class PaymentStatusActivity extends BaseActivity {
 
             // Set credit card properties
             if (transactionResponse.getPaymentType().equalsIgnoreCase(PaymentType.CREDIT_CARD)) {
-                if (TextUtils.isEmpty(transactionResponse.getBank())) {
-                    layoutBank.setVisibility(View.GONE);
-                } else {
-                    textBank.setText(transactionResponse.getBank());
-                }
 
                 //installment term
                 if (TextUtils.isEmpty(transactionResponse.getInstallmentTerm())) {
@@ -368,8 +361,6 @@ public class PaymentStatusActivity extends BaseActivity {
                     layoutInstallmentTerm.setVisibility(View.VISIBLE);
                     textDueInstallment.setText(transactionResponse.getInstallmentTerm());
                 }
-            } else {
-                layoutBank.setVisibility(View.GONE);
             }
         }
 
