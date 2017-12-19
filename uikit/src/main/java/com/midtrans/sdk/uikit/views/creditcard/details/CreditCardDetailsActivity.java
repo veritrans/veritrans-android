@@ -23,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.BankType;
@@ -46,6 +47,7 @@ import com.midtrans.sdk.uikit.views.webview.WebViewPaymentActivity;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -113,7 +115,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         super.onCreate(savedInstanceState);
         //init screenshot prevention
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
-            WindowManager.LayoutParams.FLAG_SECURE);
+                WindowManager.LayoutParams.FLAG_SECURE);
         initProperties();
         setContentView(R.layout.activity_credit_card);
         initCardNumber();
@@ -560,15 +562,15 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                 }
 
                 AlertDialog alertDialog = new AlertDialog.Builder(CreditCardDetailsActivity.this)
-                    .setTitle(titleId)
-                    .setMessage(detailId)
-                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                        }
-                    })
-                    .create();
+                        .setTitle(titleId)
+                        .setMessage(detailId)
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .create();
                 alertDialog.show();
                 changeDialogButtonColor(alertDialog);
             }
@@ -1216,7 +1218,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             } else if (requestCode == UiKitConstants.INTENT_BANK_POINT) {
                 //change flow
                 if (data != null) {
-                    redeemedPoint  = data.getFloatExtra(BankPointsActivity.EXTRA_DATA_POINT, 0f);
+                    redeemedPoint = data.getFloatExtra(BankPointsActivity.EXTRA_DATA_POINT, 0f);
                 }
                 if (!TextUtils.isEmpty(redirectUrl)) {
                     start3DSecurePage(redirectUrl, UiKitConstants.INTENT_CODE_3DS_BANK_POINT);
@@ -1258,7 +1260,8 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     public void onGetCardTokenFailure() {
         hideProgressLayout();
         if (isActivityRunning()) {
-            SdkUIFlowUtil.showApiFailedMessage(this, getString(R.string.message_getcard_token_failed));
+            String detailsMessage = getString(R.string.message_getcard_token_failed);
+            SdkUIFlowUtil.showToast(this, detailsMessage);
         }
     }
 
@@ -1299,7 +1302,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         if (isActivityRunning()) {
             if (attempt < UiKitConstants.MAX_ATTEMPT) {
                 attempt += 1;
-                SdkUIFlowUtil.showApiFailedMessage(this, getString(R.string.message_payment_failed));
+                SdkUIFlowUtil.showToast(this, getString(R.string.message_payment_failed));
             } else {
                 initPaymentStatus(response);
             }
