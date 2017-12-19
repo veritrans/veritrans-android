@@ -20,6 +20,7 @@ import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
 import com.midtrans.sdk.corekit.models.UserAddress;
 import com.midtrans.sdk.corekit.models.UserDetail;
+import com.midtrans.sdk.uikit.BuildConfig;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.fragments.UserAddressFragment;
 import com.midtrans.sdk.uikit.fragments.UserDetailFragment;
@@ -66,8 +67,10 @@ public class UserDetailsActivity extends BaseActivity {
     }
 
     private void initIssueTracker() {
-        RaygunClient.init(getApplicationContext(), getString(R.string.ISSUE_TRACKER_API_KEY));
-        RaygunClient.attachExceptionHandler();
+        if (BuildConfig.FLAVOR.equals(UiKitConstants.ENVIRONMENT_PRODUCTION)) {
+            RaygunClient.init(getApplicationContext(), getString(R.string.ISSUE_TRACKER_API_KEY));
+            RaygunClient.attachExceptionHandler();
+        }
     }
 
     private void showInformationDialog(String message) {

@@ -45,6 +45,8 @@ test:
        - cp -r corekit/build/reports $CIRCLE_ARTIFACTS
        - cp -r corekit/build/reports/ $CIRCLE_TEST_REPORTS
 
+       - cp -r corekit/build/outputs/mapping $CIRCLE_ARTIFACTS
+       - cp -r corekit/build/reports/mapping/ $CIRCLE_TEST_REPORTS
 
 # Deployment section
 deployment:
