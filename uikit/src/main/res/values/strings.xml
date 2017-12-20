@@ -588,6 +588,37 @@
     <string name="kioson_instruction_step8">Submit payment and print the receipt.</string>
     <string name="kioson_instruction_step9">Your transaction is successful! You should be receiving an email confirming your payment. Please keep your payment receipt just in case you need help via support.</string>
 
+    <!--Go-Pay Instruction-->
+    <string name="gopay_instruction_step1">Tap <b>Pay Now with GO-PAY</b>.</string>
+    <string name="gopay_instruction_step2">You will be redirected to the <b>GO-JEK</b> app.</string>
+    <string name="gopay_instruction_step3">Check your payment details in the <b>GO-JEK</b> app then tap <b>PAY</b>.</string>
+    <string name="gopay_instruction_step4">Done.</string>
+
+    <!--Go-Pay Instruction in Tablet-->
+    <string name="gopay_instruction_tablet_step1">Tap <b>Pay Now with GO-PAY</b>.</string>
+    <string name="gopay_instruction_tablet_step2">Open <b>GO-JEK</b> app on your phone.</string>
+    <string name="gopay_instruction_tablet_step3">Tap <b>SCAN QR</b>, then point your camera to the <b>QR Code</b>.</string>
+    <string name="gopay_instruction_tablet_step4">Check your payment details in <b>GO-JEK</b> app and then tap <b>PAY</b>.</string>
+    <string name="gopay_instruction_tablet_step5">Your transaction is done.</string>
+
+    <!--Go-Pay related-->
+    <string name="gopay_status_title">Pay with GO-PAY</string>
+    <string name="gopay_confirm_button">Pay Now with GO-PAY</string>
+    <string name="notification_gojek_app">GO-JEK app is required for this payment method.</string>
+    <string name="notification_gojek_app_tablet">Please complete your <b>GO-PAY</b> payment via <b>GO-JEK</b> app.</string>
+    <string name="install_gojek_message">Install GO-JEK App from Play Store</string>
+    <string name="whoops" translatable="false">Whoops!</string>
+    <string name="no_gojek_message">Unfortunately, we couldn\'t find GO-JEK app installed on your phone.</string>
+    <string name="redirecting_to_gopay">Redirecting to GO-JEK app…</string>
+    <string name="error_qr_code">Failed to load QR code. Please try again.</string>
+    <string name="reload_qr_code">Reload QR Code</string>
+    <string name="error_gopay_transaction">Transaction cannot be proccessed. Please try again or try another payment method.</string>
+    <string name="confirm_gopay_title">Confirm</string>
+    <string name="confirm_gopay_qr_scan_tablet">Make sure the QR code successfully scanned and payment has been completed within the GO-JEK app.</string>
+    <string name="confirm_gopay_deeplink">Make sure payment has been completed within the GO-JEK app.</string>
+    <string name="gopay_instruction">How to Pay?</string>
+    <string name="gopay_expiration_message">Please complete your payment before</string>
+
     <string name="error_message_invalid_input_telkomsel">Transaction failed. Your transaction got declined by T-Cash.</string>
     <string name="kioson">Kioson</string>
     <string name="kioson_valid">Please complete your payment at Kioson Outlet Before : %1$s</string>
@@ -688,7 +719,7 @@
     <string name="payment_method_description_indosat_dompetku">Pay with Indosat Dompetku</string>
     <string name="payment_method_description_kioson">Pay from Kioson Outlet</string>
     <string name="payment_method_description_gci">Pay with Gift Cards</string>
-    <string name="payment_method_description_gopay">Pay with GO-PAY</string>
+    <string name="payment_method_description_gopay">Pay with your GO-PAY wallet</string>
     <string name="payment_method_description_danamon_online">Pay with your Danamon Online Banking Account</string>
 
     <string name="payment_bank_description_bca">Pay from BCA ATMs or internet banking</string>
@@ -833,16 +864,13 @@
     <string name="card_registration">Card Registration</string>
     <string name="error_utilized_orderid">Sorry, the order id already utilized</string>
     <string name="processing_card_registration">Processing card registration</string>
-    <string name="info_gopay_account">Make sure your phone number is <b>registered with GO-JEK and has sufficient GO-PAY balance</b></string>
     <string name="country_code">Country code</string>
     <string name="country_code_default">+62</string>
-    <string name="hint_gopay_phone_number">Enter GO-PAY Registered Phone Number</string>
     <string name="payment_continue">Continue</string>
     <string name="validation_country_code_empty">Please enter country code</string>
     <string name="status_message_not_enabled">Payment method is not enabled</string>
     <string name="details_message_not_enabled">Sorry, payment method is not enabled</string>
     <string name="hint_gopay_verification_number">Enter verification code</string>
-    <string name="info_gopay_auth">We sent a <b>verification code</b> via sms to your GO-PAY registered phone number <b>%1$s</b></string>
     <string name="verificaton_code_empty">Please enter verification code</string>
     <string name="verification_code">Resend Verification Code</string>
     <string name="resend_verification_code">Resending verification code</string>
@@ -860,4 +888,7 @@
     <string name="message_invalid_merchant_url">Merchant base url cannot be null or empty, if you implement your own token storage. Please set merchant base_url to SDK</string>
     <string name="empty_card_number">Please enter card number</string>
     <string name="empty_challenge_token">Please enter challenge token</string>
+    <string name="pay_without_fiesta_poin">Pay Without Fiestapoin</string>
+    <string name="payment_instruction">Payment Instruction %1$s</string>
+    <string name="instruction_atm_with">ATM with %1$s logo</string>
 </resources>

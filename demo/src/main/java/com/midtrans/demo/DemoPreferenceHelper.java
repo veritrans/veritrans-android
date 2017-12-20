@@ -118,7 +118,12 @@ final public class DemoPreferenceHelper {
         int value = defaultValue;
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         if (preferences != null) {
-            value = preferences.getInt(key, defaultValue);
+            try {
+                value = preferences.getInt(key, defaultValue);
+            } catch (RuntimeException e) {
+                boolean boleanValue = preferences.getBoolean(key, false);
+                value = boleanValue ? 1 : 0;
+            }
         }
         return value;
     }

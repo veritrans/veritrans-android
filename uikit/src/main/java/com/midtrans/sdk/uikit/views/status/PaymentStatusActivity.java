@@ -31,6 +31,8 @@ import java.util.regex.Pattern;
 public class PaymentStatusActivity extends BaseActivity {
     public static final String EXTRA_PAYMENT_RESULT = "payment.result";
     private static final String TAG = PaymentStatusActivity.class.getSimpleName();
+    private final String PAGE_NAME_SUCCESS = "Page Success";
+    private final String PAGE_NAME_FAILED = "Page Failed";
 
     private FancyButton buttonFinish;
     private FancyButton buttonInstruction;
@@ -40,17 +42,14 @@ public class PaymentStatusActivity extends BaseActivity {
     private DefaultTextView textTotalAmount;
     private DefaultTextView textOrderId;
     private DefaultTextView textPaymentType;
-    private DefaultTextView textBank;
     private DefaultTextView textDueInstallment;
     private DefaultTextView textStatusTitle;
     private DefaultTextView textTotalDueAmount;
     private DefaultTextView textPointAmount;
 
-
     private LinearLayout layoutTotalAmount;
     private LinearLayout layoutTotalDueAmount;
     private LinearLayout layoutInstallmentTerm;
-    private LinearLayout layoutBank;
     private LinearLayout layoutOrderId;
     private LinearLayout layoutPaymentType;
     private LinearLayout layoutPointAmount;
@@ -60,10 +59,12 @@ public class PaymentStatusActivity extends BaseActivity {
 
     private TransactionResponse transactionResponse;
     private String paymentStatus;
+    private PaymentStatusPresenter presenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initProperties();
         initPaymentResponse();
         setContentView(R.layout.activity_payment_status);
         bindViews();
@@ -82,6 +83,7 @@ public class PaymentStatusActivity extends BaseActivity {
                             (transactionResponse.getTransactionStatus().equalsIgnoreCase(UiKitConstants.STATUS_SUCCESS) ||
                                     transactionResponse.getTransactionStatus().equalsIgnoreCase(UiKitConstants.STATUS_SETTLEMENT)))) {
                 paymentStatus = UiKitConstants.STATUS_SUCCESS;
+                presenter.trackPageView(PAGE_NAME_SUCCESS, false);
             } else if (transactionResponse.getStatusCode().equals(UiKitConstants.STATUS_CODE_201)
                     || (!TextUtils.isEmpty(transactionResponse.getTransactionStatus())
                     && (transactionResponse.getTransactionStatus().equalsIgnoreCase(UiKitConstants.STATUS_PENDING)))) {
@@ -93,6 +95,7 @@ public class PaymentStatusActivity extends BaseActivity {
                 }
             } else {
                 this.paymentStatus = UiKitConstants.STATUS_FAILED;
+                presenter.trackPageView(PAGE_NAME_FAILED, false);
             }
         } else {
             this.paymentStatus = UiKitConstants.STATUS_FAILED;
@@ -111,9 +114,46 @@ public class PaymentStatusActivity extends BaseActivity {
         buttonFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (transactionResponse != null) {
+                    String buttonName;
+                    String paymentType = transactionResponse.getPaymentType();
+                    switch (paymentType) {
+                        case PaymentType.CREDIT_CARD:
+                            buttonName = "Done Credit Card";
+                            break;
+                        case PaymentType.MANDIRI_CLICKPAY:
+                            buttonName = "Done Mandiri Clickpay";
+                            break;
+                        default:
+                            buttonName = "Next";
+                            break;
+                    }
+
+                    if (paymentStatus != null) {
+                        if (paymentStatus.equalsIgnoreCase(UiKitConstants.STATUS_SUCCESS)) {
+                            presenter.trackButtonClick(buttonName, PAGE_NAME_SUCCESS);
+                        } else if (paymentStatus.equalsIgnoreCase(UiKitConstants.STATUS_FAILED)) {
+                            presenter.trackButtonClick(buttonName, PAGE_NAME_FAILED);
+                        }
+                    }
+                }
+
                 finishPayment();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (presenter != null && paymentStatus != null) {
+            if (paymentStatus.equalsIgnoreCase(UiKitConstants.STATUS_SUCCESS)) {
+                presenter.trackBackButtonClick(PAGE_NAME_SUCCESS);
+            } else if (paymentStatus.equalsIgnoreCase(UiKitConstants.STATUS_FAILED)) {
+                presenter.trackBackButtonClick(PAGE_NAME_FAILED);
+            }
+        }
+        super.onBackPressed();
     }
 
     private void finishPayment() {
@@ -130,7 +170,6 @@ public class PaymentStatusActivity extends BaseActivity {
         textTotalAmount = (DefaultTextView) findViewById(R.id.text_status_amount);
         textTotalDueAmount = (DefaultTextView) findViewById(R.id.text_status_due_amount);
         textDueInstallment = (DefaultTextView) findViewById(R.id.text_status_due_installment);
-        textBank = (DefaultTextView) findViewById(R.id.text_status_bank);
         textPaymentType = (DefaultTextView) findViewById(R.id.text_payment_type);
         textPointAmount = (DefaultTextView) findViewById(R.id.text_point_amount);
 
@@ -138,7 +177,6 @@ public class PaymentStatusActivity extends BaseActivity {
         layoutTotalAmount = (LinearLayout) findViewById(R.id.layout_status_total_amount);
         layoutTotalDueAmount = (LinearLayout) findViewById(R.id.layout_status_due_amount);
         layoutInstallmentTerm = (LinearLayout) findViewById(R.id.layout_status_due_installment);
-        layoutBank = (LinearLayout) findViewById(R.id.layout_status_bank);
         layoutPaymentType = (LinearLayout) findViewById(R.id.layout_status_payment_type);
         layoutMain = (FrameLayout) findViewById(R.id.layout_main);
         layoutDetails = (LinearLayout) findViewById(R.id.layout_status_details);
@@ -191,6 +229,10 @@ public class PaymentStatusActivity extends BaseActivity {
     private void bindData() {
         setHeaderValues();
         setContentValues();
+    }
+
+    private void initProperties() {
+        this.presenter = new PaymentStatusPresenter();
     }
 
     private void setHeaderValues() {
@@ -311,11 +353,6 @@ public class PaymentStatusActivity extends BaseActivity {
 
             // Set credit card properties
             if (transactionResponse.getPaymentType().equalsIgnoreCase(PaymentType.CREDIT_CARD)) {
-                if (TextUtils.isEmpty(transactionResponse.getBank())) {
-                    layoutBank.setVisibility(View.GONE);
-                } else {
-                    textBank.setText(transactionResponse.getBank());
-                }
 
                 //installment term
                 if (TextUtils.isEmpty(transactionResponse.getInstallmentTerm())) {
@@ -324,8 +361,6 @@ public class PaymentStatusActivity extends BaseActivity {
                     layoutInstallmentTerm.setVisibility(View.VISIBLE);
                     textDueInstallment.setText(transactionResponse.getInstallmentTerm());
                 }
-            } else {
-                layoutBank.setVisibility(View.GONE);
             }
         }
 

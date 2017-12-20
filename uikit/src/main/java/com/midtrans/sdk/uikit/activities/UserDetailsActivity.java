@@ -16,13 +16,15 @@ import android.util.Log;
 import android.view.View;
 
 import com.midtrans.raygun.RaygunClient;
-import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
 import com.midtrans.sdk.corekit.models.UserAddress;
 import com.midtrans.sdk.corekit.models.UserDetail;
+import com.midtrans.sdk.uikit.BuildConfig;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.fragments.UserAddressFragment;
 import com.midtrans.sdk.uikit.fragments.UserDetailFragment;
+import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 
 import java.util.ArrayList;
@@ -35,6 +37,7 @@ public class UserDetailsActivity extends BaseActivity {
     public static final String BANK_TRANSFER_PERMATA = "bt_permata";
     public static final String BANK_TRANSFER_BNI = "bt_bni";
     public static final String BANK_TRANSFER_OTHER = "bt_other";
+    public static final String GO_PAY = "gopay";
     public static final String BCA_KLIKPAY = "bcaklikpay";
     public static final String KLIK_BCA = "klikbca";
     public static final String MANDIRI_CLICKPAY = "mandiriclickpay";
@@ -53,7 +56,6 @@ public class UserDetailsActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initIssueTracker();
-//        initRealIssueTracker();
 
         String invalidMessage = getInvalidPropertiesMessage();
         if (!TextUtils.isEmpty(invalidMessage)) {
@@ -61,12 +63,14 @@ public class UserDetailsActivity extends BaseActivity {
             return;
         }
 
-        checkUserDetails();
+        initializeSdkFlow();
     }
 
     private void initIssueTracker() {
-        RaygunClient.init(getApplicationContext(), getString(R.string.ISSUE_TRACKER_API_KEY));
-        RaygunClient.attachExceptionHandler();
+        if (BuildConfig.FLAVOR.equals(UiKitConstants.ENVIRONMENT_PRODUCTION)) {
+            RaygunClient.init(getApplicationContext(), getString(R.string.ISSUE_TRACKER_API_KEY));
+            RaygunClient.attachExceptionHandler();
+        }
     }
 
     private void showInformationDialog(String message) {
@@ -94,37 +98,55 @@ public class UserDetailsActivity extends BaseActivity {
         }
     }
 
-    public void checkUserDetails() throws RuntimeException {
+    public void initializeSdkFlow() throws RuntimeException {
 
         try {
-            UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
+            MidtransSDK midtransSDK = MidtransSDK.getInstance();
 
-            if (userDetail != null && !TextUtils.isEmpty(userDetail.getUserFullName())) {
-                //TODO check user have address filled
-                //if no take user to select address
+            if (midtransSDK != null) {
+                UIKitCustomSetting setting = midtransSDK.getUIKitCustomSetting();
+                if (setting != null && setting.isSkipCustomerDetailsPages()) {
 
-                ArrayList<UserAddress> userAddresses = userDetail.getUserAddresses();
-                if (userAddresses != null && !userAddresses.isEmpty()) {
+                    SdkUIFlowUtil.saveUserDetails();
+
                     showPaymentpage();
-                } else {
-                    setView();
-                    UserAddressFragment userAddressFragment = UserAddressFragment.newInstance();
-                    replaceFragment(userAddressFragment, false);
                     return;
                 }
-            } else {
-                setView();
-                UserDetailFragment userDetailFragment = UserDetailFragment.newInstance();
-                replaceFragment(userDetailFragment, false);
-                return;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-        setView();
-        UserDetailFragment userDetailFragment = UserDetailFragment.newInstance();
-        replaceFragment(userDetailFragment, false);
+                UserDetail userDetail = SdkUIFlowUtil.getSavedUserDetails(this);
+
+                if (userDetail != null) {
+                    if (!TextUtils.isEmpty(userDetail.getUserFullName())) {
+                        //TODO check user have address filled
+                        //if no take user to select address
+
+                        ArrayList<UserAddress> userAddresses = userDetail.getUserAddresses();
+                        if (userAddresses != null && !userAddresses.isEmpty()) {
+                            showPaymentpage();
+                        } else {
+                            setView();
+                            UserAddressFragment userAddressFragment = UserAddressFragment.newInstance();
+                            replaceFragment(userAddressFragment, false);
+                        }
+                    } else {
+                        setView();
+                        UserDetailFragment userDetailFragment = UserDetailFragment.newInstance();
+                        replaceFragment(userDetailFragment, false);
+                    }
+                }
+            } else {
+                String errorMessage = getString(R.string.error_sdk_not_initialized);
+                Log.e(TAG, errorMessage);
+                SdkUIFlowUtil.showToast(this, errorMessage);
+                finish();
+            }
+
+        } catch (Exception e) {
+            String errorMessage = "invalid customerDetails info:" + e.getMessage();
+            Log.e(TAG, errorMessage);
+            SdkUIFlowUtil.showToast(this, errorMessage);
+            finish();
+        }
     }
 
     public void showPaymentpage() {
@@ -144,6 +166,8 @@ public class UserDetailsActivity extends BaseActivity {
             } else if (getIntent().getBooleanExtra(BANK_TRANSFER_BNI, false)) {
                 paymentOptionIntent.putExtra(BANK_TRANSFER_BNI, true);
             }
+        } else if (getIntent().getBooleanExtra(GO_PAY, false)) {
+            paymentOptionIntent.putExtra(GO_PAY, true);
         } else if (getIntent().getBooleanExtra(BCA_KLIKPAY, false)) {
             paymentOptionIntent.putExtra(BCA_KLIKPAY, true);
         } else if (getIntent().getBooleanExtra(KLIK_BCA, false)) {

@@ -17,7 +17,6 @@ import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.BankTransferFragment;
 import com.midtrans.sdk.uikit.fragments.InstructionTelkomselCashFragment;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
@@ -72,9 +71,6 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
      * set up {@link BankTransferFragment} to display payment instructions.
      */
     private void setUpHomeFragment() {
-        //track page telkomsel cash
-        mMidtransSDK.trackEvent(AnalyticsEventName.PAGE_TCASH);
-
         // setup home fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -162,9 +158,6 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
      * Telkomsel Cash payment procedure.
      */
     private void performTransaction() {
-        //track telkomsel cash confirm payment
-        mMidtransSDK.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
-
         if (telkomselCashFragment != null && !telkomselCashFragment.isDetached()) {
 
             telkomselToken = telkomselCashFragment.getTelkomselToken();
@@ -193,9 +186,6 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
                 telkomselToken, new TransactionCallback() {
                     @Override
                     public void onSuccess(TransactionResponse response) {
-                        //track page status success
-                        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_SUCCESS);
-
                         SdkUIFlowUtil.hideProgressDialog();
                         mTransactionResponse = response;
 
@@ -209,9 +199,6 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
 
                     @Override
                     public void onFailure(TransactionResponse response, String reason) {
-                        //track page status failed
-                        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
-
                         SdkUIFlowUtil.hideProgressDialog();
                         mTransactionResponse = response;
                         errorMessage = getString(R.string.error_message_invalid_input_telkomsel);
@@ -228,9 +215,6 @@ public class TelkomselCashActivity extends BaseActivity implements View.OnClickL
 
                     @Override
                     public void onError(Throwable error) {
-                        //track page status failed
-                        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
-
                         SdkUIFlowUtil.hideProgressDialog();
                         String message = MessageUtil.createPaymentErrorMessage(TelkomselCashActivity.this, error.getMessage(), null);
                         errorMessage = message;

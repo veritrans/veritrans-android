@@ -12,6 +12,7 @@
     <color name="colorSecondary_min">#dbeeff</color>
     <color name="inactiveTabColor">#B2DFDB</color>
     <color name="light_gray">#F1F1F1</color>
+    <color name="lighter_gray">#F6F6F6</color>
 
     <color name="faint_gray">#d3d3d3</color>
     <color name="faint_yellow">#FFF3CD</color>

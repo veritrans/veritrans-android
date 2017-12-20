@@ -12,6 +12,13 @@ import com.midtrans.sdk.uikit.R;
 /**
  * Created by rakawm on 2/23/16.
  */
+
+/**
+ * Displays ATM bersama payment instruction.
+ * @author rakawm
+ * Deprecated, use {@link com.midtrans.sdk.uikit.views.banktransfer.instruction.InstructionMandiriVaFragment} instead
+ */
+@Deprecated
 public class InstructionMandiriInternetFragment extends Fragment {
 
     @Nullable

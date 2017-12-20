@@ -18,6 +18,9 @@ import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 public class IndomaretPaymentActivity extends BasePaymentActivity implements BasePaymentView {
 
+    private final String PAGE_NAME = "Indomaret Overview";
+    private final String BUTTON_CONFIRM_NAME = "Confirm Payment Indomaret";
+
     private FancyButton buttonPrimary;
 
     private IndomaretPaymentPresenter presenter;
@@ -35,6 +38,10 @@ public class IndomaretPaymentActivity extends BasePaymentActivity implements Bas
         setPageTitle(getString(R.string.payment_method_indomaret));
         buttonPrimary.setText(getString(R.string.confirm_payment));
         buttonPrimary.setTextBold();
+
+        //track page view after page properly loaded
+        boolean isFirstPage = getIntent().getBooleanExtra(USE_DEEP_LINK, true);
+        presenter.trackPageView(PAGE_NAME, isFirstPage);
     }
 
     private void initActionButton() {
@@ -42,6 +49,7 @@ public class IndomaretPaymentActivity extends BasePaymentActivity implements Bas
             @Override
             public void onClick(View v) {
                 showProgressLayout(getString(R.string.processing_payment));
+                presenter.trackButtonClick(BUTTON_CONFIRM_NAME, PAGE_NAME);
                 presenter.startPayment();
             }
         });
@@ -92,5 +100,13 @@ public class IndomaretPaymentActivity extends BasePaymentActivity implements Bas
         if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS) {
             finishPayment(RESULT_OK, presenter.getTransactionResponse());
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (presenter != null) {
+            presenter.trackBackButtonClick(PAGE_NAME);
+        }
+        super.onBackPressed();
     }
 }

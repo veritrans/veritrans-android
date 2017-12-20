@@ -37,7 +37,6 @@ import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
 import com.midtrans.sdk.corekit.models.snap.SnapPromo;
 import com.midtrans.sdk.corekit.models.snap.params.CreditCardPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.params.GCIPaymentParams;
-import com.midtrans.sdk.corekit.models.snap.params.GoPayPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.params.KlikBcaPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.params.MandiriClickPayPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
@@ -657,8 +656,8 @@ public class SdkUtil {
         return request;
     }
 
-    public static GoPayPaymentRequest getGoPayPaymentRequest(String phoneNumber) {
-        return new GoPayPaymentRequest(new GoPayPaymentParams(phoneNumber), PaymentType.GOPAY);
+    public static GoPayPaymentRequest getGoPayPaymentRequest() {
+        return new GoPayPaymentRequest(PaymentType.GOPAY);
     }
 
     public static GoPayAuthorizationRequest getGoPayAuthorizationRequest(String otp) {

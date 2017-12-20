@@ -23,6 +23,8 @@ import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 public class GciPaymentActivity extends BasePaymentActivity implements BasePaymentView {
 
+    private final String PAGE_NAME = "GCI";
+
     private FancyButton buttonPrimary;
     private AppCompatEditText giftCardNumber;
     private AppCompatEditText cardPin;
@@ -87,6 +89,10 @@ public class GciPaymentActivity extends BasePaymentActivity implements BasePayme
                 }
             }
         });
+
+        //track page view after page properly loaded
+        boolean isFirstPage = getIntent().getBooleanExtra(USE_DEEP_LINK, true);
+        presenter.trackPageView(PAGE_NAME, isFirstPage);
     }
 
     private void initActionButton() {
@@ -207,5 +213,13 @@ public class GciPaymentActivity extends BasePaymentActivity implements BasePayme
         if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS || requestCode == UiKitConstants.INTENT_WEBVIEW_PAYMENT) {
             finishPayment(RESULT_OK, presenter.getTransactionResponse());
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (presenter != null) {
+            presenter.trackBackButtonClick(PAGE_NAME);
+        }
+        super.onBackPressed();
     }
 }

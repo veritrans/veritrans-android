@@ -15,6 +15,7 @@ public class UiKitConstants {
     public static final int INTENT_CODE_3DS_PAYMENT = 100;
     public static final int INTENT_CODE_RBA_AUTHENTICATION = 102;
     public static final int INTENT_REQUEST_SCAN_CARD = 101;
+    public static final int INTENT_CODE_3DS_BANK_POINT = 104;
     public static final int INTENT_CODE_PAYMENT_STATUS = 210;
     public static final int INTENT_CODE_PAYMENT = 108;
     public static final int INTENT_VERIFICATION = 110;
@@ -64,6 +65,11 @@ public class UiKitConstants {
     public static final int ATM_BERSAMA = 0;
     public static final int PRIMA = 1;
     public static final int ALTO = 2;
+
+    public static final int INSTRUCTION_FIRST_POSITION = 0;
+    public static final int INSTRUCTION_SECOND_POSITION = 1;
+    public static final int INSTRUCTION_THIRD_POSITION = 2;
+
 
     public static final int RESULT_SDK_NOT_AVAILABLE = -999;
 

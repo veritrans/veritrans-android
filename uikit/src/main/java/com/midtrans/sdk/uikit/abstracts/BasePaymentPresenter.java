@@ -9,38 +9,11 @@ import com.midtrans.sdk.corekit.models.TransactionResponse;
 
 public class BasePaymentPresenter<V extends BaseView> extends BasePresenter<V> {
 
+    private final String BACK_BUTTON_NAME = "Back";
     protected TransactionResponse transactionResponse;
 
     public BasePaymentPresenter() {
         super();
-    }
-
-    /**
-     * tracking sdk events
-     *
-     * @param eventName
-     */
-    public void trackEvent(String eventName) {
-        try {
-            getMidtransSDK().getmMixpanelAnalyticsManager()
-                    .trackMixpanel(getMidtransSDK().readAuthenticationToken(), eventName);
-        } catch (NullPointerException e) {
-            Logger.e(TAG, "trackEvent():" + e.getMessage());
-        }
-    }
-
-    /**
-     * tracking sdk events
-     *
-     * @param eventName
-     * @param cardPaymentMode
-     */
-    public void trackEvent(String eventName, String cardPaymentMode) {
-        try {
-            getMidtransSDK().getmMixpanelAnalyticsManager().trackMixpanel(getMidtransSDK().readAuthenticationToken(), eventName, cardPaymentMode);
-        } catch (NullPointerException e) {
-            Logger.e(TAG, "trackEvent():" + e.getMessage());
-        }
     }
 
     /**
@@ -51,11 +24,32 @@ public class BasePaymentPresenter<V extends BaseView> extends BasePresenter<V> {
     public boolean isShowPaymentStatusPage() {
         return getMidtransSDK() != null && getMidtransSDK().getUIKitCustomSetting() != null
             && getMidtransSDK().getUIKitCustomSetting().isShowPaymentStatus();
-
     }
 
     public TransactionResponse getTransactionResponse() {
         return transactionResponse;
+    }
+
+    public void trackButtonClick(String buttonName, String pageName) {
+        try {
+            getMidtransSDK().getmMixpanelAnalyticsManager()
+                .trackButtonClicked(getMidtransSDK().readAuthenticationToken(), buttonName, pageName);
+        } catch (NullPointerException e) {
+            Logger.e(TAG, "trackButtonClick():" + e.getMessage());
+        }
+    }
+
+    public void trackPageView(String pageName, boolean isFirstPage) {
+        try {
+            getMidtransSDK().getmMixpanelAnalyticsManager()
+                .trackPageViewed(getMidtransSDK().readAuthenticationToken(), pageName, isFirstPage);
+        } catch (NullPointerException e) {
+            Logger.e(TAG, "trackPageView():" + e.getMessage());
+        }
+    }
+
+    public void trackBackButtonClick(String pageName) {
+        trackButtonClick(BACK_BUTTON_NAME, pageName);
     }
 
 }
