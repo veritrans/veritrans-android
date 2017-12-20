@@ -70,8 +70,10 @@
     <string name="custom_va_hint">Custom VA Number</string>
     <string name="custom_permata_va_error">VA Number must be 10 digits.</string>
     <string name="custom_permata_va_hint">Custom Permata VA Number</string>
+    <string name="custom_permata_recipient_hint">Custom Permata Recipient</string>
     <string name="custom_bca_va_enable_title">Enable Custom BCA VA Number</string>
     <string name="custom_permata_va_enable_title">Enable Custom Permata VA Number</string>
+    <string name="custom_permata_recipient_enable_title">Enable Custom Permata Recipient</string>
     <string name="format_va_enable_title">Enable Custom %1$s Number</string>
     <string name="custom_va_edit_button">Edit</string>
 
@@ -79,6 +81,10 @@
     <string name="subcompany_bca_va_disabled">Subcompany for BCA VA Disabled</string>
     <string name="subcompany_bca_va_enabled">Subcompany for BCA VA Enabled</string>
     <string name="subcompany_error_message">Subcompany code must be 5 digits number</string>
+
+    <!--PERMATA VA RECIPIENT-->
+    <string name="custom_permata_recipient_disabled">Custom Permata Recipient Disabled</string>
+    <string name="custom_permata_recipient_enabled">Custom Permata Recipient Enabled</string>
 
     <!--PROMO ENABLED TITLE-->
     <string name="default_promo_enabled">Promo Enabled</string>
