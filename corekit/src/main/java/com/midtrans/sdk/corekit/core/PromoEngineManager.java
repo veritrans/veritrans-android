@@ -1,10 +1,14 @@
 package com.midtrans.sdk.corekit.core;
 
 import android.content.Context;
+import android.text.TextUtils;
 
-import com.midtrans.sdk.corekit.R;
 import com.midtrans.sdk.corekit.callback.ObtainPromoCallback;
-import com.midtrans.sdk.corekit.models.promo.ObtainPromoResponse;
+import com.midtrans.sdk.corekit.models.promo.PromosResponse;
+
+import java.security.cert.CertPathValidatorException;
+
+import javax.net.ssl.SSLHandshakeException;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -14,9 +18,9 @@ import retrofit.client.Response;
  * Created by rakawm on 2/3/17.
  */
 
-public class PromoEngineManager {
+public class PromoEngineManager extends BaseTransactionManager {
 
-    private Context context;
+    private static final String TAG = PromoEngineManager.class.getSimpleName();
     private PromoEngineRestAPI promoEngineRestAPI;
 
     public PromoEngineManager(Context context, PromoEngineRestAPI promoEngineRestAPI) {
@@ -24,20 +28,55 @@ public class PromoEngineManager {
         this.promoEngineRestAPI = promoEngineRestAPI;
     }
 
-    public void obtainPromo(String promoId, double amount, final ObtainPromoCallback callback) {
-        promoEngineRestAPI.obtainPromo(promoId, amount, MidtransSDK.getInstance().getClientKey(), new Callback<ObtainPromoResponse>() {
+    /**
+     * todo remove this method
+     */
+//    public void obtainPromo(String promoId, double amount, final ObtainPromoCallback callback) {
+//        promoEngineRestAPI.obtainPromo(promoId, amount, MidtransSDK.getInstance().getClientKey(), new Callback<ObtainPromoResponse>() {
+//            @Override
+//            public void success(ObtainPromoResponse obtainPromoResponse, Response response) {
+//                if (obtainPromoResponse.isSuccess()) {
+//                    callback.onSuccess(obtainPromoResponse);
+//                } else {
+//                    callback.onFailure(obtainPromoResponse.getMessage());
+//                }
+//            }
+//
+//            @Override
+//            public void failure(RetrofitError error) {
+//                callback.onError(new Throwable(context.getString(R.string.error_empty_response)));
+//            }
+//        });
+//    }
+    public void obtainPromo(String promoCode, double amount, String clientKey, String cardNumber, String cardToken, final ObtainPromoCallback callback) {
+        promoEngineRestAPI.obtainPromo(promoCode, amount, clientKey, cardNumber, cardToken, new Callback<PromosResponse>() {
             @Override
-            public void success(ObtainPromoResponse obtainPromoResponse, Response response) {
-                if (obtainPromoResponse.isSuccess()) {
-                    callback.onSuccess(obtainPromoResponse);
+            public void success(PromosResponse promosResponse, Response response) {
+                if (promosResponse != null) {
+                    String statusCode = promosResponse.getStatusCode();
+
+                    if (!TextUtils.isEmpty(statusCode) && statusCode.equals(Constants.STATUS_CODE_200)) {
+                        callback.onSuccess(promosResponse);
+                    } else {
+                        callback.onFailure(promosResponse.getStatusCode(), promosResponse.getStatusMessage());
+                    }
+
                 } else {
-                    callback.onFailure(obtainPromoResponse.getMessage());
+                    callback.onError(new Throwable(Constants.MESSAGE_ERROR_EMPTY_RESPONSE));
                 }
             }
 
             @Override
             public void failure(RetrofitError error) {
-                callback.onError(new Throwable(context.getString(R.string.error_empty_response)));
+                try {
+                    if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
+                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
+                    }
+
+                    callback.onError(new Throwable(error.getMessage(), error.getCause()));
+                } catch (RuntimeException e) {
+                    callback.onError(new Throwable(e.getMessage(), e.getCause()));
+                }
             }
         });
     }
