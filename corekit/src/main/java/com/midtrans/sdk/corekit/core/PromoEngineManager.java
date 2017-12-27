@@ -6,7 +6,7 @@ import android.text.TextUtils;
 import com.midtrans.sdk.corekit.callback.HoldPromoCallback;
 import com.midtrans.sdk.corekit.callback.ObtainPromoCallback;
 import com.midtrans.sdk.corekit.models.promo.HoldPromoResponse;
-import com.midtrans.sdk.corekit.models.promo.PromosResponse;
+import com.midtrans.sdk.corekit.models.promo.ObtainPromosResponse;
 
 import java.security.cert.CertPathValidatorException;
 
@@ -53,9 +53,9 @@ public class PromoEngineManager extends BaseTransactionManager {
     public void obtainPromo(String promoCode, double amount, String clientKey, String cardNumber, String cardToken, final ObtainPromoCallback callback) {
 
         if (TextUtils.isEmpty(cardToken)) {
-            promoEngineRestAPI.obtainPromoByCardNumber(promoCode, amount, clientKey, cardNumber, new Callback<PromosResponse>() {
+            promoEngineRestAPI.obtainPromoByCardNumber(promoCode, amount, clientKey, cardNumber, new Callback<ObtainPromosResponse>() {
                 @Override
-                public void success(PromosResponse promosResponse, Response response) {
+                public void success(ObtainPromosResponse promosResponse, Response response) {
                     doOnSuccess(promosResponse, response, callback);
                 }
 
@@ -65,9 +65,9 @@ public class PromoEngineManager extends BaseTransactionManager {
                 }
             });
         } else {
-            promoEngineRestAPI.obtainPromoByCardToken(promoCode, amount, clientKey, cardToken, new Callback<PromosResponse>() {
+            promoEngineRestAPI.obtainPromoByCardToken(promoCode, amount, clientKey, cardToken, new Callback<ObtainPromosResponse>() {
                 @Override
-                public void success(PromosResponse promosResponse, Response response) {
+                public void success(ObtainPromosResponse promosResponse, Response response) {
                     doOnSuccess(promosResponse, response, callback);
                 }
 
@@ -90,7 +90,7 @@ public class PromoEngineManager extends BaseTransactionManager {
         }
     }
 
-    private void doOnSuccess(PromosResponse promosResponse, Response response, ObtainPromoCallback callback) {
+    private void doOnSuccess(ObtainPromosResponse promosResponse, Response response, ObtainPromoCallback callback) {
         if (promosResponse != null) {
             String statusCode = promosResponse.getStatusCode();
 

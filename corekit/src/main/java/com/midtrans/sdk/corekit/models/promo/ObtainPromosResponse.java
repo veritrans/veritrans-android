@@ -8,7 +8,7 @@ import java.util.List;
  * Created by ziahaqi on 12/22/17.
  */
 
-public class PromosResponse {
+public class ObtainPromosResponse {
 
     @SerializedName("status_code")
     private String statusCode;

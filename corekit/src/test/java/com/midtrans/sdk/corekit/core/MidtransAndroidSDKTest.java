@@ -1627,41 +1627,64 @@ public class MidtransAndroidSDKTest {
 
 
     @Test
-    public void obtainPromo_whenCallbackNull() {
-        midtransSDKSSpy.obtainPromo(samplePromoId, sampleAmount, null);
+    public void obtainPromoByCardNumber_whenCallbackNull() {
+        midtransSDKSSpy.obtainPromoByCardNumber(samplePromoId, sampleAmount, sampleClientKey, sampleCardNumber, null);
         verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
 
     @Test
-    public void obtainPromo_PromoIdEmpty() {
-        midtransSDKSSpy.obtainPromo("", sampleAmount, obtainPromoCallback);
+    public void obtainPromoByCardNumber_whenClientKeyNull() {
+        midtransSDKSSpy.obtainPromoByCardNumber(samplePromoId, sampleAmount, sampleClientKey, null, null);
         verifyStatic(Mockito.times(1));
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning);
-        Logger.e(Matchers.anyString());
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+
+    @Test
+    public void obtainPromoByCardToken_whenCallbackNull() {
+        midtransSDKSSpy.obtainPromoByCardToken(samplePromoId, sampleAmount, sampleClientKey, sampleCardNumber, null);
+        verifyStatic(Mockito.times(1));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
     }
 
     @Test
-    public void obtainPromo_whenAmountZero() {
-        midtransSDKSSpy.obtainPromo(samplePromoId, 0, obtainPromoCallback);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning);
+    public void obtainPromoByCardToken_whenClientKeyNull() {
+        midtransSDKSSpy.obtainPromoByCardToken(samplePromoId, sampleAmount, sampleClientKey, null, null);
         verifyStatic(Mockito.times(1));
-        Logger.e(Matchers.anyString());
+        Logger.e(Matchers.anyString(), Matchers.anyString());
     }
 
+
     @Test
-    public void obtainPromo_whenNetworkNotAvailabel() {
+    public void obtainPromoByCardNumber_whenNetworkNotAvailabel() {
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-        midtransSDKSSpy.obtainPromo(samplePromoId, sampleAmount, obtainPromoCallback);
+        midtransSDKSSpy.obtainPromoByCardNumber(samplePromoId, sampleAmount, sampleClientKey, sampleCardNumber, obtainPromoCallback);
         Assert.assertEquals(false, midtransSDKSSpy.isRunning);
         verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString());
     }
 
     @Test
-    public void obtainPromo() {
+    public void obtainPromoByCardNumber_whenNetworkAvailable() {
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.obtainPromo(samplePromoId, sampleAmount, obtainPromoCallback);
+        midtransSDKSSpy.obtainPromoByCardNumber(samplePromoId, sampleAmount, sampleClientKey, sampleCardNumber, obtainPromoCallback);
+        Assert.assertEquals(true, midtransSDKSSpy.isRunning);
+    }
+
+    @Test
+    public void obtainPromoByCardToken_whenNetworkNotAvailabel() {
+        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
+        midtransSDKSSpy.obtainPromoByCardToken(samplePromoId, sampleAmount, sampleClientKey, cardToken, obtainPromoCallback);
+        Assert.assertEquals(false, midtransSDKSSpy.isRunning);
+        verifyStatic(Mockito.times(1));
+        Logger.e(Matchers.anyString());
+    }
+
+    @Test
+    public void obtainPromoByCardToken_whenNetworkAvailable() {
+        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
+        midtransSDKSSpy.obtainPromoByCardNumber(samplePromoId, sampleAmount, sampleClientKey, cardToken, obtainPromoCallback);
         Assert.assertEquals(true, midtransSDKSSpy.isRunning);
     }
 

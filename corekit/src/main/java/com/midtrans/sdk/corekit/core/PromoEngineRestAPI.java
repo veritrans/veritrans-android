@@ -2,7 +2,7 @@ package com.midtrans.sdk.corekit.core;
 
 import com.midtrans.sdk.corekit.models.promo.HoldPromoResponse;
 import com.midtrans.sdk.corekit.models.promo.ObtainPromoResponse;
-import com.midtrans.sdk.corekit.models.promo.PromosResponse;
+import com.midtrans.sdk.corekit.models.promo.ObtainPromosResponse;
 
 import retrofit.Callback;
 import retrofit.http.GET;
@@ -30,13 +30,13 @@ public interface PromoEngineRestAPI {
      * @param promoCode   promoCode
      * @param callback    promos callback
      */
-    @GET("promo/v3/promos")
+    @GET("/promo/v3/promos")
     void obtainPromoByCardToken(
             @Query("promo_code") String promoCode,
             @Query("amount") double totalAmount,
             @Query("client_key") String clientKey,
             @Query("token") String cardToken,
-            Callback<PromosResponse> callback
+            Callback<ObtainPromosResponse> callback
     );
 
     /**
@@ -46,13 +46,13 @@ public interface PromoEngineRestAPI {
      * @param promoCode   promoCode
      * @param callback    promos callback
      */
-    @GET("promo/v3/promos")
+    @GET("/promo/v3/promos")
     void obtainPromoByCardNumber(
             @Query("promo_code") String promoCode,
             @Query("amount") double totalAmount,
             @Query("client_key") String clientKey,
             @Query("card") String cardNumber,
-            Callback<PromosResponse> callback
+            Callback<ObtainPromosResponse> callback
     );
 
     /**
