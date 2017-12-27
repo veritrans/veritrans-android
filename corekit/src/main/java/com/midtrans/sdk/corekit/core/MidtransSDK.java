@@ -19,6 +19,7 @@ import com.midtrans.sdk.corekit.callback.DeleteCardCallback;
 import com.midtrans.sdk.corekit.callback.GetCardCallback;
 import com.midtrans.sdk.corekit.callback.GetTransactionStatusCallback;
 import com.midtrans.sdk.corekit.callback.GoPayResendAuthorizationCallback;
+import com.midtrans.sdk.corekit.callback.HoldPromoCallback;
 import com.midtrans.sdk.corekit.callback.ObtainPromoCallback;
 import com.midtrans.sdk.corekit.callback.SaveCardCallback;
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
@@ -29,7 +30,6 @@ import com.midtrans.sdk.corekit.models.CardTokenRequest;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.TokenRequestModel;
-import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
 import com.midtrans.sdk.corekit.models.snap.MerchantData;
@@ -47,7 +47,6 @@ import com.midtrans.sdk.corekit.utilities.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by shivam on 10/19/15.
@@ -365,16 +364,32 @@ public class MidtransSDK {
     }
 
     /**
-     * It will execute an API request to obtain promo token.
+     * It will execute an API request to obtain promo list by credit card number.
      *
      * @param promoCode
      * @param amount
      * @param clientKey
      * @param cardNumber
+     * @param callback
+     */
+    public void obtainPromoByCardNumber(String promoCode, double amount, String clientKey, String cardNumber, ObtainPromoCallback callback) {
+        obtainPromo(promoCode, amount, clientKey, cardNumber, null, callback);
+    }
+
+    /**
+     * It will execute an API request to obtain promo list by creditcard token.
+     *
+     * @param promoCode
+     * @param amount
+     * @param clientKey
      * @param cardToken
      * @param callback
      */
-    public void obtainPromo(String promoCode, double amount, String clientKey, String cardNumber, String cardToken, ObtainPromoCallback callback) {
+    public void obtainPromoByCardToken(String promoCode, double amount, String clientKey, String cardToken, ObtainPromoCallback callback) {
+        obtainPromo(promoCode, amount, clientKey, null, cardToken, callback);
+    }
+
+    private void obtainPromo(String promoCode, double amount, String clientKey, String cardNumber, String cardToken, ObtainPromoCallback callback) {
         if (callback == null) {
             Logger.e(TAG, context.getString(R.string.callback_unimplemented));
             return;
@@ -384,6 +399,29 @@ public class MidtransSDK {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
                 promoEngineManager.obtainPromo(promoCode, amount, clientKey, cardNumber, cardToken, callback);
+            } else {
+                isRunning = false;
+                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+                Logger.e(context.getString(R.string.error_unable_to_connect));
+            }
+        } else {
+            Logger.e(context.getString(R.string.error_invalid_data_supplied));
+            isRunning = false;
+            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+        }
+    }
+
+
+    public void holdPromo(String promoToken, long totalAmount, String clientKey, HoldPromoCallback callback) {
+        if (callback == null) {
+            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            return;
+        }
+
+        if (!TextUtils.isEmpty(promoToken)) {
+            if (Utils.isNetworkAvailable(context)) {
+                isRunning = true;
+                promoEngineManager.holdPromo(promoToken, totalAmount, clientKey, callback);
             } else {
                 isRunning = false;
                 callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
