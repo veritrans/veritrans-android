@@ -1231,23 +1231,25 @@ public class MidtransSDK {
     }
 
     /**
-     * It will run backgrond task to charge payment using Credit Card
+     * It will run backgrond task to charge payment using Credit Card with promo (discount)
      *
      * @param authenticationToken    authentication token
-     * @param discountToken          discount token
+     * @param discountToken          discount (promo) token
+     * @param discountAmount         discount (promo) amount
      * @param creditCardPaymentModel model for creditcard payment
      * @param callback               transaction callback
      */
-    public void paymentUsingCard(@NonNull String authenticationToken, @NonNull String discountToken, CreditCardPaymentModel creditCardPaymentModel, @NonNull TransactionCallback callback) {
+    public void paymentUsingCard(@NonNull String authenticationToken, @NonNull String discountToken, Long discountAmount, CreditCardPaymentModel creditCardPaymentModel, @NonNull TransactionCallback callback) {
         if (callback == null) {
             Logger.e(TAG, context.getString(R.string.callback_unimplemented));
             return;
         }
+
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
                 mSnapTransactionManager.paymentUsingCreditCard(authenticationToken,
-                        SdkUtil.getCreditCardPaymentRequest(discountToken, creditCardPaymentModel, transactionRequest), callback);
+                        SdkUtil.getCreditCardPaymentRequest(discountToken, discountAmount, creditCardPaymentModel, transactionRequest), callback);
             } else {
                 isRunning = false;
                 callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
