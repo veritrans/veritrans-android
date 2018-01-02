@@ -140,9 +140,9 @@ public class InstructionPagerAdapter extends FragmentStatePagerAdapter {
 
                 default:
                     if (position == 0) {
-                        pageTitle = context.getString(R.string.tab_atm_bersama);
-                    } else if (position == 1) {
                         pageTitle = context.getString(R.string.tab_prima);
+                    } else if (position == 1) {
+                        pageTitle = context.getString(R.string.tab_atm_bersama);
                     } else {
                         pageTitle = context.getString(R.string.tab_alto);
                     }

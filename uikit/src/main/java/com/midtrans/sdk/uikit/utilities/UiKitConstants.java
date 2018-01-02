@@ -62,8 +62,8 @@ public class UiKitConstants {
     public static final int MONTH_COUNT = 12;
 
     // atm network
-    public static final int ATM_BERSAMA = 0;
-    public static final int PRIMA = 1;
+    public static final int PRIMA = 0;
+    public static final int ATM_BERSAMA = 1;
     public static final int ALTO = 2;
 
     public static final int INSTRUCTION_FIRST_POSITION = 0;
