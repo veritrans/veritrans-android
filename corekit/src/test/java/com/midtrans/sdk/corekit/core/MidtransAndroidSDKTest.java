@@ -235,6 +235,7 @@ public class MidtransAndroidSDKTest {
     private String sampleClientKey = "client_key";
     private String sampleBaseUrl = "base_url";
     private String sampleMerchantBaseUrl = "merchant_url";
+    private Long discountAmount = 1000l;
 
     @Test
     public void test() {
@@ -563,7 +564,7 @@ public class MidtransAndroidSDKTest {
     public void snapPaymentUsingCardWithPromo() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingCard(cardToken, sampleDiscountToken, new CreditCardPaymentModel(token, false), transactionCallbackMock);
+        midtransSDKSSpy.paymentUsingCard(cardToken, sampleDiscountToken, discountAmount, new CreditCardPaymentModel(token, false), transactionCallbackMock);
         Assert.assertEquals(true, midtransSDKSSpy.isRunning);
     }
 
@@ -571,7 +572,7 @@ public class MidtransAndroidSDKTest {
     public void snapPaymentCreditCardWithPromo_whenCallbackNull() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingCard(cardToken, sampleDiscountToken, new CreditCardPaymentModel(token, false), null);
+        midtransSDKSSpy.paymentUsingCard(cardToken, sampleDiscountToken, discountAmount, new CreditCardPaymentModel(token, false), null);
         verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -579,7 +580,7 @@ public class MidtransAndroidSDKTest {
     @Test
     public void snapPaymentUsingCardPromo_whenTransactionRequestNull() {
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingCard(cardToken, sampleDiscountToken, new CreditCardPaymentModel(token, false), transactionCallbackMock);
+        midtransSDKSSpy.paymentUsingCard(cardToken, sampleDiscountToken, discountAmount, new CreditCardPaymentModel(token, false), transactionCallbackMock);
         Assert.assertEquals(false, midtransSDKSSpy.isRunning());
         Mockito.verify(callbackCollaborator).onError();
     }
@@ -588,7 +589,7 @@ public class MidtransAndroidSDKTest {
     public void snapPaymentUsingCardPromo_whenNetworkUnavailable() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-        midtransSDKSSpy.paymentUsingCard(cardToken, sampleDiscountToken, new CreditCardPaymentModel(token, false), transactionCallbackMock);
+        midtransSDKSSpy.paymentUsingCard(cardToken, sampleDiscountToken, discountAmount, new CreditCardPaymentModel(token, false), transactionCallbackMock);
         Assert.assertEquals(false, midtransSDKSSpy.isRunning());
         Mockito.verify(callbackCollaborator).onError();
     }
