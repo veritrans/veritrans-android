@@ -77,4 +77,10 @@ public class Constants {
     public static final String AUTH_TOKEN = "authentication.token";
     public static final String WEBVIEW_REDIRECT_URL = "redirect_url";
 
+    // status code
+    public static final String STATUS_CODE_200 = "200";
+    public static final String STATUS_CODE_201 = "201";
+
+    // messages
+    public static final String MESSAGE_ERROR_EMPTY_RESPONSE = "failed to retrieve response from server.";
 }

@@ -333,22 +333,57 @@ public class MidtransSDK {
     }
 
     /**
+     * todo remove old implementation of promo engine
      * It will execute an API request to obtain promo token.
      *
      * @param promoId  promo identifier.
      * @param amount   transaction amount.
      * @param callback callback to be called.
      */
+
+    @Deprecated
     public void obtainPromo(String promoId, double amount, ObtainPromoCallback callback) {
+//        if (callback == null) {
+//            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+//            return;
+//        }
+//
+//        if (!TextUtils.isEmpty(promoId) && amount != 0) {
+//            if (Utils.isNetworkAvailable(context)) {
+//                isRunning = true;
+//                promoEngineManager.obtainPromo(promoId, amount, callback);
+//            } else {
+//                isRunning = false;
+//                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+//                Logger.e(context.getString(R.string.error_unable_to_connect));
+//            }
+//        } else {
+//            Logger.e(context.getString(R.string.error_invalid_data_supplied));
+//            isRunning = false;
+//            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+//        }
+    }
+
+    /**
+     * It will execute an API request to obtain promo token.
+     *
+     * @param promoCode
+     * @param amount
+     * @param clientKey
+     * @param cardNumber
+     * @param cardToken
+     * @param callback
+     */
+    public void obtainPromo(String promoCode, double amount, String clientKey, String cardNumber, String cardToken, ObtainPromoCallback callback) {
         if (callback == null) {
             Logger.e(TAG, context.getString(R.string.callback_unimplemented));
             return;
         }
 
-        if (!TextUtils.isEmpty(promoId) && amount != 0) {
+        if (!TextUtils.isEmpty(promoCode) && amount != 0) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
-                promoEngineManager.obtainPromo(promoId, amount, callback);
+                promoEngineManager.obtainPromo(promoCode, amount, clientKey, cardNumber, cardToken, callback);
             } else {
                 isRunning = false;
                 callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));

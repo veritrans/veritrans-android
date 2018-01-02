@@ -504,7 +504,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
 
     /**
      * This method is used for payment using Mandiri Click Pay.
-     *
+     * <p>
      * Deprecated, please see {@link com.midtrans.sdk.corekit.core.SnapTransactionManager#paymentUsingMandiriClickPay(String, NewMandiriClickPayPaymentRequest, TransactionCallback)}
      *
      * @param authenticationToken
@@ -1606,5 +1606,4 @@ public class SnapTransactionManager extends BaseTransactionManager {
             }
         });
     }
-
 }
