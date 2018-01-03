@@ -2,7 +2,6 @@ package com.midtrans.sdk.corekit.core;
 
 import com.midtrans.sdk.corekit.models.CardRegistrationResponse;
 import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
-import com.midtrans.sdk.corekit.models.promo.PromosResponse;
 
 import retrofit.Callback;
 import retrofit.http.GET;
@@ -148,5 +147,6 @@ public interface MidtransRestAPI {
             @Query("client_key") String clientKey,
             Callback<CardRegistrationResponse> callback
     );
+
 
 }
