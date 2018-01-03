@@ -1,6 +1,5 @@
 package com.midtrans.sdk.corekit.core;
 
-import android.content.Context;
 import android.text.TextUtils;
 
 import com.midtrans.sdk.corekit.callback.ObtainPromoCallback;
@@ -23,31 +22,11 @@ public class PromoEngineManager extends BaseTransactionManager {
     private static final String TAG = PromoEngineManager.class.getSimpleName();
     private PromoEngineRestAPI promoEngineRestAPI;
 
-    public PromoEngineManager(Context context, PromoEngineRestAPI promoEngineRestAPI) {
-        this.context = context;
+    public PromoEngineManager(PromoEngineRestAPI promoEngineRestAPI) {
         this.promoEngineRestAPI = promoEngineRestAPI;
     }
 
-    /**
-     * todo remove this method
-     */
-//    public void obtainPromo(String promoId, double amount, final ObtainPromoCallback callback) {
-//        promoEngineRestAPI.obtainPromo(promoId, amount, MidtransSDK.getInstance().getClientKey(), new Callback<ObtainPromoResponse>() {
-//            @Override
-//            public void success(ObtainPromoResponse obtainPromoResponse, Response response) {
-//                if (obtainPromoResponse.isSuccess()) {
-//                    callback.onSuccess(obtainPromoResponse);
-//                } else {
-//                    callback.onFailure(obtainPromoResponse.getMessage());
-//                }
-//            }
-//
-//            @Override
-//            public void failure(RetrofitError error) {
-//                callback.onError(new Throwable(context.getString(R.string.error_empty_response)));
-//            }
-//        });
-//    }
+
     public void obtainPromo(String promoCode, double amount, String clientKey, String cardNumber, String cardToken, final ObtainPromoCallback callback) {
         promoEngineRestAPI.obtainPromo(promoCode, amount, clientKey, cardNumber, cardToken, new Callback<PromosResponse>() {
             @Override

@@ -80,7 +80,10 @@ public class Constants {
     // status code
     public static final String STATUS_CODE_200 = "200";
     public static final String STATUS_CODE_201 = "201";
+    public static final String STATUS_CODE_400 = "400";
 
     // messages
-    public static final String MESSAGE_ERROR_EMPTY_RESPONSE = "failed to retrieve response from server.";
+    public static final String MESSAGE_ERROR_EMPTY_RESPONSE = "Failed to retrieve response from server";
+    public static final String MESSAGE_ERROR_EMPTY_MERCHANT_URL = "Merchant base url is empty. Please set merchant base url on SDK";
+    public static final String MESSAGE_ERROR_INVALID_DATA_SUPPLIED = "Invalid data supplied to SDK.";
 }

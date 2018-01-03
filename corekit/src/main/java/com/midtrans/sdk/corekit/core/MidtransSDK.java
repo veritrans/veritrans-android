@@ -29,7 +29,6 @@ import com.midtrans.sdk.corekit.models.CardTokenRequest;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.TokenRequestModel;
-import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
 import com.midtrans.sdk.corekit.models.snap.MerchantData;
@@ -47,7 +46,6 @@ import com.midtrans.sdk.corekit.utilities.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by shivam on 10/19/15.
@@ -121,8 +119,8 @@ public class MidtransSDK {
             mPreferences = context.getSharedPreferences(LOCAL_DATA_PREFERENCES, Context.MODE_PRIVATE);
         }
 
-        this.promoEngineManager = new PromoEngineManager(sdkBuilder.context, MidtransRestAdapter.getPromoEngineRestAPI(BuildConfig.PROMO_ENGINE_URL, requestTimeOut));
-        this.mSnapTransactionManager = new SnapTransactionManager(sdkBuilder.context, MidtransRestAdapter.getSnapRestAPI(sdkBaseUrl, requestTimeOut),
+        this.promoEngineManager = new PromoEngineManager(MidtransRestAdapter.getPromoEngineRestAPI(BuildConfig.PROMO_ENGINE_URL, requestTimeOut));
+        this.mSnapTransactionManager = new SnapTransactionManager(MidtransRestAdapter.getSnapRestAPI(sdkBaseUrl, requestTimeOut),
                 MidtransRestAdapter.getMerchantApiClient(merchantServerUrl, requestTimeOut),
                 MidtransRestAdapter.getVeritransApiClient(BuildConfig.BASE_URL, requestTimeOut));
         String deviceType = null;
@@ -1956,7 +1954,7 @@ public class MidtransSDK {
         this.clientKey = merchantClientKey;
         this.requestTimeOut = requestTimeout;
 
-        mSnapTransactionManager = new SnapTransactionManager(context, MidtransRestAdapter.getSnapRestAPI(sdkBaseUrl, requestTimeout),
+        mSnapTransactionManager = new SnapTransactionManager(MidtransRestAdapter.getSnapRestAPI(sdkBaseUrl, requestTimeout),
                 MidtransRestAdapter.getMerchantApiClient(merchantServerUrl, requestTimeout),
                 MidtransRestAdapter.getVeritransApiClient(BuildConfig.BASE_URL, requestTimeout));
         mSnapTransactionManager.setSDKLogEnabled(isLogEnabled);

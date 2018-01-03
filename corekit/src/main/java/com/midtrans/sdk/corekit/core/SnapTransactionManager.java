@@ -1,12 +1,10 @@
 package com.midtrans.sdk.corekit.core;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.midtrans.sdk.corekit.R;
 import com.midtrans.sdk.corekit.callback.BankBinsCallback;
 import com.midtrans.sdk.corekit.callback.BanksPointCallback;
 import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
@@ -59,17 +57,12 @@ import retrofit.converter.ConversionException;
  * Created by ziahaqi on 7/18/16.
  */
 public class SnapTransactionManager extends BaseTransactionManager {
-    // Snap
-    private static final String GET_SNAP_TRANSACTION_FAILED = "Failed Getting Snap Transaction";
-    private static final String GET_SNAP_TRANSACTION_SUCCESS = "Success Getting Snap Transaction";
-    private static final String PAYMENT_TYPE_SNAP = "snap";
     private static final String TAG = "TransactionManager";
     private static final String KEY_ERROR_MESSAGE = "error_messages";
 
     private SnapRestAPI snapRestAPI;
 
-    SnapTransactionManager(Context context, SnapRestAPI snapRestAPI, MerchantRestAPI merchantApiClient, MidtransRestAPI midtransRestAPI) {
-        this.context = context;
+    SnapTransactionManager(SnapRestAPI snapRestAPI, MerchantRestAPI merchantApiClient, MidtransRestAPI midtransRestAPI) {
         this.snapRestAPI = snapRestAPI;
         this.merchantPaymentAPI = merchantApiClient;
         this.midtransPaymentAPI = midtransRestAPI;
@@ -87,7 +80,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
      */
     public void checkout(TokenRequestModel model, final CheckoutCallback callback) {
         if (merchantPaymentAPI == null) {
-            String errorMessage = context.getString(R.string.error_message_empty_merchant_url);
+            String errorMessage = Constants.MESSAGE_ERROR_EMPTY_MERCHANT_URL;
             callback.onError(new Throwable(errorMessage));
             Logger.e(TAG, "checkout():" + errorMessage);
             return;
@@ -101,24 +94,27 @@ public class SnapTransactionManager extends BaseTransactionManager {
                     if (snapTokenDetailResponse.getTokenId() != null && !snapTokenDetailResponse.getTokenId().equals("")) {
                         callback.onSuccess(snapTokenDetailResponse);
                     } else {
-                        callback.onFailure(snapTokenDetailResponse, context.getString(R.string.error_empty_response));
+                        callback.onFailure(snapTokenDetailResponse, Constants.MESSAGE_ERROR_EMPTY_RESPONSE);
                     }
                 } else {
-                    callback.onError(new Throwable(context.getString(R.string.error_empty_response)));
+                    callback.onError(new Throwable(Constants.MESSAGE_ERROR_EMPTY_RESPONSE));
                 }
             }
 
             @Override
             public void failure(RetrofitError e) {
-                releaseResources();
+                try {
+                    releaseResources();
 
-                if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
-                    Logger.i(TAG, "Error in SSL Certificate. " + e.getMessage());
+                    if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+                        Logger.i(TAG, "Error in SSL Certificate. " + e.getMessage());
+                    }
+
+                    callback.onError(new Throwable(e.getMessage(), e.getCause()));
+
+                } catch (RuntimeException ex) {
+                    callback.onError(new Throwable(ex.getMessage(), ex.getCause()));
                 }
-
-                e.printStackTrace();
-
-                callback.onError(new Throwable(e.getMessage(), e.getCause()));
             }
         });
     }
@@ -131,12 +127,10 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param callback  callback of payment option
      */
     public void getTransactionOptions(@NonNull final String snapToken, final TransactionOptionsCallback callback) {
-        final long start = System.currentTimeMillis();
         snapRestAPI.getPaymentOption(snapToken, new Callback<Transaction>() {
             @Override
             public void success(Transaction transaction, Response response) {
                 releaseResources();
-                long end = System.currentTimeMillis();
 
                 if (transaction != null) {
                     if (response.getStatus() == 200 && !transaction.getTransactionDetails().getOrderId().equals("")) {
@@ -145,31 +139,34 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         callback.onFailure(transaction, response.getReason());
                     }
                 } else {
-                    callback.onError(new Throwable(context.getString(R.string.error_empty_response)));
-                    Logger.e(TAG, context.getString(R.string.error_empty_response));
+                    callback.onError(new Throwable(Constants.MESSAGE_ERROR_EMPTY_RESPONSE));
+                    Logger.e(TAG, Constants.MESSAGE_ERROR_EMPTY_RESPONSE);
                 }
             }
 
             @Override
             public void failure(RetrofitError e) {
-                releaseResources();
-                long end = System.currentTimeMillis();
+                try {
+                    releaseResources();
 
-                if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
-                    Logger.e(TAG, "Error in SSL Certificate. " + e.getMessage());
-                }
-
-                JsonObject jsonObject = (JsonObject) e.getBodyAs(JsonObject.class);
-                if (jsonObject != null && jsonObject.getAsJsonArray(KEY_ERROR_MESSAGE) != null) {
-                    JsonArray jsonArray = jsonObject.getAsJsonArray(KEY_ERROR_MESSAGE);
-                    String errorMessage = e.getMessage();
-                    if (jsonArray.get(0) != null) {
-                        errorMessage = jsonArray.get(0).toString();
+                    if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+                        Logger.e(TAG, "Error in SSL Certificate. " + e.getMessage());
                     }
-                    callback.onError(new Throwable(errorMessage, e.getCause()));
 
-                } else {
-                    callback.onError(new Throwable(e.getMessage(), e.getCause()));
+                    JsonObject jsonObject = (JsonObject) e.getBodyAs(JsonObject.class);
+                    if (jsonObject != null && jsonObject.getAsJsonArray(KEY_ERROR_MESSAGE) != null) {
+                        JsonArray jsonArray = jsonObject.getAsJsonArray(KEY_ERROR_MESSAGE);
+                        String errorMessage = e.getMessage();
+                        if (jsonArray.get(0) != null) {
+                            errorMessage = jsonArray.get(0).toString();
+                        }
+                        callback.onError(new Throwable(errorMessage, e.getCause()));
+
+                    } else {
+                        callback.onError(new Throwable(e.getMessage(), e.getCause()));
+                    }
+                } catch (RuntimeException ex) {
+                    callback.onError(new Throwable(ex.getMessage(), ex.getCause()));
                 }
             }
         });
@@ -183,44 +180,23 @@ public class SnapTransactionManager extends BaseTransactionManager {
      */
 
     public void paymentUsingCreditCard(final String authenticationToken, CreditCardPaymentRequest requestModel, final TransactionCallback callback) {
-        final long start = System.currentTimeMillis();
         if (requestModel != null) {
             snapRestAPI.paymentUsingCreditCard(authenticationToken, requestModel, new Callback<TransactionResponse>() {
                 @Override
                 public void success(TransactionResponse transactionResponse, Response response) {
-                    releaseResources();
-                    long end = System.currentTimeMillis();
-                    if (isSDKLogEnabled) {
-                        displayResponse(transactionResponse);
-                    }
-                    if (transactionResponse != null) {
-                        if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
-                                || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
-                            callback.onSuccess(transactionResponse);
-                        } else {
-                            actionFailedTransaction(callback, transactionResponse);
-                        }
-                    } else {
-                        callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
-                    }
+                    doOnPaymentResponseSuccess(transactionResponse, response, callback);
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-                    releaseResources();
-                    long end = System.currentTimeMillis();
-
-                    if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
-                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
-                    }
-                    callback.onError(new Throwable(error.getMessage()));
+                    doOnPaymentResponseFailure(error, callback);
                 }
             });
         } else {
-            releaseResources();
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            doOnInvalidDataSupplied(callback);
         }
     }
+
 
     /**
      * This method is used for Payment Using Bank Transfer BCA
@@ -229,41 +205,20 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param callback       Transaction callback
      */
     public void paymentUsingBankTransferBCA(final String authenticationToken, BankTransferPaymentRequest paymentRequest, final TransactionCallback callback) {
-        final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
             snapRestAPI.paymentUsingBankTransfer(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
                 @Override
                 public void success(TransactionResponse transactionResponse, Response response) {
-                    releaseResources();
-                    long end = System.currentTimeMillis();
-                    if (isSDKLogEnabled) {
-                        displayResponse(transactionResponse);
-                    }
-                    if (transactionResponse != null) {
-                        if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
-                                || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
-                            callback.onSuccess(transactionResponse);
-                        } else {
-                            actionFailedTransaction(callback, transactionResponse);
-                        }
-                    } else {
-                        callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
-                    }
+                    doOnPaymentResponseSuccess(transactionResponse, response, callback);
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-                    releaseResources();
-                    long end = System.currentTimeMillis();
-                    if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
-                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
-                    }
-                    callback.onError(new Throwable(error.getMessage(), error.getCause()));
+                    doOnPaymentResponseFailure(error, callback);
                 }
             });
         } else {
-            releaseResources();
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            doOnInvalidDataSupplied(callback);
         }
     }
 
@@ -274,41 +229,20 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param callback       Transaction callback
      */
     public void paymentUsingBankTransferBni(final String authenticationToken, BankTransferPaymentRequest paymentRequest, final TransactionCallback callback) {
-        final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
             snapRestAPI.paymentUsingBankTransfer(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
                 @Override
                 public void success(TransactionResponse transactionResponse, Response response) {
-                    releaseResources();
-                    long end = System.currentTimeMillis();
-                    if (isSDKLogEnabled) {
-                        displayResponse(transactionResponse);
-                    }
-                    if (transactionResponse != null) {
-                        if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
-                                || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
-                            callback.onSuccess(transactionResponse);
-                        } else {
-                            actionFailedTransaction(callback, transactionResponse);
-                        }
-                    } else {
-                        callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
-                    }
+                    doOnPaymentResponseSuccess(transactionResponse, response, callback);
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-                    releaseResources();
-                    long end = System.currentTimeMillis();
-                    if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
-                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
-                    }
-                    callback.onError(new Throwable(error.getMessage(), error.getCause()));
+                    doOnPaymentResponseFailure(error, callback);
                 }
             });
         } else {
-            releaseResources();
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            doOnInvalidDataSupplied(callback);
         }
     }
 
@@ -321,42 +255,20 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param callback            transaction callback
      */
     public void paymentUsingBankTransferPermata(final String authenticationToken, final BankTransferPaymentRequest paymentRequest, final TransactionCallback callback) {
-        final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
             snapRestAPI.paymentUsingBankTransfer(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
                 @Override
                 public void success(TransactionResponse transactionResponse, Response response) {
-                    releaseResources();
-                    long end = System.currentTimeMillis();
-                    if (isSDKLogEnabled) {
-                        displayResponse(transactionResponse);
-                    }
-
-                    if (transactionResponse != null) {
-                        if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
-                                || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
-                            callback.onSuccess(transactionResponse);
-                        } else {
-                            actionFailedTransaction(callback, transactionResponse);
-                        }
-                    } else {
-                        callback.onError(new Throwable(context.getString(R.string.transaction_response)));
-                    }
+                    doOnPaymentResponseSuccess(transactionResponse, response, callback);
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-                    releaseResources();
-                    long end = System.currentTimeMillis();
-                    if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
-                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
-                    }
-                    callback.onError(new Throwable(error.getMessage(), error.getCause()));
+                    doOnPaymentResponseFailure(error, callback);
                 }
             });
         } else {
-            releaseResources();
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            doOnInvalidDataSupplied(callback);
         }
     }
 
@@ -367,45 +279,21 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param callback transaction callback
      */
     public void paymentUsingKlikBCA(final String authenticationToken, KlikBCAPaymentRequest request, final TransactionCallback callback) {
-        final long start = System.currentTimeMillis();
         if (request != null) {
             snapRestAPI.paymentUsingKlikBCA(authenticationToken, request, new Callback<TransactionResponse>() {
                 @Override
                 public void success(TransactionResponse transactionResponse, Response response) {
-                    releaseResources();
-                    long end = System.currentTimeMillis();
-
-                    if (isSDKLogEnabled) {
-                        displayResponse(transactionResponse);
-                    }
-
-                    if (transactionResponse != null) {
-                        if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
-                                || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
-                            callback.onSuccess(transactionResponse);
-                        } else {
-                            actionFailedTransaction(callback, transactionResponse);
-                        }
-                    } else {
-                        callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
-                    }
+                    doOnPaymentResponseSuccess(transactionResponse, response, callback);
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-                    releaseResources();
-                    long end = System.currentTimeMillis();
-
-                    if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
-                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
-                    }
-                    callback.onError(new Throwable(error.getMessage(), error.getCause()));
+                    doOnPaymentResponseFailure(error, callback);
                 }
             });
 
         } else {
-            releaseResources();
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            doOnInvalidDataSupplied(callback);
         }
     }
 
@@ -416,43 +304,20 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param callback       transaction callback
      */
     public void paymentUsingBCAKlikpay(final String authenticationToken, BasePaymentRequest paymentRequest, final TransactionCallback callback) {
-        final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
             snapRestAPI.paymentUsingBCAKlikPay(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
                 @Override
                 public void success(TransactionResponse transactionResponse, Response response) {
-                    releaseResources();
-                    long end = System.currentTimeMillis();
-
-                    if (isSDKLogEnabled) {
-                        displayResponse(transactionResponse);
-                    }
-
-                    if (transactionResponse != null) {
-                        if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
-                                || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
-                            callback.onSuccess(transactionResponse);
-                        } else {
-                            actionFailedTransaction(callback, transactionResponse);
-                        }
-                    } else {
-                        callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
-                    }
+                    doOnPaymentResponseSuccess(transactionResponse, response, callback);
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-                    releaseResources();
-                    long end = System.currentTimeMillis();
-                    if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
-                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
-                    }
-                    callback.onError(new Throwable(error.getMessage(), error.getCause()));
+                    doOnPaymentResponseFailure(error, callback);
                 }
             });
         } else {
-            releaseResources();
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            doOnInvalidDataSupplied(callback);
         }
     }
 
@@ -464,41 +329,20 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param callback            transaction callback
      */
     public void paymentUsingMandiriBillPay(final String authenticationToken, BankTransferPaymentRequest paymentRequest, final TransactionCallback callback) {
-        final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
             snapRestAPI.paymentUsingMandiriBillPay(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
                 @Override
                 public void success(TransactionResponse transactionResponse, Response response) {
-                    releaseResources();
-                    long end = System.currentTimeMillis();
-                    if (isSDKLogEnabled) {
-                        displayResponse(transactionResponse);
-                    }
-                    if (transactionResponse != null) {
-                        if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
-                                || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
-                            callback.onSuccess(transactionResponse);
-                        } else {
-                            actionFailedTransaction(callback, transactionResponse);
-                        }
-                    } else {
-                        callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
-                    }
+                    doOnPaymentResponseSuccess(transactionResponse, response, callback);
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-                    releaseResources();
-                    long end = System.currentTimeMillis();
-                    if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
-                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
-                    }
-                    callback.onError(new Throwable(error.getMessage()));
+                    doOnPaymentResponseFailure(error, callback);
                 }
             });
         } else {
-            releaseResources();
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            doOnInvalidDataSupplied(callback);
         }
     }
 
@@ -517,17 +361,16 @@ public class SnapTransactionManager extends BaseTransactionManager {
             snapRestAPI.paymentUsingMandiriClickPay(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
                 @Override
                 public void success(TransactionResponse transactionResponse, Response response) {
-                    actionOnPaymentResponseSuccess(transactionResponse, response, callback);
+                    doOnPaymentResponseSuccess(transactionResponse, response, callback);
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-                    actionOnPaymentResponseFailure(error, callback);
+                    doOnPaymentResponseFailure(error, callback);
                 }
             });
         } else {
-            releaseResources();
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            doOnInvalidDataSupplied(callback);
         }
     }
 
@@ -543,17 +386,16 @@ public class SnapTransactionManager extends BaseTransactionManager {
             snapRestAPI.paymentUsingMandiriClickPay(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
                 @Override
                 public void success(TransactionResponse transactionResponse, Response response) {
-                    actionOnPaymentResponseSuccess(transactionResponse, response, callback);
+                    doOnPaymentResponseSuccess(transactionResponse, response, callback);
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-                    actionOnPaymentResponseFailure(error, callback);
+                    doOnPaymentResponseFailure(error, callback);
                 }
             });
         } else {
-            releaseResources();
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            doOnInvalidDataSupplied(callback);
         }
     }
 
@@ -565,41 +407,20 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param callback            transaction callback
      */
     public void paymentUsingCIMBClick(final String authenticationToken, BasePaymentRequest paymentRequest, final TransactionCallback callback) {
-        final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
             snapRestAPI.paymentUsingCIMBClick(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
                 @Override
                 public void success(TransactionResponse transactionResponse, Response response) {
-                    releaseResources();
-                    long end = System.currentTimeMillis();
-                    if (isSDKLogEnabled) {
-                        displayResponse(transactionResponse);
-                    }
-                    if (transactionResponse != null) {
-                        if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
-                                || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
-                            callback.onSuccess(transactionResponse);
-                        } else {
-                            actionFailedTransaction(callback, transactionResponse);
-                        }
-                    } else {
-                        callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
-                    }
+                    doOnPaymentResponseSuccess(transactionResponse, response, callback);
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-                    releaseResources();
-                    long end = System.currentTimeMillis();
-                    if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
-                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
-                    }
-                    callback.onError(new Throwable(error.getMessage(), error.getCause()));
+                    doOnPaymentResponseFailure(error, callback);
                 }
             });
         } else {
-            releaseResources();
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            doOnInvalidDataSupplied(callback);
         }
     }
 
@@ -611,41 +432,20 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param callback            transaction callback
      */
     public void paymentUsingBRIEpay(final String authenticationToken, BasePaymentRequest paymentRequest, final TransactionCallback callback) {
-        final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
             snapRestAPI.paymentUsingBRIEpay(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
                 @Override
                 public void success(TransactionResponse transactionResponse, Response response) {
-                    releaseResources();
-                    long end = System.currentTimeMillis();
-                    if (isSDKLogEnabled) {
-                        displayResponse(transactionResponse);
-                    }
-                    if (transactionResponse != null) {
-                        if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
-                                || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
-                            callback.onSuccess(transactionResponse);
-                        } else {
-                            actionFailedTransaction(callback, transactionResponse);
-                        }
-                    } else {
-                        callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
-                    }
+                    doOnPaymentResponseSuccess(transactionResponse, response, callback);
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-                    releaseResources();
-                    long end = System.currentTimeMillis();
-                    if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
-                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
-                    }
-                    callback.onError(new Throwable(error.getMessage(), error.getCause()));
+                    doOnPaymentResponseFailure(error, callback);
                 }
             });
         } else {
-            releaseResources();
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            doOnInvalidDataSupplied(callback);
         }
     }
 
@@ -657,41 +457,20 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param callback            transaction callbaack
      */
     public void paymentUsingMandiriEcash(final String authenticationToken, BasePaymentRequest paymentRequest, final TransactionCallback callback) {
-        final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
             snapRestAPI.paymentUsingMandiriEcash(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
                 @Override
                 public void success(TransactionResponse transactionResponse, Response response) {
-                    releaseResources();
-                    long end = System.currentTimeMillis();
-                    if (isSDKLogEnabled) {
-                        displayResponse(transactionResponse);
-                    }
-                    if (transactionResponse != null) {
-                        if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
-                                || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
-                            callback.onSuccess(transactionResponse);
-                        } else {
-                            actionFailedTransaction(callback, transactionResponse);
-                        }
-                    } else {
-                        callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
-                    }
+                    doOnPaymentResponseSuccess(transactionResponse, response, callback);
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-                    releaseResources();
-                    long end = System.currentTimeMillis();
-                    if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
-                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
-                    }
-                    callback.onError(new Throwable(error.getMessage(), error.getCause()));
+                    doOnPaymentResponseFailure(error, callback);
                 }
             });
         } else {
-            releaseResources();
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            doOnInvalidDataSupplied(callback);
         }
     }
 
@@ -702,41 +481,20 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param callback       transaction callback
      */
     public void paymentUsingTelkomselCash(final String authenticationToken, TelkomselEcashPaymentRequest paymentRequest, final TransactionCallback callback) {
-        final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
             snapRestAPI.paymentUsingTelkomselEcash(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
                 @Override
                 public void success(TransactionResponse transactionResponse, Response response) {
-                    releaseResources();
-                    long end = System.currentTimeMillis();
-                    if (isSDKLogEnabled) {
-                        displayResponse(transactionResponse);
-                    }
-                    if (transactionResponse != null) {
-                        if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
-                                || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
-                            callback.onSuccess(transactionResponse);
-                        } else {
-                            actionFailedTransaction(callback, transactionResponse);
-                        }
-                    } else {
-                        callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
-                    }
+                    doOnPaymentResponseSuccess(transactionResponse, response, callback);
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-                    releaseResources();
-                    long end = System.currentTimeMillis();
-                    if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
-                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
-                    }
-                    callback.onError(new Throwable(error.getMessage(), error.getCause()));
+                    doOnPaymentResponseFailure(error, callback);
                 }
             });
         } else {
-            releaseResources();
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            doOnInvalidDataSupplied(callback);
         }
     }
 
@@ -748,41 +506,20 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param callback            transaction callback
      */
     public void paymentUsingXLTunai(final String authenticationToken, BasePaymentRequest paymentRequest, final TransactionCallback callback) {
-        final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
             snapRestAPI.paymentUsingXlTunai(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
                 @Override
                 public void success(TransactionResponse transactionResponse, Response response) {
-                    releaseResources();
-                    long end = System.currentTimeMillis();
-                    if (isSDKLogEnabled) {
-                        displayResponse(transactionResponse);
-                    }
-                    if (transactionResponse != null) {
-                        if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
-                                || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
-                            callback.onSuccess(transactionResponse);
-                        } else {
-                            actionFailedTransaction(callback, transactionResponse);
-                        }
-                    } else {
-                        callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
-                    }
+                    doOnPaymentResponseSuccess(transactionResponse, response, callback);
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-                    releaseResources();
-                    long end = System.currentTimeMillis();
-                    if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
-                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
-                    }
-                    callback.onError(new Throwable(error.getMessage(), error.getCause()));
+                    doOnPaymentResponseFailure(error, callback);
                 }
             });
         } else {
-            releaseResources();
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            doOnInvalidDataSupplied(callback);
         }
     }
 
@@ -794,41 +531,20 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param callback            Transaction callback
      */
     public void paymentUsingIndomaret(final String authenticationToken, BasePaymentRequest paymentRequest, final TransactionCallback callback) {
-        final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
             snapRestAPI.paymentUsingIndomaret(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
                 @Override
                 public void success(TransactionResponse transactionResponse, Response response) {
-                    releaseResources();
-                    long end = System.currentTimeMillis();
-                    if (isSDKLogEnabled) {
-                        displayResponse(transactionResponse);
-                    }
-                    if (transactionResponse != null) {
-                        if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
-                                || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
-                            callback.onSuccess(transactionResponse);
-                        } else {
-                            actionFailedTransaction(callback, transactionResponse);
-                        }
-                    } else {
-                        callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
-                    }
+                    doOnPaymentResponseSuccess(transactionResponse, response, callback);
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-                    releaseResources();
-                    long end = System.currentTimeMillis();
-                    if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
-                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
-                    }
-                    callback.onError(new Throwable(error.getMessage(), error.getCause()));
+                    doOnPaymentResponseFailure(error, callback);
                 }
             });
         } else {
-            releaseResources();
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            doOnInvalidDataSupplied(callback);
         }
     }
 
@@ -840,41 +556,20 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param callback            transaction callback
      */
     public void paymentUsingIndosatDompetku(final String authenticationToken, IndosatDompetkuPaymentRequest paymentRequest, final TransactionCallback callback) {
-        final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
             snapRestAPI.paymentUsingIndosatDompetku(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
                 @Override
                 public void success(TransactionResponse transactionResponse, Response response) {
-                    releaseResources();
-                    long end = System.currentTimeMillis();
-                    if (isSDKLogEnabled) {
-                        displayResponse(transactionResponse);
-                    }
-                    if (transactionResponse != null) {
-                        if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
-                                || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
-                            callback.onSuccess(transactionResponse);
-                        } else {
-                            actionFailedTransaction(callback, transactionResponse);
-                        }
-                    } else {
-                        callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
-                    }
+                    doOnPaymentResponseSuccess(transactionResponse, response, callback);
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-                    releaseResources();
-                    long end = System.currentTimeMillis();
-                    if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
-                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
-                    }
-                    callback.onError(new Throwable(error.getMessage(), error.getCause()));
+                    doOnPaymentResponseFailure(error, callback);
                 }
             });
         } else {
-            releaseResources();
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            doOnInvalidDataSupplied(callback);
         }
     }
 
@@ -886,81 +581,39 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param callback            transaction callback
      */
     public void paymentUsingKiosan(final String authenticationToken, BasePaymentRequest paymentRequest, final TransactionCallback callback) {
-        final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
             snapRestAPI.paymentUsingKiosan(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
                 @Override
                 public void success(TransactionResponse transactionResponse, Response response) {
-                    releaseResources();
-                    long end = System.currentTimeMillis();
-                    if (isSDKLogEnabled) {
-                        displayResponse(transactionResponse);
-                    }
-                    if (transactionResponse != null) {
-                        if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
-                                || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
-                            callback.onSuccess(transactionResponse);
-                        } else {
-                            actionFailedTransaction(callback, transactionResponse);
-                        }
-                    } else {
-                        callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
-                    }
+                    doOnPaymentResponseSuccess(transactionResponse, response, callback);
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-                    releaseResources();
-                    long end = System.currentTimeMillis();
-                    if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
-                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
-                    }
-                    callback.onError(new Throwable(error.getMessage(), error.getCause()));
+                    doOnPaymentResponseFailure(error, callback);
                 }
             });
         } else {
-            releaseResources();
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            doOnInvalidDataSupplied(callback);
         }
     }
 
 
     public void paymentUsingGCI(final String authenticationToken, GCIPaymentRequest paymentRequest, final TransactionCallback callback) {
-        final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
             snapRestAPI.paymentUsingGCI(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
                 @Override
                 public void success(TransactionResponse transactionResponse, Response response) {
-                    releaseResources();
-                    long end = System.currentTimeMillis();
-                    if (isSDKLogEnabled) {
-                        displayResponse(transactionResponse);
-                    }
-                    if (transactionResponse != null) {
-                        if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
-                                || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
-                            callback.onSuccess(transactionResponse);
-                        } else {
-                            actionFailedTransaction(callback, transactionResponse);
-                        }
-                    } else {
-                        callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
-                    }
+                    doOnPaymentResponseSuccess(transactionResponse, response, callback);
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-                    releaseResources();
-                    long end = System.currentTimeMillis();
-                    if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
-                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
-                    }
-                    callback.onError(new Throwable(error.getMessage(), error.getCause()));
+                    doOnPaymentResponseFailure(error, callback);
                 }
             });
         } else {
-            releaseResources();
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            doOnInvalidDataSupplied(callback);
         }
     }
 
@@ -972,41 +625,20 @@ public class SnapTransactionManager extends BaseTransactionManager {
      * @param callback            transaction callback
      */
     public void paymentUsingBankTransferAllBank(final String authenticationToken, BankTransferPaymentRequest paymentRequest, final TransactionCallback callback) {
-        final long start = System.currentTimeMillis();
         if (paymentRequest != null) {
             snapRestAPI.paymentUsingBankTransfer(authenticationToken, paymentRequest, new Callback<TransactionResponse>() {
                 @Override
                 public void success(TransactionResponse transactionResponse, Response response) {
-                    releaseResources();
-                    long end = System.currentTimeMillis();
-                    if (isSDKLogEnabled) {
-                        displayResponse(transactionResponse);
-                    }
-                    if (transactionResponse != null) {
-                        if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
-                                || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
-                            callback.onSuccess(transactionResponse);
-                        } else {
-                            actionFailedTransaction(callback, transactionResponse);
-                        }
-                    } else {
-                        callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
-                    }
+                    doOnPaymentResponseSuccess(transactionResponse, response, callback);
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-                    releaseResources();
-                    long end = System.currentTimeMillis();
-                    if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
-                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
-                    }
-                    callback.onError(new Throwable(error.getMessage(), error.getCause()));
+                    doOnPaymentResponseFailure(error, callback);
                 }
             });
         } else {
-            releaseResources();
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            doOnInvalidDataSupplied(callback);
         }
     }
 
@@ -1021,17 +653,16 @@ public class SnapTransactionManager extends BaseTransactionManager {
             snapRestAPI.paymentUsingGoPay(snapToken, paymentRequest, new Callback<TransactionResponse>() {
                 @Override
                 public void success(TransactionResponse transactionResponse, Response response) {
-                    actionOnPaymentResponseSuccess(transactionResponse, response, callback);
+                    doOnPaymentResponseSuccess(transactionResponse, response, callback);
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-                    actionOnPaymentResponseFailure(error, callback);
+                    doOnPaymentResponseFailure(error, callback);
                 }
             });
         } else {
-            releaseResources();
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            doOnInvalidDataSupplied(callback);
         }
     }
 
@@ -1046,17 +677,16 @@ public class SnapTransactionManager extends BaseTransactionManager {
             snapRestAPI.authorizeGoPayPayment(snapToken, request, new Callback<TransactionResponse>() {
                 @Override
                 public void success(TransactionResponse transactionResponse, Response response) {
-                    actionOnPaymentResponseSuccess(transactionResponse, response, callback);
+                    doOnPaymentResponseSuccess(transactionResponse, response, callback);
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-                    actionOnPaymentResponseFailure(error, callback);
+                    doOnPaymentResponseFailure(error, callback);
                 }
             });
         } else {
-            releaseResources();
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            doOnInvalidDataSupplied(callback);
         }
     }
 
@@ -1074,13 +704,13 @@ public class SnapTransactionManager extends BaseTransactionManager {
                     releaseResources();
 
                     if (response != null) {
-                        if (response.getStatusCode() != null && response.getStatusCode().equals(context.getString(R.string.success_code_200))) {
+                        if (response.getStatusCode() != null && response.getStatusCode().equals(Constants.STATUS_CODE_200)) {
                             callback.onSuccess(response);
                         } else {
                             callback.onFailure(response, retrofitResponse.getReason());
                         }
                     } else {
-                        callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
+                        callback.onError(new Throwable(Constants.MESSAGE_ERROR_EMPTY_RESPONSE));
                     }
                 }
 
@@ -1097,7 +727,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
             });
         } else {
             releaseResources();
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_INVALID_DATA_SUPPLIED));
         }
     }
 
@@ -1114,44 +744,73 @@ public class SnapTransactionManager extends BaseTransactionManager {
             snapRestAPI.paymentUsingDanamonOnline(snapToken, paymentRequest, new Callback<TransactionResponse>() {
                 @Override
                 public void success(TransactionResponse transactionResponse, Response response) {
-                    actionOnPaymentResponseSuccess(transactionResponse, response, callback);
+                    doOnPaymentResponseSuccess(transactionResponse, response, callback);
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-                    actionOnPaymentResponseFailure(error, callback);
+                    doOnPaymentResponseFailure(error, callback);
                 }
             });
         } else {
-            releaseResources();
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            doOnInvalidDataSupplied(callback);
         }
     }
 
-    private void actionOnPaymentResponseFailure(RetrofitError error, TransactionCallback callback) {
+    private void doOnPaymentResponseFailure(RetrofitError error, TransactionCallback callback) {
         releaseResources();
-        if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
-            Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
+
+        try {
+            if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
+                Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
+            }
+
+            callback.onError(new Throwable(error.getMessage(), error.getCause()));
+        } catch (RuntimeException e) {
+            callback.onError(new Throwable(e.getMessage(), e.getCause()));
         }
-        callback.onError(new Throwable(error.getMessage(), error.getCause()));
     }
 
-    private void actionOnPaymentResponseSuccess(TransactionResponse transactionResponse, Response response, TransactionCallback callback) {
+    private void doOnPaymentResponseSuccess(TransactionResponse transactionResponse, Response response, TransactionCallback callback) {
         releaseResources();
+
         if (isSDKLogEnabled) {
             displayResponse(transactionResponse);
         }
+
         if (transactionResponse != null) {
-            if (transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_200))
-                    || transactionResponse.getStatusCode().equals(context.getString(R.string.success_code_201))) {
+            String statusCode = transactionResponse.getStatusCode();
+            if (!TextUtils.isEmpty(statusCode)
+                    && (transactionResponse.getStatusCode().equals(Constants.STATUS_CODE_200)
+                    || transactionResponse.getStatusCode().equals(Constants.STATUS_CODE_201))) {
+
                 callback.onSuccess(transactionResponse);
+
             } else {
-                actionFailedTransaction(callback, transactionResponse);
+
+                if (statusCode.equals(Constants.STATUS_CODE_400)) {
+                    String message;
+                    if (transactionResponse.getValidationMessages() != null && !transactionResponse.getValidationMessages().isEmpty()) {
+                        message = transactionResponse.getValidationMessages().get(0);
+                    } else {
+                        message = transactionResponse.getStatusMessage();
+                    }
+                    callback.onFailure(transactionResponse, message);
+                } else {
+                    callback.onFailure(transactionResponse, transactionResponse.getStatusMessage());
+                }
+
             }
         } else {
-            callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_EMPTY_RESPONSE));
         }
     }
+
+    private void doOnInvalidDataSupplied(TransactionCallback callback) {
+        releaseResources();
+        callback.onError(new Throwable(Constants.MESSAGE_ERROR_INVALID_DATA_SUPPLIED));
+    }
+
 
     /**
      * This method is used to save credit cards to merchant server
@@ -1162,7 +821,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
      */
     public void saveCards(String userId, ArrayList<SaveCardRequest> cardRequests, final SaveCardCallback callback) {
         if (merchantPaymentAPI == null) {
-            String errorMessage = context.getString(R.string.error_message_empty_merchant_url);
+            String errorMessage = Constants.MESSAGE_ERROR_EMPTY_MERCHANT_URL;
             callback.onError(new Throwable(errorMessage));
             Logger.e(TAG, "saveCards():" + errorMessage);
             return;
@@ -1185,23 +844,30 @@ public class SnapTransactionManager extends BaseTransactionManager {
 
                 @Override
                 public void failure(RetrofitError error) {
-                    releaseResources();
-                    if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
-                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
-                    }
-                    if (error.getCause() instanceof ConversionException) {
-                        SaveCardResponse saveCardResponse = new SaveCardResponse();
-                        saveCardResponse.setCode(200);
-                        saveCardResponse.setMessage(error.getMessage());
-                        callback.onSuccess(saveCardResponse);
-                    } else {
-                        callback.onError(new Throwable(error.getMessage(), error.getCause()));
+                    try {
+                        releaseResources();
+
+                        if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
+                            Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
+                        }
+
+                        if (error.getCause() instanceof ConversionException) {
+                            SaveCardResponse saveCardResponse = new SaveCardResponse();
+                            saveCardResponse.setCode(200);
+                            saveCardResponse.setMessage(error.getMessage());
+                            callback.onSuccess(saveCardResponse);
+                        } else {
+                            callback.onError(new Throwable(error.getMessage(), error.getCause()));
+                        }
+
+                    } catch (RuntimeException e) {
+                        callback.onError(new Throwable(e.getMessage(), e.getCause()));
                     }
                 }
             });
         } else {
             releaseResources();
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_INVALID_DATA_SUPPLIED));
         }
     }
 
@@ -1213,7 +879,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
      */
     public void getCards(String userId, final GetCardCallback callback) {
         if (merchantPaymentAPI == null) {
-            String errorMessage = context.getString(R.string.error_message_empty_merchant_url);
+            String errorMessage = Constants.MESSAGE_ERROR_EMPTY_MERCHANT_URL;
             callback.onError(new Throwable(errorMessage));
             Logger.e(TAG, "getCards():" + errorMessage);
             return;
@@ -1230,19 +896,23 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         callback.onFailure(response.getReason());
                     }
                 } else {
-                    callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
+                    callback.onError(new Throwable(Constants.MESSAGE_ERROR_EMPTY_RESPONSE));
                 }
             }
 
             @Override
             public void failure(RetrofitError error) {
-                releaseResources();
-                if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
-                    Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
-                }
+                try {
+                    releaseResources();
+                    if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
+                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
+                    }
 
-                error.printStackTrace();
-                callback.onError(new Throwable(error.getMessage(), error.getCause()));
+                    callback.onError(new Throwable(error.getMessage(), error.getCause()));
+
+                } catch (RuntimeException e) {
+                    callback.onError(new Throwable(e.getMessage(), e.getCause()));
+                }
             }
         });
     }
@@ -1271,23 +941,29 @@ public class SnapTransactionManager extends BaseTransactionManager {
                 releaseResources();
 
                 if (cardRegistrationResponse != null) {
-                    if (cardRegistrationResponse.getStatusCode().equals(context.getString(R.string.success_code_200))) {
+                    String statusCode = cardRegistrationResponse.getStatusCode();
+                    if (!TextUtils.isEmpty(statusCode) && statusCode.equals(Constants.STATUS_CODE_200)) {
                         callback.onSuccess(cardRegistrationResponse);
                     } else {
                         callback.onFailure(cardRegistrationResponse, cardRegistrationResponse.getStatusMessage());
                     }
                 } else {
-                    callback.onError(new Throwable(context.getString(R.string.empty_transaction_response)));
+                    callback.onError(new Throwable(Constants.MESSAGE_ERROR_EMPTY_RESPONSE));
                 }
             }
 
             @Override
             public void failure(RetrofitError e) {
-                releaseResources();
-                if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
-                    Logger.e(TAG, "Error in SSL Certificate. " + e.getMessage());
+                try {
+                    releaseResources();
+                    if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+                        Logger.e(TAG, "Error in SSL Certificate. " + e.getMessage());
+                    }
+                    callback.onError(new Throwable(e.getMessage(), e.getCause()));
+
+                } catch (RuntimeException exception) {
+                    callback.onError(new Throwable(exception.getMessage(), exception.getCause()));
                 }
-                callback.onError(new Throwable(e.getMessage(), e.getCause()));
             }
         });
     }
@@ -1458,25 +1134,23 @@ public class SnapTransactionManager extends BaseTransactionManager {
     private void consumeTokenSuccesResponse(final String authenticationToken, long start, TokenDetailsResponse tokenDetailsResponse, CardTokenCallback callback) {
         releaseResources();
 
-        long end = System.currentTimeMillis();
-
         if (tokenDetailsResponse != null) {
             if (isSDKLogEnabled) {
                 displayTokenResponse(tokenDetailsResponse);
             }
-            if (tokenDetailsResponse.getStatusCode().trim().equalsIgnoreCase(context.getString(R.string.success_code_200))) {
+            if (tokenDetailsResponse.getStatusCode().trim().equalsIgnoreCase(Constants.STATUS_CODE_200)) {
                 callback.onSuccess(tokenDetailsResponse);
             } else {
                 if (!TextUtils.isEmpty(tokenDetailsResponse.getStatusMessage())) {
                     callback.onFailure(tokenDetailsResponse, tokenDetailsResponse.getStatusMessage());
                 } else {
                     callback.onFailure(tokenDetailsResponse,
-                            context.getString(R.string.error_empty_response));
+                            Constants.MESSAGE_ERROR_EMPTY_RESPONSE);
                 }
             }
         } else {
-            callback.onError(new Throwable(context.getString(R.string.error_empty_response)));
-            Logger.e(TAG, context.getString(R.string.error_empty_response));
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_EMPTY_RESPONSE));
+            Logger.e(TAG, Constants.MESSAGE_ERROR_EMPTY_RESPONSE);
         }
     }
 
@@ -1492,21 +1166,6 @@ public class SnapTransactionManager extends BaseTransactionManager {
 
         callback.onError(new Throwable(e.getMessage(), e.getCause()));
         // Track Mixpanel event
-    }
-
-
-    private void actionFailedTransaction(TransactionCallback callback, TransactionResponse transactionResponse) {
-        if (transactionResponse.getStatusCode().equals(context.getString(R.string.failed_code_400))) {
-            String message;
-            if (transactionResponse.getValidationMessages() != null && !transactionResponse.getValidationMessages().isEmpty()) {
-                message = transactionResponse.getValidationMessages().get(0);
-            } else {
-                message = transactionResponse.getStatusMessage();
-            }
-            callback.onFailure(transactionResponse, message);
-        } else {
-            callback.onFailure(transactionResponse, transactionResponse.getStatusMessage());
-        }
     }
 
 
@@ -1528,20 +1187,23 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         callback.onFailure(response.getReason());
                     }
                 } else {
-                    callback.onError(new Throwable(context.getString(R.string.error_empty_response)));
+                    callback.onError(new Throwable(Constants.MESSAGE_ERROR_EMPTY_RESPONSE));
                 }
             }
 
             @Override
             public void failure(RetrofitError error) {
-                releaseResources();
-                if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
-                    Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
+                try {
+                    releaseResources();
+                    if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
+                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
+                    }
+
+                    callback.onError(new Throwable(error.getMessage(), error.getCause()));
+
+                } catch (RuntimeException ex) {
+                    callback.onError(new Throwable(ex.getMessage(), ex.getCause()));
                 }
-
-                error.printStackTrace();
-
-                callback.onError(new Throwable(error.getMessage(), error.getCause()));
             }
         });
     }
@@ -1558,23 +1220,28 @@ public class SnapTransactionManager extends BaseTransactionManager {
             public void success(BanksPointResponse bankPointResponse, Response response) {
                 releaseResources();
                 if (bankPointResponse != null) {
-                    if (bankPointResponse.getStatusCode() != null && bankPointResponse.getStatusCode().equals(context.getString(R.string.success_code_200))) {
+                    if (bankPointResponse.getStatusCode() != null && bankPointResponse.getStatusCode().equals(Constants.STATUS_CODE_200)) {
                         callback.onSuccess(bankPointResponse);
                     } else {
                         callback.onFailure(response.getReason());
                     }
                 } else {
-                    callback.onError(new Throwable(context.getString(R.string.error_empty_response)));
+                    callback.onError(new Throwable(Constants.MESSAGE_ERROR_EMPTY_RESPONSE));
                 }
             }
 
             @Override
             public void failure(RetrofitError error) {
-                releaseResources();
-                if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
-                    Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
+                try {
+                    releaseResources();
+                    if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
+                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
+                    }
+                    callback.onError(new Throwable(error.getMessage(), error.getCause()));
+
+                } catch (RuntimeException ex) {
+                    callback.onError(new Throwable(ex.getMessage(), ex.getCause()));
                 }
-                callback.onError(new Throwable(error.getMessage(), error.getCause()));
             }
         });
 
@@ -1586,23 +1253,27 @@ public class SnapTransactionManager extends BaseTransactionManager {
             public void success(TransactionStatusResponse transactionStatusResponse, Response response) {
                 releaseResources();
                 if (transactionStatusResponse != null) {
-                    if (transactionStatusResponse.getStatusCode() != null && transactionStatusResponse.getStatusCode().equals(context.getString(R.string.success_code_200))) {
+                    if (transactionStatusResponse.getStatusCode() != null && transactionStatusResponse.getStatusCode().equals(Constants.STATUS_CODE_200)) {
                         callback.onSuccess(transactionStatusResponse);
                     } else {
                         callback.onFailure(transactionStatusResponse, response.getReason());
                     }
                 } else {
-                    callback.onError(new Throwable(context.getString(R.string.error_empty_response)));
+                    callback.onError(new Throwable(Constants.MESSAGE_ERROR_EMPTY_RESPONSE));
                 }
             }
 
             @Override
             public void failure(RetrofitError error) {
-                releaseResources();
-                if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
-                    Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
+                try {
+                    releaseResources();
+                    if (error.getCause() instanceof SSLHandshakeException || error.getCause() instanceof CertPathValidatorException) {
+                        Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
+                    }
+                    callback.onError(new Throwable(error.getMessage(), error.getCause()));
+                } catch (RuntimeException ex) {
+                    callback.onError(new Throwable(ex.getMessage(), ex.getCause()));
                 }
-                callback.onError(new Throwable(error.getMessage(), error.getCause()));
             }
         });
     }
