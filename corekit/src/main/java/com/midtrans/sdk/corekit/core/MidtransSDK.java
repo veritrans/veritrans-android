@@ -123,10 +123,12 @@ public class MidtransSDK {
         this.mSnapTransactionManager = new SnapTransactionManager(MidtransRestAdapter.getSnapRestAPI(sdkBaseUrl, requestTimeOut),
                 MidtransRestAdapter.getMerchantApiClient(merchantServerUrl, requestTimeOut),
                 MidtransRestAdapter.getVeritransApiClient(BuildConfig.BASE_URL, requestTimeOut));
+
         String deviceType = null;
         if (context instanceof Activity) {
             deviceType = Utils.getDeviceType((Activity) context);
         }
+
         this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), merchantName, getFlow(flow), deviceType == null ? "" : deviceType);
         this.mSnapTransactionManager.setSDKLogEnabled(isLogEnabled);
     }
