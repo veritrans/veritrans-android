@@ -287,7 +287,7 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
                 if (isInEditMode) {
                     Toast.makeText(this, "Please save or cancel your information changes first!", Toast.LENGTH_SHORT).show();
                 } else {
-                    MidtransSDK.getInstance().startPaymentUiFlow(DemoOrderReviewActivity.this, PaymentMethod.BANK_TRANSFER_BCA);
+                    MidtransSDK.getInstance().startPaymentUiFlow(DemoOrderReviewActivity.this);
                     overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 }
                 break;
