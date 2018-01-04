@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.midtrans.demo.widgets.DemoTextView;
@@ -26,11 +27,13 @@ import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.core.PaymentMethod;
 import com.midtrans.sdk.corekit.models.UserAddress;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
 import com.midtrans.sdk.uikit.models.CountryCodeModel;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
+
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -41,7 +44,7 @@ import java.util.regex.Pattern;
  */
 
 public class DemoOrderReviewActivity extends AppCompatActivity implements TransactionFinishedCallback,
-    OnClickListener {
+        OnClickListener {
 
     private static final long DELAY = 300;
     private final int EDIT_SHIPPING_ADDRESS = 1;
@@ -103,7 +106,7 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
             if (addresses != null && !addresses.isEmpty()) {
                 for (UserAddress address : addresses) {
                     if (address.getAddressType() == Constants.ADDRESS_TYPE_BOTH
-                        || address.getAddressType() == Constants.ADDRESS_TYPE_SHIPPING) {
+                            || address.getAddressType() == Constants.ADDRESS_TYPE_SHIPPING) {
                         String countryName = getCountryFullName(address.getCountry());
                         if (countryName.length() == 0) {
                             deliveryAddress.setText(address.getAddress());
@@ -255,7 +258,7 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
                             userDetail.setEmail(editEmail.getText().toString().trim());
                             userDetail.setPhoneNumber(editPhone.getText().toString().trim());
                             LocalDataHandler
-                                .saveObject(getString(R.string.user_details), userDetail);
+                                    .saveObject(getString(R.string.user_details), userDetail);
 
                             openField(false);
                             editCustBtn.setVisibility(View.VISIBLE);
@@ -263,8 +266,8 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
                             cancelCustBtn.setVisibility(View.GONE);
                         } else {
                             Toast.makeText(this,
-                                "Unable to save change(s). Please make sure there's no empty field or discard change(s).",
-                                Toast.LENGTH_SHORT).show();
+                                    "Unable to save change(s). Please make sure there's no empty field or discard change(s).",
+                                    Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -316,7 +319,7 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
 
     private boolean isValid() {
         return !TextUtils.isEmpty(editName.getText().toString())
-            && !TextUtils.isEmpty(editPhone.getText().toString());
+                && !TextUtils.isEmpty(editPhone.getText().toString());
     }
 
     private boolean isEmailValid(String email) {

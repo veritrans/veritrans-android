@@ -541,7 +541,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             }
         } else if (isBankTransferOnly) {
             if (SdkUIFlowUtil.isBankTransferMethodEnabled(getApplicationContext(), enabledPayments)) {
-                Intent startBankPayment = new Intent(PaymentMethodsActivity.this, SelectBankTransferActivity.class);
+                Intent startBankPayment = new Intent(PaymentMethodsActivity.this, BankTransferListActivity.class);
                 if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_PERMATA, false)) {
                     if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_permata_va))) {
                         startBankPayment.putExtra(UserDetailsActivity.BANK_TRANSFER_PERMATA, true);

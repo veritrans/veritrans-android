@@ -6,13 +6,17 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
+import com.midtrans.sdk.uikit.activities.UserDetailsActivity;
 import com.midtrans.sdk.uikit.models.BankTransfer;
 import com.midtrans.sdk.uikit.models.EnabledPayments;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.views.banktransfer.payment.BankTransferPaymentActivity;
 import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
+
+import java.util.List;
 
 /**
  * Created by ziahaqi on 8/10/17.
@@ -45,8 +49,25 @@ public class BankTransferListActivity extends BasePaymentActivity implements Ban
         boolean isFirstPage = getIntent().getBooleanExtra(USE_DEEP_LINK, true);
         presenter.trackPageView(PAGE_NAME, isFirstPage);
 
-        if (presenter.getBankList().size() == 1) {
-            startBankTransferPayment(presenter.getBankList().get(0));
+        List<BankTransfer> bankTransfers = presenter.getBankList();
+        if (bankTransfers != null && !bankTransfers.isEmpty()) {
+            if (bankTransfers.size() == 1) {
+                startBankTransferPayment(presenter.getBankList().get(0).getBankType());
+            } else {
+                if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_PERMATA, false)) {
+                    startBankTransferPayment(PaymentType.PERMATA_VA);
+                } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_MANDIRI, false)) {
+                    startBankTransferPayment(PaymentType.E_CHANNEL);
+                } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_BCA, false)) {
+                    startBankTransferPayment(PaymentType.BCA_VA);
+                } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_BNI, false)) {
+                    startBankTransferPayment(PaymentType.BNI_VA);
+                } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_OTHER, false)) {
+                    startBankTransferPayment(PaymentType.ALL_VA);
+                }
+            }
+        } else {
+            finish();
         }
     }
 
@@ -77,7 +98,7 @@ public class BankTransferListActivity extends BasePaymentActivity implements Ban
     @Override
     public void onItemClick(int position) {
         BankTransfer item = adapter.getItem(position);
-        startBankTransferPayment(item);
+        startBankTransferPayment(item.getBankType());
     }
 
     @Override
@@ -85,17 +106,31 @@ public class BankTransferListActivity extends BasePaymentActivity implements Ban
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT) {
+
             if (resultCode == RESULT_OK && data != null) {
+
                 finishPayment(RESULT_OK, data);
-            } else if (presenter != null && presenter.getBankList().size() == 1) {
-                finish();
+            } else if (resultCode == RESULT_CANCELED) {
+
+                if (data == null) {
+                    if (presenter.getBankList() == null
+                            || presenter.getBankList().size() == 1
+                            || getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_PERMATA, false)
+                            || getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_MANDIRI, false)
+                            || getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_BCA, false)
+                            || getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_OTHER, false)) {
+                        finish();
+                    }
+                } else {
+                    finishPayment(RESULT_OK, data);
+                }
             }
         }
     }
 
-    private void startBankTransferPayment(BankTransfer bankPaymentMethod) {
+    private void startBankTransferPayment(String bankType) {
         Intent intent = new Intent(this, BankTransferPaymentActivity.class);
-        intent.putExtra(BankTransferPaymentActivity.EXTRA_BANK_TYPE, bankPaymentMethod.getBankType());
+        intent.putExtra(BankTransferPaymentActivity.EXTRA_BANK_TYPE, bankType);
         startActivityForResult(intent, UiKitConstants.INTENT_CODE_PAYMENT);
     }
 
