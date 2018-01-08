@@ -225,7 +225,7 @@ public abstract class BasePaymentActivity extends BaseActivity {
 
     protected void finishPayment(int resultCode, TransactionResponse response) {
         Intent data = new Intent();
-        data.putExtra(getString(R.string.transaction_response), response);
+        data.putExtra(UiKitConstants.KEY_TRANSACTION_RESPONSE, response);
         setResult(resultCode, data);
         finish();
     }

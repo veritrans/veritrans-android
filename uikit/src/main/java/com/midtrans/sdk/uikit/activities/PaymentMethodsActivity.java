@@ -935,13 +935,22 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             Logger.d(TAG, "sending result back with code " + requestCode);
 
             if (resultCode == RESULT_OK) {
-                TransactionResponse response = (TransactionResponse) data.getSerializableExtra(getString(R.string.transaction_response));
+
+                TransactionResponse response;
+                try {
+                    response = (TransactionResponse) data.getSerializableExtra(UiKitConstants.KEY_TRANSACTION_RESPONSE);
+
+                } catch (RuntimeException e) {
+                    Logger.e(TAG, "onActivityResult:" + e.getMessage());
+                    finish();
+                    return;
+                }
 
                 if (response != null) {
-                    if (response.getStatusCode().equals(getString(R.string.success_code_200))) {
+                    if (response.getStatusCode().equals(UiKitConstants.STATUS_CODE_200)) {
                         midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_SUCCESS));
                         setAlreadyUtilized(true);
-                    } else if (response.getStatusCode().equals(getString(R.string.success_code_201))) {
+                    } else if (response.getStatusCode().equals(UiKitConstants.STATUS_CODE_201)) {
                         midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_PENDING));
                         setAlreadyUtilized(true);
                     } else {

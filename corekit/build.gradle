@@ -26,16 +26,16 @@ repositories {
 
 android {
     def DEFAULT_PUBLISH
-    compileSdkVersion 25
-    buildToolsVersion '25.0.3'
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     lintOptions {
         abortOnError false
     }
 
     defaultConfig {
-        minSdkVersion 9
-        targetSdkVersion 25
+        minSdkVersion rootProject.ext.coreMinSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 2
         versionName version
         buildConfigField "String", "CALLBACK_STRING", "\"/token/callback/\""
@@ -100,7 +100,7 @@ tasks.withType(Test) {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
     compile 'com.squareup.okhttp3:okhttp:3.6.0'
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile 'com.jakewharton.retrofit:retrofit1-okhttp3-client:1.1.0'

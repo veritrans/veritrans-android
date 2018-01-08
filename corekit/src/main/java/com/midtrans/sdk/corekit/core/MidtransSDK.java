@@ -9,7 +9,6 @@ import android.util.Log;
 
 import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.BuildConfig;
-import com.midtrans.sdk.corekit.R;
 import com.midtrans.sdk.corekit.callback.BankBinsCallback;
 import com.midtrans.sdk.corekit.callback.BanksPointCallback;
 import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
@@ -116,21 +115,21 @@ public class MidtransSDK {
             this.colorTheme = sdkBuilder.colorTheme;
         }
 
+        String deviceType = null;
         if (context != null) {
             mPreferences = context.getSharedPreferences(LOCAL_DATA_PREFERENCES, Context.MODE_PRIVATE);
+
+            if (context instanceof Activity) {
+                deviceType = Utils.getDeviceType((Activity) context);
+            }
         }
 
+        this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), merchantName, getFlow(flow), deviceType == null ? "" : deviceType);
         this.promoEngineManager = new PromoEngineManager(MidtransRestAdapter.getPromoEngineRestAPI(BuildConfig.PROMO_ENGINE_URL, requestTimeOut));
         this.mSnapTransactionManager = new SnapTransactionManager(MidtransRestAdapter.getSnapRestAPI(sdkBaseUrl, requestTimeOut),
                 MidtransRestAdapter.getMerchantApiClient(merchantServerUrl, requestTimeOut),
                 MidtransRestAdapter.getVeritransApiClient(BuildConfig.BASE_URL, requestTimeOut));
 
-        String deviceType = null;
-        if (context instanceof Activity) {
-            deviceType = Utils.getDeviceType((Activity) context);
-        }
-
-        this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), merchantName, getFlow(flow), deviceType == null ? "" : deviceType);
         this.mSnapTransactionManager.setSDKLogEnabled(isLogEnabled);
     }
 
@@ -274,7 +273,7 @@ public class MidtransSDK {
     public MixpanelAnalyticsManager getmMixpanelAnalyticsManager() {
         if (mSnapTransactionManager == null) {
             String deviceType = null;
-            if (context instanceof Activity) {
+            if (context != null && context instanceof Activity) {
                 deviceType = Utils.getDeviceType((Activity) context);
             }
             this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), merchantName, getFlow(flow), deviceType == null ? "" : deviceType);
@@ -2018,7 +2017,7 @@ public class MidtransSDK {
         if (transactionFinishedCallback != null) {
             transactionFinishedCallback.onTransactionFinished(result);
         } else {
-            Logger.e(TAG, context.getString(R.string.transaction_finished_callback_unimplemented));
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
         }
     }
 
