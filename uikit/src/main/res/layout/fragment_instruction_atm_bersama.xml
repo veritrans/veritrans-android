@@ -157,17 +157,19 @@
                     android:textSize="@dimen/secondary_text_size" />
 
                 <ImageView
+                    android:id="@+id/instruction_bank_code_image"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/instruction_atm_bersama_4" />
+                    android:src="@drawable/instruction_atm_bersama_4_permata" />
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:id="@+id/instruction_bank_code_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="2dp"
                     android:paddingLeft="@dimen/sixteen_dp"
                     android:paddingRight="@dimen/sixteen_dp"
-                    android:text="@string/instruction_atm_bersama4"
+                    android:text="@string/instruction_atm_bersama4_permata"
                     android:textColor="@color/black"
                     android:textSize="@dimen/secondary_text_size" />
             </LinearLayout>

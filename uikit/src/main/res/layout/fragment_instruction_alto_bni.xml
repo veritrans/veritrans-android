@@ -52,7 +52,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/instruction_prima_1" />
+                    android:src="@drawable/instruction_alto_1" />
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
                     android:layout_width="wrap_content"
@@ -62,7 +62,7 @@
                     android:paddingLeft="@dimen/sixteen_dp"
                     android:paddingRight="@dimen/sixteen_dp"
                     android:paddingTop="@dimen/five_dp"
-                    android:text="@string/instruction_prima1"
+                    android:text="@string/instruction_alto1"
                     android:textColor="@color/black"
                     android:textSize="@dimen/secondary_text_size" />
             </LinearLayout>
@@ -96,7 +96,7 @@
                     android:lineSpacingExtra="2dp"
                     android:paddingLeft="@dimen/sixteen_dp"
                     android:paddingRight="@dimen/sixteen_dp"
-                    android:text="@string/instruction_prima2"
+                    android:text="@string/instruction_alto2_bni"
                     android:textColor="@color/black"
                     android:textSize="@dimen/secondary_text_size" />
             </LinearLayout>
@@ -133,7 +133,7 @@
                     android:paddingLeft="@dimen/sixteen_dp"
                     android:paddingRight="@dimen/sixteen_dp"
                     android:paddingTop="@dimen/five_dp"
-                    android:text="@string/instruction_prima3"
+                    android:text="@string/instruction_alto3_bni"
                     android:textColor="@color/black"
                     android:textSize="@dimen/secondary_text_size" />
             </LinearLayout>
@@ -157,19 +157,17 @@
                     android:textSize="@dimen/secondary_text_size" />
 
                 <ImageView
-                    android:id="@+id/instruction_bank_code_image"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/instruction_prima_4_permata" />
+                    android:src="@drawable/instruction_prima_4_bni" />
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                    android:id="@+id/instruction_bank_code_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="2dp"
                     android:paddingLeft="@dimen/sixteen_dp"
                     android:paddingRight="@dimen/sixteen_dp"
-                    android:text="@string/instruction_prima4_permata"
+                    android:text="@string/instruction_alto4_bni"
                     android:textColor="@color/black"
                     android:textSize="@dimen/secondary_text_size" />
             </LinearLayout>
@@ -178,6 +176,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/light_gray"
+                android:gravity="top"
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/eight_dp"
                 android:paddingTop="@dimen/eight_dp">
@@ -185,7 +184,6 @@
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/light_gray"
                     android:paddingBottom="@dimen/five_dp"
                     android:paddingLeft="@dimen/eight_dp"
                     android:paddingRight="@dimen/eight_dp"
@@ -200,28 +198,26 @@
                     android:src="@drawable/instruction_prima_5" />
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/eight_dp"
-                    android:lineSpacingExtra="2dp"
+                    android:background="@color/light_gray"
                     android:paddingBottom="@dimen/five_dp"
                     android:paddingLeft="@dimen/sixteen_dp"
                     android:paddingRight="@dimen/sixteen_dp"
                     android:paddingTop="@dimen/five_dp"
-                    android:text="@string/instruction_prima5"
+                    android:text="@string/instruction_alto5_bni"
                     android:textColor="@color/black"
                     android:textSize="@dimen/secondary_text_size" />
             </LinearLayout>
 
-
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:paddingBottom="@dimen/eight_dp"
                 android:paddingTop="@dimen/eight_dp">
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:id="@+id/no_six_instruction"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingBottom="@dimen/five_dp"
@@ -233,21 +229,25 @@
                     android:textSize="@dimen/secondary_text_size" />
 
                 <ImageView
+                    android:id="@+id/sixth_image_instruction"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/instruction_prima_6" />
+                    android:layout_toEndOf="@id/no_six_instruction"
+                    android:layout_toRightOf="@id/no_six_instruction"
+                    android:src="@drawable/instruction_alto_5" />
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/eight_dp"
+                    android:layout_toEndOf="@id/sixth_image_instruction"
+                    android:layout_toRightOf="@id/sixth_image_instruction"
                     android:lineSpacingExtra="2dp"
                     android:paddingLeft="@dimen/sixteen_dp"
                     android:paddingRight="@dimen/sixteen_dp"
-                    android:text="@string/instruction_prima6"
+                    android:text="@string/instruction_alto6_bni"
                     android:textColor="@color/black"
                     android:textSize="@dimen/secondary_text_size" />
-            </LinearLayout>
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -282,7 +282,7 @@
                     android:paddingLeft="@dimen/sixteen_dp"
                     android:paddingRight="@dimen/sixteen_dp"
                     android:paddingTop="@dimen/five_dp"
-                    android:text="@string/instruction_prima7"
+                    android:text="@string/instruction_alto7_bni"
                     android:textColor="@color/black"
                     android:textSize="@dimen/secondary_text_size" />
             </LinearLayout>
