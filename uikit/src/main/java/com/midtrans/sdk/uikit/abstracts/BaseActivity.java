@@ -51,7 +51,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
 
     private boolean activityRunning = false;
     protected boolean backgroundProcess;
-
+    private volatile MidtransSDK midtransSdk;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,7 +61,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     }
 
     private void checkSdkInstance() {
-        if (MidtransSDK.getInstance() == null) {
+        if (getMidtransSdk() == null) {
             onNullInstanceSdk();
         }
     }
@@ -103,14 +103,11 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     }
 
     private void initThemeProperties() {
-        MidtransSDK midtransSDK = MidtransSDK.getInstance();
-        if (midtransSDK != null) {
-            BaseColorTheme baseColorTheme = MidtransSDK.getInstance().getColorTheme();
-            if (baseColorTheme != null) {
-                this.primaryColor = baseColorTheme.getPrimaryColor();
-                this.primaryDarkColor = baseColorTheme.getPrimaryDarkColor();
-                this.secondaryColor = baseColorTheme.getSecondaryColor();
-            }
+        BaseColorTheme baseColorTheme = getMidtransSdk().getColorTheme();
+        if (baseColorTheme != null) {
+            this.primaryColor = baseColorTheme.getPrimaryColor();
+            this.primaryDarkColor = baseColorTheme.getPrimaryDarkColor();
+            this.secondaryColor = baseColorTheme.getSecondaryColor();
         }
     }
 
@@ -210,12 +207,9 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
 
 
     protected void overrideBackAnimation() {
-        MidtransSDK midtransSDK = MidtransSDK.getInstance();
-        if (midtransSDK != null) {
-            UIKitCustomSetting setting = midtransSDK.getUIKitCustomSetting();
-            if (setting != null && setting.isEnabledAnimation()) {
-                overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
-            }
+        UIKitCustomSetting setting = getMidtransSdk().getUIKitCustomSetting();
+        if (setting != null && setting.isEnabledAnimation()) {
+            overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
         }
     }
 
@@ -267,7 +261,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     @Override
     public void startActivityForResult(Intent intent, int requestCode) {
         super.startActivityForResult(intent, requestCode);
-        if (MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+        if (getMidtransSdk().getUIKitCustomSetting().isEnabledAnimation()) {
             overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         }
     }
@@ -275,7 +269,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     @Override
     public void startActivity(Intent intent) {
         super.startActivity(intent);
-        if (MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+        if (getMidtransSdk().getUIKitCustomSetting().isEnabledAnimation()) {
             overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         }
     }
@@ -332,5 +326,16 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     public void onNullInstanceSdk() {
         setResult(UiKitConstants.RESULT_SDK_NOT_AVAILABLE);
         finish();
+    }
+
+    public MidtransSDK getMidtransSdk() {
+        if (midtransSdk == null) {
+            midtransSdk = MidtransSDK.getInstance();
+            if (midtransSdk == null || midtransSdk.isSdkNotAvailable()) {
+                onNullInstanceSdk();
+            }
+        }
+
+        return midtransSdk;
     }
 }

@@ -77,7 +77,7 @@ public abstract class BasePaymentActivity extends BaseActivity {
     }
 
     private void initTotalAmount() {
-        final Transaction transaction = MidtransSDK.getInstance().getTransaction();
+        final Transaction transaction = getMidtransSdk().getTransaction();
         if (transaction.getTransactionDetails() != null) {
             textTotalAmount = (BoldTextView) findViewById(R.id.text_amount);
             if (textTotalAmount != null) {
@@ -88,7 +88,7 @@ public abstract class BasePaymentActivity extends BaseActivity {
                 }
             }
         }
-        initTransactionDetail(MidtransSDK.getInstance().getTransactionRequest().getItemDetails());
+        initTransactionDetail(getMidtransSdk().getTransactionRequest().getItemDetails());
         //init dim
         findViewById(R.id.background_dim).setOnClickListener(new OnClickListener() {
             @Override
@@ -137,7 +137,7 @@ public abstract class BasePaymentActivity extends BaseActivity {
         ImageView merchantLogo = (ImageView) findViewById(R.id.merchant_logo);
         DefaultTextView merchantNameText = (DefaultTextView) findViewById(R.id.text_page_merchant_name);
 
-        MerchantData merchantData = MidtransSDK.getInstance().getMerchantData();
+        MerchantData merchantData = getMidtransSdk().getMerchantData();
 
         if (merchantData != null) {
             MerchantPreferences preferences = merchantData.getPreference();

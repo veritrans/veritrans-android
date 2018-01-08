@@ -376,7 +376,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         }
 
         if (discountToken != null && !TextUtils.isEmpty(discountToken)) {
-            midtransSDK.paymentUsingCard(midtransSDK.readAuthenticationToken(), discountToken,
+            midtransSDK.paymentUsingCard(midtransSDK.readAuthenticationToken(), discountToken, null,
                     paymentModel, new TransactionCallback() {
                         @Override
                         public void onSuccess(TransactionResponse response) {
