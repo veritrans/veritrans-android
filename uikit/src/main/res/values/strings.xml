@@ -529,7 +529,7 @@
     <string name="instruction_atm_bersama1">On the main menu, choose <b>Others</b>.</string>
     <string name="instruction_atm_bersama2">Choose <b>Transfer</b>.</string>
     <string name="instruction_atm_bersama3">Choose <b>Online Transfer</b>.</string>
-    <string name="instruction_atm_bersama4_permata">Enter <b>013</b> and <b>16 digit Account No.</b> and press <b>Correct</b></string>
+    <string name="instruction_atm_bersama4_permata">Enter <b>013</b> and <b>16 digit Account No.</b> and press <b>Correct</b>.</string>
     <string name="instruction_atm_bersama4_bni">Enter <b>009</b> (Bank BNI code) and <b>16 digit Account No.</b> and press <b>Correct</b></string>
     <string name="instruction_atm_bersama5">Enter the <b>full amount to be paid</b> and press <b>Correct</b>. If the amount entered is not the same as the invoiced amount, the transaction will be declined.</string>
     <string name="instruction_atm_bersama6">Empty the transfer reference number and press <b>Correct</b>.</string>
@@ -566,7 +566,7 @@
     <string name="instruction_alto6">Your payment details will appear on the confirmation page. If the information is right press <b>Correct</b>.</string>
     <string name="instruction_alto6_bni">Enter <b>16 digits payment Account No.</b> and press <b>Correct</b>.</string>
     <string name="instruction_alto7">Choose your payment account.</string>
-    <string name="instruction_alto7_bni">Amount to be paid, account number, and merchant name will appear on the payment confirmation page. If the information is right, press <b>Correct</b></string>
+    <string name="instruction_alto7_bni">Amount to be paid, account number, and merchant name will appear on the payment confirmation page. If the information is right, press <b>Correct</b>.</string>
     <string name="pay_with_alto">Pay through ATM with Alto logo</string>
 
     <string name="amex">AMEX</string>

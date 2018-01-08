@@ -16,10 +16,10 @@
             style="@style/ButtonSecondaryExpandable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
             android:layout_marginLeft="@dimen/sixteen_dp"
             android:layout_marginRight="@dimen/sixteen_dp"
             android:layout_marginTop="@dimen/sixteen_dp"
+            android:gravity="center_vertical"
             android:text="@string/show_instruction" />
 
         <LinearLayout
@@ -33,21 +33,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/light_gray"
-                android:gravity="top"
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/eight_dp"
                 android:paddingTop="@dimen/eight_dp">
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    style="@style/BankTransferInstruction.Number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/five_dp"
-                    android:paddingLeft="@dimen/eight_dp"
-                    android:paddingRight="@dimen/eight_dp"
-                    android:paddingTop="@dimen/five_dp"
-                    android:text="@string/instruction_1"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/secondary_text_size" />
+                    android:text="@string/instruction_1"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -55,16 +49,10 @@
                     android:src="@drawable/instruction_alto_1" />
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    style="@style/BankTransferInstruction"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/light_gray"
-                    android:paddingBottom="@dimen/five_dp"
-                    android:paddingLeft="@dimen/sixteen_dp"
-                    android:paddingRight="@dimen/sixteen_dp"
-                    android:paddingTop="@dimen/five_dp"
-                    android:text="@string/instruction_alto1"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/secondary_text_size" />
+                    android:text="@string/instruction_alto1"/>
             </LinearLayout>
 
             <LinearLayout
@@ -75,15 +63,10 @@
                 android:paddingTop="@dimen/eight_dp">
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    style="@style/BankTransferInstruction.Number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/five_dp"
-                    android:paddingLeft="@dimen/eight_dp"
-                    android:paddingRight="@dimen/eight_dp"
-                    android:paddingTop="@dimen/five_dp"
-                    android:text="@string/instruction_2"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/secondary_text_size" />
+                    android:text="@string/instruction_2"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -91,14 +74,10 @@
                     android:src="@drawable/instruction_alto_2" />
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                    android:layout_width="match_parent"
+                    style="@style/BankTransferInstruction"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:lineSpacingExtra="2dp"
-                    android:paddingLeft="@dimen/sixteen_dp"
-                    android:paddingRight="@dimen/sixteen_dp"
-                    android:text="@string/instruction_alto2"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/secondary_text_size" />
+                    android:text="@string/instruction_alto2"/>
             </LinearLayout>
 
             <LinearLayout
@@ -110,15 +89,10 @@
                 android:paddingTop="@dimen/eight_dp">
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    style="@style/BankTransferInstruction.Number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/five_dp"
-                    android:paddingLeft="@dimen/eight_dp"
-                    android:paddingRight="@dimen/eight_dp"
-                    android:paddingTop="@dimen/five_dp"
-                    android:text="@string/instruction_3"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/secondary_text_size" />
+                    android:text="@string/instruction_3"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -126,16 +100,10 @@
                     android:src="@drawable/instruction_alto_3" />
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                    android:layout_width="match_parent"
+                    style="@style/BankTransferInstruction"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:lineSpacingExtra="2dp"
-                    android:paddingBottom="@dimen/five_dp"
-                    android:paddingLeft="@dimen/sixteen_dp"
-                    android:paddingRight="@dimen/sixteen_dp"
-                    android:paddingTop="@dimen/five_dp"
-                    android:text="@string/instruction_alto3"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/secondary_text_size" />
+                    android:text="@string/instruction_alto3"/>
             </LinearLayout>
 
             <LinearLayout
@@ -146,15 +114,10 @@
                 android:paddingTop="@dimen/eight_dp">
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    style="@style/BankTransferInstruction.Number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/five_dp"
-                    android:paddingLeft="@dimen/eight_dp"
-                    android:paddingRight="@dimen/eight_dp"
-                    android:paddingTop="@dimen/five_dp"
-                    android:text="@string/instruction_4"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/secondary_text_size" />
+                    android:text="@string/instruction_4"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -162,14 +125,10 @@
                     android:src="@drawable/instruction_alto_4" />
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                    android:layout_width="match_parent"
+                    style="@style/BankTransferInstruction"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:lineSpacingExtra="2dp"
-                    android:paddingLeft="@dimen/sixteen_dp"
-                    android:paddingRight="@dimen/sixteen_dp"
-                    android:text="@string/instruction_alto4"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/secondary_text_size" />
+                    android:text="@string/instruction_alto4"/>
             </LinearLayout>
 
             <LinearLayout
@@ -181,16 +140,10 @@
                 android:paddingTop="@dimen/eight_dp">
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    style="@style/BankTransferInstruction.Number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/light_gray"
-                    android:paddingBottom="@dimen/five_dp"
-                    android:paddingLeft="@dimen/eight_dp"
-                    android:paddingRight="@dimen/eight_dp"
-                    android:paddingTop="@dimen/five_dp"
-                    android:text="@string/instruction_5"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/secondary_text_size" />
+                    android:text="@string/instruction_5"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -198,78 +151,50 @@
                     android:src="@drawable/instruction_alto_5" />
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                    android:layout_width="match_parent"
+                    style="@style/BankTransferInstruction"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/eight_dp"
-                    android:lineSpacingExtra="2dp"
-                    android:paddingBottom="@dimen/five_dp"
-                    android:paddingLeft="@dimen/sixteen_dp"
-                    android:paddingRight="@dimen/sixteen_dp"
-                    android:paddingTop="@dimen/five_dp"
-                    android:text="@string/instruction_alto5"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/secondary_text_size" />
+                    android:text="@string/instruction_alto5"/>
             </LinearLayout>
-
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/eight_dp"
-                android:paddingTop="@dimen/eight_dp">
-
-                <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                    android:id="@+id/no_six_instruction"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/five_dp"
-                    android:paddingLeft="@dimen/eight_dp"
-                    android:paddingRight="@dimen/eight_dp"
-                    android:paddingTop="@dimen/five_dp"
-                    android:text="@string/instruction_6"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/secondary_text_size" />
-
-                <ImageView
-                    android:id="@+id/sixth_image_instruction"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/no_six_instruction"
-                    android:layout_toRightOf="@id/no_six_instruction"
-                    android:src="@drawable/instruction_alto_6" />
-
-                <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/sixth_image_instruction"
-                    android:layout_toRightOf="@id/sixth_image_instruction"
-                    android:lineSpacingExtra="2dp"
-                    android:paddingLeft="@dimen/sixteen_dp"
-                    android:paddingRight="@dimen/sixteen_dp"
-                    android:text="@string/instruction_alto6"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/secondary_text_size" />
-            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/light_gray"
-                android:gravity="top"
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/eight_dp"
                 android:paddingTop="@dimen/eight_dp">
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    style="@style/BankTransferInstruction.Number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/five_dp"
-                    android:paddingLeft="@dimen/eight_dp"
-                    android:paddingRight="@dimen/eight_dp"
-                    android:paddingTop="@dimen/five_dp"
-                    android:text="@string/instruction_7"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/secondary_text_size" />
+                    android:text="@string/instruction_6"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/instruction_alto_6" />
+
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    style="@style/BankTransferInstruction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/instruction_alto6"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/light_gray"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/eight_dp"
+                android:paddingTop="@dimen/eight_dp">
+
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    style="@style/BankTransferInstruction.Number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/instruction_7"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -277,18 +202,11 @@
                     android:src="@drawable/instruction_alto_7" />
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    style="@style/BankTransferInstruction"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/light_gray"
-                    android:paddingBottom="@dimen/five_dp"
-                    android:paddingLeft="@dimen/sixteen_dp"
-                    android:paddingRight="@dimen/sixteen_dp"
-                    android:paddingTop="@dimen/five_dp"
-                    android:text="@string/instruction_alto7"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/secondary_text_size" />
+                    android:text="@string/instruction_alto7"/>
             </LinearLayout>
-
         </LinearLayout>
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

@@ -33,7 +33,8 @@ public class BankTransferStatusPresenter extends BasePaymentPresenter {
                     vaNumber = transactionResponse.getPermataVANumber();
                     break;
                 case PaymentType.ALL_VA:
-                    vaNumber = transactionResponse.getPermataVANumber();
+                    //VA number is based on other VA processor
+                    vaNumber = TextUtils.isEmpty(transactionResponse.getBniVaNumber()) ? transactionResponse.getPermataVANumber() : transactionResponse.getBniVaNumber();
                     break;
                 case PaymentType.BNI_VA:
                     vaNumber = transactionResponse.getBniVaNumber();
@@ -59,7 +60,8 @@ public class BankTransferStatusPresenter extends BasePaymentPresenter {
                     expiration = transactionResponse.getPermataExpiration();
                     break;
                 case PaymentType.ALL_VA:
-                    expiration = transactionResponse.getPermataExpiration();
+                    //expiration is based on other VA processor
+                    expiration = TextUtils.isEmpty(transactionResponse.getBniExpiration()) ? transactionResponse.getPermataExpiration() : transactionResponse.getBniExpiration();
                     break;
                 case PaymentType.BNI_VA:
                     expiration = transactionResponse.getBniExpiration();

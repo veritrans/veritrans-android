@@ -36,7 +36,6 @@ import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.views.banktransfer.instruction.InstructionOtherBankFragment;
 import com.midtrans.sdk.uikit.views.banktransfer.status.MandiriBillStatusActivity;
 import com.midtrans.sdk.uikit.views.banktransfer.status.VaPaymentStatusActivity;
-import com.midtrans.sdk.uikit.widgets.BoldTextView;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
