@@ -86,4 +86,7 @@ public class Constants {
     public static final String MESSAGE_ERROR_EMPTY_RESPONSE = "Failed to retrieve response from server";
     public static final String MESSAGE_ERROR_EMPTY_MERCHANT_URL = "Merchant base url is empty. Please set merchant base url on SDK";
     public static final String MESSAGE_ERROR_INVALID_DATA_SUPPLIED = "Invalid data supplied to SDK.";
+    public static final String MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED = "Callback Unimplemented";
+    public static final String MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER = "Failed to connect to server.";
+    public static final String MESSAGE_ERROR_ALREADY_RUNNING = "Failed to connect to server.";
 }

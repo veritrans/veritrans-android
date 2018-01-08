@@ -43,7 +43,7 @@ import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.CardTokenRequest;
 import com.midtrans.sdk.corekit.models.CreditCardFromScanner;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
-import com.midtrans.sdk.corekit.models.promo.PromosResponse;
+import com.midtrans.sdk.corekit.models.promo.ObtainPromosResponse;
 import com.midtrans.sdk.corekit.models.snap.PromoResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
@@ -1053,7 +1053,7 @@ public class AddCardDetailsFragment extends Fragment {
     private void obtainPromo(final PromoResponse promoResponse) {
         midtransSDK.obtainPromo(String.valueOf(promoResponse.getId()), midtransSDK.getTransactionRequest().getAmount(), new ObtainPromoCallback() {
             @Override
-            public void onSuccess(PromosResponse response) {
+            public void onSuccess(ObtainPromosResponse response) {
                 // Set promo
                 setPromo(promoResponse);
                 // Set discount token

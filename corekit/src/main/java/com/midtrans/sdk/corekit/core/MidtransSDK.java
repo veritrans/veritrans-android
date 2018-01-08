@@ -344,25 +344,25 @@ public class MidtransSDK {
 
     @Deprecated
     public void obtainPromo(String promoId, double amount, ObtainPromoCallback callback) {
-//        if (callback == null) {
-//            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
-//            return;
-//        }
-//
-//        if (!TextUtils.isEmpty(promoId) && amount != 0) {
-//            if (Utils.isNetworkAvailable(context)) {
-//                isRunning = true;
-//                promoEngineManager.obtainPromo(promoId, amount, callback);
-//            } else {
-//                isRunning = false;
-//                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
-//                Logger.e(context.getString(R.string.error_unable_to_connect));
-//            }
-//        } else {
-//            Logger.e(context.getString(R.string.error_invalid_data_supplied));
-//            isRunning = false;
-//            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
-//        }
+        if (callback == null) {
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
+            return;
+        }
+
+        if (!TextUtils.isEmpty(promoId) && amount != 0) {
+            if (Utils.isNetworkAvailable(context)) {
+                isRunning = true;
+                promoEngineManager.obtainPromo(promoId, amount, null, null, null, callback);
+            } else {
+                isRunning = false;
+                callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
+                Logger.e(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER);
+            }
+        } else {
+            Logger.e(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER);
+            isRunning = false;
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
+        }
     }
 
     /**
@@ -393,7 +393,7 @@ public class MidtransSDK {
 
     private void obtainPromo(String promoCode, double totalAmount, @NonNull String clientKey, String cardNumber, String cardToken, @NonNull ObtainPromoCallback callback) {
         if (callback == null) {
-            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
 
@@ -404,23 +404,23 @@ public class MidtransSDK {
                     promoEngineManager.obtainPromo(promoCode, totalAmount, clientKey, cardNumber, cardToken, callback);
                 } else {
                     isRunning = false;
-                    callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
-                    Logger.e(context.getString(R.string.error_unable_to_connect));
+                    callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
+                    Logger.e(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER);
                 }
             } else {
-                Logger.e(context.getString(R.string.error_invalid_data_supplied));
+                Logger.e(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER);
                 isRunning = false;
-                callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+                callback.onError(new Throwable(Constants.MESSAGE_ERROR_INVALID_DATA_SUPPLIED));
             }
         } else {
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_INVALID_DATA_SUPPLIED));
         }
     }
 
 
     public void holdPromo(String promoToken, long totalAmount, String clientKey, HoldPromoCallback callback) {
         if (callback == null) {
-            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
 
@@ -430,13 +430,13 @@ public class MidtransSDK {
                 promoEngineManager.holdPromo(promoToken, totalAmount, clientKey, callback);
             } else {
                 isRunning = false;
-                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
-                Logger.e(context.getString(R.string.error_unable_to_connect));
+                callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
+                Logger.e(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER);
             }
         } else {
-            Logger.e(context.getString(R.string.error_invalid_data_supplied));
+            Logger.e(Constants.MESSAGE_ERROR_INVALID_DATA_SUPPLIED);
             isRunning = false;
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_INVALID_DATA_SUPPLIED));
         }
     }
 
@@ -448,7 +448,7 @@ public class MidtransSDK {
      */
     public void getCardToken(CardTokenRequest cardTokenRequest, CardTokenCallback callback) {
         if (callback == null) {
-            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
 
@@ -458,14 +458,14 @@ public class MidtransSDK {
                 mSnapTransactionManager.getToken(readAuthenticationToken(), cardTokenRequest, callback);
             } else {
                 isRunning = false;
-                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
-                Logger.e(context.getString(R.string.error_unable_to_connect));
+                callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
+                Logger.e(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER);
             }
 
         } else {
-            Logger.e(context.getString(R.string.error_invalid_data_supplied));
+            Logger.e(Constants.MESSAGE_ERROR_INVALID_DATA_SUPPLIED);
             isRunning = false;
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_INVALID_DATA_SUPPLIED));
         }
     }
 
@@ -593,7 +593,7 @@ public class MidtransSDK {
             if (transactionRequest == null) {
                 Logger.e(TAG, ADD_TRANSACTION_DETAILS);
             } else {
-                Logger.e(TAG, context.getString(R.string.error_already_running));
+                Logger.e(TAG, Constants.MESSAGE_ERROR_ALREADY_RUNNING);
             }
         }
     }
@@ -646,7 +646,7 @@ public class MidtransSDK {
             if (transactionRequest == null) {
                 Logger.e(TAG, ADD_TRANSACTION_DETAILS);
             } else {
-                Logger.e(TAG, context.getString(R.string.error_already_running));
+                Logger.e(TAG, Constants.MESSAGE_ERROR_ALREADY_RUNNING);
             }
         }
     }
@@ -671,7 +671,7 @@ public class MidtransSDK {
             if (transactionRequest == null) {
                 Logger.e(TAG, ADD_TRANSACTION_DETAILS);
             } else {
-                Logger.e(TAG, context.getString(R.string.error_already_running));
+                Logger.e(TAG, Constants.MESSAGE_ERROR_ALREADY_RUNNING);
             }
         }
     }
@@ -696,7 +696,7 @@ public class MidtransSDK {
             if (transactionRequest == null) {
                 Logger.e(TAG, ADD_TRANSACTION_DETAILS);
             } else {
-                Logger.e(TAG, context.getString(R.string.error_already_running));
+                Logger.e(TAG, Constants.MESSAGE_ERROR_ALREADY_RUNNING);
             }
         }
     }
@@ -721,7 +721,7 @@ public class MidtransSDK {
             if (transactionRequest == null) {
                 Logger.e(TAG, ADD_TRANSACTION_DETAILS);
             } else {
-                Logger.e(TAG, context.getString(R.string.error_already_running));
+                Logger.e(TAG, Constants.MESSAGE_ERROR_ALREADY_RUNNING);
             }
         }
     }
@@ -746,7 +746,7 @@ public class MidtransSDK {
             if (transactionRequest == null) {
                 Logger.e(TAG, ADD_TRANSACTION_DETAILS);
             } else {
-                Logger.e(TAG, context.getString(R.string.error_already_running));
+                Logger.e(TAG, Constants.MESSAGE_ERROR_ALREADY_RUNNING);
             }
         }
     }
@@ -771,7 +771,7 @@ public class MidtransSDK {
             if (transactionRequest == null) {
                 Logger.e(TAG, ADD_TRANSACTION_DETAILS);
             } else {
-                Logger.e(TAG, context.getString(R.string.error_already_running));
+                Logger.e(TAG, Constants.MESSAGE_ERROR_ALREADY_RUNNING);
             }
         }
     }
@@ -796,7 +796,7 @@ public class MidtransSDK {
             if (transactionRequest == null) {
                 Logger.e(TAG, ADD_TRANSACTION_DETAILS);
             } else {
-                Logger.e(TAG, context.getString(R.string.error_already_running));
+                Logger.e(TAG, Constants.MESSAGE_ERROR_ALREADY_RUNNING);
             }
         }
     }
@@ -821,7 +821,7 @@ public class MidtransSDK {
             if (transactionRequest == null) {
                 Logger.e(TAG, ADD_TRANSACTION_DETAILS);
             } else {
-                Logger.e(TAG, context.getString(R.string.error_already_running));
+                Logger.e(TAG, Constants.MESSAGE_ERROR_ALREADY_RUNNING);
             }
         }
     }
@@ -846,7 +846,7 @@ public class MidtransSDK {
             if (transactionRequest == null) {
                 Logger.e(TAG, ADD_TRANSACTION_DETAILS);
             } else {
-                Logger.e(TAG, context.getString(R.string.error_already_running));
+                Logger.e(TAG, Constants.MESSAGE_ERROR_ALREADY_RUNNING);
             }
         }
     }
@@ -871,7 +871,7 @@ public class MidtransSDK {
             if (transactionRequest == null) {
                 Logger.e(TAG, ADD_TRANSACTION_DETAILS);
             } else {
-                Logger.e(TAG, context.getString(R.string.error_already_running));
+                Logger.e(TAG, Constants.MESSAGE_ERROR_ALREADY_RUNNING);
             }
         }
     }
@@ -896,7 +896,7 @@ public class MidtransSDK {
             if (transactionRequest == null) {
                 Logger.e(TAG, ADD_TRANSACTION_DETAILS);
             } else {
-                Logger.e(TAG, context.getString(R.string.error_already_running));
+                Logger.e(TAG, Constants.MESSAGE_ERROR_ALREADY_RUNNING);
             }
         }
     }
@@ -921,7 +921,7 @@ public class MidtransSDK {
             if (transactionRequest == null) {
                 Logger.e(TAG, ADD_TRANSACTION_DETAILS);
             } else {
-                Logger.e(TAG, context.getString(R.string.error_already_running));
+                Logger.e(TAG, Constants.MESSAGE_ERROR_ALREADY_RUNNING);
             }
         }
     }
@@ -946,7 +946,7 @@ public class MidtransSDK {
             if (transactionRequest == null) {
                 Logger.e(TAG, ADD_TRANSACTION_DETAILS);
             } else {
-                Logger.e(TAG, context.getString(R.string.error_already_running));
+                Logger.e(TAG, Constants.MESSAGE_ERROR_ALREADY_RUNNING);
             }
         }
     }
@@ -971,7 +971,7 @@ public class MidtransSDK {
             if (transactionRequest == null) {
                 Logger.e(TAG, ADD_TRANSACTION_DETAILS);
             } else {
-                Logger.e(TAG, context.getString(R.string.error_already_running));
+                Logger.e(TAG, Constants.MESSAGE_ERROR_ALREADY_RUNNING);
             }
         }
     }
@@ -996,7 +996,7 @@ public class MidtransSDK {
             if (transactionRequest == null) {
                 Logger.e(TAG, ADD_TRANSACTION_DETAILS);
             } else {
-                Logger.e(TAG, context.getString(R.string.error_already_running));
+                Logger.e(TAG, Constants.MESSAGE_ERROR_ALREADY_RUNNING);
             }
         }
     }
@@ -1021,7 +1021,7 @@ public class MidtransSDK {
             if (transactionRequest == null) {
                 Logger.e(TAG, ADD_TRANSACTION_DETAILS);
             } else {
-                Logger.e(TAG, context.getString(R.string.error_already_running));
+                Logger.e(TAG, Constants.MESSAGE_ERROR_ALREADY_RUNNING);
             }
         }
     }
@@ -1046,7 +1046,7 @@ public class MidtransSDK {
             if (transactionRequest == null) {
                 Logger.e(TAG, ADD_TRANSACTION_DETAILS);
             } else {
-                Logger.e(TAG, context.getString(R.string.error_already_running));
+                Logger.e(TAG, Constants.MESSAGE_ERROR_ALREADY_RUNNING);
             }
         }
     }
@@ -1071,7 +1071,7 @@ public class MidtransSDK {
             if (transactionRequest == null) {
                 Logger.e(TAG, ADD_TRANSACTION_DETAILS);
             } else {
-                Logger.e(TAG, context.getString(R.string.error_already_running));
+                Logger.e(TAG, Constants.MESSAGE_ERROR_ALREADY_RUNNING);
             }
         }
     }
@@ -1096,7 +1096,7 @@ public class MidtransSDK {
             if (transactionRequest == null) {
                 Logger.e(TAG, ADD_TRANSACTION_DETAILS);
             } else {
-                Logger.e(TAG, context.getString(R.string.error_already_running));
+                Logger.e(TAG, Constants.MESSAGE_ERROR_ALREADY_RUNNING);
             }
         }
     }
@@ -1121,7 +1121,7 @@ public class MidtransSDK {
             if (transactionRequest == null) {
                 Logger.e(TAG, ADD_TRANSACTION_DETAILS);
             } else {
-                Logger.e(TAG, context.getString(R.string.error_already_running));
+                Logger.e(TAG, Constants.MESSAGE_ERROR_ALREADY_RUNNING);
             }
         }
     }
@@ -1134,7 +1134,7 @@ public class MidtransSDK {
      */
     public void getTransactionOptions(@NonNull String authenticationToken, @NonNull TransactionOptionsCallback callback) {
         if (callback == null) {
-            Logger.d(TAG, context.getString(R.string.callback_unimplemented));
+            Logger.d(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
         if (!TextUtils.isEmpty(authenticationToken)) {
@@ -1143,11 +1143,11 @@ public class MidtransSDK {
                 mSnapTransactionManager.getTransactionOptions(authenticationToken, callback);
             } else {
                 isRunning = false;
-                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+                callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
             isRunning = false;
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 
@@ -1159,7 +1159,7 @@ public class MidtransSDK {
      */
     public void checkout(@NonNull String userId, @NonNull CheckoutCallback callback) {
         if (callback == null) {
-            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
         if (transactionRequest != null) {
@@ -1172,11 +1172,11 @@ public class MidtransSDK {
                 mSnapTransactionManager.checkout(model, callback);
             } else {
                 isRunning = false;
-                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+                callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
             isRunning = false;
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 
@@ -1187,7 +1187,7 @@ public class MidtransSDK {
      */
     public void checkout(@NonNull CheckoutCallback callback) {
         if (callback == null) {
-            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
         if (transactionRequest != null) {
@@ -1197,11 +1197,11 @@ public class MidtransSDK {
                 mSnapTransactionManager.checkout(model, callback);
             } else {
                 isRunning = false;
-                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+                callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
             isRunning = false;
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 
@@ -1214,7 +1214,7 @@ public class MidtransSDK {
      */
     public void paymentUsingCard(@NonNull String authenticationToken, CreditCardPaymentModel creditCardPaymentModel, @NonNull TransactionCallback callback) {
         if (callback == null) {
-            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
         if (transactionRequest != null) {
@@ -1224,11 +1224,11 @@ public class MidtransSDK {
                         SdkUtil.getCreditCardPaymentRequest(creditCardPaymentModel, transactionRequest), callback);
             } else {
                 isRunning = false;
-                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+                callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
             isRunning = false;
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 
@@ -1243,7 +1243,7 @@ public class MidtransSDK {
      */
     public void paymentUsingCard(@NonNull String authenticationToken, @NonNull String discountToken, Long discountAmount, CreditCardPaymentModel creditCardPaymentModel, @NonNull TransactionCallback callback) {
         if (callback == null) {
-            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
 
@@ -1254,11 +1254,11 @@ public class MidtransSDK {
                         SdkUtil.getCreditCardPaymentRequest(discountToken, discountAmount, creditCardPaymentModel, transactionRequest), callback);
             } else {
                 isRunning = false;
-                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+                callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
             isRunning = false;
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 
@@ -1271,7 +1271,7 @@ public class MidtransSDK {
     public void paymentUsingBankTransferBCA(@NonNull String authenticationToken, @NonNull String email,
                                             @NonNull TransactionCallback callback) {
         if (callback == null) {
-            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
         if (transactionRequest != null) {
@@ -1282,11 +1282,11 @@ public class MidtransSDK {
                                 PaymentType.BCA_VA), callback);
             } else {
                 isRunning = false;
-                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+                callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
             isRunning = false;
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 
@@ -1299,7 +1299,7 @@ public class MidtransSDK {
     public void paymentUsingBankTransferBni(@NonNull String authenticationToken, @NonNull String email,
                                             @NonNull TransactionCallback callback) {
         if (callback == null) {
-            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
 
@@ -1311,11 +1311,11 @@ public class MidtransSDK {
                                 PaymentType.BNI_VA), callback);
             } else {
                 isRunning = false;
-                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+                callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
             isRunning = false;
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 
@@ -1327,7 +1327,7 @@ public class MidtransSDK {
      */
     public void paymentUsingBankTransferPermata(@NonNull String authenticationToken, @NonNull String email, @NonNull TransactionCallback callback) {
         if (callback == null) {
-            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
         if (transactionRequest != null) {
@@ -1338,11 +1338,11 @@ public class MidtransSDK {
                         callback);
             } else {
                 isRunning = false;
-                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+                callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
             isRunning = false;
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 
@@ -1355,7 +1355,7 @@ public class MidtransSDK {
      */
     public void paymentUsingKlikBCA(@NonNull String authenticationToken, @NonNull String userId, @NonNull TransactionCallback callback) {
         if (callback == null) {
-            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
 
@@ -1366,11 +1366,11 @@ public class MidtransSDK {
                         PaymentType.KLIK_BCA), callback);
             } else {
                 isRunning = false;
-                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+                callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
             isRunning = false;
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 
@@ -1382,7 +1382,7 @@ public class MidtransSDK {
      */
     public void paymentUsingBCAKlikpay(@NonNull String authenticationToken, @NonNull TransactionCallback callback) {
         if (callback == null) {
-            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
 
@@ -1393,11 +1393,11 @@ public class MidtransSDK {
                         new BasePaymentRequest(PaymentType.BCA_KLIKPAY), callback);
             } else {
                 isRunning = false;
-                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+                callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
             isRunning = false;
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 
@@ -1409,7 +1409,7 @@ public class MidtransSDK {
      */
     public void paymentUsingMandiriBillPay(@NonNull String authenticationToken, @NonNull String email, @NonNull TransactionCallback callback) {
         if (callback == null) {
-            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
         if (transactionRequest != null) {
@@ -1420,11 +1420,11 @@ public class MidtransSDK {
                         callback);
             } else {
                 isRunning = false;
-                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+                callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
             isRunning = false;
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 
@@ -1443,7 +1443,7 @@ public class MidtransSDK {
     public void paymentUsingMandiriClickPay(@NonNull String authenticationToken, @NonNull String mandiriCardNumber,
                                             @NonNull String tokenResponse, @NonNull String input3, TransactionCallback callback) {
         if (callback == null) {
-            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
 
@@ -1454,11 +1454,11 @@ public class MidtransSDK {
                         mandiriCardNumber, tokenResponse, input3, PaymentType.MANDIRI_CLICKPAY), callback);
             } else {
                 isRunning = false;
-                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+                callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
             isRunning = false;
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 
@@ -1471,7 +1471,7 @@ public class MidtransSDK {
      */
     public void paymentUsingMandiriClickPay(String snapToken, NewMandiriClickPaymentParams paymentParams, TransactionCallback callback) {
         if (callback == null) {
-            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
 
@@ -1482,11 +1482,11 @@ public class MidtransSDK {
                 ;
             } else {
                 isRunning = false;
-                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+                callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
             isRunning = false;
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 
@@ -1498,7 +1498,7 @@ public class MidtransSDK {
      */
     public void paymentUsingCIMBClick(@NonNull String authenticationToken, @NonNull TransactionCallback callback) {
         if (callback == null) {
-            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
         if (transactionRequest != null) {
@@ -1508,11 +1508,11 @@ public class MidtransSDK {
                         new BasePaymentRequest(PaymentType.CIMB_CLICKS), callback);
             } else {
                 isRunning = false;
-                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+                callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
             isRunning = false;
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 
@@ -1524,7 +1524,7 @@ public class MidtransSDK {
      */
     public void paymentUsingMandiriEcash(@NonNull String authenticationToken, @NonNull TransactionCallback callback) {
         if (callback == null) {
-            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
         if (transactionRequest != null) {
@@ -1534,11 +1534,11 @@ public class MidtransSDK {
                         new BasePaymentRequest(PaymentType.MANDIRI_ECASH), callback);
             } else {
                 isRunning = false;
-                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+                callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
             isRunning = false;
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 
@@ -1552,7 +1552,7 @@ public class MidtransSDK {
     public void paymentUsingTelkomselEcash(@NonNull String authenticationToken, @NonNull String customerPhoneNumber,
                                            @NonNull TransactionCallback callback) {
         if (callback == null) {
-            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
 
@@ -1564,11 +1564,11 @@ public class MidtransSDK {
                         callback);
             } else {
                 isRunning = false;
-                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+                callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
             isRunning = false;
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 
@@ -1580,7 +1580,7 @@ public class MidtransSDK {
      */
     public void paymentUsingXLTunai(@NonNull String authenticationToken, @NonNull TransactionCallback callback) {
         if (callback == null) {
-            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
 
@@ -1591,11 +1591,11 @@ public class MidtransSDK {
                         new BasePaymentRequest(PaymentType.XL_TUNAI), callback);
             } else {
                 isRunning = false;
-                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+                callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
             isRunning = false;
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 
@@ -1607,7 +1607,7 @@ public class MidtransSDK {
      */
     public void paymentUsingIndomaret(@NonNull String authenticationToken, @NonNull TransactionCallback callback) {
         if (callback == null) {
-            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
 
@@ -1618,11 +1618,11 @@ public class MidtransSDK {
                         new BasePaymentRequest(PaymentType.INDOMARET), callback);
             } else {
                 isRunning = false;
-                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+                callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
             isRunning = false;
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 
@@ -1635,7 +1635,7 @@ public class MidtransSDK {
      */
     public void paymentUsingIndosatDompetku(@NonNull String authenticationToken, @NonNull String msisdn, @NonNull TransactionCallback callback) {
         if (callback == null) {
-            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
 
@@ -1646,11 +1646,11 @@ public class MidtransSDK {
                         new IndosatDompetkuPaymentRequest(PaymentType.INDOSAT_DOMPETKU, new IndosatDompetkuPaymentParams(msisdn)), callback);
             } else {
                 isRunning = false;
-                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+                callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
             isRunning = false;
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 
@@ -1662,7 +1662,7 @@ public class MidtransSDK {
      */
     public void paymentUsingKiosan(@NonNull String authenticationToken, @NonNull TransactionCallback callback) {
         if (callback == null) {
-            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
 
@@ -1673,11 +1673,11 @@ public class MidtransSDK {
                         new BasePaymentRequest(PaymentType.KIOSON), callback);
             } else {
                 isRunning = false;
-                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+                callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
             isRunning = false;
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 
@@ -1689,7 +1689,7 @@ public class MidtransSDK {
      */
     public void paymentUsingEpayBRI(@NonNull String authenticationToken, @NonNull TransactionCallback callback) {
         if (callback == null) {
-            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
 
@@ -1700,11 +1700,11 @@ public class MidtransSDK {
                         new BasePaymentRequest(PaymentType.BRI_EPAY), callback);
             } else {
                 isRunning = false;
-                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+                callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
             isRunning = false;
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 
@@ -1717,7 +1717,7 @@ public class MidtransSDK {
      */
     public void paymentUsingBankTransferAllBank(@NonNull String authenticationToken, @NonNull String email, @NonNull TransactionCallback callback) {
         if (callback == null) {
-            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
         if (transactionRequest != null) {
@@ -1728,11 +1728,11 @@ public class MidtransSDK {
                         callback);
             } else {
                 isRunning = false;
-                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+                callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
             isRunning = false;
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 
@@ -1746,7 +1746,7 @@ public class MidtransSDK {
                                 @NonNull TransactionCallback callback) {
 
         if (callback == null) {
-            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
 
@@ -1757,7 +1757,7 @@ public class MidtransSDK {
                     callback);
         } else {
             isRunning = false;
-            callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 
@@ -1768,7 +1768,7 @@ public class MidtransSDK {
      */
     public void paymentUsingGoPay(String snapToken, TransactionCallback callback) {
         if (callback == null) {
-            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
 
@@ -1777,7 +1777,7 @@ public class MidtransSDK {
             mSnapTransactionManager.paymentUsingGoPay(snapToken, SdkUtil.getGoPayPaymentRequest(), callback);
         } else {
             isRunning = false;
-            callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 
@@ -1790,7 +1790,7 @@ public class MidtransSDK {
      */
     public void authorizeGoPayPayment(String snapToken, String verificationCode, TransactionCallback callback) {
         if (callback == null) {
-            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
 
@@ -1799,7 +1799,7 @@ public class MidtransSDK {
             mSnapTransactionManager.authorizeGoPayPayment(snapToken, SdkUtil.getGoPayAuthorizationRequest(verificationCode), callback);
         } else {
             isRunning = false;
-            callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 
@@ -1810,7 +1810,7 @@ public class MidtransSDK {
      */
     public void resendGopayAuthorization(String snapToken, GoPayResendAuthorizationCallback callback) {
         if (callback == null) {
-            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
 
@@ -1819,7 +1819,7 @@ public class MidtransSDK {
             mSnapTransactionManager.resendGoPayAuthorization(snapToken, callback);
         } else {
             isRunning = false;
-            callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 
@@ -1831,7 +1831,7 @@ public class MidtransSDK {
      */
     public void paymentUsingDanamonOnline(String snapToken, TransactionCallback callback) {
         if (callback == null) {
-            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
 
@@ -1840,7 +1840,7 @@ public class MidtransSDK {
             mSnapTransactionManager.paymentUsingDanamonOnline(snapToken, SdkUtil.getDanamonOnlinePaymentRequest(), callback);
         } else {
             isRunning = false;
-            callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 
@@ -1858,7 +1858,7 @@ public class MidtransSDK {
                                  @NonNull String cardCvv, @NonNull String cardExpMonth,
                                  @NonNull String cardExpYear, @NonNull CardRegistrationCallback callback) {
         if (callback == null) {
-            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
 
@@ -1868,8 +1868,8 @@ public class MidtransSDK {
                     callback);
         } else {
             isRunning = false;
-            Logger.e(context.getString(R.string.error_unable_to_connect));
-            callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+            Logger.e(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER);
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 
@@ -1883,7 +1883,7 @@ public class MidtransSDK {
     public void saveCards(@NonNull String userId, @NonNull ArrayList<SaveCardRequest> requests,
                           @NonNull SaveCardCallback callback) {
         if (callback == null) {
-            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
 
@@ -1893,10 +1893,10 @@ public class MidtransSDK {
                 mSnapTransactionManager.saveCards(userId, requests, callback);
             } else {
                 isRunning = false;
-                callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+                callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
-            callback.onError(new Throwable(context.getString(R.string.error_invalid_data_supplied)));
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 
@@ -1908,7 +1908,7 @@ public class MidtransSDK {
      */
     public void getCards(@NonNull String userId, GetCardCallback callback) {
         if (callback == null) {
-            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
 
@@ -1917,7 +1917,7 @@ public class MidtransSDK {
             mSnapTransactionManager.getCards(userId, callback);
         } else {
             isRunning = false;
-            callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 
@@ -1926,14 +1926,14 @@ public class MidtransSDK {
      */
     public void getBankBins(@NonNull BankBinsCallback callback) {
         if (callback == null) {
-            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
 
         if (Utils.isNetworkAvailable(context)) {
             mSnapTransactionManager.getBankBins(callback);
         } else {
-            callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 
@@ -1946,14 +1946,14 @@ public class MidtransSDK {
      */
     public void getBanksPoint(String cardToken, @NonNull BanksPointCallback callback) {
         if (callback == null) {
-            Logger.e(TAG, context.getString(R.string.callback_unimplemented));
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
 
         if (Utils.isNetworkAvailable(context)) {
             mSnapTransactionManager.getBanksPoint(readAuthenticationToken(), cardToken, callback);
         } else {
-            callback.onError(new Throwable(context.getString(R.string.error_unable_to_connect)));
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 
@@ -1969,7 +1969,7 @@ public class MidtransSDK {
         if (isNetworkAvailable()) {
             mSnapTransactionManager.deleteCard(authenticationToken, maskedCard, callback);
         } else {
-            callback.onError(new RuntimeException(context.getString(R.string.error_unable_to_connect)));
+            callback.onError(new RuntimeException(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 
@@ -1984,7 +1984,7 @@ public class MidtransSDK {
         if (isNetworkAvailable()) {
             mSnapTransactionManager.getTransactionStatus(authenticationToken, callback);
         } else {
-            callback.onError(new RuntimeException(context.getString(R.string.error_unable_to_connect)));
+            callback.onError(new RuntimeException(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 
