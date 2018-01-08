@@ -278,6 +278,7 @@ public class MidtransSDK {
             }
             this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), merchantName, getFlow(flow), deviceType == null ? "" : deviceType);
         }
+
         return mMixpanelAnalyticsManager;
     }
 
