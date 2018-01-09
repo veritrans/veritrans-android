@@ -1154,7 +1154,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
     private void finishPayment(int resultCode) {
         Intent data = new Intent();
-        data.putExtra(getString(R.string.transaction_response), presenter.getTransactionResponse());
+        data.putExtra(UiKitConstants.KEY_TRANSACTION_RESPONSE, presenter.getTransactionResponse());
         setResult(resultCode, data);
         finish();
     }

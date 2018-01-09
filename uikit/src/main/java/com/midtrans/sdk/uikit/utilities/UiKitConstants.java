@@ -93,4 +93,7 @@ public class UiKitConstants {
     public static final String KEY_TRACKING_MEMORY_USAGE = "Memory Usage";
     public static final String KEY_TRACKING_HOST_APP_VERSION = "Host App Version";
     public static final String KEY_TRACKING_ENVIRONMENT = "Environment";
+
+    //contant key
+    public static final String KEY_TRANSACTION_RESPONSE = "transaction_response";
 }
