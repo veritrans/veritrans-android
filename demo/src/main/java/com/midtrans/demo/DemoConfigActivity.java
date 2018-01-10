@@ -1310,7 +1310,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 if (checked) {
-                    List<EnabledPayment> enabledPayments = AppUtils.getDefaultPaymentList();
+                    List<EnabledPayment> enabledPayments = AppUtils.getDefaultPaymentList(DemoConfigActivity.this);
                     DemoConfigActivity.this.enabledPayments = AppUtils.mapPaymentMethods(DemoConfigActivity.this, enabledPayments);
                     resetSelectedPaymentChannels();
                     paymentChannelsTitle.setText(R.string.payment_channels_show_all);
@@ -3322,7 +3322,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private List<String> initActivePaymentMethods() {
         List<String> mappedPayments = new ArrayList<>();
 
-        List<EnabledPayment> defaultPayment = AppUtils.getDefaultPaymentList();
+        List<EnabledPayment> defaultPayment = AppUtils.getDefaultPaymentList(this);
         enabledPayments = AppUtils.mapPaymentMethods(this, defaultPayment);
 
         if (enabledPayments != null) {

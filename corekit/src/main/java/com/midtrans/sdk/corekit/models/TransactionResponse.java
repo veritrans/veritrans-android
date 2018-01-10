@@ -79,7 +79,8 @@ public class TransactionResponse implements Serializable {
     private String xlTunaiExpiration;
     @SerializedName("installment_term")
     private String installmentTerm;
-    private String expiry;
+    @SerializedName("gopay_expiration")
+    private String gopayExpiration;
 
     @SerializedName("indomaret_expire_time")
     private String indomaretExpireTime;
@@ -501,11 +502,11 @@ public class TransactionResponse implements Serializable {
         this.deeplinkUrl = deeplinkUrl;
     }
 
-    public String getExpiry() {
-        return expiry;
+    public String getGopayExpiration() {
+        return gopayExpiration;
     }
 
-    public void setExpiry(String expiry) {
-        this.expiry = expiry;
+    public void setGopayExpiration(String gopayExpiration) {
+        this.gopayExpiration = gopayExpiration;
     }
 }
