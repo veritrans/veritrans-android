@@ -1155,17 +1155,18 @@ public class SnapTransactionManager extends BaseTransactionManager {
     }
 
     private void consumeTokenErrorResponse(String authenticationToken, long start, RetrofitError e, CardTokenCallback callback) {
-        releaseResources();
-        long end = System.currentTimeMillis();
+        try {
+            releaseResources();
 
-        if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
-            Logger.e(TAG, "Error in SSL Certificate. " + e.getMessage());
+            if (e.getCause() instanceof SSLHandshakeException || e.getCause() instanceof CertPathValidatorException) {
+                Logger.e(TAG, "Error in SSL Certificate. " + e.getMessage());
+            }
+
+            callback.onError(new Throwable(e.getMessage(), e.getCause()));
+
+        } catch (RuntimeException ex) {
+            callback.onError(new Throwable(ex.getMessage(), ex.getCause()));
         }
-
-        e.printStackTrace();
-
-        callback.onError(new Throwable(e.getMessage(), e.getCause()));
-        // Track Mixpanel event
     }
 
 
