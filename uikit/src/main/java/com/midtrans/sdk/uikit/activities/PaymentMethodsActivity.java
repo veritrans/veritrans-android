@@ -33,6 +33,7 @@ import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.core.PaymentMethod;
 import com.midtrans.sdk.corekit.core.SdkUtil;
 import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.core.themes.ColorTheme;
@@ -904,7 +905,10 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             } else {
                 PaymentMethodsModel model = PaymentMethods.getMethods(this, enabledPayment.getType(), enabledPayment.getStatus());
                 if (model != null) {
-                    data.add(model);
+                    //inactive GO-PAY for tablet
+                    if (!model.getName().equalsIgnoreCase(getString(R.string.payment_method_gopay)) || !SdkUIFlowUtil.getDeviceType(this).equalsIgnoreCase(SdkUIFlowUtil.TYPE_TABLET)) {
+                        data.add(model);
+                    }
                 }
             }
         }
