@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.views.banktransfer.instruction.InstructionPermataVaFragment;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 
 /**
@@ -55,7 +56,7 @@ public abstract class VaInstructionFragment extends Fragment implements View.OnC
 
         layoutId = initLayoutId();
         //specific for Alto, since the diff is significant, we use another layout for VA switching
-        if (layoutId == R.layout.fragment_instruction_alto && !isUsingPermata) {
+        if (layoutId == R.layout.fragment_instruction_alto && !isUsingPermata && !(this instanceof InstructionPermataVaFragment)) {
             layoutId = R.layout.fragment_instruction_alto_bni;
             isUsingPermata = !isUsingPermata;
         }
