@@ -64,7 +64,7 @@ public class PromoEngineManager extends BaseTransactionManager {
                 Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
             }
             callback.onError(new Throwable(error.getMessage(), error.getCause()));
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             callback.onError(new Throwable(e.getMessage(), e.getCause()));
         }
     }
@@ -108,7 +108,7 @@ public class PromoEngineManager extends BaseTransactionManager {
                             Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
                         }
                         callback.onError(new Throwable(error.getMessage(), error.getCause()));
-                    } catch (RuntimeException e) {
+                    } catch (Exception e) {
                         callback.onError(new Throwable(e.getMessage(), e.getCause()));
                     }
                 }
