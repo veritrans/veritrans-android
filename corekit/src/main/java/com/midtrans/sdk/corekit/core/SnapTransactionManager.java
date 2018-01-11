@@ -112,7 +112,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
 
                     callback.onError(new Throwable(e.getMessage(), e.getCause()));
 
-                } catch (RuntimeException ex) {
+                } catch (Exception ex) {
                     callback.onError(new Throwable(ex.getMessage(), ex.getCause()));
                 }
             }
@@ -165,7 +165,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                     } else {
                         callback.onError(new Throwable(e.getMessage(), e.getCause()));
                     }
-                } catch (RuntimeException ex) {
+                } catch (Exception ex) {
                     callback.onError(new Throwable(ex.getMessage(), ex.getCause()));
                 }
             }
@@ -766,7 +766,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
             }
 
             callback.onError(new Throwable(error.getMessage(), error.getCause()));
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             callback.onError(new Throwable(e.getMessage(), e.getCause()));
         }
     }
@@ -860,7 +860,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                             callback.onError(new Throwable(error.getMessage(), error.getCause()));
                         }
 
-                    } catch (RuntimeException e) {
+                    } catch (Exception e) {
                         callback.onError(new Throwable(e.getMessage(), e.getCause()));
                     }
                 }
@@ -910,7 +910,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
 
                     callback.onError(new Throwable(error.getMessage(), error.getCause()));
 
-                } catch (RuntimeException e) {
+                } catch (Exception e) {
                     callback.onError(new Throwable(e.getMessage(), e.getCause()));
                 }
             }
@@ -961,7 +961,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                     }
                     callback.onError(new Throwable(e.getMessage(), e.getCause()));
 
-                } catch (RuntimeException exception) {
+                } catch (Exception exception) {
                     callback.onError(new Throwable(exception.getMessage(), exception.getCause()));
                 }
             }
@@ -1164,7 +1164,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
 
             callback.onError(new Throwable(e.getMessage(), e.getCause()));
 
-        } catch (RuntimeException ex) {
+        } catch (Exception ex) {
             callback.onError(new Throwable(ex.getMessage(), ex.getCause()));
         }
     }
@@ -1202,7 +1202,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
 
                     callback.onError(new Throwable(error.getMessage(), error.getCause()));
 
-                } catch (RuntimeException ex) {
+                } catch (Exception ex) {
                     callback.onError(new Throwable(ex.getMessage(), ex.getCause()));
                 }
             }
@@ -1240,7 +1240,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                     }
                     callback.onError(new Throwable(error.getMessage(), error.getCause()));
 
-                } catch (RuntimeException ex) {
+                } catch (Exception ex) {
                     callback.onError(new Throwable(ex.getMessage(), ex.getCause()));
                 }
             }
@@ -1272,7 +1272,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                         Logger.e(TAG, "Error in SSL Certificate. " + error.getMessage());
                     }
                     callback.onError(new Throwable(error.getMessage(), error.getCause()));
-                } catch (RuntimeException ex) {
+                } catch (Exception ex) {
                     callback.onError(new Throwable(ex.getMessage(), ex.getCause()));
                 }
             }
