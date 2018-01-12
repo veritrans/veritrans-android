@@ -111,7 +111,7 @@ public class SelectPaymentMethodDialogFragment extends DialogFragment {
     }
 
     private void setAdapterData() {
-        List<EnabledPayment> enabledPayments = AppUtils.getDefaultPaymentList();
+        List<EnabledPayment> enabledPayments = AppUtils.getDefaultPaymentList(getActivity());
         adapter.setPaymentMethodViewModels(createItemAdapter(enabledPayments));
     }
 
@@ -125,7 +125,7 @@ public class SelectPaymentMethodDialogFragment extends DialogFragment {
     }
 
     private List<SelectPaymentMethodViewModel> getDefaultMethods() {
-        List<EnabledPayment> enabledPayments = AppUtils.getDefaultPaymentList();
+        List<EnabledPayment> enabledPayments = AppUtils.getDefaultPaymentList(getActivity());
         List<SelectPaymentMethodViewModel> viewModels = new ArrayList<>();
         for (int i = 0; i < enabledPayments.size(); i++) {
             EnabledPayment enabledPayment = enabledPayments.get(i);

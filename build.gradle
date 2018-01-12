@@ -12,6 +12,7 @@ allprojects {
     repositories {
         jcenter()
         maven { url "http://dl.bintray.com/pt-midtrans/maven" }
+        maven { url "https://maven.google.com" }
     }
 
     project.plugins.whenPluginAdded { plugin ->
@@ -27,4 +28,13 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+ext {
+    coreMinSdkVersion = 9
+    uiMinSdkVersion = 14
+    targetSdkVersion = 27
+    compileSdkVersion = 27
+    buildToolsVersion = '27.0.2'
+    supportLibraryVersion = '27.0.2'
 }

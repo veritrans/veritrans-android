@@ -8,6 +8,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
@@ -18,6 +19,7 @@ import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.views.creditcard.details.CreditCardDetailsActivity;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -159,8 +161,8 @@ public class SavedCreditCardActivity extends BasePaymentActivity implements Save
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            TransactionResponse result = (TransactionResponse) data.getSerializableExtra(getString(R.string.transaction_response));
+        if (resultCode == RESULT_OK && data != null) {
+            TransactionResponse result = (TransactionResponse) data.getSerializableExtra(UiKitConstants.KEY_TRANSACTION_RESPONSE);
             if (result != null) {
                 finishPayment(resultCode, data);
             }

@@ -6,6 +6,7 @@ import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
+
 import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BaseVaPaymentStatusActivity;
@@ -88,6 +89,11 @@ public class VaPaymentStatusActivity extends BaseVaPaymentStatusActivity {
             case PaymentType.PERMATA_VA:
                 buttonName = "Done Bank Transfer Permata";
                 pageName = "Bank Transfer Permata Charge";
+                presenter.trackPageView(pageName, false);
+                break;
+            case PaymentType.BNI_VA:
+                buttonName = "Done Bank Transfer BNI";
+                pageName = "Bank Transfer BNI Charge";
                 presenter.trackPageView(pageName, false);
                 break;
             case PaymentType.ALL_VA:

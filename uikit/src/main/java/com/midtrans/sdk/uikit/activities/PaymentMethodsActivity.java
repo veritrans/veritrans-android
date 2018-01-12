@@ -33,6 +33,7 @@ import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.core.PaymentMethod;
 import com.midtrans.sdk.corekit.core.SdkUtil;
 import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.core.themes.ColorTheme;
@@ -482,47 +483,49 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
     private void initCustomTrackingProperties() {
 
-        RaygunClient.setOnBeforeSend(new RaygunOnBeforeSend() {
-            @Override
-            public RaygunMessage onBeforeSend(RaygunMessage message) {
+        if (BuildConfig.FLAVOR.equals(UiKitConstants.ENVIRONMENT_PRODUCTION)) {
+            RaygunClient.setOnBeforeSend(new RaygunOnBeforeSend() {
+                @Override
+                public RaygunMessage onBeforeSend(RaygunMessage message) {
 
-                try {
-                    RaygunMessageDetails details = message.getDetails();
-                    details.setGroupingKey(UiKitConstants.KEY_TRACKING_GROUP);
+                    try {
+                        RaygunMessageDetails details = message.getDetails();
+                        details.setGroupingKey(UiKitConstants.KEY_TRACKING_GROUP);
 
-                    Map<String, String> map = new HashMap<>();
+                        Map<String, String> map = new HashMap<>();
 
-                    MerchantPreferences preferences = MidtransSDK.getInstance().getMerchantData().getPreference();
+                        MerchantPreferences preferences = MidtransSDK.getInstance().getMerchantData().getPreference();
 
-                    if (preferences != null) {
-                        map.put(UiKitConstants.KEY_TRACKING_MERCHANT_NAME, preferences.getDisplayName());
+                        if (preferences != null) {
+                            map.put(UiKitConstants.KEY_TRACKING_MERCHANT_NAME, preferences.getDisplayName());
+                        }
+                        String[] appInfo = DeviceUtils.getApplicationName(PaymentMethodsActivity.this);
+                        map.put(UiKitConstants.KEY_TRACKING_HOST_APP, appInfo[0]);
+                        map.put(UiKitConstants.KEY_TRACKING_HOST_APP_VERSION, appInfo[1]);
+                        map.put(UiKitConstants.KEY_TRACKING_DEVICE_ID, SdkUtil.getDeviceId(PaymentMethodsActivity.this));
+                        map.put(UiKitConstants.KEY_TRACKING_LANGUAGE, Locale.getDefault().getLanguage());
+                        map.put(UiKitConstants.KEY_TRACKING_DEVICE_MODEL, Build.MODEL);
+                        map.put(UiKitConstants.KEY_TRACKING_DEVICE_TYPE, Build.BRAND);
+                        map.put(UiKitConstants.KEY_TRACKING_TIME_STAMP, String.valueOf(System.currentTimeMillis()));
+                        map.put(UiKitConstants.KEY_TRACKING_NETWORK, DeviceUtils.getConnectivityType(PaymentMethodsActivity.this));
+                        map.put(UiKitConstants.KEY_TRACKING_OS_VERSION, String.valueOf(Build.VERSION.SDK_INT));
+                        map.put(UiKitConstants.KEY_TRACKING_PLATFORM, UiKitConstants.VALUE_TRACKING_PLATFORM);
+                        map.put(UiKitConstants.KEY_TRACKING_SCREEN_SIZE, DeviceUtils.getDisplaySize(PaymentMethodsActivity.this));
+                        map.put(UiKitConstants.KEY_TRACKING_SDK_VERSION, BuildConfig.VERSION_NAME);
+                        map.put(UiKitConstants.KEY_TRACKING_CPU_USAGE, DeviceUtils.getTotalCpuUsage());
+                        map.put(UiKitConstants.KEY_TRACKING_MEMORY_USAGE, DeviceUtils.getMemoryUsage());
+                        map.put(UiKitConstants.KEY_TRACKING_ENVIRONMENT, BuildConfig.FLAVOR);
+
+                        details.setUserCustomData(map);
+
+                    } catch (Exception e) {
+                        Log.d(TAG, "raygun:" + e.getMessage());
                     }
-                    String[] appInfo = DeviceUtils.getApplicationName(PaymentMethodsActivity.this);
-                    map.put(UiKitConstants.KEY_TRACKING_HOST_APP, appInfo[0]);
-                    map.put(UiKitConstants.KEY_TRACKING_HOST_APP_VERSION, appInfo[1]);
-                    map.put(UiKitConstants.KEY_TRACKING_DEVICE_ID, SdkUtil.getDeviceId(PaymentMethodsActivity.this));
-                    map.put(UiKitConstants.KEY_TRACKING_LANGUAGE, Locale.getDefault().getLanguage());
-                    map.put(UiKitConstants.KEY_TRACKING_DEVICE_MODEL, Build.MODEL);
-                    map.put(UiKitConstants.KEY_TRACKING_DEVICE_TYPE, Build.BRAND);
-                    map.put(UiKitConstants.KEY_TRACKING_TIME_STAMP, String.valueOf(System.currentTimeMillis()));
-                    map.put(UiKitConstants.KEY_TRACKING_NETWORK, DeviceUtils.getConnectivityType(PaymentMethodsActivity.this));
-                    map.put(UiKitConstants.KEY_TRACKING_OS_VERSION, String.valueOf(Build.VERSION.SDK_INT));
-                    map.put(UiKitConstants.KEY_TRACKING_PLATFORM, UiKitConstants.VALUE_TRACKING_PLATFORM);
-                    map.put(UiKitConstants.KEY_TRACKING_SCREEN_SIZE, DeviceUtils.getDisplaySize(PaymentMethodsActivity.this));
-                    map.put(UiKitConstants.KEY_TRACKING_SDK_VERSION, BuildConfig.VERSION_NAME);
-                    map.put(UiKitConstants.KEY_TRACKING_CPU_USAGE, DeviceUtils.getTotalCpuUsage());
-                    map.put(UiKitConstants.KEY_TRACKING_MEMORY_USAGE, DeviceUtils.getMemoryUsage());
-                    map.put(UiKitConstants.KEY_TRACKING_ENVIRONMENT, BuildConfig.FLAVOR);
 
-                    details.setUserCustomData(map);
-
-                } catch (Exception e) {
-                    Log.d(TAG, "raygun:" + e.getMessage());
+                    return message;
                 }
-
-                return message;
-            }
-        });
+            });
+        }
     }
 
     private void initPaymentMethods(List<EnabledPayment> enabledPayments) {
@@ -904,7 +907,10 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             } else {
                 PaymentMethodsModel model = PaymentMethods.getMethods(this, enabledPayment.getType(), enabledPayment.getStatus());
                 if (model != null) {
-                    data.add(model);
+                    //inactive GO-PAY for tablet
+                    if (!model.getName().equalsIgnoreCase(getString(R.string.payment_method_gopay)) || !SdkUIFlowUtil.getDeviceType(this).equalsIgnoreCase(SdkUIFlowUtil.TYPE_TABLET)) {
+                        data.add(model);
+                    }
                 }
             }
         }
@@ -935,13 +941,22 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             Logger.d(TAG, "sending result back with code " + requestCode);
 
             if (resultCode == RESULT_OK) {
-                TransactionResponse response = (TransactionResponse) data.getSerializableExtra(getString(R.string.transaction_response));
+
+                TransactionResponse response;
+                try {
+                    response = (TransactionResponse) data.getSerializableExtra(UiKitConstants.KEY_TRANSACTION_RESPONSE);
+
+                } catch (RuntimeException e) {
+                    Logger.e(TAG, "onActivityResult:" + e.getMessage());
+                    finish();
+                    return;
+                }
 
                 if (response != null) {
-                    if (response.getStatusCode().equals(getString(R.string.success_code_200))) {
+                    if (response.getStatusCode().equals(UiKitConstants.STATUS_CODE_200)) {
                         midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_SUCCESS));
                         setAlreadyUtilized(true);
-                    } else if (response.getStatusCode().equals(getString(R.string.success_code_201))) {
+                    } else if (response.getStatusCode().equals(UiKitConstants.STATUS_CODE_201)) {
                         midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_PENDING));
                         setAlreadyUtilized(true);
                     } else {
@@ -963,13 +978,22 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                         finish();
                     }
                 } else {
-                    TransactionResponse response = (TransactionResponse) data.getSerializableExtra(getString(R.string.transaction_response));
+
+                    TransactionResponse response;
+                    try {
+                        response = (TransactionResponse) data.getSerializableExtra(UiKitConstants.KEY_TRANSACTION_RESPONSE);
+
+                    } catch (RuntimeException e) {
+                        Logger.e(TAG, "onActivityResult:" + e.getMessage());
+                        finish();
+                        return;
+                    }
 
                     if (response != null) {
-                        if (response.getStatusCode().equals(getString(R.string.success_code_200))) {
+                        if (response.getStatusCode().equals(UiKitConstants.STATUS_CODE_200)) {
                             midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_SUCCESS));
                             setAlreadyUtilized(true);
-                        } else if (response.getStatusCode().equals(getString(R.string.success_code_201))) {
+                        } else if (response.getStatusCode().equals(UiKitConstants.STATUS_CODE_201)) {
                             midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_PENDING));
                             setAlreadyUtilized(true);
                         } else {

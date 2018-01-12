@@ -147,4 +147,6 @@ public interface MidtransRestAPI {
             @Query("client_key") String clientKey,
             Callback<CardRegistrationResponse> callback
     );
+
+
 }

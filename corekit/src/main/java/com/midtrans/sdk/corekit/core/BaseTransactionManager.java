@@ -42,7 +42,6 @@ public abstract class BaseTransactionManager {
     protected static final String BANK_MANDIRI = "Mandiri";
     protected static final String ALL_BANK = "Other";
 
-    protected Context context;
     protected boolean isSDKLogEnabled = false;
     protected MidtransRestAPI midtransPaymentAPI;
     protected MerchantRestAPI merchantPaymentAPI;

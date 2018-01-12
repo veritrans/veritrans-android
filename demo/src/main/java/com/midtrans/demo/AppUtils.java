@@ -1,7 +1,9 @@
 package com.midtrans.demo;
 
+import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
 import com.midtrans.sdk.corekit.core.PaymentType;
@@ -26,6 +28,8 @@ public class AppUtils {
     private static final String PAYMENT_NAME_BNI_VA = "BNI VA";
     private static final String PAYMENT_NAME_OTHER_VA = "Other VA";
     private static final String PAYMENT_NAME_MANDIRI_ECHANNEL = "Mandiri VA";
+    private static final String TYPE_PHONE = "PHONE";
+    private static final String TYPE_TABLET = "TABLET";
 
     public static final String CATEGORY_CREDIT_CARD = "Credit/Debit Card";
     public static final String CATEGORY_VA = "ATM/Bank Transfer";
@@ -45,7 +49,7 @@ public class AppUtils {
         return false;
     }
 
-    public static List<EnabledPayment> getDefaultPaymentList() {
+    public static List<EnabledPayment> getDefaultPaymentList(Activity activity) {
         List<EnabledPayment> paymentNameList = new ArrayList<>();
         paymentNameList.add(new EnabledPayment(PaymentType.CREDIT_CARD, CATEGORY_CREDIT_CARD));
 
@@ -62,7 +66,10 @@ public class AppUtils {
         paymentNameList.add(new EnabledPayment(PaymentType.BRI_EPAY, CATEGORY_DIRECT_DEBIT));
         paymentNameList.add(new EnabledPayment(PaymentType.DANAMON_ONLINE, CATEGORY_DIRECT_DEBIT));
 
-        paymentNameList.add(new EnabledPayment(PaymentType.GOPAY, CATEGORY_EMONEY));
+        boolean isTablet = getDeviceType(activity).equals(TYPE_TABLET);
+        if (!isTablet) {
+            paymentNameList.add(new EnabledPayment(PaymentType.GOPAY, CATEGORY_EMONEY));
+        }
         paymentNameList.add(new EnabledPayment(PaymentType.MANDIRI_ECASH, CATEGORY_EMONEY));
         paymentNameList.add(new EnabledPayment(PaymentType.TELKOMSEL_CASH, CATEGORY_EMONEY));
 //        paymentNameList.add(new EnabledPayment(PaymentType.XL_TUNAI, null)); being deprecated
@@ -322,5 +329,23 @@ public class AppUtils {
             }
         }
         return enabledPayments;
+    }
+
+    public static String getDeviceType(Activity activity) {
+        String deviceType;
+        DisplayMetrics metrics = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+        float yInches = metrics.heightPixels / metrics.ydpi;
+        float xInches = metrics.widthPixels / metrics.xdpi;
+        double diagonalInches = Math.sqrt(xInches * xInches + yInches * yInches);
+
+        if (diagonalInches >= 6.5) {
+            deviceType = TYPE_TABLET;
+        } else {
+            deviceType = TYPE_PHONE;
+        }
+
+        return deviceType;
     }
 }
