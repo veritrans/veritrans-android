@@ -5,10 +5,12 @@ package com.midtrans.sdk.corekit.utilities;
  */
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.support.annotation.NonNull;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -235,5 +237,23 @@ public class Utils {
         }
 
         return result;
+    }
+
+    public static String getDeviceType(Activity activity) {
+        String deviceType;
+        DisplayMetrics metrics = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+        float yInches = metrics.heightPixels / metrics.ydpi;
+        float xInches = metrics.widthPixels / metrics.xdpi;
+        double diagonalInches = Math.sqrt(xInches * xInches + yInches * yInches);
+
+        if (diagonalInches >= 6.5) {
+            deviceType = "TABLET";
+        } else {
+            deviceType = "PHONE";
+        }
+
+        return deviceType;
     }
 }

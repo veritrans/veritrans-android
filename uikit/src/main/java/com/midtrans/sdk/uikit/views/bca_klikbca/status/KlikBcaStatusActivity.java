@@ -12,6 +12,7 @@ import com.midtrans.sdk.uikit.activities.KlikBCAInstructionActivity;
 import com.midtrans.sdk.uikit.models.MessageInfo;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
+import com.midtrans.sdk.uikit.views.status.PaymentStatusPresenter;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
@@ -23,6 +24,8 @@ import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 public class KlikBcaStatusActivity extends BasePaymentActivity {
 
     public static final String EXTRA_PAYMENT_STATUS = "extra.status";
+    private final String PAGE_NAME = "KlikBCA";
+    private final String BUTTON_CONFIRM_NAME = "Done KlikBCA";
 
     private SemiBoldTextView textExpiry;
     private SemiBoldTextView textTitle;
@@ -31,10 +34,13 @@ public class KlikBcaStatusActivity extends BasePaymentActivity {
     private FancyButton buttonInstruction;
     private FancyButton buttonFinish;
 
+    private PaymentStatusPresenter presenter;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bca_klikbca_status);
+        presenter = new PaymentStatusPresenter();
         initActionButton();
         bindData();
     }
@@ -43,6 +49,7 @@ public class KlikBcaStatusActivity extends BasePaymentActivity {
         buttonFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                presenter.trackButtonClick(BUTTON_CONFIRM_NAME, PAGE_NAME);
                 finish();
             }
         });
@@ -73,6 +80,10 @@ public class KlikBcaStatusActivity extends BasePaymentActivity {
         buttonFinish.setText(getString(R.string.complete_payment_at_klik_bca));
         buttonFinish.setTextBold();
         textTitle.setText(getString(R.string.klik_bca));
+
+        //track page view after page properly loaded
+        boolean isFirstPage = getIntent().getBooleanExtra(USE_DEEP_LINK, true);
+        presenter.trackPageView(PAGE_NAME, isFirstPage);
     }
 
     @Override
@@ -89,5 +100,13 @@ public class KlikBcaStatusActivity extends BasePaymentActivity {
         setPrimaryBackgroundColor(buttonFinish);
         setTextColor(buttonInstruction);
         setIconColorFilter(buttonInstruction);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (presenter != null) {
+            presenter.trackBackButtonClick(PAGE_NAME);
+        }
+        super.onBackPressed();
     }
 }

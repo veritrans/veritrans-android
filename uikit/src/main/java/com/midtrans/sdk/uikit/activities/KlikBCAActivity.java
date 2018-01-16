@@ -9,13 +9,11 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.KlikBCAFragment;
 import com.midtrans.sdk.uikit.fragments.KlikBCAStatusFragment;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
@@ -132,19 +130,12 @@ public class KlikBCAActivity extends BaseActivity {
                 } else {
                     // Check klik BCA user ID
                     if (klikBCAFragment.checkUserId()) {
-
-                        //track btn confirm
-                        mMidtransSDK.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
-
                         // Do the payment
                         SdkUIFlowUtil.showProgressDialog(KlikBCAActivity.this, getString(R.string.processing_payment), false);
                         mMidtransSDK.paymentUsingKlikBCA(mMidtransSDK.readAuthenticationToken(),
                                 klikBCAFragment.getUserId(), new TransactionCallback() {
                                     @Override
                                     public void onSuccess(TransactionResponse response) {
-                                        //track page status pending
-                                        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_PENDING);
-
                                         SdkUIFlowUtil.hideProgressDialog();
                                         transactionResponse = response;
                                         errorMessage = response.getStatusMessage();
@@ -153,9 +144,6 @@ public class KlikBCAActivity extends BaseActivity {
 
                                     @Override
                                     public void onFailure(TransactionResponse response, String reason) {
-                                        //track page status failed
-                                        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
-
                                         errorMessage = getString(R.string.message_payment_cannot_proccessed);
                                         transactionResponse = response;
                                         SdkUIFlowUtil.hideProgressDialog();
@@ -169,8 +157,6 @@ public class KlikBCAActivity extends BaseActivity {
 
                                     @Override
                                     public void onError(Throwable error) {
-                                        //track page status failed
-                                        MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
                                         String message = MessageUtil.createPaymentErrorMessage(KlikBCAActivity.this, error.getMessage(), null);
 
                                         errorMessage = message;
@@ -182,9 +168,6 @@ public class KlikBCAActivity extends BaseActivity {
                 }
             }
         });
-
-        //track page Klik BCA
-        mMidtransSDK.trackEvent(AnalyticsEventName.PAGE_BCA_KLIKBCA);
     }
 
     /**

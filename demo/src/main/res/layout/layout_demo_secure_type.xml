@@ -55,7 +55,7 @@
             android:text="@string/enable_3ds" />
 
         <com.midtrans.demo.widgets.DemoRadioButton
-            android:visibility="gone"
+            android:visibility="visible"
             android:id="@+id/type_secure_rba"
             style="@style/CustomRadioButtonStyle"
             android:layout_width="match_parent"
@@ -63,6 +63,17 @@
             android:layout_marginLeft="@dimen/eight_dp"
             android:layout_marginStart="@dimen/eight_dp"
             android:gravity="center_vertical"
-            android:text="@string/rba" />
+            android:text="@string/enable_rba_3ds" />
+
+        <com.midtrans.demo.widgets.DemoRadioButton
+            android:visibility="visible"
+            android:id="@+id/type_secure_rba_non_3ds"
+            style="@style/CustomRadioButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/eight_dp"
+            android:layout_marginStart="@dimen/eight_dp"
+            android:gravity="center_vertical"
+            android:text="@string/enable_rba_non_3ds" />
     </RadioGroup>
 </LinearLayout>

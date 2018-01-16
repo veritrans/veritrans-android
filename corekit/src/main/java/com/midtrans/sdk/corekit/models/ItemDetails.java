@@ -36,7 +36,7 @@ public class ItemDetails {
         this.id = id;
     }
 
-    public double getPrice() {
+    public int getPrice() {
         return price;
     }
 

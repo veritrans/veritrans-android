@@ -9,7 +9,6 @@ import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentView;
-import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
@@ -19,6 +18,8 @@ import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 public class BriEpayPaymentActivity extends BasePaymentActivity implements BasePaymentView {
 
+    private final String PAGE_NAME = "BRI e-Pay";
+    private final String BUTTON_CONFIRM_NAME = "Confirm Payment BRI e-Pay";
     private FancyButton buttonPayment;
     private BriEpayPaymentPresenter presenter;
 
@@ -35,6 +36,10 @@ public class BriEpayPaymentActivity extends BasePaymentActivity implements BaseP
         setPageTitle(getString(R.string.payment_method_bri_epay));
         buttonPayment.setText(getString(R.string.confirm_payment));
         buttonPayment.setTextBold();
+
+        //track page view after page properly loaded
+        boolean isFirstPage = getIntent().getBooleanExtra(USE_DEEP_LINK, true);
+        presenter.trackPageView(PAGE_NAME, isFirstPage);
     }
 
     private void initActionButton() {
@@ -42,8 +47,8 @@ public class BriEpayPaymentActivity extends BasePaymentActivity implements BaseP
             @Override
             public void onClick(View v) {
                 showProgressLayout();
+                presenter.trackButtonClick(BUTTON_CONFIRM_NAME, PAGE_NAME);
                 presenter.startPayment();
-                presenter.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
             }
         });
     }
@@ -86,5 +91,13 @@ public class BriEpayPaymentActivity extends BasePaymentActivity implements BaseP
         if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS || requestCode == UiKitConstants.INTENT_WEBVIEW_PAYMENT) {
             finishPayment(RESULT_OK, presenter.getTransactionResponse());
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (presenter != null) {
+            presenter.trackBackButtonClick(PAGE_NAME);
+        }
+        super.onBackPressed();
     }
 }

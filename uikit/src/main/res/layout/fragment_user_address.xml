@@ -87,10 +87,14 @@
                             android:id="@+id/et_zipcode"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignTop="@+id/zip_til"
                             android:hint="@string/hint_zip_code"
                             android:inputType="number"
                             android:maxLength="5"
                             android:maxLines="1" />
+
                     </android.support.design.widget.TextInputLayout>
 
                     <android.support.design.widget.TextInputLayout
@@ -108,6 +112,7 @@
                             android:maxLength="100"
                             android:maxLines="1" />
                     </android.support.design.widget.TextInputLayout>
+
                 </RelativeLayout>
             </android.support.v7.widget.CardView>
 
@@ -149,6 +154,7 @@
                         android:id="@+id/shipping_address_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:paddingBottom="@dimen/button_size"
                         android:layout_below="@id/cb_shipping_address"
                         android:visibility="gone">
 

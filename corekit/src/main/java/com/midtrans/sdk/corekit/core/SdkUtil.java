@@ -3,6 +3,7 @@ package com.midtrans.sdk.corekit.core;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+
 import com.midtrans.sdk.corekit.R;
 import com.midtrans.sdk.corekit.models.BCABankTransfer;
 import com.midtrans.sdk.corekit.models.BCAKlikPayDescriptionModel;
@@ -37,9 +38,9 @@ import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
 import com.midtrans.sdk.corekit.models.snap.SnapPromo;
 import com.midtrans.sdk.corekit.models.snap.params.CreditCardPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.params.GCIPaymentParams;
-import com.midtrans.sdk.corekit.models.snap.params.GoPayPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.params.KlikBcaPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.params.MandiriClickPayPaymentParams;
+import com.midtrans.sdk.corekit.models.snap.params.PromoDetails;
 import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.CreditCardPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.CustomerDetailRequest;
@@ -50,6 +51,7 @@ import com.midtrans.sdk.corekit.models.snap.payment.GoPayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.MandiriClickPayPaymentRequest;
 import com.midtrans.sdk.corekit.utilities.Installation;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -609,7 +611,7 @@ public class SdkUtil {
         return new CreditCardPaymentRequest(PaymentType.CREDIT_CARD, paymentParams, customerDetailRequest);
     }
 
-    public static CreditCardPaymentRequest getCreditCardPaymentRequest(String discountToken, CreditCardPaymentModel model, TransactionRequest transactionRequest) {
+    public static CreditCardPaymentRequest getCreditCardPaymentRequest(String discountToken, Long discountAmount, CreditCardPaymentModel model, TransactionRequest transactionRequest) {
         if (transactionRequest.isUiEnabled()) {
             // get user details only if using default ui
             transactionRequest = initializeUserInfo(transactionRequest);
@@ -619,7 +621,11 @@ public class SdkUtil {
         CreditCardPaymentParams paymentParams = new CreditCardPaymentParams(model.getCardToken(),
                 model.isSavecard(), model.getMaskedCardNumber(), model.getInstallment());
         CreditCardPaymentRequest paymentRequest = new CreditCardPaymentRequest(PaymentType.CREDIT_CARD, paymentParams, customerDetailRequest);
-        paymentRequest.setDiscountToken(discountToken);
+
+        //set the promo
+        PromoDetails promoDetails = new PromoDetails(discountToken, discountAmount);
+        paymentRequest.setPromoDetails(promoDetails);
+
         return paymentRequest;
     }
 
@@ -657,8 +663,8 @@ public class SdkUtil {
         return request;
     }
 
-    public static GoPayPaymentRequest getGoPayPaymentRequest(String phoneNumber) {
-        return new GoPayPaymentRequest(new GoPayPaymentParams(phoneNumber), PaymentType.GOPAY);
+    public static GoPayPaymentRequest getGoPayPaymentRequest() {
+        return new GoPayPaymentRequest(PaymentType.GOPAY);
     }
 
     public static GoPayAuthorizationRequest getGoPayAuthorizationRequest(String otp) {

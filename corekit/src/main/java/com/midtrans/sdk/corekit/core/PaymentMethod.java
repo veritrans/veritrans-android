@@ -12,6 +12,7 @@ public enum PaymentMethod {
     BANK_TRANSFER_PERMATA,
     BANK_TRANSFER_BNI,
     BANK_TRANSFER_OTHER,
+    GO_PAY,
     BCA_KLIKPAY,
     KLIKBCA,
     MANDIRI_CLICKPAY,

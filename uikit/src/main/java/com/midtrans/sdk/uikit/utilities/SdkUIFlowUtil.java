@@ -53,6 +53,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -62,6 +63,9 @@ import java.util.regex.Pattern;
  * Created by chetan on 19/10/15.
  */
 public class SdkUIFlowUtil {
+
+    public static final String TYPE_PHONE = "PHONE";
+    public static final String TYPE_TABLET = "TABLET";
 
     private static final String TAG = SdkUIFlowUtil.class.getSimpleName();
     private static MidtransProgressDialogFragment progressDialogFragment;
@@ -110,7 +114,12 @@ public class SdkUIFlowUtil {
      * @param message  message to display on snackbar.
      */
     public static void showToast(Activity activity, String message) {
-        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+        try {
+            Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+
+        } catch (RuntimeException e) {
+            Log.e("showToast", "message:" + e.getMessage());
+        }
     }
 
 
@@ -247,7 +256,7 @@ public class SdkUIFlowUtil {
             } else {
                 Toast.makeText(activity, activity.getString(R.string.api_fail_message), Toast.LENGTH_SHORT).show();
             }
-        } catch (NullPointerException e) {
+        } catch (RuntimeException e) {
             Logger.i("Nullpointer:" + e.getMessage());
         }
     }
@@ -484,9 +493,9 @@ public class SdkUIFlowUtil {
         double diagonalInches = Math.sqrt(xInches * xInches + yInches * yInches);
 
         if (diagonalInches >= 6.5) {
-            deviceType = "TABLET";
+            deviceType = TYPE_TABLET;
         } else {
-            deviceType = "PHONE";
+            deviceType = TYPE_PHONE;
         }
 
         return deviceType;
@@ -665,5 +674,22 @@ public class SdkUIFlowUtil {
 
     public static UserDetail getSavedUserDetails(Context context) throws RuntimeException {
         return LocalDataHandler.readObject(context.getString(R.string.user_details), UserDetail.class);
+    }
+
+    public static void saveUserDetails() throws RuntimeException {
+        UserDetail userDetail = LocalDataHandler.readObject(UiKitConstants.KEY_USER_DETAILS, UserDetail.class);
+        saveUserDetails(userDetail);
+    }
+
+    public static void saveUserDetails(UserDetail userDetail) throws RuntimeException {
+        if (userDetail == null) {
+            userDetail = new UserDetail();
+        }
+
+        if (TextUtils.isEmpty(userDetail.getUserId())) {
+            userDetail.setUserId(UUID.randomUUID().toString());
+        }
+
+        LocalDataHandler.saveObject(UiKitConstants.KEY_USER_DETAILS, userDetail);
     }
 }

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.midtrans.sdk.uikit.widgets.DefaultTextView
+        android:id="@+id/text_notification"
+        style="@style/GojekNotification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/notification_gojek_app"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/eight_dp"
+            android:src="@drawable/ic_no_gopay"/>
+
+        <com.midtrans.sdk.uikit.widgets.BoldTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/eight_dp"
+            android:text="@string/whoops"
+            android:textSize="@dimen/twenty_two_sp"/>
+
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/eight_dp"
+            android:text="@string/no_gojek_message"/>
+
+    </LinearLayout>
+
+    <com.midtrans.sdk.uikit.widgets.FancyButton
+        android:id="@+id/button_download_gojek"
+        style="@style/ButtonSecondary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/sixteen_dp"
+        app:fb_iconPaddingRight="@dimen/four_dp"
+        app:fb_iconResource="@drawable/ic_download"
+        app:fb_text="@string/install_gojek_message" />
+
+</RelativeLayout>

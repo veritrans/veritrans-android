@@ -1,15 +1,15 @@
 package com.midtrans.sdk.corekit.callback;
 
-import com.midtrans.sdk.corekit.models.promo.ObtainPromoResponse;
+import com.midtrans.sdk.corekit.models.promo.ObtainPromosResponse;
 
 /**
  * Created by rakawm on 2/3/17.
  */
 
 public interface ObtainPromoCallback {
-    void onSuccess(ObtainPromoResponse response);
+    void onSuccess(ObtainPromosResponse response);
 
-    void onFailure(String message);
+    void onFailure(String statusCode, String message);
 
     void onError(Throwable throwable);
 }

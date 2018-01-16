@@ -25,6 +25,8 @@ public interface ISdkFlow {
 
     void runOtherBankTransfer(Context context, String snapToken);
 
+    void runGoPay(Context context, String snapToken);
+
     void runBCAKlikPay(Context context, String snapToken);
 
     void runKlikBCA(Context context, String snapToken);

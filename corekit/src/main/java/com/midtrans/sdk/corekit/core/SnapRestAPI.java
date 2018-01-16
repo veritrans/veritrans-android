@@ -268,6 +268,7 @@ public interface SnapRestAPI {
     @GET("/v1/transactions/{snap_token}/point_inquiry/{card_token}")
     void getBanksPoint(@Path("snap_token") String snapToken, @Path("card_token") String cardToken, Callback<BanksPointResponse> transactionCallback);
 
+
     /**
      * Get Transaction Status.
      *

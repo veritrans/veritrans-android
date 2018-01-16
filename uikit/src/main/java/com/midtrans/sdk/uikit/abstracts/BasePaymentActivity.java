@@ -47,10 +47,14 @@ import java.util.List;
 
 public abstract class BasePaymentActivity extends BaseActivity {
 
+    //for tracking first page
+    public final static String USE_DEEP_LINK = "First Page";
     private static final String TAG = BasePaymentActivity.class.getSimpleName();
-
-    private boolean isDetailShown = false;
+    protected boolean isDetailShown = false;
     private boolean hasMerchantLogo = false;
+
+    protected BoldTextView textTotalAmount;
+    protected TransactionDetailsAdapter transactionDetailAdapter;
 
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
@@ -73,9 +77,9 @@ public abstract class BasePaymentActivity extends BaseActivity {
     }
 
     private void initTotalAmount() {
-        final Transaction transaction = MidtransSDK.getInstance().getTransaction();
+        final Transaction transaction = getMidtransSdk().getTransaction();
         if (transaction.getTransactionDetails() != null) {
-            BoldTextView textTotalAmount = (BoldTextView) findViewById(R.id.text_amount);
+            textTotalAmount = (BoldTextView) findViewById(R.id.text_amount);
             if (textTotalAmount != null) {
                 String totalAmount = getString(R.string.prefix_money, Utils.getFormattedAmount(transaction.getTransactionDetails().getAmount()));
                 textTotalAmount.setText(totalAmount);
@@ -84,7 +88,7 @@ public abstract class BasePaymentActivity extends BaseActivity {
                 }
             }
         }
-        initTransactionDetail(MidtransSDK.getInstance().getTransactionRequest().getItemDetails());
+        initTransactionDetail(getMidtransSdk().getTransactionRequest().getItemDetails());
         //init dim
         findViewById(R.id.background_dim).setOnClickListener(new OnClickListener() {
             @Override
@@ -107,12 +111,12 @@ public abstract class BasePaymentActivity extends BaseActivity {
         if (recyclerView != null) {
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            TransactionDetailsAdapter adapter = new TransactionDetailsAdapter(details);
-            recyclerView.setAdapter(adapter);
+             transactionDetailAdapter = new TransactionDetailsAdapter(details);
+            recyclerView.setAdapter(transactionDetailAdapter);
         }
     }
 
-    private void displayOrHideItemDetails() {
+    protected void displayOrHideItemDetails() {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv_transaction_detail);
         View dimView = findViewById(R.id.background_dim);
         if (recyclerView != null && dimView != null) {
@@ -133,7 +137,7 @@ public abstract class BasePaymentActivity extends BaseActivity {
         ImageView merchantLogo = (ImageView) findViewById(R.id.merchant_logo);
         DefaultTextView merchantNameText = (DefaultTextView) findViewById(R.id.text_page_merchant_name);
 
-        MerchantData merchantData = MidtransSDK.getInstance().getMerchantData();
+        MerchantData merchantData = getMidtransSdk().getMerchantData();
 
         if (merchantData != null) {
             MerchantPreferences preferences = merchantData.getPreference();
@@ -185,7 +189,7 @@ public abstract class BasePaymentActivity extends BaseActivity {
 
     protected void adjustToolbarSize(Toolbar toolbar) {
         if (hasMerchantLogo) {
-            AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams)toolbar.getLayoutParams();
+            AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
             params.height = params.height + (int) getResources().getDimension(R.dimen.toolbar_expansion_size);
             toolbar.setLayoutParams(params);
         }
@@ -221,7 +225,7 @@ public abstract class BasePaymentActivity extends BaseActivity {
 
     protected void finishPayment(int resultCode, TransactionResponse response) {
         Intent data = new Intent();
-        data.putExtra(getString(R.string.transaction_response), response);
+        data.putExtra(UiKitConstants.KEY_TRANSACTION_RESPONSE, response);
         setResult(resultCode, data);
         finish();
     }

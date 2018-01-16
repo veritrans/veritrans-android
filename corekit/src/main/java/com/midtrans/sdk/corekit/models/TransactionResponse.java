@@ -1,10 +1,8 @@
 package com.midtrans.sdk.corekit.models;
 
 import android.text.TextUtils;
-
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -81,6 +79,8 @@ public class TransactionResponse implements Serializable {
     private String xlTunaiExpiration;
     @SerializedName("installment_term")
     private String installmentTerm;
+    @SerializedName("gopay_expiration")
+    private String gopayExpiration;
 
     @SerializedName("indomaret_expire_time")
     private String indomaretExpireTime;
@@ -128,6 +128,12 @@ public class TransactionResponse implements Serializable {
     private String pointBalanceAmount;
     @SerializedName("point_redeem_amount")
     private float pointRedeemAmount;
+
+    //for gopay
+    @SerializedName("qr_code_url")
+    private String qrCodeUrl;
+    @SerializedName("deeplink_url")
+    private String deeplinkUrl;
 
     public TransactionResponse(String statusCode, String statusMessage, String transactionId,
                                String orderId, String grossAmount, String paymentType,
@@ -478,5 +484,29 @@ public class TransactionResponse implements Serializable {
 
     public void setBcaVaNumber(String bcaVaNumber) {
         this.bcaVaNumber = bcaVaNumber;
+    }
+
+    public String getQrCodeUrl() {
+        return qrCodeUrl;
+    }
+
+    public void setQrCodeUrl(String qrCodeUrl) {
+        this.qrCodeUrl = qrCodeUrl;
+    }
+
+    public String getDeeplinkUrl() {
+        return deeplinkUrl;
+    }
+
+    public void setDeeplinkUrl(String deeplinkUrl) {
+        this.deeplinkUrl = deeplinkUrl;
+    }
+
+    public String getGopayExpiration() {
+        return gopayExpiration;
+    }
+
+    public void setGopayExpiration(String gopayExpiration) {
+        this.gopayExpiration = gopayExpiration;
     }
 }

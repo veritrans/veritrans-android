@@ -20,7 +20,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".DemoProductPageActivity" />
-        <activity android:name=".DemoOrderReviewActivity" />
+        <activity android:name=".DemoOrderReviewActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity android:name=".UserAddressActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity android:name=".DemoProductListActivity" />
         <activity android:name=".DemoSavedCardsActivity" />
         <activity android:name=".DemoAccountActivity" />

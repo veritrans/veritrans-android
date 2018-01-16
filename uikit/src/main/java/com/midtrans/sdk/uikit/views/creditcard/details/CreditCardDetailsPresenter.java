@@ -12,7 +12,6 @@ import com.midtrans.sdk.corekit.callback.SaveCardCallback;
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.Logger;
-import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.CardTokenRequest;
@@ -52,6 +51,7 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
     private int installmentCurrentPosition;
 
     public CreditCardDetailsPresenter(Context context, CreditCardDetailsView view) {
+        super();
         this.view = view;
         this.creditCardTransaction = new CreditCardTransaction();
         this.context = context;
@@ -61,7 +61,7 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
 
     private void fetchBankBins() {
         try {
-            MidtransSDK.getInstance().getBankBins(new BankBinsCallback() {
+            getMidtransSDK().getBankBins(new BankBinsCallback() {
                 @Override
                 public void onSuccess(ArrayList<BankBinsResponse> response) {
                     creditCardTransaction.setBankBins(response);
@@ -84,11 +84,11 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
     }
 
     public boolean isSecurePayment() {
-        TransactionRequest request = MidtransSDK.getInstance().getTransactionRequest();
+        TransactionRequest request = getMidtransSDK().getTransactionRequest();
         if (request != null) {
             String cardClickType = request.getCardClickType();
             if (TextUtils.isEmpty(cardClickType)) {
-                if (MidtransSDK.getInstance().getCreditCard().isSecure()) {
+                if (getMidtransSDK().getCreditCard().isSecure()) {
                     return true;
                 }
             } else if (request.isSecureCard()) {
@@ -121,12 +121,9 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
     }
 
     public Integer getGrossAmount() {
-        MidtransSDK sdk = MidtransSDK.getInstance();
-        if (sdk != null) {
-            TransactionDetails transactionDetails = sdk.getTransaction().getTransactionDetails();
-            if (transactionDetails != null) {
-                return transactionDetails.getAmount();
-            }
+        TransactionDetails transactionDetails = getMidtransSDK().getTransaction().getTransactionDetails();
+        if (transactionDetails != null) {
+            return transactionDetails.getAmount();
         }
 
         return 0;
@@ -139,7 +136,7 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
                 cvv,
                 month,
                 year,
-                MidtransSDK.getInstance().getClientKey());
+                getMidtransSDK().getClientKey());
 
         cardTokenRequest.setIsSaved(saveCard);
         cardTokenRequest.setSecure(isSecurePayment());
@@ -153,7 +150,7 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
     private void applyTokenizationProperties(CardTokenRequest cardTokenRequest) {
         applyInstallmentProperties(cardTokenRequest);
         cardTokenRequest.setPoint(view.isBankPointEnabled());
-        CreditCard creditCard = MidtransSDK.getInstance().getCreditCard();
+        CreditCard creditCard = getMidtransSDK().getCreditCard();
         if (creditCard != null) {
             applyAcquiringBank(cardTokenRequest, creditCard);
             applyTokenizationType(cardTokenRequest, creditCard);
@@ -195,10 +192,9 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
 
 
     private void saveCrediCard(TransactionResponse response) {
-        MidtransSDK midtransSDK = MidtransSDK.getInstance();
-        if (!midtransSDK.isEnableBuiltInTokenStorage()) {
+        if (!getMidtransSDK().isEnableBuiltInTokenStorage()) {
             if (this.cardTokenRequest != null && this.cardTokenRequest.isSaved()) {
-                List<SavedToken> savedTokens = midtransSDK.getCreditCard().getSavedTokens();
+                List<SavedToken> savedTokens = getMidtransSDK().getCreditCard().getSavedTokens();
                 List<SaveCardRequest> savedCards = SdkUIFlowUtil.convertSavedTokens(savedTokens);
 
                 String cardType = context.getString(R.string.card_click_type_two_click);
@@ -255,7 +251,7 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
     }
 
     public boolean isShowPaymentStatus() {
-        return MidtransSDK.getInstance().getUIKitCustomSetting().isShowPaymentStatus();
+        return getMidtransSDK().getUIKitCustomSetting().isShowPaymentStatus();
     }
 
 
@@ -264,7 +260,7 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
     }
 
     public boolean isSaveCardOptionChecked() {
-        return MidtransSDK.getInstance().getUIKitCustomSetting().isSaveCardChecked();
+        return getMidtransSDK().getUIKitCustomSetting().isSaveCardChecked();
     }
 
     public void startOneClickPayment(String maskedCard) {
@@ -280,7 +276,7 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
         request.setSecure(isSecurePayment());
         request.setTwoClick(true);
         request.setSecure(isSecurePayment());
-        request.setClientKey(MidtransSDK.getInstance().getClientKey());
+        request.setClientKey(getMidtransSDK().getClientKey());
 
         applyTokenizationProperties(request);
         getCardToken(request);
@@ -292,7 +288,7 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
 
     private void startSavingCreditCards(List<SaveCardRequest> saveCardRequest) {
         UserDetail userDetail = LocalDataHandler.readObject(UiKitConstants.KEY_USER_DETAILS, UserDetail.class);
-        MidtransSDK.getInstance().saveCards(userDetail.getUserId(), new ArrayList<>(saveCardRequest),
+        getMidtransSDK().saveCards(userDetail.getUserId(), new ArrayList<>(saveCardRequest),
                 new SaveCardCallback() {
                     @Override
                     public void onSuccess(SaveCardResponse response) {
@@ -312,8 +308,8 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
     }
 
     private void startCreditCardPayment(CreditCardPaymentModel model) {
-        String authenticationToken = MidtransSDK.getInstance().readAuthenticationToken();
-        MidtransSDK.getInstance().paymentUsingCard(authenticationToken, model, new TransactionCallback() {
+        String authenticationToken = getMidtransSDK().readAuthenticationToken();
+        getMidtransSDK().paymentUsingCard(authenticationToken, model, new TransactionCallback() {
             @Override
             public void onSuccess(TransactionResponse response) {
                 transactionResponse = response;
@@ -337,7 +333,7 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
 
     private void getCardToken(CardTokenRequest cardTokenRequest) {
         this.cardTokenRequest = cardTokenRequest;
-        MidtransSDK.getInstance().getCardToken(cardTokenRequest, new CardTokenCallback() {
+        getMidtransSDK().getCardToken(cardTokenRequest, new CardTokenCallback() {
             @Override
             public void onSuccess(TokenDetailsResponse response) {
                 creditCardToken = response;
@@ -359,7 +355,7 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
 
     public void getBankPoint(final String bankType) {
         if (creditCardToken != null) {
-            MidtransSDK.getInstance().getBanksPoint(creditCardToken.getTokenId(), new BanksPointCallback() {
+            getMidtransSDK().getBanksPoint(creditCardToken.getTokenId(), new BanksPointCallback() {
                 @Override
                 public void onSuccess(BanksPointResponse response) {
                     creditCardTransaction.setBankPoint(response, bankType);
@@ -379,10 +375,6 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
         } else {
             view.onGetBankPointFailure();
         }
-    }
-
-    public void trackEvent(String eventName) {
-        MidtransSDK.getInstance().trackEvent(eventName);
     }
 
     public boolean isInstallmentAvailable() {
@@ -421,7 +413,7 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
 
     public boolean isBniPointAvailable(String cardBin) {
         String bank = creditCardTransaction.getBankByBin(cardBin);
-        List<String> bankPoints = MidtransSDK.getInstance().getBanksPointEnabled();
+        List<String> bankPoints = getMidtransSDK().getBanksPointEnabled();
 
         return !TextUtils.isEmpty(bank)
                 && bankPoints != null
@@ -431,7 +423,7 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
 
     public boolean isMandiriPointAvailable(String cardBin) {
         String bank = creditCardTransaction.getBankByBin(cardBin);
-        List<String> bankPoints = MidtransSDK.getInstance().getBanksPointEnabled();
+        List<String> bankPoints = getMidtransSDK().getBanksPointEnabled();
 
         return !TextUtils.isEmpty(bank)
                 && bankPoints != null
@@ -460,8 +452,8 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
     }
 
     public void getPaymentStatus() {
-        String snapToken = MidtransSDK.getInstance().readAuthenticationToken();
-        MidtransSDK.getInstance().getTransactionStatus(snapToken, new GetTransactionStatusCallback() {
+        String snapToken = getMidtransSDK().readAuthenticationToken();
+        getMidtransSDK().getTransactionStatus(snapToken, new GetTransactionStatusCallback() {
             @Override
             public void onSuccess(TransactionStatusResponse response) {
 
@@ -497,12 +489,12 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
 
     public void startScanCard(Activity activity, int intentRequestScanCard) {
         if (isCardScannerAvailable()) {
-            MidtransSDK.getInstance().getExternalScanner().startScan(activity, intentRequestScanCard);
+            getMidtransSDK().getExternalScanner().startScan(activity, intentRequestScanCard);
         }
     }
 
     public boolean isCardScannerAvailable() {
-        return MidtransSDK.getInstance().getExternalScanner() != null;
+        return getMidtransSDK().getExternalScanner() != null;
     }
 
     public boolean isBinLockingValid(String cardNumber) {

@@ -11,164 +11,175 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/instruction_toggle"
+            style="@style/ButtonSecondaryExpandable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/sixteen_dp"
+            android:gravity="center_vertical"
             android:layout_marginLeft="@dimen/sixteen_dp"
+            android:layout_marginRight="@dimen/sixteen_dp"
             android:layout_marginTop="@dimen/sixteen_dp"
-            android:text="@string/title_instruction_klikbca"
-            android:textColor="@color/dark_gray"
-            android:textSize="@dimen/primary_text_size" />
+            android:text="@string/show_instruction" />
 
         <LinearLayout
+            android:id="@+id/instruction_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/four_dp"
-            android:background="@color/light_gray"
-            android:orientation="horizontal"
-            android:paddingBottom="@dimen/five_dp"
-            android:paddingLeft="@dimen/eight_dp"
-            android:paddingRight="@dimen/eight_dp"
-            android:paddingTop="@dimen/five_dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
 
-            <TextView
-                android:layout_width="@dimen/twenty_four_dp"
-                android:layout_height="wrap_content"
-                android:text="@string/instruction_1" />
-
-            <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/four_dp"
                 android:background="@color/light_gray"
-                android:lineSpacingExtra="2dp"
-                android:text="@string/bca_klik_instruction_step1"
-                android:textColor="@color/black"
-                android:textSize="@dimen/secondary_text_size" />
-        </LinearLayout>
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/five_dp"
+                android:paddingLeft="@dimen/eight_dp"
+                android:paddingRight="@dimen/eight_dp"
+                android:paddingTop="@dimen/five_dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/eight_dp"
-            android:orientation="horizontal"
-            android:paddingBottom="@dimen/five_dp"
-            android:paddingLeft="@dimen/eight_dp"
-            android:paddingRight="@dimen/eight_dp"
-            android:paddingTop="@dimen/five_dp">
+                <TextView
+                    android:layout_width="@dimen/twenty_four_dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/instruction_1" />
 
-            <TextView
-                android:layout_width="@dimen/twenty_four_dp"
-                android:layout_height="wrap_content"
-                android:text="@string/instruction_2" />
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/light_gray"
+                    android:lineSpacingExtra="2dp"
+                    android:text="@string/bca_klik_instruction_step1"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/secondary_text_size" />
+            </LinearLayout>
 
-            <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:lineSpacingExtra="2dp"
-                android:text="@string/bca_klik_instruction_step2"
-                android:textColor="@color/black"
-                android:textSize="@dimen/secondary_text_size" />
-        </LinearLayout>
+                android:layout_marginTop="@dimen/eight_dp"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/five_dp"
+                android:paddingLeft="@dimen/eight_dp"
+                android:paddingRight="@dimen/eight_dp"
+                android:paddingTop="@dimen/five_dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/four_dp"
-            android:background="@color/light_gray"
-            android:orientation="horizontal"
-            android:paddingBottom="@dimen/five_dp"
-            android:paddingLeft="@dimen/eight_dp"
-            android:paddingRight="@dimen/eight_dp"
-            android:paddingTop="@dimen/five_dp">
+                <TextView
+                    android:layout_width="@dimen/twenty_four_dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/instruction_2" />
 
-            <TextView
-                android:layout_width="@dimen/twenty_four_dp"
-                android:layout_height="wrap_content"
-                android:text="@string/instruction_3" />
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="2dp"
+                    android:text="@string/bca_klik_instruction_step2"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/secondary_text_size" />
+            </LinearLayout>
 
-            <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/four_dp"
                 android:background="@color/light_gray"
-                android:lineSpacingExtra="2dp"
-                android:text="@string/bca_klik_instruction_step3"
-                android:textColor="@color/black"
-                android:textSize="@dimen/secondary_text_size" />
-        </LinearLayout>
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/five_dp"
+                android:paddingLeft="@dimen/eight_dp"
+                android:paddingRight="@dimen/eight_dp"
+                android:paddingTop="@dimen/five_dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/eight_dp"
-            android:orientation="horizontal"
-            android:paddingBottom="@dimen/five_dp"
-            android:paddingLeft="@dimen/eight_dp"
-            android:paddingRight="@dimen/eight_dp"
-            android:paddingTop="@dimen/five_dp">
+                <TextView
+                    android:layout_width="@dimen/twenty_four_dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/instruction_3" />
 
-            <TextView
-                android:layout_width="@dimen/twenty_four_dp"
-                android:layout_height="wrap_content"
-                android:text="@string/instruction_4" />
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/light_gray"
+                    android:lineSpacingExtra="2dp"
+                    android:text="@string/bca_klik_instruction_step3"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/secondary_text_size" />
+            </LinearLayout>
 
-            <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:lineSpacingExtra="2dp"
-                android:text="@string/bca_klik_instruction_step4"
-                android:textColor="@color/black"
-                android:textSize="@dimen/secondary_text_size" />
-        </LinearLayout>
+                android:layout_marginTop="@dimen/eight_dp"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/five_dp"
+                android:paddingLeft="@dimen/eight_dp"
+                android:paddingRight="@dimen/eight_dp"
+                android:paddingTop="@dimen/five_dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/four_dp"
-            android:background="@color/light_gray"
-            android:orientation="horizontal"
-            android:paddingBottom="@dimen/five_dp"
-            android:paddingLeft="@dimen/eight_dp"
-            android:paddingRight="@dimen/eight_dp"
-            android:paddingTop="@dimen/five_dp">
+                <TextView
+                    android:layout_width="@dimen/twenty_four_dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/instruction_4" />
 
-            <TextView
-                android:layout_width="@dimen/twenty_four_dp"
-                android:layout_height="wrap_content"
-                android:text="@string/instruction_5" />
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="2dp"
+                    android:text="@string/bca_klik_instruction_step4"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/secondary_text_size" />
+            </LinearLayout>
 
-            <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/four_dp"
                 android:background="@color/light_gray"
-                android:lineSpacingExtra="2dp"
-                android:text="@string/bca_klik_instruction_step5"
-                android:textColor="@color/black"
-                android:textSize="@dimen/secondary_text_size" />
-        </LinearLayout>
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/five_dp"
+                android:paddingLeft="@dimen/eight_dp"
+                android:paddingRight="@dimen/eight_dp"
+                android:paddingTop="@dimen/five_dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/eight_dp"
-            android:orientation="horizontal"
-            android:paddingBottom="@dimen/five_dp"
-            android:paddingLeft="@dimen/eight_dp"
-            android:paddingRight="@dimen/eight_dp"
-            android:paddingTop="@dimen/five_dp">
+                <TextView
+                    android:layout_width="@dimen/twenty_four_dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/instruction_5" />
 
-            <TextView
-                android:layout_width="@dimen/twenty_four_dp"
-                android:layout_height="wrap_content"
-                android:text="@string/instruction_6" />
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/light_gray"
+                    android:lineSpacingExtra="2dp"
+                    android:text="@string/bca_klik_instruction_step5"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/secondary_text_size" />
+            </LinearLayout>
 
-            <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:lineSpacingExtra="2dp"
-                android:text="@string/bca_klik_instruction_step6"
-                android:textColor="@color/black"
-                android:textSize="@dimen/secondary_text_size" />
+                android:layout_marginTop="@dimen/eight_dp"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/five_dp"
+                android:paddingLeft="@dimen/eight_dp"
+                android:paddingRight="@dimen/eight_dp"
+                android:paddingTop="@dimen/five_dp">
+
+                <TextView
+                    android:layout_width="@dimen/twenty_four_dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/instruction_6" />
+
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="2dp"
+                    android:text="@string/bca_klik_instruction_step6"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/secondary_text_size" />
+            </LinearLayout>
+
         </LinearLayout>
+
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

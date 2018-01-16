@@ -53,13 +53,24 @@ deployment:
         owner: veritrans
         commands:
             - ./gradlew :clean :corekit:assembleRelease :corekit:bintrayUpload -PdisablePreDex
+            - cp -r corekit/build/outputs/mapping $CIRCLE_ARTIFACTS
+            - cp -r corekit/build/reports/mapping/ $CIRCLE_TEST_REPORTS
             - ./gradlew :clean :uikit:assembleRelease :uikit:bintrayUpload -PdisablePreDex
+            - cp -r uikit/build/outputs/mapping $CIRCLE_ARTIFACTS
+            - cp -r uikit/build/reports/mapping/ $CIRCLE_TEST_REPORTS
             - ./gradlew :clean :scancard:assembleRelease :scancard:bintrayUpload -PdisablePreDex
             - ./gradlew :clean :widgets:assembleRelease :widgets:bintrayUpload -PdisablePreDex
             - ./gradlew :demo:assembleProductionRelease :demo:crashlyticsUploadDistributionProductionRelease
             - ./gradlew :demo:assembleDevelopmentRelease :demo:crashlyticsUploadDistributionDevelopmentRelease
+
     develop:
         branch: develop
+        owner: veritrans
+        commands:
+            - ./gradlew :demo:assembleDevelopmentRelease :demo:crashlyticsUploadDistributionDevelopmentRelease
+
+    uat:
+        branch: uat
         owner: veritrans
         commands:
             - ./gradlew :demo:assembleDevelopmentRelease :demo:crashlyticsUploadDistributionDevelopmentRelease

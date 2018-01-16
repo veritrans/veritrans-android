@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.View.OnClickListener;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BaseVaPaymentStatusActivity;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
@@ -19,6 +20,8 @@ public class MandiriBillStatusActivity extends BaseVaPaymentStatusActivity {
 
     private static final String LABEL_BILL_CODE = "Bill Code Number";
     private static final String LABEL_COMPANY_CODE = "Company Code Number";
+    private final String PAGE_NAME = "Bank Transfer Mandiri Charge";
+    private final String CONFIRM_BUTTON_NAME = "Done Bank Transfer Mandiri";
 
     private DefaultTextView textBillPayCode;
     private DefaultTextView textCompanyCode;
@@ -47,6 +50,10 @@ public class MandiriBillStatusActivity extends BaseVaPaymentStatusActivity {
         }
 
         initStatusPayment();
+
+        //track page view after page properly loaded
+        boolean isFirstPage = getIntent().getBooleanExtra(USE_DEEP_LINK, true);
+        presenter.trackPageView(PAGE_NAME, isFirstPage);
     }
 
     private void initStatusPayment() {
@@ -59,6 +66,17 @@ public class MandiriBillStatusActivity extends BaseVaPaymentStatusActivity {
             buttonCopyCompanyCode.setEnabled(false);
             buttonInstruction.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    protected void initCompletePaymentButton() {
+        buttonCompletePayment.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.trackButtonClick(CONFIRM_BUTTON_NAME, PAGE_NAME);
+                finishPaymentStatus();
+            }
+        });
     }
 
     private void initActionButton() {
@@ -115,6 +133,9 @@ public class MandiriBillStatusActivity extends BaseVaPaymentStatusActivity {
 
     @Override
     public void onBackPressed() {
+        if (presenter != null) {
+            presenter.trackBackButtonClick(PAGE_NAME);
+        }
         finishPaymentStatus();
     }
 }

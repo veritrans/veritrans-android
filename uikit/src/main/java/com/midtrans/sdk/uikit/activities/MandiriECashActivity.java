@@ -15,7 +15,6 @@ import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.constants.AnalyticsEventName;
 import com.midtrans.sdk.uikit.fragments.InstructionMandiriECashFragment;
 import com.midtrans.sdk.uikit.fragments.WebviewFragment;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
@@ -108,9 +107,6 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void setUpFragment() {
-        //track page mandiri ecash
-        mMidtransSDK.trackEvent(AnalyticsEventName.PAGE_MANDIRI_ECASH);
-
         // setup  fragment
         mandiriECashFragment = new InstructionMandiriECashFragment();
         replaceFragment(mandiriECashFragment, R.id.instruction_container, false, false);
@@ -124,17 +120,11 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void makeTransaction() {
-        //track mandiri ecash confirm payment
-        mMidtransSDK.trackEvent(AnalyticsEventName.BTN_CONFIRM_PAYMENT);
-
         SdkUIFlowUtil.showProgressDialog(this, getString(R.string.processing_payment), false);
 
         mMidtransSDK.paymentUsingMandiriEcash(mMidtransSDK.readAuthenticationToken(), new TransactionCallback() {
             @Override
             public void onSuccess(TransactionResponse response) {
-                //track page status pending
-                MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_PENDING);
-
                 SdkUIFlowUtil.hideProgressDialog();
 
                 if (response != null &&
@@ -156,9 +146,6 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
 
             @Override
             public void onFailure(TransactionResponse response, String reason) {
-                //track page status failed
-                MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
-
                 SdkUIFlowUtil.hideProgressDialog();
                 MandiriECashActivity.this.errorMessage = getString(R.string.message_payment_failed);
                 MandiriECashActivity.this.transactionResponse = response;
@@ -172,9 +159,6 @@ public class MandiriECashActivity extends BaseActivity implements View.OnClickLi
 
             @Override
             public void onError(Throwable error) {
-                //track page status failed
-                MidtransSDK.getInstance().trackEvent(AnalyticsEventName.PAGE_STATUS_FAILED);
-
                 SdkUIFlowUtil.hideProgressDialog();
                 String message = MessageUtil.createPaymentErrorMessage(MandiriECashActivity.this, error.getMessage(), null);
                 MandiriECashActivity.this.errorMessage = message;

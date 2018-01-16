@@ -281,47 +281,6 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/layout_status_bank"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/status_bank"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/small_text_size"
-                            android:textStyle="bold"
-                            android:visibility="visible" />
-
-                        <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                            android:id="@+id/text_status_bank"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="right"
-                            android:text="@string/status_installment_bank"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/primary_text_size" />
-
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginBottom="@dimen/two_dp"
-                        android:layout_marginTop="@dimen/two_dp"
-                        android:background="@color/material_grey" />
-                </LinearLayout>
-
-
-                <LinearLayout
                     android:id="@+id/layout_status_payment_type"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
