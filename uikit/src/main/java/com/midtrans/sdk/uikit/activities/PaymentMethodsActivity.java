@@ -941,29 +941,6 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             Logger.d(TAG, "sending result back with code " + requestCode);
 
             if (resultCode == RESULT_OK) {
-
-<<<<<<< HEAD
-                if (data != null) {
-
-                    TransactionResponse response = null;
-                    try {
-                        response = (TransactionResponse) data.getSerializableExtra(getString(R.string.transaction_response));
-
-                    } catch (RuntimeException e) {
-                        Logger.d(TAG, "failed to get transaction response:" + e.getMessage());
-                    }
-
-                    if (response != null) {
-                        if (response.getStatusCode().equals(getString(R.string.success_code_200))) {
-                            midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_SUCCESS));
-                            setAlreadyUtilized(true);
-                        } else if (response.getStatusCode().equals(getString(R.string.success_code_201))) {
-                            midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_PENDING));
-                            setAlreadyUtilized(true);
-                        } else {
-                            midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_FAILED));
-                        }
-=======
                 TransactionResponse response;
                 try {
                     response = (TransactionResponse) data.getSerializableExtra(UiKitConstants.KEY_TRANSACTION_RESPONSE);
@@ -981,7 +958,6 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     } else if (response.getStatusCode().equals(UiKitConstants.STATUS_CODE_201)) {
                         midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_PENDING));
                         setAlreadyUtilized(true);
->>>>>>> master
                     } else {
                         midtransSDK.notifyTransactionFinished(new TransactionResult(null, null, TransactionResult.STATUS_INVALID));
                     }
