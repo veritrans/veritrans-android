@@ -71,13 +71,13 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/instruction_alto_2" />
+                    android:src="@drawable/instruction_prima_2" />
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
                     style="@style/BankTransferInstruction"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/instruction_alto2"/>
+                    android:text="@string/instruction_alto2_bni"/>
             </LinearLayout>
 
             <LinearLayout
@@ -97,13 +97,13 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/instruction_alto_3" />
+                    android:src="@drawable/instruction_prima_3" />
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
                     style="@style/BankTransferInstruction"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/instruction_alto3"/>
+                    android:text="@string/instruction_alto3_bni"/>
             </LinearLayout>
 
             <LinearLayout
@@ -122,13 +122,13 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/instruction_alto_4" />
+                    android:src="@drawable/instruction_prima_4_bni" />
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
                     style="@style/BankTransferInstruction"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/instruction_alto4"/>
+                    android:text="@string/instruction_alto4_bni"/>
             </LinearLayout>
 
             <LinearLayout
@@ -148,13 +148,13 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/instruction_alto_5" />
+                    android:src="@drawable/instruction_prima_5" />
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
                     style="@style/BankTransferInstruction"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/instruction_alto5"/>
+                    android:text="@string/instruction_alto5_bni"/>
             </LinearLayout>
 
             <LinearLayout
@@ -173,13 +173,13 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/instruction_alto_6" />
+                    android:src="@drawable/instruction_prima_6" />
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
                     style="@style/BankTransferInstruction"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/instruction_alto6"/>
+                    android:text="@string/instruction_alto6_bni"/>
             </LinearLayout>
 
             <LinearLayout
@@ -199,13 +199,13 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/instruction_alto_7" />
+                    android:src="@drawable/instruction_prima_7" />
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
                     style="@style/BankTransferInstruction"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/instruction_alto7"/>
+                    android:text="@string/instruction_alto7_bni"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

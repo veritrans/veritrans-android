@@ -529,10 +529,11 @@
     <string name="instruction_atm_bersama1">On the main menu, choose <b>Others</b>.</string>
     <string name="instruction_atm_bersama2">Choose <b>Transfer</b>.</string>
     <string name="instruction_atm_bersama3">Choose <b>Online Transfer</b>.</string>
-    <string name="instruction_atm_bersama4">Enter <b>013</b> and <b>16 digit Account No.</b> and press <b>Correct</b></string>
-    <string name="instruction_atm_bersama5">Enter the <b>full amount to be paid</b> and press <b>Correct</b>.</string>
+    <string name="instruction_atm_bersama4_permata">Enter <b>013</b> and <b>16 digit Account No.</b> and press <b>Correct</b>.</string>
+    <string name="instruction_atm_bersama4_bni">Enter <b>009</b> (Bank BNI code) and <b>16 digit Account No.</b> and press <b>Correct</b></string>
+    <string name="instruction_atm_bersama5">Enter the <b>full amount to be paid</b> and press <b>Correct</b>. If the amount entered is not the same as the invoiced amount, the transaction will be declined.</string>
     <string name="instruction_atm_bersama6">Empty the transfer reference number and press <b>Correct</b>.</string>
-    <string name="instruction_atm_bersama7">Your payment details will appear on the confirmation page. If the information is right press <b>Correct</b>.</string>
+    <string name="instruction_atm_bersama7">Amount to be paid, account number, and merchant name will appear on the payment confirmation page. If the information is right, press <b>Correct</b>.</string>
     <string name="pay_with_atm_bersama">Pay through ATM with ATM Bersama logo</string>
 
     <string name="preview_prima">Pay through <b>all bank ATMs with Prima logo</b></string>
@@ -542,10 +543,11 @@
     <string name="instruction_prima1">On the main menu, choose <b>Other Transaction</b>.</string>
     <string name="instruction_prima2">Choose <b>Transfer</b>.</string>
     <string name="instruction_prima3">Choose <b>Other Bank Account</b>.</string>
-    <string name="instruction_prima4">Enter <b>013</b> and choose <b>Correct</b>.</string>
-    <string name="instruction_prima5">Enter the full amount to be paid and press <b>Correct</b>.</string>
+    <string name="instruction_prima4_permata">Enter <b>013</b> and choose <b>Correct</b>.</string>
+    <string name="instruction_prima4_bni">Enter <b>009</b> (Bank BNI code) and choose <b>Correct</b>.</string>
+    <string name="instruction_prima5">Enter the full amount to be paid and press <b>Correct</b>. If the amount entered is not the same as the invoiced amount, the transaction will be declined.</string>
     <string name="instruction_prima6">Enter <b>16 digits payment Account No.</b> and press <b>Correct</b>.</string>
-    <string name="instruction_prima7">Your payment details will appear on the confirmation page. If the information is right, press <b>Correct</b>.</string>
+    <string name="instruction_prima7">Amount to be paid, account number, and merchant name will appear on the payment confirmation page. If the information is right, press <b>Correct</b>.</string>
     <string name="pay_with_prima">Pay through ATM with Prima logo</string>
 
     <string name="preview_alto">Pay through <b>all bank ATMs with Alto logo</b></string>
@@ -554,11 +556,17 @@
     <string name="bank_list_header_alto">Banks registered with Alto network</string>
     <string name="instruction_alto1">On the main menu, choose <b>Other Transaction</b>.</string>
     <string name="instruction_alto2">Choose <b>Payment</b>.</string>
+    <string name="instruction_alto2_bni">Choose <b>Transfer</b>.</string>
     <string name="instruction_alto3">Choose <b>Other Payment</b>.</string>
+    <string name="instruction_alto3_bni">Choose <b>Other Bank Account</b>.</string>
     <string name="instruction_alto4">Choose <b>Virtual Account</b>.</string>
+    <string name="instruction_alto4_bni">Enter <b>009</b> (Bank BNI code) and choose <b>Correct</b>.</string>
     <string name="instruction_alto5">Enter <b>16 digits payment Account No.</b> and press <b>Correct</b>.</string>
+    <string name="instruction_alto5_bni">Enter the full amount to be paid and press <b>Correct</b>. If the amount entered is not the same as the invoiced amount, the transaction will be declined.</string>
     <string name="instruction_alto6">Your payment details will appear on the confirmation page. If the information is right press <b>Correct</b>.</string>
+    <string name="instruction_alto6_bni">Enter <b>16 digits payment Account No.</b> and press <b>Correct</b>.</string>
     <string name="instruction_alto7">Choose your payment account.</string>
+    <string name="instruction_alto7_bni">Amount to be paid, account number, and merchant name will appear on the payment confirmation page. If the information is right, press <b>Correct</b>.</string>
     <string name="pay_with_alto">Pay through ATM with Alto logo</string>
 
     <string name="amex">AMEX</string>

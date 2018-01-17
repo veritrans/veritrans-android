@@ -11,10 +11,14 @@ import android.support.v7.widget.AppCompatButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.midtrans.sdk.corekit.core.Logger;
+import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.views.banktransfer.instruction.InstructionPermataVaFragment;
+import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 
 /**
  * Created by ziahaqi on 12/5/17.
@@ -25,13 +29,14 @@ public abstract class VaInstructionFragment extends Fragment implements View.OnC
     public static final String INSTRUCTION_POSITION = "instruction.position";
     public static final String INSTRUCTION_TITLE = "instruction.title";
 
+    private final String OTHER_VA_PROCESSOR_BNI = "bni_va";
+
     protected OnInstructionShownListener listener;
     protected int layoutId = 0;
     protected AppCompatButton instructionToggle;
     protected LinearLayout instructionLayout;
     protected boolean isInstructionShown = false;
     private int colorPrimary = 0;
-
 
     public interface OnInstructionShownListener {
         void onInstructionShown(boolean isShown, int fragmentCode);
@@ -40,8 +45,35 @@ public abstract class VaInstructionFragment extends Fragment implements View.OnC
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        //dynamic instruction for supporting other VA switching
+        boolean isUsingPermata = true;
+        try {
+            String otherVaProcessor = MidtransSDK.getInstance().getMerchantData().getPreference().getOtherVaProcessor();
+            isUsingPermata = !otherVaProcessor.equalsIgnoreCase(OTHER_VA_PROCESSOR_BNI);
+        } catch (RuntimeException exception) {
+            Logger.e(exception.getMessage());
+        }
+
         layoutId = initLayoutId();
+        //specific for Alto, since the diff is significant, we use another layout for VA switching
+        if (layoutId == R.layout.fragment_instruction_alto && !isUsingPermata && !(this instanceof InstructionPermataVaFragment)) {
+            layoutId = R.layout.fragment_instruction_alto_bni;
+            isUsingPermata = !isUsingPermata;
+        }
         View view = inflater.inflate(layoutId, container, false);
+
+        if (!isUsingPermata) {
+            ImageView bankCode = (ImageView) view.findViewById(R.id.instruction_bank_code_image);
+            DefaultTextView bankCodeInstruction = (DefaultTextView) view.findViewById(R.id.instruction_bank_code_text);
+            if (layoutId == R.layout.fragment_instruction_atm_bersama) {
+                bankCode.setImageResource(R.drawable.instruction_atm_bersama_4_bni);
+                bankCodeInstruction.setText(R.string.instruction_atm_bersama4_bni);
+            } else if (layoutId == R.layout.fragment_instruction_prima) {
+                bankCode.setImageResource(R.drawable.instruction_prima_4_bni);
+                bankCodeInstruction.setText(R.string.instruction_prima4_bni);
+            }
+        }
+
         instructionLayout = (LinearLayout) view.findViewById(R.id.instruction_layout);
         instructionToggle = (AppCompatButton) view.findViewById(R.id.instruction_toggle);
 
