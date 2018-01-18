@@ -1,14 +1,18 @@
 package com.midtrans.sdk.uikit.views.bca_klikbca.status;
 
-import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.AppCompatButton;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.LinearLayout;
+import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
-import com.midtrans.sdk.uikit.activities.KlikBCAInstructionActivity;
 import com.midtrans.sdk.uikit.models.MessageInfo;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
@@ -24,14 +28,16 @@ import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 public class KlikBcaStatusActivity extends BasePaymentActivity {
 
     public static final String EXTRA_PAYMENT_STATUS = "extra.status";
+    private final String TAG = KlikBcaStatusActivity.class.getSimpleName();
     private final String PAGE_NAME = "KlikBCA";
     private final String BUTTON_CONFIRM_NAME = "Done KlikBCA";
 
     private SemiBoldTextView textExpiry;
     private SemiBoldTextView textTitle;
     private DefaultTextView textStatusFailed;
+    private LinearLayout instructionLayout;
 
-    private FancyButton buttonInstruction;
+    private AppCompatButton buttonInstruction;
     private FancyButton buttonFinish;
 
     private PaymentStatusPresenter presenter;
@@ -57,10 +63,7 @@ public class KlikBcaStatusActivity extends BasePaymentActivity {
         buttonInstruction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isActivityRunning()) {
-                    Intent intent = new Intent(KlikBcaStatusActivity.this, KlikBCAInstructionActivity.class);
-                    startActivity(intent);
-                }
+                changeToggleInstructionVisibility();
             }
         });
     }
@@ -88,18 +91,40 @@ public class KlikBcaStatusActivity extends BasePaymentActivity {
 
     @Override
     public void bindViews() {
-        buttonFinish = (FancyButton) findViewById(R.id.button_primary);
-        buttonInstruction = (FancyButton) findViewById(R.id.button_instruction);
-        textExpiry = (SemiBoldTextView) findViewById(R.id.text_expiry);
-        textTitle = (SemiBoldTextView) findViewById(R.id.text_page_title);
-        textStatusFailed = (DefaultTextView) findViewById(R.id.text_status_failed);
+        buttonFinish = findViewById(R.id.button_primary);
+        buttonInstruction = findViewById(R.id.instruction_toggle);
+        instructionLayout = findViewById(R.id.instruction_layout);
+        textExpiry = findViewById(R.id.text_expiry);
+        textTitle = findViewById(R.id.text_page_title);
+        textStatusFailed = findViewById(R.id.text_status_failed);
+    }
+
+    private void changeToggleInstructionVisibility() {
+        int colorPrimary = getPrimaryColor();
+
+        if (colorPrimary != 0) {
+            Drawable drawable;
+            if (instructionLayout.getVisibility() == View.VISIBLE) {
+                drawable = ContextCompat.getDrawable(this, R.drawable.ic_expand_more);
+                instructionLayout.setVisibility(View.GONE);
+            } else {
+                drawable = ContextCompat.getDrawable(this, R.drawable.ic_expand_less);
+                instructionLayout.setVisibility(View.VISIBLE);
+            }
+
+            try {
+                drawable.setColorFilter(colorPrimary, PorterDuff.Mode.SRC_IN);
+                buttonInstruction.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null);
+            } catch (RuntimeException e) {
+                Logger.e(TAG, "changeToggleInstructionVisibility" + e.getMessage());
+            }
+        }
     }
 
     @Override
     public void initTheme() {
         setPrimaryBackgroundColor(buttonFinish);
         setTextColor(buttonInstruction);
-        setIconColorFilter(buttonInstruction);
     }
 
     @Override

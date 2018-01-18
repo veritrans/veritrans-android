@@ -1,11 +1,16 @@
 package com.midtrans.sdk.uikit.views.danamon_online;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.AppCompatButton;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
@@ -19,10 +24,11 @@ import com.midtrans.sdk.uikit.widgets.FancyButton;
  */
 
 public class DanamonOnlineActivity extends BasePaymentActivity implements BasePaymentView {
+    private final String TAG = DanamonOnlineActivity.class.getSimpleName();
 
     private FancyButton buttonPrimary;
-    private FancyButton buttonInstruction;
-    private LinearLayout containerInstruction;
+    private AppCompatButton buttonInstruction;
+    private LinearLayout instructionLayout;
 
     private DanamonOnlinePresenter presenter;
 
@@ -59,16 +65,25 @@ public class DanamonOnlineActivity extends BasePaymentActivity implements BasePa
     }
 
     private void showHideInstruction() {
-        if (containerInstruction.getVisibility() == View.VISIBLE) {
-            containerInstruction.setVisibility(View.GONE);
-            buttonInstruction.setText(getString(R.string.show_instruction));
-            buttonInstruction.setIconResource(R.drawable.ic_view);
-        } else {
-            containerInstruction.setVisibility(View.VISIBLE);
-            buttonInstruction.setText(getString(R.string.hide_instruction));
-            buttonInstruction.setIconResource(R.drawable.ic_hide);
+        int colorPrimary = getPrimaryColor();
+
+        if (colorPrimary != 0) {
+            Drawable drawable;
+            if (instructionLayout.getVisibility() == View.VISIBLE) {
+                drawable = ContextCompat.getDrawable(this, R.drawable.ic_expand_more);
+                instructionLayout.setVisibility(View.GONE);
+            } else {
+                drawable = ContextCompat.getDrawable(this, R.drawable.ic_expand_less);
+                instructionLayout.setVisibility(View.VISIBLE);
+            }
+
+            try {
+                drawable.setColorFilter(colorPrimary, PorterDuff.Mode.SRC_IN);
+                buttonInstruction.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null);
+            } catch (RuntimeException e) {
+                Logger.e(TAG, "changeToggleInstructionVisibility" + e.getMessage());
+            }
         }
-        setIconColorFilter(buttonInstruction);
     }
 
     private void initProperties() {
@@ -78,16 +93,15 @@ public class DanamonOnlineActivity extends BasePaymentActivity implements BasePa
 
     @Override
     public void bindViews() {
-        buttonPrimary = (FancyButton) findViewById(R.id.button_primary);
-        buttonInstruction = (FancyButton) findViewById(R.id.button_toggle_instruction);
-        containerInstruction = (LinearLayout) findViewById(R.id.container_instruction);
+        buttonPrimary = findViewById(R.id.button_primary);
+        buttonInstruction = findViewById(R.id.instruction_toggle);
+        instructionLayout = findViewById(R.id.container_instruction);
     }
 
     @Override
     public void initTheme() {
         setPrimaryBackgroundColor(buttonPrimary);
         setTextColor(buttonInstruction);
-        setIconColorFilter(buttonInstruction);
     }
 
     @Override
