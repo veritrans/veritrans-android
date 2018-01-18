@@ -22,11 +22,12 @@ There are two implementation modes on this SDK.
 
 ## Sample/ Demo App
 - To build the sdk repository, need to create file `fabric.properties` inside the `demo` module folder and then define  `apiKey=fabric_api_key` and `apiSecret=fabric_api_secret`. or if you doesn't have fabric credentials just remove  `apply plugin: 'io.fabric'` in file `build.gradle` of `demo` folder.
-- To see the sample app (contais UI flow), you can download from from  [Release Section](https://github.com/veritrans/veritrans-android/releases) or see [Release Section](https://github.com/veritrans/veritrans-android/releases)`sdk-example` sub-module to see the code.
+- To see the sample app (contains UI flow), you can download from from  [Release Section](https://github.com/veritrans/veritrans-android/releases) or see [Release Section](https://github.com/veritrans/veritrans-android/releases)`sdk-example` sub-module to see the code. Or simply download it from Google Play Store by clicking the banner below.
 
+<a href='https://play.google.com/store/apps/details?id=com.midtrans.sdk.demo.development'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height='80'/></a>
 
 ## Minimum Support OS
 **Android 4.0 Ice Cream Sandwitch API Level 14**
 
 # Supports
-***Sorry We no longger answer questions from repository issues, If You need any assistance, please contact***  support@midtrans.com
+***Sorry, we no longer answer questions from repository issues. If you need any assistance, please contact***  support@midtrans.com
