@@ -94,6 +94,11 @@ public class UiKitConstants {
     public static final String KEY_TRACKING_HOST_APP_VERSION = "Host App Version";
     public static final String KEY_TRACKING_ENVIRONMENT = "Environment";
 
+
+    //va processor
+    public static final String OTHER_VA_PROCESSOR_BNI = "bni_va";
+    public static final String OTHER_VA_PROCESSOR_PERMATA = "permata_va";
+
     //contant key
     public static final String KEY_TRANSACTION_RESPONSE = "transaction_response";
 }

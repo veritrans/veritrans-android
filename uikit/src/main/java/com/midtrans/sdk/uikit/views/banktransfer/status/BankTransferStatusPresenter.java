@@ -3,6 +3,7 @@ package com.midtrans.sdk.uikit.views.banktransfer.status;
 import android.text.TextUtils;
 
 import com.midtrans.sdk.corekit.core.PaymentType;
+import com.midtrans.sdk.corekit.models.MerchantPreferences;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentPresenter;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
@@ -12,6 +13,9 @@ import com.midtrans.sdk.uikit.utilities.UiKitConstants;
  */
 
 public class BankTransferStatusPresenter extends BasePaymentPresenter {
+
+    private static final String LABEL_BANK_CODE_BNI = "009 (Bank BNI)";
+    private static final String LABEL_BANK_CODE_PERMATA = "013 (Bank Permata)";
 
     private final String bankType;
 
@@ -98,5 +102,18 @@ public class BankTransferStatusPresenter extends BasePaymentPresenter {
 
     public String getMandiriBillExpiration() {
         return (transactionResponse == null || TextUtils.isEmpty(transactionResponse.getMandiriBillExpiration()) ? "" : transactionResponse.getMandiriBillExpiration());
+    }
+
+    public String getBankCode() {
+        String bankCode = LABEL_BANK_CODE_BNI;
+
+        if(transactionResponse != null){
+          MerchantPreferences preferences = getMidtransSDK().getMerchantData().getPreference();
+            if(preferences != null && !TextUtils.isEmpty(preferences.getOtherVaProcessor())
+                    && preferences.getOtherVaProcessor().equals(UiKitConstants.OTHER_VA_PROCESSOR_PERMATA)){
+                bankCode = LABEL_BANK_CODE_PERMATA;
+            }
+        }
+        return bankCode;
     }
 }
