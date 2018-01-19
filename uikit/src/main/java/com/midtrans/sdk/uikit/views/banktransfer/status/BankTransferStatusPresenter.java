@@ -107,13 +107,12 @@ public class BankTransferStatusPresenter extends BasePaymentPresenter {
     public String getBankCode() {
         String bankCode = LABEL_BANK_CODE_BNI;
 
-        if(transactionResponse != null){
-          MerchantPreferences preferences = getMidtransSDK().getMerchantData().getPreference();
-            if(preferences != null && !TextUtils.isEmpty(preferences.getOtherVaProcessor())
-                    && preferences.getOtherVaProcessor().equals(UiKitConstants.OTHER_VA_PROCESSOR_PERMATA)){
-                bankCode = LABEL_BANK_CODE_PERMATA;
-            }
+        MerchantPreferences preferences = getMidtransSDK().getMerchantData().getPreference();
+        if (preferences != null && !TextUtils.isEmpty(preferences.getOtherVaProcessor())
+                && preferences.getOtherVaProcessor().equals(UiKitConstants.OTHER_VA_PROCESSOR_PERMATA)) {
+            bankCode = LABEL_BANK_CODE_PERMATA;
         }
+
         return bankCode;
     }
 }
