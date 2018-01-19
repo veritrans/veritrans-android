@@ -2,21 +2,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="@dimen/sixteen_dp">
+    android:orientation="vertical">
 
     <com.midtrans.sdk.uikit.widgets.DefaultTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/eight_dp"
+        android:layout_marginLeft="@dimen/twenty_four_dp"
+        android:layout_marginRight="@dimen/sixteen_dp"
+        android:layout_marginTop="@dimen/sixteen_dp"
         android:text="@string/payment_code"
         android:textColor="@color/dark_gray"
-        android:textSize="@dimen/secondary_text_size"
-        />
+        android:textSize="@dimen/secondary_text_size" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/sixteen_dp"
+        android:layout_marginRight="@dimen/sixteen_dp"
         android:gravity="center_vertical">
 
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
@@ -54,6 +56,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/sixteen_dp"
+        android:layout_marginRight="@dimen/sixteen_dp"
         android:layout_marginTop="@dimen/sixteen_dp"
         android:background="@color/faint_yellow"
         android:gravity="center"
@@ -66,8 +70,7 @@
             android:layout_marginBottom="@dimen/eight_dp"
             android:text="@string/valid_until"
             android:textColor="@color/black"
-            android:textSize="@dimen/secondary_text_size"
-            />
+            android:textSize="@dimen/secondary_text_size" />
 
         <com.midtrans.sdk.uikit.widgets.SemiBoldTextView
             android:id="@+id/text_validity"
@@ -76,23 +79,239 @@
             android:background="@color/faint_yellow"
             android:text="@string/valid_date"
             android:textColor="@color/black"
-            android:textSize="@dimen/secondary_text_size"
-            />
+            android:textSize="@dimen/secondary_text_size" />
     </LinearLayout>
 
-    <com.midtrans.sdk.uikit.widgets.FancyButton
-        android:id="@+id/button_instruction"
-        style="@style/ButtonSecondary"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/twenty_four_dp"
-        android:padding="@dimen/eight_dp"
-        android:visibility="visible"
-        app:fb_defaultColor="@android:color/white"
-        app:fb_focusColor="@color/colorAccentLight"
-        app:fb_iconPaddingRight="@dimen/four_dp"
-        app:fb_iconResource="@drawable/ic_view"
-        app:fb_radius="5dp"
-        app:fb_text="@string/kioson_instruction" />
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/instruction_toggle"
+        style="@style/ButtonSecondaryExpandable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/sixteen_dp"
+        android:layout_marginRight="@dimen/sixteen_dp"
+        android:layout_marginTop="@dimen/sixteen_dp"
+        android:gravity="center_vertical"
+        android:text="@string/show_instruction" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/instruction_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/light_gray"
+                android:paddingBottom="@dimen/five_dp"
+                android:paddingLeft="@dimen/sixteen_dp"
+                android:paddingRight="@dimen/sixteen_dp"
+                android:paddingTop="@dimen/five_dp">
+
+                <TextView
+                    android:layout_width="@dimen/twenty_four_dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/number_instruction1" />
+
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/kioson_instruction_step1"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/secondary_text_size" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/eight_dp"
+                android:lineSpacingExtra="2dp"
+                android:paddingLeft="@dimen/sixteen_dp"
+                android:paddingRight="@dimen/sixteen_dp">
+
+                <TextView
+                    android:layout_width="@dimen/twenty_four_dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/number_instruction2" />
+
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/kioson_instruction_step2"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/secondary_text_size" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/eight_dp"
+                android:background="@color/light_gray"
+                android:lineSpacingExtra="2dp"
+                android:paddingBottom="@dimen/five_dp"
+                android:paddingLeft="@dimen/sixteen_dp"
+                android:paddingRight="@dimen/sixteen_dp"
+                android:paddingTop="@dimen/five_dp">
+
+                <TextView
+                    android:layout_width="@dimen/twenty_four_dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/number_instruction3" />
+
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/kioson_instruction_step3"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/secondary_text_size" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/eight_dp"
+                android:lineSpacingExtra="2dp"
+                android:paddingBottom="@dimen/five_dp"
+                android:paddingLeft="@dimen/sixteen_dp"
+                android:paddingRight="@dimen/sixteen_dp"
+                android:paddingTop="@dimen/five_dp">
+
+                <TextView
+                    android:layout_width="@dimen/twenty_four_dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/number_instruction4" />
+
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/kioson_instruction_step4"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/secondary_text_size" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/eight_dp"
+                android:background="@color/light_gray"
+                android:lineSpacingExtra="2dp"
+                android:paddingBottom="@dimen/five_dp"
+                android:paddingLeft="@dimen/sixteen_dp"
+                android:paddingRight="@dimen/sixteen_dp"
+                android:paddingTop="@dimen/five_dp">
+
+                <TextView
+                    android:layout_width="@dimen/twenty_four_dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/number_instruction5" />
+
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/kioson_instruction_step5"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/secondary_text_size" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/eight_dp"
+                android:lineSpacingExtra="2dp"
+                android:paddingBottom="@dimen/five_dp"
+                android:paddingLeft="@dimen/sixteen_dp"
+                android:paddingRight="@dimen/sixteen_dp"
+                android:paddingTop="@dimen/five_dp">
+
+                <TextView
+                    android:layout_width="@dimen/twenty_four_dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/number_instruction6" />
+
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/kioson_instruction_step6"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/secondary_text_size" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/eight_dp"
+                android:background="@color/light_gray"
+                android:lineSpacingExtra="2dp"
+                android:paddingBottom="@dimen/five_dp"
+                android:paddingLeft="@dimen/sixteen_dp"
+                android:paddingRight="@dimen/sixteen_dp"
+                android:paddingTop="@dimen/five_dp">
+
+                <TextView
+                    android:layout_width="@dimen/twenty_four_dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/number_instruction7" />
+
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/kioson_instruction_step7"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/secondary_text_size" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/eight_dp"
+                android:lineSpacingExtra="2dp"
+                android:paddingBottom="@dimen/five_dp"
+                android:paddingLeft="@dimen/sixteen_dp"
+                android:paddingRight="@dimen/sixteen_dp"
+                android:paddingTop="@dimen/five_dp">
+
+                <TextView
+                    android:layout_width="@dimen/twenty_four_dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/number_instruction8" />
+
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/kioson_instruction_step8"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/secondary_text_size" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/eight_dp"
+                android:layout_marginTop="@dimen/eight_dp"
+                android:background="@color/light_gray"
+                android:lineSpacingExtra="2dp"
+                android:paddingBottom="@dimen/five_dp"
+                android:paddingLeft="@dimen/sixteen_dp"
+                android:paddingRight="@dimen/sixteen_dp"
+                android:paddingTop="@dimen/five_dp">
+
+                <TextView
+                    android:layout_width="@dimen/twenty_four_dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/number_instruction9" />
+
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/kioson_instruction_step9"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/secondary_text_size" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

@@ -12,6 +12,7 @@ import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 
 /**
  * Created by rakawm on 1/19/17.
+ * @Deprecated please refer to included instruction in {@link com.midtrans.sdk.uikit.views.bca_klikbca.status.KlikBcaStatusActivity}
  */
 
 public class KlikBCAInstructionActivity extends BaseActivity {

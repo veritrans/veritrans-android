@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="@dimen/sixteen_dp">
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/container_expiry"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/sixteen_dp"
         android:background="@color/faint_yellow"
         android:orientation="vertical"
         android:padding="@dimen/sixteen_dp">
@@ -39,7 +38,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="@dimen/sixteen_dp"
+        android:layout_marginLeft="@dimen/sixteen_dp"
+        android:layout_marginRight="@dimen/sixteen_dp"
         android:background="@color/faint_pink"
         android:gravity="left"
         android:padding="@dimen/sixteen_dp"
@@ -47,17 +47,67 @@
         android:textColor="@color/black"
         android:textSize="@dimen/secondary_text_size" />
 
-    <com.midtrans.sdk.uikit.widgets.FancyButton
-        android:id="@+id/button_instruction"
-        style="@style/ButtonSecondary"
-        android:layout_width="wrap_content"
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/instruction_toggle"
+        style="@style/ButtonSecondaryExpandable"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
         android:layout_marginLeft="@dimen/sixteen_dp"
         android:layout_marginRight="@dimen/sixteen_dp"
         android:layout_marginTop="@dimen/sixteen_dp"
-        app:fb_iconPaddingRight="@dimen/four_dp"
-        app:fb_iconResource="@drawable/ic_view"
-        app:fb_text="@string/see_instruction"
-        app:fb_textColor="@color/navy_blue.primary_dark"/>
+        android:gravity="center_vertical"
+        android:text="@string/show_instruction" />
+
+    <LinearLayout
+        android:id="@+id/instruction_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/light_gray"
+            android:paddingBottom="@dimen/five_dp"
+            android:paddingLeft="@dimen/sixteen_dp"
+            android:paddingRight="@dimen/sixteen_dp"
+            android:paddingTop="@dimen/five_dp">
+
+            <TextView
+                android:layout_width="@dimen/twenty_four_dp"
+                android:layout_height="wrap_content"
+                android:text="@string/number_instruction1" />
+
+            <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/instruction_klikbca1"
+                android:textColor="@color/black"
+                android:textSize="@dimen/secondary_text_size" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/sixteen_dp"
+            android:layout_marginTop="@dimen/eight_dp"
+            android:lineSpacingExtra="2dp"
+            android:paddingLeft="@dimen/sixteen_dp"
+            android:paddingRight="@dimen/sixteen_dp">
+
+            <TextView
+                android:layout_width="@dimen/twenty_four_dp"
+                android:layout_height="wrap_content"
+                android:text="@string/number_instruction2" />
+
+            <com.midtrans.sdk.uikit.widgets.DefaultTextViewWithLink
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/instruction_klikbca2"
+                android:textColor="@color/black"
+                android:textSize="@dimen/secondary_text_size" />
+
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

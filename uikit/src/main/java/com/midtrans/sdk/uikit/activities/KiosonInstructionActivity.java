@@ -12,6 +12,7 @@ import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 
 /**
  * Created by ziahaqi on 8/26/16.
+ * @Deprecated please refer to included instruction in {@link com.midtrans.sdk.uikit.views.kioson.status.KiosonStatusActivity}
  */
 public class KiosonInstructionActivity extends BaseActivity {
 
