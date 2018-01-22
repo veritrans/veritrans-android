@@ -92,6 +92,20 @@
         <item name="fb_defaultColor">@color/white</item>
     </style>
 
+    <style name="ButtonSecondaryTransparent">
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingTop">@dimen/eight_dp</item>
+        <item name="fb_focusColor">@color/colorAccentLight</item>
+        <item name="fb_iconPaddingLeft">0dp</item>
+        <item name="fb_iconPaddingRight">0dp</item>
+        <item name="fb_iconPosition">left</item>
+        <item name="fb_radius">5dp</item>
+        <item name="fb_textSize">12sp</item>
+        <item name="fb_defaultColor">@android:color/transparent</item>
+    </style>
+
     <style name="ButtonSecondaryExpandable">
         <item name="android:layout_marginTop">@dimen/four_dp</item>
         <item name="android:layout_marginBottom">@dimen/four_dp</item>
@@ -175,6 +189,11 @@
     <style name="OtpNotification" parent="Notification">
         <item name="android:drawableLeft">@drawable/ic_sms</item>
         <item name="android:text">@string/notification_otp_message</item>
+    </style>
+
+    <style name="OtherVaNotification" parent="Notification">
+        <item name="android:drawableLeft">@drawable/ic_pending</item>
+        <item name="android:text">@string/text_format_valid_until</item>
     </style>
 
     <style name="GojekNotification" parent="Notification">

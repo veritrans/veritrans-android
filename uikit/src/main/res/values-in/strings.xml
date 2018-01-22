@@ -703,5 +703,6 @@
     <string name="pay_without_fiesta_poin">Bayar Tanpa Gunakan Fiestapoin</string>
     <string name="payment_instruction">Instruksi Pembayaran %1$s</string>
     <string name="instruction_atm_with">ATM berlogo %1$s</string>
+    <string name="bank_code">Kode Bank</string>
 
 </resources>
