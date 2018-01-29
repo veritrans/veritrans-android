@@ -874,6 +874,9 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             } else if (expYear == currentYear && currentMonth > expMonth) {
                 showValidationError(textCardExpiryError, getString(R.string.validation_message_invalid_expiry_date));
                 isValid = false;
+            } else if (expYear > (currentYear + 10)) {
+                showValidationError(textCardExpiryError, getString(R.string.validation_message_invalid_expiry_date));
+                isValid = false;
             } else {
                 hideValidationError(textCardExpiryError);
             }
