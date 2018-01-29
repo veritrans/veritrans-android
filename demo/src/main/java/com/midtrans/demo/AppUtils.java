@@ -75,7 +75,7 @@ public class AppUtils {
 //        paymentNameList.add(new EnabledPayment(PaymentType.XL_TUNAI, null)); being deprecated
 
         paymentNameList.add(new EnabledPayment(PaymentType.INDOMARET, CATEGORY_CONVENIENT_STORE));
-        paymentNameList.add(new EnabledPayment(PaymentType.KIOSON, CATEGORY_CONVENIENT_STORE));
+//        paymentNameList.add(new EnabledPayment(PaymentType.KIOSON, CATEGORY_CONVENIENT_STORE)); being deprecated
         paymentNameList.add(new EnabledPayment(PaymentType.GCI, CATEGORY_VOUCHER_CARD));
 //        paymentNameList.add(new EnabledPayment(PaymentType.INDOSAT_DOMPETKU, null)); being deprecated
 
