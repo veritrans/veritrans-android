@@ -70,4 +70,6 @@
     <dimen name="button_primary_text_size">15sp</dimen>
     <dimen name="toolbar_expansion_size">8dp</dimen>
     <dimen name="qr_code_size">350dp</dimen>
+    <dimen name="barcode_width">500dp</dimen>
+    <dimen name="barcode_height">200dp</dimen>
 </resources>
