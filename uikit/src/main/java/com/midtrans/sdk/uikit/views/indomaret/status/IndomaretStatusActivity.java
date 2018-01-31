@@ -1,6 +1,5 @@
 package com.midtrans.sdk.uikit.views.indomaret.status;
 
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -13,10 +12,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import com.bumptech.glide.Glide;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 import com.midtrans.sdk.corekit.core.Logger;
@@ -115,6 +112,7 @@ public class IndomaretStatusActivity extends BasePaymentActivity {
 
         //track page view after page properly loaded
         presenter.trackPageView(PAGE_NAME, false);
+        SdkUIFlowUtil.hideProgressDialog();
     }
 
     @Override
@@ -139,11 +137,11 @@ public class IndomaretStatusActivity extends BasePaymentActivity {
             Bitmap bitmap = encoder.createBitmap(bitMatrix);
             if (barcodeContainer != null) {
                 barcodeContainer.setImageBitmap(bitmap);
+                barcodeContainer.setVisibility(View.VISIBLE);
             }
         } catch (Exception e) {
             Logger.e(e.getMessage());
         }
-        SdkUIFlowUtil.hideProgressDialog();
     }
 
     private void changeToggleInstructionVisibility() {
