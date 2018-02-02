@@ -7,6 +7,8 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class MerchantPreferences {
+    @SerializedName("other_va_processor")
+    private String otherVaProcessor;
     @SerializedName("display_name")
     private String displayName;
     @SerializedName("finish_url")
@@ -22,6 +24,14 @@ public class MerchantPreferences {
     @SerializedName("color_scheme_url")
     private String colorSchemeUrl;
     private String locale;
+
+    public String getOtherVaProcessor() {
+        return otherVaProcessor;
+    }
+
+    public void setOtherVaProcessor(String otherVaProcessor) {
+        this.otherVaProcessor = otherVaProcessor;
+    }
 
     public String getDisplayName() {
         return displayName;

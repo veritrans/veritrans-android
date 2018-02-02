@@ -12,6 +12,7 @@ import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 
 /**
  * Created by Fajar on 26/10/17.
+ * @Deprecated please refer to included instruction in {@link com.midtrans.sdk.uikit.views.indomaret.status.IndomaretStatusActivity}
  */
 
 public class IndomaretInstructionActivity extends BaseActivity {

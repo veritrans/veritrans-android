@@ -35,8 +35,8 @@ import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.views.banktransfer.instruction.InstructionOtherBankFragment;
 import com.midtrans.sdk.uikit.views.banktransfer.status.MandiriBillStatusActivity;
+import com.midtrans.sdk.uikit.views.banktransfer.status.VaOtherBankPaymentStatusActivity;
 import com.midtrans.sdk.uikit.views.banktransfer.status.VaPaymentStatusActivity;
-import com.midtrans.sdk.uikit.widgets.BoldTextView;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
@@ -272,11 +272,18 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
     }
 
     private void initPaymentStatus(TransactionResponse response) {
-        if (!TextUtils.isEmpty(paymentType) && paymentType.equals(PaymentType.E_CHANNEL)) {
-            showEchannelStatusPage(response);
+        if (!TextUtils.isEmpty(paymentType)) {
+            if (paymentType.equals(PaymentType.E_CHANNEL)) {
+                showEchannelStatusPage(response);
+            } else if (paymentType.equals(PaymentType.ALL_VA)) {
+                showOtherVaBankTransferStatusPage(response);
+            } else {
+                showBankTransferStatusPage(response);
+            }
         } else {
             showBankTransferStatusPage(response);
         }
+
     }
 
     private void showEchannelStatusPage(TransactionResponse response) {
@@ -288,6 +295,14 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
 
     private void showBankTransferStatusPage(TransactionResponse response) {
         Intent intent = new Intent(this, VaPaymentStatusActivity.class);
+        intent.putExtra(VaPaymentStatusActivity.EXTRA_PAYMENT_RESULT, response);
+        intent.putExtra(VaPaymentStatusActivity.EXTRA_BANK_TYPE, paymentType);
+        startActivityForResult(intent, UiKitConstants.INTENT_CODE_PAYMENT_STATUS);
+    }
+
+
+    private void showOtherVaBankTransferStatusPage(TransactionResponse response) {
+        Intent intent = new Intent(this, VaOtherBankPaymentStatusActivity.class);
         intent.putExtra(VaPaymentStatusActivity.EXTRA_PAYMENT_RESULT, response);
         intent.putExtra(VaPaymentStatusActivity.EXTRA_BANK_TYPE, paymentType);
         startActivityForResult(intent, UiKitConstants.INTENT_CODE_PAYMENT_STATUS);

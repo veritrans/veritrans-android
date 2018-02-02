@@ -3,6 +3,7 @@ package com.midtrans.sdk.uikit.views.banktransfer.status;
 import android.text.TextUtils;
 
 import com.midtrans.sdk.corekit.core.PaymentType;
+import com.midtrans.sdk.corekit.models.MerchantPreferences;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentPresenter;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
@@ -12,6 +13,9 @@ import com.midtrans.sdk.uikit.utilities.UiKitConstants;
  */
 
 public class BankTransferStatusPresenter extends BasePaymentPresenter {
+
+    private static final String LABEL_BANK_CODE_BNI = "009 (Bank BNI)";
+    private static final String LABEL_BANK_CODE_PERMATA = "013 (Bank Permata)";
 
     private final String bankType;
 
@@ -33,7 +37,8 @@ public class BankTransferStatusPresenter extends BasePaymentPresenter {
                     vaNumber = transactionResponse.getPermataVANumber();
                     break;
                 case PaymentType.ALL_VA:
-                    vaNumber = transactionResponse.getPermataVANumber();
+                    //VA number is based on other VA processor
+                    vaNumber = TextUtils.isEmpty(transactionResponse.getBniVaNumber()) ? transactionResponse.getPermataVANumber() : transactionResponse.getBniVaNumber();
                     break;
                 case PaymentType.BNI_VA:
                     vaNumber = transactionResponse.getBniVaNumber();
@@ -59,7 +64,8 @@ public class BankTransferStatusPresenter extends BasePaymentPresenter {
                     expiration = transactionResponse.getPermataExpiration();
                     break;
                 case PaymentType.ALL_VA:
-                    expiration = transactionResponse.getPermataExpiration();
+                    //expiration is based on other VA processor
+                    expiration = TextUtils.isEmpty(transactionResponse.getBniExpiration()) ? transactionResponse.getPermataExpiration() : transactionResponse.getBniExpiration();
                     break;
                 case PaymentType.BNI_VA:
                     expiration = transactionResponse.getBniExpiration();
@@ -96,5 +102,17 @@ public class BankTransferStatusPresenter extends BasePaymentPresenter {
 
     public String getMandiriBillExpiration() {
         return (transactionResponse == null || TextUtils.isEmpty(transactionResponse.getMandiriBillExpiration()) ? "" : transactionResponse.getMandiriBillExpiration());
+    }
+
+    public String getBankCode() {
+        String bankCode = LABEL_BANK_CODE_BNI;
+
+        MerchantPreferences preferences = getMidtransSDK().getMerchantData().getPreference();
+        if (preferences != null && !TextUtils.isEmpty(preferences.getOtherVaProcessor())
+                && preferences.getOtherVaProcessor().equals(UiKitConstants.OTHER_VA_PROCESSOR_PERMATA)) {
+            bankCode = LABEL_BANK_CODE_PERMATA;
+        }
+
+        return bankCode;
     }
 }

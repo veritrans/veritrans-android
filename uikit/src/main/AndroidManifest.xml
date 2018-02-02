@@ -199,6 +199,11 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name=".views.banktransfer.status.VaOtherBankPaymentStatusActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".views.banktransfer.status.MandiriBillStatusActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />

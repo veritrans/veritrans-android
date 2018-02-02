@@ -92,6 +92,20 @@
         <item name="fb_defaultColor">@color/white</item>
     </style>
 
+    <style name="ButtonSecondaryTransparent">
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingTop">@dimen/eight_dp</item>
+        <item name="fb_focusColor">@color/colorAccentLight</item>
+        <item name="fb_iconPaddingLeft">0dp</item>
+        <item name="fb_iconPaddingRight">0dp</item>
+        <item name="fb_iconPosition">left</item>
+        <item name="fb_radius">5dp</item>
+        <item name="fb_textSize">12sp</item>
+        <item name="fb_defaultColor">@android:color/transparent</item>
+    </style>
+
     <style name="ButtonSecondaryExpandable">
         <item name="android:layout_marginTop">@dimen/four_dp</item>
         <item name="android:layout_marginBottom">@dimen/four_dp</item>
@@ -137,7 +151,6 @@
         <item name="fb_borderColor">@color/navy_blue.primary</item>
     </style>
 
-
     <style name="CreditCardInstallmentButton">
         <item name="fb_borderColor">@color/gray.primary_dark</item>
         <item name="fb_defaultColor">@color/white</item>
@@ -147,8 +160,7 @@
         <item name="fb_textSize">14sp</item>
         <item name="fb_borderWidth">1dp</item>
     </style>
-
-
+    
     <style name="Notification">
         <item name="android:paddingTop">@dimen/eight_dp</item>
         <item name="android:paddingBottom">@dimen/eight_dp</item>
@@ -179,9 +191,25 @@
         <item name="android:text">@string/notification_otp_message</item>
     </style>
 
+    <style name="OtherVaNotification" parent="Notification">
+        <item name="android:drawableLeft">@drawable/ic_pending</item>
+        <item name="android:text">@string/text_format_valid_until</item>
+    </style>
+
     <style name="GojekNotification" parent="Notification">
         <item name="android:drawableLeft">@drawable/ic_gojek</item>
     </style>
+    
+    <style name="BankTransferInstruction">
+        <item name="android:lineSpacingExtra">2dp</item>
+        <item name="android:paddingRight">@dimen/sixteen_dp</item>
+        <item name="android:paddingLeft">@dimen/sixteen_dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/secondary_text_size</item>
+    </style>
 
-
+    <style name="BankTransferInstruction.Number">
+        <item name="android:paddingRight">@dimen/eight_dp</item>
+        <item name="android:paddingLeft">@dimen/eight_dp</item>
+    </style>
 </resources>
