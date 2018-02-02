@@ -1,6 +1,6 @@
 ## Veritrans Android SDK
 
-[ ![Download](https://api.bintray.com/packages/pt-midtrans/maven/corekit/images/download.svg) ](https://bintray.com/pt-midtrans/maven/corekit/_latestVersion)
+[latest version 1.14.1 ](https://bintray.com/pt-midtrans/maven/corekit/1.14.1)
 [![CircleCI](https://circleci.com/gh/veritrans/veritrans-android/tree/master.svg?style=svg)](https://circleci.com/gh/veritrans/veritrans-android/tree/master)
 
 ### Overview of Payments and Mobile SDK
