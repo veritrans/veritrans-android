@@ -610,7 +610,7 @@
 
     <!--Go-Pay related-->
     <string name="gopay_status_title">Pay with GO-PAY</string>
-    <string name="gopay_confirm_button">Pay Now with GO-PAY</string>
+    <string name="gopay_confirm_button">Pay Now with</string>
     <string name="notification_gojek_app">GO-JEK app is required for this payment method.</string>
     <string name="notification_gojek_app_tablet">Please complete your <b>GO-PAY</b> payment via <b>GO-JEK</b> app.</string>
     <string name="install_gojek_message">Install GO-JEK App from Play Store</string>

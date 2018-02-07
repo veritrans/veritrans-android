@@ -243,7 +243,7 @@
 
     <!--Go-Pay related-->
     <string name="gopay_status_title">Bayar dengan GO-PAY</string>
-    <string name="gopay_confirm_button">Bayar dengan GO-PAY</string>
+    <string name="gopay_confirm_button">Bayar dengan</string>
     <string name="notification_gojek_app">Aplikasi GO-JEK diperlukan untuk metode pembayaran ini.</string>
     <string name="notification_gojek_app_tablet">Mohon selesaikan pembayaran <b>GO-PAY</b> via aplikasi <b>GO-JEK</b>.</string>
     <string name="install_gojek_message">Install aplikasi GO-JEK dari Play Store</string>
