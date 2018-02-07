@@ -237,10 +237,9 @@
     <string name="kioson_instruction_step9">Transaksi Anda berhasil! Anda akan menerima email konfirmasi pembayaran. Harap simpan struk pembayaran Kioson Anda, apabila Anda memerlukan bantuan via support.</string>
 
     <!--Go-Pay Instruction-->
-    <string name="gopay_instruction_step1">Tekan <b>Bayar dengan GO-PAY</b>.</string>
-    <string name="gopay_instruction_step2">Aplikasi <b>GO-JEK</b> akan terbuka.</string>
-    <string name="gopay_instruction_step3">Periksa rincian pembayaran Anda di aplikasi <b>GO-JEK</b> lalu tekan <b>PAY</b>.</string>
-    <string name="gopay_instruction_step4">Selesai.</string>
+    <string name="gopay_instruction_step1">Klik <b>Bayar dengan GO-PAY</b>.</string>
+    <string name="gopay_instruction_step2"><b>Aplikasi GO-JEK</b> akan terbuka.</string>
+    <string name="gopay_instruction_step3">Periksa rincian pembayaran Anda lalu klik <b>Pay</b> dan transaksi anda Selesai.</string>
 
     <!--Go-Pay related-->
     <string name="gopay_status_title">Bayar dengan GO-PAY</string>
