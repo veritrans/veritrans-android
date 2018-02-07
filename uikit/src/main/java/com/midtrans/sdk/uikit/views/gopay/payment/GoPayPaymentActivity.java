@@ -88,6 +88,9 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
             });
             buttonPrimary.setTextBold();
             buttonPrimary.setText(getString(R.string.gopay_confirm_button));
+
+            buttonPrimary.setIconResource(R.drawable.ic_gopay_white);
+            buttonPrimary.setIconPosition(FancyButton.POSITION_RIGHT);
         } else {
             //hide confirm button and adjust item details to bottom of screen
             buttonPrimaryLayout.setVisibility(View.GONE);
