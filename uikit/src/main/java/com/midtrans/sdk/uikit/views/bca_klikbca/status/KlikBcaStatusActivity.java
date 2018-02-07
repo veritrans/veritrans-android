@@ -32,7 +32,7 @@ public class KlikBcaStatusActivity extends BasePaymentActivity {
     private final String PAGE_NAME = "KlikBCA";
     private final String BUTTON_CONFIRM_NAME = "Done KlikBCA";
 
-    private SemiBoldTextView textExpiry;
+    private DefaultTextView textExpiry;
     private SemiBoldTextView textTitle;
     private DefaultTextView textStatusFailed;
     private LinearLayout instructionLayout;
@@ -73,9 +73,9 @@ public class KlikBcaStatusActivity extends BasePaymentActivity {
         if (response != null) {
             if (!TextUtils.isEmpty(response.getStatusCode()) && (response.getStatusCode().equals(UiKitConstants.STATUS_CODE_200)
                     || response.getStatusCode().equals(UiKitConstants.STATUS_CODE_201))) {
-                textExpiry.setText(response.getBcaKlikBcaExpiration());
+                textExpiry.setText(getString(R.string.text_format_valid_until, response.getBcaKlikBcaExpiration()));
             } else {
-                findViewById(R.id.container_expiry).setVisibility(View.GONE);
+                textExpiry.setVisibility(View.GONE);
                 MessageInfo messageInfo = MessageUtil.createpaymentFailedMessage(this, response, null);
                 textStatusFailed.setText(messageInfo.detailsMessage);
             }
