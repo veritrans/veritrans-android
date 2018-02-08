@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import android.widget.Toast;
 import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
@@ -43,7 +44,10 @@ public class BankTransferListActivity extends BasePaymentActivity implements Ban
     }
 
     private void bindData() {
-        textTitle.setText(getString(R.string.activity_select_bank));
+        textTitle = findViewById(R.id.text_page_title);
+        if (textTitle != null) {
+            textTitle.setText(getString(R.string.activity_select_bank));
+        }
 
         //track page view after page properly loaded
         boolean isFirstPage = getIntent().getBooleanExtra(USE_DEEP_LINK, true);
@@ -73,8 +77,6 @@ public class BankTransferListActivity extends BasePaymentActivity implements Ban
 
     @Override
     public void bindViews() {
-        listBankTransfers = (RecyclerView) findViewById(R.id.rv_bank_list);
-        textTitle = (SemiBoldTextView) findViewById(R.id.text_page_title);
     }
 
     @Override
@@ -89,9 +91,14 @@ public class BankTransferListActivity extends BasePaymentActivity implements Ban
         adapter = new BankTransferListAdapter(this);
         adapter.setData(presenter.getBankList());
 
-        listBankTransfers.setLayoutManager(new LinearLayoutManager(this));
-        listBankTransfers.setHasFixedSize(true);
-        listBankTransfers.setAdapter(adapter);
+        listBankTransfers = findViewById(R.id.rv_bank_list);
+        if (listBankTransfers != null) {
+            listBankTransfers.setLayoutManager(new LinearLayoutManager(this));
+            listBankTransfers.setHasFixedSize(true);
+            listBankTransfers.setAdapter(adapter);
+        } else {
+            Toast.makeText(this, getString(R.string.message_error_internal_server), Toast.LENGTH_SHORT).show();
+        }
     }
 
 
