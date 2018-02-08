@@ -238,8 +238,8 @@
 
     <!--Go-Pay Instruction-->
     <string name="gopay_instruction_step1">Klik <b>Bayar dengan GO-PAY</b>.</string>
-    <string name="gopay_instruction_step2"><b>Aplikasi GO-JEK</b> akan terbuka.</string>
-    <string name="gopay_instruction_step3">Periksa rincian pembayaran Anda lalu klik <b>Pay</b> dan transaksi anda Selesai.</string>
+    <string name="gopay_instruction_step2">Aplikasi <b>GO-JEK</b> akan terbuka.</string>
+    <string name="gopay_instruction_step3">Periksa rincian pembayaran Anda lalu klik <b>Pay</b> dan transaksi anda <b>Selesai</b>.</string>
 
     <!--Go-Pay related-->
     <string name="gopay_status_title">Bayar dengan GO-PAY</string>
