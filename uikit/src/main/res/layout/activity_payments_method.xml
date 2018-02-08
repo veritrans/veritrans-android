@@ -37,6 +37,7 @@
                     android:textColor="@color/dark_gray"
                     android:textSize="@dimen/tool_bar_title_size"
                     android:visibility="gone"
+                    android:gravity="center_horizontal"
                     tools:visibility="visible"
                     tools:text="Name" />
 

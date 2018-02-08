@@ -44,7 +44,10 @@ public class BankTransferListActivity extends BasePaymentActivity implements Ban
     }
 
     private void bindData() {
-        textTitle.setText(getString(R.string.activity_select_bank));
+        textTitle = findViewById(R.id.text_page_title);
+        if (textTitle != null) {
+            textTitle.setText(getString(R.string.activity_select_bank));
+        }
 
         //track page view after page properly loaded
         boolean isFirstPage = getIntent().getBooleanExtra(USE_DEEP_LINK, true);
@@ -74,7 +77,6 @@ public class BankTransferListActivity extends BasePaymentActivity implements Ban
 
     @Override
     public void bindViews() {
-        textTitle = (SemiBoldTextView) findViewById(R.id.text_page_title);
     }
 
     @Override

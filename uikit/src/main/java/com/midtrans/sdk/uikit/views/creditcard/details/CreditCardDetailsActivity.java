@@ -1,5 +1,7 @@
 package com.midtrans.sdk.uikit.views.creditcard.details;
 
+import static com.midtrans.sdk.uikit.utilities.UiKitConstants.ENVIRONMENT_DEVELOPMENT;
+
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -32,6 +34,7 @@ import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.snap.BanksPointResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
+import com.midtrans.sdk.uikit.BuildConfig;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
 import com.midtrans.sdk.uikit.models.CreditCardType;
@@ -113,9 +116,11 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //init screenshot prevention
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+        //init screenshot prevention in production
+        if (!BuildConfig.FLAVOR.equalsIgnoreCase(ENVIRONMENT_DEVELOPMENT)) {
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
                 WindowManager.LayoutParams.FLAG_SECURE);
+        }
         initProperties();
         setContentView(R.layout.activity_credit_card);
         initCardNumber();
@@ -872,6 +877,9 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                 showValidationError(textCardExpiryError, getString(R.string.validation_message_invalid_expiry_date));
                 isValid = false;
             } else if (expYear == currentYear && currentMonth > expMonth) {
+                showValidationError(textCardExpiryError, getString(R.string.validation_message_invalid_expiry_date));
+                isValid = false;
+            } else if (expYear > (currentYear + 10)) {
                 showValidationError(textCardExpiryError, getString(R.string.validation_message_invalid_expiry_date));
                 isValid = false;
             } else {

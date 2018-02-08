@@ -264,7 +264,7 @@
     <string name="indomaret_instruction_step1">After confirming your payment, we will issue you a unique Payment Code number.</string>
     <string name="indomaret_instruction_step2">Note down your Payment Code and total amount.
         Don\'t worry, we will also mail you a copy of the payment instructions.</string>
-    <string name="indomaret_instruction_step3">Go to an Indomaret store near you and provide the cashier with the Payment Code number.</string>
+    <string name="indomaret_instruction_step3">Go to an Indomaret store near you and provide the cashier with the Payment Code number or barcode to be scanned.</string>
     <string name="indomaret_instruction_step4">The cashier will then confirm the transaction by asking for the transaction amount and the merchant name.</string>
     <string name="indomaret_instruction_step5">Confirm the payment with the cashier.</string>
     <string name="indomaret_instruction_step6">Your transaction is successful! You should be receiving an email confirming your payment. Please keep your Indomaret payment receipt just in case you need help via support.</string>
@@ -598,9 +598,8 @@
 
     <!--Go-Pay Instruction-->
     <string name="gopay_instruction_step1">Tap <b>Pay Now with GO-PAY</b>.</string>
-    <string name="gopay_instruction_step2">You will be redirected to the <b>GO-JEK</b> app.</string>
-    <string name="gopay_instruction_step3">Check your payment details in the <b>GO-JEK</b> app then tap <b>PAY</b>.</string>
-    <string name="gopay_instruction_step4">Done.</string>
+    <string name="gopay_instruction_step2"><b>GO-JEK</b> app will open.</string>
+    <string name="gopay_instruction_step3">Check your payment details then tap <b>Pay</b> and your transaction is <b>Done</b>.</string>
 
     <!--Go-Pay Instruction in Tablet-->
     <string name="gopay_instruction_tablet_step1">Tap <b>Pay Now with GO-PAY</b>.</string>
@@ -611,7 +610,7 @@
 
     <!--Go-Pay related-->
     <string name="gopay_status_title">Pay with GO-PAY</string>
-    <string name="gopay_confirm_button">Pay Now with GO-PAY</string>
+    <string name="gopay_confirm_button">Pay Now with</string>
     <string name="notification_gojek_app">GO-JEK app is required for this payment method.</string>
     <string name="notification_gojek_app_tablet">Please complete your <b>GO-PAY</b> payment via <b>GO-JEK</b> app.</string>
     <string name="install_gojek_message">Install GO-JEK App from Play Store</string>

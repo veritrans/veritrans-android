@@ -81,27 +81,4 @@
             android:textSize="@dimen/secondary_text_size" />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/light_gray"
-        android:lineSpacingExtra="2dp"
-        android:paddingBottom="@dimen/four_dp"
-        android:paddingLeft="@dimen/sixteen_dp"
-        android:paddingRight="@dimen/sixteen_dp"
-        android:paddingTop="@dimen/four_dp">
-
-        <TextView
-            android:layout_width="@dimen/twenty_four_dp"
-            android:layout_height="wrap_content"
-            android:text="@string/number_instruction4" />
-
-        <com.midtrans.sdk.uikit.widgets.DefaultTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/gopay_instruction_step4"
-            android:textColor="@color/black"
-            android:textSize="@dimen/secondary_text_size" />
-    </LinearLayout>
-
 </LinearLayout>

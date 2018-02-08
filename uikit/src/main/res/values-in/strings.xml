@@ -203,7 +203,7 @@
     <string name="indomaret_instruction_step1">Setelah melakukan <b>Konfirmasi Pembayaran</b>, Anda akan diberikan Kode Pembayaran yang unik.</string>
     <string name="indomaret_instruction_step2">Salinlah Kode Pembayaran Anda dan jumlah pembayaran yang akan dibayarkan.
        Jangan khawatir, Kami juga akan mengirimkan salinan kode pembayaran dan instruksi pembayaran melalui email.</string>
-    <string name="indomaret_instruction_step3">Kunjungi Indomaret terdekat dan berikan nomor Kode Pembayaran Anda ke kasir.</string>
+    <string name="indomaret_instruction_step3">Kunjungi Indomaret terdekat dan berikan nomor Kode Pembayaran Anda ke kasir (atau dengan scan barcode oleh kasir).</string>
     <string name="indomaret_instruction_step4">Kasir Indomaret akan mengkonfirmasi transaksi dengan menanyakan jumlah transaksi dan nama merchant.</string>
     <string name="indomaret_instruction_step5">Konfirmasi Pembayaran Anda ke kasir.</string>
     <string name="indomaret_instruction_step6">Transaksi Anda berhasil! Anda akan menerima email konfirmasi pembayaran. Harap simpan struk pembayaran Indomaret Anda, apabila Anda memerlukan bantuan via support.</string>
@@ -237,14 +237,13 @@
     <string name="kioson_instruction_step9">Transaksi Anda berhasil! Anda akan menerima email konfirmasi pembayaran. Harap simpan struk pembayaran Kioson Anda, apabila Anda memerlukan bantuan via support.</string>
 
     <!--Go-Pay Instruction-->
-    <string name="gopay_instruction_step1">Tekan <b>Bayar dengan GO-PAY</b>.</string>
+    <string name="gopay_instruction_step1">Klik <b>Bayar dengan GO-PAY</b>.</string>
     <string name="gopay_instruction_step2">Aplikasi <b>GO-JEK</b> akan terbuka.</string>
-    <string name="gopay_instruction_step3">Periksa rincian pembayaran Anda di aplikasi <b>GO-JEK</b> lalu tekan <b>PAY</b>.</string>
-    <string name="gopay_instruction_step4">Selesai.</string>
+    <string name="gopay_instruction_step3">Periksa rincian pembayaran Anda lalu klik <b>Pay</b> dan transaksi anda <b>Selesai</b>.</string>
 
     <!--Go-Pay related-->
     <string name="gopay_status_title">Bayar dengan GO-PAY</string>
-    <string name="gopay_confirm_button">Bayar dengan GO-PAY</string>
+    <string name="gopay_confirm_button">Bayar dengan</string>
     <string name="notification_gojek_app">Aplikasi GO-JEK diperlukan untuk metode pembayaran ini.</string>
     <string name="notification_gojek_app_tablet">Mohon selesaikan pembayaran <b>GO-PAY</b> via aplikasi <b>GO-JEK</b>.</string>
     <string name="install_gojek_message">Install aplikasi GO-JEK dari Play Store</string>
@@ -645,7 +644,7 @@
     <string name="checkout_error_empty_response">Tidak ada  data dari server</string>
     <string name="error_unable_to_connect">Gagal terhubung ke server</string>
     <string name="complete_payment_via_xl_tunai">Selesaikan Pembayaran di XL Tunai</string>
-    <string name="payment_failed">Pembayaran gagal! silakan coba lagi.</string>
+    <string name="payment_failed">Pembayaran gagal! Silakan coba lagi.</string>
 
     <string name="try_again">Try Again</string>
     <string name="timeout_message">Proses ini terlalu lama. Silakan coba lagi.</string>
