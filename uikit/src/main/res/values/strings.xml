@@ -598,8 +598,8 @@
 
     <!--Go-Pay Instruction-->
     <string name="gopay_instruction_step1">Tap <b>Pay Now with GO-PAY</b>.</string>
-    <string name="gopay_instruction_step2"><b>GO-JEK app</b> will open.</string>
-    <string name="gopay_instruction_step3">Check your payment details then tap <b>Pay</b> and your transaction is Done.</string>
+    <string name="gopay_instruction_step2"><b>GO-JEK</b> app will open.</string>
+    <string name="gopay_instruction_step3">Check your payment details then tap <b>Pay</b> and your transaction is <b>Done</b>.</string>
 
     <!--Go-Pay Instruction in Tablet-->
     <string name="gopay_instruction_tablet_step1">Tap <b>Pay Now with GO-PAY</b>.</string>
