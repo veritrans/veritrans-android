@@ -941,7 +941,6 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             Logger.d(TAG, "sending result back with code " + requestCode);
 
             if (resultCode == RESULT_OK) {
-
                 TransactionResponse response;
                 try {
                     response = (TransactionResponse) data.getSerializableExtra(UiKitConstants.KEY_TRANSACTION_RESPONSE);
@@ -960,11 +959,12 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                         midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_PENDING));
                         setAlreadyUtilized(true);
                     } else {
-                        midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_FAILED));
+                        midtransSDK.notifyTransactionFinished(new TransactionResult(null, null, TransactionResult.STATUS_INVALID));
                     }
                 } else {
                     midtransSDK.notifyTransactionFinished(new TransactionResult(null, null, TransactionResult.STATUS_INVALID));
                 }
+
                 finish();
 
             } else if (resultCode == RESULT_CANCELED) {
