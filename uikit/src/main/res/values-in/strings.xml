@@ -245,7 +245,7 @@
     <string name="gopay_status_title">Bayar dengan GO-PAY</string>
     <string name="gopay_confirm_button">Bayar dengan</string>
     <string name="notification_gojek_app">Aplikasi GO-JEK diperlukan untuk metode pembayaran ini.</string>
-    <string name="notification_gojek_app_tablet">Mohon selesaikan pembayaran <b>GO-PAY</b> via aplikasi <b>GO-JEK</b>.</string>
+    <string name="notification_gojek_app_tablet">Pastikan Anda telah menginstall <b>aplikasi GO-JEK</b> di HP Anda dan memiliki saldo lebih dari <b>Rp 10.000</b>.</string>
     <string name="install_gojek_message">Install aplikasi GO-JEK dari Play Store</string>
     <string name="no_gojek_message">Mohon maaf, kami tidak dapat mendeteksi aplikasi GO-JEK di perangkat Anda.</string>
     <string name="redirecting_to_gopay">Mengarahkan ke aplikasi GO-JEK…</string>
@@ -266,7 +266,7 @@
     <string name="gopay_instruction_tablet_step5">Arahkan kamera ke <b>Kode QR</b>.</string>
     <string name="gopay_instruction_tablet_step6">Periksa kembali detail pembayaran Anda di aplikasi <b>GO-JEK</b> lalu tekan <b>Bayar</b>.</string>
     <string name="gopay_instruction_tablet_step7">Selesai.</string>
-    <string name="gopay_instruction_tablet_hint"></string>
+    <string name="gopay_instruction_tablet_hint">Catatan: Scan tombol QR tidak akan muncul jika saldo GO-PAY kurang dari Rp 10.000.</string>
 
     <!--credit card -->
     <string name="add_card_message">Anda bisa membayar dengan kartu baru disini</string>
