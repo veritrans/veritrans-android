@@ -260,10 +260,13 @@
 
     <!--Go-Pay Instruction in Tablet-->
     <string name="gopay_instruction_tablet_step1">Tekan <b>Bayar dengan GO-PAY</b>.</string>
-    <string name="gopay_instruction_tablet_step2">Buka aplikasi <b>GO-JEK</b> di HP Anda.</string>
-    <string name="gopay_instruction_tablet_step3">Tekan <b>SCAN QR</b>, lalu arahkan kamera ke <b>Kode QR</b>.</string>
-    <string name="gopay_instruction_tablet_step4">Periksa kembali detail pembayaran Anda di aplikasi <b>GO-JEK</b> lalu tekan <b>BAYAR</b>.</string>
-    <string name="gopay_instruction_tablet_step5">Transaksi Anda selesai.</string>
+    <string name="gopay_instruction_tablet_step2"><b>Kode QR</b> akan muncul pada halaman selanjutnya.</string>
+    <string name="gopay_instruction_tablet_step3">Buka aplikasi <b>GO-JEK</b> di HP Anda.</string>
+    <string name="gopay_instruction_tablet_step4">Tekan <b>SCAN QR</b>.</string>
+    <string name="gopay_instruction_tablet_step5">Arahkan kamera ke <b>Kode QR</b>.</string>
+    <string name="gopay_instruction_tablet_step6">Periksa kembali detail pembayaran Anda di aplikasi <b>GO-JEK</b> lalu tekan <b>Bayar</b>.</string>
+    <string name="gopay_instruction_tablet_step7">Selesai.</string>
+    <string name="gopay_instruction_tablet_hint"></string>
 
     <!--credit card -->
     <string name="add_card_message">Anda bisa membayar dengan kartu baru disini</string>
@@ -683,11 +686,6 @@
     <string name="validation_country_code_empty">Masukkan kode negara</string>
     <string name="status_message_not_enabled">Metode pembayaran belum diaktifkan</string>
     <string name="details_message_not_enabled">Maaf, metode pembayaran belum diaktifkan</string>
-    <string name="verificaton_code_empty">Masukkan kode verifikasi</string>
-    <string name="verification_code">Kirim Ulang Kode Verifikasi</string>
-    <string name="resend_verification_code">Sedang mengirim ulang kode verifikasi</string>
-    <string name="resend_verification_code_success">Kode verifikasi berhasil dikirim</string>
-    <string name="resend_verification_code_failure">Gagal mengirim kode verifikasi</string>
     <string name="danamon_online_instruction_step1">Masukkan User ID dan Password Danamon Online Banking Anda dan pilih sumber rekening untuk pembayaran Anda.</string>
     <string name="danamon_online_instruction_step2">Cek rincian informasi transaksi Anda, masukkan Kode Token, lalu tekan <b>lanjut</b>.</string>
     <string name="danamon_online_instruction_step3">Konfirmasi transaksi pembayaran akan muncul, pembayaran selesai. Simpan informasi referensi merchant dan referensi pembayaran, tekan <b>Lanjut</b> untuk kembali ke situs merchant.</string>
