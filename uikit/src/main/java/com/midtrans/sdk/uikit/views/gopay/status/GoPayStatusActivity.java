@@ -5,6 +5,7 @@ import static com.midtrans.sdk.corekit.utilities.Utils.getMonth;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -23,6 +24,7 @@ import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
+import com.midtrans.sdk.uikit.utilities.TimeUtils;
 import com.midtrans.sdk.uikit.widgets.BoldTextView;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
@@ -46,6 +48,7 @@ public class GoPayStatusActivity extends BasePaymentActivity {
     private BoldTextView merchantName;
     private ImageView qrCodeContainer;
     private FancyButton qrCodeRefresh;
+    private DefaultTextView expirationDesc;
 
     private boolean isInstructionShown = true;
 
@@ -80,8 +83,8 @@ public class GoPayStatusActivity extends BasePaymentActivity {
 
             //process qr code
             final String qrCodeUrl = response.getQrCodeUrl();
-            qrCodeContainer = (ImageView) findViewById(R.id.gopay_qr_code);
-            qrCodeRefresh = (FancyButton) findViewById(R.id.gopay_reload_qr_button);
+            qrCodeContainer = findViewById(R.id.gopay_qr_code);
+            qrCodeRefresh = findViewById(R.id.gopay_reload_qr_button);
             setTextColor(qrCodeRefresh);
             setIconColorFilter(qrCodeRefresh);
             qrCodeRefresh.setOnClickListener(new OnClickListener() {
@@ -94,12 +97,15 @@ public class GoPayStatusActivity extends BasePaymentActivity {
             loadQrCode(qrCodeUrl, qrCodeContainer);
 
             //process expiration
-            expirationText = (BoldTextView) findViewById(R.id.gopay_expiration_text);
+            expirationText = findViewById(R.id.gopay_expiration_text);
+            expirationDesc = findViewById(R.id.gopay_expiration_desc);
             String expirationTime = TextUtils.isEmpty(response.getGopayExpiration()) ? getExpiryTime(response.getTransactionTime()) : response.getGopayExpiration();
-            if (TextUtils.isEmpty(expirationTime)) {
+            String startTime = response.getTransactionTime();
+            if (TextUtils.isEmpty(expirationTime) && TextUtils.isEmpty(startTime)) {
+                expirationDesc.setVisibility(View.GONE);
                 expirationText.setVisibility(View.GONE);
             } else {
-                expirationText.setText(" " + expirationTime);
+                setTimer(150000); // TODO: 12/02/18 replace this with real value 
             }
 
             buttonPrimary.setText(getString(R.string.done));
@@ -116,8 +122,8 @@ public class GoPayStatusActivity extends BasePaymentActivity {
 
     @Override
     public void bindViews() {
-        textTitle = (SemiBoldTextView) findViewById(R.id.text_page_title);
-        buttonPrimary = (FancyButton) findViewById(R.id.button_primary);
+        textTitle = findViewById(R.id.text_page_title);
+        buttonPrimary = findViewById(R.id.button_primary);
     }
 
     @Override
@@ -243,5 +249,21 @@ public class GoPayStatusActivity extends BasePaymentActivity {
             }
         }
         return transactionTime;
+    }
+
+    private void setTimer(long totalDurationInMillis) {
+        if (expirationText != null && expirationDesc != null) {
+            new CountDownTimer(totalDurationInMillis, 1000) {
+
+                public void onTick(long millisUntilFinished) {
+                    expirationText.setText(" " + TimeUtils.fromMillisToMinutes(GoPayStatusActivity.this, millisUntilFinished));
+                }
+
+                public void onFinish() {
+                    expirationText.setVisibility(View.GONE);
+                    expirationDesc.setText(getString(R.string.gopay_expiration_expired));
+                }
+            }.start();
+        }
     }
 }

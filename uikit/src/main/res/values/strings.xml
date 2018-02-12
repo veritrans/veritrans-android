@@ -627,7 +627,8 @@
     <string name="confirm_gopay_qr_scan_tablet">Make sure the QR code successfully scanned and payment has been completed within the GO-JEK app.</string>
     <string name="confirm_gopay_deeplink">Make sure payment has been completed within the GO-JEK app.</string>
     <string name="gopay_instruction">How to Pay?</string>
-    <string name="gopay_expiration_message">Please complete your payment before</string>
+    <string name="gopay_expiration_message">Please complete your payment in</string>
+    <string name="gopay_expiration_expired">Time\'s up.</string>
 
     <string name="error_message_invalid_input_telkomsel">Transaction failed. Your transaction got declined by T-Cash.</string>
     <string name="kioson">Kioson</string>
@@ -897,4 +898,9 @@
     <string name="instruction_atm_with">ATM with %1$s logo</string>
     <string name="bank_code">Bank Code</string>
     <string name="text_bank_code_here">BNI (009)</string>
+
+    <string name="minutes">minutes</string>
+    <string name="minute">minute</string>
+    <string name="seconds">seconds</string>
+    <string name="second">second</string>
 </resources>

@@ -48,6 +48,7 @@
         android:padding="@dimen/sixteen_dp">
 
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:id="@+id/gopay_expiration_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/gopay_expiration_message"/>

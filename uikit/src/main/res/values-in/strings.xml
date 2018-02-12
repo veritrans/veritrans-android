@@ -256,7 +256,8 @@
     <string name="confirm_gopay_qr_scan_tablet">Pastikan kode QR berhasil di-scan dan pembayaran telah diselesaikan di dalam aplikasi GO-JEK.</string>
     <string name="confirm_gopay_deeplink">Pastikan pembayaran telah diselesaikan di dalam aplikasi GO-JEK.</string>
     <string name="gopay_instruction">Cara Pembayaran</string>
-    <string name="gopay_expiration_message">Harap selesaikan pembayaran sebelum</string>
+    <string name="gopay_expiration_message">Harap selesaikan pembayaran dalam</string>
+    <string name="gopay_expiration_expired">Waktu habis.</string>
 
     <!--Go-Pay Instruction in Tablet-->
     <string name="gopay_instruction_tablet_step1">Tekan <b>Bayar dengan GO-PAY</b>.</string>
@@ -701,5 +702,10 @@
     <string name="payment_instruction">Instruksi Pembayaran %1$s</string>
     <string name="instruction_atm_with">ATM berlogo %1$s</string>
     <string name="bank_code">Kode Bank</string>
+
+    <string name="minutes">menit</string>
+    <string name="minute">menit</string>
+    <string name="seconds">detik</string>
+    <string name="second">detik</string>
 
 </resources>
