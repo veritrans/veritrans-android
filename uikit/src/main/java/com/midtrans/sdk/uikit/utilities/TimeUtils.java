@@ -14,14 +14,14 @@ public class TimeUtils {
             int minutes = (int) ((milliseconds / 1000) / 60);
             String result = "";
             if (minutes > 1) {
-                result = minutes + " " + context.getString(R.string.minutes) + " ";
+                result = minutes + " " + context.getString(R.string.minutes);
             } else if (minutes > 0) {
-                result = minutes + " " + context.getString(R.string.minute) + " ";
+                result = minutes + " " + context.getString(R.string.minute);
             }
             if (seconds > 1) {
-                result = result + seconds + " " + context.getString(R.string.seconds);
+                result = result + " " + seconds + " " + context.getString(R.string.seconds);
             } else if (seconds > 0) {
-                result = result + seconds + " " + context.getString(R.string.second);
+                result = result + " " + seconds + " " + context.getString(R.string.second);
             }
             return result;
         }

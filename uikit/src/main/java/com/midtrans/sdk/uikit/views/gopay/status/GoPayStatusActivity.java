@@ -32,6 +32,8 @@ import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Fajar on 16/11/17.
@@ -64,9 +66,9 @@ public class GoPayStatusActivity extends BasePaymentActivity {
         if (response != null) {
             showProgressLayout();
 
-            final LinearLayout instructionLayout = (LinearLayout) findViewById(R.id.gopay_instruction_layout);
-            merchantName = (BoldTextView) findViewById(R.id.gopay_merchant_name);
-            final DefaultTextView instructionToggle = (DefaultTextView) findViewById(R.id.gopay_instruction_toggle);
+            final LinearLayout instructionLayout = findViewById(R.id.gopay_instruction_layout);
+            merchantName = findViewById(R.id.gopay_merchant_name);
+            final DefaultTextView instructionToggle = findViewById(R.id.gopay_instruction_toggle);
             instructionToggle.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -105,7 +107,13 @@ public class GoPayStatusActivity extends BasePaymentActivity {
                 expirationDesc.setVisibility(View.GONE);
                 expirationText.setVisibility(View.GONE);
             } else {
-                setTimer(150000); // TODO: 12/02/18 replace this with real value 
+                long duration = getDuration(startTime, expirationTime);
+                if (duration > 1000) {
+                    setTimer(duration);
+                } else {
+                    expirationText.setVisibility(View.GONE);
+                    expirationDesc.setText(getString(R.string.gopay_expiration_expired));
+                }
             }
 
             buttonPrimary.setText(getString(R.string.done));
@@ -146,7 +154,7 @@ public class GoPayStatusActivity extends BasePaymentActivity {
                 .listener(new RequestListener<String, GlideDrawable>() {
                     @Override
                     public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        FrameLayout frameLayout = (FrameLayout) findViewById(R.id.gopay_qr_code_frame);
+                        FrameLayout frameLayout = findViewById(R.id.gopay_qr_code_frame);
                         frameLayout.setBackgroundColor(getResources().getColor(R.color.light_gray));
                         qrCodeRefresh.setVisibility(View.VISIBLE);
                         Logger.e(TAG, e.getMessage());
@@ -159,7 +167,7 @@ public class GoPayStatusActivity extends BasePaymentActivity {
 
                     @Override
                     public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        FrameLayout frameLayout = (FrameLayout) findViewById(R.id.gopay_qr_code_frame);
+                        FrameLayout frameLayout = findViewById(R.id.gopay_qr_code_frame);
                         frameLayout.setBackgroundColor(0);
                         qrCodeRefresh.setVisibility(View.GONE);
                         setMerchantName(true);
@@ -251,12 +259,46 @@ public class GoPayStatusActivity extends BasePaymentActivity {
         return transactionTime;
     }
 
+    /**
+     * Hack-ish approach for getting duration for the timer, as both start and end timestamp
+     * are in different format.
+     * @param start transaction start time, example : 2018-02-09 18:14:52
+     * @param end GO-PAY expiry time, example : 09 February 18:29 WIB
+     * @return
+     */
+    private long getDuration(String start, String end) {
+        long startMillis = 0, endMillis = 0;
+        //use US locale so parser understands months in English (like February)
+        SimpleDateFormat startDf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+        SimpleDateFormat expiryDf = new SimpleDateFormat("dd MMMM HH:mm", Locale.US);
+        Date date;
+        try {
+            date = startDf.parse(start);
+            startMillis = date.getTime();
+
+            //for end timestamp, we need to manually add year, same as start time year
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            int year = cal.get(Calendar.YEAR);
+
+            date = expiryDf.parse(end.replace(" WIB", ""));
+            cal.setTime(date);
+            cal.add(Calendar.YEAR, year - cal.get(Calendar.YEAR));
+            date = cal.getTime();
+            endMillis = date.getTime();
+        } catch (ParseException e) {
+            Logger.e(e.getMessage());
+        }
+
+        return endMillis - startMillis;
+    }
+
     private void setTimer(long totalDurationInMillis) {
         if (expirationText != null && expirationDesc != null) {
             new CountDownTimer(totalDurationInMillis, 1000) {
 
                 public void onTick(long millisUntilFinished) {
-                    expirationText.setText(" " + TimeUtils.fromMillisToMinutes(GoPayStatusActivity.this, millisUntilFinished));
+                    expirationText.setText(" " + TimeUtils.fromMillisToMinutes(GoPayStatusActivity.this, millisUntilFinished) + ".");
                 }
 
                 public void onFinish() {
