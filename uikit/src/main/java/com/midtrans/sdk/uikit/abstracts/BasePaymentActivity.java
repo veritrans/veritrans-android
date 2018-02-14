@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
@@ -19,12 +20,13 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.midtrans.sdk.corekit.core.Logger;
-import com.midtrans.sdk.corekit.core.MidtransSDK;
-import com.midtrans.sdk.corekit.models.ItemDetails;
 import com.midtrans.sdk.corekit.models.MerchantPreferences;
+import com.midtrans.sdk.corekit.models.PaymentTransactionDetails;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
+import com.midtrans.sdk.corekit.models.snap.ItemDetails;
 import com.midtrans.sdk.corekit.models.snap.MerchantData;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.utilities.Utils;
@@ -39,6 +41,7 @@ import com.midtrans.sdk.uikit.views.webview.WebViewPaymentActivity;
 import com.midtrans.sdk.uikit.widgets.BoldTextView;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
+
 import java.util.List;
 
 /**
@@ -88,7 +91,7 @@ public abstract class BasePaymentActivity extends BaseActivity {
                 }
             }
         }
-        initTransactionDetail(getMidtransSdk().getTransactionRequest().getItemDetails());
+        initTransactionDetail(getMidtransSdk().getPaymentTransactionDetails().getItemDetailsList());
         //init dim
         findViewById(R.id.background_dim).setOnClickListener(new OnClickListener() {
             @Override
@@ -111,7 +114,7 @@ public abstract class BasePaymentActivity extends BaseActivity {
         if (recyclerView != null) {
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
-             transactionDetailAdapter = new TransactionDetailsAdapter(details);
+            transactionDetailAdapter = new TransactionDetailsAdapter(details);
             recyclerView.setAdapter(transactionDetailAdapter);
         }
     }
@@ -130,6 +133,49 @@ public abstract class BasePaymentActivity extends BaseActivity {
                 dimView.setVisibility(View.VISIBLE);
             }
             isDetailShown = !isDetailShown;
+        }
+    }
+
+    protected void addNewItemDetails(final ItemDetails newItem) {
+        if (transactionDetailAdapter != null) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    transactionDetailAdapter.addItemDetails(newItem);
+                    changeTotalAmount();
+                }
+            }, 200);
+        }
+    }
+
+    protected void removeItemDetails(final String itemId) {
+        if (transactionDetailAdapter != null) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    transactionDetailAdapter.removeItemDetails(itemId);
+                    changeTotalAmount();
+                }
+            }, 200);
+        }
+    }
+
+    protected void changeTotalAmount() {
+        if (textTotalAmount != null) {
+            final long newTotalAmount = transactionDetailAdapter.calculateTotalAmount();
+
+            String formattedTotalAmount = getString(R.string.prefix_money, Utils.getFormattedAmount(newTotalAmount));
+            textTotalAmount.setText(formattedTotalAmount);
+
+            PaymentTransactionDetails paymentTransactionDetails = getMidtransSdk().getPaymentTransactionDetails();
+            if (paymentTransactionDetails != null) {
+                int primaryColor = getPrimaryColor() != 0 ? getPrimaryColor() : ContextCompat.getColor(BasePaymentActivity.this, R.color.dark_gray);
+
+                int amountColor = newTotalAmount == paymentTransactionDetails.getTotalAmount()
+                        ? primaryColor : ContextCompat.getColor(BasePaymentActivity.this, R.color.promoAmount);
+
+                textTotalAmount.setTextColor(amountColor);
+            }
         }
     }
 

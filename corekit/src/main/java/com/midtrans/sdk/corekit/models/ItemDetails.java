@@ -59,5 +59,4 @@ public class ItemDetails {
     public void setName(String name) {
         this.name = name;
     }
-
 }

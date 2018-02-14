@@ -13,17 +13,23 @@ public class Promo {
     @SerializedName("id")
     private long id;
 
+    @SerializedName("name")
+    private String name;
+
     @SerializedName("bins")
     private List<String> bins;
 
-    @SerializedName("discount_amount")
-    private Long discountAmount;
+    @SerializedName("payment_types")
+    private List<String> paymentTypes;
+
+    @SerializedName("calculated_discount_amount")
+    private Long calculatedDiscountAmount;
+
+    @SerializedName("discounted_gross_amount")
+    private Long discountedGrossAmount;
 
     @SerializedName("discount_type")
     private String discountType;
-
-    @SerializedName("max_discount_amount")
-    private Long maxDiscountAmount;
 
     @SerializedName("start_date")
     private String startDate;
@@ -45,7 +51,7 @@ public class Promo {
 
     @SerializedName("promo_token")
     private String promoToken;
-
+    private boolean selected;
 
     public long getId() {
         return id;
@@ -55,16 +61,8 @@ public class Promo {
         return bins;
     }
 
-    public Long getDiscountAmount() {
-        return discountAmount;
-    }
-
     public String getDiscountType() {
         return discountType;
-    }
-
-    public Long getMaxDiscountAmount() {
-        return maxDiscountAmount;
     }
 
     public String getStartDate() {
@@ -93,5 +91,51 @@ public class Promo {
 
     public String getPromoToken() {
         return promoToken;
+    }
+
+    public List<String> getPaymentTypes() {
+        return paymentTypes;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Long getCalculatedDiscountAmount() {
+        return calculatedDiscountAmount;
+    }
+
+    public Long getDiscountedGrossAmount() {
+        return discountedGrossAmount;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Promo{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", bins=" + bins +
+                ", paymentTypes=" + paymentTypes +
+                ", calculatedDiscountAmount=" + calculatedDiscountAmount +
+                ", discountedGrossAmount=" + discountedGrossAmount +
+                ", discountType='" + discountType + '\'' +
+                ", startDate='" + startDate + '\'' +
+                ", endDate='" + endDate + '\'' +
+                ", promoCode='" + promoCode + '\'' +
+                ", sponsorName='" + sponsorName + '\'' +
+                ", sponsorMessageEn='" + sponsorMessageEn + '\'' +
+                ", sponsorMessageId='" + sponsorMessageId + '\'' +
+                ", promoToken='" + promoToken + '\'' +
+                ", selected=" + selected +
+                '}';
     }
 }

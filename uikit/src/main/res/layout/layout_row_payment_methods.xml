@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -39,7 +40,6 @@
                     android:id="@+id/text_payment_method_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:textColor="@color/black"
                     tools:text="@string/text_demo" />
 
@@ -73,6 +73,22 @@
                 android:layout_marginRight="@dimen/eight_dp"
                 android:alpha="0.3"
                 android:src="@drawable/ic_arrow_right" />
+
+            <com.midtrans.sdk.uikit.widgets.FancyButton
+                android:id="@+id/badge_promo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:layout_toLeftOf="@id/image_arrow_right"
+                android:layout_toStartOf="@id/image_arrow_right"
+                android:paddingBottom="0dp"
+                android:paddingTop="0dp"
+                app:fb_defaultColor="@color/promoBadge"
+                app:fb_radius="5sp"
+                app:fb_textSize="10dp"
+                app:fb_text="promo"
+                app:fb_textColor="@color/gray.primary_dark" />
         </RelativeLayout>
 
         <LinearLayout

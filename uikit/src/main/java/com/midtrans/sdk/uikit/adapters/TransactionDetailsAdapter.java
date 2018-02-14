@@ -1,14 +1,17 @@
 package com.midtrans.sdk.uikit.adapters;
 
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.midtrans.sdk.corekit.models.ItemDetails;
+import com.midtrans.sdk.corekit.models.snap.ItemDetails;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.views.creditcard.details.CreditCardDetailsPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,20 +44,21 @@ public class TransactionDetailsAdapter extends RecyclerView.Adapter<RecyclerView
         }
 
         if (newItem != null) {
-            ItemDetails currentItem = findItemDetailByName(newItem.getName());
+            ItemDetails currentItem = findItemDetailById(newItem.getId());
             if (currentItem == null) {
                 itemDetails.add(newItem);
             } else {
                 currentItem.setPrice(newItem.getPrice());
+                currentItem.setName(newItem.getName());
             }
 
             notifyDataSetChanged();
         }
     }
 
-    private ItemDetails findItemDetailByName(String name) {
+    private ItemDetails findItemDetailById(String id) {
         for (ItemDetails item : itemDetails) {
-            if (item != null && item.getName().equals(name)) {
+            if (item != null && item.getId().equals(id)) {
                 return item;
             }
         }
@@ -89,6 +93,15 @@ public class TransactionDetailsAdapter extends RecyclerView.Adapter<RecyclerView
                 if (position % 2 != 0) {
                     itemDetailsViewHolder.itemView.setBackgroundResource(R.color.light_gray);
                 }
+
+                int amountColor = 0;
+                if (item.getId().equals(CreditCardDetailsPresenter.PROMO_ID)) {
+                    amountColor = ContextCompat.getColor(itemDetailsViewHolder.itemView.getContext(), R.color.promoAmount);
+                } else {
+                    amountColor = ContextCompat.getColor(itemDetailsViewHolder.itemView.getContext(), R.color.black);
+                }
+                itemDetailsViewHolder.price.setTextColor(amountColor);
+
                 break;
             default:
                 break;
@@ -107,6 +120,26 @@ public class TransactionDetailsAdapter extends RecyclerView.Adapter<RecyclerView
         } else {
             return TYPE_ITEM;
         }
+    }
+
+    public void removeItemDetails(String itemDetailsId) {
+        ItemDetails item = findItemDetailById(itemDetailsId);
+        if (item != null) {
+            itemDetails.remove(item);
+            notifyDataSetChanged();
+        }
+    }
+
+    public long calculateTotalAmount() {
+        long totalAmount = 0;
+        for (ItemDetails item : itemDetails) {
+            if (item != null) {
+                Log.d("xitemx", "id:" + item.getId() + " | name:" + item.getName() + "| price:" + item.getPrice());
+                totalAmount += item.getPrice();
+            }
+        }
+
+        return totalAmount;
     }
 
     private class ItemDetailsViewHolder extends RecyclerView.ViewHolder {

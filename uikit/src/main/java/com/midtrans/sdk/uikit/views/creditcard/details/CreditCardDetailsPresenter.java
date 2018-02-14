@@ -3,7 +3,9 @@ package com.midtrans.sdk.uikit.views.creditcard.details;
 import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
+import com.google.gson.Gson;
 import com.midtrans.sdk.corekit.callback.BankBinsCallback;
 import com.midtrans.sdk.corekit.callback.BanksPointCallback;
 import com.midtrans.sdk.corekit.callback.CardTokenCallback;
@@ -12,6 +14,7 @@ import com.midtrans.sdk.corekit.callback.SaveCardCallback;
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.Logger;
+import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.CardTokenRequest;
@@ -20,11 +23,15 @@ import com.midtrans.sdk.corekit.models.SaveCardResponse;
 import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.UserDetail;
+import com.midtrans.sdk.corekit.models.promo.Promo;
+import com.midtrans.sdk.corekit.models.promo.PromoDetails;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 import com.midtrans.sdk.corekit.models.snap.BanksPointResponse;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
+import com.midtrans.sdk.corekit.models.snap.ItemDetails;
 import com.midtrans.sdk.corekit.models.snap.SavedToken;
+import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.TransactionDetails;
 import com.midtrans.sdk.corekit.models.snap.TransactionStatusResponse;
 import com.midtrans.sdk.uikit.R;
@@ -33,6 +40,8 @@ import com.midtrans.sdk.uikit.models.CreditCardTransaction;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +51,7 @@ import java.util.List;
 
 public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCardDetailsView> {
     private static final String TAG = CreditCardDetailsPresenter.class.getSimpleName();
+    public static final String PROMO_ID = "promo_id";
     private Context context;
     private TokenDetailsResponse creditCardToken;
     private TransactionResponse transactionResponse;
@@ -121,6 +131,11 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
     }
 
     public Integer getGrossAmount() {
+        //use discounted gross amount if available
+        if (creditCardTransaction.isSelectedPromoAvailable()) {
+            return creditCardTransaction.getSelectedPromo().getDiscountedGrossAmount().intValue();
+        }
+
         TransactionDetails transactionDetails = getMidtransSDK().getTransaction().getTransactionDetails();
         if (transactionDetails != null) {
             return transactionDetails.getAmount();
@@ -248,6 +263,9 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
         if (creditCardTransaction.getBankName() != null && creditCardTransaction.getBankName().equalsIgnoreCase(BankType.MANDIRI)) {
             paymentModel.setBank(creditCardTransaction.getBankName());
         }
+
+        //set promo
+        paymentModel.setPromoSelected(creditCardTransaction.getSelectedPromo());
     }
 
     public boolean isShowPaymentStatus() {
@@ -499,5 +517,97 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
 
     public boolean isBinLockingValid(String cardNumber) {
         return creditCardTransaction.isWhitelistBinContainCardNumber(cardNumber);
+    }
+
+    public List<Promo> getCreditCardPromos(String cardNumber) {
+        PromoDetails promoDetails = null;
+        String json = null;
+        try {
+            InputStream is = context.getAssets().open("sample_promo.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+            Logger.i("xpromodetails:" + json);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+
+        }
+
+        try {
+            Gson gson = new Gson();
+            promoDetails = gson.fromJson(json, Transaction.class).getPromoDetails();
+            Logger.i("xpromodetails>fromfile:" + promoDetails.toString());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        List<Promo> cardPromos = new ArrayList<>();
+        if (promoDetails != null) {
+            Logger.i("xpromodetails>notnull:" + promoDetails.getPromos().get(0).getDiscountedGrossAmount());
+        }
+        PromoDetails details = promoDetails;
+//        PromoDetails details = getMidtransSDK().getTransaction().getPromoDetails();
+        if (details != null) {
+            List<Promo> promos = details.getPromos();
+            if (promos != null && !promos.isEmpty()) {
+                // todo promo log
+                Log.d("xpromo", "size:" + promos.size());
+                return getValidCreditCardPromo(cardNumber, promos);
+            }
+        }
+        return null;
+    }
+
+    private List<Promo> getValidCreditCardPromo(String cardNumber, List<Promo> promos) {
+        List<Promo> cardPromos = new ArrayList<>();
+
+        for (Promo promo : promos) {
+            if (promo.getPaymentTypes() != null && promo.getPaymentTypes().contains(PaymentType.CREDIT_CARD)) {
+                if (TextUtils.isEmpty(cardNumber)) {
+                    // todo promo log
+                    Log.d("xpromo", "empty:" + promos.size());
+
+                    cardPromos.add(promo);
+                } else {
+                    Log.d("xpromo", "have bin:true");
+
+                    if (promo.getBins() != null && !promo.getBins().isEmpty()) {
+                        for (String cardBin : promo.getBins()) {
+                            if (cardNumber.startsWith(cardBin)) {
+                                cardPromos.add(promo);
+                            }
+                            Log.d("xpromo", "have bin:true:" + cardBin);
+
+                        }
+                    } else {
+                        cardPromos.add(promo);
+                    }
+                }
+            }
+        }
+
+        return cardPromos;
+    }
+
+    public ItemDetails createTransactionItem(Promo promo) {
+        if (promo != null) {
+            int quantity = 1;
+            int price = promo.getCalculatedDiscountAmount().intValue() * -1;
+
+            ItemDetails itemDetails = new ItemDetails(PROMO_ID, promo.getName(),
+                    price, quantity);
+
+            return itemDetails;
+        }
+
+        return null;
+    }
+
+    public void setSelectedPromo(Promo seletedPromo) {
+        creditCardTransaction.setSelectedPromo(seletedPromo);
     }
 }

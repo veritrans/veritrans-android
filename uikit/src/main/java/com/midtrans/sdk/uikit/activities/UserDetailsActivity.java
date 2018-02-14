@@ -55,7 +55,7 @@ public class UserDetailsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initIssueTracker();
+//        initIssueTracker();
 
         String invalidMessage = getInvalidPropertiesMessage();
         if (!TextUtils.isEmpty(invalidMessage)) {
@@ -113,7 +113,7 @@ public class UserDetailsActivity extends BaseActivity {
                     return;
                 }
 
-                UserDetail userDetail = SdkUIFlowUtil.getSavedUserDetails(this);
+                UserDetail userDetail = null;
 
                 if (userDetail != null) {
                     if (!TextUtils.isEmpty(userDetail.getUserFullName())) {

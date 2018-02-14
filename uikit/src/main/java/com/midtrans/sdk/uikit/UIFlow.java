@@ -2,6 +2,7 @@ package com.midtrans.sdk.uikit;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
 import com.midtrans.sdk.corekit.core.ISdkFlow;
@@ -22,6 +23,7 @@ public class UIFlow implements ISdkFlow {
             Intent intent = new Intent(context, UserDetailsActivity.class);
             intent.putExtra(UiKitConstants.EXTRA_SNAP_TOKEN, snapToken);
             context.startActivity(intent);
+            Log.d("xstart", "runUIFlow");
         }
     }
 

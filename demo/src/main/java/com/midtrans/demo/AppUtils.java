@@ -88,23 +88,23 @@ public class AppUtils {
         if (model == null && !TextUtils.isEmpty(type)) {
             switch (type) {
                 case PaymentType.PERMATA_VA:
-                    model = new PaymentMethodsModel(PAYMENT_NAME_PERMATA_VA, null, 0, -1, 4, status);
+                    model = new PaymentMethodsModel(PAYMENT_NAME_PERMATA_VA, null, 0, "", 4, status);
                     break;
 
                 case PaymentType.BCA_VA:
-                    model = new PaymentMethodsModel(PAYMENT_NAME_BCA_VA, null, 0, -1, 2, status);
+                    model = new PaymentMethodsModel(PAYMENT_NAME_BCA_VA, null, 0, "", 2, status);
                     break;
 
                 case PaymentType.BNI_VA:
-                    model = new PaymentMethodsModel(PAYMENT_NAME_BNI_VA, null, 0, -1, 5, status);
+                    model = new PaymentMethodsModel(PAYMENT_NAME_BNI_VA, null, 0, "", 5, status);
                     break;
 
                 case PaymentType.ALL_VA:
-                    model = new PaymentMethodsModel(PAYMENT_NAME_OTHER_VA, null, 0, -1, 6, status);
+                    model = new PaymentMethodsModel(PAYMENT_NAME_OTHER_VA, null, 0, "", 6, status);
                     break;
 
                 case PaymentType.E_CHANNEL:
-                    model = new PaymentMethodsModel(PAYMENT_NAME_MANDIRI_ECHANNEL, null, 0, -1, 3, status);
+                    model = new PaymentMethodsModel(PAYMENT_NAME_MANDIRI_ECHANNEL, null, 0, "", 3, status);
                     break;
             }
         }

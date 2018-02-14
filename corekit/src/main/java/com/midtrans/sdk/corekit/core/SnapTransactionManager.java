@@ -1063,6 +1063,7 @@ public class SnapTransactionManager extends BaseTransactionManager {
                             cardTokenRequest.getCardExpiryMonth(),
                             cardTokenRequest.getCardExpiryYear(),
                             cardTokenRequest.getClientKey(),
+                            cardTokenRequest.getGrossAmount(),
                             cardTokenRequest.getChannel(),
                             cardTokenRequest.getType(),
                             cardTokenRequest.isPoint(),

@@ -4,7 +4,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.midtrans.sdk.corekit.models.BankType;
-import com.midtrans.sdk.corekit.models.ItemDetails;
+import com.midtrans.sdk.corekit.models.snap.ItemDetails;
 import com.midtrans.sdk.corekit.models.snap.TransactionDetails;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentPresenter;
 
@@ -92,11 +92,11 @@ public class BankPointsPresenter extends BasePaymentPresenter {
 
             switch (pointBank) {
                 case BankType.BNI:
-                    newItemDetails = new ItemDetails(BNI_POINT_ID, newPrice, quantity, itemDetailsName);
+                    newItemDetails = new ItemDetails(BNI_POINT_ID, itemDetailsName, newPrice, quantity);
                     break;
 
                 case BankType.MANDIRI:
-                    newItemDetails = new ItemDetails(MANDIRI_POIN_ID, newPrice, quantity, itemDetailsName);
+                    newItemDetails = new ItemDetails(MANDIRI_POIN_ID, itemDetailsName, newPrice, quantity);
                     break;
             }
         }

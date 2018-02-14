@@ -27,6 +27,7 @@ import com.midtrans.sdk.corekit.callback.TransactionOptionsCallback;
 import com.midtrans.sdk.corekit.core.themes.BaseColorTheme;
 import com.midtrans.sdk.corekit.models.CardTokenRequest;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
+import com.midtrans.sdk.corekit.models.PaymentTransactionDetails;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.TokenRequestModel;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
@@ -87,6 +88,7 @@ public class MidtransSDK {
     private BaseColorTheme colorTheme;
     private Transaction transaction;
     private CardRegistrationCallback cardRegistrationCallback;
+    private PaymentTransactionDetails paymentTransactionDetails;
 
     private MidtransSDK() {
 
@@ -569,6 +571,8 @@ public class MidtransSDK {
     public void startPaymentUiFlow(Context context) {
         if (merchantBaseUrlAvailable()) {
             runUiSdk(context, null);
+            Log.d("xstart", "xstartPaymentUiFlow");
+
         }
     }
 
@@ -586,6 +590,8 @@ public class MidtransSDK {
                 transactionRequest.enableUi(true);
                 if (uiflow != null) {
                     uiflow.runUIFlow(context, snapToken);
+                    Log.d("xstart", "runUIFlow(,)");
+
                 }
             }
 
@@ -2135,5 +2141,13 @@ public class MidtransSDK {
 
     public CardRegistrationCallback getUiCardRegistrationCallback() {
         return this.cardRegistrationCallback;
+    }
+
+    public PaymentTransactionDetails getPaymentTransactionDetails() {
+        return paymentTransactionDetails;
+    }
+
+    public void setPaymentTransactionDetails(PaymentTransactionDetails paymentTransactionDetails) {
+        this.paymentTransactionDetails = paymentTransactionDetails;
     }
 }
