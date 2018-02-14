@@ -33,7 +33,6 @@ import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
-import com.midtrans.sdk.corekit.core.PaymentMethod;
 import com.midtrans.sdk.corekit.core.SdkUtil;
 import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.core.themes.ColorTheme;
@@ -897,6 +896,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
      * initialize adapter data model by dummy values.
      */
     private void initialiseAdapterData(List<EnabledPayment> enabledPayments) {
+        boolean isBankTransferAdded = false;
         data.clear();
         bankTransfers.clear();
 
@@ -904,22 +904,30 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             if ((enabledPayment.getCategory() != null && enabledPayment.getCategory().equals(getString(R.string.enabled_payment_category_banktransfer)))
                     || enabledPayment.getType().equalsIgnoreCase(getString(R.string.payment_mandiri_bill_payment))) {
                 bankTransfers.add(enabledPayment);
+                if (!isBankTransferAdded) {
+                    PaymentMethodsModel model = PaymentMethods
+                        .getMethods(this, getString(R.string.payment_bank_transfer),
+                            EnabledPayment.STATUS_UP);
+                    if (model != null) {
+                        data.add(model);
+                        isBankTransferAdded = true;
+                    }
+                }
             } else {
                 PaymentMethodsModel model = PaymentMethods.getMethods(this, enabledPayment.getType(), enabledPayment.getStatus());
                 if (model != null) {
-                    //inactive GO-PAY for tablet
-                    if (!model.getName().equalsIgnoreCase(getString(R.string.payment_method_gopay)) || !SdkUIFlowUtil.getDeviceType(this).equalsIgnoreCase(SdkUIFlowUtil.TYPE_TABLET)) {
-                        data.add(model);
-                    }
+                    data.add(model);
                 }
             }
         }
 
-
+        /**
+         * Disable payment sorting, just follow payment list order from MAP
         if (!bankTransfers.isEmpty()) {
             data.add(PaymentMethods.getMethods(this, getString(R.string.payment_bank_transfer), EnabledPayment.STATUS_UP));
         }
         SdkUtil.sortPaymentMethodsByPriority(data);
+         */
     }
 
     /**

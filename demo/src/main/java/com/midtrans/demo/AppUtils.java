@@ -22,6 +22,12 @@ import java.util.List;
 
 public class AppUtils {
 
+    public static final String CATEGORY_CREDIT_CARD = "Credit/Debit Card";
+    public static final String CATEGORY_VA = "ATM/Bank Transfer";
+    public static final String CATEGORY_DIRECT_DEBIT = "Direct Debit";
+    public static final String CATEGORY_EMONEY = "e-Money";
+    public static final String CATEGORY_CONVENIENT_STORE = "Convenient Store";
+    public static final String CATEGORY_VOUCHER_CARD = "Voucher Card";
     private static final String GROUP_BANK_TRANSFER = "bank_transfer";
     private static final String PAYMENT_NAME_PERMATA_VA = "Permata VA";
     private static final String PAYMENT_NAME_BCA_VA = "BCA VA";
@@ -30,13 +36,6 @@ public class AppUtils {
     private static final String PAYMENT_NAME_MANDIRI_ECHANNEL = "Mandiri VA";
     private static final String TYPE_PHONE = "PHONE";
     private static final String TYPE_TABLET = "TABLET";
-
-    public static final String CATEGORY_CREDIT_CARD = "Credit/Debit Card";
-    public static final String CATEGORY_VA = "ATM/Bank Transfer";
-    public static final String CATEGORY_DIRECT_DEBIT = "Direct Debit";
-    public static final String CATEGORY_EMONEY = "e-Money";
-    public static final String CATEGORY_CONVENIENT_STORE = "Convenient Store";
-    public static final String CATEGORY_VOUCHER_CARD = "Voucher Card";
 
     public static boolean isActivePaymentChannel(Context context, SelectPaymentMethodViewModel channel) {
         if (channel != null) {
@@ -66,10 +65,7 @@ public class AppUtils {
         paymentNameList.add(new EnabledPayment(PaymentType.BRI_EPAY, CATEGORY_DIRECT_DEBIT));
         paymentNameList.add(new EnabledPayment(PaymentType.DANAMON_ONLINE, CATEGORY_DIRECT_DEBIT));
 
-        boolean isTablet = getDeviceType(activity).equals(TYPE_TABLET);
-        if (!isTablet) {
-            paymentNameList.add(new EnabledPayment(PaymentType.GOPAY, CATEGORY_EMONEY));
-        }
+        paymentNameList.add(new EnabledPayment(PaymentType.GOPAY, CATEGORY_EMONEY));
         paymentNameList.add(new EnabledPayment(PaymentType.MANDIRI_ECASH, CATEGORY_EMONEY));
         paymentNameList.add(new EnabledPayment(PaymentType.TELKOMSEL_CASH, CATEGORY_EMONEY));
 //        paymentNameList.add(new EnabledPayment(PaymentType.XL_TUNAI, null)); being deprecated
