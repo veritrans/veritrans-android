@@ -172,18 +172,19 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     }
 
     private void initPromoList() {
-        promosAdapter = new PromosAdapter(new PromosAdapter.PromosListener() {
-            @Override
-            public void onPromoSelected(Promo promo) {
-                if (transactionDetailAdapter != null) {
-                    if (promo.isSelected()) {
-                        addNewItemDetails(presenter.createTransactionItem(promo));
-                    } else {
-                        removeItemDetails(CreditCardDetailsPresenter.PROMO_ID);
+        promosAdapter = new PromosAdapter(getPrimaryColor(),
+                new PromosAdapter.PromosListener() {
+                    @Override
+                    public void onPromoSelected(Promo promo) {
+                        if (transactionDetailAdapter != null) {
+                            if (promo.isSelected()) {
+                                addNewItemDetails(presenter.createTransactionItem(promo));
+                            } else {
+                                removeItemDetails(UiKitConstants.PROMO_ID);
+                            }
+                        }
                     }
-                }
-            }
-        });
+                });
 
         recyclerViewPromo.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewPromo.setHasFixedSize(true);
@@ -428,9 +429,14 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     }
 
     private void initCreditCardPromos() {
-        String cardNumber = getCleanedCardNumber();
-        if (TextUtils.isEmpty(cardNumber) || cardNumber.length() < 7) {
-            promosAdapter.setData(presenter.getCreditCardPromos(cardNumber));
+        final String cardNumber = getCleanedCardNumber();
+        if (cardNumber.length() < 7) {
+            recyclerViewPromo.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    promosAdapter.setData(presenter.getCreditCardPromos(cardNumber));
+                }
+            }, 100);
         }
     }
 

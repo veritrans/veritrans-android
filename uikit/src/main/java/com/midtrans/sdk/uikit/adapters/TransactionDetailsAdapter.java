@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.midtrans.sdk.corekit.models.snap.ItemDetails;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.views.creditcard.details.CreditCardDetailsPresenter;
+import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,11 +39,15 @@ public class TransactionDetailsAdapter extends RecyclerView.Adapter<RecyclerView
     }
 
     public void addItemDetails(ItemDetails newItem) {
+        Log.d("bpoint", "item:" + newItem);
+
         if (itemDetails == null) {
             itemDetails = new ArrayList<>();
         }
 
         if (newItem != null) {
+            Log.d("bpoint", "id:" + newItem.getId());
+
             ItemDetails currentItem = findItemDetailById(newItem.getId());
             if (currentItem == null) {
                 itemDetails.add(newItem);
@@ -94,11 +98,14 @@ public class TransactionDetailsAdapter extends RecyclerView.Adapter<RecyclerView
                     itemDetailsViewHolder.itemView.setBackgroundResource(R.color.light_gray);
                 }
 
-                int amountColor = 0;
-                if (item.getId().equals(CreditCardDetailsPresenter.PROMO_ID)) {
+                int amountColor;
+                if (item.getId().equals(UiKitConstants.PROMO_ID)
+                        || item.getId().equals(UiKitConstants.BNI_POINT_ID)
+                        || item.getId().equals(UiKitConstants.MANDIRI_POIN_ID)) {
+
                     amountColor = ContextCompat.getColor(itemDetailsViewHolder.itemView.getContext(), R.color.promoAmount);
                 } else {
-                    amountColor = ContextCompat.getColor(itemDetailsViewHolder.itemView.getContext(), R.color.black);
+                    amountColor = ContextCompat.getColor(itemDetailsViewHolder.itemView.getContext(), R.color.dark_gray);
                 }
                 itemDetailsViewHolder.price.setTextColor(amountColor);
 
@@ -130,16 +137,19 @@ public class TransactionDetailsAdapter extends RecyclerView.Adapter<RecyclerView
         }
     }
 
-    public long calculateTotalAmount() {
+    public long getItemTotalAmount() {
         long totalAmount = 0;
         for (ItemDetails item : itemDetails) {
             if (item != null) {
-                Log.d("xitemx", "id:" + item.getId() + " | name:" + item.getName() + "| price:" + item.getPrice());
                 totalAmount += item.getPrice();
             }
         }
 
         return totalAmount;
+    }
+
+    public List<ItemDetails> getItemDetails() {
+        return itemDetails;
     }
 
     private class ItemDetailsViewHolder extends RecyclerView.ViewHolder {

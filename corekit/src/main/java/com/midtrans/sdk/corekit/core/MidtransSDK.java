@@ -32,6 +32,7 @@ import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.TokenRequestModel;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
+import com.midtrans.sdk.corekit.models.snap.ItemDetails;
 import com.midtrans.sdk.corekit.models.snap.MerchantData;
 import com.midtrans.sdk.corekit.models.snap.PromoResponse;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
@@ -2150,4 +2151,12 @@ public class MidtransSDK {
     public void setPaymentTransactionDetails(PaymentTransactionDetails paymentTransactionDetails) {
         this.paymentTransactionDetails = paymentTransactionDetails;
     }
+
+    public void resetPaymentDetails() {
+        paymentTransactionDetails = new PaymentTransactionDetails(getTransaction().getTransactionDetails(), getTransaction().getItemDetails());
+        Log.d("paymentdetails", "gross:" + paymentTransactionDetails.getTotalAmount());
+        Log.d("paymentdetails", "transdetails>gross:" + getTransaction().getTransactionDetails().getAmount());
+    }
+
+
 }

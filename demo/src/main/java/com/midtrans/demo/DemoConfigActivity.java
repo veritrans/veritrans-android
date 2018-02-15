@@ -2980,6 +2980,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
 
         UIKitCustomSetting uiKitCustomSetting = MidtransSDK.getInstance().getUIKitCustomSetting();
         uiKitCustomSetting.setShowPaymentStatus(true);
+        uiKitCustomSetting.setSkipCustomerDetailsPages(true);
 
         uiKitCustomSetting.setEnableAutoReadSms(true);
         if (saveCardEnabledSelection.isChecked()) {

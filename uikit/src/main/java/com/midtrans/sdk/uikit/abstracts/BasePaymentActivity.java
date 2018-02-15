@@ -15,6 +15,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -29,6 +30,7 @@ import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.snap.ItemDetails;
 import com.midtrans.sdk.corekit.models.snap.MerchantData;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
+import com.midtrans.sdk.corekit.models.snap.TransactionDetails;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.adapters.TransactionDetailsAdapter;
@@ -63,8 +65,14 @@ public abstract class BasePaymentActivity extends BaseActivity {
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
         try {
-            initMerchantLogo();
-            initToolbarBackButton();
+            new Handler().post(new Runnable() {
+                @Override
+                public void run() {
+                    initMerchantLogo();
+                    initToolbarBackButton();
+                }
+            });
+
             initItemDetails();
         } catch (Exception e) {
             Logger.e(TAG, "appbar:" + e.getMessage());
@@ -84,11 +92,17 @@ public abstract class BasePaymentActivity extends BaseActivity {
         if (transaction.getTransactionDetails() != null) {
             textTotalAmount = (BoldTextView) findViewById(R.id.text_amount);
             if (textTotalAmount != null) {
-                String totalAmount = getString(R.string.prefix_money, Utils.getFormattedAmount(transaction.getTransactionDetails().getAmount()));
-                textTotalAmount.setText(totalAmount);
-                if (getPrimaryDarkColor() != 0) {
-                    textTotalAmount.setTextColor(getPrimaryDarkColor());
+                PaymentTransactionDetails paymentDetails = getMidtransSdk().getPaymentTransactionDetails();
+                if (paymentDetails != null) {
+                    long totalAmount = paymentDetails.getTotalAmount();
+                    int defaultTotalAmount = transaction.getTransactionDetails().getAmount();
+
+                    String formattedTotalAmount = getString(R.string.prefix_money, Utils.getFormattedAmount(totalAmount));
+                    textTotalAmount.setText(formattedTotalAmount);
+
+                    changeTotalAmountColor(defaultTotalAmount, totalAmount);
                 }
+
             }
         }
         initTransactionDetail(getMidtransSdk().getPaymentTransactionDetails().getItemDetailsList());
@@ -137,6 +151,8 @@ public abstract class BasePaymentActivity extends BaseActivity {
     }
 
     protected void addNewItemDetails(final ItemDetails newItem) {
+        Log.d("bpoint", "xitemdetail>adapter:" + transactionDetailAdapter);
+
         if (transactionDetailAdapter != null) {
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -162,21 +178,29 @@ public abstract class BasePaymentActivity extends BaseActivity {
 
     protected void changeTotalAmount() {
         if (textTotalAmount != null) {
-            final long newTotalAmount = transactionDetailAdapter.calculateTotalAmount();
+            final long newTotalAmount = transactionDetailAdapter.getItemTotalAmount();
 
             String formattedTotalAmount = getString(R.string.prefix_money, Utils.getFormattedAmount(newTotalAmount));
             textTotalAmount.setText(formattedTotalAmount);
 
-            PaymentTransactionDetails paymentTransactionDetails = getMidtransSdk().getPaymentTransactionDetails();
-            if (paymentTransactionDetails != null) {
-                int primaryColor = getPrimaryColor() != 0 ? getPrimaryColor() : ContextCompat.getColor(BasePaymentActivity.this, R.color.dark_gray);
+            TransactionDetails transactionDetails = getMidtransSdk().getTransaction().getTransactionDetails();
+            if (transactionDetails != null) {
+                changeTotalAmountColor(transactionDetails.getAmount(), newTotalAmount);
+                PaymentTransactionDetails paymentDetails = getMidtransSdk().getPaymentTransactionDetails();
 
-                int amountColor = newTotalAmount == paymentTransactionDetails.getTotalAmount()
-                        ? primaryColor : ContextCompat.getColor(BasePaymentActivity.this, R.color.promoAmount);
-
-                textTotalAmount.setTextColor(amountColor);
+                if (paymentDetails != null) {
+                    paymentDetails.changePaymentDetails(transactionDetailAdapter.getItemDetails(), newTotalAmount);
+                }
             }
         }
+    }
+
+    private void changeTotalAmountColor(int totalAmount, long newTotalAmount) {
+        int primaryColor = getPrimaryColor() != 0 ? getPrimaryColor() : ContextCompat.getColor(BasePaymentActivity.this, R.color.dark_gray);
+        int amountColor = newTotalAmount == totalAmount
+                ? primaryColor : ContextCompat.getColor(BasePaymentActivity.this, R.color.promoAmount);
+
+        textTotalAmount.setTextColor(amountColor);
     }
 
     protected void initMerchantLogo() {

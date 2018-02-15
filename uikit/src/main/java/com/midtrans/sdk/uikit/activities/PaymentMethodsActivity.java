@@ -952,6 +952,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 }
             }
         }
+
         return null;
     }
 
@@ -968,6 +969,10 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         if (resultCode == UiKitConstants.RESULT_SDK_NOT_AVAILABLE) {
             finish();
             return;
+        }
+
+        if (midtransSDK != null) {
+            midtransSDK.resetPaymentDetails();
         }
 
         if (requestCode == Constants.RESULT_CODE_PAYMENT_TRANSFER) {

@@ -101,4 +101,8 @@ public class UiKitConstants {
 
     //contant key
     public static final String KEY_TRANSACTION_RESPONSE = "transaction_response";
+
+    public static final String PROMO_ID = "promo_id";
+    public static final String BNI_POINT_ID = "bni_point";
+    public static final String MANDIRI_POIN_ID = "mandiri_point";
 }

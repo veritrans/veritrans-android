@@ -4,6 +4,7 @@ package com.midtrans.sdk.corekit.models;
 import com.midtrans.sdk.corekit.models.snap.ItemDetails;
 import com.midtrans.sdk.corekit.models.snap.TransactionDetails;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,8 +16,12 @@ public class PaymentTransactionDetails {
     private List<ItemDetails> itemDetailsList;
 
     public PaymentTransactionDetails(TransactionDetails transactionDetails, List<ItemDetails> itemDetailsList) {
-        this.transactionDetails = transactionDetails;
-        this.itemDetailsList = itemDetailsList;
+        if (transactionDetails != null) {
+            this.transactionDetails = new TransactionDetails(transactionDetails.getOrderId(), transactionDetails.getAmount());
+        }
+        if (itemDetailsList != null) {
+            this.itemDetailsList = new ArrayList<>(itemDetailsList);
+        }
     }
 
     public TransactionDetails getTransactionDetails() {
@@ -37,5 +42,18 @@ public class PaymentTransactionDetails {
 
     public long getTotalAmount() {
         return transactionDetails != null ? transactionDetails.getAmount() : 0;
+    }
+
+    public void setTotalAmount(long totalAmount) {
+        if (transactionDetails != null) {
+            transactionDetails.setAmount((int) totalAmount);
+        }
+    }
+
+    public void changePaymentDetails(List<ItemDetails> newItemDetails, long newTotalAmount) {
+        if (transactionDetails != null) {
+            transactionDetails.setAmount((int) newTotalAmount);
+            this.itemDetailsList = newItemDetails;
+        }
     }
 }

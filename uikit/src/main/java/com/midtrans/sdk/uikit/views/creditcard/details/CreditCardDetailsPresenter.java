@@ -51,7 +51,6 @@ import java.util.List;
 
 public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCardDetailsView> {
     private static final String TAG = CreditCardDetailsPresenter.class.getSimpleName();
-    public static final String PROMO_ID = "promo_id";
     private Context context;
     private TokenDetailsResponse creditCardToken;
     private TransactionResponse transactionResponse;
@@ -598,7 +597,7 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
             int quantity = 1;
             int price = promo.getCalculatedDiscountAmount().intValue() * -1;
 
-            ItemDetails itemDetails = new ItemDetails(PROMO_ID, promo.getName(),
+            ItemDetails itemDetails = new ItemDetails(UiKitConstants.PROMO_ID, promo.getName(),
                     price, quantity);
 
             return itemDetails;

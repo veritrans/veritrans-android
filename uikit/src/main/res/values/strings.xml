@@ -900,4 +900,5 @@
     <string name="instruction_atm_with">ATM with %1$s logo</string>
     <string name="bank_code">Bank Code</string>
     <string name="text_bank_code_here">BNI (009)</string>
+    <string name="promo">promo</string>
 </resources>

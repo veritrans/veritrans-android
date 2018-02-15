@@ -8,9 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 
+import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.models.promo.Promo;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 
 import java.util.ArrayList;
@@ -22,12 +24,15 @@ import java.util.List;
 
 public class PromosAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    private static final java.lang.String TAG = PromosAdapter.class.getSimpleName();
     private final PromosListener listener;
+    private final int colorPrimer;
     private List<Promo> promos;
 
-    public PromosAdapter(PromosListener listener) {
+    public PromosAdapter(int colorPrimer, PromosListener listener) {
         this.promos = new ArrayList<>();
         this.listener = listener;
+        this.colorPrimer = colorPrimer;
     }
 
     public void setData(List<Promo> promos) {
@@ -82,7 +87,14 @@ public class PromosAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             super(itemView);
             checkPromoName = itemView.findViewById(R.id.check_promo_name);
             discountAmount = itemView.findViewById(R.id.text_promo_amount);
-            getAdapterPosition();
+
+            if (itemView.getContext() instanceof BasePaymentActivity) {
+                try {
+                    ((BasePaymentActivity) itemView.getContext()).setCheckboxStateColor(checkPromoName);
+                } catch (RuntimeException e) {
+                    Logger.e(TAG, "renderCheckbox" + e.getMessage());
+                }
+            }
         }
 
         public void bindView(final Promo promo) {
