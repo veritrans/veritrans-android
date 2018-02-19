@@ -13,7 +13,9 @@ import android.widget.LinearLayout;
 
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.PaymentType;
+import com.midtrans.sdk.corekit.models.PaymentDetails;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
+import com.midtrans.sdk.corekit.models.promo.Promo;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BaseActivity;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
@@ -46,6 +48,7 @@ public class PaymentStatusActivity extends BaseActivity {
     private DefaultTextView textStatusTitle;
     private DefaultTextView textTotalDueAmount;
     private DefaultTextView textPointAmount;
+    private DefaultTextView textPromoAmount;
 
     private LinearLayout layoutTotalAmount;
     private LinearLayout layoutTotalDueAmount;
@@ -53,6 +56,7 @@ public class PaymentStatusActivity extends BaseActivity {
     private LinearLayout layoutOrderId;
     private LinearLayout layoutPaymentType;
     private LinearLayout layoutPointAmount;
+    private LinearLayout layoutPromoAmount;
 
     private LinearLayout layoutDetails;
     private FrameLayout layoutMain;
@@ -163,30 +167,32 @@ public class PaymentStatusActivity extends BaseActivity {
 
     @Override
     public void bindViews() {
-        textStatusTitle = (DefaultTextView) findViewById(R.id.text_status_title);
-        textStatusMessage = (DefaultTextView) findViewById(R.id.text_status_message);
-        textStatusErrorMessage = (SemiBoldTextView) findViewById(R.id.text_status_error_message);
-        textOrderId = (DefaultTextView) findViewById(R.id.text_order_id);
-        textTotalAmount = (DefaultTextView) findViewById(R.id.text_status_amount);
-        textTotalDueAmount = (DefaultTextView) findViewById(R.id.text_status_due_amount);
-        textDueInstallment = (DefaultTextView) findViewById(R.id.text_status_due_installment);
-        textPaymentType = (DefaultTextView) findViewById(R.id.text_payment_type);
-        textPointAmount = (DefaultTextView) findViewById(R.id.text_point_amount);
+        textStatusTitle = findViewById(R.id.text_status_title);
+        textStatusMessage = findViewById(R.id.text_status_message);
+        textStatusErrorMessage = findViewById(R.id.text_status_error_message);
+        textOrderId = findViewById(R.id.text_order_id);
+        textTotalAmount = findViewById(R.id.text_status_amount);
+        textTotalDueAmount = findViewById(R.id.text_status_due_amount);
+        textDueInstallment = findViewById(R.id.text_status_due_installment);
+        textPaymentType = findViewById(R.id.text_payment_type);
+        textPointAmount = findViewById(R.id.text_point_amount);
+        textPromoAmount = findViewById(R.id.text_status_promo_amount);
 
-        layoutOrderId = (LinearLayout) findViewById(R.id.layout_status_order);
-        layoutTotalAmount = (LinearLayout) findViewById(R.id.layout_status_total_amount);
-        layoutTotalDueAmount = (LinearLayout) findViewById(R.id.layout_status_due_amount);
-        layoutInstallmentTerm = (LinearLayout) findViewById(R.id.layout_status_due_installment);
-        layoutPaymentType = (LinearLayout) findViewById(R.id.layout_status_payment_type);
-        layoutMain = (FrameLayout) findViewById(R.id.layout_main);
-        layoutDetails = (LinearLayout) findViewById(R.id.layout_status_details);
-        layoutPointAmount = (LinearLayout) findViewById(R.id.layout_status_point_amount);
+        layoutOrderId = findViewById(R.id.layout_status_order);
+        layoutTotalAmount = findViewById(R.id.layout_status_total_amount);
+        layoutTotalDueAmount = findViewById(R.id.layout_status_due_amount);
+        layoutInstallmentTerm = findViewById(R.id.layout_status_due_installment);
+        layoutPaymentType = findViewById(R.id.layout_status_payment_type);
+        layoutMain = findViewById(R.id.layout_main);
+        layoutDetails = findViewById(R.id.layout_status_details);
+        layoutPointAmount = findViewById(R.id.layout_status_point_amount);
+        layoutPromoAmount = findViewById(R.id.layout_status_promo);
 
 
-        imageStatusLogo = (ImageView) findViewById(R.id.image_status_payment);
+        imageStatusLogo = findViewById(R.id.image_status_payment);
 
-        buttonInstruction = (FancyButton) findViewById(R.id.button_status_see_instruction);
-        buttonFinish = (FancyButton) findViewById(R.id.button_primary);
+        buttonInstruction = findViewById(R.id.button_status_see_instruction);
+        buttonFinish = findViewById(R.id.button_primary);
     }
 
     @Override
@@ -273,6 +279,10 @@ public class PaymentStatusActivity extends BaseActivity {
                         } else {
                             textStatusErrorMessage.setText(getString(R.string.message_payment_cannot_proccessed));
                         }
+                    } else if (transactionResponse.getStatusCode().equals(UiKitConstants.STATUS_CODE_411)
+                            && !TextUtils.isEmpty(transactionResponse.getStatusMessage())
+                            && transactionResponse.getStatusMessage().toLowerCase().equals(MessageUtil.PROMO_UNAVAILABLE)) {
+                        textStatusErrorMessage.setText(R.string.promo_unavailable);
                     } else {
                         textStatusErrorMessage.setText(transactionResponse.getStatusMessage());
                     }
@@ -380,6 +390,15 @@ public class PaymentStatusActivity extends BaseActivity {
             String transactionMessage = transactionResponse.getStatusMessage();
             if (!TextUtils.isEmpty(transactionMessage) && transactionMessage.contains(MessageUtil.STATUS_UNSUCCESSFUL)) {
                 textStatusMessage.setText(R.string.status_rba_unsuccessful);
+            }
+        }
+
+        PaymentDetails paymentDetails = getMidtransSdk().getPaymentDetails();
+        if (paymentDetails != null) {
+            Promo promo = paymentDetails.getPromoSelected();
+            if (promo != null && promo.getId() != 0) {
+                layoutPromoAmount.setVisibility(View.VISIBLE);
+                textPromoAmount.setText(String.valueOf(promo.getCalculatedDiscountAmount()));
             }
         }
     }

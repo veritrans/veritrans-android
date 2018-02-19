@@ -26,13 +26,12 @@ import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
 import com.midtrans.sdk.corekit.callback.TransactionOptionsCallback;
 import com.midtrans.sdk.corekit.core.themes.BaseColorTheme;
 import com.midtrans.sdk.corekit.models.CardTokenRequest;
+import com.midtrans.sdk.corekit.models.PaymentDetails;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
-import com.midtrans.sdk.corekit.models.PaymentTransactionDetails;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.TokenRequestModel;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
-import com.midtrans.sdk.corekit.models.snap.ItemDetails;
 import com.midtrans.sdk.corekit.models.snap.MerchantData;
 import com.midtrans.sdk.corekit.models.snap.PromoResponse;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
@@ -89,7 +88,7 @@ public class MidtransSDK {
     private BaseColorTheme colorTheme;
     private Transaction transaction;
     private CardRegistrationCallback cardRegistrationCallback;
-    private PaymentTransactionDetails paymentTransactionDetails;
+    private PaymentDetails paymentDetails;
 
     private MidtransSDK() {
 
@@ -2144,18 +2143,16 @@ public class MidtransSDK {
         return this.cardRegistrationCallback;
     }
 
-    public PaymentTransactionDetails getPaymentTransactionDetails() {
-        return paymentTransactionDetails;
+    public PaymentDetails getPaymentDetails() {
+        return paymentDetails;
     }
 
-    public void setPaymentTransactionDetails(PaymentTransactionDetails paymentTransactionDetails) {
-        this.paymentTransactionDetails = paymentTransactionDetails;
+    public void setPaymentDetails(PaymentDetails paymentDetails) {
+        this.paymentDetails = paymentDetails;
     }
 
     public void resetPaymentDetails() {
-        paymentTransactionDetails = new PaymentTransactionDetails(getTransaction().getTransactionDetails(), getTransaction().getItemDetails());
-        Log.d("paymentdetails", "gross:" + paymentTransactionDetails.getTotalAmount());
-        Log.d("paymentdetails", "transdetails>gross:" + getTransaction().getTransactionDetails().getAmount());
+        paymentDetails = new PaymentDetails(getTransaction().getTransactionDetails(), getTransaction().getItemDetails());
     }
 
 

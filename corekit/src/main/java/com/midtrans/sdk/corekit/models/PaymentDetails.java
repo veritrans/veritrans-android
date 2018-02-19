@@ -1,6 +1,7 @@
 package com.midtrans.sdk.corekit.models;
 
 
+import com.midtrans.sdk.corekit.models.promo.Promo;
 import com.midtrans.sdk.corekit.models.snap.ItemDetails;
 import com.midtrans.sdk.corekit.models.snap.TransactionDetails;
 
@@ -11,11 +12,12 @@ import java.util.List;
  * Created by ziahaqi on 2/14/18.
  */
 
-public class PaymentTransactionDetails {
+public class PaymentDetails {
     private TransactionDetails transactionDetails;
     private List<ItemDetails> itemDetailsList;
+    private Promo promoSelected;
 
-    public PaymentTransactionDetails(TransactionDetails transactionDetails, List<ItemDetails> itemDetailsList) {
+    public PaymentDetails(TransactionDetails transactionDetails, List<ItemDetails> itemDetailsList) {
         if (transactionDetails != null) {
             this.transactionDetails = new TransactionDetails(transactionDetails.getOrderId(), transactionDetails.getAmount());
         }
@@ -55,5 +57,13 @@ public class PaymentTransactionDetails {
             transactionDetails.setAmount((int) newTotalAmount);
             this.itemDetailsList = newItemDetails;
         }
+    }
+
+    public Promo getPromoSelected() {
+        return promoSelected;
+    }
+
+    public void setPromoSelected(Promo promoSelected) {
+        this.promoSelected = promoSelected;
     }
 }

@@ -511,6 +511,7 @@
     <string name="thank_you">Terima kasih!</string>
     <string name="text_payment_type">TIPE PEMBAYARAN</string>
     <string name="status_payable_amount">JUMLAH PEMBAYARAN</string>
+    <string name="status_promo_amount">DISKON PROMO</string>
     <string name="status_order_id">ORDER ID</string>
     <string name="text_payment_time">WAKTU PEMBAYARAN</string>
     <string name="status_due_amount">JUMLAH PEMBAYARAN BERSIH</string>
@@ -703,5 +704,6 @@
     <string name="payment_instruction">Instruksi Pembayaran %1$s</string>
     <string name="instruction_atm_with">ATM berlogo %1$s</string>
     <string name="bank_code">Kode Bank</string>
+    <string name="promo_unavailable">Promo tidak tersedia</string>
 
 </resources>

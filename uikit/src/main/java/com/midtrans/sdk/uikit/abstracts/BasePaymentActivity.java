@@ -25,7 +25,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.models.MerchantPreferences;
-import com.midtrans.sdk.corekit.models.PaymentTransactionDetails;
+import com.midtrans.sdk.corekit.models.PaymentDetails;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.snap.ItemDetails;
 import com.midtrans.sdk.corekit.models.snap.MerchantData;
@@ -92,7 +92,7 @@ public abstract class BasePaymentActivity extends BaseActivity {
         if (transaction.getTransactionDetails() != null) {
             textTotalAmount = (BoldTextView) findViewById(R.id.text_amount);
             if (textTotalAmount != null) {
-                PaymentTransactionDetails paymentDetails = getMidtransSdk().getPaymentTransactionDetails();
+                PaymentDetails paymentDetails = getMidtransSdk().getPaymentDetails();
                 if (paymentDetails != null) {
                     long totalAmount = paymentDetails.getTotalAmount();
                     int defaultTotalAmount = transaction.getTransactionDetails().getAmount();
@@ -105,7 +105,7 @@ public abstract class BasePaymentActivity extends BaseActivity {
 
             }
         }
-        initTransactionDetail(getMidtransSdk().getPaymentTransactionDetails().getItemDetailsList());
+        initTransactionDetail(getMidtransSdk().getPaymentDetails().getItemDetailsList());
         //init dim
         findViewById(R.id.background_dim).setOnClickListener(new OnClickListener() {
             @Override
@@ -186,7 +186,7 @@ public abstract class BasePaymentActivity extends BaseActivity {
             TransactionDetails transactionDetails = getMidtransSdk().getTransaction().getTransactionDetails();
             if (transactionDetails != null) {
                 changeTotalAmountColor(transactionDetails.getAmount(), newTotalAmount);
-                PaymentTransactionDetails paymentDetails = getMidtransSdk().getPaymentTransactionDetails();
+                PaymentDetails paymentDetails = getMidtransSdk().getPaymentDetails();
 
                 if (paymentDetails != null) {
                     paymentDetails.changePaymentDetails(transactionDetailAdapter.getItemDetails(), newTotalAmount);

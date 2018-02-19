@@ -19,10 +19,4 @@ public class PromoDetails {
         this.promos = promos;
     }
 
-    @Override
-    public String toString() {
-        return "PromoDetails{" +
-                "promos=" + promos +
-                '}';
-    }
 }

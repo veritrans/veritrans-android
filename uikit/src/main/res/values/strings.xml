@@ -677,6 +677,7 @@
     <string name="thank_you">Thank you!</string>
     <string name="text_payment_type">PAYMENT TYPE</string>
     <string name="status_payable_amount">TOTAL AMOUNT</string>
+    <string name="status_promo_amount">PROMO DISCOUNT</string>
     <string name="status_order_id">ORDER ID</string>
     <string name="text_payment_time">PAYMENT TIME</string>
     <string name="text_payment_time_here">Payment Time Here</string>
@@ -901,4 +902,5 @@
     <string name="bank_code">Bank Code</string>
     <string name="text_bank_code_here">BNI (009)</string>
     <string name="promo">promo</string>
+    <string name="promo_unavailable">Promo is not available</string>
 </resources>

@@ -547,13 +547,19 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                 SdkUIFlowUtil.hideKeyboard(CreditCardDetailsActivity.this);
                 if (checkCardValidity()) {
                     if (checkPaymentValidity()) {
+                        setPromoSelected();
                         presenter.trackButtonClick(attempt == 0 ? BUTTON_CONFIRM_NAME : BUTTON_RETRY_NAME, PAGE_NAME);
-                        presenter.setSelectedPromo(promosAdapter.getSeletedPromo());
                         TokenizeCreditCard();
                     }
                 }
             }
         });
+    }
+
+    private void setPromoSelected() {
+        if (promosAdapter != null) {
+            presenter.setSelectedPromo(promosAdapter.getSeletedPromo());
+        }
     }
 
     private void initHelpButtons() {

@@ -117,25 +117,4 @@ public class Promo {
         return selected;
     }
 
-
-    @Override
-    public String toString() {
-        return "Promo{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", bins=" + bins +
-                ", paymentTypes=" + paymentTypes +
-                ", calculatedDiscountAmount=" + calculatedDiscountAmount +
-                ", discountedGrossAmount=" + discountedGrossAmount +
-                ", discountType='" + discountType + '\'' +
-                ", startDate='" + startDate + '\'' +
-                ", endDate='" + endDate + '\'' +
-                ", promoCode='" + promoCode + '\'' +
-                ", sponsorName='" + sponsorName + '\'' +
-                ", sponsorMessageEn='" + sponsorMessageEn + '\'' +
-                ", sponsorMessageId='" + sponsorMessageId + '\'' +
-                ", promoToken='" + promoToken + '\'' +
-                ", selected=" + selected +
-                '}';
-    }
 }

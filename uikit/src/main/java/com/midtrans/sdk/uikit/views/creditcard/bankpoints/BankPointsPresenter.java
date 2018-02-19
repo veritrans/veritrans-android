@@ -4,7 +4,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.midtrans.sdk.corekit.models.BankType;
-import com.midtrans.sdk.corekit.models.PaymentTransactionDetails;
+import com.midtrans.sdk.corekit.models.PaymentDetails;
 import com.midtrans.sdk.corekit.models.snap.ItemDetails;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentPresenter;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
@@ -32,7 +32,7 @@ public class BankPointsPresenter extends BasePaymentPresenter {
     private void initValues() {
         double totalAmount = 0;
 
-        PaymentTransactionDetails paymentDetails = getMidtransSDK().getPaymentTransactionDetails();
+        PaymentDetails paymentDetails = getMidtransSDK().getPaymentDetails();
         if (paymentDetails != null) {
             totalAmount = paymentDetails.getTotalAmount();
         }

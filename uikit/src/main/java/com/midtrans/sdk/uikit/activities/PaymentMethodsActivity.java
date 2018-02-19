@@ -41,7 +41,7 @@ import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.ItemDetails;
 import com.midtrans.sdk.corekit.models.MerchantPreferences;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
-import com.midtrans.sdk.corekit.models.PaymentTransactionDetails;
+import com.midtrans.sdk.corekit.models.PaymentDetails;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.promo.Promo;
@@ -425,7 +425,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     midtransSDK.setPromoResponses(transaction.getPromos());
                     midtransSDK.setMerchantLogo(logoUrl);
                     midtransSDK.setMerchantName(merchantName);
-                    midtransSDK.setPaymentTransactionDetails(new PaymentTransactionDetails(transaction.getTransactionDetails(), transaction.getItemDetails()));
+                    midtransSDK.setPaymentDetails(new PaymentDetails(transaction.getTransactionDetails(), transaction.getItemDetails()));
                     // Prioritize custom color themes over Snap preferences
                     if (midtransSDK.getColorTheme() == null
                             || !(midtransSDK.getColorTheme() instanceof CustomColorTheme)) {

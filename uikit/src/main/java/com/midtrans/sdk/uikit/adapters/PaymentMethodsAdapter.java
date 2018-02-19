@@ -67,7 +67,7 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
         if (paymentMethodsModel != null && paymentMethodsModel.isHavePromo()) {
             holder.badgePromo.setVisibility(View.VISIBLE);
         } else {
-            holder.badgePromo.setVisibility(View.VISIBLE);
+            holder.badgePromo.setVisibility(View.GONE);
         }
     }
 
