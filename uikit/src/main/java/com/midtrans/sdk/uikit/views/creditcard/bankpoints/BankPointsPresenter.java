@@ -1,7 +1,6 @@
 package com.midtrans.sdk.uikit.views.creditcard.bankpoints;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.PaymentDetails;
@@ -19,7 +18,7 @@ public class BankPointsPresenter extends BasePaymentPresenter {
     private double totalAmount;
     private double amountToPay;
     private float pointRedeemed;
-    private String latestValidPoint;
+    private long latestValidPoint;
     private String itemDetailsName;
 
     public BankPointsPresenter(float pointBalance, String pointBank) {
@@ -41,19 +40,8 @@ public class BankPointsPresenter extends BasePaymentPresenter {
         this.pointRedeemed = 0;
     }
 
-    public boolean isValidInputPoint(String inputString) {
-        long currentBalance = 0;
-        try {
-            currentBalance = Long.parseLong(inputString);
-        } catch (RuntimeException e) {
-            Log.e(TAG, "currentBalance:" + e.getMessage());
-        }
-
-        if (currentBalance >= 0 && currentBalance <= pointBalance) {
-            calculateAmount(currentBalance);
-            return true;
-        }
-        return false;
+    public boolean isValidInputPoint(float pointInputted) {
+        return pointInputted >= 0 && pointInputted <= pointBalance;
     }
 
     public void calculateAmount(float currentBalance) {
@@ -61,11 +49,11 @@ public class BankPointsPresenter extends BasePaymentPresenter {
         this.amountToPay = totalAmount - pointRedeemed;
     }
 
-    public String getLatestValidPoint() {
+    public long getLatestValidPoint() {
         return latestValidPoint;
     }
 
-    public void setLatestValidPoint(String latestValidPoint) {
+    public void setLatestValidPoint(long latestValidPoint) {
         this.latestValidPoint = latestValidPoint;
     }
 
@@ -106,5 +94,9 @@ public class BankPointsPresenter extends BasePaymentPresenter {
 
     public void setItemDetailsName(String itemDetailsName) {
         this.itemDetailsName = itemDetailsName;
+    }
+
+    public double getTotalAmount() {
+        return totalAmount;
     }
 }

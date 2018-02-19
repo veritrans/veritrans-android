@@ -25,8 +25,6 @@ import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 
-import java.util.Locale;
-
 /**
  * Created by ziahaqi on 7/25/17.
  */
@@ -74,15 +72,15 @@ public class BankPointsActivity extends BasePaymentActivity {
     @Override
     public void bindViews() {
         fieldRedeemedPoint = (AppCompatEditText) findViewById(R.id.redeemed_point_field);
-        textTotalPoints = (TextView) findViewById(R.id.text_total_point);
-        textAmountToPay = (TextView) findViewById(R.id.text_amount_to_pay);
-        textTitle = (SemiBoldTextView) findViewById(R.id.text_page_title);
+        textTotalPoints = findViewById(R.id.text_total_point);
+        textAmountToPay = findViewById(R.id.text_amount_to_pay);
+        textTitle = findViewById(R.id.text_page_title);
 
-        imageBankPointLogo = (ImageView) findViewById(R.id.bank_point_logo);
-        buttonRedeemPoint = (FancyButton) findViewById(R.id.button_primary);
-        buttonPayWithoutPoint = (FancyButton) findViewById(R.id.button_pay_without_point);
-        containerAmount = (FancyButton) findViewById(R.id.container_amount);
-        containerTotalPoint = (FancyButton) findViewById(R.id.container_total_point);
+        imageBankPointLogo = findViewById(R.id.bank_point_logo);
+        buttonRedeemPoint = findViewById(R.id.button_primary);
+        buttonPayWithoutPoint = findViewById(R.id.button_pay_without_point);
+        containerAmount = findViewById(R.id.container_amount);
+        containerTotalPoint = findViewById(R.id.container_total_point);
     }
 
     @Override
@@ -111,6 +109,7 @@ public class BankPointsActivity extends BasePaymentActivity {
             @Override
             public void afterTextChanged(Editable editable) {
                 String inputString = editable.toString();
+                float inputtedPoint = 0f;
 
                 try {
                     if (editable.length() == 0) {
@@ -119,14 +118,17 @@ public class BankPointsActivity extends BasePaymentActivity {
                         editable.delete(0, 1);
                     }
 
+                    inputtedPoint = Float.parseFloat(inputString);
+
                 } catch (RuntimeException e) {
                     Logger.e(TAG, "fieldRedeemedPoint:" + e.getMessage());
                 }
 
-                if (presenter.isValidInputPoint(inputString)) {
-                    presenter.setLatestValidPoint(inputString);
+                if (inputtedPoint <= presenter.getTotalAmount() && presenter.isValidInputPoint(inputtedPoint)) {
+                    presenter.calculateAmount(inputtedPoint);
+                    presenter.setLatestValidPoint((long) inputtedPoint);
                 } else {
-                    fieldRedeemedPoint.setText(presenter.getLatestValidPoint());
+                    fieldRedeemedPoint.setText(String.valueOf(presenter.getLatestValidPoint()));
                     fieldRedeemedPoint.setSelection(fieldRedeemedPoint.getText().length());
                 }
                 updateAmountToPayText();
@@ -136,15 +138,15 @@ public class BankPointsActivity extends BasePaymentActivity {
     }
 
     private void bindValues() {
-        String formattedBalance;
-        if (presenter.getPointBalance() == (long) presenter.getPointBalance()) {
-            formattedBalance = String.format(Locale.getDefault(), "%d", (long) presenter.getPointBalance());
-        } else {
-            formattedBalance = String.format("%s", presenter.getPointBalance());
+        float initialPointBalance = presenter.getPointBalance();
+        if (initialPointBalance > presenter.getTotalAmount()) {
+            initialPointBalance = (float) presenter.getTotalAmount();
         }
-        presenter.setLatestValidPoint(formattedBalance);
-        presenter.calculateAmount(presenter.getPointBalance());
-        fieldRedeemedPoint.setText(formattedBalance);
+        if (presenter.isValidInputPoint(initialPointBalance)) {
+            presenter.calculateAmount(initialPointBalance);
+            presenter.setLatestValidPoint((long) initialPointBalance);
+            fieldRedeemedPoint.setText(String.valueOf((long) initialPointBalance));
+        }
     }
 
     private void initBankPointPage() {

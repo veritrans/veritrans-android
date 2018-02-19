@@ -245,7 +245,7 @@
     <string name="gopay_status_title">Bayar dengan GO-PAY</string>
     <string name="gopay_confirm_button">Bayar dengan</string>
     <string name="notification_gojek_app">Aplikasi GO-JEK diperlukan untuk metode pembayaran ini.</string>
-    <string name="notification_gojek_app_tablet">Mohon selesaikan pembayaran <b>GO-PAY</b> via aplikasi <b>GO-JEK</b>.</string>
+    <string name="notification_gojek_app_tablet">Pastikan Anda telah menginstall <b>aplikasi GO-JEK</b> di HP Anda dan memiliki saldo lebih dari <b>Rp 10.000</b>.</string>
     <string name="install_gojek_message">Install aplikasi GO-JEK dari Play Store</string>
     <string name="no_gojek_message">Mohon maaf, kami tidak dapat mendeteksi aplikasi GO-JEK di perangkat Anda.</string>
     <string name="redirecting_to_gopay">Mengarahkan ke aplikasi GO-JEK…</string>
@@ -256,14 +256,18 @@
     <string name="confirm_gopay_qr_scan_tablet">Pastikan kode QR berhasil di-scan dan pembayaran telah diselesaikan di dalam aplikasi GO-JEK.</string>
     <string name="confirm_gopay_deeplink">Pastikan pembayaran telah diselesaikan di dalam aplikasi GO-JEK.</string>
     <string name="gopay_instruction">Cara Pembayaran</string>
-    <string name="gopay_expiration_message">Harap selesaikan pembayaran sebelum</string>
+    <string name="gopay_expiration_message">Harap selesaikan pembayaran dalam</string>
+    <string name="gopay_expiration_expired">Waktu habis.</string>
 
     <!--Go-Pay Instruction in Tablet-->
     <string name="gopay_instruction_tablet_step1">Tekan <b>Bayar dengan GO-PAY</b>.</string>
-    <string name="gopay_instruction_tablet_step2">Buka aplikasi <b>GO-JEK</b> di HP Anda.</string>
-    <string name="gopay_instruction_tablet_step3">Tekan <b>SCAN QR</b>, lalu arahkan kamera ke <b>Kode QR</b>.</string>
-    <string name="gopay_instruction_tablet_step4">Periksa kembali detail pembayaran Anda di aplikasi <b>GO-JEK</b> lalu tekan <b>BAYAR</b>.</string>
-    <string name="gopay_instruction_tablet_step5">Transaksi Anda selesai.</string>
+    <string name="gopay_instruction_tablet_step2"><b>Kode QR</b> akan muncul pada halaman selanjutnya.</string>
+    <string name="gopay_instruction_tablet_step3">Buka aplikasi <b>GO-JEK</b> di HP Anda.</string>
+    <string name="gopay_instruction_tablet_step4">Tekan <b>SCAN QR</b>.</string>
+    <string name="gopay_instruction_tablet_step5">Arahkan kamera ke <b>Kode QR</b>.</string>
+    <string name="gopay_instruction_tablet_step6">Periksa kembali detail pembayaran Anda di aplikasi <b>GO-JEK</b> lalu tekan <b>Bayar</b>.</string>
+    <string name="gopay_instruction_tablet_step7">Selesai.</string>
+    <string name="gopay_instruction_tablet_hint">Catatan: Scan tombol QR tidak akan muncul jika saldo GO-PAY kurang dari Rp 10.000.</string>
 
     <!--credit card -->
     <string name="add_card_message">Anda bisa membayar dengan kartu baru disini</string>
@@ -684,11 +688,6 @@
     <string name="validation_country_code_empty">Masukkan kode negara</string>
     <string name="status_message_not_enabled">Metode pembayaran belum diaktifkan</string>
     <string name="details_message_not_enabled">Maaf, metode pembayaran belum diaktifkan</string>
-    <string name="verificaton_code_empty">Masukkan kode verifikasi</string>
-    <string name="verification_code">Kirim Ulang Kode Verifikasi</string>
-    <string name="resend_verification_code">Sedang mengirim ulang kode verifikasi</string>
-    <string name="resend_verification_code_success">Kode verifikasi berhasil dikirim</string>
-    <string name="resend_verification_code_failure">Gagal mengirim kode verifikasi</string>
     <string name="danamon_online_instruction_step1">Masukkan User ID dan Password Danamon Online Banking Anda dan pilih sumber rekening untuk pembayaran Anda.</string>
     <string name="danamon_online_instruction_step2">Cek rincian informasi transaksi Anda, masukkan Kode Token, lalu tekan <b>lanjut</b>.</string>
     <string name="danamon_online_instruction_step3">Konfirmasi transaksi pembayaran akan muncul, pembayaran selesai. Simpan informasi referensi merchant dan referensi pembayaran, tekan <b>Lanjut</b> untuk kembali ke situs merchant.</string>
@@ -705,5 +704,10 @@
     <string name="instruction_atm_with">ATM berlogo %1$s</string>
     <string name="bank_code">Kode Bank</string>
     <string name="promo_unavailable">Promo tidak tersedia</string>
+
+    <string name="minutes">menit</string>
+    <string name="minute">menit</string>
+    <string name="seconds">detik</string>
+    <string name="second">detik</string>
 
 </resources>
