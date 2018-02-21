@@ -754,6 +754,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         String cardNumberText = getCardNumberValue();
         if (TextUtils.isEmpty(cardNumberText) || cardNumberText.length() < 7) {
             imageBankLogo.setImageDrawable(null);
+            textTitle.setText(R.string.card_details);
             return;
         }
 
