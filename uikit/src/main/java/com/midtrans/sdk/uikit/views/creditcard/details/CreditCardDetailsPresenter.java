@@ -112,6 +112,14 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
         return creditCardTransaction.isWhiteListBinsAvailable();
     }
 
+    public boolean isBlacklistBinsAvailable() {
+        return creditCardTransaction.isBlackListBinsAvailable();
+    }
+
+    public boolean isBinsFilterAvailable() {
+        return creditCardTransaction.isWhiteListBinsAvailable() || creditCardTransaction.isBlackListBinsAvailable();
+    }
+
     public boolean isCardBinLockingValid(String cardNumber) {
         return creditCardTransaction.checkCardBinValidity(cardNumber);
     }
@@ -497,7 +505,7 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
         return getMidtransSDK().getExternalScanner() != null;
     }
 
-    public boolean isBinLockingValid(String cardNumber) {
-        return creditCardTransaction.isWhitelistBinContainCardNumber(cardNumber);
+    public boolean isCardBinFiltered(String cardNumber) {
+        return creditCardTransaction.isCardBinFiltered(cardNumber);
     }
 }
