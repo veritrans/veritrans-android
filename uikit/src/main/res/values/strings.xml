@@ -903,4 +903,11 @@
     <string name="minute">minute</string>
     <string name="seconds">seconds</string>
     <string name="second">second</string>
+    <string name="tnc_title"><![CDATA[BNI Points Terms & Conditions]]></string>
+    <string name="tnc_bni_point_1">This program cannot be combined with BNI credit card installment program.</string>
+    <string name="tnc_bni_point_2">\"Hemat hingga 100% dengan BNI Reward Points\" program will directly deduct the points on transaction.</string>
+    <string name="tnc_bni_point_3">If transaction is cancelled completely, credit and reward points will be refunded to customer\'s credit card. If transaction is cancelled partially, transaction that will be refunded first is the credit card transaction, after that it will be refunded from the points.</string>
+    <string name="tnc_bni_point_4">Card holder\'s reward points that have been converted into Rupiah can be seen when card holder chooses to use BNI Reward Points by clicking \"BNI Reward Points\" button.</string>
+    <string name="tnc_bni_point_5">Card holder can choose how many points they would like to redeem. There is no minimum point to redeem.</string>
+    <string name="tnc_bni_point_6">Payment for reward points to merchant is the same as regular card payment.</string>
 </resources>
