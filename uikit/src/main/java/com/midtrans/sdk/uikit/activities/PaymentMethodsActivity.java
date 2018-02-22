@@ -925,14 +925,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             }
         }
 
-        /**
-         * Disable payment sorting, just follow payment list order from MAP
-        if (!bankTransfers.isEmpty()) {
-            data.add(PaymentMethods.getMethods(this, getString(R.string.payment_bank_transfer), EnabledPayment.STATUS_UP));
-        }
         markPaymentMethodHavePromo(data);
-        SdkUtil.sortPaymentMethodsByPriority(data);
-         */
     }
 
     private void markPaymentMethodHavePromo(List<PaymentMethodsModel> data) {

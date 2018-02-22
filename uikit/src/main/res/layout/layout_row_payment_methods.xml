@@ -67,8 +67,8 @@
                 android:id="@+id/image_arrow_right"
                 android:layout_width="@dimen/twenty_four_dp"
                 android:layout_height="@dimen/twenty_four_dp"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/eight_dp"
                 android:layout_marginRight="@dimen/eight_dp"
@@ -87,11 +87,13 @@
                 android:paddingLeft="@dimen/eight_dp"
                 android:paddingRight="@dimen/eight_dp"
                 android:paddingTop="@dimen/four_dp"
+                android:visibility="gone"
                 app:fb_defaultColor="@color/promoBadge"
                 app:fb_radius="10sp"
                 app:fb_text="promo"
                 app:fb_textColor="@color/gray.primary_dark"
-                app:fb_textSize="10dp" />
+                app:fb_textSize="10dp"
+                tools:visibility="visible" />
         </RelativeLayout>
 
         <LinearLayout

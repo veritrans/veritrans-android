@@ -3,7 +3,6 @@ package com.midtrans.sdk.uikit.views.creditcard.details;
 import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.midtrans.sdk.corekit.callback.BankBinsCallback;
 import com.midtrans.sdk.corekit.callback.BanksPointCallback;
@@ -565,9 +564,6 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
     }
 
     public void setSelectedPromo(Promo seletedPromo) {
-        Log.d("xpromo", "id:" + seletedPromo.getId());
-        Log.d("xpromo", "discounted:" + seletedPromo.getDiscountedGrossAmount());
-
         creditCardTransaction.setSelectedPromo(seletedPromo);
         PaymentDetails paymentDetails = getMidtransSDK().getPaymentDetails();
         if (paymentDetails != null) {
