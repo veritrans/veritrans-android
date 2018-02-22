@@ -1,0 +1,87 @@
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:fitsSystemWindows="true">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/main_appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/main_toolbar"
+            style="@style/ThemeOverlay.AppCompat.ActionBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@android:color/white"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp"
+            app:contentInsetStartWithNavigation="0dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/fifty_six_dp"
+                android:layout_marginRight="@dimen/fifty_six_dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:id="@+id/merchant_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center_horizontal"
+                    android:text="@string/tnc_title"
+                    android:textColor="@color/dark_gray"
+                    android:textSize="@dimen/tool_bar_title_size" />
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/container_item_details"
+            android:layout_alignParentTop="true">
+
+            <include
+                layout="@layout/layout_tnc_bni_point"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </ScrollView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/two_dp"
+            android:layout_above="@+id/button_primary"
+            android:background="@color/light_gray" />
+
+        <com.midtrans.sdk.uikit.widgets.FancyButton
+            android:id="@+id/button_primary"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_size"
+            android:layout_alignParentBottom="true"
+            app:fb_defaultColor="@android:color/transparent"
+            app:fb_focusColor="@color/colorAccentLight"
+            app:fb_radius="@dimen/two_dp"
+            app:fb_text="@string/ok"
+            app:fb_textColor="@color/dark_gray_primer"
+            app:fb_textGravity="center_vertical"
+            app:fb_textSize="@dimen/button_primary_text_size" />
+    </RelativeLayout>
+
+    <include layout="@layout/layout_loading_and_badge" />
+</android.support.design.widget.CoordinatorLayout>

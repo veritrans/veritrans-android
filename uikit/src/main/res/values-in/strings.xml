@@ -707,5 +707,12 @@
     <string name="minute">menit</string>
     <string name="seconds">detik</string>
     <string name="second">detik</string>
+    <string name="tnc_title"><![CDATA[Syarat & Ketentuan BNI Point]]></string>
+    <string name="tnc_bni_point_1">Promo ini tidak dapat digabungkan dengan program cicilan Kartu Kredit BNI.</string>
+    <string name="tnc_bni_point_2">Hemat hingga 100% dengan BNI Reward Points langsung memotong transaksi yang dilakukan.</string>
+    <string name="tnc_bni_point_3">Jika transaksi dibatalkan keseluruhan, maka dana dan poin akan dikembalikan ke Kartu Kredit pembeli. Jika transaksi dibatalkan sebagian, transaksi yang akan dikembalikan terlebih dahulu adalah transaksi Kartu Kredit, setelah itu dikembalikan dari poin.</string>
+    <string name="tnc_bni_point_4">Poin pemegang kartu yang sudah dikonversi ke dalam rupiah, terinformasi pada saat pemegang kartu memilih menggunakan BNI Reward Points dengan mengklik tombol pilihan \"BNI Reward Points\".</string>
+    <string name="tnc_bni_point_5">Pemegang kartu dapat memilih jumlah poin yang akan ditukarkan tanpa minimum redeem.</string>
+    <string name="tnc_bni_point_6">Pembayaran poin ke merchant sama dengan pembayaran transaksi biasa.</string>
 
 </resources>
