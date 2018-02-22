@@ -197,7 +197,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         UserDetail userDetail = null;
 
         try {
-            userDetail = SdkUIFlowUtil.getSavedUserDetails(this);
+            userDetail = SdkUIFlowUtil.getSavedUserDetails();
 
             if (userDetail == null) {
                 userDetail = new UserDetail();

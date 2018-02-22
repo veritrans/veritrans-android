@@ -17,6 +17,8 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
+import com.midtrans.sdk.corekit.core.Constants;
+import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.PaymentMethod;
@@ -30,6 +32,8 @@ import com.midtrans.sdk.corekit.models.CardTokenRequest;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.ExpiryModel;
 import com.midtrans.sdk.corekit.models.ItemDetails;
+import com.midtrans.sdk.corekit.models.UserAddress;
+import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
 import com.midtrans.sdk.corekit.utilities.Utils;
@@ -38,6 +42,7 @@ import com.midtrans.sdk.scancard.ScanCard;
 import com.midtrans.sdk.uikit.SdkUIFlowBuilder;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity implements TransactionFinishedCallback {
@@ -76,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initSDK();
+        initCustomerDetails();
         initView();
     }
 
@@ -108,7 +114,42 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
                     .setBoldText("open_sans_bold.ttf")
                     .setUIkitCustomSetting(uisetting) //optional
                     .buildSDK();
+
+
         }
+    }
+
+    private void initCustomerDetails() {
+
+        //define customer detail
+
+        UserDetail userDetail;
+
+        userDetail = LocalDataHandler.readObject("user_details", UserDetail.class);
+
+        if (userDetail == null) {
+            userDetail = new UserDetail();
+
+            userDetail.setUserFullName("user fullname");
+            userDetail.setEmail("mail@example.com");
+            userDetail.setPhoneNumber("012345678");
+            userDetail.setUserId(UUID.randomUUID().toString());
+
+            List<UserAddress> userAddresses = new ArrayList<>();
+
+            UserAddress userAddress = new UserAddress();
+            userAddress.setAddress("alamat");
+            userAddress.setCity("jakarta");
+            userAddress.setCountry("IDN");
+            userAddress.setZipcode("72168");
+            userAddress.setAddressType(Constants.ADDRESS_TYPE_BOTH);
+            userAddresses.add(userAddress);
+
+            userDetail.setUserAddresses(new ArrayList<>(userAddresses));
+
+            LocalDataHandler.saveObject("user_details", userDetail);
+        }
+
     }
 
 
