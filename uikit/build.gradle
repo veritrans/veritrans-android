@@ -5,7 +5,7 @@ apply from: '../jacoco-uikit.gradle'
 apply plugin: 'com.vanniktech.android.junit.jacoco'
 
 group = 'com.midtrans'
-version = '1.15.2'
+version = '1.15.3'
 
 ext {
     espressoVersion = "2.2.2"
