@@ -1,6 +1,7 @@
 package com.midtrans.sdk.uikit.models;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
@@ -250,20 +251,20 @@ public class CreditCardTransaction {
             for (String bin : creditCard.getWhitelistBins()) {
                 if (!TextUtils.isEmpty(bin)) {
                     if (TextUtils.isDigitsOnly(bin)) {
-                        if (cardNumber.startsWith(bin)) {
-                            return true;
+                        if (!cardNumber.startsWith(bin)) {
+                            return false;
                         }
                     } else {
                         String bank = getBankByCardNumber(cardNumber);
-                        if (bin.equalsIgnoreCase(bank)) {
-                            return true;
+                        if (!bin.equalsIgnoreCase(bank)) {
+                            return false;
                         }
                     }
                 }
             }
         }
 
-        return false;
+        return true;
     }
 
     /**
@@ -293,7 +294,7 @@ public class CreditCardTransaction {
         return false;
     }
 
-    public boolean isCardBinFiltered(String cardNumber) {
+    public boolean isCardBinBlocked(String cardNumber) {
         if (!isWhitelistBinContainCardNumber(cardNumber) || isBlacklistContainCardNumber(cardNumber)) {
             return true;
         }

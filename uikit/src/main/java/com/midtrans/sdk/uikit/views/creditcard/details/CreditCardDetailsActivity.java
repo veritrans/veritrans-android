@@ -642,7 +642,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     private boolean checkPaymentValidity() {
         // Card bin validation for bin locking and installment
         String cardNumber = getCleanedCardNumber();
-        if (presenter.isCardBinFiltered(cardNumber)) {
+        if (presenter.isCardBinBlocked(cardNumber)) {
             Toast.makeText(this, getString(R.string.card_bin_invalid), Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -666,10 +666,10 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     private void checkBinLockingValidity() {
         String cardNumber = getCleanedCardNumber();
 
-        if (presenter.isCardBinFiltered(cardNumber)) {
-            showInApplicablePromo(false);
-        } else {
+        if (presenter.isCardBinBlocked(cardNumber)) {
             showInApplicablePromo(true);
+        } else {
+            showInApplicablePromo(false);
         }
     }
 

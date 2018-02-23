@@ -2,10 +2,13 @@ package com.midtrans.sdk.uikit.abstracts;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
+import com.google.gson.Gson;
 import com.midtrans.sdk.corekit.callback.DeleteCardCallback;
 import com.midtrans.sdk.corekit.callback.SaveCardCallback;
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
+import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.SaveCardResponse;
@@ -13,11 +16,13 @@ import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.SavedToken;
+import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.uikit.models.CreditCardTransaction;
 import com.midtrans.sdk.uikit.models.CreditCardType;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,8 +37,44 @@ public class BaseCreditCardPresenter<V extends BaseView> extends BasePaymentPres
     protected void initCreditCardTransaction(Context context) {
         CreditCard creditCard = getMidtransSDK().getCreditCard();
         if (creditCard != null) {
+            // todo blacklist
+            //todo blacklist
+            initblacklist(creditCard, context);
+
             List<BankBinsResponse> bankBins = SdkUIFlowUtil.getBankBins(context);
             this.creditCardTransaction.setProperties(creditCard, new ArrayList<>(bankBins));
+        }
+    }
+
+    private void initblacklist(CreditCard creditCard, Context context) {
+        String data;
+        List<String> mockblacklist = null;
+        List<String> mockwhitelist = null;
+        try {
+            InputStream is = context.getAssets().open("mock_blacklist.json");
+            byte[] buffer = new byte[is.available()];
+            is.read(buffer);
+            is.close();
+            data = new String(buffer, "UTF-8");
+
+            Gson gson = new Gson();
+            mockblacklist = gson.fromJson(data, Transaction.class).getCreditCard().getBlacklistBins();
+            mockwhitelist = gson.fromJson(data, Transaction.class).getCreditCard().getWhitelistBins();
+            Logger.i("bankDetails>fromfile:" + data);
+
+
+        } catch (Exception e) {
+            Logger.e(TAG, e.getMessage());
+        }
+
+        if (mockblacklist != null && !mockblacklist.isEmpty()) {
+            creditCard.setBlacklistBins(mockblacklist);
+        } else {
+            Log.d("xbl", "mockempty");
+        }
+
+        if (mockwhitelist != null && !mockwhitelist.isEmpty()) {
+            creditCard.setWhiteListBins(new ArrayList<>(mockwhitelist));
         }
     }
 
