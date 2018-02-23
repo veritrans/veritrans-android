@@ -23,7 +23,6 @@ public class UIFlow implements ISdkFlow {
             Intent intent = new Intent(context, UserDetailsActivity.class);
             intent.putExtra(UiKitConstants.EXTRA_SNAP_TOKEN, snapToken);
             context.startActivity(intent);
-            Log.d("xstart", "runUIFlow");
         }
     }
 

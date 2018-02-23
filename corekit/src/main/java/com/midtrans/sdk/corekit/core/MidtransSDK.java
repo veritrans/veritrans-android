@@ -571,8 +571,6 @@ public class MidtransSDK {
     public void startPaymentUiFlow(Context context) {
         if (merchantBaseUrlAvailable()) {
             runUiSdk(context, null);
-            Log.d("xstart", "xstartPaymentUiFlow");
-
         }
     }
 
@@ -590,8 +588,6 @@ public class MidtransSDK {
                 transactionRequest.enableUi(true);
                 if (uiflow != null) {
                     uiflow.runUIFlow(context, snapToken);
-                    Log.d("xstart", "runUIFlow(,)");
-
                 }
             }
 

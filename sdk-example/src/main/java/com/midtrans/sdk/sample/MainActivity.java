@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             // Init custom settings
             UIKitCustomSetting uisetting = new UIKitCustomSetting();
             uisetting.setShowPaymentStatus(true);
-//            uisetting.setSkipCustomerDetailsPages(true);
+            uisetting.setSkipCustomerDetailsPages(true);
 
             // SDK initiation for UIflow
             SdkUIFlowBuilder.init(this, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL, this)
@@ -181,15 +181,15 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
 
 
         // Define item details
-        ItemDetails itemDetails = new ItemDetails("1", 20000, 1, "Trekking Shoes");
-//        ItemDetails itemDetails1 = new ItemDetails("2", 1000, 2, "Casual Shoes");
-//        ItemDetails itemDetails2 = new ItemDetails("3", 1000, 3, "Formal Shoes");
+        ItemDetails itemDetails = new ItemDetails("1", 1000, 1, "Trekking Shoes");
+        ItemDetails itemDetails1 = new ItemDetails("2", 1000, 2, "Casual Shoes");
+        ItemDetails itemDetails2 = new ItemDetails("3", 1000, 3, "Formal Shoes");
 
         // Add item details into item detail list.
         ArrayList<ItemDetails> itemDetailsArrayList = new ArrayList<>();
         itemDetailsArrayList.add(itemDetails);
-//        itemDetailsArrayList.add(itemDetails1);
-//        itemDetailsArrayList.add(itemDetails2);
+        itemDetailsArrayList.add(itemDetails1);
+        itemDetailsArrayList.add(itemDetails2);
         transactionRequestNew.setItemDetails(itemDetailsArrayList);
         // Set Bill info
         BillInfoModel billInfoModel = new BillInfoModel("demo_label", "demo_value");

@@ -9,13 +9,13 @@ import java.util.List;
 
 public class PromoDetails {
 
-    private ArrayList<Promo> promos;
+    private List<Promo> promos;
 
     public List<Promo> getPromos() {
         return promos;
     }
 
-    public void setPromos(ArrayList<Promo> promos) {
+    public void setPromos(List<Promo> promos) {
         this.promos = promos;
     }
 
