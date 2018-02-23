@@ -15,6 +15,7 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -46,6 +47,7 @@ import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.views.creditcard.bankpoints.BankPointsActivity;
+import com.midtrans.sdk.uikit.views.creditcard.tnc.TermsAndConditionsActivity;
 import com.midtrans.sdk.uikit.views.status.PaymentStatusActivity;
 import com.midtrans.sdk.uikit.views.webview.WebViewPaymentActivity;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
@@ -159,6 +161,23 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     }
 
     private void initCheckBox() {
+        checkboxPointEnabled.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (!checkboxPointEnabled.isChecked()) {
+
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        Intent intent = new Intent(CreditCardDetailsActivity.this, TermsAndConditionsActivity.class);
+                        startActivityForResult(intent, TermsAndConditionsActivity.INTENT_TNC);
+                    }
+
+                    return true;
+                }
+
+                return false;
+            }
+        });
+
         checkboxPointEnabled.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -169,6 +188,15 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                 }
             }
         });
+    }
+
+    private void setCheckboxPoint(boolean check) {
+        if (check) {
+            checkboxPointEnabled.setChecked(true);
+        } else {
+            checkboxPointEnabled.setChecked(false);
+        }
+
     }
 
     private void initPromoList() {
@@ -777,6 +805,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         String cardNumberText = getCardNumberValue();
         if (TextUtils.isEmpty(cardNumberText) || cardNumberText.length() < 7) {
             imageBankLogo.setImageDrawable(null);
+            textTitle.setText(R.string.card_details);
             return;
         }
 
@@ -1285,6 +1314,10 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                     initBanksPointPayment(redeemedPoint);
                 }
             }
+
+            if (requestCode == TermsAndConditionsActivity.INTENT_TNC) {
+                setCheckboxPoint(true);
+            }
         } else if (resultCode == RESULT_CANCELED) {
             if (requestCode == UiKitConstants.INTENT_CODE_3DS_PAYMENT) {
                 hideProgressLayout();
@@ -1293,6 +1326,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             } else if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS) {
                 finishPayment(RESULT_OK);
             }
+
         }
     }
 
