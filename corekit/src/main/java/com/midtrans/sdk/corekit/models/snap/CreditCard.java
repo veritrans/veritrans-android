@@ -31,6 +31,10 @@ public class CreditCard {
     private List<SavedToken> savedTokens;
     @SerializedName("whitelist_bins")
     private ArrayList<String> whitelistBins;
+
+    @SerializedName("blacklist_bins")
+    private List<String> blacklistBins;
+
     @SerializedName("installment")
     private Installment installment;
     private String type;
@@ -128,5 +132,13 @@ public class CreditCard {
             }
         }
         this.authentication = authentication;
+    }
+
+    public List<String> getBlacklistBins() {
+        return blacklistBins;
+    }
+
+    public void setBlacklistBins(List<String> blacklistBins) {
+        this.blacklistBins = blacklistBins;
     }
 }

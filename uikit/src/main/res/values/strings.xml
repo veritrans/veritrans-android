@@ -603,16 +603,19 @@
 
     <!--Go-Pay Instruction in Tablet-->
     <string name="gopay_instruction_tablet_step1">Tap <b>Pay Now with GO-PAY</b>.</string>
-    <string name="gopay_instruction_tablet_step2">Open <b>GO-JEK</b> app on your phone.</string>
-    <string name="gopay_instruction_tablet_step3">Tap <b>SCAN QR</b>, then point your camera to the <b>QR Code</b>.</string>
-    <string name="gopay_instruction_tablet_step4">Check your payment details in <b>GO-JEK</b> app and then tap <b>PAY</b>.</string>
-    <string name="gopay_instruction_tablet_step5">Your transaction is done.</string>
+    <string name="gopay_instruction_tablet_step2"><b>QR code</b> will appear on the next page to be scanned.</string>
+    <string name="gopay_instruction_tablet_step3">Open <b>GO-JEK app</b> on your phone.</string>
+    <string name="gopay_instruction_tablet_step4">Tap <b>SCAN QR</b>.</string>
+    <string name="gopay_instruction_tablet_step5">Point your camera to the <b>QR Code</b>.</string>
+    <string name="gopay_instruction_tablet_step6">Check your payment details in <b>GO-JEK</b> app and then tap <b>Pay</b>.</string>
+    <string name="gopay_instruction_tablet_step7">Done.</string>
+    <string name="gopay_instruction_tablet_hint">Note: Scan QR button won\'t appear if your GO-PAY balance is less than Rp 10,000.</string>
 
     <!--Go-Pay related-->
     <string name="gopay_status_title">Pay with GO-PAY</string>
     <string name="gopay_confirm_button">Pay Now with</string>
     <string name="notification_gojek_app">GO-JEK app is required for this payment method.</string>
-    <string name="notification_gojek_app_tablet">Please complete your <b>GO-PAY</b> payment via <b>GO-JEK</b> app.</string>
+    <string name="notification_gojek_app_tablet">Make sure you have installed <b>GO-JEK app</b> on your phone and have balance more than Rp 10,000.</string>
     <string name="install_gojek_message">Install GO-JEK App from Play Store</string>
     <string name="whoops" translatable="false">Whoops!</string>
     <string name="no_gojek_message">Unfortunately, we couldn\'t find GO-JEK app installed on your phone.</string>
@@ -624,7 +627,8 @@
     <string name="confirm_gopay_qr_scan_tablet">Make sure the QR code successfully scanned and payment has been completed within the GO-JEK app.</string>
     <string name="confirm_gopay_deeplink">Make sure payment has been completed within the GO-JEK app.</string>
     <string name="gopay_instruction">How to Pay?</string>
-    <string name="gopay_expiration_message">Please complete your payment before</string>
+    <string name="gopay_expiration_message">Please complete your payment in</string>
+    <string name="gopay_expiration_expired">Time\'s up.</string>
 
     <string name="error_message_invalid_input_telkomsel">Transaction failed. Your transaction got declined by T-Cash.</string>
     <string name="kioson">Kioson</string>
@@ -877,12 +881,6 @@
     <string name="validation_country_code_empty">Please enter country code</string>
     <string name="status_message_not_enabled">Payment method is not enabled</string>
     <string name="details_message_not_enabled">Sorry, payment method is not enabled</string>
-    <string name="hint_gopay_verification_number">Enter verification code</string>
-    <string name="verificaton_code_empty">Please enter verification code</string>
-    <string name="verification_code">Resend Verification Code</string>
-    <string name="resend_verification_code">Resending verification code</string>
-    <string name="resend_verification_code_success">Verification code already sent</string>
-    <string name="resend_verification_code_failure">Failed to resend verification code</string>
     <string name="gopay">GO-PAY</string>
     <string name="danamon_online_instruction_step1">Enter Danamon Online Banking User ID and Password and select the source of fund</string>
     <string name="danamon_online_instruction_step2">Check detail transaction and enter Token Code and klik <b>Next</b>.</string>
@@ -900,4 +898,16 @@
     <string name="instruction_atm_with">ATM with %1$s logo</string>
     <string name="bank_code">Bank Code</string>
     <string name="text_bank_code_here">BNI (009)</string>
+
+    <string name="minutes">minutes</string>
+    <string name="minute">minute</string>
+    <string name="seconds">seconds</string>
+    <string name="second">second</string>
+    <string name="tnc_title"><![CDATA[BNI Points Terms & Conditions]]></string>
+    <string name="tnc_bni_point_1">This program cannot be combined with BNI credit card installment program.</string>
+    <string name="tnc_bni_point_2">\"Hemat hingga 100% dengan BNI Reward Points\" program will directly deduct the points on transaction.</string>
+    <string name="tnc_bni_point_3">If transaction is cancelled completely, credit and reward points will be refunded to customer\'s credit card. If transaction is cancelled partially, transaction that will be refunded first is the credit card transaction, after that it will be refunded from the points.</string>
+    <string name="tnc_bni_point_4">Card holder\'s reward points that have been converted into Rupiah can be seen when card holder chooses to use BNI Reward Points by clicking \"BNI Reward Points\" button.</string>
+    <string name="tnc_bni_point_5">Card holder can choose how many points they would like to redeem. There is no minimum point to redeem.</string>
+    <string name="tnc_bni_point_6">Payment for reward points to merchant is the same as regular card payment.</string>
 </resources>
