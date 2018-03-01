@@ -355,7 +355,7 @@
     <string name="btn_save_card">Mendaftarkan Kartu</string>
     <string name="btn_scan_card">Pindai Kartu Menggunakan Kamera</string>
     <string name="offer_applied">Sukses menggunakan penawaran!</string>
-    <string name="offer_not_applied">Kartu tidak berlaku untuk promo, coba gunakan kartu lain.</string>
+    <string name="offer_not_applied">Kartu tidak berlaku untuk transaksi ini, coba gunakan kartu lain.</string>
     <string name="no_offers">Tidak ada penawaran</string>
     <string name="text_yes">Ya</string>
     <string name="text_no">Tidak</string>

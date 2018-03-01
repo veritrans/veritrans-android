@@ -251,17 +251,18 @@ public class CreditCardTransaction {
             for (String bin : creditCard.getWhitelistBins()) {
                 if (!TextUtils.isEmpty(bin)) {
                     if (TextUtils.isDigitsOnly(bin)) {
-                        if (!cardNumber.startsWith(bin)) {
-                            return false;
+                        if (cardNumber.startsWith(bin)) {
+                            return true;
                         }
                     } else {
                         String bank = getBankByCardNumber(cardNumber);
-                        if (!bin.equalsIgnoreCase(bank)) {
-                            return false;
+                        if (bin.equalsIgnoreCase(bank)) {
+                            return true;
                         }
                     }
                 }
             }
+            return false;
         }
 
         return true;
