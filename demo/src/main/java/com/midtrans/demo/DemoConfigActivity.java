@@ -3186,26 +3186,10 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private void setBniPointOption(CreditCard creditCard) {
         if (bniPointOnlyEnabledSelection.isChecked()) {
             ArrayList<String> whiteListBins = new ArrayList<>();
-            //add bni bin number for normal payment and 3DS
-//            whiteListBins.add("bca");
-//            whiteListBins.add("47737760");
-//            whiteListBins.add("mandiri");
-            whiteListBins.add("bca");
-//            whiteListBins.add("41111111");
-//            whiteListBins.add("mandiri");
-//            whiteListBins.add("bni");
-//            whiteListBins.add("41111111");
-//            whiteListBins.add("mandiri");
-//            whiteListBins.add("410505");
-//            whiteListBins.add("526422");
+            whiteListBins.add("410505");
+            whiteListBins.add("526422");
             creditCard.setWhiteListBins(whiteListBins);
         }
-
-        List<String> blacklist = new ArrayList<>();
-//        blacklist.add("bca");
-//        blacklist.add("41111112");
-//        blacklist.add("41111112");
-        creditCard.setBlacklistBins(null);
     }
 
     private void setMandiriPointOption(CreditCard creditCard) {
