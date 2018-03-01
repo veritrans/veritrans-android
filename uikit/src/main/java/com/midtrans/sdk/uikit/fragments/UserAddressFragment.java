@@ -312,7 +312,7 @@ public class UserAddressFragment extends Fragment {
         SdkUIFlowUtil.hideKeyboard(getActivity());
 
         try {
-            UserDetail userDetail = SdkUIFlowUtil.getSavedUserDetails(getContext());
+            UserDetail userDetail = SdkUIFlowUtil.getSavedUserDetails();
 
             if (userDetail != null) {
                 Logger.i(TAG, "userDetails:" + userDetail.getUserFullName());

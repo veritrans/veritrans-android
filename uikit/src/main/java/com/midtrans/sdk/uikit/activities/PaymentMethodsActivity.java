@@ -197,7 +197,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         UserDetail userDetail = null;
 
         try {
-            userDetail = SdkUIFlowUtil.getSavedUserDetails(this);
+            userDetail = SdkUIFlowUtil.getSavedUserDetails();
 
             if (userDetail == null) {
                 userDetail = new UserDetail();
@@ -906,8 +906,8 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 bankTransfers.add(enabledPayment);
                 if (!isBankTransferAdded) {
                     PaymentMethodsModel model = PaymentMethods
-                        .getMethods(this, getString(R.string.payment_bank_transfer),
-                            EnabledPayment.STATUS_UP);
+                            .getMethods(this, getString(R.string.payment_bank_transfer),
+                                    EnabledPayment.STATUS_UP);
                     if (model != null) {
                         data.add(model);
                         isBankTransferAdded = true;
@@ -923,10 +923,10 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
         /**
          * Disable payment sorting, just follow payment list order from MAP
-        if (!bankTransfers.isEmpty()) {
-            data.add(PaymentMethods.getMethods(this, getString(R.string.payment_bank_transfer), EnabledPayment.STATUS_UP));
-        }
-        SdkUtil.sortPaymentMethodsByPriority(data);
+         if (!bankTransfers.isEmpty()) {
+         data.add(PaymentMethods.getMethods(this, getString(R.string.payment_bank_transfer), EnabledPayment.STATUS_UP));
+         }
+         SdkUtil.sortPaymentMethodsByPriority(data);
          */
     }
 
@@ -949,7 +949,6 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             Logger.d(TAG, "sending result back with code " + requestCode);
 
             if (resultCode == RESULT_OK) {
-
                 TransactionResponse response;
                 try {
                     response = (TransactionResponse) data.getSerializableExtra(UiKitConstants.KEY_TRANSACTION_RESPONSE);
@@ -973,6 +972,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 } else {
                     midtransSDK.notifyTransactionFinished(new TransactionResult(null, null, TransactionResult.STATUS_INVALID));
                 }
+
                 finish();
 
             } else if (resultCode == RESULT_CANCELED) {

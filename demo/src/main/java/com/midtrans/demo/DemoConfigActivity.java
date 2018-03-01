@@ -2839,7 +2839,6 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     }
 
     private void initMidtransSDK() {
-
         SdkUIFlowBuilder.init()
                 .setContext(this)
                 .setMerchantBaseUrl(BuildConfig.BASE_URL)
