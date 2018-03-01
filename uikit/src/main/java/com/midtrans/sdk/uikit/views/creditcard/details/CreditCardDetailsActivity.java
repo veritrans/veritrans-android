@@ -643,7 +643,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         // Card bin validation for bin locking and installment
         String cardNumber = getCleanedCardNumber();
         if (presenter.isCardBinBlocked(cardNumber)) {
-            Toast.makeText(this, getString(R.string.card_bin_invalid), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.offer_not_applied), Toast.LENGTH_SHORT).show();
             return false;
         }
 
