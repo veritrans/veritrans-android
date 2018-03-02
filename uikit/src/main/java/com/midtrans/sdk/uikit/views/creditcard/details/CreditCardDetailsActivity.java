@@ -158,7 +158,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         checkboxPointEnabled.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (!checkboxPointEnabled.isChecked()) {
+                if (!checkboxPointEnabled.isChecked() && presenter.isBniPointAvailable(getCardNumberBin())) {
 
                     if (event.getAction() == MotionEvent.ACTION_DOWN) {
                         Intent intent = new Intent(CreditCardDetailsActivity.this, TermsAndConditionsActivity.class);
