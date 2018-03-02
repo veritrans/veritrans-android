@@ -2151,5 +2151,4 @@ public class MidtransSDK {
         paymentDetails = new PaymentDetails(getTransaction().getTransactionDetails(), getTransaction().getItemDetails());
     }
 
-
 }

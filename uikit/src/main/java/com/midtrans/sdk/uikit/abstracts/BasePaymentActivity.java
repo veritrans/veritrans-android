@@ -151,8 +151,6 @@ public abstract class BasePaymentActivity extends BaseActivity {
     }
 
     protected void addNewItemDetails(final ItemDetails newItem) {
-        Log.d("bpoint", "xitemdetail>adapter:" + transactionDetailAdapter);
-
         if (transactionDetailAdapter != null) {
             new Handler().postDelayed(new Runnable() {
                 @Override

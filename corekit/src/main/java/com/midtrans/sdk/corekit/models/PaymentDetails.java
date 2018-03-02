@@ -10,6 +10,8 @@ import java.util.List;
 
 /**
  * Created by ziahaqi on 2/14/18.
+ *
+ * This class provide actual transactions details informations is used by payment pages.
  */
 
 public class PaymentDetails {
