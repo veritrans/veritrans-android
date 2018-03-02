@@ -39,15 +39,11 @@ public class TransactionDetailsAdapter extends RecyclerView.Adapter<RecyclerView
     }
 
     public void addItemDetails(ItemDetails newItem) {
-        Log.d("bpoint", "item:" + newItem);
-
         if (itemDetails == null) {
             itemDetails = new ArrayList<>();
         }
 
         if (newItem != null) {
-            Log.d("bpoint", "id:" + newItem.getId());
-
             ItemDetails currentItem = findItemDetailById(newItem.getId());
             if (currentItem == null) {
                 itemDetails.add(newItem);
