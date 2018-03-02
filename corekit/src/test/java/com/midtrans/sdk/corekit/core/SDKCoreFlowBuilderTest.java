@@ -61,6 +61,6 @@ public class SDKCoreFlowBuilderTest {
         sdkCoreFlowBuilder = SdkCoreFlowBuilder.init(context, null, SDKConfigTest.MERCHANT_BASE_URL);
         sdkCoreFlowBuilder.isValidData();
         verifyStatic(Mockito.times(1));
-        Log.e(Matchers.anyString(), Matchers.anyString(), Matchers.any(Throwable.class));
+        Logger.e(Matchers.anyString(), Matchers.any(Throwable.class));
     }
 }

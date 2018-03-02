@@ -197,7 +197,8 @@ public class SnapTransactionManagerTest {
     private ArgumentCaptor<String> channelCator;
     @Captor
     private ArgumentCaptor<String> channelCaptor;
-
+    @Captor
+    private ArgumentCaptor<Double> grossAmount;
     @Captor
     private ArgumentCaptor<String> typeCaptor;
 
@@ -1833,7 +1834,7 @@ public class SnapTransactionManagerTest {
 
         Mockito.verify(midtransAPI, Mockito.times(1)).getToken(cardNumberCaptor.capture(),
                 cardCVVCaptor.capture(), cardExpMonthCaptor.capture(),
-                cardExpYearCaptor.capture(), clientKeyCaptor.capture(),
+                cardExpYearCaptor.capture(), clientKeyCaptor.capture(), grossAmount.capture(),
                 channelCaptor.capture(), typeCaptor.capture(), pointCaptor.capture(), callbackgetTokenArgumentCaptor.capture());
 
         callbackgetTokenArgumentCaptor.getValue().success(tokenDetailsResponse, retrofitResponse);
@@ -1850,7 +1851,7 @@ public class SnapTransactionManagerTest {
 
         Mockito.verify(midtransAPI, Mockito.times(1)).getToken(cardNumberCaptor.capture(),
                 cardCVVCaptor.capture(), cardExpMonthCaptor.capture(),
-                cardExpYearCaptor.capture(), clientKeyCaptor.capture(),
+                cardExpYearCaptor.capture(), clientKeyCaptor.capture(), grossAmount.capture(),
                 channelCaptor.capture(), typeCaptor.capture(), pointCaptor.capture(), callbackgetTokenArgumentCaptor.capture());
 
         //when retrofitResponse not 200
@@ -1874,7 +1875,7 @@ public class SnapTransactionManagerTest {
 
         Mockito.verify(midtransAPI, Mockito.times(1)).getToken(cardNumberCaptor.capture(),
                 cardCVVCaptor.capture(), cardExpMonthCaptor.capture(),
-                cardExpYearCaptor.capture(), clientKeyCaptor.capture(),
+                cardExpYearCaptor.capture(), clientKeyCaptor.capture(), grossAmount.capture(),
                 channelCaptor.capture(), typeCaptor.capture(), pointCaptor.capture(), callbackgetTokenArgumentCaptor.capture());
 
         // when retrofitResponse null
@@ -1890,7 +1891,7 @@ public class SnapTransactionManagerTest {
 
         Mockito.verify(midtransAPI, Mockito.times(1)).getToken(cardNumberCaptor.capture(),
                 cardCVVCaptor.capture(), cardExpMonthCaptor.capture(),
-                cardExpYearCaptor.capture(), clientKeyCaptor.capture(),
+                cardExpYearCaptor.capture(), clientKeyCaptor.capture(), grossAmount.capture(),
                 channelCaptor.capture(), typeCaptor.capture(), pointCaptor.capture(), callbackgetTokenArgumentCaptor.capture());
 
         //when valid certification
