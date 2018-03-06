@@ -1395,7 +1395,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         if (isActivityRunning()) {
             if (attempt < UiKitConstants.MAX_ATTEMPT) {
                 attempt += 1;
-                SdkUIFlowUtil.showToast(this, getString(R.string.message_payment_failed));
+                showPaymentFailureMessage(response);
             } else {
                 initPaymentStatus(response);
             }
@@ -1404,6 +1404,20 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                 Logger.d("3dserror", "400:" + response.getValidationMessages().get(0));
             }
         }
+    }
+
+    private void showPaymentFailureMessage(TransactionResponse response) {
+        String statusMessage = getString(R.string.message_payment_failed);
+
+        if (response != null
+                && response.getStatusCode().equals(UiKitConstants.STATUS_CODE_411)
+                && !TextUtils.isEmpty(response.getStatusMessage())
+                && response.getStatusMessage().toLowerCase().contains(MessageUtil.PROMO_UNAVAILABLE)) {
+
+            statusMessage = getString(R.string.promo_unavailable);
+        }
+
+        SdkUIFlowUtil.showToast(this, statusMessage);
     }
 
     @Override
