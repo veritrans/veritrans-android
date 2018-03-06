@@ -33,6 +33,7 @@ public class UiKitConstants {
     public static final String STATUS_CODE_200 = "200";
     public static final String STATUS_CODE_201 = "201";
     public static final String STATUS_CODE_400 = "400";
+    public static final String STATUS_CODE_411 = "411";
     public static final String STATUS_CODE_404 = "404";
     public static final String STATUS_CODE_500 = "500";
     public static final String STATUS_CODE_503 = "503";
@@ -101,4 +102,8 @@ public class UiKitConstants {
 
     //contant key
     public static final String KEY_TRANSACTION_RESPONSE = "transaction_response";
+
+    public static final String PROMO_ID = "promo_id";
+    public static final String BNI_POINT_ID = "bni_point";
+    public static final String MANDIRI_POIN_ID = "mandiri_point";
 }
