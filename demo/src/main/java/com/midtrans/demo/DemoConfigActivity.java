@@ -2892,11 +2892,11 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             MidtransSDK.getInstance().setColorTheme(new CustomColorTheme(DemoThemeConstants.BLACK_PRIMARY_HEX, DemoThemeConstants.BLACK_PRIMARY_DARK_HEX, DemoThemeConstants.BLACK_SECONDARY_HEX));
         }
         // Create new Transaction Request
-        TransactionRequest transactionRequestNew = new TransactionRequest(System.currentTimeMillis() + "", 200000);
+        TransactionRequest transactionRequestNew = new TransactionRequest(System.currentTimeMillis() + "", 20000);
 
 
         // Define item details
-        ItemDetails itemDetails = new ItemDetails("1", 200000, 1, getString(R.string.product_name_sample));
+        ItemDetails itemDetails = new ItemDetails("1", 20000, 1, getString(R.string.product_name_sample));
         // Add item details into item detail list.
         ArrayList<ItemDetails> itemDetailsArrayList = new ArrayList<>();
         itemDetailsArrayList.add(itemDetails);
@@ -3037,7 +3037,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         if (userDetail == null) {
             userDetail = new UserDetail();
             userDetail.setUserFullName(getString(R.string.order_review_customer_details_name));
-            userDetail.setEmail("Email" + String.valueOf(System.currentTimeMillis()) + "@gmail.com");
+            userDetail.setEmail(getString(R.string.order_review_customer_details_email));
             userDetail.setPhoneNumber(getString(R.string.order_review_customer_details_phone));
             if (oneClickSelection.isChecked()) {
                 userDetail.setUserId(getString(R.string.sample_user_id));
@@ -3059,7 +3059,6 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             } else if (twoClicksSelection.isChecked()) {
                 userDetail.setUserId("user2@user.com");
             }
-            userDetail.setEmail("Email" + String.valueOf(System.currentTimeMillis()) + "@gmail.com");
         }
 
         // if rba activated
