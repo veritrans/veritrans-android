@@ -51,6 +51,7 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
     private TokenDetailsResponse creditCardToken;
     private TransactionResponse transactionResponse;
     private CardTokenRequest cardTokenRequest;
+    private PromoDetails promoDetails;
 
     private int installmentTotalPositions;
     private int installmentCurrentPosition;
@@ -61,7 +62,12 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
         this.creditCardTransaction = new CreditCardTransaction();
         this.context = context;
         initCreditCardTransaction(context);
+        initPromoDetails();
         fetchBankBins();
+    }
+
+    private void initPromoDetails() {
+        this.promoDetails = getMidtransSDK().getTransaction().getPromoDetails();
     }
 
     private void fetchBankBins() {
@@ -278,6 +284,7 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
 
     public void startOneClickPayment(String maskedCard) {
         CreditCardPaymentModel paymentModel = new CreditCardPaymentModel(maskedCard);
+        applyPaymentProperties(paymentModel);
         startCreditCardPayment(paymentModel);
     }
 
@@ -515,9 +522,8 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
     }
 
     public List<Promo> getCreditCardPromos(String cardNumber) {
-        PromoDetails details = getMidtransSDK().getTransaction().getPromoDetails();
-        if (details != null) {
-            List<Promo> promos = details.getPromos();
+        if (promoDetails != null) {
+            List<Promo> promos = promoDetails.getPromos();
             if (promos != null && !promos.isEmpty()) {
                 return getValidCreditCardPromo(cardNumber, promos);
             }
@@ -529,18 +535,26 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
         List<Promo> cardPromos = new ArrayList<>();
 
         for (Promo promo : promos) {
-            if (promo.getPaymentTypes() != null && promo.getPaymentTypes().contains(PaymentType.CREDIT_CARD)) {
+            Promo newPromo;
+            try {
+                newPromo = (Promo) promo.clone();
+            } catch (CloneNotSupportedException e) {
+                newPromo = promo;
+                Logger.e("CloneNotSupportedException:" + e.getMessage());
+            }
+
+            if (newPromo.getPaymentTypes() != null && newPromo.getPaymentTypes().contains(PaymentType.CREDIT_CARD)) {
                 if (TextUtils.isEmpty(cardNumber)) {
-                    cardPromos.add(promo);
+                    cardPromos.add(newPromo);
                 } else {
-                    if (promo.getBins() != null && !promo.getBins().isEmpty()) {
-                        for (String cardBin : promo.getBins()) {
+                    if (newPromo.getBins() != null && !newPromo.getBins().isEmpty()) {
+                        for (String cardBin : newPromo.getBins()) {
                             if (cardNumber.startsWith(cardBin)) {
-                                cardPromos.add(promo);
+                                cardPromos.add(newPromo);
                             }
                         }
                     } else {
-                        cardPromos.add(promo);
+                        cardPromos.add(newPromo);
                     }
                 }
             }

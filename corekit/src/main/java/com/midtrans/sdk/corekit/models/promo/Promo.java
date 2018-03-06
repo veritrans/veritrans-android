@@ -8,7 +8,7 @@ import java.util.List;
  * Created by ziahaqi on 12/22/17.
  */
 
-public class Promo {
+public class Promo implements Cloneable{
 
     @SerializedName("id")
     private long id;
@@ -117,4 +117,8 @@ public class Promo {
         return selected;
     }
 
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }
