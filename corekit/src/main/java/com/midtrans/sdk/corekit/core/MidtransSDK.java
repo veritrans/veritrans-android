@@ -162,12 +162,15 @@ public class MidtransSDK {
                 if (midtransSDK == null) {
                     if (sdkBuilder != null) {
                         midtransSDK = new MidtransSDK(sdkBuilder);
+                        sdkNotAvailable = false;
                     } else {
                         midtransSDK = new MidtransSDK();
                         sdkNotAvailable = true;
                     }
                 }
             }
+        } else {
+            sdkNotAvailable = false;
         }
 
         return midtransSDK;
