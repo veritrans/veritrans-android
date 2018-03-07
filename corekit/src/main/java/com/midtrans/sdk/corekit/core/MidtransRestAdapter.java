@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.internal.bind.DateTypeAdapter;
 import com.jakewharton.retrofit.Ok3Client;
+import com.midtrans.sdk.corekit.BuildConfig;
 import com.midtrans.sdk.corekit.models.snap.params.CreditCardPaymentParams;
 import com.midtrans.sdk.corekit.utilities.CustomTypeAdapter;
 import com.squareup.okhttp.OkHttpClient;
@@ -126,6 +127,7 @@ public class MidtransRestAdapter {
             @Override
             public void intercept(RequestFacade request) {
                 request.addHeader("X-Source", "mobile-android");
+                request.addHeader("X-SDK-Version", "android-" + BuildConfig.VERSION_NAME);
                 request.addHeader("Accept", "application/json");
                 request.addHeader("Content-Type", "application/json");
             }
