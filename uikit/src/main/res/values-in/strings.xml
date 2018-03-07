@@ -576,7 +576,7 @@
     <string name="redeem_bni_reward">Tukarkan BNI Reward Points</string>
     <string name="redeem_mandiri_point">Tukarkan Fiestapoin</string>
     <string name="redeem_100_point">DISKON FIESTAPOIN</string>
-    <string name="amount_after_discount">TOTAL PEMBAYARAN SETELAH DISKON</string>
+    <string name="amount_after_discount">TOTAL PEMBAYARAN SETELAH TUKAR POIN</string>
     <string name="delete_this_card">Hapus Kartu Ini</string>
     <string name="redeem_point">Tukar Poin</string>
     <string name="redeem_bank_point_title">Gunakan Poin %1$s</string>
@@ -586,7 +586,7 @@
     <string name="redeem_mandiri_title">Mandiri Fiestapoin</string>
     <string name="redeem_mandiri_details">Anda dapat membayar sebagian dengan Mandiri Fiestapoin melalui kartu kredit / debit Mandiri Anda.</string>
 
-    <string name="how_much_point">Berapa poin yang ingin anda tukarkan diskon?</string>
+    <string name="how_much_point">Berapa poin yang ingin anda tukarkan?</string>
     <string name="total_bni_point">Total poin BNI anda</string>
     <string name="status_redeemed_point">DISKON POIN</string>
     <string name="total_bni_reward_point">Jumlah Point: %1$s</string>
