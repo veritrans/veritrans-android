@@ -15,14 +15,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.koushikdutta.ion.Ion;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.models.MerchantPreferences;
 import com.midtrans.sdk.corekit.models.PaymentDetails;
@@ -215,9 +214,7 @@ public abstract class BasePaymentActivity extends BaseActivity {
                 if (!TextUtils.isEmpty(merchantLogoUrl)) {
                     if (merchantLogo != null) {
                         hasMerchantLogo = true;
-                        Glide.with(this)
-                                .load(merchantLogoUrl)
-                                .into(merchantLogo);
+                        Ion.with(merchantLogo).load(merchantLogoUrl);
                         merchantLogo.setVisibility(View.VISIBLE);
                     }
                 } else {

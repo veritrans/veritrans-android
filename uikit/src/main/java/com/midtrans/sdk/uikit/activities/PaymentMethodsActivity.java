@@ -22,7 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
+import com.koushikdutta.ion.Ion;
 import com.midtrans.raygun.RaygunClient;
 import com.midtrans.raygun.RaygunOnBeforeSend;
 import com.midtrans.raygun.messages.RaygunMessage;
@@ -40,8 +40,8 @@ import com.midtrans.sdk.corekit.core.themes.CustomColorTheme;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.ItemDetails;
 import com.midtrans.sdk.corekit.models.MerchantPreferences;
-import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 import com.midtrans.sdk.corekit.models.PaymentDetails;
+import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.promo.Promo;
@@ -309,12 +309,9 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             progressMessage.setText(R.string.txt_checkout);
         }
 
-        // Init progress
-        Glide.with(this)
-                .load(R.drawable.midtrans_loader)
-                .asGif()
-                .into(progressImage);
-        progressMessage.setText(R.string.txt_loading_payment);
+        Ion.with(progressImage)
+                .load(SdkUIFlowUtil.getImagePath(this) + R.drawable.midtrans_loader);
+
     }
 
     private void getPaymentPages() {
@@ -910,8 +907,8 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 bankTransfers.add(enabledPayment);
                 if (!isBankTransferAdded) {
                     PaymentMethodsModel model = PaymentMethods
-                        .getMethods(this, getString(R.string.payment_bank_transfer),
-                            EnabledPayment.STATUS_UP);
+                            .getMethods(this, getString(R.string.payment_bank_transfer),
+                                    EnabledPayment.STATUS_UP);
                     if (model != null) {
                         data.add(model);
                         isBankTransferAdded = true;
@@ -1063,10 +1060,14 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
     private void showLogo(String url) {
         if (!TextUtils.isEmpty(url)) {
-            Glide.with(this)
-                    .load(url)
-                    .into(logo);
+//            Glide.with(this)
+//                    .load(url)
+//                    .into(logo);
             merchantName.setVisibility(View.GONE);
+
+            Ion.with(logo)
+                    .load(url);
+
         } else {
             logo.setVisibility(View.INVISIBLE);
         }
