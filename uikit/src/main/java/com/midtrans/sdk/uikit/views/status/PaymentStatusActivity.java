@@ -283,6 +283,8 @@ public class PaymentStatusActivity extends BaseActivity {
                             && !TextUtils.isEmpty(transactionResponse.getStatusMessage())
                             && transactionResponse.getStatusMessage().toLowerCase().contains(MessageUtil.PROMO_UNAVAILABLE)) {
                         textStatusErrorMessage.setText(getString(R.string.promo_unavailable));
+                    } else if (transactionResponse.getStatusCode().equals(UiKitConstants.STATUS_CODE_406)) {
+                        textStatusErrorMessage.setText(getString(R.string.message_payment_paid));
                     } else {
                         textStatusErrorMessage.setText(transactionResponse.getStatusMessage());
                     }
