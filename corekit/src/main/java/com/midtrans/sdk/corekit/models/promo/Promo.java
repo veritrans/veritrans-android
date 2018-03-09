@@ -8,22 +8,28 @@ import java.util.List;
  * Created by ziahaqi on 12/22/17.
  */
 
-public class Promo {
+public class Promo implements Cloneable{
 
     @SerializedName("id")
     private long id;
 
+    @SerializedName("name")
+    private String name;
+
     @SerializedName("bins")
     private List<String> bins;
 
-    @SerializedName("discount_amount")
-    private Long discountAmount;
+    @SerializedName("payment_types")
+    private List<String> paymentTypes;
+
+    @SerializedName("calculated_discount_amount")
+    private Long calculatedDiscountAmount;
+
+    @SerializedName("discounted_gross_amount")
+    private Long discountedGrossAmount;
 
     @SerializedName("discount_type")
     private String discountType;
-
-    @SerializedName("max_discount_amount")
-    private Long maxDiscountAmount;
 
     @SerializedName("start_date")
     private String startDate;
@@ -45,7 +51,7 @@ public class Promo {
 
     @SerializedName("promo_token")
     private String promoToken;
-
+    private boolean selected;
 
     public long getId() {
         return id;
@@ -55,16 +61,8 @@ public class Promo {
         return bins;
     }
 
-    public Long getDiscountAmount() {
-        return discountAmount;
-    }
-
     public String getDiscountType() {
         return discountType;
-    }
-
-    public Long getMaxDiscountAmount() {
-        return maxDiscountAmount;
     }
 
     public String getStartDate() {
@@ -93,5 +91,34 @@ public class Promo {
 
     public String getPromoToken() {
         return promoToken;
+    }
+
+    public List<String> getPaymentTypes() {
+        return paymentTypes;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Long getCalculatedDiscountAmount() {
+        return calculatedDiscountAmount;
+    }
+
+    public Long getDiscountedGrossAmount() {
+        return discountedGrossAmount;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

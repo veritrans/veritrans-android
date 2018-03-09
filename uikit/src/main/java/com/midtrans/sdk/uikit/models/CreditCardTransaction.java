@@ -1,10 +1,13 @@
 package com.midtrans.sdk.uikit.models;
 
 import android.text.TextUtils;
+
 import com.midtrans.sdk.corekit.models.BankType;
+import com.midtrans.sdk.corekit.models.promo.Promo;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 import com.midtrans.sdk.corekit.models.snap.BanksPointResponse;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
+
 import java.util.ArrayList;
 
 /**
@@ -21,6 +24,7 @@ public class CreditCardTransaction {
     private boolean whiteListBinsAvailable;
     private ArrayList<BankBinsResponse> bankBins;
     private boolean bankBinsAvailable;
+    private Promo selectedPromo;
 
     public CreditCardTransaction() {
         bankBins = new ArrayList<>();
@@ -248,5 +252,17 @@ public class CreditCardTransaction {
             }
         }
         return false;
+    }
+
+    public void setSelectedPromo(Promo seletedPromo) {
+        this.selectedPromo = seletedPromo;
+    }
+
+    public Promo getSelectedPromo() {
+        return selectedPromo;
+    }
+
+    public boolean isSelectedPromoAvailable() {
+        return selectedPromo != null && selectedPromo.getDiscountedGrossAmount() != null;
     }
 }

@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
@@ -234,15 +235,21 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     }
 
     protected void hideProgressLayout() {
-        setBackgroundProcess(false);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setBackgroundProcess(false);
 
-        if (containerProgress != null) {
-            containerProgress.setVisibility(View.GONE);
-        }
+                if (containerProgress != null) {
+                    containerProgress.setVisibility(View.GONE);
+                }
 
-        if (textProgressMessage != null) {
-            textProgressMessage.setText(R.string.loading);
-        }
+                if (textProgressMessage != null) {
+                    textProgressMessage.setText(R.string.loading);
+                }
+            }
+        }, 500);
+
     }
 
     private void setBackgroundProcess(boolean backgroundProcess) {

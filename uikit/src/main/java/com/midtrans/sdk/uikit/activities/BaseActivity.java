@@ -18,13 +18,14 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
-import com.midtrans.sdk.corekit.models.ItemDetails;
 import com.midtrans.sdk.corekit.models.MerchantPreferences;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
+import com.midtrans.sdk.corekit.models.snap.ItemDetails;
 import com.midtrans.sdk.corekit.models.snap.MerchantData;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.utilities.Utils;
@@ -37,6 +38,7 @@ import com.midtrans.sdk.uikit.views.status.PaymentStatusActivity;
 import com.midtrans.sdk.uikit.widgets.BoldTextView;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
+
 import java.util.List;
 
 /**
@@ -96,8 +98,8 @@ public class BaseActivity extends AppCompatActivity {
                     if (merchantLogo != null) {
                         hasMerchantLogo = true;
                         Glide.with(this)
-                            .load(merchantLogoUrl)
-                            .into(merchantLogo);
+                                .load(merchantLogoUrl)
+                                .into(merchantLogo);
                         merchantLogo.setVisibility(View.VISIBLE);
                     }
                 } else {
@@ -120,7 +122,7 @@ public class BaseActivity extends AppCompatActivity {
         if (hasMerchantLogo) {
             Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
             if (toolbar != null) {
-                AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams)toolbar.getLayoutParams();
+                AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
                 params.height = params.height + (int) getResources().getDimension(R.dimen.toolbar_expansion_size);
                 toolbar.setLayoutParams(params);
             }
@@ -140,11 +142,11 @@ public class BaseActivity extends AppCompatActivity {
             BoldTextView textTotalAmount = (BoldTextView) findViewById(R.id.text_amount);
             if (textTotalAmount != null) {
                 String totalAmount = getString(R.string.prefix_money, Utils
-                    .getFormattedAmount(transaction.getTransactionDetails().getAmount()));
+                        .getFormattedAmount(transaction.getTransactionDetails().getAmount()));
                 textTotalAmount.setText(totalAmount);
             }
         }
-        initTransactionDetail(MidtransSDK.getInstance().getTransactionRequest().getItemDetails());
+        initTransactionDetail(MidtransSDK.getInstance().getTransaction().getItemDetails());
         //init dim
         findViewById(R.id.background_dim).setOnClickListener(new OnClickListener() {
             @Override
@@ -193,7 +195,7 @@ public class BaseActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
-            && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
             overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
         }
     }
@@ -292,9 +294,9 @@ public class BaseActivity extends AppCompatActivity {
                 startActivityForResult(intent, UiKitConstants.INTENT_CODE_PAYMENT_STATUS);
             } else {
                 PaymentTransactionStatusFragment paymentTransactionStatusFragment =
-                    PaymentTransactionStatusFragment.newInstance(transactionResponse, paymentMethod);
+                        PaymentTransactionStatusFragment.newInstance(transactionResponse, paymentMethod);
                 replaceFragment(paymentTransactionStatusFragment, R.id.instruction_container,
-                    addToBackStack, false);
+                        addToBackStack, false);
             }
         } else {
             setResultCode(RESULT_OK);

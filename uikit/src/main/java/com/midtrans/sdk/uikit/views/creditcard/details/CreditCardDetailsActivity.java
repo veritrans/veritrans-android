@@ -1,7 +1,5 @@
 package com.midtrans.sdk.uikit.views.creditcard.details;
 
-import static com.midtrans.sdk.uikit.utilities.UiKitConstants.ENVIRONMENT_DEVELOPMENT;
-
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,11 +8,14 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatEditText;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -32,6 +33,7 @@ import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
+import com.midtrans.sdk.corekit.models.promo.Promo;
 import com.midtrans.sdk.corekit.models.snap.BanksPointResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.BuildConfig;
@@ -45,6 +47,7 @@ import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.views.creditcard.bankpoints.BankPointsActivity;
+import com.midtrans.sdk.uikit.views.creditcard.tnc.TermsAndConditionsActivity;
 import com.midtrans.sdk.uikit.views.status.PaymentStatusActivity;
 import com.midtrans.sdk.uikit.views.webview.WebViewPaymentActivity;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
@@ -55,6 +58,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+
+import static com.midtrans.sdk.uikit.utilities.UiKitConstants.ENVIRONMENT_DEVELOPMENT;
 
 /**
  * Created by ziahaqi on 7/11/17.
@@ -104,8 +109,10 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
     private AppCompatCheckBox checkboxSaveCard;
     private AppCompatCheckBox checkboxPointEnabled;
+    private RecyclerView recyclerViewPromo;
 
     private CreditCardDetailsPresenter presenter;
+    private PromosAdapter promosAdapter;
     private SaveCardRequest savedCard;
     private String lastExpDate = "";
     private String redirectUrl = null;
@@ -119,7 +126,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         //init screenshot prevention in production
         if (!BuildConfig.FLAVOR.equalsIgnoreCase(ENVIRONMENT_DEVELOPMENT)) {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
-                WindowManager.LayoutParams.FLAG_SECURE);
+                    WindowManager.LayoutParams.FLAG_SECURE);
         }
         initProperties();
         setContentView(R.layout.activity_credit_card);
@@ -132,6 +139,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         initDeleteButton();
         initScanCardButton();
         initCheckBox();
+        initPromoList();
         initLayoutState();
         bindData();
     }
@@ -153,6 +161,23 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     }
 
     private void initCheckBox() {
+        checkboxPointEnabled.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (!checkboxPointEnabled.isChecked() && presenter.isBniPointAvailable(getCardNumberBin())) {
+
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        Intent intent = new Intent(CreditCardDetailsActivity.this, TermsAndConditionsActivity.class);
+                        startActivityForResult(intent, TermsAndConditionsActivity.INTENT_TNC);
+                    }
+
+                    return true;
+                }
+
+                return false;
+            }
+        });
+
         checkboxPointEnabled.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -163,6 +188,37 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                 }
             }
         });
+    }
+
+    private void setCheckboxPoint(boolean check) {
+        if (check) {
+            checkboxPointEnabled.setChecked(true);
+        } else {
+            checkboxPointEnabled.setChecked(false);
+        }
+
+    }
+
+    private void initPromoList() {
+        promosAdapter = new PromosAdapter(getPrimaryColor(),
+                new PromosAdapter.PromosListener() {
+                    @Override
+                    public void onPromoSelected(Promo promo) {
+                        if (transactionDetailAdapter != null) {
+                            if (promo.isSelected()) {
+                                addNewItemDetails(presenter.createTransactionItem(promo));
+                            } else {
+                                removeItemDetails(UiKitConstants.PROMO_ID);
+                            }
+                        }
+                    }
+                });
+
+        recyclerViewPromo.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewPromo.setHasFixedSize(true);
+        recyclerViewPromo.setAdapter(promosAdapter);
+
+        initCreditCardPromos();
     }
 
     private void initDeleteButton() {
@@ -378,6 +434,8 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                         }
                     }
 
+                    initCreditCardPromos();
+
                 } catch (RuntimeException e) {
                     Logger.d(TAG, "inputccnumber:" + e.getMessage());
                 }
@@ -396,6 +454,18 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                 }
             }
         });
+    }
+
+    private void initCreditCardPromos() {
+        final String cardNumber = getCleanedCardNumber();
+        if (cardNumber.length() < 7) {
+            recyclerViewPromo.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    promosAdapter.setData(presenter.getCreditCardPromos(cardNumber));
+                }
+            }, 100);
+        }
     }
 
 
@@ -505,12 +575,19 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                 SdkUIFlowUtil.hideKeyboard(CreditCardDetailsActivity.this);
                 if (checkCardValidity()) {
                     if (checkPaymentValidity()) {
+                        setPromoSelected();
                         presenter.trackButtonClick(attempt == 0 ? BUTTON_CONFIRM_NAME : BUTTON_RETRY_NAME, PAGE_NAME);
                         TokenizeCreditCard();
                     }
                 }
             }
         });
+    }
+
+    private void setPromoSelected() {
+        if (promosAdapter != null) {
+            presenter.setSelectedPromo(promosAdapter.getSeletedPromo());
+        }
     }
 
     private void initHelpButtons() {
@@ -719,6 +796,8 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
         checkboxSaveCard = (AppCompatCheckBox) findViewById(R.id.checkbox_save_card);
         checkboxPointEnabled = (AppCompatCheckBox) findViewById(R.id.checkbox_point);
+
+        recyclerViewPromo = (RecyclerView) findViewById(R.id.recycler_promo);
     }
 
     private void setBankType() {
@@ -726,6 +805,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         String cardNumberText = getCardNumberValue();
         if (TextUtils.isEmpty(cardNumberText) || cardNumberText.length() < 7) {
             imageBankLogo.setImageDrawable(null);
+            textTitle.setText(R.string.card_details);
             return;
         }
 
@@ -1234,6 +1314,10 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                     initBanksPointPayment(redeemedPoint);
                 }
             }
+
+            if (requestCode == TermsAndConditionsActivity.INTENT_TNC) {
+                setCheckboxPoint(true);
+            }
         } else if (resultCode == RESULT_CANCELED) {
             if (requestCode == UiKitConstants.INTENT_CODE_3DS_PAYMENT) {
                 hideProgressLayout();
@@ -1242,6 +1326,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             } else if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS) {
                 finishPayment(RESULT_OK);
             }
+
         }
     }
 
@@ -1310,7 +1395,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         if (isActivityRunning()) {
             if (attempt < UiKitConstants.MAX_ATTEMPT) {
                 attempt += 1;
-                SdkUIFlowUtil.showToast(this, getString(R.string.message_payment_failed));
+                showPaymentFailureMessage(response);
             } else {
                 initPaymentStatus(response);
             }
@@ -1319,6 +1404,20 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                 Logger.d("3dserror", "400:" + response.getValidationMessages().get(0));
             }
         }
+    }
+
+    private void showPaymentFailureMessage(TransactionResponse response) {
+        String statusMessage = getString(R.string.message_payment_failed);
+
+        if (response != null
+                && response.getStatusCode().equals(UiKitConstants.STATUS_CODE_411)
+                && !TextUtils.isEmpty(response.getStatusMessage())
+                && response.getStatusMessage().toLowerCase().contains(MessageUtil.PROMO_UNAVAILABLE)) {
+
+            statusMessage = getString(R.string.promo_unavailable);
+        }
+
+        SdkUIFlowUtil.showToast(this, statusMessage);
     }
 
     @Override
@@ -1375,6 +1474,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             initPaymentStatus(transactionResponse);
         }
     }
+
 
     @Override
     public void onBackPressed() {

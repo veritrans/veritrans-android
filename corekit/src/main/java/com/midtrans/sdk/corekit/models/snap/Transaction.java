@@ -1,6 +1,7 @@
 package com.midtrans.sdk.corekit.models.snap;
 
 import com.google.gson.annotations.SerializedName;
+import com.midtrans.sdk.corekit.models.promo.PromoDetails;
 
 import java.util.List;
 
@@ -9,16 +10,29 @@ import java.util.List;
  */
 public class Transaction {
     private String token;
+
     @SerializedName("transaction_details")
     private TransactionDetails transactionDetails;
+
     private Callbacks callbacks;
+
     @SerializedName("enabled_payments")
     private List<EnabledPayment> enabledPayments;
+
     @SerializedName("merchant")
     private MerchantData merchantData;
+
     @SerializedName("credit_card")
     private CreditCard creditCard;
+
+    @Deprecated
     private List<PromoResponse> promos;
+
+    @SerializedName("promo_details")
+    private PromoDetails promoDetails;
+
+    @SerializedName("item_details")
+    private List<ItemDetails> itemDetails;
 
     public Transaction() {
     }
@@ -77,5 +91,21 @@ public class Transaction {
 
     public void setPromos(List<PromoResponse> promos) {
         this.promos = promos;
+    }
+
+    public PromoDetails getPromoDetails() {
+        return promoDetails;
+    }
+
+    public void setPromoDetails(PromoDetails promoDetails) {
+        this.promoDetails = promoDetails;
+    }
+
+    public List<ItemDetails> getItemDetails() {
+        return itemDetails;
+    }
+
+    public void setItemDetails(List<ItemDetails> itemDetails) {
+        this.itemDetails = itemDetails;
     }
 }

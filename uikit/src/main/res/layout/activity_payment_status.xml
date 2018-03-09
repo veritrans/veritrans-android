@@ -156,6 +156,48 @@
                         android:layout_marginTop="@dimen/two_dp"
                         android:background="@color/material_grey" />
                 </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_status_promo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:visibility="visible">
+
+                        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/status_promo_amount"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/small_text_size"
+                            android:textStyle="bold" />
+
+                        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                            android:id="@+id/text_status_promo_amount"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:text="@string/text_amount_here"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/primary_text_size" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="@dimen/two_dp"
+                        android:layout_marginTop="@dimen/two_dp"
+                        android:background="@color/material_grey" />
+                </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/layout_status_point_amount"
                     android:layout_width="match_parent"
@@ -333,11 +375,11 @@
                     app:fb_defaultColor="@android:color/transparent"
                     app:fb_focusColor="@color/colorAccentLight"
                     app:fb_iconColor="?attr/colorPrimary"
+                    app:fb_iconPaddingRight="@dimen/four_dp"
+                    app:fb_iconResource="@drawable/ic_view"
                     app:fb_radius="5dp"
                     app:fb_text="@string/see_instruction"
                     app:fb_textColor="@color/white"
-                    app:fb_iconPaddingRight="@dimen/four_dp"
-                    app:fb_iconResource="@drawable/ic_view"
                     tools:visibility="visible" />
 
             </LinearLayout>

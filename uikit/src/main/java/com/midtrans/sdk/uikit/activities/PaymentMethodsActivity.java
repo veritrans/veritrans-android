@@ -33,7 +33,6 @@ import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
-import com.midtrans.sdk.corekit.core.PaymentMethod;
 import com.midtrans.sdk.corekit.core.SdkUtil;
 import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.core.themes.ColorTheme;
@@ -42,8 +41,11 @@ import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.ItemDetails;
 import com.midtrans.sdk.corekit.models.MerchantPreferences;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
+import com.midtrans.sdk.corekit.models.PaymentDetails;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.UserDetail;
+import com.midtrans.sdk.corekit.models.promo.Promo;
+import com.midtrans.sdk.corekit.models.promo.PromoDetails;
 import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
 import com.midtrans.sdk.corekit.models.snap.Token;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
@@ -423,6 +425,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     midtransSDK.setPromoResponses(transaction.getPromos());
                     midtransSDK.setMerchantLogo(logoUrl);
                     midtransSDK.setMerchantName(merchantName);
+                    midtransSDK.setPaymentDetails(new PaymentDetails(transaction.getTransactionDetails(), transaction.getItemDetails()));
                     // Prioritize custom color themes over Snap preferences
                     if (midtransSDK.getColorTheme() == null
                             || !(midtransSDK.getColorTheme() instanceof CustomColorTheme)) {
@@ -897,6 +900,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
      * initialize adapter data model by dummy values.
      */
     private void initialiseAdapterData(List<EnabledPayment> enabledPayments) {
+        boolean isBankTransferAdded = false;
         data.clear();
         bankTransfers.clear();
 
@@ -904,22 +908,54 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             if ((enabledPayment.getCategory() != null && enabledPayment.getCategory().equals(getString(R.string.enabled_payment_category_banktransfer)))
                     || enabledPayment.getType().equalsIgnoreCase(getString(R.string.payment_mandiri_bill_payment))) {
                 bankTransfers.add(enabledPayment);
+                if (!isBankTransferAdded) {
+                    PaymentMethodsModel model = PaymentMethods
+                        .getMethods(this, getString(R.string.payment_bank_transfer),
+                            EnabledPayment.STATUS_UP);
+                    if (model != null) {
+                        data.add(model);
+                        isBankTransferAdded = true;
+                    }
+                }
             } else {
                 PaymentMethodsModel model = PaymentMethods.getMethods(this, enabledPayment.getType(), enabledPayment.getStatus());
                 if (model != null) {
-                    //inactive GO-PAY for tablet
-                    if (!model.getName().equalsIgnoreCase(getString(R.string.payment_method_gopay)) || !SdkUIFlowUtil.getDeviceType(this).equalsIgnoreCase(SdkUIFlowUtil.TYPE_TABLET)) {
-                        data.add(model);
-                    }
+                    data.add(model);
                 }
             }
         }
 
+        markPaymentMethodHavePromo(data);
+    }
 
-        if (!bankTransfers.isEmpty()) {
-            data.add(PaymentMethods.getMethods(this, getString(R.string.payment_bank_transfer), EnabledPayment.STATUS_UP));
+    private void markPaymentMethodHavePromo(List<PaymentMethodsModel> data) {
+        PromoDetails promoDetails = MidtransSDK.getInstance().getTransaction().getPromoDetails();
+        if (promoDetails != null) {
+            List<Promo> promos = promoDetails.getPromos();
+            if (promos != null && !promos.isEmpty()) {
+                if (data != null && !data.isEmpty()) {
+                    for (PaymentMethodsModel model : data) {
+                        Promo promo = findPromoByPymentMethod(model, promos);
+                        if (promo != null) {
+                            model.setHavePromo(true);
+                        }
+                    }
+                }
+            }
         }
-        SdkUtil.sortPaymentMethodsByPriority(data);
+    }
+
+    private Promo findPromoByPymentMethod(PaymentMethodsModel model, List<Promo> promos) {
+        for (Promo promo : promos) {
+            List<String> paymentTypes = promo.getPaymentTypes();
+            if (paymentTypes != null && !paymentTypes.isEmpty()) {
+                if (paymentTypes.contains(model.getPaymentType())) {
+                    return promo;
+                }
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -935,6 +971,10 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         if (resultCode == UiKitConstants.RESULT_SDK_NOT_AVAILABLE) {
             finish();
             return;
+        }
+
+        if (midtransSDK != null) {
+            midtransSDK.resetPaymentDetails();
         }
 
         if (requestCode == Constants.RESULT_CODE_PAYMENT_TRANSFER) {

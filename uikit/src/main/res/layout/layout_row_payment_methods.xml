@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -31,7 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/image_arrow_right"
+                android:layout_toLeftOf="@+id/badge_promo"
                 android:layout_toRightOf="@id/img_payment_method_icon"
                 android:orientation="vertical">
 
@@ -39,7 +40,6 @@
                     android:id="@+id/text_payment_method_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:textColor="@color/black"
                     tools:text="@string/text_demo" />
 
@@ -67,12 +67,33 @@
                 android:id="@+id/image_arrow_right"
                 android:layout_width="@dimen/twenty_four_dp"
                 android:layout_height="@dimen/twenty_four_dp"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/eight_dp"
                 android:layout_marginRight="@dimen/eight_dp"
                 android:alpha="0.3"
                 android:src="@drawable/ic_arrow_right" />
+
+            <com.midtrans.sdk.uikit.widgets.FancyButton
+                android:id="@+id/badge_promo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:layout_toLeftOf="@id/image_arrow_right"
+                android:layout_toStartOf="@id/image_arrow_right"
+                android:paddingBottom="@dimen/four_dp"
+                android:paddingLeft="@dimen/eight_dp"
+                android:paddingRight="@dimen/eight_dp"
+                android:paddingTop="@dimen/four_dp"
+                android:visibility="gone"
+                app:fb_defaultColor="@color/promoBadge"
+                app:fb_radius="10sp"
+                app:fb_text="promo"
+                app:fb_textColor="@color/gray.primary_dark"
+                app:fb_textSize="10dp"
+                tools:visibility="visible" />
         </RelativeLayout>
 
         <LinearLayout

@@ -115,6 +115,7 @@ public class UserDetailsActivity extends BaseActivity {
 
                 UserDetail userDetail = SdkUIFlowUtil.getSavedUserDetails(this);
 
+
                 if (userDetail != null) {
                     if (!TextUtils.isEmpty(userDetail.getUserFullName())) {
                         //TODO check user have address filled
@@ -133,6 +134,10 @@ public class UserDetailsActivity extends BaseActivity {
                         UserDetailFragment userDetailFragment = UserDetailFragment.newInstance();
                         replaceFragment(userDetailFragment, false);
                     }
+                } else {
+                    setView();
+                    UserDetailFragment userDetailFragment = UserDetailFragment.newInstance();
+                    replaceFragment(userDetailFragment, false);
                 }
             } else {
                 String errorMessage = getString(R.string.error_sdk_not_initialized);
