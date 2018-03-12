@@ -119,11 +119,6 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     private float redeemedPoint = 0f;
     private int attempt = 0;
 
-    public boolean deleteAction;
-    private char lastChar = ' ';
-    private int lastPosition;
-    private int currentPosition;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -390,6 +385,10 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         fieldCardNumber.addTextChangedListener(new TextWatcher() {
             private static final char SPACE_CHAR = ' ';
 
+            public boolean deleteAction;
+            private int lastPosition;
+            private int currentPosition;
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -397,91 +396,63 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                Logger.i(TAG, "onTextChanged:" + s.toString());
-                Logger.i(TAG, "onTextChanged>start:" + start);
-                Logger.i(TAG, "onTextChanged>before:" + before);
-                Logger.i(TAG, "onTextChanged>count:" + count);
-
                 lastPosition = start;
                 deleteAction = count == 0;
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                Logger.i(TAG, "card number:" + s.length());
-                Logger.i(TAG, "card numberz:" + s.toString());
                 textCardNumberError.setError(null);
                 try {
 
-
-//
-//                    if (s.length() > 0 && (s.length() % 5) == 0) {
-//                        final char c = s.charAt(s.length() - 1);
-//                        if (SPACE_CHAR == c) {
-//                            s.delete(s.length() - 1, s.length());
-//                        }
-//                    }
-//                    // Insert char where needed.
-//                    if (s.length() > 0 && (s.length() % 5) == 0) {
-//                        char c = s.charAt(s.length() - 1);
-//                        // Only if its a digit where there should be a space we insert a space
-//                        if (Character.isDigit(c) && TextUtils.split(s.toString(), String.valueOf
-//                                (SPACE_CHAR)).length <= 3) {
-//                            s.insert(s.length() - 1, String.valueOf(SPACE_CHAR));
-//                        }
-//                    }
-//                    String cardType = Utils.getCardType(s.toString());
-//
-//                    setCardType();
-//                    setBankType();
-//
-//                    // Move to next input
-//                    if (s.length() >= 18 && cardType.equals(getString(R.string.amex))) {
-//                        if (s.length() == 19) {
-//                            s.delete(s.length() - 1, s.length());
-//                        }
-//                        if (checkCardNumberValidity()) {
-//                            fieldCardExpiry.requestFocus();
-//                        }
-//                    } else if (s.length() == 19) {
-//                        if (checkCardNumberValidity()) {
-//                            fieldCardExpiry.requestFocus();
-//                        }
-//                    }
-//
-//                    initCreditCardPromos();
-
-                    Logger.i(TAG, "editable::" + s.toString());
-                    Logger.i(TAG, "charAt::" + s.charAt(lastPosition));
-//                    Logger.i(TAG, "charAt--::" + s.charAt(--lastPosition));
+                    String cleanCardNumber = s.toString().replaceAll("[\\s-]+", "");
+                    String cardNumber = formatCard(cleanCardNumber);
 
                     if (deleteAction) {
-                        Logger.i(TAG, "act:delete:");
-
-                        currentPosition = lastPosition;
-
+                        if (s.charAt(lastPosition - 1) == SPACE_CHAR) {
+                            currentPosition = lastPosition - 1;
+                        } else {
+                            currentPosition = lastPosition;
+                        }
                     } else {
-                        Logger.i(TAG, "act:insert:");
+                        if (s.charAt(lastPosition) == SPACE_CHAR) {
+                            s.delete(lastPosition - 1, lastPosition);
+                        }
 
-//                        if (s.charAt(lastPosition + 1) == SPACE_CHAR) {
-                        currentPosition = lastPosition + 1;
-//                        } else {
-//                            currentPosition = lastPosition + 1;
-//                        }
+                        if (cardNumber.charAt(lastPosition) == SPACE_CHAR) {
+                            currentPosition = lastPosition + 2;
+                        } else {
+                            currentPosition = lastPosition + 1;
+                        }
+
                     }
 
+                    String cardType = Utils.getCardType(s.toString());
 
-                    String ccNumber = s.toString().replaceAll("[\\s-]+", "");
-                    String cardNumber = formatCard(ccNumber);
+                    // Move to next input
+                    if (s.length() >= 18 && cardType.equals(getString(R.string.amex))) {
+                        if (s.length() == 19) {
+                            s.delete(s.length() - 1, s.length());
+                        }
+                        if (checkCardNumberValidity()) {
+                            fieldCardExpiry.requestFocus();
+                        }
+                    } else if (s.length() == 19) {
+                        if (checkCardNumberValidity()) {
+                            fieldCardExpiry.requestFocus();
+                        }
+                    }
 
                     fieldCardNumber.removeTextChangedListener(this);
                     fieldCardNumber.setText(cardNumber);
                     fieldCardNumber.setSelection(currentPosition);
                     fieldCardNumber.addTextChangedListener(this);
 
+                    setCardType();
+                    setBankType();
+
                 } catch (RuntimeException e) {
-                    Logger.d(TAG, "inputccnumber:" + e.getMessage());
+                    Logger.d(TAG, "inputCcNumber:" + e.getMessage());
                 }
             }
         });
