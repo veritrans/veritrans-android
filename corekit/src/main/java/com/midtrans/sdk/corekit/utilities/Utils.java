@@ -199,7 +199,7 @@ public class Utils {
      * @return card type
      */
     public static String getCardType(@NonNull String cardNo) {
-        if (cardNo.isEmpty() || cardNo.length() < 2) {
+        if (cardNo.isEmpty()) {
             return "";
         } else {
             if (cardNo.charAt(0) == '4') {

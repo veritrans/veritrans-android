@@ -854,7 +854,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     private void setCardType() {
         // Don't set card type when card number is empty
         String cardNumberText = getCardNumberValue();
-        if (TextUtils.isEmpty(cardNumberText) || cardNumberText.length() < 2) {
+        if (TextUtils.isEmpty(cardNumberText)) {
             imageCardLogo.setImageResource(0);
             return;
         }
