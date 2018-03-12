@@ -424,7 +424,6 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                         } else {
                             currentPosition = lastPosition + 1;
                         }
-
                     }
 
                     String cardType = Utils.getCardType(s.toString());
