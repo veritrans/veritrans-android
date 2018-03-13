@@ -752,7 +752,7 @@
     <string name="redeem_bni_reward">Redeem BNI Reward Point</string>
     <string name="redeem_mandiri_point">Redeem Fiesta Point</string>
     <string name="redeem_100_point">FIESTAPOIN DISCOUNT</string>
-    <string name="amount_after_discount">AMOUNT TO PAY AFTER DISCOUNT</string>
+    <string name="amount_after_discount">AMOUNT TO PAY AFTER REDEEM</string>
     <string name="will_be_used_point_here">Will be used point</string>
     <string name="total_point_here">total point here</string>
     <string name="redeem_point">Redeem Point</string>
@@ -772,7 +772,7 @@
     <string name="undo">Undo</string>
     <string name="delete_this_card">Delete This Card</string>
 
-    <string name="how_much_point">How much points you want to redeem for discount?</string>
+    <string name="how_much_point">How much points you want to redeem?</string>
     <string name="total_bni_point">Your total BNI points</string>
     <string name="bank_bni">BNI</string>
     <string name="bank_mandiri">Mandiri</string>
