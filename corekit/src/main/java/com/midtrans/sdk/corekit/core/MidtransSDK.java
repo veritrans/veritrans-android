@@ -89,6 +89,7 @@ public class MidtransSDK {
     private Transaction transaction;
     private CardRegistrationCallback cardRegistrationCallback;
     private PaymentDetails paymentDetails;
+    private String authenticationToken;
 
     private MidtransSDK() {
 
@@ -289,7 +290,11 @@ public class MidtransSDK {
 
 
     public String readAuthenticationToken() {
-        return LocalDataHandler.readString(Constants.AUTH_TOKEN);
+        return authenticationToken;
+    }
+
+    public void setAuthenticationToken(String authenticationToken) {
+        this.authenticationToken = authenticationToken;
     }
 
     public String getClientKey() {
@@ -1167,6 +1172,7 @@ public class MidtransSDK {
             Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
+
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;

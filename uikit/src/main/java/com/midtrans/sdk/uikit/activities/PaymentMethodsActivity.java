@@ -30,7 +30,6 @@ import com.midtrans.raygun.messages.RaygunMessageDetails;
 import com.midtrans.sdk.corekit.callback.CheckoutCallback;
 import com.midtrans.sdk.corekit.callback.TransactionOptionsCallback;
 import com.midtrans.sdk.corekit.core.Constants;
-import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.SdkUtil;
@@ -40,8 +39,8 @@ import com.midtrans.sdk.corekit.core.themes.CustomColorTheme;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.ItemDetails;
 import com.midtrans.sdk.corekit.models.MerchantPreferences;
-import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 import com.midtrans.sdk.corekit.models.PaymentDetails;
+import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.promo.Promo;
@@ -324,13 +323,6 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
         if (!isAlreadyUtilized()) {
 
-            String snapToken = getIntent().getStringExtra(UiKitConstants.EXTRA_SNAP_TOKEN);
-            if (!TextUtils.isEmpty(snapToken)) {
-                LocalDataHandler.saveString(Constants.AUTH_TOKEN, snapToken);
-                getPaymentOptions(snapToken);
-                return;
-            }
-
             if (userDetail == null || TextUtils.isEmpty(userDetail.getUserId())) {
                 midtransSDK.notifyTransactionFinished(new TransactionResult(null, null, TransactionResult.STATUS_INVALID));
                 finish();
@@ -341,7 +333,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 @Override
                 public void onSuccess(Token token) {
                     Log.i(TAG, "checkout token:" + token.getTokenId());
-                    LocalDataHandler.saveString(Constants.AUTH_TOKEN, token.getTokenId());
+                    midtransSDK.setAuthenticationToken(token.getTokenId());
                     getPaymentOptions(token.getTokenId());
                 }
 
@@ -910,8 +902,8 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 bankTransfers.add(enabledPayment);
                 if (!isBankTransferAdded) {
                     PaymentMethodsModel model = PaymentMethods
-                        .getMethods(this, getString(R.string.payment_bank_transfer),
-                            EnabledPayment.STATUS_UP);
+                            .getMethods(this, getString(R.string.payment_bank_transfer),
+                                    EnabledPayment.STATUS_UP);
                     if (model != null) {
                         data.add(model);
                         isBankTransferAdded = true;
