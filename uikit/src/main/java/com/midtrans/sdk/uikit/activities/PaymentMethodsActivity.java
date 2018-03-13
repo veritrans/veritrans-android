@@ -14,7 +14,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
@@ -514,7 +513,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                         details.setUserCustomData(map);
 
                     } catch (Exception e) {
-                        Log.d(TAG, "raygun:" + e.getMessage());
+                        Logger.d(TAG, "raygun:" + e.getMessage());
                     }
 
                     return message;
