@@ -332,14 +332,14 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             midtransSDK.checkout(userDetail.getUserId(), new CheckoutCallback() {
                 @Override
                 public void onSuccess(Token token) {
-                    Log.i(TAG, "checkout token:" + token.getTokenId());
+                    Logger.i(TAG, "checkout token:" + token.getTokenId());
                     midtransSDK.setAuthenticationToken(token.getTokenId());
                     getPaymentOptions(token.getTokenId());
                 }
 
                 @Override
                 public void onFailure(Token token, String reason) {
-                    Log.d(TAG, "Failed to registering transaction: " + reason);
+                    Logger.d(TAG, "Failed to registering transaction: " + reason);
                     enableButtonBack(true);
                     String errorMessage = MessageUtil.createMessageWhenCheckoutFailed(PaymentMethodsActivity.this, token.getErrorMessage());
                     showErrorMessage(errorMessage);
