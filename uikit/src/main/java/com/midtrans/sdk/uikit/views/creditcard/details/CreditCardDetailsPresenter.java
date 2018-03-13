@@ -51,10 +51,10 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
     private TokenDetailsResponse creditCardToken;
     private TransactionResponse transactionResponse;
     private CardTokenRequest cardTokenRequest;
-    private PromoDetails promoDetails;
 
     private int installmentTotalPositions;
     private int installmentCurrentPosition;
+    private List<Promo> promos;
 
     public CreditCardDetailsPresenter(Context context, CreditCardDetailsView view) {
         super();
@@ -67,7 +67,26 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
     }
 
     private void initPromoDetails() {
-        this.promoDetails = getMidtransSDK().getTransaction().getPromoDetails();
+        PromoDetails promoDetails = getMidtransSDK().getTransaction().getPromoDetails();
+
+        if (promoDetails != null) {
+            List<Promo> promos = promoDetails.getPromos();
+            this.promos = new ArrayList<>();
+
+            if (promos != null && !promos.isEmpty()) {
+                for (Promo promo : promos) {
+                    Promo newPromo;
+                    try {
+                        newPromo = (Promo) promo.clone();
+                    } catch (CloneNotSupportedException e) {
+                        newPromo = promo;
+                        Logger.e("CloneNotSupportedException:" + e.getMessage());
+                    }
+
+                    this.promos.add(newPromo);
+                }
+            }
+        }
     }
 
     private void fetchBankBins() {
@@ -521,46 +540,49 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
         return creditCardTransaction.isWhitelistBinContainCardNumber(cardNumber);
     }
 
-    public List<Promo> getCreditCardPromos(String cardNumber) {
-        if (promoDetails != null) {
-            List<Promo> promos = promoDetails.getPromos();
-            if (promos != null && !promos.isEmpty()) {
-                return getValidCreditCardPromo(cardNumber, promos);
-            }
+    public List<Promo> getCreditCardPromos(String cardNumber, boolean firstTime) {
+        if (promos != null && !promos.isEmpty()) {
+            return getValidCreditCardPromo(cardNumber, promos, firstTime);
         }
         return null;
     }
 
-    private List<Promo> getValidCreditCardPromo(String cardNumber, List<Promo> promos) {
+    private List<Promo> getValidCreditCardPromo(String cardNumber, List<Promo> promos, boolean firstTime) {
         List<Promo> cardPromos = new ArrayList<>();
 
         for (Promo promo : promos) {
-            Promo newPromo;
-            try {
-                newPromo = (Promo) promo.clone();
-            } catch (CloneNotSupportedException e) {
-                newPromo = promo;
-                Logger.e("CloneNotSupportedException:" + e.getMessage());
-            }
-
-            if (newPromo.getPaymentTypes() != null && newPromo.getPaymentTypes().contains(PaymentType.CREDIT_CARD)) {
+            if (promo.getPaymentTypes() != null && promo.getPaymentTypes().contains(PaymentType.CREDIT_CARD)) {
                 if (TextUtils.isEmpty(cardNumber)) {
-                    cardPromos.add(newPromo);
+                    cardPromos.add(promo);
                 } else {
-                    if (newPromo.getBins() != null && !newPromo.getBins().isEmpty()) {
-                        for (String cardBin : newPromo.getBins()) {
+                    if (promo.getBins() != null && !promo.getBins().isEmpty()) {
+                        for (String cardBin : promo.getBins()) {
                             if (cardNumber.startsWith(cardBin)) {
-                                cardPromos.add(newPromo);
+                                cardPromos.add(promo);
                             }
                         }
                     } else {
-                        cardPromos.add(newPromo);
+                        cardPromos.add(promo);
                     }
                 }
             }
         }
 
+        if (cardPromos.size() == 1 && firstTime) {
+            promos.get(0).setSelected(true);
+        } else if (cardPromos.isEmpty() && !firstTime) {
+            resetPromos();
+        }
+
         return cardPromos;
+    }
+
+    private void resetPromos() {
+        for (Promo promo : promos) {
+            if (promo.isSelected()) {
+                promo.setSelected(false);
+            }
+        }
     }
 
     public ItemDetails createTransactionItem(Promo promo) {

@@ -201,16 +201,15 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
     private void initPromoList() {
         promosAdapter = new PromosAdapter(getPrimaryColor(),
-                new PromosAdapter.PromosListener() {
+                new PromosAdapter.OnPromoCheckedChangeListener() {
                     @Override
-                    public void onPromoSelected(Promo promo) {
-                        if (transactionDetailAdapter != null) {
-                            if (promo.isSelected()) {
-                                addNewItemDetails(presenter.createTransactionItem(promo));
-                            } else {
-                                removeItemDetails(UiKitConstants.PROMO_ID);
-                            }
-                        }
+                    public void onPromoCheckedChanged(Promo promo) {
+                        updateItemDetails(promo);
+                    }
+
+                    @Override
+                    public void onPromoUnavailable() {
+                        updateItemDetails(null);
                     }
                 });
 
@@ -218,7 +217,17 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         recyclerViewPromo.setHasFixedSize(true);
         recyclerViewPromo.setAdapter(promosAdapter);
 
-        initCreditCardPromos();
+        initCreditCardPromos(true);
+    }
+
+    private void updateItemDetails(Promo promo) {
+        if (transactionDetailAdapter != null) {
+            if (promo != null && promo.isSelected()) {
+                addNewItemDetails(presenter.createTransactionItem(promo));
+            } else {
+                removeItemDetails(UiKitConstants.PROMO_ID);
+            }
+        }
     }
 
     private void initDeleteButton() {
@@ -387,7 +396,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
             public boolean deleteAction;
             private int lastPosition;
-            private int currentPosition;
+            private int currentPosition = 0;
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -404,25 +413,27 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             public void afterTextChanged(Editable s) {
                 textCardNumberError.setError(null);
                 try {
-
                     String cleanCardNumber = s.toString().replaceAll("[\\s-]+", "");
                     String cardNumber = formatCard(cleanCardNumber);
 
-                    if (deleteAction) {
-                        if (s.charAt(lastPosition - 1) == SPACE_CHAR) {
-                            currentPosition = lastPosition - 1;
-                        } else {
-                            currentPosition = lastPosition;
-                        }
-                    } else {
-                        if (s.charAt(lastPosition) == SPACE_CHAR) {
-                            s.delete(lastPosition - 1, lastPosition);
-                        }
 
-                        if (cardNumber.charAt(lastPosition) == SPACE_CHAR) {
-                            currentPosition = lastPosition + 2;
+                    if (s.length() > 0) {
+                        if (deleteAction) {
+                            if (s.charAt(lastPosition - 1) == SPACE_CHAR) {
+                                currentPosition = lastPosition - 1;
+                            } else {
+                                currentPosition = lastPosition;
+                            }
                         } else {
-                            currentPosition = lastPosition + 1;
+                            if (s.charAt(lastPosition) == SPACE_CHAR) {
+                                s.delete(lastPosition - 1, lastPosition);
+                            }
+
+                            if (cardNumber.charAt(lastPosition) == SPACE_CHAR) {
+                                currentPosition = lastPosition + 2;
+                            } else {
+                                currentPosition = lastPosition + 1;
+                            }
                         }
                     }
 
@@ -443,15 +454,21 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                     }
 
                     fieldCardNumber.removeTextChangedListener(this);
+
                     fieldCardNumber.setText(cardNumber);
-                    fieldCardNumber.setSelection(currentPosition);
+                    if (!TextUtils.isEmpty(cardNumber)) {
+                        fieldCardNumber.setSelection(currentPosition);
+                    }
+
                     fieldCardNumber.addTextChangedListener(this);
 
                     setCardType();
                     setBankType();
 
+                    initCreditCardPromos(false);
+
                 } catch (RuntimeException e) {
-                    Logger.d(TAG, "inputCcNumber:" + e.getMessage());
+                    Logger.e(TAG, "inputCcNumber:" + e.getMessage());
                 }
             }
         });
@@ -476,13 +493,13 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         return cardNumber.replaceAll(".{4}(?!$)", "$0" + delimiter);
     }
 
-    private void initCreditCardPromos() {
+    private void initCreditCardPromos(final boolean firstTime) {
         final String cardNumber = getCleanedCardNumber();
         if (cardNumber.length() < 7) {
             recyclerViewPromo.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    promosAdapter.setData(presenter.getCreditCardPromos(cardNumber));
+                    promosAdapter.setData(presenter.getCreditCardPromos(cardNumber, firstTime));
                 }
             }, 100);
         }
