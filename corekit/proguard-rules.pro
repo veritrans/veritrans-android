@@ -226,3 +226,5 @@ public static final *** NULL; }
     native <methods>;
 }
 
+-keep class com.tozny.crypto.android.AesCbcWithIntegrity$PrngFixes$* { *; }
+

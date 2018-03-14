@@ -44,6 +44,7 @@ import com.midtrans.sdk.corekit.models.snap.payment.IndosatDompetkuPaymentReques
 import com.midtrans.sdk.corekit.models.snap.payment.NewMandiriClickPayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.TelkomselEcashPaymentRequest;
 import com.midtrans.sdk.corekit.utilities.Utils;
+import com.securepreferences.SecurePreferences;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -120,8 +121,7 @@ public class MidtransSDK {
 
         String deviceType = null;
         if (context != null) {
-            mPreferences = context.getSharedPreferences(LOCAL_DATA_PREFERENCES, Context.MODE_PRIVATE);
-
+            mPreferences = new SecurePreferences(context);
             if (context instanceof Activity) {
                 deviceType = Utils.getDeviceType((Activity) context);
             }
