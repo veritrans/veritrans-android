@@ -716,5 +716,6 @@
     <string name="tnc_bni_point_4">Poin pemegang kartu yang sudah dikonversi ke dalam rupiah, terinformasi pada saat pemegang kartu memilih menggunakan BNI Reward Points dengan mengklik tombol pilihan \"BNI Reward Points\".</string>
     <string name="tnc_bni_point_5">Pemegang kartu dapat memilih jumlah poin yang akan ditukarkan tanpa minimum redeem.</string>
     <string name="tnc_bni_point_6">Pembayaran poin ke merchant sama dengan pembayaran transaksi biasa.</string>
+    <string name="message_payment_paid">Transaksi sudah diproses</string>
 
 </resources>
