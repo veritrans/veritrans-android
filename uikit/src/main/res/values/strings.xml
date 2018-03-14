@@ -639,7 +639,7 @@
     <string name="message_payment_failed">Transaction Failed. Re-check your card details or use another card.</string>
     <string name="message_payment_denied">Transaction denied! Please try again or try another payment method.</string>
     <string name="validation_message_please_fillup_form">Please fill up information properly.</string>
-    <string name="message_getcard_token_failed">Authentication failed</string>
+    <string name="message_getcard_token_failed">Process failed. Re-check your card details or use another card.</string>
     <string name="message_payment_not_completed">Payment information is not completed!</string>
     <string name="message_payment_method_empty">There are no enabled payment methods</string>
     <string name="message_payment_expired">Payment page is expired</string>
