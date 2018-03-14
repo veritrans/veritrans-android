@@ -3,7 +3,9 @@
     package="com.midtrans.sdk.uikit">
 
     <uses-sdk tools:overrideLibrary="com.rds.swipelayout,me.saket.bettermovementmethod,com.stfalcon.smsverifycatcher" />
-    <application>
+    <application
+        android:allowBackup="false"
+        tools:replace="android:allowBackup">
         <activity
             android:name="com.midtrans.sdk.uikit.activities.UserDetailsActivity"
             android:screenOrientation="portrait"
