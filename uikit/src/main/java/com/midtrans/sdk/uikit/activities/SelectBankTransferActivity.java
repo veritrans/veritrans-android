@@ -34,7 +34,9 @@ import java.util.List;
 
 /**
  * @author rakawm
+ * Deprecated, please use {@link com.midtrans.sdk.uikit.views.banktransfer.list.BankTransferListActivity} instead
  */
+@Deprecated
 public class SelectBankTransferActivity extends BaseActivity implements BankTransferListAdapter.BankTransferAdapterListener {
     public static final String EXTRA_BANK = "extra.bank";
     private static final String TAG = SelectBankTransferActivity.class.getSimpleName();
