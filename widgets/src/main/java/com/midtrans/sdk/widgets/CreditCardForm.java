@@ -16,7 +16,6 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -352,7 +351,7 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
     }
 
     public void showHidePayButton(boolean show) {
-        Log.i("showHidePaybutton:", "show" + show);
+        Logger.i("showHidePaybutton:", "show" + show);
         if (show) {
             payBtn.setVisibility(VISIBLE);
         } else {

@@ -3,7 +3,6 @@ package com.midtrans.demo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +10,7 @@ import android.view.Window;
 import android.widget.Button;
 
 import com.midtrans.demo.widgets.DemoRadioButton;
+import com.midtrans.sdk.corekit.core.Logger;
 
 /**
  * Created by ziahaqi on 5/8/17.
@@ -32,7 +32,7 @@ public class InstallmentDialogFragment extends DialogFragment {
     private Button cancelButton;
 
     public static InstallmentDialogFragment newInstance(boolean required, int color, CustomInstallmentDialogListener listener) {
-        Log.d("xinstall", "required:" + required);
+        Logger.d("xinstall", "required:" + required);
         InstallmentDialogFragment fragment = new InstallmentDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable(ARG_LISTENER, listener);
