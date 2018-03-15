@@ -5,6 +5,9 @@ package com.midtrans.sdk.corekit.core;
  */
 public class Constants {
 
+    public static final String PREFERENCE_VERSION = "1.17.0";
+
+
     public static final int PAYMENT_METHOD_NOT_SELECTED = -1;
 
     public static final int PAYMENT_METHOD_CREDIT_OR_DEBIT = 1;
