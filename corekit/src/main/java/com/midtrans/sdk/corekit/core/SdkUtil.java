@@ -704,7 +704,7 @@ public class SdkUtil {
             editor.apply();
         }
 
-        return new SecurePreferences(context, "", name);
+        return preferences;
     }
 
 }
