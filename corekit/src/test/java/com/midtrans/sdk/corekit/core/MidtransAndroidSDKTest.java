@@ -1,7 +1,6 @@
 package com.midtrans.sdk.corekit.core;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
@@ -52,6 +51,7 @@ import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
 import com.midtrans.sdk.corekit.utilities.Utils;
+import com.securepreferences.SecurePreferences;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -105,7 +105,7 @@ public class MidtransAndroidSDKTest {
     @Mock
     boolean isconnected;
     @Mock
-    SharedPreferences preference;
+    SecurePreferences preference;
     String msisdnMock = "msisdnmock";
     @Mock
     IndosatDompetkuRequest indosatDompetkuRequestMock;
@@ -260,6 +260,7 @@ public class MidtransAndroidSDKTest {
         Mockito.when(connectivityManager.getActiveNetworkInfo()).thenReturn(networkInfo);
         Mockito.when(networkInfo.isConnected()).thenReturn(false);
         Mockito.when(contextMock.getSharedPreferences("local.data", Context.MODE_PRIVATE)).thenReturn(preference);
+        Mockito.when(SdkUtil.newPreferences(contextMock, "local.data")).thenReturn(preference);
 
         this.checkoutCallbackMock = callbackSample.getCheckoutCallback();
         this.transactionOptionCallbackMock = callbackSample.getTransactionOptionCallback();
@@ -273,10 +274,10 @@ public class MidtransAndroidSDKTest {
         MidtransSDK midtransSDK = SdkCoreFlowBuilder.init(contextMock, SDKConfigTest.CLIENT_KEY, SDKConfigTest.MERCHANT_BASE_URL)
                 .enableLog(true)
                 .buildSDK();
-        Mockito.when(midtransSDK.readAuthenticationToken()).thenReturn(sdkTokenMock);
+
         midtransSDK.setTransactionManager(transactionManager);
         midtransSDKSSpy = spy(midtransSDK);
-
+        Mockito.when(midtransSDKSSpy.readAuthenticationToken()).thenReturn(sdkTokenMock);
     }
 
     @Test

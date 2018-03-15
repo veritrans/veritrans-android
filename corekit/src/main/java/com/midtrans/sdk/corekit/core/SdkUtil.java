@@ -52,6 +52,7 @@ import com.midtrans.sdk.corekit.models.snap.payment.GoPayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.MandiriClickPayPaymentRequest;
 import com.midtrans.sdk.corekit.utilities.Installation;
+import com.securepreferences.SecurePreferences;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -171,7 +172,7 @@ public class SdkUtil {
 
         // bank name
         BankTransfer bankTransfer = new BankTransfer();
-        bankTransfer.setBank(MidtransSDK.getInstance().getContext().getString(R.string.payment_permata));
+        bankTransfer.setBank(BankType.PERMATA);
 
         return new PermataBankTransfer(bankTransfer,
                 transactionDetails, request.getItemDetails(),
@@ -199,7 +200,7 @@ public class SdkUtil {
 
         // bank name
         BankTransfer bankTransfer = new BankTransfer();
-        bankTransfer.setBank(MidtransSDK.getInstance().getContext().getString(R.string.payment_bca));
+        bankTransfer.setBank(BankType.BCA);
 
 
         BCABankTransfer model =
@@ -233,8 +234,7 @@ public class SdkUtil {
         IndomaretRequestModel model =
                 new IndomaretRequestModel();
 
-        model.setPaymentType(MidtransSDK.getInstance().getContext().getString(R.string.payment_indomaret));
-
+        model.setPaymentType(PaymentType.INDOMARET_CSTORE);
         model.setItem_details(request.getItemDetails());
         model.setCustomerDetails(request.getCustomerDetails());
         model.setTransactionDetails(transactionDetails);
@@ -371,8 +371,7 @@ public class SdkUtil {
 
         model.setCustomerDetails(request.getCustomerDetails(), request
                 .getShippingAddressArrayList(), request.getBillingAddressArrayList());
-        model.setPaymentType(MidtransSDK.getInstance().getContext().getString(R.string.payment_indosat_dompetku));
-
+        model.setPaymentType(PaymentType.INDOSAT_DOMPETKU);
         IndosatDompetkuRequest.IndosatDompetkuEntity entity = new IndosatDompetkuRequest
                 .IndosatDompetkuEntity();
         entity.setMsisdn("" + msisdn);
@@ -692,5 +691,9 @@ public class SdkUtil {
                 return lhs.getPriority().compareTo(rhs.getPriority());
             }
         });
+    }
+
+    public static SecurePreferences newPreferences(Context context, String name) {
+        return new SecurePreferences(context, "", name);
     }
 }
