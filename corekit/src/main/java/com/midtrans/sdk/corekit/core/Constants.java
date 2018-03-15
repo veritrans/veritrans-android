@@ -5,7 +5,9 @@ package com.midtrans.sdk.corekit.core;
  */
 public class Constants {
 
-    public static final String PREFERENCE_VERSION = "1.17.0";
+    // sdk preference migration settings
+
+    public static final int PREFERENCES_VERSION = 1;
 
 
     public static final int PAYMENT_METHOD_NOT_SELECTED = -1;
@@ -92,4 +94,6 @@ public class Constants {
     public static final String MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED = "Callback Unimplemented";
     public static final String MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER = "Failed to connect to server.";
     public static final String MESSAGE_ERROR_ALREADY_RUNNING = "Failed to connect to server.";
+
+    public static final String KEY_PREFERENCES_VERSION = "preferences.version";
 }

@@ -1,11 +1,9 @@
 package com.midtrans.sdk.corekit.core;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.midtrans.sdk.corekit.BuildConfig;
 import com.midtrans.sdk.corekit.R;
 import com.midtrans.sdk.corekit.models.BCABankTransfer;
 import com.midtrans.sdk.corekit.models.BCAKlikPayDescriptionModel;
@@ -697,29 +695,16 @@ public class SdkUtil {
 
     public static SecurePreferences newPreferences(Context context, String name) {
 
-        if (isOldVersion()) {
-            SharedPreferences preferences = context.getSharedPreferences(name, Context.MODE_PRIVATE);
-            if (preferences != null) {
-                preferences.edit().clear().apply();
-            }
+        SecurePreferences preferences = new SecurePreferences(context, "", name);
+        int prefVersion = preferences.getInt(Constants.KEY_PREFERENCES_VERSION, 0);
+        if (prefVersion == 0 || prefVersion < Constants.PREFERENCES_VERSION) {
+            SecurePreferences.Editor editor = preferences.edit();
+            editor.clear();
+            editor.putInt(Constants.KEY_PREFERENCES_VERSION, Constants.PREFERENCES_VERSION);
+            editor.apply();
         }
 
         return new SecurePreferences(context, "", name);
     }
 
-    private static boolean isOldVersion() {
-        String currentVersion = BuildConfig.VERSION_NAME.replaceAll("\\.", "");
-        String sdkVersion = Constants.PREFERENCE_VERSION.replaceAll("\\.", "");
-
-        int intCurrentVersion = 0;
-        int intSdkVersion = 0;
-        try {
-            intCurrentVersion = Integer.parseInt(currentVersion);
-            intSdkVersion = Integer.parseInt(sdkVersion);
-        } catch (NumberFormatException e) {
-
-        }
-
-        return intCurrentVersion < intSdkVersion;
-    }
 }
