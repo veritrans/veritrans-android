@@ -215,7 +215,6 @@ public class SDKUtilsTest {
 
     @Test
     public void getPermataBankModelTest() throws ClassNotFoundException {
-//        initSDK();
 
         Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(true);
         MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "initializeUserInfo", TransactionRequest.class)).toReturn(transactionRequestMock);
