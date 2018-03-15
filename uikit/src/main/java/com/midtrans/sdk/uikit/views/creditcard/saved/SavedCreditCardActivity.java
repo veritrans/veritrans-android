@@ -172,6 +172,8 @@ public class SavedCreditCardActivity extends BasePaymentActivity implements Save
         } else {
             if (!presenter.isSavedCardEnabled() || !presenter.isSavedCardsAvailable()) {
                 finish();
+            } else {
+                getMidtransSdk().resetPaymentDetails();
             }
         }
     }

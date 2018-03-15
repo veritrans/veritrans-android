@@ -481,7 +481,7 @@
     <string name="message_payment_failed">Pembayaran gagal. Mohon cek kembali detil kartu anda atau gunakan kartu lain.</string>
     <string name="message_payment_denied">Transaksi anda ditolak! Silakan ulangi lagi, atau coba dengan metode pembayaran lain.</string>
     <string name="validation_message_please_fillup_form">Silakan isi dengan informasi yang tepat.</string>
-    <string name="message_getcard_token_failed">Gagal autentikasi</string>
+    <string name="message_getcard_token_failed">Kartu gagal diproses. Periksa kembali input anda atau gunakan kartu lain.</string>
     <string name="message_payment_not_completed">Informasi pembayaran tidak lengkap!</string>
     <string name="message_payment_method_empty">Tidak ada metode pembayaran yang diaktifkan!</string>
     <string name="message_payment_expired">Halaman pembayaran kadaluarsa</string>
@@ -515,6 +515,7 @@
     <string name="thank_you">Terima kasih!</string>
     <string name="text_payment_type">TIPE PEMBAYARAN</string>
     <string name="status_payable_amount">JUMLAH PEMBAYARAN</string>
+    <string name="status_promo_amount">DISKON PROMO</string>
     <string name="status_order_id">ORDER ID</string>
     <string name="text_payment_time">WAKTU PEMBAYARAN</string>
     <string name="status_due_amount">JUMLAH PEMBAYARAN BERSIH</string>
@@ -575,7 +576,7 @@
     <string name="redeem_bni_reward">Tukarkan BNI Reward Points</string>
     <string name="redeem_mandiri_point">Tukarkan Fiestapoin</string>
     <string name="redeem_100_point">DISKON FIESTAPOIN</string>
-    <string name="amount_after_discount">TOTAL PEMBAYARAN SETELAH DISKON</string>
+    <string name="amount_after_discount">TOTAL PEMBAYARAN SETELAH TUKAR POIN</string>
     <string name="delete_this_card">Hapus Kartu Ini</string>
     <string name="redeem_point">Tukar Poin</string>
     <string name="redeem_bank_point_title">Gunakan Poin %1$s</string>
@@ -585,7 +586,7 @@
     <string name="redeem_mandiri_title">Mandiri Fiestapoin</string>
     <string name="redeem_mandiri_details">Anda dapat membayar sebagian dengan Mandiri Fiestapoin melalui kartu kredit / debit Mandiri Anda.</string>
 
-    <string name="how_much_point">Berapa poin yang ingin anda tukarkan diskon?</string>
+    <string name="how_much_point">Berapa poin yang ingin anda tukarkan?</string>
     <string name="total_bni_point">Total poin BNI anda</string>
     <string name="status_redeemed_point">DISKON POIN</string>
     <string name="total_bni_reward_point">Jumlah Point: %1$s</string>
@@ -702,6 +703,7 @@
     <string name="payment_instruction">Instruksi Pembayaran %1$s</string>
     <string name="instruction_atm_with">ATM berlogo %1$s</string>
     <string name="bank_code">Kode Bank</string>
+    <string name="promo_unavailable">Promo tidak tersedia</string>
 
     <string name="minutes">menit</string>
     <string name="minute">menit</string>
@@ -714,5 +716,6 @@
     <string name="tnc_bni_point_4">Poin pemegang kartu yang sudah dikonversi ke dalam rupiah, terinformasi pada saat pemegang kartu memilih menggunakan BNI Reward Points dengan mengklik tombol pilihan \"BNI Reward Points\".</string>
     <string name="tnc_bni_point_5">Pemegang kartu dapat memilih jumlah poin yang akan ditukarkan tanpa minimum redeem.</string>
     <string name="tnc_bni_point_6">Pembayaran poin ke merchant sama dengan pembayaran transaksi biasa.</string>
+    <string name="message_payment_paid">Transaksi sudah diproses</string>
 
 </resources>

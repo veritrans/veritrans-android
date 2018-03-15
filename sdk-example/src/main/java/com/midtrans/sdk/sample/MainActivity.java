@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         setContentView(R.layout.activity_main);
         initSDK();
         initCustomerDetails();
+
         initView();
     }
 
@@ -103,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             // Init custom settings
             UIKitCustomSetting uisetting = new UIKitCustomSetting();
             uisetting.setShowPaymentStatus(true);
+            uisetting.setSkipCustomerDetailsPages(true);
 
             // SDK initiation for UIflow
             SdkUIFlowBuilder.init(this, BuildConfig.CLIENT_KEY, BuildConfig.BASE_URL, this)
@@ -152,7 +154,6 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
 
     }
 
-
     /**
      * Initialize transaction data.
      *
@@ -171,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         }
         // Create new Transaction Request
         TransactionRequest transactionRequestNew = new
-                TransactionRequest(System.currentTimeMillis() + "", 6000);
+                TransactionRequest(System.currentTimeMillis() + "", 20000);
 
         //define customer detail (mandatory for coreflow)
         CustomerDetails mCustomerDetails = new CustomerDetails();
@@ -222,7 +223,6 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
             creditCard.setChannel(CreditCard.MIGS);
         }
 
-        creditCard.setAuthentication(CreditCard.RBA);
 
         if (preAuthActive.isChecked()) {
             // Set Pre Auth mode

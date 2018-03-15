@@ -273,87 +273,110 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/container_installment"
+        android:id="@+id/container_promo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/container_bni_point"
-        android:layout_marginTop="@dimen/four_dp"
-        android:gravity="center_vertical"
-        android:orientation="vertical"
-        android:padding="@dimen/eight_dp"
-        android:paddingBottom="@dimen/four_dp"
-        android:visibility="gone"
-        tools:visibility="visible">
+        android:orientation="vertical">
 
-        <com.midtrans.sdk.uikit.widgets.DefaultTextView
-            android:id="@+id/title_installment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/pay_with_instalments"
-            android:textColor="@color/gray.primary_dark" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/four_dp">
+            android:layout_height="wrap_content">
 
-            <com.midtrans.sdk.uikit.widgets.FancyButton
-                android:id="@+id/button_installment_decrease"
-                style="@style/CreditCardInstallmentButton"
-                android:layout_width="@dimen/forty_dp"
-                android:layout_height="@dimen/forty_dp"
-                app:fb_text="-" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_promo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+            </android.support.v7.widget.RecyclerView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/container_installment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/container_bni_point"
+            android:layout_marginTop="@dimen/four_dp"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:padding="@dimen/eight_dp"
+            android:paddingBottom="@dimen/four_dp"
+            android:visibility="gone"
+            tools:visibility="visible">
 
             <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                android:id="@+id/text_installment_term"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/eight_dp"
-                android:layout_marginRight="@dimen/eight_dp"
-                android:layout_weight="1"
-                android:background="@color/gray.secondary"
-                android:gravity="center"
-                android:text="@string/installment_term"
-                android:textStyle="bold" />
+                android:id="@+id/title_installment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pay_with_instalments"
+                android:textColor="@color/gray.primary_dark" />
 
-            <com.midtrans.sdk.uikit.widgets.FancyButton
-                android:id="@+id/button_installment_increase"
-                style="@style/CreditCardInstallmentButton"
-                android:layout_width="@dimen/forty_dp"
-                android:layout_height="@dimen/forty_dp"
-                app:fb_radius="5dp"
-                app:fb_text="+" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/four_dp">
+
+                <com.midtrans.sdk.uikit.widgets.FancyButton
+                    android:id="@+id/button_installment_decrease"
+                    style="@style/CreditCardInstallmentButton"
+                    android:layout_width="@dimen/forty_dp"
+                    android:layout_height="@dimen/forty_dp"
+                    app:fb_text="-" />
+
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:id="@+id/text_installment_term"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/eight_dp"
+                    android:layout_marginRight="@dimen/eight_dp"
+                    android:layout_weight="1"
+                    android:background="@color/gray.secondary"
+                    android:gravity="center"
+                    android:text="@string/installment_term"
+                    android:textStyle="bold" />
+
+                <com.midtrans.sdk.uikit.widgets.FancyButton
+                    android:id="@+id/button_installment_increase"
+                    style="@style/CreditCardInstallmentButton"
+                    android:layout_width="@dimen/forty_dp"
+                    android:layout_height="@dimen/forty_dp"
+                    app:fb_radius="5dp"
+                    app:fb_text="+" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/container_security"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/container_installment"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:background="@drawable/grey_rounded_background"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/eight_dp">
+
+            <ImageView
+                android:id="@+id/cc_badge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/four_dp"
+                android:layout_marginLeft="@dimen/four_dp"
+                android:layout_marginRight="@dimen/four_dp"
+                android:layout_marginStart="@dimen/four_dp"
+                android:scaleType="centerInside" />
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/container_security"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/container_installment"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:background="@drawable/grey_rounded_background"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="@dimen/eight_dp">
-
-        <ImageView
-            android:id="@+id/cc_badge"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/four_dp"
-            android:layout_marginLeft="@dimen/four_dp"
-            android:layout_marginRight="@dimen/four_dp"
-            android:layout_marginStart="@dimen/four_dp"
-            android:scaleType="centerInside"/>
-    </LinearLayout>
-
     <com.midtrans.sdk.uikit.widgets.FancyButton
+
         android:id="@+id/button_delete"
         style="@style/ButtonSecondary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/container_security"
+        android:layout_below="@id/container_promo"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="19dp"
         android:visibility="gone"

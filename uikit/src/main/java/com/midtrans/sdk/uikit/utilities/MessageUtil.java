@@ -41,6 +41,8 @@ public class MessageUtil {
     private static final String USER_ID_LESS = "less than or equal";
     private static final String USER_ID_INVALID = "user_id format is invalid";
     private static final String DENY = "deny";
+    public static final String PROMO_UNAVAILABLE = "promo is not available";
+
 
 
     public static String createMessageWhenCheckoutFailed(Context context, ArrayList<String> statusMessage) {

@@ -7,30 +7,15 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class PromoDetails {
-    @SerializedName("discount_token")
-    private String dicountToken;
+    @SerializedName("promo_id")
+    private Long promoId;
 
-    @SerializedName("discount_amount")
-    private Long discountAmount;
+    @SerializedName("discounted_gross_amount")
+    private Long discountedGrossAmount;
 
-    public PromoDetails(String dicountToken, Long discountAmount) {
-        this.dicountToken = dicountToken;
-        this.discountAmount = discountAmount;
+    public PromoDetails(Long promoId, Long discountedGrossAmount) {
+        this.promoId = promoId;
+        this.discountedGrossAmount = discountedGrossAmount;
     }
 
-    public String getDicountToken() {
-        return dicountToken;
-    }
-
-    public void setDicountToken(String dicountToken) {
-        this.dicountToken = dicountToken;
-    }
-
-    public Long getDiscountAmount() {
-        return discountAmount;
-    }
-
-    public void setDiscountAmount(Long discountAmount) {
-        this.discountAmount = discountAmount;
-    }
 }

@@ -115,6 +115,7 @@ public class UserDetailsActivity extends BaseActivity {
 
                 UserDetail userDetail = SdkUIFlowUtil.getSavedUserDetails();
 
+
                 if (userDetail != null) {
                     if (!TextUtils.isEmpty(userDetail.getUserFullName())) {
                         //TODO check user have address filled

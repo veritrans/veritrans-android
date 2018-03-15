@@ -34,6 +34,7 @@ import com.midtrans.sdk.corekit.models.TokenRequestModel;
 import com.midtrans.sdk.corekit.models.TransactionDetails;
 import com.midtrans.sdk.corekit.models.UserAddress;
 import com.midtrans.sdk.corekit.models.UserDetail;
+import com.midtrans.sdk.corekit.models.promo.Promo;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
 import com.midtrans.sdk.corekit.models.snap.SnapPromo;
 import com.midtrans.sdk.corekit.models.snap.params.CreditCardPaymentParams;
@@ -608,7 +609,16 @@ public class SdkUtil {
         // if the transaction is not from bank point page
         paymentParams.setFromBankPoint(model.isFromBankPoint());
 
-        return new CreditCardPaymentRequest(PaymentType.CREDIT_CARD, paymentParams, customerDetailRequest);
+        CreditCardPaymentRequest creditCardPaymentRequest = new CreditCardPaymentRequest(PaymentType.CREDIT_CARD, paymentParams, customerDetailRequest);
+
+        //set promo is selected
+        Promo promo = model.getPromoSelected();
+        if (promo != null) {
+            PromoDetails promoDetails = new PromoDetails(promo.getId(), promo.getDiscountedGrossAmount());
+            creditCardPaymentRequest.setPromoDetails(promoDetails);
+        }
+
+        return creditCardPaymentRequest;
     }
 
     public static CreditCardPaymentRequest getCreditCardPaymentRequest(String discountToken, Long discountAmount, CreditCardPaymentModel model, TransactionRequest transactionRequest) {
@@ -622,9 +632,6 @@ public class SdkUtil {
                 model.isSavecard(), model.getMaskedCardNumber(), model.getInstallment());
         CreditCardPaymentRequest paymentRequest = new CreditCardPaymentRequest(PaymentType.CREDIT_CARD, paymentParams, customerDetailRequest);
 
-        //set the promo
-        PromoDetails promoDetails = new PromoDetails(discountToken, discountAmount);
-        paymentRequest.setPromoDetails(promoDetails);
 
         return paymentRequest;
     }

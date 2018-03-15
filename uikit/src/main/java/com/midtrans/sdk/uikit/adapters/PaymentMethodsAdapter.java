@@ -12,6 +12,7 @@ import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
+import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 import java.util.ArrayList;
 
@@ -59,6 +60,15 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
         holder.description.setText(data.get(position).getDescription());
 
         disablePaymentView(holder, data.get(position));
+        showPromoBadge(holder, data.get(position));
+    }
+
+    private void showPromoBadge(PaymentViewHolder holder, PaymentMethodsModel paymentMethodsModel) {
+        if (paymentMethodsModel != null && paymentMethodsModel.isHavePromo()) {
+            holder.badgePromo.setVisibility(View.VISIBLE);
+        } else {
+            holder.badgePromo.setVisibility(View.GONE);
+        }
     }
 
     private void disablePaymentView(PaymentViewHolder holder, PaymentMethodsModel paymentMethod) {
@@ -92,6 +102,7 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
         ImageView mImageView;
         DefaultTextView textUnavailable;
         LinearLayout layoutPaymentUnavailable;
+        FancyButton badgePromo;
 
         PaymentViewHolder(View itemView, final PaymentMethodListener listener) {
             super(itemView);
@@ -100,6 +111,7 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
             description = (TextView) itemView.findViewById(R.id.text_payment_method_description);
             textUnavailable = (DefaultTextView) itemView.findViewById(R.id.text_option_unavailable);
             layoutPaymentUnavailable = (LinearLayout) itemView.findViewById(R.id.layout_payment_unavailable);
+            badgePromo = itemView.findViewById(R.id.badge_promo);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
