@@ -116,6 +116,8 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
                     .setBoldText("open_sans_bold.ttf")
                     .setUIkitCustomSetting(uisetting) //optional
                     .buildSDK();
+
+
         }
     }
 
