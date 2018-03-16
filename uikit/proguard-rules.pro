@@ -260,3 +260,5 @@ public static final *** NULL; }
 -keep class com.midtrans.raygun.** { *; }
 -keepattributes Exceptions, Signature, InnerClasses, SourceFile, LineNumberTable
 -renamesourcefileattribute SourceFile
+
+-keep class com.tozny.crypto.android.AesCbcWithIntegrity$PrngFixes$* { *; }
