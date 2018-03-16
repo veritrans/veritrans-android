@@ -83,6 +83,13 @@ android {
         }
     }
 
+    testOptions {
+        unitTests.returnDefaultValues = true
+        unitTests.all {
+            jvmArgs '-noverify'
+        }
+    }
+
     defaultPublishConfig = DEFAULT_PUBLISH
     publishNonDefault true
 }
