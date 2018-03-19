@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -283,6 +282,8 @@ public class PaymentStatusActivity extends BaseActivity {
                             && !TextUtils.isEmpty(transactionResponse.getStatusMessage())
                             && transactionResponse.getStatusMessage().toLowerCase().contains(MessageUtil.PROMO_UNAVAILABLE)) {
                         textStatusErrorMessage.setText(getString(R.string.promo_unavailable));
+                    } else if (transactionResponse.getStatusCode().equals(UiKitConstants.STATUS_CODE_406)) {
+                        textStatusErrorMessage.setText(getString(R.string.message_payment_paid));
                     } else {
                         textStatusErrorMessage.setText(transactionResponse.getStatusMessage());
                     }
@@ -311,7 +312,7 @@ public class PaymentStatusActivity extends BaseActivity {
                 String formattedAmount = amount.split(Pattern.quote(".")).length == 2 ? amount.split(Pattern.quote("."))[0] : amount;
                 textTotalAmount.setText(formattedAmount);
             } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
+                Logger.e(TAG, e.getMessage());
             }
         }
 

@@ -28,6 +28,7 @@ import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
 import com.midtrans.sdk.corekit.models.snap.payment.CustomerDetailRequest;
 import com.midtrans.sdk.corekit.utilities.Utils;
+import com.securepreferences.SecurePreferences;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -55,7 +56,8 @@ import static org.powermock.api.mockito.PowerMockito.when;
  * Created by ziahaqi on 7/13/16.
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Settings.class, Settings.Secure.class, LocalDataHandler.class, Utils.class, Log.class, TextUtils.class, Logger.class, MixpanelAnalyticsManager.class})
+@PrepareForTest({Settings.class, Settings.Secure.class, LocalDataHandler.class, Utils.class,
+        Log.class, TextUtils.class, Logger.class, MixpanelAnalyticsManager.class})
 @PowerMockIgnore("javax.net.ssl.*")
 public class SDKUtilsTest {
 
@@ -107,7 +109,7 @@ public class SDKUtilsTest {
     @Mock
     private UserDetail userDetailMock;
     @Mock
-    private SharedPreferences mpreferenceMock;
+    private SecurePreferences mpreferenceMock;
     private String fullname = "fullname";
     private String email = "email@domain.com";
     private String phone = "phone";
@@ -160,9 +162,13 @@ public class SDKUtilsTest {
         Mockito.when(contextMock.getApplicationContext()).thenReturn(contextMock);
         Mockito.when(contextMock.getResources()).thenReturn(resourceMock);
 
+        MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "newPreferences", Context.class, String.class)).toReturn(mpreferenceMock);
+        Mockito.when(SdkUtil.newPreferences(contextMock, "local.data")).thenReturn(mpreferenceMock);
+
         MidtransSDK midtransSDK = (SdkCoreFlowBuilder.init(contextMock, SDKConfigTest.CLIENT_KEY, SDKConfigTest.MERCHANT_BASE_URL)
                 .enableLog(true)
                 .buildSDK());
+
         midtransSDK = spy(midtransSDK);
 
         when(contextMock.getString(R.string.payment_permata)).thenReturn(paymermataName);
@@ -209,7 +215,6 @@ public class SDKUtilsTest {
 
     @Test
     public void getPermataBankModelTest() throws ClassNotFoundException {
-        initSDK();
 
         Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(true);
         MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "initializeUserInfo", TransactionRequest.class)).toReturn(transactionRequestMock);
@@ -235,7 +240,6 @@ public class SDKUtilsTest {
 
     @Test
     public void getBcaBankTransferRequest() throws ClassNotFoundException {
-        initSDK();
 
         Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(true);
         MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "initializeUserInfo", TransactionRequest.class)).toReturn(transactionRequestMock);
@@ -261,8 +265,6 @@ public class SDKUtilsTest {
 
     @Test
     public void getIndomaretRequestModel() throws ClassNotFoundException {
-        initSDK();
-
         Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(true);
         MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "initializeUserInfo", TransactionRequest.class)).toReturn(transactionRequestMock);
         Assert.assertNotNull(transactionRequestMock.getBillInfoModel());
@@ -306,32 +308,24 @@ public class SDKUtilsTest {
 
     @Test
     public void getIndosatDompetkuRequestModel() throws ClassNotFoundException {
-        initSDK();
-
         Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(true);
         MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "initializeUserInfo", TransactionRequest.class)).toReturn(transactionRequestMock);
         Assert.assertNotNull(transactionRequestMock.getBillInfoModel());
 
         Assert.assertEquals(itemDetailMock, SdkUtil.getIndosatDompetkuRequestModel(transactionRequestMock, msisdn).getItemDetails());
-
     }
 
     @Test
     public void getIndosatDompetkuRequestModel_whenMSISDNNull() throws ClassNotFoundException {
-        initSDK();
-
         Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(true);
         MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "initializeUserInfo", TransactionRequest.class)).toReturn(transactionRequestMock);
         Assert.assertNotNull(transactionRequestMock.getBillInfoModel());
 
         Assert.assertEquals(itemDetailMock, SdkUtil.getIndosatDompetkuRequestModel(transactionRequestMock, null).getItemDetails());
-
     }
 
     @Test
     public void getIndosatDompetkuRequestModel_whenMSISDNEmpty() throws ClassNotFoundException {
-        initSDK();
-
         Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(true);
         MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "initializeUserInfo", TransactionRequest.class)).toReturn(transactionRequestMock);
         Assert.assertNotNull(transactionRequestMock.getBillInfoModel());
@@ -369,7 +363,6 @@ public class SDKUtilsTest {
 
     @Test
     public void getUserDetailTest() {
-        initSDK();
         MidtransSDK.setmPreferences(mpreferenceMock);
         mockStatic(LocalDataHandler.class);
         when(LocalDataHandler.readObject(userDetail, UserDetail.class)).thenReturn(userDetailMock);
@@ -378,41 +371,6 @@ public class SDKUtilsTest {
         SdkUtil.getUserDetails(transactionRequestMock);
 
         verifyStatic(Mockito.times(1));
-    }
-
-
-    @Test
-    public void getUserDetailTest_whenUserDetailNotNull() {
-        initSDK();
-        MidtransSDK.setmPreferences(mpreferenceMock);
-        mockStatic(LocalDataHandler.class);
-        when(TextUtils.isEmpty(Matchers.anyString())).thenReturn(false);
-        when(userDetailMock.getMerchantToken()).thenReturn("token");
-        when((userDetailMock).getUserAddresses()).thenReturn(userAddressListMock);
-        when(userDetailMock.getUserFullName()).thenReturn("name");
-        when(LocalDataHandler.readObject(Matchers.anyString(), Matchers.any(Class.class))).thenReturn(userDetailMock);
-        when(userDetailMock.getUserFullName()).thenReturn(fullname);
-        SdkUtil.getUserDetails(transactionRequestMock);
-        verifyStatic(Mockito.times(1));
-        Logger.i(Matchers.anyString());
-
-    }
-
-    @Test
-    public void getUserDetailTest_whenUserUserFullNameNull() {
-        initSDK();
-        MidtransSDK.setmPreferences(mpreferenceMock);
-        mockStatic(LocalDataHandler.class);
-        when(TextUtils.isEmpty(Matchers.anyString())).thenReturn(false);
-        when(userDetailMock.getMerchantToken()).thenReturn("token");
-        when((userDetailMock).getUserAddresses()).thenReturn(userAddressListMock);
-        when(userDetailMock.getUserFullName()).thenReturn(null);
-        when(LocalDataHandler.readObject(Matchers.anyString(), Matchers.any(Class.class))).thenReturn(userDetailMock);
-        when(userDetailMock.getUserFullName()).thenReturn(fullname);
-        SdkUtil.getUserDetails(transactionRequestMock);
-        verifyStatic(Mockito.times(1));
-        Logger.i(Matchers.anyString());
-
     }
 
 

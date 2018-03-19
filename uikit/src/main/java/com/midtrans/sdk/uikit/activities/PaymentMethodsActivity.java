@@ -14,7 +14,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
@@ -30,7 +29,6 @@ import com.midtrans.raygun.messages.RaygunMessageDetails;
 import com.midtrans.sdk.corekit.callback.CheckoutCallback;
 import com.midtrans.sdk.corekit.callback.TransactionOptionsCallback;
 import com.midtrans.sdk.corekit.core.Constants;
-import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.SdkUtil;
@@ -321,13 +319,6 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
         if (!isAlreadyUtilized()) {
 
-            String snapToken = getIntent().getStringExtra(UiKitConstants.EXTRA_SNAP_TOKEN);
-            if (!TextUtils.isEmpty(snapToken)) {
-                LocalDataHandler.saveString(Constants.AUTH_TOKEN, snapToken);
-                getPaymentOptions(snapToken);
-                return;
-            }
-
             if (userDetail == null || TextUtils.isEmpty(userDetail.getUserId())) {
                 midtransSDK.notifyTransactionFinished(new TransactionResult(null, null, TransactionResult.STATUS_INVALID));
                 finish();
@@ -337,14 +328,14 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             midtransSDK.checkout(userDetail.getUserId(), new CheckoutCallback() {
                 @Override
                 public void onSuccess(Token token) {
-                    Log.i(TAG, "checkout token:" + token.getTokenId());
-                    LocalDataHandler.saveString(Constants.AUTH_TOKEN, token.getTokenId());
+                    Logger.i(TAG, "checkout token:" + token.getTokenId());
+                    midtransSDK.setAuthenticationToken(token.getTokenId());
                     getPaymentOptions(token.getTokenId());
                 }
 
                 @Override
                 public void onFailure(Token token, String reason) {
-                    Log.d(TAG, "Failed to registering transaction: " + reason);
+                    Logger.d(TAG, "Failed to registering transaction: " + reason);
                     enableButtonBack(true);
                     String errorMessage = MessageUtil.createMessageWhenCheckoutFailed(PaymentMethodsActivity.this, token.getErrorMessage());
                     showErrorMessage(errorMessage);
@@ -519,7 +510,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                         details.setUserCustomData(map);
 
                     } catch (Exception e) {
-                        Log.d(TAG, "raygun:" + e.getMessage());
+                        Logger.d(TAG, "raygun:" + e.getMessage());
                     }
 
                     return message;
@@ -978,7 +969,6 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             Logger.d(TAG, "sending result back with code " + requestCode);
 
             if (resultCode == RESULT_OK) {
-
                 TransactionResponse response;
                 try {
                     response = (TransactionResponse) data.getSerializableExtra(UiKitConstants.KEY_TRANSACTION_RESPONSE);
@@ -997,11 +987,12 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                         midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_PENDING));
                         setAlreadyUtilized(true);
                     } else {
-                        midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_FAILED));
+                        midtransSDK.notifyTransactionFinished(new TransactionResult(null, null, TransactionResult.STATUS_INVALID));
                     }
                 } else {
                     midtransSDK.notifyTransactionFinished(new TransactionResult(null, null, TransactionResult.STATUS_INVALID));
                 }
+
                 finish();
 
             } else if (resultCode == RESULT_CANCELED) {

@@ -7,10 +7,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
-import android.util.Log;
 
 import com.midtrans.sdk.corekit.core.Logger;
-import com.midtrans.sdk.uikit.BuildConfig;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -106,7 +104,7 @@ public class DeviceUtils {
             appInfo[0] = appName;
             appInfo[1] = versionName;
         } catch (Exception e) {
-            Log.d(TAG, "appinfo:" + e.getMessage());
+            Logger.d(TAG, "appinfo:" + e.getMessage());
         }
         return appInfo;
     }

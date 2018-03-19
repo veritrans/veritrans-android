@@ -25,20 +25,31 @@ import java.util.List;
 public class PromosAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final java.lang.String TAG = PromosAdapter.class.getSimpleName();
-    private final PromosListener listener;
+    private final OnPromoCheckedChangeListener listener;
     private final int colorPrimer;
     private List<Promo> promos;
 
-    public PromosAdapter(int colorPrimer, PromosListener listener) {
+    public PromosAdapter(int colorPrimer, OnPromoCheckedChangeListener listener) {
         this.promos = new ArrayList<>();
         this.listener = listener;
         this.colorPrimer = colorPrimer;
     }
 
     public void setData(List<Promo> promos) {
-        if (promos != null && !promos.isEmpty()) {
-            this.promos.clear();
-            this.promos.addAll(promos);
+
+        if (promos != null && listener != null) {
+            if (promos.isEmpty()) {
+                listener.onPromoUnavailable();
+            } else {
+                for (Promo promo : promos) {
+                    if (promo.isSelected()) {
+                        listener.onPromoCheckedChanged(promo);
+                        break;
+                    }
+                }
+            }
+
+            this.promos = promos;
             notifyDataSetChanged();
         }
     }
@@ -126,14 +137,17 @@ public class PromosAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             });
 
             if (listener != null) {
-                listener.onPromoSelected(promo);
+                listener.onPromoCheckedChanged(promo);
             }
         }
     }
 
 
-    public interface PromosListener {
-        void onPromoSelected(Promo promo);
+    public interface OnPromoCheckedChangeListener {
+
+        void onPromoCheckedChanged(Promo promo);
+
+        void onPromoUnavailable();
     }
 
 }

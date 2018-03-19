@@ -261,4 +261,6 @@ public static final *** NULL; }
 -keepattributes Exceptions, Signature, InnerClasses, SourceFile, LineNumberTable
 -renamesourcefileattribute SourceFile
 
+-keep class com.tozny.crypto.android.AesCbcWithIntegrity$PrngFixes$* { *; }
+
 -dontwarn com.koushikdutta.ion.conscrypt.**

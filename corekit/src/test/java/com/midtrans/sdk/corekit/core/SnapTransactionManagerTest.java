@@ -29,6 +29,7 @@ import com.midtrans.sdk.corekit.models.snap.payment.IndosatDompetkuPaymentReques
 import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.MandiriClickPayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.TelkomselEcashPaymentRequest;
+import com.securepreferences.SecurePreferences;
 
 import junit.framework.Assert;
 
@@ -63,7 +64,8 @@ import static org.powermock.api.mockito.PowerMockito.when;
  * Created by ziahaqi on 7/18/16.
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Log.class, TextUtils.class, Logger.class, Looper.class, Base64.class, MixpanelAnalyticsManager.class})
+@PrepareForTest({Log.class, TextUtils.class, Logger.class, Looper.class, Base64.class,
+        MixpanelAnalyticsManager.class, SdkUtil.class})
 @PowerMockIgnore("javax.net.ssl.*")
 public class SnapTransactionManagerTest {
 
@@ -246,6 +248,8 @@ public class SnapTransactionManagerTest {
     private ArgumentCaptor<Callback<BanksPointResponse>> getbanksPointCaptor;
     @Mock
     private BanksPointResponse BankPointsResponseMock;
+    @Mock
+    private SecurePreferences preferencesMock;
 
     @Before
     public void setup() {
@@ -255,12 +259,15 @@ public class SnapTransactionManagerTest {
         PowerMockito.mockStatic(Base64.class);
         PowerMockito.mockStatic(Logger.class);
         PowerMockito.mockStatic(MixpanelAnalyticsManager.class);
+        PowerMockito.mockStatic(SdkUtil.class);
 
         Mockito.when(contextMock.getResources()).thenReturn(resourcesMock);
         Mockito.when(contextMock.getApplicationContext()).thenReturn(contextMock);
         Mockito.when(contextMock.getString(R.string.success_code_200)).thenReturn("200");
         Mockito.when(contextMock.getString(R.string.success_code_201)).thenReturn("201");
         Mockito.when(contextMock.getString(R.string.success)).thenReturn("success");
+        Mockito.when(SdkUtil.newPreferences(contextMock, "local.data")).thenReturn(preferencesMock);
+
 
         midtransSDK = SdkCoreFlowBuilder
                 .init(contextMock, SDKConfigTest.CLIENT_KEY, SDKConfigTest.MERCHANT_BASE_URL)
