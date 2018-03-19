@@ -47,6 +47,8 @@ android {
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
+        resValue "string", "PREFERENCE_PASSWORD", PREFERENCE_PASSWORD
+
     }
     buildTypes {
         release {
