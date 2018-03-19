@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
 
+import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
@@ -124,7 +124,7 @@ public class AppUtils {
         List<SelectPaymentMethodViewModel> viewModels = new ArrayList<>();
         for (int i = 0; i < enabledPayments.size(); i++) {
             EnabledPayment enabledPayment = enabledPayments.get(i);
-            Log.d("xchannel", "type:" + enabledPayment.getType());
+            Logger.d("xchannel", "type:" + enabledPayment.getType());
 
             PaymentMethodsModel model = getVaPaymentMethods(context, enabledPayment.getType(), enabledPayment.getStatus());
             if (model != null) {

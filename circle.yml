@@ -33,7 +33,7 @@ checkout:
 test:
     override:
         # Unit Test
-       - (./gradlew corekit:testDevelopmentDebugUnitTestCoverage -PdisablePreDex):
+       - (./gradlew corekit:testDevelopmentDebugUnitTestCoverage -PdisablePreDex -Dorg.gradle.jvmargs="-noverify"):
             timeout: 3600
         # unit Test uikit
        - (./gradlew uikit:testDevelopmentDebugUnitTestCoverage -PdisablePreDex):

@@ -12,10 +12,10 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 
 import com.midtrans.raygun.RaygunClient;
+import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
 import com.midtrans.sdk.corekit.models.UserAddress;
@@ -141,14 +141,14 @@ public class UserDetailsActivity extends BaseActivity {
                 }
             } else {
                 String errorMessage = getString(R.string.error_sdk_not_initialized);
-                Log.e(TAG, errorMessage);
+                Logger.e(TAG, errorMessage);
                 SdkUIFlowUtil.showToast(this, errorMessage);
                 finish();
             }
 
         } catch (Exception e) {
             String errorMessage = "invalid customerDetails info:" + e.getMessage();
-            Log.e(TAG, errorMessage);
+            Logger.e(TAG, errorMessage);
             SdkUIFlowUtil.showToast(this, errorMessage);
             finish();
         }
@@ -231,7 +231,7 @@ public class UserDetailsActivity extends BaseActivity {
                         PorterDuff.Mode.SRC_ATOP);
             }
         } catch (Exception e) {
-            Log.d(TAG, "render toolbar:" + e.getMessage());
+            Logger.d(TAG, "render toolbar:" + e.getMessage());
         }
 
         toolbar.setNavigationIcon(drawable);

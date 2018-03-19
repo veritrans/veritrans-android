@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
 import android.text.TextUtils;
-import android.util.Log;
 
+import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 import java.io.File;
@@ -68,7 +68,7 @@ public class WidgetUtils {
 				}
 
 			}catch (Exception e){
-				Log.e(FancyButton.TAG, String.format("Unable to find %s font. Using Typeface.DEFAULT instead.", fontName));
+				Logger.e(FancyButton.TAG, String.format("Unable to find %s font. Using Typeface.DEFAULT instead.", fontName));
 				cachedFontMap.put(fontName, Typeface.DEFAULT);
 				return Typeface.DEFAULT;
 			}

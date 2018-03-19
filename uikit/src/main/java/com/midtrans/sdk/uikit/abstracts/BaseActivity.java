@@ -13,7 +13,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatEditText;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -21,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
 import com.midtrans.sdk.corekit.core.themes.BaseColorTheme;
@@ -76,7 +76,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
             initTheme();
             initBadgeLayout();
         } catch (RuntimeException e) {
-            Log.e(TAG, "initTheme():" + e.getMessage());
+            Logger.e(TAG, "initTheme():" + e.getMessage());
         }
 
     }
@@ -167,7 +167,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
                 fFocusedTextColor.set(textInputLayout, new ColorStateList(new int[][]{{0}}, new int[]{secondaryColor}));
 
             } catch (RuntimeException | NoSuchFieldException | IllegalAccessException e) {
-                Log.e(TAG, "tilfilter():" + e.getMessage());
+                Logger.e(TAG, "tilfilter():" + e.getMessage());
             }
         }
     }

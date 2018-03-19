@@ -2,7 +2,6 @@ package com.midtrans.sdk.uikit;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
 import com.midtrans.sdk.corekit.core.ISdkFlow;

@@ -3,8 +3,8 @@ package com.midtrans.sdk.scancard;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
+import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.uikit.scancard.ExternalScanner;
 import com.midtrans.sdk.uikit.scancard.ScannerModel;
 
@@ -45,7 +45,7 @@ public class ScanCardActivity extends AppCompatActivity {
         if (requestCode == SCAN_REQUEST_CODE) {
             if (data != null && data.hasExtra(CardIOActivity.EXTRA_SCAN_RESULT)) {
                 CreditCard scanResult = data.getParcelableExtra(CardIOActivity.EXTRA_SCAN_RESULT);
-                Log.d("ScanCardActivity", "Card Number: " + scanResult.cardNumber + "\n");
+                Logger.d("ScanCardActivity", "Card Number: " + scanResult.cardNumber + "\n");
                 ScannerModel model = new ScannerModel(scanResult.cardNumber, scanResult.cvv, scanResult.expiryMonth, scanResult.expiryYear);
                 data.putExtra(ExternalScanner.EXTRA_SCAN_DATA, model);
                 finishWithResult(RESULT_OK, data);

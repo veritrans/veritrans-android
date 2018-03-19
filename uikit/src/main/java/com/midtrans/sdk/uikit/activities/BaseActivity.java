@@ -12,7 +12,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -241,7 +240,7 @@ public class BaseActivity extends AppCompatActivity {
                 }
             }
         } catch (Exception e) {
-            Log.e("themes", "init:" + e.getMessage());
+            Logger.e("themes", "init:" + e.getMessage());
         }
     }
 

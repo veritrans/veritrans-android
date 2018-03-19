@@ -14,7 +14,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
@@ -332,14 +331,14 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             midtransSDK.checkout(userDetail.getUserId(), new CheckoutCallback() {
                 @Override
                 public void onSuccess(Token token) {
-                    Log.i(TAG, "checkout token:" + token.getTokenId());
+                    Logger.i(TAG, "checkout token:" + token.getTokenId());
                     midtransSDK.setAuthenticationToken(token.getTokenId());
                     getPaymentOptions(token.getTokenId());
                 }
 
                 @Override
                 public void onFailure(Token token, String reason) {
-                    Log.d(TAG, "Failed to registering transaction: " + reason);
+                    Logger.d(TAG, "Failed to registering transaction: " + reason);
                     enableButtonBack(true);
                     String errorMessage = MessageUtil.createMessageWhenCheckoutFailed(PaymentMethodsActivity.this, token.getErrorMessage());
                     showErrorMessage(errorMessage);
@@ -514,7 +513,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                         details.setUserCustomData(map);
 
                     } catch (Exception e) {
-                        Log.d(TAG, "raygun:" + e.getMessage());
+                        Logger.d(TAG, "raygun:" + e.getMessage());
                     }
 
                     return message;

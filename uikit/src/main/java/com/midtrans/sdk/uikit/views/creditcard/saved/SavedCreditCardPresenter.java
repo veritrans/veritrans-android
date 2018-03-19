@@ -1,10 +1,10 @@
 package com.midtrans.sdk.uikit.views.creditcard.saved;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.midtrans.sdk.corekit.callback.GetCardCallback;
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
+import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.UserDetail;
@@ -74,13 +74,13 @@ public class SavedCreditCardPresenter extends BaseCreditCardPresenter<SavedCredi
             @Override
             public void onFailure(String reason) {
                 view.onGetSavedCardTokenFailure();
-                Log.d(TAG, "getCards:" + reason);
+                Logger.d(TAG, "getCards:" + reason);
             }
 
             @Override
             public void onError(Throwable error) {
                 view.onGetSavedCardTokenFailure();
-                Log.e(TAG, "getCards:" + error.getMessage());
+                Logger.e(TAG, "getCards:" + error.getMessage());
             }
         });
     }
