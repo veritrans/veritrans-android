@@ -1060,9 +1060,6 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
     private void showLogo(String url) {
         if (!TextUtils.isEmpty(url)) {
-//            Glide.with(this)
-//                    .load(url)
-//                    .into(logo);
             merchantName.setVisibility(View.GONE);
 
             Ion.with(logo)
