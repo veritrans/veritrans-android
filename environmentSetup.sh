@@ -23,6 +23,7 @@ function copyEnvVarsToGradleProperties {
         echo "KEY_ALIAS=$KEY_ALIAS" >> $GRADLE_PROPERTIES
         echo "KEY_PASSWORD=$KEY_PASSWORD" >> $GRADLE_PROPERTIES
         echo "ISSUE_TRACKER_API_KEY=$ISSUE_TRACKER_API_KEY" >> $GRADLE_PROPERTIES
+        echo "PREFERENCE_PASSWORD=$PREFERENCE_PASSWORD" >> $GRADLE_PROPERTIES
 
     else
         > $GRADLE_PROPERTIES
@@ -41,6 +42,7 @@ function copyEnvVarsToGradleProperties {
                 echo "KEY_ALIAS=$KEY_ALIAS" >> $GRADLE_PROPERTIES
                 echo "KEY_PASSWORD=$KEY_PASSWORD" >> $GRADLE_PROPERTIES
                 echo "ISSUE_TRACKER_API_KEY=$ISSUE_TRACKER_API_KEY" >> $GRADLE_PROPERTIES
+                echo "PREFERENCE_PASSWORD=$PREFERENCE_PASSWORD" >> $GRADLE_PROPERTIES
     fi
 }
 

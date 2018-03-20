@@ -695,8 +695,13 @@ public class SdkUtil {
 
     public static SecurePreferences newPreferences(Context context, String name) {
 
-        SecurePreferences preferences = new SecurePreferences(context, "", name);
-        int prefVersion = preferences.getInt(Constants.KEY_PREFERENCES_VERSION, 0);
+        SecurePreferences preferences = new SecurePreferences(context, context.getString(R.string.PREFERENCE_PASSWORD), name);
+        int prefVersion;
+        try {
+            prefVersion = preferences.getInt(Constants.KEY_PREFERENCES_VERSION, 0);
+        } catch (ClassCastException e) {
+            prefVersion = 0;
+        }
         if (prefVersion == 0 || prefVersion < Constants.PREFERENCES_VERSION) {
             SecurePreferences.Editor editor = preferences.edit();
             editor.clear();
