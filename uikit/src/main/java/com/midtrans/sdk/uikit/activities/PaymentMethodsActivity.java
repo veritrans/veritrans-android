@@ -309,6 +309,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
         Ion.with(progressImage)
                 .load(SdkUIFlowUtil.getImagePath(this) + R.drawable.midtrans_loader);
+        progressMessage.setText(R.string.txt_loading_payment);
 
     }
 
