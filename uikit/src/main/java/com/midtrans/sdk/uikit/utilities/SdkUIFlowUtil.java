@@ -691,4 +691,8 @@ public class SdkUIFlowUtil {
 
         LocalDataHandler.saveObject(UiKitConstants.KEY_USER_DETAILS, userDetail);
     }
+
+    public static String getImagePath(Activity activity) {
+        return "android.resource://" + activity.getPackageName() + "/";
+    }
 }

@@ -18,7 +18,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.koushikdutta.ion.Ion;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
@@ -96,9 +96,7 @@ public class BaseActivity extends AppCompatActivity {
                 if (!TextUtils.isEmpty(merchantLogoUrl)) {
                     if (merchantLogo != null) {
                         hasMerchantLogo = true;
-                        Glide.with(this)
-                                .load(merchantLogoUrl)
-                                .into(merchantLogo);
+                        Ion.with(merchantLogo).load(merchantLogoUrl);
                         merchantLogo.setVisibility(View.VISIBLE);
                     }
                 } else {

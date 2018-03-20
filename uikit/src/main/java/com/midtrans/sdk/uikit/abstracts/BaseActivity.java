@@ -19,13 +19,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.midtrans.sdk.corekit.core.Logger;
+import com.koushikdutta.ion.Ion;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
 import com.midtrans.sdk.corekit.core.themes.BaseColorTheme;
 import com.midtrans.sdk.uikit.BuildConfig;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
@@ -87,10 +88,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
         imageProgressLogo = (ImageView) findViewById(R.id.progress_bar_image);
 
         if (imageProgressLogo != null) {
-            Glide.with(this)
-                    .load(R.drawable.midtrans_loader)
-                    .asGif()
-                    .into(imageProgressLogo);
+            Ion.with(imageProgressLogo).load(SdkUIFlowUtil.getImagePath(this) + R.drawable.midtrans_loader);
         }
     }
 

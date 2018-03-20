@@ -10,8 +10,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.koushikdutta.ion.Ion;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 
 /**
  * Created by rakawm on 4/25/17.
@@ -56,10 +57,7 @@ public class MidtransProgressDialogFragment extends AppCompatDialogFragment {
     }
 
     private void initProgressAnimation(View view) {
-        ImageView progressView = (ImageView) view.findViewById(R.id.progress_bar_image);
-        Glide.with(getContext())
-                .load(R.drawable.midtrans_loader)
-                .asGif()
-                .into(progressView);
+        ImageView progressView = view.findViewById(R.id.progress_bar_image);
+        Ion.with(progressView).load(SdkUIFlowUtil.getImagePath(getActivity()) + R.drawable.midtrans_loader);
     }
 }

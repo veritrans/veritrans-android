@@ -21,7 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
+import com.koushikdutta.ion.Ion;
 import com.midtrans.raygun.RaygunClient;
 import com.midtrans.raygun.RaygunOnBeforeSend;
 import com.midtrans.raygun.messages.RaygunMessage;
@@ -307,12 +307,10 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             progressMessage.setText(R.string.txt_checkout);
         }
 
-        // Init progress
-        Glide.with(this)
-                .load(R.drawable.midtrans_loader)
-                .asGif()
-                .into(progressImage);
+        Ion.with(progressImage)
+                .load(SdkUIFlowUtil.getImagePath(this) + R.drawable.midtrans_loader);
         progressMessage.setText(R.string.txt_loading_payment);
+
     }
 
     private void getPaymentPages() {
@@ -1054,10 +1052,11 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
     private void showLogo(String url) {
         if (!TextUtils.isEmpty(url)) {
-            Glide.with(this)
-                    .load(url)
-                    .into(logo);
             merchantName.setVisibility(View.GONE);
+
+            Ion.with(logo)
+                    .load(url);
+
         } else {
             logo.setVisibility(View.INVISIBLE);
         }

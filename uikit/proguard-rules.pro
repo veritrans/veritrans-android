@@ -262,3 +262,5 @@ public static final *** NULL; }
 -renamesourcefileattribute SourceFile
 
 -keep class com.tozny.crypto.android.AesCbcWithIntegrity$PrngFixes$* { *; }
+
+-dontwarn com.koushikdutta.ion.conscrypt.**
