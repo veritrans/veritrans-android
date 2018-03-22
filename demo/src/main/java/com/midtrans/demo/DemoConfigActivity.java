@@ -2839,7 +2839,6 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     }
 
     private void initMidtransSDK() {
-
         SdkUIFlowBuilder.init()
                 .setContext(this)
                 .setMerchantBaseUrl(BuildConfig.BASE_URL)
@@ -3188,7 +3187,6 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private void setBniPointOption(CreditCard creditCard) {
         if (bniPointOnlyEnabledSelection.isChecked()) {
             ArrayList<String> whiteListBins = new ArrayList<>();
-            //add bni bin number for normal payment and 3DS
             whiteListBins.add("410505");
             whiteListBins.add("526422");
             creditCard.setWhiteListBins(whiteListBins);

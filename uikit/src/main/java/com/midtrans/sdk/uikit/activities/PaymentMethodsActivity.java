@@ -198,7 +198,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         UserDetail userDetail = null;
 
         try {
-            userDetail = SdkUIFlowUtil.getSavedUserDetails(this);
+            userDetail = SdkUIFlowUtil.getSavedUserDetails();
 
             if (userDetail == null) {
                 userDetail = new UserDetail();
@@ -988,7 +988,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                         midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_PENDING));
                         setAlreadyUtilized(true);
                     } else {
-                        midtransSDK.notifyTransactionFinished(new TransactionResult(null, null, TransactionResult.STATUS_INVALID));
+                        midtransSDK.notifyTransactionFinished(new TransactionResult(response, null, TransactionResult.STATUS_FAILED));
                     }
                 } else {
                     midtransSDK.notifyTransactionFinished(new TransactionResult(null, null, TransactionResult.STATUS_INVALID));

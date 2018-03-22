@@ -1,6 +1,8 @@
 package com.midtrans.sdk.uikit.models;
 
 import android.text.TextUtils;
+import android.util.Log;
+
 
 import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.promo.Promo;
@@ -9,6 +11,7 @@ import com.midtrans.sdk.corekit.models.snap.BanksPointResponse;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by ziahaqi on 1/19/17.
@@ -24,6 +27,7 @@ public class CreditCardTransaction {
     private boolean whiteListBinsAvailable;
     private ArrayList<BankBinsResponse> bankBins;
     private boolean bankBinsAvailable;
+    private boolean blackListBinsAvailable;
     private Promo selectedPromo;
 
     public CreditCardTransaction() {
@@ -48,13 +52,24 @@ public class CreditCardTransaction {
 
     private void init() {
         ArrayList<String> whitleListBins = creditCard.getWhitelistBins();
+        List<String> blackListBins = creditCard.getBlacklistBins();
+
         this.whiteListBinsAvailable = whitleListBins != null && !whitleListBins.isEmpty();
+        this.blackListBinsAvailable = blackListBins != null && !blackListBins.isEmpty();
         this.bankBinsAvailable = bankBins != null && !bankBins.isEmpty();
     }
 
 
     public boolean isWhiteListBinsAvailable() {
         return whiteListBinsAvailable;
+    }
+
+    public boolean isBlackListBinsAvailable() {
+        return blackListBinsAvailable;
+    }
+
+    public void setBlackListBinsAvailable(boolean blackListBinsAvailable) {
+        this.blackListBinsAvailable = blackListBinsAvailable;
     }
 
     public boolean isInstallmentAvailable() {
@@ -229,12 +244,12 @@ public class CreditCardTransaction {
     }
 
     /**
-     * check whether card number consists of one of card bin
+     * check whether card number consists of one of whitelist bins
      *
      * @param cardNumber
      * @return boolean
      */
-    public boolean isWhitelistBinContainCardNumber(String cardNumber) {
+    private boolean isWhitelistBinContainCardNumber(String cardNumber) {
         if (!TextUtils.isEmpty(cardNumber) && isWhiteListBinsAvailable()) {
             for (String bin : creditCard.getWhitelistBins()) {
                 if (!TextUtils.isEmpty(bin)) {
@@ -250,7 +265,44 @@ public class CreditCardTransaction {
                     }
                 }
             }
+            return false;
         }
+
+        return true;
+    }
+
+    /**
+     * check whether card number consists of one of blacklist bins
+     *
+     * @param cardNumber
+     * @return boolean
+     */
+    public boolean isBlacklistContainCardNumber(String cardNumber) {
+        if (!TextUtils.isEmpty(cardNumber) && isBlackListBinsAvailable()) {
+            for (String bin : creditCard.getBlacklistBins()) {
+                if (!TextUtils.isEmpty(bin)) {
+                    if (TextUtils.isDigitsOnly(bin)) {
+                        if (cardNumber.startsWith(bin)) {
+                            return true;
+                        }
+                    } else {
+                        String bank = getBankByCardNumber(cardNumber);
+                        if (bin.equalsIgnoreCase(bank)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public boolean isCardBinBlocked(String cardNumber) {
+        if (!isWhitelistBinContainCardNumber(cardNumber) || isBlacklistContainCardNumber(cardNumber)) {
+            return true;
+        }
+
         return false;
     }
 

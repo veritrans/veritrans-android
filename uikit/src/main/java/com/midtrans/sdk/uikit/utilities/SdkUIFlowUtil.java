@@ -671,8 +671,8 @@ public class SdkUIFlowUtil {
         activity.startActivity(webIntent);
     }
 
-    public static UserDetail getSavedUserDetails(Context context) throws RuntimeException {
-        return LocalDataHandler.readObject(context.getString(R.string.user_details), UserDetail.class);
+    public static UserDetail getSavedUserDetails() throws RuntimeException {
+        return LocalDataHandler.readObject(UiKitConstants.KEY_USER_DETAILS, UserDetail.class);
     }
 
     public static void saveUserDetails() throws RuntimeException {
