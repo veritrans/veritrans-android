@@ -233,11 +233,10 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     }
 
     protected void hideProgressLayout() {
+        setBackgroundProcess(false);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                setBackgroundProcess(false);
-
                 if (containerProgress != null) {
                     containerProgress.setVisibility(View.GONE);
                 }

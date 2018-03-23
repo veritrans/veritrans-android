@@ -111,7 +111,7 @@
     <string name="copied_to_clipboard">Sudah disalin ke clipboard</string>
     <string name="copied_bill_code">Kode tagihan sudah disalin ke clipboard</string>
     <string name="copied_company_code">Kode perusahaan sudah disalin ke clipboard</string>
-    <string name="complete_payment_at_atm">Selesaikan Pembayaran di ATM</string>
+    <string name="complete_payment_at_atm">Mohon Selesaikan Pembayaran</string>
     <string name="complete_payment_at_mobile_bca">Selesaikan Pembayaran di m-BCA</string>
     <string name="complete_payment_at_klik_bca_va">Selesaikan Pembayaran di KlikBCA</string>
     <string name="complete_payment_via_internet_banking">Selesaikan Pembayaran di Internet Banking</string>
@@ -173,15 +173,13 @@
     <string name="bca_klik_pay_instruction_step6">Informasi lebih lanjut tentang BCA KlikPay dapat hubungi Halo BCA di (021) 1500888 atau kunjungi <a href="http://klikbca.com/KlikPay/klikpay.html">http://klikbca.com/KlikPay/klikpay.html</a>.</string>
 
     <!--m-BCA-->
-    <string name="bca_mbanking_instruction_step1">Pilih <b>m-Transfer</b>.</string>
-    <string name="bca_mbanking_instruction_step2">Pilih <b>Transfer</b>.</string>
-    <string name="bca_mbanking_instruction_step3">Pilih <b>BCA Virtual Account</b>.</string>
-    <string name="bca_mbanking_instruction_step4">Pilih <b>nomor rekening</b> yang akan digunakan untuk pembayaran.</string>
-    <string name="bca_mbanking_instruction_step5">Masukkan nomor BCA Virtual Account, lalu pilih <b>Ok</b>.</string>
-    <string name="bca_mbanking_instruction_step6">Nomor BCA Virtual Account dan nomor rekening Anda akan terlihat pada halaman konfirmasi rekening, kemudian pilih <b>Kirim</b>.</string>
-    <string name="bca_mbanking_instruction_step7">Pilih <b>Ok</b> pada halaman konfirmasi pembayaran.</string>
-    <string name="bca_mbanking_instruction_step8">Masukkan jumlah nominal yang akan ditransfer dan kemudian pilih <b>Ok</b>.</string>
-    <string name="bca_mbanking_instruction_step9">Transaksi Anda telah selesai</string>
+    <string name="bca_mbanking_instruction_step1">Lakukan log in pada aplikasi BCA Mobile.</string>
+    <string name="bca_mbanking_instruction_step2">Pilih menu m-BCA, kemudian masukkan kode akses m-BCA.</string>
+    <string name="bca_mbanking_instruction_step3">Pilih m-Transfer > BCA Virtual Account.</string>
+    <string name="bca_mbanking_instruction_step4">Pilih dari Daftar Transfer, atau masukkan nomor virtual account tujuan.</string>
+    <string name="bca_mbanking_instruction_step5">Masukkan jumlah yang ingin dibayarkan.</string>
+    <string name="bca_mbanking_instruction_step6">Masukkan pin m-BCA.</string>
+    <string name="bca_mbanking_instruction_step7">Pembayaran selesai. Simpan notifikasi yang muncul sebagai bukti pembayaran.</string>
 
     <!-- cimb transfer Instructions -->
     <string name="cimb_instruction_step1">Pastikan bahwa Anda memiliki User ID untuk CIMB Clicks dan telah mendaftarkan mPIN Anda sebelum melanjutkan pembayaran.</string>
