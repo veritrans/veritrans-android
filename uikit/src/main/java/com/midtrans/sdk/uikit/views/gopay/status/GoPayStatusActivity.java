@@ -101,13 +101,14 @@ public class GoPayStatusActivity extends BasePaymentActivity {
             //process expiration
             expirationText = findViewById(R.id.gopay_expiration_text);
             expirationDesc = findViewById(R.id.gopay_expiration_desc);
-            String expirationTime = TextUtils.isEmpty(response.getGopayExpiration()) ? getExpiryTime(response.getTransactionTime()) : response.getGopayExpiration();
+
             String startTime = response.getTransactionTime();
-            if (TextUtils.isEmpty(expirationTime) && TextUtils.isEmpty(startTime)) {
+            if (isExpirationTimeNotAvailable(response) && TextUtils.isEmpty(startTime)) {
                 expirationDesc.setVisibility(View.GONE);
                 expirationText.setVisibility(View.GONE);
             } else {
-                long duration = getDuration(startTime, expirationTime);
+
+                long duration = getPaymentDuration(response);
                 if (duration > 1000) {
                     setTimer(duration);
                 } else {
@@ -126,6 +127,43 @@ public class GoPayStatusActivity extends BasePaymentActivity {
             buttonPrimary.setTextBold();
         }
         textTitle.setText(getString(R.string.gopay_status_title));
+    }
+
+    private boolean isExpirationTimeNotAvailable(TransactionResponse response) {
+        return TextUtils.isEmpty(response.getGopayExpiration()) && TextUtils.isEmpty(response.getGopayExpirationRaw());
+    }
+
+    private long getPaymentDuration(TransactionResponse response) {
+        String startTime = response.getTransactionTime();
+        long expiryTimeOnMillis;
+
+        if (TextUtils.isEmpty(response.getGopayExpirationRaw())) {
+            String expirationTime = getExpiryTime(TextUtils.isEmpty(response.getGopayExpiration()) ? response.getTransactionTime() : response.getGopayExpiration());
+            expiryTimeOnMillis = getDuration(startTime, expirationTime);
+        } else {
+            expiryTimeOnMillis = getDurationByExpirationRaw(startTime, response.getGopayExpirationRaw());
+        }
+
+        return expiryTimeOnMillis;
+    }
+
+    private long getDurationByExpirationRaw(String startTime, String expirationTime) {
+        long startMillis = 0, endMillis = 0;
+        SimpleDateFormat startDf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US);
+        SimpleDateFormat expiryDf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US);
+
+        try {
+            Date dateStart = startDf.parse(startTime);
+            Date dateEnd = expiryDf.parse(expirationTime);
+
+            startMillis = dateStart.getTime();
+            endMillis = dateEnd.getTime();
+
+        } catch (ParseException e) {
+            Logger.e(e.getMessage());
+        }
+
+        return endMillis - startMillis;
     }
 
     @Override
@@ -232,6 +270,7 @@ public class GoPayStatusActivity extends BasePaymentActivity {
      * @return formatted time that already added with 15 minutes
      */
     private String getExpiryTime(String transactionTime) {
+
         if (transactionTime != null && transactionTime.split(" ").length > 1) {
             try {
                 @SuppressLint("SimpleDateFormat")

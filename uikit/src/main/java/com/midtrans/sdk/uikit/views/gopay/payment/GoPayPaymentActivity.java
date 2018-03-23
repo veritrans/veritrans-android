@@ -32,7 +32,7 @@ import com.midtrans.sdk.uikit.widgets.Utils;
 public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPaymentView {
 
     private static final String TAG = GoPayPaymentActivity.class.getSimpleName();
-    private final String GOJEK_PACKAGE_NAME = "com.gojek.app";
+    private final String GOJEK_PACKAGE_NAME = "com.gojek.app.staging";
 
     private FancyButton buttonPrimary;
     private FancyButton buttonDownload;

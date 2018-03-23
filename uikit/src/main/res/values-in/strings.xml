@@ -174,11 +174,11 @@
 
     <!--m-BCA-->
     <string name="bca_mbanking_instruction_step1">Lakukan log in pada aplikasi BCA Mobile.</string>
-    <string name="bca_mbanking_instruction_step2">Pilih menu m-BCA, kemudian masukkan kode akses m-BCA.</string>
-    <string name="bca_mbanking_instruction_step3">Pilih m-Transfer > BCA Virtual Account.</string>
-    <string name="bca_mbanking_instruction_step4">Pilih dari Daftar Transfer, atau masukkan nomor virtual account tujuan.</string>
+    <string name="bca_mbanking_instruction_step2">Pilih menu <b>m-BCA</b>, kemudian masukkan kode akses m-BCA.</string>
+    <string name="bca_mbanking_instruction_step3">Pilih <b>m-Transfer</b> > BCA Virtual Account.</string>
+    <string name="bca_mbanking_instruction_step4">Pilih dari <b>Daftar Transfer</b>, atau masukkan nomor virtual account tujuan.</string>
     <string name="bca_mbanking_instruction_step5">Masukkan jumlah yang ingin dibayarkan.</string>
-    <string name="bca_mbanking_instruction_step6">Masukkan pin m-BCA.</string>
+    <string name="bca_mbanking_instruction_step6">Masukkan pin <b>m-BCA</b>.</string>
     <string name="bca_mbanking_instruction_step7">Pembayaran selesai. Simpan notifikasi yang muncul sebagai bukti pembayaran.</string>
 
     <!-- cimb transfer Instructions -->

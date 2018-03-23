@@ -233,11 +233,11 @@
 
     <!--m-BCA-->
     <string name="bca_mbanking_instruction_step1">Log in to your BCA Mobile app.</string>
-    <string name="bca_mbanking_instruction_step2">Choose m-BCA, then input your m-BCA access code</string>
-    <string name="bca_mbanking_instruction_step3">Choose m-Transfer, then choose BCA Virtual Account.</string>
-    <string name="bca_mbanking_instruction_step4">Input Virtual Account Number or choose an existing account from Daftar Transfer.</string>
+    <string name="bca_mbanking_instruction_step2">Choose <b>m-BCA</b>, then input your m-BCA access code</string>
+    <string name="bca_mbanking_instruction_step3">Choose <b>m-Transfer</b>, then choose BCA Virtual Account.</string>
+    <string name="bca_mbanking_instruction_step4">Input <b>Virtual Account Number</b> or choose an existing account from Daftar Transfer.</string>
     <string name="bca_mbanking_instruction_step5">Input the payable amount.</string>
-    <string name="bca_mbanking_instruction_step6">Input your m-BCA pin.</string>
+    <string name="bca_mbanking_instruction_step6">Input your <b>m-BCA</b> pin.</string>
     <string name="bca_mbanking_instruction_step7">Payment is finished. Save the notification as your payment receipt.</string>
 
     <!-- cimb transfer Instructions -->
