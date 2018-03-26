@@ -113,6 +113,7 @@ dependencies {
     compile 'com.midtrans:issuetracker:1.11.0'
     compile 'com.journeyapps:zxing-android-embedded:3.5.0'
     compile 'com.koushikdutta.ion:ion:2.2.1'
+
     developmentCompile project(path: ':corekit', configuration: 'developmentRelease')
     stagingCompile project(path: ':corekit', configuration: 'stagingRelease')
     productionCompile project(path: ':corekit', configuration: 'productionRelease')
