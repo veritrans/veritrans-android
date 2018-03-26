@@ -138,7 +138,7 @@ public class GoPayStatusActivity extends BasePaymentActivity {
         long expiryTimeOnMillis;
 
         if (TextUtils.isEmpty(response.getGopayExpirationRaw())) {
-            String expirationTime = getExpiryTime(TextUtils.isEmpty(response.getGopayExpiration()) ? response.getTransactionTime() : response.getGopayExpiration());
+            String expirationTime = TextUtils.isEmpty(response.getGopayExpiration()) ? getExpiryTime(response.getTransactionTime()) : response.getGopayExpiration();
             expiryTimeOnMillis = getDuration(startTime, expirationTime);
         } else {
             expiryTimeOnMillis = getDurationByExpirationRaw(startTime, response.getGopayExpirationRaw());
