@@ -82,6 +82,9 @@ public class TransactionResponse implements Serializable {
     @SerializedName("gopay_expiration")
     private String gopayExpiration;
 
+    @SerializedName("gopay_expiration_raw")
+    private String gopayExpirationRaw;
+
     @SerializedName("indomaret_expire_time")
     private String indomaretExpireTime;
 
@@ -508,5 +511,9 @@ public class TransactionResponse implements Serializable {
 
     public void setGopayExpiration(String gopayExpiration) {
         this.gopayExpiration = gopayExpiration;
+    }
+
+    public String getGopayExpirationRaw() {
+        return gopayExpirationRaw;
     }
 }
