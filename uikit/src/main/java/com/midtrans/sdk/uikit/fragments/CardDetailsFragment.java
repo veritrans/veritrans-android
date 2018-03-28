@@ -20,7 +20,6 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -506,7 +505,7 @@ public class CardDetailsFragment extends Fragment {
             deleteCardBtn.setIconColorFilter(ContextCompat.getColor(getContext(), R.color.delete_color));
 
         } catch (Exception e) {
-            Log.e(TAG, "rendering theme:" + e.getMessage());
+            Logger.e(TAG, "rendering theme:" + e.getMessage());
         }
     }
 

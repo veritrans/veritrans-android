@@ -1,6 +1,7 @@
 package com.midtrans.sdk.corekit.models.snap;
 
 import com.google.gson.annotations.SerializedName;
+import com.midtrans.sdk.corekit.models.promo.Promo;
 
 /**
  * Created by ziahaqi on 10/17/16.
@@ -18,6 +19,7 @@ public class CreditCardPaymentModel {
     private transient boolean isFromBankPoint;
     @SerializedName("point")
     private float pointRedeemed;
+    private Promo promoSelected;
 
     /**
      * init credit card model for normal and twoclick payment
@@ -81,5 +83,13 @@ public class CreditCardPaymentModel {
 
     public void setFromBankPoint(boolean fromBankPoint) {
         isFromBankPoint = fromBankPoint;
+    }
+
+    public void setPromoSelected(Promo promoSelected) {
+        this.promoSelected = promoSelected;
+    }
+
+    public Promo getPromoSelected() {
+        return promoSelected;
     }
 }

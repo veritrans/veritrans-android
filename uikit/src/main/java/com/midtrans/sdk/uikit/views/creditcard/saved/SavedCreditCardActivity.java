@@ -144,9 +144,7 @@ public class SavedCreditCardActivity extends BasePaymentActivity implements Save
 
     private void showCardDetailPage(SaveCardRequest savedCard) {
         Intent intent = new Intent(this, CreditCardDetailsActivity.class);
-        if (savedCard != null) {
-            intent.putExtra(CreditCardDetailsActivity.EXTRA_SAVED_CARD, savedCard);
-        }
+        intent.putExtra(CreditCardDetailsActivity.EXTRA_SAVED_CARD, savedCard);
         //pass deep link flag to credit card detail page
         boolean isFirstPage = getIntent().getBooleanExtra(USE_DEEP_LINK, true);
         intent.putExtra(CreditCardDetailsActivity.USE_DEEP_LINK, isFirstPage);
@@ -161,6 +159,7 @@ public class SavedCreditCardActivity extends BasePaymentActivity implements Save
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (resultCode == RESULT_OK && data != null) {
             TransactionResponse result = (TransactionResponse) data.getSerializableExtra(UiKitConstants.KEY_TRANSACTION_RESPONSE);
             if (result != null) {
@@ -172,6 +171,8 @@ public class SavedCreditCardActivity extends BasePaymentActivity implements Save
         } else {
             if (!presenter.isSavedCardEnabled() || !presenter.isSavedCardsAvailable()) {
                 finish();
+            } else {
+                getMidtransSdk().resetPaymentDetails();
             }
         }
     }

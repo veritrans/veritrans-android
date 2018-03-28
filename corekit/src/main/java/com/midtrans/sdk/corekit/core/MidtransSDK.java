@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.BuildConfig;
@@ -26,6 +25,7 @@ import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
 import com.midtrans.sdk.corekit.callback.TransactionOptionsCallback;
 import com.midtrans.sdk.corekit.core.themes.BaseColorTheme;
 import com.midtrans.sdk.corekit.models.CardTokenRequest;
+import com.midtrans.sdk.corekit.models.PaymentDetails;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.TokenRequestModel;
@@ -87,6 +87,8 @@ public class MidtransSDK {
     private BaseColorTheme colorTheme;
     private Transaction transaction;
     private CardRegistrationCallback cardRegistrationCallback;
+    private PaymentDetails paymentDetails;
+    private String authenticationToken;
 
     private MidtransSDK() {
 
@@ -117,14 +119,14 @@ public class MidtransSDK {
 
         String deviceType = null;
         if (context != null) {
-            mPreferences = context.getSharedPreferences(LOCAL_DATA_PREFERENCES, Context.MODE_PRIVATE);
+            mPreferences = SdkUtil.newPreferences(context, LOCAL_DATA_PREFERENCES);
 
             if (context instanceof Activity) {
                 deviceType = Utils.getDeviceType((Activity) context);
             }
         }
 
-        this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), merchantName, getFlow(flow), deviceType == null ? "" : deviceType, context);
+        this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), merchantName, getFlow(flow), deviceType == null ? "" : deviceType, isLogEnabled, context);
         this.promoEngineManager = new PromoEngineManager(MidtransRestAdapter.getPromoEngineRestAPI(BuildConfig.PROMO_ENGINE_URL, requestTimeOut));
         this.mSnapTransactionManager = new SnapTransactionManager(MidtransRestAdapter.getSnapRestAPI(sdkBaseUrl, requestTimeOut),
                 MidtransRestAdapter.getMerchantApiClient(merchantServerUrl, requestTimeOut),
@@ -160,12 +162,15 @@ public class MidtransSDK {
                 if (midtransSDK == null) {
                     if (sdkBuilder != null) {
                         midtransSDK = new MidtransSDK(sdkBuilder);
+                        sdkNotAvailable = false;
                     } else {
                         midtransSDK = new MidtransSDK();
                         sdkNotAvailable = true;
                     }
                 }
             }
+        } else {
+            sdkNotAvailable = false;
         }
 
         return midtransSDK;
@@ -276,7 +281,7 @@ public class MidtransSDK {
             if (context != null && context instanceof Activity) {
                 deviceType = Utils.getDeviceType((Activity) context);
             }
-            this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), merchantName, getFlow(flow), deviceType == null ? "" : deviceType, context);
+            this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), merchantName, getFlow(flow), deviceType == null ? "" : deviceType, isLogEnabled, context);
         }
 
         return mMixpanelAnalyticsManager;
@@ -284,7 +289,11 @@ public class MidtransSDK {
 
 
     public String readAuthenticationToken() {
-        return LocalDataHandler.readString(Constants.AUTH_TOKEN);
+        return authenticationToken;
+    }
+
+    public void setAuthenticationToken(String authenticationToken) {
+        this.authenticationToken = authenticationToken;
     }
 
     public String getClientKey() {
@@ -481,7 +490,7 @@ public class MidtransSDK {
             this.cardRegistrationCallback = callback;
             uiflow.runCardRegistration(context, callback);
         } else {
-            Log.d(TAG, "uikit sdk is needed to use this feature");
+            Logger.d(TAG, "uikit sdk is needed to use this feature");
         }
     }
 
@@ -1162,6 +1171,7 @@ public class MidtransSDK {
             Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
+
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
                 isRunning = true;
@@ -2136,4 +2146,17 @@ public class MidtransSDK {
     public CardRegistrationCallback getUiCardRegistrationCallback() {
         return this.cardRegistrationCallback;
     }
+
+    public PaymentDetails getPaymentDetails() {
+        return paymentDetails;
+    }
+
+    public void setPaymentDetails(PaymentDetails paymentDetails) {
+        this.paymentDetails = paymentDetails;
+    }
+
+    public void resetPaymentDetails() {
+        paymentDetails = new PaymentDetails(getTransaction().getTransactionDetails(), getTransaction().getItemDetails());
+    }
+
 }

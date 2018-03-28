@@ -34,6 +34,7 @@ import com.midtrans.sdk.corekit.models.TokenRequestModel;
 import com.midtrans.sdk.corekit.models.TransactionDetails;
 import com.midtrans.sdk.corekit.models.UserAddress;
 import com.midtrans.sdk.corekit.models.UserDetail;
+import com.midtrans.sdk.corekit.models.promo.Promo;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
 import com.midtrans.sdk.corekit.models.snap.SnapPromo;
 import com.midtrans.sdk.corekit.models.snap.params.CreditCardPaymentParams;
@@ -51,6 +52,7 @@ import com.midtrans.sdk.corekit.models.snap.payment.GoPayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.MandiriClickPayPaymentRequest;
 import com.midtrans.sdk.corekit.utilities.Installation;
+import com.securepreferences.SecurePreferences;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -170,7 +172,7 @@ public class SdkUtil {
 
         // bank name
         BankTransfer bankTransfer = new BankTransfer();
-        bankTransfer.setBank(MidtransSDK.getInstance().getContext().getString(R.string.payment_permata));
+        bankTransfer.setBank(BankType.PERMATA);
 
         return new PermataBankTransfer(bankTransfer,
                 transactionDetails, request.getItemDetails(),
@@ -198,7 +200,7 @@ public class SdkUtil {
 
         // bank name
         BankTransfer bankTransfer = new BankTransfer();
-        bankTransfer.setBank(MidtransSDK.getInstance().getContext().getString(R.string.payment_bca));
+        bankTransfer.setBank(BankType.BCA);
 
 
         BCABankTransfer model =
@@ -232,8 +234,7 @@ public class SdkUtil {
         IndomaretRequestModel model =
                 new IndomaretRequestModel();
 
-        model.setPaymentType(MidtransSDK.getInstance().getContext().getString(R.string.payment_indomaret));
-
+        model.setPaymentType(PaymentType.INDOMARET_CSTORE);
         model.setItem_details(request.getItemDetails());
         model.setCustomerDetails(request.getCustomerDetails());
         model.setTransactionDetails(transactionDetails);
@@ -370,8 +371,7 @@ public class SdkUtil {
 
         model.setCustomerDetails(request.getCustomerDetails(), request
                 .getShippingAddressArrayList(), request.getBillingAddressArrayList());
-        model.setPaymentType(MidtransSDK.getInstance().getContext().getString(R.string.payment_indosat_dompetku));
-
+        model.setPaymentType(PaymentType.INDOSAT_DOMPETKU);
         IndosatDompetkuRequest.IndosatDompetkuEntity entity = new IndosatDompetkuRequest
                 .IndosatDompetkuEntity();
         entity.setMsisdn("" + msisdn);
@@ -608,7 +608,16 @@ public class SdkUtil {
         // if the transaction is not from bank point page
         paymentParams.setFromBankPoint(model.isFromBankPoint());
 
-        return new CreditCardPaymentRequest(PaymentType.CREDIT_CARD, paymentParams, customerDetailRequest);
+        CreditCardPaymentRequest creditCardPaymentRequest = new CreditCardPaymentRequest(PaymentType.CREDIT_CARD, paymentParams, customerDetailRequest);
+
+        //set promo is selected
+        Promo promo = model.getPromoSelected();
+        if (promo != null) {
+            PromoDetails promoDetails = new PromoDetails(promo.getId(), promo.getDiscountedGrossAmount());
+            creditCardPaymentRequest.setPromoDetails(promoDetails);
+        }
+
+        return creditCardPaymentRequest;
     }
 
     public static CreditCardPaymentRequest getCreditCardPaymentRequest(String discountToken, Long discountAmount, CreditCardPaymentModel model, TransactionRequest transactionRequest) {
@@ -622,9 +631,6 @@ public class SdkUtil {
                 model.isSavecard(), model.getMaskedCardNumber(), model.getInstallment());
         CreditCardPaymentRequest paymentRequest = new CreditCardPaymentRequest(PaymentType.CREDIT_CARD, paymentParams, customerDetailRequest);
 
-        //set the promo
-        PromoDetails promoDetails = new PromoDetails(discountToken, discountAmount);
-        paymentRequest.setPromoDetails(promoDetails);
 
         return paymentRequest;
     }
@@ -686,4 +692,24 @@ public class SdkUtil {
             }
         });
     }
+
+    public static SecurePreferences newPreferences(Context context, String name) {
+
+        SecurePreferences preferences = new SecurePreferences(context, context.getString(R.string.PREFERENCE_PASSWORD), name);
+        int prefVersion;
+        try {
+            prefVersion = preferences.getInt(Constants.KEY_PREFERENCES_VERSION, 0);
+        } catch (ClassCastException e) {
+            prefVersion = 0;
+        }
+        if (prefVersion == 0 || prefVersion < Constants.PREFERENCES_VERSION) {
+            SecurePreferences.Editor editor = preferences.edit();
+            editor.clear();
+            editor.putInt(Constants.KEY_PREFERENCES_VERSION, Constants.PREFERENCES_VERSION);
+            editor.apply();
+        }
+
+        return preferences;
+    }
+
 }

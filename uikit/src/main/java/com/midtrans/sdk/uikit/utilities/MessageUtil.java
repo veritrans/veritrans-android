@@ -2,8 +2,8 @@ package com.midtrans.sdk.uikit.utilities;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
+import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.BuildConfig;
@@ -41,6 +41,8 @@ public class MessageUtil {
     private static final String USER_ID_LESS = "less than or equal";
     private static final String USER_ID_INVALID = "user_id format is invalid";
     private static final String DENY = "deny";
+    public static final String PROMO_UNAVAILABLE = "promo is not available";
+
 
 
     public static String createMessageWhenCheckoutFailed(Context context, ArrayList<String> statusMessage) {
@@ -182,7 +184,7 @@ public class MessageUtil {
             }
 
         } catch (RuntimeException e) {
-            Log.e(TAG, "createpaymentFailedMessage():" + e.getMessage());
+            Logger.e(TAG, "createpaymentFailedMessage():" + e.getMessage());
         }
 
         return message;
@@ -239,7 +241,7 @@ public class MessageUtil {
                 }
             }
         } catch (RuntimeException e) {
-            Log.e(TAG, "createMessageOnError():" + e.getMessage());
+            Logger.e(TAG, "createMessageOnError():" + e.getMessage());
         }
 
         return message;

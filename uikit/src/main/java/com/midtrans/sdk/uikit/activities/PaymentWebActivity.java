@@ -25,6 +25,10 @@ import com.stfalcon.smsverifycatcher.SmsVerifyCatcher;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Deprecated, please use {@link com.midtrans.sdk.uikit.views.webview.WebViewPaymentActivity} instead
+ */
+@Deprecated
 public class PaymentWebActivity extends BaseActivity {
     private static final String TAG = "PaymentWebActivity";
     private Toolbar toolbar;

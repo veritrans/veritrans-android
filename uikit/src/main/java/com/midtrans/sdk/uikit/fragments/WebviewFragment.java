@@ -22,6 +22,10 @@ import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.activities.PaymentWebActivity;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 
+/**
+ * Deprecated, please refer to {@link com.midtrans.sdk.uikit.views.webview.WebViewPaymentActivity} instead
+ */
+@Deprecated
 public class WebviewFragment extends Fragment {
 
     private static final String TAG = WebviewFragment.class.getSimpleName();

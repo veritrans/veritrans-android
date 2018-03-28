@@ -1,8 +1,8 @@
 package com.midtrans.sdk.uikit.views.banktransfer.instruction;
 
 import android.os.Bundle;
-import android.util.Log;
 
+import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.VaInstructionFragment;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
@@ -19,7 +19,7 @@ public class InstructionBcaVaFragment extends VaInstructionFragment {
         Bundle bundle = new Bundle();
         bundle.putInt(INSTRUCTION_POSITION, code);
         bundle.putString(INSTRUCTION_TITLE, title);
-        Log.d("xtitle", "title:" + title);
+        Logger.d("xtitle", "title:" + title);
         fragment.setArguments(bundle);
         return fragment;
     }

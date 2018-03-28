@@ -21,11 +21,13 @@ public class ItemDetailsTest {
     private ItemDetails itemDetails;
     private String exampleText;
     private int exampleNumber;
+    private long examplePrice;
 
     @Before
     public void setUp() throws Exception {
         itemDetails = new ItemDetails();
         exampleText = "example";
+        examplePrice = 10;
         exampleNumber = 1;
     }
 
@@ -37,8 +39,8 @@ public class ItemDetailsTest {
 
     @Test
     public void testSetPrice() throws Exception {
-        itemDetails.setPrice(exampleText);
-        assertEquals(itemDetails.getPrice(), exampleText);
+        itemDetails.setPrice(examplePrice);
+        assertEquals(itemDetails.getPrice(), examplePrice);
     }
 
     @Test

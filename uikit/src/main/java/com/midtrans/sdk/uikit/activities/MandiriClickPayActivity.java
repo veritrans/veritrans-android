@@ -27,7 +27,9 @@ import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 
 /**
  * Created by shivam on 11/3/15.
+ * Deprecated, please use {@link com.midtrans.sdk.uikit.views.mandiri_clickpay.MandiriClickPayActivity} instead
  */
+@Deprecated
 public class MandiriClickPayActivity extends BaseActivity implements View.OnClickListener {
 
     public static final String DENY = "202";

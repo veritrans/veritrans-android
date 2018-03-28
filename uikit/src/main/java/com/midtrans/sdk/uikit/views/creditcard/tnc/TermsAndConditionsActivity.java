@@ -6,9 +6,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 
+import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BaseActivity;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
@@ -50,7 +50,7 @@ public class TermsAndConditionsActivity extends BaseActivity {
                 });
             }
         } catch (RuntimeException e) {
-            Log.e(TAG, "initToolbar():" + e.getMessage());
+            Logger.e(TAG, "initToolbar():" + e.getMessage());
         }
     }
 

@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
 import android.text.TextUtils;
-import android.util.Log;
 
+import com.midtrans.sdk.corekit.core.Logger;
 import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -62,7 +62,7 @@ public class Utils {
                 }
 
             } catch (Exception e) {
-                Log.e(DemoButton.TAG, String.format("Unable to find %s font. Using Typeface.DEFAULT instead.", fontName));
+                Logger.e(DemoButton.TAG, String.format("Unable to find %s font. Using Typeface.DEFAULT instead.", fontName));
                 cachedFontMap.put(fontName, Typeface.DEFAULT);
                 return Typeface.DEFAULT;
             }
