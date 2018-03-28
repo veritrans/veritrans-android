@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.koushikdutta.ion.Ion;
 import com.midtrans.raygun.RaygunClient;
 import com.midtrans.raygun.RaygunOnBeforeSend;
+import com.midtrans.raygun.messages.RaygunErrorStackTraceLineMessage;
 import com.midtrans.raygun.messages.RaygunMessage;
 import com.midtrans.raygun.messages.RaygunMessageDetails;
 import com.midtrans.sdk.corekit.callback.CheckoutCallback;
@@ -478,43 +479,53 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         if (BuildConfig.FLAVOR.equals(UiKitConstants.ENVIRONMENT_PRODUCTION)) {
             RaygunClient.setOnBeforeSend(new RaygunOnBeforeSend() {
                 @Override
-                public RaygunMessage onBeforeSend(RaygunMessage message) {
+                public RaygunMessage onBeforeSend(RaygunMessage raygunMessage) {
 
-                    try {
-                        RaygunMessageDetails details = message.getDetails();
-                        details.setGroupingKey(UiKitConstants.KEY_TRACKING_GROUP);
+                    RaygunErrorStackTraceLineMessage[] stackTrace = raygunMessage.getDetails().getError().getStackTrace();
+                    if (stackTrace != null) {
+                        for (RaygunErrorStackTraceLineMessage message : stackTrace) {
+                            String className = message.getClassName();
+                            if (className.contains("com.midtrans")) {
+                                try {
+                                    RaygunMessageDetails details = raygunMessage.getDetails();
+                                    details.setGroupingKey(UiKitConstants.KEY_TRACKING_GROUP);
 
-                        Map<String, String> map = new HashMap<>();
+                                    Map<String, String> map = new HashMap<>();
 
-                        MerchantPreferences preferences = MidtransSDK.getInstance().getMerchantData().getPreference();
+                                    MerchantPreferences preferences = MidtransSDK.getInstance().getMerchantData().getPreference();
 
-                        if (preferences != null) {
-                            map.put(UiKitConstants.KEY_TRACKING_MERCHANT_NAME, preferences.getDisplayName());
+                                    if (preferences != null) {
+                                        map.put(UiKitConstants.KEY_TRACKING_MERCHANT_NAME, preferences.getDisplayName());
+                                    }
+                                    String[] appInfo = DeviceUtils.getApplicationName(PaymentMethodsActivity.this);
+                                    map.put(UiKitConstants.KEY_TRACKING_HOST_APP, appInfo[0]);
+                                    map.put(UiKitConstants.KEY_TRACKING_HOST_APP_VERSION, appInfo[1]);
+                                    map.put(UiKitConstants.KEY_TRACKING_DEVICE_ID, SdkUtil.getDeviceId(PaymentMethodsActivity.this));
+                                    map.put(UiKitConstants.KEY_TRACKING_LANGUAGE, Locale.getDefault().getLanguage());
+                                    map.put(UiKitConstants.KEY_TRACKING_DEVICE_MODEL, Build.MODEL);
+                                    map.put(UiKitConstants.KEY_TRACKING_DEVICE_TYPE, Build.BRAND);
+                                    map.put(UiKitConstants.KEY_TRACKING_TIME_STAMP, String.valueOf(System.currentTimeMillis()));
+                                    map.put(UiKitConstants.KEY_TRACKING_NETWORK, DeviceUtils.getConnectivityType(PaymentMethodsActivity.this));
+                                    map.put(UiKitConstants.KEY_TRACKING_OS_VERSION, String.valueOf(Build.VERSION.SDK_INT));
+                                    map.put(UiKitConstants.KEY_TRACKING_PLATFORM, UiKitConstants.VALUE_TRACKING_PLATFORM);
+                                    map.put(UiKitConstants.KEY_TRACKING_SCREEN_SIZE, DeviceUtils.getDisplaySize(PaymentMethodsActivity.this));
+                                    map.put(UiKitConstants.KEY_TRACKING_SDK_VERSION, BuildConfig.VERSION_NAME);
+                                    map.put(UiKitConstants.KEY_TRACKING_CPU_USAGE, DeviceUtils.getTotalCpuUsage());
+                                    map.put(UiKitConstants.KEY_TRACKING_MEMORY_USAGE, DeviceUtils.getMemoryUsage());
+                                    map.put(UiKitConstants.KEY_TRACKING_ENVIRONMENT, BuildConfig.FLAVOR);
+
+                                    details.setUserCustomData(map);
+
+                                } catch (Exception e) {
+                                    Logger.d(TAG, "raygun:" + e.getMessage());
+                                }
+
+                                return raygunMessage;
+                            }
                         }
-                        String[] appInfo = DeviceUtils.getApplicationName(PaymentMethodsActivity.this);
-                        map.put(UiKitConstants.KEY_TRACKING_HOST_APP, appInfo[0]);
-                        map.put(UiKitConstants.KEY_TRACKING_HOST_APP_VERSION, appInfo[1]);
-                        map.put(UiKitConstants.KEY_TRACKING_DEVICE_ID, SdkUtil.getDeviceId(PaymentMethodsActivity.this));
-                        map.put(UiKitConstants.KEY_TRACKING_LANGUAGE, Locale.getDefault().getLanguage());
-                        map.put(UiKitConstants.KEY_TRACKING_DEVICE_MODEL, Build.MODEL);
-                        map.put(UiKitConstants.KEY_TRACKING_DEVICE_TYPE, Build.BRAND);
-                        map.put(UiKitConstants.KEY_TRACKING_TIME_STAMP, String.valueOf(System.currentTimeMillis()));
-                        map.put(UiKitConstants.KEY_TRACKING_NETWORK, DeviceUtils.getConnectivityType(PaymentMethodsActivity.this));
-                        map.put(UiKitConstants.KEY_TRACKING_OS_VERSION, String.valueOf(Build.VERSION.SDK_INT));
-                        map.put(UiKitConstants.KEY_TRACKING_PLATFORM, UiKitConstants.VALUE_TRACKING_PLATFORM);
-                        map.put(UiKitConstants.KEY_TRACKING_SCREEN_SIZE, DeviceUtils.getDisplaySize(PaymentMethodsActivity.this));
-                        map.put(UiKitConstants.KEY_TRACKING_SDK_VERSION, BuildConfig.VERSION_NAME);
-                        map.put(UiKitConstants.KEY_TRACKING_CPU_USAGE, DeviceUtils.getTotalCpuUsage());
-                        map.put(UiKitConstants.KEY_TRACKING_MEMORY_USAGE, DeviceUtils.getMemoryUsage());
-                        map.put(UiKitConstants.KEY_TRACKING_ENVIRONMENT, BuildConfig.FLAVOR);
-
-                        details.setUserCustomData(map);
-
-                    } catch (Exception e) {
-                        Logger.d(TAG, "raygun:" + e.getMessage());
                     }
+                    return null;
 
-                    return message;
                 }
             });
         }
