@@ -169,7 +169,7 @@
     <string name="copied_to_clipboard">Copied to clipboard</string>
     <string name="copied_bill_code">Billpay code was copied to clipboard</string>
     <string name="copied_company_code">Company code was copied to clipboard</string>
-    <string name="complete_payment_at_atm">Complete Payment at ATM</string>
+    <string name="complete_payment_at_atm">Please Complete Payment</string>
     <string name="complete_payment_at_mobile_bca">Complete Payment via m-BCA</string>
     <string name="complete_payment_at_klik_bca_va">Complete Payment via KlikBCA</string>
     <string name="complete_payment_via_internet_banking">Complete Payment via Internet Banking</string>
@@ -232,15 +232,13 @@
     <string name="bca_klik_pay_instruction_step6">For more information about BCA KlikPay please contact Halo BCA at (021) 1500888 or visit <a href="http://klikbca.com/KlikPay/klikpay.html">http://klikbca.com/KlikPay/klikpay.html</a>.</string>
 
     <!--m-BCA-->
-    <string name="bca_mbanking_instruction_step1">Choose <b>m-transfer</b>.</string>
-    <string name="bca_mbanking_instruction_step2">Choose <b>Transfer</b></string>
-    <string name="bca_mbanking_instruction_step3">Choose <b>BCA Virtual Account</b>.</string>
-    <string name="bca_mbanking_instruction_step4">Choose <b>account number</b> that you want to use for payment.</string>
-    <string name="bca_mbanking_instruction_step5">Input BCA Virtual Account Number and click <b>OK</b>.</string>
-    <string name="bca_mbanking_instruction_step6">BCA Virtual Account Number and your account information will appear on the payment confirmation page and then click <b>Send</b>.</string>
-    <string name="bca_mbanking_instruction_step7">Click <b>OK</b> on the payment confirmation page.</string>
-    <string name="bca_mbanking_instruction_step8">Enter amount to be transferred then click <b>OK</b>.</string>
-    <string name="bca_mbanking_instruction_step9">Your transaction is done.</string>
+    <string name="bca_mbanking_instruction_step1">Log in to your BCA Mobile app.</string>
+    <string name="bca_mbanking_instruction_step2">Choose <b>m-BCA</b>, then input your m-BCA access code</string>
+    <string name="bca_mbanking_instruction_step3">Choose <b>m-Transfer</b>, then choose BCA Virtual Account.</string>
+    <string name="bca_mbanking_instruction_step4">Input <b>Virtual Account Number</b> or choose an existing account from Daftar Transfer.</string>
+    <string name="bca_mbanking_instruction_step5">Input the payable amount.</string>
+    <string name="bca_mbanking_instruction_step6">Input your <b>m-BCA</b> pin.</string>
+    <string name="bca_mbanking_instruction_step7">Payment is finished. Save the notification as your payment receipt.</string>
 
     <!-- cimb transfer Instructions -->
     <string name="cimb_instruction_step1">Please make sure that you have a User ID for CIMB Clicks and have registered your mPIN before going through with the payment.</string>

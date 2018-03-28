@@ -114,7 +114,7 @@ public abstract class BaseVaPaymentStatusActivity extends BasePaymentActivity {
 
             @Override
             public void onPageSelected(int position) {
-                changeConfirmationButtonLable(position);
+                changeConfirmationButtonLable();
             }
 
             @Override
@@ -138,7 +138,7 @@ public abstract class BaseVaPaymentStatusActivity extends BasePaymentActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
                 pagerInstruction.setCurrentItem(position);
-                changeConfirmationButtonLable(position);
+                changeConfirmationButtonLable();
             }
 
             @Override
@@ -152,46 +152,8 @@ public abstract class BaseVaPaymentStatusActivity extends BasePaymentActivity {
     }
 
 
-    private void changeConfirmationButtonLable(int position) {
-        switch (presenter.getBankType()) {
-
-            case PaymentType.BCA_VA:
-                if (position == 0) {
-                    buttonCompletePayment.setText(getString(R.string.complete_payment_at_atm));
-                } else if (position == 1) {
-                    buttonCompletePayment.setText(getString(R.string.complete_payment_at_klik_bca_va));
-                } else {
-                    buttonCompletePayment.setText(getString(R.string.complete_payment_at_mobile_bca));
-                }
-                break;
-
-            case PaymentType.PERMATA_VA:
-                buttonCompletePayment.setText(getString(R.string.complete_payment_at_atm));
-                break;
-
-            case PaymentType.E_CHANNEL:
-                if (position == 0) {
-                    buttonCompletePayment.setText(getString(R.string.complete_payment_at_atm));
-                } else {
-                    buttonCompletePayment.setText(getString(R.string.complete_payment_via_internet_banking));
-                }
-                break;
-
-            case PaymentType.BNI_VA:
-                if (position == 0) {
-                    buttonCompletePayment.setText(getString(R.string.complete_payment_at_atm));
-                } else if (position == 1) {
-                    buttonCompletePayment.setText(getString(R.string.complete_payment_va_bni_mobile));
-                } else {
-                    buttonCompletePayment.setText(getString(R.string.complete_payment_via_internet_banking));
-                }
-
-                break;
-
-            default:
-                buttonCompletePayment.setText(getString(R.string.complete_payment_at_atm));
-                break;
-        }
+    private void changeConfirmationButtonLable() {
+        buttonCompletePayment.setText(getString(R.string.complete_payment_at_atm));
         buttonCompletePayment.setTextBold();
     }
 
