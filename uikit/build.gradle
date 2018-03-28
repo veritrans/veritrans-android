@@ -13,7 +13,6 @@ ext {
     junitVersion = "4.12"
 }
 
-
 buildscript {
     repositories {
         jcenter()
