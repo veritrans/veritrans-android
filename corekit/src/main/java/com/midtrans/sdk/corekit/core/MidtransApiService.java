@@ -23,14 +23,14 @@ public interface MidtransApiService {
     Call<TokenDetailsResponse> getTokenTwoClick(
             @Query("card_cvv") String cardCVV,
             @Query("token_id") String tokenId,
-            @Query("two_click") boolean twoClick,
-            @Query("secure") boolean secure,
-            @Query("gross_amount") double grossAmount,
+            @Query("two_click") Boolean twoClick,
+            @Query("secure") Boolean secure,
+            @Query("gross_amount") Double grossAmount,
             @Query("bank") String bank,
             @Query("client_key") String clientKey,
             @Query("channel") String channel,
             @Query("type") String type,
-            @Query("point") boolean point
+            @Query("point") Boolean point
     );
 
     @GET("token")
@@ -41,12 +41,12 @@ public interface MidtransApiService {
             @Query("card_exp_year") String cardExpiryYear,
             @Query("client_key") String clientKey,
             @Query("bank") String bank,
-            @Query("secure") boolean secure,
-            @Query("two_click") boolean twoClick,
-            @Query("gross_amount") double grossAmount,
+            @Query("secure") Boolean secure,
+            @Query("two_click") Boolean twoClick,
+            @Query("gross_amount") Double grossAmount,
             @Query("channel") String channel,
             @Query("type") String type,
-            @Query("point") boolean point
+            @Query("point") Boolean point
     );
 
     @GET("token")
@@ -58,7 +58,7 @@ public interface MidtransApiService {
             @Query("client_key") String clientKey,
             @Query("channel") String channel,
             @Query("type") String type,
-            @Query("point") boolean point
+            @Query("point") Boolean point
     );
 
     @GET("token")
@@ -71,7 +71,7 @@ public interface MidtransApiService {
             @Query("gross_amount") Double grossAmount,
             @Query("channel") String channel,
             @Query("type") String type,
-            @Query("point") boolean point
+            @Query("point") Boolean point
     );
 
     /**
@@ -93,16 +93,16 @@ public interface MidtransApiService {
     Call<TokenDetailsResponse> getTokenInstalmentOfferTwoClick(
             @Query("card_cvv") String cardCVV,
             @Query("token_id") String tokenId,
-            @Query("two_click") boolean twoClick,
-            @Query("secure") boolean secure,
-            @Query("gross_amount") double grossAmount,
+            @Query("two_click") Boolean twoClick,
+            @Query("secure") Boolean secure,
+            @Query("gross_amount") Double grossAmount,
             @Query("bank") String bank,
             @Query("client_key") String clientKey,
-            @Query("installment") boolean instalment,
+            @Query("installment") Boolean instalment,
             @Query("installment_term") String instalmentTerm,
             @Query("channel") String channel,
             @Query("type") String type,
-            @Query("point") boolean point
+            @Query("point") Boolean point
     );
 
     /***
@@ -128,15 +128,15 @@ public interface MidtransApiService {
             @Query("card_exp_year") String cardExpiryYear,
             @Query("client_key") String clientKey,
             @Query("bank") String bank,
-            @Query("secure") boolean secure,
-            @Query("two_click") boolean twoClick,
-            @Query("gross_amount") double grossAmount,
-            @Query("installment") boolean instalment,
+            @Query("secure") Boolean secure,
+            @Query("two_click") Boolean twoClick,
+            @Query("gross_amount") Double grossAmount,
+            @Query("installment") Boolean instalment,
             @Query("channel") String channel,
             @Query("installment_term") String
                     instalmentTerm,
             @Query("type") String type,
-            @Query("point") boolean point
+            @Query("point") Boolean point
     );
 
 

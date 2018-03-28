@@ -10,7 +10,6 @@ import com.midtrans.sdk.corekit.models.snap.payment.BasePaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.CreditCardPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.DanamonOnlinePaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.GCIPaymentRequest;
-import com.midtrans.sdk.corekit.models.snap.payment.GoPayAuthorizationRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.GoPayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.IndosatDompetkuPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
@@ -56,7 +55,17 @@ public interface SnapApiService {
      * @param paymentRequest Payment Request Details.
      */
     @POST("v1/transactions/{snap_token}/pay")
-    Call<TransactionResponse> paymentUsingBankTransfer(@Path("snap_token") String snapToken, @Body BankTransferPaymentRequest paymentRequest);
+    Call<TransactionResponse> paymentUsingVa(@Path("snap_token") String snapToken, @Body BankTransferPaymentRequest paymentRequest);
+
+    /**
+     * Charge payment using BCA Klikpay.
+     *
+     * @param snapToken
+     * @param basePaymentRequest Payment Request Details.
+     */
+    @POST("v1/transactions/{snap_token}/pay")
+    Call<TransactionResponse> paymentUsingBaseMethod(@Path("snap_token") String snapToken, @Body BasePaymentRequest basePaymentRequest);
+
 
     /**
      * Charge payment using KlikBCA.
@@ -66,15 +75,6 @@ public interface SnapApiService {
      */
     @POST("v1/transactions/{snap_token}/pay")
     Call<TransactionResponse> paymentUsingKlikBca(@Path("snap_token") String snapToken, @Body KlikBCAPaymentRequest klikBCAPaymentRequest);
-
-    /**
-     * Charge payment using BCA Klikpay.
-     *
-     * @param snapToken
-     * @param basePaymentRequest Payment Request Details.
-     */
-    @POST("v1/transactions/{snap_token}/pay")
-    Call<TransactionResponse> paymentUsingBcaKlikPay(@Path("snap_token") String snapToken, @Body BasePaymentRequest basePaymentRequest);
 
     /**
      * Charge payment using mandiri bill pay.
@@ -94,34 +94,6 @@ public interface SnapApiService {
     @POST("v1/transactions/{snap_token}/pay")
     Call<TransactionResponse> paymentUsingMandiriClickPay(@Path("snap_token") String snapToken, @Body NewMandiriClickPayPaymentRequest request);
 
-
-    /**
-     * Charge payment using cimb clicks.
-     *
-     * @param snapToken
-     * @param request   BasePaymentRequest model
-     */
-    @POST("v1/transactions/{snap_token}/pay")
-    Call<TransactionResponse> paymentUsingCimbClick(@Path("snap_token") String snapToken, @Body BasePaymentRequest request);
-
-    /**
-     * Charge payment using bri epay.
-     *
-     * @param snapToken
-     * @param request   BasePaymentRequest model
-     */
-    @POST("v1/transactions/{snap_token}/pay")
-    Call<TransactionResponse> paymentUsingBriEpay(@Path("snap_token") String snapToken, @Body BasePaymentRequest request);
-
-    /**
-     * Charge payment using mandiri ecash.
-     *
-     * @param snapToken
-     * @param request   BasePaymentRequest model
-     */
-    @POST("v1/transactions/{snap_token}/pay")
-    Call<TransactionResponse> paymentUsingMandiriEcash(@Path("snap_token") String snapToken, @Body BasePaymentRequest request);
-
     /**
      * Charge payment using telkomsel cash.
      *
@@ -132,25 +104,6 @@ public interface SnapApiService {
     Call<TransactionResponse> paymentUsingTelkomselEcash(@Path("snap_token") String snapToken, @Body TelkomselEcashPaymentRequest request);
 
     /**
-     * Charge payment using telkomsel cash.
-     *
-     * @param snapToken
-     * @param request   BasePaymentRequest model
-     */
-    @POST("v1/transactions/{snap_token}/pay")
-    Call<TransactionResponse> paymentUsingXlTunai(@Path("snap_token") String snapToken, @Body BasePaymentRequest request);
-
-    /**
-     * Charge payment using indosat dompetku.
-     *
-     * @param snapToken
-     * @param request   IndosatDompetkuPaymentRequest model
-     */
-    @POST("v1/transactions/{snap_token}/pay")
-    Call<TransactionResponse> paymentUsingIndomaret(@Path("snap_token") String snapToken, @Body BasePaymentRequest request);
-
-
-    /**
      * Charge payment using indosat dompetku.
      *
      * @param snapToken
@@ -158,15 +111,6 @@ public interface SnapApiService {
      */
     @POST("v1/transactions/{snap_token}/pay")
     Call<TransactionResponse> paymentUsingIndosatDompetku(@Path("snap_token") String snapToken, @Body IndosatDompetkuPaymentRequest request);
-
-    /**
-     * Charge payment using kiosan.
-     *
-     * @param snapToken
-     * @param request   BasePaymentRequest model
-     */
-    @POST("v1/transactions/{snap_token}/pay")
-    Call<TransactionResponse> paymentUsingKiosan(@Path("snap_token") String snapToken, @Body BasePaymentRequest request);
 
     /**
      * Charge payment using GCI (Gift Card Indonesia)
@@ -185,24 +129,6 @@ public interface SnapApiService {
      */
     @POST("v1/transactions/{snap_token}/pay")
     Call<TransactionResponse> paymentUsingGoPay(@Path("snap_token") String snapToken, @Body GoPayPaymentRequest paymentRequest);
-
-    /**
-     * Authorize GO-PAY payment
-     *
-     * @param snapToken
-     * @param request
-     */
-    @POST("v1/gopay/{snap_token}/pay")
-    Call<TransactionResponse> authorizeGoPayPayment(@Path("snap_token") String snapToken, @Body GoPayAuthorizationRequest request);
-
-
-    /**
-     * Resend GO-PAY authorization
-     *
-     * @param snapToken
-     */
-    @POST("v1/gopay/{snap_token}/resend")
-    Call<TransactionResponse> resendGoPayAuthorization(@Path("snap_token") String snapToken);
 
     /**
      * Charge payment using Danamon Online

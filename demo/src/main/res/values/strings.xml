@@ -119,7 +119,7 @@
     <string name="order_review">Order Review</string>
 
     <!--PRODUCT DETAILS-->
-    <string name="product_price_sample">Rp 20,000</string>
+    <string name="product_price_sample">Rp 200,000</string>
     <string name="product_name_sample">Midtrans Pillow</string>
     <string name="product_details_sample">Get cozy with our new pillow!</string>
     <string name="product_rating_sample">4.4</string>
@@ -180,7 +180,7 @@
     <string name="midtrans_pillow">Midtrans Pillow</string>
     <string name="midtrans_pillow_1">Midtrans Pillow I</string>
     <string name="midtrans_pillow_2">Midtrans Pillow II</string>
-    <string name="price_pillow_1">Rp 20,000</string>
+    <string name="price_pillow_1">Rp 200,000</string>
     <string name="midtrans_store">midtrans store</string>
 
     <!-- Demo Account-->

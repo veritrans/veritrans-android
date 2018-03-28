@@ -11,6 +11,4 @@ public interface HoldPromoCallback {
     void onSuccess(HoldPromoResponse response);
 
     void onFailure(String message);
-
-    void onError(Throwable throwable);
 }
