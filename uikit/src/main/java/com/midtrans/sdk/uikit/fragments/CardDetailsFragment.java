@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
@@ -31,7 +30,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.midtrans.sdk.corekit.callback.ObtainPromoCallback;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
@@ -39,7 +37,6 @@ import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.CardTokenRequest;
 import com.midtrans.sdk.corekit.models.CreditCardFromScanner;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
-import com.midtrans.sdk.corekit.models.promo.ObtainPromosResponse;
 import com.midtrans.sdk.corekit.models.snap.PromoResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
@@ -1041,61 +1038,6 @@ public class CardDetailsFragment extends Fragment {
 
     private void obtainPromo(final PromoResponse promoResponse) {
         final MidtransSDK midtransSDK = MidtransSDK.getInstance();
-        midtransSDK.obtainPromo(String.valueOf(promoResponse.getId()), midtransSDK.getTransactionRequest().getAmount(), new ObtainPromoCallback() {
-            @Override
-            public void onSuccess(ObtainPromosResponse response) {
-                // Set promo
-                setPromo(promoResponse);
-                // Set discount token
-                CreditCardFlowActivity activity = (CreditCardFlowActivity) getActivity();
-                if (activity != null) {
-                    double finalAmount = midtransSDK.getTransactionRequest().getAmount()
-                            - SdkUIFlowUtil.calculateDiscountAmount(promoResponse);
-                    activity.setTextTotalAmount(finalAmount);
-
-                    promoLogoBtn.setVisibility(View.VISIBLE);
-                    promoLogoBtn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            AlertDialog alertDialog = new AlertDialog.Builder(getContext())
-                                    .setTitle(R.string.promo_dialog_title)
-                                    .setMessage(getString(R.string.promo_dialog_message, Utils.getFormattedAmount(SdkUIFlowUtil.calculateDiscountAmount(promoResponse)), promoResponse.getSponsorName()))
-                                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            dialogInterface.dismiss();
-                                        }
-                                    })
-                                    .create();
-                            alertDialog.show();
-                            changeDialogButtonColor(alertDialog);
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onFailure(String statusCode, String message) {
-                Snackbar snackbar = Snackbar.make(getActivity().findViewById(android.R.id.content), getString(R.string.error_obtain_promo), Snackbar.LENGTH_INDEFINITE);
-                snackbar.setAction(R.string.retry, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        obtainPromo(promoResponse);
-                    }
-                });
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-                Snackbar snackbar = Snackbar.make(getActivity().findViewById(android.R.id.content), getString(R.string.error_obtain_promo), Snackbar.LENGTH_INDEFINITE);
-                snackbar.setAction(R.string.retry, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        obtainPromo(promoResponse);
-                    }
-                });
-            }
-        });
     }
 
     public void setPromo(PromoResponse promo) {

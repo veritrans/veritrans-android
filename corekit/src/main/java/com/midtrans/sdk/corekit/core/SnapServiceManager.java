@@ -2,6 +2,7 @@ package com.midtrans.sdk.corekit.core;
 
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.midtrans.sdk.corekit.callback.BankBinsCallback;
 import com.midtrans.sdk.corekit.callback.BanksPointCallback;
@@ -28,7 +29,6 @@ import com.midtrans.sdk.corekit.models.snap.payment.TelkomselEcashPaymentRequest
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit.RetrofitError;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -64,46 +64,32 @@ public class SnapServiceManager extends BaseServiceManager {
                 Transaction transaction = response.body();
 
                 if (transaction != null) {
-                    if (response.code() == 200 && TextUtils.isEmpty(transaction.getToken())) {
+                    Log.d("xtkn", "response: not null");
+                    transaction.setToken("123");
+                    if (response.code() == 200 && !TextUtils.isEmpty(transaction.getToken())) {
                         callback.onSuccess(transaction);
+                        Log.d("xtkn", "response: ok");
+
                     } else {
+                        Log.d("xtkn", "response: not ok");
+
                         callback.onFailure(transaction, response.message());
                     }
                 } else {
+                    Log.d("xtkn", "response: null");
+
                     callback.onError(new Throwable(Constants.MESSAGE_ERROR_EMPTY_RESPONSE));
                     Logger.e(TAG, Constants.MESSAGE_ERROR_EMPTY_RESPONSE);
                 }
+                Log.d("xtkn", "response: pass");
+
             }
 
             @Override
             public void onFailure(Call<Transaction> call, Throwable t) {
+                doOnResponseFailure(t, callback);
+                Log.d("xtkn", "faulure");
 
-                try {
-                    releaseResources();
-
-                    // todo api
-//                    if (t.getCause() instanceof SSLHandshakeException || t.getCause() instanceof CertPathValidatorException) {
-//                        Logger.e(TAG, "Error in SSL Certificate. " + t.getMessage());
-//                    }
-//
-//                    JsonObject jsonObject = (JsonObject) t.getCause().;
-//                    if (jsonObject != null && jsonObject.getAsJsonArray(KEY_ERROR_MESSAGE) != null) {
-//                        JsonArray jsonArray = jsonObject.getAsJsonArray(KEY_ERROR_MESSAGE);
-//                        String errorMessage = t.getMessage();
-//                        if (jsonArray.get(0) != null) {
-//                            errorMessage = jsonArray.get(0).toString();
-//                        }
-//                        callback.onError(t);
-//
-//                    } else {
-//                        callback.onError(t);
-//                    }
-
-                    callback.onError(t);
-
-                } catch (Exception ex) {
-                    callback.onError(new Throwable(ex.getMessage(), ex.getCause()));
-                }
             }
         });
 
@@ -119,7 +105,6 @@ public class SnapServiceManager extends BaseServiceManager {
     public void paymentUsingCreditCard(final String authenticationToken, CreditCardPaymentRequest paymentRequest, final TransactionCallback callback) {
 
         if (paymentRequest != null) {
-            doOnInvalidDataSupplied(callback);
             doOnInvalidDataSupplied(callback);
             return;
         }

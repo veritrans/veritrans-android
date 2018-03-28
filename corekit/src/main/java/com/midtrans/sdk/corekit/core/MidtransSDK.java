@@ -16,8 +16,6 @@ import com.midtrans.sdk.corekit.callback.CheckoutCallback;
 import com.midtrans.sdk.corekit.callback.DeleteCardCallback;
 import com.midtrans.sdk.corekit.callback.GetCardCallback;
 import com.midtrans.sdk.corekit.callback.GetTransactionStatusCallback;
-import com.midtrans.sdk.corekit.callback.GoPayResendAuthorizationCallback;
-import com.midtrans.sdk.corekit.callback.ObtainPromoCallback;
 import com.midtrans.sdk.corekit.callback.SaveCardCallback;
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
@@ -73,7 +71,6 @@ public class MidtransSDK {
     private String semiBoldText = null;
     private String merchantName = null;
     private IScanner externalScanner;
-    private PromoEngineManager promoEngineManager;
     private SnapServiceManager snapServiceManager;
     private MerchantServiceManager merchantServiceManager;
     private MidtransServiceManager midtransServiceManager;
@@ -128,7 +125,6 @@ public class MidtransSDK {
         }
 
         this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), merchantName, getFlow(flow), deviceType == null ? "" : deviceType, isLogEnabled, context);
-//        this.promoEngineManager = new PromoEngineManager(MidtransRestAdapter.getPromoEngineRestAPI(BuildConfig.PROMO_ENGINE_URL, requestTimeOut));
 
         this.snapServiceManager = new SnapServiceManager(MidtransRestAdapter.newSnapApiService(requestTimeOut), this.isRunning);
         this.midtransServiceManager = new MidtransServiceManager(MidtransRestAdapter.newMidtransApiService(requestTimeOut), this.isRunning);
@@ -338,90 +334,6 @@ public class MidtransSDK {
             this.transactionRequest = transactionRequest;
         } else {
             Logger.e(TAG, ADD_TRANSACTION_DETAILS);
-        }
-    }
-
-    /**
-     * todo remove old implementation of promo engine
-     * It will execute an API request to obtain promo token.
-     *
-     * @param promoId  promo identifier.
-     * @param amount   transaction amount.
-     * @param callback callback to be called.
-     */
-
-    @Deprecated
-    public void obtainPromo(String promoId, double amount, ObtainPromoCallback callback) {
-        if (callback == null) {
-            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
-            return;
-        }
-
-        if (!TextUtils.isEmpty(promoId) && amount != 0) {
-            if (Utils.isNetworkAvailable(context)) {
-                isRunning = true;
-                promoEngineManager.obtainPromo(promoId, amount, null, null, null, callback);
-            } else {
-                isRunning = false;
-                callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
-                Logger.e(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER);
-            }
-        } else {
-            Logger.e(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER);
-            isRunning = false;
-            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
-        }
-    }
-
-    /**
-     * It will execute an API request to obtain promo list by credit card number.
-     *
-     * @param promoCode
-     * @param amount
-     * @param clientKey
-     * @param cardNumber
-     * @param callback
-     */
-    public void obtainPromoByCardNumber(String promoCode, double amount, @NonNull String clientKey, @NonNull String cardNumber, @NonNull ObtainPromoCallback callback) {
-        obtainPromo(promoCode, amount, clientKey, cardNumber, null, callback);
-    }
-
-    /**
-     * It will execute an API request to obtain promo list by creditcard token.
-     *
-     * @param promoCode
-     * @param amount
-     * @param clientKey
-     * @param cardToken
-     * @param callback
-     */
-    public void obtainPromoByCardToken(String promoCode, double amount, @NonNull String clientKey, @NonNull String cardToken, @NonNull ObtainPromoCallback callback) {
-        obtainPromo(promoCode, amount, clientKey, null, cardToken, callback);
-    }
-
-    private void obtainPromo(String promoCode, double totalAmount, @NonNull String clientKey, String cardNumber, String cardToken, @NonNull ObtainPromoCallback callback) {
-        if (callback == null) {
-            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
-            return;
-        }
-
-        if (!TextUtils.isEmpty(clientKey)) {
-            if (totalAmount != 0) {
-                if (Utils.isNetworkAvailable(context)) {
-                    isRunning = true;
-                    promoEngineManager.obtainPromo(promoCode, totalAmount, clientKey, cardNumber, cardToken, callback);
-                } else {
-                    isRunning = false;
-                    callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
-                    Logger.e(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER);
-                }
-            } else {
-                Logger.e(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER);
-                isRunning = false;
-                callback.onError(new Throwable(Constants.MESSAGE_ERROR_INVALID_DATA_SUPPLIED));
-            }
-        } else {
-            callback.onError(new Throwable(Constants.MESSAGE_ERROR_INVALID_DATA_SUPPLIED));
         }
     }
 

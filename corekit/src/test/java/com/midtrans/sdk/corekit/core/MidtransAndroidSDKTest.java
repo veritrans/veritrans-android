@@ -91,8 +91,6 @@ public class MidtransAndroidSDKTest {
     @Mock
     SnapTransactionManager transactionManager;
     @Mock
-    PromoEngineManager promoEngineManager;
-    @Mock
     MerchantRestAPI merchantRestAPI;
     @Mock
     MidtransRestAPI midtransRestAPI;
