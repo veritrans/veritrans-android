@@ -57,7 +57,6 @@ public class MidtransSDK {
     private static BaseSdkBuilder sdkBuilder;
     private static boolean sdkNotAvailable = false;
 
-    protected Boolean isRunning = false;
     ISdkFlow uiflow;
     private UIKitCustomSetting UIKitCustomSetting;
     private boolean isLogEnabled = false;
@@ -125,10 +124,9 @@ public class MidtransSDK {
         }
 
         this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), merchantName, getFlow(flow), deviceType == null ? "" : deviceType, isLogEnabled, context);
-
-        this.snapServiceManager = new SnapServiceManager(MidtransRestAdapter.newSnapApiService(requestTimeOut), this.isRunning);
-        this.midtransServiceManager = new MidtransServiceManager(MidtransRestAdapter.newMidtransApiService(requestTimeOut), this.isRunning);
-        this.merchantServiceManager = new MerchantServiceManager(MidtransRestAdapter.newMerchantApiService(merchantServerUrl, requestTimeOut), this.isRunning);
+        this.snapServiceManager = new SnapServiceManager(MidtransRestAdapter.newSnapApiService(requestTimeOut));
+        this.midtransServiceManager = new MidtransServiceManager(MidtransRestAdapter.newMidtransApiService(requestTimeOut));
+        this.merchantServiceManager = new MerchantServiceManager(MidtransRestAdapter.newMerchantApiService(merchantServerUrl, requestTimeOut));
 
     }
 
@@ -252,10 +250,6 @@ public class MidtransSDK {
         this.semiBoldText = semiBoldText;
     }
 
-    public boolean isRunning() {
-        return isRunning;
-    }
-
     public boolean isLogEnabled() {
         return isLogEnabled;
     }
@@ -351,17 +345,17 @@ public class MidtransSDK {
 
         if (cardTokenRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
-                isRunning = true;
+
                 midtransServiceManager.getToken(cardTokenRequest, callback);
             } else {
-                isRunning = false;
+
                 callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
                 Logger.e(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER);
             }
 
         } else {
             Logger.e(Constants.MESSAGE_ERROR_INVALID_DATA_SUPPLIED);
-            isRunning = false;
+
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_INVALID_DATA_SUPPLIED));
         }
     }
@@ -476,7 +470,7 @@ public class MidtransSDK {
     }
 
     private void runUiSdk(Context context, String snapToken) {
-        if (transactionRequest != null && !isRunning) {
+        if (transactionRequest != null) {
 
             if (transactionRequest.getPaymentMethod() == Constants
                     .PAYMENT_METHOD_NOT_SELECTED) {
@@ -487,11 +481,7 @@ public class MidtransSDK {
             }
 
         } else {
-            if (transactionRequest == null) {
-                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
-            } else {
-                Logger.e(TAG, Constants.MESSAGE_ERROR_ALREADY_RUNNING);
-            }
+            Logger.e(TAG, ADD_TRANSACTION_DETAILS);
         }
     }
 
@@ -530,7 +520,7 @@ public class MidtransSDK {
      * @param snapToken checkout token
      */
     private void startCreditCardUIFlow(@NonNull Context context, String snapToken) {
-        if (transactionRequest != null && !isRunning()) {
+        if (transactionRequest != null) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -540,11 +530,7 @@ public class MidtransSDK {
             }
 
         } else {
-            if (transactionRequest == null) {
-                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
-            } else {
-                Logger.e(TAG, Constants.MESSAGE_ERROR_ALREADY_RUNNING);
-            }
+            Logger.e(TAG, ADD_TRANSACTION_DETAILS);
         }
     }
 
@@ -555,7 +541,7 @@ public class MidtransSDK {
      * @param snapToken checkout token
      */
     private void startBankTransferUIFlow(@NonNull Context context, String snapToken) {
-        if (transactionRequest != null && !isRunning()) {
+        if (transactionRequest != null) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -565,11 +551,7 @@ public class MidtransSDK {
             }
 
         } else {
-            if (transactionRequest == null) {
-                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
-            } else {
-                Logger.e(TAG, Constants.MESSAGE_ERROR_ALREADY_RUNNING);
-            }
+            Logger.e(TAG, ADD_TRANSACTION_DETAILS);
         }
     }
 
@@ -580,7 +562,7 @@ public class MidtransSDK {
      * @param snapToken checkout token
      */
     private void startPermataBankTransferUIFlow(@NonNull Context context, String snapToken) {
-        if (transactionRequest != null && !isRunning()) {
+        if (transactionRequest != null) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -590,11 +572,7 @@ public class MidtransSDK {
             }
 
         } else {
-            if (transactionRequest == null) {
-                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
-            } else {
-                Logger.e(TAG, Constants.MESSAGE_ERROR_ALREADY_RUNNING);
-            }
+            Logger.e(TAG, ADD_TRANSACTION_DETAILS);
         }
     }
 
@@ -605,7 +583,7 @@ public class MidtransSDK {
      * @param snapToken checkout token
      */
     private void startMandiriBankTransferUIFlow(@NonNull Context context, String snapToken) {
-        if (transactionRequest != null && !isRunning()) {
+        if (transactionRequest != null) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -615,11 +593,7 @@ public class MidtransSDK {
             }
 
         } else {
-            if (transactionRequest == null) {
-                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
-            } else {
-                Logger.e(TAG, Constants.MESSAGE_ERROR_ALREADY_RUNNING);
-            }
+            Logger.e(TAG, ADD_TRANSACTION_DETAILS);
         }
     }
 
@@ -630,7 +604,7 @@ public class MidtransSDK {
      * @param snapToken checkout token
      */
     private void startBniBankTransferUIFlow(@NonNull Context context, String snapToken) {
-        if (transactionRequest != null && !isRunning()) {
+        if (transactionRequest != null) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -640,11 +614,7 @@ public class MidtransSDK {
             }
 
         } else {
-            if (transactionRequest == null) {
-                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
-            } else {
-                Logger.e(TAG, Constants.MESSAGE_ERROR_ALREADY_RUNNING);
-            }
+            Logger.e(TAG, ADD_TRANSACTION_DETAILS);
         }
     }
 
@@ -655,7 +625,7 @@ public class MidtransSDK {
      * @param snapToken checkout token
      */
     private void startBCABankTransferUIFlow(@NonNull Context context, String snapToken) {
-        if (transactionRequest != null && !isRunning()) {
+        if (transactionRequest != null) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -665,11 +635,7 @@ public class MidtransSDK {
             }
 
         } else {
-            if (transactionRequest == null) {
-                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
-            } else {
-                Logger.e(TAG, Constants.MESSAGE_ERROR_ALREADY_RUNNING);
-            }
+            Logger.e(TAG, ADD_TRANSACTION_DETAILS);
         }
     }
 
@@ -680,7 +646,7 @@ public class MidtransSDK {
      * @param snapToken checkout token
      */
     private void startOtherBankTransferUIFlow(@NonNull Context context, String snapToken) {
-        if (transactionRequest != null && !isRunning()) {
+        if (transactionRequest != null) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -690,11 +656,7 @@ public class MidtransSDK {
             }
 
         } else {
-            if (transactionRequest == null) {
-                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
-            } else {
-                Logger.e(TAG, Constants.MESSAGE_ERROR_ALREADY_RUNNING);
-            }
+            Logger.e(TAG, ADD_TRANSACTION_DETAILS);
         }
     }
 
@@ -705,7 +667,7 @@ public class MidtransSDK {
      * @param snapToken checkout token
      */
     private void startGoPayUIFlow(@NonNull Context context, String snapToken) {
-        if (transactionRequest != null && !isRunning()) {
+        if (transactionRequest != null) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -715,11 +677,7 @@ public class MidtransSDK {
             }
 
         } else {
-            if (transactionRequest == null) {
-                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
-            } else {
-                Logger.e(TAG, Constants.MESSAGE_ERROR_ALREADY_RUNNING);
-            }
+            Logger.e(TAG, ADD_TRANSACTION_DETAILS);
         }
     }
 
@@ -730,7 +688,7 @@ public class MidtransSDK {
      * @param snapToken checkout token
      */
     private void startBCAKlikPayUIFlow(@NonNull Context context, String snapToken) {
-        if (transactionRequest != null && !isRunning()) {
+        if (transactionRequest != null) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -740,11 +698,7 @@ public class MidtransSDK {
             }
 
         } else {
-            if (transactionRequest == null) {
-                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
-            } else {
-                Logger.e(TAG, Constants.MESSAGE_ERROR_ALREADY_RUNNING);
-            }
+            Logger.e(TAG, ADD_TRANSACTION_DETAILS);
         }
     }
 
@@ -755,7 +709,7 @@ public class MidtransSDK {
      * @param snapToken checkout token
      */
     private void startKlikBCAUIFlow(@NonNull Context context, String snapToken) {
-        if (transactionRequest != null && !isRunning()) {
+        if (transactionRequest != null) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -765,11 +719,7 @@ public class MidtransSDK {
             }
 
         } else {
-            if (transactionRequest == null) {
-                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
-            } else {
-                Logger.e(TAG, Constants.MESSAGE_ERROR_ALREADY_RUNNING);
-            }
+            Logger.e(TAG, ADD_TRANSACTION_DETAILS);
         }
     }
 
@@ -780,7 +730,7 @@ public class MidtransSDK {
      * @param snapToken checkout token
      */
     private void startMandiriClickpayUIFlow(@NonNull Context context, String snapToken) {
-        if (transactionRequest != null && !isRunning()) {
+        if (transactionRequest != null) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -790,11 +740,7 @@ public class MidtransSDK {
             }
 
         } else {
-            if (transactionRequest == null) {
-                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
-            } else {
-                Logger.e(TAG, Constants.MESSAGE_ERROR_ALREADY_RUNNING);
-            }
+            Logger.e(TAG, ADD_TRANSACTION_DETAILS);
         }
     }
 
@@ -805,7 +751,7 @@ public class MidtransSDK {
      * @param snapToken checkout token
      */
     private void startMandiriECashUIFlow(@NonNull Context context, String snapToken) {
-        if (transactionRequest != null && !isRunning()) {
+        if (transactionRequest != null) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -815,11 +761,7 @@ public class MidtransSDK {
             }
 
         } else {
-            if (transactionRequest == null) {
-                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
-            } else {
-                Logger.e(TAG, Constants.MESSAGE_ERROR_ALREADY_RUNNING);
-            }
+            Logger.e(TAG, ADD_TRANSACTION_DETAILS);
         }
     }
 
@@ -830,7 +772,7 @@ public class MidtransSDK {
      * @param snapToken checkout token
      */
     private void startCIMBClicksUIFlow(@NonNull Context context, String snapToken) {
-        if (transactionRequest != null && !isRunning()) {
+        if (transactionRequest != null) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -840,11 +782,7 @@ public class MidtransSDK {
             }
 
         } else {
-            if (transactionRequest == null) {
-                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
-            } else {
-                Logger.e(TAG, Constants.MESSAGE_ERROR_ALREADY_RUNNING);
-            }
+            Logger.e(TAG, ADD_TRANSACTION_DETAILS);
         }
     }
 
@@ -855,7 +793,7 @@ public class MidtransSDK {
      * @param snapToken checkout token
      */
     private void startBRIEpayUIFlow(@NonNull Context context, String snapToken) {
-        if (transactionRequest != null && !isRunning()) {
+        if (transactionRequest != null) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -865,11 +803,7 @@ public class MidtransSDK {
             }
 
         } else {
-            if (transactionRequest == null) {
-                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
-            } else {
-                Logger.e(TAG, Constants.MESSAGE_ERROR_ALREADY_RUNNING);
-            }
+            Logger.e(TAG, ADD_TRANSACTION_DETAILS);
         }
     }
 
@@ -880,7 +814,7 @@ public class MidtransSDK {
      * @param snapToken checkout token
      */
     private void startTelkomselCashUIFlow(@NonNull Context context, String snapToken) {
-        if (transactionRequest != null && !isRunning()) {
+        if (transactionRequest != null) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -890,11 +824,7 @@ public class MidtransSDK {
             }
 
         } else {
-            if (transactionRequest == null) {
-                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
-            } else {
-                Logger.e(TAG, Constants.MESSAGE_ERROR_ALREADY_RUNNING);
-            }
+            Logger.e(TAG, ADD_TRANSACTION_DETAILS);
         }
     }
 
@@ -905,7 +835,7 @@ public class MidtransSDK {
      * @param snapToken checkout token
      */
     private void startIndosatDompetkuUIFlow(@NonNull Context context, String snapToken) {
-        if (transactionRequest != null && !isRunning()) {
+        if (transactionRequest != null) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -915,11 +845,7 @@ public class MidtransSDK {
             }
 
         } else {
-            if (transactionRequest == null) {
-                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
-            } else {
-                Logger.e(TAG, Constants.MESSAGE_ERROR_ALREADY_RUNNING);
-            }
+            Logger.e(TAG, ADD_TRANSACTION_DETAILS);
         }
     }
 
@@ -930,7 +856,7 @@ public class MidtransSDK {
      * @param snapToken checkout token.
      */
     private void startIndomaretUIFlow(@NonNull Context context, String snapToken) {
-        if (transactionRequest != null && !isRunning()) {
+        if (transactionRequest != null) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -940,11 +866,7 @@ public class MidtransSDK {
             }
 
         } else {
-            if (transactionRequest == null) {
-                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
-            } else {
-                Logger.e(TAG, Constants.MESSAGE_ERROR_ALREADY_RUNNING);
-            }
+            Logger.e(TAG, ADD_TRANSACTION_DETAILS);
         }
     }
 
@@ -955,7 +877,7 @@ public class MidtransSDK {
      * @param snapToken checkout token
      */
     private void startKiosonUIFlow(@NonNull Context context, String snapToken) {
-        if (transactionRequest != null && !isRunning()) {
+        if (transactionRequest != null) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -965,11 +887,7 @@ public class MidtransSDK {
             }
 
         } else {
-            if (transactionRequest == null) {
-                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
-            } else {
-                Logger.e(TAG, Constants.MESSAGE_ERROR_ALREADY_RUNNING);
-            }
+            Logger.e(TAG, ADD_TRANSACTION_DETAILS);
         }
     }
 
@@ -980,7 +898,7 @@ public class MidtransSDK {
      * @param snapToken checkout token
      */
     private void startXlTunaiUIFlow(@NonNull Context context, String snapToken) {
-        if (transactionRequest != null && !isRunning()) {
+        if (transactionRequest != null) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -990,11 +908,7 @@ public class MidtransSDK {
             }
 
         } else {
-            if (transactionRequest == null) {
-                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
-            } else {
-                Logger.e(TAG, Constants.MESSAGE_ERROR_ALREADY_RUNNING);
-            }
+            Logger.e(TAG, ADD_TRANSACTION_DETAILS);
         }
     }
 
@@ -1005,7 +919,7 @@ public class MidtransSDK {
      * @param snapToken checkout token
      */
     private void startGiftCardUIFlow(@NonNull Context context, String snapToken) {
-        if (transactionRequest != null && !isRunning()) {
+        if (transactionRequest != null) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -1015,11 +929,7 @@ public class MidtransSDK {
             }
 
         } else {
-            if (transactionRequest == null) {
-                Logger.e(TAG, ADD_TRANSACTION_DETAILS);
-            } else {
-                Logger.e(TAG, Constants.MESSAGE_ERROR_ALREADY_RUNNING);
-            }
+            Logger.e(TAG, ADD_TRANSACTION_DETAILS);
         }
     }
 
@@ -1034,16 +944,16 @@ public class MidtransSDK {
             Logger.d(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
+
         if (!TextUtils.isEmpty(authenticationToken)) {
             if (Utils.isNetworkAvailable(context)) {
-                isRunning = true;
                 snapServiceManager.getTransactionOptions(authenticationToken, callback);
             } else {
-                isRunning = false;
+
                 callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
-            isRunning = false;
+
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
@@ -1062,18 +972,18 @@ public class MidtransSDK {
 
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
-                isRunning = true;
+
                 TokenRequestModel model = SdkUtil.getSnapTokenRequestModel(transactionRequest);
                 if (isEnableBuiltInTokenStorage()) {
                     model.setUserId(userId);
                 }
                 merchantServiceManager.checkout(model, callback);
             } else {
-                isRunning = false;
+
                 callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
-            isRunning = false;
+
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
@@ -1091,15 +1001,15 @@ public class MidtransSDK {
 
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
-                isRunning = true;
+
                 TokenRequestModel model = SdkUtil.getSnapTokenRequestModel(transactionRequest);
                 merchantServiceManager.checkout(model, callback);
             } else {
-                isRunning = false;
+
                 callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
-            isRunning = false;
+
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
@@ -1119,15 +1029,15 @@ public class MidtransSDK {
 
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
-                isRunning = true;
+
                 snapServiceManager.paymentUsingCreditCard(authenticationToken,
                         SdkUtil.getCreditCardPaymentRequest(creditCardPaymentModel, transactionRequest), callback);
             } else {
-                isRunning = false;
+
                 callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
-            isRunning = false;
+
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
@@ -1149,15 +1059,15 @@ public class MidtransSDK {
 
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
-                isRunning = true;
+
                 snapServiceManager.paymentUsingCreditCard(authenticationToken,
                         SdkUtil.getCreditCardPaymentRequest(discountToken, discountAmount, creditCardPaymentModel, transactionRequest), callback);
             } else {
-                isRunning = false;
+
                 callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
-            isRunning = false;
+
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
@@ -1176,16 +1086,16 @@ public class MidtransSDK {
         }
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
-                isRunning = true;
+
                 snapServiceManager.paymentUsingVa(authenticationToken,
                         SdkUtil.getBankTransferPaymentRequest(email,
                                 PaymentType.BCA_VA), callback);
             } else {
-                isRunning = false;
+
                 callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
-            isRunning = false;
+
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
@@ -1205,16 +1115,16 @@ public class MidtransSDK {
 
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
-                isRunning = true;
+
                 snapServiceManager.paymentUsingVa(authenticationToken,
                         SdkUtil.getBankTransferPaymentRequest(email,
                                 PaymentType.BNI_VA), callback);
             } else {
-                isRunning = false;
+
                 callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
-            isRunning = false;
+
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
@@ -1232,16 +1142,16 @@ public class MidtransSDK {
         }
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
-                isRunning = true;
+
                 snapServiceManager.paymentUsingVa(authenticationToken,
                         SdkUtil.getBankTransferPaymentRequest(email, PaymentType.PERMATA_VA),
                         callback);
             } else {
-                isRunning = false;
+
                 callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
-            isRunning = false;
+
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
@@ -1261,15 +1171,15 @@ public class MidtransSDK {
 
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
-                isRunning = true;
+
                 snapServiceManager.paymentUsingKlikBca(authenticationToken, SdkUtil.getKlikBCAPaymentRequest(userId,
                         PaymentType.KLIK_BCA), callback);
             } else {
-                isRunning = false;
+
                 callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
-            isRunning = false;
+
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
@@ -1288,15 +1198,15 @@ public class MidtransSDK {
 
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
-                isRunning = true;
+
                 snapServiceManager.paymentUsingBaseMethod(authenticationToken,
                         new BasePaymentRequest(PaymentType.BCA_KLIKPAY), callback);
             } else {
-                isRunning = false;
+
                 callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
-            isRunning = false;
+
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
@@ -1314,16 +1224,16 @@ public class MidtransSDK {
         }
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
-                isRunning = true;
+
                 snapServiceManager.paymentUsingMandiriBillPay(authenticationToken,
                         SdkUtil.getBankTransferPaymentRequest(email, PaymentType.E_CHANNEL),
                         callback);
             } else {
-                isRunning = false;
+
                 callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
-            isRunning = false;
+
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
@@ -1344,15 +1254,15 @@ public class MidtransSDK {
 
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
-                isRunning = true;
+
                 snapServiceManager.paymentUsingMandiriClickPay(snapToken, new NewMandiriClickPayPaymentRequest(PaymentType.MANDIRI_CLICKPAY, paymentParams), callback)
                 ;
             } else {
-                isRunning = false;
+
                 callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
-            isRunning = false;
+
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
@@ -1370,15 +1280,15 @@ public class MidtransSDK {
         }
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
-                isRunning = true;
+
                 snapServiceManager.paymentUsingBaseMethod(authenticationToken,
                         new BasePaymentRequest(PaymentType.CIMB_CLICKS), callback);
             } else {
-                isRunning = false;
+
                 callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
-            isRunning = false;
+
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
@@ -1396,15 +1306,15 @@ public class MidtransSDK {
         }
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
-                isRunning = true;
+
                 snapServiceManager.paymentUsingBaseMethod(authenticationToken,
                         new BasePaymentRequest(PaymentType.MANDIRI_ECASH), callback);
             } else {
-                isRunning = false;
+
                 callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
-            isRunning = false;
+
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
@@ -1425,16 +1335,16 @@ public class MidtransSDK {
 
         if (transactionRequest != null) {
             if (isNetworkAvailable()) {
-                isRunning = true;
+
                 snapServiceManager.paymentUsingTelkomselCash(authenticationToken,
                         new TelkomselEcashPaymentRequest(PaymentType.TELKOMSEL_CASH, new TelkomselCashPaymentParams(customerPhoneNumber)),
                         callback);
             } else {
-                isRunning = false;
+
                 callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
-            isRunning = false;
+
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
@@ -1453,15 +1363,15 @@ public class MidtransSDK {
 
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
-                isRunning = true;
+
                 snapServiceManager.paymentUsingBaseMethod(authenticationToken,
                         new BasePaymentRequest(PaymentType.XL_TUNAI), callback);
             } else {
-                isRunning = false;
+
                 callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
-            isRunning = false;
+
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
@@ -1480,15 +1390,15 @@ public class MidtransSDK {
 
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
-                isRunning = true;
+
                 snapServiceManager.paymentUsingBaseMethod(authenticationToken,
                         new BasePaymentRequest(PaymentType.INDOMARET), callback);
             } else {
-                isRunning = false;
+
                 callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
-            isRunning = false;
+
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
@@ -1508,15 +1418,15 @@ public class MidtransSDK {
 
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
-                isRunning = true;
+
                 snapServiceManager.paymentUsingIndosatDompetku(authenticationToken,
                         new IndosatDompetkuPaymentRequest(PaymentType.INDOSAT_DOMPETKU, new IndosatDompetkuPaymentParams(msisdn)), callback);
             } else {
-                isRunning = false;
+
                 callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
-            isRunning = false;
+
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
@@ -1535,15 +1445,15 @@ public class MidtransSDK {
 
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
-                isRunning = true;
+
                 snapServiceManager.paymentUsingBaseMethod(authenticationToken,
                         new BasePaymentRequest(PaymentType.KIOSON), callback);
             } else {
-                isRunning = false;
+
                 callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
-            isRunning = false;
+
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
@@ -1562,15 +1472,15 @@ public class MidtransSDK {
 
         if (transactionRequest != null) {
             if (isNetworkAvailable()) {
-                isRunning = true;
+
                 snapServiceManager.paymentUsingBaseMethod(authenticationToken,
                         new BasePaymentRequest(PaymentType.BRI_EPAY), callback);
             } else {
-                isRunning = false;
+
                 callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
-            isRunning = false;
+
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
@@ -1589,16 +1499,16 @@ public class MidtransSDK {
         }
         if (transactionRequest != null) {
             if (isNetworkAvailable()) {
-                isRunning = true;
+
                 snapServiceManager.paymentUsingVa(authenticationToken,
                         SdkUtil.getBankTransferPaymentRequest(email, PaymentType.ALL_VA),
                         callback);
             } else {
-                isRunning = false;
+
                 callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
-            isRunning = false;
+
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
@@ -1618,12 +1528,12 @@ public class MidtransSDK {
         }
 
         if (isNetworkAvailable()) {
-            isRunning = true;
+
             snapServiceManager.paymentUsingGci(authenticationToken,
                     SdkUtil.getGCIPaymentRequest(cardNumber, password),
                     callback);
         } else {
-            isRunning = false;
+
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
@@ -1640,10 +1550,10 @@ public class MidtransSDK {
         }
 
         if (isNetworkAvailable()) {
-            isRunning = true;
+
             snapServiceManager.paymentUsingGoPay(snapToken, SdkUtil.getGoPayPaymentRequest(), callback);
         } else {
-            isRunning = false;
+
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
@@ -1660,10 +1570,10 @@ public class MidtransSDK {
         }
 
         if (isNetworkAvailable()) {
-            isRunning = true;
+
             snapServiceManager.paymentUsingDanamonOnline(snapToken, SdkUtil.getDanamonOnlinePaymentRequest(), callback);
         } else {
-            isRunning = false;
+
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
@@ -1687,11 +1597,10 @@ public class MidtransSDK {
         }
 
         if (isNetworkAvailable()) {
-            isRunning = true;
+
             midtransServiceManager.cardRegistration(cardNumber, cardCvv, cardExpMonth, cardExpYear, clientKey,
                     callback);
         } else {
-            isRunning = false;
             Logger.e(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER);
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
@@ -1713,10 +1622,10 @@ public class MidtransSDK {
 
         if (requests != null) {
             if (Utils.isNetworkAvailable(context)) {
-                isRunning = true;
+
                 merchantServiceManager.saveCards(userId, requests, callback);
             } else {
-                isRunning = false;
+
                 callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
@@ -1737,10 +1646,10 @@ public class MidtransSDK {
         }
 
         if (Utils.isNetworkAvailable(context)) {
-            isRunning = true;
+
             merchantServiceManager.getCards(userId, callback);
         } else {
-            isRunning = false;
+
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
@@ -1846,10 +1755,6 @@ public class MidtransSDK {
 
     boolean isNetworkAvailable() {
         return Utils.isNetworkAvailable(context);
-    }
-
-    public void releaseResource() {
-        this.isRunning = false;
     }
 
     public String getSdkBaseUrl() {

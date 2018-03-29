@@ -1,7 +1,5 @@
 package com.midtrans.sdk.corekit.core;
 
-import android.content.Context;
-
 import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
@@ -86,7 +84,6 @@ public abstract class BaseTransactionManager {
     protected void releaseResources() {
         MidtransSDK midtransSDK = MidtransSDK.getInstance();
         if (midtransSDK != null) {
-            midtransSDK.releaseResource();
             Logger.i("released transaction");
         }
     }

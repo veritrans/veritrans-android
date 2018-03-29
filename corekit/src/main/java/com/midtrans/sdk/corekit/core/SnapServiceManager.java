@@ -1,9 +1,12 @@
 package com.midtrans.sdk.corekit.core;
 
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.midtrans.sdk.corekit.callback.BankBinsCallback;
 import com.midtrans.sdk.corekit.callback.BanksPointCallback;
 import com.midtrans.sdk.corekit.callback.DeleteCardCallback;
@@ -39,11 +42,12 @@ import retrofit2.Response;
 
 public class SnapServiceManager extends BaseServiceManager {
     private static final String TAG = SnapServiceManager.class.getSimpleName();
+    private static final String KEY_ERROR_MESSAGE = "error_messages";
+
     private SnapApiService snapApiService;
 
-    SnapServiceManager(SnapApiService snapApiService, Boolean isRunning) {
+    SnapServiceManager(SnapApiService snapApiService) {
         this.snapApiService = snapApiService;
-        this.isRunning = isRunning;
     }
 
 
@@ -64,32 +68,48 @@ public class SnapServiceManager extends BaseServiceManager {
                 Transaction transaction = response.body();
 
                 if (transaction != null) {
-                    Log.d("xtkn", "response: not null");
-                    transaction.setToken("123");
                     if (response.code() == 200 && !TextUtils.isEmpty(transaction.getToken())) {
                         callback.onSuccess(transaction);
-                        Log.d("xtkn", "response: ok");
-
                     } else {
-                        Log.d("xtkn", "response: not ok");
-
                         callback.onFailure(transaction, response.message());
                     }
-                } else {
-                    Log.d("xtkn", "response: null");
 
+                    return;
+                }
+
+                try {
+                    if (response.code() == 404 && response.errorBody() != null) {
+                        String strErrorBody = String.valueOf(response.errorBody());
+
+                        Gson gson = new Gson();
+                        JsonObject jsonObject = gson.fromJson(strErrorBody, JsonObject.class);
+
+                        if (jsonObject != null && jsonObject.getAsJsonArray(KEY_ERROR_MESSAGE) != null) {
+                            JsonArray jsonArray = jsonObject.getAsJsonArray(KEY_ERROR_MESSAGE);
+                            String errorMessage = response.message();
+                            if (jsonArray.get(0) != null) {
+                                errorMessage = jsonArray.get(0).toString();
+                            }
+                            callback.onError(new Throwable(errorMessage, new Resources.NotFoundException()));
+
+                        } else {
+                            callback.onError(new Throwable(response.message(), new Resources.NotFoundException()));
+                        }
+
+                    } else {
+                        callback.onError(new Throwable(Constants.MESSAGE_ERROR_EMPTY_RESPONSE));
+                        Logger.e(TAG, Constants.MESSAGE_ERROR_EMPTY_RESPONSE);
+                    }
+
+                } catch (Exception e) {
                     callback.onError(new Throwable(Constants.MESSAGE_ERROR_EMPTY_RESPONSE));
                     Logger.e(TAG, Constants.MESSAGE_ERROR_EMPTY_RESPONSE);
                 }
-                Log.d("xtkn", "response: pass");
-
             }
 
             @Override
             public void onFailure(Call<Transaction> call, Throwable t) {
                 doOnResponseFailure(t, callback);
-                Log.d("xtkn", "faulure");
-
             }
         });
 
@@ -104,7 +124,7 @@ public class SnapServiceManager extends BaseServiceManager {
 
     public void paymentUsingCreditCard(final String authenticationToken, CreditCardPaymentRequest paymentRequest, final TransactionCallback callback) {
 
-        if (paymentRequest != null) {
+        if (paymentRequest == null) {
             doOnInvalidDataSupplied(callback);
             return;
         }
@@ -131,7 +151,7 @@ public class SnapServiceManager extends BaseServiceManager {
      * @param callback       Transaction callback
      */
     public void paymentUsingVa(final String snapToken, BankTransferPaymentRequest paymentRequest, final TransactionCallback callback) {
-        if (paymentRequest != null) {
+        if (paymentRequest == null) {
             doOnInvalidDataSupplied(callback);
             return;
         }
@@ -160,7 +180,7 @@ public class SnapServiceManager extends BaseServiceManager {
      */
     public void paymentUsingBaseMethod(final String snap, BasePaymentRequest paymentRequest, final TransactionCallback callback) {
 
-        if (paymentRequest != null) {
+        if (paymentRequest == null) {
             doOnInvalidDataSupplied(callback);
             return;
         }
@@ -187,7 +207,7 @@ public class SnapServiceManager extends BaseServiceManager {
      * @param callback       transaction callback
      */
     public void paymentUsingMandiriBillPay(final String snapToken, BankTransferPaymentRequest paymentRequest, final TransactionCallback callback) {
-        if (paymentRequest != null) {
+        if (paymentRequest == null) {
             doOnInvalidDataSupplied(callback);
             return;
         }
@@ -214,7 +234,7 @@ public class SnapServiceManager extends BaseServiceManager {
      * @param callback       transaction callback
      */
     public void paymentUsingMandiriClickPay(final String snapToken, NewMandiriClickPayPaymentRequest paymentRequest, final TransactionCallback callback) {
-        if (paymentRequest != null) {
+        if (paymentRequest == null) {
             doOnInvalidDataSupplied(callback);
             return;
         }
@@ -241,7 +261,7 @@ public class SnapServiceManager extends BaseServiceManager {
      */
     public void paymentUsingTelkomselCash(final String snapToken, TelkomselEcashPaymentRequest paymentRequest, final TransactionCallback callback) {
 
-        if (paymentRequest != null) {
+        if (paymentRequest == null) {
             doOnInvalidDataSupplied(callback);
             return;
         }
@@ -269,7 +289,7 @@ public class SnapServiceManager extends BaseServiceManager {
      */
     public void paymentUsingIndosatDompetku(final String snapToken, IndosatDompetkuPaymentRequest paymentRequest, final TransactionCallback callback) {
 
-        if (paymentRequest != null) {
+        if (paymentRequest == null) {
             doOnInvalidDataSupplied(callback);
             return;
         }
@@ -290,7 +310,7 @@ public class SnapServiceManager extends BaseServiceManager {
 
     public void paymentUsingGci(final String authenticationToken, GCIPaymentRequest paymentRequest, final TransactionCallback callback) {
 
-        if (paymentRequest != null) {
+        if (paymentRequest == null) {
             doOnInvalidDataSupplied(callback);
             return;
         }
@@ -317,7 +337,7 @@ public class SnapServiceManager extends BaseServiceManager {
      */
     public void paymentUsingKlikBca(final String authenticationToken, KlikBCAPaymentRequest paymentRequest, final TransactionCallback callback) {
 
-        if (paymentRequest != null) {
+        if (paymentRequest == null) {
             doOnInvalidDataSupplied(callback);
             return;
         }
@@ -345,7 +365,7 @@ public class SnapServiceManager extends BaseServiceManager {
      */
     public void paymentUsingGoPay(String snapToken, GoPayPaymentRequest paymentRequest, final TransactionCallback callback) {
 
-        if (paymentRequest != null) {
+        if (paymentRequest == null) {
             doOnInvalidDataSupplied(callback);
             return;
         }
@@ -373,7 +393,7 @@ public class SnapServiceManager extends BaseServiceManager {
      */
     public void paymentUsingDanamonOnline(String snapToken, DanamonOnlinePaymentRequest paymentRequest, final TransactionCallback callback) {
 
-        if (paymentRequest != null) {
+        if (paymentRequest == null) {
             doOnInvalidDataSupplied(callback);
             return;
         }

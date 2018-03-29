@@ -72,7 +72,7 @@ public class MidtransRestAdapter {
     }
 
 
-    private static Interceptor newHttpLoggingInterceptor() {
+    private static HttpLoggingInterceptor newHttpLoggingInterceptor() {
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor
                 .setLevel(Logger.enabled ?
@@ -114,7 +114,6 @@ public class MidtransRestAdapter {
                 Request headerInterceptedRequest = request.newBuilder()
                         .addHeader("Content-Type", "application/json")
                         .addHeader("Accept", "application/json")
-                        .addHeader("X-Source", "mobile-android")
                         .addHeader("X-Source", "mobile-android")
                         .addHeader("X-SDK-Version", "android-" + BuildConfig.VERSION_NAME)
                         .build();

@@ -26,9 +26,8 @@ public class MerchantServiceManager extends BaseServiceManager {
     private static final String TAG = MerchantServiceManager.class.getSimpleName();
     private MerchantApiService service;
 
-    public MerchantServiceManager(MerchantApiService service, Boolean isRunning) {
+    public MerchantServiceManager(MerchantApiService service) {
         this.service = service;
-        this.isRunning = isRunning;
     }
 
     /**
@@ -49,7 +48,6 @@ public class MerchantServiceManager extends BaseServiceManager {
             public void onResponse(Call<Token> call, Response<Token> response) {
                 releaseResources();
                 Token token = response.body();
-
                 if (token != null) {
                     if (token.getTokenId() != null && !TextUtils.isEmpty(token.getTokenId())) {
                         callback.onSuccess(token);
@@ -80,7 +78,6 @@ public class MerchantServiceManager extends BaseServiceManager {
             doOnApiServiceUnAvailable(callback);
             return;
         }
-
 
         if (cardRequests != null) {
             Call<String> call = service.saveCards(userId, cardRequests);

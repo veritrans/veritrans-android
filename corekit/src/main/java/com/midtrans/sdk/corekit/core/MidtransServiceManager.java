@@ -21,9 +21,8 @@ public class MidtransServiceManager extends BaseServiceManager {
     private static final String TAG = MerchantServiceManager.class.getSimpleName();
     private MidtransApiService service;
 
-    public MidtransServiceManager(MidtransApiService service, Boolean isRunning) {
+    public MidtransServiceManager(MidtransApiService service) {
         this.service = service;
-        this.isRunning = isRunning;
     }
 
     /**
@@ -72,7 +71,7 @@ public class MidtransServiceManager extends BaseServiceManager {
      * @param cardTokenRequest information about credit card.
      * @param callback         get creditcard token callback
      */
-    public void getToken( @NonNull CardTokenRequest cardTokenRequest, @NonNull final CardTokenCallback callback) {
+    public void getToken(@NonNull CardTokenRequest cardTokenRequest, @NonNull final CardTokenCallback callback) {
         if (cardTokenRequest.isTwoClick()) {
 
             if (cardTokenRequest.isInstallment()) {

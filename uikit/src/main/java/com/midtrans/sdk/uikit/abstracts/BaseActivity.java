@@ -225,6 +225,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
 
         if (containerProgress != null) {
             containerProgress.setVisibility(View.VISIBLE);
+            containerProgress.setClickable(true);
         }
     }
 
