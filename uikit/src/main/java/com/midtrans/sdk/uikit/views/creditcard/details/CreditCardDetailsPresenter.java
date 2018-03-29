@@ -2,6 +2,7 @@ package com.midtrans.sdk.uikit.views.creditcard.details;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.midtrans.sdk.corekit.callback.BankBinsCallback;
@@ -14,6 +15,7 @@ import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.core.TransactionRequest;
+import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
 import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.CardTokenRequest;
 import com.midtrans.sdk.corekit.models.PaymentDetails;
@@ -605,5 +607,45 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
         if (paymentDetails != null) {
             paymentDetails.setPromoSelected(seletedPromo);
         }
+    }
+
+    public boolean isShowEmailForm() {
+        UIKitCustomSetting customSetting = getMidtransSDK().getUIKitCustomSetting();
+        if (customSetting != null) {
+            return customSetting.isShowEmailInCcForm();
+        }
+        return false;
+    }
+
+    public boolean isEmailValid(String email) {
+        return !(!TextUtils.isEmpty(email) && !SdkUIFlowUtil.isEmailValid(email));
+    }
+
+    public String getUserEmail() {
+        String userEmail = "";
+        UserDetail userDetail = LocalDataHandler.readObject(UiKitConstants.KEY_USER_DETAILS, UserDetail.class);
+        if (userDetail != null) {
+            userEmail = userDetail.getEmail();
+        }
+        return userEmail;
+    }
+
+    public String getUserPhone() {
+        String userEmail = "";
+        UserDetail userDetail = LocalDataHandler.readObject(UiKitConstants.KEY_USER_DETAILS, UserDetail.class);
+        if (userDetail != null) {
+            userEmail = userDetail.getPhoneNumber();
+        }
+        return userEmail;
+    }
+
+    public void saveUserDetail(@NonNull String email, @NonNull String phone) {
+        UserDetail userDetail = LocalDataHandler.readObject(UiKitConstants.KEY_USER_DETAILS, UserDetail.class);
+        if (userDetail == null) {
+            userDetail = new UserDetail();
+        }
+        userDetail.setEmail(email);
+        userDetail.setPhoneNumber(phone);
+        LocalDataHandler.saveObject(UiKitConstants.KEY_USER_DETAILS, userDetail);
     }
 }

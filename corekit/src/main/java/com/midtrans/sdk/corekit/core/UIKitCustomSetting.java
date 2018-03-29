@@ -11,6 +11,7 @@ public class UIKitCustomSetting {
     private boolean enabledAnimation = true;
     private boolean enableAutoReadSms = false;
     private boolean skipCustomerDetailsPages = false;
+    private boolean showEmailInCcForm = false;
 
     public boolean isShowPaymentStatus() {
         return showPaymentStatus;
@@ -50,5 +51,13 @@ public class UIKitCustomSetting {
 
     public void setSkipCustomerDetailsPages(boolean skipCustomerDetailsPages) {
         this.skipCustomerDetailsPages = skipCustomerDetailsPages;
+    }
+
+    public boolean isShowEmailInCcForm() {
+        return showEmailInCcForm;
+    }
+
+    public void setShowEmailInCcForm(boolean showEmailInCcForm) {
+        this.showEmailInCcForm = showEmailInCcForm;
     }
 }

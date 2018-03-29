@@ -200,12 +200,77 @@
                 tools:visibility="visible" />
         </RelativeLayout>
     </LinearLayout>
+    
+    <LinearLayout
+        android:id="@+id/container_user_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/container_card_expiry"
+        android:visibility="gone"
+        android:baselineAligned="false"
+        android:orientation="vertical"
+        tools:visibility="visible">
+
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:id="@+id/hint_user_email"
+            style="@style/EditTextHint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/hint_email_optional" />
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/field_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:hint="@string/hint_email_example"
+            android:inputType="textEmailAddress"
+            android:maxLength="128"
+            android:maxLines="1"
+            android:nextFocusDown="@+id/field_phone"/>
+
+        <TextView
+            android:id="@+id/error_message_email"
+            style="@style/FormErrorMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/validation_email_invalid_optional"
+            tools:visibility="visible" />
+
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:id="@+id/hint_user_phone"
+            style="@style/EditTextHint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/eight_dp"
+            android:text="@string/hint_phone_number_optional" />
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/field_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:hint="@string/hint_phone_example"
+            android:inputType="phone"
+            android:imeOptions="actionDone"
+            android:maxLength="13"
+            android:maxLines="1" />
+
+        <TextView
+            android:id="@+id/error_message_phone"
+            style="@style/FormErrorMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/validation_phone_no_invalid_optional"
+            tools:visibility="visible" />
+
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/container_save_card_details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/container_card_expiry"
+        android:layout_below="@id/container_user_detail"
         android:layout_marginTop="@dimen/eight_dp"
         android:visibility="gone"
         tools:visibility="visible">
