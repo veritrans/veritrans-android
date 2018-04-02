@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,29 +15,20 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.midtrans.raygun.RaygunClient;
-import com.midtrans.raygun.RaygunOnBeforeSend;
-import com.midtrans.raygun.messages.RaygunErrorStackTraceLineMessage;
-import com.midtrans.raygun.messages.RaygunMessage;
-import com.midtrans.raygun.messages.RaygunMessageDetails;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
-import com.midtrans.sdk.corekit.core.SdkUtil;
 import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
-import com.midtrans.sdk.corekit.models.MerchantPreferences;
 import com.midtrans.sdk.corekit.models.UserAddress;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.uikit.BuildConfig;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.UiKitOnBeforeSend;
 import com.midtrans.sdk.uikit.fragments.UserAddressFragment;
 import com.midtrans.sdk.uikit.fragments.UserDetailFragment;
-import com.midtrans.sdk.uikit.utilities.DeviceUtils;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
 
 public class UserDetailsActivity extends BaseActivity {
     public static final String CREDIT_CARD_ONLY = "cconly";
@@ -81,72 +71,7 @@ public class UserDetailsActivity extends BaseActivity {
         if (BuildConfig.FLAVOR.equals(UiKitConstants.ENVIRONMENT_PRODUCTION)) {
             RaygunClient.init(getApplicationContext(), getString(R.string.ISSUE_TRACKER_API_KEY));
             RaygunClient.attachExceptionHandler();
-            RaygunClient.setOnBeforeSend(new RaygunOnBeforeSend() {
-                @Override
-                public RaygunMessage onBeforeSend(RaygunMessage raygunMessage) {
-
-                    RaygunErrorStackTraceLineMessage[] stackTrace = raygunMessage.getDetails()
-                        .getError().getStackTrace();
-                    if (stackTrace != null) {
-                        for (RaygunErrorStackTraceLineMessage message : stackTrace) {
-                            String className = message.getClassName();
-                            if (className.contains("com.midtrans")) {
-                                try {
-                                    RaygunMessageDetails details = raygunMessage.getDetails();
-                                    details.setGroupingKey(UiKitConstants.KEY_TRACKING_GROUP);
-
-                                    Map<String, String> map = new HashMap<>();
-
-                                    MerchantPreferences preferences = MidtransSDK.getInstance()
-                                        .getMerchantData().getPreference();
-
-                                    if (preferences != null) {
-                                        map.put(UiKitConstants.KEY_TRACKING_MERCHANT_NAME,
-                                            preferences.getDisplayName());
-                                    }
-                                    String[] appInfo = DeviceUtils
-                                        .getApplicationName(UserDetailsActivity.this);
-                                    map.put(UiKitConstants.KEY_TRACKING_HOST_APP, appInfo[0]);
-                                    map.put(UiKitConstants.KEY_TRACKING_HOST_APP_VERSION, appInfo[1]);
-                                    map.put(UiKitConstants.KEY_TRACKING_DEVICE_ID,
-                                        SdkUtil.getDeviceId(UserDetailsActivity.this));
-                                    map.put(UiKitConstants.KEY_TRACKING_LANGUAGE,
-                                        Locale.getDefault().getLanguage());
-                                    map.put(UiKitConstants.KEY_TRACKING_DEVICE_MODEL, Build.MODEL);
-                                    map.put(UiKitConstants.KEY_TRACKING_DEVICE_TYPE, Build.BRAND);
-                                    map.put(UiKitConstants.KEY_TRACKING_TIME_STAMP,
-                                        String.valueOf(System.currentTimeMillis()));
-                                    map.put(UiKitConstants.KEY_TRACKING_NETWORK,
-                                        DeviceUtils.getConnectivityType(UserDetailsActivity.this));
-                                    map.put(UiKitConstants.KEY_TRACKING_OS_VERSION,
-                                        String.valueOf(Build.VERSION.SDK_INT));
-                                    map.put(UiKitConstants.KEY_TRACKING_PLATFORM,
-                                        UiKitConstants.VALUE_TRACKING_PLATFORM);
-                                    map.put(UiKitConstants.KEY_TRACKING_SCREEN_SIZE,
-                                        DeviceUtils.getDisplaySize(UserDetailsActivity.this));
-                                    map.put(UiKitConstants.KEY_TRACKING_SDK_VERSION,
-                                        BuildConfig.VERSION_NAME);
-                                    map.put(UiKitConstants.KEY_TRACKING_CPU_USAGE,
-                                        DeviceUtils.getTotalCpuUsage());
-                                    map.put(UiKitConstants.KEY_TRACKING_MEMORY_USAGE,
-                                        DeviceUtils.getMemoryUsage());
-                                    map.put(UiKitConstants.KEY_TRACKING_ENVIRONMENT,
-                                        BuildConfig.FLAVOR);
-
-                                    details.setUserCustomData(map);
-
-                                } catch (Exception e) {
-                                    Logger.d(TAG, "raygun:" + e.getMessage());
-                                }
-
-                                return raygunMessage;
-                            }
-                        }
-                    }
-                    return null;
-
-                }
-        });
+            RaygunClient.setOnBeforeSend(new UiKitOnBeforeSend(this));
         }
     }
 
@@ -362,4 +287,9 @@ public class UserDetailsActivity extends BaseActivity {
         return sdkErrorValidationMessage;
     }
 
+    @Override
+    public void finish() {
+        RaygunClient.setOnBeforeSend(null);
+        super.finish();
+    }
 }
