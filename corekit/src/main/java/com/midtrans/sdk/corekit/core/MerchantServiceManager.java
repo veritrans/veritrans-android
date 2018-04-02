@@ -1,6 +1,5 @@
 package com.midtrans.sdk.corekit.core;
 
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.midtrans.sdk.corekit.callback.CheckoutCallback;
@@ -36,7 +35,7 @@ public class MerchantServiceManager extends BaseServiceManager {
      * @param request  Transaction details.
      * @param callback Checkout Callback
      */
-    public void checkout(final @NonNull TokenRequestModel request, final CheckoutCallback callback) {
+    public void checkout(final TokenRequestModel request, final CheckoutCallback callback) {
         if (service == null) {
             doOnApiServiceUnAvailable(callback);
             return;

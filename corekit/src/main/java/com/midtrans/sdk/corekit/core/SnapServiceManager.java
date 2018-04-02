@@ -1,7 +1,6 @@
 package com.midtrans.sdk.corekit.core;
 
 import android.content.res.Resources;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
@@ -44,10 +43,10 @@ public class SnapServiceManager extends BaseServiceManager {
     private static final String TAG = SnapServiceManager.class.getSimpleName();
     private static final String KEY_ERROR_MESSAGE = "error_messages";
 
-    private SnapApiService snapApiService;
+    private SnapApiService service;
 
-    SnapServiceManager(SnapApiService snapApiService) {
-        this.snapApiService = snapApiService;
+    SnapServiceManager(SnapApiService service) {
+        this.service = service;
     }
 
 
@@ -57,9 +56,14 @@ public class SnapServiceManager extends BaseServiceManager {
      * @param snapToken Snap Token.
      * @param callback  callback of payment option
      */
-    public void getTransactionOptions(@NonNull final String snapToken, final TransactionOptionsCallback callback) {
+    public void getTransactionOptions(final String snapToken, final TransactionOptionsCallback callback) {
 
-        Call<Transaction> call = snapApiService.getPaymentOption(snapToken);
+        if (service == null) {
+            doOnApiServiceUnAvailable(callback);
+            return;
+        }
+
+        Call<Transaction> call = service.getPaymentOption(snapToken);
         call.enqueue(new Callback<Transaction>() {
             @Override
             public void onResponse(Call<Transaction> call, Response<Transaction> response) {
@@ -122,14 +126,13 @@ public class SnapServiceManager extends BaseServiceManager {
      * @param callback       Transaction callback
      */
 
-    public void paymentUsingCreditCard(final String authenticationToken, CreditCardPaymentRequest paymentRequest, final TransactionCallback callback) {
-
-        if (paymentRequest == null) {
-            doOnInvalidDataSupplied(callback);
+    public void paymentUsingCreditCard(final String snapToken, CreditCardPaymentRequest paymentRequest, final TransactionCallback callback) {
+        if (service == null) {
+            doOnApiServiceUnAvailable(callback);
             return;
         }
 
-        Call<TransactionResponse> call = snapApiService.paymentUsingCreditCard(authenticationToken, paymentRequest);
+        Call<TransactionResponse> call = service.paymentUsingCreditCard(snapToken, paymentRequest);
         call.enqueue(new Callback<TransactionResponse>() {
             @Override
             public void onResponse(Call<TransactionResponse> call, Response<TransactionResponse> response) {
@@ -151,12 +154,12 @@ public class SnapServiceManager extends BaseServiceManager {
      * @param callback       Transaction callback
      */
     public void paymentUsingVa(final String snapToken, BankTransferPaymentRequest paymentRequest, final TransactionCallback callback) {
-        if (paymentRequest == null) {
-            doOnInvalidDataSupplied(callback);
+        if (service == null) {
+            doOnApiServiceUnAvailable(callback);
             return;
         }
 
-        Call<TransactionResponse> call = snapApiService.paymentUsingVa(snapToken, paymentRequest);
+        Call<TransactionResponse> call = service.paymentUsingVa(snapToken, paymentRequest);
         call.enqueue(new Callback<TransactionResponse>() {
             @Override
             public void onResponse(Call<TransactionResponse> call, Response<TransactionResponse> response) {
@@ -179,13 +182,12 @@ public class SnapServiceManager extends BaseServiceManager {
      * @param callback       transaction callback
      */
     public void paymentUsingBaseMethod(final String snap, BasePaymentRequest paymentRequest, final TransactionCallback callback) {
-
-        if (paymentRequest == null) {
-            doOnInvalidDataSupplied(callback);
+        if (service == null) {
+            doOnApiServiceUnAvailable(callback);
             return;
         }
 
-        Call<TransactionResponse> call = snapApiService.paymentUsingBaseMethod(snap, paymentRequest);
+        Call<TransactionResponse> call = service.paymentUsingBaseMethod(snap, paymentRequest);
         call.enqueue(new Callback<TransactionResponse>() {
             @Override
             public void onResponse(Call<TransactionResponse> call, Response<TransactionResponse> response) {
@@ -207,12 +209,12 @@ public class SnapServiceManager extends BaseServiceManager {
      * @param callback       transaction callback
      */
     public void paymentUsingMandiriBillPay(final String snapToken, BankTransferPaymentRequest paymentRequest, final TransactionCallback callback) {
-        if (paymentRequest == null) {
-            doOnInvalidDataSupplied(callback);
+        if (service == null) {
+            doOnApiServiceUnAvailable(callback);
             return;
         }
 
-        Call<TransactionResponse> call = snapApiService.paymentUsingMandiriBillPay(snapToken, paymentRequest);
+        Call<TransactionResponse> call = service.paymentUsingMandiriBillPay(snapToken, paymentRequest);
         call.enqueue(new Callback<TransactionResponse>() {
             @Override
             public void onResponse(Call<TransactionResponse> call, Response<TransactionResponse> response) {
@@ -234,12 +236,12 @@ public class SnapServiceManager extends BaseServiceManager {
      * @param callback       transaction callback
      */
     public void paymentUsingMandiriClickPay(final String snapToken, NewMandiriClickPayPaymentRequest paymentRequest, final TransactionCallback callback) {
-        if (paymentRequest == null) {
-            doOnInvalidDataSupplied(callback);
+        if (service == null) {
+            doOnApiServiceUnAvailable(callback);
             return;
         }
 
-        Call<TransactionResponse> call = snapApiService.paymentUsingMandiriClickPay(snapToken, paymentRequest);
+        Call<TransactionResponse> call = service.paymentUsingMandiriClickPay(snapToken, paymentRequest);
         call.enqueue(new Callback<TransactionResponse>() {
             @Override
             public void onResponse(Call<TransactionResponse> call, Response<TransactionResponse> response) {
@@ -260,13 +262,12 @@ public class SnapServiceManager extends BaseServiceManager {
      * @param callback       transaction callback
      */
     public void paymentUsingTelkomselCash(final String snapToken, TelkomselEcashPaymentRequest paymentRequest, final TransactionCallback callback) {
-
-        if (paymentRequest == null) {
-            doOnInvalidDataSupplied(callback);
+        if (service == null) {
+            doOnApiServiceUnAvailable(callback);
             return;
         }
 
-        Call<TransactionResponse> call = snapApiService.paymentUsingTelkomselEcash(snapToken, paymentRequest);
+        Call<TransactionResponse> call = service.paymentUsingTelkomselEcash(snapToken, paymentRequest);
         call.enqueue(new Callback<TransactionResponse>() {
             @Override
             public void onResponse(Call<TransactionResponse> call, Response<TransactionResponse> response) {
@@ -288,13 +289,12 @@ public class SnapServiceManager extends BaseServiceManager {
      * @param callback       transaction callback
      */
     public void paymentUsingIndosatDompetku(final String snapToken, IndosatDompetkuPaymentRequest paymentRequest, final TransactionCallback callback) {
-
-        if (paymentRequest == null) {
-            doOnInvalidDataSupplied(callback);
+        if (service == null) {
+            doOnApiServiceUnAvailable(callback);
             return;
         }
 
-        Call<TransactionResponse> call = snapApiService.paymentUsingIndosatDompetku(snapToken, paymentRequest);
+        Call<TransactionResponse> call = service.paymentUsingIndosatDompetku(snapToken, paymentRequest);
         call.enqueue(new Callback<TransactionResponse>() {
             @Override
             public void onResponse(Call<TransactionResponse> call, Response<TransactionResponse> response) {
@@ -309,13 +309,12 @@ public class SnapServiceManager extends BaseServiceManager {
     }
 
     public void paymentUsingGci(final String authenticationToken, GCIPaymentRequest paymentRequest, final TransactionCallback callback) {
-
-        if (paymentRequest == null) {
-            doOnInvalidDataSupplied(callback);
+        if (service == null) {
+            doOnApiServiceUnAvailable(callback);
             return;
         }
 
-        Call<TransactionResponse> call = snapApiService.paymentUsingGci(authenticationToken, paymentRequest);
+        Call<TransactionResponse> call = service.paymentUsingGci(authenticationToken, paymentRequest);
         call.enqueue(new Callback<TransactionResponse>() {
             @Override
             public void onResponse(Call<TransactionResponse> call, Response<TransactionResponse> response) {
@@ -336,13 +335,12 @@ public class SnapServiceManager extends BaseServiceManager {
      * @param callback       transaction callback
      */
     public void paymentUsingKlikBca(final String authenticationToken, KlikBCAPaymentRequest paymentRequest, final TransactionCallback callback) {
-
-        if (paymentRequest == null) {
-            doOnInvalidDataSupplied(callback);
+        if (service == null) {
+            doOnApiServiceUnAvailable(callback);
             return;
         }
 
-        Call<TransactionResponse> call = snapApiService.paymentUsingKlikBca(authenticationToken, paymentRequest);
+        Call<TransactionResponse> call = service.paymentUsingKlikBca(authenticationToken, paymentRequest);
         call.enqueue(new Callback<TransactionResponse>() {
             @Override
             public void onResponse(Call<TransactionResponse> call, Response<TransactionResponse> response) {
@@ -364,13 +362,12 @@ public class SnapServiceManager extends BaseServiceManager {
      * @param callback
      */
     public void paymentUsingGoPay(String snapToken, GoPayPaymentRequest paymentRequest, final TransactionCallback callback) {
-
-        if (paymentRequest == null) {
-            doOnInvalidDataSupplied(callback);
+        if (service == null) {
+            doOnApiServiceUnAvailable(callback);
             return;
         }
 
-        Call<TransactionResponse> call = snapApiService.paymentUsingGoPay(snapToken, paymentRequest);
+        Call<TransactionResponse> call = service.paymentUsingGoPay(snapToken, paymentRequest);
         call.enqueue(new Callback<TransactionResponse>() {
             @Override
             public void onResponse(Call<TransactionResponse> call, Response<TransactionResponse> response) {
@@ -392,13 +389,12 @@ public class SnapServiceManager extends BaseServiceManager {
      * @param callback       TransactionCallback
      */
     public void paymentUsingDanamonOnline(String snapToken, DanamonOnlinePaymentRequest paymentRequest, final TransactionCallback callback) {
-
-        if (paymentRequest == null) {
-            doOnInvalidDataSupplied(callback);
+        if (service == null) {
+            doOnApiServiceUnAvailable(callback);
             return;
         }
 
-        Call<TransactionResponse> call = snapApiService.paymentUsingDanamonOnline(snapToken, paymentRequest);
+        Call<TransactionResponse> call = service.paymentUsingDanamonOnline(snapToken, paymentRequest);
         call.enqueue(new Callback<TransactionResponse>() {
             @Override
             public void onResponse(Call<TransactionResponse> call, Response<TransactionResponse> response) {
@@ -447,13 +443,17 @@ public class SnapServiceManager extends BaseServiceManager {
     /**
      * It will delete saved credit card number on Snap Api
      *
-     * @param authenticationToken
-     * @param maskedCard          masked card number
-     * @param callback            DeleteCardCallback
+     * @param snapToken
+     * @param maskedCard masked card number
+     * @param callback   DeleteCardCallback
      */
-    public void deleteCard(String authenticationToken, String maskedCard, final DeleteCardCallback callback) {
+    public void deleteCard(String snapToken, String maskedCard, final DeleteCardCallback callback) {
+        if (service == null) {
+            doOnApiServiceUnAvailable(callback);
+            return;
+        }
 
-        Call<Void> call = snapApiService.deleteCard(authenticationToken, maskedCard);
+        Call<Void> call = service.deleteCard(snapToken, maskedCard);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -480,8 +480,12 @@ public class SnapServiceManager extends BaseServiceManager {
      * @param callback BankbinsCallback instance
      */
     public void getBankBins(final BankBinsCallback callback) {
+        if (service == null) {
+            doOnApiServiceUnAvailable(callback);
+            return;
+        }
 
-        Call<List<BankBinsResponse>> call = snapApiService.getBankBins();
+        Call<List<BankBinsResponse>> call = service.getBankBins();
         call.enqueue(new Callback<List<BankBinsResponse>>() {
             @Override
             public void onResponse(Call<List<BankBinsResponse>> call, Response<List<BankBinsResponse>> response) {
@@ -508,13 +512,19 @@ public class SnapServiceManager extends BaseServiceManager {
     }
 
     /**
-     * @param authenticationToken snap token
-     * @param cardToken           credit card token
-     * @param callback            BNI points callback instance
+     * Get points of given card
+     *
+     * @param snapToken snap token
+     * @param cardToken credit card token
+     * @param callback  BNI points callback instance
      */
-    public void getBanksPoint(String authenticationToken, String cardToken, final BanksPointCallback callback) {
+    public void getBanksPoint(String snapToken, String cardToken, final BanksPointCallback callback) {
+        if (service == null) {
+            doOnApiServiceUnAvailable(callback);
+            return;
+        }
 
-        Call<BanksPointResponse> call = snapApiService.getBanksPoint(authenticationToken, cardToken);
+        Call<BanksPointResponse> call = service.getBanksPoint(snapToken, cardToken);
         call.enqueue(new Callback<BanksPointResponse>() {
             @Override
             public void onResponse(Call<BanksPointResponse> call, Response<BanksPointResponse> response) {
@@ -539,9 +549,19 @@ public class SnapServiceManager extends BaseServiceManager {
         });
     }
 
+    /**
+     * Get transaction status from Snap API
+     *
+     * @param snapToken
+     * @param callback
+     */
     public void getTransactionStatus(String snapToken, final GetTransactionStatusCallback callback) {
+        if (service == null) {
+            doOnApiServiceUnAvailable(callback);
+            return;
+        }
 
-        Call<TransactionStatusResponse> call = snapApiService.getTransactionStatus(snapToken);
+        Call<TransactionStatusResponse> call = service.getTransactionStatus(snapToken);
         call.enqueue(new Callback<TransactionStatusResponse>() {
             @Override
             public void onResponse(Call<TransactionStatusResponse> call, Response<TransactionStatusResponse> response) {

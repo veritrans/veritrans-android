@@ -1,6 +1,5 @@
 package com.midtrans.sdk.corekit.core;
 
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
@@ -39,6 +38,11 @@ public class MidtransServiceManager extends BaseServiceManager {
                                  String cardExpMonth,
                                  String cardExpYear, String clientKey, final CardRegistrationCallback callback) {
 
+        if (service == null) {
+            doOnApiServiceUnAvailable(callback);
+            return;
+        }
+
         Call<CardRegistrationResponse> call = service.registerCard(cardNumber, cardCvv, cardExpMonth, cardExpYear, clientKey);
         call.enqueue(new Callback<CardRegistrationResponse>() {
             @Override
@@ -71,7 +75,13 @@ public class MidtransServiceManager extends BaseServiceManager {
      * @param cardTokenRequest information about credit card.
      * @param callback         get creditcard token callback
      */
-    public void getToken(@NonNull CardTokenRequest cardTokenRequest, @NonNull final CardTokenCallback callback) {
+    public void getToken(CardTokenRequest cardTokenRequest, final CardTokenCallback callback) {
+
+        if (service == null) {
+            doOnApiServiceUnAvailable(callback);
+            return;
+        }
+
         if (cardTokenRequest.isTwoClick()) {
 
             if (cardTokenRequest.isInstallment()) {
