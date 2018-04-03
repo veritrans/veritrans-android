@@ -144,8 +144,8 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         intPaymentButton();
         initHelpButtons();
         initInstallmentButton();
-        initDeleteButton();
         initScanCardButton();
+        initDeleteButton();
         initCheckBox();
         initPromoList();
         initLayoutState();
@@ -342,6 +342,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
     private void showDeleteIcon() {
         buttonDeleteCard.setVisibility(View.VISIBLE);
+        findViewById(R.id.button_separator).setVisibility(View.VISIBLE);
     }
 
     private void initExtras() {
@@ -381,6 +382,8 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             setTextColor(textCardNumberHint);
             setTextColor(textExpriyHint);
             setTextColor(textCvvHint);
+            setTextColor(textEmailHint);
+            setTextColor(textPhoneHint);
 
             setTextColor(buttonIncreaseInstallment);
             setTextColor(buttonDecreaseInstallment);
@@ -1198,8 +1201,10 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     private void showScanCardButton(boolean show) {
         if (show) {
             buttonScanCard.setVisibility(View.VISIBLE);
+            findViewById(R.id.button_separator).setVisibility(View.VISIBLE);
         } else {
             buttonScanCard.setVisibility(View.GONE);
+            findViewById(R.id.button_separator).setVisibility(View.GONE);
         }
     }
 

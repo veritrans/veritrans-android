@@ -73,7 +73,9 @@
     <string name="save_card_message">Simpan data kartu kredit</string>
     <string name="save_card_dialog">Kami akan menyimpan kartu anda sehingga bisa digunakan untuk transaksi selanjutnya.</string>
     <string name="pay_now">Bayar Sekarang</string>
-    <string name="pay_with_instalments">Bayar dengan cicilan ?</string>
+    <string name="pay_with_instalments">PEMBAYARAN MENGGUNAKAN CICILAN</string>
+    <string name="card_detail_title">DETAIL KARTU</string>
+    <string name="contact_detail_title">DETAIL KONTAK</string>
     <string name="validatation_message_card_holder_name">Masukkan nama pemilik kartu</string>
     <string name="hint_expiry_date">Kadaluarsa(mm/yy)</string>
     <string name="validation_message_card_number">Masukkan nomor kartu</string>
