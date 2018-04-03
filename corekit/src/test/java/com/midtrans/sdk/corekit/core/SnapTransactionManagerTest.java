@@ -251,10 +251,6 @@ public class SnapTransactionManagerTest {
     @Mock
     private SecurePreferences preferencesMock;
 
-    @Test
-    public void test() {
-        org.junit.Assert.assertEquals(1, 1);
-    }
 
 //    @Before
 //    public void setup() {
@@ -293,17 +289,17 @@ public class SnapTransactionManagerTest {
 //        Assert.assertTrue(true);
 //    }
 //
-//    @Test
-//    public void checkoutSuccess() {
-//        Mockito.when(snapTokenMock.getTokenId()).thenReturn(tokenId);
-//        callbackImplement.checkout(snapTokenRequestModelMock);
-//
-//        Mockito.verify(merchantApi, Mockito.times(1)).checkout(snapTokenRequestModelCaptor.capture(),
-//                callbackSnapTokenResponseCaptor.capture());
-//
-//        callbackSnapTokenResponseCaptor.getValue().success(snapTokenMock, retrofitResponse);
-//        Mockito.verify(callbackCollaborator, Mockito.times(1)).onCheckoutSuccess();
-//    }
+    @Test
+    public void checkoutSuccess() {
+        Mockito.when(snapTokenMock.getTokenId()).thenReturn(tokenId);
+        callbackImplement.checkout(snapTokenRequestModelMock);
+
+        Mockito.verify(merchantApi, Mockito.times(1)).checkout(snapTokenRequestModelCaptor.capture(),
+                callbackSnapTokenResponseCaptor.capture());
+
+        callbackSnapTokenResponseCaptor.getValue().success(snapTokenMock, retrofitResponse);
+        Mockito.verify(callbackCollaborator, Mockito.times(1)).onCheckoutSuccess();
+    }
 //
 //    @Test
 //    public void checkoutError_whenTokenNull() {
@@ -364,13 +360,13 @@ public class SnapTransactionManagerTest {
 //     * Get Transaction Options
 //     */
 //
-//    @Test
-//    public void getTransactionOptionError_whenResponseNull() {
-//        callbackImplement.getPaymentOption(tokenId);
-//        Mockito.verify(snapAPI).getPaymentOption(tokenIdCaptor.capture(), transactionCaptorMock.capture());
-//        transactionCaptorMock.getValue().success(null, retrofitResponse);
-//        Mockito.verify(callbackCollaborator).onError();
-//    }
+    @Test
+    public void getTransactionOptionError_whenResponseNull() {
+        callbackImplement.getPaymentOption(tokenId);
+        Mockito.verify(snapAPI).getPaymentOption(tokenIdCaptor.capture(), transactionCaptorMock.capture());
+        transactionCaptorMock.getValue().success(null, retrofitResponse);
+        Mockito.verify(callbackCollaborator).onError();
+    }
 //
 //    @Test
 //    public void getTransactionOptionSuccess() {
