@@ -712,4 +712,16 @@ public class SdkUtil {
         return preferences;
     }
 
+    public static SnapServiceManager newSnapServiceManager(int requestTimeOut) {
+        return new SnapServiceManager(MidtransRestAdapter.newSnapApiService(requestTimeOut));
+    }
+
+    public static MidtransServiceManager newMidtransServiceManager(int requestTimeOut) {
+        return new MidtransServiceManager(MidtransRestAdapter.newMidtransApiService(requestTimeOut));
+    }
+
+    public static MerchantServiceManager newMerchantServiceManager(String merchantServerUrl, int requestTimeOut) {
+        return new MerchantServiceManager(MidtransRestAdapter.newMerchantApiService(merchantServerUrl, requestTimeOut));
+    }
+
 }
