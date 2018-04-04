@@ -123,11 +123,10 @@ public class MidtransSDK {
             }
         }
 
-        this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), merchantName, getFlow(flow), deviceType == null ? "" : deviceType, isLogEnabled, context);
-        this.snapServiceManager = new SnapServiceManager(MidtransRestAdapter.newSnapApiService(requestTimeOut));
-        this.midtransServiceManager = new MidtransServiceManager(MidtransRestAdapter.newMidtransApiService(requestTimeOut));
-        this.merchantServiceManager = new MerchantServiceManager(MidtransRestAdapter.newMerchantApiService(merchantServerUrl, requestTimeOut));
-
+//        this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), merchantName, getFlow(flow), deviceType == null ? "" : deviceType, isLogEnabled, context);
+        this.snapServiceManager = SdkUtil.newSnapServiceManager(requestTimeOut);
+        this.midtransServiceManager = SdkUtil.newMidtransServiceManager(requestTimeOut);
+        this.merchantServiceManager = SdkUtil.newMerchantServiceManager(merchantServerUrl, requestTimeOut);
     }
 
     /**
@@ -1605,6 +1604,7 @@ public class MidtransSDK {
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
+
 
     /**
      * It will run backround task to save card to merchant server

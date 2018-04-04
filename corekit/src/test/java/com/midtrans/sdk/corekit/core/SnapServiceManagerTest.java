@@ -18,13 +18,22 @@ import com.midtrans.sdk.corekit.models.snap.BanksPointResponse;
 import com.midtrans.sdk.corekit.models.snap.Token;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.TransactionDetails;
+import com.midtrans.sdk.corekit.models.snap.params.CreditCardPaymentParams;
+import com.midtrans.sdk.corekit.models.snap.params.GCIPaymentParams;
+import com.midtrans.sdk.corekit.models.snap.params.IndosatDompetkuPaymentParams;
+import com.midtrans.sdk.corekit.models.snap.params.KlikBcaPaymentParams;
+import com.midtrans.sdk.corekit.models.snap.params.NewMandiriClickPaymentParams;
+import com.midtrans.sdk.corekit.models.snap.params.TelkomselCashPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.BasePaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.CreditCardPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.CustomerDetailRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.GCIPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.GoPayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.IndosatDompetkuPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.MandiriClickPayPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.NewMandiriClickPayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.TelkomselEcashPaymentRequest;
 import com.securepreferences.SecurePreferences;
 
@@ -35,6 +44,7 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
+import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
@@ -44,6 +54,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.security.cert.CertPathValidatorException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.net.ssl.SSLHandshakeException;
 
@@ -52,6 +63,7 @@ import okhttp3.Protocol;
 import okhttp3.Request;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
@@ -70,6 +82,7 @@ public class SnapServiceManagerTest {
     public static final String CARD_EXP_YEAR = "123";
     private static final String RESPONSE_CODE_200 = "200";
     private static final String RESPONSE_CODE_400 = "400";
+    private static final int ERR_TYPE_NPE = 1;
     protected String sampleJsonResponse = "{\"response\":\"response\"}";
     // transaction properties
     @InjectMocks
@@ -225,12 +238,17 @@ public class SnapServiceManagerTest {
     private int timout = 1000;
 
     @Mock
-    private Call<Transaction> callMock;
+    private Call<Transaction> callTransactionMock;
+    @Mock
+    private Call<TransactionResponse> callTransactionResponseMock;
 
     @Captor
-    private ArgumentCaptor<retrofit2.Callback<Transaction>> transactionCaptor;
+    private ArgumentCaptor<Callback<Transaction>> transactionCaptor;
     @Mock
     private CallbackCollaborator callbackCollaboratorMock;
+    @Captor
+    private ArgumentCaptor<Callback<TransactionResponse>> transactionResponseCaptor;
+
 
     @Test
     public void test() {
@@ -247,6 +265,10 @@ public class SnapServiceManagerTest {
         PowerMockito.mockStatic(MixpanelAnalyticsManager.class);
         PowerMockito.mockStatic(SdkUtil.class);
         PowerMockito.mockStatic(MidtransRestAdapter.class);
+
+        Mockito.when(TextUtils.isEmpty(Matchers.anyString())).thenReturn(false);
+        Mockito.when(TextUtils.isEmpty(null)).thenReturn(true);
+        Mockito.when(TextUtils.isEmpty("")).thenReturn(true);
 
         Mockito.when(contextMock.getResources()).thenReturn(resourcesMock);
         Mockito.when(contextMock.getApplicationContext()).thenReturn(contextMock);
@@ -289,22 +311,52 @@ public class SnapServiceManagerTest {
 
 
     private void initGetTransactions() {
-        Mockito.when(snapApiServiceMock.getPaymentOption(snapToken)).thenReturn(callMock);
+        Mockito.when(snapApiServiceMock.getPaymentOption(snapToken)).thenReturn(callTransactionMock);
         callbackImplement.getTransactionOptions(snapToken);
-        Mockito.verify(callMock).enqueue(transactionCaptor.capture());
+        Mockito.verify(callTransactionMock).enqueue(transactionCaptor.capture());
+    }
+
+    private Response<TransactionResponse> createResponseOfTransactionResponseSuccess(Integer statusCode, String paymentType, boolean emptyBody) {
+        Request okReq = new Request.Builder().url(SDKConfigTest.SNAP_URL).build();
+        okhttp3.Response okResponse = new okhttp3.Response.Builder().code((statusCode == null || statusCode > 300) ? 299 : statusCode).request(okReq).message("success").protocol(Protocol.HTTP_2).build();
+        TransactionResponse transResponse = emptyBody ? null : createTransactionReponseSuccess(statusCode, paymentType);
+        Response<TransactionResponse> resTransactionResponse = Response.success(transResponse, okResponse);
+        return resTransactionResponse;
+    }
+
+    private TransactionResponse createTransactionReponseSuccess(Integer statusCode, String paymentType) {
+        TransactionResponse response = new TransactionResponse("success");
+        response.setPaymentType(paymentType);
+        response.setStatusCode(String.valueOf(statusCode));
+        return response;
+    }
+
+    private Throwable createThrowableOfTransactionResponseFailure(int errorMessage) {
+        switch (errorMessage) {
+            case ERR_TYPE_NPE:
+                return new Throwable(new NullPointerException());
+        }
+
+        return new Throwable();
+    }
+
+    private ArrayList<String> createValidationMessages() {
+        List<String> validations = new ArrayList<>();
+        validations.add("is paid");
+        return new ArrayList<>(validations);
     }
 
     @Test
     public void getTransactionOptionSuccess() {
         initGetTransactions();
-        transactionCaptor.getValue().onResponse(callMock, createResponseTransactionSuccess(200, false));
+        transactionCaptor.getValue().onResponse(callTransactionMock, createResponseTransactionSuccess(200, false));
         Mockito.verify(callbackCollaboratorMock).onGetPaymentOptionSuccess();
     }
 
     @Test
     public void getTransactionOptionFailure_whenResponseCodeNot200() {
         initGetTransactions();
-        transactionCaptor.getValue().onResponse(callMock, createResponseTransactionSuccess(234, false));
+        transactionCaptor.getValue().onResponse(callTransactionMock, createResponseTransactionSuccess(234, false));
         Mockito.verify(callbackCollaboratorMock).onGetPaymentOptionFailure();
     }
 
@@ -313,16 +365,863 @@ public class SnapServiceManagerTest {
         initGetTransactions();
         Response<Transaction> resTransaction = createResponseTransactionSuccess(234, false);
         Mockito.when(Mockito.spy(resTransaction.body()).getToken()).thenReturn(null);
-        transactionCaptor.getValue().onResponse(callMock, resTransaction);
+        transactionCaptor.getValue().onResponse(callTransactionMock, resTransaction);
         Mockito.verify(callbackCollaboratorMock).onGetPaymentOptionFailure();
     }
 
     @Test
     public void getTransactionOptionError_whenResponseCodeNotIn200To300() {
         initGetTransactions();
-        transactionCaptor.getValue().onResponse(callMock, createResponseTransactionError(400));
+        transactionCaptor.getValue().onResponse(callTransactionMock, createResponseTransactionError(400));
         Mockito.verify(callbackCollaboratorMock).onError();
     }
 
 
+    /**
+     * credit card payment
+     */
+
+    private void initCreditCardpayment() {
+        CreditCardPaymentRequest request = createCreditCardRequest();
+        Mockito.when(snapApiServiceMock.paymentUsingCreditCard(snapToken, request)).thenReturn(callTransactionResponseMock);
+        callbackImplement.paymentUsingCreditCard(snapToken, request);
+        Mockito.verify(callTransactionResponseMock).enqueue(transactionResponseCaptor.capture());
+    }
+
+    private CreditCardPaymentRequest createCreditCardRequest() {
+        CreditCardPaymentParams params = new CreditCardPaymentParams(SDKConfigTest.CARD_TOKEN, false, SDKConfigTest.MASKED_CARD_NUMBER);
+        CustomerDetailRequest cdRequest = new CustomerDetailRequest();
+        CreditCardPaymentRequest creditCardPaymentRequest = new CreditCardPaymentRequest(PaymentType.CREDIT_CARD, params, cdRequest);
+        return creditCardPaymentRequest;
+    }
+
+    @Test
+    public void paymentUsingCreditCardSuccess() {
+        initCreditCardpayment();
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, createResponseOfTransactionResponseSuccess(200, PaymentType.CREDIT_CARD, false));
+        Mockito.verify(callbackCollaboratorMock).onTransactionSuccess();
+    }
+
+
+    @Test
+    public void paymentUsingCreditCardFailure_whenEmptyStatusCode() {
+        initCreditCardpayment();
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, createResponseOfTransactionResponseSuccess(null, PaymentType.CREDIT_CARD, false));
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingCreditCardFailure_whenStatusCodeNot200Or201() {
+        initCreditCardpayment();
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, createResponseOfTransactionResponseSuccess(204, PaymentType.CREDIT_CARD, false));
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingCreditCardFailure_whenStatusCode400() {
+        initCreditCardpayment();
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, createResponseOfTransactionResponseSuccess(400, PaymentType.CREDIT_CARD, false));
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingCreditCardFailure_whenValidationMessagesNullOrEmpty() {
+        initCreditCardpayment();
+        Response<TransactionResponse> resTransaction = createResponseOfTransactionResponseSuccess(400, PaymentType.CREDIT_CARD, false);
+
+        //Validation Messages Null
+        Mockito.when(Mockito.spy(resTransaction.body()).getValidationMessages()).thenReturn(null);
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, resTransaction);
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+
+        //Validation Messages Empty
+        Mockito.when(Mockito.spy(resTransaction.body()).getValidationMessages()).thenReturn(new ArrayList<String>());
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, resTransaction);
+        Mockito.verify(callbackCollaboratorMock, Mockito.times(2)).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingCreditCardFailure_whenValidationMessagesNotEmpty() {
+        initCreditCardpayment();
+        Response<TransactionResponse> resTransaction = createResponseOfTransactionResponseSuccess(400, PaymentType.CREDIT_CARD, false);
+        resTransaction.body().setValidationMessages(createValidationMessages());
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, resTransaction);
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingCreditCardFailure_whenServiceNull() {
+        snapTransactionManager.setService(null);
+        callbackImplement.paymentUsingCreditCard(snapToken, null);
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+    @Test
+    public void paymentUsingCreditCardError_whenEmptyResponseBody() {
+        initCreditCardpayment();
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, createResponseOfTransactionResponseSuccess(200, PaymentType.CREDIT_CARD, true));
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+    @Test
+    public void paymentUsingCreditCardError() {
+        initCreditCardpayment();
+        transactionResponseCaptor.getValue().onFailure(callTransactionResponseMock, createThrowableOfTransactionResponseFailure(ERR_TYPE_NPE));
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+    /**
+     * payment using va
+     */
+
+    private void initVaRequest(String paymentType) {
+        BankTransferPaymentRequest request = createVaRequest(paymentType);
+        Mockito.when(snapApiServiceMock.paymentUsingVa(snapToken, request)).thenReturn(callTransactionResponseMock);
+        callbackImplement.paymentUsingVa(snapToken, request);
+        Mockito.verify(callTransactionResponseMock).enqueue(transactionResponseCaptor.capture());
+    }
+
+    private BankTransferPaymentRequest createVaRequest(String paymentType) {
+        BankTransferPaymentRequest request = new BankTransferPaymentRequest(paymentType, new CustomerDetailRequest());
+        return request;
+    }
+
+    @Test
+    public void paymentUsingVaSuccess() {
+        initVaRequest(PaymentType.ALL_VA);
+        Response<TransactionResponse> response = createResponseOfTransactionResponseSuccess(200, PaymentType.ALL_VA, false);
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, response);
+        Mockito.verify(callbackCollaboratorMock).onTransactionSuccess();
+        Assert.assertEquals(PaymentType.ALL_VA, response.body().getPaymentType());
+    }
+
+
+    @Test
+    public void paymentUsingVaFailure_whenEmptyStatusCode() {
+        initVaRequest(PaymentType.ALL_VA);
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, createResponseOfTransactionResponseSuccess(null, PaymentType.BNI_VA, false));
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+
+    }
+
+    @Test
+    public void paymentUsingVaFailure_whenStatusCodeNot200Or201() {
+        initVaRequest(PaymentType.ALL_VA);
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, createResponseOfTransactionResponseSuccess(204, PaymentType.ALL_VA, false));
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingVaFailure_whenStatusCode400() {
+        initVaRequest(PaymentType.ALL_VA);
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, createResponseOfTransactionResponseSuccess(400, PaymentType.ALL_VA, false));
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingVaFailure_whenValidationMessagesNullOrEmpty() {
+        initVaRequest(PaymentType.ALL_VA);
+        Response<TransactionResponse> resTransaction = createResponseOfTransactionResponseSuccess(400, PaymentType.ALL_VA, false);
+
+        //Validation Messages Null
+        Mockito.when(Mockito.spy(resTransaction.body()).getValidationMessages()).thenReturn(null);
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, resTransaction);
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+
+        //Validation Messages Empty
+        Mockito.when(Mockito.spy(resTransaction.body()).getValidationMessages()).thenReturn(new ArrayList<String>());
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, resTransaction);
+        Mockito.verify(callbackCollaboratorMock, Mockito.times(2)).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingVaFailure_whenValidationMessagesNotEmpty() {
+        initVaRequest(PaymentType.ALL_VA);
+        Response<TransactionResponse> resTransaction = createResponseOfTransactionResponseSuccess(400, PaymentType.ALL_VA, false);
+        resTransaction.body().setValidationMessages(createValidationMessages());
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, resTransaction);
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingVaFailure_whenServiceNull() {
+        snapTransactionManager.setService(null);
+        callbackImplement.paymentUsingVa(snapToken, null);
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+    @Test
+    public void paymentUsingVaError_whenEmptyResponseBody() {
+        initVaRequest(PaymentType.ALL_VA);
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, createResponseOfTransactionResponseSuccess(200, PaymentType.ALL_VA, true));
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+    @Test
+    public void paymentUsingVaError() {
+        initVaRequest(PaymentType.ALL_VA);
+        transactionResponseCaptor.getValue().onFailure(callTransactionResponseMock, createThrowableOfTransactionResponseFailure(ERR_TYPE_NPE));
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+    /**
+     * payment using base method
+     */
+
+    private void initBaseMethod(String paymentType) {
+        BasePaymentRequest request = createBaseRequest(paymentType);
+        Mockito.when(snapApiServiceMock.paymentUsingBaseMethod(snapToken, request)).thenReturn(callTransactionResponseMock);
+        callbackImplement.paymentBaseMethod(snapToken, request);
+        Mockito.verify(callTransactionResponseMock).enqueue(transactionResponseCaptor.capture());
+    }
+
+    private BasePaymentRequest createBaseRequest(String paymentType) {
+        BasePaymentRequest request = new BasePaymentRequest(paymentType);
+        return request;
+    }
+
+    @Test
+    public void paymentUsingBaseMethodSuccess() {
+        initBaseMethod(PaymentType.DANAMON_ONLINE);
+        Response<TransactionResponse> response = createResponseOfTransactionResponseSuccess(200, PaymentType.DANAMON_ONLINE, false);
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, response);
+        Mockito.verify(callbackCollaboratorMock).onTransactionSuccess();
+        Assert.assertEquals(PaymentType.DANAMON_ONLINE, response.body().getPaymentType());
+    }
+
+
+    @Test
+    public void paymentUsingBaseMethod_whenEmptyStatusCode() {
+        initBaseMethod(PaymentType.DANAMON_ONLINE);
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, createResponseOfTransactionResponseSuccess(null, PaymentType.DANAMON_ONLINE, false));
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingBaseMethodFailure_whenStatusCodeNot200Or201() {
+        initBaseMethod(PaymentType.DANAMON_ONLINE);
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, createResponseOfTransactionResponseSuccess(204, PaymentType.DANAMON_ONLINE, false));
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingBaseMethodFailure_whenStatusCode400() {
+        initBaseMethod(PaymentType.DANAMON_ONLINE);
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, createResponseOfTransactionResponseSuccess(400, PaymentType.DANAMON_ONLINE, false));
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingBaseMethodFailure_whenValidationMessagesNullOrEmpty() {
+        initBaseMethod(PaymentType.DANAMON_ONLINE);
+        Response<TransactionResponse> resTransaction = createResponseOfTransactionResponseSuccess(400, PaymentType.DANAMON_ONLINE, false);
+
+        //Validation Messages Null
+        Mockito.when(Mockito.spy(resTransaction.body()).getValidationMessages()).thenReturn(null);
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, resTransaction);
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+
+        //Validation Messages Empty
+        Mockito.when(Mockito.spy(resTransaction.body()).getValidationMessages()).thenReturn(new ArrayList<String>());
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, resTransaction);
+        Mockito.verify(callbackCollaboratorMock, Mockito.times(2)).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingBaseMethodFailure_whenValidationMessagesNotEmpty() {
+        initBaseMethod(PaymentType.DANAMON_ONLINE);
+        Response<TransactionResponse> resTransaction = createResponseOfTransactionResponseSuccess(400, PaymentType.DANAMON_ONLINE, false);
+        resTransaction.body().setValidationMessages(createValidationMessages());
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, resTransaction);
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingBaseMethodFailure_whenServiceNull() {
+        snapTransactionManager.setService(null);
+        callbackImplement.paymentBaseMethod(snapToken, null);
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+    @Test
+    public void paymentUsingBaseMethodError_whenEmptyResponseBody() {
+        initBaseMethod(PaymentType.DANAMON_ONLINE);
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, createResponseOfTransactionResponseSuccess(200, PaymentType.DANAMON_ONLINE, true));
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+    @Test
+    public void paymentUsingBaseMethodError() {
+        initBaseMethod(PaymentType.DANAMON_ONLINE);
+        transactionResponseCaptor.getValue().onFailure(callTransactionResponseMock, createThrowableOfTransactionResponseFailure(ERR_TYPE_NPE));
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+    /**
+     * payment using mandiri click pay
+     */
+
+    private void initMandiriClickPay() {
+        NewMandiriClickPayPaymentRequest request = createMandiriRequest();
+        Mockito.when(snapApiServiceMock.paymentUsingMandiriClickPay(snapToken, request)).thenReturn(callTransactionResponseMock);
+        callbackImplement.paymentUsingMandiriClickPay(snapToken, request);
+        Mockito.verify(callTransactionResponseMock).enqueue(transactionResponseCaptor.capture());
+    }
+
+    private NewMandiriClickPayPaymentRequest createMandiriRequest() {
+        String mandiriCardNumber = "4111111111111111";
+        String input3 = "123123";
+        String token = "token1321";
+
+        NewMandiriClickPaymentParams params = new NewMandiriClickPaymentParams(mandiriCardNumber, input3, token);
+        NewMandiriClickPayPaymentRequest request = new NewMandiriClickPayPaymentRequest(PaymentType.MANDIRI_CLICKPAY, params);
+        return request;
+    }
+
+    @Test
+    public void paymentUsingMandiriClickPaySuccess() {
+        initMandiriClickPay();
+        Response<TransactionResponse> response = createResponseOfTransactionResponseSuccess(200, PaymentType.MANDIRI_CLICKPAY, false);
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, response);
+        Mockito.verify(callbackCollaboratorMock).onTransactionSuccess();
+        Assert.assertEquals(PaymentType.MANDIRI_CLICKPAY, response.body().getPaymentType());
+    }
+
+
+    @Test
+    public void paymentUsingMandiriClickPay_whenEmptyStatusCode() {
+        initMandiriClickPay();
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, createResponseOfTransactionResponseSuccess(null, PaymentType.MANDIRI_CLICKPAY, false));
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingMandiriClickPayFailure_whenStatusCodeNot200Or201() {
+        initMandiriClickPay();
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, createResponseOfTransactionResponseSuccess(204, PaymentType.MANDIRI_CLICKPAY, false));
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingMandiriClickPayFailure_whenStatusCode400() {
+        initMandiriClickPay();
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, createResponseOfTransactionResponseSuccess(400, PaymentType.MANDIRI_CLICKPAY, false));
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingMandiriClickPayFailure_whenValidationMessagesNullOrEmpty() {
+        initMandiriClickPay();
+        Response<TransactionResponse> resTransaction = createResponseOfTransactionResponseSuccess(400, PaymentType.MANDIRI_CLICKPAY, false);
+
+        //Validation Messages Null
+        Mockito.when(Mockito.spy(resTransaction.body()).getValidationMessages()).thenReturn(null);
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, resTransaction);
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+
+        //Validation Messages Empty
+        Mockito.when(Mockito.spy(resTransaction.body()).getValidationMessages()).thenReturn(new ArrayList<String>());
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, resTransaction);
+        Mockito.verify(callbackCollaboratorMock, Mockito.times(2)).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingMandiriClickPayFailure_whenValidationMessagesNotEmpty() {
+        initMandiriClickPay();
+        Response<TransactionResponse> resTransaction = createResponseOfTransactionResponseSuccess(400, PaymentType.MANDIRI_CLICKPAY, false);
+        resTransaction.body().setValidationMessages(createValidationMessages());
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, resTransaction);
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingMandiriClickPayFailure_whenServiceNull() {
+        snapTransactionManager.setService(null);
+        callbackImplement.paymentBaseMethod(snapToken, null);
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+    @Test
+    public void paymentUsingMandiriClickPayError_whenEmptyResponseBody() {
+        initMandiriClickPay();
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, createResponseOfTransactionResponseSuccess(200, PaymentType.MANDIRI_CLICKPAY, true));
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+    @Test
+    public void paymentUsingMandiriClickPayError() {
+        initMandiriClickPay();
+        transactionResponseCaptor.getValue().onFailure(callTransactionResponseMock, createThrowableOfTransactionResponseFailure(ERR_TYPE_NPE));
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+    /**
+     * payment using T-Cash
+     */
+
+    private void initTCash() {
+        TelkomselEcashPaymentRequest request = createTCashRequest();
+        Mockito.when(snapApiServiceMock.paymentUsingTelkomselEcash(snapToken, request)).thenReturn(callTransactionResponseMock);
+        callbackImplement.paymentUsingTCash(snapToken, request);
+        Mockito.verify(callTransactionResponseMock).enqueue(transactionResponseCaptor.capture());
+    }
+
+    private TelkomselEcashPaymentRequest createTCashRequest() {
+        TelkomselCashPaymentParams params = new TelkomselCashPaymentParams("08123456789");
+        TelkomselEcashPaymentRequest request = new TelkomselEcashPaymentRequest(PaymentType.TELKOMSEL_CASH, params);
+        return request;
+    }
+
+    @Test
+    public void paymentUsingTCashSuccess() {
+        initTCash();
+        Response<TransactionResponse> response = createResponseOfTransactionResponseSuccess(200, PaymentType.TELKOMSEL_CASH, false);
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, response);
+        Mockito.verify(callbackCollaboratorMock).onTransactionSuccess();
+        Assert.assertEquals(PaymentType.TELKOMSEL_CASH, response.body().getPaymentType());
+    }
+
+
+    @Test
+    public void paymentUsingTCash_whenEmptyStatusCode() {
+        initTCash();
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, createResponseOfTransactionResponseSuccess(null, PaymentType.TELKOMSEL_CASH, false));
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingTCashFailure_whenStatusCodeNot200Or201() {
+        initTCash();
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, createResponseOfTransactionResponseSuccess(204, PaymentType.TELKOMSEL_CASH, false));
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingTCashFailure_whenStatusCode400() {
+        initTCash();
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, createResponseOfTransactionResponseSuccess(400, PaymentType.TELKOMSEL_CASH, false));
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingTCashFailure_whenValidationMessagesNullOrEmpty() {
+        initTCash();
+        Response<TransactionResponse> resTransaction = createResponseOfTransactionResponseSuccess(400, PaymentType.TELKOMSEL_CASH, false);
+
+        //Validation Messages Null
+        Mockito.when(Mockito.spy(resTransaction.body()).getValidationMessages()).thenReturn(null);
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, resTransaction);
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+
+        //Validation Messages Empty
+        Mockito.when(Mockito.spy(resTransaction.body()).getValidationMessages()).thenReturn(new ArrayList<String>());
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, resTransaction);
+        Mockito.verify(callbackCollaboratorMock, Mockito.times(2)).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingTCashFailure_whenValidationMessagesNotEmpty() {
+        initTCash();
+        Response<TransactionResponse> resTransaction = createResponseOfTransactionResponseSuccess(400, PaymentType.TELKOMSEL_CASH, false);
+        resTransaction.body().setValidationMessages(createValidationMessages());
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, resTransaction);
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingTCashFailure_whenServiceNull() {
+        snapTransactionManager.setService(null);
+        callbackImplement.paymentUsingTCash(snapToken, null);
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+    @Test
+    public void paymentUsingTCashError_whenEmptyResponseBody() {
+        initTCash();
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, createResponseOfTransactionResponseSuccess(200, PaymentType.TELKOMSEL_CASH, true));
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+    @Test
+    public void paymentUsingTCashError() {
+        initTCash();
+        transactionResponseCaptor.getValue().onFailure(callTransactionResponseMock, createThrowableOfTransactionResponseFailure(ERR_TYPE_NPE));
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+    /**
+     * payment using Indosat Dompetku
+     */
+
+    private void initIndosatDompetKu() {
+        IndosatDompetkuPaymentRequest request = createIndosatDompetkuRequest();
+        Mockito.when(snapApiServiceMock.paymentUsingIndosatDompetku(snapToken, request)).thenReturn(callTransactionResponseMock);
+        callbackImplement.paymentUsingIndosatDomputku(snapToken, request);
+        Mockito.verify(callTransactionResponseMock).enqueue(transactionResponseCaptor.capture());
+    }
+
+    private IndosatDompetkuPaymentRequest createIndosatDompetkuRequest() {
+        IndosatDompetkuPaymentParams params = new IndosatDompetkuPaymentParams("msisdn");
+        IndosatDompetkuPaymentRequest request = new IndosatDompetkuPaymentRequest(PaymentType.INDOSAT_DOMPETKU, params);
+        return request;
+    }
+
+    @Test
+    public void paymentUsingIndosatDompetkuSuccess() {
+        initIndosatDompetKu();
+        Response<TransactionResponse> response = createResponseOfTransactionResponseSuccess(200, PaymentType.INDOSAT_DOMPETKU, false);
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, response);
+        Mockito.verify(callbackCollaboratorMock).onTransactionSuccess();
+        Assert.assertEquals(PaymentType.INDOSAT_DOMPETKU, response.body().getPaymentType());
+    }
+
+
+    @Test
+    public void paymentUsingIndosatDompetku_whenEmptyStatusCode() {
+        initIndosatDompetKu();
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, createResponseOfTransactionResponseSuccess(null, PaymentType.INDOSAT_DOMPETKU, false));
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingIndosatDompetkuFailure_whenStatusCodeNot200Or201() {
+        initIndosatDompetKu();
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, createResponseOfTransactionResponseSuccess(204, PaymentType.INDOSAT_DOMPETKU, false));
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingIndosatDompetkuFailure_whenStatusCode400() {
+        initIndosatDompetKu();
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, createResponseOfTransactionResponseSuccess(400, PaymentType.INDOSAT_DOMPETKU, false));
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingIndosatDompetkuFailure_whenValidationMessagesNullOrEmpty() {
+        initIndosatDompetKu();
+        Response<TransactionResponse> resTransaction = createResponseOfTransactionResponseSuccess(400, PaymentType.INDOSAT_DOMPETKU, false);
+
+        //Validation Messages Null
+        Mockito.when(Mockito.spy(resTransaction.body()).getValidationMessages()).thenReturn(null);
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, resTransaction);
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+
+        //Validation Messages Empty
+        Mockito.when(Mockito.spy(resTransaction.body()).getValidationMessages()).thenReturn(new ArrayList<String>());
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, resTransaction);
+        Mockito.verify(callbackCollaboratorMock, Mockito.times(2)).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingIndosatDompetkuFailure_whenValidationMessagesNotEmpty() {
+        initIndosatDompetKu();
+        Response<TransactionResponse> resTransaction = createResponseOfTransactionResponseSuccess(400, PaymentType.INDOSAT_DOMPETKU, false);
+        resTransaction.body().setValidationMessages(createValidationMessages());
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, resTransaction);
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingIndosatDompetkuFailure_whenServiceNull() {
+        snapTransactionManager.setService(null);
+        callbackImplement.paymentUsingIndosatDomputku(snapToken, null);
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+    @Test
+    public void paymentUsingIndosatDompetkuError_whenEmptyResponseBody() {
+        initIndosatDompetKu();
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, createResponseOfTransactionResponseSuccess(200, PaymentType.INDOSAT_DOMPETKU, true));
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+    @Test
+    public void paymentUsingIndosatDompetkuError() {
+        initIndosatDompetKu();
+        transactionResponseCaptor.getValue().onFailure(callTransactionResponseMock, createThrowableOfTransactionResponseFailure(ERR_TYPE_NPE));
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+    /**
+     * payment using GCI
+     */
+
+    private void initGci() {
+        GCIPaymentRequest request = createGciRequest();
+        Mockito.when(snapApiServiceMock.paymentUsingGci(snapToken, request)).thenReturn(callTransactionResponseMock);
+        callbackImplement.paymentUsingGci(snapToken, request);
+        Mockito.verify(callTransactionResponseMock).enqueue(transactionResponseCaptor.capture());
+    }
+
+    private GCIPaymentRequest createGciRequest() {
+        GCIPaymentParams params = new GCIPaymentParams(SDKConfigTest.CARD_NUMBER, "pass1234");
+        GCIPaymentRequest request = new GCIPaymentRequest(params, PaymentType.GCI);
+        return request;
+    }
+
+    @Test
+    public void paymentUsingGciSuccess() {
+        initGci();
+        Response<TransactionResponse> response = createResponseOfTransactionResponseSuccess(200, PaymentType.GCI, false);
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, response);
+        Mockito.verify(callbackCollaboratorMock).onTransactionSuccess();
+        Assert.assertEquals(PaymentType.GCI, response.body().getPaymentType());
+    }
+
+
+    @Test
+    public void paymentUsingGci_whenEmptyStatusCode() {
+        initGci();
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, createResponseOfTransactionResponseSuccess(null, PaymentType.GCI, false));
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingGciFailure_whenStatusCodeNot200Or201() {
+        initGci();
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, createResponseOfTransactionResponseSuccess(204, PaymentType.GCI, false));
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingGciFailure_whenStatusCode400() {
+        initGci();
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, createResponseOfTransactionResponseSuccess(400, PaymentType.GCI, false));
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingGciFailure_whenValidationMessagesNullOrEmpty() {
+        initGci();
+        Response<TransactionResponse> resTransaction = createResponseOfTransactionResponseSuccess(400, PaymentType.GCI, false);
+
+        //Validation Messages Null
+        Mockito.when(Mockito.spy(resTransaction.body()).getValidationMessages()).thenReturn(null);
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, resTransaction);
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+
+        //Validation Messages Empty
+        Mockito.when(Mockito.spy(resTransaction.body()).getValidationMessages()).thenReturn(new ArrayList<String>());
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, resTransaction);
+        Mockito.verify(callbackCollaboratorMock, Mockito.times(2)).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingGciFailure_whenValidationMessagesNotEmpty() {
+        initGci();
+        Response<TransactionResponse> resTransaction = createResponseOfTransactionResponseSuccess(400, PaymentType.GCI, false);
+        resTransaction.body().setValidationMessages(createValidationMessages());
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, resTransaction);
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingGciFailure_whenServiceNull() {
+        snapTransactionManager.setService(null);
+        callbackImplement.paymentUsingGci(snapToken, null);
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+    @Test
+    public void paymentUsingGciError_whenEmptyResponseBody() {
+        initGci();
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, createResponseOfTransactionResponseSuccess(200, PaymentType.GCI, true));
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+    @Test
+    public void paymentUsingGciError() {
+        initTCash();
+        transactionResponseCaptor.getValue().onFailure(callTransactionResponseMock, createThrowableOfTransactionResponseFailure(ERR_TYPE_NPE));
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+    /**
+     * payment using KlikBca
+     */
+
+    private void initKlikBca() {
+        KlikBCAPaymentRequest request = createKlikBcaRequesst();
+        Mockito.when(snapApiServiceMock.paymentUsingKlikBca(snapToken, request)).thenReturn(callTransactionResponseMock);
+        callbackImplement.paymentUsingKlikBca(snapToken, request);
+        Mockito.verify(callTransactionResponseMock).enqueue(transactionResponseCaptor.capture());
+    }
+
+    private KlikBCAPaymentRequest createKlikBcaRequesst() {
+        KlikBcaPaymentParams params = new KlikBcaPaymentParams("user_id");
+        KlikBCAPaymentRequest request = new KlikBCAPaymentRequest(PaymentType.KLIK_BCA, params);
+        return request;
+    }
+
+    @Test
+    public void paymentUsingKlikBcaSuccess() {
+        initKlikBca();
+        Response<TransactionResponse> response = createResponseOfTransactionResponseSuccess(200, PaymentType.KLIK_BCA, false);
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, response);
+        Mockito.verify(callbackCollaboratorMock).onTransactionSuccess();
+        Assert.assertEquals(PaymentType.KLIK_BCA, response.body().getPaymentType());
+    }
+
+
+    @Test
+    public void paymentUsingKlikBca_whenEmptyStatusCode() {
+        initKlikBca();
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, createResponseOfTransactionResponseSuccess(null, PaymentType.KLIK_BCA, false));
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingKlikBcaFailure_whenStatusCodeNot200Or201() {
+        initKlikBca();
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, createResponseOfTransactionResponseSuccess(204, PaymentType.KLIK_BCA, false));
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingKlikBcaFailure_whenStatusCode400() {
+        initKlikBca();
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, createResponseOfTransactionResponseSuccess(400, PaymentType.KLIK_BCA, false));
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingKlikBcaFailure_whenValidationMessagesNullOrEmpty() {
+        initKlikBca();
+        Response<TransactionResponse> resTransaction = createResponseOfTransactionResponseSuccess(400, PaymentType.KLIK_BCA, false);
+
+        //Validation Messages Null
+        Mockito.when(Mockito.spy(resTransaction.body()).getValidationMessages()).thenReturn(null);
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, resTransaction);
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+
+        //Validation Messages Empty
+        Mockito.when(Mockito.spy(resTransaction.body()).getValidationMessages()).thenReturn(new ArrayList<String>());
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, resTransaction);
+        Mockito.verify(callbackCollaboratorMock, Mockito.times(2)).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingKlikBcaFailure_whenValidationMessagesNotEmpty() {
+        initKlikBca();
+        Response<TransactionResponse> resTransaction = createResponseOfTransactionResponseSuccess(400, PaymentType.KLIK_BCA, false);
+        resTransaction.body().setValidationMessages(createValidationMessages());
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, resTransaction);
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingKlikBcaFailure_whenServiceNull() {
+        snapTransactionManager.setService(null);
+        callbackImplement.paymentUsingKlikBca(snapToken, null);
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+    @Test
+    public void paymentUsingKlikBcaError_whenEmptyResponseBody() {
+        initKlikBca();
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, createResponseOfTransactionResponseSuccess(200, PaymentType.KLIK_BCA, true));
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+    @Test
+    public void paymentUsingKlikBcaError() {
+        initTCash();
+        transactionResponseCaptor.getValue().onFailure(callTransactionResponseMock, createThrowableOfTransactionResponseFailure(ERR_TYPE_NPE));
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+
+    /**
+     * payment using GoPay
+     */
+
+    private void initGoPay() {
+        GoPayPaymentRequest request = createGoPayPaymentRequest();
+        Mockito.when(snapApiServiceMock.paymentUsingGoPay(snapToken, request)).thenReturn(callTransactionResponseMock);
+        callbackImplement.paymentUsingGopay(snapToken, request);
+        Mockito.verify(callTransactionResponseMock).enqueue(transactionResponseCaptor.capture());
+    }
+
+    private GoPayPaymentRequest createGoPayPaymentRequest() {
+        GoPayPaymentRequest request = new GoPayPaymentRequest(PaymentType.GOPAY);
+        return request;
+    }
+
+    @Test
+    public void paymentUsingGoPaySuccess() {
+        initGoPay();
+        Response<TransactionResponse> response = createResponseOfTransactionResponseSuccess(200, PaymentType.GOPAY, false);
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, response);
+        Mockito.verify(callbackCollaboratorMock).onTransactionSuccess();
+        Assert.assertEquals(PaymentType.GOPAY, response.body().getPaymentType());
+    }
+
+
+    @Test
+    public void paymentUsingGoPay_whenEmptyStatusCode() {
+        initGoPay();
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, createResponseOfTransactionResponseSuccess(null, PaymentType.GOPAY, false));
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingGoPayFailure_whenStatusCodeNot200Or201() {
+        initGoPay();
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, createResponseOfTransactionResponseSuccess(204, PaymentType.GOPAY, false));
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingGoPayFailure_whenStatusCode400() {
+        initGoPay();
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, createResponseOfTransactionResponseSuccess(400, PaymentType.GOPAY, false));
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingGoPayFailure_whenValidationMessagesNullOrEmpty() {
+        initGoPay();
+        Response<TransactionResponse> resTransaction = createResponseOfTransactionResponseSuccess(400, PaymentType.GOPAY, false);
+
+        //Validation Messages Null
+        Mockito.when(Mockito.spy(resTransaction.body()).getValidationMessages()).thenReturn(null);
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, resTransaction);
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+
+        //Validation Messages Empty
+        Mockito.when(Mockito.spy(resTransaction.body()).getValidationMessages()).thenReturn(new ArrayList<String>());
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, resTransaction);
+        Mockito.verify(callbackCollaboratorMock, Mockito.times(2)).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingGoPayFailure_whenValidationMessagesNotEmpty() {
+        initGoPay();
+        Response<TransactionResponse> resTransaction = createResponseOfTransactionResponseSuccess(400, PaymentType.GOPAY, false);
+        resTransaction.body().setValidationMessages(createValidationMessages());
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, resTransaction);
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingGoPayFailure_whenServiceNull() {
+        snapTransactionManager.setService(null);
+        callbackImplement.paymentUsingGopay(snapToken, null);
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+    @Test
+    public void paymentUsingGoPayError_whenEmptyResponseBody() {
+        initGoPay();
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, createResponseOfTransactionResponseSuccess(200, PaymentType.GOPAY, true));
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+    @Test
+    public void paymentUsingGoPayError() {
+        initGoPay();
+        transactionResponseCaptor.getValue().onFailure(callTransactionResponseMock, createThrowableOfTransactionResponseFailure(ERR_TYPE_NPE));
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
 }

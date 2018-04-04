@@ -213,7 +213,6 @@ public class SnapServiceManager extends BaseServiceManager {
             doOnApiServiceUnAvailable(callback);
             return;
         }
-
         Call<TransactionResponse> call = service.paymentUsingMandiriBillPay(snapToken, paymentRequest);
         call.enqueue(new Callback<TransactionResponse>() {
             @Override
@@ -414,14 +413,13 @@ public class SnapServiceManager extends BaseServiceManager {
 
         if (transactionResponse != null) {
             String statusCode = transactionResponse.getStatusCode();
-            if (!TextUtils.isEmpty(statusCode)
-                    && (transactionResponse.getStatusCode().equals(Constants.STATUS_CODE_200)
-                    || transactionResponse.getStatusCode().equals(Constants.STATUS_CODE_201))) {
 
+            if (!TextUtils.isEmpty(statusCode)
+                    && (statusCode.equals(Constants.STATUS_CODE_200)
+                    || statusCode.equals(Constants.STATUS_CODE_201))) {
                 callback.onSuccess(transactionResponse);
 
             } else {
-
                 if (statusCode.equals(Constants.STATUS_CODE_400)) {
                     String message;
                     if (transactionResponse.getValidationMessages() != null && !transactionResponse.getValidationMessages().isEmpty()) {
@@ -433,7 +431,6 @@ public class SnapServiceManager extends BaseServiceManager {
                 } else {
                     callback.onFailure(transactionResponse, transactionResponse.getStatusMessage());
                 }
-
             }
         } else {
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_EMPTY_RESPONSE));
@@ -584,5 +581,9 @@ public class SnapServiceManager extends BaseServiceManager {
                 doOnResponseFailure(t, callback);
             }
         });
+    }
+
+    void setService(SnapApiService service) {
+        this.service = service;
     }
 }
