@@ -1,15 +1,21 @@
 package com.midtrans.sdk.corekit.core;
 
+import com.midtrans.sdk.corekit.callback.BankBinsCallback;
+import com.midtrans.sdk.corekit.callback.BanksPointCallback;
 import com.midtrans.sdk.corekit.callback.CheckoutCallback;
+import com.midtrans.sdk.corekit.callback.DeleteCardCallback;
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.callback.TransactionOptionsCallback;
 import com.midtrans.sdk.corekit.models.TokenRequestModel;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
+import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
+import com.midtrans.sdk.corekit.models.snap.BanksPointResponse;
 import com.midtrans.sdk.corekit.models.snap.Token;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.BasePaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.CreditCardPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.DanamonOnlinePaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.GCIPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.GoPayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.IndosatDompetkuPaymentRequest;
@@ -17,11 +23,14 @@ import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.NewMandiriClickPayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.TelkomselEcashPaymentRequest;
 
+import java.util.ArrayList;
+
 /**
  * Created by ziahaqi on 4/2/18.
  */
 
-public class SnapServiceCallbackImplement implements TransactionCallback, CheckoutCallback, TransactionOptionsCallback {
+public class SnapServiceCallbackImplement implements TransactionCallback, CheckoutCallback,
+        TransactionOptionsCallback, DeleteCardCallback, BankBinsCallback, BanksPointCallback {
     CallbackCollaborator callbackCollaborator;
     SnapServiceManager serviceManager;
 
@@ -66,9 +75,30 @@ public class SnapServiceCallbackImplement implements TransactionCallback, Checko
         callbackCollaborator.onGetPaymentOptionFailure();
     }
 
-    public void checkout(TokenRequestModel snapTokenRequestModelMock) {
+    @Override
+    public void onSuccess(Void object) {
+        callbackCollaborator.onDeleteCardSuccess();
     }
 
+    @Override
+    public void onFailure(Void object) {
+        callbackCollaborator.onDeleteCardFailure();
+    }
+
+    @Override
+    public void onSuccess(ArrayList<BankBinsResponse> response) {
+        callbackCollaborator.onGetBankBinSuccess();
+    }
+
+    @Override
+    public void onSuccess(BanksPointResponse response) {
+        callbackCollaborator.onGetbanksPointSuccess();
+    }
+
+    @Override
+    public void onFailure(String reason) {
+        callbackCollaborator.onGetBankBinFailure();
+    }
 
     public void getTransactionOptions(String tokenId) {
         this.serviceManager.getTransactionOptions(tokenId, this);
@@ -108,5 +138,21 @@ public class SnapServiceCallbackImplement implements TransactionCallback, Checko
 
     public void paymentUsingGopay(String snapToken, GoPayPaymentRequest request) {
         this.serviceManager.paymentUsingGoPay(snapToken, request, this);
+    }
+
+    public void paymentUsingDanamonOnline(String snapToken, DanamonOnlinePaymentRequest request) {
+        this.serviceManager.paymentUsingDanamonOnline(snapToken, request, this);
+    }
+
+    public void deleteSavedCard(String snapToken, String maskedCardNumber) {
+        this.serviceManager.deleteCard(snapToken, maskedCardNumber, this);
+    }
+
+    public void getBankBins() {
+        this.serviceManager.getBankBins(this);
+    }
+
+    public void getBankPoints(String snapToken, String cardToken) {
+        this.serviceManager.getBanksPoint(snapToken, cardToken, this);
     }
 }

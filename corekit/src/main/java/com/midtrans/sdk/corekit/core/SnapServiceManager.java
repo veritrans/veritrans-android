@@ -487,7 +487,6 @@ public class SnapServiceManager extends BaseServiceManager {
             @Override
             public void onResponse(Call<List<BankBinsResponse>> call, Response<List<BankBinsResponse>> response) {
                 releaseResources();
-
                 List<BankBinsResponse> bankBinsResponses = response.body();
 
                 if (bankBinsResponses != null && !bankBinsResponses.isEmpty()) {

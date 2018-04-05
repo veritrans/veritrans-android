@@ -28,6 +28,7 @@ import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.BasePaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.CreditCardPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.CustomerDetailRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.DanamonOnlinePaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.GCIPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.GoPayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.IndosatDompetkuPaymentRequest;
@@ -54,6 +55,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.security.cert.CertPathValidatorException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.net.ssl.SSLHandshakeException;
@@ -241,14 +243,26 @@ public class SnapServiceManagerTest {
     private Call<Transaction> callTransactionMock;
     @Mock
     private Call<TransactionResponse> callTransactionResponseMock;
+    @Mock
+    private Call<Void> callDeleteCardResponseMock;
+    @Mock
+    private Call<List<BankBinsResponse>> callBankBinsResponseMock;
+    @Mock
+    private Call<BanksPointResponse> callBankPointResponseMock;
 
     @Captor
     private ArgumentCaptor<Callback<Transaction>> transactionCaptor;
     @Mock
     private CallbackCollaborator callbackCollaboratorMock;
+
     @Captor
     private ArgumentCaptor<Callback<TransactionResponse>> transactionResponseCaptor;
-
+    @Captor
+    ArgumentCaptor<Callback<Void>> deleteCardResponseCaptor;
+    @Captor
+    ArgumentCaptor<Callback<List<BankBinsResponse>>> bankBinsResponseCaptor;
+    @Captor
+    ArgumentCaptor<Callback<BanksPointResponse>> bankPointsResponseCaptor;
 
     @Test
     public void test() {
@@ -329,6 +343,36 @@ public class SnapServiceManagerTest {
         response.setPaymentType(paymentType);
         response.setStatusCode(String.valueOf(statusCode));
         return response;
+    }
+
+    private Response<Void> createCardDeletionReponseSuccess(Integer statusCode) {
+        Request okReq = new Request.Builder().url(SDKConfigTest.SNAP_URL).build();
+        okhttp3.Response okResponse = new okhttp3.Response.Builder().code((statusCode == null || statusCode > 300) ? 299 : statusCode).request(okReq).message("success").protocol(Protocol.HTTP_2).build();
+        Void data = null;
+        Response<Void> resTransactionResponse = Response.success(data, okResponse);
+        return resTransactionResponse;
+    }
+
+    private Response<List<BankBinsResponse>> createBankBinsResponseSuccess(Integer statusCode) {
+        Request okReq = new Request.Builder().url(SDKConfigTest.SNAP_URL).build();
+        okhttp3.Response okResponse = new okhttp3.Response.Builder().code((statusCode == null || statusCode > 300) ? 299 : statusCode).request(okReq).message("success").protocol(Protocol.HTTP_2).build();
+
+        BankBinsResponse bankBinsResponse = new BankBinsResponse();
+        List<BankBinsResponse> bankBinsResponses = new ArrayList<>();
+        bankBinsResponses.add(bankBinsResponse);
+
+        Response<List<BankBinsResponse>> resTransactionResponse = Response.success(bankBinsResponses, okResponse);
+        return resTransactionResponse;
+    }
+
+    private Response<BanksPointResponse> createBankPointResponse(Integer statusCode) {
+        Request okReq = new Request.Builder().url(SDKConfigTest.SNAP_URL).build();
+        okhttp3.Response okResponse = new okhttp3.Response.Builder().code((statusCode == null || statusCode > 300) ? 299 : statusCode).request(okReq).message("success").protocol(Protocol.HTTP_2).build();
+
+        BanksPointResponse response = new BanksPointResponse(String.valueOf(statusCode), "point", null, 1000l, new Date().toString());
+
+        Response<BanksPointResponse> resTransactionResponse = Response.success(response, okResponse);
+        return resTransactionResponse;
     }
 
     private Throwable createThrowableOfTransactionResponseFailure(int errorMessage) {
@@ -1222,6 +1266,252 @@ public class SnapServiceManagerTest {
     public void paymentUsingGoPayError() {
         initGoPay();
         transactionResponseCaptor.getValue().onFailure(callTransactionResponseMock, createThrowableOfTransactionResponseFailure(ERR_TYPE_NPE));
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+    /**
+     * payment using danamon online
+     */
+
+    private void initDanamonOnline() {
+        DanamonOnlinePaymentRequest request = createDanamonOnlineRequest();
+        Mockito.when(snapApiServiceMock.paymentUsingDanamonOnline(snapToken, request)).thenReturn(callTransactionResponseMock);
+        callbackImplement.paymentUsingDanamonOnline(snapToken, request);
+        Mockito.verify(callTransactionResponseMock).enqueue(transactionResponseCaptor.capture());
+    }
+
+    private DanamonOnlinePaymentRequest createDanamonOnlineRequest() {
+        DanamonOnlinePaymentRequest request = new DanamonOnlinePaymentRequest(PaymentType.DANAMON_ONLINE);
+        return request;
+    }
+
+    @Test
+    public void paymentUsingdanamonOnlineSuccess() {
+        initDanamonOnline();
+        Response<TransactionResponse> response = createResponseOfTransactionResponseSuccess(200, PaymentType.DANAMON_ONLINE, false);
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, response);
+        Mockito.verify(callbackCollaboratorMock).onTransactionSuccess();
+        Assert.assertEquals(PaymentType.DANAMON_ONLINE, response.body().getPaymentType());
+    }
+
+
+    @Test
+    public void paymentUsingdanamonOnline_whenEmptyStatusCode() {
+        initDanamonOnline();
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, createResponseOfTransactionResponseSuccess(null, PaymentType.DANAMON_ONLINE, false));
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingdanamonOnlineFailure_whenStatusCodeNot200Or201() {
+        initDanamonOnline();
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, createResponseOfTransactionResponseSuccess(204, PaymentType.DANAMON_ONLINE, false));
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingdanamonOnlineFailure_whenStatusCode400() {
+        initDanamonOnline();
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, createResponseOfTransactionResponseSuccess(400, PaymentType.DANAMON_ONLINE, false));
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingdanamonOnlineFailure_whenValidationMessagesNullOrEmpty() {
+        initDanamonOnline();
+        Response<TransactionResponse> resTransaction = createResponseOfTransactionResponseSuccess(400, PaymentType.DANAMON_ONLINE, false);
+
+        //Validation Messages Null
+        Mockito.when(Mockito.spy(resTransaction.body()).getValidationMessages()).thenReturn(null);
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, resTransaction);
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+
+        //Validation Messages Empty
+        Mockito.when(Mockito.spy(resTransaction.body()).getValidationMessages()).thenReturn(new ArrayList<String>());
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, resTransaction);
+        Mockito.verify(callbackCollaboratorMock, Mockito.times(2)).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingdanamonOnlineFailure_whenValidationMessagesNotEmpty() {
+        initDanamonOnline();
+        Response<TransactionResponse> resTransaction = createResponseOfTransactionResponseSuccess(400, PaymentType.DANAMON_ONLINE, false);
+        resTransaction.body().setValidationMessages(createValidationMessages());
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, resTransaction);
+        Mockito.verify(callbackCollaboratorMock).onTransactionFailure();
+    }
+
+    @Test
+    public void paymentUsingdanamonOnlineFailure_whenServiceNull() {
+        snapTransactionManager.setService(null);
+        callbackImplement.paymentUsingDanamonOnline(snapToken, null);
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+    @Test
+    public void paymentUsingdanamonOnlineError_whenEmptyResponseBody() {
+        initDanamonOnline();
+        transactionResponseCaptor.getValue().onResponse(callTransactionResponseMock, createResponseOfTransactionResponseSuccess(200, PaymentType.DANAMON_ONLINE, true));
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+    @Test
+    public void paymentUsingDanamonOnlineError() {
+        initDanamonOnline();
+        transactionResponseCaptor.getValue().onFailure(callTransactionResponseMock, createThrowableOfTransactionResponseFailure(ERR_TYPE_NPE));
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+
+    /**
+     * delete saved cards
+     */
+
+    private void initDeleteCard() {
+        Mockito.when(snapApiServiceMock.deleteCard(snapToken, SDKConfigTest.MASKED_CARD_NUMBER)).thenReturn(callDeleteCardResponseMock);
+        callbackImplement.deleteSavedCard(snapToken, SDKConfigTest.MASKED_CARD_NUMBER);
+        Mockito.verify(callDeleteCardResponseMock).enqueue(deleteCardResponseCaptor.capture());
+    }
+
+    @Test
+    public void cardDeletionSuccess() {
+        initDeleteCard();
+        Response<Void> response = createCardDeletionReponseSuccess(200);
+        deleteCardResponseCaptor.getValue().onResponse(callDeleteCardResponseMock, response);
+        Mockito.verify(callbackCollaboratorMock).onDeleteCardSuccess();
+    }
+
+
+    @Test
+    public void cardDeletionFailure_whenEmptyStatusCode() {
+        initDeleteCard();
+        Response<Void> response = createCardDeletionReponseSuccess(null);
+        deleteCardResponseCaptor.getValue().onResponse(callDeleteCardResponseMock, response);
+        Mockito.verify(callbackCollaboratorMock).onDeleteCardFailure();
+    }
+
+    @Test
+    public void cardDeletionFailure_whenStatusCodeNot200Or201() {
+        initDeleteCard();
+        Response<Void> response = createCardDeletionReponseSuccess(204);
+        deleteCardResponseCaptor.getValue().onResponse(callDeleteCardResponseMock, response);
+        Mockito.verify(callbackCollaboratorMock).onDeleteCardFailure();
+    }
+
+
+    @Test
+    public void cardDeletionFailure_whenServiceNull() {
+        snapTransactionManager.setService(null);
+        callbackImplement.deleteSavedCard(snapToken, null);
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+    @Test
+    public void cardDeletionError() {
+        initDeleteCard();
+        deleteCardResponseCaptor.getValue().onFailure(callDeleteCardResponseMock, createThrowableOfTransactionResponseFailure(ERR_TYPE_NPE));
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+
+    /**
+     * get bank bins
+     */
+
+    private void initGetBankBins() {
+        Mockito.when(snapApiServiceMock.getBankBins()).thenReturn(callBankBinsResponseMock);
+        callbackImplement.getBankBins();
+        Mockito.verify(callBankBinsResponseMock).enqueue(bankBinsResponseCaptor.capture());
+    }
+
+    @Test
+    public void getBankBinsSuccess() {
+        initGetBankBins();
+        Response<List<BankBinsResponse>> response = createBankBinsResponseSuccess(200);
+        bankBinsResponseCaptor.getValue().onResponse(callBankBinsResponseMock, response);
+        Mockito.verify(callbackCollaboratorMock).onGetBankBinSuccess();
+    }
+
+
+    @Test
+    public void getBankBinsFailure_whenEmptyStatusCode() {
+        initGetBankBins();
+        Response<List<BankBinsResponse>> response = createBankBinsResponseSuccess(null);
+        bankBinsResponseCaptor.getValue().onResponse(callBankBinsResponseMock, response);
+        Mockito.verify(callbackCollaboratorMock).onGetBankBinFailure();
+    }
+
+    @Test
+    public void getBankBinsFailure_whenStatusCodeNot200Or201() {
+        initGetBankBins();
+        Response<List<BankBinsResponse>> response = createBankBinsResponseSuccess(204);
+        bankBinsResponseCaptor.getValue().onResponse(callBankBinsResponseMock, response);
+        Mockito.verify(callbackCollaboratorMock).onGetBankBinFailure();
+    }
+
+
+    @Test
+    public void getBankBinsFailure_whenServiceNull() {
+        snapTransactionManager.setService(null);
+        callbackImplement.getBankBins();
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+    @Test
+    public void getBankBinsError() {
+        initGetBankBins();
+        bankBinsResponseCaptor.getValue().onFailure(callBankBinsResponseMock, createThrowableOfTransactionResponseFailure(ERR_TYPE_NPE));
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+
+    /**
+     * get bank points
+     */
+
+    private void initGetBankPoints() {
+        Mockito.when(snapApiServiceMock.getBanksPoint(snapToken, SDKConfigTest.CARD_TOKEN)).thenReturn(callBankPointResponseMock);
+        callbackImplement.getBankPoints(snapToken, SDKConfigTest.CARD_TOKEN);
+        Mockito.verify(callBankPointResponseMock).enqueue(bankPointsResponseCaptor.capture());
+    }
+
+    @Test
+    public void getBankPointsSuccess() {
+        initGetBankPoints();
+        Response<BanksPointResponse> response = createBankPointResponse(200);
+        bankPointsResponseCaptor.getValue().onResponse(callBankPointResponseMock, response);
+        Mockito.verify(callbackCollaboratorMock).onGetbanksPointSuccess();
+    }
+
+
+    @Test
+    public void getBankPointsFailure_whenEmptyStatusCode() {
+        initGetBankPoints();
+        Response<Ban> response = createBankBinsResponseSuccess(null);
+        bankBinsResponseCaptor.getValue().onResponse(callBankBinsResponseMock, response);
+        Mockito.verify(callbackCollaboratorMock).onGetBankBinFailure();
+    }
+
+    @Test
+    public void getBankPointsFailure_whenStatusCodeNot200Or201() {
+        initGetBankPoints();
+        Response<List<BankBinsResponse>> response = createBankBinsResponseSuccess(204);
+        bankBinsResponseCaptor.getValue().onResponse(callBankBinsResponseMock, response);
+        Mockito.verify(callbackCollaboratorMock).onGetBankBinFailure();
+    }
+
+
+    @Test
+    public void getBankPointsFailure_whenServiceNull() {
+        snapTransactionManager.setService(null);
+        callbackImplement.getBankPoints();
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+    @Test
+    public void getBankPointsError() {
+        initGetBankBins();
+        bankBinsResponseCaptor.getValue().onFailure(callBankBinsResponseMock, createThrowableOfTransactionResponseFailure(ERR_TYPE_NPE));
         Mockito.verify(callbackCollaboratorMock).onError();
     }
 }
