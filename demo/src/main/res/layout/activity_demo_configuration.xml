@@ -830,57 +830,7 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical">
 
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:scaleType="center"
-                    android:src="@drawable/ic_config_promo" />
-
-                <com.midtrans.demo.widgets.DemoTextView
-                    android:id="@+id/title_promo_type"
-                    style="@style/ConfigItemTextTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/default_promo_disabled" />
-
-            </LinearLayout>
-
-
-            <RadioGroup
-                android:id="@+id/promo_type_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingLeft="@dimen/thirtytwo_dp"
-                android:paddingRight="@dimen/thirtytwo_dp"
-                android:visibility="gone">
-
-                <com.midtrans.demo.widgets.DemoRadioButton
-                    android:id="@+id/type_promo_disabled"
-                    style="@style/CustomRadioButtonStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/eight_dp"
-                    android:layout_marginStart="@dimen/eight_dp"
-                    android:checked="true"
-                    android:gravity="center_vertical"
-                    android:text="@string/disabled" />
-
-                <com.midtrans.demo.widgets.DemoRadioButton
-                    android:id="@+id/type_promo_enabled"
-                    style="@style/CustomRadioButtonStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/eight_dp"
-                    android:layout_marginStart="@dimen/eight_dp"
-                    android:gravity="center_vertical"
-                    android:text="@string/enabled" />
-            </RadioGroup>
 
             <LinearLayout
                 android:layout_width="match_parent"
