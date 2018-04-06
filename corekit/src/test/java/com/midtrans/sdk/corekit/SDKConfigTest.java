@@ -21,4 +21,7 @@ public class SDKConfigTest {
     public static final String SAVED_TOKEN_ID = "token_id3131232e34";
     public static final String BANK = "bni";
     public static final String INSTALLMENT_TERM = "3";
+    public static final String SNAP_TOKEN = "snap_token131422723";
+    public static final String USER_ID = "user_id";
+    public static final String TWO_CLICK = "two_clicks";
 }

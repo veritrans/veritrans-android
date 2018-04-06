@@ -72,7 +72,7 @@ public class MerchantServiceManager extends BaseServiceManager {
      * @param userId       unique id for every user
      * @param callback     save card callback
      */
-    public void saveCards(String userId, ArrayList<SaveCardRequest> cardRequests, final SaveCardCallback callback) {
+    public void saveCards(String userId, List<SaveCardRequest> cardRequests, final SaveCardCallback callback) {
         if (service == null) {
             doOnApiServiceUnAvailable(callback);
             return;
@@ -143,4 +143,7 @@ public class MerchantServiceManager extends BaseServiceManager {
         });
     }
 
+    void setService(MerchantApiService service) {
+        this.service = service;
+    }
 }

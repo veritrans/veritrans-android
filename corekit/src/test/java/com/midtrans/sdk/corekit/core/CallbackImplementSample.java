@@ -93,7 +93,7 @@ public class CallbackImplementSample implements TransactionCallback, CheckoutCal
 
     @Override
     public void onSuccess(SaveCardResponse response) {
-        callbackCollaborator.onSaveCardsSuccess();
+        callbackCollaborator.onSaveAndGetCardsSuccess();
     }
 
     @Override
@@ -108,7 +108,7 @@ public class CallbackImplementSample implements TransactionCallback, CheckoutCal
 
     @Override
     public void onFailure(String reason) {
-        callbackCollaborator.onSaveCardsFailure();
+        callbackCollaborator.onSaveAndGetCardsFailure();
     }
 
     @Override

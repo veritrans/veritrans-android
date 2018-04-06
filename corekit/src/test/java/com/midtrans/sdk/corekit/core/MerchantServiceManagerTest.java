@@ -45,6 +45,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.security.cert.CertPathValidatorException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.net.ssl.SSLHandshakeException;
 
@@ -92,7 +93,6 @@ public class MerchantServiceManagerTest {
     private ArgumentCaptor<TokenRequestModel> snapTokenRequestModelCaptor;
     @Mock
     private TokenRequestModel snapTokenRequestModelMock;
-    private String transactionId = "trans_id";
     @Mock
     private CreditCardPaymentRequest creditcardRequestMock;
     @Captor
@@ -107,8 +107,7 @@ public class MerchantServiceManagerTest {
     private BankTransferPaymentRequest bankTransferRequestMock;
     @Captor
     private ArgumentCaptor<BankTransferPaymentRequest> bankTransferRequestCaptor;
-    @Mock
-    private KlikBCAPaymentRequest klikBCARequestMock;
+
     @Mock
     private BasePaymentRequest basePaymentRequestMock;
     @Captor
@@ -209,11 +208,22 @@ public class MerchantServiceManagerTest {
     private CallbackCollaborator callbackCollaboratorMock;
     @Mock
     private Call<TokenDetailsResponse> callGetCardTokenMock;
+    @Mock
+    private Call<Token> callCheckoutMock;
+    @Mock
+    private TokenRequestModel checkoutRequestMock;
+    @Mock
+    private Call<String> callSaveCardMock;
+    @Mock
+    private Call<List<SaveCardRequest>> callGetCardsMock;
+
 
     @Captor
-    private ArgumentCaptor<Callback<CardRegistrationResponse>> cardRegistrationCaptor;
+    private ArgumentCaptor<Callback<Token>> checkoutCaptor;
     @Captor
-    private ArgumentCaptor<Callback<TokenDetailsResponse>> getCardTokenCaptor;
+    private ArgumentCaptor<Callback<String>> saveCardCaptor;
+    @Captor
+    private ArgumentCaptor<Callback<List<SaveCardRequest>>> getCardsCaptor;
 
 
     @Test
@@ -262,96 +272,217 @@ public class MerchantServiceManagerTest {
         return new Throwable();
     }
 
-    private Response<CardRegistrationResponse> createCarRegistrationResponse(Integer statusCode) {
+    private Response<Token> createCheckoutResponse(Integer statusCode, String snapToken, boolean emptyBody) {
         Request okReq = new Request.Builder().url(SDKConfigTest.PAPI_URL).build();
         okhttp3.Response okResponse = new okhttp3.Response.Builder().code((statusCode == null || statusCode > 300) ? 299 : statusCode).request(okReq).message("success").protocol(Protocol.HTTP_2).build();
+        Token response = new Token();
+        response.setTokenId(snapToken);
 
-        CardRegistrationResponse response = new CardRegistrationResponse();
-        response.setStatusCode(String.valueOf(statusCode));
-
-        Response<CardRegistrationResponse> resTransactionResponse = Response.success(response, okResponse);
+        Response<Token> resTransactionResponse = Response.success(emptyBody ? null : response, okResponse);
         return resTransactionResponse;
-
     }
 
-    private Response<TokenDetailsResponse> createCardTokenResponse(Integer statusCode) {
+    private Response<String> createSaveCardResponse(Integer statusCode, boolean emptyBody) {
         Request okReq = new Request.Builder().url(SDKConfigTest.PAPI_URL).build();
         okhttp3.Response okResponse = new okhttp3.Response.Builder().code((statusCode == null || statusCode > 300) ? 299 : statusCode).request(okReq).message("success").protocol(Protocol.HTTP_2).build();
 
-        TokenDetailsResponse response = new TokenDetailsResponse();
-        response.setStatusCode(String.valueOf(statusCode));
+        String response = "res";
 
-        Response<TokenDetailsResponse> resTransactionResponse = Response.success(response, okResponse);
+        Response<String> resTransactionResponse = Response.success(emptyBody ? null : response, okResponse);
         return resTransactionResponse;
+    }
 
+    private Response<List<SaveCardRequest>> createGetCardsResponse(Integer statusCode, boolean emptyBody) {
+        Request okReq = new Request.Builder().url(SDKConfigTest.PAPI_URL).build();
+        okhttp3.Response okResponse = new okhttp3.Response.Builder().code((statusCode == null || statusCode > 300) ? 299 : statusCode).request(okReq).message("success").protocol(Protocol.HTTP_2).build();
+
+        List<SaveCardRequest> response = createSampleCards();
+
+        Response<List<SaveCardRequest>> resTransactionResponse = Response.success(emptyBody ? null : response, okResponse);
+        return resTransactionResponse;
     }
 
 
     /**
-     * Register Card
+     * checkout
      */
 
-//    private void initCardRegistration() {
-//
-//        Mockito.when(midtransServiceMock.registerCard(SDKConfigTest.CARD_NUMBER,
-//                SDKConfigTest.CARD_CVV,
-//                SDKConfigTest.CARD_EXPIRY_MONTH,
-//                SDKConfigTest.CARD_EXPIRY_YEAR,
-//                SDKConfigTest.CLIENT_KEY)).thenReturn(callRegisterCardMock);
-//
-//        callbackImplement.registerCard(SDKConfigTest.CARD_NUMBER,
-//                SDKConfigTest.CARD_CVV,
-//                SDKConfigTest.CARD_EXPIRY_MONTH,
-//                SDKConfigTest.CARD_EXPIRY_YEAR,
-//                SDKConfigTest.CLIENT_KEY);
-//
-//        Mockito.verify(callRegisterCardMock).enqueue(cardRegistrationCaptor.capture());
-//    }
-//
-//    @Test
-//    public void registerCardSuccess() {
-//        initCardRegistration();
-//        Response<CardRegistrationResponse> response = createCarRegistrationResponse(200);
-//        cardRegistrationCaptor.getValue().onResponse(callRegisterCardMock, response);
-//        Mockito.verify(callbackCollaboratorMock).onCardRegistrationSuccess();
-//    }
-//
-//
-//    @Test
-//    public void getBankPointsFailure_whenEmptyStatusCode() {
-//        initCardRegistration();
-//        Response<CardRegistrationResponse> response = createCarRegistrationResponse(null);
-//        cardRegistrationCaptor.getValue().onResponse(callRegisterCardMock, response);
-//        Mockito.verify(callbackCollaboratorMock).onCardRegistrationFailed();
-//    }
-//
-//    @Test
-//    public void getBankPointsFailure_whenStatusCodeNot200Or201() {
-//        initCardRegistration();
-//        Response<CardRegistrationResponse> response = createCarRegistrationResponse(214);
-//        cardRegistrationCaptor.getValue().onResponse(callRegisterCardMock, response);
-//        Mockito.verify(callbackCollaboratorMock).onCardRegistrationFailed();
-//    }
-//
-//
-//    @Test
-//    public void getBankPointsFailure_whenServiceNull() {
-//        manager.setService(null);
-//
-//        callbackImplement.registerCard(SDKConfigTest.CARD_NUMBER,
-//                SDKConfigTest.CARD_CVV,
-//                SDKConfigTest.CARD_EXPIRY_MONTH,
-//                SDKConfigTest.CARD_EXPIRY_YEAR,
-//                SDKConfigTest.CLIENT_KEY);
-//
-//        Mockito.verify(callbackCollaboratorMock).onError();
-//    }
-//
-//    @Test
-//    public void getBankPointsError() {
-//        initCardRegistration();
-//        cardRegistrationCaptor.getValue().onFailure(callRegisterCardMock, createThrowableOfTransactionResponseFailure(ERR_TYPE_NPE));
-//        Mockito.verify(callbackCollaboratorMock).onError();
-//    }
+    private void initCheckout(TokenRequestModel model) {
+        Mockito.when(merchantApiServiceMock.checkout(model)).thenReturn(callCheckoutMock);
+        callbackImplement.checkout(model);
+        Mockito.verify(callCheckoutMock).enqueue(checkoutCaptor.capture());
+    }
+
+    @Test
+    public void checkoutSuccess() {
+        initCheckout(checkoutRequestMock);
+        Response<Token> response = createCheckoutResponse(200, SDKConfigTest.SNAP_TOKEN, false);
+        checkoutCaptor.getValue().onResponse(callCheckoutMock, response);
+        Mockito.verify(callbackCollaboratorMock).onCheckoutSuccess();
+    }
+
+    @Test
+    public void checkoutFailure_whenEmptyStatusCode() {
+        initCheckout(checkoutRequestMock);
+        Response<Token> response = createCheckoutResponse(null, SDKConfigTest.SNAP_TOKEN, false);
+        checkoutCaptor.getValue().onResponse(callCheckoutMock, response);
+        Mockito.verify(callbackCollaboratorMock).onCheckoutSuccess();
+    }
+
+    @Test
+    public void checkoutFailure_whenEmptySnapTokenNullOrEmpty() {
+        initCheckout(checkoutRequestMock);
+        Response<Token> response = createCheckoutResponse(240, null, false);
+        checkoutCaptor.getValue().onResponse(callCheckoutMock, response);
+        Mockito.verify(callbackCollaboratorMock).onCheckoutFailure();
+
+        response = createCheckoutResponse(240, "", false);
+        checkoutCaptor.getValue().onResponse(callCheckoutMock, response);
+        Mockito.verify(callbackCollaboratorMock, Mockito.times(2)).onCheckoutFailure();
+    }
+
+    @Test
+    public void checkoutFailure_whenStatusCodeNot200Or201() {
+        initCheckout(checkoutRequestMock);
+        Response<Token> response = createCheckoutResponse(204, SDKConfigTest.SNAP_TOKEN, false);
+        checkoutCaptor.getValue().onResponse(callCheckoutMock, response);
+        Mockito.verify(callbackCollaboratorMock).onCheckoutSuccess();
+    }
+
+
+    @Test
+    public void checkoutFailure_whenServiceNull() {
+        manager.setService(null);
+        callbackImplement.checkout(checkoutRequestMock);
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+    @Test
+    public void paymentUsingCreditCardError_whenEmptyResponseBody() {
+        initCheckout(snapTokenRequestModelMock);
+        checkoutCaptor.getValue().onResponse(callCheckoutMock, createCheckoutResponse(200, SDKConfigTest.SNAP_TOKEN, true));
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+    @Test
+    public void checkoutError() {
+        initCheckout(snapTokenRequestModelMock);
+        checkoutCaptor.getValue().onFailure(callCheckoutMock, createThrowableOfTransactionResponseFailure(ERR_TYPE_NPE));
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+
+    /**
+     * save cards
+     */
+
+    private void initSaveCard() {
+        List<SaveCardRequest> cards = createSampleCards();
+
+        Mockito.when(merchantApiServiceMock.saveCards(SDKConfigTest.USER_ID, cards)).thenReturn(callSaveCardMock);
+        callbackImplement.saveCards(SDKConfigTest.USER_ID, cards);
+        Mockito.verify(callSaveCardMock).enqueue(saveCardCaptor.capture());
+    }
+
+    private List<SaveCardRequest> createSampleCards() {
+        List<SaveCardRequest> cards = new ArrayList<>();
+
+        SaveCardRequest card = new SaveCardRequest(SDKConfigTest.SAVED_TOKEN_ID,
+                SDKConfigTest.MASKED_CARD_NUMBER, SDKConfigTest.TWO_CLICK);
+        cards.add(card);
+        return cards;
+    }
+
+    @Test
+    public void saveCardsSuccess() {
+        initSaveCard();
+        Response<String> response = createSaveCardResponse(200, false);
+        saveCardCaptor.getValue().onResponse(callSaveCardMock, response);
+        Mockito.verify(callbackCollaboratorMock).onSaveAndGetCardsSuccess();
+    }
+
+    @Test
+    public void saveCardsFailure_whenEmptyStatusCode() {
+        initSaveCard();
+        Response<String> response = createSaveCardResponse(null, false);
+        saveCardCaptor.getValue().onResponse(callSaveCardMock, response);
+        Mockito.verify(callbackCollaboratorMock).onSaveAndGetCardsFailure();
+    }
+
+
+    @Test
+    public void saveCardsFailure_whenStatusCodeNot200Or201() {
+        initSaveCard();
+        Response<String> response = createSaveCardResponse(204, false);
+        saveCardCaptor.getValue().onResponse(callSaveCardMock, response);
+        Mockito.verify(callbackCollaboratorMock).onSaveAndGetCardsFailure();
+    }
+
+
+    @Test
+    public void saveCardsFailure_whenServiceNull() {
+        manager.setService(null);
+        callbackImplement.saveCards(SDKConfigTest.USER_ID, createSampleCards());
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+
+    @Test
+    public void saveCardError() {
+        initSaveCard();
+        saveCardCaptor.getValue().onFailure(callSaveCardMock, createThrowableOfTransactionResponseFailure(ERR_TYPE_NPE));
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+    /**
+     * get Saved Cards
+     */
+
+    private void initGetCards() {
+        Mockito.when(merchantApiServiceMock.getCards(SDKConfigTest.USER_ID)).thenReturn(callGetCardsMock);
+        callbackImplement.getCards(SDKConfigTest.USER_ID);
+        Mockito.verify(callGetCardsMock).enqueue(getCardsCaptor.capture());
+    }
+
+    @Test
+    public void getCardsSuccess() {
+        initGetCards();
+        Response<List<SaveCardRequest>> response = createGetCardsResponse(200, false);
+        getCardsCaptor.getValue().onResponse(callGetCardsMock, response);
+        Mockito.verify(callbackCollaboratorMock).onSaveAndGetCardsSuccess();
+    }
+
+    @Test
+    public void getCardsFailure_whenEmptyStatusCode() {
+        initSaveCard();
+        Response<String> response = createSaveCardResponse(null, false);
+        saveCardCaptor.getValue().onResponse(callSaveCardMock, response);
+        Mockito.verify(callbackCollaboratorMock).onSaveAndGetCardsFailure();
+    }
+
+
+    @Test
+    public void getCardsFailure_whenStatusCodeNot200Or201() {
+        initSaveCard();
+        Response<String> response = createSaveCardResponse(204, false);
+        saveCardCaptor.getValue().onResponse(callSaveCardMock, response);
+        Mockito.verify(callbackCollaboratorMock).onSaveAndGetCardsFailure();
+    }
+
+
+    @Test
+    public void getCardsFailure_whenServiceNull() {
+        manager.setService(null);
+        callbackImplement.getCards(SDKConfigTest.USER_ID);
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+
+    @Test
+    public void getCardsError() {
+        initGetCards();
+        getCardsCaptor.getValue().onFailure(callGetCardsMock, createThrowableOfTransactionResponseFailure(ERR_TYPE_NPE));
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
 
 }

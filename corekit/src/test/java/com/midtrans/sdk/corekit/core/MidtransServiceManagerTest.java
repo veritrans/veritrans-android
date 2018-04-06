@@ -355,7 +355,7 @@ public class MidtransServiceManagerTest {
     }
 
     /**
-     * Register Card
+     *  get card token
      */
 
     private void initGetCardToken(CardTokenRequest request, Boolean point, Boolean twoClick, Boolean secure) {

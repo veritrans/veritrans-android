@@ -33,11 +33,11 @@ public class CallbackCollaborator {
 
     }
 
-    public void onSaveCardsSuccess() {
+    public void onSaveAndGetCardsSuccess() {
 
     }
 
-    public void onSaveCardsFailure() {
+    public void onSaveAndGetCardsFailure() {
 
     }
 

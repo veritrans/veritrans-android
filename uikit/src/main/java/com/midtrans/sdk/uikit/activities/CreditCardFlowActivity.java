@@ -627,7 +627,7 @@ public class CreditCardFlowActivity extends BaseActivity {
                     }
                     cardTokenRequest.setCardCVV("0");
                     cardTokenRequest.setClientKey("");
-                    cardTokenRequest.setGrossAmount(0);
+                    cardTokenRequest.setGrossAmount(0L);
 
                     if (cardTokenRequest.isSaved()) {
                         if (!TextUtils.isEmpty(response.getSavedTokenId())) {

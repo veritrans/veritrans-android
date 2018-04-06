@@ -1615,7 +1615,7 @@ public class SnapTransactionManagerTest {
 //        callbackImplement.saveCards(sampleUserId, cardRequestListMock);
 //        Mockito.verify(merchantApi).saveCards(sampleUserIdCaptor.capture(), cardRequestListCaptor.capture(), saveCardCallbackCaptor.capture());
 //        saveCardCallbackCaptor.getValue().success(saveCardResponse, retrofitResponse);
-//        Mockito.verify(callbackCollaborator).onSaveCardsSuccess();
+//        Mockito.verify(callbackCollaborator).onSaveAndGetCardsSuccess();
 //    }
 //
 //    @Test
@@ -1626,7 +1626,7 @@ public class SnapTransactionManagerTest {
 //        callbackImplement.saveCards(sampleUserId, cardRequestListMock);
 //        Mockito.verify(merchantApi).saveCards(sampleUserIdCaptor.capture(), cardRequestListCaptor.capture(), saveCardCallbackCaptor.capture());
 //        saveCardCallbackCaptor.getValue().success(saveCardResponse, retrofitResponse);
-//        Mockito.verify(callbackCollaborator).onSaveCardsFailure();
+//        Mockito.verify(callbackCollaborator).onSaveAndGetCardsFailure();
 //    }
 //
 //    @Test
@@ -1680,7 +1680,7 @@ public class SnapTransactionManagerTest {
 //        callbackImplement.snapGetCards(sampleUserId);
 //        Mockito.verify(merchantApi).getCards(sampleUserIdCaptor.capture(), getCardCallbackCaptor.capture());
 //        getCardCallbackCaptor.getValue().success(getCardResponseMock, retrofitResponse);
-//        Mockito.verify(callbackCollaborator).onSaveCardsFailure();
+//        Mockito.verify(callbackCollaborator).onSaveAndGetCardsFailure();
 //    }
 //
 //    @Test
