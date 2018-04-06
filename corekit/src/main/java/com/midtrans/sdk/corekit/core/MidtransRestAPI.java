@@ -67,7 +67,7 @@ public interface MidtransRestAPI {
             @Query("card_exp_month") String cardExpiryMonth,
             @Query("card_exp_year") String cardExpiryYear,
             @Query("client_key") String clientKey,
-            @Query("gross_amount") Double grossAmount,
+            @Query("gross_amount") Long grossAmount,
             @Query("channel") String channel,
             @Query("type") String type,
             @Query("point") boolean point,

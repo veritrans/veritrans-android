@@ -34,7 +34,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
 public class TransactionRequestTest {
 
     TransactionRequest transactionRequest;
-    private double amount = 10;
+    private long amount = 10;
     private String orderId = "01";
     @Mock
     private CustomerDetails costumerDetailMock;

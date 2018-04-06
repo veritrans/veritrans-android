@@ -325,9 +325,9 @@ public class CardDetailsFragment extends Fragment {
                                 // Calculate discount amount
                                 double preDiscountAmount = midtransSDK.getTransactionRequest().getAmount();
                                 double discountedAmount = preDiscountAmount - SdkUIFlowUtil.calculateDiscountAmount(promo);
-                                request.setGrossAmount(discountedAmount);
+                                request.setGrossAmount((long) discountedAmount);
                             } else {
-                                request.setGrossAmount(midtransSDK.getTransactionRequest().getAmount());
+                                request.setGrossAmount((long) midtransSDK.getTransactionRequest().getAmount());
                             }
                             ((CreditCardFlowActivity) getActivity()).twoClickPayment(request);
                         } else {
@@ -344,7 +344,7 @@ public class CardDetailsFragment extends Fragment {
                                     midtransSDK.getClientKey());
                             cardTokenRequest.setIsSaved(saveCardCheckBox.isChecked());
                             cardTokenRequest.setSecure(((CreditCardFlowActivity) getActivity()).isSecurePayment());
-                            cardTokenRequest.setGrossAmount(midtransSDK.getTransactionRequest().getAmount());
+                            cardTokenRequest.setGrossAmount((long) midtransSDK.getTransactionRequest().getAmount());
 
                             SdkUIFlowUtil.showProgressDialog((AppCompatActivity) getActivity(), false);
                             ((CreditCardFlowActivity) getActivity()).setSavedCardInfo(saveCardCheckBox.isChecked(), "");
@@ -352,7 +352,7 @@ public class CardDetailsFragment extends Fragment {
                                 // Calculate discount amount
                                 double preDiscountAmount = midtransSDK.getTransactionRequest().getAmount();
                                 double discountedAmount = preDiscountAmount - SdkUIFlowUtil.calculateDiscountAmount(promo);
-                                cardTokenRequest.setGrossAmount(discountedAmount);
+                                cardTokenRequest.setGrossAmount((long) discountedAmount);
                                 ((CreditCardFlowActivity) getActivity()).normalPayment(cardTokenRequest);
                             } else {
                                 ((CreditCardFlowActivity) getActivity()).normalPayment(cardTokenRequest);

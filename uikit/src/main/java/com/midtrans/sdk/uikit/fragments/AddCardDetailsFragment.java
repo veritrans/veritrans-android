@@ -402,9 +402,9 @@ public class AddCardDetailsFragment extends Fragment {
                             // Calculate discount amount
                             double preDiscountAmount = midtransSDK.getTransactionRequest().getAmount();
                             double discountedAmount = preDiscountAmount - SdkUIFlowUtil.calculateDiscountAmount(promo);
-                            request.setGrossAmount(discountedAmount);
+                            request.setGrossAmount((long) discountedAmount);
                         } else {
-                            request.setGrossAmount(midtransSDK.getTransactionRequest().getAmount());
+                            request.setGrossAmount((long) midtransSDK.getTransactionRequest().getAmount());
                         }
                         ((CreditDebitCardFlowActivity) getActivity()).twoClickPayment(request);
 
@@ -417,7 +417,7 @@ public class AddCardDetailsFragment extends Fragment {
                                 midtransSDK.getClientKey());
                         cardTokenRequest.setIsSaved(cbSaveCard.isChecked());
                         cardTokenRequest.setSecure(midtransSDK.getTransactionRequest().isSecureCard());
-                        cardTokenRequest.setGrossAmount(midtransSDK.getTransactionRequest().getAmount());
+                        cardTokenRequest.setGrossAmount((long) midtransSDK.getTransactionRequest().getAmount());
                         cardTokenRequest.setCardType(cardType);
 
 
@@ -429,7 +429,7 @@ public class AddCardDetailsFragment extends Fragment {
                             // Calculate discount amount
                             double preDiscountAmount = midtransSDK.getTransactionRequest().getAmount();
                             double discountedAmount = preDiscountAmount - SdkUIFlowUtil.calculateDiscountAmount(promo);
-                            cardTokenRequest.setGrossAmount(discountedAmount);
+                            cardTokenRequest.setGrossAmount((long) discountedAmount);
                             ((CreditDebitCardFlowActivity) getActivity()).normalPayment(cardTokenRequest);
                         } else {
                             ((CreditDebitCardFlowActivity) getActivity()).normalPayment(cardTokenRequest);
