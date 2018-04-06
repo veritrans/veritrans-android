@@ -4,14 +4,15 @@ import com.midtrans.sdk.corekit.callback.BankBinsCallback;
 import com.midtrans.sdk.corekit.callback.BanksPointCallback;
 import com.midtrans.sdk.corekit.callback.CheckoutCallback;
 import com.midtrans.sdk.corekit.callback.DeleteCardCallback;
+import com.midtrans.sdk.corekit.callback.GetTransactionStatusCallback;
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.callback.TransactionOptionsCallback;
-import com.midtrans.sdk.corekit.models.TokenRequestModel;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 import com.midtrans.sdk.corekit.models.snap.BanksPointResponse;
 import com.midtrans.sdk.corekit.models.snap.Token;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
+import com.midtrans.sdk.corekit.models.snap.TransactionStatusResponse;
 import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.BasePaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.CreditCardPaymentRequest;
@@ -30,7 +31,8 @@ import java.util.ArrayList;
  */
 
 public class SnapServiceCallbackImplement implements TransactionCallback, CheckoutCallback,
-        TransactionOptionsCallback, DeleteCardCallback, BankBinsCallback, BanksPointCallback {
+        TransactionOptionsCallback, DeleteCardCallback, BankBinsCallback, BanksPointCallback,
+        GetTransactionStatusCallback {
     CallbackCollaborator callbackCollaborator;
     SnapServiceManager serviceManager;
 
@@ -100,6 +102,16 @@ public class SnapServiceCallbackImplement implements TransactionCallback, Checko
         callbackCollaborator.onGetBankBinFailure();
     }
 
+    @Override
+    public void onSuccess(TransactionStatusResponse response) {
+        this.callbackCollaborator.onGetTransactionStatatusSuccess();
+    }
+
+    @Override
+    public void onFailure(TransactionStatusResponse response, String reason) {
+        this.callbackCollaborator.onGetTransactionStatatusFailure();
+    }
+
     public void getTransactionOptions(String tokenId) {
         this.serviceManager.getTransactionOptions(tokenId, this);
     }
@@ -154,5 +166,9 @@ public class SnapServiceCallbackImplement implements TransactionCallback, Checko
 
     public void getBankPoints(String snapToken, String cardToken) {
         this.serviceManager.getBanksPoint(snapToken, cardToken, this);
+    }
+
+    public void getTransactionStatus(String snapToken) {
+        this.serviceManager.getTransactionStatus(snapToken, this);
     }
 }

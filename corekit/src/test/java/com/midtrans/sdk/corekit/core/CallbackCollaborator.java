@@ -92,4 +92,12 @@ public class CallbackCollaborator {
     public void onDeleteCardFailure() {
 
     }
+
+    public void onGetTransactionStatatusSuccess() {
+
+    }
+
+    public void onGetTransactionStatatusFailure() {
+
+    }
 }

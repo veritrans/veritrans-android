@@ -77,15 +77,6 @@ public interface SnapApiService {
     Call<TransactionResponse> paymentUsingKlikBca(@Path("snap_token") String snapToken, @Body KlikBCAPaymentRequest klikBCAPaymentRequest);
 
     /**
-     * Charge payment using mandiri bill pay.
-     *
-     * @param snapToken
-     * @param request   BankTransferPaymentRequest model
-     */
-    @POST("v1/transactions/{snap_token}/pay")
-    Call<TransactionResponse> paymentUsingMandiriBillPay(@Path("snap_token") String snapToken, @Body BankTransferPaymentRequest request);
-
-    /**
      * Charge payment using new flow mandiri click pay.
      *
      * @param snapToken

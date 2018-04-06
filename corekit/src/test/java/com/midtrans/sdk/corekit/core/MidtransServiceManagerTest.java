@@ -77,12 +77,11 @@ import retrofit2.Response;
 @PrepareForTest({Log.class, TextUtils.class, Logger.class, Looper.class, Base64.class,
         MixpanelAnalyticsManager.class, SdkUtil.class, MidtransRestAdapter.class})
 @PowerMockIgnore("javax.net.ssl.*")
-public class SnapServiceManagerTest {
+public class MidtransServiceManagerTest {
 
     private static final int ERR_TYPE_NPE = 1;
     @InjectMocks
     protected SnapServiceCallbackImplement callbackImplement;
-    CardTokenRequest cardTokenRequest = new CardTokenRequest();
     @Mock
     private Context contextMock;
     @Mock
@@ -102,7 +101,7 @@ public class SnapServiceManagerTest {
     @Mock
     private Transaction transactionMock;
     @Mock
-    private java.lang.Throwable errorGeneralMock;
+    private Throwable errorGeneralMock;
     @Captor
     private ArgumentCaptor<String> tokenIdCaptor;
     @Captor
@@ -287,7 +286,7 @@ public class SnapServiceManagerTest {
         Mockito.when(MidtransRestAdapter.newSnapApiService(timout)).thenReturn(snapApiServiceMock);
 
         Mockito.when(SdkUtil.newPreferences(contextMock, "local.data")).thenReturn(preferencesMock);
-        Mockito.when(SdkUtil.newSnapServiceManager(timout)).thenReturn(snapTransactionManager);
+        Mockito.when(SdkUtil.newMidtransServiceManager(timout)).thenReturn(midtransServiceManagerMock);
 
         snapTransactionManager = new SnapServiceManager(MidtransRestAdapter.newSnapApiService(timout));
         callbackImplement = new SnapServiceCallbackImplement(snapTransactionManager, callbackCollaboratorMock);

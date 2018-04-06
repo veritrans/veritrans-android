@@ -202,32 +202,6 @@ public class SnapServiceManager extends BaseServiceManager {
     }
 
     /**
-     * This method is used for payment using Mandiri Bill Pay.
-     *
-     * @param snapToken
-     * @param paymentRequest payment request for Mandiri Bill pay
-     * @param callback       transaction callback
-     */
-    public void paymentUsingMandiriBillPay(final String snapToken, BankTransferPaymentRequest paymentRequest, final TransactionCallback callback) {
-        if (service == null) {
-            doOnApiServiceUnAvailable(callback);
-            return;
-        }
-        Call<TransactionResponse> call = service.paymentUsingMandiriBillPay(snapToken, paymentRequest);
-        call.enqueue(new Callback<TransactionResponse>() {
-            @Override
-            public void onResponse(Call<TransactionResponse> call, Response<TransactionResponse> response) {
-                doOnPaymentResponseSuccess(response, callback);
-            }
-
-            @Override
-            public void onFailure(Call<TransactionResponse> call, Throwable t) {
-                doOnResponseFailure(t, callback);
-            }
-        });
-    }
-
-    /**
      * This method is used for payment using new flow of Mandiri Click Pay.
      *
      * @param snapToken

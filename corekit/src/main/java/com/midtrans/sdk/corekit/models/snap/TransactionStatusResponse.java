@@ -104,4 +104,8 @@ public class TransactionStatusResponse {
     public String getTransactionId() {
         return transactionId;
     }
+
+    public void setStatusCode(String statusCode) {
+        this.statusCode = statusCode;
+    }
 }

@@ -1224,7 +1224,7 @@ public class MidtransSDK {
         if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
 
-                snapServiceManager.paymentUsingMandiriBillPay(authenticationToken,
+                snapServiceManager.paymentUsingVa(authenticationToken,
                         SdkUtil.getBankTransferPaymentRequest(email, PaymentType.E_CHANNEL),
                         callback);
             } else {
