@@ -36,6 +36,7 @@ project.afterEvaluate {
                                    '**/*$ViewBinder*.*',
                                    '**/BuildConfig.*',
                                    '**/com/midtrans/sdk/corekit/models/*',
+                                   '**/com/midtrans/sdk/corekit/callback/*',
                                    '**/Manifest*.*']
                 )
 

@@ -10,7 +10,6 @@ import android.util.Log;
 import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.SDKConfigTest;
 import com.midtrans.sdk.corekit.models.CardRegistrationResponse;
-import com.midtrans.sdk.corekit.models.CardTokenRequest;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.models.TokenRequestModel;
@@ -26,6 +25,7 @@ import com.midtrans.sdk.corekit.models.snap.payment.IndosatDompetkuPaymentReques
 import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.MandiriClickPayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.TelkomselEcashPaymentRequest;
+import com.midtrans.sdk.corekit.utilities.MerchantServiceCallbackImplement;
 import com.securepreferences.SecurePreferences;
 
 import org.junit.Assert;
@@ -62,11 +62,11 @@ import retrofit2.Response;
 @PrepareForTest({Log.class, TextUtils.class, Logger.class, Looper.class, Base64.class,
         MixpanelAnalyticsManager.class, SdkUtil.class, MidtransRestAdapter.class})
 @PowerMockIgnore("javax.net.ssl.*")
-public class MidtransServiceManagerTest {
+public class MerchantServiceManagerTest {
 
     private static final int ERR_TYPE_NPE = 1;
     @InjectMocks
-    protected MidtransServiceCallbackImplement callbackImplement;
+    protected MerchantServiceCallbackImplement callbackImplement;
     @Mock
     private Context contextMock;
     @Mock
@@ -196,10 +196,10 @@ public class MidtransServiceManagerTest {
     @Mock
     private SecurePreferences preferencesMock;
 
-    private MidtransServiceManager midtransServiceManager;
+    private MerchantServiceManager manager;
 
     @Mock
-    MidtransApiService midtransServiceMock;
+    MerchantApiService merchantApiServiceMock;
 
     private int timout = 1000;
 
@@ -238,13 +238,13 @@ public class MidtransServiceManagerTest {
 
         Mockito.when(contextMock.getResources()).thenReturn(resourcesMock);
         Mockito.when(contextMock.getApplicationContext()).thenReturn(contextMock);
-        Mockito.when(MidtransRestAdapter.newMidtransApiService(timout)).thenReturn(midtransServiceMock);
+        Mockito.when(MidtransRestAdapter.newMerchantApiService(SDKConfigTest.MERCHANT_BASE_URL, timout)).thenReturn(merchantApiServiceMock);
 
         Mockito.when(SdkUtil.newPreferences(contextMock, "local.data")).thenReturn(preferencesMock);
-        Mockito.when(SdkUtil.newMidtransServiceManager(timout)).thenReturn(midtransServiceManager);
+        Mockito.when(SdkUtil.newMerchantServiceManager(SDKConfigTest.MERCHANT_BASE_URL, timout)).thenReturn(manager);
 
-        midtransServiceManager = new MidtransServiceManager(MidtransRestAdapter.newMidtransApiService(timout));
-        callbackImplement = new MidtransServiceCallbackImplement(midtransServiceManager, callbackCollaboratorMock);
+        manager = new MerchantServiceManager(MidtransRestAdapter.newMerchantApiService(SDKConfigTest.MERCHANT_BASE_URL, timout));
+        callbackImplement = new MerchantServiceCallbackImplement(manager, callbackCollaboratorMock);
 
         SdkCoreFlowBuilder
                 .init(contextMock, SDKConfigTest.CLIENT_KEY, SDKConfigTest.MERCHANT_BASE_URL)
@@ -291,162 +291,67 @@ public class MidtransServiceManagerTest {
      * Register Card
      */
 
-    private void initCardRegistration() {
+//    private void initCardRegistration() {
+//
+//        Mockito.when(midtransServiceMock.registerCard(SDKConfigTest.CARD_NUMBER,
+//                SDKConfigTest.CARD_CVV,
+//                SDKConfigTest.CARD_EXPIRY_MONTH,
+//                SDKConfigTest.CARD_EXPIRY_YEAR,
+//                SDKConfigTest.CLIENT_KEY)).thenReturn(callRegisterCardMock);
+//
+//        callbackImplement.registerCard(SDKConfigTest.CARD_NUMBER,
+//                SDKConfigTest.CARD_CVV,
+//                SDKConfigTest.CARD_EXPIRY_MONTH,
+//                SDKConfigTest.CARD_EXPIRY_YEAR,
+//                SDKConfigTest.CLIENT_KEY);
+//
+//        Mockito.verify(callRegisterCardMock).enqueue(cardRegistrationCaptor.capture());
+//    }
+//
+//    @Test
+//    public void registerCardSuccess() {
+//        initCardRegistration();
+//        Response<CardRegistrationResponse> response = createCarRegistrationResponse(200);
+//        cardRegistrationCaptor.getValue().onResponse(callRegisterCardMock, response);
+//        Mockito.verify(callbackCollaboratorMock).onCardRegistrationSuccess();
+//    }
+//
+//
+//    @Test
+//    public void getBankPointsFailure_whenEmptyStatusCode() {
+//        initCardRegistration();
+//        Response<CardRegistrationResponse> response = createCarRegistrationResponse(null);
+//        cardRegistrationCaptor.getValue().onResponse(callRegisterCardMock, response);
+//        Mockito.verify(callbackCollaboratorMock).onCardRegistrationFailed();
+//    }
+//
+//    @Test
+//    public void getBankPointsFailure_whenStatusCodeNot200Or201() {
+//        initCardRegistration();
+//        Response<CardRegistrationResponse> response = createCarRegistrationResponse(214);
+//        cardRegistrationCaptor.getValue().onResponse(callRegisterCardMock, response);
+//        Mockito.verify(callbackCollaboratorMock).onCardRegistrationFailed();
+//    }
+//
+//
+//    @Test
+//    public void getBankPointsFailure_whenServiceNull() {
+//        manager.setService(null);
+//
+//        callbackImplement.registerCard(SDKConfigTest.CARD_NUMBER,
+//                SDKConfigTest.CARD_CVV,
+//                SDKConfigTest.CARD_EXPIRY_MONTH,
+//                SDKConfigTest.CARD_EXPIRY_YEAR,
+//                SDKConfigTest.CLIENT_KEY);
+//
+//        Mockito.verify(callbackCollaboratorMock).onError();
+//    }
+//
+//    @Test
+//    public void getBankPointsError() {
+//        initCardRegistration();
+//        cardRegistrationCaptor.getValue().onFailure(callRegisterCardMock, createThrowableOfTransactionResponseFailure(ERR_TYPE_NPE));
+//        Mockito.verify(callbackCollaboratorMock).onError();
+//    }
 
-        Mockito.when(midtransServiceMock.registerCard(SDKConfigTest.CARD_NUMBER,
-                SDKConfigTest.CARD_CVV,
-                SDKConfigTest.CARD_EXPIRY_MONTH,
-                SDKConfigTest.CARD_EXPIRY_YEAR,
-                SDKConfigTest.CLIENT_KEY)).thenReturn(callRegisterCardMock);
-
-        callbackImplement.registerCard(SDKConfigTest.CARD_NUMBER,
-                SDKConfigTest.CARD_CVV,
-                SDKConfigTest.CARD_EXPIRY_MONTH,
-                SDKConfigTest.CARD_EXPIRY_YEAR,
-                SDKConfigTest.CLIENT_KEY);
-
-        Mockito.verify(callRegisterCardMock).enqueue(cardRegistrationCaptor.capture());
-    }
-
-    @Test
-    public void registerCardSuccess() {
-        initCardRegistration();
-        Response<CardRegistrationResponse> response = createCarRegistrationResponse(200);
-        cardRegistrationCaptor.getValue().onResponse(callRegisterCardMock, response);
-        Mockito.verify(callbackCollaboratorMock).onCardRegistrationSuccess();
-    }
-
-
-    @Test
-    public void getBankPointsFailure_whenEmptyStatusCode() {
-        initCardRegistration();
-        Response<CardRegistrationResponse> response = createCarRegistrationResponse(null);
-        cardRegistrationCaptor.getValue().onResponse(callRegisterCardMock, response);
-        Mockito.verify(callbackCollaboratorMock).onCardRegistrationFailed();
-    }
-
-    @Test
-    public void getBankPointsFailure_whenStatusCodeNot200Or201() {
-        initCardRegistration();
-        Response<CardRegistrationResponse> response = createCarRegistrationResponse(214);
-        cardRegistrationCaptor.getValue().onResponse(callRegisterCardMock, response);
-        Mockito.verify(callbackCollaboratorMock).onCardRegistrationFailed();
-    }
-
-
-    @Test
-    public void getBankPointsFailure_whenServiceNull() {
-        midtransServiceManager.setService(null);
-
-        callbackImplement.registerCard(SDKConfigTest.CARD_NUMBER,
-                SDKConfigTest.CARD_CVV,
-                SDKConfigTest.CARD_EXPIRY_MONTH,
-                SDKConfigTest.CARD_EXPIRY_YEAR,
-                SDKConfigTest.CLIENT_KEY);
-
-        Mockito.verify(callbackCollaboratorMock).onError();
-    }
-
-    @Test
-    public void getBankPointsError() {
-        initCardRegistration();
-        cardRegistrationCaptor.getValue().onFailure(callRegisterCardMock, createThrowableOfTransactionResponseFailure(ERR_TYPE_NPE));
-        Mockito.verify(callbackCollaboratorMock).onError();
-    }
-
-    /**
-     * Register Card
-     */
-
-    private void initGetCardToken(CardTokenRequest request, Boolean point, Boolean twoClick, Boolean secure) {
-
-        Mockito.when(midtransServiceMock.getToken(
-                SDKConfigTest.CARD_NUMBER,
-                SDKConfigTest.CARD_CVV,
-                SDKConfigTest.CARD_EXPIRY_MONTH,
-                SDKConfigTest.CARD_EXPIRY_YEAR,
-                SDKConfigTest.CLIENT_KEY,
-                SDKConfigTest.CHANNEL,
-                SDKConfigTest.TYPE,
-                point
-        )).thenReturn(callGetCardTokenMock);
-
-        //with gross amount
-        Mockito.when(midtransServiceMock.getToken(
-                SDKConfigTest.CARD_NUMBER,
-                SDKConfigTest.CARD_CVV,
-                SDKConfigTest.CARD_EXPIRY_MONTH,
-                SDKConfigTest.CARD_EXPIRY_YEAR,
-                SDKConfigTest.CLIENT_KEY,
-                SDKConfigTest.GROSS_AMOUNT,
-                SDKConfigTest.CHANNEL,
-                SDKConfigTest.TYPE,
-                point
-        )).thenReturn(callGetCardTokenMock);
-
-
-        Mockito.when(midtransServiceMock.get3DSToken(
-                SDKConfigTest.CARD_NUMBER,
-                SDKConfigTest.CARD_CVV,
-                SDKConfigTest.CARD_EXPIRY_MONTH,
-                SDKConfigTest.CARD_EXPIRY_YEAR,
-                SDKConfigTest.CLIENT_KEY,
-                SDKConfigTest.BANK,
-                secure,
-                twoClick,
-                SDKConfigTest.GROSS_AMOUNT,
-                SDKConfigTest.CHANNEL,
-                SDKConfigTest.TYPE,
-                point
-        )).thenReturn(callGetCardTokenMock);
-
-
-        Mockito.when(midtransServiceMock.getTokenTwoClick(
-                SDKConfigTest.CARD_CVV,
-                SDKConfigTest.SAVED_TOKEN_ID,
-                twoClick,
-                secure,
-                SDKConfigTest.GROSS_AMOUNT,
-                SDKConfigTest.BANK,
-                SDKConfigTest.CLIENT_KEY,
-                SDKConfigTest.CHANNEL,
-                SDKConfigTest.TYPE,
-                point
-        )).thenReturn(callGetCardTokenMock);
-
-        Mockito.when(midtransServiceMock.getTokenInstalmentOfferTwoClick(
-                SDKConfigTest.CARD_CVV,
-                SDKConfigTest.SAVED_TOKEN_ID,
-                twoClick,
-                secure,
-                SDKConfigTest.GROSS_AMOUNT,
-                SDKConfigTest.BANK,
-                SDKConfigTest.CLIENT_KEY,
-                true,
-                SDKConfigTest.INSTALLMENT_TERM,
-                SDKConfigTest.CHANNEL,
-                SDKConfigTest.TYPE,
-                point
-        )).thenReturn(callGetCardTokenMock);
-
-        Mockito.when(midtransServiceMock.get3DSTokenInstalmentOffers(
-                SDKConfigTest.CARD_NUMBER,
-                SDKConfigTest.CARD_CVV,
-                SDKConfigTest.CARD_EXPIRY_MONTH,
-                SDKConfigTest.CARD_EXPIRY_YEAR,
-                SDKConfigTest.CLIENT_KEY,
-                SDKConfigTest.BANK,
-                secure,
-                twoClick,
-                SDKConfigTest.GROSS_AMOUNT,
-                true,
-                SDKConfigTest.CHANNEL,
-                SDKConfigTest.INSTALLMENT_TERM,
-                SDKConfigTest.TYPE,
-                point
-        )).thenReturn(callGetCardTokenMock);
-
-        callbackImplement.getCardToken(request);
-        Mockito.verify(callGetCardTokenMock).enqueue(getCardTokenCaptor.capture());
-    }
 }

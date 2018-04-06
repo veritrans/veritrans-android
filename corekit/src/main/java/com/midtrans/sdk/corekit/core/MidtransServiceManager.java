@@ -37,7 +37,6 @@ public class MidtransServiceManager extends BaseServiceManager {
                                  String cardCvv,
                                  String cardExpMonth,
                                  String cardExpYear, String clientKey, final CardRegistrationCallback callback) {
-
         if (service == null) {
             doOnApiServiceUnAvailable(callback);
             return;
@@ -49,9 +48,9 @@ public class MidtransServiceManager extends BaseServiceManager {
             public void onResponse(Call<CardRegistrationResponse> call, Response<CardRegistrationResponse> response) {
                 releaseResources();
                 CardRegistrationResponse cardRegistrationResponse = response.body();
-
                 if (cardRegistrationResponse != null) {
                     String statusCode = cardRegistrationResponse.getStatusCode();
+
                     if (!TextUtils.isEmpty(statusCode) && statusCode.equals(Constants.STATUS_CODE_200)) {
                         callback.onSuccess(cardRegistrationResponse);
                     } else {
@@ -245,4 +244,7 @@ public class MidtransServiceManager extends BaseServiceManager {
         }
     }
 
+    void setService(MidtransApiService service) {
+        this.service = service;
+    }
 }
