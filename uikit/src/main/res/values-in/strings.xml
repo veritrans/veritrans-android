@@ -12,11 +12,14 @@
     <string name="hint_email">Email</string>
     <string name="next">Selanjutnya</string>
     <string name="hint_phone_number">No. Telepon </string>
+    <string name="hint_phone_number_optional">No. Telepon (Opsional)</string>
     <string name="validation_full_name_empty">Masukkan nama lengkap</string>
     <string name="validation_email_empty">Masukkan alamat email</string>
     <string name="validation_email_invalid">Masukkan alamat email yang benar</string>
+    <string name="validation_email_invalid_optional">Masukkan alamat email yang benar atau kosongkan</string>
     <string name="validation_phone_no_empty">Masukkan nomor telepon</string>
     <string name="validation_phone_no_invalid">Masukkan nomor telepon yang benar</string>
+    <string name="validation_phone_no_invalid_optional">Masukkan nomor telepon yang benar atau kosongkan</string>
     <string name="my_credit_card">Kartu Kredit Saya</string>
 
     <!-- User Address -->
@@ -70,7 +73,9 @@
     <string name="save_card_message">Simpan data kartu kredit</string>
     <string name="save_card_dialog">Kami akan menyimpan kartu anda sehingga bisa digunakan untuk transaksi selanjutnya.</string>
     <string name="pay_now">Bayar Sekarang</string>
-    <string name="pay_with_instalments">Bayar dengan cicilan ?</string>
+    <string name="pay_with_instalments">PEMBAYARAN MENGGUNAKAN CICILAN</string>
+    <string name="card_detail_title">DETAIL KARTU</string>
+    <string name="contact_detail_title">DETAIL KONTAK</string>
     <string name="validatation_message_card_holder_name">Masukkan nama pemilik kartu</string>
     <string name="hint_expiry_date">Kadaluarsa(mm/yy)</string>
     <string name="validation_message_card_number">Masukkan nomor kartu</string>

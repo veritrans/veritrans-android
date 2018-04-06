@@ -2995,6 +2995,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             uiKitCustomSetting.setEnableAutoReadSms(false);
         }
 
+        uiKitCustomSetting.setShowEmailInCcForm(true);
+
         MidtransSDK.getInstance().setUIKitCustomSetting(uiKitCustomSetting);
 
         if (secureEnabledSelection.isChecked()) {
