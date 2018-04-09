@@ -81,7 +81,7 @@
                 app:fb_iconPosition="left"
                 app:fb_iconResource="@drawable/ic_plus_new"
                 app:fb_radius="5dp"
-                app:fb_text="@string/add_new_card"
+                app:fb_text="@string/add_new_card_demo"
                 app:fb_textColor="@color/gray.primary_dark"
                 app:fb_textSize="12sp" />
         </LinearLayout>

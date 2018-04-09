@@ -191,7 +191,7 @@
     <string name="user_address">Midplaza 2, 4th Jl. Jendral Sudirman Kav. 10-11, Jakarta - 10220 \n Indonesia</string>
     <string name="account_phone">081808466410</string>
     <string name="my_account">My Account</string>
-    <string name="add_new_card">Add New Card</string>
+    <string name="add_new_card_demo">Add New Card</string>
 
     <string name="save_card_successfully">Save Card Successfully</string>
     <string name="please_wait">Please Wait</string>
