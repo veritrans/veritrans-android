@@ -430,6 +430,7 @@
             android:layout_marginLeft="@dimen/sixteen_dp"
             android:layout_marginRight="@dimen/sixteen_dp"
             android:hint="@string/hint_phone_example"
+            android:digits="@string/hint_phone_example"
             android:imeOptions="actionDone"
             android:inputType="phone"
             android:maxLength="13"
