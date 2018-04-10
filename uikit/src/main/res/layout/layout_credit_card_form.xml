@@ -499,7 +499,7 @@
         android:layout_marginBottom="@dimen/eight_dp"
         android:layout_marginLeft="@dimen/sixteen_dp"
         android:layout_marginRight="@dimen/sixteen_dp"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginTop="@dimen/eight_dp"
         android:background="@drawable/grey_rounded_background"
         android:gravity="center_vertical"
         android:orientation="horizontal"
