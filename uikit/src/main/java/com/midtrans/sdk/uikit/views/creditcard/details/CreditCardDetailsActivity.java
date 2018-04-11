@@ -448,6 +448,10 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                                 currentPosition = lastPosition + 1;
                             }
                         }
+                    } else {
+                        if (textInApplicablePromoStatus != null) {
+                            showInApplicablePromo(false);
+                        }
                     }
 
                     String cardType = Utils.getCardType(s.toString());

@@ -166,6 +166,7 @@
     <string name="using_bca_installment">BCA Installment</string>
     <string name="using_bri_installment">BRI Installment</string>
     <string name="using_cimb_installment">CIMB Installment</string>
+    <string name="using_maybank_installment">Maybank Installment</string>
     <string name="installment_required_title">(Required)</string>
 
     <!-- BNI Point -->
@@ -201,6 +202,7 @@
     <string name="optional">Optional</string>
     <string name="installment_bri">BRI</string>
     <string name="installment_cimb">CIMB</string>
+    <string name="installment_maybank">Maybank</string>
     <string name="save_card">Save Card</string>
     <string name="reset_setting">Reset</string>
     <string name="reset_setting_notification">All Settings are Reset</string>

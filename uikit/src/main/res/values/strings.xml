@@ -391,7 +391,7 @@
     <string name="btn_save_card">Register Card</string>
     <string name="btn_scan_card">Scan Card Using Camera</string>
     <string name="offer_applied">Offer Applied Successfully !</string>
-    <string name="offer_not_applied">This card is not applicable for this promotion, please use another one.</string>
+    <string name="offer_not_applied">This card is not applicable for this transaction, please use another card.</string>
     <string name="no_offers">No offers found</string>
     <string name="text_yes">Yes</string>
     <string name="text_no">No</string>
@@ -848,7 +848,7 @@
     <string name="hint_card_number_example">4811 1111 1111 1114</string>
     <string name="hint_expiry_date_example">01 / 20</string>
     <string name="hint_email_example">budi@utomo.com</string>
-    <string name="hint_phone_example">081234567890</string>
+    <string name="hint_phone_example">08123456789</string>
     <string name="hint_cvv_example">123</string>
     <string name="payment_info">Payment Info</string>
     <string name="notification_token_message">Key token device is required for this payment method.</string>
