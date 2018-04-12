@@ -76,7 +76,7 @@ public class SDKUtilsTest {
     @Mock
     private ArrayList<ShippingAddress> shippingAddressMock;
     private java.lang.String orderId = "01";
-    private java.lang.Double amount = 20.0;
+    private java.lang.Long amount = 20L;
     @Mock
     private CustomerDetails costumerDetailMock;
     @Mock
