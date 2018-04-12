@@ -213,4 +213,5 @@
     <string name="enable_rba_non_3ds">RBA Enabled - Case non 3DS</string>
     <string name="enable_3ds">Enable 3ds</string>
     <string name="error_empty">Please fill the field</string>
+    <string name="swipe_left">Swipe left to delete saved card</string>
 </resources>

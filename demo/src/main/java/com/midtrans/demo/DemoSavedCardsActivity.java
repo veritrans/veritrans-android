@@ -14,6 +14,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
+import com.midtrans.demo.SavedCardsAdapter.SavedCardAdapterEventListener;
 import com.midtrans.demo.models.SavedCard;
 import com.midtrans.demo.models.SavedCards;
 import com.midtrans.demo.widgets.DemoButton;
@@ -140,9 +141,9 @@ public class DemoSavedCardsActivity extends AppCompatActivity implements CardReg
 
 
     private void bindViews() {
-        listSavedCard = (RecyclerView) findViewById(R.id.rv_saved_cards);
-        buttonDemo = (DemoButton) findViewById(R.id.btn_add_card);
-        toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        listSavedCard = findViewById(R.id.rv_saved_cards);
+        buttonDemo = findViewById(R.id.btn_add_card);
+        toolbar = findViewById(R.id.main_toolbar);
     }
 
     private void initListView() {
@@ -150,6 +151,13 @@ public class DemoSavedCardsActivity extends AppCompatActivity implements CardReg
         listSavedCard.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         cardsAdapter = new SavedCardsAdapter();
         cardsAdapter.setData(savedCards);
+
+        cardsAdapter.setListener(new SavedCardAdapterEventListener() {
+            @Override
+            public void onItemClick() {
+                Toast.makeText(DemoSavedCardsActivity.this, getString(R.string.swipe_left), Toast.LENGTH_SHORT).show();
+            }
+        });
 
         cardsAdapter.setDeleteCardListener(new SavedCardsAdapter.DeleteCardListener() {
             @Override

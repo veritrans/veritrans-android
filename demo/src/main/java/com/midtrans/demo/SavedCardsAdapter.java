@@ -115,7 +115,7 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
     }
 
     public interface SavedCardAdapterEventListener {
-        void onItemClick(int position);
+        void onItemClick();
     }
 
 
@@ -172,7 +172,7 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
                 @Override
                 public void onClick(View view) {
                     if (listener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
-                        listener.onItemClick(getAdapterPosition());
+                        listener.onItemClick();
                     }
                 }
             });

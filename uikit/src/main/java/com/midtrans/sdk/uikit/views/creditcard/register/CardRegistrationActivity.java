@@ -16,7 +16,6 @@ import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.CardRegistrationResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.abstracts.BaseActivity;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
 import com.midtrans.sdk.uikit.scancard.ExternalScanner;
 import com.midtrans.sdk.uikit.scancard.ScannerModel;
@@ -484,6 +483,7 @@ public class CardRegistrationActivity extends BasePaymentActivity implements Car
         textTitle = findViewById(R.id.text_page_title);
 
         buttonSaveCard.setText(getString(R.string.save_card));
+        buttonSaveCard.setTextBold();
     }
 
     @Override
