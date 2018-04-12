@@ -17,6 +17,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnFocusChangeListener;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -76,17 +77,23 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     private AppCompatEditText fieldCardNumber;
     private AppCompatEditText fieldCardCvv;
     private AppCompatEditText fieldCardExpiry;
+    private AppCompatEditText fieldEmail;
+    private AppCompatEditText fieldPhone;
 
     private DefaultTextView textCardNumberHint;
     private DefaultTextView textExpriyHint;
     private DefaultTextView textCvvHint;
     private DefaultTextView textInApplicablePromoStatus;
+    private DefaultTextView textEmailHint;
+    private DefaultTextView textPhoneHint;
 
     private TextView textCardNumberError;
     private TextView textCardCvvError;
     private TextView textCardExpiryError;
     private TextView textInstallmentTerm;
     private TextView textTitleInstallment;
+    private TextView textEmailError;
+    private TextView textPhoneError;
     private SemiBoldTextView textTitle;
 
     private ImageView imageCardLogo;
@@ -106,6 +113,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     private RelativeLayout containerSaveCard;
     private LinearLayout containerInstallment;
     private RelativeLayout containerPoint;
+    private LinearLayout containerUserDetail;
 
     private AppCompatCheckBox checkboxSaveCard;
     private AppCompatCheckBox checkboxPointEnabled;
@@ -118,7 +126,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     private String redirectUrl = null;
     private float redeemedPoint = 0f;
     private int attempt = 0;
-
+    private boolean isEmailShown = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -136,8 +144,8 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         intPaymentButton();
         initHelpButtons();
         initInstallmentButton();
-        initDeleteButton();
         initScanCardButton();
+        initDeleteButton();
         initCheckBox();
         initPromoList();
         initLayoutState();
@@ -328,10 +336,13 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         boolean isFirstPage = getIntent().getBooleanExtra(USE_DEEP_LINK, true);
         presenter.trackPageView(PAGE_NAME, isFirstPage);
 
+        initUserDetail();
+
     }
 
     private void showDeleteIcon() {
         buttonDeleteCard.setVisibility(View.VISIBLE);
+        findViewById(R.id.button_separator).setVisibility(View.VISIBLE);
     }
 
     private void initExtras() {
@@ -371,6 +382,8 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             setTextColor(textCardNumberHint);
             setTextColor(textExpriyHint);
             setTextColor(textCvvHint);
+            setTextColor(textEmailHint);
+            setTextColor(textPhoneHint);
 
             setTextColor(buttonIncreaseInstallment);
             setTextColor(buttonDecreaseInstallment);
@@ -434,6 +447,10 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                             } else {
                                 currentPosition = lastPosition + 1;
                             }
+                        }
+                    } else {
+                        if (textInApplicablePromoStatus != null) {
+                            showInApplicablePromo(false);
                         }
                     }
 
@@ -610,7 +627,10 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             @Override
             public void onClick(View v) {
                 SdkUIFlowUtil.hideKeyboard(CreditCardDetailsActivity.this);
-                if (checkCardValidity()) {
+                if (checkCardValidity() && checkUserDataValidity()) {
+                    if (isEmailShown) {
+                        presenter.saveUserDetail(fieldEmail.getEditableText().toString(), fieldPhone.getEditableText().toString());
+                    }
                     if (checkPaymentValidity()) {
                         setPromoSelected();
                         presenter.trackButtonClick(attempt == 0 ? BUTTON_CONFIRM_NAME : BUTTON_RETRY_NAME, PAGE_NAME);
@@ -751,6 +771,16 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         return cardNumberValidity && cardExpiryValidity && cardCVVValidity;
     }
 
+    private boolean checkUserDataValidity() {
+        if (isEmailShown) {
+            boolean emailValidity = presenter.isEmailValid(fieldEmail.getEditableText().toString());
+            String phoneNumber = fieldPhone.getEditableText().toString();
+            boolean phoneValidity = TextUtils.isEmpty(phoneNumber) || phoneNumber.length() > 5;
+            return emailValidity && phoneValidity;
+        }
+        return true;
+    }
+
     private void checkBinLockingValidity() {
         String cardNumber = getCleanedCardNumber();
         if (!TextUtils.isEmpty(cardNumber)) {
@@ -797,44 +827,51 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
     @Override
     public void bindViews() {
-        fieldCardNumber = (AppCompatEditText) findViewById(R.id.field_card_number);
-        fieldCardCvv = (AppCompatEditText) findViewById(R.id.field_cvv);
-        fieldCardExpiry = (AppCompatEditText) findViewById(R.id.field_expiry);
+        fieldCardNumber = findViewById(R.id.field_card_number);
+        fieldCardCvv = findViewById(R.id.field_cvv);
+        fieldCardExpiry = findViewById(R.id.field_expiry);
+        fieldEmail = findViewById(R.id.field_email);
+        fieldPhone = findViewById(R.id.field_phone);
 
-        textInstallmentTerm = (TextView) findViewById(R.id.text_installment_term);
-        textTitleInstallment = (TextView) findViewById(R.id.title_installment);
-        textTitle = (SemiBoldTextView) findViewById(R.id.text_page_title);
-        textCardNumberHint = (DefaultTextView) findViewById(R.id.hint_card_number);
-        textExpriyHint = (DefaultTextView) findViewById(R.id.hint_card_expiry);
-        textCvvHint = (DefaultTextView) findViewById(R.id.hint_card_cvv);
-        textInApplicablePromoStatus = (DefaultTextView) findViewById(R.id.text_offer_status_not_applied);
+        textInstallmentTerm = findViewById(R.id.text_installment_term);
+        textTitleInstallment = findViewById(R.id.title_installment);
+        textTitle = findViewById(R.id.text_page_title);
+        textCardNumberHint = findViewById(R.id.hint_card_number);
+        textExpriyHint = findViewById(R.id.hint_card_expiry);
+        textCvvHint = findViewById(R.id.hint_card_cvv);
+        textInApplicablePromoStatus = findViewById(R.id.text_offer_status_not_applied);
+        textEmailHint = findViewById(R.id.hint_user_email);
+        textPhoneHint = findViewById(R.id.hint_user_phone);
 
-        textCardNumberError = (TextView) findViewById(R.id.error_message_card_number);
-        textCardExpiryError = (TextView) findViewById(R.id.error_message_expiry);
-        textCardCvvError = (TextView) findViewById(R.id.error_message_cvv);
+        textCardNumberError = findViewById(R.id.error_message_card_number);
+        textCardExpiryError = findViewById(R.id.error_message_expiry);
+        textCardCvvError = findViewById(R.id.error_message_cvv);
+        textEmailError = findViewById(R.id.error_message_email);
+        textPhoneError = findViewById(R.id.error_message_phone);
 
-        imageCardLogo = (ImageView) findViewById(R.id.payment_card_logo);
-        imageBankLogo = (ImageView) findViewById(R.id.bank_logo);
-        ccBadge = (ImageView) findViewById(R.id.cc_badge);
+        imageCardLogo = findViewById(R.id.payment_card_logo);
+        imageBankLogo = findViewById(R.id.bank_logo);
+        ccBadge = findViewById(R.id.cc_badge);
 
-        buttonCvvHelp = (ImageButton) findViewById(R.id.help_cvv_button);
-        buttonSaveCardHelp = (ImageButton) findViewById(R.id.help_save_card);
-        buttonPointHelp = (ImageButton) findViewById(R.id.help_bank_point);
+        buttonCvvHelp = findViewById(R.id.help_cvv_button);
+        buttonSaveCardHelp = findViewById(R.id.help_save_card);
+        buttonPointHelp = findViewById(R.id.help_bank_point);
 
-        buttonScanCard = (FancyButton) findViewById(R.id.button_scan_card);
-        buttonDeleteCard = (FancyButton) findViewById(R.id.button_delete);
-        buttonPayNow = (FancyButton) findViewById(R.id.button_primary);
-        buttonDecreaseInstallment = (FancyButton) findViewById(R.id.button_installment_decrease);
-        buttonIncreaseInstallment = (FancyButton) findViewById(R.id.button_installment_increase);
+        buttonScanCard = findViewById(R.id.button_scan_card);
+        buttonDeleteCard = findViewById(R.id.button_delete);
+        buttonPayNow = findViewById(R.id.button_primary);
+        buttonDecreaseInstallment = findViewById(R.id.button_installment_decrease);
+        buttonIncreaseInstallment = findViewById(R.id.button_installment_increase);
 
-        containerSaveCard = (RelativeLayout) findViewById(R.id.container_save_card_details);
-        containerInstallment = (LinearLayout) findViewById(R.id.container_installment);
-        containerPoint = (RelativeLayout) findViewById(R.id.container_bni_point);
+        containerSaveCard = findViewById(R.id.container_save_card_details);
+        containerInstallment = findViewById(R.id.container_installment);
+        containerPoint = findViewById(R.id.container_bni_point);
+        containerUserDetail = findViewById(R.id.container_user_detail);
 
-        checkboxSaveCard = (AppCompatCheckBox) findViewById(R.id.checkbox_save_card);
-        checkboxPointEnabled = (AppCompatCheckBox) findViewById(R.id.checkbox_point);
+        checkboxSaveCard = findViewById(R.id.checkbox_save_card);
+        checkboxPointEnabled = findViewById(R.id.checkbox_point);
 
-        recyclerViewPromo = (RecyclerView) findViewById(R.id.recycler_promo);
+        recyclerViewPromo = findViewById(R.id.recycler_promo);
     }
 
     private void setBankType() {
@@ -911,6 +948,67 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             case Utils.CARD_TYPE_AMEX:
                 imageCardLogo.setImageResource(R.drawable.ic_amex);
                 break;
+        }
+    }
+
+    private void initUserDetail() {
+        if (presenter.isShowEmailForm()) {
+            isEmailShown = true;
+            fieldEmail.setText(presenter.getUserEmail());
+            fieldEmail.clearFocus();
+            fieldEmail.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    String email = s.toString();
+                    if (TextUtils.isEmpty(email) || presenter.isEmailValid(email)) {
+                        textEmailError.setVisibility(View.GONE);
+                    } else {
+                        textEmailError.setVisibility(View.VISIBLE);
+                    }
+                }
+            });
+            fieldPhone.setText(presenter.getUserPhone());
+            fieldPhone.clearFocus();
+            fieldPhone.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    String phone = s.toString();
+                    if (TextUtils.isEmpty(phone) || phone.length() > 5) {
+                        textPhoneError.setVisibility(View.GONE);
+                    } else {
+                        textPhoneError.setVisibility(View.VISIBLE);
+                    }
+                }
+            });
+            fieldPhone.setOnFocusChangeListener(new OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (hasFocus) {
+                        fieldPhone.setSelection(fieldPhone.getEditableText().toString().length());
+                    }
+                }
+            });
+            containerUserDetail.setVisibility(View.VISIBLE);
         }
     }
 
@@ -1107,8 +1205,10 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     private void showScanCardButton(boolean show) {
         if (show) {
             buttonScanCard.setVisibility(View.VISIBLE);
+            findViewById(R.id.button_separator).setVisibility(View.VISIBLE);
         } else {
             buttonScanCard.setVisibility(View.GONE);
+            findViewById(R.id.button_separator).setVisibility(View.GONE);
         }
     }
 

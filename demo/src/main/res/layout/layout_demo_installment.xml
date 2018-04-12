@@ -98,6 +98,16 @@
                 android:gravity="center_vertical"
                 android:text="@string/installment_cimb" />
 
+            <com.midtrans.demo.widgets.DemoRadioButton
+                android:id="@+id/installment_type_maybank"
+                style="@style/CustomRadioButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/eight_dp"
+                android:layout_marginStart="@dimen/eight_dp"
+                android:gravity="center_vertical"
+                android:text="@string/installment_maybank" />
+
         </RadioGroup>
 
         <LinearLayout
@@ -169,6 +179,18 @@
 
             <ImageButton
                 android:id="@+id/button_cimb_installment_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="?selectableItemBackground"
+                android:minHeight="30dp"
+                android:minWidth="12dp"
+                android:src="@drawable/ic_edit_icon"
+                android:visibility="invisible"
+                tools:visibility="visible" />
+
+            <ImageButton
+                android:id="@+id/button_maybank_installment_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"

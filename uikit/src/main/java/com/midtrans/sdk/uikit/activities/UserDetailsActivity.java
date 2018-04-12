@@ -22,6 +22,7 @@ import com.midtrans.sdk.corekit.models.UserAddress;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.uikit.BuildConfig;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.UiKitOnBeforeSend;
 import com.midtrans.sdk.uikit.fragments.UserAddressFragment;
 import com.midtrans.sdk.uikit.fragments.UserDetailFragment;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
@@ -70,6 +71,7 @@ public class UserDetailsActivity extends BaseActivity {
         if (BuildConfig.FLAVOR.equals(UiKitConstants.ENVIRONMENT_PRODUCTION)) {
             RaygunClient.init(getApplicationContext(), getString(R.string.ISSUE_TRACKER_API_KEY));
             RaygunClient.attachExceptionHandler();
+            RaygunClient.setOnBeforeSend(new UiKitOnBeforeSend(this));
         }
     }
 
@@ -285,4 +287,9 @@ public class UserDetailsActivity extends BaseActivity {
         return sdkErrorValidationMessage;
     }
 
+    @Override
+    public void finish() {
+        RaygunClient.setOnBeforeSend(null);
+        super.finish();
+    }
 }

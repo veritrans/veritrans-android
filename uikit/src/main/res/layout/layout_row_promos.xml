@@ -29,11 +29,4 @@
         android:text="@string/promo"
         android:textSize="14sp" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@id/text_promo_amount"
-        android:layout_marginTop="6dp"
-        android:background="@color/gray_divider" />
-
 </RelativeLayout>

@@ -110,10 +110,9 @@ dependencies {
     compile 'ru.rambler.android:swipe-layout:1.0.14'
     compile 'me.saket:better-link-movement-method:1.2'
     compile 'com.github.stfalcon:smsverifycatcher:0.3.1'
-    compile 'com.midtrans:issuetracker:1.11.0'
     compile 'com.journeyapps:zxing-android-embedded:3.5.0'
     compile 'com.koushikdutta.ion:ion:2.2.1'
-
+    compile project(':issuetracker')
     developmentCompile project(path: ':corekit', configuration: 'developmentRelease')
     stagingCompile project(path: ':corekit', configuration: 'stagingRelease')
     productionCompile project(path: ':corekit', configuration: 'productionRelease')
