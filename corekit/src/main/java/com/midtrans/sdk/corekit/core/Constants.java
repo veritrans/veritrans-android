@@ -96,4 +96,5 @@ public class Constants {
     public static final String MESSAGE_ERROR_ALREADY_RUNNING = "Failed to connect to server.";
 
     public static final String KEY_PREFERENCES_VERSION = "preferences.version";
+    public static final String USER_DETAILS = "user_details";
 }

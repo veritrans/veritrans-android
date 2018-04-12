@@ -1,4 +1,4 @@
-package com.midtrans.sdk.corekit.core;
+package com.midtrans.sdk.corekit.utilities;
 
 import com.midtrans.sdk.corekit.callback.BankBinsCallback;
 import com.midtrans.sdk.corekit.callback.BanksPointCallback;
@@ -7,6 +7,7 @@ import com.midtrans.sdk.corekit.callback.DeleteCardCallback;
 import com.midtrans.sdk.corekit.callback.GetTransactionStatusCallback;
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.callback.TransactionOptionsCallback;
+import com.midtrans.sdk.corekit.core.SnapServiceManager;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 import com.midtrans.sdk.corekit.models.snap.BanksPointResponse;
@@ -170,5 +171,25 @@ public class SnapServiceCallbackImplement implements TransactionCallback, Checko
 
     public void getTransactionStatus(String snapToken) {
         this.serviceManager.getTransactionStatus(snapToken, this);
+    }
+
+    public TransactionCallback getTransactionCallback(){
+        return this;
+    }
+
+    public TransactionOptionsCallback getTransactionOptionsCallback(){
+        return this;
+    }
+
+    public BankBinsCallback getBankBinCallback() {
+        return this;
+    }
+
+    public BanksPointCallback getbankPointCallback() {
+        return this;
+    }
+
+    public DeleteCardCallback getDeleteCardCallback() {
+        return this;
     }
 }

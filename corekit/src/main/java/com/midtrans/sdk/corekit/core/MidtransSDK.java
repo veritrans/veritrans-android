@@ -123,8 +123,9 @@ public class MidtransSDK {
             }
         }
 
-//        this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), merchantName, getFlow(flow), deviceType == null ? "" : deviceType, isLogEnabled, context);
+        this.mMixpanelAnalyticsManager = SdkUtil.newMixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), merchantName, getFlow(flow), deviceType == null ? "": deviceType, isLogEnabled, context);
         this.snapServiceManager = SdkUtil.newSnapServiceManager(requestTimeOut);
+
         this.midtransServiceManager = SdkUtil.newMidtransServiceManager(requestTimeOut);
         this.merchantServiceManager = SdkUtil.newMerchantServiceManager(merchantServerUrl, requestTimeOut);
     }
@@ -344,7 +345,6 @@ public class MidtransSDK {
 
         if (cardTokenRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
-
                 midtransServiceManager.getToken(cardTokenRequest, callback);
             } else {
 
@@ -469,7 +469,7 @@ public class MidtransSDK {
     }
 
     private void runUiSdk(Context context, String snapToken) {
-        if (transactionRequest != null) {
+        if (isTransactionRequestAvailable()) {
 
             if (transactionRequest.getPaymentMethod() == Constants
                     .PAYMENT_METHOD_NOT_SELECTED) {
@@ -519,7 +519,7 @@ public class MidtransSDK {
      * @param snapToken checkout token
      */
     private void startCreditCardUIFlow(@NonNull Context context, String snapToken) {
-        if (transactionRequest != null) {
+        if (isTransactionRequestAvailable()) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -540,7 +540,7 @@ public class MidtransSDK {
      * @param snapToken checkout token
      */
     private void startBankTransferUIFlow(@NonNull Context context, String snapToken) {
-        if (transactionRequest != null) {
+        if (isTransactionRequestAvailable()) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -561,7 +561,7 @@ public class MidtransSDK {
      * @param snapToken checkout token
      */
     private void startPermataBankTransferUIFlow(@NonNull Context context, String snapToken) {
-        if (transactionRequest != null) {
+        if (isTransactionRequestAvailable()) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -582,7 +582,7 @@ public class MidtransSDK {
      * @param snapToken checkout token
      */
     private void startMandiriBankTransferUIFlow(@NonNull Context context, String snapToken) {
-        if (transactionRequest != null) {
+        if (isTransactionRequestAvailable()) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -603,7 +603,7 @@ public class MidtransSDK {
      * @param snapToken checkout token
      */
     private void startBniBankTransferUIFlow(@NonNull Context context, String snapToken) {
-        if (transactionRequest != null) {
+        if (isTransactionRequestAvailable()) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -624,7 +624,7 @@ public class MidtransSDK {
      * @param snapToken checkout token
      */
     private void startBCABankTransferUIFlow(@NonNull Context context, String snapToken) {
-        if (transactionRequest != null) {
+        if (isTransactionRequestAvailable()) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -645,7 +645,7 @@ public class MidtransSDK {
      * @param snapToken checkout token
      */
     private void startOtherBankTransferUIFlow(@NonNull Context context, String snapToken) {
-        if (transactionRequest != null) {
+        if (isTransactionRequestAvailable()) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -666,7 +666,7 @@ public class MidtransSDK {
      * @param snapToken checkout token
      */
     private void startGoPayUIFlow(@NonNull Context context, String snapToken) {
-        if (transactionRequest != null) {
+        if (isTransactionRequestAvailable()) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -687,13 +687,10 @@ public class MidtransSDK {
      * @param snapToken checkout token
      */
     private void startBCAKlikPayUIFlow(@NonNull Context context, String snapToken) {
-        if (transactionRequest != null) {
-
-            if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
-                transactionRequest.enableUi(true);
-                if (uiflow != null) {
-                    uiflow.runBCAKlikPay(context, snapToken);
-                }
+        if (isTransactionRequestAvailable()) {
+            transactionRequest.enableUi(true);
+            if (uiflow != null) {
+                uiflow.runBCAKlikPay(context, snapToken);
             }
 
         } else {
@@ -708,7 +705,7 @@ public class MidtransSDK {
      * @param snapToken checkout token
      */
     private void startKlikBCAUIFlow(@NonNull Context context, String snapToken) {
-        if (transactionRequest != null) {
+        if (isTransactionRequestAvailable()) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -729,7 +726,7 @@ public class MidtransSDK {
      * @param snapToken checkout token
      */
     private void startMandiriClickpayUIFlow(@NonNull Context context, String snapToken) {
-        if (transactionRequest != null) {
+        if (isTransactionRequestAvailable()) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -750,7 +747,7 @@ public class MidtransSDK {
      * @param snapToken checkout token
      */
     private void startMandiriECashUIFlow(@NonNull Context context, String snapToken) {
-        if (transactionRequest != null) {
+        if (isTransactionRequestAvailable()) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -771,7 +768,7 @@ public class MidtransSDK {
      * @param snapToken checkout token
      */
     private void startCIMBClicksUIFlow(@NonNull Context context, String snapToken) {
-        if (transactionRequest != null) {
+        if (isTransactionRequestAvailable()) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -792,7 +789,7 @@ public class MidtransSDK {
      * @param snapToken checkout token
      */
     private void startBRIEpayUIFlow(@NonNull Context context, String snapToken) {
-        if (transactionRequest != null) {
+        if (isTransactionRequestAvailable()) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -813,7 +810,7 @@ public class MidtransSDK {
      * @param snapToken checkout token
      */
     private void startTelkomselCashUIFlow(@NonNull Context context, String snapToken) {
-        if (transactionRequest != null) {
+        if (isTransactionRequestAvailable()) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -834,7 +831,7 @@ public class MidtransSDK {
      * @param snapToken checkout token
      */
     private void startIndosatDompetkuUIFlow(@NonNull Context context, String snapToken) {
-        if (transactionRequest != null) {
+        if (isTransactionRequestAvailable()) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -855,7 +852,7 @@ public class MidtransSDK {
      * @param snapToken checkout token.
      */
     private void startIndomaretUIFlow(@NonNull Context context, String snapToken) {
-        if (transactionRequest != null) {
+        if (isTransactionRequestAvailable()) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -876,7 +873,7 @@ public class MidtransSDK {
      * @param snapToken checkout token
      */
     private void startKiosonUIFlow(@NonNull Context context, String snapToken) {
-        if (transactionRequest != null) {
+        if (isTransactionRequestAvailable()) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -897,7 +894,7 @@ public class MidtransSDK {
      * @param snapToken checkout token
      */
     private void startXlTunaiUIFlow(@NonNull Context context, String snapToken) {
-        if (transactionRequest != null) {
+        if (isTransactionRequestAvailable()) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -918,7 +915,7 @@ public class MidtransSDK {
      * @param snapToken checkout token
      */
     private void startGiftCardUIFlow(@NonNull Context context, String snapToken) {
-        if (transactionRequest != null) {
+        if (isTransactionRequestAvailable()) {
 
             if (transactionRequest.getPaymentMethod() == Constants.PAYMENT_METHOD_NOT_SELECTED) {
                 transactionRequest.enableUi(true);
@@ -969,7 +966,7 @@ public class MidtransSDK {
             return;
         }
 
-        if (transactionRequest != null) {
+        if (isTransactionRequestAvailable()) {
             if (Utils.isNetworkAvailable(context)) {
 
                 TokenRequestModel model = SdkUtil.getSnapTokenRequestModel(transactionRequest);
@@ -1008,7 +1005,6 @@ public class MidtransSDK {
                 callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
-
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
@@ -1026,7 +1022,7 @@ public class MidtransSDK {
             return;
         }
 
-        if (transactionRequest != null) {
+        if (isTransactionRequestAvailable()) {
             if (Utils.isNetworkAvailable(context)) {
 
                 snapServiceManager.paymentUsingCreditCard(authenticationToken,
@@ -1036,40 +1032,10 @@ public class MidtransSDK {
                 callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
-
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 
-    /**
-     * It will run backgrond task to charge payment using Credit Card with promo (discount)
-     *
-     * @param authenticationToken    authentication token
-     * @param discountToken          discount (promo) token
-     * @param discountAmount         discount (promo) amount
-     * @param creditCardPaymentModel model for creditcard payment
-     * @param callback               transaction callback
-     */
-    public void paymentUsingCard(@NonNull String authenticationToken, @NonNull String discountToken, Long discountAmount, CreditCardPaymentModel creditCardPaymentModel, @NonNull TransactionCallback callback) {
-        if (callback == null) {
-            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
-            return;
-        }
-
-        if (transactionRequest != null) {
-            if (Utils.isNetworkAvailable(context)) {
-
-                snapServiceManager.paymentUsingCreditCard(authenticationToken,
-                        SdkUtil.getCreditCardPaymentRequest(discountToken, discountAmount, creditCardPaymentModel, transactionRequest), callback);
-            } else {
-
-                callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
-            }
-        } else {
-
-            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
-        }
-    }
 
     /**
      * It will run backround task to charge payment using Bank Transfer BCA
@@ -1083,7 +1049,7 @@ public class MidtransSDK {
             Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
-        if (transactionRequest != null) {
+        if (isTransactionRequestAvailable()) {
             if (Utils.isNetworkAvailable(context)) {
 
                 snapServiceManager.paymentUsingVa(authenticationToken,
@@ -1112,7 +1078,7 @@ public class MidtransSDK {
             return;
         }
 
-        if (transactionRequest != null) {
+        if (isTransactionRequestAvailable()) {
             if (Utils.isNetworkAvailable(context)) {
 
                 snapServiceManager.paymentUsingVa(authenticationToken,
@@ -1139,7 +1105,7 @@ public class MidtransSDK {
             Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
-        if (transactionRequest != null) {
+        if (isTransactionRequestAvailable()) {
             if (Utils.isNetworkAvailable(context)) {
 
                 snapServiceManager.paymentUsingVa(authenticationToken,
@@ -1168,7 +1134,7 @@ public class MidtransSDK {
             return;
         }
 
-        if (transactionRequest != null) {
+        if (isTransactionRequestAvailable()) {
             if (Utils.isNetworkAvailable(context)) {
 
                 snapServiceManager.paymentUsingKlikBca(authenticationToken, SdkUtil.getKlikBCAPaymentRequest(userId,
@@ -1195,7 +1161,7 @@ public class MidtransSDK {
             return;
         }
 
-        if (transactionRequest != null) {
+        if (isTransactionRequestAvailable()) {
             if (Utils.isNetworkAvailable(context)) {
 
                 snapServiceManager.paymentUsingBaseMethod(authenticationToken,
@@ -1221,7 +1187,8 @@ public class MidtransSDK {
             Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
-        if (transactionRequest != null) {
+
+        if (isTransactionRequestAvailable()) {
             if (Utils.isNetworkAvailable(context)) {
 
                 snapServiceManager.paymentUsingVa(authenticationToken,
@@ -1251,7 +1218,7 @@ public class MidtransSDK {
             return;
         }
 
-        if (transactionRequest != null) {
+        if (isTransactionRequestAvailable()) {
             if (Utils.isNetworkAvailable(context)) {
 
                 snapServiceManager.paymentUsingMandiriClickPay(snapToken, new NewMandiriClickPayPaymentRequest(PaymentType.MANDIRI_CLICKPAY, paymentParams), callback)
@@ -1277,7 +1244,7 @@ public class MidtransSDK {
             Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
-        if (transactionRequest != null) {
+        if (isTransactionRequestAvailable()) {
             if (Utils.isNetworkAvailable(context)) {
 
                 snapServiceManager.paymentUsingBaseMethod(authenticationToken,
@@ -1303,7 +1270,7 @@ public class MidtransSDK {
             Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
-        if (transactionRequest != null) {
+        if (isTransactionRequestAvailable()) {
             if (Utils.isNetworkAvailable(context)) {
 
                 snapServiceManager.paymentUsingBaseMethod(authenticationToken,
@@ -1332,7 +1299,7 @@ public class MidtransSDK {
             return;
         }
 
-        if (transactionRequest != null) {
+        if (isTransactionRequestAvailable()) {
             if (isNetworkAvailable()) {
 
                 snapServiceManager.paymentUsingTelkomselCash(authenticationToken,
@@ -1360,7 +1327,7 @@ public class MidtransSDK {
             return;
         }
 
-        if (transactionRequest != null) {
+        if (isTransactionRequestAvailable()) {
             if (Utils.isNetworkAvailable(context)) {
 
                 snapServiceManager.paymentUsingBaseMethod(authenticationToken,
@@ -1387,7 +1354,7 @@ public class MidtransSDK {
             return;
         }
 
-        if (transactionRequest != null) {
+        if (isTransactionRequestAvailable()) {
             if (Utils.isNetworkAvailable(context)) {
 
                 snapServiceManager.paymentUsingBaseMethod(authenticationToken,
@@ -1415,7 +1382,7 @@ public class MidtransSDK {
             return;
         }
 
-        if (transactionRequest != null) {
+        if (isTransactionRequestAvailable()) {
             if (Utils.isNetworkAvailable(context)) {
 
                 snapServiceManager.paymentUsingIndosatDompetku(authenticationToken,
@@ -1442,7 +1409,7 @@ public class MidtransSDK {
             return;
         }
 
-        if (transactionRequest != null) {
+        if (isTransactionRequestAvailable()) {
             if (Utils.isNetworkAvailable(context)) {
 
                 snapServiceManager.paymentUsingBaseMethod(authenticationToken,
@@ -1469,7 +1436,7 @@ public class MidtransSDK {
             return;
         }
 
-        if (transactionRequest != null) {
+        if (isTransactionRequestAvailable()) {
             if (isNetworkAvailable()) {
 
                 snapServiceManager.paymentUsingBaseMethod(authenticationToken,
@@ -1496,7 +1463,7 @@ public class MidtransSDK {
             Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
-        if (transactionRequest != null) {
+        if (isTransactionRequestAvailable()) {
             if (isNetworkAvailable()) {
 
                 snapServiceManager.paymentUsingVa(authenticationToken,
@@ -1549,10 +1516,8 @@ public class MidtransSDK {
         }
 
         if (isNetworkAvailable()) {
-
             snapServiceManager.paymentUsingGoPay(snapToken, SdkUtil.getGoPayPaymentRequest(), callback);
         } else {
-
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
@@ -1864,4 +1829,31 @@ public class MidtransSDK {
         paymentDetails = new PaymentDetails(getTransaction().getTransactionDetails(), getTransaction().getItemDetails());
     }
 
+    public void setSnapServiceManager(SnapServiceManager snapServiceManager) {
+        this.snapServiceManager = snapServiceManager;
+    }
+
+    public void setMerchantServiceManager(MerchantServiceManager merchantServiceManager) {
+        this.merchantServiceManager = merchantServiceManager;
+    }
+
+    public void setMidtransServiceManager(MidtransServiceManager midtransServiceManager) {
+        this.midtransServiceManager = midtransServiceManager;
+    }
+
+    public SnapServiceManager getSnapServiceManager() {
+        return snapServiceManager;
+    }
+
+    public MerchantServiceManager getMerchantServiceManager() {
+        return merchantServiceManager;
+    }
+
+    public MidtransServiceManager getMidtransServiceManager() {
+        return midtransServiceManager;
+    }
+
+    private boolean isTransactionRequestAvailable() {
+        return transactionRequest != null;
+    }
 }

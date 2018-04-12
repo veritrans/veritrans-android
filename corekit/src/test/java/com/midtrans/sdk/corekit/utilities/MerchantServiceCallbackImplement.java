@@ -3,7 +3,6 @@ package com.midtrans.sdk.corekit.utilities;
 import com.midtrans.sdk.corekit.callback.CheckoutCallback;
 import com.midtrans.sdk.corekit.callback.GetCardCallback;
 import com.midtrans.sdk.corekit.callback.SaveCardCallback;
-import com.midtrans.sdk.corekit.core.CallbackCollaborator;
 import com.midtrans.sdk.corekit.core.MerchantServiceManager;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.SaveCardResponse;
@@ -67,5 +66,13 @@ public class MerchantServiceCallbackImplement implements CheckoutCallback, SaveC
 
     public void getCards(String userId) {
         this.manager.getCards(userId, this);
+    }
+
+    public CheckoutCallback getCheckoutCallback() {
+        return this;
+    }
+
+    public SaveCardCallback getSaveCardCallback() {
+        return this;
     }
 }

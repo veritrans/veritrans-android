@@ -26,6 +26,8 @@ import com.midtrans.sdk.corekit.models.snap.payment.IndosatDompetkuPaymentReques
 import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.MandiriClickPayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.TelkomselEcashPaymentRequest;
+import com.midtrans.sdk.corekit.utilities.CallbackCollaborator;
+import com.midtrans.sdk.corekit.utilities.MidtransServiceCallbackImplement;
 import com.securepreferences.SecurePreferences;
 
 import org.junit.Assert;
@@ -71,128 +73,8 @@ public class MidtransServiceManagerTest {
     private Context contextMock;
     @Mock
     private Resources resourcesMock;
-    @Mock
-    private MixpanelAnalyticsManager mixpanelAnalyticsManagerMock;
-    @Mock
-    private Token snapTokenMock;
 
-    private String snapToken = "aa3afad7-a346-4db6-9cb3-737f24e4fc56";
-    @Mock
-    private CertPathValidatorException errorInvalidCertPatMock;
-    @Mock
-    private SSLHandshakeException errorInvalidSSLException;
 
-    @Mock
-    private Transaction transactionMock;
-    @Mock
-    private Throwable errorGeneralMock;
-    @Captor
-    private ArgumentCaptor<String> tokenIdCaptor;
-    @Captor
-    private ArgumentCaptor<TokenRequestModel> snapTokenRequestModelCaptor;
-    @Mock
-    private TokenRequestModel snapTokenRequestModelMock;
-    private String transactionId = "trans_id";
-    @Mock
-    private CreditCardPaymentRequest creditcardRequestMock;
-    @Captor
-    private ArgumentCaptor<CreditCardPaymentRequest> creditCardRequestCaptor;
-    @Mock
-    private CreditCardPaymentRequest transactionRequestMock;
-    @Captor
-    private ArgumentCaptor<Boolean> pointCaptor;
-    @Mock
-    private TransactionResponse transactionResponseMock;
-    @Mock
-    private BankTransferPaymentRequest bankTransferRequestMock;
-    @Captor
-    private ArgumentCaptor<BankTransferPaymentRequest> bankTransferRequestCaptor;
-    @Mock
-    private KlikBCAPaymentRequest klikBCARequestMock;
-    @Mock
-    private BasePaymentRequest basePaymentRequestMock;
-    @Captor
-    private ArgumentCaptor<KlikBCAPaymentRequest> klikBCARequestCaptor;
-    @Captor
-    private ArgumentCaptor<BasePaymentRequest> BCAKlikpayRequestCaptor;
-    @Mock
-    private MandiriClickPayPaymentRequest mandiriClickPayPaymentRequestMock;
-    @Captor
-    private ArgumentCaptor<MandiriClickPayPaymentRequest> mandirClickPayPaymentRequestCaptor;
-    @Captor
-    private ArgumentCaptor<BasePaymentRequest> basePaymentRequestCaptor;
-    @Mock
-    private TelkomselEcashPaymentRequest telkomselEcashPaymentRequestMock;
-    @Captor
-    private ArgumentCaptor<TelkomselEcashPaymentRequest> telkomselEcashPaymentRequestCaptor;
-    @Mock
-    private IndosatDompetkuPaymentRequest indosatDompetkuPaymentRequestMock;
-    @Captor
-    private ArgumentCaptor<IndosatDompetkuPaymentRequest> indosatDompetKuPaymentRequestCaptor;
-    private String sampleUserId = "user_id214";
-    @Mock
-    private ArrayList<SaveCardRequest> cardRequestListMock;
-    @Captor
-    private ArgumentCaptor<ArrayList<SaveCardRequest>> cardRequestListCaptor;
-
-    // get card token properties
-    private String saveCardResponse = "Created";
-    @Captor
-    private ArgumentCaptor<String> sampleUserIdCaptor;
-    @Mock
-    private ArrayList<SaveCardRequest> getCardResponseMock;
-    @Mock
-    private ArrayList<BankBinsResponse> getBankBinsResponseMock;
-
-    @Captor
-    private ArgumentCaptor<String> cardNumberCaptor;
-    @Captor
-    private ArgumentCaptor<String> cardCVVCaptor;
-    @Captor
-    private ArgumentCaptor<String> cardExpMonthCaptor;
-    @Captor
-    private ArgumentCaptor<String> cardExpYearCaptor;
-    @Captor
-    private ArgumentCaptor<String> clientKeyCaptor;
-    @Captor
-    private ArgumentCaptor<String> bankCaptor;
-    @Captor
-    private ArgumentCaptor<Boolean> instalmentCaptor;
-    @Captor
-    private ArgumentCaptor<String> channelCator;
-    @Captor
-    private ArgumentCaptor<String> channelCaptor;
-    @Captor
-    private ArgumentCaptor<Double> grossAmount;
-    @Captor
-    private ArgumentCaptor<String> typeCaptor;
-
-    //card registration properties
-    @Captor
-    private ArgumentCaptor<String> instalmentTermCaptor;
-    @Captor
-    private ArgumentCaptor<Boolean> scureCaptor;
-    @Captor
-    private ArgumentCaptor<Boolean> twoClickCaptor;
-    @Captor
-    private ArgumentCaptor<Double> grossAmountCaptor;
-    @Captor
-    private ArgumentCaptor<String> callbackArgumentCaptorCardNumber;
-    @Captor
-    private ArgumentCaptor<String> callbackArgumentCaptorCardCVV;
-    @Captor
-    private ArgumentCaptor<String> callbackArgumentCaptorCardYear;
-    @Captor
-    private ArgumentCaptor<String> callbackArgumentCaptorCardMonth;
-    @Captor
-    private ArgumentCaptor<String> callbackArgumentCaptorCar;
-    @Captor
-    private ArgumentCaptor<String> calbackArgumentCatorClientKey;
-
-    @Captor
-    private ArgumentCaptor<String> cardTokenCaptor;
-    @Mock
-    private BanksPointResponse BankPointsResponseMock;
     @Mock
     private SecurePreferences preferencesMock;
 

@@ -1,4 +1,4 @@
-package com.midtrans.sdk.corekit.core;
+package com.midtrans.sdk.corekit.utilities;
 
 /**
  * Created by ziahaqi on 9/5/16.

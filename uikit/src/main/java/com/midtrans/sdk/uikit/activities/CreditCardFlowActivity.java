@@ -379,22 +379,7 @@ public class CreditCardFlowActivity extends BaseActivity {
 
         MidtransSDK midtransSDK = MidtransSDK.getInstance();
         if (discountToken != null && !TextUtils.isEmpty(discountToken)) {
-            midtransSDK.paymentUsingCard(midtransSDK.readAuthenticationToken(), discountToken, null, paymentModel, new TransactionCallback() {
-                @Override
-                public void onSuccess(TransactionResponse response) {
-                    actionPaymentSuccess(response);
-                }
 
-                @Override
-                public void onFailure(TransactionResponse response, String reason) {
-                    actionPaymentFailure(response, reason);
-                }
-
-                @Override
-                public void onError(Throwable error) {
-                    actionPaymentError(error);
-                }
-            });
         } else {
             midtransSDK.paymentUsingCard(midtransSDK.readAuthenticationToken(), paymentModel, new TransactionCallback() {
                 @Override

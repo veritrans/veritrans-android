@@ -24,4 +24,5 @@ public class SDKConfigTest {
     public static final String SNAP_TOKEN = "snap_token131422723";
     public static final String USER_ID = "user_id";
     public static final String TWO_CLICK = "two_clicks";
+    public static final String PASSWORD = "pasword";
 }

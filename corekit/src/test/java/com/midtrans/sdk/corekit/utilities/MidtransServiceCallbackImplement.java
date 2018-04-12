@@ -1,7 +1,8 @@
-package com.midtrans.sdk.corekit.core;
+package com.midtrans.sdk.corekit.utilities;
 
 import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
 import com.midtrans.sdk.corekit.callback.CardTokenCallback;
+import com.midtrans.sdk.corekit.core.MidtransServiceManager;
 import com.midtrans.sdk.corekit.models.CardRegistrationResponse;
 import com.midtrans.sdk.corekit.models.CardTokenRequest;
 import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
@@ -50,5 +51,9 @@ public class MidtransServiceCallbackImplement implements CardTokenCallback, Card
 
     public void getCardToken(CardTokenRequest request) {
         this.manager.getToken(request, this);
+    }
+
+    public CardTokenCallback getCardTokenCallback() {
+        return this;
     }
 }
