@@ -35,8 +35,7 @@
             android:paddingTop="@dimen/eight_dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/container_edit_card_number"
-            android:paddingBottom="@dimen/twelve_dp"
+            android:layout_marginTop="@dimen/eight_dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true">
 

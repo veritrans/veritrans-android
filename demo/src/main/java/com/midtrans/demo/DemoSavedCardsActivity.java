@@ -150,6 +150,7 @@ public class DemoSavedCardsActivity extends AppCompatActivity implements CardReg
         listSavedCard.setHasFixedSize(true);
         listSavedCard.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         cardsAdapter = new SavedCardsAdapter();
+        cardsAdapter.setBankBin(this);
         cardsAdapter.setData(savedCards);
 
         cardsAdapter.setListener(new SavedCardAdapterEventListener() {

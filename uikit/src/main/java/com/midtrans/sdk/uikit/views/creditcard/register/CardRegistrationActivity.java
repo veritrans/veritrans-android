@@ -515,7 +515,7 @@ public class CardRegistrationActivity extends BasePaymentActivity implements Car
 
     private void updateScanCardData(ScannerModel scanData) {
         if (scanData != null) {
-            String cardNumber = Utils.getFormattedCreditCardNumber(Utils.getFormattedCreditCardNumber(scanData.getCardNumber()));
+            String cardNumber = Utils.getFormattedCreditCardNumber((scanData.getCardNumber()));
             String expDate = String.format("%s/%d", scanData.getExpiredMonth() < 10 ? String.format("0%d",
                     scanData.getExpiredMonth()) : String.format("%d", scanData.getExpiredMonth()),
                     scanData.getExpiredYear() - 2000);
