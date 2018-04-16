@@ -117,7 +117,7 @@
     <string name="card_detail_title">CARD DETAILS</string>
     <string name="contact_detail_title">CONTACT DETAILS</string>
     <string name="validatation_message_card_holder_name">Please enter card holder name</string>
-    <string name="hint_expiry_date">Expiry(mm/yy)</string>
+    <string name="hint_expiry_date">Expiration Date(mm/yy)</string>
     <string name="validation_message_card_number">Please enter card number</string>
     <string name="validation_message_invalid_card_no">Please enter valid card number</string>
     <string name="validation_message_invalid_token_no">Challenge token must be 6 characters.</string>

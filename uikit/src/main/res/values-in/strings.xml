@@ -77,7 +77,7 @@
     <string name="card_detail_title">DETAIL KARTU</string>
     <string name="contact_detail_title">DETAIL KONTAK</string>
     <string name="validatation_message_card_holder_name">Masukkan nama pemilik kartu</string>
-    <string name="hint_expiry_date">Kadaluarsa(mm/yy)</string>
+    <string name="hint_expiry_date">Berlaku Hingga(mm/yy)</string>
     <string name="validation_message_card_number">Masukkan nomor kartu</string>
     <string name="validation_message_invalid_card_no">Masukkan nomor kartu yang benar</string>
     <string name="validation_message_invalid_token_no">Challenge token harus terdiri dari 6 karakter.</string>
