@@ -165,15 +165,11 @@ public class MidtransServiceManager extends BaseServiceManager {
         call.enqueue(new Callback<TokenDetailsResponse>() {
             @Override
             public void onResponse(Call<TokenDetailsResponse> call, Response<TokenDetailsResponse> response) {
-                System.out.println("suc");
-
                 doOnGetCardTokenSuccess(response, callback);
             }
 
             @Override
             public void onFailure(Call<TokenDetailsResponse> call, Throwable t) {
-                System.out.println("fail");
-
                 doOnResponseFailure(t, callback);
             }
         });

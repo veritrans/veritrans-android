@@ -281,15 +281,11 @@ public class MidtransSDK {
 
 
     public String readAuthenticationToken() {
-        System.out.println("get:" + authenticationToken);
-
         return this.authenticationToken;
     }
 
     public void setAuthenticationToken(String authenticationToken) {
-        System.out.println("st:" + authenticationToken);
         this.authenticationToken = authenticationToken;
-        System.out.println("st>af:" + this.authenticationToken);
 
     }
 

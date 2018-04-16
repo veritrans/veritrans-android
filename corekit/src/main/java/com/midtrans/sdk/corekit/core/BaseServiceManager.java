@@ -19,7 +19,6 @@ public abstract class BaseServiceManager {
     }
 
     protected void doOnResponseFailure(Throwable error, HttpRequestCallback callback) {
-        System.out.println("fail");
 
         releaseResources();
         try {
@@ -33,7 +32,6 @@ public abstract class BaseServiceManager {
                 ((SaveCardCallback) callback).onSuccess(saveCardResponse);
                 return;
             }
-            System.out.println("errorx");
             callback.onError(error);
 
         } catch (Exception e) {
