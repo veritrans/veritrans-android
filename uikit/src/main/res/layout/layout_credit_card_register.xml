@@ -35,6 +35,7 @@
             android:paddingTop="@dimen/eight_dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/eight_dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true">
 
@@ -52,7 +53,7 @@
                 android:layout_height="@dimen/payment_logo_size"
                 android:layout_marginEnd="@dimen/four_dp"
                 android:layout_marginRight="@dimen/four_dp"
-                tools:src="@drawable/ic_visa" />
+                tools:src="@drawable/ic_amex" />
         </LinearLayout>
     </RelativeLayout>
 
@@ -127,7 +128,7 @@
         android:layout_below="@id/container_card_expiry_cvv"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="19dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:fb_borderColor="@color/navy_blue.primary_dark"
         app:fb_iconColor="@color/navy_blue.primary_dark"
         app:fb_iconResource="@drawable/ic_scan_cam"

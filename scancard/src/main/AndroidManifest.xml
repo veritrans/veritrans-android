@@ -1,5 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.midtrans.sdk.scancard">
+
+    <uses-sdk tools:overrideLibrary="io.card.payment" />
 
     <application
         android:allowBackup="true"
