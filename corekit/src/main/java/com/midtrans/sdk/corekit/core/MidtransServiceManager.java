@@ -81,10 +81,11 @@ public class MidtransServiceManager extends BaseServiceManager {
             return;
         }
 
+        Call<TokenDetailsResponse> call;
         if (cardTokenRequest.isTwoClick()) {
 
             if (cardTokenRequest.isInstallment()) {
-                Call<TokenDetailsResponse> call = service.getTokenInstalmentOfferTwoClick(
+                call = service.getTokenInstalmentOfferTwoClick(
                         cardTokenRequest.getCardCVV(),
                         cardTokenRequest.getSavedTokenId(),
                         cardTokenRequest.isTwoClick(),
@@ -97,20 +98,8 @@ public class MidtransServiceManager extends BaseServiceManager {
                         cardTokenRequest.getChannel(),
                         cardTokenRequest.getType(),
                         cardTokenRequest.isPoint());
-
-                call.enqueue(new Callback<TokenDetailsResponse>() {
-                    @Override
-                    public void onResponse(Call<TokenDetailsResponse> call, Response<TokenDetailsResponse> response) {
-                        doOnGetCardTokenSuccess(response, callback);
-                    }
-
-                    @Override
-                    public void onFailure(Call<TokenDetailsResponse> call, Throwable t) {
-                        doOnResponseFailure(t, callback);
-                    }
-                });
             } else {
-                Call<TokenDetailsResponse> call = service.getTokenTwoClick(
+                call = service.getTokenTwoClick(
                         cardTokenRequest.getCardCVV(),
                         cardTokenRequest.getSavedTokenId(),
                         cardTokenRequest.isTwoClick(),
@@ -121,23 +110,12 @@ public class MidtransServiceManager extends BaseServiceManager {
                         cardTokenRequest.getChannel(),
                         cardTokenRequest.getType(),
                         cardTokenRequest.isPoint());
-
-                call.enqueue(new Callback<TokenDetailsResponse>() {
-                    @Override
-                    public void onResponse(Call<TokenDetailsResponse> call, Response<TokenDetailsResponse> response) {
-                        doOnGetCardTokenSuccess(response, callback);
-                    }
-
-                    @Override
-                    public void onFailure(Call<TokenDetailsResponse> call, Throwable t) {
-                        doOnResponseFailure(t, callback);
-                    }
-                });
             }
 
         } else {
             if (cardTokenRequest.isInstallment()) {
-                Call<TokenDetailsResponse> call = service.get3DSTokenInstalmentOffers(cardTokenRequest.getCardNumber(),
+
+                call = service.get3DSTokenInstalmentOffers(cardTokenRequest.getCardNumber(),
                         cardTokenRequest.getCardCVV(),
                         cardTokenRequest.getCardExpiryMonth(), cardTokenRequest
                                 .getCardExpiryYear(),
@@ -152,22 +130,11 @@ public class MidtransServiceManager extends BaseServiceManager {
                         cardTokenRequest.getType(),
                         cardTokenRequest.isPoint());
 
-                call.enqueue(new Callback<TokenDetailsResponse>() {
-                    @Override
-                    public void onResponse(Call<TokenDetailsResponse> call, Response<TokenDetailsResponse> response) {
-                        doOnGetCardTokenSuccess(response, callback);
-                    }
-
-                    @Override
-                    public void onFailure(Call<TokenDetailsResponse> call, Throwable t) {
-                        doOnResponseFailure(t, callback);
-                    }
-                });
-
             } else {
                 //normal request
                 if (!cardTokenRequest.isSecure()) {
-                    Call<TokenDetailsResponse> call = service.getToken(
+
+                    call = service.getToken(
                             cardTokenRequest.getCardNumber(),
                             cardTokenRequest.getCardCVV(),
                             cardTokenRequest.getCardExpiryMonth(),
@@ -177,21 +144,8 @@ public class MidtransServiceManager extends BaseServiceManager {
                             cardTokenRequest.getChannel(),
                             cardTokenRequest.getType(),
                             cardTokenRequest.isPoint());
-
-                    call.enqueue(new Callback<TokenDetailsResponse>() {
-                        @Override
-                        public void onResponse(Call<TokenDetailsResponse> call, Response<TokenDetailsResponse> response) {
-                            doOnGetCardTokenSuccess(response, callback);
-                        }
-
-                        @Override
-                        public void onFailure(Call<TokenDetailsResponse> call, Throwable t) {
-                            doOnResponseFailure(t, callback);
-                        }
-                    });
-
                 } else {
-                    Call<TokenDetailsResponse> call = service.get3DSToken(cardTokenRequest.getCardNumber(),
+                    call = service.get3DSToken(cardTokenRequest.getCardNumber(),
                             cardTokenRequest.getCardCVV(),
                             cardTokenRequest.getCardExpiryMonth(),
                             cardTokenRequest.getCardExpiryYear(),
@@ -203,22 +157,26 @@ public class MidtransServiceManager extends BaseServiceManager {
                             cardTokenRequest.getChannel(),
                             cardTokenRequest.getType(),
                             cardTokenRequest.isPoint());
-
-                    call.enqueue(new Callback<TokenDetailsResponse>() {
-                        @Override
-                        public void onResponse(Call<TokenDetailsResponse> call, Response<TokenDetailsResponse> response) {
-                            doOnGetCardTokenSuccess(response, callback);
-                        }
-
-                        @Override
-                        public void onFailure(Call<TokenDetailsResponse> call, Throwable t) {
-                            doOnResponseFailure(t, callback);
-                        }
-                    });
                 }
             }
 
         }
+
+        call.enqueue(new Callback<TokenDetailsResponse>() {
+            @Override
+            public void onResponse(Call<TokenDetailsResponse> call, Response<TokenDetailsResponse> response) {
+                System.out.println("suc");
+
+                doOnGetCardTokenSuccess(response, callback);
+            }
+
+            @Override
+            public void onFailure(Call<TokenDetailsResponse> call, Throwable t) {
+                System.out.println("fail");
+
+                doOnResponseFailure(t, callback);
+            }
+        });
     }
 
 
@@ -244,7 +202,7 @@ public class MidtransServiceManager extends BaseServiceManager {
         }
     }
 
-    void setService(MidtransApiService service) {
+    public void setService(MidtransApiService service) {
         this.service = service;
     }
 }

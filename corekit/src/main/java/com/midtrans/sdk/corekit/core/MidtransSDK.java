@@ -271,18 +271,26 @@ public class MidtransSDK {
         if (context != null && context instanceof Activity) {
             deviceType = Utils.getDeviceType((Activity) context);
         }
-        this.mMixpanelAnalyticsManager = new MixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), merchantName, getFlow(flow), deviceType == null ? "" : deviceType, isLogEnabled, context);
+
+        if(mMixpanelAnalyticsManager == null){
+            this.mMixpanelAnalyticsManager = SdkUtil.newMixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), merchantName, getFlow(flow), deviceType == null ? "" : deviceType, isLogEnabled, context);
+        }
 
         return mMixpanelAnalyticsManager;
     }
 
 
     public String readAuthenticationToken() {
-        return authenticationToken;
+        System.out.println("get:" + authenticationToken);
+
+        return this.authenticationToken;
     }
 
     public void setAuthenticationToken(String authenticationToken) {
+        System.out.println("st:" + authenticationToken);
         this.authenticationToken = authenticationToken;
+        System.out.println("st>af:" + this.authenticationToken);
+
     }
 
     public String getClientKey() {
@@ -371,7 +379,7 @@ public class MidtransSDK {
             this.cardRegistrationCallback = callback;
             uiflow.runCardRegistration(context, callback);
         } else {
-            Logger.d(TAG, "uikit sdk is needed to use this feature");
+            Logger.e(TAG, "uikit sdk is needed to use this feature");
         }
     }
 
@@ -937,7 +945,7 @@ public class MidtransSDK {
      */
     public void getTransactionOptions(@NonNull String authenticationToken, @NonNull TransactionOptionsCallback callback) {
         if (callback == null) {
-            Logger.d(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
 

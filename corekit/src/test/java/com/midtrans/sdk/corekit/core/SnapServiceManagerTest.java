@@ -9,10 +9,15 @@ import android.util.Log;
 
 import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.SDKConfigTest;
+import com.midtrans.sdk.corekit.models.CardTokenRequest;
+import com.midtrans.sdk.corekit.models.SaveCardRequest;
+import com.midtrans.sdk.corekit.models.TokenRequestModel;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 import com.midtrans.sdk.corekit.models.snap.BanksPointResponse;
+import com.midtrans.sdk.corekit.models.snap.Token;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
+import com.midtrans.sdk.corekit.models.snap.TransactionDetails;
 import com.midtrans.sdk.corekit.models.snap.TransactionStatusResponse;
 import com.midtrans.sdk.corekit.models.snap.params.CreditCardPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.params.GCIPaymentParams;
@@ -29,6 +34,7 @@ import com.midtrans.sdk.corekit.models.snap.payment.GCIPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.GoPayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.IndosatDompetkuPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.MandiriClickPayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.NewMandiriClickPayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.TelkomselEcashPaymentRequest;
 import com.midtrans.sdk.corekit.utilities.CallbackCollaborator;
@@ -95,6 +101,10 @@ public class SnapServiceManagerTest {
     private SecurePreferences preferencesMock;
 
     private SnapServiceManager snapTransactionManager;
+    @Mock
+    private MidtransServiceManager midtransServiceManagerMock;
+    @Mock
+    private MerchantServiceManager merchantServiceManagerMock;
 
     @Mock
     SnapApiService snapApiServiceMock;
@@ -247,7 +257,7 @@ public class SnapServiceManagerTest {
         TransactionStatusResponse response = new TransactionStatusResponse();
         response.setStatusCode(String.valueOf(statusCode));
 
-        Response<TransactionStatusResponse> resTransactionResponse = Response.success(bodyEmpty ? null : response, okResponse);
+        Response<TransactionStatusResponse> resTransactionResponse = Response.success(bodyEmpty ? null: response, okResponse);
         return resTransactionResponse;
     }
 

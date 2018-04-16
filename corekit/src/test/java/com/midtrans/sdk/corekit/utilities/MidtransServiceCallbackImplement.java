@@ -27,7 +27,7 @@ public class MidtransServiceCallbackImplement implements CardTokenCallback, Card
 
     @Override
     public void onSuccess(TokenDetailsResponse response) {
-
+        this.collaborator.onGetCardTokenSuccess();
     }
 
     @Override

@@ -19,18 +19,21 @@ public abstract class BaseServiceManager {
     }
 
     protected void doOnResponseFailure(Throwable error, HttpRequestCallback callback) {
+        System.out.println("fail");
+
         releaseResources();
         try {
             Logger.e(TAG, "Error > cause:" + error.getCause() + "| message:" + error.getMessage());
 
             if (callback instanceof SaveCardCallback && error.getCause() instanceof ConversionException) {
+
                 SaveCardResponse saveCardResponse = new SaveCardResponse();
                 saveCardResponse.setCode(200);
                 saveCardResponse.setMessage(error.getMessage());
                 ((SaveCardCallback) callback).onSuccess(saveCardResponse);
                 return;
             }
-
+            System.out.println("errorx");
             callback.onError(error);
 
         } catch (Exception e) {

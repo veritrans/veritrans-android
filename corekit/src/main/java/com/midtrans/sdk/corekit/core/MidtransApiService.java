@@ -56,18 +56,6 @@ public interface MidtransApiService {
             @Query("card_exp_month") String cardExpiryMonth,
             @Query("card_exp_year") String cardExpiryYear,
             @Query("client_key") String clientKey,
-            @Query("channel") String channel,
-            @Query("type") String type,
-            @Query("point") Boolean point
-    );
-
-    @GET("token")
-    Call<TokenDetailsResponse> getToken(
-            @Query("card_number") String cardNumber,
-            @Query("card_cvv") String cardCVV,
-            @Query("card_exp_month") String cardExpiryMonth,
-            @Query("card_exp_year") String cardExpiryYear,
-            @Query("client_key") String clientKey,
             @Query("gross_amount") Long grossAmount,
             @Query("channel") String channel,
             @Query("type") String type,

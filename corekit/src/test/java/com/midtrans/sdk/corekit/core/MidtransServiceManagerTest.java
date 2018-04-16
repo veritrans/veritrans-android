@@ -11,21 +11,7 @@ import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.SDKConfigTest;
 import com.midtrans.sdk.corekit.models.CardRegistrationResponse;
 import com.midtrans.sdk.corekit.models.CardTokenRequest;
-import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
-import com.midtrans.sdk.corekit.models.TokenRequestModel;
-import com.midtrans.sdk.corekit.models.TransactionResponse;
-import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
-import com.midtrans.sdk.corekit.models.snap.BanksPointResponse;
-import com.midtrans.sdk.corekit.models.snap.Token;
-import com.midtrans.sdk.corekit.models.snap.Transaction;
-import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
-import com.midtrans.sdk.corekit.models.snap.payment.BasePaymentRequest;
-import com.midtrans.sdk.corekit.models.snap.payment.CreditCardPaymentRequest;
-import com.midtrans.sdk.corekit.models.snap.payment.IndosatDompetkuPaymentRequest;
-import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
-import com.midtrans.sdk.corekit.models.snap.payment.MandiriClickPayPaymentRequest;
-import com.midtrans.sdk.corekit.models.snap.payment.TelkomselEcashPaymentRequest;
 import com.midtrans.sdk.corekit.utilities.CallbackCollaborator;
 import com.midtrans.sdk.corekit.utilities.MidtransServiceCallbackImplement;
 import com.securepreferences.SecurePreferences;
@@ -44,11 +30,6 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-
-import java.security.cert.CertPathValidatorException;
-import java.util.ArrayList;
-
-import javax.net.ssl.SSLHandshakeException;
 
 import okhttp3.Protocol;
 import okhttp3.Request;
@@ -156,14 +137,14 @@ public class MidtransServiceManagerTest {
 
     }
 
-    private Response<TokenDetailsResponse> createCardTokenResponse(Integer statusCode) {
+    private Response<TokenDetailsResponse> createCardTokenResponse(Integer statusCode, boolean emptyBody) {
         Request okReq = new Request.Builder().url(SDKConfigTest.PAPI_URL).build();
         okhttp3.Response okResponse = new okhttp3.Response.Builder().code((statusCode == null || statusCode > 300) ? 299 : statusCode).request(okReq).message("success").protocol(Protocol.HTTP_2).build();
 
         TokenDetailsResponse response = new TokenDetailsResponse();
         response.setStatusCode(String.valueOf(statusCode));
 
-        Response<TokenDetailsResponse> resTransactionResponse = Response.success(response, okResponse);
+        Response<TokenDetailsResponse> resTransactionResponse = Response.success(emptyBody ? null : response, okResponse);
         return resTransactionResponse;
 
     }
@@ -237,23 +218,10 @@ public class MidtransServiceManagerTest {
     }
 
     /**
-     *  get card token
+     * get card token normal
      */
+    private void initGetCardTokenNormal() {
 
-    private void initGetCardToken(CardTokenRequest request, Boolean point, Boolean twoClick, Boolean secure) {
-
-        Mockito.when(midtransServiceMock.getToken(
-                SDKConfigTest.CARD_NUMBER,
-                SDKConfigTest.CARD_CVV,
-                SDKConfigTest.CARD_EXPIRY_MONTH,
-                SDKConfigTest.CARD_EXPIRY_YEAR,
-                SDKConfigTest.CLIENT_KEY,
-                SDKConfigTest.CHANNEL,
-                SDKConfigTest.TYPE,
-                point
-        )).thenReturn(callGetCardTokenMock);
-
-        //with gross amount
         Mockito.when(midtransServiceMock.getToken(
                 SDKConfigTest.CARD_NUMBER,
                 SDKConfigTest.CARD_CVV,
@@ -263,9 +231,33 @@ public class MidtransServiceManagerTest {
                 SDKConfigTest.GROSS_AMOUNT,
                 SDKConfigTest.CHANNEL,
                 SDKConfigTest.TYPE,
-                point
+                false
         )).thenReturn(callGetCardTokenMock);
 
+        CardTokenRequest req = new CardTokenRequest(
+                SDKConfigTest.CARD_NUMBER,
+                SDKConfigTest.CARD_CVV,
+                SDKConfigTest.CARD_EXPIRY_MONTH,
+                SDKConfigTest.CARD_EXPIRY_YEAR,
+                SDKConfigTest.CLIENT_KEY);
+
+        req.setChannel(SDKConfigTest.CHANNEL);
+        req.setGrossAmount(SDKConfigTest.GROSS_AMOUNT);
+        req.setType(SDKConfigTest.TYPE);
+
+        req.setPoint(false);
+        req.setTwoClick(false);
+        req.setInstallment(false);
+        req.setSecure(false);
+        callbackImplement.getCardToken(req);
+
+        Mockito.verify(callGetCardTokenMock).enqueue(getCardTokenCaptor.capture());
+    }
+
+    /**
+     * get card token normal
+     */
+    private void initGetCardTokenNormal3ds() {
 
         Mockito.when(midtransServiceMock.get3DSToken(
                 SDKConfigTest.CARD_NUMBER,
@@ -274,42 +266,47 @@ public class MidtransServiceManagerTest {
                 SDKConfigTest.CARD_EXPIRY_YEAR,
                 SDKConfigTest.CLIENT_KEY,
                 SDKConfigTest.BANK,
-                secure,
-                twoClick,
-                SDKConfigTest.GROSS_AMOUNT,
-                SDKConfigTest.CHANNEL,
-                SDKConfigTest.TYPE,
-                point
-        )).thenReturn(callGetCardTokenMock);
-
-
-        Mockito.when(midtransServiceMock.getTokenTwoClick(
-                SDKConfigTest.CARD_CVV,
-                SDKConfigTest.SAVED_TOKEN_ID,
-                twoClick,
-                secure,
-                SDKConfigTest.GROSS_AMOUNT,
-                SDKConfigTest.BANK,
-                SDKConfigTest.CLIENT_KEY,
-                SDKConfigTest.CHANNEL,
-                SDKConfigTest.TYPE,
-                point
-        )).thenReturn(callGetCardTokenMock);
-
-        Mockito.when(midtransServiceMock.getTokenInstalmentOfferTwoClick(
-                SDKConfigTest.CARD_CVV,
-                SDKConfigTest.SAVED_TOKEN_ID,
-                twoClick,
-                secure,
-                SDKConfigTest.GROSS_AMOUNT,
-                SDKConfigTest.BANK,
-                SDKConfigTest.CLIENT_KEY,
                 true,
-                SDKConfigTest.INSTALLMENT_TERM,
+                false,
+                SDKConfigTest.GROSS_AMOUNT,
                 SDKConfigTest.CHANNEL,
                 SDKConfigTest.TYPE,
-                point
+                false
         )).thenReturn(callGetCardTokenMock);
+
+        CardTokenRequest req = new CardTokenRequest(
+                SDKConfigTest.CARD_NUMBER,
+                SDKConfigTest.CARD_CVV,
+                SDKConfigTest.CARD_EXPIRY_MONTH,
+                SDKConfigTest.CARD_EXPIRY_YEAR,
+                SDKConfigTest.CLIENT_KEY);
+
+        req.setChannel(SDKConfigTest.CHANNEL);
+        req.setGrossAmount(SDKConfigTest.GROSS_AMOUNT);
+        req.setType(SDKConfigTest.TYPE);
+        req.setBank(SDKConfigTest.BANK);
+        req.setPoint(false);
+        req.setTwoClick(false);
+        req.setInstallment(false);
+        req.setSecure(true);
+        callbackImplement.getCardToken(req);
+    }
+
+    @Test
+    public void getCardTokenNormal() {
+        initGetCardTokenNormal();
+        Mockito.verify(callGetCardTokenMock).enqueue(getCardTokenCaptor.capture());
+
+    }
+
+    @Test
+    public void getCardTokenNormal_With3Ds() {
+        initGetCardTokenNormal3ds();
+        Mockito.verify(callGetCardTokenMock).enqueue(getCardTokenCaptor.capture());
+    }
+
+    @Test
+    public void getCardTokenNormal_With3DsAndInstallment() {
 
         Mockito.when(midtransServiceMock.get3DSTokenInstalmentOffers(
                 SDKConfigTest.CARD_NUMBER,
@@ -318,17 +315,152 @@ public class MidtransServiceManagerTest {
                 SDKConfigTest.CARD_EXPIRY_YEAR,
                 SDKConfigTest.CLIENT_KEY,
                 SDKConfigTest.BANK,
-                secure,
-                twoClick,
+                true,
+                false,
                 SDKConfigTest.GROSS_AMOUNT,
                 true,
                 SDKConfigTest.CHANNEL,
                 SDKConfigTest.INSTALLMENT_TERM,
                 SDKConfigTest.TYPE,
-                point
+                false
         )).thenReturn(callGetCardTokenMock);
 
-        callbackImplement.getCardToken(request);
+        CardTokenRequest req = new CardTokenRequest(
+                SDKConfigTest.CARD_NUMBER,
+                SDKConfigTest.CARD_CVV,
+                SDKConfigTest.CARD_EXPIRY_MONTH,
+                SDKConfigTest.CARD_EXPIRY_YEAR,
+                SDKConfigTest.CLIENT_KEY);
+
+        req.setChannel(SDKConfigTest.CHANNEL);
+        req.setGrossAmount(SDKConfigTest.GROSS_AMOUNT);
+        req.setType(SDKConfigTest.TYPE);
+        req.setBank(SDKConfigTest.BANK);
+        req.setPoint(false);
+        req.setTwoClick(false);
+        req.setInstallment(false);
+        req.setSecure(true);
+        req.setInstalmentTerm(Integer.parseInt(SDKConfigTest.INSTALLMENT_TERM));
+        req.setInstallment(true);
+        callbackImplement.getCardToken(req);
+
         Mockito.verify(callGetCardTokenMock).enqueue(getCardTokenCaptor.capture());
+    }
+
+    @Test
+    public void getCardTokenTwoClick() {
+        Mockito.when(midtransServiceMock.getTokenTwoClick(
+                SDKConfigTest.CARD_CVV,
+                SDKConfigTest.SAVED_TOKEN_ID,
+                true,
+                true,
+                SDKConfigTest.GROSS_AMOUNT,
+                SDKConfigTest.BANK,
+                SDKConfigTest.CLIENT_KEY,
+                SDKConfigTest.CHANNEL,
+                SDKConfigTest.TYPE,
+                false
+        )).thenReturn(callGetCardTokenMock);
+
+        CardTokenRequest req = new CardTokenRequest();
+
+        req.setCardCVV(SDKConfigTest.CARD_CVV);
+        req.setSavedTokenId(SDKConfigTest.SAVED_TOKEN_ID);
+        req.setTwoClick(true);
+        req.setSecure(true);
+        req.setGrossAmount(SDKConfigTest.GROSS_AMOUNT);
+        req.setBank(SDKConfigTest.BANK);
+        req.setClientKey(SDKConfigTest.CLIENT_KEY);
+        req.setChannel(SDKConfigTest.CHANNEL);
+        req.setType(SDKConfigTest.TYPE);
+        req.setPoint(false);
+
+        callbackImplement.getCardToken(req);
+        Mockito.verify(callGetCardTokenMock).enqueue(getCardTokenCaptor.capture());
+    }
+
+    @Test
+    public void getCardTokenTwoClick_withInstallment() {
+
+        Mockito.when(midtransServiceMock.getTokenInstalmentOfferTwoClick(
+                SDKConfigTest.CARD_CVV,
+                SDKConfigTest.SAVED_TOKEN_ID,
+                true,
+                true,
+                SDKConfigTest.GROSS_AMOUNT,
+                SDKConfigTest.BANK,
+                SDKConfigTest.CLIENT_KEY,
+                true,
+                SDKConfigTest.INSTALLMENT_TERM,
+                SDKConfigTest.CHANNEL,
+                SDKConfigTest.TYPE,
+                false
+        )).thenReturn(callGetCardTokenMock);
+
+        CardTokenRequest req = new CardTokenRequest();
+
+        req.setCardCVV(SDKConfigTest.CARD_CVV);
+        req.setSavedTokenId(SDKConfigTest.SAVED_TOKEN_ID);
+        req.setTwoClick(true);
+        req.setSecure(true);
+        req.setGrossAmount(SDKConfigTest.GROSS_AMOUNT);
+        req.setBank(SDKConfigTest.BANK);
+        req.setClientKey(SDKConfigTest.CLIENT_KEY);
+        req.setChannel(SDKConfigTest.CHANNEL);
+        req.setType(SDKConfigTest.TYPE);
+        req.setPoint(false);
+        req.setInstallment(true);
+        req.setInstalmentTerm(Integer.valueOf(SDKConfigTest.INSTALLMENT_TERM));
+
+        callbackImplement.getCardToken(req);
+        Mockito.verify(callGetCardTokenMock).enqueue(getCardTokenCaptor.capture());
+    }
+
+    @Test
+    public void getCardToken_whenServiceNull() {
+        CardTokenRequest req = new CardTokenRequest();
+        midtransServiceManager.setService(null);
+        callbackImplement.getCardToken(req);
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+    @Test
+    public void getCardTokenSuccess() {
+        initGetCardTokenNormal();
+        Response<TokenDetailsResponse> response = createCardTokenResponse(200, false);
+        getCardTokenCaptor.getValue().onResponse(callGetCardTokenMock, response);
+        Mockito.verify(callbackCollaboratorMock).onGetCardTokenSuccess();
+    }
+
+    @Test
+    public void getCardTokenFailure_whenStatusMessageEmpty() {
+        initGetCardTokenNormal();
+        Response<TokenDetailsResponse> response = createCardTokenResponse(201, false);
+        getCardTokenCaptor.getValue().onResponse(callGetCardTokenMock, response);
+        Mockito.verify(callbackCollaboratorMock).onGetCardTokenFailed();
+    }
+
+    @Test
+    public void getCardTokenFailure_whenStatusNotEmpty() {
+        initGetCardTokenNormal();
+        Response<TokenDetailsResponse> response = createCardTokenResponse(201, false);
+        response.body().setStatusMessage("message not empty");
+        getCardTokenCaptor.getValue().onResponse(callGetCardTokenMock, response);
+        Mockito.verify(callbackCollaboratorMock).onGetCardTokenFailed();
+    }
+
+    @Test
+    public void getCardTokenError_whenResponBodyEmpty() {
+        initGetCardTokenNormal();
+        Response<TokenDetailsResponse> response = createCardTokenResponse(234, true);
+        getCardTokenCaptor.getValue().onResponse(callGetCardTokenMock, response);
+        Mockito.verify(callbackCollaboratorMock).onError();
+    }
+
+    @Test
+    public void getCardTokenError() {
+        initGetCardTokenNormal();
+        getCardTokenCaptor.getValue().onFailure(callGetCardTokenMock, createThrowableOfTransactionResponseFailure(ERR_TYPE_NPE));
+        Mockito.verify(callbackCollaboratorMock).onError();
     }
 }
