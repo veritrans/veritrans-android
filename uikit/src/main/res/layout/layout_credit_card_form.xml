@@ -79,7 +79,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_alignTop="@id/field_card_number"
+            android:layout_alignBottom="@id/field_card_number"
+            android:paddingBottom="@dimen/twelve_dp"
             android:layout_centerVertical="true"
             android:gravity="center_vertical"
             android:orientation="horizontal">
@@ -98,7 +99,7 @@
                 android:layout_height="@dimen/payment_logo_size"
                 android:layout_marginEnd="@dimen/four_dp"
                 android:layout_marginRight="@dimen/four_dp"
-                tools:src="@drawable/ic_visa" />
+                tools:src="@drawable/ic_amex" />
 
             <com.midtrans.sdk.uikit.widgets.AspectRatioImageView
                 android:id="@+id/promo_logo"

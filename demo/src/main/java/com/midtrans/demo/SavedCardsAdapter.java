@@ -1,6 +1,8 @@
 package com.midtrans.demo;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.midtrans.demo.models.SavedCard;
+import com.midtrans.sdk.corekit.models.BankType;
+import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.widgets.AspectRatioImageView;
@@ -30,6 +34,8 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
     private SavedCardAdapterEventListener listener;
     private DeleteCardListener deleteCardListener;
 
+    private List<BankBinsResponse> bankBins;
+
     public SavedCardsAdapter() {
         mData = new ArrayList<>();
     }
@@ -42,6 +48,10 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
         this.mData.clear();
         this.mData.addAll(cards);
         this.notifyDataSetChanged();
+    }
+
+    public void setBankBin(Context context) {
+        bankBins = AppUtils.getBankBins(context);
     }
 
     public void removeCard(String maskedCard) {
@@ -82,6 +92,7 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
         SavedCard card = mData.get(position);
         String maskedCard = card.getMaskedCard();
         String cardType = Utils.getCardType(maskedCard);
+        String bankType = getBankByBin(card.getMaskedCard().substring(0, 6));
 
         holder.swipeLayout.setOffset(0);
         switch (cardType) {
@@ -98,6 +109,38 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
                 holder.imageCardType.setImageResource(R.drawable.ic_amex);
                 break;
         }
+
+        if (bankType != null && !TextUtils.isEmpty(bankType)) {
+            switch (bankType) {
+                case BankType.BCA:
+                    holder.bankLogo.setImageResource(R.drawable.bca);
+                    break;
+                case BankType.BNI:
+                    holder.bankLogo.setImageResource(R.drawable.bni);
+                    break;
+                case BankType.BRI:
+                    holder.bankLogo.setImageResource(R.drawable.bri);
+                    break;
+                case BankType.CIMB:
+                    holder.bankLogo.setImageResource(R.drawable.cimb);
+                    break;
+                case BankType.MANDIRI:
+                    holder.bankLogo.setImageResource(R.drawable.mandiri);
+                    break;
+                case BankType.MAYBANK:
+                    holder.bankLogo.setImageResource(R.drawable.maybank);
+                    break;
+                case BankType.BNI_DEBIT_ONLINE:
+                    holder.bankLogo.setImageResource(R.drawable.bni);
+                    break;
+                default:
+                    holder.bankLogo.setImageDrawable(null);
+                    break;
+            }
+        } else {
+            holder.bankLogo.setImageDrawable(null);
+        }
+
         String cardName = maskedCard.substring(0, 4);
         holder.textCardName.setText(cardType + "-" + cardName);
         String cardNumber = getMaskedCardNumber(maskedCard);
@@ -115,7 +158,7 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
     }
 
     public interface SavedCardAdapterEventListener {
-        void onItemClick(int position);
+        void onItemClick();
     }
 
 
@@ -137,14 +180,14 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
 
         public SavedCardsViewHolder(View itemView) {
             super(itemView);
-            swipeLayout = (SwipeLayout) itemView.findViewById(R.id.lyt_container);
-            textCardName = (TextView) itemView.findViewById(R.id.text_saved_card_name);
-            textCardNumber = (TextView) itemView.findViewById(R.id.text_saved_card_number);
-            deleteButton = (TextView) itemView.findViewById(R.id.txt_delete);
-            imageCardType = (ImageView) itemView.findViewById(R.id.image_card_type);
-            imageCardOffer = (AspectRatioImageView) itemView.findViewById(R.id.image_card_offer);
-            mainSaveCard = (LinearLayout) itemView.findViewById(R.id.save_card_main);
-            bankLogo = (AspectRatioImageView) itemView.findViewById(R.id.bank_logo);
+            swipeLayout = itemView.findViewById(R.id.lyt_container);
+            textCardName = itemView.findViewById(R.id.text_saved_card_name);
+            textCardNumber = itemView.findViewById(R.id.text_saved_card_number);
+            deleteButton = itemView.findViewById(R.id.txt_delete);
+            imageCardType = itemView.findViewById(R.id.image_card_type);
+            imageCardOffer = itemView.findViewById(R.id.image_card_offer);
+            mainSaveCard = itemView.findViewById(R.id.save_card_main);
+            bankLogo = itemView.findViewById(R.id.bank_logo);
 
             swipeLayout.setOnSwipeListener(new SwipeLayout.OnSwipeListener() {
                 @Override
@@ -172,7 +215,7 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
                 @Override
                 public void onClick(View view) {
                     if (listener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
-                        listener.onItemClick(getAdapterPosition());
+                        listener.onItemClick();
                     }
                 }
             });
@@ -205,5 +248,21 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
             }
         }
         return builder.toString();
+    }
+
+    private String getBankByBin(String cardBin) {
+        for (BankBinsResponse savedBankBin : bankBins) {
+            if (savedBankBin.getBins() != null && !savedBankBin.getBins().isEmpty()) {
+                for (String savedBin : savedBankBin.getBins()) {
+                    if (savedBin.contains(cardBin)) {
+                        String bankBin = savedBankBin.getBank();
+                        if (bankBin != null) {
+                            return bankBin;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
     }
 }
