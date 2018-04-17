@@ -11,12 +11,14 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.MandiriClickPayModel;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
+import com.midtrans.sdk.corekit.models.snap.params.NewMandiriClickPaymentParams;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.fragments.MandiriClickPayFragment;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
@@ -210,9 +212,11 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
      * @param mandiriClickPayModel Mandiri click pay request object
      */
     private void makeTransaction(MandiriClickPayModel mandiriClickPayModel) {
+        NewMandiriClickPaymentParams paymentParams = new NewMandiriClickPaymentParams(mMidtransSDK.readAuthenticationToken(),
+                mandiriClickPayModel.getToken(), mandiriClickPayModel.getInput3());
+
         mMidtransSDK.paymentUsingMandiriClickPay(mMidtransSDK.readAuthenticationToken(),
-                mandiriClickPayModel.getCardNumber(), mandiriClickPayModel.getToken(),
-                mandiriClickPayModel.getInput3(), new TransactionCallback() {
+                paymentParams, new TransactionCallback() {
                     @Override
                     public void onSuccess(TransactionResponse response) {
                         SdkUIFlowUtil.hideProgressDialog();
@@ -242,8 +246,6 @@ public class MandiriClickPayActivity extends BaseActivity implements View.OnClic
                                 setUpTransactionStatusFragment(transactionResponse);
                             }
                         }
-
-
 
 
                     }

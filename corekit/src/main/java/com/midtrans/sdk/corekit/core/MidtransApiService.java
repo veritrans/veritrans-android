@@ -3,75 +3,63 @@ package com.midtrans.sdk.corekit.core;
 import com.midtrans.sdk.corekit.models.CardRegistrationResponse;
 import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
 
-import retrofit.Callback;
-import retrofit.http.GET;
-import retrofit.http.Headers;
-import retrofit.http.Query;
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Headers;
+import retrofit2.http.Query;
 
 /**
- * Created by ziahaqi on 27/06/2016.
+ * Created by ziahaqi on 3/26/18.
  */
-public interface MidtransRestAPI {
+
+public interface MidtransApiService {
+
     /**
      * card_cvv, token_id, two_click, bank, secure, gross_amount this api call hit midtrans server
      *
      * @return callback of transaction response
      */
-    @GET("/token")
-    void getTokenTwoClick(
+    @GET("token")
+    Call<TokenDetailsResponse> getTokenTwoClick(
             @Query("card_cvv") String cardCVV,
             @Query("token_id") String tokenId,
-            @Query("two_click") boolean twoClick,
-            @Query("secure") boolean secure,
-            @Query("gross_amount") double grossAmount,
+            @Query("two_click") Boolean twoClick,
+            @Query("secure") Boolean secure,
+            @Query("gross_amount") Long grossAmount,
             @Query("bank") String bank,
             @Query("client_key") String clientKey,
             @Query("channel") String channel,
             @Query("type") String type,
-            @Query("point") boolean point,
-            Callback<TokenDetailsResponse> callback);
-
-    @GET("/token")
-    void get3DSToken(@Query("card_number") String cardNumber,
-                     @Query("card_cvv") String cardCVV,
-                     @Query("card_exp_month") String cardExpiryMonth,
-                     @Query("card_exp_year") String cardExpiryYear,
-                     @Query("client_key") String clientKey,
-                     @Query("bank") String bank,
-                     @Query("secure") boolean secure,
-                     @Query("two_click") boolean twoClick,
-                     @Query("gross_amount") double grossAmount,
-                     @Query("channel") String channel,
-                     @Query("type") String type,
-                     @Query("point") boolean point,
-                     Callback<TokenDetailsResponse> callback
+            @Query("point") Boolean point
     );
 
-    @GET("/token")
-    void getToken(
+    @GET("token")
+    Call<TokenDetailsResponse> get3DSToken(
             @Query("card_number") String cardNumber,
             @Query("card_cvv") String cardCVV,
             @Query("card_exp_month") String cardExpiryMonth,
             @Query("card_exp_year") String cardExpiryYear,
             @Query("client_key") String clientKey,
+            @Query("bank") String bank,
+            @Query("secure") Boolean secure,
+            @Query("two_click") Boolean twoClick,
+            @Query("gross_amount") Long grossAmount,
             @Query("channel") String channel,
             @Query("type") String type,
-            @Query("point") boolean point,
-            Callback<TokenDetailsResponse> callback
+            @Query("point") Boolean point
     );
 
-    @GET("/token")
-    void getToken(
+    @GET("token")
+    Call<TokenDetailsResponse> getToken(
             @Query("card_number") String cardNumber,
             @Query("card_cvv") String cardCVV,
             @Query("card_exp_month") String cardExpiryMonth,
             @Query("card_exp_year") String cardExpiryYear,
             @Query("client_key") String clientKey,
-            @Query("gross_amount") Double grossAmount,
+            @Query("gross_amount") Long grossAmount,
             @Query("channel") String channel,
             @Query("type") String type,
-            @Query("point") boolean point,
-            Callback<TokenDetailsResponse> callback
+            @Query("point") Boolean point
     );
 
     /**
@@ -89,21 +77,20 @@ public interface MidtransRestAPI {
      * @return callback of transaction response
      */
 
-    @GET("/token")
-    void getTokenInstalmentOfferTwoClick(
+    @GET("token")
+    Call<TokenDetailsResponse> getTokenInstalmentOfferTwoClick(
             @Query("card_cvv") String cardCVV,
             @Query("token_id") String tokenId,
-            @Query("two_click") boolean twoClick,
-            @Query("secure") boolean secure,
-            @Query("gross_amount") double grossAmount,
+            @Query("two_click") Boolean twoClick,
+            @Query("secure") Boolean secure,
+            @Query("gross_amount") Long grossAmount,
             @Query("bank") String bank,
             @Query("client_key") String clientKey,
-            @Query("installment") boolean instalment,
+            @Query("installment") Boolean instalment,
             @Query("installment_term") String instalmentTerm,
             @Query("channel") String channel,
             @Query("type") String type,
-            @Query("point") boolean point,
-            Callback<TokenDetailsResponse> callback
+            @Query("point") Boolean point
     );
 
     /***
@@ -122,22 +109,22 @@ public interface MidtransRestAPI {
      */
 
     @GET("/token")
-    void get3DSTokenInstalmentOffers(@Query("card_number") String cardNumber,
-                                     @Query("card_cvv") String cardCVV,
-                                     @Query("card_exp_month") String cardExpiryMonth,
-                                     @Query("card_exp_year") String cardExpiryYear,
-                                     @Query("client_key") String clientKey,
-                                     @Query("bank") String bank,
-                                     @Query("secure") boolean secure,
-                                     @Query("two_click") boolean twoClick,
-                                     @Query("gross_amount") double grossAmount,
-                                     @Query("installment") boolean instalment,
-                                     @Query("channel") String channel,
-                                     @Query("installment_term") String
-                                             instalmentTerm,
-                                     @Query("type") String type,
-                                     @Query("point") boolean point,
-                                     Callback<TokenDetailsResponse> callback
+    Call<TokenDetailsResponse> get3DSTokenInstalmentOffers(
+            @Query("card_number") String cardNumber,
+            @Query("card_cvv") String cardCVV,
+            @Query("card_exp_month") String cardExpiryMonth,
+            @Query("card_exp_year") String cardExpiryYear,
+            @Query("client_key") String clientKey,
+            @Query("bank") String bank,
+            @Query("secure") Boolean secure,
+            @Query("two_click") Boolean twoClick,
+            @Query("gross_amount") Long grossAmount,
+            @Query("installment") Boolean instalment,
+            @Query("channel") String channel,
+            @Query("installment_term") String
+                    instalmentTerm,
+            @Query("type") String type,
+            @Query("point") Boolean point
     );
 
 
@@ -152,15 +139,13 @@ public interface MidtransRestAPI {
      * @return callback of token
      */
     @Headers({"Content-Type: application/json", "x-auth: da53847171259b511488cf366e701050"})
-    @GET("/card/register")
-    void registerCard(
+    @GET("card/register")
+    Call<CardRegistrationResponse> registerCard(
             @Query("card_number") String cardNumber,
             @Query("card_cvv") String cardCVV,
             @Query("card_exp_month") String cardExpiryMonth,
             @Query("card_exp_year") String cardExpiryYear,
-            @Query("client_key") String clientKey,
-            Callback<CardRegistrationResponse> callback
+            @Query("client_key") String clientKey
     );
-
 
 }

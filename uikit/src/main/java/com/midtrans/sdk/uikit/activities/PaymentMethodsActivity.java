@@ -299,11 +299,12 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 || isTelkomselCash || isIndosatDompetku || isXlTunai
                 || isIndomaret || isKioson || isGci) {
             progressMessage.setText(R.string.txt_checkout);
+        } else {
+            progressMessage.setText(getString(R.string.txt_loading_payment));
         }
 
         Ion.with(progressImage)
                 .load(SdkUIFlowUtil.getImagePath(this) + R.drawable.midtrans_loader);
-        progressMessage.setText(R.string.txt_loading_payment);
 
     }
 
@@ -313,6 +314,13 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         UserDetail userDetail = getUserDetails();
 
         if (!isAlreadyUtilized()) {
+
+            String snapToken = midtransSDK.readAuthenticationToken();
+            if (!TextUtils.isEmpty(snapToken)) {
+                getPaymentOptions(snapToken);
+                return;
+            }
+
 
             if (userDetail == null || TextUtils.isEmpty(userDetail.getUserId())) {
                 midtransSDK.notifyTransactionFinished(new TransactionResult(null, null, TransactionResult.STATUS_INVALID));

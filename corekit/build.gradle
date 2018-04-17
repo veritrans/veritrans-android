@@ -110,10 +110,14 @@ tasks.withType(Test) {
 
 dependencies {
     compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
-    compile 'com.squareup.okhttp3:okhttp:3.6.0'
-    compile 'com.squareup.retrofit:retrofit:1.9.0'
-    compile 'com.jakewharton.retrofit:retrofit1-okhttp3-client:1.1.0'
     compile 'com.github.scottyab:secure-preferences:v0.1.6'
+
+    compile 'com.squareup.okhttp3:okhttp:3.10.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.10.0'
+
+    compile 'com.squareup.retrofit2:retrofit:2.4.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.4.0'
+
 
 
     // Analytics Manager

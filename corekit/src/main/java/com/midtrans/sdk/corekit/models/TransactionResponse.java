@@ -397,6 +397,10 @@ public class TransactionResponse implements Serializable {
         return validationMessages;
     }
 
+    public void setValidationMessages(ArrayList<String> validationMessages) {
+        this.validationMessages = validationMessages;
+    }
+
     public String getInstallmentTerm() {
         return installmentTerm;
     }

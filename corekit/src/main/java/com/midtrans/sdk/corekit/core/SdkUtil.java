@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.R;
 import com.midtrans.sdk.corekit.models.BCABankTransfer;
 import com.midtrans.sdk.corekit.models.BCAKlikPayDescriptionModel;
@@ -36,7 +37,6 @@ import com.midtrans.sdk.corekit.models.UserAddress;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.promo.Promo;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
-import com.midtrans.sdk.corekit.models.snap.SnapPromo;
 import com.midtrans.sdk.corekit.models.snap.params.CreditCardPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.params.GCIPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.params.KlikBcaPaymentParams;
@@ -406,7 +406,7 @@ public class SdkUtil {
         CustomerDetails mCustomerDetails = null;
 
         try {
-            userDetail = LocalDataHandler.readObject(MidtransSDK.getInstance().getContext().getString(R.string.user_details), UserDetail.class);
+            userDetail = LocalDataHandler.readObject(Constants.USER_DETAILS, UserDetail.class);
 
             if (userDetail != null && !TextUtils.isEmpty(userDetail.getUserFullName())) {
                 ArrayList<UserAddress> userAddresses = userDetail.getUserAddresses();
@@ -567,16 +567,6 @@ public class SdkUtil {
             requestModel.setEnabledPayments(transactionRequest.getEnabledPayments());
         }
 
-        // Set promo is available
-        if (transactionRequest.isPromoEnabled()) {
-            SnapPromo promo = new SnapPromo();
-            promo.setEnabled(true);
-
-            if (transactionRequest.getPromoCodes() != null && !transactionRequest.getPromoCodes().isEmpty()) {
-                promo.setAllowedPromoCodes(transactionRequest.getPromoCodes());
-            }
-            requestModel.setPromo(promo);
-        }
 
         return requestModel;
     }
@@ -712,4 +702,19 @@ public class SdkUtil {
         return preferences;
     }
 
+    public static SnapServiceManager newSnapServiceManager(int requestTimeOut) {
+        return new SnapServiceManager(MidtransRestAdapter.newSnapApiService(requestTimeOut));
+    }
+
+    public static MidtransServiceManager newMidtransServiceManager(int requestTimeOut) {
+        return new MidtransServiceManager(MidtransRestAdapter.newMidtransApiService(requestTimeOut));
+    }
+
+    public static MerchantServiceManager newMerchantServiceManager(String merchantServerUrl, int requestTimeOut) {
+        return new MerchantServiceManager(MidtransRestAdapter.newMerchantApiService(merchantServerUrl, requestTimeOut));
+    }
+
+    public static MixpanelAnalyticsManager newMixpanelAnalyticsManager(String versionName, String deviceId, String merchantName, String flow, String deviceType, boolean isLogEnabled, Context context) {
+        return new MixpanelAnalyticsManager(versionName, deviceId, merchantName, flow, deviceType, isLogEnabled, context);
+    }
 }

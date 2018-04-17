@@ -152,10 +152,10 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
         return creditCardTransaction.isInstallmentValid();
     }
 
-    public Integer getGrossAmount() {
+    public Long getGrossAmount() {
         //use discounted gross amount if available
         if (creditCardTransaction.isSelectedPromoAvailable()) {
-            return creditCardTransaction.getSelectedPromo().getDiscountedGrossAmount().intValue();
+            return creditCardTransaction.getSelectedPromo().getDiscountedGrossAmount();
         }
 
         TransactionDetails transactionDetails = getMidtransSDK().getTransaction().getTransactionDetails();
@@ -163,7 +163,7 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
             return transactionDetails.getAmount();
         }
 
-        return 0;
+        return 0L;
     }
 
 

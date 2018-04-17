@@ -10,9 +10,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.midtrans.sdk.corekit.callback.CardTokenCallback;
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.models.CardTokenRequest;
+import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
+import com.midtrans.sdk.corekit.models.snap.params.NewMandiriClickPaymentParams;
 
 public class MandiriClickPaymentActivity extends AppCompatActivity {
     TextInputLayout cardNumberContainer, tokenContainer;
@@ -58,24 +62,23 @@ public class MandiriClickPaymentActivity extends AppCompatActivity {
                 if (inputValidator()) {
                     dialog.show();
 
-                    MidtransSDK.getInstance().paymentUsingMandiriClickPay(
-                            MidtransSDK.getInstance().readAuthenticationToken(),
-                            sampleMandiriCardNumber, sampleTokenResponse, input3, new TransactionCallback() {
-                                @Override
-                                public void onSuccess(TransactionResponse response) {
-                                    actionTransactionSuccess(response);
-                                }
+                    final CardTokenRequest request = new CardTokenRequest(sampleMandiriCardNumber, null, null, null, MidtransSDK.getInstance().getClientKey());
+                    MidtransSDK.getInstance().getCardToken(request, new CardTokenCallback() {
+                        @Override
+                        public void onSuccess(TokenDetailsResponse response) {
+                            actionTokenizationSuccess(response);
+                        }
 
-                                @Override
-                                public void onFailure(TransactionResponse response, String reason) {
-                                    actionTransactionFailure(response, reason);
-                                }
+                        @Override
+                        public void onFailure(TokenDetailsResponse response, String reason) {
+                            actionTokenizationFailure(response, reason);
+                        }
 
-                                @Override
-                                public void onError(Throwable error) {
-                                    actionTransactionError(error);
-                                }
-                            });
+                        @Override
+                        public void onError(Throwable error) {
+                            actionTransactionError(error);
+                        }
+                    });
                 }
             }
         });
@@ -113,6 +116,35 @@ public class MandiriClickPaymentActivity extends AppCompatActivity {
                 && cardNumber.getText().toString().length() == 16
                 && !challengeToken.getText().toString().isEmpty()
                 && challengeToken.getText().toString().length() == 6;
+    }
+
+    private void actionTokenizationFailure(TokenDetailsResponse response, String reason) {
+        dialog.dismiss();
+        AlertDialog dialog = new AlertDialog.Builder(this)
+            .setMessage(reason)
+            .create();
+        dialog.show();
+    }
+
+    private void actionTokenizationSuccess(TokenDetailsResponse response) {
+        // Handle success tokenization
+        MidtransSDK.getInstance().paymentUsingMandiriClickPay(
+            MidtransSDK.getInstance().readAuthenticationToken(), new NewMandiriClickPaymentParams(response.getTokenId(), sampleTokenResponse, input3), new TransactionCallback() {
+                @Override
+                public void onSuccess(TransactionResponse response) {
+                    actionTransactionSuccess(response);
+                }
+
+                @Override
+                public void onFailure(TransactionResponse response, String reason) {
+                    actionTransactionFailure(response, reason);
+                }
+
+                @Override
+                public void onError(Throwable error) {
+                    actionTransactionError(error);
+                }
+            });
     }
 
     private void actionTransactionError(Throwable error) {

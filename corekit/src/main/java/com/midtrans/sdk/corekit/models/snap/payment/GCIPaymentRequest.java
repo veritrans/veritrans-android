@@ -19,4 +19,8 @@ public class GCIPaymentRequest {
         this.paymentParams = paymentParams;
         this.paymentType = paymentType;
     }
+
+    public GCIPaymentParams getPaymentParams() {
+        return paymentParams;
+    }
 }

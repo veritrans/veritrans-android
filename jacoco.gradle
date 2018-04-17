@@ -36,6 +36,12 @@ project.afterEvaluate {
                                    '**/*$ViewBinder*.*',
                                    '**/BuildConfig.*',
                                    '**/com/midtrans/sdk/corekit/models/*',
+                                   '**/com/midtrans/sdk/corekit/core/themes/*',
+                                   '**/com/midtrans/sdk/corekit/callback/*',
+                                   '**/com/midtrans/sdk/corekit/core/PaymentMethod.class',
+                                   '**/com/midtrans/sdk/corekit/core/UIKitCustomSetting.class',
+                                   '**/com/midtrans/sdk/corekit/core/MidtransRestAdapter.class',
+                                   '**/com/midtrans/sdk/corekit/core/Logger.class',
                                    '**/Manifest*.*']
                 )
 
