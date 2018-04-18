@@ -108,7 +108,7 @@ public interface MidtransApiService {
      * @return callback of transaction response
      */
 
-    @GET("/token")
+    @GET("token")
     Call<TokenDetailsResponse> get3DSTokenInstalmentOffers(
             @Query("card_number") String cardNumber,
             @Query("card_cvv") String cardCVV,
