@@ -123,7 +123,7 @@ public class MidtransSDK {
             }
         }
 
-        this.mMixpanelAnalyticsManager = SdkUtil.newMixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), merchantName, getFlow(flow), deviceType == null ? "": deviceType, isLogEnabled, context);
+        this.mMixpanelAnalyticsManager = SdkUtil.newMixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), merchantName, getFlow(flow), deviceType == null ? "" : deviceType, isLogEnabled, context);
         this.snapServiceManager = SdkUtil.newSnapServiceManager(requestTimeOut);
 
         this.midtransServiceManager = SdkUtil.newMidtransServiceManager(requestTimeOut);
@@ -272,7 +272,7 @@ public class MidtransSDK {
             deviceType = Utils.getDeviceType((Activity) context);
         }
 
-        if(mMixpanelAnalyticsManager == null){
+        if (mMixpanelAnalyticsManager == null) {
             this.mMixpanelAnalyticsManager = SdkUtil.newMixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), merchantName, getFlow(flow), deviceType == null ? "" : deviceType, isLogEnabled, context);
         }
 
@@ -489,6 +489,8 @@ public class MidtransSDK {
     }
 
     private boolean snapTokenAvailable(String snapToken) {
+        this.authenticationToken = snapToken;
+
         if (TextUtils.isEmpty(snapToken)) {
             String message = "snap token cannot be null or empty, please checkout transaction to get snapToken";
             Logger.e(TAG, message);
@@ -970,7 +972,7 @@ public class MidtransSDK {
             return;
         }
 
-        if (isTransactionRequestAvailable()) {
+        if (transactionRequest != null) {
             if (Utils.isNetworkAvailable(context)) {
 
                 TokenRequestModel model = SdkUtil.getSnapTokenRequestModel(transactionRequest);
@@ -1858,6 +1860,6 @@ public class MidtransSDK {
     }
 
     private boolean isTransactionRequestAvailable() {
-        return transactionRequest != null;
+        return transactionRequest != null || !TextUtils.isEmpty(authenticationToken);
     }
 }
