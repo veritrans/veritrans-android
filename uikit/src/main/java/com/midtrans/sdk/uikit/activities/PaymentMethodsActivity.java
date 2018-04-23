@@ -76,10 +76,7 @@ import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -467,7 +464,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
             @Override
             public void onError(Throwable error) {
-                Logger.e(TAG, "error:" + error.getMessage());
+                Logger.e(TAG, "onError:" + error.getMessage());
                 enableButtonBack(true);
                 progressContainer.setVisibility(View.GONE);
                 showFallbackErrorPage(error, getString(R.string.maintenance_message));
