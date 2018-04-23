@@ -5,14 +5,13 @@ apply from: '../jacoco-uikit.gradle'
 apply plugin: 'com.vanniktech.android.junit.jacoco'
 
 group = 'com.midtrans'
-version = '1.15.0'
+version = '1.17.1'
 
 ext {
     espressoVersion = "2.2.2"
     supporTestVersion = "0.5"
     junitVersion = "4.12"
 }
-
 
 buildscript {
     repositories {

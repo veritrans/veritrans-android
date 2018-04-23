@@ -115,7 +115,7 @@ public class UserDetailsActivity extends BaseActivity {
                     return;
                 }
 
-                UserDetail userDetail = SdkUIFlowUtil.getSavedUserDetails(this);
+                UserDetail userDetail = SdkUIFlowUtil.getSavedUserDetails();
 
 
                 if (userDetail != null) {
