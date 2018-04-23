@@ -429,7 +429,7 @@ public class BankTransferActivity extends BaseActivity implements View.OnClickLi
 
     private void otherBankTransaction(MidtransSDK midtransSDK) {
         midtransSDK.paymentUsingBankTransferAllBank(midtransSDK.readAuthenticationToken(),
-                SdkUtil.getEmailAddress(midtransSDK.getTransactionRequest()), new TransactionCallback() {
+                null, new TransactionCallback() {
                     @Override
                     public void onSuccess(TransactionResponse response) {
                         actionPaymentSuccess(response);
