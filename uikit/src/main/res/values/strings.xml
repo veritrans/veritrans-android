@@ -391,7 +391,6 @@
     <string name="btn_save_card">Register Card</string>
     <string name="btn_scan_card">Scan Card Using Camera</string>
     <string name="offer_applied">Offer Applied Successfully !</string>
-    <string name="offer_not_applied">Card is not eligible for this transaction, please try another card.</string>
     <string name="offer_not_applied">This card is not applicable for this transaction, please use another card.</string>
     <string name="no_offers">No offers found</string>
     <string name="text_yes">Yes</string>
