@@ -215,14 +215,19 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS) {
             finishPayment(RESULT_OK, presenter.getTransactionResponse());
+        } else if (requestCode == UiKitConstants.INTENT_CODE_GOPAY) {
+            Logger.d(TAG, "reqcode:" + requestCode);
+
+            presenter.getPaymentStatus();
         }
     }
 
+
     private void openDeeplink(String deeplinkUrl) {
         Toast.makeText(this, getString(R.string.redirecting_to_gopay), Toast.LENGTH_SHORT)
-            .show();
+                .show();
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(deeplinkUrl));
-        startActivity(intent);
+        startActivityForResult(intent, UiKitConstants.INTENT_CODE_GOPAY);
     }
 
     private void showConfirmationDialog(String message) {
@@ -264,4 +269,29 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
             super.onBackPressed();
         }
     }
+
+    @Override
+    public void onGetTransactionStatusError(Throwable error) {
+    }
+
+    @Override
+    public void onGetTransactionStatusFailure(TransactionResponse response) {
+        validateTransactionResponse(response);
+    }
+
+    private void validateTransactionResponse(TransactionResponse response) {
+        String statusCode = response.getStatusCode();
+        String transactionStatus = response.getTransactionStatus();
+        if ((!TextUtils.isEmpty(statusCode) && statusCode.equals(UiKitConstants.STATUS_CODE_201)
+                || !TextUtils.isEmpty(transactionStatus) && transactionStatus.equalsIgnoreCase(UiKitConstants.STATUS_PENDING))) {
+
+            showPaymentStatusPage(response, presenter.isShowPaymentStatusPage());
+        }
+    }
+
+    @Override
+    public void onGetTransactionStatusSuccess(TransactionResponse response) {
+        validateTransactionResponse(response);
+    }
+
 }

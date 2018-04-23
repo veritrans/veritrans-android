@@ -2,6 +2,7 @@ package com.midtrans.sdk.uikit.abstracts;
 
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
+import com.midtrans.sdk.corekit.models.snap.TransactionStatusResponse;
 
 /**
  * Created by ziahaqi on 7/28/17.
@@ -23,7 +24,7 @@ public class BasePaymentPresenter<V extends BaseView> extends BasePresenter<V> {
      */
     public boolean isShowPaymentStatusPage() {
         return getMidtransSDK() != null && getMidtransSDK().getUIKitCustomSetting() != null
-            && getMidtransSDK().getUIKitCustomSetting().isShowPaymentStatus();
+                && getMidtransSDK().getUIKitCustomSetting().isShowPaymentStatus();
     }
 
     public TransactionResponse getTransactionResponse() {
@@ -33,7 +34,7 @@ public class BasePaymentPresenter<V extends BaseView> extends BasePresenter<V> {
     public void trackButtonClick(String buttonName, String pageName) {
         try {
             getMidtransSDK().getmMixpanelAnalyticsManager()
-                .trackButtonClicked(getMidtransSDK().readAuthenticationToken(), buttonName, pageName);
+                    .trackButtonClicked(getMidtransSDK().readAuthenticationToken(), buttonName, pageName);
         } catch (NullPointerException e) {
             Logger.e(TAG, "trackButtonClick():" + e.getMessage());
         }
@@ -42,7 +43,7 @@ public class BasePaymentPresenter<V extends BaseView> extends BasePresenter<V> {
     public void trackPageView(String pageName, boolean isFirstPage) {
         try {
             getMidtransSDK().getmMixpanelAnalyticsManager()
-                .trackPageViewed(getMidtransSDK().readAuthenticationToken(), pageName, isFirstPage);
+                    .trackPageViewed(getMidtransSDK().readAuthenticationToken(), pageName, isFirstPage);
         } catch (NullPointerException e) {
             Logger.e(TAG, "trackPageView():" + e.getMessage());
         }
@@ -50,6 +51,15 @@ public class BasePaymentPresenter<V extends BaseView> extends BasePresenter<V> {
 
     public void trackBackButtonClick(String pageName) {
         trackButtonClick(BACK_BUTTON_NAME, pageName);
+    }
+
+    protected TransactionResponse convertTransactionStatus(TransactionStatusResponse response) {
+        TransactionResponse transactionResponse = new TransactionResponse(
+                response.getStatusCode(), response.getStatusMessage(), response.getTransactionId(),
+                response.getOrderId(), response.getGrossAmount(), response.getPaymentType(),
+                response.getTransactionTime(), response.getTransactionStatus());
+        this.transactionResponse = transactionResponse;
+        return transactionResponse;
     }
 
 }

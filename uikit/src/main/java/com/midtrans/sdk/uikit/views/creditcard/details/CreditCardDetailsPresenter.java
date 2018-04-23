@@ -519,15 +519,6 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
         });
     }
 
-    private TransactionResponse convertTransactionStatus(TransactionStatusResponse response) {
-        TransactionResponse transactionResponse = new TransactionResponse(
-                response.getStatusCode(), response.getStatusMessage(), response.getTransactionId(),
-                response.getOrderId(), response.getGrossAmount(), response.getPaymentType(),
-                response.getTransactionTime(), response.getTransactionStatus());
-        this.transactionResponse = transactionResponse;
-        return transactionResponse;
-    }
-
     public void startScanCard(Activity activity, int intentRequestScanCard) {
         if (isCardScannerAvailable()) {
             getMidtransSDK().getExternalScanner().startScan(activity, intentRequestScanCard);
