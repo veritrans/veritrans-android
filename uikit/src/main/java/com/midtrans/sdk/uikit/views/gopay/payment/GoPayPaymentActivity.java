@@ -228,26 +228,26 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
     private void showConfirmationDialog(String message) {
         try {
             AlertDialog dialog = new AlertDialog.Builder(GoPayPaymentActivity.this, R.style.AlertDialogCustom)
-                .setPositiveButton(R.string.text_yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (!GoPayPaymentActivity.this.isFinishing()) {
-                            dialog.dismiss();
-                            finishPayment(RESULT_CANCELED, presenter.getTransactionResponse());
+                    .setPositiveButton(R.string.text_yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (!GoPayPaymentActivity.this.isFinishing()) {
+                                dialog.dismiss();
+                                finishPayment(RESULT_CANCELED, presenter.getTransactionResponse());
+                            }
                         }
-                    }
-                })
-                .setNegativeButton(R.string.text_no, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (!GoPayPaymentActivity.this.isFinishing()) {
-                            dialog.dismiss();
+                    })
+                    .setNegativeButton(R.string.text_no, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (!GoPayPaymentActivity.this.isFinishing()) {
+                                dialog.dismiss();
+                            }
                         }
-                    }
-                })
-                .setTitle(R.string.cancel_transaction)
-                .setMessage(message)
-                .create();
+                    })
+                    .setTitle(R.string.cancel_transaction)
+                    .setMessage(message)
+                    .create();
             dialog.show();
         } catch (Exception e) {
             Logger.e(TAG, "showDialog:" + e.getMessage());

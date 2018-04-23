@@ -1,11 +1,11 @@
 package com.midtrans.sdk.uikit.views.status;
 
+import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -197,31 +197,31 @@ public class PaymentStatusActivity extends BaseActivity {
 
     @Override
     public void initTheme() {
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            switch (this.paymentStatus) {
-                case UiKitConstants.STATUS_SUCCESS:
-                    getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.payment_status_success));
-                    break;
-                case UiKitConstants.STATUS_PENDING:
-                    getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.payment_status_pending));
-                    break;
-                default:
-                    getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.payment_status_failed));
-                    break;
+            int primaryColor = getPrimaryDarkColor();
+            if (primaryColor != 0) {
+                getWindow().setStatusBarColor(primaryColor);
             }
         }
 
+        int colorPaymentStatus;
         switch (this.paymentStatus) {
             case UiKitConstants.STATUS_SUCCESS:
-                layoutMain.setBackgroundColor(ContextCompat.getColor(this, R.color.payment_status_success));
+                colorPaymentStatus = ContextCompat.getColor(this, R.color.payment_status_success);
                 break;
             case UiKitConstants.STATUS_PENDING:
-                layoutMain.setBackgroundColor(ContextCompat.getColor(this, R.color.payment_status_pending));
+                colorPaymentStatus = ContextCompat.getColor(this, R.color.payment_status_pending);
                 break;
             default:
-                layoutMain.setBackgroundColor(ContextCompat.getColor(this, R.color.payment_status_failed));
+                colorPaymentStatus = ContextCompat.getColor(this, R.color.payment_status_failed);
                 break;
         }
+
+        GradientDrawable drawable = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
+                new int[]{getPrimaryColor(), colorPaymentStatus});
+        setBackgroundDrawable(drawable);
+
 
         buttonInstruction.setTextColor(ContextCompat.getColor(this, R.color.white));
         buttonInstruction.setIconColorFilter(ContextCompat.getColor(this, R.color.white));
@@ -230,6 +230,16 @@ public class PaymentStatusActivity extends BaseActivity {
         buttonFinish.setText(getString(R.string.done));
         buttonFinish.setTextBold();
         findViewById(R.id.button_chevron).setVisibility(View.GONE);
+    }
+
+    @SuppressWarnings("deprecation")
+    private void setBackgroundDrawable(GradientDrawable drawable) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            layoutMain.setBackground(drawable);
+        } else {
+            layoutMain.setBackgroundDrawable(drawable);
+        }
     }
 
     private void bindData() {
@@ -313,7 +323,7 @@ public class PaymentStatusActivity extends BaseActivity {
                 String formattedAmount = amount.split(Pattern.quote(".")).length == 2 ? amount.split(Pattern.quote("."))[0] : amount;
                 textTotalAmount.setText(formattedAmount);
             } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
+                Logger.e(TAG, e.getMessage());
             }
         }
 

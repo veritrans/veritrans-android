@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.R;
 import com.midtrans.sdk.corekit.models.BCABankTransfer;
 import com.midtrans.sdk.corekit.models.BCAKlikPayDescriptionModel;
@@ -36,7 +37,6 @@ import com.midtrans.sdk.corekit.models.UserAddress;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.promo.Promo;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
-import com.midtrans.sdk.corekit.models.snap.SnapPromo;
 import com.midtrans.sdk.corekit.models.snap.params.CreditCardPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.params.GCIPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.params.KlikBcaPaymentParams;
@@ -52,6 +52,7 @@ import com.midtrans.sdk.corekit.models.snap.payment.GoPayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.MandiriClickPayPaymentRequest;
 import com.midtrans.sdk.corekit.utilities.Installation;
+import com.securepreferences.SecurePreferences;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -171,7 +172,7 @@ public class SdkUtil {
 
         // bank name
         BankTransfer bankTransfer = new BankTransfer();
-        bankTransfer.setBank(MidtransSDK.getInstance().getContext().getString(R.string.payment_permata));
+        bankTransfer.setBank(BankType.PERMATA);
 
         return new PermataBankTransfer(bankTransfer,
                 transactionDetails, request.getItemDetails(),
@@ -199,7 +200,7 @@ public class SdkUtil {
 
         // bank name
         BankTransfer bankTransfer = new BankTransfer();
-        bankTransfer.setBank(MidtransSDK.getInstance().getContext().getString(R.string.payment_bca));
+        bankTransfer.setBank(BankType.BCA);
 
 
         BCABankTransfer model =
@@ -233,8 +234,7 @@ public class SdkUtil {
         IndomaretRequestModel model =
                 new IndomaretRequestModel();
 
-        model.setPaymentType(MidtransSDK.getInstance().getContext().getString(R.string.payment_indomaret));
-
+        model.setPaymentType(PaymentType.INDOMARET_CSTORE);
         model.setItem_details(request.getItemDetails());
         model.setCustomerDetails(request.getCustomerDetails());
         model.setTransactionDetails(transactionDetails);
@@ -371,8 +371,7 @@ public class SdkUtil {
 
         model.setCustomerDetails(request.getCustomerDetails(), request
                 .getShippingAddressArrayList(), request.getBillingAddressArrayList());
-        model.setPaymentType(MidtransSDK.getInstance().getContext().getString(R.string.payment_indosat_dompetku));
-
+        model.setPaymentType(PaymentType.INDOSAT_DOMPETKU);
         IndosatDompetkuRequest.IndosatDompetkuEntity entity = new IndosatDompetkuRequest
                 .IndosatDompetkuEntity();
         entity.setMsisdn("" + msisdn);
@@ -407,7 +406,7 @@ public class SdkUtil {
         CustomerDetails mCustomerDetails = null;
 
         try {
-            userDetail = LocalDataHandler.readObject(MidtransSDK.getInstance().getContext().getString(R.string.user_details), UserDetail.class);
+            userDetail = LocalDataHandler.readObject(Constants.USER_DETAILS, UserDetail.class);
 
             if (userDetail != null && !TextUtils.isEmpty(userDetail.getUserFullName())) {
                 ArrayList<UserAddress> userAddresses = userDetail.getUserAddresses();
@@ -568,16 +567,6 @@ public class SdkUtil {
             requestModel.setEnabledPayments(transactionRequest.getEnabledPayments());
         }
 
-        // Set promo is available
-        if (transactionRequest.isPromoEnabled()) {
-            SnapPromo promo = new SnapPromo();
-            promo.setEnabled(true);
-
-            if (transactionRequest.getPromoCodes() != null && !transactionRequest.getPromoCodes().isEmpty()) {
-                promo.setAllowedPromoCodes(transactionRequest.getPromoCodes());
-            }
-            requestModel.setPromo(promo);
-        }
 
         return requestModel;
     }
@@ -692,5 +681,40 @@ public class SdkUtil {
                 return lhs.getPriority().compareTo(rhs.getPriority());
             }
         });
+    }
+
+    public static SecurePreferences newPreferences(Context context, String name) {
+
+        SecurePreferences preferences = new SecurePreferences(context, context.getString(R.string.PREFERENCE_PASSWORD), name);
+        int prefVersion;
+        try {
+            prefVersion = preferences.getInt(Constants.KEY_PREFERENCES_VERSION, 0);
+        } catch (ClassCastException e) {
+            prefVersion = 0;
+        }
+        if (prefVersion == 0 || prefVersion < Constants.PREFERENCES_VERSION) {
+            SecurePreferences.Editor editor = preferences.edit();
+            editor.clear();
+            editor.putInt(Constants.KEY_PREFERENCES_VERSION, Constants.PREFERENCES_VERSION);
+            editor.apply();
+        }
+
+        return preferences;
+    }
+
+    public static SnapServiceManager newSnapServiceManager(int requestTimeOut) {
+        return new SnapServiceManager(MidtransRestAdapter.newSnapApiService(requestTimeOut));
+    }
+
+    public static MidtransServiceManager newMidtransServiceManager(int requestTimeOut) {
+        return new MidtransServiceManager(MidtransRestAdapter.newMidtransApiService(requestTimeOut));
+    }
+
+    public static MerchantServiceManager newMerchantServiceManager(String merchantServerUrl, int requestTimeOut) {
+        return new MerchantServiceManager(MidtransRestAdapter.newMerchantApiService(merchantServerUrl, requestTimeOut));
+    }
+
+    public static MixpanelAnalyticsManager newMixpanelAnalyticsManager(String versionName, String deviceId, String merchantName, String flow, String deviceType, boolean isLogEnabled, Context context) {
+        return new MixpanelAnalyticsManager(versionName, deviceId, merchantName, flow, deviceType, isLogEnabled, context);
     }
 }

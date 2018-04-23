@@ -99,6 +99,8 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
                 }
             }
         });
+
+        buttonPay.setText(getString(R.string.pay_now));
     }
 
     private boolean checkEmailValidity(String email) {
@@ -222,10 +224,8 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
                 Fragment fragment = adapter.getItem(position);
                 if (fragment instanceof InstructionOtherBankFragment && flags != null) {
                     showOtherAtmGuidance(((InstructionOtherBankFragment) fragment).getFragmentCode());
-                    setButtonPayText(adapter.getPayButtonText(((InstructionOtherBankFragment) fragment).getFragmentCode()));
                 } else {
                     hideOtherAtmGuidance();
-                    setButtonPayText(adapter.getPayButtonText(-1));
                 }
             }
 

@@ -1,9 +1,9 @@
 package com.midtrans.sdk.corekit.models;
 
+import android.text.TextUtils;
+
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
-
-import android.text.TextUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -38,7 +38,7 @@ public class CardTokenRequest implements Serializable {
     private String bank = null;
     private String cardType;
     private String savedTokenId;
-    private double grossAmount;
+    private Long grossAmount;
     private boolean isSaved;
     private String clientKey;
     private boolean installment;
@@ -148,11 +148,11 @@ public class CardTokenRequest implements Serializable {
         this.bank = bank;
     }
 
-    public double getGrossAmount() {
+    public Long getGrossAmount() {
         return grossAmount;
     }
 
-    public void setGrossAmount(double grossAmount) {
+    public void setGrossAmount(Long grossAmount) {
         this.grossAmount = grossAmount;
     }
 
@@ -235,7 +235,7 @@ public class CardTokenRequest implements Serializable {
     }
 
     public String getFormattedInstalmentTerm() {
-        return ""+ instalmentTerm ;
+        return "" + instalmentTerm;
     }
 
     public ArrayList<String> getBins() {

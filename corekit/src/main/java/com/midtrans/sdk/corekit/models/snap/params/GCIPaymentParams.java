@@ -17,4 +17,12 @@ public class GCIPaymentParams {
         this.cardNumber = cardNumber;
         this.password = password;
     }
+
+    public String getCardNumber() {
+        return cardNumber;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 }

@@ -5,14 +5,13 @@ apply from: '../jacoco-uikit.gradle'
 apply plugin: 'com.vanniktech.android.junit.jacoco'
 
 group = 'com.midtrans'
-version = '1.17.0'
+version = '1.18.0'
 
 ext {
     espressoVersion = "2.2.2"
     supporTestVersion = "0.5"
     junitVersion = "4.12"
 }
-
 
 buildscript {
     repositories {
@@ -108,11 +107,11 @@ dependencies {
     compile "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
 
     compile 'ru.rambler.android:swipe-layout:1.0.14'
-    compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'me.saket:better-link-movement-method:1.2'
     compile 'com.github.stfalcon:smsverifycatcher:0.3.1'
-    compile 'com.midtrans:issuetracker:1.11.0'
     compile 'com.journeyapps:zxing-android-embedded:3.5.0'
+    compile 'com.koushikdutta.ion:ion:2.2.1'
+    compile project(':issuetracker')
     developmentCompile project(path: ':corekit', configuration: 'developmentRelease')
     stagingCompile project(path: ':corekit', configuration: 'stagingRelease')
     productionCompile project(path: ':corekit', configuration: 'productionRelease')

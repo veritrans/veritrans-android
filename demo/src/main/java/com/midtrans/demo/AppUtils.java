@@ -4,13 +4,17 @@ import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
+import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
 import com.midtrans.sdk.uikit.PaymentMethods;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -21,6 +25,8 @@ import java.util.List;
  */
 
 public class AppUtils {
+
+    private static String TAG = AppUtils.class.getName();
 
     public static final String CATEGORY_CREDIT_CARD = "Credit/Debit Card";
     public static final String CATEGORY_VA = "ATM/Bank Transfer";
@@ -124,7 +130,7 @@ public class AppUtils {
         List<SelectPaymentMethodViewModel> viewModels = new ArrayList<>();
         for (int i = 0; i < enabledPayments.size(); i++) {
             EnabledPayment enabledPayment = enabledPayments.get(i);
-            Log.d("xchannel", "type:" + enabledPayment.getType());
+            Logger.d("xchannel", "type:" + enabledPayment.getType());
 
             PaymentMethodsModel model = getVaPaymentMethods(context, enabledPayment.getType(), enabledPayment.getStatus());
             if (model != null) {
@@ -343,5 +349,26 @@ public class AppUtils {
         }
 
         return deviceType;
+    }
+
+    public static ArrayList<BankBinsResponse> getBankBins(Context context) {
+        ArrayList<BankBinsResponse> list = null;
+        String data;
+        try {
+            InputStream is = context.getAssets().open("bank_bins.json");
+            byte[] buffer = new byte[is.available()];
+            is.read(buffer);
+            is.close();
+            data = new String(buffer, "UTF-8");
+
+            Gson gson = new Gson();
+            list = gson.fromJson(data, new TypeToken<ArrayList<BankBinsResponse>>() {
+            }.getType());
+
+        } catch (Exception e) {
+            Logger.e(TAG, e.getMessage());
+        }
+
+        return list;
     }
 }

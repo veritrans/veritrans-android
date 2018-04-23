@@ -1,4 +1,4 @@
-package com.midtrans.sdk.corekit.core;
+package com.midtrans.sdk.corekit.utilities;
 
 /**
  * Created by ziahaqi on 9/5/16.
@@ -33,11 +33,11 @@ public class CallbackCollaborator {
 
     }
 
-    public void onSaveCardsSuccess() {
+    public void onSaveAndGetCardsSuccess() {
 
     }
 
-    public void onSaveCardsFailure() {
+    public void onSaveAndGetCardsFailure() {
 
     }
 
@@ -90,6 +90,14 @@ public class CallbackCollaborator {
     }
 
     public void onDeleteCardFailure() {
+
+    }
+
+    public void onGetTransactionStatatusSuccess() {
+
+    }
+
+    public void onGetTransactionStatatusFailure() {
 
     }
 }

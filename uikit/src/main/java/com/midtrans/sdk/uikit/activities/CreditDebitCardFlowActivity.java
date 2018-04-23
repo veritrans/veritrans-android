@@ -376,44 +376,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
         }
 
         if (discountToken != null && !TextUtils.isEmpty(discountToken)) {
-            midtransSDK.paymentUsingCard(midtransSDK.readAuthenticationToken(), discountToken, null,
-                    paymentModel, new TransactionCallback() {
-                        @Override
-                        public void onSuccess(TransactionResponse response) {
-                            actionPaymentSuccess(response);
-                        }
 
-                        @Override
-                        public void onFailure(TransactionResponse response, String reason) {
-                            SdkUIFlowUtil.hideProgressDialog();
-                            if (attempt < MAX_ATTEMPT) {
-                                attempt += 1;
-                                SdkUIFlowUtil.showApiFailedMessage(CreditDebitCardFlowActivity.this, getString(R.string.message_payment_failed));
-                            } else {
-                                TransactionResponse transactionResponse = response;
-                                Handler handler = new Handler();
-                                handler.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        processingLayout.setVisibility(View.GONE);
-                                    }
-                                }, 200);
-                                CreditDebitCardFlowActivity.this.transactionResponse = transactionResponse;
-                                CreditDebitCardFlowActivity.this.errorMessage = getString(R.string.message_payment_failed);
-                                initPaymentStatus(transactionResponse, errorMessage, Constants.PAYMENT_METHOD_CREDIT_OR_DEBIT, true);
-                                titleHeaderTextView.setText(getString(R.string.title_payment_status));
-                            }
-                            if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
-                                Log.d("3dserror", "1>400:" + response.getValidationMessages().get(0));
-                            }
-                        }
-
-                        @Override
-                        public void onError(Throwable error) {
-                            SdkUIFlowUtil.hideProgressDialog();
-                            showErrorMessage(getString(R.string.message_payment_failed));
-                        }
-                    });
         } else {
             midtransSDK.paymentUsingCard(midtransSDK.readAuthenticationToken(),
                     paymentModel, new TransactionCallback() {
@@ -494,7 +457,7 @@ public class CreditDebitCardFlowActivity extends BaseActivity implements ReadBan
                     }
                     cardTokenRequest.setCardCVV("0");
                     cardTokenRequest.setClientKey("");
-                    cardTokenRequest.setGrossAmount(0);
+                    cardTokenRequest.setGrossAmount(0L);
 
                     if (cardTokenRequest.isSaved()) {
                         if (!TextUtils.isEmpty(cardPaymentResponse.getSavedTokenId())) {

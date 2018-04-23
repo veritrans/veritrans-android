@@ -12,7 +12,6 @@ import android.support.v7.widget.AppCompatEditText;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -178,7 +177,7 @@ public class MandiriClickPayActivity extends BasePaymentActivity implements Mand
                 drawable.setColorFilter(colorPrimary, PorterDuff.Mode.SRC_IN);
                 toggleInstruction.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null);
             } catch (RuntimeException e) {
-                Log.e(TAG, "changeToggleInstructionVisibility" + e.getMessage());
+                Logger.e(TAG, "changeToggleInstructionVisibility" + e.getMessage());
             }
         }
     }

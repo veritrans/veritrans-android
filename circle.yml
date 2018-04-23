@@ -33,7 +33,7 @@ checkout:
 test:
     override:
         # Unit Test
-       - (./gradlew corekit:testDevelopmentDebugUnitTestCoverage -PdisablePreDex):
+       - (./gradlew corekit:testDevelopmentDebugUnitTestCoverage -PdisablePreDex -Dorg.gradle.jvmargs="-noverify"):
             timeout: 3600
         # unit Test uikit
        - (./gradlew uikit:testDevelopmentDebugUnitTestCoverage -PdisablePreDex):
@@ -59,7 +59,6 @@ deployment:
             - cp -r uikit/build/outputs/mapping $CIRCLE_ARTIFACTS
             - cp -r uikit/build/outputs/mapping/ $CIRCLE_TEST_REPORTS
             - ./gradlew :clean :scancard:assembleRelease :scancard:bintrayUpload -PdisablePreDex
-            - ./gradlew :clean :widgets:assembleRelease :widgets:bintrayUpload -PdisablePreDex
             - ./gradlew :demo:assembleProductionRelease :demo:crashlyticsUploadDistributionProductionRelease
             - ./gradlew :demo:assembleDevelopmentRelease :demo:crashlyticsUploadDistributionDevelopmentRelease
 

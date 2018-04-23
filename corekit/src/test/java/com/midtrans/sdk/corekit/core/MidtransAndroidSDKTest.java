@@ -1,7 +1,6 @@
 package com.midtrans.sdk.corekit.core;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
@@ -11,6 +10,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
+import com.midtrans.sdk.corekit.BuildConfig;
 import com.midtrans.sdk.corekit.R;
 import com.midtrans.sdk.corekit.SDKConfigTest;
 import com.midtrans.sdk.corekit.callback.BankBinsCallback;
@@ -20,44 +20,44 @@ import com.midtrans.sdk.corekit.callback.CardTokenCallback;
 import com.midtrans.sdk.corekit.callback.CheckoutCallback;
 import com.midtrans.sdk.corekit.callback.DeleteCardCallback;
 import com.midtrans.sdk.corekit.callback.GetCardCallback;
-import com.midtrans.sdk.corekit.callback.ObtainPromoCallback;
+import com.midtrans.sdk.corekit.callback.GetTransactionStatusCallback;
 import com.midtrans.sdk.corekit.callback.SaveCardCallback;
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
 import com.midtrans.sdk.corekit.callback.TransactionOptionsCallback;
-import com.midtrans.sdk.corekit.models.BCABankTransfer;
-import com.midtrans.sdk.corekit.models.BCAKlikPayDescriptionModel;
-import com.midtrans.sdk.corekit.models.BCAKlikPayModel;
-import com.midtrans.sdk.corekit.models.BillInfoModel;
-import com.midtrans.sdk.corekit.models.CIMBClickPayModel;
+import com.midtrans.sdk.corekit.core.themes.BaseColorTheme;
 import com.midtrans.sdk.corekit.models.CardTokenRequest;
-import com.midtrans.sdk.corekit.models.CardTransfer;
-import com.midtrans.sdk.corekit.models.CstoreEntity;
-import com.midtrans.sdk.corekit.models.DescriptionModel;
-import com.midtrans.sdk.corekit.models.EpayBriTransfer;
-import com.midtrans.sdk.corekit.models.IndomaretRequestModel;
 import com.midtrans.sdk.corekit.models.IndosatDompetkuRequest;
-import com.midtrans.sdk.corekit.models.ItemDetails;
-import com.midtrans.sdk.corekit.models.KlikBCADescriptionModel;
-import com.midtrans.sdk.corekit.models.KlikBCAModel;
-import com.midtrans.sdk.corekit.models.MandiriBillPayTransferModel;
-import com.midtrans.sdk.corekit.models.MandiriClickPayModel;
 import com.midtrans.sdk.corekit.models.MandiriClickPayRequestModel;
-import com.midtrans.sdk.corekit.models.MandiriECashModel;
+import com.midtrans.sdk.corekit.models.PaymentDetails;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
-import com.midtrans.sdk.corekit.models.PermataBankTransfer;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.TokenRequestModel;
 import com.midtrans.sdk.corekit.models.UserDetail;
+import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
+import com.midtrans.sdk.corekit.models.snap.MerchantData;
+import com.midtrans.sdk.corekit.models.snap.PromoResponse;
+import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
+import com.midtrans.sdk.corekit.models.snap.params.NewMandiriClickPaymentParams;
+import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.BasePaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.CreditCardPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.DanamonOnlinePaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.GCIPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.GoPayPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.IndosatDompetkuPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.NewMandiriClickPayPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.TelkomselEcashPaymentRequest;
 import com.midtrans.sdk.corekit.utilities.Utils;
+import com.securepreferences.SecurePreferences;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -68,8 +68,8 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import static org.powermock.api.mockito.PowerMockito.spy;
 import static org.powermock.api.mockito.PowerMockito.verifyStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
 
@@ -78,24 +78,13 @@ import static org.powermock.api.mockito.PowerMockito.when;
  */
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({LocalDataHandler.class, SdkUtil.class, Looper.class, Utils.class, Log.class, TextUtils.class, Logger.class, MixpanelAnalyticsManager.class})
+@PrepareForTest({LocalDataHandler.class, SdkUtil.class, Looper.class, Utils.class, Log.class, TextUtils.class,
+        Logger.class, MixpanelAnalyticsManager.class, MidtransRestAdapter.class})
 @PowerMockIgnore("javax.net.ssl.*")
 public class MidtransAndroidSDKTest {
-
-    @Mock
-    protected CallbackCollaborator callbackCollaborator;
-    @InjectMocks
-    protected CallbackImplementSample callbackSample;
     @Mock
     Context contextMock;
-    @Mock
-    SnapTransactionManager transactionManager;
-    @Mock
-    PromoEngineManager promoEngineManager;
-    @Mock
-    MerchantRestAPI merchantRestAPI;
-    @Mock
-    MidtransRestAPI midtransRestAPI;
+
     @Mock
     Resources resourceMock;
     @Mock
@@ -105,21 +94,26 @@ public class MidtransAndroidSDKTest {
     @Mock
     boolean isconnected;
     @Mock
-    SharedPreferences preference;
-    String msisdnMock = "msisdnmock";
+    SecurePreferences preference;
     @Mock
     IndosatDompetkuRequest indosatDompetkuRequestMock;
-    Log fakeLog;
+    @Mock
     private CardTokenCallback cardTokenCallbackMock;
+    @Mock
+    private CheckoutCallback checkoutCallbackMock;
+    @Mock
+    private TransactionOptionsCallback transactionOptionCallbackMock;
+    @Mock
+    private TransactionCallback transactionCallbackMock;
+    @Mock
+    private BankBinsCallback getBankBinCallbackMock;
+
+
     private String sampleToken = "token";
     private String sampleText = "text";
     private String sampleMerchantLogoStr = "merchantLogo";
     private String giftCardNumber = "4811111111111114";
     private String giftCardPassword = "123";
-    private CheckoutCallback checkoutCallbackMock;
-    private TransactionOptionsCallback transactionOptionCallbackMock;
-    private TransactionCallback transactionCallbackMock;
-    private BankBinsCallback getBankBinCallbackMock;
 
     @Mock
     private String sdkTokenMock;
@@ -133,53 +127,12 @@ public class MidtransAndroidSDKTest {
     @Mock
     private TransactionRequest transactionRequestMock;
     @Mock
-    private PermataBankTransfer permatabankTransferMok;
-    @Mock
-    private BCABankTransfer bcaTransferMok;
-    @Mock
-    private CardTransfer cardTransferMock;
-    @Mock
-    private BCAKlikPayDescriptionModel bcaklikpayDescModelMock;
-    @Mock
-    private BCAKlikPayModel bcaKlikPayModelMock;
-    @Mock
-    private KlikBCADescriptionModel klikbcaDescModelMock;
-    @Mock
-    private KlikBCAModel klikBCAModelMock;
-    @Mock
-    private BillInfoModel billInfoModelMock;
-    @Mock
-    private ArrayList<ItemDetails> itemDetailMock;
-    @Mock
-    private MandiriBillPayTransferModel mandiriBillPayTransModelMock;
-    @Mock
-    private DescriptionModel descriptionModelMock;
-    @Mock
-    private CIMBClickPayModel cimbClickPayModel;
-    @Mock
-    private MandiriECashModel mandiriEcashModelMock;
-    @Mock
-    private EpayBriTransfer epayBriTransferMock;
-    @Mock
-    private CstoreEntity cstoreEntityMock;
-    @Mock
-    private IndomaretRequestModel indomaretRequestModelMock;
-    @Mock
-    private SaveCardRequest savecardMock;
-    @Mock
-    private SaveCardRequest saveCardRequestMock;
-    @Mock
-    private MandiriClickPayModel mandiriClickPayModelMock;
-    @Mock
     private MandiriClickPayRequestModel mandiriClickPayRequestModelMock;
     private String userId = "klikBCA";
-    private String transactionId = "A1";
     private String cardToken = "card_token";
-    private String token = "token";
     private String email = "email@domain.com";
     @Mock
     private ISdkFlow uiflowMock;
-    private String exceptionMock;
     @Mock
     private Integer drawableIntCostumMock;
     @Mock
@@ -188,17 +141,12 @@ public class MidtransAndroidSDKTest {
     private Integer drawableIntDefaultMock;
     @Mock
     private Drawable drawableDefaultMock;
-    private String merchantLogoMock = "merchantLogo";
     @Mock
     private ArrayList<PaymentMethodsModel> paymentMethodMock;
     @Mock
     private UserDetail userDetailMock;
     @Mock
     private MixpanelAnalyticsManager mixpanelMock;
-    @Mock
-    private SnapTransactionManager snapTransctionmanagerMock;
-    @Mock
-    private ObtainPromoCallback obtainPromoCallback;
     @Mock
     private TokenRequestModel tokenRequestModelMock;
     @Mock
@@ -215,32 +163,63 @@ public class MidtransAndroidSDKTest {
     private TransactionFinishedCallback transactionFinishedCallbackMock;
     @Mock
     private TransactionResult transactionResultMock;
+    @Mock
+    private DeleteCardCallback deleteCardCallbackMock;
 
-    private String snapTOken = "token";
-    private String samplePromoId = "promo_id";
-    private Double sampleAmount = 1000.0;
-    private String sampleDiscountToken = "discount_token";
+
+    private String snapToken = "token";
     private String sampleUserId = "userId";
-    private String sampleMandiriCardNumber = "4111111111111111";
-    private String sampleTokenResponse = "token_response";
-    private String sampleInput3 = "input_3";
     private String sampleMsisdn = "msisdn";
     private String samplePhoneNumber = "08111111111";
     private String sampleCardNumber = "4811111111111114";
     private String sampleCvv = "123";
     private String sampleExpMonth = "01";
     private String sampleExpYear = "2020";
-    private DeleteCardCallback deleteCardCallbackMock;
     private int sampleTimeOut = 1000;
     private String sampleClientKey = "client_key";
-    private String sampleBaseUrl = "base_url";
-    private String sampleMerchantBaseUrl = "merchant_url";
-    private Long discountAmount = 1000l;
+    private String sampleBaseUrl = "https://merchant.com";
+
+    @Mock
+    private SnapApiService snapServiceMock;
+    @Mock
+    private MidtransApiService midtransServiceMock;
+    @Mock
+    private MerchantApiService merchantServiceMock;
+
+    @Mock
+    private SnapServiceManager snapServiceManager;
+    @Mock
+    private MerchantServiceManager merchantServiceManager;
+    @Mock
+    private MidtransServiceManager midtransServiceManager;
+    @Mock
+    private MixpanelAnalyticsManager analyticsMock;
+    @Mock
+    private NewMandiriClickPaymentParams mandiriClickPayparamMock;
+    @Mock
+    private UIKitCustomSetting uiCustomSettingMock;
+    @Mock
+    private CreditCard creditCardMock;
+    @Mock
+    private List<PromoResponse> promosMock;
+    @Mock
+    private BaseColorTheme colorThemeMock;
+    @Mock
+    private Transaction transactionMock;
+    @Mock
+    private MerchantData merchantDataMock;
+    @Mock
+    private ArrayList<String> pointsMock;
+    @Mock
+    private PaymentDetails paymeDetailsMock;
+    @Mock
+    private GetTransactionStatusCallback getTransactionStatusMock;
 
     @Test
     public void test() {
         Assert.assertEquals(1, 1);
     }
+
 
     @Before
     public void setup() {
@@ -250,7 +229,9 @@ public class MidtransAndroidSDKTest {
         PowerMockito.mockStatic(Looper.class);
         PowerMockito.mockStatic(Utils.class);
         PowerMockito.mockStatic(SdkUtil.class);
+        PowerMockito.mockStatic(MidtransRestAdapter.class);
         PowerMockito.mockStatic(MixpanelAnalyticsManager.class);
+
         Mockito.when(contextMock.getApplicationContext()).thenReturn(contextMock);
         Mockito.when(contextMock.getString(R.string.error_unable_to_connect)).thenReturn("not connected");
         Mockito.when(contextMock.getResources()).thenReturn(resourceMock);
@@ -259,23 +240,22 @@ public class MidtransAndroidSDKTest {
         Mockito.when(contextMock.getSystemService(Context.CONNECTIVITY_SERVICE)).thenReturn(connectivityManager);
         Mockito.when(connectivityManager.getActiveNetworkInfo()).thenReturn(networkInfo);
         Mockito.when(networkInfo.isConnected()).thenReturn(false);
-        Mockito.when(contextMock.getSharedPreferences("local.data", Context.MODE_PRIVATE)).thenReturn(preference);
 
-        this.checkoutCallbackMock = callbackSample.getCheckoutCallback();
-        this.transactionOptionCallbackMock = callbackSample.getTransactionOptionCallback();
-        this.transactionCallbackMock = callbackSample.getTransactionCallback();
-        this.getBankBinCallbackMock = callbackSample.getBankBinCallback();
-        this.cardTokenCallbackMock = callbackSample.getCardTokenCallback();
-        this.saveCardCallbackMock = callbackSample.getSaveCardCallback();
-        this.bankpointCallbackMock = callbackSample.getbankPointCallback();
-        this.deleteCardCallbackMock = callbackSample.getDeleteCardCallback();
+        Mockito.when(contextMock.getSharedPreferences("local.data", Context.MODE_PRIVATE)).thenReturn(preference);
+        Mockito.when(SdkUtil.newPreferences(contextMock, "local.data")).thenReturn(preference);
+
+        Mockito.when(SdkUtil.newSnapServiceManager(sampleTimeOut)).thenReturn(snapServiceManager);
+
 
         MidtransSDK midtransSDK = SdkCoreFlowBuilder.init(contextMock, SDKConfigTest.CLIENT_KEY, SDKConfigTest.MERCHANT_BASE_URL)
                 .enableLog(true)
                 .buildSDK();
-        Mockito.when(midtransSDK.readAuthenticationToken()).thenReturn(sdkTokenMock);
-        midtransSDK.setTransactionManager(transactionManager);
-        midtransSDKSSpy = spy(midtransSDK);
+
+        midtransSDK.setSnapServiceManager(snapServiceManager);
+        midtransSDK.setMerchantServiceManager(merchantServiceManager);
+        midtransSDK.setMidtransServiceManager(midtransServiceManager);
+
+        midtransSDKSSpy = Mockito.spy(midtransSDK);
 
     }
 
@@ -287,67 +267,39 @@ public class MidtransAndroidSDKTest {
     @Test
     public void getToken_whenCardTokenCallbackNull() {
         midtransSDKSSpy.getCardToken(cardTokenRequestMock, null);
-        verifyStatic(Mockito.times(1));
+        PowerMockito.verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
 
-    @Test
-    public void getToken_whenCardTokenRequestNull() {
-        midtransSDKSSpy.getCardToken(null, cardTokenCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning);
-    }
 
     @Test
     public void getToken_whenCardTokenRequestNotNull_networkAvailable() {
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-
         midtransSDKSSpy.getCardToken(cardTokenRequestMock, cardTokenCallbackMock);
-        Assert.assertEquals(true, midtransSDKSSpy.isRunning);
+        Mockito.verify(midtransServiceManager).getToken(cardTokenRequestMock, cardTokenCallbackMock);
     }
 
     @Test
     public void getToken_whenCardTokenRequestNotNull_networkUnavailable() {
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-
         midtransSDKSSpy.getCardToken(cardTokenRequestMock, cardTokenCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning);
-        callbackCollaborator.onError();
+        Mockito.verify(cardTokenCallbackMock).onError(Matchers.any(Throwable.class));
     }
 
     @Test
-    public void startPaymentUiFlow_whenUIFlowNotNull() {
+    public void getToken_whenCardTokenRequestNull() {
+        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
+        midtransSDKSSpy.getCardToken(cardTokenRequestMock, cardTokenCallbackMock);
+        Mockito.verify(cardTokenCallbackMock).onError(Matchers.any(Throwable.class));
+    }
+
+    @Test
+    public void startPaymentUiFlow_whenUIFlowNotNull() throws Exception {
         when(transactionRequestMock.getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
         midtransSDKSSpy.uiflow = uiflowMock;
-        midtransSDKSSpy.isRunning = false;
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-
         midtransSDKSSpy.startPaymentUiFlow(contextMock);
-        Mockito.verify(midtransSDKSSpy).startPaymentUiFlow(contextMock);
-    }
-
-
-    @Test
-    public void startPaymentUiFlow_whenTransactionRequestNull() {
-        midtransSDKSSpy.uiflow = uiflowMock;
-        midtransSDKSSpy.isRunning = true;
-        midtransSDKSSpy.setTransactionRequest(null);
-
-        midtransSDKSSpy.startPaymentUiFlow(contextMock);
-        verifyStatic(Mockito.times(2));
-        Logger.e(Matchers.anyString(), Matchers.anyString());
-
-    }
-
-    @Test
-    public void startPaymentUiFlow_whenSdkRunning() {
-        midtransSDKSSpy.uiflow = uiflowMock;
-        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        midtransSDKSSpy.isRunning = true;
-
-        midtransSDKSSpy.startPaymentUiFlow(contextMock);
-        verifyStatic(Mockito.times(1));
-        Logger.e(Matchers.anyString(), Matchers.anyString());
-
+        PowerMockito.verifyPrivate(midtransSDKSSpy).invoke("runUiSdk", contextMock, null);
     }
 
     @Test
@@ -391,28 +343,12 @@ public class MidtransAndroidSDKTest {
     }
 
     @Test
-    public void isRunningTest() {
-        midtransSDKSSpy.isRunning = true;
-        Assert.assertEquals(true, midtransSDKSSpy.isRunning());
-
-    }
-
-
-    @Test
     public void merchantLogo() {
         String merchantLogo = sampleMerchantLogoStr;
         midtransSDKSSpy.setMerchantLogo(merchantLogo);
         Assert.assertEquals(merchantLogo, midtransSDKSSpy.getMerchantLogo());
 
     }
-
-    @Test
-    public void paymentMethod() {
-
-        midtransSDKSSpy.setSelectedPaymentMethods(paymentMethodMock);
-        Assert.assertEquals(paymentMethodMock, midtransSDKSSpy.getSelectedPaymentMethods());
-    }
-
 
     @Test
     public void TransactionRequestTest() {
@@ -429,7 +365,7 @@ public class MidtransAndroidSDKTest {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
         midtransSDKSSpy.checkout(checkoutCallbackMock);
-        Assert.assertEquals(true, midtransSDKSSpy.isRunning());
+        Mockito.verify(merchantServiceManager).checkout(Matchers.any(TokenRequestModel.class), Matchers.any(CheckoutCallback.class));
     }
 
     @Test
@@ -439,13 +375,15 @@ public class MidtransAndroidSDKTest {
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
 
+
     @Test
-    public void checkout_whenTransactionRequestNull() {
+    public void checkout_whenTransactionRequestUnAvailable() throws Exception {
         midtransSDKSSpy.setTransactionRequest(null);
+//        PowerMockito.doReturn(true).when(midtransSDKSSpy, "isTransactionRequestAvailable");
+
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
         midtransSDKSSpy.checkout(checkoutCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
+        Mockito.verify(checkoutCallbackMock).onError(Matchers.any(Throwable.class));
     }
 
     @Test
@@ -453,8 +391,7 @@ public class MidtransAndroidSDKTest {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
         midtransSDKSSpy.checkout(checkoutCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
+        Mockito.verify(checkoutCallbackMock).onError(Matchers.any(Throwable.class));
     }
 
 
@@ -468,7 +405,8 @@ public class MidtransAndroidSDKTest {
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
         when(SdkUtil.getSnapTokenRequestModel(transactionRequestMock)).thenReturn(tokenRequestModelMock);
         midtransSDKSSpy.checkout(sampleUserId, checkoutCallbackMock);
-        Assert.assertEquals(true, midtransSDKSSpy.isRunning());
+        Mockito.verify(merchantServiceManager).checkout(Matchers.any(TokenRequestModel.class), Matchers.any(CheckoutCallback.class));
+
     }
 
     @Test
@@ -483,8 +421,7 @@ public class MidtransAndroidSDKTest {
         midtransSDKSSpy.setTransactionRequest(null);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
         midtransSDKSSpy.checkout(userId, checkoutCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
+        Mockito.verify(checkoutCallbackMock).onError(Matchers.any(Throwable.class));
     }
 
     @Test
@@ -492,16 +429,25 @@ public class MidtransAndroidSDKTest {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
         midtransSDKSSpy.checkout(userId, checkoutCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
+        Mockito.verify(checkoutCallbackMock).onError(Matchers.any(Throwable.class));
     }
 
+    /**
+     * get transaction option
+     */
 
     @Test
     public void getSnapTransaction() {
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.getTransactionOptions(snapTOken, transactionOptionCallbackMock);
-        Assert.assertEquals(true, midtransSDKSSpy.isRunning());
+        midtransSDKSSpy.getTransactionOptions(snapToken, transactionOptionCallbackMock);
+        Mockito.verify(snapServiceManager).getTransactionOptions(snapToken, transactionOptionCallbackMock);
+    }
+
+    @Test
+    public void getSnapTransaction_whenCallbackNull() {
+        midtransSDKSSpy.getTransactionOptions(snapToken, null);
+        verifyStatic(Mockito.times(1));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
     }
 
     @Test
@@ -509,8 +455,7 @@ public class MidtransAndroidSDKTest {
         when(TextUtils.isEmpty(null)).thenReturn(true);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
         midtransSDKSSpy.getTransactionOptions(null, transactionOptionCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
+        Mockito.verify(transactionOptionCallbackMock).onError(Matchers.any(Throwable.class));
     }
 
     @Test
@@ -518,23 +463,28 @@ public class MidtransAndroidSDKTest {
         when(TextUtils.isEmpty(sdkTokenMock)).thenReturn(true);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
         midtransSDKSSpy.getTransactionOptions(null, transactionOptionCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
+        Mockito.verify(transactionOptionCallbackMock).onError(Matchers.any(Throwable.class));
     }
+
+    /**
+     * credit card payment
+     */
 
     @Test
     public void snapPaymentUsingCard() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingCard(cardToken, new CreditCardPaymentModel(token, false), transactionCallbackMock);
-        Assert.assertEquals(true, midtransSDKSSpy.isRunning);
+        CreditCardPaymentModel model = new CreditCardPaymentModel(snapToken, false);
+        midtransSDKSSpy.paymentUsingCard(snapToken, model, transactionCallbackMock);
+        Mockito.verify(snapServiceManager).paymentUsingCreditCard(Matchers.anyString(),
+                Matchers.any(CreditCardPaymentRequest.class), Matchers.any(TransactionCallback.class));
     }
 
     @Test
     public void snapPaymentCreditCard_whenCallbackNull() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingCard(cardToken, new CreditCardPaymentModel(token, false), null);
+        midtransSDKSSpy.paymentUsingCard(cardToken, new CreditCardPaymentModel(snapToken, false), null);
         verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -542,75 +492,36 @@ public class MidtransAndroidSDKTest {
     @Test
     public void snapPaymentUsingCard_whenTransactionRequestNull() {
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingCard(cardToken, new CreditCardPaymentModel(token, false), transactionCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
+        midtransSDKSSpy.paymentUsingCard(cardToken, new CreditCardPaymentModel(snapToken, false), transactionCallbackMock);
+        Mockito.verify(transactionCallbackMock).onError(Matchers.any(Throwable.class));
     }
 
     @Test
     public void snapPaymentUsingCard_whenNetworkUnavailable() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-        midtransSDKSSpy.paymentUsingCard(cardToken, new CreditCardPaymentModel(token, false), transactionCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
+        midtransSDKSSpy.paymentUsingCard(cardToken, new CreditCardPaymentModel(snapToken, false), transactionCallbackMock);
+        Mockito.verify(transactionCallbackMock).onError(Matchers.any(Throwable.class));
     }
 
     /**
-     * payment creditcard with promo
-     */
-
-    @Test
-    public void snapPaymentUsingCardWithPromo() {
-        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingCard(cardToken, sampleDiscountToken, discountAmount, new CreditCardPaymentModel(token, false), transactionCallbackMock);
-        Assert.assertEquals(true, midtransSDKSSpy.isRunning);
-    }
-
-    @Test
-    public void snapPaymentCreditCardWithPromo_whenCallbackNull() {
-        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingCard(cardToken, sampleDiscountToken, discountAmount, new CreditCardPaymentModel(token, false), null);
-        verifyStatic(Mockito.times(1));
-        Logger.e(Matchers.anyString(), Matchers.anyString());
-    }
-
-    @Test
-    public void snapPaymentUsingCardPromo_whenTransactionRequestNull() {
-        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingCard(cardToken, sampleDiscountToken, discountAmount, new CreditCardPaymentModel(token, false), transactionCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
-    }
-
-    @Test
-    public void snapPaymentUsingCardPromo_whenNetworkUnavailable() {
-        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-        midtransSDKSSpy.paymentUsingCard(cardToken, sampleDiscountToken, discountAmount, new CreditCardPaymentModel(token, false), transactionCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
-    }
-
-    /**
-     * test BCA Bank Transfer
+     * Bank Transfer / VA
      */
 
     @Test
     public void snapPaymentUsingBankTransferBCA() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingBankTransferBCA(email, token, transactionCallbackMock);
-        Assert.assertEquals(true, midtransSDKSSpy.isRunning());
+        midtransSDKSSpy.paymentUsingBankTransferBCA(email, snapToken, transactionCallbackMock);
+        Mockito.verify(snapServiceManager).paymentUsingVa(Matchers.anyString(), Matchers.any(BankTransferPaymentRequest.class),
+                Matchers.any(TransactionCallback.class));
     }
 
     @Test
     public void snapPaymentUsingBankTransferBCA_whenCallbackNull() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingBankTransferBCA(email, token, null);
+        midtransSDKSSpy.paymentUsingBankTransferBCA(email, snapToken, null);
         verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -619,32 +530,31 @@ public class MidtransAndroidSDKTest {
     public void snapPaymentUsingBankTransferBCA_whenNetworkUnavailable() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-        midtransSDKSSpy.paymentUsingBankTransferBCA(email, token, transactionCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
+        midtransSDKSSpy.paymentUsingBankTransferBCA(email, snapToken, transactionCallbackMock);
+        Mockito.verify(transactionCallbackMock).onError(Matchers.any(Throwable.class));
     }
 
     @Test
     public void snapPaymentUsingBankTransferBCA_whenTransactionRequestNull() {
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingBankTransferBCA(email, token, transactionCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
+        midtransSDKSSpy.paymentUsingBankTransferBCA(email, snapToken, transactionCallbackMock);
+        Mockito.verify(transactionCallbackMock).onError(Matchers.any(Throwable.class));
     }
 
     @Test
     public void snapPaymentUsingBankTransferPermata() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingBankTransferPermata(email, token, transactionCallbackMock);
-        Assert.assertEquals(true, midtransSDKSSpy.isRunning());
+        midtransSDKSSpy.paymentUsingBankTransferPermata(email, snapToken, transactionCallbackMock);
+        Mockito.verify(snapServiceManager).paymentUsingVa(Matchers.anyString(), Matchers.any(BankTransferPaymentRequest.class),
+                Matchers.any(TransactionCallback.class));
     }
 
     @Test
     public void snapPaymentUsingBankTransferPermata_whenCallbackNull() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingBankTransferPermata(email, token, null);
+        midtransSDKSSpy.paymentUsingBankTransferPermata(email, snapToken, null);
         verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -653,17 +563,15 @@ public class MidtransAndroidSDKTest {
     public void snapPaymentUsingBankTransferPermata_whenNetworkUnavailable() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-        midtransSDKSSpy.paymentUsingBankTransferPermata(email, token, transactionCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
+        midtransSDKSSpy.paymentUsingBankTransferPermata(email, snapToken, transactionCallbackMock);
+        Mockito.verify(transactionCallbackMock).onError(Matchers.any(Throwable.class));
     }
 
     @Test
     public void snapPaymentUsingBankTransferPermata_whenTransactionRequestNull() {
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingBankTransferPermata(email, token, transactionCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
+        midtransSDKSSpy.paymentUsingBankTransferPermata(email, snapToken, transactionCallbackMock);
+        Mockito.verify(transactionCallbackMock).onError(Matchers.any(Throwable.class));
     }
 
 
@@ -671,15 +579,16 @@ public class MidtransAndroidSDKTest {
     public void snapPaymentUsingBankTransferBni() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingBankTransferBni(email, token, transactionCallbackMock);
-        Assert.assertEquals(true, midtransSDKSSpy.isRunning());
+        midtransSDKSSpy.paymentUsingBankTransferBni(email, snapToken, transactionCallbackMock);
+        Mockito.verify(snapServiceManager).paymentUsingVa(Matchers.anyString(), Matchers.any(BankTransferPaymentRequest.class),
+                Matchers.any(TransactionCallback.class));
     }
 
     @Test
     public void snapPaymentUsingBankTransferBni_whenCallbackNull() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingBankTransferBni(email, token, null);
+        midtransSDKSSpy.paymentUsingBankTransferBni(email, snapToken, null);
         verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -688,99 +597,32 @@ public class MidtransAndroidSDKTest {
     public void snapPaymentUsingBankTransferBni_whenNetworkUnavailable() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-        midtransSDKSSpy.paymentUsingBankTransferBni(email, token, transactionCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
+        midtransSDKSSpy.paymentUsingBankTransferBni(email, snapToken, transactionCallbackMock);
+        Mockito.verify(transactionCallbackMock).onError(Matchers.any(Throwable.class));
     }
 
     @Test
     public void snapPaymentUsingBankTransferBni_whenTransactionRequestNull() {
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingBankTransferBni(email, token, transactionCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
+        midtransSDKSSpy.paymentUsingBankTransferBni(email, snapToken, transactionCallbackMock);
+        Mockito.verify(transactionCallbackMock).onError(Matchers.any(Throwable.class));
     }
+
 
     @Test
-    public void snapPaymentUsingKlikBCA() {
-        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingKlikBCA(userId, token, transactionCallbackMock);
-        Assert.assertEquals(true, midtransSDKSSpy.isRunning());
-    }
-
-    @Test
-    public void snapPaymentUsingKlikBca_whenCallbackNull() {
-        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingKlikBCA(userId, token, null);
-        verifyStatic(Mockito.times(1));
-        Logger.e(Matchers.anyString(), Matchers.anyString());
-    }
-
-    @Test
-    public void snapPaymentUsingKlikBCA_whenTransactionRequestNull() {
-        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingKlikBCA(userId, token, transactionCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
-    }
-
-    @Test
-    public void snapPaymentUsingKlikBCA_whenNetworkUnavailable() {
-        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-        midtransSDKSSpy.paymentUsingKlikBCA(userId, token, transactionCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
-    }
-
-    @Test
-    public void snapPaymentUsingBCAKlikpay() {
-        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingBCAKlikpay(token, transactionCallbackMock);
-        Assert.assertEquals(true, midtransSDKSSpy.isRunning());
-    }
-
-    @Test
-    public void snapPaymentUsingBcaKlikPay_whenCallbackNull() {
-        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingBCAKlikpay(token, null);
-        verifyStatic(Mockito.times(1));
-        Logger.e(Matchers.anyString(), Matchers.anyString());
-    }
-
-    @Test
-    public void snapPaymentUsingBCAKlikpay_whenTransactionRequestNull() {
-        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingBCAKlikpay(token, transactionCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
-    }
-
-    @Test
-    public void snapPaymentUsingBCAKlikpay_whenNetworkUnavailable() {
-        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-        midtransSDKSSpy.paymentUsingBCAKlikpay(token, transactionCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
-    }
-
     public void snapPaymentUsingBankTransferAllBank() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingBankTransferAllBank(email, token, transactionCallbackMock);
-        Assert.assertEquals(true, midtransSDKSSpy.isRunning());
+        midtransSDKSSpy.paymentUsingBankTransferAllBank(email, snapToken, transactionCallbackMock);
+        Mockito.verify(snapServiceManager).paymentUsingVa(Matchers.anyString(), Matchers.any(BankTransferPaymentRequest.class),
+                Matchers.any(TransactionCallback.class));
     }
 
     @Test
     public void snapPaymentUsingBankTransferAllBank_whenCallbackNull() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingBankTransferAllBank(email, token, null);
+        midtransSDKSSpy.paymentUsingBankTransferAllBank(email, snapToken, null);
         verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -789,17 +631,163 @@ public class MidtransAndroidSDKTest {
     public void snapPaymentUsingBankTransferAllBank_whenNetworkUnavailable() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-        midtransSDKSSpy.paymentUsingBankTransferAllBank(email, token, transactionCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
+        midtransSDKSSpy.paymentUsingBankTransferAllBank(email, snapToken, transactionCallbackMock);
+        Mockito.verify(transactionCallbackMock).onError(Matchers.any(Throwable.class));
     }
 
     @Test
     public void snapPaymentUsingBankTransferAllBank_whenTransactionRequestNull() {
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingBankTransferAllBank(email, token, transactionCallbackMock);
-        Assert.assertFalse(midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
+        midtransSDKSSpy.paymentUsingBankTransferAllBank(email, snapToken, transactionCallbackMock);
+        Mockito.verify(transactionCallbackMock).onError(Matchers.any(Throwable.class));
+    }
+
+
+    /**
+     * payment using mandiri bill pay
+     */
+
+    @Test
+    public void paymentUsingMandiriBill() {
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
+        midtransSDKSSpy.paymentUsingMandiriBillPay(snapToken, email, transactionCallbackMock);
+        Mockito.verify(snapServiceManager).paymentUsingVa(Matchers.anyString(),
+                Matchers.any(BankTransferPaymentRequest.class), Matchers.any(TransactionCallback.class));
+    }
+
+    @Test
+    public void paymentUsingMandiriBill_whenCallbackNull() {
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
+        midtransSDKSSpy.paymentUsingMandiriBillPay(snapToken, email, null);
+
+        verifyStatic(Mockito.times(1));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    @Test
+    public void paymentUsingMandiriBill_whenNetworkUnavailable() {
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
+        midtransSDKSSpy.paymentUsingMandiriBillPay(snapToken, email, transactionCallbackMock);
+        Mockito.verify(transactionCallbackMock).onError(Matchers.any(Throwable.class));
+    }
+
+    @Test
+    public void paymentUsingMandiriBill_whenTransactionRequestNull() {
+        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
+        midtransSDKSSpy.paymentUsingMandiriBillPay(snapToken, email, transactionCallbackMock);
+        Mockito.verify(transactionCallbackMock).onError(Matchers.any(Throwable.class));
+    }
+
+    /**
+     * payment using mandiri Click Pay
+     */
+
+    @Test
+    public void paymentUsingMandiriClickPay() {
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
+        midtransSDKSSpy.paymentUsingMandiriClickPay(snapToken, mandiriClickPayparamMock, transactionCallbackMock);
+        Mockito.verify(snapServiceManager).paymentUsingMandiriClickPay(Matchers.anyString(),
+                Matchers.any(NewMandiriClickPayPaymentRequest.class), Matchers.any(TransactionCallback.class));
+    }
+
+    @Test
+    public void paymentUsingMandiriClickPay_whenCallbackNull() {
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
+        midtransSDKSSpy.paymentUsingMandiriClickPay(snapToken, mandiriClickPayparamMock, null);
+
+        verifyStatic(Mockito.times(1));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    @Test
+    public void paymentUsingMandiriClickPay_whenNetworkUnavailable() {
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
+        midtransSDKSSpy.paymentUsingMandiriClickPay(snapToken, mandiriClickPayparamMock, transactionCallbackMock);
+        Mockito.verify(transactionCallbackMock).onError(Matchers.any(Throwable.class));
+    }
+
+    @Test
+    public void paymentUsingMandiriClickPay_whenTransactionRequestNull() {
+        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
+        midtransSDKSSpy.paymentUsingMandiriClickPay(snapToken, mandiriClickPayparamMock, transactionCallbackMock);
+        Mockito.verify(transactionCallbackMock).onError(Matchers.any(Throwable.class));
+    }
+
+
+    /**
+     * klik bca
+     */
+
+    @Test
+    public void snapPaymentUsingKlikBCA() {
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
+        midtransSDKSSpy.paymentUsingKlikBCA(userId, snapToken, transactionCallbackMock);
+        Mockito.verify(snapServiceManager).paymentUsingKlikBca(Matchers.anyString(), Matchers.any(KlikBCAPaymentRequest.class),
+                Matchers.any(TransactionCallback.class));
+    }
+
+    @Test
+    public void snapPaymentUsingKlikBca_whenCallbackNull() {
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
+        midtransSDKSSpy.paymentUsingKlikBCA(userId, snapToken, null);
+        verifyStatic(Mockito.times(1));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    @Test
+    public void snapPaymentUsingKlikBCA_whenTransactionRequestNull() {
+        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
+        midtransSDKSSpy.paymentUsingKlikBCA(userId, snapToken, transactionCallbackMock);
+        Mockito.verify(transactionCallbackMock).onError(Matchers.any(Throwable.class));
+    }
+
+    @Test
+    public void snapPaymentUsingKlikBCA_whenNetworkUnavailable() {
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
+        midtransSDKSSpy.paymentUsingKlikBCA(userId, snapToken, transactionCallbackMock);
+        Mockito.verify(transactionCallbackMock).onError(Matchers.any(Throwable.class));
+    }
+
+    @Test
+    public void snapPaymentUsingBCAKlikpay() {
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
+        midtransSDKSSpy.paymentUsingBCAKlikpay(snapToken, transactionCallbackMock);
+        Mockito.verify(snapServiceManager).paymentUsingBaseMethod(Matchers.anyString(),
+                Matchers.any(BasePaymentRequest.class), Matchers.any(TransactionCallback.class));
+    }
+
+    @Test
+    public void snapPaymentUsingBcaKlikPay_whenCallbackNull() {
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
+        midtransSDKSSpy.paymentUsingBCAKlikpay(snapToken, null);
+        verifyStatic(Mockito.times(1));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    @Test
+    public void snapPaymentUsingBCAKlikpay_whenTransactionRequestNull() {
+        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
+        midtransSDKSSpy.paymentUsingBCAKlikpay(snapToken, transactionCallbackMock);
+        Mockito.verify(transactionCallbackMock).onError(Matchers.any(Throwable.class));
+    }
+
+    @Test
+    public void snapPaymentUsingBCAKlikpay_whenNetworkUnavailable() {
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
+        midtransSDKSSpy.paymentUsingBCAKlikpay(snapToken, transactionCallbackMock);
+        Mockito.verify(transactionCallbackMock).onError(Matchers.any(Throwable.class));
     }
 
     @Test
@@ -812,34 +800,54 @@ public class MidtransAndroidSDKTest {
 
     @Test
     public void getBankBins_whenInternetNotConnected() {
-        midtransSDKSSpy.getBankBins(getBankBinCallbackMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-        Mockito.verify(callbackCollaborator).onGetBankBinError();
+        midtransSDKSSpy.getBankBins(getBankBinCallbackMock);
+        Mockito.verify(getBankBinCallbackMock).onError(Matchers.any(Throwable.class));
+    }
+
+    @Test
+    public void getBankBins() {
+        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
+        midtransSDKSSpy.getBankBins(getBankBinCallbackMock);
+        Mockito.verify(snapServiceManager).getBankBins(getBankBinCallbackMock);
     }
 
     /**
      * test gci payment
      */
+    @Test
     public void snapPaymentUsingGCI() {
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingGCI(token, giftCardNumber, giftCardPassword, transactionCallbackMock);
-        Assert.assertEquals(true, midtransSDKSSpy.isRunning());
+        midtransSDKSSpy.paymentUsingGCI(snapToken, giftCardNumber, giftCardPassword, transactionCallbackMock);
+        Mockito.verify(snapServiceManager).paymentUsingGci(Matchers.anyString(),
+                Matchers.any(GCIPaymentRequest.class), Matchers.any(TransactionCallback.class));
     }
 
     @Test
     public void snapPaymentUsingGCI_whenNetworkUnavailable() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-        midtransSDKSSpy.paymentUsingGCI(token, giftCardNumber, giftCardPassword, transactionCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
+        midtransSDKSSpy.paymentUsingGCI(snapToken, giftCardNumber, giftCardPassword, transactionCallbackMock);
+        Mockito.verify(transactionCallbackMock).onError(Matchers.any(Throwable.class));
     }
 
     @Test
     public void snapPaymentUsingGCI_whenCallbackNull() {
-        midtransSDKSSpy.paymentUsingGCI(token, giftCardNumber, giftCardPassword, null);
+        midtransSDKSSpy.paymentUsingGCI(snapToken, giftCardNumber, giftCardPassword, null);
         verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    @Test
+    public void startPaymentUiFLow_whenSnapTokenEmpty() throws Exception {
+        midtransSDKSSpy.startPaymentUiFlow(contextMock);
+        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startPaymentUiFlow", contextMock);
+    }
+
+    @Test
+    public void startPaymentUiFLow_withSnapToken() throws Exception {
+        midtransSDKSSpy.startPaymentUiFlow(contextMock, snapToken);
+        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("runUiSdk", contextMock, snapToken);
     }
 
     /**
@@ -918,8 +926,15 @@ public class MidtransAndroidSDKTest {
 
     @Test
     public void startPaymentUiFLow_whenUsingBcaKlikpay() throws Exception {
-        midtransSDKSSpy.startPaymentUiFlow(contextMock, PaymentMethod.BANK_TRANSFER_PERMATA);
+        midtransSDKSSpy.startPaymentUiFlow(contextMock, PaymentMethod.BCA_KLIKPAY);
         PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startBCAKlikPayUIFlow", contextMock, null);
+    }
+
+
+    @Test
+    public void startPaymentUiFLow_whenUsingGopay() throws Exception {
+        midtransSDKSSpy.startPaymentUiFlow(contextMock, PaymentMethod.GO_PAY);
+        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startGoPayUIFlow", contextMock, null);
     }
 
     /**
@@ -1032,34 +1047,11 @@ public class MidtransAndroidSDKTest {
         PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startGiftCardUIFlow", contextMock, null);
     }
 
-    /**
-     * test startBankTransferUIFlow method
-     */
-
-    @Test
-    public void startBankTransferUIFlow_whenPaymentMethodAlreadySelected() throws Exception {
-        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
-        midtransSDKSSpy.uiflow = uiflowMock;
-        Whitebox.invokeMethod(midtransSDKSSpy, "startBankTransferUIFlow", contextMock, snapTOken);
-        Mockito.verify(midtransSDKSSpy.uiflow).runBankTransfer(contextMock, snapTOken);
-    }
-
-
     @Test
     public void startBankTransferUIFlow_whenTransactionRequestNull() throws Exception {
         midtransSDKSSpy.setTransactionRequest(null);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startBankTransferUIFlow", contextMock, snapTOken);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startBankTransferUIFlow", contextMock, snapToken);
         verifyStatic(Mockito.times(2));
-        Logger.e(Matchers.anyString(), Matchers.anyString());
-    }
-
-    @Test
-    public void startBankTransferUIFlow_whenSdkIsrunning() throws Exception {
-        when(midtransSDKSSpy.isRunning()).thenReturn(true);
-        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startBankTransferUIFlow", contextMock, snapTOken);
-        verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
 
@@ -1073,25 +1065,16 @@ public class MidtransAndroidSDKTest {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
         midtransSDKSSpy.uiflow = uiflowMock;
-        Whitebox.invokeMethod(midtransSDKSSpy, "startPermataBankTransferUIFlow", contextMock, snapTOken);
-        Mockito.verify(midtransSDKSSpy.uiflow).runPermataBankTransfer(contextMock, snapTOken);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startPermataBankTransferUIFlow", contextMock, snapToken);
+        Mockito.verify(midtransSDKSSpy.uiflow).runPermataBankTransfer(contextMock, snapToken);
     }
 
 
     @Test
     public void startPermataBankTransferUIFlow_whenTransactionRequestNull() throws Exception {
         midtransSDKSSpy.setTransactionRequest(null);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startPermataBankTransferUIFlow", contextMock, snapTOken);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startPermataBankTransferUIFlow", contextMock, snapToken);
         verifyStatic(Mockito.times(2));
-        Logger.e(Matchers.anyString(), Matchers.anyString());
-    }
-
-    @Test
-    public void startPermataBankTransferUIFlow_whenSdkIsrunning() throws Exception {
-        when(midtransSDKSSpy.isRunning()).thenReturn(true);
-        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startPermataBankTransferUIFlow", contextMock, snapTOken);
-        verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
 
@@ -1104,27 +1087,19 @@ public class MidtransAndroidSDKTest {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
         midtransSDKSSpy.uiflow = uiflowMock;
-        Whitebox.invokeMethod(midtransSDKSSpy, "startMandiriBankTransferUIFlow", contextMock, snapTOken);
-        Mockito.verify(midtransSDKSSpy.uiflow).runMandiriBankTransfer(contextMock, snapTOken);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startMandiriBankTransferUIFlow", contextMock, snapToken);
+        Mockito.verify(midtransSDKSSpy.uiflow).runMandiriBankTransfer(contextMock, snapToken);
     }
 
 
     @Test
     public void startMandiriBankTransferUIFlow_whenTransactionRequestNull() throws Exception {
         midtransSDKSSpy.setTransactionRequest(null);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startMandiriBankTransferUIFlow", contextMock, snapTOken);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startMandiriBankTransferUIFlow", contextMock, snapToken);
         verifyStatic(Mockito.times(2));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
 
-    @Test
-    public void startMandiriBankTransferUIFlow_whenSdkIsrunning() throws Exception {
-        when(midtransSDKSSpy.isRunning()).thenReturn(true);
-        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startMandiriBankTransferUIFlow", contextMock, snapTOken);
-        verifyStatic(Mockito.times(1));
-        Logger.e(Matchers.anyString(), Matchers.anyString());
-    }
 
     /**
      * test startBniBankTransferUIFlow method
@@ -1135,25 +1110,16 @@ public class MidtransAndroidSDKTest {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
         midtransSDKSSpy.uiflow = uiflowMock;
-        Whitebox.invokeMethod(midtransSDKSSpy, "startBniBankTransferUIFlow", contextMock, snapTOken);
-        Mockito.verify(midtransSDKSSpy.uiflow).runBniBankTransfer(contextMock, snapTOken);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startBniBankTransferUIFlow", contextMock, snapToken);
+        Mockito.verify(midtransSDKSSpy.uiflow).runBniBankTransfer(contextMock, snapToken);
     }
 
 
     @Test
     public void startBniBankTransferUIFlow_whenTransactionRequestNull() throws Exception {
         midtransSDKSSpy.setTransactionRequest(null);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startBniBankTransferUIFlow", contextMock, snapTOken);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startBniBankTransferUIFlow", contextMock, snapToken);
         verifyStatic(Mockito.times(2));
-        Logger.e(Matchers.anyString(), Matchers.anyString());
-    }
-
-    @Test
-    public void startBniBankTransferUIFlow_whenSdkIsrunning() throws Exception {
-        when(midtransSDKSSpy.isRunning()).thenReturn(true);
-        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startBniBankTransferUIFlow", contextMock, snapTOken);
-        verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
 
@@ -1166,27 +1132,19 @@ public class MidtransAndroidSDKTest {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
         midtransSDKSSpy.uiflow = uiflowMock;
-        Whitebox.invokeMethod(midtransSDKSSpy, "startBCABankTransferUIFlow", contextMock, snapTOken);
-        Mockito.verify(midtransSDKSSpy.uiflow).runBCABankTransfer(contextMock, snapTOken);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startBCABankTransferUIFlow", contextMock, snapToken);
+        Mockito.verify(midtransSDKSSpy.uiflow).runBCABankTransfer(contextMock, snapToken);
     }
 
 
     @Test
     public void startBCABankTransferUIFlow_whenTransactionRequestNull() throws Exception {
         midtransSDKSSpy.setTransactionRequest(null);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startBCABankTransferUIFlow", contextMock, snapTOken);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startBCABankTransferUIFlow", contextMock, snapToken);
         verifyStatic(Mockito.times(2));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
 
-    @Test
-    public void startBCABankTransferUIFlow_whenSdkIsrunning() throws Exception {
-        when(midtransSDKSSpy.isRunning()).thenReturn(true);
-        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startBCABankTransferUIFlow", contextMock, snapTOken);
-        verifyStatic(Mockito.times(1));
-        Logger.e(Matchers.anyString(), Matchers.anyString());
-    }
 
     /**
      * test startBCAKlikPayUIFlow method
@@ -1197,27 +1155,19 @@ public class MidtransAndroidSDKTest {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
         midtransSDKSSpy.uiflow = uiflowMock;
-        Whitebox.invokeMethod(midtransSDKSSpy, "startBCAKlikPayUIFlow", contextMock, snapTOken);
-        Mockito.verify(midtransSDKSSpy.uiflow).runBCAKlikPay(contextMock, snapTOken);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startBCAKlikPayUIFlow", contextMock, snapToken);
+        Mockito.verify(midtransSDKSSpy.uiflow).runBCAKlikPay(contextMock, snapToken);
     }
 
 
     @Test
     public void startBCAKlikPayUIFlow_whenTransactionRequestNull() throws Exception {
         midtransSDKSSpy.setTransactionRequest(null);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startBCAKlikPayUIFlow", contextMock, snapTOken);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startBCAKlikPayUIFlow", contextMock, snapToken);
         verifyStatic(Mockito.times(2));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
 
-    @Test
-    public void startBCAKlikPayUIFlow_whenSdkIsrunning() throws Exception {
-        when(midtransSDKSSpy.isRunning()).thenReturn(true);
-        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startBCAKlikPayUIFlow", contextMock, snapTOken);
-        verifyStatic(Mockito.times(1));
-        Logger.e(Matchers.anyString(), Matchers.anyString());
-    }
 
     /**
      * test startKlikBCAUIFlow method
@@ -1228,27 +1178,19 @@ public class MidtransAndroidSDKTest {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
         midtransSDKSSpy.uiflow = uiflowMock;
-        Whitebox.invokeMethod(midtransSDKSSpy, "startKlikBCAUIFlow", contextMock, snapTOken);
-        Mockito.verify(midtransSDKSSpy.uiflow).runKlikBCA(contextMock, snapTOken);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startKlikBCAUIFlow", contextMock, snapToken);
+        Mockito.verify(midtransSDKSSpy.uiflow).runKlikBCA(contextMock, snapToken);
     }
 
 
     @Test
     public void startKlikBCAUIFlow_whenTransactionRequestNull() throws Exception {
         midtransSDKSSpy.setTransactionRequest(null);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startKlikBCAUIFlow", contextMock, snapTOken);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startKlikBCAUIFlow", contextMock, snapToken);
         verifyStatic(Mockito.times(2));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
 
-    @Test
-    public void startKlikBCAUIFlow_whenSdkIsrunning() throws Exception {
-        when(midtransSDKSSpy.isRunning()).thenReturn(true);
-        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startKlikBCAUIFlow", contextMock, snapTOken);
-        verifyStatic(Mockito.times(1));
-        Logger.e(Matchers.anyString(), Matchers.anyString());
-    }
 
     /**
      * test startMandiriClickpayUIFlow method
@@ -1259,27 +1201,19 @@ public class MidtransAndroidSDKTest {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
         midtransSDKSSpy.uiflow = uiflowMock;
-        Whitebox.invokeMethod(midtransSDKSSpy, "startMandiriClickpayUIFlow", contextMock, snapTOken);
-        Mockito.verify(midtransSDKSSpy.uiflow).runMandiriClickpay(contextMock, snapTOken);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startMandiriClickpayUIFlow", contextMock, snapToken);
+        Mockito.verify(midtransSDKSSpy.uiflow).runMandiriClickpay(contextMock, snapToken);
     }
 
 
     @Test
     public void startMandiriClickpayUIFlow_whenTransactionRequestNull() throws Exception {
         midtransSDKSSpy.setTransactionRequest(null);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startMandiriClickpayUIFlow", contextMock, snapTOken);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startMandiriClickpayUIFlow", contextMock, snapToken);
         verifyStatic(Mockito.times(2));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
 
-    @Test
-    public void startMandiriClickpayUIFlow_whenSdkIsrunning() throws Exception {
-        when(midtransSDKSSpy.isRunning()).thenReturn(true);
-        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startMandiriClickpayUIFlow", contextMock, snapTOken);
-        verifyStatic(Mockito.times(1));
-        Logger.e(Matchers.anyString(), Matchers.anyString());
-    }
 
     /**
      * test startMandiriECashUIFlow method
@@ -1290,27 +1224,19 @@ public class MidtransAndroidSDKTest {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
         midtransSDKSSpy.uiflow = uiflowMock;
-        Whitebox.invokeMethod(midtransSDKSSpy, "startMandiriECashUIFlow", contextMock, snapTOken);
-        Mockito.verify(midtransSDKSSpy.uiflow).runMandiriECash(contextMock, snapTOken);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startMandiriECashUIFlow", contextMock, snapToken);
+        Mockito.verify(midtransSDKSSpy.uiflow).runMandiriECash(contextMock, snapToken);
     }
 
 
     @Test
     public void startMandiriECashUIFlow_whenTransactionRequestNull() throws Exception {
         midtransSDKSSpy.setTransactionRequest(null);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startMandiriECashUIFlow", contextMock, snapTOken);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startMandiriECashUIFlow", contextMock, snapToken);
         verifyStatic(Mockito.times(2));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
 
-    @Test
-    public void startMandiriECashUIFlow_whenSdkIsrunning() throws Exception {
-        when(midtransSDKSSpy.isRunning()).thenReturn(true);
-        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startMandiriECashUIFlow", contextMock, snapTOken);
-        verifyStatic(Mockito.times(1));
-        Logger.e(Matchers.anyString(), Matchers.anyString());
-    }
 
     /**
      * test startCIMBClicksUIFlow method
@@ -1321,27 +1247,19 @@ public class MidtransAndroidSDKTest {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
         midtransSDKSSpy.uiflow = uiflowMock;
-        Whitebox.invokeMethod(midtransSDKSSpy, "startCIMBClicksUIFlow", contextMock, snapTOken);
-        Mockito.verify(midtransSDKSSpy.uiflow).runCIMBClicks(contextMock, snapTOken);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startCIMBClicksUIFlow", contextMock, snapToken);
+        Mockito.verify(midtransSDKSSpy.uiflow).runCIMBClicks(contextMock, snapToken);
     }
 
 
     @Test
     public void startCIMBClicksUIFlow_whenTransactionRequestNull() throws Exception {
         midtransSDKSSpy.setTransactionRequest(null);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startCIMBClicksUIFlow", contextMock, snapTOken);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startCIMBClicksUIFlow", contextMock, snapToken);
         verifyStatic(Mockito.times(2));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
 
-    @Test
-    public void startCIMBClicksUIFlow_whenSdkIsrunning() throws Exception {
-        when(midtransSDKSSpy.isRunning()).thenReturn(true);
-        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startCIMBClicksUIFlow", contextMock, snapTOken);
-        verifyStatic(Mockito.times(1));
-        Logger.e(Matchers.anyString(), Matchers.anyString());
-    }
 
     /**
      * test startTelkomselCashUIFlow method
@@ -1352,25 +1270,16 @@ public class MidtransAndroidSDKTest {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
         midtransSDKSSpy.uiflow = uiflowMock;
-        Whitebox.invokeMethod(midtransSDKSSpy, "startTelkomselCashUIFlow", contextMock, snapTOken);
-        Mockito.verify(midtransSDKSSpy.uiflow).runTelkomselCash(contextMock, snapTOken);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startTelkomselCashUIFlow", contextMock, snapToken);
+        Mockito.verify(midtransSDKSSpy.uiflow).runTelkomselCash(contextMock, snapToken);
     }
 
 
     @Test
     public void startTelkomselCashUIFlow_whenTransactionRequestNull() throws Exception {
         midtransSDKSSpy.setTransactionRequest(null);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startTelkomselCashUIFlow", contextMock, snapTOken);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startTelkomselCashUIFlow", contextMock, snapToken);
         verifyStatic(Mockito.times(2));
-        Logger.e(Matchers.anyString(), Matchers.anyString());
-    }
-
-    @Test
-    public void startTelkomselCashUIFlow_whenSdkIsrunning() throws Exception {
-        when(midtransSDKSSpy.isRunning()).thenReturn(true);
-        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startTelkomselCashUIFlow", contextMock, snapTOken);
-        verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
 
@@ -1383,25 +1292,16 @@ public class MidtransAndroidSDKTest {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
         midtransSDKSSpy.uiflow = uiflowMock;
-        Whitebox.invokeMethod(midtransSDKSSpy, "startIndosatDompetkuUIFlow", contextMock, snapTOken);
-        Mockito.verify(midtransSDKSSpy.uiflow).runIndosatDompetku(contextMock, snapTOken);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startIndosatDompetkuUIFlow", contextMock, snapToken);
+        Mockito.verify(midtransSDKSSpy.uiflow).runIndosatDompetku(contextMock, snapToken);
     }
 
 
     @Test
     public void startIndosatDompetkuUIFlow_whenTransactionRequestNull() throws Exception {
         midtransSDKSSpy.setTransactionRequest(null);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startIndosatDompetkuUIFlow", contextMock, snapTOken);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startIndosatDompetkuUIFlow", contextMock, snapToken);
         verifyStatic(Mockito.times(2));
-        Logger.e(Matchers.anyString(), Matchers.anyString());
-    }
-
-    @Test
-    public void startIndosatDompetkuUIFlow_whenSdkIsrunning() throws Exception {
-        when(midtransSDKSSpy.isRunning()).thenReturn(true);
-        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startIndosatDompetkuUIFlow", contextMock, snapTOken);
-        verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
 
@@ -1414,27 +1314,19 @@ public class MidtransAndroidSDKTest {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
         midtransSDKSSpy.uiflow = uiflowMock;
-        Whitebox.invokeMethod(midtransSDKSSpy, "startIndomaretUIFlow", contextMock, snapTOken);
-        Mockito.verify(midtransSDKSSpy.uiflow).runIndomaret(contextMock, snapTOken);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startIndomaretUIFlow", contextMock, snapToken);
+        Mockito.verify(midtransSDKSSpy.uiflow).runIndomaret(contextMock, snapToken);
     }
 
 
     @Test
     public void startIndomaretUIFlow_whenTransactionRequestNull() throws Exception {
         midtransSDKSSpy.setTransactionRequest(null);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startIndomaretUIFlow", contextMock, snapTOken);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startIndomaretUIFlow", contextMock, snapToken);
         verifyStatic(Mockito.times(2));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
 
-    @Test
-    public void startIndomaretUIFlow_whenSdkIsrunning() throws Exception {
-        when(midtransSDKSSpy.isRunning()).thenReturn(true);
-        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startIndomaretUIFlow", contextMock, snapTOken);
-        verifyStatic(Mockito.times(1));
-        Logger.e(Matchers.anyString(), Matchers.anyString());
-    }
 
     /**
      * test startKiosonUIFlow method
@@ -1445,27 +1337,19 @@ public class MidtransAndroidSDKTest {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
         midtransSDKSSpy.uiflow = uiflowMock;
-        Whitebox.invokeMethod(midtransSDKSSpy, "startKiosonUIFlow", contextMock, snapTOken);
-        Mockito.verify(midtransSDKSSpy.uiflow).runKioson(contextMock, snapTOken);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startKiosonUIFlow", contextMock, snapToken);
+        Mockito.verify(midtransSDKSSpy.uiflow).runKioson(contextMock, snapToken);
     }
 
 
     @Test
     public void startKiosonUIFlow_whenTransactionRequestNull() throws Exception {
         midtransSDKSSpy.setTransactionRequest(null);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startKiosonUIFlow", contextMock, snapTOken);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startKiosonUIFlow", contextMock, snapToken);
         verifyStatic(Mockito.times(2));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
 
-    @Test
-    public void startKiosonUIFlow_whenSdkIsrunning() throws Exception {
-        when(midtransSDKSSpy.isRunning()).thenReturn(true);
-        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startKiosonUIFlow", contextMock, snapTOken);
-        verifyStatic(Mockito.times(1));
-        Logger.e(Matchers.anyString(), Matchers.anyString());
-    }
 
     /**
      * test startXlTunaiUIFlow method
@@ -1476,27 +1360,19 @@ public class MidtransAndroidSDKTest {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
         midtransSDKSSpy.uiflow = uiflowMock;
-        Whitebox.invokeMethod(midtransSDKSSpy, "startXlTunaiUIFlow", contextMock, snapTOken);
-        Mockito.verify(midtransSDKSSpy.uiflow).runXlTunai(contextMock, snapTOken);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startXlTunaiUIFlow", contextMock, snapToken);
+        Mockito.verify(midtransSDKSSpy.uiflow).runXlTunai(contextMock, snapToken);
     }
 
 
     @Test
     public void startXlTunaiUIFlow_whenTransactionRequestNull() throws Exception {
         midtransSDKSSpy.setTransactionRequest(null);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startXlTunaiUIFlow", contextMock, snapTOken);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startXlTunaiUIFlow", contextMock, snapToken);
         verifyStatic(Mockito.times(2));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
 
-    @Test
-    public void startXlTunaiUIFlow_whenSdkIsrunning() throws Exception {
-        when(midtransSDKSSpy.isRunning()).thenReturn(true);
-        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startXlTunaiUIFlow", contextMock, snapTOken);
-        verifyStatic(Mockito.times(1));
-        Logger.e(Matchers.anyString(), Matchers.anyString());
-    }
 
     /**
      * test startGiftCardUIFlow method
@@ -1507,27 +1383,19 @@ public class MidtransAndroidSDKTest {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
         midtransSDKSSpy.uiflow = uiflowMock;
-        Whitebox.invokeMethod(midtransSDKSSpy, "startGiftCardUIFlow", contextMock, snapTOken);
-        Mockito.verify(midtransSDKSSpy.uiflow).runGci(contextMock, snapTOken);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startGiftCardUIFlow", contextMock, snapToken);
+        Mockito.verify(midtransSDKSSpy.uiflow).runGci(contextMock, snapToken);
     }
 
 
     @Test
     public void startGiftCardUIFlow_whenTransactionRequestNull() throws Exception {
         midtransSDKSSpy.setTransactionRequest(null);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startGiftCardUIFlow", contextMock, snapTOken);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startGiftCardUIFlow", contextMock, snapToken);
         verifyStatic(Mockito.times(2));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
 
-    @Test
-    public void startGiftCardUIFlow_whenSdkIsrunning() throws Exception {
-        when(midtransSDKSSpy.isRunning()).thenReturn(true);
-        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startGiftCardUIFlow", contextMock, snapTOken);
-        verifyStatic(Mockito.times(1));
-        Logger.e(Matchers.anyString(), Matchers.anyString());
-    }
 
     /**
      * test startBRIEpayUIFlow method
@@ -1538,27 +1406,19 @@ public class MidtransAndroidSDKTest {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
         midtransSDKSSpy.uiflow = uiflowMock;
-        Whitebox.invokeMethod(midtransSDKSSpy, "startBRIEpayUIFlow", contextMock, snapTOken);
-        Mockito.verify(midtransSDKSSpy.uiflow).runBRIEpay(contextMock, snapTOken);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startBRIEpayUIFlow", contextMock, snapToken);
+        Mockito.verify(midtransSDKSSpy.uiflow).runBRIEpay(contextMock, snapToken);
     }
 
 
     @Test
     public void startBRIEpayUIFlow_whenTransactionRequestNull() throws Exception {
         midtransSDKSSpy.setTransactionRequest(null);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startBRIEpayUIFlow", contextMock, snapTOken);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startBRIEpayUIFlow", contextMock, snapToken);
         verifyStatic(Mockito.times(2));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
 
-    @Test
-    public void startBRIEpayUIFlow_whenSdkIsrunning() throws Exception {
-        when(midtransSDKSSpy.isRunning()).thenReturn(true);
-        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startBRIEpayUIFlow", contextMock, snapTOken);
-        verifyStatic(Mockito.times(1));
-        Logger.e(Matchers.anyString(), Matchers.anyString());
-    }
 
     /**
      * test startOtherBankTransferUIFlow method
@@ -1569,25 +1429,16 @@ public class MidtransAndroidSDKTest {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
         midtransSDKSSpy.uiflow = uiflowMock;
-        Whitebox.invokeMethod(midtransSDKSSpy, "startOtherBankTransferUIFlow", contextMock, snapTOken);
-        Mockito.verify(midtransSDKSSpy.uiflow).runOtherBankTransfer(contextMock, snapTOken);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startOtherBankTransferUIFlow", contextMock, snapToken);
+        Mockito.verify(midtransSDKSSpy.uiflow).runOtherBankTransfer(contextMock, snapToken);
     }
 
 
     @Test
     public void startOtherBankTransferUIFlow_whenTransactionRequestNull() throws Exception {
         midtransSDKSSpy.setTransactionRequest(null);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startOtherBankTransferUIFlow", contextMock, snapTOken);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startOtherBankTransferUIFlow", contextMock, snapToken);
         verifyStatic(Mockito.times(2));
-        Logger.e(Matchers.anyString(), Matchers.anyString());
-    }
-
-    @Test
-    public void startOtherBankTransferUIFlow_whenSdkIsrunning() throws Exception {
-        when(midtransSDKSSpy.isRunning()).thenReturn(true);
-        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startOtherBankTransferUIFlow", contextMock, snapTOken);
-        verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
 
@@ -1600,170 +1451,19 @@ public class MidtransAndroidSDKTest {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
         midtransSDKSSpy.uiflow = uiflowMock;
-        Whitebox.invokeMethod(midtransSDKSSpy, "startCreditCardUIFlow", contextMock, snapTOken);
-        Mockito.verify(midtransSDKSSpy.uiflow).runCreditCard(contextMock, snapTOken);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startCreditCardUIFlow", contextMock, snapToken);
+        Mockito.verify(midtransSDKSSpy.uiflow).runCreditCard(contextMock, snapToken);
     }
 
 
     @Test
     public void startCreditCardUIFlow_whenTransactionRequestNull() throws Exception {
         midtransSDKSSpy.setTransactionRequest(null);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startCreditCardUIFlow", contextMock, snapTOken);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startCreditCardUIFlow", contextMock, snapToken);
         verifyStatic(Mockito.times(2));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
 
-    @Test
-    public void startCreditCardUIFlow_whenSdkIsrunning() throws Exception {
-        when(midtransSDKSSpy.isRunning()).thenReturn(true);
-        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        Whitebox.invokeMethod(midtransSDKSSpy, "startCreditCardUIFlow", contextMock, snapTOken);
-        verifyStatic(Mockito.times(1));
-        Logger.e(Matchers.anyString(), Matchers.anyString());
-    }
-
-    /**
-     * Obtain Promo Test
-     */
-
-
-    @Test
-    public void obtainPromoByCardNumber_whenCallbackNull() {
-        midtransSDKSSpy.obtainPromoByCardNumber(samplePromoId, sampleAmount, sampleClientKey, sampleCardNumber, null);
-        verifyStatic(Mockito.times(1));
-        Logger.e(Matchers.anyString(), Matchers.anyString());
-    }
-
-    @Test
-    public void obtainPromoByCardNumber_whenClientKeyNull() {
-        midtransSDKSSpy.obtainPromoByCardNumber(samplePromoId, sampleAmount, sampleClientKey, null, null);
-        verifyStatic(Mockito.times(1));
-        Logger.e(Matchers.anyString(), Matchers.anyString());
-    }
-
-
-    @Test
-    public void obtainPromoByCardToken_whenCallbackNull() {
-        midtransSDKSSpy.obtainPromoByCardToken(samplePromoId, sampleAmount, sampleClientKey, sampleCardNumber, null);
-        verifyStatic(Mockito.times(1));
-        Logger.e(Matchers.anyString(), Matchers.anyString());
-    }
-
-    @Test
-    public void obtainPromoByCardToken_whenClientKeyNull() {
-        midtransSDKSSpy.obtainPromoByCardToken(samplePromoId, sampleAmount, sampleClientKey, null, null);
-        verifyStatic(Mockito.times(1));
-        Logger.e(Matchers.anyString(), Matchers.anyString());
-    }
-
-
-    @Test
-    public void obtainPromoByCardNumber_whenNetworkNotAvailabel() {
-        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-        midtransSDKSSpy.obtainPromoByCardNumber(samplePromoId, sampleAmount, sampleClientKey, sampleCardNumber, obtainPromoCallback);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning);
-        verifyStatic(Mockito.times(1));
-        Logger.e(Matchers.anyString());
-    }
-
-    @Test
-    public void obtainPromoByCardNumber_whenNetworkAvailable() {
-        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.obtainPromoByCardNumber(samplePromoId, sampleAmount, sampleClientKey, sampleCardNumber, obtainPromoCallback);
-        Assert.assertEquals(true, midtransSDKSSpy.isRunning);
-    }
-
-    @Test
-    public void obtainPromoByCardToken_whenNetworkNotAvailabel() {
-        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-        midtransSDKSSpy.obtainPromoByCardToken(samplePromoId, sampleAmount, sampleClientKey, cardToken, obtainPromoCallback);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning);
-        verifyStatic(Mockito.times(1));
-        Logger.e(Matchers.anyString());
-    }
-
-    @Test
-    public void obtainPromoByCardToken_whenNetworkAvailable() {
-        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.obtainPromoByCardNumber(samplePromoId, sampleAmount, sampleClientKey, cardToken, obtainPromoCallback);
-        Assert.assertEquals(true, midtransSDKSSpy.isRunning);
-    }
-
-    /**
-     * payment using mandiri bill pay
-     */
-
-    @Test
-    public void paymentUsingMandiriBill() {
-        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingMandiriBillPay(token, email, transactionCallbackMock);
-        Assert.assertEquals(true, midtransSDKSSpy.isRunning());
-    }
-
-    @Test
-    public void paymentUsingMandiriBill_whenCallbackNull() {
-        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingMandiriBillPay(token, email, null);
-        verifyStatic(Mockito.times(1));
-        Logger.e(Matchers.anyString(), Matchers.anyString());
-    }
-
-    @Test
-    public void paymentUsingMandiriBill_whenNetworkUnavailable() {
-        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-        midtransSDKSSpy.paymentUsingMandiriBillPay(token, email, transactionCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
-    }
-
-    @Test
-    public void paymentUsingMandiriBill_whenTransactionRequestNull() {
-        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingMandiriBillPay(token, email, transactionCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
-    }
-
-    /**
-     * payment using mandiri ClickPay
-     */
-
-    @Test
-    public void paymentUsingMandiriClickpay() {
-        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingMandiriClickPay(token, sampleMandiriCardNumber, sampleTokenResponse, sampleInput3, transactionCallbackMock);
-        Assert.assertEquals(true, midtransSDKSSpy.isRunning());
-    }
-
-    @Test
-    public void paymentUsingMandiriClickpay_whenCallbackNull() {
-        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);/**/
-        midtransSDKSSpy.paymentUsingMandiriClickPay(token, sampleMandiriCardNumber, sampleTokenResponse, sampleInput3, null);
-        verifyStatic(Mockito.times(1));
-        Logger.e(Matchers.anyString(), Matchers.anyString());
-    }
-
-    @Test
-    public void paymentUsingMandiriClickpay_whenNetworkUnavailable() {
-        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
-        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-        midtransSDKSSpy.paymentUsingMandiriClickPay(token, sampleMandiriCardNumber, sampleTokenResponse, sampleInput3, transactionCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
-    }
-
-    @Test
-    public void paymentUsingMandiriClickpay_whenTransactionRequestNull() {
-        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingMandiriClickPay(token, sampleMandiriCardNumber, sampleTokenResponse, sampleInput3, transactionCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
-    }
 
     /**
      * payment using cimb click
@@ -1773,15 +1473,16 @@ public class MidtransAndroidSDKTest {
     public void paymentUsingCimbClick() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingCIMBClick(token, transactionCallbackMock);
-        Assert.assertEquals(true, midtransSDKSSpy.isRunning());
+        midtransSDKSSpy.paymentUsingCIMBClick(snapToken, transactionCallbackMock);
+        Mockito.verify(snapServiceManager).paymentUsingBaseMethod(Matchers.anyString(),
+                Mockito.any(BasePaymentRequest.class), Matchers.any(TransactionCallback.class));
     }
 
     @Test
     public void paymentUsingCimbClick_whenCallbackNull() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingCIMBClick(token, null);
+        midtransSDKSSpy.paymentUsingCIMBClick(snapToken, null);
         verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1790,17 +1491,15 @@ public class MidtransAndroidSDKTest {
     public void paymentUsingCimbClick_whenNetworkUnavailable() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-        midtransSDKSSpy.paymentUsingCIMBClick(token, transactionCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
+        midtransSDKSSpy.paymentUsingCIMBClick(snapToken, transactionCallbackMock);
+        Mockito.verify(transactionCallbackMock).onError(Matchers.any(Throwable.class));
     }
 
     @Test
     public void paymentUsingCimbClick_whenTransactionRequestNull() {
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingCIMBClick(token, transactionCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
+        midtransSDKSSpy.paymentUsingCIMBClick(snapToken, transactionCallbackMock);
+        Mockito.verify(transactionCallbackMock).onError(Matchers.any(Throwable.class));
     }
 
     /**
@@ -1811,15 +1510,16 @@ public class MidtransAndroidSDKTest {
     public void paymentUsingXlTunai() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingXLTunai(token, transactionCallbackMock);
-        Assert.assertEquals(true, midtransSDKSSpy.isRunning());
+        midtransSDKSSpy.paymentUsingXLTunai(snapToken, transactionCallbackMock);
+        Mockito.verify(snapServiceManager).paymentUsingBaseMethod(Matchers.anyString(),
+                Mockito.any(BasePaymentRequest.class), Matchers.any(TransactionCallback.class));
     }
 
     @Test
     public void paymentUsingXlTunai_whenCallbackNull() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingXLTunai(token, null);
+        midtransSDKSSpy.paymentUsingXLTunai(snapToken, null);
         verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1828,17 +1528,15 @@ public class MidtransAndroidSDKTest {
     public void paymentUsingXlTunai_whenNetworkUnavailable() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-        midtransSDKSSpy.paymentUsingXLTunai(token, transactionCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
+        midtransSDKSSpy.paymentUsingXLTunai(snapToken, transactionCallbackMock);
+        Mockito.verify(transactionCallbackMock).onError(Matchers.any(Throwable.class));
     }
 
     @Test
     public void paymentUsingXlTunai_whenTransactionRequestNull() {
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingXLTunai(token, transactionCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
+        midtransSDKSSpy.paymentUsingXLTunai(snapToken, transactionCallbackMock);
+        Mockito.verify(transactionCallbackMock).onError(Matchers.any(Throwable.class));
     }
 
     /**
@@ -1849,15 +1547,16 @@ public class MidtransAndroidSDKTest {
     public void paymentUsingIndomaret() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingIndomaret(token, transactionCallbackMock);
-        Assert.assertEquals(true, midtransSDKSSpy.isRunning());
+        midtransSDKSSpy.paymentUsingIndomaret(snapToken, transactionCallbackMock);
+        Mockito.verify(snapServiceManager).paymentUsingBaseMethod(Matchers.anyString(),
+                Mockito.any(BasePaymentRequest.class), Matchers.any(TransactionCallback.class));
     }
 
     @Test
     public void paymentUsingIndomaret_whenCallbackNull() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingIndomaret(token, null);
+        midtransSDKSSpy.paymentUsingIndomaret(snapToken, null);
         verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1866,17 +1565,15 @@ public class MidtransAndroidSDKTest {
     public void paymentUsingIndomaret_whenNetworkUnavailable() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-        midtransSDKSSpy.paymentUsingIndomaret(token, transactionCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
+        midtransSDKSSpy.paymentUsingIndomaret(snapToken, transactionCallbackMock);
+        Mockito.verify(transactionCallbackMock).onError(Matchers.any(Throwable.class));
     }
 
     @Test
     public void paymentUsingIndomaret_whenTransactionRequestNull() {
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingIndomaret(token, transactionCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
+        midtransSDKSSpy.paymentUsingIndomaret(snapToken, transactionCallbackMock);
+        Mockito.verify(transactionCallbackMock).onError(Matchers.any(Throwable.class));
     }
 
     /**
@@ -1887,15 +1584,16 @@ public class MidtransAndroidSDKTest {
     public void paymentUsingIndosatDompetku() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingIndosatDompetku(token, sampleMsisdn, transactionCallbackMock);
-        Assert.assertEquals(true, midtransSDKSSpy.isRunning());
+        midtransSDKSSpy.paymentUsingIndosatDompetku(snapToken, sampleMsisdn, transactionCallbackMock);
+        Mockito.verify(snapServiceManager).paymentUsingIndosatDompetku(Matchers.anyString(),
+                Mockito.any(IndosatDompetkuPaymentRequest.class), Matchers.any(TransactionCallback.class));
     }
 
     @Test
     public void paymentUsingIndosatDompetku_whenCallbackNull() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingIndosatDompetku(token, sampleMsisdn, null);
+        midtransSDKSSpy.paymentUsingIndosatDompetku(snapToken, sampleMsisdn, null);
         verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1904,17 +1602,15 @@ public class MidtransAndroidSDKTest {
     public void paymentUsingIndosatDompetku_whenNetworkUnavailable() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-        midtransSDKSSpy.paymentUsingIndosatDompetku(token, sampleMsisdn, transactionCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
+        midtransSDKSSpy.paymentUsingIndosatDompetku(snapToken, sampleMsisdn, transactionCallbackMock);
+        Mockito.verify(transactionCallbackMock).onError(Matchers.any(Throwable.class));
     }
 
     @Test
     public void paymentUsingIndosatDompetku_whenTransactionRequestNull() {
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingIndosatDompetku(token, sampleMsisdn, transactionCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
+        midtransSDKSSpy.paymentUsingIndosatDompetku(snapToken, sampleMsisdn, transactionCallbackMock);
+        Mockito.verify(transactionCallbackMock).onError(Matchers.any(Throwable.class));
     }
 
     /**
@@ -1925,15 +1621,16 @@ public class MidtransAndroidSDKTest {
     public void paymentUsingKioson() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingKiosan(token, transactionCallbackMock);
-        Assert.assertEquals(true, midtransSDKSSpy.isRunning());
+        midtransSDKSSpy.paymentUsingKiosan(snapToken, transactionCallbackMock);
+        Mockito.verify(snapServiceManager).paymentUsingBaseMethod(Matchers.anyString(),
+                Mockito.any(IndosatDompetkuPaymentRequest.class), Matchers.any(TransactionCallback.class));
     }
 
     @Test
     public void paymentUsingKioson_whenCallbackNull() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingKiosan(token, null);
+        midtransSDKSSpy.paymentUsingKiosan(snapToken, null);
         verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1942,17 +1639,16 @@ public class MidtransAndroidSDKTest {
     public void paymentUsingKioson_whenNetworkUnavailable() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-        midtransSDKSSpy.paymentUsingKiosan(token, transactionCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
+        midtransSDKSSpy.paymentUsingKiosan(snapToken, transactionCallbackMock);
+        Mockito.verify(transactionCallbackMock).onError(Matchers.any(Throwable.class));
+
     }
 
     @Test
     public void paymentUsingKioson_whenTransactionRequestNull() {
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingKiosan(token, transactionCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
+        midtransSDKSSpy.paymentUsingKiosan(snapToken, transactionCallbackMock);
+        Mockito.verify(transactionCallbackMock).onError(Matchers.any(Throwable.class));
     }
 
     /**
@@ -1963,15 +1659,16 @@ public class MidtransAndroidSDKTest {
     public void paymentUsingEpayBri() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingKiosan(token, transactionCallbackMock);
-        Assert.assertEquals(true, midtransSDKSSpy.isRunning());
+        midtransSDKSSpy.paymentUsingEpayBRI(snapToken, transactionCallbackMock);
+        Mockito.verify(snapServiceManager).paymentUsingBaseMethod(Matchers.anyString(),
+                Mockito.any(IndosatDompetkuPaymentRequest.class), Matchers.any(TransactionCallback.class));
     }
 
     @Test
     public void paymentUsingEpayBri_whenCallbackNull() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingEpayBRI(token, null);
+        midtransSDKSSpy.paymentUsingEpayBRI(snapToken, null);
         verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1980,17 +1677,15 @@ public class MidtransAndroidSDKTest {
     public void paymentUsingEpayBri_whenNetworkUnavailable() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-        midtransSDKSSpy.paymentUsingEpayBRI(token, transactionCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
+        midtransSDKSSpy.paymentUsingEpayBRI(snapToken, transactionCallbackMock);
+        Mockito.verify(transactionCallbackMock).onError(Matchers.any(Throwable.class));
     }
 
     @Test
     public void paymentUsingEpayBri_whenTransactionRequestNull() {
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingEpayBRI(token, transactionCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
+        midtransSDKSSpy.paymentUsingEpayBRI(snapToken, transactionCallbackMock);
+        Mockito.verify(transactionCallbackMock).onError(Matchers.any(Throwable.class));
     }
 
     /**
@@ -2001,15 +1696,17 @@ public class MidtransAndroidSDKTest {
     public void paymentUsingTcash() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingTelkomselEcash(token, samplePhoneNumber, transactionCallbackMock);
-        Assert.assertEquals(true, midtransSDKSSpy.isRunning());
+        midtransSDKSSpy.paymentUsingTelkomselEcash(snapToken, samplePhoneNumber, transactionCallbackMock);
+        Mockito.verify(snapServiceManager).paymentUsingTelkomselCash(Matchers.anyString(),
+                Mockito.any(TelkomselEcashPaymentRequest.class), Matchers.any(TransactionCallback.class));
     }
 
     @Test
     public void paymentUsingTcash_whenCallbackNull() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingTelkomselEcash(token, samplePhoneNumber, null);
+        midtransSDKSSpy.paymentUsingTelkomselEcash(snapToken, samplePhoneNumber, null);
+
         verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -2018,17 +1715,15 @@ public class MidtransAndroidSDKTest {
     public void paymentUsingTcash_whenNetworkUnavailable() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-        midtransSDKSSpy.paymentUsingTelkomselEcash(token, samplePhoneNumber, transactionCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
+        midtransSDKSSpy.paymentUsingTelkomselEcash(snapToken, samplePhoneNumber, transactionCallbackMock);
+        Mockito.verify(transactionCallbackMock).onError(Matchers.any(Throwable.class));
     }
 
     @Test
     public void paymentUsingTcash_whenTransactionRequestNull() {
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingTelkomselEcash(token, samplePhoneNumber, transactionCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
+        midtransSDKSSpy.paymentUsingTelkomselEcash(snapToken, samplePhoneNumber, transactionCallbackMock);
+        Mockito.verify(transactionCallbackMock).onError(Matchers.any(Throwable.class));
     }
 
     /**
@@ -2039,7 +1734,9 @@ public class MidtransAndroidSDKTest {
     public void cardRegistration() {
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
         midtransSDKSSpy.cardRegistration(sampleCardNumber, sampleCvv, sampleExpMonth, sampleExpYear, cardRegistrationCallbackMock);
-        Assert.assertEquals(true, midtransSDKSSpy.isRunning());
+        Mockito.verify(midtransServiceManager).cardRegistration(sampleCardNumber, sampleCvv, sampleExpMonth,
+                sampleExpYear, sampleClientKey, cardRegistrationCallbackMock);
+
     }
 
     @Test
@@ -2052,8 +1749,8 @@ public class MidtransAndroidSDKTest {
     @Test
     public void cardRegistration_whenNetworkUnAvailable() {
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-        midtransSDKSSpy.cardRegistration(sampleCardNumber, sampleCvv, sampleExpMonth, sampleExpYear, null);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
+        midtransSDKSSpy.cardRegistration(sampleCardNumber, sampleCvv, sampleExpMonth, sampleExpYear, cardRegistrationCallbackMock);
+        Mockito.verify(cardRegistrationCallbackMock).onError(Matchers.any(Throwable.class));
     }
 
     /**
@@ -2064,7 +1761,8 @@ public class MidtransAndroidSDKTest {
     public void saveCard() {
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
         midtransSDKSSpy.saveCards(sampleUserId, savedCardsMock, saveCardCallbackMock);
-        Assert.assertEquals(true, midtransSDKSSpy.isRunning());
+        Mockito.verify(merchantServiceManager).saveCards(Matchers.anyString(),
+                Matchers.anyList(), Matchers.any(SaveCardCallback.class));
     }
 
     @Test
@@ -2077,7 +1775,7 @@ public class MidtransAndroidSDKTest {
     @Test
     public void saveCard_whenSaveCardRequestNull() {
         midtransSDKSSpy.saveCards(sampleUserId, null, saveCardCallbackMock);
-        Mockito.verify(callbackCollaborator).onError();
+        Mockito.verify(saveCardCallbackMock).onError(Matchers.any(Throwable.class));
     }
 
 
@@ -2085,7 +1783,7 @@ public class MidtransAndroidSDKTest {
     public void saveCard_whenNetworkUnAvailable() {
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
         midtransSDKSSpy.saveCards(sampleUserId, savedCardsMock, saveCardCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
+        Mockito.verify(saveCardCallbackMock).onError(Matchers.any(Throwable.class));
     }
 
     /**
@@ -2096,7 +1794,7 @@ public class MidtransAndroidSDKTest {
     public void getCard() {
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
         midtransSDKSSpy.getCards(sampleUserId, getCardCallbackMock);
-        Assert.assertEquals(true, midtransSDKSSpy.isRunning());
+        Mockito.verify(merchantServiceManager).getCards(sampleUserId, getCardCallbackMock);
     }
 
     @Test
@@ -2111,7 +1809,8 @@ public class MidtransAndroidSDKTest {
     public void getCard_whenNetworkUnAvailable() {
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
         midtransSDKSSpy.getCards(sampleUserId, getCardCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
+        Mockito.verify(getCardCallbackMock).onError(Matchers.any(Throwable.class));
+
     }
 
     /**
@@ -2122,15 +1821,16 @@ public class MidtransAndroidSDKTest {
     public void paymentUsingMandiriEcash() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingMandiriEcash(token, transactionCallbackMock);
-        Assert.assertEquals(true, midtransSDKSSpy.isRunning());
+        midtransSDKSSpy.paymentUsingMandiriEcash(sampleToken, transactionCallbackMock);
+        Mockito.verify(snapServiceManager).paymentUsingBaseMethod(Matchers.anyString(),
+                Matchers.any(BasePaymentRequest.class), Matchers.any(TransactionCallback.class));
     }
 
     @Test
     public void paymentUsingMandiriEcash_whenCallbackNull() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingMandiriEcash(token, null);
+        midtransSDKSSpy.paymentUsingMandiriEcash(snapToken, null);
         verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -2139,18 +1839,77 @@ public class MidtransAndroidSDKTest {
     public void paymentUsingMandiriEcash_whenNetworkUnavailable() {
         midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-        midtransSDKSSpy.paymentUsingMandiriEcash(token, transactionCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
+        midtransSDKSSpy.paymentUsingMandiriEcash(snapToken, transactionCallbackMock);
+        Mockito.verify(transactionCallbackMock).onError(Matchers.any(Throwable.class));
     }
 
     @Test
     public void paymentUsingMandiriEcash_whenTransactionRequestNull() {
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.paymentUsingMandiriEcash(token, transactionCallbackMock);
-        Assert.assertEquals(false, midtransSDKSSpy.isRunning());
-        Mockito.verify(callbackCollaborator).onError();
+        midtransSDKSSpy.paymentUsingMandiriEcash(snapToken, transactionCallbackMock);
+        Mockito.verify(transactionCallbackMock).onError(Matchers.any(Throwable.class));
     }
+
+    /**
+     * payment using gopay
+     */
+
+    @Test
+    public void paymentUsingGopay() {
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
+        midtransSDKSSpy.paymentUsingGoPay(snapToken, transactionCallbackMock);
+        Mockito.verify(snapServiceManager).paymentUsingGoPay(Matchers.anyString(),
+                Matchers.any(GoPayPaymentRequest.class), Matchers.any(TransactionCallback.class));
+    }
+
+    @Test
+    public void paymentUsingGopay_whenCallbackNull() {
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
+        midtransSDKSSpy.paymentUsingGoPay(snapToken, null);
+        verifyStatic(Mockito.times(1));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    @Test
+    public void paymentUsingGopay_whenNetworkUnavailable() {
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
+        midtransSDKSSpy.paymentUsingGoPay(snapToken, transactionCallbackMock);
+        Mockito.verify(transactionCallbackMock).onError(Matchers.any(Throwable.class));
+    }
+
+    /**
+     * payment using danamon online
+     */
+
+    @Test
+    public void paymentUsingDanamonOnline() {
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
+        midtransSDKSSpy.paymentUsingDanamonOnline(snapToken, transactionCallbackMock);
+        Mockito.verify(snapServiceManager).paymentUsingDanamonOnline(Matchers.anyString(),
+                Matchers.any(DanamonOnlinePaymentRequest.class), Matchers.any(TransactionCallback.class));
+    }
+
+    @Test
+    public void paymentUsingDanamonOnline_whenCallbackNull() {
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
+        midtransSDKSSpy.paymentUsingDanamonOnline(snapToken, null);
+        verifyStatic(Mockito.times(1));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    @Test
+    public void paymentUsingDanamonOnline_whenNetworkUnavailable() {
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
+        midtransSDKSSpy.paymentUsingDanamonOnline(snapToken, transactionCallbackMock);
+        Mockito.verify(transactionCallbackMock).onError(Matchers.any(Throwable.class));
+    }
+
 
     /**
      * get bank point
@@ -2159,15 +1918,15 @@ public class MidtransAndroidSDKTest {
     @Test
     public void getBankPoint() {
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        when(midtransSDKSSpy.readAuthenticationToken()).thenReturn(token);
+        when(midtransSDKSSpy.readAuthenticationToken()).thenReturn(snapToken);
         midtransSDKSSpy.getBanksPoint(cardToken, bankpointCallbackMock);
-        Mockito.verify(transactionManager).getBanksPoint(token, cardToken, bankpointCallbackMock);
+        Mockito.verify(snapServiceManager).getBanksPoint(snapToken, cardToken, bankpointCallbackMock);
     }
 
     @Test
     public void getBankPoint_whenCallbackNull() {
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        when(midtransSDKSSpy.readAuthenticationToken()).thenReturn(token);
+        when(midtransSDKSSpy.readAuthenticationToken()).thenReturn(snapToken);
         midtransSDKSSpy.getBanksPoint(cardToken, null);
         verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
@@ -2176,9 +1935,9 @@ public class MidtransAndroidSDKTest {
     @Test
     public void getBankPoint_whenNetworkUnAvailable() {
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-        when(midtransSDKSSpy.readAuthenticationToken()).thenReturn(token);
+        when(midtransSDKSSpy.readAuthenticationToken()).thenReturn(snapToken);
         midtransSDKSSpy.getBanksPoint(cardToken, bankpointCallbackMock);
-        Mockito.verify(callbackCollaborator).onError();
+        Mockito.verify(bankpointCallbackMock).onError(Matchers.any(Throwable.class));
     }
 
     /**
@@ -2188,15 +1947,15 @@ public class MidtransAndroidSDKTest {
     @Test
     public void deleteCard() {
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSDKSSpy.deleteCard(token, sampleCardNumber, deleteCardCallbackMock);
-        Mockito.verify(transactionManager).deleteCard(token, sampleCardNumber, deleteCardCallbackMock);
+        midtransSDKSSpy.deleteCard(snapToken, sampleCardNumber, deleteCardCallbackMock);
+        Mockito.verify(snapServiceManager).deleteCard(snapToken, sampleCardNumber, deleteCardCallbackMock);
     }
 
     @Test
     public void deleteCard_whenNetworkUnAvailable() {
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
-        midtransSDKSSpy.deleteCard(token, sampleCardNumber, deleteCardCallbackMock);
-        Mockito.verify(callbackCollaborator).onError();
+        midtransSDKSSpy.deleteCard(snapToken, sampleCardNumber, deleteCardCallbackMock);
+        Mockito.verify(deleteCardCallbackMock).onError(Matchers.any(Throwable.class));
     }
 
     /**
@@ -2205,8 +1964,8 @@ public class MidtransAndroidSDKTest {
 
     @Test
     public void changeSdkConfig() {
-        midtransSDKSSpy.changeSdkConfig(sampleBaseUrl, sampleMerchantBaseUrl, sampleClientKey, sampleTimeOut);
-        Assert.assertEquals(midtransSDKSSpy.getMerchantServerUrl(), sampleMerchantBaseUrl);
+        midtransSDKSSpy.changeSdkConfig(sampleBaseUrl, sampleBaseUrl, sampleClientKey, sampleTimeOut);
+        Assert.assertEquals(midtransSDKSSpy.getMerchantServerUrl(), sampleBaseUrl);
     }
 
     /**
@@ -2228,4 +1987,203 @@ public class MidtransAndroidSDKTest {
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
 
+    @Test
+    public void getFlowTest() throws Exception {
+        String flow = Whitebox.invokeMethod(midtransSDKSSpy, "getFlow", BaseSdkBuilder.CORE_FLOW);
+        Assert.assertEquals(MixpanelAnalyticsManager.CORE_FLOW, flow);
+
+        flow = Whitebox.invokeMethod(midtransSDKSSpy, "getFlow", BaseSdkBuilder.UI_FLOW);
+        Assert.assertEquals(MixpanelAnalyticsManager.UI_FLOW, flow);
+
+        flow = Whitebox.invokeMethod(midtransSDKSSpy, "getFlow", BaseSdkBuilder.WIDGET);
+        Assert.assertEquals(MixpanelAnalyticsManager.WIDGET, flow);
+    }
+
+    @Test
+    public void setGetMerchantNameTest() throws Exception {
+        String merchantName = "mercant midtrans";
+        midtransSDKSSpy.setMerchantName(merchantName);
+        Assert.assertEquals(merchantName, midtransSDKSSpy.getMerchantName());
+    }
+
+    @Test
+    public void setGetFlowTest() throws Exception {
+        String flow = "core";
+        midtransSDKSSpy.setFlow(flow);
+        Assert.assertEquals(flow, midtransSDKSSpy.getFlow());
+    }
+
+    @Test
+    public void getContextTest() throws Exception {
+        Assert.assertEquals(contextMock, midtransSDKSSpy.getContext());
+    }
+
+    @Test
+    public void getmMixpanelAnalyticsManagerTest() throws Exception {
+        String deviceid = "dev_242ed234";
+        when(SdkUtil.getDeviceId(contextMock)).thenReturn(deviceid);
+        when(SdkUtil.newMixpanelAnalyticsManager(Matchers.anyString(), Matchers.anyString(), Matchers.anyString(),
+                Matchers.anyString(), Matchers.anyString(), Matchers.anyBoolean(), Matchers.any(Context.class))).thenReturn(analyticsMock);
+        MixpanelAnalyticsManager analyticsManager = midtransSDKSSpy.getmMixpanelAnalyticsManager();
+        Assert.assertEquals(analyticsManager, analyticsMock);
+    }
+
+    @Test
+    public void setGetAuthenticationTokenTest() throws Exception {
+        midtransSDKSSpy.setAuthenticationToken(snapToken);
+        Assert.assertEquals(snapToken, midtransSDKSSpy.readAuthenticationToken());
+    }
+
+    @Test
+    public void cardRegistrationUi() throws Exception {
+        midtransSDKSSpy.uiflow = uiflowMock;
+        midtransSDKSSpy.UiCardRegistration(contextMock, cardRegistrationCallbackMock);
+        Mockito.verify(uiflowMock).runCardRegistration(contextMock, cardRegistrationCallbackMock);
+    }
+
+    @Test
+    public void cardRegistrationUi_whenUiFlowNull() throws Exception {
+        midtransSDKSSpy.UiCardRegistration(contextMock, cardRegistrationCallbackMock);
+        verifyStatic(Mockito.times(1));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    @Test
+    public void isSnapTokenAvailable() throws Exception {
+        Assert.assertEquals(true, Whitebox.invokeMethod(midtransSDKSSpy, "snapTokenAvailable", snapToken));
+    }
+
+    @Test
+    public void isSnapTokenAvailable_whenTokenEMpty() throws Exception {
+        when(TextUtils.isEmpty(null)).thenReturn(true);
+        Assert.assertEquals(false, Whitebox.invokeMethod(midtransSDKSSpy, "snapTokenAvailable", null));
+    }
+
+    @Test
+    public void isMerchantUrlAvailable() throws Exception {
+        Assert.assertEquals(true, Whitebox.invokeMethod(midtransSDKSSpy, "merchantBaseUrlAvailable"));
+    }
+    @Test
+    public void isMerchantUrlAvailable_whenMerchantUrlEmpty() throws Exception {
+        when(TextUtils.isEmpty(Matchers.anyString())).thenReturn(true);
+        Assert.assertEquals(false, Whitebox.invokeMethod(midtransSDKSSpy, "merchantBaseUrlAvailable"));
+    }
+
+    @Test
+    public void getSdkBaseUrl() throws Exception {
+        Assert.assertEquals(BuildConfig.SNAP_BASE_URL, midtransSDKSSpy.getSdkBaseUrl());
+    }
+
+    @Test
+    public void getSdkTimeout() throws Exception {
+        Assert.assertEquals(30, midtransSDKSSpy.getRequestTimeOut());
+    }
+
+    @Test
+    public void getUiCustomSetting_whenNull() throws Exception {
+        midtransSDKSSpy.setUIKitCustomSetting(null);
+        Assert.assertNotEquals(uiCustomSettingMock, midtransSDKSSpy.getUIKitCustomSetting());
+        Assert.assertNotNull(midtransSDKSSpy.getUIKitCustomSetting());
+    }
+
+    @Test
+    public void getUiCustomSetting() throws Exception {
+        midtransSDKSSpy.setUIKitCustomSetting(uiCustomSettingMock);
+        Assert.assertEquals(uiCustomSettingMock, midtransSDKSSpy.getUIKitCustomSetting());
+    }
+
+    @Test
+    public void getCreditCard() throws Exception {
+        midtransSDKSSpy.setCreditCard(creditCardMock);
+        midtransSDKSSpy.setTransaction(null);
+        Assert.assertEquals(creditCardMock, midtransSDKSSpy.getCreditCard());
+    }
+
+    @Test
+    public void getCreditCard_whenNull() throws Exception {
+        transactionMock.setCreditCard(null);
+        Assert.assertNotEquals(creditCardMock, midtransSDKSSpy.getCreditCard());
+        Assert.assertNotNull(midtransSDKSSpy.getCreditCard());
+    }
+
+    @Test
+    public void setGetPromos() throws Exception {
+        midtransSDKSSpy.setPromoResponses(promosMock);
+        Assert.assertEquals(promosMock, midtransSDKSSpy.getPromoResponses());
+    }
+
+    @Test
+    public void setGetColorTheme() throws Exception {
+        midtransSDKSSpy.setColorTheme(colorThemeMock);
+        Assert.assertEquals(colorThemeMock, midtransSDKSSpy.getColorTheme());
+    }
+
+    @Test
+    public void getBankPointEnable() throws Exception {
+        when(transactionMock.getMerchantData()).thenReturn(merchantDataMock);
+        when(merchantDataMock.getPointBanks()).thenReturn(pointsMock);
+        midtransSDKSSpy.setTransaction(transactionMock);
+        Assert.assertEquals(pointsMock, midtransSDKSSpy.getBanksPointEnabled());
+    }
+
+    @Test
+    public void getMerchantData() throws Exception {
+        when(transactionMock.getMerchantData()).thenReturn(merchantDataMock);
+        when(merchantDataMock.getPointBanks()).thenReturn(pointsMock);
+        midtransSDKSSpy.setTransaction(transactionMock);
+        Assert.assertEquals(merchantDataMock, midtransSDKSSpy.getMerchantData());
+    }
+
+    @Test
+    public void getMerchantData_whenMerchantDataNull() throws Exception {
+        when(transactionMock.getMerchantData()).thenReturn(null);
+        midtransSDKSSpy.setTransaction(transactionMock);
+        Assert.assertNotEquals(merchantDataMock, midtransSDKSSpy.getMerchantData());
+    }
+
+    @Test
+    public void getTransaction() throws Exception {
+        midtransSDKSSpy.setTransaction(transactionMock);
+        Assert.assertEquals(transactionMock, midtransSDKSSpy.getTransaction());
+    }
+
+    @Test
+    public void getCardRegisterCallback() throws Exception {
+        midtransSDKSSpy.uiflow = uiflowMock;
+        midtransSDKSSpy.UiCardRegistration(contextMock, cardRegistrationCallbackMock);
+        Assert.assertEquals(cardRegistrationCallbackMock, midtransSDKSSpy.getUiCardRegistrationCallback());
+    }
+
+    @Test
+    public void setGetPaymentDetails() throws Exception {
+        midtransSDKSSpy.setPaymentDetails(paymeDetailsMock);
+        Assert.assertEquals(paymeDetailsMock, midtransSDKSSpy.getPaymentDetails());
+    }
+
+    @Test
+    public void resetPaymentDetails() throws Exception {
+        midtransSDKSSpy.setPaymentDetails(paymeDetailsMock);
+        midtransSDKSSpy.resetPaymentDetails();
+        Assert.assertNotEquals(paymeDetailsMock, midtransSDKSSpy.getPaymentDetails());
+    }
+
+    @Test
+    public void getServiceManager() throws Exception {
+        Assert.assertEquals(snapServiceManager, midtransSDKSSpy.getSnapServiceManager());
+        Assert.assertEquals(midtransServiceManager, midtransSDKSSpy.getMidtransServiceManager());
+        Assert.assertEquals(merchantServiceManager, midtransSDKSSpy.getMerchantServiceManager());
+    }
+
+    @Test
+    public void getTransactionStatus() throws Exception {
+        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
+        midtransSDKSSpy.getTransactionStatus(snapToken, getTransactionStatusMock);
+        Mockito.verify(snapServiceManager).getTransactionStatus(snapToken, getTransactionStatusMock);
+    }
+    @Test
+    public void getTransactionStatus_whenNetworkUnAvailable() throws Exception {
+        when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
+        midtransSDKSSpy.getTransactionStatus(snapToken, getTransactionStatusMock);
+        Mockito.verify(getTransactionStatusMock).onError(Matchers.any(Throwable.class));
+    }
 }

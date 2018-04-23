@@ -15,14 +15,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.koushikdutta.ion.Ion;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.models.MerchantPreferences;
 import com.midtrans.sdk.corekit.models.PaymentDetails;
@@ -95,7 +94,7 @@ public abstract class BasePaymentActivity extends BaseActivity {
                 PaymentDetails paymentDetails = getMidtransSdk().getPaymentDetails();
                 if (paymentDetails != null) {
                     long totalAmount = paymentDetails.getTotalAmount();
-                    int defaultTotalAmount = transaction.getTransactionDetails().getAmount();
+                    long defaultTotalAmount = transaction.getTransactionDetails().getAmount();
 
                     String formattedTotalAmount = getString(R.string.prefix_money, Utils.getFormattedAmount(totalAmount));
                     textTotalAmount.setText(formattedTotalAmount);
@@ -193,7 +192,7 @@ public abstract class BasePaymentActivity extends BaseActivity {
         }
     }
 
-    private void changeTotalAmountColor(int totalAmount, long newTotalAmount) {
+    private void changeTotalAmountColor(long totalAmount, long newTotalAmount) {
         int primaryColor = getPrimaryColor() != 0 ? getPrimaryColor() : ContextCompat.getColor(BasePaymentActivity.this, R.color.dark_gray);
         int amountColor = newTotalAmount == totalAmount
                 ? primaryColor : ContextCompat.getColor(BasePaymentActivity.this, R.color.promoAmount);
@@ -215,9 +214,7 @@ public abstract class BasePaymentActivity extends BaseActivity {
                 if (!TextUtils.isEmpty(merchantLogoUrl)) {
                     if (merchantLogo != null) {
                         hasMerchantLogo = true;
-                        Glide.with(this)
-                                .load(merchantLogoUrl)
-                                .into(merchantLogo);
+                        Ion.with(merchantLogo).load(merchantLogoUrl);
                         merchantLogo.setVisibility(View.VISIBLE);
                     }
                 } else {

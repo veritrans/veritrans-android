@@ -1,7 +1,5 @@
 package com.midtrans.sdk.uikit.views.gopay.status;
 
-import static com.midtrans.sdk.corekit.utilities.Utils.getMonth;
-
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -15,10 +13,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
+
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
@@ -29,11 +26,14 @@ import com.midtrans.sdk.uikit.widgets.BoldTextView;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+
+import static com.midtrans.sdk.corekit.utilities.Utils.getMonth;
 
 /**
  * Created by Fajar on 16/11/17.
@@ -101,13 +101,14 @@ public class GoPayStatusActivity extends BasePaymentActivity {
             //process expiration
             expirationText = findViewById(R.id.gopay_expiration_text);
             expirationDesc = findViewById(R.id.gopay_expiration_desc);
-            String expirationTime = TextUtils.isEmpty(response.getGopayExpiration()) ? getExpiryTime(response.getTransactionTime()) : response.getGopayExpiration();
+
             String startTime = response.getTransactionTime();
-            if (TextUtils.isEmpty(expirationTime) && TextUtils.isEmpty(startTime)) {
+            if (isExpirationTimeNotAvailable(response) && TextUtils.isEmpty(startTime)) {
                 expirationDesc.setVisibility(View.GONE);
                 expirationText.setVisibility(View.GONE);
             } else {
-                long duration = getDuration(startTime, expirationTime);
+
+                long duration = getPaymentDuration(response);
                 if (duration > 1000) {
                     setTimer(duration);
                 } else {
@@ -126,6 +127,43 @@ public class GoPayStatusActivity extends BasePaymentActivity {
             buttonPrimary.setTextBold();
         }
         textTitle.setText(getString(R.string.gopay_status_title));
+    }
+
+    private boolean isExpirationTimeNotAvailable(TransactionResponse response) {
+        return TextUtils.isEmpty(response.getGopayExpiration()) && TextUtils.isEmpty(response.getGopayExpirationRaw());
+    }
+
+    private long getPaymentDuration(TransactionResponse response) {
+        String startTime = response.getTransactionTime();
+        long expiryTimeOnMillis;
+
+        if (TextUtils.isEmpty(response.getGopayExpirationRaw())) {
+            String expirationTime = TextUtils.isEmpty(response.getGopayExpiration()) ? getExpiryTime(response.getTransactionTime()) : response.getGopayExpiration();
+            expiryTimeOnMillis = getDuration(startTime, expirationTime);
+        } else {
+            expiryTimeOnMillis = getDurationByExpirationRaw(startTime, response.getGopayExpirationRaw());
+        }
+
+        return expiryTimeOnMillis;
+    }
+
+    private long getDurationByExpirationRaw(String startTime, String expirationTime) {
+        long startMillis = 0, endMillis = 0;
+        SimpleDateFormat startDf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US);
+        SimpleDateFormat expiryDf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US);
+
+        try {
+            Date dateStart = startDf.parse(startTime);
+            Date dateEnd = expiryDf.parse(expirationTime);
+
+            startMillis = dateStart.getTime();
+            endMillis = dateEnd.getTime();
+
+        } catch (ParseException e) {
+            Logger.e(e.getMessage());
+        }
+
+        return endMillis - startMillis;
     }
 
     @Override
@@ -149,33 +187,28 @@ public class GoPayStatusActivity extends BasePaymentActivity {
      * @param container view to display the image
      */
     private void loadQrCode(String url, final ImageView container) {
-        Glide.with(this)
-                .load(url)
-                .listener(new RequestListener<String, GlideDrawable>() {
-                    @Override
-                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        FrameLayout frameLayout = findViewById(R.id.gopay_qr_code_frame);
-                        frameLayout.setBackgroundColor(getResources().getColor(R.color.light_gray));
-                        qrCodeRefresh.setVisibility(View.VISIBLE);
-                        Logger.e(TAG, e.getMessage());
-                        setMerchantName(false);
-                        hideProgressLayout();
-                        Toast.makeText(GoPayStatusActivity.this, getString(R.string.error_qr_code), Toast.LENGTH_SHORT)
-                                .show();
-                        return true;
-                    }
+        Ion.with(container).load(url).setCallback(new FutureCallback<ImageView>() {
+            @Override
+            public void onCompleted(Exception e, ImageView result) {
+                if (e == null) {
+                    FrameLayout frameLayout = findViewById(R.id.gopay_qr_code_frame);
+                    frameLayout.setBackgroundColor(0);
+                    qrCodeRefresh.setVisibility(View.GONE);
+                    setMerchantName(true);
+                    hideProgressLayout();
 
-                    @Override
-                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        FrameLayout frameLayout = findViewById(R.id.gopay_qr_code_frame);
-                        frameLayout.setBackgroundColor(0);
-                        qrCodeRefresh.setVisibility(View.GONE);
-                        setMerchantName(true);
-                        hideProgressLayout();
-                        return false;
-                    }
-                })
-                .into(container);
+                } else {
+                    FrameLayout frameLayout = findViewById(R.id.gopay_qr_code_frame);
+                    frameLayout.setBackgroundColor(getResources().getColor(R.color.light_gray));
+                    qrCodeRefresh.setVisibility(View.VISIBLE);
+                    Logger.e(TAG, e.getMessage());
+                    setMerchantName(false);
+                    hideProgressLayout();
+                    Toast.makeText(GoPayStatusActivity.this, getString(R.string.error_qr_code), Toast.LENGTH_SHORT)
+                            .show();
+                }
+            }
+        });
     }
 
     @Override
@@ -232,10 +265,12 @@ public class GoPayStatusActivity extends BasePaymentActivity {
 
     /**
      * Get default expiry time for GO-PAY transaction
+     *
      * @param transactionTime when transaction started
      * @return formatted time that already added with 15 minutes
      */
     private String getExpiryTime(String transactionTime) {
+
         if (transactionTime != null && transactionTime.split(" ").length > 1) {
             try {
                 @SuppressLint("SimpleDateFormat")
@@ -262,8 +297,9 @@ public class GoPayStatusActivity extends BasePaymentActivity {
     /**
      * Hack-ish approach for getting duration for the timer, as both start and end timestamp
      * are in different format.
+     *
      * @param start transaction start time, example : 2018-02-09 18:14:52
-     * @param end GO-PAY expiry time, example : 09 February 18:29 WIB
+     * @param end   GO-PAY expiry time, example : 09 February 18:29 WIB
      * @return
      */
     private long getDuration(String start, String end) {

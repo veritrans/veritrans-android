@@ -12,16 +12,17 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 
 import com.midtrans.raygun.RaygunClient;
+import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
 import com.midtrans.sdk.corekit.models.UserAddress;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.uikit.BuildConfig;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.UiKitOnBeforeSend;
 import com.midtrans.sdk.uikit.fragments.UserAddressFragment;
 import com.midtrans.sdk.uikit.fragments.UserDetailFragment;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
@@ -70,6 +71,7 @@ public class UserDetailsActivity extends BaseActivity {
         if (BuildConfig.FLAVOR.equals(UiKitConstants.ENVIRONMENT_PRODUCTION)) {
             RaygunClient.init(getApplicationContext(), getString(R.string.ISSUE_TRACKER_API_KEY));
             RaygunClient.attachExceptionHandler();
+            RaygunClient.setOnBeforeSend(new UiKitOnBeforeSend(this));
         }
     }
 
@@ -141,14 +143,14 @@ public class UserDetailsActivity extends BaseActivity {
                 }
             } else {
                 String errorMessage = getString(R.string.error_sdk_not_initialized);
-                Log.e(TAG, errorMessage);
+                Logger.e(TAG, errorMessage);
                 SdkUIFlowUtil.showToast(this, errorMessage);
                 finish();
             }
 
         } catch (Exception e) {
             String errorMessage = "invalid customerDetails info:" + e.getMessage();
-            Log.e(TAG, errorMessage);
+            Logger.e(TAG, errorMessage);
             SdkUIFlowUtil.showToast(this, errorMessage);
             finish();
         }
@@ -231,7 +233,7 @@ public class UserDetailsActivity extends BaseActivity {
                         PorterDuff.Mode.SRC_ATOP);
             }
         } catch (Exception e) {
-            Log.d(TAG, "render toolbar:" + e.getMessage());
+            Logger.d(TAG, "render toolbar:" + e.getMessage());
         }
 
         toolbar.setNavigationIcon(drawable);
@@ -285,4 +287,9 @@ public class UserDetailsActivity extends BaseActivity {
         return sdkErrorValidationMessage;
     }
 
+    @Override
+    public void finish() {
+        RaygunClient.setOnBeforeSend(null);
+        super.finish();
+    }
 }

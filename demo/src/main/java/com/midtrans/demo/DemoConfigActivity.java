@@ -65,7 +65,6 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private static final String BANK_TYPE = "config.bank";
     private static final String EXPIRY_TPE = "config.expiry";
     private static final String SAVE_CARD_TYPE = "config.save";
-    private static final String PROMO_TYPE = "config.promo";
     private static final String PRE_AUTH_TYPE = "config.preauth";
     private static final String CUSTOM_BCA_VA_NUMBER = "config.va.bca";
     private static final String CUSTOM_PERMATA_VA_NUMBER = "config.va.permata";
@@ -97,7 +96,6 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private TextView bankTitle;
     private TextView expiryTitle;
     private TextView saveCardTitle;
-    private TextView promoTitle;
     private TextView preAuthTitle;
     private TextView colorThemeTitle;
     private TextView customPermataVaTitle;
@@ -119,7 +117,6 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private RadioGroup bankContainer;
     private RadioGroup expiryContainer;
     private RadioGroup saveCardContainer;
-    private RadioGroup promoContainer;
     private RadioGroup preAuthContainer;
     private RadioGroup colorThemeContainer;
     private LinearLayout customBcaVaContainer;
@@ -142,6 +139,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private AppCompatRadioButton installmentBcaSelection;
     private AppCompatRadioButton installmentBriSelection;
     private AppCompatRadioButton installmentCimbSelection;
+    private AppCompatRadioButton installmentMaybankSelection;
     private AppCompatRadioButton noInstallmentSelection;
     /**
      * Radio Button selection for BNI Point
@@ -216,11 +214,6 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private AppCompatRadioButton subCompanyBcaVaEnabledSelection;
     private AppCompatRadioButton subCompanyBcaVaDisabledSelection;
     /**
-     * Radio Button Selection for Promo
-     **/
-    private AppCompatRadioButton promoDisabledSelection;
-    private AppCompatRadioButton promoEnabledSelection;
-    /**
      * Radio Button Selection for Pre Authorization
      **/
     private AppCompatRadioButton preAuthDisabledSelection;
@@ -257,6 +250,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private ImageButton editInstallmentBni;
     private ImageButton editInstallmentBri;
     private ImageButton editInstallmentCimb;
+    private ImageButton editInstallmentMaybank;
 
     private boolean installmentRequired;
 
@@ -280,7 +274,6 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         initCustomPermataRecipientSelection();
         initCustomBniVaSelection();
         initSubCompanyBcaVaSelection();
-        initPromoSelection();
         initPreAuthSelection();
         initInstallmentSelection();
         initChangeInstallmentOption();
@@ -300,130 +293,127 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     }
 
     private void bindViews() {
-        cardClickTitle = (TextView) findViewById(R.id.title_credit_card_type);
-        secureTitle = (TextView) findViewById(R.id.title_secure_type);
-        bankTitle = (TextView) findViewById(R.id.title_issuing_bank_type);
-        expiryTitle = (TextView) findViewById(R.id.title_custom_expiry_type);
-        saveCardTitle = (TextView) findViewById(R.id.title_default_save_card_type);
-        promoTitle = (TextView) findViewById(R.id.title_promo_type);
-        preAuthTitle = (TextView) findViewById(R.id.title_pre_auth_type);
-        colorThemeTitle = (TextView) findViewById(R.id.title_color_theme_type);
-        customPermataVaTitle = (TextView) findViewById(R.id.title_custom_permata_va);
-        customPermataRecipientTitle = (TextView) findViewById(R.id.title_custom_permata_recipient);
-        customBcaVaTitle = (TextView) findViewById(R.id.title_custom_bca_va);
-        customBniVaTitle = (TextView) findViewById(R.id.title_custom_bni_va);
-        subCompanyBcaVaTitle = (TextView) findViewById(R.id.title_subcompany_bca_va);
-        installmentTitle = (TextView) findViewById(R.id.title_installment_type);
-        bniPointTitle = (TextView) findViewById(R.id.title_bni_point_type);
-        mandiriPointTitle = (TextView) findViewById(R.id.title_mandiri_point_type);
-        paymentChannelsTitle = (TextView) findViewById(R.id.title_custom_payment_channels);
-        autoReadSmsTitle = (TextView) findViewById(R.id.title_auto_read_type);
+        cardClickTitle = findViewById(R.id.title_credit_card_type);
+        secureTitle = findViewById(R.id.title_secure_type);
+        bankTitle = findViewById(R.id.title_issuing_bank_type);
+        expiryTitle = findViewById(R.id.title_custom_expiry_type);
+        saveCardTitle = findViewById(R.id.title_default_save_card_type);
+        preAuthTitle = findViewById(R.id.title_pre_auth_type);
+        colorThemeTitle = findViewById(R.id.title_color_theme_type);
+        customPermataVaTitle = findViewById(R.id.title_custom_permata_va);
+        customPermataRecipientTitle = findViewById(R.id.title_custom_permata_recipient);
+        customBcaVaTitle = findViewById(R.id.title_custom_bca_va);
+        customBniVaTitle = findViewById(R.id.title_custom_bni_va);
+        subCompanyBcaVaTitle = findViewById(R.id.title_subcompany_bca_va);
+        installmentTitle = findViewById(R.id.title_installment_type);
+        bniPointTitle = findViewById(R.id.title_bni_point_type);
+        mandiriPointTitle = findViewById(R.id.title_mandiri_point_type);
+        paymentChannelsTitle = findViewById(R.id.title_custom_payment_channels);
+        autoReadSmsTitle = findViewById(R.id.title_auto_read_type);
 
-        resetSetting = (DemoTextView) findViewById(R.id.text_reset);
+        resetSetting = findViewById(R.id.text_reset);
 
-        cardClickContainer = (RadioGroup) findViewById(R.id.credit_card_type_container);
-        secureContainer = (RadioGroup) findViewById(R.id.secure_type_container);
-        bankContainer = (RadioGroup) findViewById(R.id.issuing_bank_type_container);
-        expiryContainer = (RadioGroup) findViewById(R.id.expiry_type_container);
-        saveCardContainer = (RadioGroup) findViewById(R.id.default_save_type_container);
-        promoContainer = (RadioGroup) findViewById(R.id.promo_type_container);
-        preAuthContainer = (RadioGroup) findViewById(R.id.preauth_type_container);
-        colorThemeContainer = (RadioGroup) findViewById(R.id.theme_type_container);
-        customBcaVaContainer = (LinearLayout) findViewById(R.id.custom_bca_va_type_container);
-        customPermataVaContainer = (LinearLayout) findViewById(R.id.custom_permata_va_type_container);
-        customPermataRecipientContainer = (LinearLayout) findViewById(R.id.custom_permata_recipient_type_container);
-        customBniVaContainer = (LinearLayout) findViewById(R.id.custom_bni_va_type_container);
-        subCompanyBcaVaContainer = (LinearLayout) findViewById(R.id.subcompany_bca_va_type_container);
-        installmentContainer = (RadioGroup) findViewById(R.id.enable_installment_container);
-        changeInstallmentContainer = (LinearLayout) findViewById(R.id.change_installment_container);
-        bniPointContainer = (RadioGroup) findViewById(R.id.bni_point_type_container);
-        mandiriPointContainer = (RadioGroup) findViewById(R.id.mandiri_point_type_container);
-        paymentChannelsContainer = (LinearLayout) findViewById(R.id.payment_channels_type_container);
-        autoReadSmsContainer = (RadioGroup) findViewById(R.id.auto_read_type_container);
+        cardClickContainer = findViewById(R.id.credit_card_type_container);
+        secureContainer = findViewById(R.id.secure_type_container);
+        bankContainer = findViewById(R.id.issuing_bank_type_container);
+        expiryContainer = findViewById(R.id.expiry_type_container);
+        saveCardContainer = findViewById(R.id.default_save_type_container);
+        preAuthContainer = findViewById(R.id.preauth_type_container);
+        colorThemeContainer = findViewById(R.id.theme_type_container);
+        customBcaVaContainer = findViewById(R.id.custom_bca_va_type_container);
+        customPermataVaContainer = findViewById(R.id.custom_permata_va_type_container);
+        customPermataRecipientContainer = findViewById(R.id.custom_permata_recipient_type_container);
+        customBniVaContainer = findViewById(R.id.custom_bni_va_type_container);
+        subCompanyBcaVaContainer = findViewById(R.id.subcompany_bca_va_type_container);
+        installmentContainer = findViewById(R.id.enable_installment_container);
+        changeInstallmentContainer = findViewById(R.id.change_installment_container);
+        bniPointContainer = findViewById(R.id.bni_point_type_container);
+        mandiriPointContainer = findViewById(R.id.mandiri_point_type_container);
+        paymentChannelsContainer = findViewById(R.id.payment_channels_type_container);
+        autoReadSmsContainer = findViewById(R.id.auto_read_type_container);
 
-        installmentBniSelection = (AppCompatRadioButton) findViewById(R.id.installment_type_bni);
-        installmentMandiriSelection = (AppCompatRadioButton) findViewById(R.id.installment_type_mandiri);
-        installmentBcaSelection = (AppCompatRadioButton) findViewById(R.id.installment_type_bca);
-        installmentBriSelection = (AppCompatRadioButton) findViewById(R.id.installment_type_bri);
-        installmentCimbSelection = (AppCompatRadioButton) findViewById(R.id.installment_type_cimb);
-        noInstallmentSelection = (AppCompatRadioButton) findViewById(R.id.no_installment);
+        installmentBniSelection = findViewById(R.id.installment_type_bni);
+        installmentMandiriSelection = findViewById(R.id.installment_type_mandiri);
+        installmentBcaSelection = findViewById(R.id.installment_type_bca);
+        installmentBriSelection = findViewById(R.id.installment_type_bri);
+        installmentCimbSelection = findViewById(R.id.installment_type_cimb);
+        installmentMaybankSelection = findViewById(R.id.installment_type_maybank);
+        noInstallmentSelection = findViewById(R.id.no_installment);
 
-        normalSelection = (AppCompatRadioButton) findViewById(R.id.type_credit_card_normal);
-        twoClicksSelection = (AppCompatRadioButton) findViewById(R.id.type_credit_card_two_clicks);
-        oneClickSelection = (AppCompatRadioButton) findViewById(R.id.type_credit_card_one_click);
+        normalSelection = findViewById(R.id.type_credit_card_normal);
+        twoClicksSelection = findViewById(R.id.type_credit_card_two_clicks);
+        oneClickSelection = findViewById(R.id.type_credit_card_one_click);
 
-        secureDisabledSelection = (AppCompatRadioButton) findViewById(R.id.type_secure_disabled);
-        secureEnabledSelection = (AppCompatRadioButton) findViewById(R.id.type_secure_enabled);
-        secureRbaWith3dsSelection = (AppCompatRadioButton) findViewById(R.id.type_secure_rba);
-        secureRbaNon3dsSelection = (AppCompatRadioButton) findViewById(R.id.type_secure_rba_non_3ds);
+        secureDisabledSelection = findViewById(R.id.type_secure_disabled);
+        secureEnabledSelection = findViewById(R.id.type_secure_enabled);
+        secureRbaWith3dsSelection = findViewById(R.id.type_secure_rba);
+        secureRbaNon3dsSelection = findViewById(R.id.type_secure_rba_non_3ds);
 
-        bankNoneSelection = (AppCompatRadioButton) findViewById(R.id.type_bank_none);
-        bankBniSelection = (AppCompatRadioButton) findViewById(R.id.type_bank_bni);
-        bankMandiriSelection = (AppCompatRadioButton) findViewById(R.id.type_bank_mandiri);
-        bankBcaSelection = (AppCompatRadioButton) findViewById(R.id.type_bank_bca);
-        bankMaybankSelection = (AppCompatRadioButton) findViewById(R.id.type_bank_maybank);
-        bankBriSelection = (AppCompatRadioButton) findViewById(R.id.type_bank_bri);
-        bankCimbSelection = (AppCompatRadioButton) findViewById(R.id.type_bank_cimb);
-        bankMegaSelection = (AppCompatRadioButton) findViewById(R.id.type_bank_mega);
+        bankNoneSelection = findViewById(R.id.type_bank_none);
+        bankBniSelection = findViewById(R.id.type_bank_bni);
+        bankMandiriSelection = findViewById(R.id.type_bank_mandiri);
+        bankBcaSelection = findViewById(R.id.type_bank_bca);
+        bankMaybankSelection = findViewById(R.id.type_bank_maybank);
+        bankBriSelection = findViewById(R.id.type_bank_bri);
+        bankCimbSelection = findViewById(R.id.type_bank_cimb);
+        bankMegaSelection = findViewById(R.id.type_bank_mega);
 
-        expiryNoneSelection = (AppCompatRadioButton) findViewById(R.id.type_expiry_none);
-        expiryOneMinuteSelection = (AppCompatRadioButton) findViewById(R.id.type_expiry_one_minute);
-        expiryOneHourSelection = (AppCompatRadioButton) findViewById(R.id.type_expiry_one_hour);
+        expiryNoneSelection = findViewById(R.id.type_expiry_none);
+        expiryOneMinuteSelection = findViewById(R.id.type_expiry_one_minute);
+        expiryOneHourSelection = findViewById(R.id.type_expiry_one_hour);
 
-        saveCardDisabledSelection = (AppCompatRadioButton) findViewById(R.id.type_default_save_disabled);
-        saveCardEnabledSelection = (AppCompatRadioButton) findViewById(R.id.type_default_save_enabled);
+        saveCardDisabledSelection = findViewById(R.id.type_default_save_disabled);
+        saveCardEnabledSelection = findViewById(R.id.type_default_save_enabled);
 
-        customBcaVaDisabledSelection = (AppCompatRadioButton) findViewById(R.id.type_bca_va_disabled);
-        customBcaVaEnabledSelection = (AppCompatRadioButton) findViewById(R.id.type_bca_va_enabled);
+        customBcaVaDisabledSelection = findViewById(R.id.type_bca_va_disabled);
+        customBcaVaEnabledSelection = findViewById(R.id.type_bca_va_enabled);
 
-        customPermataVaDisabledSelection = (AppCompatRadioButton) findViewById(R.id.type_permata_va_disabled);
-        customPermataVaEnabledSelection = (AppCompatRadioButton) findViewById(R.id.type_permata_va_enabled);
+        customPermataVaDisabledSelection = findViewById(R.id.type_permata_va_disabled);
+        customPermataVaEnabledSelection = findViewById(R.id.type_permata_va_enabled);
 
-        customPermataRecipientDisabledSelection = (AppCompatRadioButton) findViewById(R.id.type_permata_recipient_disabled);
-        customPermataRecipientEnabledSelection = (AppCompatRadioButton) findViewById(R.id.type_permata_recipient_enabled);
+        customPermataRecipientDisabledSelection = findViewById(R.id.type_permata_recipient_disabled);
+        customPermataRecipientEnabledSelection = findViewById(R.id.type_permata_recipient_enabled);
 
-        customBniVaEnabledSelection = (AppCompatRadioButton) findViewById(R.id.type_bni_va_enabled);
-        customBniVaDisabledSelection = (AppCompatRadioButton) findViewById(R.id.type_bni_va_disabled);
+        customBniVaEnabledSelection = findViewById(R.id.type_bni_va_enabled);
+        customBniVaDisabledSelection = findViewById(R.id.type_bni_va_disabled);
 
-        subCompanyBcaVaDisabledSelection = (AppCompatRadioButton) findViewById(R.id.type_subcompany_bca_va_disabled);
-        subCompanyBcaVaEnabledSelection = (AppCompatRadioButton) findViewById(R.id.type_subcompany_bca_va_enabled);
+        subCompanyBcaVaDisabledSelection = findViewById(R.id.type_subcompany_bca_va_disabled);
+        subCompanyBcaVaEnabledSelection = findViewById(R.id.type_subcompany_bca_va_enabled);
 
-        promoDisabledSelection = (AppCompatRadioButton) findViewById(R.id.type_promo_disabled);
-        promoEnabledSelection = (AppCompatRadioButton) findViewById(R.id.type_promo_enabled);
+        preAuthDisabledSelection = findViewById(R.id.type_preauth_disabled);
+        preAuthEnabledSelection = findViewById(R.id.type_preauth_enabled);
 
-        preAuthDisabledSelection = (AppCompatRadioButton) findViewById(R.id.type_preauth_disabled);
-        preAuthEnabledSelection = (AppCompatRadioButton) findViewById(R.id.type_preauth_enabled);
+        defaultThemeSelection = findViewById(R.id.type_theme_default);
+        redThemeSelection = findViewById(R.id.type_theme_red);
+        greenThemeSelection = findViewById(R.id.type_theme_green);
+        orangeThemeSelection = findViewById(R.id.type_theme_orange);
+        blackThemeSelection = findViewById(R.id.type_theme_black);
 
-        defaultThemeSelection = (AppCompatRadioButton) findViewById(R.id.type_theme_default);
-        redThemeSelection = (AppCompatRadioButton) findViewById(R.id.type_theme_red);
-        greenThemeSelection = (AppCompatRadioButton) findViewById(R.id.type_theme_green);
-        orangeThemeSelection = (AppCompatRadioButton) findViewById(R.id.type_theme_orange);
-        blackThemeSelection = (AppCompatRadioButton) findViewById(R.id.type_theme_black);
+        bniPointOnlyEnabledSelection = findViewById(R.id.type_bni_point_enabled);
+        bniPointOnlyDisabledSelection = findViewById(R.id.type_bni_point_disabled);
 
-        bniPointOnlyEnabledSelection = (AppCompatRadioButton) findViewById(R.id.type_bni_point_enabled);
-        bniPointOnlyDisabledSelection = (AppCompatRadioButton) findViewById(R.id.type_bni_point_disabled);
+        mandiriPointOnlyEnabledSelection = findViewById(R.id.type_mandiri_point_enabled);
+        mandiriPointOnlyDisabledSelection = findViewById(R.id.type_mandiri_point_disabled);
 
-        mandiriPointOnlyEnabledSelection = (AppCompatRadioButton) findViewById(R.id.type_mandiri_point_enabled);
-        mandiriPointOnlyDisabledSelection = (AppCompatRadioButton) findViewById(R.id.type_mandiri_point_disabled);
+        paymentChannelsAllSelection = findViewById(R.id.type_payment_channels_show_all);
+        paymentChannelsSelectedSelection = findViewById(R.id.type_payment_channels_show_selected);
 
-        paymentChannelsAllSelection = (AppCompatRadioButton) findViewById(R.id.type_payment_channels_show_all);
-        paymentChannelsSelectedSelection = (AppCompatRadioButton) findViewById(R.id.type_payment_channels_show_selected);
+        autoReadSmsDisabledSelection = findViewById(R.id.type_auto_read_disabled);
+        autoReadSmsEnabledSelection = findViewById(R.id.type_auto_read_enabled);
 
-        autoReadSmsDisabledSelection = (AppCompatRadioButton) findViewById(R.id.type_auto_read_disabled);
-        autoReadSmsEnabledSelection = (AppCompatRadioButton) findViewById(R.id.type_auto_read_enabled);
-
-        nextButton = (FancyButton) findViewById(R.id.button_primary);
-        editBcaVaButton = (ImageButton) findViewById(R.id.btn_edit_bca_va);
-        editPermataVaButton = (ImageButton) findViewById(R.id.btn_edit_permata_va);
-        editPermataRecipientButton = (ImageButton) findViewById(R.id.btn_edit_permata_recipient);
-        editPaymentChannels = (ImageButton) findViewById(R.id.btn_edit_payment_method);
-        editBniVaButton = (ImageButton) findViewById(R.id.btn_edit_bni_va);
-        editSubCompanyBcaVaButton = (ImageButton) findViewById(R.id.btn_edit_subcompany_bca_va);
-        editInstallmentMandiri = (ImageButton) findViewById(R.id.button_mandiri_installment_edit);
-        editInstallmentBca = (ImageButton) findViewById(R.id.button_bca_installment_edit);
-        editInstallmentBni = (ImageButton) findViewById(R.id.button_bni_installment_edit);
-        editInstallmentBri = (ImageButton) findViewById(R.id.button_bri_installment_edit);
-        editInstallmentCimb = (ImageButton) findViewById(R.id.button_cimb_installment_edit);
+        nextButton = findViewById(R.id.button_primary);
+        editBcaVaButton = findViewById(R.id.btn_edit_bca_va);
+        editPermataVaButton = findViewById(R.id.btn_edit_permata_va);
+        editPermataRecipientButton = findViewById(R.id.btn_edit_permata_recipient);
+        editPaymentChannels = findViewById(R.id.btn_edit_payment_method);
+        editBniVaButton = findViewById(R.id.btn_edit_bni_va);
+        editSubCompanyBcaVaButton = findViewById(R.id.btn_edit_subcompany_bca_va);
+        editInstallmentMandiri = findViewById(R.id.button_mandiri_installment_edit);
+        editInstallmentBca = findViewById(R.id.button_bca_installment_edit);
+        editInstallmentBni = findViewById(R.id.button_bni_installment_edit);
+        editInstallmentBri = findViewById(R.id.button_bri_installment_edit);
+        editInstallmentCimb = findViewById(R.id.button_cimb_installment_edit);
+        editInstallmentMaybank = findViewById(R.id.button_maybank_installment_edit);
     }
 
     private void initTitleClicks() {
@@ -533,29 +523,6 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                             setTextViewDrawableLeftColorFilter(saveCardTitle);
                             // Show save card container
                             saveCardContainer.setVisibility(View.VISIBLE);
-                        } else {
-                            unselectAllTitles();
-                            hideAllSelections();
-                        }
-                    }
-                }, DELAY);
-            }
-        });
-
-        promoTitle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (!promoTitle.isSelected()) {
-                            unselectAllTitles();
-                            hideAllSelections();
-                            promoTitle.setSelected(true);
-                            setTextViewSelectedColor(promoTitle);
-                            setTextViewDrawableLeftColorFilter(promoTitle);
-                            // Show promo container
-                            promoContainer.setVisibility(View.VISIBLE);
                         } else {
                             unselectAllTitles();
                             hideAllSelections();
@@ -1796,36 +1763,6 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         editSubCompanyBcaVaButton.setOnClickListener(null);
     }
 
-    private void initPromoSelection() {
-        boolean promoEnabled = DemoPreferenceHelper.getBooleanPreference(this, PROMO_TYPE, false);
-
-        if (promoEnabled) {
-            promoTitle.setText(R.string.default_promo_enabled);
-            promoEnabledSelection.setChecked(true);
-        } else {
-            promoTitle.setText(R.string.default_promo_disabled);
-            promoDisabledSelection.setChecked(true);
-        }
-
-        promoEnabledSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                if (checked) {
-                    promoTitle.setText(R.string.default_promo_enabled);
-                }
-            }
-        });
-
-        promoDisabledSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                if (checked) {
-                    promoTitle.setText(R.string.default_promo_disabled);
-                }
-            }
-        });
-    }
-
     private void initPreAuthSelection() {
         boolean preAuthEnabled = DemoPreferenceHelper.getBooleanPreference(this, PRE_AUTH_TYPE, false);
         if (preAuthEnabled) {
@@ -1886,7 +1823,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 case Constants.INSTALLMENT_BCA:
                     String bcaTitle = getString(R.string.using_bca_installment);
                     installmentTitle.setText(bcaTitle);
-                    installmentMandiriSelection.setChecked(true);
+                    installmentBcaSelection.setChecked(true);
                     resetBniPointSelection();
                     resetMandiriPointSelection();
                     updateSelectedInstallment();
@@ -1909,12 +1846,24 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 case Constants.INSTALLMENT_CIMB:
                     String cimbTitle = getString(R.string.using_cimb_installment);
                     installmentTitle.setText(cimbTitle);
-                    installmentBriSelection.setChecked(true);
+                    installmentCimbSelection.setChecked(true);
                     resetBniPointSelection();
                     resetMandiriPointSelection();
                     updateSelectedInstallment();
                     showEditInstallmentCimbOption();
                     setCimbAcquiringBank();
+                    resetOneClickSelection();
+                    break;
+
+                case Constants.INSTALLMENT_MAYBANK:
+                    String maybankTitle = getString(R.string.using_maybank_installment);
+                    installmentTitle.setText(maybankTitle);
+                    installmentMaybankSelection.setChecked(true);
+                    resetBniPointSelection();
+                    resetMandiriPointSelection();
+                    updateSelectedInstallment();
+                    showEditInstallmentMaybankOption();
+                    setMaybankAcquiringBank();
                     resetOneClickSelection();
                     break;
 
@@ -2034,6 +1983,24 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 }
             }
         });
+
+        installmentMaybankSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    String title = getString(R.string.using_maybank_installment);
+                    installmentTitle.setText(title);
+                    installmentMaybankSelection.setChecked(true);
+                    hideEditInstallmentOption();
+                    resetBniPointSelection();
+                    resetMandiriPointSelection();
+                    showInstallmentDialog(false);
+                    showEditInstallmentMaybankOption();
+                    setMaybankAcquiringBank();
+                    resetOneClickSelection();
+                }
+            }
+        });
     }
 
     private void resetAcquiringBank() {
@@ -2046,6 +2013,10 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
 
     private void setCimbAcquiringBank() {
         bankCimbSelection.setChecked(true);
+    }
+
+    private void setMaybankAcquiringBank() {
+        bankMaybankSelection.setChecked(true);
     }
 
     private void setMegaAcquiringBank() {
@@ -2085,6 +2056,20 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 showInstallmentDialog(installmentRequired);
             }
         });
+
+        editInstallmentCimb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showInstallmentDialog(installmentRequired);
+            }
+        });
+
+        editInstallmentMaybank.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showInstallmentDialog(installmentRequired);
+            }
+        });
     }
 
     private void hideEditInstallmentOption() {
@@ -2093,6 +2078,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         editInstallmentBni.setVisibility(View.INVISIBLE);
         editInstallmentBri.setVisibility(View.INVISIBLE);
         editInstallmentCimb.setVisibility(View.INVISIBLE);
+        editInstallmentMaybank.setVisibility(View.INVISIBLE);
     }
 
     private void showEditInstallmentMandiriOption() {
@@ -2113,6 +2099,10 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
 
     private void showEditInstallmentCimbOption() {
         editInstallmentCimb.setVisibility(View.VISIBLE);
+    }
+
+    private void showEditInstallmentMaybankOption() {
+        editInstallmentMaybank.setVisibility(View.VISIBLE);
     }
 
     private void showInstallmentDialog(boolean isRequired) {
@@ -2152,6 +2142,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         installmentBcaSelection.setText(getString(R.string.installment_bca));
         installmentBniSelection.setText(getString(R.string.installment_bni));
         installmentBriSelection.setText(getString(R.string.installment_bri));
+        installmentCimbSelection.setText(getString(R.string.installment_cimb));
+        installmentMaybankSelection.setText(getString(R.string.installment_maybank));
     }
 
     private void resetBniPointSelection() {
@@ -2285,7 +2277,6 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 savePermataVaNumber();
                 savePermataRecipient();
                 saveBniVaNumber();
-                savePromoSelection();
                 savePreAuthSelection();
                 saveInstallmentSelection();
                 saveBniPointSelection();
@@ -2317,7 +2308,6 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 customPermataVaDisabledSelection.setChecked(true);
                 customPermataRecipientDisabledSelection.setChecked(true);
                 subCompanyBcaVaDisabledSelection.setChecked(true);
-                promoDisabledSelection.setChecked(true);
                 preAuthDisabledSelection.setChecked(true);
                 bniPointOnlyDisabledSelection.setChecked(true);
                 mandiriPointOnlyDisabledSelection.setChecked(true);
@@ -2485,14 +2475,6 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         }
     }
 
-    private void savePromoSelection() {
-        if (promoEnabledSelection.isChecked()) {
-            DemoPreferenceHelper.setBooleanPreference(this, PROMO_TYPE, true);
-        } else {
-            DemoPreferenceHelper.setBooleanPreference(this, PROMO_TYPE, false);
-        }
-    }
-
     private void savePreAuthSelection() {
         if (preAuthEnabledSelection.isChecked()) {
             DemoPreferenceHelper.setBooleanPreference(this, PRE_AUTH_TYPE, true);
@@ -2512,6 +2494,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             DemoPreferenceHelper.setStringPreference(this, INSTALLMENT_TYPE, Constants.INSTALLMENT_BRI);
         } else if (installmentCimbSelection.isChecked()) {
             DemoPreferenceHelper.setStringPreference(this, INSTALLMENT_TYPE, Constants.INSTALLMENT_CIMB);
+        } else if (installmentMaybankSelection.isChecked()) {
+            DemoPreferenceHelper.setStringPreference(this, INSTALLMENT_TYPE, Constants.INSTALLMENT_MAYBANK);
         } else {
             DemoPreferenceHelper.setStringPreference(this, INSTALLMENT_TYPE, Constants.NO_INSTALLMENT);
         }
@@ -2558,9 +2542,6 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         saveCardTitle.setSelected(false);
         saveCardTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
         clearTextViewDrawableLeftColorFilter(saveCardTitle);
-        promoTitle.setSelected(false);
-        promoTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
-        clearTextViewDrawableLeftColorFilter(promoTitle);
         preAuthTitle.setSelected(false);
         preAuthTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
         clearTextViewDrawableLeftColorFilter(preAuthTitle);
@@ -2605,7 +2586,6 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         bankContainer.setVisibility(View.GONE);
         expiryContainer.setVisibility(View.GONE);
         saveCardContainer.setVisibility(View.GONE);
-        promoContainer.setVisibility(View.GONE);
         preAuthContainer.setVisibility(View.GONE);
         colorThemeContainer.setVisibility(View.GONE);
         customBcaVaContainer.setVisibility(View.GONE);
@@ -2807,9 +2787,6 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         subCompanyBcaVaEnabledSelection.setSupportButtonTintList(colorStateList);
         subCompanyBcaVaDisabledSelection.setSupportButtonTintList(colorStateList);
 
-        promoDisabledSelection.setSupportButtonTintList(colorStateList);
-        promoEnabledSelection.setSupportButtonTintList(colorStateList);
-
         preAuthDisabledSelection.setSupportButtonTintList(colorStateList);
         preAuthEnabledSelection.setSupportButtonTintList(colorStateList);
 
@@ -2823,6 +2800,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         installmentMandiriSelection.setSupportButtonTintList(colorStateList);
         installmentBcaSelection.setSupportButtonTintList(colorStateList);
         installmentBriSelection.setSupportButtonTintList(colorStateList);
+        installmentCimbSelection.setSupportButtonTintList(colorStateList);
+        installmentMaybankSelection.setSupportButtonTintList(colorStateList);
         noInstallmentSelection.setSupportButtonTintList(colorStateList);
 
         bniPointOnlyEnabledSelection.setSupportButtonTintList(colorStateList);
@@ -2891,11 +2870,11 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             MidtransSDK.getInstance().setColorTheme(new CustomColorTheme(DemoThemeConstants.BLACK_PRIMARY_HEX, DemoThemeConstants.BLACK_PRIMARY_DARK_HEX, DemoThemeConstants.BLACK_SECONDARY_HEX));
         }
         // Create new Transaction Request
-        TransactionRequest transactionRequestNew = new TransactionRequest(System.currentTimeMillis() + "", 20000);
+        TransactionRequest transactionRequestNew = new TransactionRequest(System.currentTimeMillis() + "", 200000);
 
 
         // Define item details
-        ItemDetails itemDetails = new ItemDetails("1", 20000, 1, getString(R.string.product_name_sample));
+        ItemDetails itemDetails = new ItemDetails("1", 200000, 1, getString(R.string.product_name_sample));
         // Add item details into item detail list.
         ArrayList<ItemDetails> itemDetailsArrayList = new ArrayList<>();
         itemDetailsArrayList.add(itemDetails);
@@ -2994,6 +2973,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             uiKitCustomSetting.setEnableAutoReadSms(false);
         }
 
+        uiKitCustomSetting.setShowEmailInCcForm(true);
+
         MidtransSDK.getInstance().setUIKitCustomSetting(uiKitCustomSetting);
 
         if (secureEnabledSelection.isChecked()) {
@@ -3025,11 +3006,6 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         } else if (expiryOneHourSelection.isChecked()) {
             expiryModel.setUnit(ExpiryModel.UNIT_HOUR);
             transactionRequestNew.setExpiry(expiryModel);
-        }
-
-        if (promoEnabledSelection.isChecked()) {
-            // Set promo
-            transactionRequestNew.setPromoEnabled(true);
         }
 
         UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
@@ -3268,8 +3244,10 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             setInstallmentBankTerm(bankTerms, Constants.INSTALLMENT_BANK_MANDIRI);
         } else if (installmentBcaSelection.isChecked()) {
             setInstallmentBankTerm(bankTerms, Constants.INSTALLMENT_BANK_BCA);
-        } else if (installmentBcaSelection.isChecked()) {
+        } else if (installmentCimbSelection.isChecked()) {
             setInstallmentBankTerm(bankTerms, Constants.INSTALLMENT_BANK_CIMB);
+        } else if (installmentMaybankSelection.isChecked()) {
+            setInstallmentBankTerm(bankTerms, Constants.INSTALLMENT_BANK_MAYBANK);
         } else {
             installment = null;
         }
@@ -3292,9 +3270,9 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         ArrayList<Integer> term = new ArrayList<>();
         term.add(3);
         term.add(6);
+        term.add(12);
         term.add(18);
         term.add(24);
-        term.add(12);
         //set bank and term
         bankTerms.put(bank, term);
     }

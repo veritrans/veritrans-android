@@ -15,7 +15,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -118,7 +117,7 @@ public class SdkUIFlowUtil {
             Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
 
         } catch (RuntimeException e) {
-            Log.e("showToast", "message:" + e.getMessage());
+            Logger.e("showToast", "message:" + e.getMessage());
         }
     }
 
@@ -138,7 +137,7 @@ public class SdkUIFlowUtil {
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
         } catch (RuntimeException e) {
-            Log.d(TAG, "hideKeyboard():" + e.getMessage());
+            Logger.d(TAG, "hideKeyboard():" + e.getMessage());
         }
     }
 
@@ -691,5 +690,9 @@ public class SdkUIFlowUtil {
         }
 
         LocalDataHandler.saveObject(UiKitConstants.KEY_USER_DETAILS, userDetail);
+    }
+
+    public static String getImagePath(Activity activity) {
+        return "android.resource://" + activity.getPackageName() + "/";
     }
 }

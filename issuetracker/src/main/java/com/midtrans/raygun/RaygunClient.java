@@ -849,8 +849,9 @@ public class RaygunClient {
             } else if (RaygunClient.tags != null) {
                 RaygunClient.send(throwable, tags);
             } else {
-                List tags = new ArrayList();
+                List<String> tags = new ArrayList<>();
                 tags.add("UnhandledException");
+                tags.add(throwable.getClass().getSimpleName());
                 RaygunClient.send(throwable, tags);
                 Pulse.sendRemainingActivity();
             }
