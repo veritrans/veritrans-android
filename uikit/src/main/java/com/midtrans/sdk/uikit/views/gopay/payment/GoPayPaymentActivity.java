@@ -42,6 +42,7 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
     private boolean isTablet, isGojekInstalled, isAlreadyGotResponse;
     private Boolean isGojekInstalledWhenPaused;
     private int attempt;
+    private int goPayIntentCode;
 
 
     @Override
@@ -139,6 +140,10 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
         if (isGojekInstalledWhenPaused != null && isGojekInstalledWhenPaused != isGojekInstalled) {
             recreate();
         }
+
+        if (goPayIntentCode == UiKitConstants.INTENT_CODE_GOPAY) {
+            presenter.getPaymentStatus();
+        }
     }
 
     @Override
@@ -216,9 +221,7 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
         if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS) {
             finishPayment(RESULT_OK, presenter.getTransactionResponse());
         } else if (requestCode == UiKitConstants.INTENT_CODE_GOPAY) {
-            Logger.d(TAG, "reqcode:" + requestCode);
-
-            presenter.getPaymentStatus();
+            this.goPayIntentCode = requestCode;
         }
     }
 
@@ -272,26 +275,28 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
 
     @Override
     public void onGetTransactionStatusError(Throwable error) {
+        // do nothing
     }
 
     @Override
     public void onGetTransactionStatusFailure(TransactionResponse response) {
-        validateTransactionResponse(response);
+        // do nothing
     }
 
-    private void validateTransactionResponse(TransactionResponse response) {
+
+    private boolean isPaymentPending(TransactionResponse response) {
         String statusCode = response.getStatusCode();
         String transactionStatus = response.getTransactionStatus();
-        if ((!TextUtils.isEmpty(statusCode) && statusCode.equals(UiKitConstants.STATUS_CODE_201)
-                || !TextUtils.isEmpty(transactionStatus) && transactionStatus.equalsIgnoreCase(UiKitConstants.STATUS_PENDING))) {
 
-            showPaymentStatusPage(response, presenter.isShowPaymentStatusPage());
-        }
+        return (!TextUtils.isEmpty(statusCode) && statusCode.equals(UiKitConstants.STATUS_CODE_201)
+                || !TextUtils.isEmpty(transactionStatus) && transactionStatus.equalsIgnoreCase(UiKitConstants.STATUS_PENDING));
     }
 
     @Override
     public void onGetTransactionStatusSuccess(TransactionResponse response) {
-        validateTransactionResponse(response);
+        if (!isPaymentPending(response)) {
+            showPaymentStatusPage(response, presenter.isShowPaymentStatusPage());
+        }
     }
 
 }
