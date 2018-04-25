@@ -31,7 +31,6 @@ import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.core.themes.ColorTheme;
 import com.midtrans.sdk.corekit.core.themes.CustomColorTheme;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
-import com.midtrans.sdk.corekit.models.ItemDetails;
 import com.midtrans.sdk.corekit.models.PaymentDetails;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
@@ -39,6 +38,7 @@ import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.promo.Promo;
 import com.midtrans.sdk.corekit.models.promo.PromoDetails;
 import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
+import com.midtrans.sdk.corekit.models.snap.ItemDetails;
 import com.midtrans.sdk.corekit.models.snap.Token;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
@@ -165,12 +165,9 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     SdkUIFlowUtil.saveUserDetails();
                 }
 
-                setUpPaymentMethods();
-                setupRecyclerView();
-
-            } else {
-                showErrorAlertDialog(getString(R.string.error_transaction_empty));
             }
+            setUpPaymentMethods();
+            setupRecyclerView();
 
         } else {
             Logger.e("Veritrans SDK is not started.");
@@ -218,8 +215,6 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         initRetryButton();
 
         setSupportActionBar(toolbar);
-
-        bindDataToView();
         getPaymentPages();
     }
 
@@ -242,22 +237,21 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     /**
      * set data to view.
      */
-    private void bindDataToView() {
+    private void bindDataToView(Transaction transaction) {
 
-        MidtransSDK midtransSDK = MidtransSDK.getInstance();
 
-        if (midtransSDK != null) {
+        if (transaction != null) {
             List<ItemViewDetails> itemViewDetails = new ArrayList<>();
             // Add amount
-            String amount = getString(R.string.prefix_money, Utils.getFormattedAmount(midtransSDK.getTransactionRequest().getAmount()));
+            String amount = getString(R.string.prefix_money, Utils.getFormattedAmount(transaction.getTransactionDetails().getAmount()));
             // Add header
             itemViewDetails.add(new ItemViewDetails(
                     null,
                     amount,
                     ItemViewDetails.TYPE_ITEM_HEADER,
-                    midtransSDK.getTransactionRequest().getItemDetails().size() > 0));
+                    transaction.getItemDetails().size() > 0));
             // Add item
-            for (ItemDetails itemDetails : midtransSDK.getTransactionRequest().getItemDetails()) {
+            for (ItemDetails itemDetails : transaction.getItemDetails()) {
                 String price = getString(R.string.prefix_money, Utils.getFormattedAmount(itemDetails.getQuantity() * itemDetails.getPrice()));
                 String itemName = itemDetails.getName();
                 if (itemDetails.getQuantity() > 1) {
@@ -446,6 +440,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                             secureBadge.setImageResource(R.drawable.badge_default);
                     }
 
+                    bindDataToView(transaction);
                     // Directly start credit card payment if using credit card mode only
                     initPaymentMethods(transaction.getEnabledPayments());
 
