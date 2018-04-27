@@ -141,7 +141,7 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
             recreate();
         }
 
-        if (goPayIntentCode == UiKitConstants.INTENT_CODE_GOPAY) {
+        if (goPayIntentCode == UiKitConstants.INTENT_CODE_GOPAY && presenter != null) {
             presenter.getPaymentStatus();
         }
     }
@@ -284,19 +284,9 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
     }
 
 
-    private boolean isPaymentPending(TransactionResponse response) {
-        String statusCode = response.getStatusCode();
-        String transactionStatus = response.getTransactionStatus();
-
-        return (!TextUtils.isEmpty(statusCode) && statusCode.equals(UiKitConstants.STATUS_CODE_201)
-                || !TextUtils.isEmpty(transactionStatus) && transactionStatus.equalsIgnoreCase(UiKitConstants.STATUS_PENDING));
-    }
-
     @Override
     public void onGetTransactionStatusSuccess(TransactionResponse response) {
-        if (!isPaymentPending(response)) {
-            showPaymentStatusPage(response, presenter.isShowPaymentStatusPage());
-        }
+        showPaymentStatusPage(response, presenter.isShowPaymentStatusPage());
     }
 
 }

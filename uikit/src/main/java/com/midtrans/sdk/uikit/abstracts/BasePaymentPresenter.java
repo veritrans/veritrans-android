@@ -58,7 +58,7 @@ public class BasePaymentPresenter<V extends BaseView> extends BasePresenter<V> {
                 response.getStatusCode(), response.getStatusMessage(), response.getTransactionId(),
                 response.getOrderId(), response.getGrossAmount(), response.getPaymentType(),
                 response.getTransactionTime(), response.getTransactionStatus());
-        this.transactionResponse = transactionResponse;
+
         return transactionResponse;
     }
 

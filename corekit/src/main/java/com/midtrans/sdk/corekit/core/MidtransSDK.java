@@ -123,7 +123,7 @@ public class MidtransSDK {
             }
         }
 
-        this.mMixpanelAnalyticsManager = SdkUtil.newMixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), merchantName, getFlow(flow), deviceType == null ? "": deviceType, isLogEnabled, context);
+        this.mMixpanelAnalyticsManager = SdkUtil.newMixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), merchantName, getFlow(flow), deviceType == null ? "" : deviceType, isLogEnabled, context);
         this.snapServiceManager = SdkUtil.newSnapServiceManager(requestTimeOut);
 
         this.midtransServiceManager = SdkUtil.newMidtransServiceManager(requestTimeOut);
@@ -192,13 +192,16 @@ public class MidtransSDK {
     }
 
     private String getFlow(String flow) {
-        if (flow.equalsIgnoreCase(BaseSdkBuilder.CORE_FLOW)) {
-            return MixpanelAnalyticsManager.CORE_FLOW;
-        } else if (flow.equalsIgnoreCase(BaseSdkBuilder.UI_FLOW)) {
-            return MixpanelAnalyticsManager.UI_FLOW;
-        } else {
-            return MixpanelAnalyticsManager.WIDGET;
+        if (flow != null) {
+            if (flow.equalsIgnoreCase(BaseSdkBuilder.CORE_FLOW)) {
+                return MixpanelAnalyticsManager.CORE_FLOW;
+            } else if (flow.equalsIgnoreCase(BaseSdkBuilder.UI_FLOW)) {
+                return MixpanelAnalyticsManager.UI_FLOW;
+            } else {
+                return MixpanelAnalyticsManager.WIDGET;
+            }
         }
+        return "";
     }
 
 
@@ -272,7 +275,7 @@ public class MidtransSDK {
             deviceType = Utils.getDeviceType((Activity) context);
         }
 
-        if(mMixpanelAnalyticsManager == null){
+        if (mMixpanelAnalyticsManager == null) {
             this.mMixpanelAnalyticsManager = SdkUtil.newMixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), merchantName, getFlow(flow), deviceType == null ? "" : deviceType, isLogEnabled, context);
         }
 

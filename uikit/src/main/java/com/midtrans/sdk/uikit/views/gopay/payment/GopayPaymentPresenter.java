@@ -1,10 +1,13 @@
 package com.midtrans.sdk.uikit.views.gopay.payment;
 
+import android.text.TextUtils;
+
 import com.midtrans.sdk.corekit.callback.GetTransactionStatusCallback;
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.snap.TransactionStatusResponse;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentPresenter;
+import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 
 /**
  * Created by ziahaqi on 9/7/17.
@@ -44,20 +47,15 @@ public class GopayPaymentPresenter extends BasePaymentPresenter<GoPayPaymentView
         getMidtransSDK().getTransactionStatus(snapToken, new GetTransactionStatusCallback() {
             @Override
             public void onSuccess(TransactionStatusResponse response) {
-
-                TransactionResponse newTransactionResponse = convertTransactionStatus(response);
-                transactionResponse = newTransactionResponse;
-
-                view.onGetTransactionStatusSuccess(transactionResponse);
+                if (response != null && !isPaymentPending(response)) {
+                    transactionResponse = convertTransactionStatus(response);
+                    view.onPaymentSuccess(transactionResponse);
+                }
             }
 
             @Override
             public void onFailure(TransactionStatusResponse response, String reason) {
-
-                TransactionResponse newTransactionResponse = convertTransactionStatus(response);
-                transactionResponse = newTransactionResponse;
-
-                view.onGetTransactionStatusFailure(transactionResponse);
+                // do nothing
             }
 
             @Override
@@ -65,5 +63,13 @@ public class GopayPaymentPresenter extends BasePaymentPresenter<GoPayPaymentView
                 view.onGetTransactionStatusError(error);
             }
         });
+    }
+
+    private boolean isPaymentPending(TransactionStatusResponse response) {
+        String statusCode = response.getStatusCode();
+        String transactionStatus = response.getTransactionStatus();
+
+        return (!TextUtils.isEmpty(statusCode) && statusCode.equals(UiKitConstants.STATUS_CODE_201)
+                || !TextUtils.isEmpty(transactionStatus) && transactionStatus.equalsIgnoreCase(UiKitConstants.STATUS_PENDING));
     }
 }
