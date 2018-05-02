@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="112dp"
+    android:height="80dp"
+    android:viewportWidth="112"
+    android:viewportHeight="80">
+
+    <path
+        android:name="Rectangle"
+        android:fillColor="#E8E8E9"
+        android:fillType="evenOdd"
+        android:strokeWidth="1"
+        android:pathData="M8,0 L104,0 Q112,0,112,8 L112,72 Q112,80,104,80 L8,80 Q0,80,0,72 L0,8 Q0,0,8,0 Z" />
+    <path
+        android:name="Rectangle-2"
+        android:fillColor="#939589"
+        android:fillAlpha="0.13"
+        android:fillType="evenOdd"
+        android:strokeWidth="1"
+        android:pathData="M14.5778,37.2 L36.6222,37.2 Q38.4,37.2,38.4,38.9778 L38.4,38.9778
+Q38.4,40.7556,36.6222,40.7556 L14.5778,40.7556 Q12.8,40.7556,12.8,38.9778
+L12.8,38.9778 Q12.8,37.2,14.5778,37.2 Z" />
+    <path
+        android:name="Rectangle-2"
+        android:fillColor="#939589"
+        android:fillAlpha="0.13"
+        android:fillType="evenOdd"
+        android:strokeWidth="1"
+        android:pathData="M14.5778,24 L36.6222,24 Q38.4,24,38.4,25.7778 L38.4,25.7778
+Q38.4,27.5556,36.6222,27.5556 L14.5778,27.5556 Q12.8,27.5556,12.8,25.7778
+L12.8,25.7778 Q12.8,24,14.5778,24 Z" />
+    <path
+        android:name="Rectangle-2"
+        android:fillColor="#44DB5E"
+        android:fillType="evenOdd"
+        android:strokeWidth="1"
+        android:pathData="M6.57778,50.4 L7.82222,50.4 Q9.6,50.4,9.6,52.1778 L9.6,52.1778
+Q9.6,53.9556,7.82222,53.9556 L6.57778,53.9556 Q4.8,53.9556,4.8,52.1778
+L4.8,52.1778 Q4.8,50.4,6.57778,50.4 Z" />
+    <path
+        android:name="Rectangle-2"
+        android:fillColor="#939589"
+        android:fillAlpha="0.13"
+        android:fillType="evenOdd"
+        android:strokeWidth="1"
+        android:pathData="M6.57778,37.2 L7.82222,37.2 Q9.6,37.2,9.6,38.9778 L9.6,38.9778
+Q9.6,40.7556,7.82222,40.7556 L6.57778,40.7556 Q4.8,40.7556,4.8,38.9778
+L4.8,38.9778 Q4.8,37.2,6.57778,37.2 Z" />
+    <path
+        android:name="Rectangle-2"
+        android:fillColor="#939589"
+        android:fillAlpha="0.13"
+        android:fillType="evenOdd"
+        android:strokeWidth="1"
+        android:pathData="M6.57778,24 L7.82222,24 Q9.6,24,9.6,25.7778 L9.6,25.7778
+Q9.6,27.5556,7.82222,27.5556 L6.57778,27.5556 Q4.8,27.5556,4.8,25.7778
+L4.8,25.7778 Q4.8,24,6.57778,24 Z" />
+    <path
+        android:name="Rectangle-2"
+        android:fillColor="#939589"
+        android:fillAlpha="0.13"
+        android:fillType="evenOdd"
+        android:strokeWidth="1"
+        android:pathData="M31,8 L81.4,8 Q83.4,8,83.4,10 L83.4,10 Q83.4,12,81.4,12 L31,12 Q29,12,29,10
+L29,10 Q29,8,31,8 Z" />
+</vector>
