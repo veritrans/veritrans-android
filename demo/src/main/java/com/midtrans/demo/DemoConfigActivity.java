@@ -2949,6 +2949,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             cardClickType = getString(R.string.card_click_type_two_click);
             creditCard.setSaveCard(true);
             transactionRequestNew.setCreditCard(creditCard);
+
         } else {
             cardClickType = getString(R.string.card_click_type_one_click);
             creditCard.setSaveCard(true);
@@ -3029,10 +3030,11 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             userAddresses.add(userAddress);
             userDetail.setUserAddresses(userAddresses);
         } else {
+
             if (oneClickSelection.isChecked()) {
-                userDetail.setUserId("user@user.com");
+                userDetail.setUserId(getString(R.string.sample_user_id));
             } else if (twoClicksSelection.isChecked()) {
-                userDetail.setUserId("user2@user.com");
+                userDetail.setUserId(getString(R.string.sample_user_id2));
             }
         }
 
