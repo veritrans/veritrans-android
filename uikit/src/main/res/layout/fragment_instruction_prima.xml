@@ -46,7 +46,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/instruction_prima_1" />
+                    app:srcCompat="@drawable/instruction_prima_1" />
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
                     style="@style/BankTransferInstruction"
@@ -71,7 +71,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/instruction_prima_2" />
+                    app:srcCompat="@drawable/instruction_prima_2" />
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
                     style="@style/BankTransferInstruction"
@@ -97,7 +97,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/instruction_prima_3" />
+                    app:srcCompat="@drawable/instruction_prima_3" />
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
                     style="@style/BankTransferInstruction"
@@ -123,7 +123,7 @@
                     android:id="@+id/instruction_bank_code_image"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/instruction_prima_4_permata" />
+                    app:srcCompat="@drawable/instruction_prima_4_permata" />
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
                     android:id="@+id/instruction_bank_code_text"
@@ -150,7 +150,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/instruction_prima_5" />
+                    app:srcCompat="@drawable/instruction_prima_5" />
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
                     style="@style/BankTransferInstruction"
@@ -175,7 +175,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/instruction_prima_6" />
+                    app:srcCompat="@drawable/instruction_prima_6" />
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
                     style="@style/BankTransferInstruction"
@@ -201,7 +201,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/instruction_prima_7" />
+                    app:srcCompat="@drawable/instruction_prima_7" />
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
                     style="@style/BankTransferInstruction"
