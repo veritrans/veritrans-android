@@ -274,7 +274,7 @@ public class MidtransSDK {
         if (context != null && context instanceof Activity) {
             deviceType = Utils.getDeviceType((Activity) context);
         }
-
+mMixpanelAnalyticsManager.trackMixpanel();
         if (mMixpanelAnalyticsManager == null) {
             this.mMixpanelAnalyticsManager = SdkUtil.newMixpanelAnalyticsManager(BuildConfig.VERSION_NAME, SdkUtil.getDeviceId(context), merchantName, getFlow(flow), deviceType == null ? "" : deviceType, isLogEnabled, context);
         }
