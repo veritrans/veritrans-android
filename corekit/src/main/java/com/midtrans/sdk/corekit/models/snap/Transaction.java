@@ -1,6 +1,7 @@
 package com.midtrans.sdk.corekit.models.snap;
 
 import com.google.gson.annotations.SerializedName;
+import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.promo.PromoDetails;
 
 import java.util.List;
@@ -33,6 +34,9 @@ public class Transaction {
 
     @SerializedName("item_details")
     private List<ItemDetails> itemDetails;
+
+    @SerializedName("customer_details")
+    private CustomerDetails customerDetails;
 
     public Transaction() {
     }
@@ -107,5 +111,13 @@ public class Transaction {
 
     public void setItemDetails(List<ItemDetails> itemDetails) {
         this.itemDetails = itemDetails;
+    }
+
+    public CustomerDetails getCustomerDetails() {
+        return customerDetails;
+    }
+
+    public void setCustomerDetails(CustomerDetails customerDetails) {
+        this.customerDetails = customerDetails;
     }
 }

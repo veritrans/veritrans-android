@@ -892,9 +892,10 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                     break;
                 case BankType.MANDIRI:
                     imageBankLogo.setImageResource(R.drawable.mandiri);
-                    if (presenter.isMandiriDebitCard(cleanCardNumber)) {
-                        textTitle.setText(R.string.mandiri_debit_card);
-                    }
+                    break;
+                case BankType.MANDIRI_DEBIT:
+                    imageBankLogo.setImageResource(R.drawable.mandiri);
+                    textTitle.setText(R.string.mandiri_debit_card);
                     break;
                 case BankType.MAYBANK:
                     imageBankLogo.setImageResource(R.drawable.maybank);

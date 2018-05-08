@@ -1,11 +1,7 @@
 package com.midtrans.sdk.corekit.core;
 
-import android.content.res.Resources;
 import android.text.TextUtils;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.midtrans.sdk.corekit.callback.BankBinsCallback;
 import com.midtrans.sdk.corekit.callback.BanksPointCallback;
 import com.midtrans.sdk.corekit.callback.DeleteCardCallback;
@@ -27,6 +23,9 @@ import com.midtrans.sdk.corekit.models.snap.payment.IndosatDompetkuPaymentReques
 import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.NewMandiriClickPayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.TelkomselEcashPaymentRequest;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,23 +81,20 @@ public class SnapServiceManager extends BaseServiceManager {
                 }
 
                 try {
-                    if (response.code() == 404 && response.errorBody() != null) {
-                        String strErrorBody = String.valueOf(response.errorBody());
+                    if (response.errorBody() != null) {
 
-                        Gson gson = new Gson();
-                        JsonObject jsonObject = gson.fromJson(strErrorBody, JsonObject.class);
+                        String strErrorBody = response.errorBody().string();
+                        JSONObject jsonObject = new JSONObject(strErrorBody);
+                        String errorMessage = response.message();
 
-                        if (jsonObject != null && jsonObject.getAsJsonArray(KEY_ERROR_MESSAGE) != null) {
-                            JsonArray jsonArray = jsonObject.getAsJsonArray(KEY_ERROR_MESSAGE);
-                            String errorMessage = response.message();
+                        if (jsonObject != null && jsonObject.getJSONArray(KEY_ERROR_MESSAGE) != null) {
+                            JSONArray jsonArray = jsonObject.getJSONArray(KEY_ERROR_MESSAGE);
                             if (jsonArray.get(0) != null) {
                                 errorMessage = jsonArray.get(0).toString();
                             }
-                            callback.onError(new Throwable(errorMessage, new Resources.NotFoundException()));
-
-                        } else {
-                            callback.onError(new Throwable(response.message(), new Resources.NotFoundException()));
                         }
+
+                        callback.onError(new Throwable(errorMessage));
 
                     } else {
                         callback.onError(new Throwable(Constants.MESSAGE_ERROR_EMPTY_RESPONSE));
@@ -107,7 +103,7 @@ public class SnapServiceManager extends BaseServiceManager {
 
                 } catch (Exception e) {
                     callback.onError(new Throwable(Constants.MESSAGE_ERROR_EMPTY_RESPONSE));
-                    Logger.e(TAG, Constants.MESSAGE_ERROR_EMPTY_RESPONSE);
+                    Logger.e(TAG, "e:" + e.getMessage());
                 }
             }
 

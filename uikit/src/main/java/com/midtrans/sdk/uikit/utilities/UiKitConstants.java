@@ -20,6 +20,7 @@ public class UiKitConstants {
     public static final int INTENT_CODE_PAYMENT = 108;
     public static final int INTENT_VERIFICATION = 110;
     public static final int INTENT_WEBVIEW_PAYMENT = 111;
+    public static final int INTENT_CODE_GOPAY = 345;
 
 
     public static final String KEY_USER_DETAILS = "user_details";
