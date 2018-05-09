@@ -149,6 +149,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         isIndomaret = getIntent().getBooleanExtra(UserDetailsActivity.INDOMARET, false);
         isKioson = getIntent().getBooleanExtra(UserDetailsActivity.KIOSON, false);
         isGci = getIntent().getBooleanExtra(UserDetailsActivity.GIFT_CARD, false);
+        isDanamonOnline = getIntent().getBooleanExtra(UserDetailsActivity.DANAMON_ONLINE, false);
 
         midtransSDK = MidtransSDK.getInstance();
         initializeTheme();
@@ -288,7 +289,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         if (isCreditCardOnly || isBankTransferOnly || isKlikBCA || isBCAKlikpay
                 || isMandiriClickPay || isMandiriECash || isCIMBClicks || isBRIEpay
                 || isTelkomselCash || isIndosatDompetku || isXlTunai
-                || isIndomaret || isKioson || isGci) {
+                || isIndomaret || isKioson || isGci || isDanamonOnline) {
             progressMessage.setText(R.string.txt_checkout);
         } else {
             progressMessage.setText(getString(R.string.txt_loading_payment));
@@ -955,7 +956,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     if (this.data.size() == 1 || isCreditCardOnly || isBankTransferOnly || isBCAKlikpay || isKlikBCA
                             || isMandiriClickPay || isMandiriECash || isCIMBClicks || isBRIEpay
                             || isTelkomselCash || isIndosatDompetku || isXlTunai
-                            || isIndomaret || isKioson || isGci) {
+                            || isIndomaret || isKioson || isGci || isDanamonOnline || isGopay) {
 
                         midtransSDK.notifyTransactionFinished(new TransactionResult(true));
                         finish();
@@ -987,7 +988,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                         if (this.data.size() == 1 || isCreditCardOnly || isBankTransferOnly || isBCAKlikpay || isKlikBCA
                                 || isMandiriClickPay || isMandiriECash || isCIMBClicks || isBRIEpay
                                 || isTelkomselCash || isIndosatDompetku || isXlTunai
-                                || isIndomaret || isKioson || isGci) {
+                                || isIndomaret || isKioson || isGci || isGopay || isDanamonOnline) {
 
                             midtransSDK.notifyTransactionFinished(new TransactionResult(true));
                             finish();

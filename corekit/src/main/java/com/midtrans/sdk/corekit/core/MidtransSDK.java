@@ -448,6 +448,8 @@ public class MidtransSDK {
             startKiosonUIFlow(context, snapToken);
         } else if (paymentMethod.equals(PaymentMethod.GIFT_CARD_INDONESIA)) {
             startGiftCardUIFlow(context, snapToken);
+        } else if (paymentMethod.equals(PaymentMethod.DANAMON_ONLINE)) {
+            startDanamonOnlineUIFlow(context, snapToken);
         } else {
             if (TextUtils.isEmpty(snapToken)) {
                 startPaymentUiFlow(context);
@@ -801,6 +803,20 @@ public class MidtransSDK {
     private void startGiftCardUIFlow(@NonNull Context context, String snapToken) {
         if (isTransactionRequestAvailable() && uiflow != null) {
             uiflow.runGci(context, snapToken);
+        } else {
+            Logger.e(TAG, ADD_TRANSACTION_DETAILS);
+        }
+    }
+
+    /**
+     * This will start actual execution of Gift Card UI flow.
+     *
+     * @param context   activity context.
+     * @param snapToken checkout token
+     */
+    private void startDanamonOnlineUIFlow(@NonNull Context context, String snapToken) {
+        if (isTransactionRequestAvailable() && uiflow != null) {
+            uiflow.runDanamonOnline(context, snapToken);
         } else {
             Logger.e(TAG, ADD_TRANSACTION_DETAILS);
         }

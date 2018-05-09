@@ -27,6 +27,7 @@ import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.core.PaymentMethod;
 import com.midtrans.sdk.corekit.models.UserAddress;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
@@ -286,7 +287,7 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
                 if (isInEditMode) {
                     Toast.makeText(this, "Please save or cancel your information changes first!", Toast.LENGTH_SHORT).show();
                 } else {
-                    MidtransSDK.getInstance().startPaymentUiFlow(DemoOrderReviewActivity.this);
+                    MidtransSDK.getInstance().startPaymentUiFlow(DemoOrderReviewActivity.this, PaymentMethod.DANAMON_ONLINE);
                     overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 }
                 break;
