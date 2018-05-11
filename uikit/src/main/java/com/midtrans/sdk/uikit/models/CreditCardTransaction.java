@@ -314,4 +314,8 @@ public class CreditCardTransaction {
     public boolean isSelectedPromoAvailable() {
         return selectedPromo != null && selectedPromo.getDiscountedGrossAmount() != null;
     }
+
+    public boolean isInstallmentOptionRequired() {
+        return (cardInstallment != null && cardInstallment.isInstallmentOptionRequired());
+    }
 }

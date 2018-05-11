@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.koushikdutta.ion.Ion;
 import com.midtrans.raygun.RaygunClient;
+import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.callback.CheckoutCallback;
 import com.midtrans.sdk.corekit.callback.TransactionOptionsCallback;
 import com.midtrans.sdk.corekit.core.Constants;
@@ -39,8 +40,10 @@ import com.midtrans.sdk.corekit.models.promo.Promo;
 import com.midtrans.sdk.corekit.models.promo.PromoDetails;
 import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
 import com.midtrans.sdk.corekit.models.snap.ItemDetails;
+import com.midtrans.sdk.corekit.models.snap.MerchantData;
 import com.midtrans.sdk.corekit.models.snap.Token;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
+import com.midtrans.sdk.corekit.models.snap.TransactionDetails;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.BuildConfig;
@@ -444,7 +447,9 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     bindDataToView(transaction);
                     // Directly start credit card payment if using credit card mode only
                     initPaymentMethods(transaction.getEnabledPayments());
-
+                    // init mixpanel properties
+                    initMixpanelProperties(transaction);
+                    // init issue tracker
                     initCustomTrackingProperties();
                 } catch (NullPointerException e) {
                     Logger.e(TAG, e.getMessage());
@@ -466,6 +471,34 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 showFallbackErrorPage(error, getString(R.string.maintenance_message));
             }
         });
+    }
+
+    private void initMixpanelProperties(Transaction transaction) {
+        MixpanelAnalyticsManager analyticsManager = midtransSDK.getmMixpanelAnalyticsManager();
+        if (transaction != null) {
+            analyticsManager.setEnabledPayments(createEnabledMethods(transaction.getEnabledPayments()));
+            TransactionDetails transactionDetails = transaction.getTransactionDetails();
+            if (transactionDetails != null) {
+                analyticsManager.setOrderId(transactionDetails.getOrderId());
+            }
+
+            MerchantData merchantData = transaction.getMerchantData();
+            if (merchantData != null) {
+                merchantData.getMerchantId();
+            }
+        }
+
+
+    }
+
+    private List<String> createEnabledMethods(List<EnabledPayment> enabledPayments) {
+        List<String> enabledMethods = new ArrayList<>();
+        if (enabledPayments != null && !enabledPayments.isEmpty()) {
+            for (EnabledPayment method : enabledPayments) {
+                enabledMethods.add(method.getType());
+            }
+        }
+        return enabledMethods;
     }
 
     private void initCustomTrackingProperties() {
