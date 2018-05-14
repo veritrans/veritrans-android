@@ -32,6 +32,7 @@ import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.core.themes.ColorTheme;
 import com.midtrans.sdk.corekit.core.themes.CustomColorTheme;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
+import com.midtrans.sdk.corekit.models.MerchantPreferences;
 import com.midtrans.sdk.corekit.models.PaymentDetails;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
@@ -484,13 +485,18 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
             TransactionDetails transactionDetails = transaction.getTransactionDetails();
             if (transactionDetails != null) {
-
                 analyticsManager.setOrderId(transactionDetails.getOrderId());
             }
 
             MerchantData merchantData = transaction.getMerchantData();
+
             if (merchantData != null) {
-                merchantData.getMerchantId();
+                analyticsManager.setMerchantId(merchantData.getMerchantId());
+
+                MerchantPreferences preferences = merchantData.getPreference();
+                if (preferences != null) {
+                    analyticsManager.setMerchantName(preferences.getDisplayName());
+                }
             }
         }
 
