@@ -445,10 +445,13 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     }
 
                     bindDataToView(transaction);
-                    // Directly start credit card payment if using credit card mode only
-                    initPaymentMethods(transaction.getEnabledPayments());
+
                     // init mixpanel properties
                     initMixpanelProperties(transaction);
+
+                    // Directly start credit card payment if using credit card mode only
+                    initPaymentMethods(transaction.getEnabledPayments());
+
                     // init issue tracker
                     initCustomTrackingProperties();
                 } catch (NullPointerException e) {
@@ -476,9 +479,12 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     private void initMixpanelProperties(Transaction transaction) {
         MixpanelAnalyticsManager analyticsManager = midtransSDK.getmMixpanelAnalyticsManager();
         if (transaction != null) {
+
             analyticsManager.setEnabledPayments(createEnabledMethods(transaction.getEnabledPayments()));
+
             TransactionDetails transactionDetails = transaction.getTransactionDetails();
             if (transactionDetails != null) {
+
                 analyticsManager.setOrderId(transactionDetails.getOrderId());
             }
 
@@ -487,7 +493,6 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 merchantData.getMerchantId();
             }
         }
-
 
     }
 

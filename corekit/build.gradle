@@ -121,9 +121,9 @@ dependencies {
 
 
     // Analytics Manager
-    developmentCompile 'com.midtrans:analytics:1.4.0-SANDBOX'
-    stagingCompile 'com.midtrans:analytics:1.4.0-SANDBOX'
-    productionCompile 'com.midtrans:analytics:1.4.0'
+    developmentCompile 'com.midtrans:analytics:1.4.4-SANDBOX'
+    stagingCompile 'com.midtrans:analytics:1.4.4-SANDBOX'
+    productionCompile 'com.midtrans:analytics:1.4.4'
     /*
      * test dependencies
      */
