@@ -66,6 +66,10 @@ public class CreditCardInstallment {
         return true;
     }
 
+    public boolean isInstallmentOptionRequired() {
+        return (installment != null && installment.isRequired());
+    }
+
     public void setAvailableStatus(boolean availableStatus) {
         this.installmentAvailable = availableStatus;
     }
