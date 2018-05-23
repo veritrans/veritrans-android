@@ -9,7 +9,6 @@
     <include layout="@layout/appbar_payment" />
 
     <RelativeLayout
-        android:id="@+id/main_content_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"

@@ -30,7 +30,6 @@
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
             android:layout_centerVertical="true"
             android:textStyle="bold"
-            android:id="@+id/payable_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/payable_amount"

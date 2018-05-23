@@ -45,7 +45,6 @@
         android:orientation="vertical">
 
         <RelativeLayout
-            android:id="@+id/view_pager_container"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.5">
@@ -103,7 +102,6 @@
                 android:textSize="12sp" />
 
             <LinearLayout
-                android:id="@+id/rating_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/product_details"

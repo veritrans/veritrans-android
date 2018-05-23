@@ -8,7 +8,6 @@
     <string name="card_click_normal">Normal</string>
     <string name="card_click_two_click">Two Click</string>
     <string name="card_click_one_click">One Click</string>
-    <string name="label_credit_card">credit_card</string>
 
     <!--SECURE TYPE TITLE-->
     <string name="secure_type_enabled">3D Secure Enabled</string>
@@ -64,9 +63,6 @@
     <string name="custom_bni_va_enabled">Custom BNI VA Number Enabled</string>
 
     <string name="custom_va_enabled_format">Enabled - %1$s</string>
-    <string name="custom_va_enabled">Enabled</string>
-    <string name="custom_va_disabled">Disabled</string>
-    <string name="custom_bca_va_hint">Custom BCA VA Number</string>
     <string name="custom_va_hint">Custom VA Number</string>
     <string name="custom_permata_va_error">VA Number must be 10 digits.</string>
     <string name="custom_permata_va_hint">Custom Permata VA Number</string>
@@ -75,7 +71,6 @@
     <string name="custom_permata_va_enable_title">Enable Custom Permata VA Number</string>
     <string name="custom_permata_recipient_enable_title">Enable Custom Permata Recipient</string>
     <string name="format_va_enable_title">Enable Custom %1$s Number</string>
-    <string name="custom_va_edit_button">Edit</string>
 
     <!--SUBCOMPANY-->
     <string name="subcompany_bca_va_disabled">Subcompany for BCA VA Disabled</string>
@@ -87,8 +82,6 @@
     <string name="custom_permata_recipient_enabled">Custom Permata Recipient Enabled</string>
 
     <!--PROMO ENABLED TITLE-->
-    <string name="default_promo_enabled">Promo Enabled</string>
-    <string name="default_promo_disabled">Promo Disabled</string>
 
     <!--PRE AUTHORIZATION ENABLED TITLE-->
     <string name="pre_auth_enabled">Pre Auth Feature Enabled</string>
@@ -160,14 +153,12 @@
     <string name="installment_bni">BNI</string>
     <string name="installment_mandiri">Mandiri</string>
     <string name="installment_bca">BCA</string>
-    <string name="installment_offline">Offline</string>
     <string name="using_bni_installment">BNI Installment</string>
     <string name="using_mandiri_installment">Mandiri Installment</string>
     <string name="using_bca_installment">BCA Installment</string>
     <string name="using_bri_installment">BRI Installment</string>
     <string name="using_cimb_installment">CIMB Installment</string>
     <string name="using_maybank_installment">Maybank Installment</string>
-    <string name="installment_required_title">(Required)</string>
 
     <!-- BNI Point -->
     <string name="bni_point_only_disabled">BNI Point Only Disabled</string>
@@ -182,7 +173,6 @@
     <string name="midtrans_pillow_1">Midtrans Pillow I</string>
     <string name="midtrans_pillow_2">Midtrans Pillow II</string>
     <string name="price_pillow_1">Rp 200,000</string>
-    <string name="midtrans_store">midtrans store</string>
 
     <!-- Demo Account-->
     <string name="account_name">Budi Utomo</string>
@@ -210,7 +200,6 @@
     <string name="bca_va_title">BCA VA</string>
     <string name="subcompany_bca_va_title">Subcompany BCA VA</string>
     <string name="bank_mega">Mega</string>
-    <string name="secure_3ds">3ds</string>
     <string name="enable_rba_3ds">RBA Enabled - Case 3DS</string>
     <string name="enable_rba_non_3ds">RBA Enabled - Case non 3DS</string>
     <string name="enable_3ds">Enable 3ds</string>

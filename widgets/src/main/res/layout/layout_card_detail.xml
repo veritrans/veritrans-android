@@ -78,7 +78,6 @@
                         android:textSize="12sp" />
 
                     <TextView
-                        android:id="@+id/text_exp_date"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
@@ -90,7 +89,6 @@
             </LinearLayout>
 
             <ImageView
-                android:id="@+id/logo_card"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
@@ -100,7 +98,6 @@
                 tools:src="@drawable/ic_visa" />
 
             <LinearLayout
-                android:id="@+id/validation_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"

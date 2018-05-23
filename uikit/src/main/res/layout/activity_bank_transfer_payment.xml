@@ -21,9 +21,7 @@
             android:layout_above="@+id/container_item_details"
             android:layout_alignParentTop="true">
 
-            <include
-                android:id="@+id/container_saved_card_root"
-                layout="@layout/layout_bank_transfer_payment" />
+            <include layout="@layout/layout_bank_transfer_payment" />
         </ScrollView>
 
         <View

@@ -9,7 +9,6 @@
     tools:context="com.midtrans.sdk.uikit.fragments.UserAddressFragment">
 
     <android.support.v4.widget.NestedScrollView
-        android:id="@+id/addressScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorAccentLight"
@@ -118,7 +117,6 @@
 
             <android.support.v7.widget.CardView
                 xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/shipping_address_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/billing_address_view"

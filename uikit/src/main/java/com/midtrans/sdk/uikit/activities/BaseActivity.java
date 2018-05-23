@@ -1,6 +1,5 @@
 package com.midtrans.sdk.uikit.activities;
 
-import android.content.Intent;
 import android.support.annotation.LayoutRes;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
@@ -19,11 +18,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.koushikdutta.ion.Ion;
-import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.MerchantPreferences;
-import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.snap.ItemDetails;
 import com.midtrans.sdk.corekit.models.snap.MerchantData;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
@@ -31,9 +28,6 @@ import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.BuildConfig;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.adapters.TransactionDetailsAdapter;
-import com.midtrans.sdk.uikit.fragments.PaymentTransactionStatusFragment;
-import com.midtrans.sdk.uikit.utilities.UiKitConstants;
-import com.midtrans.sdk.uikit.views.status.PaymentStatusActivity;
 import com.midtrans.sdk.uikit.widgets.BoldTextView;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
@@ -209,24 +203,7 @@ public class BaseActivity extends AppCompatActivity {
                     if (primaryButton != null) {
                         primaryButton.setBackgroundColor(primaryColor);
                     }
-
-                    // Set button confirm color
-                    FancyButton confirmPayButton = (FancyButton) findViewById(R.id.btn_confirm_payment);
-                    if (confirmPayButton != null) {
-                        confirmPayButton.setBackgroundColor(primaryColor);
-                    }
-
-                    // Set button pay now color
-                    FancyButton payNowButton = (FancyButton) findViewById(R.id.btn_pay_now);
-                    if (payNowButton != null) {
-                        payNowButton.setBackgroundColor(primaryColor);
-                    }
-
-                    // Set tab indicator color if available
-                    TabLayout tabLayout = (TabLayout) findViewById(R.id.instruction_tabs);
-                    if (tabLayout != null) {
-                        tabLayout.setSelectedTabIndicatorColor(primaryColor);
-                    }
+                    
                 }
 
                 if (primaryDarkColor != 0) {
@@ -273,41 +250,6 @@ public class BaseActivity extends AppCompatActivity {
                 }
             }
         }
-    }
-
-    protected Fragment getCurrentFagment(Class fragmentClass) {
-        if (!TextUtils.isEmpty(currentFragmentName) && currentFragmentName.equals(fragmentClass.getName())) {
-            Fragment currentFragment = getSupportFragmentManager().findFragmentByTag(currentFragmentName);
-            return currentFragment;
-        }
-        return null;
-    }
-
-    protected void initPaymentStatus(TransactionResponse transactionResponse, String errorMessage, int paymentMethod, boolean addToBackStack) {
-        if (MidtransSDK.getInstance().getUIKitCustomSetting().isShowPaymentStatus()) {
-            if (paymentMethod == Constants.PAYMENT_METHOD_MANDIRI_CLICK_PAY || paymentMethod == Constants.PAYMENT_METHOD_TELKOMSEL_CASH || paymentMethod == Constants.PAYMENT_METHOD_GCI || paymentMethod == Constants.PAYMENT_METHOD_INDOSAT_DOMPETKU) {
-                Intent intent = new Intent(this, PaymentStatusActivity.class);
-                intent.putExtra(PaymentStatusActivity.EXTRA_PAYMENT_RESULT, transactionResponse);
-                startActivityForResult(intent, UiKitConstants.INTENT_CODE_PAYMENT_STATUS);
-            } else {
-                PaymentTransactionStatusFragment paymentTransactionStatusFragment =
-                        PaymentTransactionStatusFragment.newInstance(transactionResponse, paymentMethod);
-                replaceFragment(paymentTransactionStatusFragment, R.id.instruction_container,
-                        addToBackStack, false);
-            }
-        } else {
-            setResultCode(RESULT_OK);
-            setResultAndFinish(transactionResponse, errorMessage);
-        }
-    }
-
-
-    protected void setResultAndFinish(TransactionResponse transactionResponse, String errorMessage) {
-        Intent data = new Intent();
-        data.putExtra(getString(R.string.transaction_response), transactionResponse);
-        data.putExtra(getString(R.string.error_transaction), errorMessage);
-        setResult(this.RESULT_CODE, data);
-        finish();
     }
 
     public void setResultCode(int resultCode) {

@@ -15,37 +15,12 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.midtrans.sdk.uikit.activities.BankTransferActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.midtrans.sdk.uikit.activities.BankTransferInstructionActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.midtrans.sdk.uikit.activities.PaymentWebActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.midtrans.sdk.uikit.activities.MandiriClickPayActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity
             android:name="com.midtrans.sdk.uikit.views.mandiri_clickpay.MandiriClickPayActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name="com.midtrans.sdk.uikit.activities.EpayBriActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait" />
-        <activity
             android:name="com.midtrans.sdk.uikit.views.bri_epay.BriEpayPaymentActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.midtrans.sdk.uikit.activities.CIMBClickPayActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
@@ -54,27 +29,14 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="com.midtrans.sdk.uikit.activities.MandiriECashActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait" />
-        <activity
             android:name="com.midtrans.sdk.uikit.views.mandiri_ecash.MandiriEcashPaymentActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
-        <activity
-            android:name="com.midtrans.sdk.uikit.activities.IndosatDompetkuActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name="com.midtrans.sdk.uikit.views.indosat_dompetku.IndosatDompetkuPaymentActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity
-            android:name="com.midtrans.sdk.uikit.activities.IndomaretActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait" />
         <activity
             android:name="com.midtrans.sdk.uikit.views.indomaret.payment.IndomaretPaymentActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -83,42 +45,12 @@
             android:name="com.midtrans.sdk.uikit.views.indomaret.status.IndomaretStatusActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
-        <activity
-            android:name="com.midtrans.sdk.uikit.activities.IndomaretInstructionActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.midtrans.sdk.uikit.activities.MandiriClickPayInstructionActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait" />
 
-        <activity
-            android:name="com.midtrans.sdk.uikit.activities.SelectBankTransferActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="com.midtrans.sdk.uikit.activities.BCAKlikPayActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.midtrans.sdk.uikit.activities.KlikBCAActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.midtrans.sdk.uikit.activities.TelkomselCashActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name="com.midtrans.sdk.uikit.views.telkomsel_cash.TelkomselCashPaymentActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity
-            android:name="com.midtrans.sdk.uikit.activities.XLTunaiActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait" />
         <activity
             android:name="com.midtrans.sdk.uikit.views.xl_tunai.payment.XlTunaiPaymentActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -132,15 +64,7 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.midtrans.sdk.uikit.activities.KiosonActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait" />
-        <activity
             android:name="com.midtrans.sdk.uikit.views.kioson.payment.KiosonPaymentActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.midtrans.sdk.uikit.activities.KiosonInstructionActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
@@ -148,19 +72,10 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.midtrans.sdk.uikit.activities.GCIActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity
             android:name="com.midtrans.sdk.uikit.views.gci.GciPaymentActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity
-            android:name=".activities.KlikBCAInstructionActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait" />
 
         <activity
             android:name=".views.creditcard.details.CreditCardDetailsActivity"
