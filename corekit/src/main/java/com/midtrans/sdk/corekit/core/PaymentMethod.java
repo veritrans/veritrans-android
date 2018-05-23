@@ -24,5 +24,6 @@ public enum PaymentMethod {
     GIFT_CARD_INDONESIA,
     INDOSAT_DOMPETKU,
     TELKOMSEL_CASH,
-    XL_TUNAI
+    XL_TUNAI,
+    DANAMON_ONLINE
 }

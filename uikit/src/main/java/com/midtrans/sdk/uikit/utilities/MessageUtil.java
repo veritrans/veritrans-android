@@ -2,8 +2,8 @@ package com.midtrans.sdk.uikit.utilities;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
+import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.BuildConfig;
@@ -21,7 +21,7 @@ public class MessageUtil {
     private static String TAG = MessageUtil.class.getSimpleName();
 
     private static final String PAID_ORDER_ID = "has been paid";
-    private static final String PROCESSED_ORDER_ID = "transaction has been processed";
+    public static final String PROCESSED_ORDER_ID = "transaction has been processed";
     private static final String TOKEN_NOT_FOUND = "token not found";
     private static final String GROSS_AMOUNT_NOT_EQUAL = "is not equal to the sum";
     private static final String GROSS_AMOUNT_REQUIRED = "amount is required";
@@ -41,6 +41,7 @@ public class MessageUtil {
     private static final String USER_ID_LESS = "less than or equal";
     private static final String USER_ID_INVALID = "user_id format is invalid";
     private static final String DENY = "deny";
+    public static final String PROMO_UNAVAILABLE = "promo is not available";
 
 
     public static String createMessageWhenCheckoutFailed(Context context, ArrayList<String> statusMessage) {
@@ -182,7 +183,7 @@ public class MessageUtil {
             }
 
         } catch (RuntimeException e) {
-            Log.e(TAG, "createpaymentFailedMessage():" + e.getMessage());
+            Logger.e(TAG, "createpaymentFailedMessage():" + e.getMessage());
         }
 
         return message;
@@ -212,6 +213,12 @@ public class MessageUtil {
                                     context.getString(R.string.status_message_token_notfound),
                                     context.getString(R.string.detail_message_token_notfound));
 
+                        } else if (errorMessage.contains(PROCESSED_ORDER_ID)) {
+
+                            message = new MessageInfo(UiKitConstants.STATUS_CODE_406,
+                                    context.getString(R.string.message_payment_paid),
+                                    context.getString(R.string.message_payment_paid));
+
                         } else if (!Utils.isNetworkAvailable(context)) {
 
                             message = new MessageInfo(null,
@@ -239,7 +246,7 @@ public class MessageUtil {
                 }
             }
         } catch (RuntimeException e) {
-            Log.e(TAG, "createMessageOnError():" + e.getMessage());
+            Logger.e(TAG, "createMessageOnError():" + e.getMessage());
         }
 
         return message;

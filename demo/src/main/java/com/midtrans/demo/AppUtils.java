@@ -4,13 +4,17 @@ import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
+import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
 import com.midtrans.sdk.uikit.PaymentMethods;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -21,6 +25,8 @@ import java.util.List;
  */
 
 public class AppUtils {
+
+    private static String TAG = AppUtils.class.getName();
 
     public static final String CATEGORY_CREDIT_CARD = "Credit/Debit Card";
     public static final String CATEGORY_VA = "ATM/Bank Transfer";
@@ -84,23 +90,23 @@ public class AppUtils {
         if (model == null && !TextUtils.isEmpty(type)) {
             switch (type) {
                 case PaymentType.PERMATA_VA:
-                    model = new PaymentMethodsModel(PAYMENT_NAME_PERMATA_VA, null, 0, -1, 4, status);
+                    model = new PaymentMethodsModel(PAYMENT_NAME_PERMATA_VA, null, 0, "", 4, status);
                     break;
 
                 case PaymentType.BCA_VA:
-                    model = new PaymentMethodsModel(PAYMENT_NAME_BCA_VA, null, 0, -1, 2, status);
+                    model = new PaymentMethodsModel(PAYMENT_NAME_BCA_VA, null, 0, "", 2, status);
                     break;
 
                 case PaymentType.BNI_VA:
-                    model = new PaymentMethodsModel(PAYMENT_NAME_BNI_VA, null, 0, -1, 5, status);
+                    model = new PaymentMethodsModel(PAYMENT_NAME_BNI_VA, null, 0, "", 5, status);
                     break;
 
                 case PaymentType.ALL_VA:
-                    model = new PaymentMethodsModel(PAYMENT_NAME_OTHER_VA, null, 0, -1, 6, status);
+                    model = new PaymentMethodsModel(PAYMENT_NAME_OTHER_VA, null, 0, "", 6, status);
                     break;
 
                 case PaymentType.E_CHANNEL:
-                    model = new PaymentMethodsModel(PAYMENT_NAME_MANDIRI_ECHANNEL, null, 0, -1, 3, status);
+                    model = new PaymentMethodsModel(PAYMENT_NAME_MANDIRI_ECHANNEL, null, 0, "", 3, status);
                     break;
             }
         }
@@ -124,7 +130,7 @@ public class AppUtils {
         List<SelectPaymentMethodViewModel> viewModels = new ArrayList<>();
         for (int i = 0; i < enabledPayments.size(); i++) {
             EnabledPayment enabledPayment = enabledPayments.get(i);
-            Log.d("xchannel", "type:" + enabledPayment.getType());
+            Logger.d("xchannel", "type:" + enabledPayment.getType());
 
             PaymentMethodsModel model = getVaPaymentMethods(context, enabledPayment.getType(), enabledPayment.getStatus());
             if (model != null) {
@@ -343,5 +349,26 @@ public class AppUtils {
         }
 
         return deviceType;
+    }
+
+    public static ArrayList<BankBinsResponse> getBankBins(Context context) {
+        ArrayList<BankBinsResponse> list = null;
+        String data;
+        try {
+            InputStream is = context.getAssets().open("bank_bins.json");
+            byte[] buffer = new byte[is.available()];
+            is.read(buffer);
+            is.close();
+            data = new String(buffer, "UTF-8");
+
+            Gson gson = new Gson();
+            list = gson.fromJson(data, new TypeToken<ArrayList<BankBinsResponse>>() {
+            }.getType());
+
+        } catch (Exception e) {
+            Logger.e(TAG, e.getMessage());
+        }
+
+        return list;
     }
 }

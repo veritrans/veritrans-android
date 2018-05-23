@@ -6,6 +6,7 @@
 
     <application
         android:name=".DemoApp"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -20,9 +21,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".DemoProductPageActivity" />
-        <activity android:name=".DemoOrderReviewActivity"
+        <activity
+            android:name=".DemoOrderReviewActivity"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".UserAddressActivity"
+        <activity
+            android:name=".UserAddressActivity"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity android:name=".DemoProductListActivity" />
         <activity android:name=".DemoSavedCardsActivity" />

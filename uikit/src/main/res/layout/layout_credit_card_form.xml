@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container_form"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="@dimen/sixteen_dp"
-    android:paddingRight="@dimen/sixteen_dp">
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/container_offer_status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/sixteen_dp"
         android:orientation="vertical">
 
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
@@ -20,6 +18,7 @@
             style="@style/OfferText.Success"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/eight_dp"
             android:text="@string/offer_applied"
             android:visibility="gone"
             tools:visibility="visible" />
@@ -29,6 +28,7 @@
             style="@style/OfferText.Failure"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/eight_dp"
             android:text="@string/offer_not_applied"
             android:visibility="gone"
             tools:visibility="visible" />
@@ -38,15 +38,25 @@
         android:id="@+id/container_card_number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/container_offer_status">
+        android:paddingLeft="@dimen/sixteen_dp"
+        android:paddingRight="@dimen/sixteen_dp">
+
+        <com.midtrans.sdk.uikit.widgets.BoldTextView
+            android:id="@+id/title_card_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/eight_dp"
+            android:paddingTop="@dimen/eight_dp"
+            android:text="@string/card_detail_title"
+            android:textColor="@color/gray.primary_dark"
+            android:textSize="10sp" />
 
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
             android:id="@+id/hint_card_number"
             style="@style/EditTextHint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/title_card_detail"
             android:text="@string/hint_card_number" />
 
         <android.support.v7.widget.AppCompatEditText
@@ -69,7 +79,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_alignTop="@id/field_card_number"
+            android:layout_alignBottom="@id/field_card_number"
+            android:paddingBottom="@dimen/twelve_dp"
             android:layout_centerVertical="true"
             android:gravity="center_vertical"
             android:orientation="horizontal">
@@ -88,7 +99,7 @@
                 android:layout_height="@dimen/payment_logo_size"
                 android:layout_marginEnd="@dimen/four_dp"
                 android:layout_marginRight="@dimen/four_dp"
-                tools:src="@drawable/ic_visa" />
+                tools:src="@drawable/ic_amex" />
 
             <com.midtrans.sdk.uikit.widgets.AspectRatioImageView
                 android:id="@+id/promo_logo"
@@ -114,11 +125,12 @@
         android:id="@+id/container_card_expiry"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/container_card_number"
         android:layout_marginTop="@dimen/eight_dp"
         android:baselineAligned="false"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/eight_dp"
+        android:paddingLeft="@dimen/sixteen_dp"
+        android:paddingRight="@dimen/sixteen_dp"
         android:weightSum="1">
 
         <RelativeLayout
@@ -202,51 +214,14 @@
     </LinearLayout>
 
     <RelativeLayout
-        android:id="@+id/container_save_card_details"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/container_card_expiry"
-        android:layout_marginTop="@dimen/eight_dp"
-        android:visibility="gone"
-        tools:visibility="visible">
-
-        <android.support.v7.widget.AppCompatCheckBox
-            android:id="@+id/checkbox_save_card"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginBottom="@dimen/four_dp"
-            android:layout_marginEnd="@dimen/eight_dp"
-            android:layout_marginRight="@dimen/eight_dp"
-            android:layout_marginTop="@dimen/four_dp"
-            android:layout_toLeftOf="@id/help_save_card"
-            android:layout_toStartOf="@id/help_save_card"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:text="@string/save_card_message"
-            app:buttonTint="@color/gray.primary_dark" />
-
-        <ImageButton
-            android:id="@+id/help_save_card"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:background="?selectableItemBackground"
-            android:contentDescription="@string/save_card_info"
-            android:src="@drawable/ic_hints" />
-    </RelativeLayout>
-
-    <RelativeLayout
         android:id="@+id/container_bni_point"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/container_save_card_details"
         android:layout_marginTop="@dimen/eight_dp"
         android:gravity="end"
         android:orientation="horizontal"
+        android:paddingLeft="@dimen/sixteen_dp"
+        android:paddingRight="@dimen/sixteen_dp"
         android:visibility="gone"
         tools:visibility="visible">
 
@@ -272,30 +247,48 @@
             android:textColor="?colorAccent" />
     </RelativeLayout>
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_promo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/sixteen_dp"
+        android:paddingRight="@dimen/sixteen_dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/one_dp"
+        android:layout_marginBottom="@dimen/eight_dp"
+        android:layout_marginTop="@dimen/eight_dp"
+        android:background="@color/light_gray"/>
+
     <LinearLayout
         android:id="@+id/container_installment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/container_bni_point"
-        android:layout_marginTop="@dimen/four_dp"
         android:gravity="center_vertical"
         android:orientation="vertical"
-        android:padding="@dimen/eight_dp"
-        android:paddingBottom="@dimen/four_dp"
         android:visibility="gone"
         tools:visibility="visible">
 
-        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+        <com.midtrans.sdk.uikit.widgets.BoldTextView
             android:id="@+id/title_installment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/eight_dp"
+            android:paddingLeft="@dimen/sixteen_dp"
+            android:paddingRight="@dimen/sixteen_dp"
+            android:paddingTop="@dimen/eight_dp"
             android:text="@string/pay_with_instalments"
-            android:textColor="@color/gray.primary_dark" />
+            android:textColor="@color/gray.primary_dark"
+            android:textSize="10sp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/four_dp">
+            android:layout_marginTop="@dimen/four_dp"
+            android:paddingLeft="@dimen/sixteen_dp"
+            android:paddingRight="@dimen/sixteen_dp">
 
             <com.midtrans.sdk.uikit.widgets.FancyButton
                 android:id="@+id/button_installment_decrease"
@@ -324,28 +317,13 @@
                 app:fb_radius="5dp"
                 app:fb_text="+" />
         </LinearLayout>
-    </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/container_security"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/container_installment"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:background="@drawable/grey_rounded_background"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="@dimen/eight_dp">
-
-        <ImageView
-            android:id="@+id/cc_badge"
+        <View
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/four_dp"
-            android:layout_marginLeft="@dimen/four_dp"
-            android:layout_marginRight="@dimen/four_dp"
-            android:layout_marginStart="@dimen/four_dp"
-            android:scaleType="centerInside"/>
+            android:layout_height="@dimen/one_dp"
+            android:layout_marginBottom="@dimen/eight_dp"
+            android:layout_marginTop="@dimen/eight_dp"
+            android:background="@color/light_gray"/>
     </LinearLayout>
 
     <com.midtrans.sdk.uikit.widgets.FancyButton
@@ -353,9 +331,7 @@
         style="@style/ButtonSecondary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/container_security"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="19dp"
+        android:layout_gravity="center_horizontal"
         android:visibility="gone"
         app:fb_iconColor="@color/delete_color"
         app:fb_iconPaddingRight="@dimen/four_dp"
@@ -370,11 +346,174 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/button_delete"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/eight_dp"
+        android:layout_gravity="center_horizontal"
         android:visibility="gone"
         app:fb_iconPaddingRight="@dimen/four_dp"
         app:fb_iconResource="@drawable/ic_scan_cam"
         app:fb_text="@string/btn_scan_card"
         tools:visibility="visible" />
-</RelativeLayout>
+
+    <View
+        android:id="@+id/button_separator"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/one_dp"
+        android:layout_marginBottom="@dimen/eight_dp"
+        android:layout_marginTop="@dimen/eight_dp"
+        android:background="@color/light_gray"/>
+
+    <LinearLayout
+        android:id="@+id/container_user_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <com.midtrans.sdk.uikit.widgets.BoldTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/sixteen_dp"
+            android:layout_marginRight="@dimen/sixteen_dp"
+            android:paddingBottom="@dimen/eight_dp"
+            android:paddingTop="@dimen/eight_dp"
+            android:text="@string/contact_detail_title"
+            android:textColor="@color/gray.primary_dark"
+            android:textSize="10sp"/>
+
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:id="@+id/hint_user_email"
+            style="@style/EditTextHint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/sixteen_dp"
+            android:layout_marginRight="@dimen/sixteen_dp"
+            android:text="@string/hint_email_optional"/>
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/field_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="@dimen/sixteen_dp"
+            android:layout_marginRight="@dimen/sixteen_dp"
+            android:hint="@string/hint_email_example"
+            android:inputType="textEmailAddress"
+            android:maxLength="128"
+            android:maxLines="1"
+            android:nextFocusDown="@+id/field_phone"/>
+
+        <TextView
+            android:id="@+id/error_message_email"
+            style="@style/FormErrorMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/sixteen_dp"
+            android:layout_marginRight="@dimen/sixteen_dp"
+            android:text="@string/validation_email_invalid_optional"
+            tools:visibility="visible" />
+
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:id="@+id/hint_user_phone"
+            style="@style/EditTextHint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/sixteen_dp"
+            android:layout_marginRight="@dimen/sixteen_dp"
+            android:layout_marginTop="@dimen/eight_dp"
+            android:text="@string/hint_phone_number_optional"/>
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/field_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="@dimen/sixteen_dp"
+            android:layout_marginRight="@dimen/sixteen_dp"
+            android:hint="@string/hint_phone_example"
+            android:digits="@string/hint_phone_example"
+            android:imeOptions="actionDone"
+            android:inputType="phone"
+            android:maxLength="13"
+            android:maxLines="1"/>
+
+        <TextView
+            android:id="@+id/error_message_phone"
+            style="@style/FormErrorMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/sixteen_dp"
+            android:layout_marginRight="@dimen/sixteen_dp"
+            android:text="@string/validation_phone_no_invalid_optional"
+            tools:visibility="visible" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/one_dp"
+            android:layout_marginBottom="@dimen/eight_dp"
+            android:layout_marginTop="@dimen/eight_dp"
+            android:background="@color/light_gray"/>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/container_save_card_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/container_user_detail"
+        android:paddingLeft="@dimen/sixteen_dp"
+        android:paddingRight="@dimen/sixteen_dp"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id="@+id/checkbox_save_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginEnd="@dimen/eight_dp"
+            android:layout_marginRight="@dimen/eight_dp"
+            android:layout_toLeftOf="@id/help_save_card"
+            android:layout_toStartOf="@id/help_save_card"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/save_card_message"
+            app:buttonTint="@color/gray.primary_dark" />
+
+        <ImageButton
+            android:id="@+id/help_save_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="?selectableItemBackground"
+            android:contentDescription="@string/save_card_info"
+            android:src="@drawable/ic_hints" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/container_security"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/eight_dp"
+        android:layout_marginLeft="@dimen/sixteen_dp"
+        android:layout_marginRight="@dimen/sixteen_dp"
+        android:layout_marginTop="@dimen/eight_dp"
+        android:background="@drawable/grey_rounded_background"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/eight_dp">
+
+        <ImageView
+            android:id="@+id/cc_badge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/four_dp"
+            android:layout_marginLeft="@dimen/four_dp"
+            android:layout_marginRight="@dimen/four_dp"
+            android:layout_marginStart="@dimen/four_dp"
+            android:scaleType="centerInside" />
+    </LinearLayout>
+</LinearLayout>

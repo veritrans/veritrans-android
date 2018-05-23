@@ -40,7 +40,7 @@ public class TransactionRequest {
     /**
      * amount to charge customer.
      */
-    private double amount = 0.0;
+    private long amount = 0L;
 
     /**
      * It helps to identify whether to execute transaction in secure manner or not.
@@ -60,7 +60,7 @@ public class TransactionRequest {
     /**
      * list of purchased items.
      */
-    private ArrayList<ItemDetails> itemDetails = new ArrayList();
+    private ArrayList<ItemDetails> itemDetails = new ArrayList<>();
 
     /**
      * List of billing addresses.
@@ -98,7 +98,7 @@ public class TransactionRequest {
      * @param amount        amount to charge.
      * @param paymentMethod payment method.
      */
-    public TransactionRequest(String orderId, double amount, int paymentMethod) {
+    public TransactionRequest(String orderId, long amount, int paymentMethod) {
 
         if (!TextUtils.isEmpty(orderId) && amount > 0) {
             this.orderId = orderId;
@@ -114,7 +114,7 @@ public class TransactionRequest {
      * @param orderId order id of transaction.
      * @param amount  amount to charge.
      */
-    public TransactionRequest(String orderId, double amount) {
+    public TransactionRequest(String orderId, long amount) {
 
         if (!TextUtils.isEmpty(orderId) && amount > 0) {
             this.orderId = orderId;
@@ -245,7 +245,7 @@ public class TransactionRequest {
         return orderId;
     }
 
-    public double getAmount() {
+    public long getAmount() {
         return amount;
     }
 

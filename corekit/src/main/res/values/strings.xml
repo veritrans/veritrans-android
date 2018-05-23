@@ -108,7 +108,6 @@
     <string name="hint_card_number">Card Number</string>
     <string name="hint_cvv">CVV</string>
     <string name="save_card_message">Save my card details</string>
-    <string name="pay_now">Pay now</string>
     <string name="pay_with_instalments">Pay with instalment ?</string>
     <string name="validatation_message_card_holder_name">Please enter card holder name</string>
     <string name="hint_expiry_date">Expiry(mm/yy)</string>
@@ -166,7 +165,6 @@
     <string name="copied_bill_code">Billpay code was copied to clipboard</string>
     <string name="copied_company_code">Company code was copied to clipboard</string>
     <string name="failed_to_copy">Failed to copy to clipboard</string>
-    <string name="complete_payment_at_atm">Complete Payment at ATM</string>
     <string name="complete_payment_at_klik_bca">Complete Payment at KlikBCA</string>
     <string name="done">Finish</string>
     <string name="virtual_account_number">Virtual Account Number</string>
@@ -260,7 +258,6 @@
     <string name="btn_save_card">Register Card</string>
     <string name="btn_scan_card">Scan Card Using Camera</string>
     <string name="offer_applied">Offer Applied Successfully !</string>
-    <string name="offer_not_applied">This card is not applicable for this promotion, please use another one.</string>
     <string name="no_offers">No offers found</string>
     <string name="text_yes">Yes</string>
     <string name="text_no">No</string>

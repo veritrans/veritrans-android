@@ -229,10 +229,7 @@ public class BankPointsActivity extends BasePaymentActivity {
         if (textTotalAmount != null) {
             textTotalAmount.setText(amountToPay);
         }
-
-        if (transactionDetailAdapter != null) {
-            transactionDetailAdapter.addItemDetails(presenter.createBankPointItemDetails());
-        }
+        addNewItemDetails(presenter.createBankPointItemDetails());
     }
 
     private void redeemPoint(boolean withPoint) {

@@ -9,7 +9,6 @@ import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import com.midtrans.sdk.corekit.core.Logger;
@@ -17,7 +16,7 @@ import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.CardRegistrationResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.abstracts.BaseActivity;
+import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
 import com.midtrans.sdk.uikit.scancard.ExternalScanner;
 import com.midtrans.sdk.uikit.scancard.ScannerModel;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
@@ -32,7 +31,7 @@ import java.util.Date;
  * Created by ziahaqi on 8/18/17.
  */
 
-public class CardRegistrationActivity extends BaseActivity implements CardRegistrationView {
+public class CardRegistrationActivity extends BasePaymentActivity implements CardRegistrationView {
 
     public static final String EXTRA_CALLBACK = "extra.callback";
     private static final String TAG = CardRegistrationActivity.class.getSimpleName();
@@ -211,6 +210,10 @@ public class CardRegistrationActivity extends BaseActivity implements CardRegist
     private void setCardType() {
         // Don't set card type when card number is empty
         String cardNumberText = fieldCardNumber.getText().toString();
+        if (cardNumberText.startsWith("4")) {
+            imageCardLogo.setImageResource(R.drawable.ic_visa);
+            return;
+        }
         if (TextUtils.isEmpty(cardNumberText) || cardNumberText.length() < 2) {
             imageCardLogo.setImageResource(0);
             return;
@@ -463,21 +466,24 @@ public class CardRegistrationActivity extends BaseActivity implements CardRegist
     @Override
     public void bindViews() {
 
-        fieldCardNumber = (TextInputEditText) findViewById(R.id.edit_card_number);
-        fieldCardExpiry = (TextInputEditText) findViewById(R.id.edit_card_expiry);
-        fieldCardCvv = (TextInputEditText) findViewById(R.id.edit_card_cvv);
+        fieldCardNumber = findViewById(R.id.edit_card_number);
+        fieldCardExpiry = findViewById(R.id.edit_card_expiry);
+        fieldCardCvv = findViewById(R.id.edit_card_cvv);
 
-        containerCardNumber = (TextInputLayout) findViewById(R.id.container_edit_card_number);
-        containerCardExpiry = (TextInputLayout) findViewById(R.id.container_card_expiry);
-        containerCardCvv = (TextInputLayout) findViewById(R.id.container_card_cvv);
+        containerCardNumber = findViewById(R.id.container_edit_card_number);
+        containerCardExpiry = findViewById(R.id.container_card_expiry);
+        containerCardCvv = findViewById(R.id.container_card_cvv);
 
-        imageBankLogo = (ImageView) findViewById(R.id.image_bank_logo);
-        imageCardLogo = (ImageView) findViewById(R.id.image_card_logo);
+        imageBankLogo = findViewById(R.id.image_bank_logo);
+        imageCardLogo = findViewById(R.id.image_card_logo);
 
-        buttonSaveCard = (FancyButton) findViewById(R.id.button_save_card);
-        buttonScanCard = (FancyButton) findViewById(R.id.button_scan_card);
+        buttonSaveCard = findViewById(R.id.button_primary);
+        buttonScanCard = findViewById(R.id.button_scan_card);
 
-        textTitle = (SemiBoldTextView) findViewById(R.id.text_page_title);
+        textTitle = findViewById(R.id.text_page_title);
+
+        buttonSaveCard.setText(getString(R.string.save_card));
+        buttonSaveCard.setTextBold();
     }
 
     @Override
@@ -501,7 +507,7 @@ public class CardRegistrationActivity extends BaseActivity implements CardRegist
         if (requestCode == UiKitConstants.INTENT_REQUEST_SCAN_CARD) {
             if (data != null && data.hasExtra(ExternalScanner.EXTRA_SCAN_DATA)) {
                 ScannerModel scanData = (ScannerModel) data.getSerializableExtra(ExternalScanner.EXTRA_SCAN_DATA);
-                Log.d("scancard", String.format("Card Number: %s, Card Expire: %s/%d", scanData.getCardNumber(), scanData.getExpiredMonth() < 10 ? String.format("0%d", scanData.getExpiredMonth()) : String.format("%d", scanData.getExpiredMonth()), scanData.getExpiredYear() - 2000));
+                Logger.d("scancard", String.format("Card Number: %s, Card Expire: %s/%d", scanData.getCardNumber(), scanData.getExpiredMonth() < 10 ? String.format("0%d", scanData.getExpiredMonth()) : String.format("%d", scanData.getExpiredMonth()), scanData.getExpiredYear() - 2000));
                 updateScanCardData(scanData);
             }
         }
@@ -509,7 +515,7 @@ public class CardRegistrationActivity extends BaseActivity implements CardRegist
 
     private void updateScanCardData(ScannerModel scanData) {
         if (scanData != null) {
-            String cardNumber = Utils.getFormattedCreditCardNumber(Utils.getFormattedCreditCardNumber(scanData.getCardNumber()));
+            String cardNumber = Utils.getFormattedCreditCardNumber((scanData.getCardNumber()));
             String expDate = String.format("%s/%d", scanData.getExpiredMonth() < 10 ? String.format("0%d",
                     scanData.getExpiredMonth()) : String.format("%d", scanData.getExpiredMonth()),
                     scanData.getExpiredYear() - 2000);

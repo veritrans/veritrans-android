@@ -62,7 +62,6 @@
     <string name="hint_card_number">Nomor Kartu</string>
     <string name="hint_cvv">CVV</string>
     <string name="save_card_message">Simpan detail kartu saya</string>
-    <string name="pay_now">Bayar Sekarang</string>
     <string name="pay_with_instalments">Bayar dengan cicilan ?</string>
     <string name="validatation_message_card_holder_name">Masukkan nama pemilik kartu</string>
     <string name="hint_expiry_date">Kadaluarsa(mm/yy)</string>
@@ -105,7 +104,6 @@
     <string name="copied_to_clipboard">Sudah disalin ke clipboard</string>
     <string name="copied_bill_code">Kode tagihan sudah disalin ke clipboard</string>
     <string name="copied_company_code">Kode perusahaan sudah disalin ke clipboard</string>
-    <string name="complete_payment_at_atm">Selesaikan Pembayaran di ATM</string>
     <string name="done">Selesai</string>
     <string name="virtual_account_number">Nomor Akun Virtual</string>
     <string name="payment_pending">Menunggu Pembayaran</string>
@@ -187,7 +185,6 @@
     <string name="btn_save_card">Mendaftarkan Kartu</string>
     <string name="btn_scan_card">Pindai Kartu Menggunakan Kamera</string>
     <string name="offer_applied">Sukses menggunakan penawaran!</string>
-    <string name="offer_not_applied">Kartu tidak berlaku untuk promo, coba gunakan kartu lain.</string>
     <string name="no_offers">Tidak ada penawaran</string>
     <string name="text_yes">Ya</string>
     <string name="text_no">Tidak</string>

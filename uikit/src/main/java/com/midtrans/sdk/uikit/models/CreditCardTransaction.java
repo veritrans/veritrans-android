@@ -1,9 +1,9 @@
 package com.midtrans.sdk.uikit.models;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.midtrans.sdk.corekit.models.BankType;
+import com.midtrans.sdk.corekit.models.promo.Promo;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 import com.midtrans.sdk.corekit.models.snap.BanksPointResponse;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
@@ -26,6 +26,7 @@ public class CreditCardTransaction {
     private ArrayList<BankBinsResponse> bankBins;
     private boolean bankBinsAvailable;
     private boolean blackListBinsAvailable;
+    private Promo selectedPromo;
 
     public CreditCardTransaction() {
         bankBins = new ArrayList<>();
@@ -78,8 +79,7 @@ public class CreditCardTransaction {
     }
 
     public void setBankBins(ArrayList<BankBinsResponse> bankBins) {
-        this.bankBins.clear();
-        this.bankBins.addAll(bankBins);
+        // do nothing
     }
 
     public boolean isInWhiteList(String cardBin) {
@@ -251,17 +251,18 @@ public class CreditCardTransaction {
             for (String bin : creditCard.getWhitelistBins()) {
                 if (!TextUtils.isEmpty(bin)) {
                     if (TextUtils.isDigitsOnly(bin)) {
-                        if (!cardNumber.startsWith(bin)) {
-                            return false;
+                        if (cardNumber.startsWith(bin)) {
+                            return true;
                         }
                     } else {
                         String bank = getBankByCardNumber(cardNumber);
-                        if (!bin.equalsIgnoreCase(bank)) {
-                            return false;
+                        if (bin.equalsIgnoreCase(bank)) {
+                            return true;
                         }
                     }
                 }
             }
+            return false;
         }
 
         return true;
@@ -300,5 +301,21 @@ public class CreditCardTransaction {
         }
 
         return false;
+    }
+
+    public void setSelectedPromo(Promo seletedPromo) {
+        this.selectedPromo = seletedPromo;
+    }
+
+    public Promo getSelectedPromo() {
+        return selectedPromo;
+    }
+
+    public boolean isSelectedPromoAvailable() {
+        return selectedPromo != null && selectedPromo.getDiscountedGrossAmount() != null;
+    }
+
+    public boolean isInstallmentOptionRequired() {
+        return (cardInstallment != null && cardInstallment.isInstallmentOptionRequired());
     }
 }

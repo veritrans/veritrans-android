@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
@@ -20,7 +19,6 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +30,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.midtrans.sdk.corekit.callback.ObtainPromoCallback;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
@@ -40,7 +37,6 @@ import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.CardTokenRequest;
 import com.midtrans.sdk.corekit.models.CreditCardFromScanner;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
-import com.midtrans.sdk.corekit.models.promo.ObtainPromosResponse;
 import com.midtrans.sdk.corekit.models.snap.PromoResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
@@ -329,9 +325,9 @@ public class CardDetailsFragment extends Fragment {
                                 // Calculate discount amount
                                 double preDiscountAmount = midtransSDK.getTransactionRequest().getAmount();
                                 double discountedAmount = preDiscountAmount - SdkUIFlowUtil.calculateDiscountAmount(promo);
-                                request.setGrossAmount(discountedAmount);
+                                request.setGrossAmount((long) discountedAmount);
                             } else {
-                                request.setGrossAmount(midtransSDK.getTransactionRequest().getAmount());
+                                request.setGrossAmount((long) midtransSDK.getTransactionRequest().getAmount());
                             }
                             ((CreditCardFlowActivity) getActivity()).twoClickPayment(request);
                         } else {
@@ -348,7 +344,7 @@ public class CardDetailsFragment extends Fragment {
                                     midtransSDK.getClientKey());
                             cardTokenRequest.setIsSaved(saveCardCheckBox.isChecked());
                             cardTokenRequest.setSecure(((CreditCardFlowActivity) getActivity()).isSecurePayment());
-                            cardTokenRequest.setGrossAmount(midtransSDK.getTransactionRequest().getAmount());
+                            cardTokenRequest.setGrossAmount((long) midtransSDK.getTransactionRequest().getAmount());
 
                             SdkUIFlowUtil.showProgressDialog((AppCompatActivity) getActivity(), false);
                             ((CreditCardFlowActivity) getActivity()).setSavedCardInfo(saveCardCheckBox.isChecked(), "");
@@ -356,7 +352,7 @@ public class CardDetailsFragment extends Fragment {
                                 // Calculate discount amount
                                 double preDiscountAmount = midtransSDK.getTransactionRequest().getAmount();
                                 double discountedAmount = preDiscountAmount - SdkUIFlowUtil.calculateDiscountAmount(promo);
-                                cardTokenRequest.setGrossAmount(discountedAmount);
+                                cardTokenRequest.setGrossAmount((long) discountedAmount);
                                 ((CreditCardFlowActivity) getActivity()).normalPayment(cardTokenRequest);
                             } else {
                                 ((CreditCardFlowActivity) getActivity()).normalPayment(cardTokenRequest);
@@ -506,7 +502,7 @@ public class CardDetailsFragment extends Fragment {
             deleteCardBtn.setIconColorFilter(ContextCompat.getColor(getContext(), R.color.delete_color));
 
         } catch (Exception e) {
-            Log.e(TAG, "rendering theme:" + e.getMessage());
+            Logger.e(TAG, "rendering theme:" + e.getMessage());
         }
     }
 
@@ -1042,61 +1038,6 @@ public class CardDetailsFragment extends Fragment {
 
     private void obtainPromo(final PromoResponse promoResponse) {
         final MidtransSDK midtransSDK = MidtransSDK.getInstance();
-        midtransSDK.obtainPromo(String.valueOf(promoResponse.getId()), midtransSDK.getTransactionRequest().getAmount(), new ObtainPromoCallback() {
-            @Override
-            public void onSuccess(ObtainPromosResponse response) {
-                // Set promo
-                setPromo(promoResponse);
-                // Set discount token
-                CreditCardFlowActivity activity = (CreditCardFlowActivity) getActivity();
-                if (activity != null) {
-                    double finalAmount = midtransSDK.getTransactionRequest().getAmount()
-                            - SdkUIFlowUtil.calculateDiscountAmount(promoResponse);
-                    activity.setTextTotalAmount(finalAmount);
-
-                    promoLogoBtn.setVisibility(View.VISIBLE);
-                    promoLogoBtn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            AlertDialog alertDialog = new AlertDialog.Builder(getContext())
-                                    .setTitle(R.string.promo_dialog_title)
-                                    .setMessage(getString(R.string.promo_dialog_message, Utils.getFormattedAmount(SdkUIFlowUtil.calculateDiscountAmount(promoResponse)), promoResponse.getSponsorName()))
-                                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            dialogInterface.dismiss();
-                                        }
-                                    })
-                                    .create();
-                            alertDialog.show();
-                            changeDialogButtonColor(alertDialog);
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onFailure(String statusCode, String message) {
-                Snackbar snackbar = Snackbar.make(getActivity().findViewById(android.R.id.content), getString(R.string.error_obtain_promo), Snackbar.LENGTH_INDEFINITE);
-                snackbar.setAction(R.string.retry, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        obtainPromo(promoResponse);
-                    }
-                });
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-                Snackbar snackbar = Snackbar.make(getActivity().findViewById(android.R.id.content), getString(R.string.error_obtain_promo), Snackbar.LENGTH_INDEFINITE);
-                snackbar.setAction(R.string.retry, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        obtainPromo(promoResponse);
-                    }
-                });
-            }
-        });
     }
 
     public void setPromo(PromoResponse promo) {

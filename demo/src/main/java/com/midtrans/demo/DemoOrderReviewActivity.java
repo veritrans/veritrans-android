@@ -12,7 +12,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -26,6 +25,7 @@ import com.midtrans.demo.widgets.DemoTextView;
 import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
+import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.PaymentMethod;
 import com.midtrans.sdk.corekit.models.UserAddress;
@@ -219,7 +219,7 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
                     break;
             }
             result.getResponse().getValidationMessages();
-            Log.d("xresult", "xresponse:" + result.getResponse().getFraudStatus());
+            Logger.d("xresult", "xresponse:" + result.getResponse().getFraudStatus());
         } else if (result.isTransactionCanceled()) {
             Toast.makeText(this, "Transaction Canceled", Toast.LENGTH_LONG).show();
         } else {

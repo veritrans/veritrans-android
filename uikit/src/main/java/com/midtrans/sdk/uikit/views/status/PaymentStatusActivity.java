@@ -1,11 +1,11 @@
 package com.midtrans.sdk.uikit.views.status;
 
+import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -13,7 +13,9 @@ import android.widget.LinearLayout;
 
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.PaymentType;
+import com.midtrans.sdk.corekit.models.PaymentDetails;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
+import com.midtrans.sdk.corekit.models.promo.Promo;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BaseActivity;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
@@ -46,6 +48,7 @@ public class PaymentStatusActivity extends BaseActivity {
     private DefaultTextView textStatusTitle;
     private DefaultTextView textTotalDueAmount;
     private DefaultTextView textPointAmount;
+    private DefaultTextView textPromoAmount;
 
     private LinearLayout layoutTotalAmount;
     private LinearLayout layoutTotalDueAmount;
@@ -53,6 +56,7 @@ public class PaymentStatusActivity extends BaseActivity {
     private LinearLayout layoutOrderId;
     private LinearLayout layoutPaymentType;
     private LinearLayout layoutPointAmount;
+    private LinearLayout layoutPromoAmount;
 
     private LinearLayout layoutDetails;
     private FrameLayout layoutMain;
@@ -163,59 +167,61 @@ public class PaymentStatusActivity extends BaseActivity {
 
     @Override
     public void bindViews() {
-        textStatusTitle = (DefaultTextView) findViewById(R.id.text_status_title);
-        textStatusMessage = (DefaultTextView) findViewById(R.id.text_status_message);
-        textStatusErrorMessage = (SemiBoldTextView) findViewById(R.id.text_status_error_message);
-        textOrderId = (DefaultTextView) findViewById(R.id.text_order_id);
-        textTotalAmount = (DefaultTextView) findViewById(R.id.text_status_amount);
-        textTotalDueAmount = (DefaultTextView) findViewById(R.id.text_status_due_amount);
-        textDueInstallment = (DefaultTextView) findViewById(R.id.text_status_due_installment);
-        textPaymentType = (DefaultTextView) findViewById(R.id.text_payment_type);
-        textPointAmount = (DefaultTextView) findViewById(R.id.text_point_amount);
+        textStatusTitle = findViewById(R.id.text_status_title);
+        textStatusMessage = findViewById(R.id.text_status_message);
+        textStatusErrorMessage = findViewById(R.id.text_status_error_message);
+        textOrderId = findViewById(R.id.text_order_id);
+        textTotalAmount = findViewById(R.id.text_status_amount);
+        textTotalDueAmount = findViewById(R.id.text_status_due_amount);
+        textDueInstallment = findViewById(R.id.text_status_due_installment);
+        textPaymentType = findViewById(R.id.text_payment_type);
+        textPointAmount = findViewById(R.id.text_point_amount);
+        textPromoAmount = findViewById(R.id.text_status_promo_amount);
 
-        layoutOrderId = (LinearLayout) findViewById(R.id.layout_status_order);
-        layoutTotalAmount = (LinearLayout) findViewById(R.id.layout_status_total_amount);
-        layoutTotalDueAmount = (LinearLayout) findViewById(R.id.layout_status_due_amount);
-        layoutInstallmentTerm = (LinearLayout) findViewById(R.id.layout_status_due_installment);
-        layoutPaymentType = (LinearLayout) findViewById(R.id.layout_status_payment_type);
-        layoutMain = (FrameLayout) findViewById(R.id.layout_main);
-        layoutDetails = (LinearLayout) findViewById(R.id.layout_status_details);
-        layoutPointAmount = (LinearLayout) findViewById(R.id.layout_status_point_amount);
+        layoutOrderId = findViewById(R.id.layout_status_order);
+        layoutTotalAmount = findViewById(R.id.layout_status_total_amount);
+        layoutTotalDueAmount = findViewById(R.id.layout_status_due_amount);
+        layoutInstallmentTerm = findViewById(R.id.layout_status_due_installment);
+        layoutPaymentType = findViewById(R.id.layout_status_payment_type);
+        layoutMain = findViewById(R.id.layout_main);
+        layoutDetails = findViewById(R.id.layout_status_details);
+        layoutPointAmount = findViewById(R.id.layout_status_point_amount);
+        layoutPromoAmount = findViewById(R.id.layout_status_promo);
 
 
-        imageStatusLogo = (ImageView) findViewById(R.id.image_status_payment);
+        imageStatusLogo = findViewById(R.id.image_status_payment);
 
-        buttonInstruction = (FancyButton) findViewById(R.id.button_status_see_instruction);
-        buttonFinish = (FancyButton) findViewById(R.id.button_primary);
+        buttonInstruction = findViewById(R.id.button_status_see_instruction);
+        buttonFinish = findViewById(R.id.button_primary);
     }
 
     @Override
     public void initTheme() {
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            switch (this.paymentStatus) {
-                case UiKitConstants.STATUS_SUCCESS:
-                    getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.payment_status_success));
-                    break;
-                case UiKitConstants.STATUS_PENDING:
-                    getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.payment_status_pending));
-                    break;
-                default:
-                    getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.payment_status_failed));
-                    break;
+            int primaryColor = getPrimaryDarkColor();
+            if (primaryColor != 0) {
+                getWindow().setStatusBarColor(primaryColor);
             }
         }
 
+        int colorPaymentStatus;
         switch (this.paymentStatus) {
             case UiKitConstants.STATUS_SUCCESS:
-                layoutMain.setBackgroundColor(ContextCompat.getColor(this, R.color.payment_status_success));
+                colorPaymentStatus = ContextCompat.getColor(this, R.color.payment_status_success);
                 break;
             case UiKitConstants.STATUS_PENDING:
-                layoutMain.setBackgroundColor(ContextCompat.getColor(this, R.color.payment_status_pending));
+                colorPaymentStatus = ContextCompat.getColor(this, R.color.payment_status_pending);
                 break;
             default:
-                layoutMain.setBackgroundColor(ContextCompat.getColor(this, R.color.payment_status_failed));
+                colorPaymentStatus = ContextCompat.getColor(this, R.color.payment_status_failed);
                 break;
         }
+
+        GradientDrawable drawable = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
+                new int[]{getPrimaryColor(), colorPaymentStatus});
+        setBackgroundDrawable(drawable);
+
 
         buttonInstruction.setTextColor(ContextCompat.getColor(this, R.color.white));
         buttonInstruction.setIconColorFilter(ContextCompat.getColor(this, R.color.white));
@@ -224,6 +230,16 @@ public class PaymentStatusActivity extends BaseActivity {
         buttonFinish.setText(getString(R.string.done));
         buttonFinish.setTextBold();
         findViewById(R.id.button_chevron).setVisibility(View.GONE);
+    }
+
+    @SuppressWarnings("deprecation")
+    private void setBackgroundDrawable(GradientDrawable drawable) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            layoutMain.setBackground(drawable);
+        } else {
+            layoutMain.setBackgroundDrawable(drawable);
+        }
     }
 
     private void bindData() {
@@ -273,6 +289,12 @@ public class PaymentStatusActivity extends BaseActivity {
                         } else {
                             textStatusErrorMessage.setText(getString(R.string.message_payment_cannot_proccessed));
                         }
+                    } else if (transactionResponse.getStatusCode().equals(UiKitConstants.STATUS_CODE_411)
+                            && !TextUtils.isEmpty(transactionResponse.getStatusMessage())
+                            && transactionResponse.getStatusMessage().toLowerCase().contains(MessageUtil.PROMO_UNAVAILABLE)) {
+                        textStatusErrorMessage.setText(getString(R.string.promo_unavailable));
+                    } else if (transactionResponse.getStatusCode().equals(UiKitConstants.STATUS_CODE_406)) {
+                        textStatusErrorMessage.setText(getString(R.string.message_payment_paid));
                     } else {
                         textStatusErrorMessage.setText(transactionResponse.getStatusMessage());
                     }
@@ -301,7 +323,7 @@ public class PaymentStatusActivity extends BaseActivity {
                 String formattedAmount = amount.split(Pattern.quote(".")).length == 2 ? amount.split(Pattern.quote("."))[0] : amount;
                 textTotalAmount.setText(formattedAmount);
             } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
+                Logger.e(TAG, e.getMessage());
             }
         }
 
@@ -380,6 +402,15 @@ public class PaymentStatusActivity extends BaseActivity {
             String transactionMessage = transactionResponse.getStatusMessage();
             if (!TextUtils.isEmpty(transactionMessage) && transactionMessage.contains(MessageUtil.STATUS_UNSUCCESSFUL)) {
                 textStatusMessage.setText(R.string.status_rba_unsuccessful);
+            }
+        }
+
+        PaymentDetails paymentDetails = getMidtransSdk().getPaymentDetails();
+        if (paymentDetails != null) {
+            Promo promo = paymentDetails.getPromoSelected();
+            if (promo != null && promo.getId() != 0) {
+                layoutPromoAmount.setVisibility(View.VISIBLE);
+                textPromoAmount.setText(String.valueOf(promo.getCalculatedDiscountAmount()));
             }
         }
     }

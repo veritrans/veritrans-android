@@ -165,6 +165,10 @@ public class TokenRequestModel {
         return bcaVa;
     }
 
+    public BankTransferRequestModel getBniVa() {
+        return bniVa;
+    }
+
     public void setBcaVa(BcaBankTransferRequestModel bcaVa) {
         this.bcaVa = bcaVa;
     }

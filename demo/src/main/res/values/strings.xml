@@ -119,7 +119,7 @@
     <string name="order_review">Order Review</string>
 
     <!--PRODUCT DETAILS-->
-    <string name="product_price_sample">Rp 20,000</string>
+    <string name="product_price_sample">Rp 200,000</string>
     <string name="product_name_sample">Midtrans Pillow</string>
     <string name="product_details_sample">Get cozy with our new pillow!</string>
     <string name="product_rating_sample">4.4</string>
@@ -166,6 +166,7 @@
     <string name="using_bca_installment">BCA Installment</string>
     <string name="using_bri_installment">BRI Installment</string>
     <string name="using_cimb_installment">CIMB Installment</string>
+    <string name="using_maybank_installment">Maybank Installment</string>
     <string name="installment_required_title">(Required)</string>
 
     <!-- BNI Point -->
@@ -180,7 +181,7 @@
     <string name="midtrans_pillow">Midtrans Pillow</string>
     <string name="midtrans_pillow_1">Midtrans Pillow I</string>
     <string name="midtrans_pillow_2">Midtrans Pillow II</string>
-    <string name="price_pillow_1">Rp 20,000</string>
+    <string name="price_pillow_1">Rp 200,000</string>
     <string name="midtrans_store">midtrans store</string>
 
     <!-- Demo Account-->
@@ -191,7 +192,7 @@
     <string name="user_address">Midplaza 2, 4th Jl. Jendral Sudirman Kav. 10-11, Jakarta - 10220 \n Indonesia</string>
     <string name="account_phone">081808466410</string>
     <string name="my_account">My Account</string>
-    <string name="add_new_card">Add New Card</string>
+    <string name="add_new_card_demo">Add New Card</string>
 
     <string name="save_card_successfully">Save Card Successfully</string>
     <string name="please_wait">Please Wait</string>
@@ -201,6 +202,7 @@
     <string name="optional">Optional</string>
     <string name="installment_bri">BRI</string>
     <string name="installment_cimb">CIMB</string>
+    <string name="installment_maybank">Maybank</string>
     <string name="save_card">Save Card</string>
     <string name="reset_setting">Reset</string>
     <string name="reset_setting_notification">All Settings are Reset</string>
@@ -213,4 +215,5 @@
     <string name="enable_rba_non_3ds">RBA Enabled - Case non 3DS</string>
     <string name="enable_3ds">Enable 3ds</string>
     <string name="error_empty">Please fill the field</string>
+    <string name="swipe_left">Swipe left to delete saved card</string>
 </resources>

@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
@@ -12,19 +13,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatEditText;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.midtrans.sdk.corekit.core.Logger;
+import com.koushikdutta.ion.Ion;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
 import com.midtrans.sdk.corekit.core.themes.BaseColorTheme;
 import com.midtrans.sdk.uikit.BuildConfig;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
@@ -75,7 +77,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
             initTheme();
             initBadgeLayout();
         } catch (RuntimeException e) {
-            Log.e(TAG, "initTheme():" + e.getMessage());
+            Logger.e(TAG, "initTheme():" + e.getMessage());
         }
 
     }
@@ -86,10 +88,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
         imageProgressLogo = (ImageView) findViewById(R.id.progress_bar_image);
 
         if (imageProgressLogo != null) {
-            Glide.with(this)
-                    .load(R.drawable.midtrans_loader)
-                    .asGif()
-                    .into(imageProgressLogo);
+            Ion.with(imageProgressLogo).load(SdkUIFlowUtil.getImagePath(this) + R.drawable.midtrans_loader);
         }
     }
 
@@ -166,7 +165,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
                 fFocusedTextColor.set(textInputLayout, new ColorStateList(new int[][]{{0}}, new int[]{secondaryColor}));
 
             } catch (RuntimeException | NoSuchFieldException | IllegalAccessException e) {
-                Log.e(TAG, "tilfilter():" + e.getMessage());
+                Logger.e(TAG, "tilfilter():" + e.getMessage());
             }
         }
     }
@@ -226,6 +225,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
 
         if (containerProgress != null) {
             containerProgress.setVisibility(View.VISIBLE);
+            containerProgress.setClickable(true);
         }
     }
 
@@ -235,14 +235,19 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
 
     protected void hideProgressLayout() {
         setBackgroundProcess(false);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (containerProgress != null) {
+                    containerProgress.setVisibility(View.GONE);
+                }
 
-        if (containerProgress != null) {
-            containerProgress.setVisibility(View.GONE);
-        }
+                if (textProgressMessage != null) {
+                    textProgressMessage.setText(R.string.loading);
+                }
+            }
+        }, 500);
 
-        if (textProgressMessage != null) {
-            textProgressMessage.setText(R.string.loading);
-        }
     }
 
     private void setBackgroundProcess(boolean backgroundProcess) {

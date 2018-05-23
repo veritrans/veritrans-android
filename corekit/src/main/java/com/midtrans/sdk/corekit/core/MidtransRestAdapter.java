@@ -1,144 +1,147 @@
 package com.midtrans.sdk.corekit.core;
 
-import android.text.TextUtils;
-
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.internal.bind.DateTypeAdapter;
-import com.jakewharton.retrofit.Ok3Client;
+import com.midtrans.sdk.corekit.BuildConfig;
 import com.midtrans.sdk.corekit.models.snap.params.CreditCardPaymentParams;
 import com.midtrans.sdk.corekit.utilities.CustomTypeAdapter;
-import com.squareup.okhttp.OkHttpClient;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.util.concurrent.TimeUnit;
 
-import retrofit.RequestInterceptor;
-import retrofit.RestAdapter;
-import retrofit.client.OkClient;
-import retrofit.converter.GsonConverter;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by chetan on 16/10/15.
  */
 public class MidtransRestAdapter {
-    private static final RestAdapter.LogLevel LOG_LEVEL = Logger.enabled ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE;
     private static final String TAG = MidtransRestAdapter.class.getName();
-
-    /**
-     * It will return instance of PaymentAPI using that we can execute api calls.
-     *
-     * @param baseUrl base URL of PAPI
-     * @return Payment API implementation
-     */
-    public static MidtransRestAPI getVeritransApiClient(String baseUrl, int timeout) {
-        OkHttpClient okHttpClient = new OkHttpClient();
-        okHttpClient.setConnectTimeout(timeout, TimeUnit.SECONDS);
-        okHttpClient.setWriteTimeout(timeout, TimeUnit.SECONDS);
-        okHttpClient.setReadTimeout(timeout, TimeUnit.SECONDS);
-        Gson gson = new GsonBuilder()
-                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
-                .registerTypeAdapter(Date.class, new DateTypeAdapter())
-                .create();
-        RestAdapter.Builder builder = new RestAdapter.Builder()
-                .setEndpoint(baseUrl)
-                .setConverter(new GsonConverter(gson))
-                .setLogLevel(LOG_LEVEL)
-                .setRequestInterceptor(buildMidtransRequestInterceptor())
-                .setClient(new OkClient(okHttpClient));
-        RestAdapter restAdapter = builder.build();
-        return restAdapter.create(MidtransRestAPI.class);
-    }
 
     /**
      * Create Merchant API implementation
      *
-     * @param merchantBaseURL Merchant base URL
+     * @param merchantBaseUrl Merchant base URL
      * @return Merchant API implementation
      */
-    public static MerchantRestAPI getMerchantApiClient(String merchantBaseURL, int timeout) {
+    public static MerchantApiService newMerchantApiService(String merchantBaseUrl, int timeout) {
 
-        if (TextUtils.isEmpty(merchantBaseURL)) {
-            return null;
-        }
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(merchantBaseUrl)
+                .client(newOkHttpClient(timeout))
+                .addConverterFactory(GsonConverterFactory.create(newGson()))
+                .build();
 
-        okhttp3.OkHttpClient.Builder okclient = new okhttp3.OkHttpClient.Builder();
-        okclient.connectTimeout(timeout, TimeUnit.SECONDS);
-        okclient.readTimeout(timeout, TimeUnit.SECONDS);
-        okclient.writeTimeout(timeout, TimeUnit.SECONDS);
-
-        Gson gson = new GsonBuilder()
-                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
-                .registerTypeAdapter(Date.class, new DateTypeAdapter())
-                .create();
-        RestAdapter.Builder builder = new RestAdapter.Builder()
-                .setConverter(new GsonConverter(gson))
-                .setLogLevel(LOG_LEVEL)
-                .setClient(new Ok3Client(okclient.build()))
-                .setRequestInterceptor(buildSnapRequestInterceptor())
-                .setEndpoint(merchantBaseURL);
-        RestAdapter restAdapter = builder.build();
-        return restAdapter.create(MerchantRestAPI.class);
-
+        return retrofit.create(MerchantApiService.class);
     }
 
     /**
-     * Crate Snap API
+     * It will return instance of PaymentAPI using that we can execute api calls.
      *
-     * @param snapBaseURL base URL of snap API
-     * @return snap API implementation
+     * @return Payment API implementation
      */
-    public static SnapRestAPI getSnapRestAPI(String snapBaseURL, int timeOut) {
-        OkHttpClient okHttpClient = new OkHttpClient();
-        okHttpClient.setConnectTimeout(timeOut, TimeUnit.SECONDS);
-        okHttpClient.setReadTimeout(timeOut, TimeUnit.SECONDS);
-        okHttpClient.setWriteTimeout(timeOut, TimeUnit.SECONDS);
+    public static MidtransApiService newMidtransApiService(int timeout) {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BuildConfig.BASE_URL)
+                .client(newOkHttpClient(timeout))
+                .addConverterFactory(GsonConverterFactory.create(newGson()))
+                .build();
+
+        return retrofit.create(MidtransApiService.class);
+    }
+
+
+    public static SnapApiService newSnapApiService(int timeout) {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BuildConfig.SNAP_BASE_URL)
+                .client(newSnapOkHttpClient(timeout))
+                .addConverterFactory(GsonConverterFactory.create(newGson()))
+                .build();
+
+        return retrofit.create(SnapApiService.class);
+    }
+
+
+    private static HttpLoggingInterceptor newHttpLoggingInterceptor() {
+        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+        httpLoggingInterceptor
+                .setLevel(Logger.enabled ?
+                        HttpLoggingInterceptor.Level.BODY :
+                        HttpLoggingInterceptor.Level.NONE);
+        return httpLoggingInterceptor;
+    }
+
+    private static Gson newGson() {
         Gson gson = new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
                 .registerTypeAdapter(Date.class, new DateTypeAdapter())
                 .registerTypeAdapter(CreditCardPaymentParams.class, new CustomTypeAdapter())
                 .create();
-        RestAdapter.Builder builder = new RestAdapter.Builder()
-                .setConverter(new GsonConverter(gson))
-                .setLogLevel(LOG_LEVEL)
-                .setClient(new OkClient(okHttpClient))
-                .setRequestInterceptor(buildSnapRequestInterceptor())
-                .setEndpoint(snapBaseURL);
-        return builder.build().create(SnapRestAPI.class);
+
+        return gson;
     }
 
-    public static PromoEngineRestAPI getPromoEngineRestAPI(String promoEngineUrl, int timeOut) {
-        OkHttpClient okHttpClient = new OkHttpClient();
-        okHttpClient.setConnectTimeout(timeOut, TimeUnit.SECONDS);
-        okHttpClient.setReadTimeout(timeOut, TimeUnit.SECONDS);
-        okHttpClient.setWriteTimeout(timeOut, TimeUnit.SECONDS);
-        RestAdapter.Builder builder = new RestAdapter.Builder()
-                .setLogLevel(LOG_LEVEL)
-                .setClient(new OkClient(okHttpClient))
-                .setRequestInterceptor(buildSnapRequestInterceptor())
-                .setEndpoint(promoEngineUrl);
-        return builder.build().create(PromoEngineRestAPI.class);
-    }
-
-    private static RequestInterceptor buildSnapRequestInterceptor() {
-        return new RequestInterceptor() {
+    private static Interceptor newHeaderInterceptor() {
+        return new Interceptor() {
             @Override
-            public void intercept(RequestFacade request) {
-                request.addHeader("X-Source", "mobile-android");
-                request.addHeader("Accept", "application/json");
-                request.addHeader("Content-Type", "application/json");
+            public Response intercept(Chain chain) throws IOException {
+                Request request = chain.request();
+                Request headerInterceptedRequest = request.newBuilder()
+                        .addHeader("Content-Type", "application/json")
+                        .addHeader("Accept", "application/json")
+                        .build();
+
+                return chain.proceed(headerInterceptedRequest);
             }
         };
     }
 
-    private static RequestInterceptor buildMidtransRequestInterceptor() {
-        return new RequestInterceptor() {
+    private static Interceptor newSnapHeaderInterceptor() {
+        return new Interceptor() {
             @Override
-            public void intercept(RequestFacade request) {
-                request.addHeader("Accept", "application/json");
-                request.addHeader("Content-Type", "application/json");
+            public Response intercept(Chain chain) throws IOException {
+                Request request = chain.request();
+                Request headerInterceptedRequest = request.newBuilder()
+                        .addHeader("Content-Type", "application/json")
+                        .addHeader("Accept", "application/json")
+                        .addHeader("X-Source", "mobile-android")
+                        .addHeader("X-SDK-Version", "android-" + BuildConfig.VERSION_NAME)
+                        .build();
+
+                return chain.proceed(headerInterceptedRequest);
             }
         };
     }
+
+
+    private static OkHttpClient newSnapOkHttpClient(int timeout) {
+        return new OkHttpClient.Builder()
+                .addInterceptor(newHttpLoggingInterceptor())
+                .addInterceptor(newSnapHeaderInterceptor())
+                .connectTimeout(timeout, TimeUnit.SECONDS)
+                .readTimeout(timeout, TimeUnit.SECONDS)
+                .writeTimeout(timeout, TimeUnit.SECONDS)
+                .build();
+    }
+
+    private static OkHttpClient newOkHttpClient(int timeout) {
+        return new OkHttpClient.Builder()
+                .addInterceptor(newHttpLoggingInterceptor())
+                .addInterceptor(newHeaderInterceptor())
+                .connectTimeout(timeout, TimeUnit.SECONDS)
+                .readTimeout(timeout, TimeUnit.SECONDS)
+                .writeTimeout(timeout, TimeUnit.SECONDS)
+                .build();
+    }
+
 }

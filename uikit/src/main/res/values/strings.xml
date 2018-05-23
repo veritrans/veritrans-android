@@ -4,11 +4,14 @@
     <string name="hint_email">Email</string>
     <string name="next">Next</string>
     <string name="hint_phone_number">Phone number</string>
+    <string name="hint_phone_number_optional">Phone number (Optional)</string>
     <string name="validation_full_name_empty">Please enter full name</string>
     <string name="validation_email_empty">Please enter email</string>
     <string name="validation_email_invalid">Please enter valid email</string>
+    <string name="validation_email_invalid_optional">Please enter valid email or leave it empty</string>
     <string name="validation_phone_no_empty">Please enter phone number.</string>
     <string name="validation_phone_no_invalid">Please enter valid phone number</string>
+    <string name="validation_phone_no_invalid_optional">Please enter valid phone number or leave it empty</string>
     <string name="my_credit_card">My Credit Card</string>
 
     <string name="description_btn_bbm">BBM Button</string>
@@ -110,9 +113,11 @@
     <string name="save_card_message">Save card for later reuse</string>
     <string name="save_card_dialog">We will securely save your card details so you can reuse them later.</string>
     <string name="pay_now">Pay Now</string>
-    <string name="pay_with_instalments">Pay with instalment ?</string>
+    <string name="pay_with_instalments">INSTALLMENT PAYMENT PLAN</string>
+    <string name="card_detail_title">CARD DETAILS</string>
+    <string name="contact_detail_title">CONTACT DETAILS</string>
     <string name="validatation_message_card_holder_name">Please enter card holder name</string>
-    <string name="hint_expiry_date">Expiry(mm/yy)</string>
+    <string name="hint_expiry_date">Expiration Date(mm/yy)</string>
     <string name="validation_message_card_number">Please enter card number</string>
     <string name="validation_message_invalid_card_no">Please enter valid card number</string>
     <string name="validation_message_invalid_token_no">Challenge token must be 6 characters.</string>
@@ -169,7 +174,7 @@
     <string name="copied_to_clipboard">Copied to clipboard</string>
     <string name="copied_bill_code">Billpay code was copied to clipboard</string>
     <string name="copied_company_code">Company code was copied to clipboard</string>
-    <string name="complete_payment_at_atm">Complete Payment at ATM</string>
+    <string name="complete_payment_at_atm">Please Complete Payment</string>
     <string name="complete_payment_at_mobile_bca">Complete Payment via m-BCA</string>
     <string name="complete_payment_at_klik_bca_va">Complete Payment via KlikBCA</string>
     <string name="complete_payment_via_internet_banking">Complete Payment via Internet Banking</string>
@@ -232,15 +237,13 @@
     <string name="bca_klik_pay_instruction_step6">For more information about BCA KlikPay please contact Halo BCA at (021) 1500888 or visit <a href="http://klikbca.com/KlikPay/klikpay.html">http://klikbca.com/KlikPay/klikpay.html</a>.</string>
 
     <!--m-BCA-->
-    <string name="bca_mbanking_instruction_step1">Choose <b>m-transfer</b>.</string>
-    <string name="bca_mbanking_instruction_step2">Choose <b>Transfer</b></string>
-    <string name="bca_mbanking_instruction_step3">Choose <b>BCA Virtual Account</b>.</string>
-    <string name="bca_mbanking_instruction_step4">Choose <b>account number</b> that you want to use for payment.</string>
-    <string name="bca_mbanking_instruction_step5">Input BCA Virtual Account Number and click <b>OK</b>.</string>
-    <string name="bca_mbanking_instruction_step6">BCA Virtual Account Number and your account information will appear on the payment confirmation page and then click <b>Send</b>.</string>
-    <string name="bca_mbanking_instruction_step7">Click <b>OK</b> on the payment confirmation page.</string>
-    <string name="bca_mbanking_instruction_step8">Enter amount to be transferred then click <b>OK</b>.</string>
-    <string name="bca_mbanking_instruction_step9">Your transaction is done.</string>
+    <string name="bca_mbanking_instruction_step1">Log in to your BCA Mobile app.</string>
+    <string name="bca_mbanking_instruction_step2">Choose <b>m-BCA</b>, then input your m-BCA access code</string>
+    <string name="bca_mbanking_instruction_step3">Choose <b>m-Transfer</b>, then choose BCA Virtual Account.</string>
+    <string name="bca_mbanking_instruction_step4">Input <b>Virtual Account Number</b> or choose an existing account from Daftar Transfer.</string>
+    <string name="bca_mbanking_instruction_step5">Input the payable amount.</string>
+    <string name="bca_mbanking_instruction_step6">Input your <b>m-BCA</b> pin.</string>
+    <string name="bca_mbanking_instruction_step7">Payment is finished. Save the notification as your payment receipt.</string>
 
     <!-- cimb transfer Instructions -->
     <string name="cimb_instruction_step1">Please make sure that you have a User ID for CIMB Clicks and have registered your mPIN before going through with the payment.</string>
@@ -388,7 +391,7 @@
     <string name="btn_save_card">Register Card</string>
     <string name="btn_scan_card">Scan Card Using Camera</string>
     <string name="offer_applied">Offer Applied Successfully !</string>
-    <string name="offer_not_applied">This card is not applicable for this promotion, please use another one.</string>
+    <string name="offer_not_applied">This card is not applicable for this transaction, please use another card.</string>
     <string name="no_offers">No offers found</string>
     <string name="text_yes">Yes</string>
     <string name="text_no">No</string>
@@ -639,7 +642,7 @@
     <string name="message_payment_failed">Transaction Failed. Re-check your card details or use another card.</string>
     <string name="message_payment_denied">Transaction denied! Please try again or try another payment method.</string>
     <string name="validation_message_please_fillup_form">Please fill up information properly.</string>
-    <string name="message_getcard_token_failed">Authentication failed</string>
+    <string name="message_getcard_token_failed">Process failed. Re-check your card details or use another card.</string>
     <string name="message_payment_not_completed">Payment information is not completed!</string>
     <string name="message_payment_method_empty">There are no enabled payment methods</string>
     <string name="message_payment_expired">Payment page is expired</string>
@@ -681,6 +684,7 @@
     <string name="thank_you">Thank you!</string>
     <string name="text_payment_type">PAYMENT TYPE</string>
     <string name="status_payable_amount">TOTAL AMOUNT</string>
+    <string name="status_promo_amount">PROMO DISCOUNT</string>
     <string name="status_order_id">ORDER ID</string>
     <string name="text_payment_time">PAYMENT TIME</string>
     <string name="text_payment_time_here">Payment Time Here</string>
@@ -751,7 +755,7 @@
     <string name="redeem_bni_reward">Redeem BNI Reward Point</string>
     <string name="redeem_mandiri_point">Redeem Fiesta Point</string>
     <string name="redeem_100_point">FIESTAPOIN DISCOUNT</string>
-    <string name="amount_after_discount">AMOUNT TO PAY AFTER DISCOUNT</string>
+    <string name="amount_after_discount">AMOUNT TO PAY AFTER REDEEM</string>
     <string name="will_be_used_point_here">Will be used point</string>
     <string name="total_point_here">total point here</string>
     <string name="redeem_point">Redeem Point</string>
@@ -771,7 +775,7 @@
     <string name="undo">Undo</string>
     <string name="delete_this_card">Delete This Card</string>
 
-    <string name="how_much_point">How much points you want to redeem for discount?</string>
+    <string name="how_much_point">How much points you want to redeem?</string>
     <string name="total_bni_point">Your total BNI points</string>
     <string name="bank_bni">BNI</string>
     <string name="bank_mandiri">Mandiri</string>
@@ -843,6 +847,8 @@
     <string name="payment_method_unavailable">This option is currently unavailable</string>
     <string name="hint_card_number_example">4811 1111 1111 1114</string>
     <string name="hint_expiry_date_example">01 / 20</string>
+    <string name="hint_email_example">budi@utomo.com</string>
+    <string name="hint_phone_example">08123456789</string>
     <string name="hint_cvv_example">123</string>
     <string name="payment_info">Payment Info</string>
     <string name="notification_token_message">Key token device is required for this payment method.</string>
@@ -903,6 +909,8 @@
     <string name="minute">minute</string>
     <string name="seconds">seconds</string>
     <string name="second">second</string>
+    <string name="promo">promo</string>
+    <string name="promo_unavailable">Promo is not available</string>
     <string name="tnc_title"><![CDATA[BNI Points Terms & Conditions]]></string>
     <string name="tnc_bni_point_1">This program cannot be combined with BNI credit card installment program.</string>
     <string name="tnc_bni_point_2">\"Hemat hingga 100% dengan BNI Reward Points\" program will directly deduct the points on transaction.</string>
@@ -910,4 +918,5 @@
     <string name="tnc_bni_point_4">Card holder\'s reward points that have been converted into Rupiah can be seen when card holder chooses to use BNI Reward Points by clicking \"BNI Reward Points\" button.</string>
     <string name="tnc_bni_point_5">Card holder can choose how many points they would like to redeem. There is no minimum point to redeem.</string>
     <string name="tnc_bni_point_6">Payment for reward points to merchant is the same as regular card payment.</string>
+    <string name="message_payment_paid">Transaction has been processed</string>
 </resources>

@@ -18,6 +18,10 @@ public class MerchantData {
     private List<String> enabledPrinciples;
     @SerializedName("point_banks")
     private ArrayList<String> pointBanks;
+    @SerializedName("merchant_id")
+    private String merchantId;
+    @SerializedName("acquiring_banks")
+    private List<String> acquiringBanks;
 
     public MerchantPreferences getPreference() {
         return preference;
@@ -49,5 +53,21 @@ public class MerchantData {
 
     public void setPointBanks(ArrayList<String> pointBanks) {
         this.pointBanks = pointBanks;
+    }
+
+    public String getMerchantId() {
+        return merchantId;
+    }
+
+    public void setMerchantId(String merchantId) {
+        this.merchantId = merchantId;
+    }
+
+    public List<String> getAcquiringBanks() {
+        return acquiringBanks;
+    }
+
+    public void setAcquiringBanks(List<String> acquiringBanks) {
+        this.acquiringBanks = acquiringBanks;
     }
 }

@@ -1,5 +1,6 @@
 package com.midtrans.sdk.uikit.views.gopay.payment;
 
+import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentView;
 
 /**
@@ -7,4 +8,11 @@ import com.midtrans.sdk.uikit.abstracts.BasePaymentView;
  */
 
 public interface GoPayPaymentView extends BasePaymentView {
+
+    void onGetTransactionStatusError(Throwable error);
+
+    void onGetTransactionStatusFailure(TransactionResponse transactionResponse);
+
+    void onGetTransactionStatusSuccess(TransactionResponse transactionResponse);
+
 }

@@ -43,21 +43,18 @@ public class BaseCreditCardPresenter<V extends BaseView> extends BasePaymentPres
 
     public boolean isSavedCardEnabled() {
         TransactionRequest request = getMidtransSDK().getTransactionRequest();
+        boolean saveCard = getMidtransSDK().getCreditCard().isSaveCard();
         if (request != null) {
             String cardClickType = request.getCardClickType();
-            if (TextUtils.isEmpty(cardClickType)) {
-                if (getMidtransSDK().getCreditCard().isSaveCard()) {
-                    return true;
-                }
-            } else {
+            if (!TextUtils.isEmpty(cardClickType)) {
                 if (cardClickType.equals(CreditCardType.ONE_CLICK) ||
                         cardClickType.equals(CreditCardType.TWO_CLICKS)) {
-                    return true;
+                    saveCard = true;
                 }
             }
         }
 
-        return false;
+        return saveCard;
     }
 
     protected void deleteSavedCard(SaveCardRequest savedCard, BaseCreditCardPaymentView view) {
