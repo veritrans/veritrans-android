@@ -21,7 +21,7 @@ public class MessageUtil {
     private static String TAG = MessageUtil.class.getSimpleName();
 
     private static final String PAID_ORDER_ID = "has been paid";
-    private static final String PROCESSED_ORDER_ID = "transaction has been processed";
+    public static final String PROCESSED_ORDER_ID = "transaction has been processed";
     private static final String TOKEN_NOT_FOUND = "token not found";
     private static final String GROSS_AMOUNT_NOT_EQUAL = "is not equal to the sum";
     private static final String GROSS_AMOUNT_REQUIRED = "amount is required";
@@ -42,7 +42,6 @@ public class MessageUtil {
     private static final String USER_ID_INVALID = "user_id format is invalid";
     private static final String DENY = "deny";
     public static final String PROMO_UNAVAILABLE = "promo is not available";
-
 
 
     public static String createMessageWhenCheckoutFailed(Context context, ArrayList<String> statusMessage) {
@@ -213,6 +212,12 @@ public class MessageUtil {
                             message = new MessageInfo(UiKitConstants.STATUS_CODE_404,
                                     context.getString(R.string.status_message_token_notfound),
                                     context.getString(R.string.detail_message_token_notfound));
+
+                        } else if (errorMessage.contains(PROCESSED_ORDER_ID)) {
+
+                            message = new MessageInfo(UiKitConstants.STATUS_CODE_406,
+                                    context.getString(R.string.message_payment_paid),
+                                    context.getString(R.string.message_payment_paid));
 
                         } else if (!Utils.isNetworkAvailable(context)) {
 

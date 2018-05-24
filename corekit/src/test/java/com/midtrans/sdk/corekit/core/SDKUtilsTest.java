@@ -2,7 +2,6 @@ package com.midtrans.sdk.corekit.core;
 
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.provider.Settings;
 import android.text.TextUtils;
@@ -29,6 +28,7 @@ import com.midtrans.sdk.corekit.models.UserAddress;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.BankTransferRequestModel;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
+import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.payment.CustomerDetailRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.GCIPaymentRequest;
 import com.midtrans.sdk.corekit.utilities.Utils;
@@ -38,7 +38,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
@@ -51,7 +50,6 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import java.util.ArrayList;
 
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
-import static org.powermock.api.mockito.PowerMockito.spy;
 import static org.powermock.api.mockito.PowerMockito.verifyStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
 
@@ -72,10 +70,12 @@ public class SDKUtilsTest {
     private static final String CUSTOM_FIELD1 = "cf1";
     private static final String CUSTOM_FIELD2 = "cf2";
     private static final String CUSTOM_FIELD3 = "cf3";
-    private static final String PREF_NAME = "pref_name";
 
     @Mock
     private TransactionRequest transactionRequestMock;
+
+    @Mock
+    private Transaction transactionMock;
 
     @Mock
     private CustomerDetailRequest customerDetailRequest;
@@ -180,182 +180,6 @@ public class SDKUtilsTest {
         Mockito.when(customerDetailRequest.getPhone()).thenReturn(phone);
     }
 
-    private void initSDK() {
-        Mockito.when(klikBCAModelMock.getDescription()).thenReturn(descriptionMock);
-        Mockito.when(contextMock.getApplicationContext()).thenReturn(contextMock);
-        Mockito.when(contextMock.getResources()).thenReturn(resourceMock);
-
-        MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "newPreferences", Context.class, String.class)).toReturn(mpreferenceMock);
-        Mockito.when(SdkUtil.newPreferences(contextMock, "local.data")).thenReturn(mpreferenceMock);
-
-        MidtransSDK midtransSDK = (SdkCoreFlowBuilder.init(contextMock, SDKConfigTest.CLIENT_KEY, SDKConfigTest.MERCHANT_BASE_URL)
-                .enableLog(true)
-                .buildSDK());
-
-        midtransSDK = spy(midtransSDK);
-
-        when(contextMock.getString(R.string.payment_permata)).thenReturn(paymermataName);
-    }
-
-
-    @Test
-    public void getMandiriBillPayModel() throws Exception {
-        Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(true);
-        mockStatic(SdkUtil.class);
-        MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "initializeUserInfo", TransactionRequest.class)).toReturn(null);
-        Assert.assertNotNull(transactionRequestMock.getBillInfoModel());
-
-        Assert.assertEquals(billingInfoModelMock, SdkUtil.getMandiriBillPayModel(transactionRequestMock).getBillInfoModel());
-        verifyStatic();
-    }
-
-    @Test
-    public void getMandiriClickPayRequestModel() throws ClassNotFoundException {
-        Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(true);
-        MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "initializeUserInfo", TransactionRequest.class)).toReturn(transactionRequestMock);
-        Assert.assertNotNull(transactionRequestMock.getBillInfoModel());
-
-        Assert.assertEquals(mandiriClickPayModelMock, SdkUtil.getMandiriClickPayRequestModel(transactionRequestMock, mandiriClickPayModelMock).getMandiriClickPayModel());
-    }
-
-    @Test
-    public void getKlikBCAModelTest() throws ClassNotFoundException {
-        Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(true);
-        MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "initializeUserInfo", TransactionRequest.class)).toReturn(transactionRequestMock);
-        Assert.assertNotNull(transactionRequestMock.getBillInfoModel());
-
-        Assert.assertNotNull(SdkUtil.getKlikBCAModel(transactionRequestMock, klikBCAModelMock).getDescriptionModel());
-    }
-
-    @Test
-    public void getBCAKlickPayModelTest() throws ClassNotFoundException {
-        Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(true);
-        MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "initializeUserInfo", TransactionRequest.class)).toReturn(transactionRequestMock);
-        Assert.assertNotNull(transactionRequestMock.getBillInfoModel());
-
-        Assert.assertNotNull(SdkUtil.getBCAKlikPayModel(transactionRequestMock, bcaKlikPayMock).getTransactionDetails());
-    }
-
-    @Test
-    public void getPermataBankModelTest() throws ClassNotFoundException {
-
-        Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(true);
-        MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "initializeUserInfo", TransactionRequest.class)).toReturn(transactionRequestMock);
-        Assert.assertNotNull(transactionRequestMock.getBillInfoModel());
-
-        Assert.assertEquals(itemDetailMock, SdkUtil.getPermataBankModel(transactionRequestMock).getItemDetails());
-
-    }
-
-
-    @Test
-    public void getPermataBankModelTest_whenSDKNull() throws ClassNotFoundException {
-
-        Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(true);
-        MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "initializeUserInfo", TransactionRequest.class)).toReturn(transactionRequestMock);
-        Assert.assertNotNull(transactionRequestMock.getBillInfoModel());
-        Assert.assertEquals(itemDetailMock, SdkUtil.getPermataBankModel(transactionRequestMock).getItemDetails());
-        verifyStatic(Mockito.times(1));
-        Logger.e(Matchers.anyString());
-
-    }
-
-
-    @Test
-    public void getBcaBankTransferRequest() throws ClassNotFoundException {
-
-        Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(true);
-        MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "initializeUserInfo", TransactionRequest.class)).toReturn(transactionRequestMock);
-        Assert.assertNotNull(transactionRequestMock.getBillInfoModel());
-
-        Assert.assertEquals(itemDetailMock, SdkUtil.getBcaBankTransferRequest(transactionRequestMock).getItemDetails());
-
-    }
-
-
-    @Test
-    public void getBcaBankTransferRequest_whenSDKNull() throws ClassNotFoundException {
-
-        Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(true);
-        MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "initializeUserInfo", TransactionRequest.class)).toReturn(transactionRequestMock);
-        Assert.assertNotNull(transactionRequestMock.getBillInfoModel());
-        Assert.assertEquals(itemDetailMock, SdkUtil.getBcaBankTransferRequest(transactionRequestMock).getItemDetails());
-        verifyStatic(Mockito.times(1));
-        Logger.e(Matchers.anyString());
-
-    }
-
-
-    @Test
-    public void getIndomaretRequestModel() throws ClassNotFoundException {
-        Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(true);
-        MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "initializeUserInfo", TransactionRequest.class)).toReturn(transactionRequestMock);
-        Assert.assertNotNull(transactionRequestMock.getBillInfoModel());
-
-        Assert.assertNotNull(SdkUtil.getIndomaretRequestModel(transactionRequestMock, cstoreMock).getCustomerDetails());
-
-    }
-
-    @Test
-    public void getCIMBClickPayModelTest() throws ClassNotFoundException {
-        Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(true);
-        MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "initializeUserInfo", TransactionRequest.class)).toReturn(transactionRequestMock);
-        Assert.assertNotNull(transactionRequestMock.getBillInfoModel());
-
-        Assert.assertEquals(billingAddressMock, SdkUtil.getCIMBClickPayModel(transactionRequestMock, descriptionCIMBMock).getBillingAddresses());
-    }
-
-    @Test
-    public void getMandiriECashModel() throws ClassNotFoundException {
-        Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(true);
-        MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "initializeUserInfo", TransactionRequest.class)).toReturn(transactionRequestMock);
-        Assert.assertNotNull(transactionRequestMock.getBillInfoModel());
-        Assert.assertEquals(billingAddressMock, SdkUtil.getMandiriECashModel(transactionRequestMock, descriptionCIMBMock).getBillingAddresses());
-    }
-
-    @Test
-    public void getCardTransferModel() throws ClassNotFoundException {
-        Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(true);
-        MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "initializeUserInfo", TransactionRequest.class)).toReturn(transactionRequestMock);
-        Assert.assertNotNull(transactionRequestMock.getBillInfoModel());
-        Assert.assertEquals(billingAddressMock, SdkUtil.getCardTransferModel(transactionRequestMock, cardPaymentDetailMock).getBillingAddresses());
-    }
-
-    @Test
-    public void getEpayBriBankModel() throws ClassNotFoundException {
-        Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(true);
-        MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "initializeUserInfo", TransactionRequest.class)).toReturn(transactionRequestMock);
-        Assert.assertNotNull(transactionRequestMock.getBillInfoModel());
-        Assert.assertEquals(billingAddressMock, SdkUtil.getEpayBriBankModel(transactionRequestMock).getBillingAddresses());
-    }
-
-    @Test
-    public void getIndosatDompetkuRequestModel() throws ClassNotFoundException {
-        Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(true);
-        MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "initializeUserInfo", TransactionRequest.class)).toReturn(transactionRequestMock);
-        Assert.assertNotNull(transactionRequestMock.getBillInfoModel());
-
-        Assert.assertEquals(itemDetailMock, SdkUtil.getIndosatDompetkuRequestModel(transactionRequestMock, msisdn).getItemDetails());
-    }
-
-    @Test
-    public void getIndosatDompetkuRequestModel_whenMSISDNNull() throws ClassNotFoundException {
-        Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(true);
-        MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "initializeUserInfo", TransactionRequest.class)).toReturn(transactionRequestMock);
-        Assert.assertNotNull(transactionRequestMock.getBillInfoModel());
-
-        Assert.assertEquals(itemDetailMock, SdkUtil.getIndosatDompetkuRequestModel(transactionRequestMock, null).getItemDetails());
-    }
-
-    @Test
-    public void getIndosatDompetkuRequestModel_whenMSISDNEmpty() throws ClassNotFoundException {
-        Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(true);
-        MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "initializeUserInfo", TransactionRequest.class)).toReturn(transactionRequestMock);
-        Assert.assertNotNull(transactionRequestMock.getBillInfoModel());
-
-        Assert.assertEquals(itemDetailMock, SdkUtil.getIndosatDompetkuRequestModel(transactionRequestMock, "").getItemDetails());
-
-    }
 
     @Test
     public void initializeUserInfo() throws ClassNotFoundException {
@@ -364,24 +188,6 @@ public class SDKUtilsTest {
         Assert.assertEquals(transactionRequestMock, SdkUtil.initializeUserInfo(transactionRequestMock));
     }
 
-    @Test
-    public void initializePaymentDetails_whenCustomerDetailsNotNull() throws ClassNotFoundException {
-        Mockito.when(transactionRequestMock.getCustomerDetails().getFirstName()).thenReturn(fullname);
-        Mockito.when(transactionRequestMock.getCustomerDetails().getEmail()).thenReturn(email);
-        Mockito.when(transactionRequestMock.getCustomerDetails().getPhone()).thenReturn(phone);
-
-        Assert.assertEquals(customerDetailRequest.getEmail(), SdkUtil.initializePaymentDetails(transactionRequestMock).getEmail());
-        Assert.assertEquals(customerDetailRequest.getFullName(), SdkUtil.initializePaymentDetails(transactionRequestMock).getFullName());
-        Assert.assertEquals(customerDetailRequest.getPhone(), SdkUtil.initializePaymentDetails(transactionRequestMock).getPhone());
-    }
-
-    @Test
-    public void initializePaymentDetails_whenCustomerDetailsNull() throws ClassNotFoundException {
-        Assert.assertNotNull(SdkUtil.initializePaymentDetails(transactionRequestMock));
-        Assert.assertNull(SdkUtil.initializePaymentDetails(transactionRequestMock).getEmail());
-        Assert.assertNull(SdkUtil.initializePaymentDetails(transactionRequestMock).getPhone());
-        Assert.assertNull(SdkUtil.initializePaymentDetails(transactionRequestMock).getFullName());
-    }
 
     @Test
     public void getUserDetailTest() {
@@ -499,8 +305,8 @@ public class SDKUtilsTest {
         Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(false);
         MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "initializeUserInfo", TransactionRequest.class)).toReturn(transactionRequestMock);
 
-        Assert.assertEquals(cardToken, SdkUtil.getCreditCardPaymentRequest(new CreditCardPaymentModel(cardToken, saveCard), transactionRequestMock).getPaymentParams().getCardToken());
-        Assert.assertEquals(saveCard, SdkUtil.getCreditCardPaymentRequest(new CreditCardPaymentModel(cardToken, saveCard), transactionRequestMock).getPaymentParams().isSaveCard());
+        Assert.assertEquals(cardToken, SdkUtil.getCreditCardPaymentRequest(new CreditCardPaymentModel(cardToken, saveCard), transactionMock).getPaymentParams().getCardToken());
+        Assert.assertEquals(saveCard, SdkUtil.getCreditCardPaymentRequest(new CreditCardPaymentModel(cardToken, saveCard), transactionMock).getPaymentParams().isSaveCard());
     }
 
     @Test
@@ -513,12 +319,6 @@ public class SDKUtilsTest {
     public void getKlikBCAPaymentRequest() {
         Mockito.when(transactionRequestMock.isUiEnabled()).thenReturn(false);
         Assert.assertEquals(klikBCAUserId, SdkUtil.getKlikBCAPaymentRequest(klikBCAUserId, klikBCAPaymentType).getPaymentParams().getUserId());
-    }
-
-    @Test
-    public void getEmailAddressTest() {
-        Mockito.when(transactionRequestMock.getCustomerDetails().getEmail()).thenReturn(email);
-        Assert.assertEquals(email, SdkUtil.getEmailAddress(transactionRequestMock));
     }
 
     @Test

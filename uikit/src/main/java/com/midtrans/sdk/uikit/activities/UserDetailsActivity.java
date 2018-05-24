@@ -51,6 +51,7 @@ public class UserDetailsActivity extends BaseActivity {
     public static final String INDOMARET = "indomaret";
     public static final String KIOSON = "kioson";
     public static final String GIFT_CARD = "gci";
+    public static final String DANAMON_ONLINE = "danamon_online";
     private static final String TAG = "UserDetailsActivity";
 
     @Override
@@ -199,6 +200,8 @@ public class UserDetailsActivity extends BaseActivity {
             paymentOptionIntent.putExtra(KIOSON, true);
         } else if (getIntent().getBooleanExtra(GIFT_CARD, false)) {
             paymentOptionIntent.putExtra(GIFT_CARD, true);
+        } else if (getIntent().getBooleanExtra(DANAMON_ONLINE, false)) {
+            paymentOptionIntent.putExtra(DANAMON_ONLINE, true);
         }
 
         paymentOptionIntent.putExtra(UiKitConstants.EXTRA_SNAP_TOKEN,

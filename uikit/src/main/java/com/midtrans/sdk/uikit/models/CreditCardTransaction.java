@@ -1,8 +1,6 @@
 package com.midtrans.sdk.uikit.models;
 
 import android.text.TextUtils;
-import android.util.Log;
-
 
 import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.promo.Promo;
@@ -81,8 +79,7 @@ public class CreditCardTransaction {
     }
 
     public void setBankBins(ArrayList<BankBinsResponse> bankBins) {
-        this.bankBins.clear();
-        this.bankBins.addAll(bankBins);
+        // do nothing
     }
 
     public boolean isInWhiteList(String cardBin) {
@@ -316,5 +313,9 @@ public class CreditCardTransaction {
 
     public boolean isSelectedPromoAvailable() {
         return selectedPromo != null && selectedPromo.getDiscountedGrossAmount() != null;
+    }
+
+    public boolean isInstallmentOptionRequired() {
+        return (cardInstallment != null && cardInstallment.isInstallmentOptionRequired());
     }
 }

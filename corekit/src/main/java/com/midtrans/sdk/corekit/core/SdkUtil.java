@@ -6,382 +6,38 @@ import android.text.TextUtils;
 
 import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.R;
-import com.midtrans.sdk.corekit.models.BCABankTransfer;
-import com.midtrans.sdk.corekit.models.BCAKlikPayDescriptionModel;
-import com.midtrans.sdk.corekit.models.BCAKlikPayModel;
-import com.midtrans.sdk.corekit.models.BankTransfer;
 import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.BillingAddress;
-import com.midtrans.sdk.corekit.models.CIMBClickPayModel;
-import com.midtrans.sdk.corekit.models.CardPaymentDetails;
-import com.midtrans.sdk.corekit.models.CardTransfer;
-import com.midtrans.sdk.corekit.models.CstoreEntity;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
-import com.midtrans.sdk.corekit.models.DescriptionModel;
-import com.midtrans.sdk.corekit.models.EpayBriTransfer;
-import com.midtrans.sdk.corekit.models.IndomaretRequestModel;
-import com.midtrans.sdk.corekit.models.IndosatDompetkuRequest;
-import com.midtrans.sdk.corekit.models.KlikBCADescriptionModel;
-import com.midtrans.sdk.corekit.models.KlikBCAModel;
-import com.midtrans.sdk.corekit.models.MandiriBillPayTransferModel;
-import com.midtrans.sdk.corekit.models.MandiriClickPayModel;
-import com.midtrans.sdk.corekit.models.MandiriClickPayRequestModel;
-import com.midtrans.sdk.corekit.models.MandiriECashModel;
-import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
-import com.midtrans.sdk.corekit.models.PermataBankTransfer;
 import com.midtrans.sdk.corekit.models.ShippingAddress;
 import com.midtrans.sdk.corekit.models.SnapTransactionDetails;
 import com.midtrans.sdk.corekit.models.TokenRequestModel;
-import com.midtrans.sdk.corekit.models.TransactionDetails;
 import com.midtrans.sdk.corekit.models.UserAddress;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.promo.Promo;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
+import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.params.CreditCardPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.params.GCIPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.params.KlikBcaPaymentParams;
-import com.midtrans.sdk.corekit.models.snap.params.MandiriClickPayPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.params.PromoDetails;
 import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.CreditCardPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.CustomerDetailRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.DanamonOnlinePaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.GCIPaymentRequest;
-import com.midtrans.sdk.corekit.models.snap.payment.GoPayAuthorizationRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.GoPayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
-import com.midtrans.sdk.corekit.models.snap.payment.MandiriClickPayPaymentRequest;
 import com.midtrans.sdk.corekit.utilities.Installation;
 import com.securepreferences.SecurePreferences;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 /**
  * Created by ziahaqi on 18/06/2016.
  */
 public class SdkUtil {
     private static final String UNIT_MINUTES = "minutes";
-
-    /**
-     * helper method to extract {@link MandiriBillPayTransferModel} from {@link
-     * TransactionRequest}.
-     *
-     * @param request transaction request object
-     * @return Transfer model object
-     */
-    protected static MandiriBillPayTransferModel getMandiriBillPayModel(TransactionRequest
-                                                                                request) {
-
-        TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
-                request.getOrderId());
-        if (request.isUiEnabled()) {
-            //get user details only if using default ui.
-            request = initializeUserInfo(request);
-        }
-
-        MandiriBillPayTransferModel model =
-                new MandiriBillPayTransferModel(request.getBillInfoModel(),
-                        transactionDetails, request.getItemDetails(),
-                        request.getBillingAddressArrayList(),
-                        request.getShippingAddressArrayList(), request.getCustomerDetails());
-        return model;
-    }
-
-
-    /**
-     * helper method to extract {@link MandiriClickPayModel} from {@link TransactionRequest}.
-     *
-     * @param request transaction request object
-     * @return Transfer model object
-     */
-    protected static MandiriClickPayRequestModel getMandiriClickPayRequestModel(TransactionRequest
-                                                                                        request,
-                                                                                MandiriClickPayModel mandiriClickPayModel) {
-
-        TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
-                request.getOrderId());
-
-        if (request.isUiEnabled()) {
-            //get user details only if using default ui.
-            request = initializeUserInfo(request);
-        }
-
-        MandiriClickPayRequestModel model =
-                new MandiriClickPayRequestModel(mandiriClickPayModel,
-                        transactionDetails, request.getItemDetails(),
-                        request.getBillingAddressArrayList(),
-                        request.getShippingAddressArrayList(), request.getCustomerDetails());
-        return model;
-    }
-
-    protected static KlikBCAModel getKlikBCAModel(TransactionRequest request, KlikBCADescriptionModel descriptionModel) {
-        TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(), request.getOrderId());
-
-        if (request.isUiEnabled()) {
-            //get user details only if using default ui.
-            request = initializeUserInfo(request);
-        }
-
-        return new KlikBCAModel(
-                descriptionModel,
-                transactionDetails,
-                request.getItemDetails(),
-                request.getBillingAddressArrayList(),
-                request.getShippingAddressArrayList(),
-                request.getCustomerDetails()
-        );
-    }
-
-    protected static BCAKlikPayModel getBCAKlikPayModel(TransactionRequest request,
-                                                        BCAKlikPayDescriptionModel descriptionModel) {
-        TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(), request.getOrderId());
-
-        if (request.isUiEnabled()) {
-            //get user details only if using default ui.
-            request = initializeUserInfo(request);
-        }
-
-        return new BCAKlikPayModel(
-                descriptionModel,
-                transactionDetails,
-                request.getItemDetails(),
-                request.getBillingAddressArrayList(),
-                request.getShippingAddressArrayList(),
-                request.getCustomerDetails()
-        );
-    }
-
-
-    /**
-     * helper method to extract {@link PermataBankTransfer} from {@link TransactionRequest}.
-     *
-     * @param request transaction request
-     * @return Transfer model object
-     */
-    protected static PermataBankTransfer getPermataBankModel(TransactionRequest request) {
-
-        TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
-                request.getOrderId());
-
-        if (request.isUiEnabled()) {
-            //get user details only if using default ui.
-            request = initializeUserInfo(request);
-        }
-
-        // bank name
-        BankTransfer bankTransfer = new BankTransfer();
-        bankTransfer.setBank(BankType.PERMATA);
-
-        return new PermataBankTransfer(bankTransfer,
-                transactionDetails, request.getItemDetails(),
-                request.getBillingAddressArrayList(),
-                request.getShippingAddressArrayList(),
-                request.getCustomerDetails());
-
-    }
-
-    /**
-     * helper method to extract {@link PermataBankTransfer} from {@link TransactionRequest}.
-     *
-     * @param request Transaction request
-     * @return Transfer model object
-     */
-    protected static BCABankTransfer getBcaBankTransferRequest(TransactionRequest request) {
-
-        TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
-                request.getOrderId());
-
-        if (request.isUiEnabled()) {
-            //get user details only if using default ui.
-            request = initializeUserInfo(request);
-        }
-
-        // bank name
-        BankTransfer bankTransfer = new BankTransfer();
-        bankTransfer.setBank(BankType.BCA);
-
-
-        BCABankTransfer model =
-                new BCABankTransfer(bankTransfer,
-                        transactionDetails, request.getItemDetails(),
-                        request.getBillingAddressArrayList(),
-                        request.getShippingAddressArrayList(),
-                        request.getCustomerDetails());
-        return model;
-
-    }
-
-
-    /**
-     * helper method to extract {@link IndomaretRequestModel} from {@link TransactionRequest}.
-     *
-     * @param request transaction request object
-     * @return transfer model object
-     */
-    protected static IndomaretRequestModel getIndomaretRequestModel(TransactionRequest request,
-                                                                    CstoreEntity cstoreEntity) {
-
-        TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
-                request.getOrderId());
-
-        if (request.isUiEnabled()) {
-            //get user details only if using default ui.
-            request = initializeUserInfo(request);
-        }
-
-        IndomaretRequestModel model =
-                new IndomaretRequestModel();
-
-        model.setPaymentType(PaymentType.INDOMARET_CSTORE);
-        model.setItem_details(request.getItemDetails());
-        model.setCustomerDetails(request.getCustomerDetails());
-        model.setTransactionDetails(transactionDetails);
-        model.setCstore(cstoreEntity);
-
-        return model;
-
-    }
-
-
-    /**
-     * helper method to extract {@link CIMBClickPayModel} from {@link TransactionRequest}.
-     *
-     * @param cimbDescription CIMB bank description
-     * @param request         transaction request
-     * @return transfer model object
-     */
-
-    protected static CIMBClickPayModel getCIMBClickPayModel(TransactionRequest request,
-                                                            DescriptionModel cimbDescription) {
-
-        TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
-                request.getOrderId());
-
-        if (request.isUiEnabled()) {
-            //get user details only if using default ui.
-            request = initializeUserInfo(request);
-        }
-
-        CIMBClickPayModel model =
-                new CIMBClickPayModel(cimbDescription, transactionDetails, request.getItemDetails(),
-                        request.getBillingAddressArrayList(),
-                        request.getShippingAddressArrayList(),
-                        request.getCustomerDetails());
-        return model;
-    }
-
-    /**
-     * helper method to extract {@link MandiriECashModel} from {@link TransactionRequest}.
-     *
-     * @return Mandiri E Cash Model object
-     */
-
-    protected static MandiriECashModel getMandiriECashModel(TransactionRequest request,
-                                                            DescriptionModel description) {
-
-        TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
-                request.getOrderId());
-
-        if (request.isUiEnabled()) {
-            //get user details only if using default ui.
-            request = initializeUserInfo(request);
-        }
-
-        MandiriECashModel model =
-                new MandiriECashModel(description, transactionDetails, request.getItemDetails(),
-                        request.getBillingAddressArrayList(),
-                        request.getShippingAddressArrayList(),
-                        request.getCustomerDetails());
-        return model;
-    }
-
-    /**
-     * helper method to extract {@link CardTransfer} from {@link TransactionRequest}.
-     *
-     * @param request            transaction request
-     * @param cardPaymentDetails payment details
-     * @return Card transfer model object
-     */
-    public static CardTransfer getCardTransferModel(TransactionRequest request,
-                                                    CardPaymentDetails cardPaymentDetails) {
-
-        TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
-                request.getOrderId());
-
-        if (request.isUiEnabled()) {
-            //get user details only if using default ui.
-            request = initializeUserInfo(request);
-        }
-
-        CardTransfer model =
-                new CardTransfer(cardPaymentDetails,
-                        transactionDetails, request.getItemDetails(),
-                        request.getBillingAddressArrayList(),
-                        request.getShippingAddressArrayList(),
-                        request.getCustomerDetails());
-        return model;
-    }
-
-
-    /**
-     * helper method to extract {@link EpayBriTransfer} from {@link TransactionRequest}.
-     *
-     * @param request transaction request object
-     * @return E Pay BRI transfer model
-     */
-    protected static EpayBriTransfer getEpayBriBankModel(TransactionRequest request) {
-
-        TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
-                request.getOrderId());
-
-        if (request.isUiEnabled()) {
-            //get user details only if using default ui.
-            request = initializeUserInfo(request);
-        }
-
-        EpayBriTransfer model =
-                new EpayBriTransfer(transactionDetails, request.getItemDetails(),
-                        request.getBillingAddressArrayList(),
-                        request.getShippingAddressArrayList(),
-                        request.getCustomerDetails());
-        return model;
-
-    }
-
-    /**
-     * helper method to extract {@link IndosatDompetkuRequest} from {@link TransactionRequest}.
-     *
-     * @param request transaction request object
-     * @return transfer model object
-     */
-    protected static IndosatDompetkuRequest getIndosatDompetkuRequestModel(TransactionRequest
-                                                                                   request,
-                                                                           String msisdn) {
-
-        TransactionDetails transactionDetails = new TransactionDetails("" + request.getAmount(),
-                request.getOrderId());
-
-        //get user details only if using default ui.
-        request = initializeUserInfo(request);
-
-        IndosatDompetkuRequest model =
-                new IndosatDompetkuRequest();
-
-        model.setCustomerDetails(request.getCustomerDetails(), request
-                .getShippingAddressArrayList(), request.getBillingAddressArrayList());
-        model.setPaymentType(PaymentType.INDOSAT_DOMPETKU);
-        IndosatDompetkuRequest.IndosatDompetkuEntity entity = new IndosatDompetkuRequest
-                .IndosatDompetkuEntity();
-        entity.setMsisdn("" + msisdn);
-
-        model.setIndosatDompetku(entity);
-        model.setItemDetails(request.getItemDetails());
-        model.setTransactionDetails(transactionDetails);
-
-        return model;
-    }
 
     /**
      * helper method to add {@link CustomerDetails} in {@link TransactionRequest}.
@@ -571,21 +227,26 @@ public class SdkUtil {
         return requestModel;
     }
 
-    public static CustomerDetailRequest initializePaymentDetails(TransactionRequest transactionRequest) {
-        CustomerDetailRequest customerDetailRequest = new CustomerDetailRequest();
-        customerDetailRequest.setFullName(transactionRequest.getCustomerDetails().getFirstName());
-        customerDetailRequest.setPhone(transactionRequest.getCustomerDetails().getPhone());
-        customerDetailRequest.setEmail(transactionRequest.getCustomerDetails().getEmail());
-        return customerDetailRequest;
-    }
+    public static CustomerDetailRequest initializePaymentDetails(Transaction transaction) {
+        if (transaction != null) {
+            CustomerDetails customerDetails = transaction.getCustomerDetails();
+            if (customerDetails != null) {
+                CustomerDetailRequest customerDetailRequest = new CustomerDetailRequest();
+                customerDetailRequest.setFullName(customerDetails.getFirstName());
+                customerDetailRequest.setPhone(customerDetailRequest.getPhone());
+                customerDetailRequest.setEmail(customerDetailRequest.getEmail());
 
-    public static CreditCardPaymentRequest getCreditCardPaymentRequest(CreditCardPaymentModel model, TransactionRequest transactionRequest) {
-        if (transactionRequest.isUiEnabled()) {
-            // get user details only if using default ui
-            transactionRequest = initializeUserInfo(transactionRequest);
+                return customerDetailRequest;
+            }
         }
 
-        CustomerDetailRequest customerDetailRequest = initializePaymentDetails(transactionRequest);
+        return null;
+    }
+
+    public static CreditCardPaymentRequest getCreditCardPaymentRequest(CreditCardPaymentModel model, Transaction transaction) {
+
+        CustomerDetailRequest customerDetailRequest = initializePaymentDetails(transaction);
+
         CreditCardPaymentParams paymentParams = new CreditCardPaymentParams(model.getCardToken(),
                 model.isSavecard(), model.getMaskedCardNumber(), model.getInstallment());
         paymentParams.setPointRedeemed(model.getPointRedeemed());
@@ -610,20 +271,6 @@ public class SdkUtil {
         return creditCardPaymentRequest;
     }
 
-    public static CreditCardPaymentRequest getCreditCardPaymentRequest(String discountToken, Long discountAmount, CreditCardPaymentModel model, TransactionRequest transactionRequest) {
-        if (transactionRequest.isUiEnabled()) {
-            // get user details only if using default ui
-            transactionRequest = initializeUserInfo(transactionRequest);
-        }
-
-        CustomerDetailRequest customerDetailRequest = initializePaymentDetails(transactionRequest);
-        CreditCardPaymentParams paymentParams = new CreditCardPaymentParams(model.getCardToken(),
-                model.isSavecard(), model.getMaskedCardNumber(), model.getInstallment());
-        CreditCardPaymentRequest paymentRequest = new CreditCardPaymentRequest(PaymentType.CREDIT_CARD, paymentParams, customerDetailRequest);
-
-
-        return paymentRequest;
-    }
 
     public static BankTransferPaymentRequest getBankTransferPaymentRequest(String email, String paymentType) {
         CustomerDetailRequest request = new CustomerDetailRequest();
@@ -639,10 +286,6 @@ public class SdkUtil {
         return klikBCAPaymentRequest;
     }
 
-    public static String getEmailAddress(TransactionRequest transactionRequest) {
-        return transactionRequest.getCustomerDetails().getEmail();
-    }
-
 
     public static GCIPaymentRequest getGCIPaymentRequest(String cardNumber, String password) {
         GCIPaymentParams paymentParams = new GCIPaymentParams(cardNumber, password);
@@ -650,38 +293,16 @@ public class SdkUtil {
         return request;
     }
 
-    public static MandiriClickPayPaymentRequest getMandiriClickPaymentRequest(String mandiriCardNumber, String tokenResponse,
-                                                                              String input3, String paymentType) {
-
-        MandiriClickPayPaymentParams paymentParams = new MandiriClickPayPaymentParams(mandiriCardNumber, input3, tokenResponse);
-        MandiriClickPayPaymentRequest request = new MandiriClickPayPaymentRequest(paymentType, paymentParams);
-
-        return request;
-    }
 
     public static GoPayPaymentRequest getGoPayPaymentRequest() {
         return new GoPayPaymentRequest(PaymentType.GOPAY);
     }
 
-    public static GoPayAuthorizationRequest getGoPayAuthorizationRequest(String otp) {
-        return new GoPayAuthorizationRequest(otp);
-    }
 
     public static DanamonOnlinePaymentRequest getDanamonOnlinePaymentRequest() {
         return new DanamonOnlinePaymentRequest(PaymentType.DANAMON_ONLINE);
     }
 
-    /**
-     * Sorting payment method by priority (Ascending)
-     */
-    public static void sortPaymentMethodsByPriority(ArrayList<PaymentMethodsModel> paymentMethodsModels) {
-        Collections.sort(paymentMethodsModels, new Comparator<PaymentMethodsModel>() {
-            @Override
-            public int compare(PaymentMethodsModel lhs, PaymentMethodsModel rhs) {
-                return lhs.getPriority().compareTo(rhs.getPriority());
-            }
-        });
-    }
 
     public static SecurePreferences newPreferences(Context context, String name) {
 

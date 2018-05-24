@@ -167,10 +167,5 @@ public class TransactionRequestTest {
         Assert.assertEquals(itemDetailsMock, transactionRequest.getItemDetails());
     }
 
-    @Test
-    public void enableUITest() {
-        transactionRequest.enableUi(true);
-        Assert.assertTrue(transactionRequest.isUiEnabled());
-    }
 }
 

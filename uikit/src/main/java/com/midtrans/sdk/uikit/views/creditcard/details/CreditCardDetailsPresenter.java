@@ -631,4 +631,8 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
         userDetail.setPhoneNumber(phone);
         LocalDataHandler.saveObject(UiKitConstants.KEY_USER_DETAILS, userDetail);
     }
+
+    public boolean isInstallmentOptionRequired() {
+        return (creditCardTransaction != null && creditCardTransaction.isInstallmentOptionRequired());
+    }
 }

@@ -5,7 +5,7 @@ apply from: '../jacoco.gradle'
 apply plugin: 'com.vanniktech.android.junit.jacoco'
 
 group = 'com.midtrans'
-version = '1.18.0'
+version = '1.19.0'
 
 buildscript {
     repositories {
@@ -121,9 +121,9 @@ dependencies {
 
 
     // Analytics Manager
-    developmentCompile 'com.midtrans:analytics:1.3.7-SANDBOX'
-    stagingCompile 'com.midtrans:analytics:1.3.7-SANDBOX'
-    productionCompile 'com.midtrans:analytics:1.3.7'
+    developmentCompile 'com.midtrans:analytics:1.4.5-SANDBOX'
+    stagingCompile 'com.midtrans:analytics:1.4.5-SANDBOX'
+    productionCompile 'com.midtrans:analytics:1.4.5'
     /*
      * test dependencies
      */

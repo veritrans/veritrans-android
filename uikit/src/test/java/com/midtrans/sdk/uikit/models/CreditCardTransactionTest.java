@@ -100,19 +100,6 @@ public class CreditCardTransactionTest {
         assertFalse(cardTransaction.isInWhiteList(BIN_INVALID));
     }
 
-    @Test
-    public void setBankBins() throws Exception {
-        ArrayList<BankBinsResponse> newBankBins = TestUtils.getJsonDataFromMapFile(getClass().getClassLoader(), createBankBinsType(), "bank_bins_sample_new.json");
-        cardTransaction.setBankBins(newBankBins);
-        assertEquals(BANK_MANDIRI, cardTransaction.getBankByBin(MANDIRI_BIN));
-    }
-
-    @Test
-    public void setBankBins_whenInvalid() throws Exception {
-        ArrayList<BankBinsResponse> newBankBins = TestUtils.getJsonDataFromMapFile(getClass().getClassLoader(), createBankBinsType(), "bank_bins_sample_new.json");
-        cardTransaction.setBankBins(newBankBins);
-        assertEquals(null, cardTransaction.getBankByBin(BIN_INVALID));
-    }
 
     @Test
     public void getInstallmentTerm() throws Exception {

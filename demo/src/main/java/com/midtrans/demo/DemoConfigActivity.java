@@ -26,6 +26,7 @@ import com.midtrans.demo.widgets.DemoTextView;
 import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.core.PaymentMethod;
 import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
 import com.midtrans.sdk.corekit.core.themes.CustomColorTheme;
@@ -3285,8 +3286,6 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         term.add(3);
         term.add(6);
         term.add(12);
-        term.add(18);
-        term.add(24);
         //set bank and term
         bankTerms.put(bank, term);
     }

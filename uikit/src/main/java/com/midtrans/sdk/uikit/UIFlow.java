@@ -250,6 +250,17 @@ public class UIFlow implements ISdkFlow {
         }
     }
 
+    @Override
+    public void runDanamonOnline(Context context, String tokenToken) {
+        MidtransSDK sdk = MidtransSDK.getInstance();
+        if (sdk != null) {
+            Intent intent = new Intent(context, UserDetailsActivity.class);
+            intent.putExtra(UserDetailsActivity.DANAMON_ONLINE, true);
+            intent.putExtra(UiKitConstants.EXTRA_SNAP_TOKEN, tokenToken);
+            context.startActivity(intent);
+        }
+    }
+
 
     @Override
     public void runCardRegistration(Context context, CardRegistrationCallback callback) {

@@ -28,6 +28,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.BankType;
@@ -639,6 +640,26 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                 }
             }
         });
+    }
+
+    private void setAnalyticsProperties(TransactionResponse response) {
+        MixpanelAnalyticsManager analyticsManager = getMidtransSdk().getmMixpanelAnalyticsManager();
+        if (analyticsManager != null) {
+            if (response != null) {
+                analyticsManager.setTransactionid(response.getTransactionId());
+                if (isOneClickMode()) {
+                    analyticsManager.setOneCLick(isOneClickMode());
+                } else if (isTwoClicksMode()) {
+                    analyticsManager.setTwoclicks(isTwoClicksMode());
+                }
+
+                if (!TextUtils.isEmpty(response.getInstallmentTerm())) {
+                    analyticsManager.setInstallmentAvailable(true);
+                    analyticsManager.setInstallmentRequired(presenter.isInstallmentOptionRequired());
+                }
+            }
+
+        }
     }
 
     private void setPromoSelected() {
@@ -1503,6 +1524,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
     @Override
     public void onPaymentSuccess(TransactionResponse response) {
+        setAnalyticsProperties(response);
         if (isActivityRunning()) {
             if (presenter.isRbaAuthentication(response)) {
                 start3DSecurePage(response.getRedirectUrl(), UiKitConstants.INTENT_CODE_RBA_AUTHENTICATION);
@@ -1517,6 +1539,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
     @Override
     public void onPaymentFailure(TransactionResponse response) {
+        setAnalyticsProperties(response);
         hideProgressLayout();
         if (isActivityRunning()) {
             if (attempt < UiKitConstants.MAX_ATTEMPT) {
