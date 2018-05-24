@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.midtrans.demo.widgets.DemoRadioButton;
 import com.midtrans.demo.widgets.DemoTextView;
 import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
@@ -48,6 +49,7 @@ import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.scancard.ScanCard;
 import com.midtrans.sdk.uikit.SdkUIFlowBuilder;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -84,6 +86,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private static final int AUTH_TYPE_RBA = 2;
     private static final int AUTH_TYPE_RBA_NON_3DS = 3;
     private static final int AUTH_TYPE_NONE = 0;
+    private static final String CLIENT_KEY_FOR_ONE_CLICK_MID = "VT-client-F91kdUrnE5w8zCja";
 
     private static int DELAY = 200;
     private String selectedColor = DemoThemeConstants.BLUE_THEME;
@@ -2287,10 +2290,19 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 TransactionRequest transactionRequest = initializePurchaseRequest();
                 MidtransSDK.getInstance().setTransactionRequest(transactionRequest);
 
+                // change just for demo app purpose
+                changeClientKeyIfOneClick();
                 startActivity(new Intent(DemoConfigActivity.this, DemoProductListActivity.class));
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
         });
+    }
+
+    private void changeClientKeyIfOneClick() {
+        if(oneClickSelection.isChecked()){
+            MidtransSDK.getInstance().setClientKey(CLIENT_KEY_FOR_ONE_CLICK_MID);
+            MidtransSDK.getInstance().getTransactionRequest().setCustomField1("one_click");
+        }
     }
 
     private void initResetSettings() {
