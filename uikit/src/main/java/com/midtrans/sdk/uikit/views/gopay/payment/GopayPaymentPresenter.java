@@ -1,6 +1,7 @@
 package com.midtrans.sdk.uikit.views.gopay.payment;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.midtrans.sdk.corekit.callback.GetTransactionStatusCallback;
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
@@ -49,7 +50,7 @@ public class GopayPaymentPresenter extends BasePaymentPresenter<GoPayPaymentView
             public void onSuccess(TransactionStatusResponse response) {
                 if (response != null && !isPaymentPending(response)) {
                     transactionResponse = convertTransactionStatus(response);
-                    view.onPaymentSuccess(transactionResponse);
+                    view.onGetTransactionStatusSuccess(transactionResponse);
                 }
             }
 
