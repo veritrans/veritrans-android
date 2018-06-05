@@ -115,7 +115,7 @@ public class MidtransRestAdapter {
                         .addHeader("Content-Type", "application/json")
                         .addHeader("Accept", "application/json")
                         .addHeader("X-Source", "mobile-android")
-                        .addHeader("X-SDK-Version", "android-" + BuildConfig.VERSION_NAME)
+                        .addHeader("X-Source-Version", BuildConfig.VERSION_NAME)
                         .build();
 
                 return chain.proceed(headerInterceptedRequest);
