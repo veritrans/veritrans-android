@@ -117,12 +117,7 @@
     <string name="copied_bill_code">Kode tagihan sudah disalin ke clipboard</string>
     <string name="copied_company_code">Kode perusahaan sudah disalin ke clipboard</string>
     <string name="complete_payment_at_atm">Mohon Selesaikan Pembayaran</string>
-    <string name="complete_payment_at_mobile_bca">Selesaikan Pembayaran di m-BCA</string>
-    <string name="complete_payment_at_klik_bca_va">Selesaikan Pembayaran di KlikBCA</string>
-    <string name="complete_payment_via_internet_banking">Selesaikan Pembayaran di Internet Banking</string>
-    <string name="complete_payment_va_bni_mobile">Selesaikan Pembayaran di BNI Mobile</string>
     <string name="complete_payment_at_klik_bca">Selesaikan Pembayaran di KlikBCA</string>
-    <string name="complete_payment">Selesaikan Pembayaran</string>
     <string name="done">Selesai</string>
     <string name="virtual_account_number">Nomor Akun Virtual</string>
     <string name="payment_pending">Menunggu Pembayaran</string>
@@ -202,7 +197,6 @@
         OTP sudah kadaluarsa, klik <b>Batal</b> dan ulangi transaksi.</string>
 
     <!-- Indomaret Instruction-->
-    <string name="indomaret_payment_instruction">Instruksi Pembayaran Indomaret</string>
     <string name="indomaret_instruction_step1">Setelah melakukan <b>Konfirmasi Pembayaran</b>, Anda akan diberikan Kode Pembayaran yang unik.</string>
     <string name="indomaret_instruction_step2">Salinlah Kode Pembayaran Anda dan jumlah pembayaran yang akan dibayarkan.
        Jangan khawatir, Kami juga akan mengirimkan salinan kode pembayaran dan instruksi pembayaran melalui email.</string>
@@ -219,7 +213,6 @@
     <string name="permata_instruction_step5">Masukkan <b>16 digit No. Virtual Account</b> yang dituju, lalu tekan <b>Benar</b>.</string>
     <string name="permata_instruction_step6"><b>Detail pembayaran anda</b> akan muncul pada halaman konfirmasi. Jika informasi telah sesuai tekan <b>Benar</b>.</string>
     <string name="permata_instruction_step7">Pilih rekening pembayaran Anda dan tekan <b>Benar</b>.</string>
-    <string name="bank_transfer_dummy_text">* Bergantung pada biaya bank/transfer dan transaksi minimum sebesar Rp50,000, - untuk bank mandiri</string>
 
     <string name="bri_instruction_step1">Pastikan bahwa Anda memiliki User ID untuk BRI e-Pay dan telah terdaftar untuk mTOKEN sebelum melanjutkan pembayaran.</string>
     <string name="bri_instruction_step2">Untuk mendapatkan User ID untuk BRI e-Pay, harap mendaftar pada ATM BRI terdekat</string>
@@ -255,7 +248,6 @@
     <string name="error_qr_code">Gagal memuat kode QR. Mohon coba lagi.</string>
     <string name="reload_qr_code">Muat Ulang Kode QR</string>
     <string name="error_gopay_transaction">Transaksi Anda tidak dapat diproses. Silakan ulangi lagi, atau coba dengan metode pembayaran lain.</string>
-    <string name="confirm_gopay_title">Konfirmasi</string>
     <string name="confirm_gopay_qr_scan_tablet">Pastikan kode QR berhasil di-scan dan pembayaran telah diselesaikan di dalam aplikasi GO-JEK.</string>
     <string name="confirm_gopay_deeplink">Pastikan pembayaran telah diselesaikan di dalam aplikasi GO-JEK.</string>
     <string name="gopay_instruction">Cara Pembayaran</string>
@@ -315,7 +307,6 @@
     <string name="epay_bri">e-Pay BRI</string>
     <string name="bbm_money">BBM Money</string>
     <string name="indosat_dompetku">Indosat Dompetku</string>
-    <string name="mandiri_e_cash">LINE Pay e-cash / Mandiri e-cash</string>
     <string name="bca_klik">BCA KlikPay</string>
     <string name="indomaret">Indomaret</string>
     <string name="offers">Penawaran</string>
@@ -352,7 +343,6 @@
 
     <string name="for_three_seconds">selama 3 detik</string>
     <string name="title_payment_status">Status Pembayaran</string>
-    <string name="payment_deny">Pembayaran Ditolak.</string>
     <string name="success">success</string>
     <string name="fetching_cards">Mengambil data kartu</string>
     <string name="btn_save_card">Mendaftarkan Kartu</string>
@@ -383,12 +373,7 @@
 
     <string name="btn_close">Tutup</string>
     <string name="payment_canceled">Otorisasi 3D telah dibatalkan.</string>
-    <string name="btn_pay">Bayar</string>
-    <string name="btn_register">Daftar</string>
-    <string name="hint_input_cvv">Masukkan CVV</string>
 
-    <string name="payment_confirmation_title">Konfirmasi Pembayaran</string>
-    <string name="payment_confirmation_description">Nomor Kartu:\n%1$s\n\nTotal Pembayaran: %2$s</string>
     <string name="txt_loading_payment">Mengambil daftar metode pembayaran</string>
     <string name="txt_checkout">Checkout Transaksi</string>
     <string name="txt_error_snap_token">Gagal mendaftarkan transaksi.</string>
@@ -413,14 +398,7 @@
     <string name="text_hint_xl_order_id">Kode Pemesanan XL Tunai</string>
     <string name="text_hint_xl_merchant_code">Kode Penjual</string>
 
-    <string name="text_copy_order_id">Salin Kode Pemesanan</string>
-    <string name="text_copy_merchant_code">Salin Kode Penjual</string>
-
-    <string name="copied_order_id">Kode pemesanan telah disalin ke clipboard</string>
-    <string name="copied_merchant_code">Kode penjual telah disalin ke clipboard</string>
-
     <string name="text_format_valid_until">Silakan menyelesaikan pembayaran sebelum : %1$s</string>
-    <string name="klik_bca_complete_payment">Selesaikan pembayaran di <a href="http://klikbca.com/">http://klikbca.com/</a> sebelum:</string>
 
     <!-- instruction atm bersama -->
     <string name="preview_atm_bersama">Bayar melalui <b>semua ATM bank berlogo ATM Bersama</b></string>
@@ -471,40 +449,26 @@
     <string name="pay_with_alto">Bayar melalui ATM berlogo Alto</string>
 
     <string name="show_instruction">Lihat Instruksi Pembayaran</string>
-    <string name="hide_instruction">Sembunyikan Instruksi Pembayaran</string>
 
     <string name="all_bank_transfer">Jaringan ATM Lainnya</string>
     <string name="error_message_invalid_input_telkomsel">Transaksi Anda tidak dapat diproses. Pastikan informasi pembayaran Anda benar.</string>
     <string name="no_network_msg">Koneksi tidak tersedia! Coba lagi lain waktu.</string>
     <string name="kioson">Kioson</string>
-    <string name="kioson_valid">Konfirmasi pembayaran anda di outlet Kioson Sebelum : %1$s </string>
-    <string name="kioson_payment_instruction">Instruksi Pembayaran Kioson</string>
-    <string name="klikbca_payment_instruction">Instruksi Pembayaran KlikBCA</string>
     <string name="message_payment_cannot_proccessed">Transaksi anda tidak dapat diproses. Pastikan informasi pembayaran anda benar</string>
     <string name="message_payment_failed">Pembayaran gagal. Mohon cek kembali detil kartu anda atau gunakan kartu lain.</string>
     <string name="message_payment_denied">Transaksi anda ditolak! Silakan ulangi lagi, atau coba dengan metode pembayaran lain.</string>
-    <string name="validation_message_please_fillup_form">Silakan isi dengan informasi yang tepat.</string>
     <string name="message_getcard_token_failed">Kartu gagal diproses. Periksa kembali input anda atau gunakan kartu lain.</string>
-    <string name="message_payment_not_completed">Informasi pembayaran tidak lengkap!</string>
     <string name="message_payment_method_empty">Tidak ada metode pembayaran yang diaktifkan!</string>
     <string name="message_payment_expired">Halaman pembayaran kadaluarsa</string>
-    <string name="status_denied">Ditolak</string>
-    <string name="status_expired">Kadaluarsa</string>
-    <string name="message_cannot_proccessed">Transaksi anda tidak dapat diproses.</string>
     <string name="formatted_installment_month">Cicilan %1$s bulan</string>
     <string name="no_installment">Tanpa cicilan</string>
-    <string name="status_installment_bank">Bank Cicilan</string>
-    <string name="status_installment_term">Jangka waktu cicilan</string>
-    <string name="installment_months">Bulan %1$s</string>
     <string name="hint_giftcard_number">Nomor Gift Card Anda</string>
     <string name="info_gci_payment">PENTING! Setelah konfirmasi pembayaran, anda tidak bisa merubah metode pembayarannya</string>
     <string name="error_password_empty">PIN harus diisi</string>
     <string name="error_password_invalid">Masukkan PIN yang benar</string>
     <string name="text_items">Barang</string>
-    <string name="text_order_details">Detil Pesanan</string>
     <string name="text_price">Harga</string>
     <string name="save_card_info">Detail kartu diatas akan disimpan untuk membantu transaksi anda berikutnya.</string>
-    <string name="choose_card">Pilih kartu kredit</string>
     <string name="add_new_card">Bayar dengan Kartu Baru</string>
     <string name="mandiri_bill_transfer">Bank Mandiri</string>
     <string name="bank_bca_transfer">Bank BCA</string>
@@ -514,19 +478,15 @@
     <string name="copy">Salin</string>
     <string name="valid_until">Valid hingga</string>
     <string name="valid_date">10 September 2015, 16:00</string>
-    <string name="mandir_bill_instruction">bagaimana saya dapat melakukan pembayaran dengan mandiri bill ?</string>
     <string name="thank_you">Terima kasih!</string>
     <string name="text_payment_type">TIPE PEMBAYARAN</string>
     <string name="status_payable_amount">JUMLAH PEMBAYARAN</string>
     <string name="status_promo_amount">DISKON PROMO</string>
     <string name="status_order_id">ORDER ID</string>
-    <string name="text_payment_time">WAKTU PEMBAYARAN</string>
     <string name="status_due_amount">JUMLAH PEMBAYARAN BERSIH</string>
     <string name="status_due_installment">CICILAN</string>
     <string name="sorry">Maaf!</string>
-    <string name="get_challenge_token">Bagaimana saya bisa mendapatkan challenge token?</string>
     <string name="kioson_instruction">Lihat Instruksi Pembayaran</string>
-    <string name="card_bin_invalid">nomor kartu kredit tidak terdapat didalam whitelist bin kartu kredit</string>
     <string name="installment_required">Pembayaran harus menggunakan cicilan</string>
     <string name="complete_payment_kioson">Selesaikan Pembayaran di Kioson</string>
     <string name="complete_payment_indomaret">Selesaikan pembayaran di Indomaret</string>
@@ -563,38 +523,27 @@
 
     <string name="instruction_klikbca1">Mohon pastikan UserID aktif dan terdaftar di BCA.</string>
     <string name="instruction_klikbca2">Mohon lanjutkan pembayaran melalui KlikBCA dengan membuka <a href="http://klikbca.com/">http://klikbca.com/</a> di jendela atau tab terpisah, menggunakan User ID yang anda masukkan sebelumnya.</string>
-    <string name="instruction_klikbca3">Transaksi akan dibatalkan bila pembayaran tidak diselesaikan dalam 2 jam.</string>
-    <string name="btn_show_account_number">Lihat Nomor Rekening</string>
 
-    <string name="promo_dialog_title">Selamat</string>
-    <string name="promo_dialog_message">Dengan kartu ini, anda mendapatkan diskon sejumlah Rp. %1$s dari %2$s.</string>
-    <string name="error_obtain_promo">Gagal memperoleh promo.</string>
     <string name="klik_bca_continue">Mohon lanjutkan proses pembayaran lewat KlikBCA dengan membuka <a href="http://klikbca.com/">http://klikbca.com/</a> di browser anda.</string>
     <string name="error_delete_message">Gagal menghapus kartu</string>
     <string name="mandiri_debit_card">Kartu Debit Mandiri</string>
     <string name="bni_debit_online_card">Kartu Debit Online BNI</string>
-    <string name="deleted">Dihapus</string>
-    <string name="undo">Batalkan</string>
 
     <string name="redeem_bni_reward">Tukarkan BNI Reward Points</string>
     <string name="redeem_mandiri_point">Tukarkan Fiestapoin</string>
     <string name="redeem_100_point">DISKON FIESTAPOIN</string>
     <string name="amount_after_discount">TOTAL PEMBAYARAN SETELAH TUKAR POIN</string>
     <string name="delete_this_card">Hapus Kartu Ini</string>
-    <string name="redeem_point">Tukar Poin</string>
     <string name="redeem_bank_point_title">Gunakan Poin %1$s</string>
-    <string name="total_point">Total poin hadiah %1$s Anda adalah %2$s</string>
     <string name="redeem_bni_title">BNI Reward Points</string>
     <string name="redeem_bni_details">Anda dapat membayar sebagian dengan BNI Reward Points melalui kartu kredit BNI Anda.</string>
     <string name="redeem_mandiri_title">Mandiri Fiestapoin</string>
     <string name="redeem_mandiri_details">Anda dapat membayar sebagian dengan Mandiri Fiestapoin melalui kartu kredit / debit Mandiri Anda.</string>
 
     <string name="how_much_point">Berapa poin yang ingin anda tukarkan?</string>
-    <string name="total_bni_point">Total poin BNI anda</string>
     <string name="status_redeemed_point">DISKON POIN</string>
     <string name="total_bni_reward_point">Jumlah Point: %1$s</string>
     <string name="total_mandiri_fiestapoint">Jumlah Fiestapoin: %1$s</string>
-    <string name="pay_without_bank_point">Bayar tanpa Menggunakan %1$s</string>
     <string name="pay_with_mandiri_point">Bayar Menggunakan Mandiri Fiestapoin</string>
     <string name="pay_with_bni_point">Bayar Menggunakan BNI Reward Points</string>
 
@@ -628,22 +577,7 @@
     <string name="tab_atm_bni">ATM BNI</string>
     <string name="tab_bni_mobile">Mobile Banking</string>
     <string name="tab_bni_internet">Internet Banking</string>
-    <string name="one_click_confirmation_message">Anda akan melakukan pembayaran senilai %2$s dengan kartu kredit %1$s</string>
-    <string name="text_confirm">Konfirmasi</string>
-    <string name="text_cancel">Batal</string>
 
-    <string name="title_instruction_klikbca">Langkah-Langkah Pembayaran KlikBCA</string>
-    <string name="title_instruction_alto">Langkah-Langkah Pembayaran Alto</string>
-    <string name="title_instruction_atm_bersama">Langkah-Langkah Pembayaran ATM Bersama</string>
-    <string name="title_instruction_bca">Langkah-Langkah Pembayaran Bank Transfer BCA</string>
-    <string name="title_instruction_bca_mbca">Langkah-Langkah Pembayaran BCA Mobile</string>
-    <string name="title_instruction_bni_atm">Langkah-Langkah Pembayaran Bank Transfer BNI</string>
-    <string name="title_instruction_bni_internet">Langkah-Langkah Pembayaran BNI Internet</string>
-    <string name="title_instruction_bni_mobile">Langkah-Langkah Pembayaran BNI Mobile</string>
-    <string name="title_instruction_mandiri">Langkah-Langkah Pembayaran Bank Transfer Mandiri</string>
-    <string name="title_instruction_mandiri_internet">Langkah-Langkah Pembayaran Mandiri Internet</string>
-    <string name="title_instruction_permata">Langkah-Langkah Pembayaran Bank Transfer Permata</string>
-    <string name="title_instruction_prima">Langkah-Langkah Pembayaran Prima</string>
     <string name="error_snap_transaction_details">Gagal mengambil detil transaksi</string>
     <string name="error_paid_orderid">Order id sudah dibayar</string>
     <string name="error_gross_amount_not_equal">Total pembayaran tidak sama dengan detil item</string>
@@ -658,7 +592,6 @@
     <string name="timeout_message">Proses ini terlalu lama. Silakan coba lagi.</string>
     <string name="maintenance_back">Oke, Kembali</string>
     <string name="maintenance_message">We expect to be back in a couple hours. Thanks for your patience</string>
-    <string name="maintenance_title">Saat ini kami sedang dalam perawatan</string>
     <string name="payment_method_unavailable">Opsi ini sekarang tidak tersedia</string>
     <string name="notification_token_message">Perangkat token key dibutuhkan untuk cara pembayaran ini.</string>
     <string name="notification_otp_message">Biaya SMS mungkin akan dikenakan untuk cara pembayaran ini.</string>
@@ -686,9 +619,6 @@
     <string name="card_registration">Registrasi Kartu</string>
     <string name="error_utilized_orderid">Maaf, order id sudah digunakan</string>
     <string name="processing_card_registration">Proses registrasi kartu</string>
-    <string name="country_code">Kode negara</string>
-    <string name="payment_continue">Lanjutkan</string>
-    <string name="validation_country_code_empty">Masukkan kode negara</string>
     <string name="status_message_not_enabled">Metode pembayaran belum diaktifkan</string>
     <string name="details_message_not_enabled">Maaf, metode pembayaran belum diaktifkan</string>
     <string name="danamon_online_instruction_step1">Masukkan User ID dan Password Danamon Online Banking Anda dan pilih sumber rekening untuk pembayaran Anda.</string>

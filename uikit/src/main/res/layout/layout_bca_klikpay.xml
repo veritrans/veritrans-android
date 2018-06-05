@@ -5,7 +5,6 @@
     android:orientation="vertical">
 
     <com.midtrans.sdk.uikit.widgets.DefaultTextView
-        android:id="@+id/text_notification"
         style="@style/OtpNotification"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -57,7 +56,6 @@
             android:text="@string/number_instruction2" />
 
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
-            android:id="@+id/defaultTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/bca_klik_pay_instruction_step2"

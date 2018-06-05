@@ -1,9 +1,5 @@
 <resources>
     <string name="app_name">Midtrans SDK Sample</string>
-    <string name="buy">Buy</string>
-    <string name="header_token">Token : </string>
-    <string name="btn_get_token">Get Token</string>
-    <string name="btn_refresh_token">Refresh Token</string>
     <string name="title_show_credit_card_example">Credit Card Flow</string>
     <string name="title_show_example">Show Example</string>
     <string name="title_card_widget">Widget Example</string>
@@ -35,21 +31,11 @@
     <string name="buy_with_ui">UI flow</string>
     <string name="show_card_widget">Show Widget</string>
     <string name="show_card_widget_register">Show Register Widget</string>
-    <string name="buy_with_credit_card">Buy using credit card</string>
-    <string name="buy_with_permata_va">Buy using Permata VA</string>
-    <string name="buy_with_mandiri_bill">Buy using Mandiri Bill</string>
-    <string name="buy_with_bca_va">Buy using BCA VA</string>
-    <string name="buy_with_mandiri_click">Buy using Mandiri Click</string>
-    <string name="buy_with_cimbc_click">Buy using CIMB Click</string>
-    <string name="buy_with_indomaret">Buy using Indomaret</string>
-    <string name="buy_with_mandiri_e_cash">Buy using Mandiri E-Cash</string>
-    <string name="buy_with_bca_klik">Buy using BCA KlikPay</string>
     <string name="activity_title_credit_card">Pay with Credit/Debit Card</string>
     <string name="activity_title_permata_va">Pay with Bank Transfer</string>
     <string name="activity_title_mandiri_bill">Pay with Mandiri Bill</string>
     <string name="activity_title_bca">Pay with BCA</string>
     <string name="activity_title_mandiri_click">Pay with Mandiri Click</string>
-    <string name="activity_title_cimb_click">Pay with CIMB Click</string>
     <string name="activity_title_indomaret">Pay with Indomaret</string>
     <string name="activity_title_mandiri_cash">Pay with Mandiri E-Cash</string>
     <string name="activity_title_bca_klik">Pay with BCA KlikPay</string>
@@ -72,12 +58,10 @@
     <string name="card_click_two_click">Two Click</string>
     <string name="card_click_one_click">One Click</string>
     <string name="label_credit_card">credit_card</string>
-    <string name="label_bank_transfer">bank_transfer</string>
     <string name="label_bca_klik_bca">bca_klikbca</string>
     <string name="label_mandiri_clickpay">mandiri_clickpay</string>
     <string name="label_bca_klikpay">bca_klikpay</string>
     <string name="label_cimbclick">cimb_clicks</string>
-    <string name="bca_klikpay">BCA Klik Pay</string>
     <string name="label_bri_epay">bri_epay</string>
     <string name="label_payment_mandiri_ecash">mandiri_ecash</string>
     <string name="label_payment_indomaret">indomaret</string>
@@ -134,8 +118,6 @@
     <string name="txt_active">Active</string>
     <string name="txt_inactive">Not Active</string>
     <string name="save_card_options_title">Save Card Default Options</string>
-    <string name="save_card_true">Save</string>
-    <string name="save_card_false">Not Saved</string>
     <string name="pre_auth">Pre Auth Feature</string>
     <string name="color_theme">Color Theme</string>
     <string name="custom_field">Custom Field</string>

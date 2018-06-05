@@ -68,7 +68,6 @@
         </android.support.design.widget.TextInputLayout>
 
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
-            android:id="@+id/email_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingEnd="@dimen/sixteen_dp"

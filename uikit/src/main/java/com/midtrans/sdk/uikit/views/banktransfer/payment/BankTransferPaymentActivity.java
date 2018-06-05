@@ -28,7 +28,6 @@ import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
 import com.midtrans.sdk.uikit.abstracts.VaInstructionFragment.OnInstructionShownListener;
 import com.midtrans.sdk.uikit.adapters.InstructionPagerAdapter;
 import com.midtrans.sdk.uikit.adapters.ListBankAdapter;
-import com.midtrans.sdk.uikit.fragments.BankTransferFragment;
 import com.midtrans.sdk.uikit.models.MessageInfo;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
@@ -323,7 +322,7 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
                 } else {
                     showTokenNotification(false);
                 }
-            } else if (paymentType.equals(BankTransferFragment.TYPE_BNI)) {
+            } else if (paymentType.equals(PaymentType.BNI_VA)) {
                 if (position == 1) {
                     showOtpNotification(true);
                 } else {

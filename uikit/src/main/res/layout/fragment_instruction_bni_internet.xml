@@ -221,7 +221,6 @@
                     android:text="@string/number_instruction8" />
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                    android:id="@+id/defaultTextView2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="2dp"

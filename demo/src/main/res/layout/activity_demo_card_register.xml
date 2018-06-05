@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <android.support.design.widget.AppBarLayout
-        android:id="@id/appbar"
+        android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -60,7 +60,6 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <RelativeLayout
-                android:id="@+id/form_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/sixteen_dp"
@@ -227,14 +226,13 @@
                     android:padding="@dimen/eight_dp">
 
                     <ImageView
-                        android:id="@+id/midtrans_lock"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/four_dp"
                         android:layout_marginRight="@dimen/four_dp"
                         android:layout_weight="0.4"
                         android:scaleType="centerInside"
-                        android:src="@drawable/midtrans_lock" />
+                        android:src="@drawable/ic_veritrans" />
 
                     <ImageView
                         android:id="@+id/cc_badge"
@@ -244,7 +242,7 @@
                         android:layout_marginStart="@dimen/four_dp"
                         android:layout_weight="0.6"
                         android:scaleType="centerInside"
-                        android:src="@drawable/cc_badge" />
+                        android:src="@drawable/ic_veritrans" />
                 </LinearLayout>
             </RelativeLayout>
         </android.support.v4.widget.NestedScrollView>
