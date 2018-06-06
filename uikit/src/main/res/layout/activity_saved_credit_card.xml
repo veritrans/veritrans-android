@@ -19,9 +19,7 @@
             android:layout_above="@+id/container_item_details"
             android:layout_alignParentTop="true">
 
-            <include
-                android:id="@+id/container_saved_card_root"
-                layout="@layout/layout_saved_credit_card" />
+            <include layout="@layout/layout_saved_credit_card" />
         </ScrollView>
 
         <View

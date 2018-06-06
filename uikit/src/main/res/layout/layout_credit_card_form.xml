@@ -2,19 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container_form"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/container_offer_status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
-            android:id="@+id/text_offer_status_applied"
             style="@style/OfferText.Success"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -102,7 +99,6 @@
                 tools:src="@drawable/ic_amex" />
 
             <com.midtrans.sdk.uikit.widgets.AspectRatioImageView
-                android:id="@+id/promo_logo"
                 android:layout_width="@dimen/promo_logo_size"
                 android:layout_height="@dimen/promo_logo_size"
                 android:background="?selectableItemBackground"
@@ -474,8 +470,8 @@
             android:layout_alignParentStart="true"
             android:layout_marginEnd="@dimen/eight_dp"
             android:layout_marginRight="@dimen/eight_dp"
-            android:layout_toLeftOf="@id/help_save_card"
-            android:layout_toStartOf="@id/help_save_card"
+            android:layout_toLeftOf="@+id/help_save_card"
+            android:layout_toStartOf="@+id/help_save_card"
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@string/save_card_message"
@@ -494,7 +490,6 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/container_security"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/eight_dp"

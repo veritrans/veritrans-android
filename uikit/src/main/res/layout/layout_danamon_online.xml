@@ -80,7 +80,6 @@
                 android:text="@string/number_instruction2" />
 
             <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                android:id="@+id/defaultTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/danamon_online_instruction_step2"

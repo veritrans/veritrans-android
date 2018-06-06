@@ -29,7 +29,4 @@
         <item name="windowActionModeOverlay">true</item>
     </style>
 
-    <style name="ScrollTheme">
-        <item name="android:colorEdgeEffect">?colorPrimary</item>
-    </style>
 </resources>

@@ -18,7 +18,6 @@
         android:paddingTop="@dimen/four_dp">
 
         <RelativeLayout
-            android:id="@+id/layout_cards_icons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 

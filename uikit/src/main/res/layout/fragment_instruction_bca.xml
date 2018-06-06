@@ -50,10 +50,9 @@
                     android:textSize="@dimen/secondary_text_size" />
 
                 <ImageView
-                    android:id="@+id/imageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/instruction_bca_1" />
+                    app:srcCompat="@drawable/instruction_bca_1" />
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
                     android:layout_width="wrap_content"
@@ -89,7 +88,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/instruction_bca_2" />
+                    app:srcCompat="@drawable/instruction_bca_2" />
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
                     android:layout_width="match_parent"
@@ -124,7 +123,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/instruction_bca_3" />
+                    app:srcCompat="@drawable/instruction_bca_3" />
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
                     android:layout_width="match_parent"
@@ -160,7 +159,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/instruction_bca_4" />
+                    app:srcCompat="@drawable/instruction_bca_4" />
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
                     android:layout_width="match_parent"
@@ -196,7 +195,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/instruction_bca_5" />
+                    app:srcCompat="@drawable/instruction_bca_5" />
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
                     android:layout_width="match_parent"
@@ -237,7 +236,7 @@
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@id/no_six_instruction"
                     android:layout_toRightOf="@id/no_six_instruction"
-                    android:src="@drawable/instruction_bca_6" />
+                    app:srcCompat="@drawable/instruction_bca_6" />
 
                 <com.midtrans.sdk.uikit.widgets.DefaultTextView
                     android:layout_width="match_parent"

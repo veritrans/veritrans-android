@@ -372,7 +372,6 @@
                     android:orientation="vertical">
 
                     <ImageButton
-                        android:id="@+id/btn_edit_payment_method_disabled"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="?selectableItemBackground"
@@ -461,7 +460,6 @@
                     android:orientation="vertical">
 
                     <ImageButton
-                        android:id="@+id/btn_edit_bca_va_disabled"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="?selectableItemBackground"
@@ -549,7 +547,6 @@
                     android:orientation="vertical">
 
                     <ImageButton
-                        android:id="@+id/btn_edit_subcompany_bca_va_disabled"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="?selectableItemBackground"
@@ -635,7 +632,6 @@
                     android:orientation="vertical">
 
                     <ImageButton
-                        android:id="@+id/btn_edit_permata_va_disabled"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="?selectableItemBackground"
@@ -721,7 +717,6 @@
                     android:orientation="vertical">
 
                     <ImageButton
-                        android:id="@+id/btn_edit_permata_recipient_disabled"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="?selectableItemBackground"
@@ -808,7 +803,6 @@
                     android:orientation="vertical">
 
                     <ImageButton
-                        android:id="@+id/btn_edit_bni_va_disabled"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="?selectableItemBackground"

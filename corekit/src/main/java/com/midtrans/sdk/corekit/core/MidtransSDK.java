@@ -296,6 +296,10 @@ public class MidtransSDK {
         return clientKey;
     }
 
+    public void setClientKey(String clientKey) {
+        this.clientKey = clientKey;
+    }
+
     public String getMerchantServerUrl() {
         return merchantServerUrl;
     }

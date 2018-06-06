@@ -29,7 +29,6 @@
         </ScrollView>
 
         <LinearLayout
-            android:id="@+id/container_security"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/layout_container"

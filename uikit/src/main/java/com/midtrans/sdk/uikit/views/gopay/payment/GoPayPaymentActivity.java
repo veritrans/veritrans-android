@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -163,7 +164,6 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
                     startActivityForResult(intent, UiKitConstants.INTENT_CODE_PAYMENT_STATUS);
                 } else {
                     isAlreadyGotResponse = true;
-
                     openDeeplink(response.getDeeplinkUrl());
                 }
             } else {

@@ -38,7 +38,7 @@
 
                 <ImageView
                     android:id="@+id/image_setting_account"
-                    android:layout_width="@dimen/logo_width"
+                    android:layout_width="48dp"
                     android:layout_height="match_parent"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentEnd="true"
@@ -121,14 +121,12 @@
                             android:orientation="vertical">
 
                             <com.midtrans.demo.widgets.DemoTextView
-                                android:id="@+id/text_product_title_1"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/midtrans_pillow_1"
                                 android:textSize="16sp" />
 
                             <LinearLayout
-                                android:id="@+id/rating_container_1"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center_vertical">
@@ -211,14 +209,12 @@
                                 android:orientation="vertical">
 
                                 <com.midtrans.demo.widgets.DemoTextView
-                                    android:id="@+id/text_product_title_2"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="@string/midtrans_pillow_2"
                                     android:textSize="16sp" />
 
                                 <LinearLayout
-                                    android:id="@+id/rating_container_2"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:gravity="center_vertical">

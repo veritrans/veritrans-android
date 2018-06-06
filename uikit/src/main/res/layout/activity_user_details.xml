@@ -30,7 +30,6 @@
                 tools:src="@drawable/ic_veritrans" />
 
             <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                android:id="@+id/title_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="end"
