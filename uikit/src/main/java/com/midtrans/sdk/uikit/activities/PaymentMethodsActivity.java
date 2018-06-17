@@ -249,20 +249,22 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             List<ItemViewDetails> itemViewDetails = new ArrayList<>();
             // Add amount
             String amount = getString(R.string.prefix_money, Utils.getFormattedAmount(transaction.getTransactionDetails().getAmount()));
-            // Add header
-            itemViewDetails.add(new ItemViewDetails(
-                    null,
-                    amount,
-                    ItemViewDetails.TYPE_ITEM_HEADER,
-                    transaction.getItemDetails().size() > 0));
-            // Add item
-            for (ItemDetails itemDetails : transaction.getItemDetails()) {
-                String price = getString(R.string.prefix_money, Utils.getFormattedAmount(itemDetails.getQuantity() * itemDetails.getPrice()));
-                String itemName = itemDetails.getName();
-                if (itemDetails.getQuantity() > 1) {
-                    itemName = getString(R.string.text_item_name_format, itemDetails.getName(), itemDetails.getQuantity());
+            if (transaction.getItemDetails() != null) {
+                // Add header
+                itemViewDetails.add(new ItemViewDetails(
+                        null,
+                        amount,
+                        ItemViewDetails.TYPE_ITEM_HEADER,
+                        transaction.getItemDetails().size() > 0));
+                // Add item
+                for (ItemDetails itemDetails : transaction.getItemDetails()) {
+                    String price = getString(R.string.prefix_money, Utils.getFormattedAmount(itemDetails.getQuantity() * itemDetails.getPrice()));
+                    String itemName = itemDetails.getName();
+                    if (itemDetails.getQuantity() > 1) {
+                        itemName = getString(R.string.text_item_name_format, itemDetails.getName(), itemDetails.getQuantity());
+                    }
+                    itemViewDetails.add(new ItemViewDetails(itemName, price, ItemViewDetails.TYPE_ITEM, true));
                 }
-                itemViewDetails.add(new ItemViewDetails(itemName, price, ItemViewDetails.TYPE_ITEM, true));
             }
 
             ItemDetailsAdapter adapter = new ItemDetailsAdapter(itemViewDetails, this);
