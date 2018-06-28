@@ -311,8 +311,9 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
         if (!isAlreadyUtilized()) {
 
-            String snapToken = midtransSDK.readAuthenticationToken();
+            String snapToken = getIntent().getStringExtra(UiKitConstants.EXTRA_SNAP_TOKEN);
             if (!TextUtils.isEmpty(snapToken)) {
+                midtransSDK.setAuthenticationToken(snapToken);
                 getPaymentOptions(snapToken);
                 return;
             }
