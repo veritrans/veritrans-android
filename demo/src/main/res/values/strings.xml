@@ -112,7 +112,7 @@
     <string name="order_review">Order Review</string>
 
     <!--PRODUCT DETAILS-->
-    <string name="product_price_sample">Rp 200,000</string>
+    <string name="product_price_sample">Rp 10,000</string>
     <string name="product_name_sample">Midtrans Pillow</string>
     <string name="product_details_sample">Get cozy with our new pillow!</string>
     <string name="product_rating_sample">4.4</string>
@@ -144,7 +144,7 @@
     <!--BUTTON-->
     <string name="btn_launch_demo">Launch Demo App</string>
     <string name="btn_buy">Buy</string>
-    <string name="btn_pay_20000">Pay Rp 20,000</string>
+    <string name="btn_pay_20000">Pay Rp 10,000</string>
     <string name="sample_user_id">midtrans.android@yopmail.com</string>
     <string name="sample_user_id2">midtrans.android2@yopmail.com</string>
 
@@ -172,7 +172,7 @@
     <string name="midtrans_pillow">Midtrans Pillow</string>
     <string name="midtrans_pillow_1">Midtrans Pillow I</string>
     <string name="midtrans_pillow_2">Midtrans Pillow II</string>
-    <string name="price_pillow_1">Rp 200,000</string>
+    <string name="price_pillow_1">Rp 10,000</string>
 
     <!-- Demo Account-->
     <string name="account_name">Budi Utomo</string>

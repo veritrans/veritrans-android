@@ -2883,11 +2883,11 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             MidtransSDK.getInstance().setColorTheme(new CustomColorTheme(DemoThemeConstants.BLACK_PRIMARY_HEX, DemoThemeConstants.BLACK_PRIMARY_DARK_HEX, DemoThemeConstants.BLACK_SECONDARY_HEX));
         }
         // Create new Transaction Request
-        TransactionRequest transactionRequestNew = new TransactionRequest(System.currentTimeMillis() + "", 200000);
+        TransactionRequest transactionRequestNew = new TransactionRequest(System.currentTimeMillis() + "", 10000);
 
 
         // Define item details
-        ItemDetails itemDetails = new ItemDetails("1", 200000, 1, getString(R.string.product_name_sample));
+        ItemDetails itemDetails = new ItemDetails("1", 10000, 1, getString(R.string.product_name_sample));
         // Add item details into item detail list.
         ArrayList<ItemDetails> itemDetailsArrayList = new ArrayList<>();
         itemDetailsArrayList.add(itemDetails);

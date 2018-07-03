@@ -118,7 +118,7 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.4.0'
     compile 'com.squareup.retrofit2:converter-gson:2.4.0'
 
-
+    compile 'com.google.android.gms:play-services-auth:15.0.0'
 
     // Analytics Manager
     developmentCompile 'com.midtrans:analytics:1.4.5-SANDBOX'
