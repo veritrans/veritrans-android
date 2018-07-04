@@ -247,6 +247,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
         if (transaction != null) {
             List<ItemViewDetails> itemViewDetails = new ArrayList<>();
+            int itemDetailsSize = transaction.getItemDetails() != null ? transaction.getItemDetails().size() : 0;
             // Add amount
             String amount = getString(R.string.prefix_money, Utils.getFormattedAmount(transaction.getTransactionDetails().getAmount()));
             // Add header
@@ -254,15 +255,17 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     null,
                     amount,
                     ItemViewDetails.TYPE_ITEM_HEADER,
-                    transaction.getItemDetails().size() > 0));
+                    itemDetailsSize > 0));
             // Add item
-            for (ItemDetails itemDetails : transaction.getItemDetails()) {
-                String price = getString(R.string.prefix_money, Utils.getFormattedAmount(itemDetails.getQuantity() * itemDetails.getPrice()));
-                String itemName = itemDetails.getName();
-                if (itemDetails.getQuantity() > 1) {
-                    itemName = getString(R.string.text_item_name_format, itemDetails.getName(), itemDetails.getQuantity());
+            if (itemDetailsSize > 0) {
+                for (ItemDetails itemDetails : transaction.getItemDetails()) {
+                    String price = getString(R.string.prefix_money, Utils.getFormattedAmount(itemDetails.getQuantity() * itemDetails.getPrice()));
+                    String itemName = itemDetails.getName();
+                    if (itemDetails.getQuantity() > 1) {
+                        itemName = getString(R.string.text_item_name_format, itemDetails.getName(), itemDetails.getQuantity());
+                    }
+                    itemViewDetails.add(new ItemViewDetails(itemName, price, ItemViewDetails.TYPE_ITEM, true));
                 }
-                itemViewDetails.add(new ItemViewDetails(itemName, price, ItemViewDetails.TYPE_ITEM, true));
             }
 
             ItemDetailsAdapter adapter = new ItemDetailsAdapter(itemViewDetails, this);
@@ -311,8 +314,9 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
         if (!isAlreadyUtilized()) {
 
-            String snapToken = midtransSDK.readAuthenticationToken();
+            String snapToken = getIntent().getStringExtra(UiKitConstants.EXTRA_SNAP_TOKEN);
             if (!TextUtils.isEmpty(snapToken)) {
+                midtransSDK.setAuthenticationToken(snapToken);
                 getPaymentOptions(snapToken);
                 return;
             }
