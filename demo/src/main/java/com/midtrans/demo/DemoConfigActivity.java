@@ -24,9 +24,9 @@ import android.widget.Toast;
 import com.midtrans.demo.widgets.DemoRadioButton;
 import com.midtrans.demo.widgets.DemoTextView;
 import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
+import com.midtrans.sdk.corekit.core.Currency;
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
-import com.midtrans.sdk.corekit.core.PaymentMethod;
 import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
 import com.midtrans.sdk.corekit.core.themes.CustomColorTheme;
@@ -2300,7 +2300,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     }
 
     private void changeClientKeyIfOneClick() {
-        if(oneClickSelection.isChecked()){
+        if (oneClickSelection.isChecked()) {
             MidtransSDK.getInstance().setClientKey(CLIENT_KEY_FOR_ONE_CLICK_MID);
             MidtransSDK.getInstance().getTransactionRequest().setCustomField1("one_click");
         }
@@ -2883,11 +2883,10 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             MidtransSDK.getInstance().setColorTheme(new CustomColorTheme(DemoThemeConstants.BLACK_PRIMARY_HEX, DemoThemeConstants.BLACK_PRIMARY_DARK_HEX, DemoThemeConstants.BLACK_SECONDARY_HEX));
         }
         // Create new Transaction Request
-        TransactionRequest transactionRequestNew = new TransactionRequest(System.currentTimeMillis() + "", 10000);
-
+        TransactionRequest transactionRequestNew = new TransactionRequest(System.currentTimeMillis() + "", 50.5, Currency.IDR);
 
         // Define item details
-        ItemDetails itemDetails = new ItemDetails("1", 10000, 1, getString(R.string.product_name_sample));
+        ItemDetails itemDetails = new ItemDetails("1", 50.5, 1, getString(R.string.product_name_sample));
         // Add item details into item detail list.
         ArrayList<ItemDetails> itemDetailsArrayList = new ArrayList<>();
         itemDetailsArrayList.add(itemDetails);

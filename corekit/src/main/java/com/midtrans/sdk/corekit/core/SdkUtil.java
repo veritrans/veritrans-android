@@ -189,6 +189,10 @@ public class SdkUtil {
                 transactionRequest.getCustomerDetails(), transactionRequest.getCreditCard());
         requestModel.setExpiry(transactionRequest.getExpiry());
 
+
+        // set currency
+        requestModel.setCurrency(transactionRequest.getCurrency());
+
         // Set expiry if it's available
         if (transactionRequest.getExpiry() != null) {
             requestModel.setExpiry(transactionRequest.getExpiry());
@@ -222,7 +226,6 @@ public class SdkUtil {
                 && !transactionRequest.getEnabledPayments().isEmpty()) {
             requestModel.setEnabledPayments(transactionRequest.getEnabledPayments());
         }
-
 
         return requestModel;
     }

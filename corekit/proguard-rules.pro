@@ -119,6 +119,7 @@
 -keep class com.midtrans.sdk.corekit.core.BaseSdkBuilder {*;}
 -keep class com.midtrans.sdk.corekit.core.ISdkFlow {*;}
 -keep class com.midtrans.sdk.corekit.core.IScanner {*;}
+-keep class com.midtrans.sdk.corekit.core.Currency {*;}
 -keep class com.midtrans.sdk.corekit.core.UIKitCustomSetting {*;}
 -keep class com.midtrans.sdk.corekit.core.themes.BaseColorTheme {*;}
 -keep class com.midtrans.sdk.corekit.core.themes.ColorTheme {*;}

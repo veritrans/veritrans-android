@@ -51,6 +51,7 @@ public class TokenRequestModel {
     private String customField2;
     @SerializedName("custom_field3")
     private String customField3;
+    private String currency;
 
     public TokenRequestModel(SnapTransactionDetails transactionDetails, ArrayList<ItemDetails> itemDetails,
                              CustomerDetails customerDetails) {
@@ -183,5 +184,13 @@ public class TokenRequestModel {
 
     public void setEnabledPayments(List<String> enabledPayments) {
         this.enabledPayments = enabledPayments;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 }
