@@ -93,8 +93,8 @@ public abstract class BasePaymentActivity extends BaseActivity {
             if (textTotalAmount != null) {
                 PaymentDetails paymentDetails = getMidtransSdk().getPaymentDetails();
                 if (paymentDetails != null) {
-                    long totalAmount = paymentDetails.getTotalAmount();
-                    long defaultTotalAmount = transaction.getTransactionDetails().getAmount();
+                    double totalAmount = paymentDetails.getTotalAmount();
+                    double defaultTotalAmount = transaction.getTransactionDetails().getAmount();
 
                     String formattedTotalAmount = getString(R.string.prefix_money, Utils.getFormattedAmount(totalAmount));
                     textTotalAmount.setText(formattedTotalAmount);
@@ -182,7 +182,7 @@ public abstract class BasePaymentActivity extends BaseActivity {
 
             TransactionDetails transactionDetails = getMidtransSdk().getTransaction().getTransactionDetails();
             if (transactionDetails != null) {
-                changeTotalAmountColor(transactionDetails.getAmount(), newTotalAmount);
+                changeTotalAmountColor(transactionDetails.getAmount(),newTotalAmount);
                 PaymentDetails paymentDetails = getMidtransSdk().getPaymentDetails();
 
                 if (paymentDetails != null) {
@@ -192,7 +192,7 @@ public abstract class BasePaymentActivity extends BaseActivity {
         }
     }
 
-    private void changeTotalAmountColor(long totalAmount, long newTotalAmount) {
+    private void changeTotalAmountColor(double totalAmount, double newTotalAmount) {
         int primaryColor = getPrimaryColor() != 0 ? getPrimaryColor() : ContextCompat.getColor(BasePaymentActivity.this, R.color.dark_gray);
         int amountColor = newTotalAmount == totalAmount
                 ? primaryColor : ContextCompat.getColor(BasePaymentActivity.this, R.color.promoAmount);

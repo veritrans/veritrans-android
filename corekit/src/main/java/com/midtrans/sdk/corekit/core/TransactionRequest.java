@@ -41,7 +41,7 @@ public class TransactionRequest {
     /**
      * amount to charge customer.
      */
-    private long amount = 0L;
+    private Double amount = 0.0;
 
     /**
      * It helps to identify whether to execute transaction in secure manner or not.
@@ -95,11 +95,11 @@ public class TransactionRequest {
     private List<String> enabledPayments;
 
     /**
-     * @param orderId       order id of transaction.
-     * @param amount        amount to charge.
-     * @param currency      currency
+     * @param orderId  order id of transaction.
+     * @param amount   amount to charge.
+     * @param currency currency
      */
-    public TransactionRequest(String orderId, double amount, String currency) {
+    public TransactionRequest(String orderId, Double amount, String currency) {
 
         if (!TextUtils.isEmpty(orderId) && amount > 0) {
             this.orderId = orderId;

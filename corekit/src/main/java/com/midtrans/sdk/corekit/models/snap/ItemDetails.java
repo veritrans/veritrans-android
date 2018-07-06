@@ -6,14 +6,14 @@ package com.midtrans.sdk.corekit.models.snap;
 public class ItemDetails {
     private String id;
     private String name;
-    private long price;
+    private double price;
     private int quantity;
 
     public ItemDetails() {
 
     }
 
-    public ItemDetails(String id, String name, long price, int quantity) {
+    public ItemDetails(String id, String name, double price, int quantity) {
         setId(id);
         setName(name);
         setPrice(price);
@@ -36,11 +36,11 @@ public class ItemDetails {
         this.name = name;
     }
 
-    public long getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(long price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

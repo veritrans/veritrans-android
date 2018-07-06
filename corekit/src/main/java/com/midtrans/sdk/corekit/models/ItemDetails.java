@@ -21,7 +21,7 @@ public class ItemDetails {
      * @param quantity number of items that is purchased.
      * @param name     name of the item.
      */
-    public ItemDetails(String id, Double price, int quantity, String name) {
+    public ItemDetails(String id, double price, int quantity, String name) {
         this.id = id;
         this.price = price;
         this.quantity = quantity;
