@@ -23,10 +23,10 @@ public class Promo implements Cloneable{
     private List<String> paymentTypes;
 
     @SerializedName("calculated_discount_amount")
-    private Long calculatedDiscountAmount;
+    private double calculatedDiscountAmount;
 
     @SerializedName("discounted_gross_amount")
-    private Long discountedGrossAmount;
+    private double discountedGrossAmount;
 
     @SerializedName("discount_type")
     private String discountType;
@@ -101,11 +101,11 @@ public class Promo implements Cloneable{
         return name;
     }
 
-    public Long getCalculatedDiscountAmount() {
+    public double getCalculatedDiscountAmount() {
         return calculatedDiscountAmount;
     }
 
-    public Long getDiscountedGrossAmount() {
+    public double getDiscountedGrossAmount() {
         return discountedGrossAmount;
     }
 

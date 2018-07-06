@@ -47,6 +47,7 @@ public class MidtransRestAdapter {
      * @param merchantBaseUrl Merchant base URL
      * @return Merchant API implementation
      */
+
     public static MerchantApiService newMerchantApiService(String merchantBaseUrl, int timeout) {
 
         Retrofit retrofit = new Retrofit.Builder()

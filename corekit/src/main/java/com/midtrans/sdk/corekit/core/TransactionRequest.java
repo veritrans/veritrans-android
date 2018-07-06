@@ -25,6 +25,7 @@ import java.util.Map;
  */
 public class TransactionRequest {
 
+    private String currency;
     /**
      * payment method using which user wants to perform transaction. use payment methods from {@link
      * Constants}
@@ -96,14 +97,14 @@ public class TransactionRequest {
     /**
      * @param orderId       order id of transaction.
      * @param amount        amount to charge.
-     * @param paymentMethod payment method.
+     * @param currency      currency
      */
-    public TransactionRequest(String orderId, long amount, int paymentMethod) {
+    public TransactionRequest(String orderId, double amount, String currency) {
 
         if (!TextUtils.isEmpty(orderId) && amount > 0) {
             this.orderId = orderId;
             this.amount = amount;
-            this.paymentMethod = paymentMethod;
+            this.currency = currency;
         } else {
             Logger.e("Invalid transaction data.");
         }
@@ -114,7 +115,7 @@ public class TransactionRequest {
      * @param orderId order id of transaction.
      * @param amount  amount to charge.
      */
-    public TransactionRequest(String orderId, long amount) {
+    public TransactionRequest(String orderId, double amount) {
 
         if (!TextUtils.isEmpty(orderId) && amount > 0) {
             this.orderId = orderId;
@@ -245,7 +246,7 @@ public class TransactionRequest {
         return orderId;
     }
 
-    public long getAmount() {
+    public double getAmount() {
         return amount;
     }
 

@@ -9,12 +9,12 @@ public class TransactionDetails {
     @SerializedName("order_id")
     private String orderId;
     @SerializedName("gross_amount")
-    private long amount;
+    private Double amount;
 
     public TransactionDetails() {
     }
 
-    public TransactionDetails(String orderId, long amount) {
+    public TransactionDetails(String orderId, Double amount) {
         setOrderId(orderId);
         setAmount(amount);
     }
@@ -27,11 +27,11 @@ public class TransactionDetails {
         this.orderId = orderId;
     }
 
-    public long getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(long amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 }
