@@ -254,6 +254,11 @@
                     android:text="@string/expiry_one_hour" />
             </RadioGroup>
 
+            <include
+                layout="@layout/layout_demo_currency"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -1122,10 +1127,6 @@
 
             </RadioGroup>
 
-            <include
-                layout="@layout/layout_demo_currency"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
         </LinearLayout>
     </ScrollView>
 
