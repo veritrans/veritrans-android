@@ -887,7 +887,6 @@ public class MidtransSDK {
                 }
                 merchantServiceManager.checkout(model, callback);
             } else {
-
                 callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {

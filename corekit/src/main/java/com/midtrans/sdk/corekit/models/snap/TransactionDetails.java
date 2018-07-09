@@ -8,8 +8,11 @@ import com.google.gson.annotations.SerializedName;
 public class TransactionDetails {
     @SerializedName("order_id")
     private String orderId;
+
     @SerializedName("gross_amount")
     private Double amount;
+
+    private String currency;
 
     public TransactionDetails() {
     }
@@ -33,5 +36,9 @@ public class TransactionDetails {
 
     public void setAmount(Double amount) {
         this.amount = amount;
+    }
+
+    public String getCurrency() {
+        return currency;
     }
 }

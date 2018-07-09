@@ -185,13 +185,13 @@ public class SdkUtil {
 
         SnapTransactionDetails details = new SnapTransactionDetails(transactionRequest.getOrderId(), transactionRequest.getAmount());
 
+        // set currency
+        details.setCurrency(transactionRequest.getCurrency());
+
         TokenRequestModel requestModel = new TokenRequestModel(details, transactionRequest.getItemDetails(),
                 transactionRequest.getCustomerDetails(), transactionRequest.getCreditCard());
         requestModel.setExpiry(transactionRequest.getExpiry());
 
-
-        // set currency
-        requestModel.setCurrency(transactionRequest.getCurrency());
 
         // Set expiry if it's available
         if (transactionRequest.getExpiry() != null) {
