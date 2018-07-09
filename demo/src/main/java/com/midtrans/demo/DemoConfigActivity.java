@@ -80,6 +80,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private static final String MANDIRI_POINT_TYPE = "config.mandiri.point";
     private static final String PAYMENT_CHANNELS_TYPE = "config.channels";
     private static final String AUTO_READ_SMS_TYPE = "config.auto.otp";
+    private static final String CURRENCY_TYPE = "config.auto.otp";
 
     private static final String LABEL_INSTALLMENT_REQUIRED = " - Required";
     private static final String LABEL_INSTALLMENT_OPTIONAL = " - optional";
@@ -112,6 +113,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private TextView mandiriPointTitle;
     private TextView paymentChannelsTitle;
     private TextView autoReadSmsTitle;
+    private TextView currencyTitle;
 
     /**
      * Selection Container
@@ -134,6 +136,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private LinearLayout paymentChannelsContainer;
     private LinearLayout changeInstallmentContainer;
     private RadioGroup autoReadSmsContainer;
+    private RadioGroup currencyContainer;
 
     /**
      * Radio Button selection for installment
@@ -241,6 +244,12 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private AppCompatRadioButton autoReadSmsEnabledSelection;
     private AppCompatRadioButton autoReadSmsDisabledSelection;
 
+    /**
+     * Radio Button Selection for currency
+     */
+    private AppCompatRadioButton currencyIdrSelection;
+    private AppCompatRadioButton currencySgdSelection;
+
 
     private FancyButton nextButton;
     private ImageButton editBcaVaButton;
@@ -284,6 +293,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         initBniPointSelection();
         initMandiriPointSelection();
         initAutoReadOtpSelection();
+        initCurrencySelection();
+
         initTitleClicks();
         initNextButton();
         initResetSettings();
@@ -314,6 +325,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         mandiriPointTitle = findViewById(R.id.title_mandiri_point_type);
         paymentChannelsTitle = findViewById(R.id.title_custom_payment_channels);
         autoReadSmsTitle = findViewById(R.id.title_auto_read_type);
+        currencyTitle = findViewById(R.id.title_currency_type);
 
         resetSetting = findViewById(R.id.text_reset);
 
@@ -335,6 +347,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         mandiriPointContainer = findViewById(R.id.mandiri_point_type_container);
         paymentChannelsContainer = findViewById(R.id.payment_channels_type_container);
         autoReadSmsContainer = findViewById(R.id.auto_read_type_container);
+        currencyContainer = findViewById(R.id.currency_container);
 
         installmentBniSelection = findViewById(R.id.installment_type_bni);
         installmentMandiriSelection = findViewById(R.id.installment_type_mandiri);
@@ -404,6 +417,9 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
 
         autoReadSmsDisabledSelection = findViewById(R.id.type_auto_read_disabled);
         autoReadSmsEnabledSelection = findViewById(R.id.type_auto_read_enabled);
+
+        currencyIdrSelection = findViewById(R.id.currency_idr_selection);
+        currencySgdSelection = findViewById(R.id.currency_sgd_selection);
 
         nextButton = findViewById(R.id.button_primary);
         editBcaVaButton = findViewById(R.id.btn_edit_bca_va);
@@ -810,6 +826,15 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                         }
                     }
                 }, DELAY);
+            }
+        });
+
+        currencyTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!currencyTitle.isSelected()){
+
+                }
             }
         });
     }
@@ -2256,6 +2281,36 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             }
         });
     }
+
+    private void initCurrencySelection() {
+        final int currencyType = DemoPreferenceHelper.getIntegerPreference(this, CURRENCY_TYPE, 0);
+        if (currencyType == 1) {
+            currencyTitle.setText(R.string.currency_type_sgd);
+            currencySgdSelection.setChecked(true);
+        } else {
+            currencyTitle.setText(R.string.currency_type_idr);
+            currencyIdrSelection.setChecked(true);
+        }
+
+        currencyIdrSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    currencyTitle.setText(R.string.currency_type_idr);
+                }
+            }
+        });
+
+        currencySgdSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    currencyTitle.setText(R.string.currency_type_sgd);
+                }
+            }
+        });
+    }
+
 
     private void resetInstallmentSelection() {
         noInstallmentSelection.setChecked(true);

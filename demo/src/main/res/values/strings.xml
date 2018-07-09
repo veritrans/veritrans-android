@@ -205,4 +205,6 @@
     <string name="enable_3ds">Enable 3ds</string>
     <string name="error_empty">Please fill the field</string>
     <string name="swipe_left">Swipe left to delete saved card</string>
+    <string name="currency_type_idr">Currency IDR</string>
+    <string name="currency_type_sgd">Currency SGD</string>
 </resources>
