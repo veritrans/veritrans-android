@@ -1,5 +1,6 @@
 package com.midtrans.sdk.uikit.adapters;
 
+import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.midtrans.sdk.corekit.core.Currency;
 import com.midtrans.sdk.corekit.models.snap.ItemDetails;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
@@ -26,8 +28,18 @@ public class TransactionDetailsAdapter extends RecyclerView.Adapter<RecyclerView
     private static final int TYPE_ITEM = 1003;
 
     private List<ItemDetails> itemDetails;
+    private String currency;
 
     public TransactionDetailsAdapter(List<ItemDetails> itemDetails) {
+        init(itemDetails);
+    }
+
+    public TransactionDetailsAdapter(List<ItemDetails> itemDetails, String currency) {
+        this.currency = currency;
+        init(itemDetails);
+    }
+
+    private void init(List<ItemDetails> itemDetails) {
         this.itemDetails = new ArrayList<>();
         if (itemDetails != null) {
             this.itemDetails.addAll(itemDetails);
@@ -89,7 +101,7 @@ public class TransactionDetailsAdapter extends RecyclerView.Adapter<RecyclerView
                 ItemDetails item = itemDetails.get(position);
                 itemDetailsViewHolder.item.setText(item.getName());
                 itemDetailsViewHolder.quantity.setText(item.getQuantity() == 0 ? "" : String.valueOf(item.getQuantity()));
-                itemDetailsViewHolder.price.setText("Rp " + Utils.getFormattedAmount(item.getPrice() * item.getQuantity()));
+                itemDetailsViewHolder.price.setText(formatAmount(item.getPrice(), holder.itemView.getContext()));
                 if (position % 2 != 0) {
                     itemDetailsViewHolder.itemView.setBackgroundResource(R.color.light_gray);
                 }
@@ -109,6 +121,22 @@ public class TransactionDetailsAdapter extends RecyclerView.Adapter<RecyclerView
             default:
                 break;
         }
+    }
+
+    private String formatAmount(double price, Context context) {
+        String formattedAmount = Utils.getFormattedAmount(price);
+        if (context != null && !TextUtils.isEmpty(currency)) {
+            switch (currency) {
+                case Currency.SGD:
+                    formattedAmount = context.getString(R.string.prefix_money_sgd, Utils.getFormattedAmount(price));
+                    break;
+
+                default:
+                    formattedAmount = context.getString(R.string.prefix_money_sgd, Utils.getFormattedAmount(price));
+                    break;
+            }
+        }
+        return formattedAmount;
     }
 
     @Override
@@ -168,6 +196,14 @@ public class TransactionDetailsAdapter extends RecyclerView.Adapter<RecyclerView
         ItemHeaderViewHolder(final View itemView) {
             super(itemView);
         }
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 }
 

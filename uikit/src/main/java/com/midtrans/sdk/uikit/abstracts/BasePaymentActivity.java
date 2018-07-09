@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.koushikdutta.ion.Ion;
+import com.midtrans.sdk.corekit.core.Currency;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.models.MerchantPreferences;
 import com.midtrans.sdk.corekit.models.PaymentDetails;
@@ -89,22 +90,25 @@ public abstract class BasePaymentActivity extends BaseActivity {
     private void initTotalAmount() {
         final Transaction transaction = getMidtransSdk().getTransaction();
         if (transaction.getTransactionDetails() != null) {
-            textTotalAmount = (BoldTextView) findViewById(R.id.text_amount);
+            String currency = transaction.getTransactionDetails().getCurrency();
+            textTotalAmount = findViewById(R.id.text_amount);
+
             if (textTotalAmount != null) {
                 PaymentDetails paymentDetails = getMidtransSdk().getPaymentDetails();
                 if (paymentDetails != null) {
                     double totalAmount = paymentDetails.getTotalAmount();
                     double defaultTotalAmount = transaction.getTransactionDetails().getAmount();
 
-                    String formattedTotalAmount = getString(R.string.prefix_money, Utils.getFormattedAmount(totalAmount));
-                    textTotalAmount.setText(formattedTotalAmount);
-
+                    setTotalAmount(formatTotalAmount(totalAmount, currency));
                     changeTotalAmountColor(defaultTotalAmount, totalAmount);
-                }
 
+                    // init item details
+                    List<ItemDetails> itemDetails = paymentDetails.getItemDetailsList();
+                    initTransactionDetail(itemDetails, currency);
+                }
             }
         }
-        initTransactionDetail(getMidtransSdk().getPaymentDetails().getItemDetailsList());
+
         //init dim
         findViewById(R.id.background_dim).setOnClickListener(new OnClickListener() {
             @Override
@@ -122,12 +126,12 @@ public abstract class BasePaymentActivity extends BaseActivity {
         });
     }
 
-    private void initTransactionDetail(List<ItemDetails> details) {
+    private void initTransactionDetail(List<ItemDetails> details, String currency) {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv_transaction_detail);
         if (recyclerView != null) {
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            transactionDetailAdapter = new TransactionDetailsAdapter(details);
+            transactionDetailAdapter = new TransactionDetailsAdapter(details, currency);
             recyclerView.setAdapter(transactionDetailAdapter);
         }
     }
@@ -176,19 +180,21 @@ public abstract class BasePaymentActivity extends BaseActivity {
     protected void changeTotalAmount() {
         if (textTotalAmount != null) {
             final long newTotalAmount = transactionDetailAdapter.getItemTotalAmount();
+            String currency = Currency.IDR;
 
-            String formattedTotalAmount = getString(R.string.prefix_money, Utils.getFormattedAmount(newTotalAmount));
-            textTotalAmount.setText(formattedTotalAmount);
 
             TransactionDetails transactionDetails = getMidtransSdk().getTransaction().getTransactionDetails();
             if (transactionDetails != null) {
-                changeTotalAmountColor(transactionDetails.getAmount(),newTotalAmount);
+                changeTotalAmountColor(transactionDetails.getAmount(), newTotalAmount);
+                currency = transactionDetails.getCurrency();
                 PaymentDetails paymentDetails = getMidtransSdk().getPaymentDetails();
 
                 if (paymentDetails != null) {
                     paymentDetails.changePaymentDetails(transactionDetailAdapter.getItemDetails(), newTotalAmount);
                 }
             }
+
+            formatTotalAmount(newTotalAmount, currency);
         }
     }
 
@@ -323,6 +329,32 @@ public abstract class BasePaymentActivity extends BaseActivity {
             displayOrHideItemDetails();
         } else {
             super.onBackPressed();
+        }
+    }
+
+    public String formatTotalAmount(double totalAmount, String currency) {
+        String formattedAmount;
+
+        if (TextUtils.isEmpty(currency)) {
+            formattedAmount = getString(R.string.prefix_money, Utils.getFormattedAmount(totalAmount));
+        } else {
+            switch (currency) {
+                case Currency.SGD:
+                    formattedAmount = getString(R.string.prefix_money_sgd, Utils.getFormattedAmount(totalAmount));
+                    break;
+
+                default:
+                    formattedAmount = getString(R.string.prefix_money, Utils.getFormattedAmount(totalAmount));
+                    break;
+            }
+        }
+
+        return formattedAmount;
+    }
+
+    protected void setTotalAmount(String formattedAmount) {
+        if (textTotalAmount != null) {
+            textTotalAmount.setText(formattedAmount);
         }
     }
 }
