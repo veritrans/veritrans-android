@@ -27,11 +27,12 @@ import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
-import com.midtrans.sdk.corekit.core.PaymentMethod;
 import com.midtrans.sdk.corekit.models.UserAddress;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
+import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.models.CountryCodeModel;
+import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 import java.io.InputStream;
@@ -58,6 +59,7 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
     private DemoTextView deliveryAddress, cityAddress, postalCodeAddress;
     private boolean isInEditMode;
     private ArrayList<CountryCodeModel> countryCodeList = null;
+    private DemoTextView totalAmountText;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,12 +73,14 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
         initPayButton();
         initEditButton();
         initMidtransSDK();
+        initData();
     }
 
     private void bindViews() {
         payBtn = (FancyButton) findViewById(R.id.button_primary);
         amountContainer = (RelativeLayout) findViewById(R.id.amount_container);
         amountText = (TextView) findViewById(R.id.product_price_amount);
+        totalAmountText = findViewById(R.id.text_amount);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         editCustBtn = (ImageView) findViewById(R.id.button_edit_customer_detail);
         saveCustBtn = (ImageView) findViewById(R.id.button_save_customer_detail);
@@ -370,5 +374,21 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
             }
         }
         return "";
+    }
+
+    private void initData() {
+
+        final int currencyType = DemoPreferenceHelper.getIntegerPreference(this, DemoConfigActivity.CURRENCY_TYPE, 0);
+        String formattedAmount;
+        if (currencyType == DemoConfigActivity.CURRENCY_TYPE_SGD) {
+            formattedAmount = getString(R.string.prefix_money_sgd, Utils.getFormattedAmount(com.midtrans.demo.Constants.TOTAL_AMOUNT_SGD));
+        } else {
+            formattedAmount = getString(R.string.prefix_money, Utils.getFormattedAmount(com.midtrans.demo.Constants.TOTAL_AMOUNT));
+        }
+
+        amountText.setText(formattedAmount);
+        totalAmountText.setText(formattedAmount);
+        payBtn.setText(getString(R.string.pay_label) + " " + formattedAmount);
+
     }
 }

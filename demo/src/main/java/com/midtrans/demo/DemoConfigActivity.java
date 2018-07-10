@@ -80,7 +80,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private static final String MANDIRI_POINT_TYPE = "config.mandiri.point";
     private static final String PAYMENT_CHANNELS_TYPE = "config.channels";
     private static final String AUTO_READ_SMS_TYPE = "config.auto.otp";
-    private static final String CURRENCY_TYPE = "config.currency";
+    public static final String CURRENCY_TYPE = "config.currency";
 
     private static final String LABEL_INSTALLMENT_REQUIRED = " - Required";
     private static final String LABEL_INSTALLMENT_OPTIONAL = " - optional";
@@ -90,8 +90,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private static final int AUTH_TYPE_RBA_NON_3DS = 3;
     private static final int AUTH_TYPE_NONE = 0;
 
-    private static final int CURRENCY_TYPE_IDR = 0;
-    private static final int CURRENCY_TYPE_SGD = 1;
+    public static final int CURRENCY_TYPE_IDR = 0;
+    public static final int CURRENCY_TYPE_SGD = 1;
 
     private static final String CLIENT_KEY_FOR_ONE_CLICK_MID = "VT-client-F91kdUrnE5w8zCja";
 

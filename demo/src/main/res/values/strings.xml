@@ -207,4 +207,5 @@
     <string name="swipe_left">Swipe left to delete saved card</string>
     <string name="currency_type_idr">Currency IDR</string>
     <string name="currency_type_sgd">Currency SGD</string>
+    <string name="pay_label">Pay</string>
 </resources>
