@@ -89,7 +89,7 @@ public abstract class BasePaymentActivity extends BaseActivity {
     private void initTotalAmount() {
         final Transaction transaction = getMidtransSdk().getTransaction();
         if (transaction.getTransactionDetails() != null) {
-            textTotalAmount = (BoldTextView) findViewById(R.id.text_amount);
+            textTotalAmount = findViewById(R.id.text_amount);
             if (textTotalAmount != null) {
                 PaymentDetails paymentDetails = getMidtransSdk().getPaymentDetails();
                 if (paymentDetails != null) {
@@ -102,7 +102,12 @@ public abstract class BasePaymentActivity extends BaseActivity {
                     changeTotalAmountColor(defaultTotalAmount, totalAmount);
                 }
 
+                TextView textOrderId = findViewById(R.id.text_order_id);
+                if (textOrderId != null) {
+                    textOrderId.setText(transaction.getTransactionDetails().getOrderId());
+                }
             }
+
         }
         initTransactionDetail(getMidtransSdk().getPaymentDetails().getItemDetailsList());
         //init dim
