@@ -10,7 +10,7 @@ public class TransactionDetails {
     private String orderId;
 
     @SerializedName("gross_amount")
-    private Double amount;
+    private double amount;
 
     private String currency;
 
@@ -30,8 +30,8 @@ public class TransactionDetails {
         this.orderId = orderId;
     }
 
-    public Double getAmount() {
-        return amount;
+    public double getAmount() {
+        return this.amount;
     }
 
     public void setAmount(Double amount) {
