@@ -74,7 +74,7 @@ public class Utils {
             DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.US);
             otherSymbols.setDecimalSeparator('.');
             otherSymbols.setGroupingSeparator(',');
-            String amountString = new DecimalFormat("#,###", otherSymbols).format(amount);
+            String amountString = new DecimalFormat("#,###.##", otherSymbols).format(amount);
             return amountString;
         } catch (NullPointerException | IllegalArgumentException e) {
             return "" + amount;

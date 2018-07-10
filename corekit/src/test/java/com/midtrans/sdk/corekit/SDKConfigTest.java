@@ -17,7 +17,7 @@ public class SDKConfigTest {
     public static final String TYPE = "type";
     public static final String CHANNEL = "dragon";
 
-    public static final Long GROSS_AMOUNT = 10000l;
+    public static final Double GROSS_AMOUNT = 10000d;
     public static final String SAVED_TOKEN_ID = "token_id3131232e34";
     public static final String BANK = "bni";
     public static final String INSTALLMENT_TERM = "3";

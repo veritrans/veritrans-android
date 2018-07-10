@@ -11,9 +11,9 @@ public class PromoDetails {
     private Long promoId;
 
     @SerializedName("discounted_gross_amount")
-    private Long discountedGrossAmount;
+    private Double discountedGrossAmount;
 
-    public PromoDetails(Long promoId, Long discountedGrossAmount) {
+    public PromoDetails(Long promoId, Double discountedGrossAmount) {
         this.promoId = promoId;
         this.discountedGrossAmount = discountedGrossAmount;
     }

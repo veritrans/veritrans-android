@@ -24,9 +24,9 @@ import android.widget.Toast;
 import com.midtrans.demo.widgets.DemoRadioButton;
 import com.midtrans.demo.widgets.DemoTextView;
 import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
+import com.midtrans.sdk.corekit.core.Currency;
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
-import com.midtrans.sdk.corekit.core.PaymentMethod;
 import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
 import com.midtrans.sdk.corekit.core.themes.CustomColorTheme;
@@ -80,13 +80,19 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private static final String MANDIRI_POINT_TYPE = "config.mandiri.point";
     private static final String PAYMENT_CHANNELS_TYPE = "config.channels";
     private static final String AUTO_READ_SMS_TYPE = "config.auto.otp";
+    public static final String CURRENCY_TYPE = "config.currency";
 
     private static final String LABEL_INSTALLMENT_REQUIRED = " - Required";
     private static final String LABEL_INSTALLMENT_OPTIONAL = " - optional";
+
     private static final int AUTH_TYPE_3DS = 1;
     private static final int AUTH_TYPE_RBA = 2;
     private static final int AUTH_TYPE_RBA_NON_3DS = 3;
     private static final int AUTH_TYPE_NONE = 0;
+
+    public static final int CURRENCY_TYPE_IDR = 0;
+    public static final int CURRENCY_TYPE_SGD = 1;
+
     private static final String CLIENT_KEY_FOR_ONE_CLICK_MID = "VT-client-F91kdUrnE5w8zCja";
 
     private static int DELAY = 200;
@@ -112,6 +118,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private TextView mandiriPointTitle;
     private TextView paymentChannelsTitle;
     private TextView autoReadSmsTitle;
+    private TextView currencyTitle;
 
     /**
      * Selection Container
@@ -134,6 +141,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private LinearLayout paymentChannelsContainer;
     private LinearLayout changeInstallmentContainer;
     private RadioGroup autoReadSmsContainer;
+    private RadioGroup currencyContainer;
 
     /**
      * Radio Button selection for installment
@@ -241,6 +249,12 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private AppCompatRadioButton autoReadSmsEnabledSelection;
     private AppCompatRadioButton autoReadSmsDisabledSelection;
 
+    /**
+     * Radio Button Selection for currency
+     */
+    private AppCompatRadioButton currencyIdrSelection;
+    private AppCompatRadioButton currencySgdSelection;
+
 
     private FancyButton nextButton;
     private ImageButton editBcaVaButton;
@@ -284,6 +298,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         initBniPointSelection();
         initMandiriPointSelection();
         initAutoReadOtpSelection();
+        initCurrencySelection();
+
         initTitleClicks();
         initNextButton();
         initResetSettings();
@@ -314,6 +330,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         mandiriPointTitle = findViewById(R.id.title_mandiri_point_type);
         paymentChannelsTitle = findViewById(R.id.title_custom_payment_channels);
         autoReadSmsTitle = findViewById(R.id.title_auto_read_type);
+        currencyTitle = findViewById(R.id.title_currency_type);
 
         resetSetting = findViewById(R.id.text_reset);
 
@@ -335,6 +352,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         mandiriPointContainer = findViewById(R.id.mandiri_point_type_container);
         paymentChannelsContainer = findViewById(R.id.payment_channels_type_container);
         autoReadSmsContainer = findViewById(R.id.auto_read_type_container);
+        currencyContainer = findViewById(R.id.currency_container);
 
         installmentBniSelection = findViewById(R.id.installment_type_bni);
         installmentMandiriSelection = findViewById(R.id.installment_type_mandiri);
@@ -404,6 +422,9 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
 
         autoReadSmsDisabledSelection = findViewById(R.id.type_auto_read_disabled);
         autoReadSmsEnabledSelection = findViewById(R.id.type_auto_read_enabled);
+
+        currencyIdrSelection = findViewById(R.id.currency_idr_selection);
+        currencySgdSelection = findViewById(R.id.currency_sgd_selection);
 
         nextButton = findViewById(R.id.button_primary);
         editBcaVaButton = findViewById(R.id.btn_edit_bca_va);
@@ -804,6 +825,26 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                             setTextViewDrawableLeftColorFilter(autoReadSmsTitle);
                             // Show auto read selection container
                             autoReadSmsContainer.setVisibility(View.VISIBLE);
+                        } else {
+                            unselectAllTitles();
+                            hideAllSelections();
+                        }
+                    }
+                }, DELAY);
+            }
+        });
+
+        currencyTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!currencyTitle.isSelected()) {
+                            currencyTitle.setSelected(true);
+                            setTextViewSelectedColor(currencyTitle);
+                            setTextViewDrawableLeftColorFilter(currencyTitle);
+                            currencyContainer.setVisibility(View.VISIBLE);
                         } else {
                             unselectAllTitles();
                             hideAllSelections();
@@ -2257,6 +2298,36 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         });
     }
 
+    private void initCurrencySelection() {
+        final int currencyType = DemoPreferenceHelper.getIntegerPreference(this, CURRENCY_TYPE, 0);
+        if (currencyType == 1) {
+            currencyTitle.setText(R.string.currency_type_sgd);
+            currencySgdSelection.setChecked(true);
+        } else {
+            currencyTitle.setText(R.string.currency_type_idr);
+            currencyIdrSelection.setChecked(true);
+        }
+
+        currencyIdrSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    currencyTitle.setText(R.string.currency_type_idr);
+                }
+            }
+        });
+
+        currencySgdSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    currencyTitle.setText(R.string.currency_type_sgd);
+                }
+            }
+        });
+    }
+
+
     private void resetInstallmentSelection() {
         noInstallmentSelection.setChecked(true);
     }
@@ -2287,6 +2358,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 saveMandiriPointSelection();
                 saveAutoReadSmsSelection();
                 saveEnabledPayments();
+                saveCurrencySelection();
 
                 TransactionRequest transactionRequest = initializePurchaseRequest();
                 MidtransSDK.getInstance().setTransactionRequest(transactionRequest);
@@ -2300,7 +2372,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     }
 
     private void changeClientKeyIfOneClick() {
-        if(oneClickSelection.isChecked()){
+        if (oneClickSelection.isChecked()) {
             MidtransSDK.getInstance().setClientKey(CLIENT_KEY_FOR_ONE_CLICK_MID);
             MidtransSDK.getInstance().getTransactionRequest().setCustomField1("one_click");
         }
@@ -2412,12 +2484,21 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         }
     }
 
+    private void saveCurrencySelection() {
+        if (currencySgdSelection.isChecked()) {
+            DemoPreferenceHelper.setIntegerPreference(this, CURRENCY_TYPE, CURRENCY_TYPE_SGD);
+        } else {
+            DemoPreferenceHelper.setIntegerPreference(this, CURRENCY_TYPE, CURRENCY_TYPE_IDR);
+        }
+    }
+
     private void saveBcaVaNumber() {
         String vaNumber = "";
 
         try {
             vaNumber = customBcaVaEnabledSelection.getText().toString().split(" - ")[1];
         } catch (ArrayIndexOutOfBoundsException e) {
+
         }
 
         if (customBcaVaEnabledSelection.isChecked() && !TextUtils.isEmpty(vaNumber)) {
@@ -2543,54 +2624,74 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         cardClickTitle.setSelected(false);
         cardClickTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
         clearTextViewDrawableLeftColorFilter(cardClickTitle);
+
         secureTitle.setSelected(false);
         secureTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
         clearTextViewDrawableLeftColorFilter(secureTitle);
+
         bankTitle.setSelected(false);
         bankTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
         clearTextViewDrawableLeftColorFilter(bankTitle);
+
         expiryTitle.setSelected(false);
         expiryTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
         clearTextViewDrawableLeftColorFilter(expiryTitle);
+
         saveCardTitle.setSelected(false);
         saveCardTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
         clearTextViewDrawableLeftColorFilter(saveCardTitle);
+
         preAuthTitle.setSelected(false);
         preAuthTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
         clearTextViewDrawableLeftColorFilter(preAuthTitle);
+
         colorThemeTitle.setSelected(false);
         colorThemeTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
         clearTextViewDrawableLeftColorFilter(colorThemeTitle);
+
         customBcaVaTitle.setSelected(false);
         customBcaVaTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
         clearTextViewDrawableLeftColorFilter(customBcaVaTitle);
+
         customPermataVaTitle.setSelected(false);
         customPermataVaTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
         clearTextViewDrawableLeftColorFilter(customPermataVaTitle);
+
         customPermataRecipientTitle.setSelected(false);
         customPermataRecipientTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
         clearTextViewDrawableLeftColorFilter(customPermataRecipientTitle);
+
         customBniVaTitle.setSelected(false);
         customBniVaTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
         clearTextViewDrawableLeftColorFilter(customBniVaTitle);
+
         subCompanyBcaVaTitle.setSelected(false);
         subCompanyBcaVaTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
         clearTextViewDrawableLeftColorFilter(subCompanyBcaVaTitle);
+
         installmentTitle.setSelected(false);
         installmentTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
         clearTextViewDrawableLeftColorFilter(installmentTitle);
+
         bniPointTitle.setSelected(false);
         bniPointTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
         clearTextViewDrawableLeftColorFilter(bniPointTitle);
+
         mandiriPointTitle.setSelected(false);
         mandiriPointTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
         clearTextViewDrawableLeftColorFilter(mandiriPointTitle);
+
         paymentChannelsTitle.setSelected(false);
         paymentChannelsTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
         clearTextViewDrawableLeftColorFilter(paymentChannelsTitle);
+
         autoReadSmsTitle.setSelected(false);
         autoReadSmsTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
         clearTextViewDrawableLeftColorFilter(autoReadSmsTitle);
+
+        currencyTitle.setSelected(false);
+        currencyTitle.setTextColor((ContextCompat.getColor(this, R.color.black)));
+        clearTextViewDrawableLeftColorFilter(currencyTitle);
     }
 
     private void hideAllSelections() {
@@ -2612,6 +2713,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         mandiriPointContainer.setVisibility(View.GONE);
         paymentChannelsContainer.setVisibility(View.GONE);
         autoReadSmsContainer.setVisibility(View.GONE);
+        currencyContainer.setVisibility(View.GONE);
     }
 
     private void setTextViewDrawableLeftColorFilter(TextView textView) {
@@ -2882,12 +2984,17 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         } else if (blackThemeSelection.isChecked()) {
             MidtransSDK.getInstance().setColorTheme(new CustomColorTheme(DemoThemeConstants.BLACK_PRIMARY_HEX, DemoThemeConstants.BLACK_PRIMARY_DARK_HEX, DemoThemeConstants.BLACK_SECONDARY_HEX));
         }
+
         // Create new Transaction Request
         TransactionRequest transactionRequestNew = new TransactionRequest(System.currentTimeMillis() + "", 10000);
+        ItemDetails itemDetails = new ItemDetails("1", 10000, 1, getString(R.string.product_name_sample));
 
+        if (currencySgdSelection.isChecked()) {
+            transactionRequestNew = new TransactionRequest(System.currentTimeMillis() + "", 50.5, Currency.SGD);
+            itemDetails = new ItemDetails("1", 50.5, 1, getString(R.string.product_name_sample));
+        }
 
         // Define item details
-        ItemDetails itemDetails = new ItemDetails("1", 10000, 1, getString(R.string.product_name_sample));
         // Add item details into item detail list.
         ArrayList<ItemDetails> itemDetailsArrayList = new ArrayList<>();
         itemDetailsArrayList.add(itemDetails);

@@ -312,7 +312,7 @@ public class CreditCardTransaction {
     }
 
     public boolean isSelectedPromoAvailable() {
-        return selectedPromo != null && selectedPromo.getDiscountedGrossAmount() != null;
+        return selectedPromo != null;
     }
 
     public boolean isInstallmentOptionRequired() {
