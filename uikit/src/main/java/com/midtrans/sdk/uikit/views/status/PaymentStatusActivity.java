@@ -19,12 +19,11 @@ import com.midtrans.sdk.corekit.models.promo.Promo;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BaseActivity;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
+import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
-
-import java.util.regex.Pattern;
 
 /**
  * Created by ziahaqi on 7/21/17.
@@ -319,12 +318,7 @@ public class PaymentStatusActivity extends BaseActivity {
         if (TextUtils.isEmpty(amount)) {
             layoutTotalAmount.setVisibility(View.GONE);
         } else {
-            try {
-                String formattedAmount = amount.split(Pattern.quote(".")).length == 2 ? amount.split(Pattern.quote("."))[0] : amount;
-                textTotalAmount.setText(formattedAmount);
-            } catch (Exception e) {
-                Logger.e(TAG, e.getMessage());
-            }
+            textTotalAmount.setText(getFormattedAmount(transactionResponse));
         }
 
         String paymentType = transactionResponse.getPaymentType();
@@ -363,15 +357,7 @@ public class PaymentStatusActivity extends BaseActivity {
             textOrderId.setText(String.valueOf(transactionResponse.getOrderId()));
 
             // Set total amount
-            try {
-                String amount = transactionResponse.getGrossAmount();
-                if (!TextUtils.isEmpty(amount)) {
-                    String formattedAmount = amount.split(Pattern.quote(".")).length == 2 ? amount.split(Pattern.quote("."))[0] : amount;
-                    textTotalAmount.setText(formattedAmount);
-                }
-            } catch (RuntimeException e) {
-                Logger.e(TAG, "amount:" + e.getMessage());
-            }
+            textTotalAmount.setText(getFormattedAmount(transactionResponse));
 
             // Set credit card properties
             if (transactionResponse.getPaymentType().equalsIgnoreCase(PaymentType.CREDIT_CARD)) {
@@ -389,10 +375,24 @@ public class PaymentStatusActivity extends BaseActivity {
         buttonInstruction.setVisibility(View.GONE);
     }
 
+    private String getFormattedAmount(TransactionResponse transactionResponse) {
+        String amountStr = transactionResponse.getGrossAmount();
+        String currency = transactionResponse.getCurrency();
+        double amount = 0;
+
+        try {
+            amount = Double.parseDouble(amountStr);
+        } catch (RuntimeException e) {
+            Logger.e(e.getMessage());
+        }
+
+        return SdkUIFlowUtil.getFormattedAmount(this, amount, currency);
+    }
+
     private void setCreditCardPaymentStatus() {
         int pointRedeemed = (int) transactionResponse.getPointRedeemAmount();
         if (pointRedeemed != 0.f) {
-            String formattedBalance = String.format("%s", String.valueOf(pointRedeemed));
+            String formattedBalance = SdkUIFlowUtil.getFormattedAmount(this, pointRedeemed, transactionResponse.getCurrency());
             textPointAmount.setText(formattedBalance);
             layoutPointAmount.setVisibility(View.VISIBLE);
         }
@@ -410,7 +410,10 @@ public class PaymentStatusActivity extends BaseActivity {
             Promo promo = paymentDetails.getPromoSelected();
             if (promo != null && promo.getId() != 0) {
                 layoutPromoAmount.setVisibility(View.VISIBLE);
-                textPromoAmount.setText(String.valueOf(promo.getCalculatedDiscountAmount()));
+                textPromoAmount.setText(SdkUIFlowUtil.getFormattedAmount(
+                        this,
+                        promo.getCalculatedDiscountAmount(),
+                        transactionResponse.getCurrency()));
             }
         }
     }

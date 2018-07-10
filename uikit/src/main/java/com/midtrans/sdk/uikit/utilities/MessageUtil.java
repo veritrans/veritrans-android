@@ -42,6 +42,7 @@ public class MessageUtil {
     private static final String USER_ID_INVALID = "user_id format is invalid";
     private static final String DENY = "deny";
     public static final String PROMO_UNAVAILABLE = "promo is not available";
+    public static final String CURRENCY_NOT_INCLUDED = "Currency is not included";
 
 
     public static String createMessageWhenCheckoutFailed(Context context, ArrayList<String> statusMessage) {
@@ -69,6 +70,8 @@ public class MessageUtil {
                     message = context.getString(R.string.error_order_id_required);
                 } else if (statusMessage.contains(TIMEOUT) || statusMessage.contains(RETROFIT_TIMEOUT)) {
                     message = context.getString(R.string.timeout_message);
+                } else if (statusMessage.contains(CURRENCY_NOT_INCLUDED)) {
+                    message = context.getString(R.string.currency_invalid);
                 } else {
                     message = context.getString(R.string.txt_error_snap_token);
                 }

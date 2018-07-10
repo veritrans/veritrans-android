@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.midtrans.sdk.corekit.BuildConfig;
 import com.midtrans.sdk.corekit.core.Constants;
+import com.midtrans.sdk.corekit.core.Currency;
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
@@ -35,6 +36,7 @@ import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
 import com.midtrans.sdk.corekit.models.snap.PromoResponse;
 import com.midtrans.sdk.corekit.models.snap.SavedToken;
+import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.models.BankTransfer;
 import com.midtrans.sdk.uikit.models.CreditCardType;
@@ -694,5 +696,22 @@ public class SdkUIFlowUtil {
 
     public static String getImagePath(Activity activity) {
         return "android.resource://" + activity.getPackageName() + "/";
+    }
+
+    public static String getFormattedAmount(Context context, double amount, String currency) {
+        String formattedAmount = context.getString(R.string.prefix_money, Utils.getFormattedAmount(amount));
+        if (!TextUtils.isEmpty(currency)) {
+            switch (currency) {
+                case Currency.SGD:
+                    formattedAmount = context.getString(R.string.prefix_money_sgd, Utils.getFormattedAmount(amount));
+                    break;
+
+                case Currency.IDR:
+                    formattedAmount = context.getString(R.string.prefix_money, Utils.getFormattedAmount(amount));
+                    break;
+            }
+        }
+
+        return formattedAmount;
     }
 }
