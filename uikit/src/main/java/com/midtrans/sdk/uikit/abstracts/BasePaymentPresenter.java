@@ -1,7 +1,9 @@
 package com.midtrans.sdk.uikit.abstracts;
 
+import com.midtrans.sdk.corekit.core.Currency;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
+import com.midtrans.sdk.corekit.models.snap.TransactionDetails;
 import com.midtrans.sdk.corekit.models.snap.TransactionStatusResponse;
 
 /**
@@ -12,6 +14,7 @@ public class BasePaymentPresenter<V extends BaseView> extends BasePresenter<V> {
 
     private final String BACK_BUTTON_NAME = "Back";
     protected TransactionResponse transactionResponse;
+    private String currency;
 
     public BasePaymentPresenter() {
         super();
@@ -62,4 +65,13 @@ public class BasePaymentPresenter<V extends BaseView> extends BasePresenter<V> {
         return transactionResponse;
     }
 
+    public String getCurrency() {
+        String currency = Currency.IDR;
+        TransactionDetails transactionDetails = getMidtransSDK().getTransaction().getTransactionDetails();
+        if (transactionDetails != null) {
+            currency = transactionDetails.getCurrency();
+        }
+
+        return currency;
+    }
 }

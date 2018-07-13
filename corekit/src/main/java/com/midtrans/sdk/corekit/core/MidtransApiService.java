@@ -30,6 +30,7 @@ public interface MidtransApiService {
             @Query("client_key") String clientKey,
             @Query("channel") String channel,
             @Query("type") String type,
+            @Query("currency") String currency,
             @Query("point") Boolean point
     );
 
@@ -46,6 +47,7 @@ public interface MidtransApiService {
             @Query("gross_amount") Double grossAmount,
             @Query("channel") String channel,
             @Query("type") String type,
+            @Query("currency") String currency,
             @Query("point") Boolean point
     );
 
@@ -59,6 +61,7 @@ public interface MidtransApiService {
             @Query("gross_amount") Double grossAmount,
             @Query("channel") String channel,
             @Query("type") String type,
+            @Query("currency") String currency,
             @Query("point") Boolean point
     );
 
@@ -90,6 +93,7 @@ public interface MidtransApiService {
             @Query("installment_term") String instalmentTerm,
             @Query("channel") String channel,
             @Query("type") String type,
+            @Query("currency") String currency,
             @Query("point") Boolean point
     );
 
@@ -124,6 +128,7 @@ public interface MidtransApiService {
             @Query("installment_term") String
                     instalmentTerm,
             @Query("type") String type,
+            @Query("currency") String currency,
             @Query("point") Boolean point
     );
 

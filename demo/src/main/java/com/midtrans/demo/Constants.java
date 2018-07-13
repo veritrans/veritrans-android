@@ -38,5 +38,5 @@ public class Constants {
     public static final String INSTALLMENT_BANK_MAYBANK = "maybank";
 
     public static final double TOTAL_AMOUNT = 10000;
-    public static final double TOTAL_AMOUNT_SGD = 50.5;
+    public static final double TOTAL_AMOUNT_SGD = 5000.5;
 }

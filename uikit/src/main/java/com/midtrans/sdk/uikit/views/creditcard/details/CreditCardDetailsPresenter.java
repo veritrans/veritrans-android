@@ -13,6 +13,7 @@ import com.midtrans.sdk.corekit.callback.SaveCardCallback;
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.Logger;
+import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
@@ -179,10 +180,18 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
     private void applyTokenizationProperties(CardTokenRequest cardTokenRequest) {
         applyInstallmentProperties(cardTokenRequest);
         cardTokenRequest.setPoint(view.isBankPointEnabled());
-        CreditCard creditCard = getMidtransSDK().getCreditCard();
+
+        MidtransSDK midtransSDK = getMidtransSDK();
+        CreditCard creditCard = midtransSDK.getCreditCard();
+
         if (creditCard != null) {
             applyAcquiringBank(cardTokenRequest, creditCard);
             applyTokenizationType(cardTokenRequest, creditCard);
+        }
+
+        TransactionDetails transactionDetails = midtransSDK.getTransaction().getTransactionDetails();
+        if (transactionDetails != null) {
+            cardTokenRequest.setCurrency(transactionDetails.getCurrency());
         }
     }
 

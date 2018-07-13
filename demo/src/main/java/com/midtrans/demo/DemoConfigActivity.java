@@ -2990,8 +2990,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         ItemDetails itemDetails = new ItemDetails("1", 10000, 1, getString(R.string.product_name_sample));
 
         if (currencySgdSelection.isChecked()) {
-            transactionRequestNew = new TransactionRequest(System.currentTimeMillis() + "", 50.5, Currency.SGD);
-            itemDetails = new ItemDetails("1", 50.5, 1, getString(R.string.product_name_sample));
+            transactionRequestNew = new TransactionRequest(System.currentTimeMillis() + "", 5000.5, Currency.SGD);
+            itemDetails = new ItemDetails("1", 5000.5, 1, getString(R.string.product_name_sample));
         }
 
         // Define item details

@@ -714,4 +714,21 @@ public class SdkUIFlowUtil {
 
         return formattedAmount;
     }
+
+    public static String getFormattedNegativeAmount(Context context, double amount, String currency) {
+        String formattedAmount = context.getString(R.string.prefix_money_negative, Utils.getFormattedAmount(amount));
+        if (!TextUtils.isEmpty(currency)) {
+            switch (currency) {
+                case Currency.SGD:
+                    formattedAmount = context.getString(R.string.prefix_money_negative_sgd, Utils.getFormattedAmount(amount));
+                    break;
+
+                case Currency.IDR:
+                    formattedAmount = context.getString(R.string.prefix_money_negative, Utils.getFormattedAmount(amount));
+                    break;
+            }
+        }
+
+        return formattedAmount;
+    }
 }

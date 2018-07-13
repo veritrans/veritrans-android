@@ -39,6 +39,7 @@ public class CardTokenRequest implements Serializable {
     private String channel;
     private String type = TYPE_CAPTURE;
     private boolean point;
+    private String currency;
 
     public CardTokenRequest() {
     }
@@ -247,5 +248,13 @@ public class CardTokenRequest implements Serializable {
 
     public void setPoint(boolean point) {
         this.point = point;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 }

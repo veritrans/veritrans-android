@@ -13,6 +13,7 @@ import com.midtrans.sdk.corekit.core.Currency;
 import com.midtrans.sdk.corekit.models.snap.ItemDetails;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 
 import java.util.ArrayList;
@@ -101,7 +102,12 @@ public class TransactionDetailsAdapter extends RecyclerView.Adapter<RecyclerView
                 ItemDetails item = itemDetails.get(position);
                 itemDetailsViewHolder.item.setText(item.getName());
                 itemDetailsViewHolder.quantity.setText(item.getQuantity() == 0 ? "" : String.valueOf(item.getQuantity()));
-                itemDetailsViewHolder.price.setText(formatAmount(item.getPrice(), holder.itemView.getContext()));
+                itemDetailsViewHolder.price.setText(SdkUIFlowUtil.getFormattedAmount(
+                        holder.itemView.getContext(),
+                        item.getPrice(),
+                        currency)
+                );
+
                 if (position % 2 != 0) {
                     itemDetailsViewHolder.itemView.setBackgroundResource(R.color.light_gray);
                 }
@@ -121,22 +127,6 @@ public class TransactionDetailsAdapter extends RecyclerView.Adapter<RecyclerView
             default:
                 break;
         }
-    }
-
-    private String formatAmount(double price, Context context) {
-        String formattedAmount = Utils.getFormattedAmount(price);
-        if (context != null && !TextUtils.isEmpty(currency)) {
-            switch (currency) {
-                case Currency.SGD:
-                    formattedAmount = context.getString(R.string.prefix_money_sgd, Utils.getFormattedAmount(price));
-                    break;
-
-                default:
-                    formattedAmount = context.getString(R.string.prefix_money_sgd, Utils.getFormattedAmount(price));
-                    break;
-            }
-        }
-        return formattedAmount;
     }
 
     @Override
