@@ -182,7 +182,6 @@ public abstract class BasePaymentActivity extends BaseActivity {
             final long newTotalAmount = transactionDetailAdapter.getItemTotalAmount();
             String currency = Currency.IDR;
 
-
             TransactionDetails transactionDetails = getMidtransSdk().getTransaction().getTransactionDetails();
             if (transactionDetails != null) {
                 changeTotalAmountColor(transactionDetails.getAmount(), newTotalAmount);
@@ -194,7 +193,7 @@ public abstract class BasePaymentActivity extends BaseActivity {
                 }
             }
 
-            formatTotalAmount(newTotalAmount, currency);
+            setTotalAmount(formatTotalAmount(newTotalAmount, currency));
         }
     }
 

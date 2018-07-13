@@ -2397,6 +2397,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 bniPointOnlyDisabledSelection.setChecked(true);
                 mandiriPointOnlyDisabledSelection.setChecked(true);
                 autoReadSmsDisabledSelection.setChecked(true);
+                currencyIdrSelection.setChecked(true);
                 Toast.makeText(DemoConfigActivity.this, getString(R.string.reset_setting_notification), Toast.LENGTH_SHORT).show();
             }
         });
