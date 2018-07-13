@@ -15,6 +15,7 @@ public class SDKConfigTest {
     public static final String CARD_EXPIRY_YEAR = "20";
     public static final String PAPI_URL = "https://api.midtrans.com";
     public static final String TYPE = "type";
+    public static final String CURRENCY = "IDR";
     public static final String CHANNEL = "dragon";
 
     public static final Double GROSS_AMOUNT = 10000d;
