@@ -89,7 +89,7 @@ public class SDKUtilsTest {
     @Mock
     private ArrayList<ShippingAddress> shippingAddressMock;
     private java.lang.String orderId = "01";
-    private java.lang.Long amount = 20L;
+    private Double amount = 20d;
     @Mock
     private CustomerDetails costumerDetailMock;
     @Mock
@@ -212,7 +212,7 @@ public class SDKUtilsTest {
         when(userDetailMock.getPhoneNumber()).thenReturn("phoneNumber");
 
         userAddressListMock = new ArrayList<>();
-        TransactionRequest transactionRequest = new TransactionRequest(orderId, amount, Constants.PAYMENT_METHOD_NOT_SELECTED);
+        TransactionRequest transactionRequest = new TransactionRequest(orderId, amount);
         CustomerDetails customerDetails = new CustomerDetails(FIRST_NAME, LAST_NAME, EMAIL, PHONE);
         transactionRequest.setCustomerDetails(customerDetails);
 
@@ -237,7 +237,7 @@ public class SDKUtilsTest {
         when(userDetailMock.getUserFullName()).thenReturn("fullname");
         when(userDetailMock.getPhoneNumber()).thenReturn("phoneNumber");
         userAddressListMock = new ArrayList<>();
-        TransactionRequest transactionRequest = new TransactionRequest(orderId, amount, Constants.PAYMENT_METHOD_NOT_SELECTED);
+        TransactionRequest transactionRequest = new TransactionRequest(orderId, amount);
         CustomerDetails customerDetails = new CustomerDetails(FIRST_NAME, LAST_NAME, EMAIL, PHONE);
         transactionRequest.setCustomerDetails(customerDetails);
         userAddressListMock.add(userAddressMock1);
@@ -262,7 +262,7 @@ public class SDKUtilsTest {
         when(userDetailMock.getUserFullName()).thenReturn("fullname");
         when(userDetailMock.getPhoneNumber()).thenReturn("phoneNumber");
         userAddressListMock = new ArrayList<>();
-        TransactionRequest transactionRequest = new TransactionRequest(orderId, amount, Constants.PAYMENT_METHOD_NOT_SELECTED);
+        TransactionRequest transactionRequest = new TransactionRequest(orderId, amount);
         CustomerDetails customerDetails = new CustomerDetails(FIRST_NAME, LAST_NAME, EMAIL, PHONE);
         transactionRequest.setCustomerDetails(customerDetails);
 

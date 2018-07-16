@@ -290,6 +290,7 @@
     <string name="challenge">challenge</string>
     <string name="prefix_money">Rp %1$s</string>
     <string name="prefix_money_negative">-Rp %1$s</string>
+    <string name="prefix_money_negative_sgd">-SGD %1$s</string>
 
     <string name="payment_method_bri_epay">e-Pay BRI</string>
     <string name="payment_method_offers">Offers</string>

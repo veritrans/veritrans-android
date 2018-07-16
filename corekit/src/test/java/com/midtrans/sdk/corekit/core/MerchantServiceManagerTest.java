@@ -9,22 +9,11 @@ import android.util.Log;
 
 import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.SDKConfigTest;
-import com.midtrans.sdk.corekit.models.CardRegistrationResponse;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.models.TokenRequestModel;
-import com.midtrans.sdk.corekit.models.TransactionResponse;
-import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
-import com.midtrans.sdk.corekit.models.snap.BanksPointResponse;
 import com.midtrans.sdk.corekit.models.snap.Token;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
-import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
-import com.midtrans.sdk.corekit.models.snap.payment.BasePaymentRequest;
-import com.midtrans.sdk.corekit.models.snap.payment.CreditCardPaymentRequest;
-import com.midtrans.sdk.corekit.models.snap.payment.IndosatDompetkuPaymentRequest;
-import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
-import com.midtrans.sdk.corekit.models.snap.payment.MandiriClickPayPaymentRequest;
-import com.midtrans.sdk.corekit.models.snap.payment.TelkomselEcashPaymentRequest;
 import com.midtrans.sdk.corekit.utilities.CallbackCollaborator;
 import com.midtrans.sdk.corekit.utilities.MerchantServiceCallbackImplement;
 import com.securepreferences.SecurePreferences;
@@ -107,7 +96,7 @@ public class MerchantServiceManagerTest {
     @Mock
     private TokenRequestModel checkoutRequestMock;
     @Mock
-    private Call<String> callSaveCardMock;
+    private Call<List<SaveCardRequest>> callSaveCardMock;
     @Mock
     private Call<List<SaveCardRequest>> callGetCardsMock;
 
@@ -115,7 +104,7 @@ public class MerchantServiceManagerTest {
     @Captor
     private ArgumentCaptor<Callback<Token>> checkoutCaptor;
     @Captor
-    private ArgumentCaptor<Callback<String>> saveCardCaptor;
+    private ArgumentCaptor<Callback<List<SaveCardRequest>>> saveCardCaptor;
     @Captor
     private ArgumentCaptor<Callback<List<SaveCardRequest>>> getCardsCaptor;
 
@@ -176,13 +165,13 @@ public class MerchantServiceManagerTest {
         return resTransactionResponse;
     }
 
-    private Response<String> createSaveCardResponse(Integer statusCode, boolean emptyBody) {
+    private Response<List<SaveCardRequest>> createSaveCardResponse(Integer statusCode, boolean emptyBody) {
         Request okReq = new Request.Builder().url(SDKConfigTest.PAPI_URL).build();
         okhttp3.Response okResponse = new okhttp3.Response.Builder().code((statusCode == null || statusCode > 300) ? 299 : statusCode).request(okReq).message("success").protocol(Protocol.HTTP_2).build();
 
         String response = "res";
-
-        Response<String> resTransactionResponse = Response.success(emptyBody ? null : response, okResponse);
+        List<SaveCardRequest> savedCardsResponse = new ArrayList<>();
+        Response<List<SaveCardRequest>> resTransactionResponse = Response.success(emptyBody ? null : savedCardsResponse, okResponse);
         return resTransactionResponse;
     }
 
@@ -290,7 +279,7 @@ public class MerchantServiceManagerTest {
     @Test
     public void saveCardsSuccess() {
         initSaveCard();
-        Response<String> response = createSaveCardResponse(200, false);
+        Response<List<SaveCardRequest>> response = createSaveCardResponse(200, false);
         saveCardCaptor.getValue().onResponse(callSaveCardMock, response);
         Mockito.verify(callbackCollaboratorMock).onSaveAndGetCardsSuccess();
     }
@@ -298,7 +287,7 @@ public class MerchantServiceManagerTest {
     @Test
     public void saveCardsFailure_whenEmptyStatusCode() {
         initSaveCard();
-        Response<String> response = createSaveCardResponse(null, false);
+        Response<List<SaveCardRequest>> response = createSaveCardResponse(null, false);
         saveCardCaptor.getValue().onResponse(callSaveCardMock, response);
         Mockito.verify(callbackCollaboratorMock).onSaveAndGetCardsFailure();
     }
@@ -307,7 +296,7 @@ public class MerchantServiceManagerTest {
     @Test
     public void saveCardsFailure_whenStatusCodeNot200Or201() {
         initSaveCard();
-        Response<String> response = createSaveCardResponse(204, false);
+        Response<List<SaveCardRequest>> response = createSaveCardResponse(204, false);
         saveCardCaptor.getValue().onResponse(callSaveCardMock, response);
         Mockito.verify(callbackCollaboratorMock).onSaveAndGetCardsFailure();
     }
@@ -349,7 +338,7 @@ public class MerchantServiceManagerTest {
     @Test
     public void getCardsFailure_whenEmptyStatusCode() {
         initSaveCard();
-        Response<String> response = createSaveCardResponse(null, false);
+        Response<List<SaveCardRequest>> response = createSaveCardResponse(null, false);
         saveCardCaptor.getValue().onResponse(callSaveCardMock, response);
         Mockito.verify(callbackCollaboratorMock).onSaveAndGetCardsFailure();
     }
@@ -358,7 +347,7 @@ public class MerchantServiceManagerTest {
     @Test
     public void getCardsFailure_whenStatusCodeNot200Or201() {
         initSaveCard();
-        Response<String> response = createSaveCardResponse(204, false);
+        Response<List<SaveCardRequest>> response = createSaveCardResponse(204, false);
         saveCardCaptor.getValue().onResponse(callSaveCardMock, response);
         Mockito.verify(callbackCollaboratorMock).onSaveAndGetCardsFailure();
     }

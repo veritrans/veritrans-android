@@ -97,6 +97,7 @@ public class MidtransServiceManager extends BaseServiceManager {
                         cardTokenRequest.getFormattedInstalmentTerm(),
                         cardTokenRequest.getChannel(),
                         cardTokenRequest.getType(),
+                        cardTokenRequest.getCurrency(),
                         cardTokenRequest.isPoint());
             } else {
                 call = service.getTokenTwoClick(
@@ -109,6 +110,7 @@ public class MidtransServiceManager extends BaseServiceManager {
                         cardTokenRequest.getClientKey(),
                         cardTokenRequest.getChannel(),
                         cardTokenRequest.getType(),
+                        cardTokenRequest.getCurrency(),
                         cardTokenRequest.isPoint());
             }
 
@@ -128,6 +130,7 @@ public class MidtransServiceManager extends BaseServiceManager {
                         cardTokenRequest.getChannel(),
                         cardTokenRequest.getFormattedInstalmentTerm(),
                         cardTokenRequest.getType(),
+                        cardTokenRequest.getCurrency(),
                         cardTokenRequest.isPoint());
 
             } else {
@@ -143,6 +146,7 @@ public class MidtransServiceManager extends BaseServiceManager {
                             cardTokenRequest.getGrossAmount(),
                             cardTokenRequest.getChannel(),
                             cardTokenRequest.getType(),
+                            cardTokenRequest.getCurrency(),
                             cardTokenRequest.isPoint());
                 } else {
                     call = service.get3DSToken(cardTokenRequest.getCardNumber(),
@@ -156,6 +160,7 @@ public class MidtransServiceManager extends BaseServiceManager {
                             cardTokenRequest.getGrossAmount(),
                             cardTokenRequest.getChannel(),
                             cardTokenRequest.getType(),
+                            cardTokenRequest.getCurrency(),
                             cardTokenRequest.isPoint());
                 }
             }

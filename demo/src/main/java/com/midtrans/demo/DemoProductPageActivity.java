@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.midtrans.demo.indicator.CirclePageIndicator;
+import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 /**
@@ -37,6 +38,7 @@ public class DemoProductPageActivity extends AppCompatActivity {
         bindThemes();
         initViewPager();
         initBuyButton();
+        initData();
     }
 
     private void bindViews() {
@@ -134,5 +136,18 @@ public class DemoProductPageActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
         });
+    }
+
+    private void initData() {
+
+        final int currencyType = DemoPreferenceHelper.getIntegerPreference(this, DemoConfigActivity.CURRENCY_TYPE, 0);
+        String formattedAmount;
+        if (currencyType == DemoConfigActivity.CURRENCY_TYPE_SGD) {
+            formattedAmount = getString(R.string.prefix_money_sgd, Utils.getFormattedAmount(Constants.TOTAL_AMOUNT_SGD));
+        } else {
+            formattedAmount = getString(R.string.prefix_money, Utils.getFormattedAmount(Constants.TOTAL_AMOUNT));
+        }
+
+        productPrice.setText(formattedAmount);
     }
 }

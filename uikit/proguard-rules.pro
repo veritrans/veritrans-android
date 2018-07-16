@@ -124,6 +124,7 @@
 -keep class com.midtrans.sdk.corekit.core.SdkCoreFlowBuilder {*;}
 -keep class com.midtrans.sdk.corekit.core.BaseSdkBuilder {*;}
 -keep class com.midtrans.sdk.corekit.core.ISdkFlow {*;}
+-keep class com.midtrans.sdk.corekit.core.Currency {*;}
 -keep class com.midtrans.sdk.corekit.core.IScanner {*;}
 -keep class com.midtrans.sdk.corekit.utilities.** {*;}
 -keep class com.midtrans.sdk.corekit.core.themes.BaseColorTheme {*;}

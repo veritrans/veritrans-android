@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * Created by ziahaqi on 2/14/18.
- *
+ * <p>
  * This class provide actual transactions details informations is used by payment pages.
  */
 
@@ -44,19 +44,19 @@ public class PaymentDetails {
         this.itemDetailsList = itemDetailsList;
     }
 
-    public long getTotalAmount() {
+    public double getTotalAmount() {
         return transactionDetails != null ? transactionDetails.getAmount() : 0;
     }
 
-    public void setTotalAmount(long totalAmount) {
+    public void setTotalAmount(double totalAmount) {
         if (transactionDetails != null) {
-            transactionDetails.setAmount((int) totalAmount);
+            transactionDetails.setAmount(totalAmount);
         }
     }
 
-    public void changePaymentDetails(List<ItemDetails> newItemDetails, long newTotalAmount) {
+    public void changePaymentDetails(List<ItemDetails> newItemDetails, double newTotalAmount) {
         if (transactionDetails != null) {
-            transactionDetails.setAmount((int) newTotalAmount);
+            transactionDetails.setAmount(newTotalAmount);
             this.itemDetailsList = newItemDetails;
         }
     }

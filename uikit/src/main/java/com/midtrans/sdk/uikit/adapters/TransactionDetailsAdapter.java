@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.midtrans.sdk.corekit.models.snap.ItemDetails;
-import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 
 import java.util.ArrayList;
@@ -26,8 +26,18 @@ public class TransactionDetailsAdapter extends RecyclerView.Adapter<RecyclerView
     private static final int TYPE_ITEM = 1003;
 
     private List<ItemDetails> itemDetails;
+    private String currency;
 
     public TransactionDetailsAdapter(List<ItemDetails> itemDetails) {
+        init(itemDetails);
+    }
+
+    public TransactionDetailsAdapter(List<ItemDetails> itemDetails, String currency) {
+        this.currency = currency;
+        init(itemDetails);
+    }
+
+    private void init(List<ItemDetails> itemDetails) {
         this.itemDetails = new ArrayList<>();
         if (itemDetails != null) {
             this.itemDetails.addAll(itemDetails);
@@ -89,7 +99,12 @@ public class TransactionDetailsAdapter extends RecyclerView.Adapter<RecyclerView
                 ItemDetails item = itemDetails.get(position);
                 itemDetailsViewHolder.item.setText(item.getName());
                 itemDetailsViewHolder.quantity.setText(item.getQuantity() == 0 ? "" : String.valueOf(item.getQuantity()));
-                itemDetailsViewHolder.price.setText("Rp " + Utils.getFormattedAmount(item.getPrice() * item.getQuantity()));
+                itemDetailsViewHolder.price.setText(SdkUIFlowUtil.getFormattedAmount(
+                        holder.itemView.getContext(),
+                        item.getPrice(),
+                        currency)
+                );
+
                 if (position % 2 != 0) {
                     itemDetailsViewHolder.itemView.setBackgroundResource(R.color.light_gray);
                 }
@@ -168,6 +183,14 @@ public class TransactionDetailsAdapter extends RecyclerView.Adapter<RecyclerView
         ItemHeaderViewHolder(final View itemView) {
             super(itemView);
         }
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 }
 

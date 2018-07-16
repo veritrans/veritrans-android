@@ -213,7 +213,6 @@
                     android:text="@string/custom_expiry_none" />
             </LinearLayout>
 
-
             <RadioGroup
                 android:id="@+id/expiry_type_container"
                 android:layout_width="match_parent"
@@ -255,6 +254,11 @@
                     android:text="@string/expiry_one_hour" />
             </RadioGroup>
 
+            <include
+                layout="@layout/layout_demo_currency"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -274,7 +278,6 @@
                     android:text="@string/default_save_card_disabled" />
 
             </LinearLayout>
-
 
             <RadioGroup
                 android:id="@+id/default_save_type_container"
@@ -414,7 +417,6 @@
 
             </LinearLayout>
 
-
             <LinearLayout
                 android:id="@+id/custom_bca_va_type_container"
                 android:layout_width="match_parent"
@@ -500,7 +502,6 @@
                     android:text="@string/subcompany_bca_va_disabled" />
 
             </LinearLayout>
-
 
             <LinearLayout
                 android:id="@+id/subcompany_bca_va_type_container"
@@ -824,8 +825,6 @@
                 </LinearLayout>
             </LinearLayout>
 
-
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -845,7 +844,6 @@
                     android:text="@string/pre_auth_disabled" />
 
             </LinearLayout>
-
 
             <RadioGroup
                 android:id="@+id/preauth_type_container"
@@ -898,7 +896,6 @@
 
             </LinearLayout>
 
-
             <RadioGroup
                 android:id="@+id/bni_point_type_container"
                 android:layout_width="match_parent"
@@ -949,7 +946,6 @@
                     android:text="@string/bni_point_only_disabled" />
 
             </LinearLayout>
-
 
             <RadioGroup
                 android:id="@+id/mandiri_point_type_container"
@@ -1054,7 +1050,6 @@
                     android:text="@string/default_color_theme" />
             </LinearLayout>
 
-
             <RadioGroup
                 android:id="@+id/theme_type_container"
                 android:layout_width="match_parent"
@@ -1131,6 +1126,7 @@
                     android:text="@string/color_black" />
 
             </RadioGroup>
+
         </LinearLayout>
     </ScrollView>
 
