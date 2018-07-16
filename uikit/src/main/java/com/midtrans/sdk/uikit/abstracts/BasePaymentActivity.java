@@ -179,7 +179,7 @@ public abstract class BasePaymentActivity extends BaseActivity {
 
     protected void changeTotalAmount() {
         if (textTotalAmount != null) {
-            final long newTotalAmount = transactionDetailAdapter.getItemTotalAmount();
+            final double newTotalAmount = transactionDetailAdapter.getItemTotalAmount();
             String currency = Currency.IDR;
 
             TransactionDetails transactionDetails = getMidtransSdk().getTransaction().getTransactionDetails();
