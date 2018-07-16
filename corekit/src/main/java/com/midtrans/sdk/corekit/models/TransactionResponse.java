@@ -137,6 +137,7 @@ public class TransactionResponse implements Serializable {
     private String qrCodeUrl;
     @SerializedName("deeplink_url")
     private String deeplinkUrl;
+    private String currency;
 
     public TransactionResponse(String statusCode, String statusMessage, String transactionId,
                                String orderId, String grossAmount, String paymentType,
@@ -519,5 +520,13 @@ public class TransactionResponse implements Serializable {
 
     public String getGopayExpirationRaw() {
         return gopayExpirationRaw;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 }

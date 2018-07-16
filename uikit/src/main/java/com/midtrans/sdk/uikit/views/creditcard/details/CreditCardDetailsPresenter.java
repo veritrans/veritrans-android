@@ -13,6 +13,7 @@ import com.midtrans.sdk.corekit.callback.SaveCardCallback;
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.Logger;
+import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
@@ -144,7 +145,7 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
         return creditCardTransaction.isInstallmentValid();
     }
 
-    public Long getGrossAmount() {
+    public Double getGrossAmount() {
         //use discounted gross amount if available
         if (creditCardTransaction.isSelectedPromoAvailable()) {
             return creditCardTransaction.getSelectedPromo().getDiscountedGrossAmount();
@@ -155,7 +156,7 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
             return transactionDetails.getAmount();
         }
 
-        return 0L;
+        return 0D;
     }
 
 
@@ -179,10 +180,18 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
     private void applyTokenizationProperties(CardTokenRequest cardTokenRequest) {
         applyInstallmentProperties(cardTokenRequest);
         cardTokenRequest.setPoint(view.isBankPointEnabled());
-        CreditCard creditCard = getMidtransSDK().getCreditCard();
+
+        MidtransSDK midtransSDK = getMidtransSDK();
+        CreditCard creditCard = midtransSDK.getCreditCard();
+
         if (creditCard != null) {
             applyAcquiringBank(cardTokenRequest, creditCard);
             applyTokenizationType(cardTokenRequest, creditCard);
+        }
+
+        TransactionDetails transactionDetails = midtransSDK.getTransaction().getTransactionDetails();
+        if (transactionDetails != null) {
+            cardTokenRequest.setCurrency(transactionDetails.getCurrency());
         }
     }
 
@@ -573,9 +582,11 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
     public ItemDetails createTransactionItem(Promo promo) {
         if (promo != null) {
             int quantity = 1;
-            int price = promo.getCalculatedDiscountAmount().intValue() * -1;
+            double price = promo.getCalculatedDiscountAmount() * -1;
 
-            ItemDetails itemDetails = new ItemDetails(UiKitConstants.PROMO_ID, promo.getName(),
+            ItemDetails itemDetails = new ItemDetails(
+                    UiKitConstants.PROMO_ID,
+                    promo.getName(),
                     price, quantity);
 
             return itemDetails;

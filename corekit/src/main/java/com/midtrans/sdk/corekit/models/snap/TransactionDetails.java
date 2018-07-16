@@ -8,13 +8,16 @@ import com.google.gson.annotations.SerializedName;
 public class TransactionDetails {
     @SerializedName("order_id")
     private String orderId;
+
     @SerializedName("gross_amount")
-    private long amount;
+    private double amount;
+
+    private String currency;
 
     public TransactionDetails() {
     }
 
-    public TransactionDetails(String orderId, long amount) {
+    public TransactionDetails(String orderId, Double amount) {
         setOrderId(orderId);
         setAmount(amount);
     }
@@ -27,11 +30,15 @@ public class TransactionDetails {
         this.orderId = orderId;
     }
 
-    public long getAmount() {
-        return amount;
+    public double getAmount() {
+        return this.amount;
     }
 
-    public void setAmount(long amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
+    }
+
+    public String getCurrency() {
+        return currency;
     }
 }

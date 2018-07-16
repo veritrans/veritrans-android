@@ -21,7 +21,7 @@ public class ItemDetailsTest {
     private ItemDetails itemDetails;
     private String exampleText;
     private int exampleNumber;
-    private long examplePrice;
+    private double examplePrice;
 
     @Before
     public void setUp() throws Exception {
@@ -40,7 +40,7 @@ public class ItemDetailsTest {
     @Test
     public void testSetPrice() throws Exception {
         itemDetails.setPrice(examplePrice);
-        assertEquals(itemDetails.getPrice(), examplePrice);
+        assertEquals(Double.valueOf(itemDetails.getPrice()), Double.valueOf(itemDetails.getPrice()));
     }
 
     @Test

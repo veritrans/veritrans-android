@@ -231,6 +231,7 @@ public class MidtransServiceManagerTest {
                 SDKConfigTest.GROSS_AMOUNT,
                 SDKConfigTest.CHANNEL,
                 SDKConfigTest.TYPE,
+                SDKConfigTest.CURRENCY,
                 false
         )).thenReturn(callGetCardTokenMock);
 
@@ -244,6 +245,7 @@ public class MidtransServiceManagerTest {
         req.setChannel(SDKConfigTest.CHANNEL);
         req.setGrossAmount(SDKConfigTest.GROSS_AMOUNT);
         req.setType(SDKConfigTest.TYPE);
+        req.setCurrency(SDKConfigTest.CURRENCY);
 
         req.setPoint(false);
         req.setTwoClick(false);
@@ -271,6 +273,7 @@ public class MidtransServiceManagerTest {
                 SDKConfigTest.GROSS_AMOUNT,
                 SDKConfigTest.CHANNEL,
                 SDKConfigTest.TYPE,
+                SDKConfigTest.CURRENCY,
                 false
         )).thenReturn(callGetCardTokenMock);
 
@@ -285,6 +288,7 @@ public class MidtransServiceManagerTest {
         req.setGrossAmount(SDKConfigTest.GROSS_AMOUNT);
         req.setType(SDKConfigTest.TYPE);
         req.setBank(SDKConfigTest.BANK);
+        req.setCurrency(SDKConfigTest.CURRENCY);
         req.setPoint(false);
         req.setTwoClick(false);
         req.setInstallment(false);
@@ -322,6 +326,7 @@ public class MidtransServiceManagerTest {
                 SDKConfigTest.CHANNEL,
                 SDKConfigTest.INSTALLMENT_TERM,
                 SDKConfigTest.TYPE,
+                SDKConfigTest.CURRENCY,
                 false
         )).thenReturn(callGetCardTokenMock);
 
@@ -336,6 +341,7 @@ public class MidtransServiceManagerTest {
         req.setGrossAmount(SDKConfigTest.GROSS_AMOUNT);
         req.setType(SDKConfigTest.TYPE);
         req.setBank(SDKConfigTest.BANK);
+        req.setCurrency(SDKConfigTest.CURRENCY);
         req.setPoint(false);
         req.setTwoClick(false);
         req.setInstallment(false);
@@ -359,6 +365,7 @@ public class MidtransServiceManagerTest {
                 SDKConfigTest.CLIENT_KEY,
                 SDKConfigTest.CHANNEL,
                 SDKConfigTest.TYPE,
+                SDKConfigTest.CURRENCY,
                 false
         )).thenReturn(callGetCardTokenMock);
 
@@ -372,6 +379,7 @@ public class MidtransServiceManagerTest {
         req.setBank(SDKConfigTest.BANK);
         req.setClientKey(SDKConfigTest.CLIENT_KEY);
         req.setChannel(SDKConfigTest.CHANNEL);
+        req.setCurrency(SDKConfigTest.CURRENCY);
         req.setType(SDKConfigTest.TYPE);
         req.setPoint(false);
 
@@ -394,6 +402,7 @@ public class MidtransServiceManagerTest {
                 SDKConfigTest.INSTALLMENT_TERM,
                 SDKConfigTest.CHANNEL,
                 SDKConfigTest.TYPE,
+                SDKConfigTest.CURRENCY,
                 false
         )).thenReturn(callGetCardTokenMock);
 
@@ -408,6 +417,7 @@ public class MidtransServiceManagerTest {
         req.setClientKey(SDKConfigTest.CLIENT_KEY);
         req.setChannel(SDKConfigTest.CHANNEL);
         req.setType(SDKConfigTest.TYPE);
+        req.setCurrency(SDKConfigTest.CURRENCY);
         req.setPoint(false);
         req.setInstallment(true);
         req.setInstalmentTerm(Integer.valueOf(SDKConfigTest.INSTALLMENT_TERM));

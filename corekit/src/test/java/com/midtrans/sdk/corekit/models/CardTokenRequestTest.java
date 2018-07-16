@@ -91,7 +91,7 @@ public class CardTokenRequestTest {
 
     @Test
     public void grossAmount() {
-        cardTokenRequest.setGrossAmount(10L);
+        cardTokenRequest.setGrossAmount(10d);
         Assert.assertTrue(10 == cardTokenRequest.getGrossAmount());
     }
 

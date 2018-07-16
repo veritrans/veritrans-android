@@ -183,11 +183,15 @@ public class SdkUtil {
             transactionRequest = initializeUserInfo(transactionRequest);
         }
 
-        SnapTransactionDetails details = new SnapTransactionDetails(transactionRequest.getOrderId(), (int) transactionRequest.getAmount());
+        SnapTransactionDetails details = new SnapTransactionDetails(transactionRequest.getOrderId(), transactionRequest.getAmount());
+
+        // set currency
+        details.setCurrency(transactionRequest.getCurrency());
 
         TokenRequestModel requestModel = new TokenRequestModel(details, transactionRequest.getItemDetails(),
                 transactionRequest.getCustomerDetails(), transactionRequest.getCreditCard());
         requestModel.setExpiry(transactionRequest.getExpiry());
+
 
         // Set expiry if it's available
         if (transactionRequest.getExpiry() != null) {
@@ -222,7 +226,6 @@ public class SdkUtil {
                 && !transactionRequest.getEnabledPayments().isEmpty()) {
             requestModel.setEnabledPayments(transactionRequest.getEnabledPayments());
         }
-
 
         return requestModel;
     }

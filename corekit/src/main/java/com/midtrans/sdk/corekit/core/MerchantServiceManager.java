@@ -72,23 +72,35 @@ public class MerchantServiceManager extends BaseServiceManager {
      * @param userId       unique id for every user
      * @param callback     save card callback
      */
-    public void saveCards(String userId, List<SaveCardRequest> cardRequests, final SaveCardCallback callback) {
+    public void saveCards(String userId, final List<SaveCardRequest> cardRequests, final SaveCardCallback callback) {
         if (service == null) {
             doOnApiServiceUnAvailable(callback);
             return;
         }
 
         if (cardRequests != null) {
-            Call<String> call = service.saveCards(userId, cardRequests);
-            call.enqueue(new Callback<String>() {
+            Call<List<SaveCardRequest>> call = service.saveCards(userId, cardRequests);
+
+            call.enqueue(new Callback<List<SaveCardRequest>>() {
                 @Override
-                public void onResponse(Call<String> call, Response<String> response) {
+                public void onResponse(Call<List<SaveCardRequest>> call, Response<List<SaveCardRequest>> response) {
                     releaseResources();
 
-                    SaveCardResponse saveCardResponse = new SaveCardResponse();
-                    saveCardResponse.setCode(response.code());
-                    saveCardResponse.setMessage(response.message());
-                    if (response.code() == 200 || response.code() == 201) {
+                    String statusCode = "";
+                    List<SaveCardRequest> data = response.body();
+
+                    if (data != null && !data.isEmpty()) {
+                        SaveCardRequest cardResponse = data.get(0);
+                        if (cardResponse != null) {
+                            statusCode = cardResponse.getCode();
+                        }
+                    }
+
+                    if (isSuccess(response.code(), statusCode)) {
+                        SaveCardResponse saveCardResponse = new SaveCardResponse();
+                        saveCardResponse.setCode(response.code());
+                        saveCardResponse.setMessage(response.message());
+
                         callback.onSuccess(saveCardResponse);
                     } else {
                         callback.onFailure(response.message());
@@ -96,7 +108,7 @@ public class MerchantServiceManager extends BaseServiceManager {
                 }
 
                 @Override
-                public void onFailure(Call<String> call, Throwable t) {
+                public void onFailure(Call<List<SaveCardRequest>> call, Throwable t) {
                     doOnResponseFailure(t, callback);
                 }
             });
@@ -104,6 +116,29 @@ public class MerchantServiceManager extends BaseServiceManager {
         } else {
             doOnInvalidDataSupplied(callback);
         }
+    }
+
+
+    private boolean isSuccess(int httpStatusCode, String responseStatusCode) {
+
+        if (httpStatusCode == 200
+                || httpStatusCode == 201
+                || isResponseStatusCodeSuccess(responseStatusCode)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean isResponseStatusCodeSuccess(String responseStatusCode) {
+
+        if (!TextUtils.isEmpty(responseStatusCode)
+                && (responseStatusCode.equals(Constants.STATUS_CODE_200)
+                || responseStatusCode.equals(Constants.STATUS_CODE_201))) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

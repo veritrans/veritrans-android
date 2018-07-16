@@ -4,7 +4,6 @@ import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.TokenRequestModel;
 import com.midtrans.sdk.corekit.models.snap.Token;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -37,7 +36,7 @@ public interface MerchantApiService {
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("users/{user_id}/tokens")
-    Call<String> saveCards(@Path("user_id") String userId, @Body List<SaveCardRequest> saveCardsRequests);
+    Call<List<SaveCardRequest>> saveCards(@Path("user_id") String userId, @Body List<SaveCardRequest> saveCardsRequests);
 
     /**
      * get cards from merchant server

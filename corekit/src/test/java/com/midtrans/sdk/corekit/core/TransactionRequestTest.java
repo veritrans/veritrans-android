@@ -71,7 +71,7 @@ public class TransactionRequestTest {
      */
     @Test
     public void constructor3ArgsTest() {
-        transactionRequest = new TransactionRequest(orderId, amount, Constants.PAYMENT_METHOD_NOT_SELECTED);
+        transactionRequest = new TransactionRequest(orderId, amount);
         Assert.assertEquals(Constants.PAYMENT_METHOD_NOT_SELECTED, transactionRequest.getPaymentMethod());
         Assert.assertEquals(orderId, transactionRequest.getOrderId());
         Assert.assertTrue(transactionRequest.getAmount() == amount);
@@ -83,7 +83,7 @@ public class TransactionRequestTest {
         when(TextUtils.isEmpty(null)).thenReturn(true);
         when(TextUtils.isEmpty("")).thenReturn(true);
 
-        transactionRequest = new TransactionRequest(null, amount, Constants.PAYMENT_METHOD_NOT_SELECTED);
+        transactionRequest = new TransactionRequest(null, amount);
         PowerMockito.verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString());
 
@@ -94,7 +94,7 @@ public class TransactionRequestTest {
         when(TextUtils.isEmpty(null)).thenReturn(true);
         when(TextUtils.isEmpty("")).thenReturn(true);
 
-        transactionRequest = new TransactionRequest(orderId, 0, Constants.PAYMENT_METHOD_NOT_SELECTED);
+        transactionRequest = new TransactionRequest(orderId, 0d);
         PowerMockito.verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString());
 

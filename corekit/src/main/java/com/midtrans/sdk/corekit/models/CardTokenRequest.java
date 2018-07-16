@@ -19,16 +19,6 @@ public class CardTokenRequest implements Serializable {
     public final static String TYPE_CAPTURE = "authorize_capture";
     public final static String TYPE_AUTHORIZE = "authorize";
 
-    //card_number=4811111111111114
-    // &card_cvv=123
-    // &card_exp_month=12
-    // &card_exp_year=2020
-    // &client_key=VT-client-Lre_JFh5klhfGefF
-    // &secure=true
-    // &gross_amount=10000
-    // &bank=bni
-    // &two_click=false
-
     private String cardNumber;
     private String cardCVV;
     private String cardExpiryMonth;
@@ -38,16 +28,18 @@ public class CardTokenRequest implements Serializable {
     private String bank = null;
     private String cardType;
     private String savedTokenId;
-    private Long grossAmount;
+    private Double grossAmount;
     private boolean isSaved;
     private String clientKey;
     private boolean installment;
+
     @SerializedName("installment_term")
     private int instalmentTerm;
     private ArrayList<String> bins;
     private String channel;
     private String type = TYPE_CAPTURE;
     private boolean point;
+    private String currency;
 
     public CardTokenRequest() {
     }
@@ -61,18 +53,6 @@ public class CardTokenRequest implements Serializable {
         this.cardExpiryYear = cardExpiryYear;
         this.clientKey = clientKey;
     }
-
-    //card_cvv, token_id, two_click, bank, secure, gross_amount
-   /* public CardTokenRequest(int cardCVV, String token, boolean isTwoClick, boolean isSecure,
-   String bank, double grossAmount) {
-
-        this.cardCVV = cardCVV;
-        this.savedTokenId = token;
-        this.twoClick = isTwoClick;
-        this.secure = isSecure;
-        this.bank = bank;
-        this.grossAmount = grossAmount;
-    }*/
 
     public String getCardNumber() {
         return cardNumber;
@@ -148,11 +128,11 @@ public class CardTokenRequest implements Serializable {
         this.bank = bank;
     }
 
-    public Long getGrossAmount() {
+    public Double getGrossAmount() {
         return grossAmount;
     }
 
-    public void setGrossAmount(Long grossAmount) {
+    public void setGrossAmount(Double grossAmount) {
         this.grossAmount = grossAmount;
     }
 
@@ -268,5 +248,13 @@ public class CardTokenRequest implements Serializable {
 
     public void setPoint(boolean point) {
         this.point = point;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 }

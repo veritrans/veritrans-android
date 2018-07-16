@@ -47,6 +47,7 @@ public class MidtransRestAdapter {
      * @param merchantBaseUrl Merchant base URL
      * @return Merchant API implementation
      */
+
     public static MerchantApiService newMerchantApiService(String merchantBaseUrl, int timeout) {
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -128,7 +129,8 @@ public class MidtransRestAdapter {
                         .addHeader("Content-Type", "application/json")
                         .addHeader("Accept", "application/json")
                         .addHeader("X-Source", "mobile-android")
-                        .addHeader("X-Source-Version", BuildConfig.VERSION_NAME)
+                        .addHeader("X-Source-Version", "android-" + BuildConfig.VERSION_NAME)
+                        .addHeader("X-Service", "snap")
                         .build();
 
                 return chain.proceed(headerInterceptedRequest);

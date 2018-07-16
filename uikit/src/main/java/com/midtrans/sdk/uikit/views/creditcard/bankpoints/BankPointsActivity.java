@@ -187,7 +187,7 @@ public class BankPointsActivity extends BasePaymentActivity {
     private void setFiestapoinDiscount() {
         float fiestaDiscount = presenter.getPointBalance();
         presenter.calculateAmount(fiestaDiscount);
-        ((DefaultTextView) findViewById(R.id.text_fiestapoin_discount)).setText(getString(R.string.prefix_money_negative, Utils.getFormattedAmount(fiestaDiscount)));
+        ((DefaultTextView) findViewById(R.id.text_fiestapoin_discount)).setText(SdkUIFlowUtil.getFormattedNegativeAmount(this, fiestaDiscount, presenter.getCurrency()));
     }
 
     private void setFocusForBniPoint() {
@@ -224,7 +224,7 @@ public class BankPointsActivity extends BasePaymentActivity {
     }
 
     private void updateAmountToPayText() {
-        String amountToPay = getString(R.string.prefix_money, Utils.getFormattedAmount(presenter.getAmountToPay()));
+        String amountToPay = SdkUIFlowUtil.getFormattedAmount(this, presenter.getAmountToPay(), presenter.getCurrency());
         textAmountToPay.setText(amountToPay);
         if (textTotalAmount != null) {
             textTotalAmount.setText(amountToPay);

@@ -826,5 +826,7 @@
     <string name="tnc_bni_point_5">Card holder can choose how many points they would like to redeem. There is no minimum point to redeem.</string>
     <string name="tnc_bni_point_6">Payment for reward points to merchant is the same as regular card payment.</string>
     <string name="message_payment_paid">Transaction has been processed</string>
+    <string name="prefix_money_sgd">SGD %1$s</string>
+    <string name="currency_invalid">Currency is not available</string>
     <string name="order_id">Order ID</string>
 </resources>
