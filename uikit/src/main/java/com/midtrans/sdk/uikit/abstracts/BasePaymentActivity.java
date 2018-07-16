@@ -106,7 +106,13 @@ public abstract class BasePaymentActivity extends BaseActivity {
                     List<ItemDetails> itemDetails = paymentDetails.getItemDetailsList();
                     initTransactionDetail(itemDetails, currency);
                 }
+
+                TextView textOrderId = findViewById(R.id.text_order_id);
+                if (textOrderId != null) {
+                    textOrderId.setText(transaction.getTransactionDetails().getOrderId());
+                }
             }
+
         }
 
         //init dim

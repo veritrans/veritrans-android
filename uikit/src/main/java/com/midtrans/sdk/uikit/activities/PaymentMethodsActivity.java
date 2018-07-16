@@ -281,7 +281,11 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 }
             }
 
-            ItemDetailsAdapter adapter = new ItemDetailsAdapter(itemViewDetails, this);
+            ItemDetailsAdapter adapter = new ItemDetailsAdapter(
+                    itemViewDetails,
+                    this,
+                    transaction.getTransactionDetails().getOrderId());
+
             itemDetailsView.setLayoutManager(new LinearLayoutManager(this));
             itemDetailsView.setAdapter(adapter);
         }

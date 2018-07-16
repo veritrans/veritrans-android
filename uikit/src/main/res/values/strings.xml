@@ -828,4 +828,5 @@
     <string name="message_payment_paid">Transaction has been processed</string>
     <string name="prefix_money_sgd">SGD %1$s</string>
     <string name="currency_invalid">Currency is not available</string>
+    <string name="order_id">Order ID</string>
 </resources>

@@ -13,8 +13,7 @@
         android:gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/sixteen_dp"
-        android:layout_marginBottom="@dimen/sixteen_dp">
+        android:layout_marginTop="@dimen/eight_dp" >
 
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
             android:id="@+id/total_amount"
@@ -35,6 +34,31 @@
             android:text="@string/payable_amount"
             android:textColor="@color/white"
             android:textSize="@dimen/primary_text_size" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/two_dp"
+        android:layout_marginBottom="@dimen/eight_dp">
+
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:id="@+id/text_order_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/secondary_text_size"
+            tools:text="order-0001" />
+
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/order_id"
+            android:textColor="@color/white"
+            android:textSize="@dimen/secondary_text_size" />
     </RelativeLayout>
 
     <RelativeLayout

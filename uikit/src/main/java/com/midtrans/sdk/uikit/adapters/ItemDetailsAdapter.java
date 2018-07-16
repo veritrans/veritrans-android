@@ -19,15 +19,18 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private static final int TYPE_HEADER = 1002;
     private static final int TYPE_ITEM = 1003;
+    private final String orderId;
     private boolean itemShown = false;
 
     private List<ItemViewDetails> itemViewDetails;
     private ItemDetailListener listener;
-    public interface ItemDetailListener{
+
+    public interface ItemDetailListener {
         public void onItemShown();
     }
 
-    public ItemDetailsAdapter(List<ItemViewDetails> itemViewDetails, ItemDetailListener listener) {
+    public ItemDetailsAdapter(List<ItemViewDetails> itemViewDetails, ItemDetailListener listener, String orderId) {
+        this.orderId = orderId;
         this.itemViewDetails = itemViewDetails;
         this.listener = listener;
     }
@@ -42,7 +45,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     public void onClick(View view) {
                         itemShown = !itemShown;
                         notifyDataSetChanged();
-                        if(listener != null && itemShown){
+                        if (listener != null && itemShown) {
                             listener.onItemShown();
                         }
                     }
@@ -63,6 +66,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             case TYPE_HEADER:
                 ItemHeaderViewHolder headerViewHolder = (ItemHeaderViewHolder) holder;
                 headerViewHolder.amount.setText(itemViewDetails.get(position).getValue());
+                headerViewHolder.orderId.setText(this.orderId);
                 if (itemViewDetails.get(position).isItemAvailable() && itemShown) {
                     headerViewHolder.containerItem.setVisibility(View.VISIBLE);
                     headerViewHolder.divider.setVisibility(View.VISIBLE);
@@ -106,20 +110,22 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         public ItemDetailsViewHolder(View itemView) {
             super(itemView);
-            item = (TextView) itemView.findViewById(R.id.item_name);
-            price = (TextView) itemView.findViewById(R.id.item_price);
+            item = itemView.findViewById(R.id.item_name);
+            price = itemView.findViewById(R.id.item_price);
         }
     }
 
     class ItemHeaderViewHolder extends RecyclerView.ViewHolder {
         TextView amount;
+        TextView orderId;
         View containerItem;
         View divider;
 
         public ItemHeaderViewHolder(final View itemView) {
             super(itemView);
             divider = itemView.findViewById(R.id.divider);
-            amount = (TextView) itemView.findViewById(R.id.total_amount);
+            amount = itemView.findViewById(R.id.total_amount);
+            orderId = itemView.findViewById(R.id.text_order_id);
             containerItem = itemView.findViewById(R.id.item_details_container);
         }
     }
