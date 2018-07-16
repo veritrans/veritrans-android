@@ -148,8 +148,8 @@ public class TransactionDetailsAdapter extends RecyclerView.Adapter<RecyclerView
         }
     }
 
-    public long getItemTotalAmount() {
-        long totalAmount = 0;
+    public double getItemTotalAmount() {
+        double totalAmount = 0d;
         for (ItemDetails item : itemDetails) {
             if (item != null) {
                 totalAmount += item.getPrice();
