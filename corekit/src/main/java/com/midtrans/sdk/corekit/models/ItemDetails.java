@@ -8,7 +8,7 @@ package com.midtrans.sdk.corekit.models;
 public class ItemDetails {
 
     private String id;
-    private int price;
+    private Double price;
     private int quantity;
     private String name;
 
@@ -21,7 +21,7 @@ public class ItemDetails {
      * @param quantity number of items that is purchased.
      * @param name     name of the item.
      */
-    public ItemDetails(String id, int price, int quantity, String name) {
+    public ItemDetails(String id, double price, int quantity, String name) {
         this.id = id;
         this.price = price;
         this.quantity = quantity;
@@ -36,11 +36,11 @@ public class ItemDetails {
         this.id = id;
     }
 
-    public int getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

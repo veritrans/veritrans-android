@@ -37,6 +37,7 @@ import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.promo.Promo;
 import com.midtrans.sdk.corekit.models.snap.BanksPointResponse;
+import com.midtrans.sdk.corekit.models.snap.TransactionDetails;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.BuildConfig;
 import com.midtrans.sdk.uikit.R;
@@ -209,7 +210,16 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     }
 
     private void initPromoList() {
-        promosAdapter = new PromosAdapter(getPrimaryColor(),
+        TransactionDetails transactionDetails = getMidtransSdk().getTransaction().getTransactionDetails();
+        String currency = "";
+
+        if (transactionDetails != null) {
+            currency = transactionDetails.getCurrency();
+        }
+
+        promosAdapter = new PromosAdapter(
+                getPrimaryColor(),
+                currency,
                 new PromosAdapter.OnPromoCheckedChangeListener() {
                     @Override
                     public void onPromoCheckedChanged(Promo promo) {
@@ -1588,13 +1598,9 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         }
     }
 
-
     @Override
     public void onDeleteCardFailure() {
         hideProgressLayout();
-        if (isActivityRunning()) {
-            SdkUIFlowUtil.showToast(this, getString(R.string.error_delete_message));
-        }
     }
 
     @Override
@@ -1630,6 +1636,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         if (presenter != null) {
             presenter.trackBackButtonClick(PAGE_NAME);
         }
+
         super.onBackPressed();
     }
 }

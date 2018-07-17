@@ -25,11 +25,12 @@ public interface MidtransApiService {
             @Query("token_id") String tokenId,
             @Query("two_click") Boolean twoClick,
             @Query("secure") Boolean secure,
-            @Query("gross_amount") Long grossAmount,
+            @Query("gross_amount") Double grossAmount,
             @Query("bank") String bank,
             @Query("client_key") String clientKey,
             @Query("channel") String channel,
             @Query("type") String type,
+            @Query("currency") String currency,
             @Query("point") Boolean point
     );
 
@@ -43,9 +44,10 @@ public interface MidtransApiService {
             @Query("bank") String bank,
             @Query("secure") Boolean secure,
             @Query("two_click") Boolean twoClick,
-            @Query("gross_amount") Long grossAmount,
+            @Query("gross_amount") Double grossAmount,
             @Query("channel") String channel,
             @Query("type") String type,
+            @Query("currency") String currency,
             @Query("point") Boolean point
     );
 
@@ -56,9 +58,10 @@ public interface MidtransApiService {
             @Query("card_exp_month") String cardExpiryMonth,
             @Query("card_exp_year") String cardExpiryYear,
             @Query("client_key") String clientKey,
-            @Query("gross_amount") Long grossAmount,
+            @Query("gross_amount") Double grossAmount,
             @Query("channel") String channel,
             @Query("type") String type,
+            @Query("currency") String currency,
             @Query("point") Boolean point
     );
 
@@ -83,13 +86,14 @@ public interface MidtransApiService {
             @Query("token_id") String tokenId,
             @Query("two_click") Boolean twoClick,
             @Query("secure") Boolean secure,
-            @Query("gross_amount") Long grossAmount,
+            @Query("gross_amount") Double grossAmount,
             @Query("bank") String bank,
             @Query("client_key") String clientKey,
             @Query("installment") Boolean instalment,
             @Query("installment_term") String instalmentTerm,
             @Query("channel") String channel,
             @Query("type") String type,
+            @Query("currency") String currency,
             @Query("point") Boolean point
     );
 
@@ -118,12 +122,13 @@ public interface MidtransApiService {
             @Query("bank") String bank,
             @Query("secure") Boolean secure,
             @Query("two_click") Boolean twoClick,
-            @Query("gross_amount") Long grossAmount,
+            @Query("gross_amount") Double grossAmount,
             @Query("installment") Boolean instalment,
             @Query("channel") String channel,
             @Query("installment_term") String
                     instalmentTerm,
             @Query("type") String type,
+            @Query("currency") String currency,
             @Query("point") Boolean point
     );
 

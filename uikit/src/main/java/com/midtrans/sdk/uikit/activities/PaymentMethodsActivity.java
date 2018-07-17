@@ -46,7 +46,6 @@ import com.midtrans.sdk.corekit.models.snap.Token;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.TransactionDetails;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
-import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.BuildConfig;
 import com.midtrans.sdk.uikit.PaymentMethods;
 import com.midtrans.sdk.uikit.R;
@@ -248,27 +247,45 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         if (transaction != null) {
             List<ItemViewDetails> itemViewDetails = new ArrayList<>();
             int itemDetailsSize = transaction.getItemDetails() != null ? transaction.getItemDetails().size() : 0;
+
             // Add amount
-            String amount = getString(R.string.prefix_money, Utils.getFormattedAmount(transaction.getTransactionDetails().getAmount()));
+            double amount = transaction.getTransactionDetails().getAmount();
+            String currency = transaction.getTransactionDetails().getCurrency();
+            String formattedAmount = formatAmount(amount, currency);
+            setTotalAmount(formattedAmount);
+
             // Add header
             itemViewDetails.add(new ItemViewDetails(
                     null,
-                    amount,
+                    formattedAmount,
                     ItemViewDetails.TYPE_ITEM_HEADER,
                     itemDetailsSize > 0));
+
             // Add item
             if (itemDetailsSize > 0) {
                 for (ItemDetails itemDetails : transaction.getItemDetails()) {
-                    String price = getString(R.string.prefix_money, Utils.getFormattedAmount(itemDetails.getQuantity() * itemDetails.getPrice()));
+                    String price = formatAmount(itemDetails.getPrice(), currency);
                     String itemName = itemDetails.getName();
+
                     if (itemDetails.getQuantity() > 1) {
-                        itemName = getString(R.string.text_item_name_format, itemDetails.getName(), itemDetails.getQuantity());
+                        itemName = getString(
+                                R.string.text_item_name_format,
+                                itemDetails.getName(),
+                                itemDetails.getQuantity());
                     }
-                    itemViewDetails.add(new ItemViewDetails(itemName, price, ItemViewDetails.TYPE_ITEM, true));
+
+                    itemViewDetails.add(new ItemViewDetails(itemName,
+                            price,
+                            ItemViewDetails.TYPE_ITEM,
+                            true));
                 }
             }
 
-            ItemDetailsAdapter adapter = new ItemDetailsAdapter(itemViewDetails, this);
+            ItemDetailsAdapter adapter = new ItemDetailsAdapter(
+                    itemViewDetails,
+                    this,
+                    transaction.getTransactionDetails().getOrderId());
+
             itemDetailsView.setLayoutManager(new LinearLayoutManager(this));
             itemDetailsView.setAdapter(adapter);
         }

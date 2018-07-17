@@ -15,6 +15,8 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.midtrans.demo.widgets.DemoTextView;
+import com.midtrans.sdk.corekit.core.Currency;
+import com.midtrans.sdk.corekit.utilities.Utils;
 
 /**
  * Created by ziahaqi on 5/2/17.
@@ -27,6 +29,7 @@ public class DemoProductListActivity extends AppCompatActivity {
     private DemoTextView labelPriceProduct2;
     private ImageView imageSettingAccount;
     private Toolbar toolbar;
+    private String currency = Currency.IDR;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,6 +39,7 @@ public class DemoProductListActivity extends AppCompatActivity {
         initThemes();
         initToolbar();
         initLayout();
+        initData();
     }
 
     private void initThemes() {
@@ -127,6 +131,20 @@ public class DemoProductListActivity extends AppCompatActivity {
                 showProductPageActivity();
             }
         });
+    }
+
+    private void initData() {
+
+        final int currencyType = DemoPreferenceHelper.getIntegerPreference(this, DemoConfigActivity.CURRENCY_TYPE, 0);
+        String formattedAmount;
+        if (currencyType == DemoConfigActivity.CURRENCY_TYPE_SGD) {
+            formattedAmount = getString(R.string.prefix_money_sgd, Utils.getFormattedAmount(Constants.TOTAL_AMOUNT_SGD));
+        } else {
+            formattedAmount = getString(R.string.prefix_money, Utils.getFormattedAmount(Constants.TOTAL_AMOUNT));
+        }
+
+        labelPriceProduct1.setText(formattedAmount);
+        labelPriceProduct2.setText(formattedAmount);
     }
 
     private void showProductPageActivity() {

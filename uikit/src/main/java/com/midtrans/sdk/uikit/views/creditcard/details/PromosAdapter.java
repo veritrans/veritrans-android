@@ -10,9 +10,9 @@ import android.widget.CompoundButton;
 
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.models.promo.Promo;
-import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
+import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 
 import java.util.ArrayList;
@@ -27,12 +27,14 @@ public class PromosAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private static final java.lang.String TAG = PromosAdapter.class.getSimpleName();
     private final OnPromoCheckedChangeListener listener;
     private final int colorPrimer;
+    private final String currency;
     private List<Promo> promos;
 
-    public PromosAdapter(int colorPrimer, OnPromoCheckedChangeListener listener) {
+    public PromosAdapter(int colorPrimer, String currency, OnPromoCheckedChangeListener listener) {
         this.promos = new ArrayList<>();
         this.listener = listener;
         this.colorPrimer = colorPrimer;
+        this.currency = currency;
     }
 
     public void setData(List<Promo> promos) {
@@ -112,8 +114,10 @@ public class PromosAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             checkPromoName.setOnCheckedChangeListener(null);
 
             checkPromoName.setText(promo.getName());
-            discountAmount.setText(itemView.getContext().getString(R.string.prefix_money_negative,
-                    Utils.getFormattedAmount(promo.getCalculatedDiscountAmount())));
+            discountAmount.setText(SdkUIFlowUtil.getFormattedNegativeAmount(
+                    itemView.getContext(),
+                    promo.getCalculatedDiscountAmount(),
+                    currency));
 
             if (promo.isSelected()) {
                 checkPromoName.setChecked(true);
