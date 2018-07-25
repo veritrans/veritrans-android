@@ -30,7 +30,7 @@ android {
         minSdkVersion rootProject.ext.uiMinSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 4
-        versionName "1.19.1"
+        versionName "1.20.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
