@@ -755,7 +755,7 @@
     <string name="try_again">Try Again</string>
     <string name="timeout_message">This request too long process. Please try again.</string>
     <string name="maintenance_back">Okey, bring me back</string>
-    <string name="maintenance_message">We expect to be back in a couple hours. Thanks for your patience</string>
+    <string name="maintenance_message">Something went wrong. Please try later</string>
     <string name="payment_method_unavailable">This option is currently unavailable</string>
     <string name="hint_card_number_example">4811 1111 1111 1114</string>
     <string name="hint_expiry_date_example">01 / 20</string>
@@ -770,7 +770,7 @@
     <string name="total_mandiri_fiestapoint">Current Fiestapoin: %1$s</string>
 
     <string name="status_rba_unsuccessful">Payment has not been made</string>
-    <string name="message_error_internal_server">Sorry, there is an internal problem. Please try again or try another payment method</string>
+    <string name="message_error_internal_server">Sorry, a problem occurs. Please try again or try another payment method</string>
     <string name="mandiri_bill">Mandiri</string>
     <string name="message_virtual_account">Virtual Account Number</string>
     <string name="message_card_register_error">Failed to save card information</string>
@@ -781,11 +781,11 @@
     <string name="status_message_expired">Your order has expired</string>
     <string name="status_message_invalid">Transaction is invalid</string>
     <string name="details_message_invalid">Transaction cannot be proccessed. Make sure your payment informations is correct</string>
-    <string name="status_message_internal_error">Internal problem</string>
+    <string name="status_message_internal_error">Sorry, a problem occurs</string>
     <string name="detail_message_payment_error">Failed to get response from server</string>
     <string name="status_message_payment_error">Payment Failed</string>
-    <string name="status_message_not_found">not found</string>
-    <string name="detail_message_not_found">Failed to connect to server</string>
+    <string name="status_message_not_found">Sorry, we cannot find that</string>
+    <string name="detail_message_not_found">Sorry, we cannot find that</string>
     <string name="detail_message_token_notfound">Transaction data not found</string>
     <string name="status_message_token_notfound">Token not found</string>
     <string name="status_message_network_unavailable">Network unavailable</string>
