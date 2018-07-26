@@ -610,8 +610,8 @@
     <string name="status_message_internal_error">Maaf, terjadi masalah</string>
     <string name="detail_message_payment_error">Gagal mendapatkan respon dari server</string>
     <string name="status_message_payment_error">Pembayaran Gagal</string>
-    <string name="status_message_not_found">Sorry, we cannot find that</string>
-    <string name="detail_message_not_found">Sorry, we cannot find that</string>
+    <string name="status_message_not_found">Maaf, Kami tidak bisa menemukannya</string>
+    <string name="detail_message_not_found">Maaf, Kami tidak bisa menemukannya</string>
     <string name="detail_message_token_notfound">Data transaksi tidak ditemukan</string>
     <string name="status_message_token_notfound">Token tidak ditemukan</string>
     <string name="status_message_network_unavailable">Jaringan data tidak tersedia</string>
