@@ -112,7 +112,7 @@ public class MessageUtil {
                 if (isTimeOut(defaultErrorMessage)) {
                     errorMessageDetails = context.getString(R.string.timeout_message);
                 } else {
-                    errorMessageDetails = context.getString(R.string.status_message_invalid);
+                    errorMessageDetails = context.getString(R.string.details_message_invalid);
                 }
                 break;
             case UiKitConstants.STATUS_CODE_406:

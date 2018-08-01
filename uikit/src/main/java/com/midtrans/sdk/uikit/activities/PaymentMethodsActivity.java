@@ -28,6 +28,7 @@ import com.midtrans.sdk.corekit.callback.TransactionOptionsCallback;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.core.themes.ColorTheme;
 import com.midtrans.sdk.corekit.core.themes.CustomColorTheme;
@@ -545,7 +546,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             if (SdkUIFlowUtil.isBankTransferMethodEnabled(getApplicationContext(), enabledPayments)) {
                 Intent startBankPayment = new Intent(PaymentMethodsActivity.this, BankTransferListActivity.class);
                 if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_PERMATA, false)) {
-                    if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_permata_va))) {
+                    if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, PaymentType.PERMATA_VA)) {
                         startBankPayment.putExtra(UserDetailsActivity.BANK_TRANSFER_PERMATA, true);
                     } else {
                         showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
@@ -559,21 +560,21 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                         return;
                     }
                 } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_BCA, false)) {
-                    if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_bca_va))) {
+                    if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, PaymentType.BCA_VA)) {
                         startBankPayment.putExtra(UserDetailsActivity.BANK_TRANSFER_BCA, true);
                     } else {
                         showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
                         return;
                     }
                 } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_BNI, false)) {
-                    if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_bni_va))) {
+                    if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, PaymentType.BNI_VA)) {
                         startBankPayment.putExtra(UserDetailsActivity.BANK_TRANSFER_BNI, true);
                     } else {
                         showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
                         return;
                     }
                 } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_OTHER, false)) {
-                    if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_all_va))) {
+                    if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, PaymentType.ALL_VA)) {
                         startBankPayment.putExtra(UserDetailsActivity.BANK_TRANSFER_OTHER, true);
                     } else {
                         showErrorAlertDialog(getString(R.string.payment_not_enabled_message));

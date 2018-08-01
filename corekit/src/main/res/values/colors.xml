@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#2196F3</color>
+    <color name="colorAccent">#0099EE</color>
+    <color name="colorAccentLight">#e1e1e1</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="red">#FF0000</color>
+    <color name="card_background_color">#1768a9</color>
+    <color name="colorSecondary">#ACD6FA</color>
+    <color name="inactiveTabColor">#B2DFDB</color>
+    <color name="light_gray">#F1F1F1</color>
+    <color name="gray_bd">#BDBDBD</color>
+    <color name="promoBadge">#ffd700</color>
+    <color name="promoAmount">#d99906</color>
+
+    <color name="faint_gray">#d3d3d3</color>
+    <color name="faint_yellow">#FFF3CD</color>
+    <color name="faint_pink">#FFE0E0</color>
+    <color name="faint_white">#9AD7F9</color>
+
+    <color name="dark_gray">#757575</color>
+    <color name="gray_divider">#E0E0E0</color>
+
+    <color name="text_offer_success">#37AF87</color>
+    <color name="bg_offer_success">#C4FFE4</color>
+
+    <color name="text_offer_failure">#EF7273</color>
+    <color name="bg_offer_failure">#FFDDDE</color>
+
+    <color name="blue_button_disabled_state">#D2D2D2</color>
+    <color name="bg_notification">#FEF3C7</color>
+
+    <!--SNAP COLOR-->
+
+    <!--Aquamarine-->
+    <color name="aquamarine.primary">#51aad8</color>
+    <color name="aquamarine.primary_dark">#3d80a2</color>
+    <color name="aquamarine.secondary">#74bbe0</color>
+
+    <!--Azure-->
+    <color name="azure.primary">#00bcf1</color>
+    <color name="azure.primary_dark">#008db5</color>
+    <color name="azure.secondary">#33c9f4</color>
+
+    <!--Navy Blue-->
+    <color name="navy_blue.primary">#0e4e95</color>
+    <color name="navy_blue.primary_dark">#0b3b70</color>
+    <color name="navy_blue.secondary">#3e71aa</color>
+
+    <!--Indigo-->
+    <color name="indigo.primary">#5d50a0</color>
+    <color name="indigo.primary_dark">#463c78</color>
+    <color name="indigo.secondary">#7d73b3</color>
+
+    <!--Lavender-->
+    <color name="lavender.primary">#7558d6</color>
+    <color name="lavender.primary_dark">#412b89</color>
+    <color name="lavender.secondary">#9179de</color>
+
+    <!--Hot Pink-->
+    <color name="hot_pink.primary">#fd6fd9</color>
+    <color name="hot_pink.primary_dark">#be53a3</color>
+    <color name="hot_pink.secondary">#fd8ce1</color>
+
+    <!--Maroon-->
+    <color name="maroon.primary">#b11235</color>
+    <color name="maroon.primary_dark">#850e28</color>
+    <color name="maroon.secondary">#c1415d</color>
+
+    <!--Crimson-->
+    <color name="crimson.primary">#ec1846</color>
+    <color name="crimson.primary_dark">#b11235</color>
+    <color name="crimson.secondary">#f36b89</color>
+
+    <!--Salmon-->
+    <color name="salmon.primary">#f36965</color>
+    <color name="salmon.primary_dark">#b64f4c</color>
+    <color name="salmon.secondary">#f58784</color>
+
+    <!--Coral-->
+    <color name="coral.primary">#e8a340</color>
+    <color name="coral.primary_dark">#bb8330</color>
+    <color name="coral.secondary">#fbbf66</color>
+
+    <!--Golden-->
+    <color name="golden.primary">#ce9f51</color>
+    <color name="golden.primary_dark">#9f804d</color>
+    <color name="golden.secondary">#ddbc85</color>
+
+    <!--Khaki-->
+    <color name="khaki.primary">#ae9c94</color>
+    <color name="khaki.primary_dark">#83756f</color>
+    <color name="khaki.secondary">#beb0a9</color>
+
+    <!--Gray-->
+    <color name="gray.primary">#999999</color>
+    <color name="gray.primary_dark">#737373</color>
+    <color name="gray.secondary">#adadad</color>
+
+    <!--Green Forest-->
+    <color name="green_forest.primary">#32ad4a</color>
+    <color name="green_forest.primary_dark">#268238</color>
+    <color name="green_forest.secondary">#5bbd6e</color>
+
+    <!--Olive-->
+    <color name="olive.primary">#77af2d</color>
+    <color name="olive.primary_dark">#69952f</color>
+    <color name="olive.secondary">#a3d165</color>
+
+    <!--Lime-->
+    <color name="lime.primary">#a4b900</color>
+    <color name="lime.primary_dark">#528b00</color>
+    <color name="lime.secondary">#b6c733</color>
+
+    <!--Minty-->
+    <color name="minty.primary">#00ccbc</color>
+    <color name="minty.primary_dark">#00a78d</color>
+    <color name="minty.secondary">#33e5c9</color>
+
+    <!--Teal-->
+    <color name="teal.primary">#339991</color>
+    <color name="teal.primary_dark">#26736d</color>
+    <color name="teal.secondary">#5cada7</color>
+</resources>

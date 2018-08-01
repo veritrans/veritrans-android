@@ -113,6 +113,7 @@
     <string name="copy_billpay_code">Salin Kode Tagihan</string>
     <string name="copy_company_code">Salin Kode Perusahaan</string>
     <string name="copied_to_clipboard">Sudah disalin ke clipboard</string>
+    <string name="failed_to_copy">Gagal menyalin ke clipboard</string>
     <string name="copied_bill_code">Kode tagihan sudah disalin ke clipboard</string>
     <string name="copied_company_code">Kode perusahaan sudah disalin ke clipboard</string>
     <string name="complete_payment_at_atm">Mohon Selesaikan Pembayaran</string>
@@ -602,19 +603,7 @@
     <string name="message_card_register_success">Informasi kartu berhasil disimpan</string>
     <string name="save_card">Simpan Kartu</string>
 
-    <string name="details_message_expired">Transaksi anda sudah tidak tersedia lagi sehingga tidak dapat kami proses. Silakan coba memesan kembali</string>
-    <string name="status_message_expired">Transaksi Anda sudah kadaluarsa</string>
-    <string name="status_message_invalid">Transaksi tidak sah</string>
     <string name="details_message_invalid">Transaksi anda tidak dapat diproses. Pastikan informasi pembayaran anda benar</string>
-    <string name="status_message_internal_error">Maaf, terjadi masalah</string>
-    <string name="detail_message_payment_error">Gagal mendapatkan respon dari server</string>
-    <string name="status_message_payment_error">Pembayaran Gagal</string>
-    <string name="status_message_not_found">Maaf, Kami tidak bisa menemukannya</string>
-    <string name="detail_message_not_found">Maaf, Kami tidak bisa menemukannya</string>
-    <string name="detail_message_token_notfound">Data transaksi tidak ditemukan</string>
-    <string name="status_message_token_notfound">Token tidak ditemukan</string>
-    <string name="status_message_network_unavailable">Jaringan data tidak tersedia</string>
-    <string name="detail_message_network_unavailable">Maaf, jaringan data tidak tersedia</string>
     <string name="card_registration">Registrasi Kartu</string>
     <string name="error_utilized_orderid">Maaf, order id sudah digunakan</string>
     <string name="processing_card_registration">Proses registrasi kartu</string>

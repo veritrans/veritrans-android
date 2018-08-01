@@ -1558,10 +1558,6 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             } else {
                 initPaymentStatus(response);
             }
-
-            if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
-                Logger.d("3dserror", "400:" + response.getValidationMessages().get(0));
-            }
         }
     }
 

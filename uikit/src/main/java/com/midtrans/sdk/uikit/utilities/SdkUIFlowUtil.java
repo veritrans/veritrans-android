@@ -29,6 +29,7 @@ import com.midtrans.sdk.corekit.core.Currency;
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.BankTransferModel;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.UserDetail;
@@ -472,10 +473,10 @@ public class SdkUIFlowUtil {
     public static boolean isBankTransferMethodEnabled(Context context, List<EnabledPayment> enabledPayments) {
         if (enabledPayments != null) {
             for (EnabledPayment enabledPayment : enabledPayments) {
-                if (enabledPayment.getType().equalsIgnoreCase(context.getString(R.string.payment_bca_va))
-                        || enabledPayment.getType().equalsIgnoreCase(context.getString(R.string.payment_permata_va))
-                        || enabledPayment.getType().equalsIgnoreCase(context.getString(R.string.payment_mandiri_bill_payment))
-                        || enabledPayment.getType().equalsIgnoreCase(context.getString(R.string.payment_all_va))) {
+                if (enabledPayment.getType().equalsIgnoreCase(PaymentType.BCA_VA)
+                        || enabledPayment.getType().equalsIgnoreCase(PaymentType.PERMATA_VA)
+                        || enabledPayment.getType().equalsIgnoreCase(PaymentType.E_CHANNEL)
+                        || enabledPayment.getType().equalsIgnoreCase(PaymentType.ALL_VA)) {
                     return true;
                 }
             }

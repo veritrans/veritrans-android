@@ -2,6 +2,8 @@
     <!--user detail-->
     <string name="hint_full_name">Full name</string>
     <string name="hint_email">Email</string>
+    <string name="hint_email_optional">Email Address (optional)</string>
+
     <string name="next">Next</string>
     <string name="hint_phone_number">Phone number</string>
     <string name="hint_phone_number_optional">Phone number (Optional)</string>
@@ -171,6 +173,7 @@
     <string name="copy_billpay_code">Copy Bill Pay Code</string>
     <string name="copy_company_code">Copy Company Code</string>
     <string name="copied_to_clipboard">Copied to clipboard</string>
+    <string name="failed_to_copy">Failed to copy to clipboard</string>
     <string name="copied_bill_code">Billpay code was copied to clipboard</string>
     <string name="copied_company_code">Company code was copied to clipboard</string>
     <string name="complete_payment_at_atm">Please Complete Payment</string>
@@ -182,11 +185,15 @@
     <string name="what_is_cvv">What is CVV?</string>
     <string name="transactionTime">Transaction Time</string>
     <string name="paymentType">Payment Type</string>
+
+    <string name="tab_prima">Prima</string>
+    <string name="tab_atm_bersama">ATM Bersama</string>
     <string name="tab_mandiri">Mandiri/ATM Bersama</string>
     <string name="tab_bca_prima">BCA/Prima</string>
     <string name="tab_permata_alto">Permata/Alto</string>
     <string name="payment_instrution">Payment Instruction</string>
     <string name="payment_code">Payment Code</string>
+    <string name="activity_bank_transfer_all_bank">Other Bank Transfer</string>
 
     <!-- Mandiri bank transfer Instruction-->
     <string name="instruction">Instructions</string>
@@ -412,7 +419,6 @@
     <string name="payment_response">payment_response</string>
     <string name="deny">deny</string>
     <string name="challenge">challenge</string>
-    <string name="prefix_money">Rp %1$s</string>
 
     <string name="payment_method_bri_epay">e-Pay BRI</string>
     <string name="payment_method_offers">Offers</string>
@@ -495,6 +501,7 @@
     <string name="text_hint_telkomsel_token">T-Cash Token</string>
     <string name="text_hint_xl_order_id">XL Tunai Order ID</string>
     <string name="text_hint_xl_merchant_code">Merchant Code</string>
+    <string name="error_empty_tcash_token_field">T-Cash token must not be empty.</string>
 
     <string name="text_format_valid_until">Please complete your payment before : %1$s</string>
 
@@ -775,19 +782,7 @@
     <string name="message_card_register_success">Card information successfully saved</string>
     <string name="save_card">Save Card</string>
 
-    <string name="details_message_expired">The order is no longer available and thus cannot be processed. Retry ordering from the store page.</string>
-    <string name="status_message_expired">Your order has expired</string>
-    <string name="status_message_invalid">Transaction is invalid</string>
-    <string name="details_message_invalid">Transaction cannot be proccessed. Make sure your payment informations is correct</string>
-    <string name="status_message_internal_error">Sorry, a problem occurs</string>
-    <string name="detail_message_payment_error">Failed to get response from server</string>
-    <string name="status_message_payment_error">Payment Failed</string>
-    <string name="status_message_not_found">Sorry, we cannot find that</string>
-    <string name="detail_message_not_found">Sorry, we cannot find that</string>
-    <string name="detail_message_token_notfound">Transaction data not found</string>
-    <string name="status_message_token_notfound">Token not found</string>
-    <string name="status_message_network_unavailable">Network unavailable</string>
-    <string name="detail_message_network_unavailable">Sorry, network unavailable</string>
+    <string name="details_message_invalid">Transaction cannot be processed. Make sure your payment information is correct</string>
     <string name="card_registration">Card Registration</string>
     <string name="error_utilized_orderid">Sorry, the order id already utilized</string>
     <string name="processing_card_registration">Processing card registration</string>
@@ -834,4 +829,16 @@
     <string name="error_message_status_code_500">We are experiencing some unexpected system error. Please try again.</string>
     <string name="error_message_status_code_502">We are having issues connecting to the payment provider. Please try again.</string>
     <string name="error_message_others">Transaction is unsuccessful. Please try again with another card or with a different payment method.</string>
+
+    <!-- enabled payment -->
+    <string name="enabled_payment_category_banktransfer">bank_transfer</string>
+    <string name="enabled_payment_category_cstore">cstore</string>
+    <string name="saved_card_one_click">one_click</string>
+    <string name="saved_card_two_click">two_clicks</string>
+
+    <!-- money formatter -->
+    <string name="prefix_money">Rp %1$s</string>
+    <string name="prefix_money_negative">-Rp %1$s</string>
+    <string name="prefix_money_negative_sgd">-SGD %1$s</string>
+
 </resources>

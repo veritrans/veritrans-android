@@ -72,7 +72,7 @@ public class InstructionPagerAdapter extends FragmentStatePagerAdapter {
         String newTitle = title;
         if (!TextUtils.isEmpty(title)) {
             if (newTitle.equalsIgnoreCase(context.getString(R.string.tab_alto)) ||
-                    newTitle.equalsIgnoreCase(context.getString(R.string.tab_prima))) {
+                    newTitle.equalsIgnoreCase(context.getString(R.string.tab_atm_bersama))) {
                 newTitle = context.getString(R.string.instruction_atm_with, title);
             }
         }
