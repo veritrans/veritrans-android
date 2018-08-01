@@ -295,7 +295,7 @@
     <string name="company_code">Kode Perusahaan</string>
     <string name="bill_code">Kode Tagihan</string>
 
-    <string name="processing_payment">Memproses pembayaran anda</string>
+    <string name="processing_payment">Memproses transaksi anda</string>
 
     <string name="processing_delete">Menghapus Kartu</string>
     <string name="fetching_offers">Mengambil Data Penawaran</string>
@@ -382,7 +382,7 @@
     <string name="error_transaction_empty">Tidak Ada Data Transaksi</string>
     <string name="text_hint_telkomsel_token">Token T-Cash</string>
 
-    <string name="error_empty_tcash_token_field">Token T-Cash tidak boleh kosong.</string>
+    <string name="error_empty_tcash_token_field">Token tidak boleh kosong.</string>
     <string name="error_invalid_phone_number">Nomor telepon tidak benar.</string>
     <string name="error_something_wrong">Sedang terjadi kesalahan, silakan ulangi lagi!</string>
 
@@ -533,8 +533,8 @@
     <string name="redeem_mandiri_point">Tukarkan Fiestapoin</string>
     <string name="redeem_100_point">Diskon Fiestapoin</string>
     <string name="amount_after_discount">TOTAL PEMBAYARAN SETELAH TUKAR POIN</string>
-    <string name="delete_this_card">Hapus Kartu Ini</string>
-    <string name="redeem_bank_point_title">Gunakan Poin %1$s</string>
+    <string name="delete_this_card">Hapus kartu ini</string>
+    <string name="redeem_bank_point_title">Gunakan poin %1$s</string>
     <string name="redeem_bni_title">BNI Reward Points</string>
     <string name="redeem_bni_details">Anda dapat membayar sebagian dengan BNI Reward Points melalui kartu kredit BNI Anda.</string>
     <string name="redeem_mandiri_title">Mandiri Fiestapoin</string>

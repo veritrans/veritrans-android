@@ -313,7 +313,7 @@
     <string name="company_code">Company Code</string>
     <string name="bill_code">Billpay Code</string>
 
-    <string name="processing_payment">Processing your payment</string>
+    <string name="processing_payment">Processing your transaction</string>
 
     <string name="processing_delete">Deleting Card</string>
     <string name="fetching_offers">Fetching Offers</string>
@@ -501,7 +501,7 @@
     <string name="text_hint_telkomsel_token">T-Cash Token</string>
     <string name="text_hint_xl_order_id">XL Tunai Order ID</string>
     <string name="text_hint_xl_merchant_code">Merchant Code</string>
-    <string name="error_empty_tcash_token_field">T-Cash token must not be empty.</string>
+    <string name="error_empty_tcash_token_field">Token should not be empty.</string>
 
     <string name="text_format_valid_until">Please complete your payment before : %1$s</string>
 
@@ -712,7 +712,7 @@
     <string name="error_delete_message">Failed to delete card</string>
     <string name="mandiri_debit_card">Mandiri Debit Card</string>
     <string name="bni_debit_online_card">BNI Debit Online Card</string>
-    <string name="delete_this_card">Delete This Card</string>
+    <string name="delete_this_card">Delete this card</string>
 
     <string name="how_much_point">How much points you want to redeem?</string>
     <string name="status_redeemed_point">POINT DISCOUNT</string>
