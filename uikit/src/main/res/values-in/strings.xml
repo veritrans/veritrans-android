@@ -384,7 +384,6 @@
 
     <string name="error_empty_tcash_token_field">Token tidak boleh kosong.</string>
     <string name="error_invalid_phone_number">Nomor telepon tidak benar.</string>
-    <string name="error_something_wrong">Sedang terjadi kesalahan, silakan ulangi lagi!</string>
 
     <!--xl tunai payment instruction-->
     <string name="xl_tunai_payment_instruction">Instruksi Pembayaran XL Tunai</string>
@@ -584,7 +583,6 @@
     <string name="error_gross_amount_required">Total pembayaran diperlukan</string>
     <string name="error_order_id_required">Order id diperlukan</string>
     <string name="checkout_error_empty_response">Tidak ada  data dari server</string>
-    <string name="error_unable_to_connect">Gagal terhubung ke server</string>
     <string name="complete_payment_via_xl_tunai">Selesaikan Pembayaran melalui XL Tunai</string>
     <string name="payment_failed">Pembayaran gagal! Silakan coba lagi.</string>
 
