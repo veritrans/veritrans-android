@@ -106,7 +106,7 @@
     <string name="bank_atm_transfer_step3">Harap selesaikan pembayaran melalui Prima (BCA), ATM Bersama(Mandiri), or Alto(Permata).</string>
     <string name="bank_atm_transfer_step4">Bila pembayaran sudah selesai, Anda akan menerima email konfirmasi.</string>
     <string name="see_instruction">Lihat Instruksi</string>
-    <string name="download_instruction">Unduh Instruksi</string>
+    <string name="download_instruction">Unduh Instruksi Pembayaran</string>
     <string name="confirm_payment">Konfirmasi Pembayaran</string>
     <string name="copy_payment_code">Salin Kode Pembayaran</string>
     <string name="copy_va_number">Salin Nomor Akun Virtual</string>
@@ -116,7 +116,7 @@
     <string name="failed_to_copy">Gagal menyalin ke clipboard</string>
     <string name="copied_bill_code">Kode tagihan sudah disalin ke clipboard</string>
     <string name="copied_company_code">Kode perusahaan sudah disalin ke clipboard</string>
-    <string name="complete_payment_at_atm">Mohon Selesaikan Pembayaran</string>
+    <string name="complete_payment_at_atm">Selesaikan Pembayaran</string>
     <string name="complete_payment_at_klik_bca">Selesaikan Pembayaran di KlikBCA</string>
     <string name="done">Selesai</string>
     <string name="virtual_account_number">Nomor Akun Virtual</string>
@@ -240,7 +240,7 @@
     <string name="gopay_status_title">Bayar dengan GO-PAY</string>
     <string name="gopay_confirm_button">Bayar dengan</string>
     <string name="notification_gojek_app">Aplikasi GO-JEK diperlukan untuk metode pembayaran ini.</string>
-    <string name="notification_gojek_app_tablet">Pastikan Anda telah menginstall <b>aplikasi GO-JEK</b> di HP Anda dan memiliki saldo lebih dari <b>Rp 10.000</b>.</string>
+    <string name="notification_gojek_app_tablet">Pastikan Anda telah melakukan instalasi <b>aplikasi GO-JEK</b> di HP Anda dan memiliki saldo lebih dari <b>Rp 10.000</b>.</string>
     <string name="install_gojek_message">Install aplikasi GO-JEK dari Play Store</string>
     <string name="no_gojek_message">Mohon maaf, kami tidak dapat mendeteksi aplikasi GO-JEK di perangkat Anda.</string>
     <string name="redirecting_to_gopay">Mengarahkan ke aplikasi GO-JEK…</string>
@@ -250,7 +250,7 @@
     <string name="confirm_gopay_qr_scan_tablet">Pastikan kode QR berhasil di-scan dan pembayaran telah diselesaikan di dalam aplikasi GO-JEK.</string>
     <string name="confirm_gopay_deeplink">Pastikan pembayaran telah diselesaikan di dalam aplikasi GO-JEK.</string>
     <string name="gopay_instruction">Cara Pembayaran</string>
-    <string name="gopay_expiration_message">Harap selesaikan pembayaran dalam</string>
+    <string name="gopay_expiration_message">Harap selesaikan pembayaran dalam:</string>
     <string name="gopay_expiration_expired">Waktu habis.</string>
 
     <!--Go-Pay Instruction in Tablet-->
@@ -375,7 +375,7 @@
     <string name="btn_close">Tutup</string>
     <string name="payment_canceled">Otorisasi 3D telah dibatalkan.</string>
 
-    <string name="txt_loading_payment">Mengambil daftar metode pembayaran</string>
+    <string name="txt_loading_payment">Memuat daftar pembayaran</string>
     <string name="txt_checkout">Checkout Transaksi</string>
     <string name="btn_cancel">Batal</string>
     <string name="btn_retry">Ulangi</string>
@@ -398,7 +398,7 @@
     <string name="text_hint_xl_order_id">Kode Pemesanan XL Tunai</string>
     <string name="text_hint_xl_merchant_code">Kode Penjual</string>
 
-    <string name="text_format_valid_until">Silakan menyelesaikan pembayaran sebelum : %1$s</string>
+    <string name="text_format_valid_until">Silakan menyelesaikan pembayaran sebelum: %1$s</string>
 
     <!-- instruction atm bersama -->
     <string name="preview_atm_bersama">Bayar melalui <b>semua ATM bank berlogo ATM Bersama</b></string>
@@ -542,7 +542,7 @@
 
     <string name="how_much_point">Berapa poin yang ingin anda tukarkan?</string>
     <string name="status_redeemed_point">DISKON POIN</string>
-    <string name="total_bni_reward_point">Jumlah Point: %1$s</string>
+    <string name="total_bni_reward_point">Poin sekarang : %1$s</string>
     <string name="total_mandiri_fiestapoint">Fiestapoin anda: %1$s</string>
     <string name="pay_with_mandiri_point">Bayar Menggunakan Mandiri Fiestapoin</string>
     <string name="pay_with_bni_point">Bayar Menggunakan BNI Reward Points</string>
@@ -594,7 +594,7 @@
     <string name="maintenance_message">Something went wrong. Please try later</string>
     <string name="payment_method_unavailable">Opsi ini sekarang tidak tersedia</string>
     <string name="notification_token_message">Perangkat token key dibutuhkan untuk cara pembayaran ini.</string>
-    <string name="notification_otp_message">Biaya SMS mungkin akan dikenakan untuk cara pembayaran ini.</string>
+    <string name="notification_otp_message">Anda mungkin akan dikenakan biaya SMS akan dikenakan untuk cara pembayaran ini.</string>
     <string name="failed_to_get_bank_point">Gagal mengambil bank point</string>
     <string name="status_rba_unsuccessful">Pembayaran belum dilakukan</string>
     <string name="message_error_internal_server">Maaf, terjadi masalah. Silakan ulangi lagi, atau coba dengan metode pembayaran lain.</string>
@@ -630,7 +630,7 @@
     <string name="minute">menit</string>
     <string name="seconds">detik</string>
     <string name="second">detik</string>
-    <string name="tnc_title"><![CDATA[Syarat & Ketentuan BNI Point]]></string>
+    <string name="tnc_title"><![CDATA[Syarat & Ketentuan BNI Rewards Point]]></string>
     <string name="tnc_bni_point_1">Promo ini tidak dapat digabungkan dengan program cicilan Kartu Kredit BNI.</string>
     <string name="tnc_bni_point_2">Hemat hingga 100% dengan BNI Reward Points langsung memotong transaksi yang dilakukan.</string>
     <string name="tnc_bni_point_3">Jika transaksi dibatalkan keseluruhan, maka dana dan poin akan dikembalikan ke Kartu Kredit pembeli. Jika transaksi dibatalkan sebagian, transaksi yang akan dikembalikan terlebih dahulu adalah transaksi Kartu Kredit, setelah itu dikembalikan dari poin.</string>

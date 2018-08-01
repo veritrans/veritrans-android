@@ -334,7 +334,7 @@
     <string name="offers">Offers</string>
     <string name="loading">Loading</string>
     <string name="delete">Delete</string>
-    <string name="card_delete_message">Are you sure you want to delete card?</string>
+    <string name="card_delete_message">Are you sure to delete this card?</string>
     <string name="message_save_card">Save your card for faster checkout process.</string>
     <string name="got_it">Got it</string>
 
@@ -494,7 +494,7 @@
     <string name="btn_close">Close</string>
     <string name="payment_canceled">3DS Authorization was cancelled.</string>
 
-    <string name="txt_loading_payment">Retrieving payment methods</string>
+    <string name="txt_loading_payment">Loading payment list</string>
     <string name="txt_checkout">Checkout Transaction</string>
 
     <string name="error_transaction_empty">Transaction Data is Empty</string>
@@ -503,7 +503,7 @@
     <string name="text_hint_xl_merchant_code">Merchant Code</string>
     <string name="error_empty_tcash_token_field">Token should not be empty.</string>
 
-    <string name="text_format_valid_until">Please complete your payment before : %1$s</string>
+    <string name="text_format_valid_until">Please complete payment before : %1$s</string>
 
     <!-- instruction atm bersama -->
     <string name="preview_atm_bersama">Pay through <b>all bank ATMs with ATM Bersama logo</b></string>
@@ -594,7 +594,7 @@
     <string name="gopay_status_title">Pay with GO-PAY</string>
     <string name="gopay_confirm_button">Pay Now with</string>
     <string name="notification_gojek_app">GO-JEK app is required for this payment method.</string>
-    <string name="notification_gojek_app_tablet">Make sure you have installed <b>GO-JEK app</b> on your phone and have balance more than Rp 10,000.</string>
+    <string name="notification_gojek_app_tablet">Make sure you have <b>GO-JEK app</b> installed on your phone and have GO-PAY balance more than Rp 10,000.</string>
     <string name="install_gojek_message">Install GO-JEK App from Play Store</string>
     <string name="whoops" translatable="false">Whoops!</string>
     <string name="no_gojek_message">Unfortunately, we couldn\'t find GO-JEK app installed on your phone.</string>
@@ -605,7 +605,7 @@
     <string name="confirm_gopay_qr_scan_tablet">Make sure the QR code successfully scanned and payment has been completed within the GO-JEK app.</string>
     <string name="confirm_gopay_deeplink">Make sure payment has been completed within the GO-JEK app.</string>
     <string name="gopay_instruction">How to Pay?</string>
-    <string name="gopay_expiration_message">Please complete your payment in</string>
+    <string name="gopay_expiration_message">Please complete your payment in:</string>
     <string name="gopay_expiration_expired">Time\'s up.</string>
 
     <string name="error_message_invalid_input_telkomsel">Transaction failed. Your transaction got declined by T-Cash.</string>
@@ -662,7 +662,7 @@
     <string name="price_header">PRICE</string>
 
     <string name="kioson_instruction">See Payment Instruction</string>
-    <string name="installment_required">Payment have to use installment</string>
+    <string name="installment_required">This transaction must use installment</string>
 
     <string name="complete_payment_kioson">Complete payment via Kioson</string>
     <string name="complete_payment_indomaret">Complete payment via Indomaret</string>
@@ -703,7 +703,7 @@
     <string name="amount_after_discount">AMOUNT TO PAY AFTER REDEEM</string>
     <string name="redeem_bank_point_title">Redeem %1$s Point</string>
     <string name="redeem_bni_title">BNI Reward Points</string>
-    <string name="redeem_bni_details">You can pay partly through the redemption of BNI Reward Point through your BNI credit card.</string>
+    <string name="redeem_bni_details">You can pay partly using redemption of BNI Reward Points through your credit card</string>
     <string name="redeem_mandiri_title">Mandiri Fiestapoin</string>
     <string name="redeem_mandiri_details">You can pay partly through the redemption of Mandiri Fiestpoin through your Mandiri credit / debit card.</string>
     <string name="pay_with_mandiri_point">Pay with Mandiri Fiestapoin</string>
@@ -771,8 +771,8 @@
     <string name="notification_token_message">Key token device is required for this payment method.</string>
     <string name="notification_otp_message">SMS charges may be applied for this payment method</string>
     <string name="failed_to_get_bank_point">Failed to get bank points</string>
-    <string name="total_bni_reward_point">Current Points: %1$s</string>
-    <string name="total_mandiri_fiestapoint">Current fiesta point: %1$s</string>
+    <string name="total_bni_reward_point">Current BNI Points %1$s</string>
+    <string name="total_mandiri_fiestapoint">Current fiesta point %1$s</string>
 
     <string name="status_rba_unsuccessful">Payment has not been made</string>
     <string name="message_error_internal_server">Sorry, a problem occurs. Please try again or try another payment method</string>
@@ -811,7 +811,7 @@
     <string name="second">second</string>
     <string name="promo">promo</string>
     <string name="promo_unavailable">Promo is not available</string>
-    <string name="tnc_title"><![CDATA[BNI Points Terms & Conditions]]></string>
+    <string name="tnc_title"><![CDATA[BNI Rewards Points Terms & Conditions]]></string>
     <string name="tnc_bni_point_1">This program cannot be combined with BNI credit card installment program.</string>
     <string name="tnc_bni_point_2">\"Hemat hingga 100% dengan BNI Reward Points\" program will directly deduct the points on transaction.</string>
     <string name="tnc_bni_point_3">If transaction is cancelled completely, credit and reward points will be refunded to customer\'s credit card. If transaction is cancelled partially, transaction that will be refunded first is the credit card transaction, after that it will be refunded from the points.</string>
