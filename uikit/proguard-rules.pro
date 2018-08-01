@@ -136,6 +136,7 @@
 -keep class com.midtrans.sdk.uikit.PaymentMethods {*;}
 -keep class com.midtrans.sdk.uikit.scancard.ExternalScanner{*;}
 -keep class com.midtrans.sdk.corekit.core.PaymentMethods{*;}
+-keep class com.midtrans.sdk.corekit.core.PaymentException{*;}
 -keep class com.midtrans.sdk.corekit.callback.** { *; }
 
 
