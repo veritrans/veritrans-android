@@ -307,7 +307,9 @@
     <string name="hint_challenge_token">Challenge Token</string>
     <string name="company_code">Company Code</string>
     <string name="bill_code">Billpay Code</string>
-    <string name="processing_payment">Processing Payment</string>
+
+    <string name="processing_payment">Processing your payment</string>
+
     <string name="processing_delete">Deleting Card</string>
     <string name="fetching_offers">Fetching Offers</string>
     <string name="no_card_yet">No Card Yet</string>
@@ -618,7 +620,7 @@
     <string name="hint_giftcard_number">Your Gift Card Number</string>
     <string name="hint_giftcard_password">PIN</string>
     <string name="info_gci_payment"><b>IMPORTANT!</b> After confirming your payment, you won’t be able to change payment method</string>
-    <string name="error_password_empty">Please fill PIN</string>
+    <string name="error_password_empty">PIN cannot be empty</string>
     <string name="error_password_invalid">Please enter valid PIN</string>
     <string name="text_items">Item(s)</string>
     <string name="text_item_name_format">%1$s x%2$d</string>
@@ -694,7 +696,7 @@
 
     <string name="redeem_bni_reward">Redeem BNI Reward Point</string>
     <string name="redeem_mandiri_point">Redeem Fiesta Point</string>
-    <string name="redeem_100_point">FIESTAPOIN DISCOUNT</string>
+    <string name="redeem_100_point">Diskon Fiesta Point</string>
     <string name="amount_after_discount">AMOUNT TO PAY AFTER REDEEM</string>
     <string name="redeem_bank_point_title">Redeem %1$s Point</string>
     <string name="redeem_bni_title">BNI Reward Points</string>
@@ -767,7 +769,7 @@
     <string name="notification_otp_message">SMS charges may be applied for this payment method</string>
     <string name="failed_to_get_bank_point">Failed to get bank points</string>
     <string name="total_bni_reward_point">Current Points: %1$s</string>
-    <string name="total_mandiri_fiestapoint">Current Fiestapoin: %1$s</string>
+    <string name="total_mandiri_fiestapoint">Current fiesta point: %1$s</string>
 
     <string name="status_rba_unsuccessful">Payment has not been made</string>
     <string name="message_error_internal_server">Sorry, a problem occurs. Please try again or try another payment method</string>
@@ -829,4 +831,11 @@
     <string name="prefix_money_sgd">SGD %1$s</string>
     <string name="currency_invalid">Currency is not available</string>
     <string name="order_id">Order ID</string>
+
+    <string name="error_message_status_code_400">Your payment can\'t be processed. Please make sure you have entered the correct payment.</string>
+    <string name="error_message_status_code_406">Order has been paid.</string>
+    <string name="error_message_status_code_407">Your order are no longer available.</string>
+    <string name="error_message_status_code_500">We are experiencing some unexpected system error. Please try again.</string>
+    <string name="error_message_status_code_502">We are having issues connecting to the payment provider. Please try again.</string>
+    <string name="error_message_others">Transaction is unsuccessful. Please try again with another card or with a different payment method.</string>
 </resources>

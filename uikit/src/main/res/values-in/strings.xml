@@ -295,7 +295,9 @@
     <string name="hint_challenge_token">Challenge Token</string>
     <string name="company_code">Kode Perusahaan</string>
     <string name="bill_code">Kode Tagihan</string>
-    <string name="processing_payment">Memproses Pembayaran</string>
+
+    <string name="processing_payment">Memproses pembayaran anda</string>
+
     <string name="processing_delete">Menghapus Kartu</string>
     <string name="fetching_offers">Mengambil Data Penawaran</string>
     <string name="no_card_yet">Belum punya kartu</string>
@@ -404,7 +406,7 @@
     <string name="preview_atm_bersama">Bayar melalui <b>semua ATM bank berlogo ATM Bersama</b></string>
     <string name="expand_link_atm_bersama">Lihat 83 Bank yang Terdaftar</string>
     <string name="instruction_card_atm_bersama">Pastikan terdapat <b>logo ATM Bersama di belakang kartu ATM</b> Anda.</string>
-    <string name="bank_list_header_atm_bersama">Bank terdaftar ATM Bersama</string>
+    <string name="bank_list_header_atm_bersama">Bank terdaftar dalam jaringan ATM Bersama</string>
     <string name="instruction_atm_bersama1">Pada menu utama, pilih <b>Transaksi Lainnya</b>.</string>
     <string name="instruction_atm_bersama2">Pilih <b>Transfer</b>.</string>
     <string name="instruction_atm_bersama3">Pilih <b>Antar Bank Online</b>.</string>
@@ -418,7 +420,7 @@
     <string name="preview_prima">Bayar melalui <b>semua ATM bank berlogo Prima</b></string>
     <string name="expand_link_prima">Lihat 64 Bank yang Terdaftar</string>
     <string name="instruction_card_prima">Pastikan terdapat <b>logo Prima di belakang kartu ATM</b> Anda.</string>
-    <string name="bank_list_header_prima">Bank terdaftar jaringan Prima</string>
+    <string name="bank_list_header_prima">Bank terdaftar dalam jaringan Prima</string>
     <string name="instruction_prima1">Pada menu utama, pilih <b>Transaksi Lainnya</b>.</string>
     <string name="instruction_prima2">Pilih <b>Transfer</b>.</string>
     <string name="instruction_prima3">Pilih <b>Ke Rek Bank Lain</b>.</string>
@@ -432,7 +434,7 @@
     <string name="preview_alto">Bayar melalui <b>semua ATM bank berlogo Alto</b></string>
     <string name="expand_link_alto">Lihat 19 Bank yang Terdaftar</string>
     <string name="instruction_card_alto">Pastikan terdapat <b>logo Alto di belakang kartu ATM</b> Anda.</string>
-    <string name="bank_list_header_alto">Bank terdaftar jaringan Alto</string>
+    <string name="bank_list_header_alto">Bank terdaftar dalam jaringan Alto</string>
     <string name="instruction_alto1">Pada menu utama, pilih <b>Transaksi lainnya</b>.</string>
     <string name="instruction_alto2">Pilih <b>Transaksi Pembayaran</b>.</string>
     <string name="instruction_alto2_bni">Pilih <b>Transfer</b>.</string>
@@ -464,7 +466,7 @@
     <string name="no_installment">Tanpa cicilan</string>
     <string name="hint_giftcard_number">Nomor Gift Card Anda</string>
     <string name="info_gci_payment">PENTING! Setelah konfirmasi pembayaran, anda tidak bisa merubah metode pembayarannya</string>
-    <string name="error_password_empty">PIN harus diisi</string>
+    <string name="error_password_empty">Masukkan PIN yang benar</string>
     <string name="error_password_invalid">Masukkan PIN yang benar</string>
     <string name="text_items">Barang</string>
     <string name="text_price">Harga</string>
@@ -531,7 +533,7 @@
 
     <string name="redeem_bni_reward">Tukarkan BNI Reward Points</string>
     <string name="redeem_mandiri_point">Tukarkan Fiestapoin</string>
-    <string name="redeem_100_point">DISKON FIESTAPOIN</string>
+    <string name="redeem_100_point">Diskon Fiestapoin</string>
     <string name="amount_after_discount">TOTAL PEMBAYARAN SETELAH TUKAR POIN</string>
     <string name="delete_this_card">Hapus Kartu Ini</string>
     <string name="redeem_bank_point_title">Gunakan Poin %1$s</string>
@@ -543,7 +545,7 @@
     <string name="how_much_point">Berapa poin yang ingin anda tukarkan?</string>
     <string name="status_redeemed_point">DISKON POIN</string>
     <string name="total_bni_reward_point">Jumlah Point: %1$s</string>
-    <string name="total_mandiri_fiestapoint">Jumlah Fiestapoin: %1$s</string>
+    <string name="total_mandiri_fiestapoint">Fiestapoin anda: %1$s</string>
     <string name="pay_with_mandiri_point">Bayar Menggunakan Mandiri Fiestapoin</string>
     <string name="pay_with_bni_point">Bayar Menggunakan BNI Reward Points</string>
 
@@ -651,5 +653,12 @@
     <string name="tnc_bni_point_6">Pembayaran poin ke merchant sama dengan pembayaran transaksi biasa.</string>
     <string name="message_payment_paid">Transaksi sudah diproses</string>
     <string name="currency_invalid">Mata uang tidak tersedia</string>
+
+    <string name="error_message_status_code_400">Transaksi tidak dapat diproses. Pastikan informasi pembayaran Anda benar.</string>
+    <string name="error_message_status_code_406">Pesanan telah dibayar.</string>
+    <string name="error_message_status_code_407">Order Anda tidak lagi tersedia.</string>
+    <string name="error_message_status_code_500">Kami sedang mengalami kendala teknis. Silakan coba lagi</string>
+    <string name="error_message_status_code_502">Kami mengalami kendala dengan Payment Provider. Silakan dicoba lagi.</string>
+    <string name="error_message_others">Transaksi tidak berhasil. Silakan ulangi lagi atau coba dengan metode pembayaran lain.</string>
 
 </resources>

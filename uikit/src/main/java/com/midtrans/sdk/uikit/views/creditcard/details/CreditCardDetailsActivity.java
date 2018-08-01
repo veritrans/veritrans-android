@@ -1378,7 +1378,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     }
 
     private void showErrorMessage(Throwable error) {
-        MessageInfo messageInfo = MessageUtil.createMessageOnError(this, error, null);
+        MessageInfo messageInfo = MessageUtil.createMessageOnError(error, this);
         SdkUIFlowUtil.showToast(this, messageInfo.detailsMessage);
     }
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.midtrans.sdk.corekit.core.Logger;
+import com.midtrans.sdk.corekit.core.PaymentException;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.BuildConfig;
@@ -12,6 +13,9 @@ import com.midtrans.sdk.uikit.models.MessageInfo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
+
+import retrofit2.HttpException;
 
 /**
  * Created by ziahaqi on 4/19/17.
@@ -253,5 +257,77 @@ public class MessageUtil {
         }
 
         return message;
+    }
+
+
+    public static MessageInfo createMessageOnError(Throwable throwable, Context context) {
+        String errorMessageDetails = context.getString(R.string.error_message_others);
+
+        try {
+            if (BuildConfig.FLAVOR.equals(FLAVOR_DEVELOPMENT)) {
+                errorMessageDetails = throwable.getMessage();
+            } else {
+                if (throwable instanceof HttpException) {
+                    int statusCode = ((HttpException) throwable).code();
+                    String message = ((HttpException) throwable).message();
+
+                    errorMessageDetails = getErrorMessage(String.valueOf(statusCode), message, context);
+                } else if (throwable instanceof PaymentException) {
+                    String statusCode = ((PaymentException) throwable).statusCode;
+                    String message = throwable.getMessage();
+
+                    errorMessageDetails = getErrorMessage(statusCode, message, context);
+                } else if (throwable instanceof TimeoutException) {
+                    errorMessageDetails = context.getString(R.string.timeout_message);
+                }
+            }
+        } catch (RuntimeException e) {
+            Logger.e(TAG, e.getMessage());
+        }
+
+        return new MessageInfo(
+                context.getString(R.string.failed_title),
+                errorMessageDetails
+        );
+    }
+
+    private static String getErrorMessage(String statusCode, String defaultErrorMessage, Context context) {
+        String errorMessageDetails;
+
+        switch (String.valueOf(statusCode)) {
+            case UiKitConstants.STATUS_CODE_400:
+                errorMessageDetails = context.getString(R.string.error_message_status_code_400);
+                break;
+            case UiKitConstants.STATUS_CODE_411:
+                if (isTimeOut(defaultErrorMessage)) {
+                    errorMessageDetails = context.getString(R.string.timeout_message);
+                } else {
+                    errorMessageDetails = context.getString(R.string.status_message_invalid);
+                }
+                break;
+            case UiKitConstants.STATUS_CODE_406:
+                errorMessageDetails = context.getString(R.string.error_message_status_code_406);
+                break;
+            case UiKitConstants.STATUS_CODE_407:
+                errorMessageDetails = context.getString(R.string.error_message_status_code_407);
+                break;
+            case UiKitConstants.STATUS_CODE_500:
+                errorMessageDetails = context.getString(R.string.error_message_status_code_500);
+                break;
+            case UiKitConstants.STATUS_CODE_502:
+                errorMessageDetails = context.getString(R.string.error_message_status_code_502);
+                break;
+            default:
+                errorMessageDetails = context.getString(R.string.error_message_others);
+                break;
+        }
+
+        return errorMessageDetails;
+    }
+
+    private static boolean isTimeOut(String errorMessage) {
+        return errorMessage.contains(TIMED_OUT) ||
+                errorMessage.contains(TIMEOUT) ||
+                errorMessage.equals(TIME_OUT);
     }
 }

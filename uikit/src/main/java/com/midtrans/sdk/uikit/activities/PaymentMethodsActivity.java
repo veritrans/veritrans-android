@@ -364,7 +364,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 @Override
                 public void onError(Throwable error) {
                     Logger.e(TAG, "checkout>error:" + error.getMessage());
-                    showFallbackErrorPage(error, getString(R.string.maintenance_message));
+                    showFallbackErrorPage(error);
                 }
             });
         } else {
@@ -372,37 +372,24 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         }
     }
 
-    private void showFallbackErrorPage(Throwable error, String defaultMessage) {
-        MessageInfo messageInfo = MessageUtil.createMessageOnError(this, error, defaultMessage);
+    private void showFallbackErrorPage(Throwable error) {
+        MessageInfo messageInfo = MessageUtil.createMessageOnError(error, this);
 
-        if (messageInfo.statusMessage.equalsIgnoreCase(MessageUtil.TIMEOUT) || messageInfo.statusMessage.equalsIgnoreCase(MessageUtil.RETROFIT_TIMEOUT)) {
-            maintenanceTitleMessage.setText(getString(R.string.failed_title));
-            maintenanceMessage.setText(getString(R.string.timeout_message));
-            buttonRetry.setText(getString(R.string.try_again));
-            buttonRetry.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showMaintenanceContainer(false);
-                    if (isAlreadyUtilized()) {
-                        SdkUIFlowUtil.showToast(PaymentMethodsActivity.this, getString(R.string.error_utilized_orderid));
-                    } else {
-                        getPaymentPages();
-                    }
+        maintenanceTitleMessage.setText(messageInfo.titleMessage);
+        maintenanceMessage.setText(messageInfo.detailsMessage);
+        buttonRetry.setText(getString(R.string.try_again));
+        buttonRetry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showMaintenanceContainer(false);
+                if (isAlreadyUtilized()) {
+                    SdkUIFlowUtil.showToast(PaymentMethodsActivity.this, getString(R.string.error_utilized_orderid));
+                } else {
+                    getPaymentPages();
                 }
-            });
-        } else {
-            maintenanceTitleMessage.setText(getString(R.string.failed_title));
-            maintenanceMessage.setText(messageInfo.detailsMessage);
-            buttonRetry.setText(getString(R.string.maintenance_back));
+            }
+        });
 
-            buttonRetry.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showMaintenanceContainer(false);
-                    finish();
-                }
-            });
-        }
         showMaintenanceContainer(true);
     }
 
@@ -493,7 +480,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 Logger.e(TAG, "onError:" + error.getMessage());
                 enableButtonBack(true);
                 progressContainer.setVisibility(View.GONE);
-                showFallbackErrorPage(error, getString(R.string.maintenance_message));
+                showFallbackErrorPage(error);
             }
         });
     }
