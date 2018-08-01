@@ -108,16 +108,16 @@
     </string-array>
     <!--add credicard-->
     <string name="hint_name_on_card">Name on the card</string>
-    <string name="hint_card_number">Card Number</string>
+    <string name="hint_card_number">Credit card number</string>
     <string name="hint_cvv">CVV</string>
-    <string name="save_card_message">Save card for later reuse</string>
+    <string name="save_card_message">Save card for later use</string>
     <string name="save_card_dialog">We will securely save your card details so you can reuse them later.</string>
     <string name="pay_now">Pay Now</string>
     <string name="pay_with_instalments">INSTALLMENT PAYMENT PLAN</string>
     <string name="card_detail_title">CARD DETAILS</string>
     <string name="contact_detail_title">CONTACT DETAILS</string>
     <string name="validatation_message_card_holder_name">Please enter card holder name</string>
-    <string name="hint_expiry_date">Expiration Date(mm/yy)</string>
+    <string name="hint_expiry_date">Expiration Date(MM/YY)</string>
     <string name="validation_message_card_number">Please enter card number</string>
     <string name="validation_message_invalid_card_no">Please enter valid card number</string>
     <string name="validation_message_invalid_token_no">Challenge token must be 6 characters.</string>
@@ -155,7 +155,6 @@
     <string name="orderId">Order ID</string>
     <string name="amount">Amount</string>
     <string name="transfer_amount">Transfer Amount</string>
-    <string name="hint_email_optional">Email Address (Optional)</string>
     <string name="email_instruction">We\'ll send payment instruction to mail.</string>
     <string name="atm_transfer_steps">ATM Transfer step-by-step</string>
     <string name="bank_atm_transfer_step1">Click the Confirm Payment button.</string>
@@ -290,7 +289,6 @@
     <string name="payment_unsuccessful">Payment Unsuccessful</string>
     <string name="validation_message_invalid_expiry_date">Please enter valid expiry date</string>
     <string name="api_fail_message">Something went wrong. Please try later.</string>
-    <string name="title_payment_failed">Payment Failed</string>
     <string name="title_payment_successful">Payment Successful</string>
     <string name="card_details_error_message">Card details not found.</string>
     <string name="no_saved_cards">No saved cards found.</string>
@@ -562,8 +560,7 @@
 
     <!-- Kioson Instruction-->
     <string name="kioson_instruction_step1">After confirming your payment, we will issue you a unique Payment Code number.</string>
-    <string name="kioson_instruction_step2">Note down your Payment Code and total amount.
-        Don\'t worry, we will also mail you a copy of the payment instructions to your email.</string>
+    <string name="kioson_instruction_step2">Note down your Payment Code and total amount. We will send you the payment code along with payment instructions to your email address.</string>
     <string name="kioson_instruction_step3">Go to a Kioson outlet near you and provide the cashier with the Payment Code.</string>
     <string name="kioson_instruction_step4">The cashier will open kioson Cash Point, on the menu chasier will select <b>Keagenan</b>.</string>
     <string name="kioson_instruction_step5">Choose merchant name.</string>
@@ -626,7 +623,7 @@
     <string name="text_item_name_format">%1$s x%2$d</string>
     <string name="text_price">Price</string>
     <string name="save_card_info">Card details above will be saved to help your future transactions.</string>
-    <string name="add_new_card">Pay with New Card</string>
+    <string name="add_new_card">Add new card</string>
     <string name="mandiri_bill_transfer">Bank Mandiri</string>
     <string name="bank_bca_transfer">Bank BCA</string>
     <string name="bank_permata_transfer">Bank Permata</string>
@@ -661,8 +658,8 @@
     <string name="kioson_instruction">See Payment Instruction</string>
     <string name="installment_required">Payment have to use installment</string>
 
-    <string name="complete_payment_kioson">Complete Payment at Kioson</string>
-    <string name="complete_payment_indomaret">Complete payment at Indomaret</string>
+    <string name="complete_payment_kioson">Complete payment via Kioson</string>
+    <string name="complete_payment_indomaret">Complete payment via Indomaret</string>
     <string name="payment_not_enabled_message">Can\'t open the page, please enable the payment channel.</string>
 
     <string name="payment_method_description_credit_card">Pay with VISA, MasterCard, JCB or AMEX</string>
@@ -751,7 +748,7 @@
     <string name="error_gross_amount_required">Gross amount is required</string>
     <string name="error_order_id_required">Order id is required</string>
     <string name="checkout_error_empty_response">Empty response from server</string>
-    <string name="complete_payment_via_xl_tunai">Complete Payment via XL Tunai</string>
+    <string name="complete_payment_via_xl_tunai">Complete payment via XL Tunai</string>
     <string name="payment_failed">Payment failed! Please try again.</string>
     <string name="failed_title">oops!</string>
     <string name="try_again">Try Again</string>
@@ -807,7 +804,7 @@
     <string name="danamon_online_description_2">Please make sure you have a User ID for Danamon Online Banking before going through the payment.</string>
     <string name="message_sdk_invalid">Client key  and context cannot be null or empty. Please set the client key and context to SDK</string>
     <string name="message_invalid_merchant_url">Merchant base url cannot be null or empty, if you implement your own token storage. Please set merchant base_url to SDK</string>
-    <string name="empty_card_number">Please enter card number</string>
+    <string name="empty_card_number">Card Number cannot be empty</string>
     <string name="empty_challenge_token">Please enter challenge token</string>
     <string name="pay_without_fiesta_poin">Pay Without Fiestapoin</string>
     <string name="payment_instruction">Payment Instruction %1$s</string>

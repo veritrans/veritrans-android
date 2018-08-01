@@ -86,7 +86,6 @@
     <string name="orderId">Order ID</string>
     <string name="amount">Jumlah</string>
     <string name="transfer_amount">Jumlah Transfer</string>
-    <string name="hint_email_optional">Alamat Email (Opsional)</string>
     <string name="email_instruction">Kami akan mengirimkan instruksi pembayaran melalui email</string>
     <string name="atm_transfer_steps">ATM Transfer step-by-step</string>
     <string name="bank_atm_transfer_step1">Klik tombol Confirm Payment.</string>
@@ -106,7 +105,6 @@
     <string name="copied_company_code">Kode perusahaan sudah disalin ke clipboard</string>
     <string name="done">Selesai</string>
     <string name="virtual_account_number">Nomor Akun Virtual</string>
-    <string name="payment_pending">Menunggu Pembayaran</string>
     <string name="transactionTime">Waktu Transaksi</string>
     <string name="paymentType">Tipe Pembayaran</string>
     <string name="tab_mandiri">Mandiri/ATM Bersama</string>
@@ -131,7 +129,6 @@
     <string name="coming_soon">Segera Muncul!!</string>
     <string name="successful">Berhasil</string>
     <string name="unsuccessful">Tidak Berhasil</string>
-    <string name="payment_successful">Pembayaran Berhasil</string>
     <string name="payment_unsuccessful_msg">Payment gateway <i>error</i></string>
     <string name="validation_message_invalid_expiry_date">Masukkan tanggal kadaluarsa yang benar</string>
     <string name="api_fail_message">Terjadi kesalahan. Silakan coba lagi.</string>

@@ -147,7 +147,7 @@
     <string name="orderId">Order ID</string>
     <string name="amount">Amount</string>
     <string name="transfer_amount">Transfer Amount</string>
-    <string name="hint_email_optional">Email Address (Optional)</string>
+    <string name="hint_email_optional">Email Address (optional)</string>
     <string name="email_instruction">We\'ll send payment instruction to mail.</string>
     <string name="atm_transfer_steps">ATM Transfer step-by-step</string>
     <string name="bank_atm_transfer_step1">Click the Confirm Payment button.</string>
@@ -168,7 +168,6 @@
     <string name="complete_payment_at_klik_bca">Complete Payment at KlikBCA</string>
     <string name="done">Finish</string>
     <string name="virtual_account_number">Virtual Account Number</string>
-    <string name="payment_pending">Payment Pending</string>
     <string name="transactionTime">Transaction Time</string>
     <string name="paymentType">Payment Type</string>
     <string name="tab_mandiri">Mandiri/ATM Bersana</string>
@@ -205,13 +204,12 @@
 
     <!--credit card -->
     <string name="add_card_message">You can also pay with a new card from here</string>
-    <string name="saved_card">Saved card</string>
+    <string name="saved_card">Choose card</string>
     <string name="card_details">Card details</string>
     <string name="retry">Retry</string>
     <string name="coming_soon">Coming soon!!</string>
     <string name="successful">Successful</string>
     <string name="unsuccessful">Unsuccessful</string>
-    <string name="payment_successful">Payment Successful</string>
     <string name="payment_unsuccessful_msg">Payment gateway error</string>
     <string name="validation_message_invalid_expiry_date">Please enter valid expiry date</string>
     <string name="api_fail_message">Something went wrong. Please try later.</string>

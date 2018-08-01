@@ -47,7 +47,6 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="pay_with">Bayar Dengan</string>
     <string name="payable_amount">Jumlah Pembayaran</string>
-    <string name="select_payment_method">Pilih Metode Pembayaran</string>
 
     <!-- name of payment methods -->
     <string-array name="payment_methods">
@@ -68,16 +67,16 @@
 
     <!--add credicard-->
     <string name="hint_name_on_card">Nama pada kartu</string>
-    <string name="hint_card_number">Nomor Kartu</string>
+    <string name="hint_card_number">Nomor kartu kredit</string>
     <string name="hint_cvv">CVV</string>
-    <string name="save_card_message">Simpan data kartu kredit</string>
+    <string name="save_card_message">Simpan kartu</string>
     <string name="save_card_dialog">Kami akan menyimpan kartu anda sehingga bisa digunakan untuk transaksi selanjutnya.</string>
     <string name="pay_now">Bayar Sekarang</string>
     <string name="pay_with_instalments">PEMBAYARAN MENGGUNAKAN CICILAN</string>
     <string name="card_detail_title">DETAIL KARTU</string>
     <string name="contact_detail_title">DETAIL KONTAK</string>
     <string name="validatation_message_card_holder_name">Masukkan nama pemilik kartu</string>
-    <string name="hint_expiry_date">Berlaku Hingga(mm/yy)</string>
+    <string name="hint_expiry_date">Berlaku Hingga(MM/YY)</string>
     <string name="validation_message_card_number">Masukkan nomor kartu</string>
     <string name="validation_message_invalid_card_no">Masukkan nomor kartu yang benar</string>
     <string name="validation_message_invalid_token_no">Challenge token harus terdiri dari 6 karakter.</string>
@@ -98,7 +97,7 @@
     <string name="orderId">Order ID</string>
     <string name="amount">Jumlah</string>
     <string name="transfer_amount">Jumlah Transfer</string>
-    <string name="hint_email_optional">Alamat Email (Opsional)</string>
+    <string name="hint_email_optional">Alamat Email (opsional)</string>
     <string name="email_instruction">Kami akan mengirimkan instruksi pembayaran melalui email</string>
     <string name="atm_transfer_steps">Langkah-Langkah Transfer ATM</string>
     <string name="bank_atm_transfer_step1">Klik tombol Confirm Payment.</string>
@@ -165,7 +164,7 @@
     <string name="bca_klik_instruction_step6">Transaksi Anda selesai.</string>
 
     <!--BCA KlikPay -->
-    <string name="bca_klik_pay_instruction_step1">Setelah Anda menekan tombol <b>Konfirmasi Pembayaran</b>, Anda akan diarahkan ke halaman pembayaran BCA KlikPay.</string>
+    <string name="bca_klik_pay_instruction_step1">Anda akan diarahkan ke halaman BCA KlikPay setelah menekan tombol<b>Konfirmasi Pembayaran</b>.</string>
     <string name="bca_klik_pay_instruction_step2">Setelah Login ke Akun BCA Klikpay Anda dengan memasukkan alamat email dan password, maka akan tampil informasi data transaksi seperti nama merchant, waktu transaksi, dan jumlah yang harus dibayar. Pilihlah jenis pembayaran KlikBCA atau BCA Card untuk transaksi tersebut.</string>
     <string name="bca_klik_pay_instruction_step3">Untuk otorisasi pembayaran dengan BCA KlikPay, tekan tombol <b>Kirim OTP</b>, dan Anda akan menerima kode OTP (One Time Password) yang dikirim melalui SMS ke handphone Anda. Masukkan kode OTP tersebut pada kolom yang tersedia.</string>
     <string name="bca_klik_pay_instruction_step4">Apabila kode OTP yang Anda masukkan benar, transaksi pembayaran akan langsung diproses dan saldo rekening Anda (untuk jenis pembayaran KlikBCA) atau limit BCA Card Anda (untuk jenis pembayaran BCA Card) akan berkurang sejumlah nilai transaksi.</string>
@@ -222,8 +221,7 @@
 
     <!-- Kioson Instruction-->
     <string name="kioson_instruction_step1">Setelah melakukan <b>Konfirmasi Pembayaran</b>, Anda akan diberikan Kode Pembayaran yang unik.</string>
-    <string name="kioson_instruction_step2">Salinlah Kode Pembayaran Anda dan jumlah pembayaran pembayaran yang akan dibayarkan.
-       Jangan khawatir, Kami akan mengirimkan salinan Kode Pembayaran dan Instruksi Pembayaran melalui email.</string>
+    <string name="kioson_instruction_step2">Salinlah Kode Pembayaran Anda dan jumlah pembayaran pembayaran yang akan dibayarkan. Kami akan mengirimkan kode pembayaran dan instruksi pembayaran melalui email.</string>
     <string name="kioson_instruction_step3">Kunjungi outlet Kioson terdekat dan berikan nomor Kode Pembayaran Anda ke kasir.</string>
     <string name="kioson_instruction_step4">Kasir akan membuka menu Kioson Cash Point, kemudian kasir akan memilih <b>Keagenan</b>.</string>
     <string name="kioson_instruction_step5">Pilih nama merchant.</string>
@@ -266,7 +264,7 @@
 
     <!--credit card -->
     <string name="add_card_message">Anda bisa membayar dengan kartu baru disini</string>
-    <string name="saved_card">Kartu yang Tersimpan</string>
+    <string name="saved_card">Pilih kartu</string>
     <string name="card_details">Detil Kartu</string>
     <string name="retry">Ulangi</string>
     <string name="coming_soon">Segera Muncul!!</string>
@@ -350,13 +348,13 @@
     <string name="btn_save_card">Mendaftarkan Kartu</string>
     <string name="btn_scan_card">Pindai Kartu Menggunakan Kamera</string>
     <string name="offer_applied">Sukses menggunakan penawaran!</string>
-    <string name="offer_not_applied">Kartu tidak berlaku untuk transaksi ini, mohon gunakan kartu lain.</string>
+    <string name="offer_not_applied">Kartu tidak berlaku untuk transaksi ini, silakan gunakan kartu lain.</string>
     <string name="no_offers">Tidak ada penawaran</string>
     <string name="text_yes">Ya</string>
     <string name="text_no">Tidak</string>
 
     <!--KlikBCA Payment Instructions-->
-    <string name="klikbca_instruction_1">Pastikan bahwa <b>User ID</b> sudah aktif dan terdaftar di BCA.</string>
+    <string name="klikbca_instruction_1">Mohon pastikan UserID aktif dan terdaftar di BCA.</string>
     <string name="klikbca_instruction_2">Silakan lanjutkan pembayaran melalui KlikBCA dengan membuka <a href="http://klikbca.com/">http://klikbca.com/</a> pada browser anda, menggunakan <b>User ID</b> yang sama dengan yang anda masukkan di atas.</string>
 
     <string name="payment_method_bri_epay">e-Pay BRI</string>
@@ -471,7 +469,7 @@
     <string name="text_items">Barang</string>
     <string name="text_price">Harga</string>
     <string name="save_card_info">Detail kartu diatas akan disimpan untuk membantu transaksi anda berikutnya.</string>
-    <string name="add_new_card">Bayar dengan Kartu Baru</string>
+    <string name="add_new_card">Tambah kartu baru</string>
     <string name="mandiri_bill_transfer">Bank Mandiri</string>
     <string name="bank_bca_transfer">Bank BCA</string>
     <string name="bank_permata_transfer">Bank Permata</string>
@@ -490,8 +488,8 @@
     <string name="sorry">Maaf!</string>
     <string name="kioson_instruction">Lihat Instruksi Pembayaran</string>
     <string name="installment_required">Pembayaran harus menggunakan cicilan</string>
-    <string name="complete_payment_kioson">Selesaikan Pembayaran di Kioson</string>
-    <string name="complete_payment_indomaret">Selesaikan pembayaran di Indomaret</string>
+    <string name="complete_payment_kioson">Selesaikan pembayaran melalui Kioson</string>
+    <string name="complete_payment_indomaret">Selesaikan pembayaran melalui Indomaret</string>
     <string name="payment_not_enabled_message">Tidak dapat membuka halaman ini, silakan aktifkan channel pembayaran ini.</string>
     <string name="item_header">BARANG</string>
     <string name="quantity_header">JLH</string>
@@ -587,7 +585,7 @@
     <string name="error_order_id_required">Order id diperlukan</string>
     <string name="checkout_error_empty_response">Tidak ada  data dari server</string>
     <string name="error_unable_to_connect">Gagal terhubung ke server</string>
-    <string name="complete_payment_via_xl_tunai">Selesaikan Pembayaran di XL Tunai</string>
+    <string name="complete_payment_via_xl_tunai">Selesaikan Pembayaran melalui XL Tunai</string>
     <string name="payment_failed">Pembayaran gagal! Silakan coba lagi.</string>
 
     <string name="try_again">Try Again</string>
@@ -632,7 +630,7 @@
     <string name="danamon_online_description_2">Pastikan Anda telah memiliki User ID Danamon Online Banking sebelum melakukan pembayaran.</string>
     <string name="message_sdk_invalid">client_key  dan context tidak boleh kosong. Silakan mendefinisikan client key dan context ke SDK</string>
     <string name="message_invalid_merchant_url">Merchant base_url tidak boleh kosong, jika anda menggunakan penyimapanan kartu sendiri. Silakan mendefinisikan merchant base url pada SDK</string>
-    <string name="empty_card_number">Silakan Masukkan Nomor Kartu</string>
+    <string name="empty_card_number">Nomor kartu harus terisi</string>
     <string name="empty_challenge_token">Silakan Masukkan Challange Token</string>
     <string name="pay_without_fiesta_poin">Bayar Tanpa Gunakan Fiestapoin</string>
     <string name="payment_instruction">Instruksi Pembayaran %1$s</string>
