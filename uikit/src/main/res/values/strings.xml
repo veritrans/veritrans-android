@@ -490,7 +490,6 @@
 
     <string name="txt_loading_payment">Retrieving payment methods</string>
     <string name="txt_checkout">Checkout Transaction</string>
-    <string name="txt_error_snap_token">Failed to registering transaction.</string>
 
     <string name="error_transaction_empty">Transaction Data is Empty</string>
     <string name="text_hint_telkomsel_token">T-Cash Token</string>
@@ -752,7 +751,7 @@
     <string name="payment_failed">Payment failed! Please try again.</string>
     <string name="failed_title">oops!</string>
     <string name="try_again">Try Again</string>
-    <string name="timeout_message">This request too long process. Please try again.</string>
+    <string name="timeout_message">This request too long process. Please check your connection.</string>
     <string name="maintenance_back">Okey, bring me back</string>
     <string name="maintenance_message">Something went wrong. Please try later</string>
     <string name="payment_method_unavailable">This option is currently unavailable</string>

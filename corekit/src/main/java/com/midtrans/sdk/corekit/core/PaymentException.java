@@ -8,7 +8,7 @@ public class PaymentException extends RuntimeException {
 
     public String statusCode;
 
-    public PaymentException(Throwable cause, String statusCode, String errorMessage) {
+    public PaymentException(String statusCode, String errorMessage, Throwable cause) {
         super(cause);
         this.statusCode = statusCode;
     }

@@ -376,7 +376,6 @@
 
     <string name="txt_loading_payment">Mengambil daftar metode pembayaran</string>
     <string name="txt_checkout">Checkout Transaksi</string>
-    <string name="txt_error_snap_token">Gagal mendaftarkan transaksi.</string>
     <string name="btn_cancel">Batal</string>
     <string name="btn_retry">Ulangi</string>
     <string name="error_transaction_empty">Tidak Ada Data Transaksi</string>
@@ -589,7 +588,7 @@
     <string name="payment_failed">Pembayaran gagal! Silakan coba lagi.</string>
 
     <string name="try_again">Try Again</string>
-    <string name="timeout_message">Proses ini terlalu lama. Silakan coba lagi.</string>
+    <string name="timeout_message">Proses ini terlalu lama. Silakan periksa koneksi anda.</string>
     <string name="maintenance_back">Oke, Kembali</string>
     <string name="maintenance_message">Something went wrong. Please try later</string>
     <string name="payment_method_unavailable">Opsi ini sekarang tidak tersedia</string>
