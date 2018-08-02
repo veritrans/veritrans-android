@@ -9,6 +9,7 @@ import android.support.v7.widget.AppCompatButton;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
+
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
@@ -76,7 +77,7 @@ public class KlikBcaStatusActivity extends BasePaymentActivity {
                 textExpiry.setText(getString(R.string.text_format_valid_until, response.getBcaKlikBcaExpiration()));
             } else {
                 textExpiry.setVisibility(View.GONE);
-                MessageInfo messageInfo = MessageUtil.createpaymentFailedMessage(this, response, null);
+                MessageInfo messageInfo = MessageUtil.createPaymentFailedMessage(this, response);
                 textStatusFailed.setText(messageInfo.detailsMessage);
             }
         }

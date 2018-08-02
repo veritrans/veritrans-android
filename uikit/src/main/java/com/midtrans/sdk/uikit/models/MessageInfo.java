@@ -7,13 +7,11 @@ import android.support.annotation.NonNull;
  */
 
 public class MessageInfo {
-    public String statusCode;
-    public String statusMessage;
+    public String titleMessage;
     public String detailsMessage;
 
-    public MessageInfo(String statusCode, @NonNull String statusMessage, @NonNull String detailsMessage) {
-        this.statusCode = statusCode;
-        this.statusMessage = statusMessage;
+    public MessageInfo(@NonNull String titleMessage, @NonNull String detailsMessage) {
+        this.titleMessage = titleMessage;
         this.detailsMessage = detailsMessage;
     }
 

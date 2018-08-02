@@ -383,7 +383,7 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
     public void onPaymentFailure(TransactionResponse response) {
         hideProgressLayout();
         if (!isFinishing()) {
-            MessageInfo messageInfo = MessageUtil.createpaymentFailedMessage(this, response, null);
+            MessageInfo messageInfo = MessageUtil.createPaymentFailedMessage(this, response);
             SdkUIFlowUtil.showToast(this, messageInfo.detailsMessage);
 
             initPaymentStatus(response);

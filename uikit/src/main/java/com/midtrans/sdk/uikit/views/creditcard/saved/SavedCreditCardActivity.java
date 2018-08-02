@@ -40,15 +40,15 @@ public class SavedCreditCardActivity extends BasePaymentActivity implements Save
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved_credit_card);
         initProperties();
-        initTitle();
+        setTitle(getString(R.string.saved_card));
         initCardsContainer();
         initTheme();
         initActionButton();
         initSavedCards();
     }
 
-    private void initTitle() {
-        textTitle.setText(getString(R.string.saved_card));
+    private void setTitle(String title) {
+        textTitle.setText(title);
     }
 
     private void initCardsContainer() {

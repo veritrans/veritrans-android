@@ -2,6 +2,8 @@
     <!--user detail-->
     <string name="hint_full_name">Full name</string>
     <string name="hint_email">Email</string>
+    <string name="hint_email_optional">Email Address (optional)</string>
+
     <string name="next">Next</string>
     <string name="hint_phone_number">Phone number</string>
     <string name="hint_phone_number_optional">Phone number (Optional)</string>
@@ -108,16 +110,16 @@
     </string-array>
     <!--add credicard-->
     <string name="hint_name_on_card">Name on the card</string>
-    <string name="hint_card_number">Card Number</string>
+    <string name="hint_card_number">Credit card number</string>
     <string name="hint_cvv">CVV</string>
-    <string name="save_card_message">Save card for later reuse</string>
+    <string name="save_card_message">Save card for later use</string>
     <string name="save_card_dialog">We will securely save your card details so you can reuse them later.</string>
     <string name="pay_now">Pay Now</string>
     <string name="pay_with_instalments">INSTALLMENT PAYMENT PLAN</string>
     <string name="card_detail_title">CARD DETAILS</string>
     <string name="contact_detail_title">CONTACT DETAILS</string>
     <string name="validatation_message_card_holder_name">Please enter card holder name</string>
-    <string name="hint_expiry_date">Expiration Date(mm/yy)</string>
+    <string name="hint_expiry_date">Expiration Date(MM/YY)</string>
     <string name="validation_message_card_number">Please enter card number</string>
     <string name="validation_message_invalid_card_no">Please enter valid card number</string>
     <string name="validation_message_invalid_token_no">Challenge token must be 6 characters.</string>
@@ -155,7 +157,6 @@
     <string name="orderId">Order ID</string>
     <string name="amount">Amount</string>
     <string name="transfer_amount">Transfer Amount</string>
-    <string name="hint_email_optional">Email Address (Optional)</string>
     <string name="email_instruction">We\'ll send payment instruction to mail.</string>
     <string name="atm_transfer_steps">ATM Transfer step-by-step</string>
     <string name="bank_atm_transfer_step1">Click the Confirm Payment button.</string>
@@ -172,6 +173,7 @@
     <string name="copy_billpay_code">Copy Bill Pay Code</string>
     <string name="copy_company_code">Copy Company Code</string>
     <string name="copied_to_clipboard">Copied to clipboard</string>
+    <string name="failed_to_copy">Failed to copy to clipboard</string>
     <string name="copied_bill_code">Billpay code was copied to clipboard</string>
     <string name="copied_company_code">Company code was copied to clipboard</string>
     <string name="complete_payment_at_atm">Please Complete Payment</string>
@@ -183,11 +185,15 @@
     <string name="what_is_cvv">What is CVV?</string>
     <string name="transactionTime">Transaction Time</string>
     <string name="paymentType">Payment Type</string>
+
+    <string name="tab_prima">Prima</string>
+    <string name="tab_atm_bersama">ATM Bersama</string>
     <string name="tab_mandiri">Mandiri/ATM Bersama</string>
     <string name="tab_bca_prima">BCA/Prima</string>
     <string name="tab_permata_alto">Permata/Alto</string>
     <string name="payment_instrution">Payment Instruction</string>
     <string name="payment_code">Payment Code</string>
+    <string name="activity_bank_transfer_all_bank">Other Bank Transfer</string>
 
     <!-- Mandiri bank transfer Instruction-->
     <string name="instruction">Instructions</string>
@@ -290,7 +296,6 @@
     <string name="payment_unsuccessful">Payment Unsuccessful</string>
     <string name="validation_message_invalid_expiry_date">Please enter valid expiry date</string>
     <string name="api_fail_message">Something went wrong. Please try later.</string>
-    <string name="title_payment_failed">Payment Failed</string>
     <string name="title_payment_successful">Payment Successful</string>
     <string name="card_details_error_message">Card details not found.</string>
     <string name="no_saved_cards">No saved cards found.</string>
@@ -307,7 +312,9 @@
     <string name="hint_challenge_token">Challenge Token</string>
     <string name="company_code">Company Code</string>
     <string name="bill_code">Billpay Code</string>
-    <string name="processing_payment">Processing Payment</string>
+
+    <string name="processing_payment">Processing your transaction</string>
+
     <string name="processing_delete">Deleting Card</string>
     <string name="fetching_offers">Fetching Offers</string>
     <string name="no_card_yet">No Card Yet</string>
@@ -327,7 +334,7 @@
     <string name="offers">Offers</string>
     <string name="loading">Loading</string>
     <string name="delete">Delete</string>
-    <string name="card_delete_message">Are you sure you want to delete card?</string>
+    <string name="card_delete_message">Are you sure to delete this card?</string>
     <string name="message_save_card">Save your card for faster checkout process.</string>
     <string name="got_it">Got it</string>
 
@@ -365,6 +372,9 @@
     <string name="xl_instruction_step6">You will receive an SMS confirmation from XL.</string>
 
     <string name="hint_indosat_phone_number">Indosat Phone Number</string>
+    <string name="error_sdk_not_initialized">sdk is not initialized.</string>
+    <string name="error_invalid_email_id">Email is invalid</string>
+    <string name="error_invalid_phone_number">Invalid phone number.</string>
 
     <!-- mandiri clickpay -->
     <string name="mandiri_click_pay_instruction_step1">1.\tActivate your Mandiri token by pressing [img src=ic_mandiri_instrcn/].</string>
@@ -412,7 +422,6 @@
     <string name="payment_response">payment_response</string>
     <string name="deny">deny</string>
     <string name="challenge">challenge</string>
-    <string name="prefix_money">Rp %1$s</string>
 
     <string name="payment_method_bri_epay">e-Pay BRI</string>
     <string name="payment_method_offers">Offers</string>
@@ -458,16 +467,6 @@
 
 
     <!--Error Response-->
-    <string name="error_empty_response">failed to retrieve response from server.</string>
-    <string name="error_sdk_not_initialized">sdk is not initialized.</string>
-    <string name="error_invalid_data_supplied">invalid data supplied to sdk.</string>
-    <string name="error_unable_to_connect">failed to connect to server.</string>
-    <string name="error_invalid_email_id">Email is invalid</string>
-    <string name="error_invalid_phone_number">Invalid phone number.</string>
-    <string name="error_something_wrong">Please try again, something went wrong!</string>
-    <string name="error_already_running">Already running!</string>
-    <string name="error_description_required">add description model</string>
-    <string name="error_transaction">transaction_error</string>
     <string name="retrofit_network_message">Unable to resolve host</string>
 
     <!--TAB TITLE-->
@@ -488,16 +487,16 @@
     <string name="btn_close">Close</string>
     <string name="payment_canceled">3DS Authorization was cancelled.</string>
 
-    <string name="txt_loading_payment">Retrieving payment methods</string>
+    <string name="txt_loading_payment">Loading payment list</string>
     <string name="txt_checkout">Checkout Transaction</string>
-    <string name="txt_error_snap_token">Failed to registering transaction.</string>
 
     <string name="error_transaction_empty">Transaction Data is Empty</string>
     <string name="text_hint_telkomsel_token">T-Cash Token</string>
     <string name="text_hint_xl_order_id">XL Tunai Order ID</string>
     <string name="text_hint_xl_merchant_code">Merchant Code</string>
+    <string name="error_empty_tcash_token_field">Token should not be empty.</string>
 
-    <string name="text_format_valid_until">Please complete your payment before : %1$s</string>
+    <string name="text_format_valid_until">Please complete payment before : %1$s</string>
 
     <!-- instruction atm bersama -->
     <string name="preview_atm_bersama">Pay through <b>all bank ATMs with ATM Bersama logo</b></string>
@@ -560,8 +559,7 @@
 
     <!-- Kioson Instruction-->
     <string name="kioson_instruction_step1">After confirming your payment, we will issue you a unique Payment Code number.</string>
-    <string name="kioson_instruction_step2">Note down your Payment Code and total amount.
-        Don\'t worry, we will also mail you a copy of the payment instructions to your email.</string>
+    <string name="kioson_instruction_step2">Note down your Payment Code and total amount. We will send you the payment code along with payment instructions to your email address.</string>
     <string name="kioson_instruction_step3">Go to a Kioson outlet near you and provide the cashier with the Payment Code.</string>
     <string name="kioson_instruction_step4">The cashier will open kioson Cash Point, on the menu chasier will select <b>Keagenan</b>.</string>
     <string name="kioson_instruction_step5">Choose merchant name.</string>
@@ -589,7 +587,7 @@
     <string name="gopay_status_title">Pay with GO-PAY</string>
     <string name="gopay_confirm_button">Pay Now with</string>
     <string name="notification_gojek_app">GO-JEK app is required for this payment method.</string>
-    <string name="notification_gojek_app_tablet">Make sure you have installed <b>GO-JEK app</b> on your phone and have balance more than Rp 10,000.</string>
+    <string name="notification_gojek_app_tablet">Make sure you have <b>GO-JEK app</b> installed on your phone and have GO-PAY balance more than Rp 10,000.</string>
     <string name="install_gojek_message">Install GO-JEK App from Play Store</string>
     <string name="whoops" translatable="false">Whoops!</string>
     <string name="no_gojek_message">Unfortunately, we couldn\'t find GO-JEK app installed on your phone.</string>
@@ -600,7 +598,7 @@
     <string name="confirm_gopay_qr_scan_tablet">Make sure the QR code successfully scanned and payment has been completed within the GO-JEK app.</string>
     <string name="confirm_gopay_deeplink">Make sure payment has been completed within the GO-JEK app.</string>
     <string name="gopay_instruction">How to Pay?</string>
-    <string name="gopay_expiration_message">Please complete your payment in</string>
+    <string name="gopay_expiration_message">Please complete your payment in:</string>
     <string name="gopay_expiration_expired">Time\'s up.</string>
 
     <string name="error_message_invalid_input_telkomsel">Transaction failed. Your transaction got declined by T-Cash.</string>
@@ -618,13 +616,13 @@
     <string name="hint_giftcard_number">Your Gift Card Number</string>
     <string name="hint_giftcard_password">PIN</string>
     <string name="info_gci_payment"><b>IMPORTANT!</b> After confirming your payment, you won’t be able to change payment method</string>
-    <string name="error_password_empty">Please fill PIN</string>
+    <string name="error_password_empty">PIN cannot be empty</string>
     <string name="error_password_invalid">Please enter valid PIN</string>
     <string name="text_items">Item(s)</string>
     <string name="text_item_name_format">%1$s x%2$d</string>
     <string name="text_price">Price</string>
     <string name="save_card_info">Card details above will be saved to help your future transactions.</string>
-    <string name="add_new_card">Pay with New Card</string>
+    <string name="add_new_card">Add new card</string>
     <string name="mandiri_bill_transfer">Bank Mandiri</string>
     <string name="bank_bca_transfer">Bank BCA</string>
     <string name="bank_permata_transfer">Bank Permata</string>
@@ -657,10 +655,10 @@
     <string name="price_header">PRICE</string>
 
     <string name="kioson_instruction">See Payment Instruction</string>
-    <string name="installment_required">Payment have to use installment</string>
+    <string name="installment_required">This transaction must use installment</string>
 
-    <string name="complete_payment_kioson">Complete Payment at Kioson</string>
-    <string name="complete_payment_indomaret">Complete payment at Indomaret</string>
+    <string name="complete_payment_kioson">Complete payment via Kioson</string>
+    <string name="complete_payment_indomaret">Complete payment via Indomaret</string>
     <string name="payment_not_enabled_message">Can\'t open the page, please enable the payment channel.</string>
 
     <string name="payment_method_description_credit_card">Pay with VISA, MasterCard, JCB or AMEX</string>
@@ -694,11 +692,11 @@
 
     <string name="redeem_bni_reward">Redeem BNI Reward Point</string>
     <string name="redeem_mandiri_point">Redeem Fiesta Point</string>
-    <string name="redeem_100_point">FIESTAPOIN DISCOUNT</string>
+    <string name="redeem_100_point">Diskon Fiesta Point</string>
     <string name="amount_after_discount">AMOUNT TO PAY AFTER REDEEM</string>
     <string name="redeem_bank_point_title">Redeem %1$s Point</string>
     <string name="redeem_bni_title">BNI Reward Points</string>
-    <string name="redeem_bni_details">You can pay partly through the redemption of BNI Reward Point through your BNI credit card.</string>
+    <string name="redeem_bni_details">You can pay partly using redemption of BNI Reward Points through your credit card</string>
     <string name="redeem_mandiri_title">Mandiri Fiestapoin</string>
     <string name="redeem_mandiri_details">You can pay partly through the redemption of Mandiri Fiestpoin through your Mandiri credit / debit card.</string>
     <string name="pay_with_mandiri_point">Pay with Mandiri Fiestapoin</string>
@@ -707,7 +705,7 @@
     <string name="error_delete_message">Failed to delete card</string>
     <string name="mandiri_debit_card">Mandiri Debit Card</string>
     <string name="bni_debit_online_card">BNI Debit Online Card</string>
-    <string name="delete_this_card">Delete This Card</string>
+    <string name="delete_this_card">Delete this card</string>
 
     <string name="how_much_point">How much points you want to redeem?</string>
     <string name="status_redeemed_point">POINT DISCOUNT</string>
@@ -749,13 +747,13 @@
     <string name="error_gross_amount_required">Gross amount is required</string>
     <string name="error_order_id_required">Order id is required</string>
     <string name="checkout_error_empty_response">Empty response from server</string>
-    <string name="complete_payment_via_xl_tunai">Complete Payment via XL Tunai</string>
+    <string name="complete_payment_via_xl_tunai">Complete payment via XL Tunai</string>
     <string name="payment_failed">Payment failed! Please try again.</string>
     <string name="failed_title">oops!</string>
     <string name="try_again">Try Again</string>
-    <string name="timeout_message">This request too long process. Please try again.</string>
+    <string name="timeout_message">This request too long process. Please check your connection.</string>
     <string name="maintenance_back">Okey, bring me back</string>
-    <string name="maintenance_message">We expect to be back in a couple hours. Thanks for your patience</string>
+    <string name="maintenance_message">Something went wrong. Please try later</string>
     <string name="payment_method_unavailable">This option is currently unavailable</string>
     <string name="hint_card_number_example">4811 1111 1111 1114</string>
     <string name="hint_expiry_date_example">01 / 20</string>
@@ -766,30 +764,18 @@
     <string name="notification_token_message">Key token device is required for this payment method.</string>
     <string name="notification_otp_message">SMS charges may be applied for this payment method</string>
     <string name="failed_to_get_bank_point">Failed to get bank points</string>
-    <string name="total_bni_reward_point">Current Points: %1$s</string>
-    <string name="total_mandiri_fiestapoint">Current Fiestapoin: %1$s</string>
+    <string name="total_bni_reward_point">Current BNI Points %1$s</string>
+    <string name="total_mandiri_fiestapoint">Current fiesta point %1$s</string>
 
     <string name="status_rba_unsuccessful">Payment has not been made</string>
-    <string name="message_error_internal_server">Sorry, there is an internal problem. Please try again or try another payment method</string>
+    <string name="message_error_internal_server">Sorry, a problem occurs. Please try again or try another payment method</string>
     <string name="mandiri_bill">Mandiri</string>
     <string name="message_virtual_account">Virtual Account Number</string>
     <string name="message_card_register_error">Failed to save card information</string>
     <string name="message_card_register_success">Card information successfully saved</string>
     <string name="save_card">Save Card</string>
 
-    <string name="details_message_expired">The order is no longer available and thus cannot be processed. Retry ordering from the store page.</string>
-    <string name="status_message_expired">Your order has expired</string>
-    <string name="status_message_invalid">Transaction is invalid</string>
-    <string name="details_message_invalid">Transaction cannot be proccessed. Make sure your payment informations is correct</string>
-    <string name="status_message_internal_error">Internal problem</string>
-    <string name="detail_message_payment_error">Failed to get response from server</string>
-    <string name="status_message_payment_error">Payment Failed</string>
-    <string name="status_message_not_found">not found</string>
-    <string name="detail_message_not_found">Failed to connect to server</string>
-    <string name="detail_message_token_notfound">Transaction data not found</string>
-    <string name="status_message_token_notfound">Token not found</string>
-    <string name="status_message_network_unavailable">Network unavailable</string>
-    <string name="detail_message_network_unavailable">Sorry, network unavailable</string>
+    <string name="details_message_invalid">Transaction cannot be processed. Make sure your payment information is correct</string>
     <string name="card_registration">Card Registration</string>
     <string name="error_utilized_orderid">Sorry, the order id already utilized</string>
     <string name="processing_card_registration">Processing card registration</string>
@@ -805,7 +791,7 @@
     <string name="danamon_online_description_2">Please make sure you have a User ID for Danamon Online Banking before going through the payment.</string>
     <string name="message_sdk_invalid">Client key  and context cannot be null or empty. Please set the client key and context to SDK</string>
     <string name="message_invalid_merchant_url">Merchant base url cannot be null or empty, if you implement your own token storage. Please set merchant base_url to SDK</string>
-    <string name="empty_card_number">Please enter card number</string>
+    <string name="empty_card_number">Card Number cannot be empty</string>
     <string name="empty_challenge_token">Please enter challenge token</string>
     <string name="pay_without_fiesta_poin">Pay Without Fiestapoin</string>
     <string name="payment_instruction">Payment Instruction %1$s</string>
@@ -818,7 +804,7 @@
     <string name="second">second</string>
     <string name="promo">promo</string>
     <string name="promo_unavailable">Promo is not available</string>
-    <string name="tnc_title"><![CDATA[BNI Points Terms & Conditions]]></string>
+    <string name="tnc_title"><![CDATA[BNI Rewards Points Terms & Conditions]]></string>
     <string name="tnc_bni_point_1">This program cannot be combined with BNI credit card installment program.</string>
     <string name="tnc_bni_point_2">\"Hemat hingga 100% dengan BNI Reward Points\" program will directly deduct the points on transaction.</string>
     <string name="tnc_bni_point_3">If transaction is cancelled completely, credit and reward points will be refunded to customer\'s credit card. If transaction is cancelled partially, transaction that will be refunded first is the credit card transaction, after that it will be refunded from the points.</string>
@@ -829,4 +815,23 @@
     <string name="prefix_money_sgd">SGD %1$s</string>
     <string name="currency_invalid">Currency is not available</string>
     <string name="order_id">Order ID</string>
+
+    <string name="error_message_status_code_400">Your payment can\'t be processed. Please make sure you have entered the correct payment.</string>
+    <string name="error_message_status_code_406">Order has been paid.</string>
+    <string name="error_message_status_code_407">Your order are no longer available.</string>
+    <string name="error_message_status_code_500">We are experiencing some unexpected system error. Please try again.</string>
+    <string name="error_message_status_code_502">We are having issues connecting to the payment provider. Please try again.</string>
+    <string name="error_message_others">Transaction is unsuccessful. Please try again with another card or with a different payment method.</string>
+
+    <!-- enabled payment -->
+    <string name="enabled_payment_category_banktransfer">bank_transfer</string>
+    <string name="enabled_payment_category_cstore">cstore</string>
+    <string name="saved_card_one_click">one_click</string>
+    <string name="saved_card_two_click">two_clicks</string>
+
+    <!-- money formatter -->
+    <string name="prefix_money">Rp %1$s</string>
+    <string name="prefix_money_negative">-Rp %1$s</string>
+    <string name="prefix_money_negative_sgd">-SGD %1$s</string>
+
 </resources>

@@ -11,6 +11,8 @@ import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentView;
+import com.midtrans.sdk.uikit.models.MessageInfo;
+import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
@@ -110,7 +112,8 @@ public class IndosatDompetkuPaymentActivity extends BasePaymentActivity implemen
 
         if (attempt < UiKitConstants.MAX_ATTEMPT) {
             attempt += 1;
-            SdkUIFlowUtil.showToast(IndosatDompetkuPaymentActivity.this, getString(R.string.error_something_wrong));
+            MessageInfo messageInfo = MessageUtil.createPaymentFailedMessage(this, response);
+            SdkUIFlowUtil.showToast(IndosatDompetkuPaymentActivity.this, messageInfo.detailsMessage);
         } else {
             if (response != null) {
                 showPaymentStatusPage(response, presenter.isShowPaymentStatusPage());

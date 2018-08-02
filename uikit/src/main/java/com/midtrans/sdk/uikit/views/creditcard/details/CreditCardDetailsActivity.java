@@ -1378,7 +1378,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     }
 
     private void showErrorMessage(Throwable error) {
-        MessageInfo messageInfo = MessageUtil.createMessageOnError(this, error, null);
+        MessageInfo messageInfo = MessageUtil.createMessageOnError(error, this);
         SdkUIFlowUtil.showToast(this, messageInfo.detailsMessage);
     }
 
@@ -1557,10 +1557,6 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                 showPaymentFailureMessage(response);
             } else {
                 initPaymentStatus(response);
-            }
-
-            if (response != null && response.getStatusCode().equals(getString(R.string.failed_code_400))) {
-                Logger.d("3dserror", "400:" + response.getValidationMessages().get(0));
             }
         }
     }

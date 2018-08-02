@@ -47,7 +47,6 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="pay_with">Bayar Dengan</string>
     <string name="payable_amount">Jumlah Pembayaran</string>
-    <string name="select_payment_method">Pilih Metode Pembayaran</string>
 
     <!-- name of payment methods -->
     <string-array name="payment_methods">
@@ -68,16 +67,16 @@
 
     <!--add credicard-->
     <string name="hint_name_on_card">Nama pada kartu</string>
-    <string name="hint_card_number">Nomor Kartu</string>
+    <string name="hint_card_number">Nomor kartu kredit</string>
     <string name="hint_cvv">CVV</string>
-    <string name="save_card_message">Simpan data kartu kredit</string>
+    <string name="save_card_message">Simpan kartu</string>
     <string name="save_card_dialog">Kami akan menyimpan kartu anda sehingga bisa digunakan untuk transaksi selanjutnya.</string>
     <string name="pay_now">Bayar Sekarang</string>
     <string name="pay_with_instalments">PEMBAYARAN MENGGUNAKAN CICILAN</string>
     <string name="card_detail_title">DETAIL KARTU</string>
     <string name="contact_detail_title">DETAIL KONTAK</string>
     <string name="validatation_message_card_holder_name">Masukkan nama pemilik kartu</string>
-    <string name="hint_expiry_date">Berlaku Hingga(mm/yy)</string>
+    <string name="hint_expiry_date">Berlaku Hingga(MM/YY)</string>
     <string name="validation_message_card_number">Masukkan nomor kartu</string>
     <string name="validation_message_invalid_card_no">Masukkan nomor kartu yang benar</string>
     <string name="validation_message_invalid_token_no">Challenge token harus terdiri dari 6 karakter.</string>
@@ -98,7 +97,7 @@
     <string name="orderId">Order ID</string>
     <string name="amount">Jumlah</string>
     <string name="transfer_amount">Jumlah Transfer</string>
-    <string name="hint_email_optional">Alamat Email (Opsional)</string>
+    <string name="hint_email_optional">Alamat Email (opsional)</string>
     <string name="email_instruction">Kami akan mengirimkan instruksi pembayaran melalui email</string>
     <string name="atm_transfer_steps">Langkah-Langkah Transfer ATM</string>
     <string name="bank_atm_transfer_step1">Klik tombol Confirm Payment.</string>
@@ -107,16 +106,17 @@
     <string name="bank_atm_transfer_step3">Harap selesaikan pembayaran melalui Prima (BCA), ATM Bersama(Mandiri), or Alto(Permata).</string>
     <string name="bank_atm_transfer_step4">Bila pembayaran sudah selesai, Anda akan menerima email konfirmasi.</string>
     <string name="see_instruction">Lihat Instruksi</string>
-    <string name="download_instruction">Unduh Instruksi</string>
+    <string name="download_instruction">Unduh Instruksi Pembayaran</string>
     <string name="confirm_payment">Konfirmasi Pembayaran</string>
     <string name="copy_payment_code">Salin Kode Pembayaran</string>
     <string name="copy_va_number">Salin Nomor Akun Virtual</string>
     <string name="copy_billpay_code">Salin Kode Tagihan</string>
     <string name="copy_company_code">Salin Kode Perusahaan</string>
     <string name="copied_to_clipboard">Sudah disalin ke clipboard</string>
+    <string name="failed_to_copy">Gagal menyalin ke clipboard</string>
     <string name="copied_bill_code">Kode tagihan sudah disalin ke clipboard</string>
     <string name="copied_company_code">Kode perusahaan sudah disalin ke clipboard</string>
-    <string name="complete_payment_at_atm">Mohon Selesaikan Pembayaran</string>
+    <string name="complete_payment_at_atm">Selesaikan Pembayaran</string>
     <string name="complete_payment_at_klik_bca">Selesaikan Pembayaran di KlikBCA</string>
     <string name="done">Selesai</string>
     <string name="virtual_account_number">Nomor Akun Virtual</string>
@@ -165,7 +165,7 @@
     <string name="bca_klik_instruction_step6">Transaksi Anda selesai.</string>
 
     <!--BCA KlikPay -->
-    <string name="bca_klik_pay_instruction_step1">Setelah Anda menekan tombol <b>Konfirmasi Pembayaran</b>, Anda akan diarahkan ke halaman pembayaran BCA KlikPay.</string>
+    <string name="bca_klik_pay_instruction_step1">Anda akan diarahkan ke halaman BCA KlikPay setelah menekan tombol<b>Konfirmasi Pembayaran</b>.</string>
     <string name="bca_klik_pay_instruction_step2">Setelah Login ke Akun BCA Klikpay Anda dengan memasukkan alamat email dan password, maka akan tampil informasi data transaksi seperti nama merchant, waktu transaksi, dan jumlah yang harus dibayar. Pilihlah jenis pembayaran KlikBCA atau BCA Card untuk transaksi tersebut.</string>
     <string name="bca_klik_pay_instruction_step3">Untuk otorisasi pembayaran dengan BCA KlikPay, tekan tombol <b>Kirim OTP</b>, dan Anda akan menerima kode OTP (One Time Password) yang dikirim melalui SMS ke handphone Anda. Masukkan kode OTP tersebut pada kolom yang tersedia.</string>
     <string name="bca_klik_pay_instruction_step4">Apabila kode OTP yang Anda masukkan benar, transaksi pembayaran akan langsung diproses dan saldo rekening Anda (untuk jenis pembayaran KlikBCA) atau limit BCA Card Anda (untuk jenis pembayaran BCA Card) akan berkurang sejumlah nilai transaksi.</string>
@@ -222,8 +222,7 @@
 
     <!-- Kioson Instruction-->
     <string name="kioson_instruction_step1">Setelah melakukan <b>Konfirmasi Pembayaran</b>, Anda akan diberikan Kode Pembayaran yang unik.</string>
-    <string name="kioson_instruction_step2">Salinlah Kode Pembayaran Anda dan jumlah pembayaran pembayaran yang akan dibayarkan.
-       Jangan khawatir, Kami akan mengirimkan salinan Kode Pembayaran dan Instruksi Pembayaran melalui email.</string>
+    <string name="kioson_instruction_step2">Salinlah Kode Pembayaran Anda dan jumlah pembayaran pembayaran yang akan dibayarkan. Kami akan mengirimkan kode pembayaran dan instruksi pembayaran melalui email.</string>
     <string name="kioson_instruction_step3">Kunjungi outlet Kioson terdekat dan berikan nomor Kode Pembayaran Anda ke kasir.</string>
     <string name="kioson_instruction_step4">Kasir akan membuka menu Kioson Cash Point, kemudian kasir akan memilih <b>Keagenan</b>.</string>
     <string name="kioson_instruction_step5">Pilih nama merchant.</string>
@@ -241,7 +240,7 @@
     <string name="gopay_status_title">Bayar dengan GO-PAY</string>
     <string name="gopay_confirm_button">Bayar dengan</string>
     <string name="notification_gojek_app">Aplikasi GO-JEK diperlukan untuk metode pembayaran ini.</string>
-    <string name="notification_gojek_app_tablet">Pastikan Anda telah menginstall <b>aplikasi GO-JEK</b> di HP Anda dan memiliki saldo lebih dari <b>Rp 10.000</b>.</string>
+    <string name="notification_gojek_app_tablet">Pastikan Anda telah melakukan instalasi <b>aplikasi GO-JEK</b> di HP Anda dan memiliki saldo lebih dari <b>Rp 10.000</b>.</string>
     <string name="install_gojek_message">Install aplikasi GO-JEK dari Play Store</string>
     <string name="no_gojek_message">Mohon maaf, kami tidak dapat mendeteksi aplikasi GO-JEK di perangkat Anda.</string>
     <string name="redirecting_to_gopay">Mengarahkan ke aplikasi GO-JEK…</string>
@@ -251,7 +250,7 @@
     <string name="confirm_gopay_qr_scan_tablet">Pastikan kode QR berhasil di-scan dan pembayaran telah diselesaikan di dalam aplikasi GO-JEK.</string>
     <string name="confirm_gopay_deeplink">Pastikan pembayaran telah diselesaikan di dalam aplikasi GO-JEK.</string>
     <string name="gopay_instruction">Cara Pembayaran</string>
-    <string name="gopay_expiration_message">Harap selesaikan pembayaran dalam</string>
+    <string name="gopay_expiration_message">Harap selesaikan pembayaran dalam:</string>
     <string name="gopay_expiration_expired">Waktu habis.</string>
 
     <!--Go-Pay Instruction in Tablet-->
@@ -266,7 +265,7 @@
 
     <!--credit card -->
     <string name="add_card_message">Anda bisa membayar dengan kartu baru disini</string>
-    <string name="saved_card">Kartu yang Tersimpan</string>
+    <string name="saved_card">Pilih kartu</string>
     <string name="card_details">Detil Kartu</string>
     <string name="retry">Ulangi</string>
     <string name="coming_soon">Segera Muncul!!</string>
@@ -295,7 +294,9 @@
     <string name="hint_challenge_token">Challenge Token</string>
     <string name="company_code">Kode Perusahaan</string>
     <string name="bill_code">Kode Tagihan</string>
-    <string name="processing_payment">Memproses Pembayaran</string>
+
+    <string name="processing_payment">Memproses transaksi anda</string>
+
     <string name="processing_delete">Menghapus Kartu</string>
     <string name="fetching_offers">Mengambil Data Penawaran</string>
     <string name="no_card_yet">Belum punya kartu</string>
@@ -348,13 +349,13 @@
     <string name="btn_save_card">Mendaftarkan Kartu</string>
     <string name="btn_scan_card">Pindai Kartu Menggunakan Kamera</string>
     <string name="offer_applied">Sukses menggunakan penawaran!</string>
-    <string name="offer_not_applied">Kartu tidak berlaku untuk transaksi ini, mohon gunakan kartu lain.</string>
+    <string name="offer_not_applied">Kartu tidak berlaku untuk transaksi ini, silakan gunakan kartu lain.</string>
     <string name="no_offers">Tidak ada penawaran</string>
     <string name="text_yes">Ya</string>
     <string name="text_no">Tidak</string>
 
     <!--KlikBCA Payment Instructions-->
-    <string name="klikbca_instruction_1">Pastikan bahwa <b>User ID</b> sudah aktif dan terdaftar di BCA.</string>
+    <string name="klikbca_instruction_1">Mohon pastikan UserID aktif dan terdaftar di BCA.</string>
     <string name="klikbca_instruction_2">Silakan lanjutkan pembayaran melalui KlikBCA dengan membuka <a href="http://klikbca.com/">http://klikbca.com/</a> pada browser anda, menggunakan <b>User ID</b> yang sama dengan yang anda masukkan di atas.</string>
 
     <string name="payment_method_bri_epay">e-Pay BRI</string>
@@ -374,17 +375,15 @@
     <string name="btn_close">Tutup</string>
     <string name="payment_canceled">Otorisasi 3D telah dibatalkan.</string>
 
-    <string name="txt_loading_payment">Mengambil daftar metode pembayaran</string>
+    <string name="txt_loading_payment">Memuat daftar pembayaran</string>
     <string name="txt_checkout">Checkout Transaksi</string>
-    <string name="txt_error_snap_token">Gagal mendaftarkan transaksi.</string>
     <string name="btn_cancel">Batal</string>
     <string name="btn_retry">Ulangi</string>
     <string name="error_transaction_empty">Tidak Ada Data Transaksi</string>
     <string name="text_hint_telkomsel_token">Token T-Cash</string>
 
-    <string name="error_empty_tcash_token_field">Token T-Cash tidak boleh kosong.</string>
+    <string name="error_empty_tcash_token_field">Token tidak boleh kosong.</string>
     <string name="error_invalid_phone_number">Nomor telepon tidak benar.</string>
-    <string name="error_something_wrong">Sedang terjadi kesalahan, silakan ulangi lagi!</string>
 
     <!--xl tunai payment instruction-->
     <string name="xl_tunai_payment_instruction">Instruksi Pembayaran XL Tunai</string>
@@ -398,13 +397,13 @@
     <string name="text_hint_xl_order_id">Kode Pemesanan XL Tunai</string>
     <string name="text_hint_xl_merchant_code">Kode Penjual</string>
 
-    <string name="text_format_valid_until">Silakan menyelesaikan pembayaran sebelum : %1$s</string>
+    <string name="text_format_valid_until">Silakan menyelesaikan pembayaran sebelum: %1$s</string>
 
     <!-- instruction atm bersama -->
     <string name="preview_atm_bersama">Bayar melalui <b>semua ATM bank berlogo ATM Bersama</b></string>
     <string name="expand_link_atm_bersama">Lihat 83 Bank yang Terdaftar</string>
     <string name="instruction_card_atm_bersama">Pastikan terdapat <b>logo ATM Bersama di belakang kartu ATM</b> Anda.</string>
-    <string name="bank_list_header_atm_bersama">Bank terdaftar ATM Bersama</string>
+    <string name="bank_list_header_atm_bersama">Bank terdaftar dalam jaringan ATM Bersama</string>
     <string name="instruction_atm_bersama1">Pada menu utama, pilih <b>Transaksi Lainnya</b>.</string>
     <string name="instruction_atm_bersama2">Pilih <b>Transfer</b>.</string>
     <string name="instruction_atm_bersama3">Pilih <b>Antar Bank Online</b>.</string>
@@ -418,7 +417,7 @@
     <string name="preview_prima">Bayar melalui <b>semua ATM bank berlogo Prima</b></string>
     <string name="expand_link_prima">Lihat 64 Bank yang Terdaftar</string>
     <string name="instruction_card_prima">Pastikan terdapat <b>logo Prima di belakang kartu ATM</b> Anda.</string>
-    <string name="bank_list_header_prima">Bank terdaftar jaringan Prima</string>
+    <string name="bank_list_header_prima">Bank terdaftar dalam jaringan Prima</string>
     <string name="instruction_prima1">Pada menu utama, pilih <b>Transaksi Lainnya</b>.</string>
     <string name="instruction_prima2">Pilih <b>Transfer</b>.</string>
     <string name="instruction_prima3">Pilih <b>Ke Rek Bank Lain</b>.</string>
@@ -432,7 +431,7 @@
     <string name="preview_alto">Bayar melalui <b>semua ATM bank berlogo Alto</b></string>
     <string name="expand_link_alto">Lihat 19 Bank yang Terdaftar</string>
     <string name="instruction_card_alto">Pastikan terdapat <b>logo Alto di belakang kartu ATM</b> Anda.</string>
-    <string name="bank_list_header_alto">Bank terdaftar jaringan Alto</string>
+    <string name="bank_list_header_alto">Bank terdaftar dalam jaringan Alto</string>
     <string name="instruction_alto1">Pada menu utama, pilih <b>Transaksi lainnya</b>.</string>
     <string name="instruction_alto2">Pilih <b>Transaksi Pembayaran</b>.</string>
     <string name="instruction_alto2_bni">Pilih <b>Transfer</b>.</string>
@@ -464,12 +463,12 @@
     <string name="no_installment">Tanpa cicilan</string>
     <string name="hint_giftcard_number">Nomor Gift Card Anda</string>
     <string name="info_gci_payment">PENTING! Setelah konfirmasi pembayaran, anda tidak bisa merubah metode pembayarannya</string>
-    <string name="error_password_empty">PIN harus diisi</string>
+    <string name="error_password_empty">Masukkan PIN yang benar</string>
     <string name="error_password_invalid">Masukkan PIN yang benar</string>
     <string name="text_items">Barang</string>
     <string name="text_price">Harga</string>
     <string name="save_card_info">Detail kartu diatas akan disimpan untuk membantu transaksi anda berikutnya.</string>
-    <string name="add_new_card">Bayar dengan Kartu Baru</string>
+    <string name="add_new_card">Tambah kartu baru</string>
     <string name="mandiri_bill_transfer">Bank Mandiri</string>
     <string name="bank_bca_transfer">Bank BCA</string>
     <string name="bank_permata_transfer">Bank Permata</string>
@@ -488,8 +487,8 @@
     <string name="sorry">Maaf!</string>
     <string name="kioson_instruction">Lihat Instruksi Pembayaran</string>
     <string name="installment_required">Pembayaran harus menggunakan cicilan</string>
-    <string name="complete_payment_kioson">Selesaikan Pembayaran di Kioson</string>
-    <string name="complete_payment_indomaret">Selesaikan pembayaran di Indomaret</string>
+    <string name="complete_payment_kioson">Selesaikan pembayaran melalui Kioson</string>
+    <string name="complete_payment_indomaret">Selesaikan pembayaran melalui Indomaret</string>
     <string name="payment_not_enabled_message">Tidak dapat membuka halaman ini, silakan aktifkan channel pembayaran ini.</string>
     <string name="item_header">BARANG</string>
     <string name="quantity_header">JLH</string>
@@ -531,10 +530,10 @@
 
     <string name="redeem_bni_reward">Tukarkan BNI Reward Points</string>
     <string name="redeem_mandiri_point">Tukarkan Fiestapoin</string>
-    <string name="redeem_100_point">DISKON FIESTAPOIN</string>
+    <string name="redeem_100_point">Diskon Fiestapoin</string>
     <string name="amount_after_discount">TOTAL PEMBAYARAN SETELAH TUKAR POIN</string>
-    <string name="delete_this_card">Hapus Kartu Ini</string>
-    <string name="redeem_bank_point_title">Gunakan Poin %1$s</string>
+    <string name="delete_this_card">Hapus kartu ini</string>
+    <string name="redeem_bank_point_title">Gunakan poin %1$s</string>
     <string name="redeem_bni_title">BNI Reward Points</string>
     <string name="redeem_bni_details">Anda dapat membayar sebagian dengan BNI Reward Points melalui kartu kredit BNI Anda.</string>
     <string name="redeem_mandiri_title">Mandiri Fiestapoin</string>
@@ -542,8 +541,8 @@
 
     <string name="how_much_point">Berapa poin yang ingin anda tukarkan?</string>
     <string name="status_redeemed_point">DISKON POIN</string>
-    <string name="total_bni_reward_point">Jumlah Point: %1$s</string>
-    <string name="total_mandiri_fiestapoint">Jumlah Fiestapoin: %1$s</string>
+    <string name="total_bni_reward_point">Poin sekarang : %1$s</string>
+    <string name="total_mandiri_fiestapoint">Fiestapoin anda: %1$s</string>
     <string name="pay_with_mandiri_point">Bayar Menggunakan Mandiri Fiestapoin</string>
     <string name="pay_with_bni_point">Bayar Menggunakan BNI Reward Points</string>
 
@@ -584,38 +583,25 @@
     <string name="error_gross_amount_required">Total pembayaran diperlukan</string>
     <string name="error_order_id_required">Order id diperlukan</string>
     <string name="checkout_error_empty_response">Tidak ada  data dari server</string>
-    <string name="error_unable_to_connect">Gagal terhubung ke server</string>
-    <string name="complete_payment_via_xl_tunai">Selesaikan Pembayaran di XL Tunai</string>
+    <string name="complete_payment_via_xl_tunai">Selesaikan Pembayaran melalui XL Tunai</string>
     <string name="payment_failed">Pembayaran gagal! Silakan coba lagi.</string>
 
     <string name="try_again">Try Again</string>
-    <string name="timeout_message">Proses ini terlalu lama. Silakan coba lagi.</string>
+    <string name="timeout_message">Proses ini terlalu lama. Silakan periksa koneksi anda.</string>
     <string name="maintenance_back">Oke, Kembali</string>
-    <string name="maintenance_message">We expect to be back in a couple hours. Thanks for your patience</string>
+    <string name="maintenance_message">Something went wrong. Please try later</string>
     <string name="payment_method_unavailable">Opsi ini sekarang tidak tersedia</string>
     <string name="notification_token_message">Perangkat token key dibutuhkan untuk cara pembayaran ini.</string>
-    <string name="notification_otp_message">Biaya SMS mungkin akan dikenakan untuk cara pembayaran ini.</string>
+    <string name="notification_otp_message">Anda mungkin akan dikenakan biaya SMS akan dikenakan untuk cara pembayaran ini.</string>
     <string name="failed_to_get_bank_point">Gagal mengambil bank point</string>
     <string name="status_rba_unsuccessful">Pembayaran belum dilakukan</string>
-    <string name="message_error_internal_server">Maaf, terdapat masalah internal. Silakan ulangi lagi, atau coba dengan metode pembayaran lain.</string>
+    <string name="message_error_internal_server">Maaf, terjadi masalah. Silakan ulangi lagi, atau coba dengan metode pembayaran lain.</string>
     <string name="message_virtual_account">Nomor Virtual Account</string>
     <string name="message_card_register_error">Gagal menyimpan informasi kartu</string>
     <string name="message_card_register_success">Informasi kartu berhasil disimpan</string>
     <string name="save_card">Simpan Kartu</string>
 
-    <string name="details_message_expired">Transaksi anda sudah tidak tersedia lagi sehingga tidak dapat kami proses. Silakan coba memesan kembali</string>
-    <string name="status_message_expired">Transaksi Anda sudah kadaluarsa</string>
-    <string name="status_message_invalid">Transaksi tidak sah</string>
     <string name="details_message_invalid">Transaksi anda tidak dapat diproses. Pastikan informasi pembayaran anda benar</string>
-    <string name="status_message_internal_error">Masalah internal</string>
-    <string name="detail_message_payment_error">Gagal mendapatkan respon dari server</string>
-    <string name="status_message_payment_error">Pembayaran Gagal</string>
-    <string name="status_message_not_found">Tidak ditemukan</string>
-    <string name="detail_message_not_found">Gagal terkoneksi dengan server</string>
-    <string name="detail_message_token_notfound">Data transaksi tidak ditemukan</string>
-    <string name="status_message_token_notfound">Token tidak ditemukan</string>
-    <string name="status_message_network_unavailable">Jaringan data tidak tersedia</string>
-    <string name="detail_message_network_unavailable">Maaf, jaringan data tidak tersedia</string>
     <string name="card_registration">Registrasi Kartu</string>
     <string name="error_utilized_orderid">Maaf, order id sudah digunakan</string>
     <string name="processing_card_registration">Proses registrasi kartu</string>
@@ -630,7 +616,7 @@
     <string name="danamon_online_description_2">Pastikan Anda telah memiliki User ID Danamon Online Banking sebelum melakukan pembayaran.</string>
     <string name="message_sdk_invalid">client_key  dan context tidak boleh kosong. Silakan mendefinisikan client key dan context ke SDK</string>
     <string name="message_invalid_merchant_url">Merchant base_url tidak boleh kosong, jika anda menggunakan penyimapanan kartu sendiri. Silakan mendefinisikan merchant base url pada SDK</string>
-    <string name="empty_card_number">Silakan Masukkan Nomor Kartu</string>
+    <string name="empty_card_number">Nomor kartu harus terisi</string>
     <string name="empty_challenge_token">Silakan Masukkan Challange Token</string>
     <string name="pay_without_fiesta_poin">Bayar Tanpa Gunakan Fiestapoin</string>
     <string name="payment_instruction">Instruksi Pembayaran %1$s</string>
@@ -642,7 +628,7 @@
     <string name="minute">menit</string>
     <string name="seconds">detik</string>
     <string name="second">detik</string>
-    <string name="tnc_title"><![CDATA[Syarat & Ketentuan BNI Point]]></string>
+    <string name="tnc_title"><![CDATA[Syarat & Ketentuan BNI Rewards Point]]></string>
     <string name="tnc_bni_point_1">Promo ini tidak dapat digabungkan dengan program cicilan Kartu Kredit BNI.</string>
     <string name="tnc_bni_point_2">Hemat hingga 100% dengan BNI Reward Points langsung memotong transaksi yang dilakukan.</string>
     <string name="tnc_bni_point_3">Jika transaksi dibatalkan keseluruhan, maka dana dan poin akan dikembalikan ke Kartu Kredit pembeli. Jika transaksi dibatalkan sebagian, transaksi yang akan dikembalikan terlebih dahulu adalah transaksi Kartu Kredit, setelah itu dikembalikan dari poin.</string>
@@ -651,5 +637,12 @@
     <string name="tnc_bni_point_6">Pembayaran poin ke merchant sama dengan pembayaran transaksi biasa.</string>
     <string name="message_payment_paid">Transaksi sudah diproses</string>
     <string name="currency_invalid">Mata uang tidak tersedia</string>
+
+    <string name="error_message_status_code_400">Transaksi tidak dapat diproses. Pastikan informasi pembayaran Anda benar.</string>
+    <string name="error_message_status_code_406">Pesanan telah dibayar.</string>
+    <string name="error_message_status_code_407">Order Anda tidak lagi tersedia.</string>
+    <string name="error_message_status_code_500">Kami sedang mengalami kendala teknis. Silakan coba lagi</string>
+    <string name="error_message_status_code_502">Kami mengalami kendala dengan Payment Provider. Silakan dicoba lagi.</string>
+    <string name="error_message_others">Transaksi tidak berhasil. Silakan ulangi lagi atau coba dengan metode pembayaran lain.</string>
 
 </resources>
