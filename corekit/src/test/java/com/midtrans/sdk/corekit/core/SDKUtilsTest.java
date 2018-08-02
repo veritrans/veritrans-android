@@ -194,7 +194,6 @@ public class SDKUtilsTest {
         MidtransSDK.setmPreferences(mpreferenceMock);
         mockStatic(LocalDataHandler.class);
         when(LocalDataHandler.readObject(userDetail, UserDetail.class)).thenReturn(userDetailMock);
-        when(contextMock.getString(R.string.user_details)).thenReturn(userDetail);
         when(userDetailMock.getUserFullName()).thenReturn(fullname);
         SdkUtil.getUserDetails(transactionRequestMock);
 
