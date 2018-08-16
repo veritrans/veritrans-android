@@ -68,6 +68,7 @@ android {
             DEFAULT_PUBLISH = "developmentRelease"
         }
 
+
         staging {
             DEFAULT_PUBLISH = "stagingRelease"
         }
