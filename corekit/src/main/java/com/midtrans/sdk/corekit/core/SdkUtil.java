@@ -335,6 +335,10 @@ public class SdkUtil {
     }
 
     public static MerchantServiceManager newMerchantServiceManager(String merchantServerUrl, int requestTimeOut) {
+        if (TextUtils.isEmpty(merchantServerUrl)) {
+            return null;
+        }
+
         return new MerchantServiceManager(MidtransRestAdapter.newMerchantApiService(merchantServerUrl, requestTimeOut));
     }
 

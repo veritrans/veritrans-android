@@ -3,13 +3,9 @@ package com.midtrans.sdk.corekit.core;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.security.ProviderInstaller;
 import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.BuildConfig;
 import com.midtrans.sdk.corekit.callback.BankBinsCallback;
@@ -124,16 +120,6 @@ public class MidtransSDK {
 
             if (context instanceof Activity) {
                 deviceType = Utils.getDeviceType((Activity) context);
-            }
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN && Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
-                try {
-                    ProviderInstaller.installIfNeeded(context.getApplicationContext());
-                } catch (GooglePlayServicesRepairableException e) {
-                    e.printStackTrace();
-                } catch (GooglePlayServicesNotAvailableException e) {
-                    e.printStackTrace();
-                }
             }
         }
 
@@ -885,7 +871,12 @@ public class MidtransSDK {
                 if (isEnableBuiltInTokenStorage()) {
                     model.setUserId(userId);
                 }
-                merchantServiceManager.checkout(model, callback);
+
+                if (merchantServiceManager != null) {
+                    merchantServiceManager.checkout(model, callback);
+                } else {
+                    callback.onError(new Throwable(Constants.MESSAGE_ERROR_EMPTY_MERCHANT_URL));
+                }
             } else {
                 callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
@@ -910,7 +901,11 @@ public class MidtransSDK {
             if (Utils.isNetworkAvailable(context)) {
 
                 TokenRequestModel model = SdkUtil.getSnapTokenRequestModel(transactionRequest);
-                merchantServiceManager.checkout(model, callback);
+                if (merchantServiceManager != null) {
+                    merchantServiceManager.checkout(model, callback);
+                } else {
+                    callback.onError(new Throwable(Constants.MESSAGE_ERROR_EMPTY_MERCHANT_URL));
+                }
             } else {
 
                 callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
@@ -1295,7 +1290,6 @@ public class MidtransSDK {
 
         if (isTransactionRequestAvailable()) {
             if (Utils.isNetworkAvailable(context)) {
-
                 snapServiceManager.paymentUsingIndosatDompetku(authenticationToken,
                         new IndosatDompetkuPaymentRequest(PaymentType.INDOSAT_DOMPETKU, new IndosatDompetkuPaymentParams(msisdn)), callback);
             } else {
@@ -1322,7 +1316,6 @@ public class MidtransSDK {
 
         if (isTransactionRequestAvailable()) {
             if (Utils.isNetworkAvailable(context)) {
-
                 snapServiceManager.paymentUsingBaseMethod(authenticationToken,
                         new BasePaymentRequest(PaymentType.KIOSON), callback);
             } else {
@@ -1349,7 +1342,6 @@ public class MidtransSDK {
 
         if (isTransactionRequestAvailable()) {
             if (isNetworkAvailable()) {
-
                 snapServiceManager.paymentUsingBaseMethod(authenticationToken,
                         new BasePaymentRequest(PaymentType.BRI_EPAY), callback);
             } else {
@@ -1357,7 +1349,6 @@ public class MidtransSDK {
                 callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
-
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
@@ -1410,7 +1401,6 @@ public class MidtransSDK {
                     SdkUtil.getGCIPaymentRequest(cardNumber, password),
                     callback);
         } else {
-
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
@@ -1498,8 +1488,11 @@ public class MidtransSDK {
 
         if (requests != null) {
             if (Utils.isNetworkAvailable(context)) {
-
-                merchantServiceManager.saveCards(userId, requests, callback);
+                if (merchantServiceManager != null) {
+                    merchantServiceManager.saveCards(userId, requests, callback);
+                } else {
+                    callback.onError(new Throwable(Constants.MESSAGE_ERROR_EMPTY_MERCHANT_URL));
+                }
             } else {
 
                 callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
@@ -1522,8 +1515,11 @@ public class MidtransSDK {
         }
 
         if (Utils.isNetworkAvailable(context)) {
-
-            merchantServiceManager.getCards(userId, callback);
+            if (merchantServiceManager != null) {
+                merchantServiceManager.getCards(userId, callback);
+            } else {
+                callback.onError(new Throwable(Constants.MESSAGE_ERROR_EMPTY_MERCHANT_URL));
+            }
         } else {
 
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
