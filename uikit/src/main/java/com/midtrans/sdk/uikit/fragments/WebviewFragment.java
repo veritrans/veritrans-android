@@ -15,7 +15,6 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
 import com.midtrans.sdk.corekit.BuildConfig;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.uikit.R;
@@ -91,6 +90,7 @@ public class WebviewFragment extends Fragment {
         webView.setInitialScale(1);
         webView.getSettings().setLoadWithOverviewMode(true);
         webView.getSettings().setUseWideViewPort(true);
+        webView.getSettings().setDomStorageEnabled(true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
@@ -145,6 +145,7 @@ public class WebviewFragment extends Fragment {
 
         private final String type;
         private PaymentWebActivity activity;
+        private boolean flag = false;
 
         private MidtransWebViewClient(PaymentWebActivity activity, String type) {
             this.type = type;
@@ -159,7 +160,7 @@ public class WebviewFragment extends Fragment {
         }
 
         @Override
-        public void onPageFinished(WebView view, String url) {
+        public void onPageFinished(final WebView view, String url) {
             super.onPageFinished(view, url);
             Log.d(TAG, "onPageFinished()>url:" + url);
             if (activity != null && !activity.isFinishing()) {
@@ -168,6 +169,16 @@ public class WebviewFragment extends Fragment {
                     activity.setResult(Activity.RESULT_OK, returnIntent);
                     activity.finish();
                     overridePendingTransition();
+                }
+                if (url.contains("https://api.sandbox.veritrans.co.id/") && !flag) {
+                    flag = true;
+                    view.loadUrl("javascript: {" +
+                            "var input = document.getElementsByClassName('link_nav')[0].text; " +
+                            "if(input.startsWith('Click')){ " +
+                            "console.log(input); " +
+                            "document.getElementsByClassName('link_nav')[0].click(); " +
+                            "};" +
+                            "};");
                 }
             }
         }
@@ -224,6 +235,7 @@ public class WebviewFragment extends Fragment {
                 }
             }
         }
+
     }
 
 }
