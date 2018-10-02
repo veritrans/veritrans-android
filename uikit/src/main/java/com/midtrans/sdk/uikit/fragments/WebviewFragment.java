@@ -170,7 +170,7 @@ public class WebviewFragment extends Fragment {
                     activity.finish();
                     overridePendingTransition();
                 }
-                if (url.contains("https://api.sandbox.veritrans.co.id/") && !flag) {
+                if (url.contains("veritrans.co.id") && !flag) {
                     flag = true;
                     view.loadUrl("javascript: {" +
                             "var input = document.getElementsByClassName('link_nav')[0].text; " +
