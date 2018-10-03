@@ -9,13 +9,13 @@ repositories {
     maven { url "http://dl.bintray.com/pt-midtrans/maven" }
 }
 android {
-    compileSdkVersion 27
-    buildToolsVersion '27.0.2'
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
         applicationId "com.midtrans.sdk.example"
-        minSdkVersion 15
-        targetSdkVersion 27
+        minSdkVersion rootProject.ext.uiMinSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
 
