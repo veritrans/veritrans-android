@@ -28,5 +28,10 @@
     <string name="save_card_hint_message">Simpan kartu anda untuk proses checkout lebih cepat.</string>
     <string name="message_payment_not_completed">Informasi pembayaran tidak lengkap!</string>
     <string name="text_saved_card_expiry">xx/xx</string>
+    <string name="description_delete_card">Hapus</string>
+    <string name="text_sample_masked_credit_card">4444 **** **** 1111</string>
+    <string name="valid_thru">02/22</string>
+    <string name="save_card_message">Simpan Kartu</string>
+    <string name="description_help_icon">Help Icon</string>
 
 </resources>
