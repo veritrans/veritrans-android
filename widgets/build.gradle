@@ -12,12 +12,12 @@ repositories {
 
 android {
     def DEFAULT_PUBLISH
-    compileSdkVersion 27
-    buildToolsVersion '27.0.2'
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion 9
-        targetSdkVersion 27
+        minSdkVersion rootProject.ext.uiMinSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName version
     }
@@ -47,8 +47,8 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:27.0.2'
-    compile 'com.android.support:design:27.0.2'
+    compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
+    compile "com.android.support:design:$rootProject.supportLibraryVersion"
     developmentCompile project(path: ':corekit', configuration: 'developmentRelease')
     stagingCompile project(path: ':corekit', configuration: 'stagingRelease')
     productionCompile project(path: ':corekit', configuration: 'productionRelease')
