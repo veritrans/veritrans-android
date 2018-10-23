@@ -186,6 +186,12 @@
     <string name="cimb_instruction_step2">Transaksi akan dibatalkan apabila pembayaran tidak diselesaikan dalam 2 jam.</string>
     <string name="cimb_instruction_step3">Pastikan bahwa tidak ada pop-up blocker pada browser Anda.</string>
 
+    <!-- akulaku transfer Instructions -->
+    <string name="akulaku_instruction_step1">Tekan tombol "Bayar Sekarang", lalu Anda akan diarahkan ke halaman Pusat Pembayaran Akulaku.</string>
+    <string name="akulaku_instruction_step2">Pilih tenor cicilan yang diinginkan, lalu Login ke akun Akulaku Anda dengan memasukkan nomor ponsel dan password.</string>
+    <string name="akulaku_instruction_step3">Masukkan kode verifikasi (OTP) yang telah dikirimkan ke ponsel Anda, lalu klik tombol "Selanjutnya".</string>
+    <string name="akulaku_instruction_step4">Akan tampil halaman konfirmasi, lalu Anda dapat menyelesaikan transaksi.</string>
+
     <!-- Mandiri E Cash transfer Instruction-->
     <string name="mandiri__e_cash_instruction_step1">Pastikan no. HP anda telah terdaftar untuk LINE Pay e-cash / mandiri e-cash.</string>
     <string name="mandiri__e_cash_instruction_step2">Klik <b>Confirm Payment</b>.</string>
@@ -305,6 +311,7 @@
     <string name="credit_card">Kartu Kredit/Debit</string>
     <string name="mandiri_clickpay">Mandiri Clickpay</string>
     <string name="cimb_clicks">CIMB Clicks</string>
+    <string name="akulaku">Akulaku</string>
     <string name="epay_bri">e-Pay BRI</string>
     <string name="bbm_money">BBM Money</string>
     <string name="indosat_dompetku">Indosat Dompetku</string>
@@ -513,6 +520,7 @@
     <string name="payment_method_description_gci">Bayar dengan Gift Card</string>
     <string name="payment_method_description_gopay">Bayar dengan saldo GO-PAY Anda</string>
     <string name="payment_method_description_danamon_online">Bayar dengan akun Danamon Online Banking anda</string>
+    <string name="payment_method_description_akulaku">Bayar meggunakan akun Akulaku Anda</string>
 
     <string name="payment_bank_description_bca">Bayar dari ATM BCA atau internet banking</string>
     <string name="payment_bank_description_mandiri">Bayar dari ATM Mandiri atau internet banking</string>
