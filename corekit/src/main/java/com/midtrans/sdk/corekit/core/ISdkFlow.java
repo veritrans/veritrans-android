@@ -53,5 +53,7 @@ public interface ISdkFlow {
 
     void runDanamonOnline(Context context, String tokenToken);
 
+    void runAkulaku(Context context, String snapToken);
+
     void runCardRegistration(Context context, CardRegistrationCallback callback);
 }
