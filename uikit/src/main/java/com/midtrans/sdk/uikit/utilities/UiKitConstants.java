@@ -63,6 +63,7 @@ public class UiKitConstants {
     public static final String CALLBACK_BRI_EPAY = "briPayment?tid=";
     public static final String CALLBACK_MANDIRI_ECAH = "notify?id=";
     public static final String CALLBACK_BCA_KLIKPAY = "?id=";
+    public static final String CALLBACK_AKULAKU = "?refNo=";
 
     public static final int MONTH_COUNT = 12;
 
