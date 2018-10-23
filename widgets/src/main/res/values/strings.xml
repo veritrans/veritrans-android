@@ -40,5 +40,7 @@
     <string name="valid_thru">02/22</string>
     <string name="save_card_message">Save Card</string>
     <string name="description_help_icon">Help Icon</string>
+    <string name="saved_card_one_click">Save one click</string>
+    <string name="saved_card_two_click">Save two click</string>
 
 </resources>
