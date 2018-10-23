@@ -80,6 +80,7 @@ public class AppUtils {
 //        paymentNameList.add(new EnabledPayment(PaymentType.KIOSON, CATEGORY_CONVENIENT_STORE)); being deprecated
         paymentNameList.add(new EnabledPayment(PaymentType.GCI, CATEGORY_VOUCHER_CARD));
 //        paymentNameList.add(new EnabledPayment(PaymentType.INDOSAT_DOMPETKU, null)); being deprecated
+        paymentNameList.add(new EnabledPayment(PaymentType.AKULAKU, CATEGORY_VOUCHER_CARD));
 
         return paymentNameList;
     }
@@ -220,6 +221,10 @@ public class AppUtils {
                 newModel.setCategory(CATEGORY_VOUCHER_CARD);
                 newModel.setPriority(17);
                 break;
+            case PaymentType.AKULAKU:
+                newModel.setCategory(CATEGORY_VOUCHER_CARD);
+                newModel.setPriority(18);
+                break;
         }
         return newModel;
     }
@@ -328,6 +333,8 @@ public class AppUtils {
                 enabledPayments.add(new EnabledPayment(PaymentType.DANAMON_ONLINE, CATEGORY_DIRECT_DEBIT));
             } else if (name.equals(PaymentType.GOPAY)) {
                 enabledPayments.add(new EnabledPayment(PaymentType.GOPAY, CATEGORY_EMONEY));
+            }else if (name.equals(PaymentType.AKULAKU)) {
+                enabledPayments.add(new EnabledPayment(PaymentType.AKULAKU, CATEGORY_VOUCHER_CARD));
             }
         }
         return enabledPayments;
