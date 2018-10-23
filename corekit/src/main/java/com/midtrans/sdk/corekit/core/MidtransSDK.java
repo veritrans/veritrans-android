@@ -5,33 +5,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-
 import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.BuildConfig;
-import com.midtrans.sdk.corekit.callback.BankBinsCallback;
-import com.midtrans.sdk.corekit.callback.BanksPointCallback;
-import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
-import com.midtrans.sdk.corekit.callback.CardTokenCallback;
-import com.midtrans.sdk.corekit.callback.CheckoutCallback;
-import com.midtrans.sdk.corekit.callback.DeleteCardCallback;
-import com.midtrans.sdk.corekit.callback.GetCardCallback;
-import com.midtrans.sdk.corekit.callback.GetTransactionStatusCallback;
-import com.midtrans.sdk.corekit.callback.SaveCardCallback;
-import com.midtrans.sdk.corekit.callback.TransactionCallback;
-import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
-import com.midtrans.sdk.corekit.callback.TransactionOptionsCallback;
+import com.midtrans.sdk.corekit.callback.*;
 import com.midtrans.sdk.corekit.core.themes.BaseColorTheme;
-import com.midtrans.sdk.corekit.models.CardTokenRequest;
-import com.midtrans.sdk.corekit.models.PaymentDetails;
-import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
-import com.midtrans.sdk.corekit.models.SaveCardRequest;
-import com.midtrans.sdk.corekit.models.TokenRequestModel;
-import com.midtrans.sdk.corekit.models.snap.CreditCard;
-import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
-import com.midtrans.sdk.corekit.models.snap.MerchantData;
-import com.midtrans.sdk.corekit.models.snap.PromoResponse;
-import com.midtrans.sdk.corekit.models.snap.Transaction;
-import com.midtrans.sdk.corekit.models.snap.TransactionResult;
+import com.midtrans.sdk.corekit.models.*;
+import com.midtrans.sdk.corekit.models.snap.*;
 import com.midtrans.sdk.corekit.models.snap.params.IndosatDompetkuPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.params.NewMandiriClickPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.params.TelkomselCashPaymentParams;
@@ -455,6 +434,8 @@ public class MidtransSDK {
             startGiftCardUIFlow(context, snapToken);
         } else if (paymentMethod.equals(PaymentMethod.DANAMON_ONLINE)) {
             startDanamonOnlineUIFlow(context, snapToken);
+        } else if (paymentMethod.equals(PaymentMethod.AKULAKU)) {
+            startAkulakuUIFlow(context, snapToken);
         } else {
             if (TextUtils.isEmpty(snapToken)) {
                 startPaymentUiFlow(context);
@@ -822,6 +803,20 @@ public class MidtransSDK {
     private void startDanamonOnlineUIFlow(@NonNull Context context, String snapToken) {
         if (isTransactionRequestAvailable() && uiflow != null) {
             uiflow.runDanamonOnline(context, snapToken);
+        } else {
+            Logger.e(TAG, ADD_TRANSACTION_DETAILS);
+        }
+    }
+
+    /**
+     * This will start actual execution of Akulaku UI flow.
+     *
+     * @param context   activity context.
+     * @param snapToken checkout token
+     */
+    private void startAkulakuUIFlow(@NonNull Context context, String snapToken) {
+        if (isTransactionRequestAvailable() && uiflow != null) {
+            uiflow.runAkulaku(context, snapToken);
         } else {
             Logger.e(TAG, ADD_TRANSACTION_DETAILS);
         }
@@ -1437,6 +1432,32 @@ public class MidtransSDK {
         if (isNetworkAvailable()) {
 
             snapServiceManager.paymentUsingDanamonOnline(snapToken, SdkUtil.getDanamonOnlinePaymentRequest(), callback);
+        } else {
+
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
+        }
+    }
+
+
+    /**
+     * It will run backround task to charge payment using Akulaku
+     *
+     * @param authenticationToken
+     */
+    public void paymentUsingAkulaku(@NonNull String authenticationToken, TransactionCallback callback) {
+        if (callback == null) {
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
+            return;
+        }
+        if (isTransactionRequestAvailable()) {
+            if (Utils.isNetworkAvailable(context)) {
+
+                snapServiceManager.paymentUsingBaseMethod(authenticationToken,
+                        new BasePaymentRequest(PaymentType.AKULAKU), callback);
+            } else {
+
+                callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
+            }
         } else {
 
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
