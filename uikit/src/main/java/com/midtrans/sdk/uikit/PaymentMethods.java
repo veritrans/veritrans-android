@@ -2,17 +2,11 @@ package com.midtrans.sdk.uikit;
 
 import android.content.Context;
 import android.text.TextUtils;
-
-import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.PaymentType;
-import com.midtrans.sdk.corekit.models.BankTransferModel;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
-import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
 import com.midtrans.sdk.uikit.models.BankTransfer;
 import com.midtrans.sdk.uikit.models.CreditCardType;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
-
-import java.util.ArrayList;
 
 /**
  * Payment method list.
@@ -54,6 +48,8 @@ public class PaymentMethods {
             return getMethodGopay(context, 15, paymentType, status);
         } else if (paymentType.equals(context.getString(R.string.payment_danamon_online))) {
             return getDanamonOnline(context, 16, paymentType, status);
+        } else if (paymentType.equals(context.getString(R.string.payment_akulaku))) {
+            return getMethodAkulaku(context, 17, paymentType, status);
         } else {
             return null;
         }
@@ -133,6 +129,9 @@ public class PaymentMethods {
         return new PaymentMethodsModel(context.getString(R.string.payment_method_danamon_online), context.getString(R.string.payment_method_description_danamon_online), R.drawable.ic_danamon_online, paymentType, priority, status);
     }
 
+    private static PaymentMethodsModel getMethodAkulaku(Context context, int priority, String paymentType, String status) {
+        return new PaymentMethodsModel(context.getString(R.string.payment_method_akulaku), context.getString(R.string.payment_method_description_akulaku), R.drawable.ic_akulaku, paymentType, priority, status);
+    }
 
     public static BankTransfer createBankTransferModel(Context context, String type, String status) {
         BankTransfer bankTransfer = null;
