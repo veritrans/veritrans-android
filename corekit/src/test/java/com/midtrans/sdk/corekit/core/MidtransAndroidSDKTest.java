@@ -233,7 +233,6 @@ public class MidtransAndroidSDKTest {
         PowerMockito.mockStatic(MixpanelAnalyticsManager.class);
 
         Mockito.when(contextMock.getApplicationContext()).thenReturn(contextMock);
-        Mockito.when(contextMock.getString(R.string.error_unable_to_connect)).thenReturn("not connected");
         Mockito.when(contextMock.getResources()).thenReturn(resourceMock);
         Mockito.when(contextMock.getResources().getDrawable(drawableIntDefaultMock)).thenReturn(drawableDefaultMock);
 

@@ -2,17 +2,11 @@ package com.midtrans.sdk.uikit;
 
 import android.content.Context;
 import android.text.TextUtils;
-
-import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.PaymentType;
-import com.midtrans.sdk.corekit.models.BankTransferModel;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
-import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
 import com.midtrans.sdk.uikit.models.BankTransfer;
 import com.midtrans.sdk.uikit.models.CreditCardType;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
-
-import java.util.ArrayList;
 
 /**
  * Payment method list.
@@ -54,6 +48,8 @@ public class PaymentMethods {
             return getMethodGopay(context, 15, paymentType, status);
         } else if (paymentType.equals(context.getString(R.string.payment_danamon_online))) {
             return getDanamonOnline(context, 16, paymentType, status);
+        } else if (paymentType.equals(context.getString(R.string.payment_akulaku))) {
+            return getMethodAkulaku(context, 17, paymentType, status);
         } else {
             return null;
         }
@@ -133,41 +129,9 @@ public class PaymentMethods {
         return new PaymentMethodsModel(context.getString(R.string.payment_method_danamon_online), context.getString(R.string.payment_method_description_danamon_online), R.drawable.ic_danamon_online, paymentType, priority, status);
     }
 
-    public static ArrayList<BankTransferModel> getBankTransferList(Context context) {
-        ArrayList<BankTransferModel> models = new ArrayList<>();
-        models.add(getBankTransferModel(context, context.getString(R.string.payment_bca_va), EnabledPayment.STATUS_DOWN));
-        models.add(getBankTransferModel(context, context.getString(R.string.payment_mandiri_bill_payment), EnabledPayment.STATUS_DOWN));
-        models.add(getBankTransferModel(context, context.getString(R.string.payment_permata_va), EnabledPayment.STATUS_DOWN));
-        models.add(getBankTransferModel(context, context.getString(R.string.payment_all_va), EnabledPayment.STATUS_DOWN));
-        return models;
+    private static PaymentMethodsModel getMethodAkulaku(Context context, int priority, String paymentType, String status) {
+        return new PaymentMethodsModel(context.getString(R.string.payment_method_akulaku), context.getString(R.string.payment_method_description_akulaku), R.drawable.ic_akulaku, paymentType, priority, status);
     }
-
-    /**
-     * Get bank transfer model to be shown
-     * It's deprecated now, please use {@link PaymentMethods#createBankTransferModel(Context, String, String)}
-     *
-     * @param context context
-     * @param name    bank name
-     * @param status  whether it is up or down
-     * @return bank transfer model
-     */
-    @Deprecated
-    public static BankTransferModel getBankTransferModel(Context context, String name, String status) {
-        if (name.equals(context.getString(R.string.payment_bca_va))) {
-            return new BankTransferModel(context.getString(R.string.bca_bank_transfer), R.drawable.ic_bca, true, 1, context.getString(R.string.payment_bank_description_bca), status);
-        } else if (name.equals(context.getString(R.string.payment_permata_va))) {
-            return new BankTransferModel(context.getString(R.string.permata_bank_transfer), R.drawable.ic_permata, true, 3, context.getString(R.string.payment_bank_description_permata), status);
-        } else if (name.equals(context.getString(R.string.payment_all_va))) {
-            return new BankTransferModel(context.getString(R.string.all_bank_transfer), R.drawable.ic_atm, true, 5, context.getString(R.string.payment_bank_description_other), status);
-        } else if (name.equals(context.getString(R.string.payment_mandiri_bill_payment))) {
-            return new BankTransferModel(context.getString(R.string.mandiri_bank_transfer), R.drawable.ic_mandiri_bill_payment2, true, 2, context.getString(R.string.payment_bank_description_mandiri), status);
-        } else if (name.equals(context.getString(R.string.payment_bni_va))) {
-            return new BankTransferModel(context.getString(R.string.bni_bank_transfer), R.drawable.ic_bni, true, 4, context.getString(R.string.payment_bank_description_bni), status);
-        } else {
-            return null;
-        }
-    }
-
 
     public static BankTransfer createBankTransferModel(Context context, String type, String status) {
         BankTransfer bankTransfer = null;

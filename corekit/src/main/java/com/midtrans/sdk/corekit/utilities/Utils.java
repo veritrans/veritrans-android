@@ -228,6 +228,7 @@ public class Utils {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
         df.setTimeZone(TimeZone.getTimeZone("Asia/Jakarta"));
         String nowAsISO = df.format(new Date(time));
+
         return nowAsISO;
     }
 

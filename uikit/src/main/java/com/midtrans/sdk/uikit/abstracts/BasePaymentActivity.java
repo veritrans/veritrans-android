@@ -312,7 +312,7 @@ public abstract class BasePaymentActivity extends BaseActivity {
 
     protected void showOnErrorPaymentStatusmessage(Throwable error, String defaultmessage) {
         if (isActivityRunning()) {
-            MessageInfo messageInfo = MessageUtil.createMessageOnError(this, error, defaultmessage);
+            MessageInfo messageInfo = MessageUtil.createMessageOnError(error, this);
             SdkUIFlowUtil.showToast(this, messageInfo.detailsMessage);
         }
     }

@@ -5,22 +5,24 @@ apply from: '../jacoco.gradle'
 apply plugin: 'com.vanniktech.android.junit.jacoco'
 
 group = 'com.midtrans'
-version = '1.19.3'
+version = '1.20.2'
 
 buildscript {
     repositories {
-        jcenter()
         mavenCentral()
+        maven { url 'https://maven.google.com' }
+        jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.1'
+        classpath 'com.android.tools.build:gradle:2.3.3'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6'
         classpath 'com.vanniktech:gradle-android-junit-jacoco-plugin:0.4.0'
     }
 }
 repositories {
-    jcenter()
     maven { url "https://dl.bintray.com/pt-midtrans/maven" }
+    maven { url 'https://maven.google.com' }
+    jcenter()
 }
 
 
@@ -110,6 +112,7 @@ tasks.withType(Test) {
 
 dependencies {
     compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
+    compile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
     compile 'com.github.scottyab:secure-preferences:v0.1.6'
 
     compile 'com.squareup.okhttp3:okhttp:3.10.0'
@@ -118,7 +121,7 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.4.0'
     compile 'com.squareup.retrofit2:converter-gson:2.4.0'
 
-    compile 'com.google.android.gms:play-services-auth:15.0.0'
+    compile 'com.google.android.gms:play-services-auth:15.0.1'
 
     // Analytics Manager
     developmentCompile 'com.midtrans:analytics:1.4.5-SANDBOX'

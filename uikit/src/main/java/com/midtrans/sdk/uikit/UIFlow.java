@@ -2,7 +2,6 @@ package com.midtrans.sdk.uikit;
 
 import android.content.Context;
 import android.content.Intent;
-
 import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
 import com.midtrans.sdk.corekit.core.ISdkFlow;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
@@ -261,6 +260,16 @@ public class UIFlow implements ISdkFlow {
         }
     }
 
+    @Override
+    public void runAkulaku(Context context, String snapToken) {
+        MidtransSDK sdk = MidtransSDK.getInstance();
+        if (sdk != null) {
+            Intent intent = new Intent(context, UserDetailsActivity.class);
+            intent.putExtra(UserDetailsActivity.AKULAKU, true);
+            intent.putExtra(UiKitConstants.EXTRA_SNAP_TOKEN, snapToken);
+            context.startActivity(intent);
+        }
+    }
 
     @Override
     public void runCardRegistration(Context context, CardRegistrationCallback callback) {

@@ -560,7 +560,6 @@ public class CardRegistrationActivity extends BasePaymentActivity implements Car
         Logger.d(TAG, "onCallbackUnImplemented()");
 
         hideProgressLayout();
-        SdkUIFlowUtil.showToast(this, getString(R.string.callback_unimplemented));
         finishRegistration(RESULT_CANCELED);
     }
 

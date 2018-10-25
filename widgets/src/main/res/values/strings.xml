@@ -35,5 +35,12 @@
     <string name="text_saved_card_expiry">xx/xx</string>
     <string name="card_click_type_one_click">one_click</string>
     <string name="card_click_type_two_click">two_clicks</string>
+    <string name="description_delete_card">Delete</string>
+    <string name="text_sample_masked_credit_card">4444 **** **** 1111</string>
+    <string name="valid_thru">02/22</string>
+    <string name="save_card_message">Save Card</string>
+    <string name="description_help_icon">Help Icon</string>
+    <string name="saved_card_one_click">Save one click</string>
+    <string name="saved_card_two_click">Save two click</string>
 
 </resources>

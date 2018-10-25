@@ -25,5 +25,6 @@ public enum PaymentMethod {
     INDOSAT_DOMPETKU,
     TELKOMSEL_CASH,
     XL_TUNAI,
-    DANAMON_ONLINE
+    DANAMON_ONLINE,
+    AKULAKU
 }
