@@ -19,34 +19,21 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.koushikdutta.ion.Ion;
 import com.midtrans.raygun.RaygunClient;
 import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.callback.CheckoutCallback;
 import com.midtrans.sdk.corekit.callback.TransactionOptionsCallback;
-import com.midtrans.sdk.corekit.core.Constants;
-import com.midtrans.sdk.corekit.core.Logger;
-import com.midtrans.sdk.corekit.core.MidtransSDK;
-import com.midtrans.sdk.corekit.core.PaymentType;
-import com.midtrans.sdk.corekit.core.TransactionRequest;
+import com.midtrans.sdk.corekit.core.*;
 import com.midtrans.sdk.corekit.core.themes.ColorTheme;
 import com.midtrans.sdk.corekit.core.themes.CustomColorTheme;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
-import com.midtrans.sdk.corekit.models.MerchantPreferences;
-import com.midtrans.sdk.corekit.models.PaymentDetails;
-import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
-import com.midtrans.sdk.corekit.models.TransactionResponse;
-import com.midtrans.sdk.corekit.models.UserDetail;
+import com.midtrans.sdk.corekit.models.*;
 import com.midtrans.sdk.corekit.models.promo.Promo;
 import com.midtrans.sdk.corekit.models.promo.PromoDetails;
-import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
+import com.midtrans.sdk.corekit.models.snap.*;
 import com.midtrans.sdk.corekit.models.snap.ItemDetails;
-import com.midtrans.sdk.corekit.models.snap.MerchantData;
-import com.midtrans.sdk.corekit.models.snap.Token;
-import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.TransactionDetails;
-import com.midtrans.sdk.corekit.models.snap.TransactionResult;
 import com.midtrans.sdk.uikit.BuildConfig;
 import com.midtrans.sdk.uikit.PaymentMethods;
 import com.midtrans.sdk.uikit.R;
@@ -59,6 +46,7 @@ import com.midtrans.sdk.uikit.models.MessageInfo;
 import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
+import com.midtrans.sdk.uikit.views.akulaku.AkulakuActivity;
 import com.midtrans.sdk.uikit.views.banktransfer.list.BankTransferListActivity;
 import com.midtrans.sdk.uikit.views.bca_klikbca.payment.KlikBcaPaymentActivity;
 import com.midtrans.sdk.uikit.views.bca_klikpay.BcaKlikPayPaymentActivity;
@@ -108,6 +96,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     private boolean isGci = false;
     private boolean isGopay = false;
     private boolean isDanamonOnline = false;
+    private boolean isAkulaku = false;
     private boolean backButtonEnabled;
     private boolean isDeepLink;
 
@@ -154,6 +143,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         isKioson = getIntent().getBooleanExtra(UserDetailsActivity.KIOSON, false);
         isGci = getIntent().getBooleanExtra(UserDetailsActivity.GIFT_CARD, false);
         isDanamonOnline = getIntent().getBooleanExtra(UserDetailsActivity.DANAMON_ONLINE, false);
+        isAkulaku = getIntent().getBooleanExtra(UserDetailsActivity.AKULAKU, false);
 
         midtransSDK = MidtransSDK.getInstance();
         initializeTheme();
@@ -314,7 +304,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         if (isCreditCardOnly || isBankTransferOnly || isKlikBCA || isBCAKlikpay
                 || isMandiriClickPay || isMandiriECash || isCIMBClicks || isBRIEpay
                 || isTelkomselCash || isIndosatDompetku || isXlTunai
-                || isIndomaret || isKioson || isGci || isDanamonOnline) {
+                || isIndomaret || isKioson || isGci || isDanamonOnline || isAkulaku) {
             progressMessage.setText(R.string.txt_checkout);
         } else {
             progressMessage.setText(getString(R.string.txt_loading_payment));
@@ -741,6 +731,17 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             } else {
                 showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
             }
+        } else if (isAkulaku) {
+            if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_akulaku))) {
+                Intent akulakuIntent = new Intent(this, AkulakuActivity.class);
+                startActivityForResult(akulakuIntent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+                if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
+                        && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                    overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                }
+            } else {
+                showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
+            }
         } else {
             if (data.isEmpty()) {
                 showErrorAlertDialog(getString(R.string.message_payment_method_empty));
@@ -883,6 +884,14 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             Intent danamonOnlineIntent = new Intent(this, DanamonOnlineActivity.class);
             danamonOnlineIntent.putExtra(DanamonOnlineActivity.USE_DEEP_LINK, isDeepLink);
             startActivityForResult(danamonOnlineIntent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
+                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+            }
+        } else if (name.equalsIgnoreCase(getString(R.string.payment_method_akulaku))) {
+            Intent akulakuIntent = new Intent(this, AkulakuActivity.class);
+            akulakuIntent.putExtra(DanamonOnlineActivity.USE_DEEP_LINK, isDeepLink);
+            startActivityForResult(akulakuIntent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
             if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                     && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);

@@ -171,6 +171,9 @@
             android:name=".views.creditcard.tnc.TermsAndConditionsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
+        <activity android:name=".views.akulaku.AkulakuActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait" />
 
         <service
             android:name="com.midtrans.raygun.RaygunPostService"

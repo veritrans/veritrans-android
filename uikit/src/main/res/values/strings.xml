@@ -251,6 +251,11 @@
     <string name="cimb_instruction_step2">Transaction will be cancelled if payment is not completed within 2 hours.</string>
     <string name="cimb_instruction_step3">Please make sure that there is no pop-up blocker on your browser.</string>
 
+    <!-- akulaku transfer Instructions -->
+    <string name="akulaku_instruction_step1">Click the "Pay Now" button, then you will be directed to the Akulaku Payment Center page.</string>
+    <string name="akulaku_instruction_step2">Select the desired installment tenor, then Login to your Akulaku account by entering your mobile number and password.</string>
+    <string name="akulaku_instruction_step3">Enter the verification code (OTP) that has been sent to your mobile number, then click the "Next" button.</string>
+    <string name="akulaku_instruction_step4">A confirmation page will be shown to you, then you can finish your transaction.</string>
 
     <!-- Mandiri E Cash transfer Instruction-->
     <string name="mandiri__e_cash_instruction_step1">Make sure you have registered your mobile phone number for LINE Pay e-cash / mandiri e-cash.</string>
@@ -323,6 +328,7 @@
     <string name="credit_card">Credit/Debit Card</string>
     <string name="mandiri_clickpay">Mandiri Clickpay</string>
     <string name="cimb_clicks">CIMB Clicks</string>
+    <string name="akulaku">Akulaku</string>
     <string name="epay_bri">e-Pay BRI</string>
     <string name="bbm_money">BBM Money</string>
     <string name="indosat_dompetku">Indosat Dompetku</string>
@@ -442,6 +448,7 @@
     <string name="payment_method_gci"> Gift Card Indonesia </string>
     <string name="payment_method_gopay">GO-PAY</string>
     <string name="payment_method_danamon_online">Danamon Online Banking</string>
+    <string name="payment_method_akulaku">Akulaku</string>
 
     <!--Payment List-->
     <string name="payment_epay_bri">bri_epay</string>
@@ -464,6 +471,7 @@
     <string name="payment_gci">gci</string>
     <string name="payment_gopay">gopay</string>
     <string name="payment_danamon_online">danamon_online</string>
+    <string name="payment_akulaku">akulaku</string>
 
 
     <!--Error Response-->
@@ -680,6 +688,7 @@
     <string name="payment_method_description_gci">Pay with Gift Cards</string>
     <string name="payment_method_description_gopay">Pay with your GO-PAY wallet</string>
     <string name="payment_method_description_danamon_online">Pay with your Danamon Online Banking Account</string>
+    <string name="payment_method_description_akulaku">Pay with your Akulaku account</string>
 
     <string name="payment_bank_description_bca">Pay from BCA ATMs or internet banking</string>
     <string name="payment_bank_description_mandiri">Pay from Mandiri ATMs or internet banking</string>

@@ -13,11 +13,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.webkit.ConsoleMessage;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import android.webkit.*;
 import android.widget.ImageView;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.PaymentType;
@@ -125,6 +121,9 @@ public class WebViewPaymentActivity extends BasePaymentActivity {
                 case PaymentType.CIMB_CLICKS:
                     textTitle.setText(getString(R.string.payment_method_cimb_clicks));
                     break;
+                case PaymentType.AKULAKU:
+                    textTitle.setText(getString(R.string.payment_method_akulaku));
+                    break;
             }
         }
     }
@@ -142,6 +141,7 @@ public class WebViewPaymentActivity extends BasePaymentActivity {
     private void initWebViewContainer() {
         webviewContainer.getSettings().setAllowFileAccess(false);
         webviewContainer.getSettings().setJavaScriptEnabled(true);
+        webviewContainer.getSettings().setDomStorageEnabled(true);
         webviewContainer.setInitialScale(1);
         webviewContainer.getSettings().setLoadWithOverviewMode(true);
         webviewContainer.getSettings().setUseWideViewPort(true);
@@ -240,6 +240,10 @@ public class WebViewPaymentActivity extends BasePaymentActivity {
                     }
                 } else if (!TextUtils.isEmpty(paymentType) && paymentType.equals(PaymentType.DANAMON_ONLINE)) {
                     if (url.contains(UiKitConstants.CALLBACK_DANAMON_ONLINE)) {
+                        finishWebViewPayment(activity, RESULT_OK);
+                    }
+                } else if (!TextUtils.isEmpty(paymentType) && paymentType.equals(PaymentType.AKULAKU)) {
+                    if (url.contains(UiKitConstants.CALLBACK_AKULAKU)) {
                         finishWebViewPayment(activity, RESULT_OK);
                     }
                 }

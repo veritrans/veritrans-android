@@ -171,7 +171,7 @@ public class SnapServiceManager extends BaseServiceManager {
 
     /**
      * This method is used for payment methods that using Base payment model
-     * payment methods : kioson, BCA KlikPay, CIMB Click, BRI epay, Mandiri Ecash, XL Tunai, Indomaret
+     * payment methods : kioson, BCA KlikPay, CIMB Click, BRI epay, Mandiri Ecash, XL Tunai, Indomaret, Akulaku
      *
      * @param snap
      * @param paymentRequest BasePaymentRequest

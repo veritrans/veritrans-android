@@ -1,5 +1,6 @@
 buildscript {
     repositories {
+        maven { url 'https://maven.google.com' }
         jcenter()
     }
     dependencies {
@@ -10,10 +11,10 @@ buildscript {
 
 allprojects {
     repositories {
-        jcenter()
         maven { url "http://dl.bintray.com/pt-midtrans/maven" }
         maven { url "https://maven.google.com" }
         maven { url "https://jitpack.io" }
+        jcenter()
     }
 
     project.plugins.whenPluginAdded { plugin ->
