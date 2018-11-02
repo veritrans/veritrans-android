@@ -3,6 +3,7 @@ package com.midtrans.sdk.corekit.core;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.google.gson.annotations.SerializedName;
 import com.midtrans.sdk.corekit.models.BcaBankTransferRequestModel;
 import com.midtrans.sdk.corekit.models.BillInfoModel;
 import com.midtrans.sdk.corekit.models.BillingAddress;
@@ -12,6 +13,7 @@ import com.midtrans.sdk.corekit.models.ItemDetails;
 import com.midtrans.sdk.corekit.models.ShippingAddress;
 import com.midtrans.sdk.corekit.models.snap.BankTransferRequestModel;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
+import com.midtrans.sdk.corekit.models.snap.Gopay;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,6 +80,10 @@ public class TransactionRequest {
      */
     private CustomerDetails mCustomerDetails = null;
 
+    /**
+     * contains user app deeplink for merchant app
+     */
+    private Gopay gopay;
     /**
      * helps to identify whether to use ui or not.
      */
@@ -401,5 +407,13 @@ public class TransactionRequest {
 
     public String getCurrency() {
         return currency;
+    }
+
+    public Gopay getGopay() {
+        return gopay;
+    }
+
+    public void setGopay(Gopay gopay) {
+        this.gopay = gopay;
     }
 }
