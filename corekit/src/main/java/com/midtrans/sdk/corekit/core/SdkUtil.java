@@ -3,17 +3,9 @@ package com.midtrans.sdk.corekit.core;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-
 import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.R;
-import com.midtrans.sdk.corekit.models.BankType;
-import com.midtrans.sdk.corekit.models.BillingAddress;
-import com.midtrans.sdk.corekit.models.CustomerDetails;
-import com.midtrans.sdk.corekit.models.ShippingAddress;
-import com.midtrans.sdk.corekit.models.SnapTransactionDetails;
-import com.midtrans.sdk.corekit.models.TokenRequestModel;
-import com.midtrans.sdk.corekit.models.UserAddress;
-import com.midtrans.sdk.corekit.models.UserDetail;
+import com.midtrans.sdk.corekit.models.*;
 import com.midtrans.sdk.corekit.models.promo.Promo;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
@@ -21,13 +13,7 @@ import com.midtrans.sdk.corekit.models.snap.params.CreditCardPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.params.GCIPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.params.KlikBcaPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.params.PromoDetails;
-import com.midtrans.sdk.corekit.models.snap.payment.BankTransferPaymentRequest;
-import com.midtrans.sdk.corekit.models.snap.payment.CreditCardPaymentRequest;
-import com.midtrans.sdk.corekit.models.snap.payment.CustomerDetailRequest;
-import com.midtrans.sdk.corekit.models.snap.payment.DanamonOnlinePaymentRequest;
-import com.midtrans.sdk.corekit.models.snap.payment.GCIPaymentRequest;
-import com.midtrans.sdk.corekit.models.snap.payment.GoPayPaymentRequest;
-import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.*;
 import com.midtrans.sdk.corekit.utilities.Installation;
 import com.securepreferences.SecurePreferences;
 
@@ -225,6 +211,10 @@ public class SdkUtil {
         if (transactionRequest.getEnabledPayments() != null
                 && !transactionRequest.getEnabledPayments().isEmpty()) {
             requestModel.setEnabledPayments(transactionRequest.getEnabledPayments());
+        }
+
+        if (transactionRequest.getGopay() != null) {
+            requestModel.setGopay(transactionRequest.getGopay());
         }
 
         return requestModel;
