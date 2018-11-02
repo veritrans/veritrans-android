@@ -1,10 +1,13 @@
 package com.midtrans.demo;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import com.midtrans.sdk.corekit.core.Logger;
@@ -36,6 +39,7 @@ public class GopayStatusActivity extends AppCompatActivity {
     private DefaultTextView textOrderId;
     private DefaultTextView textStatusTitle;
 
+    private FrameLayout layoutMain;
     private LinearLayout layoutTotalAmount;
     private LinearLayout layoutOrderId;
     private LinearLayout layoutPaymentType;
@@ -81,6 +85,7 @@ public class GopayStatusActivity extends AppCompatActivity {
 
 
         imageStatusLogo = findViewById(R.id.image_status_payment);
+        layoutMain = findViewById(com.midtrans.sdk.uikit.R.id.layout_main);
 
         buttonFinish = findViewById(R.id.button_primary);
     }
@@ -96,20 +101,34 @@ public class GopayStatusActivity extends AppCompatActivity {
     }
 
     private void setHeaderValues(String paymentStatus) {
+        int colorPaymentStatus;
         if (!TextUtils.isEmpty(paymentStatus)) {
             switch (paymentStatus) {
                 case "success":
                     textStatusTitle.setText(getString(R.string.payment_successful));
                     imageStatusLogo.setImageResource(R.drawable.ic_status_success);
                     textStatusMessage.setText(getString(R.string.thank_you));
+                    colorPaymentStatus = ContextCompat.getColor(this, com.midtrans.sdk.uikit.R.color.payment_status_success);
                     break;
                 default:
                     textStatusTitle.setText(getString(R.string.payment_unsuccessful));
                     textStatusMessage.setText(getString(R.string.sorry));
                     imageStatusLogo.setImageResource(R.drawable.ic_status_failed);
                     textStatusErrorMessage.setVisibility(View.VISIBLE);
+                    colorPaymentStatus = ContextCompat.getColor(this, com.midtrans.sdk.uikit.R.color.payment_status_failed);
                     break;
             }
+            setBackgroundDrawable(colorPaymentStatus);
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    private void setBackgroundDrawable(int drawable) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            layoutMain.setBackgroundColor(drawable);
+        } else {
+            layoutMain.setBackgroundColor(drawable);
         }
     }
 
