@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -14,38 +15,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.CompoundButton;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.RadioGroup;
-import android.widget.TextView;
-import android.widget.Toast;
-
+import android.widget.*;
 import com.midtrans.demo.widgets.DemoRadioButton;
 import com.midtrans.demo.widgets.DemoTextView;
 import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
-import com.midtrans.sdk.corekit.core.Currency;
-import com.midtrans.sdk.corekit.core.LocalDataHandler;
-import com.midtrans.sdk.corekit.core.MidtransSDK;
-import com.midtrans.sdk.corekit.core.TransactionRequest;
-import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
+import com.midtrans.sdk.corekit.core.*;
 import com.midtrans.sdk.corekit.core.themes.CustomColorTheme;
-import com.midtrans.sdk.corekit.models.BankType;
-import com.midtrans.sdk.corekit.models.BcaBankTransferRequestModel;
-import com.midtrans.sdk.corekit.models.BillInfoModel;
-import com.midtrans.sdk.corekit.models.CardTokenRequest;
-import com.midtrans.sdk.corekit.models.ExpiryModel;
-import com.midtrans.sdk.corekit.models.FreeText;
-import com.midtrans.sdk.corekit.models.FreeTextLanguage;
+import com.midtrans.sdk.corekit.models.*;
 import com.midtrans.sdk.corekit.models.ItemDetails;
-import com.midtrans.sdk.corekit.models.PermataBankTransferRequestModel;
-import com.midtrans.sdk.corekit.models.UserAddress;
-import com.midtrans.sdk.corekit.models.UserDetail;
-import com.midtrans.sdk.corekit.models.snap.BankTransferRequestModel;
-import com.midtrans.sdk.corekit.models.snap.CreditCard;
-import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
-import com.midtrans.sdk.corekit.models.snap.Installment;
-import com.midtrans.sdk.corekit.models.snap.TransactionResult;
+import com.midtrans.sdk.corekit.models.snap.*;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.scancard.ScanCard;
 import com.midtrans.sdk.uikit.SdkUIFlowBuilder;
@@ -55,6 +33,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.midtrans.demo.GopayStatusActivity.*;
 
 /**
  * Created by rakawm on 3/15/17.
@@ -303,6 +283,22 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         initTitleClicks();
         initNextButton();
         initResetSettings();
+        checkGopayCallback();
+    }
+
+    private void checkGopayCallback() {
+        Intent intent = getIntent();
+        Uri data = intent.getData();
+        if (data != null && data.isHierarchical()) {
+            final String orderId = data.getQueryParameter("order_id");
+            final String result = data.getQueryParameter("result");
+            Intent intentToResult = new Intent(DemoConfigActivity.this, GopayStatusActivity.class);
+            intentToResult.putExtra(INTENT_ORDERID, orderId);
+            intentToResult.putExtra(INTENT_AMOUNT, "10000");
+            intentToResult.putExtra(INTENT_TYPE, "GO-PAY");
+            intentToResult.putExtra(INTENT_STATUS, result);
+            startActivity(intentToResult);
+        }
     }
 
     @Override
@@ -3249,6 +3245,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     new BankTransferRequestModel(vaNumber)
             );
         }
+
+        transactionRequestNew.setGopay(new Gopay("demo://midtrans"));
 
         return transactionRequestNew;
     }

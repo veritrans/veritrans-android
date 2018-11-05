@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import com.midtrans.sdk.corekit.models.snap.BankTransferRequestModel;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
+import com.midtrans.sdk.corekit.models.snap.Gopay;
 import com.midtrans.sdk.corekit.models.snap.SnapPromo;
 
 import java.util.ArrayList;
@@ -51,6 +52,9 @@ public class TokenRequestModel {
     private String customField2;
     @SerializedName("custom_field3")
     private String customField3;
+
+    @SerializedName("gopay")
+    private Gopay gopay;
 
     public TokenRequestModel(SnapTransactionDetails transactionDetails, ArrayList<ItemDetails> itemDetails,
                              CustomerDetails customerDetails) {
@@ -183,5 +187,13 @@ public class TokenRequestModel {
 
     public void setEnabledPayments(List<String> enabledPayments) {
         this.enabledPayments = enabledPayments;
+    }
+
+    public Gopay getGopay() {
+        return gopay;
+    }
+
+    public void setGopay(Gopay gopay) {
+        this.gopay = gopay;
     }
 }

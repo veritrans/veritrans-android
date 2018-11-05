@@ -38,6 +38,9 @@ public class Transaction {
     @SerializedName("customer_details")
     private CustomerDetails customerDetails;
 
+    @SerializedName("gopay")
+    private Gopay gopay;
+
     public Transaction() {
     }
 
@@ -119,5 +122,13 @@ public class Transaction {
 
     public void setCustomerDetails(CustomerDetails customerDetails) {
         this.customerDetails = customerDetails;
+    }
+
+    public Gopay getGopay() {
+        return gopay;
+    }
+
+    public void setGopay(Gopay gopay) {
+        this.gopay = gopay;
     }
 }
