@@ -1,0 +1,101 @@
+apply plugin: 'com.android.library'
+apply from: '../jacoco.gradle'
+apply plugin: 'com.vanniktech.android.junit.jacoco'
+
+group = 'com.midtrans'
+version = '2.0.0'
+
+android {
+    def DEFAULT_PUBLISH
+
+    compileSdkVersion rootProject.sdkVersion
+    buildToolsVersion rootProject.buildToolsVersion
+    flavorDimensions("mode")
+    lintOptions {
+        abortOnError false
+    }
+    defaultConfig {
+        minSdkVersion rootProject.minCoreSdkVersion
+        targetSdkVersion rootProject.sdkVersion
+        versionCode 3
+        versionName version
+
+        buildConfigField "String", "CALLBACK_STRING", "\"/token/callback/\""
+        buildConfigField "String", "CALLBACK_URL", "\"https://hangout.betas.in/veritrans/api/paymentstatus\""
+        buildConfigField "String", "BBM_MONEY_PACKAGE", "\"com.monitise.client.android.bbmmoney\""
+        buildConfigField "String", "MARKET_URL", "\"market://details?id=\""
+        buildConfigField "String", "PLAY_STORE_URL", "\"https://play.google.com/store/apps/details?id=\""
+        buildConfigField "String", "BBM_PREFIX_URL", "\"bbmmoney://api/payment/imp?data=\""
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            testCoverageEnabled = true
+        }
+    }
+    productFlavors {
+        development {
+            dimension = "mode"
+            DEFAULT_PUBLISH = "developmentRelease"
+            buildConfigField "String", "BASE_URL", "\"https://api.sandbox.midtrans.com/v2/\""
+            buildConfigField "String", "SNAP_BASE_URL", "\"https://app.sandbox.midtrans.com/snap/\""
+            buildConfigField "String", "PROMO_ENGINE_URL", "\"https://promo.vt-stage.info/\""
+        }
+        staging {
+            dimension = "mode"
+            DEFAULT_PUBLISH = "stagingRelease"
+            buildConfigField "String", "BASE_URL", "\"https://api.stg.veritrans.co.id/v2/\""
+            buildConfigField "String", "SNAP_BASE_URL", "\"https://midtrans-checkout1.stg.veritrans.co.id/snap/\""
+            buildConfigField "String", "PROMO_ENGINE_URL", "\"https://promo.vt-stage.info/\""
+        }
+        production {
+            dimension = "mode"
+            DEFAULT_PUBLISH = "productionRelease"
+            buildConfigField "String", "BASE_URL", "\"https://api.midtrans.com/v2/\""
+            buildConfigField "String", "SNAP_BASE_URL", "\"https://app.midtrans.com/snap/\""
+            buildConfigField "String", "PROMO_ENGINE_URL", "\"https://promo.vt-stage.info/\""
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    testImplementation 'junit:junit:4.12'
+    implementation "com.android.support:appcompat-v7:${rootProject.supportLibVersion}"
+    implementation "com.jakewharton.retrofit:retrofit1-okhttp3-client:1.1.0"
+    implementation "com.squareup.okhttp3:okhttp:${rootProject.okHttpVersion}"
+    implementation "com.squareup.okhttp3:logging-interceptor:${rootProject.okHttpVersion}"
+    implementation "com.squareup.retrofit2:retrofit:${rootProject.retrofitVersion}"
+    implementation "com.squareup.retrofit2:converter-gson:${rootProject.retrofitVersion}"
+
+    testImplementation 'org.mockito:mockito-core:2.21.0'
+    testImplementation 'org.mockito:mockito-inline:2.7.22'
+    testImplementation("org.powermock:powermock-api-mockito:${rootProject.powerMockVersion}") {
+        exclude module: 'hamcrest-core'
+        exclude module: 'objenesis'
+    }
+    testImplementation("org.powermock:powermock-module-junit4:${rootProject.powerMockVersion}") {
+        exclude module: 'hamcrest-core'
+        exclude module: 'objenesis'
+    }
+    testImplementation("org.powermock:powermock-api-mockito:${rootProject.powerMockVersion}") {
+        exclude module: 'hamcrest-core'
+        exclude module: 'objenesis'
+    }
+    testImplementation("org.powermock:powermock-module-junit4-rule:${rootProject.powerMockVersion}") {
+        exclude module: 'hamcrest-core'
+        exclude module: 'objenesis'
+    }
+
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation("org.powermock:powermock-mockito-release-full:${rootProject.powerMockVersion}") {
+        exclude module: 'hamcrest-core'
+        exclude module: 'objenesis'
+    }
+}
