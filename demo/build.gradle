@@ -1,0 +1,69 @@
+apply plugin: 'com.android.application'
+
+group = 'com.midtrans'
+version = '2.0.0'
+
+android {
+    compileSdkVersion rootProject.sdkVersion
+    buildToolsVersion rootProject.buildToolsVersion
+    flavorDimensions "mode"
+    lintOptions {
+        abortOnError false
+    }
+    defaultConfig {
+        applicationId "com.midtrans.demo"
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.sdkVersion
+        versionCode 3
+        versionName version
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    signingConfigs {
+        release {
+            storeFile file(KEYSTORE)
+            storePassword KEYSTORE_PASSWORD
+            keyAlias KEY_ALIAS
+            keyPassword KEY_PASSWORD
+        }
+    }
+    buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    productFlavors {
+        development {
+            dimension = "mode"
+            applicationIdSuffix ".development"
+            versionNameSuffix "-development"
+            resValue "string", "app_name", "Midtrans Demo Dev"
+            buildConfigField "String", "BASE_URL", MERCHANT_BASE_URL_SANDBOX
+            buildConfigField "String", "CLIENT_KEY", MERCHANT_CLIENT_KEY_SANDBOX
+        }
+
+        production {
+            dimension = "mode"
+            resValue "string", "app_name", "Midtrans Demo"
+            buildConfigField "String", "BASE_URL", MERCHANT_BASE_URL_PRODUCTION
+            buildConfigField "String", "CLIENT_KEY", MERCHANT_CLIENT_KEY_PRODUCTION
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    developmentImplementation project(path:':corekit')
+    productionImplementation project(path:':corekit')
+}
