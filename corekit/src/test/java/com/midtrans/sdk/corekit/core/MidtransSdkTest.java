@@ -13,7 +13,6 @@ import com.midtrans.sdk.corekit.base.network.MidtransRestAdapter;
 import com.midtrans.sdk.corekit.core.merchant.MerchantApiManager;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.CheckoutCallback;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.TransactionRequest;
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.TokenResponse;
 import com.midtrans.sdk.corekit.core.snap.SnapApiManager;
 import com.midtrans.sdk.corekit.core.snap.model.transaction.TransactionOptionsCallback;
 import com.midtrans.sdk.corekit.utilities.Logger;
@@ -37,7 +36,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({NetworkHelper.class, Looper.class, Utils.class, Log.class, TextUtils.class,
         Logger.class, MidtransRestAdapter.class})
-public class MidtransCoreSdkTest {
+public class MidtransSdkTest {
 
     @Mock
     private Context contextMock;
@@ -52,7 +51,7 @@ public class MidtransCoreSdkTest {
     private TransactionOptionsCallback transactionOptionCallbackMock;
 
     @Mock
-    private MidtransCoreSdk midtransCoreSdkSpy;
+    private MidtransSdk midtransSdkSpy;
     @Mock
     private TransactionRequest transactionRequestMock;
 
@@ -86,62 +85,62 @@ public class MidtransCoreSdkTest {
         Mockito.when(NetworkHelper.newSnapServiceManager(SDKConfigTest.MERCHANT_BASE_URL, SDKConfigTest.TIME_OUT)).thenReturn(snapServiceManager);
         Mockito.when(NetworkHelper.newMerchantServiceManager(SDKConfigTest.MERCHANT_BASE_URL, SDKConfigTest.TIME_OUT)).thenReturn(merchantServiceManager);
 
-        MidtransCoreSdk midtransSDK = MidtransCoreSdk.init(contextMock,
+        MidtransSdk midtransSDK = MidtransSdk.builder(contextMock,
                 SDKConfigTest.CLIENT_KEY,
                 SDKConfigTest.MERCHANT_BASE_URL)
                 .setLogEnabled(true)
                 .setEnvironment(Environment.SANDBOX)
                 .build();
 
-        midtransCoreSdkSpy = Mockito.spy(midtransSDK);
+        midtransSdkSpy = Mockito.spy(midtransSDK);
     }
 
     @Test
     public void test_setTransactionRequest_positive() {
-        midtransCoreSdkSpy.setTransactionRequest(transactionRequestMock);
-        Assert.assertEquals(transactionRequestMock, midtransCoreSdkSpy.getTransactionRequest());
+        midtransSdkSpy.setTransactionRequest(transactionRequestMock);
+        Assert.assertEquals(transactionRequestMock, midtransSdkSpy.getTransactionRequest());
     }
 
     @Test
     public void test_setTransactionRequest_negative() {
-        midtransCoreSdkSpy.setTransactionRequest(transactionRequestMock);
+        midtransSdkSpy.setTransactionRequest(transactionRequestMock);
         Assert.assertNotEquals(transactionRequestMock, null);
     }
 
     @Test
     public void test_getMerchantBaseUrl_positive() {
-        Assert.assertEquals(midtransCoreSdkSpy.getMerchantBaseUrl(), SDKConfigTest.MERCHANT_BASE_URL);
+        Assert.assertEquals(midtransSdkSpy.getMerchantBaseUrl(), SDKConfigTest.MERCHANT_BASE_URL);
     }
 
     @Test
     public void test_getMerchantBaseUrl_negative() {
-        Assert.assertNotEquals(midtransCoreSdkSpy.getMerchantBaseUrl(), null);
+        Assert.assertNotEquals(midtransSdkSpy.getMerchantBaseUrl(), null);
     }
 
     @Test
     public void test_getEnvironment_positive() {
-        Assert.assertEquals(midtransCoreSdkSpy.getEnvironment(), Environment.SANDBOX);
+        Assert.assertEquals(midtransSdkSpy.getEnvironment(), Environment.SANDBOX);
     }
 
     @Test
     public void test_getEnvironment_negative() {
-        Assert.assertNotEquals(midtransCoreSdkSpy.getEnvironment(), Environment.PRODUCTION);
+        Assert.assertNotEquals(midtransSdkSpy.getEnvironment(), Environment.PRODUCTION);
     }
 
 
     @Test
     public void test_getClientId_positive() {
-        Assert.assertEquals(midtransCoreSdkSpy.getMerchantClientId(), SDKConfigTest.CLIENT_KEY);
+        Assert.assertEquals(midtransSdkSpy.getMerchantClientId(), SDKConfigTest.CLIENT_KEY);
     }
 
     @Test
     public void test_getClientId_negative() {
-        Assert.assertNotEquals(midtransCoreSdkSpy.getMerchantClientId(), "123");
+        Assert.assertNotEquals(midtransSdkSpy.getMerchantClientId(), "123");
     }
 
     @Test
     public void test_getContext_positive() throws Exception {
-        Assert.assertEquals(contextMock, midtransCoreSdkSpy.getContext());
+        Assert.assertEquals(contextMock, midtransSdkSpy.getContext());
     }
 
     @Test
@@ -151,12 +150,12 @@ public class MidtransCoreSdkTest {
 
     @Test
     public void test_sdkTimeout_positive() throws Exception {
-        Assert.assertEquals(midtransCoreSdkSpy.getApiRequestTimeOut(), 30);
+        Assert.assertEquals(midtransSdkSpy.getApiRequestTimeOut(), 30);
     }
 
     @Test
     public void test_sdkTimeout_negative() throws Exception {
-        Assert.assertNotEquals(midtransCoreSdkSpy.getApiRequestTimeOut(), 0);
+        Assert.assertNotEquals(midtransSdkSpy.getApiRequestTimeOut(), 0);
     }
 
     /**
@@ -165,24 +164,24 @@ public class MidtransCoreSdkTest {
 
     @Test
     public void test_checkout() {
-        midtransCoreSdkSpy.setTransactionRequest(transactionRequestMock);
-        when(midtransCoreSdkSpy.isNetworkAvailable()).thenReturn(true);
-        midtransCoreSdkSpy.checkout(checkoutCallbackMock);
-        Mockito.verify(midtransCoreSdkSpy).checkout(checkoutCallbackMock);
+        midtransSdkSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSdkSpy.isNetworkAvailable()).thenReturn(true);
+        midtransSdkSpy.checkout(checkoutCallbackMock);
+        Mockito.verify(midtransSdkSpy).checkout(checkoutCallbackMock);
     }
 
     @Test
     public void test_checkout_whenCallbackNull() {
-        midtransCoreSdkSpy.checkout(null);
+        midtransSdkSpy.checkout(null);
         verifyStatic(Mockito.times(1));
         Logger.error(Matchers.anyString(), Matchers.anyString());
     }
 
     @Test
     public void test_checkout_whenNetworkUnAvailable() {
-        midtransCoreSdkSpy.setTransactionRequest(transactionRequestMock);
-        when(midtransCoreSdkSpy.isNetworkAvailable()).thenReturn(false);
-        midtransCoreSdkSpy.checkout(checkoutCallbackMock);
+        midtransSdkSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSdkSpy.isNetworkAvailable()).thenReturn(false);
+        midtransSdkSpy.checkout(checkoutCallbackMock);
         Mockito.verify(checkoutCallbackMock).onError(Matchers.any(Throwable.class));
     }
 
@@ -192,29 +191,29 @@ public class MidtransCoreSdkTest {
 
     @Test
     public void test_getSnapTransaction() {
-        when(midtransCoreSdkSpy.isNetworkAvailable()).thenReturn(true);
-        midtransCoreSdkSpy.getTransactionOptions(SDKConfigTest.SNAP_TOKEN, transactionOptionCallbackMock);
+        when(midtransSdkSpy.isNetworkAvailable()).thenReturn(true);
+        midtransSdkSpy.getTransactionOptions(SDKConfigTest.SNAP_TOKEN, transactionOptionCallbackMock);
         Mockito.verify(snapServiceManager).getTransactionOptions(SDKConfigTest.SNAP_TOKEN, transactionOptionCallbackMock);
     }
 
     @Test
     public void test_getSnapTransaction_whenCallbackNull() {
-        midtransCoreSdkSpy.getTransactionOptions(SDKConfigTest.SNAP_TOKEN, null);
+        midtransSdkSpy.getTransactionOptions(SDKConfigTest.SNAP_TOKEN, null);
         verifyStatic(Mockito.times(1));
         Logger.error(Matchers.anyString(), Matchers.anyString());
     }
 
     @Test
     public void test_getSnapTransaction_whenTokenNull() {
-        when(midtransCoreSdkSpy.isNetworkAvailable()).thenReturn(true);
-        midtransCoreSdkSpy.getTransactionOptions(null, transactionOptionCallbackMock);
+        when(midtransSdkSpy.isNetworkAvailable()).thenReturn(true);
+        midtransSdkSpy.getTransactionOptions(null, transactionOptionCallbackMock);
         Mockito.verify(transactionOptionCallbackMock).onError(Matchers.any(Throwable.class));
     }
 
     @Test
     public void test_getSnapTransaction_whenNetworkUnAvailable() {
-        when(midtransCoreSdkSpy.isNetworkAvailable()).thenReturn(false);
-        midtransCoreSdkSpy.getTransactionOptions(null, transactionOptionCallbackMock);
+        when(midtransSdkSpy.isNetworkAvailable()).thenReturn(false);
+        midtransSdkSpy.getTransactionOptions(null, transactionOptionCallbackMock);
         Mockito.verify(transactionOptionCallbackMock).onError(Matchers.any(Throwable.class));
     }
 
