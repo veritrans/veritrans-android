@@ -192,13 +192,13 @@ public class MidtransSdkTest {
     @Test
     public void test_getSnapTransaction() {
         when(midtransSdkSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSdkSpy.getTransactionOptions(SDKConfigTest.SNAP_TOKEN, transactionOptionCallbackMock);
-        Mockito.verify(snapServiceManager).getTransactionOptions(SDKConfigTest.SNAP_TOKEN, transactionOptionCallbackMock);
+        midtransSdkSpy.getPaymentInfo(SDKConfigTest.SNAP_TOKEN, transactionOptionCallbackMock);
+        Mockito.verify(snapServiceManager).getPaymentInfo(SDKConfigTest.SNAP_TOKEN, transactionOptionCallbackMock);
     }
 
     @Test
     public void test_getSnapTransaction_whenCallbackNull() {
-        midtransSdkSpy.getTransactionOptions(SDKConfigTest.SNAP_TOKEN, null);
+        midtransSdkSpy.getPaymentInfo(SDKConfigTest.SNAP_TOKEN, null);
         verifyStatic(Mockito.times(1));
         Logger.error(Matchers.anyString(), Matchers.anyString());
     }
@@ -206,14 +206,14 @@ public class MidtransSdkTest {
     @Test
     public void test_getSnapTransaction_whenTokenNull() {
         when(midtransSdkSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSdkSpy.getTransactionOptions(null, transactionOptionCallbackMock);
+        midtransSdkSpy.getPaymentInfo(null, transactionOptionCallbackMock);
         Mockito.verify(transactionOptionCallbackMock).onError(Matchers.any(Throwable.class));
     }
 
     @Test
     public void test_getSnapTransaction_whenNetworkUnAvailable() {
         when(midtransSdkSpy.isNetworkAvailable()).thenReturn(false);
-        midtransSdkSpy.getTransactionOptions(null, transactionOptionCallbackMock);
+        midtransSdkSpy.getPaymentInfo(null, transactionOptionCallbackMock);
         Mockito.verify(transactionOptionCallbackMock).onError(Matchers.any(Throwable.class));
     }
 

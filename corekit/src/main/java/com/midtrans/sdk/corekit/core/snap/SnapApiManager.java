@@ -33,8 +33,8 @@ public class SnapApiManager extends BaseServiceManager {
      * @param snapToken Snap token after creating Snap Token from Merchant Server.
      * @param callback  callback of Transaction Option.
      */
-    public void getTransactionOptions(@NonNull final String snapToken,
-                                      final TransactionOptionsCallback callback) {
+    public void getPaymentInfo(@NonNull final String snapToken,
+                               final TransactionOptionsCallback callback) {
 
         if (apiService == null) {
             doOnApiServiceUnAvailable(callback);
