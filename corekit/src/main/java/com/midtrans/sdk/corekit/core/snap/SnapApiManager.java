@@ -1,20 +1,17 @@
 package com.midtrans.sdk.corekit.core.snap;
 
-import android.support.annotation.NonNull;
-import android.text.TextUtils;
-
+import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.base.network.BaseServiceManager;
-import com.midtrans.sdk.corekit.core.snap.model.transaction.TransactionOptionsCallback;
-import com.midtrans.sdk.corekit.core.snap.model.transaction.response.TransactionOptionsResponse;
+import com.midtrans.sdk.corekit.core.snap.model.pay.request.va.BankTransferPaymentRequest;
+import com.midtrans.sdk.corekit.core.snap.model.pay.response.PaymentResponse;
+import com.midtrans.sdk.corekit.core.snap.model.transaction.response.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.utilities.Constants;
-import com.midtrans.sdk.corekit.utilities.Logger;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.midtrans.sdk.corekit.utilities.Constants.MESSAGE_ERROR_EMPTY_RESPONSE;
 
 public class SnapApiManager extends BaseServiceManager {
 
@@ -33,61 +30,80 @@ public class SnapApiManager extends BaseServiceManager {
      * @param snapToken Snap token after creating Snap Token from Merchant Server.
      * @param callback  callback of Transaction Option.
      */
-    public void getPaymentInfo(@NonNull final String snapToken,
-                               final TransactionOptionsCallback callback) {
+    public void getPaymentInfo(final String snapToken,
+                               final MidtransCallback<PaymentInfoResponse> callback) {
 
+        if (snapToken == null) {
+            callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
+        } else {
+            if (apiService == null) {
+                callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_EMPTY_MERCHANT_URL));
+            } else {
+                Call<PaymentInfoResponse> call = apiService.getTransactionOptions(snapToken);
+                call.enqueue(new Callback<PaymentInfoResponse>() {
+                    @Override
+                    public void onResponse(Call<PaymentInfoResponse> call, Response<PaymentInfoResponse> response) {
+                        releaseResources();
+                        handleServerResponse(response, callback, new PaymentInfoResponse(), null);
+                    }
+
+                    @Override
+                    public void onFailure(Call<PaymentInfoResponse> call, Throwable t) {
+                        releaseResources();
+                        handleServerResponse(null, callback, new PaymentInfoResponse(), t);
+                    }
+                });
+            }
+        }
+    }
+
+    /**
+     * This method is used for Payment Using Bank Transfer BCA
+     *
+     * @param paymentRequest Payment Details.
+     * @param callback       Transaction callback
+     */
+    public void paymentUsingBankTransferBCA(final String snapToken,
+                                            BankTransferPaymentRequest paymentRequest,
+                                            final MidtransCallback<PaymentResponse> callback) {
         if (apiService == null) {
-            doOnApiServiceUnAvailable(callback);
+            callback.onFailed(new Throwable(MESSAGE_ERROR_EMPTY_RESPONSE));
             return;
         }
 
-        Call<TransactionOptionsResponse> call = apiService.getTransactionOptions(snapToken);
-        call.enqueue(new Callback<TransactionOptionsResponse>() {
+        Call<PaymentResponse> call = apiService.paymentBankTransfer(snapToken, paymentRequest);
+        call.enqueue(new Callback<PaymentResponse>() {
             @Override
-            public void onResponse(Call<TransactionOptionsResponse> call, Response<TransactionOptionsResponse> response) {
+            public void onResponse(Call<PaymentResponse> call, Response<PaymentResponse> response) {
                 releaseResources();
-                TransactionOptionsResponse transaction = response.body();
-                if (transaction != null) {
-                    if (response.code() == 200 && !TextUtils.isEmpty(transaction.getToken())) {
-                        callback.onSuccess(transaction);
-                    } else {
-                        callback.onFailure(transaction, response.message());
-                    }
-                    return;
-                }
-
-                try {
-                    if (response.errorBody() != null) {
-
-                        String strErrorBody = response.errorBody().string();
-                        JSONObject jsonObject = new JSONObject(strErrorBody);
-                        String errorMessage = response.message();
-
-                        if (jsonObject != null && jsonObject.getJSONArray(KEY_ERROR_MESSAGE) != null) {
-                            JSONArray jsonArray = jsonObject.getJSONArray(KEY_ERROR_MESSAGE);
-                            if (jsonArray.get(0) != null) {
-                                errorMessage = jsonArray.get(0).toString();
-                            }
-                        }
-                        callback.onError(new Throwable(errorMessage));
-
-                    } else {
-                        callback.onError(new Throwable(Constants.MESSAGE_ERROR_EMPTY_RESPONSE));
-                        Logger.error(TAG, Constants.MESSAGE_ERROR_EMPTY_RESPONSE);
-                    }
-
-                } catch (Exception e) {
-                    callback.onError(new Throwable(Constants.MESSAGE_ERROR_EMPTY_RESPONSE));
-                    Logger.error(TAG, "error: " + e.getMessage());
-                }
+                handleServerResponse(response, callback, new PaymentResponse(), null);
             }
 
             @Override
-            public void onFailure(Call<TransactionOptionsResponse> call, Throwable t) {
+            public void onFailure(Call<PaymentResponse> call, Throwable t) {
                 releaseResources();
-                callback.onError(new Throwable(t.getMessage(), t.getCause()));
+                handleServerResponse(null, callback, new PaymentResponse(), t);
             }
         });
+    }
+
+
+    private <T> void handleServerResponse(Response<T> response, MidtransCallback<T> callback, T defaultValue, Throwable throwable) {
+        if (response != null && response.isSuccessful()) {
+            if (response.code() != 204) {
+                T responseBody = response.body();
+                callback.onSuccess(responseBody);
+            } else {
+                callback.onSuccess(defaultValue);
+            }
+        } else {
+            if (throwable != null) {
+                callback.onFailed(new Throwable(throwable.getMessage(), throwable.getCause()));
+            } else {
+                callback.onFailed(new Throwable(MESSAGE_ERROR_EMPTY_RESPONSE));
+            }
+        }
+
     }
 
 }
