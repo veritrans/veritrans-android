@@ -4,12 +4,13 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.base.enums.Environment;
 import com.midtrans.sdk.corekit.core.merchant.MerchantApiManager;
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.CheckoutCallback;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.TransactionRequest;
+import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutResponse;
 import com.midtrans.sdk.corekit.core.snap.SnapApiManager;
-import com.midtrans.sdk.corekit.core.snap.model.transaction.TransactionOptionsCallback;
+import com.midtrans.sdk.corekit.core.snap.model.transaction.response.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.utilities.Constants;
 import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.corekit.utilities.NetworkHelper;
@@ -46,6 +47,12 @@ public class MidtransSdk {
     private SnapApiManager snapApiManager;
 
     private final int apiRequestTimeOut = 30;
+    private final String BASE_URL_SANDBOX = "https://api.sandbox.midtrans.com/v2/";
+    private final String BASE_URL_PRODUCTION = "https://api.midtrans.com/v2/";
+    private final String SNAP_BASE_URL_SANDBOX = "https://app.sandbox.midtrans.com/snap/";
+    private final String SNAP_BASE_URL_PRODUCTION = "https://app.midtrans.com/snap/";
+    private final String PROMO_BASE_URL_SANDBOX = "https://promo.vt-stage.info/";
+    private final String PROMO_BASE_URL_PRODUCTION = "https://promo.vt-stage.info/";
 
     private MidtransSdk(Context context,
                         String clientId,
@@ -56,7 +63,13 @@ public class MidtransSdk {
         this.merchantBaseUrl = merchantUrl;
         this.midtransEnvironment = environment;
         this.merchantApiManager = NetworkHelper.newMerchantServiceManager(merchantBaseUrl, apiRequestTimeOut);
-        this.snapApiManager = NetworkHelper.newSnapServiceManager(merchantBaseUrl, apiRequestTimeOut);
+        String snapBaseUrl;
+        if (this.midtransEnvironment == Environment.SANDBOX){
+            snapBaseUrl = SNAP_BASE_URL_SANDBOX;
+        }else{
+            snapBaseUrl = SNAP_BASE_URL_PRODUCTION;
+        }
+        this.snapApiManager = NetworkHelper.newSnapServiceManager(snapBaseUrl, apiRequestTimeOut);
     }
 
     /**
@@ -223,7 +236,7 @@ public class MidtransSdk {
      *
      * @param callback for receiving callback from request.
      */
-    public void checkout(final CheckoutCallback callback) {
+    public void checkout(final MidtransCallback<CheckoutResponse> callback) {
         checkout(this.transactionRequest, callback);
     }
 
@@ -235,24 +248,15 @@ public class MidtransSdk {
      * @param callback           for receiving callback from request.
      */
     public void checkout(@NonNull final TransactionRequest transactionRequest,
-                         final CheckoutCallback callback) {
+                         final MidtransCallback<CheckoutResponse> callback) {
         if (callback == null) {
             Logger.error(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
-
-        if (transactionRequest != null) {
-            if (isNetworkAvailable()) {
-                if (merchantApiManager != null) {
-                    merchantApiManager.checkout(transactionRequest, callback);
-                } else {
-                    callback.onError(new Throwable(Constants.MESSAGE_ERROR_EMPTY_MERCHANT_URL));
-                }
-            } else {
-                callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
-            }
+        if (isNetworkAvailable()) {
+            merchantApiManager.checkout(transactionRequest, callback);
         } else {
-            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
+            callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 
@@ -263,24 +267,15 @@ public class MidtransSdk {
      * @param callback  for receiving callback from request.
      */
     public void getPaymentInfo(@NonNull final String snapToken,
-                               final TransactionOptionsCallback callback) {
+                               final MidtransCallback<PaymentInfoResponse> callback) {
         if (callback == null) {
             Logger.error(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
-
-        if (snapToken != null) {
-            if (isNetworkAvailable()) {
-                if (snapApiManager != null) {
-                    snapApiManager.getPaymentInfo(snapToken, callback);
-                } else {
-                    callback.onError(new Throwable(Constants.MESSAGE_ERROR_EMPTY_MERCHANT_URL));
-                }
-            } else {
-                callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
-            }
+        if (isNetworkAvailable()) {
+            snapApiManager.getPaymentInfo(snapToken, callback);
         } else {
-            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
+            callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 
