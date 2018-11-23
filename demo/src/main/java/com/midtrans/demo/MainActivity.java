@@ -3,18 +3,17 @@ package com.midtrans.demo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.base.enums.Environment;
 import com.midtrans.sdk.corekit.base.model.BankType;
 import com.midtrans.sdk.corekit.core.MidtransSdk;
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.CheckoutCallback;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.TransactionRequest;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.customer.BillingAddress;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.customer.CustomerDetails;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.customer.ShippingAddress;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.specific.creditcard.CreditCard;
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.TokenResponse;
-import com.midtrans.sdk.corekit.core.snap.model.transaction.TransactionOptionsCallback;
-import com.midtrans.sdk.corekit.core.snap.model.transaction.response.TransactionOptionsResponse;
+import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutResponse;
+import com.midtrans.sdk.corekit.core.snap.model.transaction.response.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.utilities.Currency;
 import com.midtrans.sdk.corekit.utilities.Logger;
 
@@ -73,42 +72,29 @@ public class MainActivity extends AppCompatActivity {
         TransactionRequest trxInstance = TransactionRequest.getInstance();
 
         MidtransSdk.getInstance().setTransactionRequest(trxRequest);
-        MidtransSdk.getInstance().checkout(new CheckoutCallback() {
+        MidtransSdk.getInstance().checkout(new MidtransCallback<CheckoutResponse>() {
             @Override
-            public void onSuccess(TokenResponse token) {
-                Logger.debug("MIDTRANS SDK NEW RETURN SUCCESS >>> " + token.getSnapToken());
-                getTransactionOptions(token.getSnapToken());
+            public void onSuccess(CheckoutResponse data) {
+                Logger.debug("RESULT TOKEN "+data.getSnapToken());
+                getTransactionOptions(data.getSnapToken());
             }
 
             @Override
-            public void onFailure(TokenResponse token, String reason) {
-                Logger.debug("MIDTRANS SDK NEW RETURN FAILURE >>> " + reason);
-            }
+            public void onFailed(Throwable throwable) {
 
-            @Override
-            public void onError(Throwable error) {
-                Logger.debug("MIDTRANS SDK NEW RETURN ERROR >>> " + error.getMessage());
             }
         });
     }
 
     private void getTransactionOptions(String snapToken) {
-        MidtransSdk.getInstance().getPaymentInfo(snapToken, new TransactionOptionsCallback() {
+        MidtransSdk.getInstance().getPaymentInfo(snapToken, new MidtransCallback<PaymentInfoResponse>() {
             @Override
-            public void onSuccess(TransactionOptionsResponse transaction) {
-                Logger.debug("MIDTRANS SDK NEW RETURN SUCCESS >>> " + transaction.getToken());
-
+            public void onSuccess(PaymentInfoResponse data) {
+                Logger.debug("RESULT TOKEN "+data.getToken());
             }
 
             @Override
-            public void onFailure(TransactionOptionsResponse transaction, String reason) {
-                Logger.debug("MIDTRANS SDK NEW RETURN FAILURE >>> " + reason);
-
-            }
-
-            @Override
-            public void onError(Throwable error) {
-                Logger.debug("MIDTRANS SDK NEW RETURN ERROR >>> " + error.getMessage());
+            public void onFailed(Throwable throwable) {
 
             }
         });
