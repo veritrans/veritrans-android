@@ -16,7 +16,7 @@ import com.midtrans.sdk.corekit.core.snap.model.transaction.response.promo.Promo
 import java.io.Serializable;
 import java.util.List;
 
-public class TransactionOptionsResponse implements Serializable {
+public class PaymentInfoResponse implements Serializable {
     private String token;
 
     @SerializedName("transaction_details")
@@ -48,7 +48,7 @@ public class TransactionOptionsResponse implements Serializable {
     @SerializedName("gopay")
     private GopayDeeplink gopay;
 
-    public TransactionOptionsResponse() {
+    public PaymentInfoResponse() {
     }
 
     public String getToken() {
