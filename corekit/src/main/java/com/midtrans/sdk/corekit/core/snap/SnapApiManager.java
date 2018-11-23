@@ -63,9 +63,9 @@ public class SnapApiManager extends BaseServiceManager {
      * @param paymentRequest Payment Details.
      * @param callback       Transaction callback
      */
-    public void paymentUsingBankTransferBCA(final String snapToken,
-                                            BankTransferPaymentRequest paymentRequest,
-                                            final MidtransCallback<PaymentResponse> callback) {
+    public void paymentUsingBankTransferVa(final String snapToken,
+                                           final BankTransferPaymentRequest paymentRequest,
+                                           final MidtransCallback<PaymentResponse> callback) {
         if (apiService == null) {
             callback.onFailed(new Throwable(MESSAGE_ERROR_EMPTY_RESPONSE));
             return;
