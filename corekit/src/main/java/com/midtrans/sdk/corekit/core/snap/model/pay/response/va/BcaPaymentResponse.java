@@ -3,11 +3,9 @@ package com.midtrans.sdk.corekit.core.snap.model.pay.response.va;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import com.midtrans.sdk.corekit.base.model.BasePaymentRequest;
-
 import java.util.List;
 
-public class BcaPaymentResponse extends BaseBankTransferVa<BcaPaymentResponse> {
+public class BcaPaymentResponse extends BaseBankTransferVa {
     @SerializedName("bca_va_number")
     @Expose
     private String bcaVaNumber;
