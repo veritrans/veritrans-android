@@ -14,9 +14,8 @@ import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.cu
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.customer.ShippingAddress;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.specific.creditcard.CreditCard;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutResponse;
-import com.midtrans.sdk.corekit.core.snap.model.pay.request.va.BankTransferPaymentRequest;
-import com.midtrans.sdk.corekit.core.snap.model.pay.request.va.CustomerDetailRequest;
-import com.midtrans.sdk.corekit.core.snap.model.pay.response.PaymentResponse;
+import com.midtrans.sdk.corekit.core.snap.model.pay.request.BankTransferPaymentRequest;
+import com.midtrans.sdk.corekit.core.snap.model.pay.request.CustomerDetailRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BcaPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.transaction.response.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.utilities.Currency;
