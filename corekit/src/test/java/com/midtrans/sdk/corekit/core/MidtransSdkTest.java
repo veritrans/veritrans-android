@@ -8,13 +8,15 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.midtrans.sdk.corekit.SDKConfigTest;
+import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.base.enums.Environment;
 import com.midtrans.sdk.corekit.base.network.MidtransRestAdapter;
 import com.midtrans.sdk.corekit.core.merchant.MerchantApiManager;
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.CheckoutCallback;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.TransactionRequest;
+import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutResponse;
 import com.midtrans.sdk.corekit.core.snap.SnapApiManager;
-import com.midtrans.sdk.corekit.core.snap.model.transaction.TransactionOptionsCallback;
+import com.midtrans.sdk.corekit.core.snap.model.pay.response.PaymentResponse;
+import com.midtrans.sdk.corekit.core.snap.model.transaction.response.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.corekit.utilities.NetworkHelper;
 import com.midtrans.sdk.corekit.utilities.Utils;
@@ -46,9 +48,9 @@ public class MidtransSdkTest {
     @Mock
     private NetworkInfo networkInfo;
     @Mock
-    private CheckoutCallback checkoutCallbackMock;
+    private MidtransCallback<CheckoutResponse> checkoutResponseMidtransCallback;
     @Mock
-    private TransactionOptionsCallback transactionOptionCallbackMock;
+    private MidtransCallback<PaymentInfoResponse> paymentInfoResponseMidtransCallback;
 
     @Mock
     private MidtransSdk midtransSdkSpy;
@@ -166,8 +168,8 @@ public class MidtransSdkTest {
     public void test_checkout() {
         midtransSdkSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSdkSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSdkSpy.checkout(checkoutCallbackMock);
-        Mockito.verify(midtransSdkSpy).checkout(checkoutCallbackMock);
+        midtransSdkSpy.checkout(checkoutResponseMidtransCallback);
+        Mockito.verify(midtransSdkSpy).checkout(checkoutResponseMidtransCallback);
     }
 
     @Test
@@ -181,8 +183,8 @@ public class MidtransSdkTest {
     public void test_checkout_whenNetworkUnAvailable() {
         midtransSdkSpy.setTransactionRequest(transactionRequestMock);
         when(midtransSdkSpy.isNetworkAvailable()).thenReturn(false);
-        midtransSdkSpy.checkout(checkoutCallbackMock);
-        Mockito.verify(checkoutCallbackMock).onError(Matchers.any(Throwable.class));
+        midtransSdkSpy.checkout(checkoutResponseMidtransCallback);
+        Mockito.verify(checkoutResponseMidtransCallback).onFailed(Matchers.any(Throwable.class));
     }
 
     /**
@@ -192,8 +194,8 @@ public class MidtransSdkTest {
     @Test
     public void test_getSnapTransaction() {
         when(midtransSdkSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSdkSpy.getPaymentInfo(SDKConfigTest.SNAP_TOKEN, transactionOptionCallbackMock);
-        Mockito.verify(snapServiceManager).getPaymentInfo(SDKConfigTest.SNAP_TOKEN, transactionOptionCallbackMock);
+        midtransSdkSpy.getPaymentInfo(SDKConfigTest.SNAP_TOKEN, paymentInfoResponseMidtransCallback);
+        Mockito.verify(paymentInfoResponseMidtransCallback).onSuccess(Matchers.any(PaymentInfoResponse.class));
     }
 
     @Test
@@ -206,15 +208,15 @@ public class MidtransSdkTest {
     @Test
     public void test_getSnapTransaction_whenTokenNull() {
         when(midtransSdkSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSdkSpy.getPaymentInfo(null, transactionOptionCallbackMock);
-        Mockito.verify(transactionOptionCallbackMock).onError(Matchers.any(Throwable.class));
+        midtransSdkSpy.getPaymentInfo(null, paymentInfoResponseMidtransCallback);
+        Mockito.verify(paymentInfoResponseMidtransCallback).onFailed(Matchers.any(Throwable.class));
     }
 
     @Test
     public void test_getSnapTransaction_whenNetworkUnAvailable() {
         when(midtransSdkSpy.isNetworkAvailable()).thenReturn(false);
-        midtransSdkSpy.getPaymentInfo(null, transactionOptionCallbackMock);
-        Mockito.verify(transactionOptionCallbackMock).onError(Matchers.any(Throwable.class));
+        midtransSdkSpy.getPaymentInfo(null, paymentInfoResponseMidtransCallback);
+        Mockito.verify(paymentInfoResponseMidtransCallback).onFailed(Matchers.any(Throwable.class));
     }
 
 }
