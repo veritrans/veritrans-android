@@ -10,6 +10,15 @@ public class SnapPromo implements Serializable {
     @SerializedName("allowed_promo_codes")
     private List<String> allowedPromoCodes;
 
+    public SnapPromo() {
+    }
+
+    public SnapPromo(boolean enabled,
+                     List<String> allowedPromoCodes) {
+        this.enabled = enabled;
+        this.allowedPromoCodes = allowedPromoCodes;
+    }
+
     public List<String> getAllowedPromoCodes() {
         return allowedPromoCodes;
     }

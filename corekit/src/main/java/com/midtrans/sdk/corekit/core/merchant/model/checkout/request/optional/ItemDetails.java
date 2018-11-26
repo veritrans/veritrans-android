@@ -5,18 +5,11 @@ import java.io.Serializable;
 public class ItemDetails implements Serializable {
 
     private String id;
-    private Double price;
+    private double price;
     private int quantity;
     private String name;
 
     public ItemDetails() {
-    }
-
-    public ItemDetails(String id, Double price, int quantity, String name) {
-        this.id = id;
-        this.price = price;
-        this.quantity = quantity;
-        this.name = name;
     }
 
     /**
@@ -25,7 +18,10 @@ public class ItemDetails implements Serializable {
      * @param quantity number of items that is purchased.
      * @param name     name of the item.
      */
-    public ItemDetails(String id, double price, int quantity, String name) {
+    public ItemDetails(String id,
+                       double price,
+                       int quantity,
+                       String name) {
         this.id = id;
         this.price = price;
         this.quantity = quantity;

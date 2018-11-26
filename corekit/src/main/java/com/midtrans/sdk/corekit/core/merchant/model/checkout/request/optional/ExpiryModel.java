@@ -19,6 +19,14 @@ public class ExpiryModel implements Serializable {
     public ExpiryModel() {
     }
 
+    public ExpiryModel(String startTime,
+                       String unit,
+                       int duration) {
+        this.startTime = startTime;
+        this.unit = unit;
+        this.duration = duration;
+    }
+
     public String getStartTime() {
         return startTime;
     }

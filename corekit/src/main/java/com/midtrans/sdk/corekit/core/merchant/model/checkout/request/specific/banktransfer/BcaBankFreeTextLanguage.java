@@ -1,10 +1,13 @@
 package com.midtrans.sdk.corekit.core.merchant.model.checkout.request.specific.banktransfer;
 
-public class BcaBankFreeTextLanguage {
+import java.io.Serializable;
+
+public class BcaBankFreeTextLanguage implements Serializable {
     private String id;
     private String en;
 
-    public BcaBankFreeTextLanguage(String id, String en) {
+    public BcaBankFreeTextLanguage(String id,
+                                   String en) {
         this.id = id;
         this.en = en;
     }
