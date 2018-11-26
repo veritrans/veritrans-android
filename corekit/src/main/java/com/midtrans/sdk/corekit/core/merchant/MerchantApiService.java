@@ -12,6 +12,7 @@ public interface MerchantApiService {
 
     /**
      * Get snap token
+     *
      * @param requestModel SnapToken RequestModel
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})

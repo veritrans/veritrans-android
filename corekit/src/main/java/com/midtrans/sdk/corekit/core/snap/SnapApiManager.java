@@ -1,8 +1,10 @@
 package com.midtrans.sdk.corekit.core.snap;
 
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
+import com.midtrans.sdk.corekit.base.model.PaymentType;
 import com.midtrans.sdk.corekit.base.network.BaseServiceManager;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.va.BankTransferPaymentRequest;
+import com.midtrans.sdk.corekit.core.snap.model.pay.request.va.CustomerDetailRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BcaPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BniPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.OtherPaymentResponse;
@@ -63,17 +65,18 @@ public class SnapApiManager extends BaseServiceManager {
     /**
      * This method is used for Payment Using Bank Transfer BCA
      *
-     * @param snapToken      snapToken after get payment info.
-     * @param paymentRequest Payment Details.
-     * @param callback       Transaction callback.
+     * @param snapToken       snapToken after get payment info.
+     * @param customerDetails Payment Details.
+     * @param callback        Transaction callback.
      */
     public void paymentUsingBankTransferVaBca(final String snapToken,
-                                              final BankTransferPaymentRequest paymentRequest,
+                                              final CustomerDetailRequest customerDetails,
                                               final MidtransCallback<BcaPaymentResponse> callback) {
         if (apiService == null) {
             callback.onFailed(new Throwable(MESSAGE_ERROR_EMPTY_RESPONSE));
             return;
         }
+        BankTransferPaymentRequest paymentRequest = new BankTransferPaymentRequest(PaymentType.BCA_VA, customerDetails);
         Call<BcaPaymentResponse> call = apiService.paymentBankTransferBca(snapToken, paymentRequest);
         call.enqueue(new Callback<BcaPaymentResponse>() {
             @Override
@@ -93,17 +96,18 @@ public class SnapApiManager extends BaseServiceManager {
     /**
      * This method is used for Payment Using Bank Transfer BNI
      *
-     * @param snapToken      snapToken after get payment info.
-     * @param paymentRequest Payment Details.
-     * @param callback       Transaction callback.
+     * @param snapToken       snapToken after get payment info.
+     * @param customerDetails Payment Details.
+     * @param callback        Transaction callback.
      */
     public void paymentUsingBankTransferVaBni(final String snapToken,
-                                              final BankTransferPaymentRequest paymentRequest,
+                                              final CustomerDetailRequest customerDetails,
                                               final MidtransCallback<BniPaymentResponse> callback) {
         if (apiService == null) {
             callback.onFailed(new Throwable(MESSAGE_ERROR_EMPTY_RESPONSE));
             return;
         }
+        BankTransferPaymentRequest paymentRequest = new BankTransferPaymentRequest(PaymentType.BNI_VA, customerDetails);
         Call<BniPaymentResponse> call = apiService.paymentBankTransferBni(snapToken, paymentRequest);
         call.enqueue(new Callback<BniPaymentResponse>() {
             @Override
@@ -123,17 +127,18 @@ public class SnapApiManager extends BaseServiceManager {
     /**
      * This method is used for Payment Using Bank Transfer Permata
      *
-     * @param snapToken      snapToken after get payment info.
-     * @param paymentRequest Payment Details.
-     * @param callback       Transaction callback.
+     * @param snapToken       snapToken after get payment info.
+     * @param customerDetails Payment Details.
+     * @param callback        Transaction callback.
      */
     public void paymentUsingBankTransferVaPermata(final String snapToken,
-                                                  final BankTransferPaymentRequest paymentRequest,
+                                                  final CustomerDetailRequest customerDetails,
                                                   final MidtransCallback<PermataPaymentResponse> callback) {
         if (apiService == null) {
             callback.onFailed(new Throwable(MESSAGE_ERROR_EMPTY_RESPONSE));
             return;
         }
+        BankTransferPaymentRequest paymentRequest = new BankTransferPaymentRequest(PaymentType.PERMATA_VA, customerDetails);
         Call<PermataPaymentResponse> call = apiService.paymentBankTransferPermata(snapToken, paymentRequest);
         call.enqueue(new Callback<PermataPaymentResponse>() {
             @Override
@@ -153,17 +158,18 @@ public class SnapApiManager extends BaseServiceManager {
     /**
      * This method is used for Payment Using Bank Transfer Other Bank
      *
-     * @param snapToken      snapToken after get payment info.
-     * @param paymentRequest Payment Details.
-     * @param callback       Transaction callback.
+     * @param snapToken       snapToken after get payment info.
+     * @param customerDetails Payment Details.
+     * @param callback        Transaction callback.
      */
     public void paymentUsingBankTransferVaOther(final String snapToken,
-                                                final BankTransferPaymentRequest paymentRequest,
+                                                final CustomerDetailRequest customerDetails,
                                                 final MidtransCallback<OtherPaymentResponse> callback) {
         if (apiService == null) {
             callback.onFailed(new Throwable(MESSAGE_ERROR_EMPTY_RESPONSE));
             return;
         }
+        BankTransferPaymentRequest paymentRequest = new BankTransferPaymentRequest(PaymentType.OTHER_VA, customerDetails);
         Call<OtherPaymentResponse> call = apiService.paymentBankTransferOther(snapToken, paymentRequest);
         call.enqueue(new Callback<OtherPaymentResponse>() {
             @Override
@@ -180,7 +186,9 @@ public class SnapApiManager extends BaseServiceManager {
         });
     }
 
-    private <T> void handleServerResponse(Response<T> response, MidtransCallback<T> callback, Throwable throwable) {
+    private <T> void handleServerResponse(Response<T> response,
+                                          MidtransCallback<T> callback,
+                                          Throwable throwable) {
         if (response != null && response.isSuccessful()) {
             if (response.code() != 204) {
                 T responseBody = response.body();

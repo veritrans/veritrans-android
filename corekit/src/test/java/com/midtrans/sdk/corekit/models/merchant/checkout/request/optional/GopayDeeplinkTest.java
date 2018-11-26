@@ -1,6 +1,6 @@
 package com.midtrans.sdk.corekit.models.merchant.checkout.request.optional;
 
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.GopayDeeplink;
+import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.GopayDeepLink;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -8,28 +8,28 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-public class GopayDeeplinkTest {
+public class GopayDeepLinkTest {
 
-    private GopayDeeplink gopayDeeplink;
+    private GopayDeepLink gopayDeepLink;
     private String exampleTextPositive, exampleTextNegative;
 
     @Before
     public void test_setup() {
-        this.gopayDeeplink = new GopayDeeplink();
+        this.gopayDeepLink = new GopayDeepLink();
         this.exampleTextPositive = "exampleTextPositive";
         this.exampleTextNegative = "exampleTextNegative";
     }
 
     @Test
     public void test_SetMerchantGopayDeepLink_positive() {
-        gopayDeeplink.setMerchantGopayDeeplink(exampleTextPositive);
-        assertEquals(gopayDeeplink.getMerchantGopayDeeplink(), exampleTextPositive);
+        gopayDeepLink.setMerchantGopayDeeplink(exampleTextPositive);
+        assertEquals(gopayDeepLink.getMerchantGopayDeeplink(), exampleTextPositive);
     }
 
     @Test
     public void test_SetMerchantGopayDeepLink_negative() {
-        gopayDeeplink.setMerchantGopayDeeplink(exampleTextPositive);
-        assertNotEquals(gopayDeeplink.getMerchantGopayDeeplink(), exampleTextNegative);
+        gopayDeepLink.setMerchantGopayDeeplink(exampleTextPositive);
+        assertNotEquals(gopayDeepLink.getMerchantGopayDeeplink(), exampleTextNegative);
     }
 
 }

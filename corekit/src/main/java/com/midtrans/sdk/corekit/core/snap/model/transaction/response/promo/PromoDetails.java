@@ -1,8 +1,9 @@
 package com.midtrans.sdk.corekit.core.snap.model.transaction.response.promo;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class PromoDetails {
+public class PromoDetails implements Serializable {
 
     private List<Promo> promos;
 

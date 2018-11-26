@@ -4,7 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 import android.text.TextUtils;
 
-public class CustomerDetailRequest {
+import java.io.Serializable;
+
+public class CustomerDetailRequest implements Serializable {
     @SerializedName("full_name")
     private String fullName;
     private String email;
@@ -13,7 +15,9 @@ public class CustomerDetailRequest {
     public CustomerDetailRequest() {
     }
 
-    public CustomerDetailRequest(String fullName, String email, String phone) {
+    public CustomerDetailRequest(String fullName,
+                                 String email,
+                                 String phone) {
         this.fullName = fullName;
         this.email = email;
         this.phone = phone;

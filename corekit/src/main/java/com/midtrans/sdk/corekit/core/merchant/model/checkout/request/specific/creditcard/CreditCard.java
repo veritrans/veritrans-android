@@ -2,7 +2,6 @@ package com.midtrans.sdk.corekit.core.merchant.model.checkout.request.specific.c
 
 import com.google.gson.annotations.SerializedName;
 
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import java.io.Serializable;
@@ -46,16 +45,16 @@ public class CreditCard implements Serializable {
     private boolean isAuthenticationSet = false;
 
     private CreditCard(boolean saveCard,
-                              String tokenId,
-                              boolean secure,
-                              String channel,
-                              String bank,
-                              List<SavedToken> savedTokens,
-                              ArrayList<String> whitelistBins,
-                              List<String> blacklistBins,
-                              Installment installment,
-                              String type,
-                              String authentication) {
+                       String tokenId,
+                       boolean secure,
+                       String channel,
+                       String bank,
+                       List<SavedToken> savedTokens,
+                       ArrayList<String> whitelistBins,
+                       List<String> blacklistBins,
+                       Installment installment,
+                       String type,
+                       String authentication) {
         this.saveCard = saveCard;
         this.tokenId = tokenId;
         this.secure = secure;
@@ -81,8 +80,9 @@ public class CreditCard implements Serializable {
                                              String authentication) {
         return new Builder(secure, authentication);
     }
+
     public static Builder builder(boolean secure,
-                                             String authentication) {
+                                  String authentication) {
         return new Builder(secure, authentication);
     }
 
@@ -107,16 +107,16 @@ public class CreditCard implements Serializable {
         private boolean isAuthenticationSet = false;
 
         Builder(boolean secure,
-                String authentication){
+                String authentication) {
             setSecure(secure);
             setAuthentication(authentication);
         }
 
-        Builder(boolean secure){
+        Builder(boolean secure) {
             setSecure(secure);
         }
 
-        Builder(){
+        Builder() {
             setAuthentication(AUTHENTICATION_TYPE_3DS);
             setSecure(true);
         }

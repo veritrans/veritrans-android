@@ -25,7 +25,6 @@ public class PromoResponse implements Serializable {
     @SerializedName("sponsor_message_id")
     private String sponsorMessageId;
 
-
     public int getId() {
         return id;
     }

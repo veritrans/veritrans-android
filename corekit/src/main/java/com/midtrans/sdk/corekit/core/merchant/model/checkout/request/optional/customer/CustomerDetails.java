@@ -19,7 +19,12 @@ public class CustomerDetails implements Serializable {
     @SerializedName("billing_address")
     private BillingAddress billingAddress;
 
-    private CustomerDetails(String firstName, String lastName, String email, String phone, ShippingAddress shippingAddress, BillingAddress billingAddress) {
+    private CustomerDetails(String firstName,
+                            String lastName,
+                            String email,
+                            String phone,
+                            ShippingAddress shippingAddress,
+                            BillingAddress billingAddress) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -29,7 +34,7 @@ public class CustomerDetails implements Serializable {
     }
 
     public static Builder builder(String firstName, String lastName, String email, String phone) {
-        return new Builder(firstName,lastName,email,phone);
+        return new Builder(firstName, lastName, email, phone);
     }
 
     public static class Builder {
