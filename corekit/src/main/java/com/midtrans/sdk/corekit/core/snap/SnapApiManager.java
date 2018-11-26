@@ -1,8 +1,11 @@
 package com.midtrans.sdk.corekit.core.snap;
 
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
+import com.midtrans.sdk.corekit.base.model.PaymentType;
 import com.midtrans.sdk.corekit.base.network.BaseServiceManager;
+import com.midtrans.sdk.corekit.core.snap.model.pay.request.CustomerDetailRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.PaymentRequest;
+import com.midtrans.sdk.corekit.core.snap.model.pay.response.mandiriecash.MandiriEcashResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BcaPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BniPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.OtherPaymentResponse;
@@ -174,6 +177,37 @@ public class SnapApiManager extends BaseServiceManager {
 
             @Override
             public void onFailure(Call<OtherPaymentResponse> call, Throwable t) {
+                releaseResources();
+                handleServerResponse(null, callback, t);
+            }
+        });
+    }
+
+    /**
+     * This method is used for Payment Using Mandiri Echannel
+     *
+     * @param snapToken             snapToken after get payment info.
+     * @param customerDetailRequest Payment Details.
+     * @param callback              Transaction callback.
+     */
+    public void paymentUsingMandiriEcash(final String snapToken,
+                                            final CustomerDetailRequest customerDetailRequest,
+                                            final MidtransCallback<MandiriEcashResponse> callback) {
+        if (apiService == null) {
+            callback.onFailed(new Throwable(MESSAGE_ERROR_EMPTY_RESPONSE));
+            return;
+        }
+        PaymentRequest paymentRequest = new PaymentRequest(PaymentType.MANDIRI_ECASH, customerDetailRequest);
+        Call<MandiriEcashResponse> call = apiService.paymentMandiriEcash(snapToken, paymentRequest);
+        call.enqueue(new Callback<MandiriEcashResponse>() {
+            @Override
+            public void onResponse(Call<MandiriEcashResponse> call, Response<MandiriEcashResponse> response) {
+                releaseResources();
+                handleServerResponse(response, callback, null);
+            }
+
+            @Override
+            public void onFailure(Call<MandiriEcashResponse> call, Throwable t) {
                 releaseResources();
                 handleServerResponse(null, callback, t);
             }
