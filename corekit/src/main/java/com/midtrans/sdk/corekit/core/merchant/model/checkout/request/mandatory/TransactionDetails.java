@@ -32,7 +32,8 @@ public class TransactionDetails implements Serializable {
         }
     }
 
-    public TransactionDetails(String orderId, double grossAmount) {
+    public TransactionDetails(String orderId,
+                              double grossAmount) {
         if (!TextUtils.isEmpty(orderId) && grossAmount > 0) {
             this.orderId = orderId;
             this.grossAmount = grossAmount;

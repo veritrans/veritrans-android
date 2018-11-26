@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.mandatory.TransactionDetails;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.BillInfoModel;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.ExpiryModel;
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.GopayDeeplink;
+import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.GopayDeepLink;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.ItemDetails;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.SnapPromo;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.customer.CustomerDetails;
@@ -56,7 +56,7 @@ public class TransactionRequest implements Serializable {
      * Optional
      */
     @SerializedName("gopay")
-    private GopayDeeplink gopayDeeplink = null;
+    private GopayDeepLink gopayDeepLink = null;
 
     /**
      * Set custom expiry of token that will be created
@@ -135,7 +135,7 @@ public class TransactionRequest implements Serializable {
                                CreditCard creditCard,
                                CustomerDetails customerDetails) {
         this.transactionDetails = new TransactionDetails(orderId, grossAmount, currency);
-        this.gopayDeeplink = new GopayDeeplink(gopayDeepLink);
+        this.gopayDeepLink = new GopayDeepLink(gopayDeepLink);
         this.creditCard = creditCard;
     }
 
@@ -225,8 +225,8 @@ public class TransactionRequest implements Serializable {
         return transactionDetails;
     }
 
-    public GopayDeeplink getGopayDeeplink() {
-        return gopayDeeplink;
+    public GopayDeepLink getGopayDeepLink() {
+        return gopayDeepLink;
     }
 
     public CreditCard getCreditCard() {

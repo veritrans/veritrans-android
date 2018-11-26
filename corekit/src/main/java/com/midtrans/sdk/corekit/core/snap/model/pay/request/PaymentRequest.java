@@ -4,17 +4,19 @@ import com.google.gson.annotations.SerializedName;
 
 import com.midtrans.sdk.corekit.base.model.BasePaymentRequest;
 
-public class PaymentRequest extends BasePaymentRequest {
+import java.io.Serializable;
 
+public class PaymentRequest extends BasePaymentRequest implements Serializable {
     @SerializedName("customer_details")
-    private CustomerDetailRequest customerDetails;
+    private CustomerDetailPayRequest customerDetails;
 
-    public PaymentRequest(String paymentType, CustomerDetailRequest customerDetails) {
+    public PaymentRequest(String paymentType,
+                          CustomerDetailPayRequest customerDetails) {
         super(paymentType);
         this.customerDetails = customerDetails;
     }
 
-    public CustomerDetailRequest getCustomerDetails() {
+    public CustomerDetailPayRequest getCustomerDetails() {
         return customerDetails;
     }
 }

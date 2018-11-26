@@ -33,7 +33,8 @@ public class BillInfoModel implements Serializable {
     public BillInfoModel() {
     }
 
-    public BillInfoModel(String billInfo1, String billInfo2) {
+    public BillInfoModel(String billInfo1,
+                         String billInfo2) {
         this.billInfo1 = billInfo1;
         this.billInfo2 = billInfo2;
     }

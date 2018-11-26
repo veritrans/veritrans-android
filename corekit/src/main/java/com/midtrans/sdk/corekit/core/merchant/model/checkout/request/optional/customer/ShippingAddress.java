@@ -25,7 +25,13 @@ public class ShippingAddress implements Serializable {
     public ShippingAddress() {
     }
 
-    public ShippingAddress(String address, String city, String phone, String firstName, String lastName, String postalCode, String countryCode) {
+    public ShippingAddress(String address,
+                           String city,
+                           String phone,
+                           String firstName,
+                           String lastName,
+                           String postalCode,
+                           String countryCode) {
         this.address = address;
         this.city = city;
         this.phone = phone;

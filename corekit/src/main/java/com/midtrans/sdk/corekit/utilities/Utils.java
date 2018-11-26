@@ -1,32 +1,13 @@
 package com.midtrans.sdk.corekit.utilities;
 
-/**
- * Created by shivam on 10/26/15.
- */
-
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
-import android.net.ConnectivityManager;
 import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
-import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
-
-/**
- * Created by chetan on 14/05/15.
- */
 public class Utils {
 
     public static final String CARD_TYPE_VISA = "VISA";

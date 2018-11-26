@@ -7,7 +7,8 @@ public class BcaBankFreeText implements Serializable {
     private List<BcaBankFreeTextLanguage> inquiry;
     private List<BcaBankFreeTextLanguage> payment;
 
-    public BcaBankFreeText(List<BcaBankFreeTextLanguage> inquiry, List<BcaBankFreeTextLanguage> payment) {
+    public BcaBankFreeText(List<BcaBankFreeTextLanguage> inquiry,
+                           List<BcaBankFreeTextLanguage> payment) {
         this.inquiry = inquiry;
         this.payment = payment;
     }
