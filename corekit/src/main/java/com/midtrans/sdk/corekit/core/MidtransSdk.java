@@ -10,7 +10,9 @@ import com.midtrans.sdk.corekit.core.merchant.MerchantApiManager;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.TransactionRequest;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutResponse;
 import com.midtrans.sdk.corekit.core.snap.SnapApiManager;
+import com.midtrans.sdk.corekit.core.snap.model.pay.request.CustomerDetailRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.PaymentRequest;
+import com.midtrans.sdk.corekit.core.snap.model.pay.response.mandiriecash.MandiriEcashResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BcaPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BniPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.OtherPaymentResponse;
@@ -355,14 +357,35 @@ public class MidtransSdk {
      * @param callback       for receiving callback from request.
      */
     public void paymentUsingBankTransferVaOther(final String snapToken,
-                                                 final PaymentRequest paymentRequest,
-                                                 final MidtransCallback<OtherPaymentResponse> callback) {
+                                                final PaymentRequest paymentRequest,
+                                                final MidtransCallback<OtherPaymentResponse> callback) {
         if (callback == null) {
             Logger.error(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
         if (isNetworkAvailable()) {
             snapApiManager.paymentUsingBankTransferVaOther(snapToken, paymentRequest, callback);
+        } else {
+            callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
+        }
+    }
+
+    /**
+     * Start payment using bank transfer and va with Mandiri Ecash.
+     *
+     * @param snapToken             token after making checkout.
+     * @param customerDetailRequest for putting bank transfer request.
+     * @param callback              for receiving callback from request.
+     */
+    public void paymentUsingMandiriEcash(final String snapToken,
+                                         final CustomerDetailRequest customerDetailRequest,
+                                         final MidtransCallback<MandiriEcashResponse> callback) {
+        if (callback == null) {
+            Logger.error(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
+            return;
+        }
+        if (isNetworkAvailable()) {
+            snapApiManager.paymentUsingMandiriEcash(snapToken, customerDetailRequest, callback);
         } else {
             callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
