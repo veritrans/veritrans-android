@@ -1,6 +1,6 @@
 package com.midtrans.sdk.corekit.core.snap;
 
-import com.midtrans.sdk.corekit.core.snap.model.pay.request.BankTransferPaymentRequest;
+import com.midtrans.sdk.corekit.core.snap.model.pay.request.PaymentRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BcaPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BniPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.OtherPaymentResponse;
@@ -29,7 +29,7 @@ public interface SnapApiService {
      * @param paymentRequest Payment Request Details.
      */
     @POST("v1/transactions/{snap_token}/pay")
-    Call<BcaPaymentResponse> paymentBankTransferBca(@Path("snap_token") String snapToken, @Body BankTransferPaymentRequest paymentRequest);
+    Call<BcaPaymentResponse> paymentBankTransferBca(@Path("snap_token") String snapToken, @Body PaymentRequest paymentRequest);
 
     /**
      * Charge payment using bank transfer Virtual account.
@@ -37,16 +37,7 @@ public interface SnapApiService {
      * @param paymentRequest Payment Request Details.
      */
     @POST("v1/transactions/{snap_token}/pay")
-    Call<BniPaymentResponse> paymentBankTransferBni(@Path("snap_token") String snapToken, @Body BankTransferPaymentRequest paymentRequest);
-
-
-    /**
-     * Charge payment using bank transfer Virtual account.
-     *
-     * @param paymentRequest Payment Request Details.
-     */
-    @POST("v1/transactions/{snap_token}/pay")
-    Call<PermataPaymentResponse> paymentBankTransferPermata(@Path("snap_token") String snapToken, @Body BankTransferPaymentRequest paymentRequest);
+    Call<BniPaymentResponse> paymentBankTransferBni(@Path("snap_token") String snapToken, @Body PaymentRequest paymentRequest);
 
 
     /**
@@ -55,6 +46,15 @@ public interface SnapApiService {
      * @param paymentRequest Payment Request Details.
      */
     @POST("v1/transactions/{snap_token}/pay")
-    Call<OtherPaymentResponse> paymentBankTransferOther(@Path("snap_token") String snapToken, @Body BankTransferPaymentRequest paymentRequest);
+    Call<PermataPaymentResponse> paymentBankTransferPermata(@Path("snap_token") String snapToken, @Body PaymentRequest paymentRequest);
+
+
+    /**
+     * Charge payment using bank transfer Virtual account.
+     *
+     * @param paymentRequest Payment Request Details.
+     */
+    @POST("v1/transactions/{snap_token}/pay")
+    Call<OtherPaymentResponse> paymentBankTransferOther(@Path("snap_token") String snapToken, @Body PaymentRequest paymentRequest);
 
 }

@@ -14,7 +14,7 @@ import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.cu
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.customer.ShippingAddress;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.specific.creditcard.CreditCard;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutResponse;
-import com.midtrans.sdk.corekit.core.snap.model.pay.request.BankTransferPaymentRequest;
+import com.midtrans.sdk.corekit.core.snap.model.pay.request.PaymentRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.CustomerDetailRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BcaPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.transaction.response.PaymentInfoResponse;
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void startPayment(String snapToken) {
         MidtransSdk.getInstance().paymentUsingBankTransferVaBca(snapToken,
-                new BankTransferPaymentRequest(PaymentType.OTHER_VA,
+                new PaymentRequest(PaymentType.OTHER_VA,
                         new CustomerDetailRequest("FirstName",
                         "mail@test.com",
                         "08123456789")),

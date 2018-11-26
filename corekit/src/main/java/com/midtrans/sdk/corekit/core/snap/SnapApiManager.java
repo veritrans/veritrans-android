@@ -2,7 +2,7 @@ package com.midtrans.sdk.corekit.core.snap;
 
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.base.network.BaseServiceManager;
-import com.midtrans.sdk.corekit.core.snap.model.pay.request.BankTransferPaymentRequest;
+import com.midtrans.sdk.corekit.core.snap.model.pay.request.PaymentRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BcaPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BniPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.OtherPaymentResponse;
@@ -68,7 +68,7 @@ public class SnapApiManager extends BaseServiceManager {
      * @param callback       Transaction callback.
      */
     public void paymentUsingBankTransferVaBca(final String snapToken,
-                                              final BankTransferPaymentRequest paymentRequest,
+                                              final PaymentRequest paymentRequest,
                                               final MidtransCallback<BcaPaymentResponse> callback) {
         if (apiService == null) {
             callback.onFailed(new Throwable(MESSAGE_ERROR_EMPTY_RESPONSE));
@@ -98,7 +98,7 @@ public class SnapApiManager extends BaseServiceManager {
      * @param callback       Transaction callback.
      */
     public void paymentUsingBankTransferVaBni(final String snapToken,
-                                              final BankTransferPaymentRequest paymentRequest,
+                                              final PaymentRequest paymentRequest,
                                               final MidtransCallback<BniPaymentResponse> callback) {
         if (apiService == null) {
             callback.onFailed(new Throwable(MESSAGE_ERROR_EMPTY_RESPONSE));
@@ -128,7 +128,7 @@ public class SnapApiManager extends BaseServiceManager {
      * @param callback       Transaction callback.
      */
     public void paymentUsingBankTransferVaPermata(final String snapToken,
-                                                  final BankTransferPaymentRequest paymentRequest,
+                                                  final PaymentRequest paymentRequest,
                                                   final MidtransCallback<PermataPaymentResponse> callback) {
         if (apiService == null) {
             callback.onFailed(new Throwable(MESSAGE_ERROR_EMPTY_RESPONSE));
@@ -158,7 +158,7 @@ public class SnapApiManager extends BaseServiceManager {
      * @param callback       Transaction callback.
      */
     public void paymentUsingBankTransferVaOther(final String snapToken,
-                                                final BankTransferPaymentRequest paymentRequest,
+                                                final PaymentRequest paymentRequest,
                                                 final MidtransCallback<OtherPaymentResponse> callback) {
         if (apiService == null) {
             callback.onFailed(new Throwable(MESSAGE_ERROR_EMPTY_RESPONSE));

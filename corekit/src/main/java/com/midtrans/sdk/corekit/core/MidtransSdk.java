@@ -10,7 +10,7 @@ import com.midtrans.sdk.corekit.core.merchant.MerchantApiManager;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.TransactionRequest;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutResponse;
 import com.midtrans.sdk.corekit.core.snap.SnapApiManager;
-import com.midtrans.sdk.corekit.core.snap.model.pay.request.BankTransferPaymentRequest;
+import com.midtrans.sdk.corekit.core.snap.model.pay.request.PaymentRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BcaPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BniPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.OtherPaymentResponse;
@@ -292,7 +292,7 @@ public class MidtransSdk {
      * @param callback       for receiving callback from request.
      */
     public void paymentUsingBankTransferVaBca(final String snapToken,
-                                              final BankTransferPaymentRequest paymentRequest,
+                                              final PaymentRequest paymentRequest,
                                               final MidtransCallback<BcaPaymentResponse> callback) {
         if (callback == null) {
             Logger.error(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
@@ -313,7 +313,7 @@ public class MidtransSdk {
      * @param callback       for receiving callback from request.
      */
     public void paymentUsingBankTransferVaBni(final String snapToken,
-                                              final BankTransferPaymentRequest paymentRequest,
+                                              final PaymentRequest paymentRequest,
                                               final MidtransCallback<BniPaymentResponse> callback) {
         if (callback == null) {
             Logger.error(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
@@ -334,7 +334,7 @@ public class MidtransSdk {
      * @param callback       for receiving callback from request.
      */
     public void paymentUsingBankTransferVaPermata(final String snapToken,
-                                                  final BankTransferPaymentRequest paymentRequest,
+                                                  final PaymentRequest paymentRequest,
                                                   final MidtransCallback<PermataPaymentResponse> callback) {
         if (callback == null) {
             Logger.error(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
@@ -355,7 +355,7 @@ public class MidtransSdk {
      * @param callback       for receiving callback from request.
      */
     public void paymentUsingBankTransferVaOther(final String snapToken,
-                                                 final BankTransferPaymentRequest paymentRequest,
+                                                 final PaymentRequest paymentRequest,
                                                  final MidtransCallback<OtherPaymentResponse> callback) {
         if (callback == null) {
             Logger.error(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
