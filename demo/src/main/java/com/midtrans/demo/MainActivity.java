@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.base.enums.Environment;
 import com.midtrans.sdk.corekit.base.model.BankType;
-import com.midtrans.sdk.corekit.base.model.PaymentType;
 import com.midtrans.sdk.corekit.core.MidtransSdk;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.TransactionRequest;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.customer.BillingAddress;
@@ -14,8 +13,8 @@ import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.cu
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.customer.ShippingAddress;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.specific.creditcard.CreditCard;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutResponse;
-import com.midtrans.sdk.corekit.core.snap.model.pay.request.PaymentRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.CustomerDetailRequest;
+import com.midtrans.sdk.corekit.core.snap.model.pay.response.mandiriecash.MandiriEcashResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BcaPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.transaction.response.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.utilities.Currency;
@@ -106,15 +105,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startPayment(String snapToken) {
-        MidtransSdk.getInstance().paymentUsingBankTransferVaBca(snapToken,
-                new PaymentRequest(PaymentType.OTHER_VA,
-                        new CustomerDetailRequest("FirstName",
+        MidtransSdk.getInstance().paymentUsingMandiriEcash(snapToken,
+                new CustomerDetailRequest("FirstName",
                         "mail@test.com",
-                        "08123456789")),
-                new MidtransCallback<BcaPaymentResponse>() {
+                        "08123456789"),
+                new MidtransCallback<MandiriEcashResponse>() {
                     @Override
-                    public void onSuccess(BcaPaymentResponse data) {
-                        Logger.debug("RESULT SUCCESS PAYMENT " + data.getBcaVaNumber());
+                    public void onSuccess(MandiriEcashResponse data) {
+                        Logger.debug("RESULT SUCCESS PAYMENT " + data.getRedirectUrl());
                     }
 
                     @Override
