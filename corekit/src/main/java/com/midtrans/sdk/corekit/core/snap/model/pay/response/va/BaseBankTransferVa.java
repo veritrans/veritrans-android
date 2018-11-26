@@ -3,7 +3,9 @@ package com.midtrans.sdk.corekit.core.snap.model.pay.response.va;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class BaseBankTransferVa<T extends BaseBankTransferVa<T>> {
+import java.io.Serializable;
+
+public class BaseBankTransferVa implements Serializable {
     @SerializedName("type")
     @Expose
     private String type;
