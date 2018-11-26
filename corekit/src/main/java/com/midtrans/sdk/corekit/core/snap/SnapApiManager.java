@@ -56,9 +56,9 @@ public class SnapApiManager extends BaseServiceManager {
                     }
 
                     @Override
-                    public void onFailure(@NonNull Call<PaymentInfoResponse> call, @NonNull Throwable t) {
+                    public void onFailure(@NonNull Call<PaymentInfoResponse> call, @NonNull Throwable throwable) {
                         releaseResources();
-                        handleServerResponse(null, callback, t);
+                        handleServerResponse(null, callback, throwable);
                     }
                 });
             }
@@ -89,9 +89,9 @@ public class SnapApiManager extends BaseServiceManager {
             }
 
             @Override
-            public void onFailure(@NonNull Call<BcaPaymentResponse> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<BcaPaymentResponse> call, @NonNull Throwable throwable) {
                 releaseResources();
-                handleServerResponse(null, callback, t);
+                handleServerResponse(null, callback, throwable);
             }
         });
     }
@@ -120,9 +120,9 @@ public class SnapApiManager extends BaseServiceManager {
             }
 
             @Override
-            public void onFailure(@NonNull Call<BniPaymentResponse> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<BniPaymentResponse> call, @NonNull Throwable throwable) {
                 releaseResources();
-                handleServerResponse(null, callback, t);
+                handleServerResponse(null, callback, throwable);
             }
         });
     }
@@ -151,9 +151,9 @@ public class SnapApiManager extends BaseServiceManager {
             }
 
             @Override
-            public void onFailure(@NonNull Call<PermataPaymentResponse> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<PermataPaymentResponse> call, @NonNull Throwable throwable) {
                 releaseResources();
-                handleServerResponse(null, callback, t);
+                handleServerResponse(null, callback, throwable);
             }
         });
     }
@@ -182,9 +182,9 @@ public class SnapApiManager extends BaseServiceManager {
             }
 
             @Override
-            public void onFailure(@NonNull Call<OtherPaymentResponse> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<OtherPaymentResponse> call, @NonNull Throwable throwable) {
                 releaseResources();
-                handleServerResponse(null, callback, t);
+                handleServerResponse(null, callback, throwable);
             }
         });
     }
@@ -193,7 +193,7 @@ public class SnapApiManager extends BaseServiceManager {
      * This method is used for Payment Using Mandiri Echannel
      *
      * @param snapToken             snapToken after get payment info.
-     * @param customerDetailPayRequest Payment Details.
+     * @param customerDetailPayRequest Payment Details.zz
      * @param callback              Transaction callback.
      */
     public void paymentUsingMandiriEcash(final String snapToken,
@@ -213,9 +213,9 @@ public class SnapApiManager extends BaseServiceManager {
             }
 
             @Override
-            public void onFailure(@NonNull Call<MandiriEcashResponse> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<MandiriEcashResponse> call, @NonNull Throwable throwable) {
                 releaseResources();
-                handleServerResponse(null, callback, t);
+                handleServerResponse(null, callback, throwable);
             }
         });
     }
