@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName;
 
 import android.text.TextUtils;
 
+import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.VaNumber;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;

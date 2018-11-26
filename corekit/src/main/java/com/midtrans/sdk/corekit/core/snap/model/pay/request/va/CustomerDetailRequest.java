@@ -10,6 +10,15 @@ public class CustomerDetailRequest {
     private String email;
     private String phone;
 
+    public CustomerDetailRequest() {
+    }
+
+    public CustomerDetailRequest(String fullName, String email, String phone) {
+        this.fullName = fullName;
+        this.email = email;
+        this.phone = phone;
+    }
+
     public String getFullName() {
         return fullName;
     }

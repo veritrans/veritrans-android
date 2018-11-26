@@ -1,7 +1,6 @@
 package com.midtrans.sdk.corekit.core.snap;
 
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.va.BankTransferPaymentRequest;
-import com.midtrans.sdk.corekit.core.snap.model.pay.response.PaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.transaction.response.PaymentInfoResponse;
 
 import retrofit2.Call;
@@ -26,6 +25,6 @@ public interface SnapApiService {
      * @param paymentRequest Payment Request Details.
      */
     @POST("v1/transactions/{snap_token}/pay")
-    Call<PaymentResponse> paymentBankTransfer(@Path("snap_token") String snapToken, @Body BankTransferPaymentRequest paymentRequest);
+    <T> Call<T> paymentBankTransfer(@Path("snap_token") String snapToken, @Body BankTransferPaymentRequest paymentRequest);
 
 }

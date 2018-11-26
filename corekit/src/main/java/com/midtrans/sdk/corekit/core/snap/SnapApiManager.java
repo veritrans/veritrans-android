@@ -3,7 +3,6 @@ package com.midtrans.sdk.corekit.core.snap;
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.base.network.BaseServiceManager;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.va.BankTransferPaymentRequest;
-import com.midtrans.sdk.corekit.core.snap.model.pay.response.PaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.transaction.response.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.utilities.Constants;
 
@@ -44,13 +43,13 @@ public class SnapApiManager extends BaseServiceManager {
                     @Override
                     public void onResponse(Call<PaymentInfoResponse> call, Response<PaymentInfoResponse> response) {
                         releaseResources();
-                        handleServerResponse(response, callback, new PaymentInfoResponse(), null);
+                        handleServerResponse(response, callback, null);
                     }
 
                     @Override
                     public void onFailure(Call<PaymentInfoResponse> call, Throwable t) {
                         releaseResources();
-                        handleServerResponse(null, callback, new PaymentInfoResponse(), t);
+                        handleServerResponse(null, callback, t);
                     }
                 });
             }
@@ -63,38 +62,36 @@ public class SnapApiManager extends BaseServiceManager {
      * @param paymentRequest Payment Details.
      * @param callback       Transaction callback
      */
-    public void paymentUsingBankTransferVa(final String snapToken,
-                                           final BankTransferPaymentRequest paymentRequest,
-                                           final MidtransCallback<PaymentResponse> callback) {
+    public <T> void paymentUsingBankTransferVa(final String snapToken,
+                                               final BankTransferPaymentRequest paymentRequest,
+                                               final MidtransCallback<T> callback) {
         if (apiService == null) {
             callback.onFailed(new Throwable(MESSAGE_ERROR_EMPTY_RESPONSE));
             return;
         }
-
-        Call<PaymentResponse> call = apiService.paymentBankTransfer(snapToken, paymentRequest);
-        call.enqueue(new Callback<PaymentResponse>() {
+        Call<T> call = apiService.paymentBankTransfer(snapToken, paymentRequest);
+        call.enqueue(new Callback<T>() {
             @Override
-            public void onResponse(Call<PaymentResponse> call, Response<PaymentResponse> response) {
+            public void onResponse(Call<T> call, Response<T> response) {
                 releaseResources();
-                handleServerResponse(response, callback, new PaymentResponse(), null);
+                handleServerResponse(response, callback, null);
             }
 
             @Override
-            public void onFailure(Call<PaymentResponse> call, Throwable t) {
+            public void onFailure(Call<T> call, Throwable t) {
                 releaseResources();
-                handleServerResponse(null, callback, new PaymentResponse(), t);
+                handleServerResponse(null, callback, t);
             }
         });
     }
 
-
-    private <T> void handleServerResponse(Response<T> response, MidtransCallback<T> callback, T defaultValue, Throwable throwable) {
+    private <T> void handleServerResponse(Response<T> response, MidtransCallback<T> callback, Throwable throwable) {
         if (response != null && response.isSuccessful()) {
             if (response.code() != 204) {
                 T responseBody = response.body();
                 callback.onSuccess(responseBody);
             } else {
-                callback.onSuccess(defaultValue);
+                callback.onFailed(new Throwable(MESSAGE_ERROR_EMPTY_RESPONSE));
             }
         } else {
             if (throwable != null) {
@@ -103,7 +100,6 @@ public class SnapApiManager extends BaseServiceManager {
                 callback.onFailed(new Throwable(MESSAGE_ERROR_EMPTY_RESPONSE));
             }
         }
-
     }
 
 }
