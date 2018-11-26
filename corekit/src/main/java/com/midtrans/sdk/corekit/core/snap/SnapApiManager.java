@@ -1,10 +1,13 @@
 package com.midtrans.sdk.corekit.core.snap;
 
+import android.support.annotation.NonNull;
+
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.base.model.PaymentType;
 import com.midtrans.sdk.corekit.base.network.BaseServiceManager;
-import com.midtrans.sdk.corekit.core.snap.model.pay.request.va.BankTransferPaymentRequest;
-import com.midtrans.sdk.corekit.core.snap.model.pay.request.va.CustomerDetailRequest;
+import com.midtrans.sdk.corekit.core.snap.model.pay.request.CustomerDetailPayRequest;
+import com.midtrans.sdk.corekit.core.snap.model.pay.request.PaymentRequest;
+import com.midtrans.sdk.corekit.core.snap.model.pay.response.mandiriecash.MandiriEcashResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BcaPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BniPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.OtherPaymentResponse;
@@ -47,15 +50,15 @@ public class SnapApiManager extends BaseServiceManager {
 
                 call.enqueue(new Callback<PaymentInfoResponse>() {
                     @Override
-                    public void onResponse(Call<PaymentInfoResponse> call, Response<PaymentInfoResponse> response) {
+                    public void onResponse(@NonNull Call<PaymentInfoResponse> call, @NonNull Response<PaymentInfoResponse> response) {
                         releaseResources();
                         handleServerResponse(response, callback, null);
                     }
 
                     @Override
-                    public void onFailure(Call<PaymentInfoResponse> call, Throwable t) {
+                    public void onFailure(@NonNull Call<PaymentInfoResponse> call, @NonNull Throwable throwable) {
                         releaseResources();
-                        handleServerResponse(null, callback, t);
+                        handleServerResponse(null, callback, throwable);
                     }
                 });
             }
@@ -70,25 +73,25 @@ public class SnapApiManager extends BaseServiceManager {
      * @param callback        Transaction callback.
      */
     public void paymentUsingBankTransferVaBca(final String snapToken,
-                                              final CustomerDetailRequest customerDetails,
+                                              final CustomerDetailPayRequest customerDetails,
                                               final MidtransCallback<BcaPaymentResponse> callback) {
         if (apiService == null) {
             callback.onFailed(new Throwable(MESSAGE_ERROR_EMPTY_RESPONSE));
             return;
         }
-        BankTransferPaymentRequest paymentRequest = new BankTransferPaymentRequest(PaymentType.BCA_VA, customerDetails);
+        PaymentRequest paymentRequest = new PaymentRequest(PaymentType.BCA_VA, customerDetails);
         Call<BcaPaymentResponse> call = apiService.paymentBankTransferBca(snapToken, paymentRequest);
         call.enqueue(new Callback<BcaPaymentResponse>() {
             @Override
-            public void onResponse(Call<BcaPaymentResponse> call, Response<BcaPaymentResponse> response) {
+            public void onResponse(@NonNull Call<BcaPaymentResponse> call, @NonNull Response<BcaPaymentResponse> response) {
                 releaseResources();
                 handleServerResponse(response, callback, null);
             }
 
             @Override
-            public void onFailure(Call<BcaPaymentResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<BcaPaymentResponse> call, @NonNull Throwable throwable) {
                 releaseResources();
-                handleServerResponse(null, callback, t);
+                handleServerResponse(null, callback, throwable);
             }
         });
     }
@@ -101,25 +104,25 @@ public class SnapApiManager extends BaseServiceManager {
      * @param callback        Transaction callback.
      */
     public void paymentUsingBankTransferVaBni(final String snapToken,
-                                              final CustomerDetailRequest customerDetails,
+                                              final CustomerDetailPayRequest customerDetails,
                                               final MidtransCallback<BniPaymentResponse> callback) {
         if (apiService == null) {
             callback.onFailed(new Throwable(MESSAGE_ERROR_EMPTY_RESPONSE));
             return;
         }
-        BankTransferPaymentRequest paymentRequest = new BankTransferPaymentRequest(PaymentType.BNI_VA, customerDetails);
+        PaymentRequest paymentRequest = new PaymentRequest(PaymentType.BNI_VA, customerDetails);
         Call<BniPaymentResponse> call = apiService.paymentBankTransferBni(snapToken, paymentRequest);
         call.enqueue(new Callback<BniPaymentResponse>() {
             @Override
-            public void onResponse(Call<BniPaymentResponse> call, Response<BniPaymentResponse> response) {
+            public void onResponse(@NonNull Call<BniPaymentResponse> call, @NonNull Response<BniPaymentResponse> response) {
                 releaseResources();
                 handleServerResponse(response, callback, null);
             }
 
             @Override
-            public void onFailure(Call<BniPaymentResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<BniPaymentResponse> call, @NonNull Throwable throwable) {
                 releaseResources();
-                handleServerResponse(null, callback, t);
+                handleServerResponse(null, callback, throwable);
             }
         });
     }
@@ -132,25 +135,25 @@ public class SnapApiManager extends BaseServiceManager {
      * @param callback        Transaction callback.
      */
     public void paymentUsingBankTransferVaPermata(final String snapToken,
-                                                  final CustomerDetailRequest customerDetails,
+                                                  final CustomerDetailPayRequest customerDetails,
                                                   final MidtransCallback<PermataPaymentResponse> callback) {
         if (apiService == null) {
             callback.onFailed(new Throwable(MESSAGE_ERROR_EMPTY_RESPONSE));
             return;
         }
-        BankTransferPaymentRequest paymentRequest = new BankTransferPaymentRequest(PaymentType.PERMATA_VA, customerDetails);
+        PaymentRequest paymentRequest = new PaymentRequest(PaymentType.PERMATA_VA, customerDetails);
         Call<PermataPaymentResponse> call = apiService.paymentBankTransferPermata(snapToken, paymentRequest);
         call.enqueue(new Callback<PermataPaymentResponse>() {
             @Override
-            public void onResponse(Call<PermataPaymentResponse> call, Response<PermataPaymentResponse> response) {
+            public void onResponse(@NonNull Call<PermataPaymentResponse> call, @NonNull Response<PermataPaymentResponse> response) {
                 releaseResources();
                 handleServerResponse(response, callback, null);
             }
 
             @Override
-            public void onFailure(Call<PermataPaymentResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<PermataPaymentResponse> call, @NonNull Throwable throwable) {
                 releaseResources();
-                handleServerResponse(null, callback, t);
+                handleServerResponse(null, callback, throwable);
             }
         });
     }
@@ -163,25 +166,56 @@ public class SnapApiManager extends BaseServiceManager {
      * @param callback        Transaction callback.
      */
     public void paymentUsingBankTransferVaOther(final String snapToken,
-                                                final CustomerDetailRequest customerDetails,
+                                                final CustomerDetailPayRequest customerDetails,
                                                 final MidtransCallback<OtherPaymentResponse> callback) {
         if (apiService == null) {
             callback.onFailed(new Throwable(MESSAGE_ERROR_EMPTY_RESPONSE));
             return;
         }
-        BankTransferPaymentRequest paymentRequest = new BankTransferPaymentRequest(PaymentType.OTHER_VA, customerDetails);
+        PaymentRequest paymentRequest = new PaymentRequest(PaymentType.OTHER_VA, customerDetails);
         Call<OtherPaymentResponse> call = apiService.paymentBankTransferOther(snapToken, paymentRequest);
         call.enqueue(new Callback<OtherPaymentResponse>() {
             @Override
-            public void onResponse(Call<OtherPaymentResponse> call, Response<OtherPaymentResponse> response) {
+            public void onResponse(@NonNull Call<OtherPaymentResponse> call, @NonNull Response<OtherPaymentResponse> response) {
                 releaseResources();
                 handleServerResponse(response, callback, null);
             }
 
             @Override
-            public void onFailure(Call<OtherPaymentResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<OtherPaymentResponse> call, @NonNull Throwable throwable) {
                 releaseResources();
-                handleServerResponse(null, callback, t);
+                handleServerResponse(null, callback, throwable);
+            }
+        });
+    }
+
+    /**
+     * This method is used for Payment Using Mandiri Echannel
+     *
+     * @param snapToken             snapToken after get payment info.
+     * @param customerDetailPayRequest Payment Details.zz
+     * @param callback              Transaction callback.
+     */
+    public void paymentUsingMandiriEcash(final String snapToken,
+                                         final CustomerDetailPayRequest customerDetailPayRequest,
+                                         final MidtransCallback<MandiriEcashResponse> callback) {
+        if (apiService == null) {
+            callback.onFailed(new Throwable(MESSAGE_ERROR_EMPTY_RESPONSE));
+            return;
+        }
+        PaymentRequest paymentRequest = new PaymentRequest(PaymentType.MANDIRI_ECASH, customerDetailPayRequest);
+        Call<MandiriEcashResponse> call = apiService.paymentMandiriEcash(snapToken, paymentRequest);
+        call.enqueue(new Callback<MandiriEcashResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<MandiriEcashResponse> call, @NonNull Response<MandiriEcashResponse> response) {
+                releaseResources();
+                handleServerResponse(response, callback, null);
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<MandiriEcashResponse> call, @NonNull Throwable throwable) {
+                releaseResources();
+                handleServerResponse(null, callback, throwable);
             }
         });
     }

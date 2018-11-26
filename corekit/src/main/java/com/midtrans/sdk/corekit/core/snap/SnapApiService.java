@@ -1,6 +1,7 @@
 package com.midtrans.sdk.corekit.core.snap;
 
-import com.midtrans.sdk.corekit.core.snap.model.pay.request.va.BankTransferPaymentRequest;
+import com.midtrans.sdk.corekit.core.snap.model.pay.request.PaymentRequest;
+import com.midtrans.sdk.corekit.core.snap.model.pay.response.mandiriecash.MandiriEcashResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BcaPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BniPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.OtherPaymentResponse;
@@ -15,12 +16,15 @@ import retrofit2.http.Path;
 
 public interface SnapApiService {
 
+    String PAYMENT_INFO = "v1/transactions/{snap_token}";
+    String PAYMENT_PAY = "v1/transactions/{snap_token}/pay";
+
     /**
      * Get transaction options using Snap with snap token.
      *
      * @param snapToken snap token
      */
-    @GET("v1/transactions/{snap_token}")
+    @GET(PAYMENT_INFO)
     Call<PaymentInfoResponse> getTransactionOptions(@Path("snap_token") String snapToken);
 
     /**
@@ -28,33 +32,39 @@ public interface SnapApiService {
      *
      * @param paymentRequest Payment Request Details.
      */
-    @POST("v1/transactions/{snap_token}/pay")
-    Call<BcaPaymentResponse> paymentBankTransferBca(@Path("snap_token") String snapToken, @Body BankTransferPaymentRequest paymentRequest);
+    @POST(PAYMENT_PAY)
+    Call<BcaPaymentResponse> paymentBankTransferBca(@Path("snap_token") String snapToken, @Body PaymentRequest paymentRequest);
 
     /**
      * Charge payment using bank transfer Virtual account.
      *
      * @param paymentRequest Payment Request Details.
      */
-    @POST("v1/transactions/{snap_token}/pay")
-    Call<BniPaymentResponse> paymentBankTransferBni(@Path("snap_token") String snapToken, @Body BankTransferPaymentRequest paymentRequest);
-
-
-    /**
-     * Charge payment using bank transfer Virtual account.
-     *
-     * @param paymentRequest Payment Request Details.
-     */
-    @POST("v1/transactions/{snap_token}/pay")
-    Call<PermataPaymentResponse> paymentBankTransferPermata(@Path("snap_token") String snapToken, @Body BankTransferPaymentRequest paymentRequest);
-
+    @POST(PAYMENT_PAY)
+    Call<BniPaymentResponse> paymentBankTransferBni(@Path("snap_token") String snapToken, @Body PaymentRequest paymentRequest);
 
     /**
      * Charge payment using bank transfer Virtual account.
      *
      * @param paymentRequest Payment Request Details.
      */
-    @POST("v1/transactions/{snap_token}/pay")
-    Call<OtherPaymentResponse> paymentBankTransferOther(@Path("snap_token") String snapToken, @Body BankTransferPaymentRequest paymentRequest);
+    @POST(PAYMENT_PAY)
+    Call<PermataPaymentResponse> paymentBankTransferPermata(@Path("snap_token") String snapToken, @Body PaymentRequest paymentRequest);
+
+    /**
+     * Charge payment using bank transfer Virtual account.
+     *
+     * @param paymentRequest Payment Request Details.
+     */
+    @POST(PAYMENT_PAY)
+    Call<OtherPaymentResponse> paymentBankTransferOther(@Path("snap_token") String snapToken, @Body PaymentRequest paymentRequest);
+
+    /**
+     * Charge payment using bank transfer Virtual account.
+     *
+     * @param paymentRequest Payment Request Details.
+     */
+    @POST(PAYMENT_PAY)
+    Call<MandiriEcashResponse> paymentMandiriEcash(@Path("snap_token") String snapToken, @Body PaymentRequest paymentRequest);
 
 }

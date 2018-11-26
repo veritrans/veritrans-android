@@ -1,5 +1,7 @@
 package com.midtrans.sdk.corekit.core.merchant;
 
+import android.support.annotation.NonNull;
+
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.base.network.BaseServiceManager;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.TransactionRequest;
@@ -38,15 +40,15 @@ public class MerchantApiManager extends BaseServiceManager {
                 Call<CheckoutResponse> call = apiService.checkout(request);
                 call.enqueue(new retrofit2.Callback<CheckoutResponse>() {
                     @Override
-                    public void onResponse(Call<CheckoutResponse> call, retrofit2.Response<CheckoutResponse> response) {
+                    public void onResponse(@NonNull Call<CheckoutResponse> call, @NonNull retrofit2.Response<CheckoutResponse> response) {
                         releaseResources();
                         handleServerResponse(response, callback, null);
                     }
 
                     @Override
-                    public void onFailure(Call<CheckoutResponse> call, Throwable t) {
+                    public void onFailure(@NonNull Call<CheckoutResponse> call, @NonNull Throwable throwable) {
                         releaseResources();
-                        handleServerResponse(null, callback, t);
+                        handleServerResponse(null, callback, throwable);
                     }
                 });
             }

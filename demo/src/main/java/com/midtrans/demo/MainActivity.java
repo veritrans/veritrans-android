@@ -13,8 +13,8 @@ import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.cu
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.customer.ShippingAddress;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.specific.creditcard.CreditCard;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutResponse;
-import com.midtrans.sdk.corekit.core.snap.model.pay.request.va.CustomerDetailRequest;
-import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BcaPaymentResponse;
+import com.midtrans.sdk.corekit.core.snap.model.pay.request.CustomerDetailPayRequest;
+import com.midtrans.sdk.corekit.core.snap.model.pay.response.mandiriecash.MandiriEcashResponse;
 import com.midtrans.sdk.corekit.core.snap.model.transaction.response.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.utilities.Currency;
 import com.midtrans.sdk.corekit.utilities.Logger;
@@ -104,14 +104,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startPayment(String snapToken) {
-        MidtransSdk.getInstance().paymentUsingBankTransferVaBca(snapToken,
-                new CustomerDetailRequest("FirstName",
+        MidtransSdk.getInstance().paymentUsingMandiriEcash(snapToken,
+                new CustomerDetailPayRequest("FirstName",
                         "mail@test.com",
                         "08123456789"),
-                new MidtransCallback<BcaPaymentResponse>() {
+                new MidtransCallback<MandiriEcashResponse>() {
                     @Override
-                    public void onSuccess(BcaPaymentResponse data) {
-                        Logger.debug("RESULT SUCCESS PAYMENT " + data.getBcaVaNumber());
+                    public void onSuccess(MandiriEcashResponse data) {
+                        Logger.debug("RESULT SUCCESS PAYMENT " + data.getRedirectUrl());
                     }
 
                     @Override

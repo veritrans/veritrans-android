@@ -11,9 +11,6 @@ public class GopayDeepLink implements Serializable {
     @SerializedName("callback_url")
     private String merchantGopayDeeplink;
 
-    public GopayDeepLink() {
-    }
-
     public GopayDeepLink(String merchantGopayDeeplink) {
         this.merchantGopayDeeplink = merchantGopayDeeplink;
         this.enableCallback = true;

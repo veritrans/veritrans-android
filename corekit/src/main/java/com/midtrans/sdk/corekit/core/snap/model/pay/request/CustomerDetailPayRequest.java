@@ -1,4 +1,4 @@
-package com.midtrans.sdk.corekit.core.snap.model.pay.request.va;
+package com.midtrans.sdk.corekit.core.snap.model.pay.request;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -6,18 +6,18 @@ import android.text.TextUtils;
 
 import java.io.Serializable;
 
-public class CustomerDetailRequest implements Serializable {
+public class CustomerDetailPayRequest implements Serializable {
     @SerializedName("full_name")
     private String fullName;
     private String email;
     private String phone;
 
-    public CustomerDetailRequest() {
+    public CustomerDetailPayRequest() {
     }
 
-    public CustomerDetailRequest(String fullName,
-                                 String email,
-                                 String phone) {
+    public CustomerDetailPayRequest(String fullName,
+                                    String email,
+                                    String phone) {
         this.fullName = fullName;
         this.email = email;
         this.phone = phone;
