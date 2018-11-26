@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.base.enums.Environment;
 import com.midtrans.sdk.corekit.base.model.BankType;
-import com.midtrans.sdk.corekit.base.model.PaymentType;
 import com.midtrans.sdk.corekit.core.MidtransSdk;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.TransactionRequest;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.customer.BillingAddress;
@@ -14,9 +13,7 @@ import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.cu
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.customer.ShippingAddress;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.specific.creditcard.CreditCard;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutResponse;
-import com.midtrans.sdk.corekit.core.snap.model.pay.request.va.BankTransferPaymentRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.va.CustomerDetailRequest;
-import com.midtrans.sdk.corekit.core.snap.model.pay.response.PaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BcaPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.transaction.response.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.utilities.Currency;
@@ -108,10 +105,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void startPayment(String snapToken) {
         MidtransSdk.getInstance().paymentUsingBankTransferVaBca(snapToken,
-                new BankTransferPaymentRequest(PaymentType.OTHER_VA,
-                        new CustomerDetailRequest("FirstName",
+                new CustomerDetailRequest("FirstName",
                         "mail@test.com",
-                        "08123456789")),
+                        "08123456789"),
                 new MidtransCallback<BcaPaymentResponse>() {
                     @Override
                     public void onSuccess(BcaPaymentResponse data) {
