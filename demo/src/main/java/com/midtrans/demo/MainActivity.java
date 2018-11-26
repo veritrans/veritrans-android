@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.base.enums.Environment;
 import com.midtrans.sdk.corekit.base.model.BankType;
+import com.midtrans.sdk.corekit.base.model.PaymentType;
 import com.midtrans.sdk.corekit.core.MidtransSdk;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.TransactionRequest;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.customer.BillingAddress;
@@ -13,6 +14,10 @@ import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.cu
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.customer.ShippingAddress;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.specific.creditcard.CreditCard;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutResponse;
+import com.midtrans.sdk.corekit.core.snap.model.pay.request.va.BankTransferPaymentRequest;
+import com.midtrans.sdk.corekit.core.snap.model.pay.request.va.CustomerDetailRequest;
+import com.midtrans.sdk.corekit.core.snap.model.pay.response.PaymentResponse;
+import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BcaPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.transaction.response.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.utilities.Currency;
 import com.midtrans.sdk.corekit.utilities.Logger;
@@ -33,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         TransactionRequest trxRequest = TransactionRequest
-                .builder("sample_sdk_test_core_00005", 20000.0)
+                .builder("sample_sdk_test_core_" + System.currentTimeMillis(), 20000.0)
                 .setCurrency(Currency.IDR)
                 .setGopayCallbackDeepLink("demo://midtrans")
                 .setCreditCard(CreditCard
@@ -75,28 +80,48 @@ public class MainActivity extends AppCompatActivity {
         MidtransSdk.getInstance().checkout(new MidtransCallback<CheckoutResponse>() {
             @Override
             public void onSuccess(CheckoutResponse data) {
-                Logger.debug("RESULT TOKEN "+data.getSnapToken());
+                Logger.debug("RESULT TOKEN CHECKOUT " + data.getSnapToken());
                 getTransactionOptions(data.getSnapToken());
             }
 
             @Override
             public void onFailed(Throwable throwable) {
-
+                Logger.debug("RESULT ERROR CHECKOUT " + throwable.getMessage());
             }
         });
     }
 
-    private void getTransactionOptions(String snapToken) {
+    private void getTransactionOptions(final String snapToken) {
         MidtransSdk.getInstance().getPaymentInfo(snapToken, new MidtransCallback<PaymentInfoResponse>() {
             @Override
             public void onSuccess(PaymentInfoResponse data) {
-                Logger.debug("RESULT TOKEN "+data.getToken());
+                startPayment(snapToken);
+                Logger.debug("RESULT SUCCESS PAYMENT INFO " + data.getToken());
             }
 
             @Override
             public void onFailed(Throwable throwable) {
-
+                Logger.debug("RESULT ERROR PAYMENT INFO " + throwable.getMessage());
             }
         });
+    }
+
+    private void startPayment(String snapToken) {
+        MidtransSdk.getInstance().paymentUsingBankTransferVaBca(snapToken,
+                new BankTransferPaymentRequest(PaymentType.OTHER_VA,
+                        new CustomerDetailRequest("FirstName",
+                        "mail@test.com",
+                        "08123456789")),
+                new MidtransCallback<BcaPaymentResponse>() {
+                    @Override
+                    public void onSuccess(BcaPaymentResponse data) {
+                        Logger.debug("RESULT SUCCESS PAYMENT " + data.getBcaVaNumber());
+                    }
+
+                    @Override
+                    public void onFailed(Throwable throwable) {
+                        Logger.debug("RESULT ERROR PAYMENT " + throwable.getMessage());
+                    }
+                });
     }
 }
