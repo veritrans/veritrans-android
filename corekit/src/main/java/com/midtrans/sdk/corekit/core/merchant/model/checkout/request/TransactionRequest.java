@@ -2,18 +2,17 @@ package com.midtrans.sdk.corekit.core.merchant.model.checkout.request;
 
 import com.google.gson.annotations.SerializedName;
 
-import android.support.annotation.NonNull;
-
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.ItemDetails;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.mandatory.TransactionDetails;
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.customer.CustomerDetails;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.BillInfoModel;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.ExpiryModel;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.GopayDeeplink;
+import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.ItemDetails;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.SnapPromo;
+import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.customer.CustomerDetails;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.specific.banktransfer.BankTransferRequestModel;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.specific.banktransfer.BcaBankTransferRequestModel;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.specific.creditcard.CreditCard;
+import com.midtrans.sdk.corekit.utilities.Logger;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -21,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 
 public class TransactionRequest implements Serializable {
+
+    private static TransactionRequest SINGLETON_INSTANCE = null;
 
     /**
      * contains details about transaction.
@@ -55,7 +56,7 @@ public class TransactionRequest implements Serializable {
      * Optional
      */
     @SerializedName("gopay")
-    private GopayDeeplink gopay = null;
+    private GopayDeeplink gopayDeeplink = null;
 
     /**
      * Set custom expiry of token that will be created
@@ -127,149 +128,112 @@ public class TransactionRequest implements Serializable {
     private Map<String, String> customObject = null;
 
 
-    /**
-     * TransactionRequest constructor for mandatory item
-     *
-     * @param transactionDetails contains order id, currency, and gross amount of transaction.
-     */
-    public TransactionRequest(@NonNull TransactionDetails transactionDetails) {
-        this.transactionDetails = transactionDetails;
+    private TransactionRequest(String orderId,
+                               double grossAmount,
+                               String currency,
+                               String gopayDeepLink,
+                               CreditCard creditCard,
+                               CustomerDetails customerDetails) {
+        this.transactionDetails = new TransactionDetails(orderId, grossAmount, currency);
+        this.gopayDeeplink = new GopayDeeplink(gopayDeepLink);
+        this.creditCard = creditCard;
     }
 
-    /**
-     * TransactionRequest constructor for mandatory item without using TransactionDetails object
-     * but the request use IDR, if want to custom use SGD, use setter or TransactionRequest constructor with object¬
-     *
-     * @param orderId     contains order id.
-     * @param grossAmount contains gross amount.
-     */
-    public TransactionRequest(@NonNull String orderId,
-                              @NonNull double grossAmount) {
-        this.transactionDetails = new TransactionDetails(orderId, grossAmount);
+    public static Builder builder(String orderId,
+                                  double grossAmount) {
+        return new Builder(orderId, grossAmount);
     }
 
-    /**
-     * Start getter and setter for mandatory object
-     */
-    public CustomerDetails getCustomerDetails() {
-        return customerDetails;
+    public synchronized static TransactionRequest getInstance() {
+        if (SINGLETON_INSTANCE == null) {
+            String message = "Transaction isn't build. Please use Transaction.builder() to initialize and build request object.";
+            RuntimeException runtimeException = new RuntimeException(message);
+            Logger.error(message, runtimeException);
+        }
+        return SINGLETON_INSTANCE;
     }
 
-    public ArrayList<ItemDetails> getItemDetails() {
-        return itemDetails;
+    public static class Builder {
+        private String orderId;
+        private double grossAmount;
+
+        private String currency;
+        private String gopayDeepLink;
+        private CreditCard creditCard;
+        private CustomerDetails customerDetails;
+
+        private Builder(
+                String orderId,
+                double grossAmount) {
+            this.orderId = orderId;
+            this.grossAmount = grossAmount;
+        }
+
+        public Builder setCurrency(String currency) {
+            this.currency = currency;
+            return this;
+        }
+
+        public Builder setGopayCallbackDeepLink(String gopayDeepLink) {
+            this.gopayDeepLink = gopayDeepLink;
+            return this;
+        }
+
+        public Builder setCreditCard(CreditCard creditCard) {
+            this.creditCard = creditCard;
+            return this;
+        }
+
+        public Builder setCustomerDetails(CustomerDetails customerDetails) {
+            this.customerDetails = customerDetails;
+            return this;
+        }
+
+        public TransactionRequest build() {
+            if (isValidData(orderId, grossAmount)) {
+                SINGLETON_INSTANCE = new TransactionRequest(orderId,
+                        grossAmount,
+                        currency,
+                        gopayDeepLink,
+                        creditCard,
+                        customerDetails);
+                return SINGLETON_INSTANCE;
+            } else {
+                Logger.error("Already performing an transaction");
+            }
+            return null;
+        }
+
+        private boolean isValidData(String orderId,
+                                    double grossAmount) {
+            if (orderId == null) {
+                String message = "Please set order id";
+                RuntimeException runtimeException = new RuntimeException(message);
+                Logger.error(message, runtimeException);
+            }
+
+            if (grossAmount == 0) {
+                String message = "Please set gross amount";
+                RuntimeException runtimeException = new RuntimeException(message);
+                Logger.error(message, runtimeException);
+            }
+            return true;
+        }
     }
 
     public TransactionDetails getTransactionDetails() {
         return transactionDetails;
     }
 
-    public void setCustomerDetails(CustomerDetails customerDetails) {
-        this.customerDetails = customerDetails;
-    }
-
-    public void setItemDetails(ArrayList<ItemDetails> itemDetails) {
-        this.itemDetails = itemDetails;
-    }
-
-    /**
-     * Start getter and setter for optional object
-     */
-    public List<String> getEnabledPayments() {
-        return enabledPayments;
-    }
-
-    public void setEnabledPayments(List<String> enabledPayments) {
-        this.enabledPayments = enabledPayments;
-    }
-
-    public GopayDeeplink getGopay() {
-        return gopay;
-    }
-
-    public void setGopay(GopayDeeplink gopay) {
-        this.gopay = gopay;
-    }
-
-    public ExpiryModel getExpiry() {
-        return expiry;
-    }
-
-    public void setExpiry(ExpiryModel expiry) {
-        this.expiry = expiry;
-    }
-
-    public String getCustomField1() {
-        return customField1;
-    }
-
-    public void setCustomField1(String customField1) {
-        this.customField1 = customField1;
-    }
-
-    public String getCustomField2() {
-        return customField2;
-    }
-
-    public void setCustomField2(String customField2) {
-        this.customField2 = customField2;
-    }
-
-    public String getCustomField3() {
-        return customField3;
-    }
-
-    public void setCustomField3(String customField3) {
-        this.customField3 = customField3;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    /**
-     * Start getter and setter for specific object
-     */
-    public SnapPromo getPromo() {
-        return promo;
-    }
-
-    public void setPromo(SnapPromo promo) {
-        this.promo = promo;
-    }
-
-    public BankTransferRequestModel getPermataVa() {
-        return permataVa;
-    }
-
-    public void setPermataVa(BankTransferRequestModel permataVa) {
-        this.permataVa = permataVa;
-    }
-
-    public BcaBankTransferRequestModel getBcaVa() {
-        return bcaVa;
-    }
-
-    public void setBcaVa(BcaBankTransferRequestModel bcaVa) {
-        this.bcaVa = bcaVa;
-    }
-
-    public BankTransferRequestModel getBniVa() {
-        return bniVa;
-    }
-
-    public void setBniVa(BankTransferRequestModel bniVa) {
-        this.bniVa = bniVa;
+    public GopayDeeplink getGopayDeeplink() {
+        return gopayDeeplink;
     }
 
     public CreditCard getCreditCard() {
         return creditCard;
     }
 
-    public void setCreditCard(CreditCard creditCard) {
-        this.creditCard = creditCard;
+    public CustomerDetails getCustomerDetails() {
+        return customerDetails;
     }
 }

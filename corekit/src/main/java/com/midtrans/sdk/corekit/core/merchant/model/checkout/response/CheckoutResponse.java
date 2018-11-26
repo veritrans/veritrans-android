@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
-public class TokenResponse {
+public class CheckoutResponse {
     @SerializedName("token")
     private String tokenId;
     @SerializedName("error_messages")

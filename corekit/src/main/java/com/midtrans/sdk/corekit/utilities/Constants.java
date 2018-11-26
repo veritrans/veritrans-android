@@ -33,7 +33,7 @@ public class Constants {
     public static final int BANK_TRANSFER_PERMATA = 1003;
     public static final int BANK_TRANSFER_BNI = 1004;
 
-    public static final String TAG = "MidtransCoreSdk";
+    public static final String TAG = "MidtransSdk";
 
     public static final int PHONE_NUMBER_LENGTH = 9;
     public static final int PHONE_NUMBER_MAX_LENGTH = 15;

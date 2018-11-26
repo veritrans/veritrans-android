@@ -9,7 +9,7 @@ import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.cu
 
 public class ModelHelper {
 
-    public static CustomerDetails sanitizeCustomerDetails(CustomerDetails customerDetails) {
+    /*public static CustomerDetails sanitizeCustomerDetails(CustomerDetails customerDetails) {
         if (customerDetails != null) {
             if (TextUtils.isEmpty(customerDetails.getFirstName())) {
                 customerDetails.setFirstName(null);
@@ -95,5 +95,5 @@ public class ModelHelper {
                 shippingAddress.setCountryCode(null);
             }
         }
-    }
+    }*/
 }
