@@ -1,9 +1,11 @@
 package com.midtrans.sdk.corekit.core.merchant.model.checkout.request;
+
 import com.google.gson.annotations.SerializedName;
+
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.mandatory.TransactionDetails;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.BillInfoModel;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.ExpiryModel;
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.GopayDeeplink;
+import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.GopayDeepLink;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.ItemDetails;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.SnapPromo;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.customer.CustomerDetails;
@@ -11,10 +13,12 @@ import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.specific.ba
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.specific.banktransfer.BcaBankTransferRequestModel;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.specific.creditcard.CreditCard;
 import com.midtrans.sdk.corekit.utilities.Logger;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 public class TransactionRequest implements Serializable {
     private static TransactionRequest SINGLETON_INSTANCE = null;
     /**
@@ -46,7 +50,7 @@ public class TransactionRequest implements Serializable {
      * Optional
      */
     @SerializedName("gopay")
-    private GopayDeeplink gopayDeeplink = null;
+    private GopayDeepLink gopayDeepLink = null;
     /**
      * Set custom expiry of token that will be created
      */
@@ -106,6 +110,7 @@ public class TransactionRequest implements Serializable {
      * helps to identify whether to use ui or not.
      */
     private Map<String, String> customObject = null;
+
     private TransactionRequest(String orderId,
                                double grossAmount,
                                String currency,
@@ -120,13 +125,15 @@ public class TransactionRequest implements Serializable {
                                String customField2,
                                String customField3) {
         this.transactionDetails = new TransactionDetails(orderId, grossAmount, currency);
-        this.gopayDeeplink = new GopayDeeplink(gopayDeepLink);
+        this.gopayDeepLink = new GopayDeepLink(gopayDeepLink);
         this.creditCard = creditCard;
     }
+
     public static Builder builder(String orderId,
                                   double grossAmount) {
         return new Builder(orderId, grossAmount);
     }
+
     public synchronized static TransactionRequest getInstance() {
         if (SINGLETON_INSTANCE == null) {
             String message = "Transaction isn't build. Please use Transaction.builder() to initialize and build request object.";
@@ -135,6 +142,7 @@ public class TransactionRequest implements Serializable {
         }
         return SINGLETON_INSTANCE;
     }
+
     public static class Builder {
         private String orderId;
         private double grossAmount;
@@ -155,80 +163,99 @@ public class TransactionRequest implements Serializable {
         private BcaBankTransferRequestModel bcaVa;
         private BankTransferRequestModel bniVa;
         private Map<String, String> customObject;
+
         private Builder(
                 String orderId,
                 double grossAmount) {
             this.orderId = orderId;
             this.grossAmount = grossAmount;
         }
+
         public Builder setCurrency(String currency) {
             this.currency = currency;
             return this;
         }
+
         public Builder setGopayCallbackDeepLink(String gopayDeepLink) {
             this.gopayDeepLink = gopayDeepLink;
             return this;
         }
+
         public Builder setCreditCard(CreditCard creditCard) {
             this.creditCard = creditCard;
             return this;
         }
+
         public Builder setCustomerDetails(CustomerDetails customerDetails) {
             this.customerDetails = customerDetails;
             return this;
         }
+
         public Builder setItemDetails(ArrayList<ItemDetails> itemDetails) {
             this.itemDetails = itemDetails;
             return this;
         }
+
         public Builder setEnabledPayments(List<String> enabledPayments) {
             this.enabledPayments = enabledPayments;
             return this;
         }
+
         public Builder setExpiry(ExpiryModel expiry) {
             this.expiry = expiry;
             return this;
         }
+
         public Builder setBillInfoModel(BillInfoModel billInfoModel) {
             this.billInfoModel = billInfoModel;
             return this;
         }
+
         public Builder setCustomField1(String customField1) {
             this.customField1 = customField1;
             return this;
         }
+
         public Builder setCustomField2(String customField2) {
             this.customField2 = customField2;
             return this;
         }
+
         public Builder setCustomField3(String customField3) {
             this.customField3 = customField3;
             return this;
         }
+
         public Builder setUserId(String userId) {
             this.userId = userId;
             return this;
         }
+
         public Builder setPromo(SnapPromo promo) {
             this.promo = promo;
             return this;
         }
+
         public Builder setPermataVa(BankTransferRequestModel permataVa) {
             this.permataVa = permataVa;
             return this;
         }
+
         public Builder setBcaVa(BcaBankTransferRequestModel bcaVa) {
             this.bcaVa = bcaVa;
             return this;
         }
+
         public Builder setBniVa(BankTransferRequestModel bniVa) {
             this.bniVa = bniVa;
             return this;
         }
+
         public Builder setCustomObject(Map<String, String> customObject) {
             this.customObject = customObject;
             return this;
         }
+
         public TransactionRequest build() {
             if (isValidData(orderId, grossAmount)) {
                 SINGLETON_INSTANCE = new TransactionRequest(orderId,
@@ -250,6 +277,7 @@ public class TransactionRequest implements Serializable {
             }
             return null;
         }
+
         private boolean isValidData(String orderId,
                                     double grossAmount) {
             if (orderId == null) {
@@ -265,54 +293,71 @@ public class TransactionRequest implements Serializable {
             return true;
         }
     }
+
     public String getCustomField1() {
         return customField1;
     }
+
     public String getCustomField2() {
         return customField2;
     }
+
     public String getCustomField3() {
         return customField3;
     }
+
     public String getUserId() {
         return userId;
     }
+
     public SnapPromo getPromo() {
         return promo;
     }
+
     public BankTransferRequestModel getPermataVa() {
         return permataVa;
     }
+
     public BcaBankTransferRequestModel getBcaVa() {
         return bcaVa;
     }
+
     public BankTransferRequestModel getBniVa() {
         return bniVa;
     }
+
     public Map<String, String> getCustomObject() {
         return customObject;
     }
+
     public ArrayList<ItemDetails> getItemDetails() {
         return itemDetails;
     }
+
     public List<String> getEnabledPayments() {
         return enabledPayments;
     }
+
     public ExpiryModel getExpiry() {
         return expiry;
     }
+
     public BillInfoModel getBillInfoModel() {
         return billInfoModel;
     }
+
     public TransactionDetails getTransactionDetails() {
         return transactionDetails;
     }
-    public GopayDeeplink getGopayDeeplink() {
-        return gopayDeeplink;
+
+    public GopayDeepLink getGopayDeepLink() {
+        return gopayDeepLink;
     }
+
     public CreditCard getCreditCard() {
         return creditCard;
     }
+
     public CustomerDetails getCustomerDetails() {
         return customerDetails;
     }

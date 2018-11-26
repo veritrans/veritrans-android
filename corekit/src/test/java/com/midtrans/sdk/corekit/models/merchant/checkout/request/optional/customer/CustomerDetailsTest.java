@@ -14,56 +14,51 @@ public class CustomerDetailsTest {
 
     @Before
     public void test_setup() {
-        this.customerDetails = new CustomerDetails();
+        this.customerDetails = new CustomerDetails(exampleTextPositive,
+                exampleTextPositive,
+                exampleTextPositive,
+                exampleTextPositive);
         this.exampleTextPositive = "exampleTextPositive";
         this.exampleTextNegative = "exampleTextNegative";
     }
 
     @Test
     public void test_SetPhone_positive() {
-        customerDetails.setPhone(exampleTextPositive);
         assertEquals(customerDetails.getPhone(), exampleTextPositive);
     }
 
     @Test
     public void test_SetPhone_negative() {
-        customerDetails.setPhone(exampleTextPositive);
         assertNotEquals(customerDetails.getPhone(), exampleTextNegative);
     }
 
     @Test
     public void test_SetEmail_positive() {
-        customerDetails.setEmail(exampleTextPositive);
         assertEquals(customerDetails.getEmail(), exampleTextPositive);
     }
 
     @Test
     public void test_SetEmail_negative() {
-        customerDetails.setEmail(exampleTextPositive);
         assertNotEquals(customerDetails.getEmail(), exampleTextNegative);
     }
 
     @Test
     public void test_SetFirstName_positive() {
-        customerDetails.setFirstName(exampleTextPositive);
         assertEquals(customerDetails.getFirstName(), exampleTextPositive);
     }
 
     @Test
     public void test_SetFirstName_negative() {
-        customerDetails.setFirstName(exampleTextPositive);
         assertNotEquals(customerDetails.getFirstName(), exampleTextNegative);
     }
 
     @Test
     public void test_SetLastName_positive() {
-        customerDetails.setLastName(exampleTextPositive);
         assertEquals(customerDetails.getLastName(), exampleTextPositive);
     }
 
     @Test
     public void test_SetLastName_negative() {
-        customerDetails.setLastName(exampleTextPositive);
         assertNotEquals(customerDetails.getLastName(), exampleTextNegative);
     }
 

@@ -1,7 +1,7 @@
 package com.midtrans.sdk.corekit.core.merchant;
 
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.TransactionRequest;
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.TokenResponse;
+import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -12,10 +12,11 @@ public interface MerchantApiService {
 
     /**
      * Get snap token
+     *
      * @param requestModel SnapToken RequestModel
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("charge")
-    Call<TokenResponse> checkout(@Body TransactionRequest requestModel);
+    Call<CheckoutResponse> checkout(@Body TransactionRequest requestModel);
 
 }

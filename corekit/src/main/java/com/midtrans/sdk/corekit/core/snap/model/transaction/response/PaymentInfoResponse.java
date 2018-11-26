@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.ItemDetails;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.mandatory.TransactionDetails;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.customer.CustomerDetails;
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.GopayDeeplink;
+import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.GopayDeepLink;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.specific.creditcard.CreditCard;
 import com.midtrans.sdk.corekit.core.snap.model.transaction.response.callback.Callbacks;
 import com.midtrans.sdk.corekit.core.snap.model.transaction.response.enablepayment.EnabledPayment;
@@ -16,7 +16,7 @@ import com.midtrans.sdk.corekit.core.snap.model.transaction.response.promo.Promo
 import java.io.Serializable;
 import java.util.List;
 
-public class TransactionOptionsResponse implements Serializable {
+public class PaymentInfoResponse implements Serializable {
     private String token;
 
     @SerializedName("transaction_details")
@@ -46,9 +46,9 @@ public class TransactionOptionsResponse implements Serializable {
     private CustomerDetails customerDetails;
 
     @SerializedName("gopay")
-    private GopayDeeplink gopay;
+    private GopayDeepLink gopay;
 
-    public TransactionOptionsResponse() {
+    public PaymentInfoResponse() {
     }
 
     public String getToken() {
@@ -131,11 +131,11 @@ public class TransactionOptionsResponse implements Serializable {
         this.customerDetails = customerDetails;
     }
 
-    public GopayDeeplink getGopay() {
+    public GopayDeepLink getGopay() {
         return gopay;
     }
 
-    public void setGopay(GopayDeeplink gopay) {
+    public void setGopay(GopayDeepLink gopay) {
         this.gopay = gopay;
     }
 }

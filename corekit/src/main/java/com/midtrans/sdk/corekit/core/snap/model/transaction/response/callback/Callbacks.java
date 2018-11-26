@@ -1,6 +1,8 @@
 package com.midtrans.sdk.corekit.core.snap.model.transaction.response.callback;
 
-public class Callbacks {
+import java.io.Serializable;
+
+public class Callbacks implements Serializable {
 
     private String finish;
     private String error;

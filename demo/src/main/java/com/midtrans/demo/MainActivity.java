@@ -1,10 +1,12 @@
 package com.midtrans.demo;
+
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+
+import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.base.enums.Environment;
 import com.midtrans.sdk.corekit.base.model.BankType;
 import com.midtrans.sdk.corekit.core.MidtransSdk;
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.CheckoutCallback;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.TransactionRequest;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.BillInfoModel;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.ExpiryModel;
@@ -13,15 +15,17 @@ import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.cu
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.customer.CustomerDetails;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.customer.ShippingAddress;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.specific.creditcard.CreditCard;
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.TokenResponse;
-import com.midtrans.sdk.corekit.core.snap.model.transaction.TransactionOptionsCallback;
-import com.midtrans.sdk.corekit.core.snap.model.transaction.response.TransactionOptionsResponse;
-import com.midtrans.sdk.corekit.core.snap.model.transaction.response.enablepayment.EnabledPayment;
+import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutResponse;
+import com.midtrans.sdk.corekit.core.snap.model.pay.request.CustomerDetailPayRequest;
+import com.midtrans.sdk.corekit.core.snap.model.pay.response.mandiriecash.MandiriEcashResponse;
+import com.midtrans.sdk.corekit.core.snap.model.transaction.response.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.utilities.Currency;
 import com.midtrans.sdk.corekit.utilities.Logger;
+
 import java.util.ArrayList;
-import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
                 .setEnvironment(Environment.SANDBOX)
                 .build();
         TransactionRequest trxRequest = TransactionRequest
-                .builder("sample_sdk_test_core_00005", 20000.0)
+                .builder("sample_sdk_test_core_" + System.currentTimeMillis(), 20000.0)
                 .setCurrency(Currency.IDR)
                 .setGopayCallbackDeepLink("demo://midtrans")
                 .setCreditCard(CreditCard
@@ -78,36 +82,52 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         TransactionRequest trxInstance = TransactionRequest.getInstance();
         MidtransSdk.getInstance().setTransactionRequest(trxRequest);
-        MidtransSdk.getInstance().checkout(new CheckoutCallback() {
+        MidtransSdk.getInstance().checkout(new MidtransCallback<CheckoutResponse>() {
             @Override
-            public void onSuccess(TokenResponse token) {
-                Logger.debug("MIDTRANS SDK NEW RETURN SUCCESS >>> " + token.getSnapToken());
-                getTransactionOptions(token.getSnapToken());
+            public void onFailed(Throwable throwable) {
+                Logger.debug("MIDTRANS SDK NEW RETURN ERROR >>> " + throwable.getMessage());
             }
+
             @Override
-            public void onFailure(TokenResponse token, String reason) {
-                Logger.debug("MIDTRANS SDK NEW RETURN FAILURE >>> " + reason);
-            }
-            @Override
-            public void onError(Throwable error) {
-                Logger.debug("MIDTRANS SDK NEW RETURN ERROR >>> " + error.getMessage());
+            public void onSuccess(CheckoutResponse data) {
+                Logger.debug("RESULT TOKEN CHECKOUT " + data.getSnapToken());
+                getTransactionOptions(data.getSnapToken());
             }
         });
     }
-    private void getTransactionOptions(String snapToken) {
-        MidtransSdk.getInstance().getPaymentInfo(snapToken, new TransactionOptionsCallback() {
+
+
+    private void getTransactionOptions(final String snapToken) {
+        MidtransSdk.getInstance().getPaymentInfo(snapToken, new MidtransCallback<PaymentInfoResponse>() {
             @Override
-            public void onSuccess(TransactionOptionsResponse transaction) {
-                Logger.debug("MIDTRANS SDK NEW RETURN SUCCESS >>> " + transaction.getToken());
+            public void onSuccess(PaymentInfoResponse data) {
+                startPayment(snapToken);
+                Logger.debug("RESULT SUCCESS PAYMENT INFO " + data.getToken());
             }
+
             @Override
-            public void onFailure(TransactionOptionsResponse transaction, String reason) {
-                Logger.debug("MIDTRANS SDK NEW RETURN FAILURE >>> " + reason);
-            }
-            @Override
-            public void onError(Throwable error) {
-                Logger.debug("MIDTRANS SDK NEW RETURN ERROR >>> " + error.getMessage());
+            public void onFailed(Throwable throwable) {
+                Logger.debug("MIDTRANS SDK NEW RETURN ERROR >>> " + throwable.getMessage());
+
             }
         });
+    }
+
+    private void startPayment(final String snapToken) {
+        MidtransSdk.getInstance().paymentUsingMandiriEcash(snapToken,
+                new CustomerDetailPayRequest("FirstName",
+                        "mail@test.com",
+                        "08123456789"),
+                new MidtransCallback<MandiriEcashResponse>() {
+                    @Override
+                    public void onSuccess(MandiriEcashResponse data) {
+                        Logger.debug("RESULT SUCCESS PAYMENT " + data.getRedirectUrl());
+                    }
+
+                    @Override
+                    public void onFailed(Throwable throwable) {
+                        Logger.debug("RESULT ERROR PAYMENT " + throwable.getMessage());
+                    }
+                });
     }
 }

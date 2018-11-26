@@ -4,17 +4,14 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class GopayDeeplink implements Serializable {
+public class GopayDeepLink implements Serializable {
 
     @SerializedName("enable_callback")
     private boolean enableCallback = false;
     @SerializedName("callback_url")
     private String merchantGopayDeeplink;
 
-    public GopayDeeplink() {
-    }
-
-    public GopayDeeplink(String merchantGopayDeeplink) {
+    public GopayDeepLink(String merchantGopayDeeplink) {
         this.merchantGopayDeeplink = merchantGopayDeeplink;
         this.enableCallback = true;
     }

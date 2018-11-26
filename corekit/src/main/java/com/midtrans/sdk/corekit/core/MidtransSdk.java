@@ -4,12 +4,20 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.base.enums.Environment;
 import com.midtrans.sdk.corekit.core.merchant.MerchantApiManager;
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.CheckoutCallback;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.TransactionRequest;
+import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutResponse;
 import com.midtrans.sdk.corekit.core.snap.SnapApiManager;
-import com.midtrans.sdk.corekit.core.snap.model.transaction.TransactionOptionsCallback;
+import com.midtrans.sdk.corekit.core.snap.model.pay.request.CustomerDetailPayRequest;
+import com.midtrans.sdk.corekit.core.snap.model.pay.request.PaymentRequest;
+import com.midtrans.sdk.corekit.core.snap.model.pay.response.mandiriecash.MandiriEcashResponse;
+import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BcaPaymentResponse;
+import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BniPaymentResponse;
+import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.OtherPaymentResponse;
+import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.PermataPaymentResponse;
+import com.midtrans.sdk.corekit.core.snap.model.transaction.response.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.utilities.Constants;
 import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.corekit.utilities.NetworkHelper;
@@ -46,6 +54,12 @@ public class MidtransSdk {
     private SnapApiManager snapApiManager;
 
     private final int apiRequestTimeOut = 30;
+    private final String BASE_URL_SANDBOX = "https://api.sandbox.midtrans.com/v2/";
+    private final String BASE_URL_PRODUCTION = "https://api.midtrans.com/v2/";
+    private final String SNAP_BASE_URL_SANDBOX = "https://app.sandbox.midtrans.com/snap/";
+    private final String SNAP_BASE_URL_PRODUCTION = "https://app.midtrans.com/snap/";
+    private final String PROMO_BASE_URL_SANDBOX = "https://promo.vt-stage.info/";
+    private final String PROMO_BASE_URL_PRODUCTION = "https://promo.vt-stage.info/";
 
     private MidtransSdk(Context context,
                         String clientId,
@@ -56,7 +70,13 @@ public class MidtransSdk {
         this.merchantBaseUrl = merchantUrl;
         this.midtransEnvironment = environment;
         this.merchantApiManager = NetworkHelper.newMerchantServiceManager(merchantBaseUrl, apiRequestTimeOut);
-        this.snapApiManager = NetworkHelper.newSnapServiceManager(merchantBaseUrl, apiRequestTimeOut);
+        String snapBaseUrl;
+        if (this.midtransEnvironment == Environment.SANDBOX) {
+            snapBaseUrl = SNAP_BASE_URL_SANDBOX;
+        } else {
+            snapBaseUrl = SNAP_BASE_URL_PRODUCTION;
+        }
+        this.snapApiManager = NetworkHelper.newSnapServiceManager(snapBaseUrl, apiRequestTimeOut);
     }
 
     /**
@@ -118,7 +138,10 @@ public class MidtransSdk {
          */
         public MidtransSdk build() {
             if (isValidData()) {
-                SINGLETON_INSTANCE = new MidtransSdk(context, merchantClientId, merchantBaseUrl, midtransEnvironment);
+                SINGLETON_INSTANCE = new MidtransSdk(context,
+                        merchantClientId,
+                        merchantBaseUrl,
+                        midtransEnvironment);
                 return SINGLETON_INSTANCE;
             } else {
                 Logger.error("Already performing an transaction");
@@ -223,7 +246,7 @@ public class MidtransSdk {
      *
      * @param callback for receiving callback from request.
      */
-    public void checkout(final CheckoutCallback callback) {
+    public void checkout(final MidtransCallback<CheckoutResponse> callback) {
         checkout(this.transactionRequest, callback);
     }
 
@@ -235,24 +258,15 @@ public class MidtransSdk {
      * @param callback           for receiving callback from request.
      */
     public void checkout(@NonNull final TransactionRequest transactionRequest,
-                         final CheckoutCallback callback) {
+                         final MidtransCallback<CheckoutResponse> callback) {
         if (callback == null) {
             Logger.error(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
-
-        if (transactionRequest != null) {
-            if (isNetworkAvailable()) {
-                if (merchantApiManager != null) {
-                    merchantApiManager.checkout(transactionRequest, callback);
-                } else {
-                    callback.onError(new Throwable(Constants.MESSAGE_ERROR_EMPTY_MERCHANT_URL));
-                }
-            } else {
-                callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
-            }
+        if (isNetworkAvailable()) {
+            merchantApiManager.checkout(transactionRequest, callback);
         } else {
-            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
+            callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 
@@ -262,25 +276,121 @@ public class MidtransSdk {
      * @param snapToken token after making checkout.
      * @param callback  for receiving callback from request.
      */
-    public void getPaymentInfo(@NonNull final String snapToken,
-                               final TransactionOptionsCallback callback) {
+    public void getPaymentInfo(final String snapToken,
+                               final MidtransCallback<PaymentInfoResponse> callback) {
         if (callback == null) {
             Logger.error(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
-
-        if (snapToken != null) {
-            if (isNetworkAvailable()) {
-                if (snapApiManager != null) {
-                    snapApiManager.getPaymentInfo(snapToken, callback);
-                } else {
-                    callback.onError(new Throwable(Constants.MESSAGE_ERROR_EMPTY_MERCHANT_URL));
-                }
-            } else {
-                callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
-            }
+        if (isNetworkAvailable()) {
+            snapApiManager.getPaymentInfo(snapToken, callback);
         } else {
-            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
+            callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
+        }
+    }
+
+    /**
+     * Start payment using bank transfer and va with BCA.
+     *
+     * @param snapToken       token after making checkout.
+     * @param customerDetails for putting bank transfer request.
+     * @param callback        for receiving callback from request.
+     */
+    public void paymentUsingBankTransferVaBca(final String snapToken,
+                                              final CustomerDetailPayRequest customerDetails,
+                                              final MidtransCallback<BcaPaymentResponse> callback) {
+        if (callback == null) {
+            Logger.error(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
+            return;
+        }
+        if (isNetworkAvailable()) {
+            snapApiManager.paymentUsingBankTransferVaBca(snapToken, customerDetails, callback);
+        } else {
+            callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
+        }
+    }
+
+    /**
+     * Start payment using bank transfer and va with BNI.
+     *
+     * @param snapToken       token after making checkout.
+     * @param customerDetails for putting bank transfer request.
+     * @param callback        for receiving callback from request.
+     */
+    public void paymentUsingBankTransferVaBni(final String snapToken,
+                                              final CustomerDetailPayRequest customerDetails,
+                                              final MidtransCallback<BniPaymentResponse> callback) {
+        if (callback == null) {
+            Logger.error(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
+            return;
+        }
+        if (isNetworkAvailable()) {
+            snapApiManager.paymentUsingBankTransferVaBni(snapToken, customerDetails, callback);
+        } else {
+            callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
+        }
+    }
+
+    /**
+     * Start payment using bank transfer and va with PERMATA.
+     *
+     * @param snapToken       token after making checkout.
+     * @param customerDetails for putting bank transfer request.
+     * @param callback        for receiving callback from request.
+     */
+    public void paymentUsingBankTransferVaPermata(final String snapToken,
+                                                  final CustomerDetailPayRequest customerDetails,
+                                                  final MidtransCallback<PermataPaymentResponse> callback) {
+        if (callback == null) {
+            Logger.error(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
+            return;
+        }
+        if (isNetworkAvailable()) {
+            snapApiManager.paymentUsingBankTransferVaPermata(snapToken, customerDetails, callback);
+        } else {
+            callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
+        }
+    }
+
+    /**
+     * Start payment using bank transfer and va with Other Bank.
+     *
+     * @param snapToken       token after making checkout.
+     * @param customerDetails for putting bank transfer request.
+     * @param callback        for receiving callback from request.
+     */
+    public void paymentUsingBankTransferVaOther(final String snapToken,
+                                                final CustomerDetailPayRequest customerDetails,
+                                                final MidtransCallback<OtherPaymentResponse> callback) {
+        if (callback == null) {
+            Logger.error(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
+            return;
+        }
+        if (isNetworkAvailable()) {
+            snapApiManager.paymentUsingBankTransferVaOther(snapToken, customerDetails, callback);
+        } else {
+            callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
+        }
+    }
+
+    /**
+     * Start payment using bank transfer and va with Mandiri Ecash.
+     *
+     * @param snapToken                token after making checkout.
+     * @param customerDetailPayRequest for putting bank transfer request.
+     * @param callback                 for receiving callback from request.
+     */
+    public void paymentUsingMandiriEcash(final String snapToken,
+                                         final CustomerDetailPayRequest customerDetailPayRequest,
+                                         final MidtransCallback<MandiriEcashResponse> callback) {
+        if (callback == null) {
+            Logger.error(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
+            return;
+        }
+        if (isNetworkAvailable()) {
+            snapApiManager.paymentUsingMandiriEcash(snapToken, customerDetailPayRequest, callback);
+        } else {
+            callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 
