@@ -40,26 +40,28 @@ public class MerchantApiManager extends BaseServiceManager {
                     @Override
                     public void onResponse(Call<CheckoutResponse> call, retrofit2.Response<CheckoutResponse> response) {
                         releaseResources();
-                        handleServerResponse(response, callback, new CheckoutResponse(), null);
+                        handleServerResponse(response, callback, null);
                     }
 
                     @Override
                     public void onFailure(Call<CheckoutResponse> call, Throwable t) {
                         releaseResources();
-                        handleServerResponse(null, callback, new CheckoutResponse(), t);
+                        handleServerResponse(null, callback, t);
                     }
                 });
             }
         }
     }
 
-    private <T> void handleServerResponse(Response<T> response, MidtransCallback<T> callback, T defaultValue, Throwable throwable) {
+    private <T> void handleServerResponse(Response<T> response,
+                                          MidtransCallback<T> callback,
+                                          Throwable throwable) {
         if (response != null && response.isSuccessful()) {
             if (response.code() != 204) {
                 T responseBody = response.body();
                 callback.onSuccess(responseBody);
             } else {
-                callback.onSuccess(defaultValue);
+                callback.onFailed(new Throwable(MESSAGE_ERROR_EMPTY_RESPONSE));
             }
         } else {
             if (throwable != null) {
@@ -68,7 +70,6 @@ public class MerchantApiManager extends BaseServiceManager {
                 callback.onFailed(new Throwable(MESSAGE_ERROR_EMPTY_RESPONSE));
             }
         }
-
     }
 
 }
