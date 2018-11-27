@@ -1,11 +1,11 @@
-package com.midtrans.sdk.corekit.core.snap.model.pay.response.mandiriecash;
+package com.midtrans.sdk.corekit.core.snap.model.pay.response;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class MandiriEcashResponse implements Serializable {
+public class BasePaymentResponse implements Serializable {
     @SerializedName("status_code")
     @Expose
     private String statusCode;
@@ -40,7 +40,7 @@ public class MandiriEcashResponse implements Serializable {
     @Expose
     private String finishRedirectUrl;
 
-    public MandiriEcashResponse() {
+    public BasePaymentResponse() {
     }
 
     public String getStatusCode() {
