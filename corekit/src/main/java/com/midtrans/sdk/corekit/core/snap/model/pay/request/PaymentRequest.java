@@ -2,8 +2,6 @@ package com.midtrans.sdk.corekit.core.snap.model.pay.request;
 
 import com.google.gson.annotations.SerializedName;
 
-import com.midtrans.sdk.corekit.base.model.BasePaymentRequest;
-
 import java.io.Serializable;
 
 public class PaymentRequest extends BasePaymentRequest implements Serializable {
