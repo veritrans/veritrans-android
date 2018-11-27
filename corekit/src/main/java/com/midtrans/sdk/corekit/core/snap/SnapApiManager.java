@@ -3,11 +3,13 @@ package com.midtrans.sdk.corekit.core.snap;
 import android.support.annotation.NonNull;
 
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
+import com.midtrans.sdk.corekit.base.model.BasePaymentRequest;
 import com.midtrans.sdk.corekit.base.model.PaymentType;
 import com.midtrans.sdk.corekit.base.network.BaseServiceManager;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.CustomerDetailPayRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.PaymentRequest;
-import com.midtrans.sdk.corekit.core.snap.model.pay.response.mandiriecash.MandiriEcashResponse;
+import com.midtrans.sdk.corekit.core.snap.model.pay.response.BasePaymentResponse;
+import com.midtrans.sdk.corekit.core.snap.model.pay.response.epaybri.BriEpayPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BcaPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BniPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.OtherPaymentResponse;
@@ -192,28 +194,86 @@ public class SnapApiManager extends BaseServiceManager {
     /**
      * This method is used for Payment Using Mandiri Echannel
      *
-     * @param snapToken             snapToken after get payment info.
+     * @param snapToken                snapToken after get payment info.
      * @param customerDetailPayRequest Payment Details.zz
-     * @param callback              Transaction callback.
+     * @param callback                 Transaction callback.
      */
     public void paymentUsingMandiriEcash(final String snapToken,
                                          final CustomerDetailPayRequest customerDetailPayRequest,
-                                         final MidtransCallback<MandiriEcashResponse> callback) {
+                                         final MidtransCallback<BasePaymentResponse> callback) {
         if (apiService == null) {
             callback.onFailed(new Throwable(MESSAGE_ERROR_EMPTY_RESPONSE));
             return;
         }
         PaymentRequest paymentRequest = new PaymentRequest(PaymentType.MANDIRI_ECASH, customerDetailPayRequest);
-        Call<MandiriEcashResponse> call = apiService.paymentMandiriEcash(snapToken, paymentRequest);
-        call.enqueue(new Callback<MandiriEcashResponse>() {
+        Call<BasePaymentResponse> call = apiService.paymentMandiriEcash(snapToken, paymentRequest);
+        call.enqueue(new Callback<BasePaymentResponse>() {
             @Override
-            public void onResponse(@NonNull Call<MandiriEcashResponse> call, @NonNull Response<MandiriEcashResponse> response) {
+            public void onResponse(@NonNull Call<BasePaymentResponse> call, @NonNull Response<BasePaymentResponse> response) {
                 releaseResources();
                 handleServerResponse(response, callback, null);
             }
 
             @Override
-            public void onFailure(@NonNull Call<MandiriEcashResponse> call, @NonNull Throwable throwable) {
+            public void onFailure(@NonNull Call<BasePaymentResponse> call, @NonNull Throwable throwable) {
+                releaseResources();
+                handleServerResponse(null, callback, throwable);
+            }
+        });
+    }
+
+    /**
+     * This method is used for Payment Using CIMB Clicks
+     *
+     * @param snapToken snapToken after get payment info.
+     * @param callback  Transaction callback.
+     */
+    public void paymentUsingCimbClick(final String snapToken,
+                                      final MidtransCallback<BasePaymentResponse> callback) {
+        if (apiService == null) {
+            callback.onFailed(new Throwable(MESSAGE_ERROR_EMPTY_RESPONSE));
+            return;
+        }
+        BasePaymentRequest basePaymentRequest = new BasePaymentRequest(PaymentType.CIMB_CLICKS);
+        Call<BasePaymentResponse> call = apiService.paymentCimbClicks(snapToken, basePaymentRequest);
+        call.enqueue(new Callback<BasePaymentResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<BasePaymentResponse> call, @NonNull Response<BasePaymentResponse> response) {
+                releaseResources();
+                handleServerResponse(response, callback, null);
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<BasePaymentResponse> call, @NonNull Throwable throwable) {
+                releaseResources();
+                handleServerResponse(null, callback, throwable);
+            }
+        });
+    }
+
+    /**
+     * This method is used for Payment Using BRI Epay
+     *
+     * @param snapToken snapToken after get payment info.
+     * @param callback  Transaction callback.
+     */
+    public void paymentUsingBriEpay(final String snapToken,
+                                    final MidtransCallback<BriEpayPaymentResponse> callback) {
+        if (apiService == null) {
+            callback.onFailed(new Throwable(MESSAGE_ERROR_EMPTY_RESPONSE));
+            return;
+        }
+        BasePaymentRequest basePaymentRequest = new BasePaymentRequest(PaymentType.BRI_EPAY);
+        Call<BriEpayPaymentResponse> call = apiService.paymentBriEpay(snapToken, basePaymentRequest);
+        call.enqueue(new Callback<BriEpayPaymentResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<BriEpayPaymentResponse> call, @NonNull Response<BriEpayPaymentResponse> response) {
+                releaseResources();
+                handleServerResponse(response, callback, null);
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<BriEpayPaymentResponse> call, @NonNull Throwable throwable) {
                 releaseResources();
                 handleServerResponse(null, callback, throwable);
             }

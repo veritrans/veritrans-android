@@ -1,7 +1,9 @@
 package com.midtrans.sdk.corekit.core.snap;
 
+import com.midtrans.sdk.corekit.base.model.BasePaymentRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.PaymentRequest;
-import com.midtrans.sdk.corekit.core.snap.model.pay.response.mandiriecash.MandiriEcashResponse;
+import com.midtrans.sdk.corekit.core.snap.model.pay.response.BasePaymentResponse;
+import com.midtrans.sdk.corekit.core.snap.model.pay.response.epaybri.BriEpayPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BcaPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BniPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.OtherPaymentResponse;
@@ -60,11 +62,27 @@ public interface SnapApiService {
     Call<OtherPaymentResponse> paymentBankTransferOther(@Path("snap_token") String snapToken, @Body PaymentRequest paymentRequest);
 
     /**
-     * Charge payment using bank transfer Virtual account.
+     * Charge payment using Mandiri Ecash.
      *
      * @param paymentRequest Payment Request Details.
      */
     @POST(PAYMENT_PAY)
-    Call<MandiriEcashResponse> paymentMandiriEcash(@Path("snap_token") String snapToken, @Body PaymentRequest paymentRequest);
+    Call<BasePaymentResponse> paymentMandiriEcash(@Path("snap_token") String snapToken, @Body PaymentRequest paymentRequest);
+
+    /**
+     * Charge payment using CIMB Clicks.
+     *
+     * @param paymentRequest Payment Request Details.
+     */
+    @POST(PAYMENT_PAY)
+    Call<BasePaymentResponse> paymentCimbClicks(@Path("snap_token") String snapToken, @Body BasePaymentRequest paymentRequest);
+
+    /**
+     * Charge payment using BRI Epay.
+     *
+     * @param paymentRequest Payment Request Details.
+     */
+    @POST(PAYMENT_PAY)
+    Call<BriEpayPaymentResponse> paymentBriEpay(@Path("snap_token") String snapToken, @Body BasePaymentRequest paymentRequest);
 
 }

@@ -1,26 +1,26 @@
-package com.midtrans.sdk.corekit.core.snap.model.pay.response.mandiriecash;
+package com.midtrans.sdk.corekit.core.snap.model.pay.response.epaybri;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class MandiriEcashResponse implements Serializable {
+public class BriEpayPaymentResponse implements Serializable {
     @SerializedName("status_code")
     @Expose
     private String statusCode;
     @SerializedName("status_message")
     @Expose
     private String statusMessage;
-    @SerializedName("redirect_url")
-    @Expose
-    private String redirectUrl;
     @SerializedName("transaction_id")
     @Expose
     private String transactionId;
     @SerializedName("order_id")
     @Expose
     private String orderId;
+    @SerializedName("redirect_url")
+    @Expose
+    private String redirectUrl;
     @SerializedName("gross_amount")
     @Expose
     private String grossAmount;
@@ -36,12 +36,12 @@ public class MandiriEcashResponse implements Serializable {
     @SerializedName("transaction_status")
     @Expose
     private String transactionStatus;
+    @SerializedName("fraud_status")
+    @Expose
+    private String fraudStatus;
     @SerializedName("finish_redirect_url")
     @Expose
     private String finishRedirectUrl;
-
-    public MandiriEcashResponse() {
-    }
 
     public String getStatusCode() {
         return statusCode;
@@ -59,14 +59,6 @@ public class MandiriEcashResponse implements Serializable {
         this.statusMessage = statusMessage;
     }
 
-    public String getRedirectUrl() {
-        return redirectUrl;
-    }
-
-    public void setRedirectUrl(String redirectUrl) {
-        this.redirectUrl = redirectUrl;
-    }
-
     public String getTransactionId() {
         return transactionId;
     }
@@ -81,6 +73,14 @@ public class MandiriEcashResponse implements Serializable {
 
     public void setOrderId(String orderId) {
         this.orderId = orderId;
+    }
+
+    public String getRedirectUrl() {
+        return redirectUrl;
+    }
+
+    public void setRedirectUrl(String redirectUrl) {
+        this.redirectUrl = redirectUrl;
     }
 
     public String getGrossAmount() {
@@ -123,6 +123,14 @@ public class MandiriEcashResponse implements Serializable {
         this.transactionStatus = transactionStatus;
     }
 
+    public String getFraudStatus() {
+        return fraudStatus;
+    }
+
+    public void setFraudStatus(String fraudStatus) {
+        this.fraudStatus = fraudStatus;
+    }
+
     public String getFinishRedirectUrl() {
         return finishRedirectUrl;
     }
@@ -130,4 +138,5 @@ public class MandiriEcashResponse implements Serializable {
     public void setFinishRedirectUrl(String finishRedirectUrl) {
         this.finishRedirectUrl = finishRedirectUrl;
     }
+
 }
