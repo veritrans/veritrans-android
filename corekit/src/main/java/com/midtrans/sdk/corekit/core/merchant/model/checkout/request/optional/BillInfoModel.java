@@ -30,9 +30,6 @@ public class BillInfoModel implements Serializable {
     @SerializedName("bill_info8")
     private String billInfo8;
 
-    public BillInfoModel() {
-    }
-
     public BillInfoModel(String billInfo1,
                          String billInfo2) {
         this.billInfo1 = billInfo1;

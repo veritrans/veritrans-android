@@ -9,7 +9,7 @@ import java.util.Locale;
 public class StringHelper {
 
     public static String checkCurrency(String currency) {
-        if (currency==null){
+        if (currency == null) {
             return Currency.IDR;
         } else if (!currency.equalsIgnoreCase(Currency.IDR) ||
                 !currency.equalsIgnoreCase(Currency.SGD)) {

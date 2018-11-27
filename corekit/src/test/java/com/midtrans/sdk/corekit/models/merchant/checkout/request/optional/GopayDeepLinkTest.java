@@ -15,9 +15,9 @@ public class GopayDeepLinkTest {
 
     @Before
     public void test_setup() {
-        this.gopayDeepLink = new GopayDeepLink();
         this.exampleTextPositive = "exampleTextPositive";
         this.exampleTextNegative = "exampleTextNegative";
+        this.gopayDeepLink = new GopayDeepLink(exampleTextPositive);
     }
 
     @Test

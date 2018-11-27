@@ -32,27 +32,6 @@ public class MidtransSdk {
      * Instance variable.
      */
     private static volatile MidtransSdk SINGLETON_INSTANCE = null;
-
-    /**
-     * Mandatory property.
-     */
-    private Context context;
-    private String merchantClientId;
-    private String merchantBaseUrl;
-
-    /**
-     * Optional property.
-     */
-    private Environment midtransEnvironment;
-
-    /**
-     * Mandatory checkout property.
-     */
-    private TransactionRequest transactionRequest = null;
-
-    private MerchantApiManager merchantApiManager;
-    private SnapApiManager snapApiManager;
-
     private final int apiRequestTimeOut = 30;
     private final String BASE_URL_SANDBOX = "https://api.sandbox.midtrans.com/v2/";
     private final String BASE_URL_PRODUCTION = "https://api.midtrans.com/v2/";
@@ -60,6 +39,22 @@ public class MidtransSdk {
     private final String SNAP_BASE_URL_PRODUCTION = "https://app.midtrans.com/snap/";
     private final String PROMO_BASE_URL_SANDBOX = "https://promo.vt-stage.info/";
     private final String PROMO_BASE_URL_PRODUCTION = "https://promo.vt-stage.info/";
+    /**
+     * Mandatory property.
+     */
+    private Context context;
+    private String merchantClientId;
+    private String merchantBaseUrl;
+    /**
+     * Optional property.
+     */
+    private Environment midtransEnvironment;
+    /**
+     * Mandatory checkout property.
+     */
+    private TransactionRequest transactionRequest = null;
+    private MerchantApiManager merchantApiManager;
+    private SnapApiManager snapApiManager;
 
     private MidtransSdk(Context context,
                         String clientId,
@@ -94,75 +89,6 @@ public class MidtransSdk {
         return new Builder(context,
                 clientId,
                 merchantUrl);
-    }
-
-    /**
-     * Builder class extends BaseSdkBuilder
-     * contain Constructor for set data to BaseSdkBuilder.
-     */
-    public static class Builder {
-
-        protected String merchantClientId;
-        protected Context context;
-        protected boolean enableLog = false;
-        protected String merchantBaseUrl;
-        protected Environment midtransEnvironment = Environment.SANDBOX;
-
-        private Builder(Context context, String clientId, String merchantUrl) {
-            this.context = context;
-            this.merchantClientId = clientId;
-            this.merchantBaseUrl = merchantUrl;
-        }
-
-        /**
-         * set Logger visible or not.
-         */
-        public Builder setLogEnabled(boolean logEnabled) {
-            this.enableLog = logEnabled;
-            Logger.enabled = this.enableLog;
-            return this;
-        }
-
-        /**
-         * set Logger visible or not.
-         */
-        public Builder setEnvironment(Environment environment) {
-            this.midtransEnvironment = environment;
-            return this;
-        }
-
-        /**
-         * This method will start payment flow if you have set useUi field to true.
-         *
-         * @return it returns fully initialized object of midtrans sdk.
-         */
-        public MidtransSdk build() {
-            if (isValidData()) {
-                SINGLETON_INSTANCE = new MidtransSdk(context,
-                        merchantClientId,
-                        merchantBaseUrl,
-                        midtransEnvironment);
-                return SINGLETON_INSTANCE;
-            } else {
-                Logger.error("Already performing an transaction");
-            }
-            return null;
-        }
-
-        private boolean isValidData() {
-            if (merchantClientId == null || context == null) {
-                String message = "Client key and context cannot be null or empty. Please set the client key and context";
-                RuntimeException runtimeException = new RuntimeException(message);
-                Logger.error(message, runtimeException);
-            }
-
-            if (TextUtils.isEmpty(merchantBaseUrl) && isValidUrl(merchantBaseUrl)) {
-                String message = "Merchant base url cannot be null or empty (required) and must url valid format if you implement your own token storage. Please set your merchant base url to enable your own token storage";
-                RuntimeException runtimeException = new RuntimeException(message);
-                Logger.error(message, runtimeException);
-            }
-            return true;
-        }
     }
 
     /**
@@ -439,6 +365,75 @@ public class MidtransSdk {
      */
     public boolean isNetworkAvailable() {
         return NetworkHelper.isNetworkAvailable(this.context);
+    }
+
+    /**
+     * Builder class extends BaseSdkBuilder
+     * contain Constructor for set data to BaseSdkBuilder.
+     */
+    public static class Builder {
+
+        protected String merchantClientId;
+        protected Context context;
+        protected boolean enableLog = false;
+        protected String merchantBaseUrl;
+        protected Environment midtransEnvironment = Environment.SANDBOX;
+
+        private Builder(Context context, String clientId, String merchantUrl) {
+            this.context = context;
+            this.merchantClientId = clientId;
+            this.merchantBaseUrl = merchantUrl;
+        }
+
+        /**
+         * set Logger visible or not.
+         */
+        public Builder setLogEnabled(boolean logEnabled) {
+            this.enableLog = logEnabled;
+            Logger.enabled = this.enableLog;
+            return this;
+        }
+
+        /**
+         * set Logger visible or not.
+         */
+        public Builder setEnvironment(Environment environment) {
+            this.midtransEnvironment = environment;
+            return this;
+        }
+
+        /**
+         * This method will start payment flow if you have set useUi field to true.
+         *
+         * @return it returns fully initialized object of midtrans sdk.
+         */
+        public MidtransSdk build() {
+            if (isValidData()) {
+                SINGLETON_INSTANCE = new MidtransSdk(context,
+                        merchantClientId,
+                        merchantBaseUrl,
+                        midtransEnvironment);
+                return SINGLETON_INSTANCE;
+            } else {
+                Logger.error("Already performing an transaction");
+            }
+            return null;
+        }
+
+        private boolean isValidData() {
+            if (merchantClientId == null || context == null) {
+                String message = "Client key and context cannot be null or empty. Please set the client key and context";
+                RuntimeException runtimeException = new RuntimeException(message);
+                Logger.error(message, runtimeException);
+            }
+
+            if (TextUtils.isEmpty(merchantBaseUrl) && isValidUrl(merchantBaseUrl)) {
+                String message = "Merchant base url cannot be null or empty (required) and must url valid format if you implement your own token storage. Please set your merchant base url to enable your own token storage";
+                RuntimeException runtimeException = new RuntimeException(message);
+                Logger.error(message, runtimeException);
+            }
+            return true;
+        }
     }
 
 }

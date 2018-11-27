@@ -11,16 +11,13 @@ import java.util.Map;
 
 public class CreditCard implements Serializable {
 
-    private static volatile CreditCard SINGLETON_INSTANCE = null;
-
     public static final String MIGS = "migs";
     public static final String AUTHENTICATION_TYPE_RBA = "rba";
     public static final String AUTHENTICATION_TYPE_3DS = "3ds";
     public static final String AUTHENTICATION_TYPE_NONE = "none";
-
     @Deprecated
     public static final String RBA = "rba";
-
+    private static volatile CreditCard SINGLETON_INSTANCE = null;
     @SerializedName("save_card")
     private boolean saveCard;
     @SerializedName("token_id")
@@ -84,6 +81,58 @@ public class CreditCard implements Serializable {
     public static Builder builder(boolean secure,
                                   String authentication) {
         return new Builder(secure, authentication);
+    }
+
+    public boolean isSaveCard() {
+        return saveCard;
+    }
+
+    public String getTokenId() {
+        return tokenId;
+    }
+
+    public boolean isSecure() {
+        return secure;
+    }
+
+    public String getChannel() {
+        return channel;
+    }
+
+    public String getBank() {
+        return bank;
+    }
+
+    public List<SavedToken> getSavedTokens() {
+        return savedTokens;
+    }
+
+    public ArrayList<String> getWhitelistBins() {
+        return whitelistBins;
+    }
+
+    public List<String> getBlacklistBins() {
+        return blacklistBins;
+    }
+
+    public Installment getInstallment() {
+        return installment;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getAuthentication() {
+        return authentication;
+    }
+
+    public boolean isSecureSet() {
+        return isSecureSet;
+    }
+
+    public boolean isAuthenticationSet() {
+        return isAuthenticationSet;
     }
 
     public static class Builder {
@@ -212,57 +261,5 @@ public class CreditCard implements Serializable {
                     authentication);
             return SINGLETON_INSTANCE;
         }
-    }
-
-    public boolean isSaveCard() {
-        return saveCard;
-    }
-
-    public String getTokenId() {
-        return tokenId;
-    }
-
-    public boolean isSecure() {
-        return secure;
-    }
-
-    public String getChannel() {
-        return channel;
-    }
-
-    public String getBank() {
-        return bank;
-    }
-
-    public List<SavedToken> getSavedTokens() {
-        return savedTokens;
-    }
-
-    public ArrayList<String> getWhitelistBins() {
-        return whitelistBins;
-    }
-
-    public List<String> getBlacklistBins() {
-        return blacklistBins;
-    }
-
-    public Installment getInstallment() {
-        return installment;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public String getAuthentication() {
-        return authentication;
-    }
-
-    public boolean isSecureSet() {
-        return isSecureSet;
-    }
-
-    public boolean isAuthenticationSet() {
-        return isAuthenticationSet;
     }
 }

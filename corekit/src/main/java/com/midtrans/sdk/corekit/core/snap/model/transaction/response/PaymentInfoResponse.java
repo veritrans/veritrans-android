@@ -2,10 +2,10 @@ package com.midtrans.sdk.corekit.core.snap.model.transaction.response;
 
 import com.google.gson.annotations.SerializedName;
 
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.ItemDetails;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.mandatory.TransactionDetails;
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.customer.CustomerDetails;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.GopayDeepLink;
+import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.ItemDetails;
+import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.customer.CustomerDetails;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.specific.creditcard.CreditCard;
 import com.midtrans.sdk.corekit.core.snap.model.transaction.response.callback.Callbacks;
 import com.midtrans.sdk.corekit.core.snap.model.transaction.response.enablepayment.EnabledPayment;
