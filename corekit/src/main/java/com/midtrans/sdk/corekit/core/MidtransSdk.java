@@ -11,8 +11,8 @@ import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.Transaction
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutResponse;
 import com.midtrans.sdk.corekit.core.snap.SnapApiManager;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.CustomerDetailPayRequest;
-import com.midtrans.sdk.corekit.core.snap.model.pay.request.PaymentRequest;
-import com.midtrans.sdk.corekit.core.snap.model.pay.response.mandiriecash.MandiriEcashResponse;
+import com.midtrans.sdk.corekit.core.snap.model.pay.response.BasePaymentResponse;
+import com.midtrans.sdk.corekit.core.snap.model.pay.response.epaybri.BriEpayPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BcaPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BniPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.OtherPaymentResponse;
@@ -382,13 +382,51 @@ public class MidtransSdk {
      */
     public void paymentUsingMandiriEcash(final String snapToken,
                                          final CustomerDetailPayRequest customerDetailPayRequest,
-                                         final MidtransCallback<MandiriEcashResponse> callback) {
+                                         final MidtransCallback<BasePaymentResponse> callback) {
         if (callback == null) {
             Logger.error(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
         if (isNetworkAvailable()) {
             snapApiManager.paymentUsingMandiriEcash(snapToken, customerDetailPayRequest, callback);
+        } else {
+            callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
+        }
+    }
+
+    /**
+     * Start payment using bank transfer and va with CIMB Clicks.
+     *
+     * @param snapToken token after making checkout.
+     * @param callback  for receiving callback from request.
+     */
+    public void paymentUsingCimbClicks(final String snapToken,
+                                       final MidtransCallback<BasePaymentResponse> callback) {
+        if (callback == null) {
+            Logger.error(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
+            return;
+        }
+        if (isNetworkAvailable()) {
+            snapApiManager.paymentUsingCimbClick(snapToken, callback);
+        } else {
+            callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
+        }
+    }
+
+    /**
+     * Start payment using bank transfer and va with BRI Epay.
+     *
+     * @param snapToken token after making checkout.
+     * @param callback  for receiving callback from request.
+     */
+    public void paymentUsingBriEpay(final String snapToken,
+                                    final MidtransCallback<BriEpayPaymentResponse> callback) {
+        if (callback == null) {
+            Logger.error(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
+            return;
+        }
+        if (isNetworkAvailable()) {
+            snapApiManager.paymentUsingBriEpay(snapToken, callback);
         } else {
             callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
