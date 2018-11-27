@@ -14,7 +14,7 @@ import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.cu
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.specific.creditcard.CreditCard;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.CustomerDetailPayRequest;
-import com.midtrans.sdk.corekit.core.snap.model.pay.response.mandiriecash.MandiriEcashResponse;
+import com.midtrans.sdk.corekit.core.snap.model.pay.response.BasePaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.transaction.response.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.utilities.Currency;
 import com.midtrans.sdk.corekit.utilities.Logger;
@@ -108,9 +108,9 @@ public class MainActivity extends AppCompatActivity {
                 new CustomerDetailPayRequest("FirstName",
                         "mail@test.com",
                         "08123456789"),
-                new MidtransCallback<MandiriEcashResponse>() {
+                new MidtransCallback<BasePaymentResponse>() {
                     @Override
-                    public void onSuccess(MandiriEcashResponse data) {
+                    public void onSuccess(BasePaymentResponse data) {
                         Logger.debug("RESULT SUCCESS PAYMENT " + data.getRedirectUrl());
                     }
 
