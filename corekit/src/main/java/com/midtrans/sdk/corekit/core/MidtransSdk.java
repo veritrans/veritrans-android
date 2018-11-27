@@ -359,6 +359,26 @@ public class MidtransSdk {
     }
 
     /**
+     * Start payment using bank transfer and va with Klik BCA.
+     *
+     * @param snapToken token after making checkout.
+     * @param callback  for receiving callback from request.
+     */
+    public void paymentUsingKlikBca(final String snapToken,
+                                    final String klikBcaUserId,
+                                    final MidtransCallback<BasePaymentResponse> callback) {
+        if (callback == null) {
+            Logger.error(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
+            return;
+        }
+        if (isNetworkAvailable()) {
+            snapApiManager.paymentUsingKlikBca(snapToken, klikBcaUserId, callback);
+        } else {
+            callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
+        }
+    }
+
+    /**
      * Open utils for checking network status
      *
      * @return boolean based on network status
