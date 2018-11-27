@@ -13,19 +13,19 @@ public class BcaBankFreeText implements Serializable {
         this.payment = payment;
     }
 
-    public void setInquiry(List<BcaBankFreeTextLanguage> inquiry) {
-        this.inquiry = inquiry;
-    }
-
-    public void setPayment(List<BcaBankFreeTextLanguage> payment) {
-        this.payment = payment;
-    }
-
     public List<BcaBankFreeTextLanguage> getInquiry() {
         return inquiry;
     }
 
+    public void setInquiry(List<BcaBankFreeTextLanguage> inquiry) {
+        this.inquiry = inquiry;
+    }
+
     public List<BcaBankFreeTextLanguage> getPayment() {
         return payment;
+    }
+
+    public void setPayment(List<BcaBankFreeTextLanguage> payment) {
+        this.payment = payment;
     }
 }

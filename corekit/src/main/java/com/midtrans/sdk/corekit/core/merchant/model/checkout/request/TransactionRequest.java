@@ -123,10 +123,31 @@ public class TransactionRequest implements Serializable {
                                BillInfoModel billInfoModel,
                                String customField1,
                                String customField2,
-                               String customField3) {
+                               String customField3,
+                               String userId,
+                               SnapPromo promo,
+                               BankTransferRequestModel permataVa,
+                               BcaBankTransferRequestModel bcaVa,
+                               BankTransferRequestModel bniVa,
+                               Map<String, String> customObject) {
         this.transactionDetails = new TransactionDetails(orderId, grossAmount, currency);
         this.gopayDeepLink = new GopayDeepLink(gopayDeepLink);
         this.creditCard = creditCard;
+        this.customerDetails = customerDetails;
+        this.itemDetails = itemDetails;
+        this.enabledPayments = enabledPayments;
+        this.expiry = expiry;
+        this.customField1 = customField1;
+        this.customField2 = customField2;
+        this.customField3 = customField3;
+        this.billInfoModel = billInfoModel;
+        this.userId = userId;
+        this.promo = promo;
+        this.permataVa = permataVa;
+        this.bcaVa = bcaVa;
+        this.bniVa = bniVa;
+        this.customObject = customObject;
+
     }
 
     public static Builder builder(String orderId,
@@ -141,6 +162,74 @@ public class TransactionRequest implements Serializable {
             Logger.error(message, runtimeException);
         }
         return SINGLETON_INSTANCE;
+    }
+
+    public String getCustomField1() {
+        return customField1;
+    }
+
+    public String getCustomField2() {
+        return customField2;
+    }
+
+    public String getCustomField3() {
+        return customField3;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public SnapPromo getPromo() {
+        return promo;
+    }
+
+    public BankTransferRequestModel getPermataVa() {
+        return permataVa;
+    }
+
+    public BcaBankTransferRequestModel getBcaVa() {
+        return bcaVa;
+    }
+
+    public BankTransferRequestModel getBniVa() {
+        return bniVa;
+    }
+
+    public Map<String, String> getCustomObject() {
+        return customObject;
+    }
+
+    public ArrayList<ItemDetails> getItemDetails() {
+        return itemDetails;
+    }
+
+    public List<String> getEnabledPayments() {
+        return enabledPayments;
+    }
+
+    public ExpiryModel getExpiry() {
+        return expiry;
+    }
+
+    public BillInfoModel getBillInfoModel() {
+        return billInfoModel;
+    }
+
+    public TransactionDetails getTransactionDetails() {
+        return transactionDetails;
+    }
+
+    public GopayDeepLink getGopayDeepLink() {
+        return gopayDeepLink;
+    }
+
+    public CreditCard getCreditCard() {
+        return creditCard;
+    }
+
+    public CustomerDetails getCustomerDetails() {
+        return customerDetails;
     }
 
     public static class Builder {
@@ -270,7 +359,12 @@ public class TransactionRequest implements Serializable {
                         billInfoModel,
                         customField1,
                         customField2,
-                        customField3);
+                        customField3,
+                        userId,
+                        promo, permataVa,
+                        bcaVa,
+                        bniVa,
+                        customObject);
                 return SINGLETON_INSTANCE;
             } else {
                 Logger.error("Already performing an transaction");
@@ -292,73 +386,5 @@ public class TransactionRequest implements Serializable {
             }
             return true;
         }
-    }
-
-    public String getCustomField1() {
-        return customField1;
-    }
-
-    public String getCustomField2() {
-        return customField2;
-    }
-
-    public String getCustomField3() {
-        return customField3;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public SnapPromo getPromo() {
-        return promo;
-    }
-
-    public BankTransferRequestModel getPermataVa() {
-        return permataVa;
-    }
-
-    public BcaBankTransferRequestModel getBcaVa() {
-        return bcaVa;
-    }
-
-    public BankTransferRequestModel getBniVa() {
-        return bniVa;
-    }
-
-    public Map<String, String> getCustomObject() {
-        return customObject;
-    }
-
-    public ArrayList<ItemDetails> getItemDetails() {
-        return itemDetails;
-    }
-
-    public List<String> getEnabledPayments() {
-        return enabledPayments;
-    }
-
-    public ExpiryModel getExpiry() {
-        return expiry;
-    }
-
-    public BillInfoModel getBillInfoModel() {
-        return billInfoModel;
-    }
-
-    public TransactionDetails getTransactionDetails() {
-        return transactionDetails;
-    }
-
-    public GopayDeepLink getGopayDeepLink() {
-        return gopayDeepLink;
-    }
-
-    public CreditCard getCreditCard() {
-        return creditCard;
-    }
-
-    public CustomerDetails getCustomerDetails() {
-        return customerDetails;
     }
 }

@@ -19,12 +19,12 @@ public class CustomerDetails implements Serializable {
     @SerializedName("billing_address")
     private BillingAddress billingAddress;
 
-    private CustomerDetails(String firstName,
-                            String lastName,
-                            String email,
-                            String phone,
-                            ShippingAddress shippingAddress,
-                            BillingAddress billingAddress) {
+    public CustomerDetails(String firstName,
+                           String lastName,
+                           String email,
+                           String phone,
+                           ShippingAddress shippingAddress,
+                           BillingAddress billingAddress) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -33,41 +33,10 @@ public class CustomerDetails implements Serializable {
         this.billingAddress = billingAddress;
     }
 
-    public static Builder builder(String firstName, String lastName, String email, String phone) {
-        return new Builder(firstName, lastName, email, phone);
-    }
-
-    public static class Builder {
-        private ShippingAddress shippingAddress;
-        private BillingAddress billingAddress;
-        private String firstName;
-        private String lastName;
-        private String email;
-        private String phone;
-
-        public Builder(String firstName, String lastName, String email, String phone) {
-            this.firstName = firstName;
-            this.lastName = lastName;
-            this.email = email;
-            this.phone = phone;
-        }
-
-        public Builder setShippingAddress(ShippingAddress shippingAddress) {
-            this.shippingAddress = shippingAddress;
-            return this;
-        }
-
-        public Builder setBillingAddress(BillingAddress billingAddress) {
-            this.billingAddress = billingAddress;
-            return this;
-        }
-
-        public CustomerDetails build() {
-            return new CustomerDetails(firstName, lastName, email, phone, shippingAddress, billingAddress);
-        }
-    }
-
-    public CustomerDetails(String firstName, String lastName, String email, String phone) {
+    public CustomerDetails(String firstName,
+                           String lastName,
+                           String email,
+                           String phone) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -78,23 +47,47 @@ public class CustomerDetails implements Serializable {
         return firstName;
     }
 
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
     public String getLastName() {
         return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
         return email;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getPhone() {
         return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public ShippingAddress getShippingAddress() {
         return shippingAddress;
     }
 
+    public void setShippingAddress(ShippingAddress shippingAddress) {
+        this.shippingAddress = shippingAddress;
+    }
+
     public BillingAddress getBillingAddress() {
         return billingAddress;
+    }
+
+    public void setBillingAddress(BillingAddress billingAddress) {
+        this.billingAddress = billingAddress;
     }
 }

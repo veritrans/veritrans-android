@@ -8,7 +8,6 @@ import com.google.gson.internal.bind.DateTypeAdapter;
 import android.os.Build;
 
 import com.midtrans.sdk.corekit.core.merchant.MerchantApiService;
-import com.midtrans.sdk.corekit.core.snap.SnapApiManager;
 import com.midtrans.sdk.corekit.core.snap.SnapApiService;
 import com.midtrans.sdk.corekit.utilities.Logger;
 
