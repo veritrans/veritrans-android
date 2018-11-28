@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class TransactionRequest implements Serializable {
-    private static TransactionRequest SINGLETON_INSTANCE = null;
+public class CheckoutTransaction implements Serializable {
+    private static CheckoutTransaction SINGLETON_INSTANCE = null;
     /**
      * contains details about transaction.
      * Mandatory
@@ -111,25 +111,25 @@ public class TransactionRequest implements Serializable {
      */
     private Map<String, String> customObject = null;
 
-    private TransactionRequest(String orderId,
-                               double grossAmount,
-                               String currency,
-                               String gopayDeepLink,
-                               CreditCard creditCard,
-                               CustomerDetails customerDetails,
-                               ArrayList<ItemDetails> itemDetails,
-                               List<String> enabledPayments,
-                               ExpiryModel expiry,
-                               BillInfoModel billInfoModel,
-                               String customField1,
-                               String customField2,
-                               String customField3,
-                               String userId,
-                               SnapPromo promo,
-                               BankTransferRequestModel permataVa,
-                               BcaBankTransferRequestModel bcaVa,
-                               BankTransferRequestModel bniVa,
-                               Map<String, String> customObject) {
+    private CheckoutTransaction(String orderId,
+                                double grossAmount,
+                                String currency,
+                                String gopayDeepLink,
+                                CreditCard creditCard,
+                                CustomerDetails customerDetails,
+                                ArrayList<ItemDetails> itemDetails,
+                                List<String> enabledPayments,
+                                ExpiryModel expiry,
+                                BillInfoModel billInfoModel,
+                                String customField1,
+                                String customField2,
+                                String customField3,
+                                String userId,
+                                SnapPromo promo,
+                                BankTransferRequestModel permataVa,
+                                BcaBankTransferRequestModel bcaVa,
+                                BankTransferRequestModel bniVa,
+                                Map<String, String> customObject) {
         this.transactionDetails = new TransactionDetails(orderId, grossAmount, currency);
         this.gopayDeepLink = new GopayDeepLink(gopayDeepLink);
         this.creditCard = creditCard;
@@ -155,7 +155,7 @@ public class TransactionRequest implements Serializable {
         return new Builder(orderId, grossAmount);
     }
 
-    public synchronized static TransactionRequest getInstance() {
+    public synchronized static CheckoutTransaction getInstance() {
         if (SINGLETON_INSTANCE == null) {
             String message = "Transaction isn't build. Please use Transaction.builder() to initialize and build request object.";
             RuntimeException runtimeException = new RuntimeException(message);
@@ -345,9 +345,9 @@ public class TransactionRequest implements Serializable {
             return this;
         }
 
-        public TransactionRequest build() {
+        public CheckoutTransaction build() {
             if (isValidData(orderId, grossAmount)) {
-                SINGLETON_INSTANCE = new TransactionRequest(orderId,
+                SINGLETON_INSTANCE = new CheckoutTransaction(orderId,
                         grossAmount,
                         currency,
                         gopayDeepLink,

@@ -7,7 +7,7 @@ import android.text.TextUtils;
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.base.enums.Environment;
 import com.midtrans.sdk.corekit.core.merchant.MerchantApiManager;
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.TransactionRequest;
+import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.CheckoutTransaction;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutResponse;
 import com.midtrans.sdk.corekit.core.snap.SnapApiManager;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.CustomerDetailPayRequest;
@@ -52,7 +52,7 @@ public class MidtransSdk {
     /**
      * Mandatory checkout property.
      */
-    private TransactionRequest transactionRequest = null;
+    private CheckoutTransaction checkoutTransaction = null;
     private MerchantApiManager merchantApiManager;
     private SnapApiManager snapApiManager;
 
@@ -155,42 +155,42 @@ public class MidtransSdk {
      *
      * @return transaction request object.
      */
-    public TransactionRequest getTransactionRequest() {
-        return transactionRequest;
+    public CheckoutTransaction getCheckoutTransaction() {
+        return checkoutTransaction;
     }
 
     /**
      * Set value to transaction request for begin checkout.
      */
-    public void setTransactionRequest(TransactionRequest transactionRequest) {
-        this.transactionRequest = transactionRequest;
+    public void setCheckoutTransaction(CheckoutTransaction checkoutTransaction) {
+        this.checkoutTransaction = checkoutTransaction;
     }
 
     /**
      * Begin checkout for all Payment Method that merchant activate in MAP
-     * for use this method you have to set transactionRequest first.
+     * for use this method you have to set checkoutTransaction first.
      *
      * @param callback for receiving callback from request.
      */
     public void checkout(final MidtransCallback<CheckoutResponse> callback) {
-        checkout(this.transactionRequest, callback);
+        checkout(this.checkoutTransaction, callback);
     }
 
     /**
      * Begin checkout for all Payment Method that merchant activate in MAP
-     * for use this method you must to include transactionRequest as parameter.
+     * for use this method you must to include checkoutTransaction as parameter.
      *
-     * @param transactionRequest transaction request for making checkout.
-     * @param callback           for receiving callback from request.
+     * @param checkoutTransaction transaction request for making checkout.
+     * @param callback            for receiving callback from request.
      */
-    public void checkout(@NonNull final TransactionRequest transactionRequest,
+    public void checkout(@NonNull final CheckoutTransaction checkoutTransaction,
                          final MidtransCallback<CheckoutResponse> callback) {
         if (callback == null) {
             Logger.error(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
         if (isNetworkAvailable()) {
-            merchantApiManager.checkout(transactionRequest, callback);
+            merchantApiManager.checkout(checkoutTransaction, callback);
         } else {
             callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }

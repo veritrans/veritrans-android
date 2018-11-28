@@ -12,7 +12,7 @@ import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.base.enums.Environment;
 import com.midtrans.sdk.corekit.base.network.MidtransRestAdapter;
 import com.midtrans.sdk.corekit.core.merchant.MerchantApiManager;
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.TransactionRequest;
+import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.CheckoutTransaction;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutResponse;
 import com.midtrans.sdk.corekit.core.snap.SnapApiManager;
 import com.midtrans.sdk.corekit.core.snap.model.transaction.response.PaymentInfoResponse;
@@ -54,7 +54,7 @@ public class MidtransSdkTest {
     @Mock
     private MidtransSdk midtransSdkSpy;
     @Mock
-    private TransactionRequest transactionRequestMock;
+    private CheckoutTransaction checkoutTransactionMock;
 
     @Mock
     private SnapApiManager snapServiceManager;
@@ -98,14 +98,14 @@ public class MidtransSdkTest {
 
     @Test
     public void test_setTransactionRequest_positive() {
-        midtransSdkSpy.setTransactionRequest(transactionRequestMock);
-        Assert.assertEquals(transactionRequestMock, midtransSdkSpy.getTransactionRequest());
+        midtransSdkSpy.setCheckoutTransaction(checkoutTransactionMock);
+        Assert.assertEquals(checkoutTransactionMock, midtransSdkSpy.getCheckoutTransaction());
     }
 
     @Test
     public void test_setTransactionRequest_negative() {
-        midtransSdkSpy.setTransactionRequest(transactionRequestMock);
-        Assert.assertNotEquals(transactionRequestMock, null);
+        midtransSdkSpy.setCheckoutTransaction(checkoutTransactionMock);
+        Assert.assertNotEquals(checkoutTransactionMock, null);
     }
 
     @Test
@@ -165,7 +165,7 @@ public class MidtransSdkTest {
 
     @Test
     public void test_checkout() {
-        midtransSdkSpy.setTransactionRequest(transactionRequestMock);
+        midtransSdkSpy.setCheckoutTransaction(checkoutTransactionMock);
         when(midtransSdkSpy.isNetworkAvailable()).thenReturn(true);
         midtransSdkSpy.checkout(checkoutResponseMidtransCallback);
         Mockito.verify(midtransSdkSpy).checkout(checkoutResponseMidtransCallback);
@@ -180,7 +180,7 @@ public class MidtransSdkTest {
 
     @Test
     public void test_checkout_whenNetworkUnAvailable() {
-        midtransSdkSpy.setTransactionRequest(transactionRequestMock);
+        midtransSdkSpy.setCheckoutTransaction(checkoutTransactionMock);
         when(midtransSdkSpy.isNetworkAvailable()).thenReturn(false);
         midtransSdkSpy.checkout(checkoutResponseMidtransCallback);
         Mockito.verify(checkoutResponseMidtransCallback).onFailed(Matchers.any(Throwable.class));

@@ -8,7 +8,7 @@ import com.midtrans.sdk.corekit.base.enums.Environment;
 import com.midtrans.sdk.corekit.base.enums.ExpiryModelUnit;
 import com.midtrans.sdk.corekit.base.model.BankType;
 import com.midtrans.sdk.corekit.core.MidtransSdk;
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.TransactionRequest;
+import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.CheckoutTransaction;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.BillInfoModel;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.ExpiryModel;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.ItemDetails;
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
                 .setEnvironment(Environment.SANDBOX)
                 .build();
 
-        TransactionRequest trxRequest = TransactionRequest
+        CheckoutTransaction trxRequest = CheckoutTransaction
                 .builder("sample_sdk_test_core_" + System.currentTimeMillis(), 20000.0)
                 .setCurrency(Currency.IDR)
                 .setGopayCallbackDeepLink("demo://midtrans")
@@ -91,8 +91,8 @@ public class MainActivity extends AppCompatActivity {
                 .setCustomField3("Custom Field 3")
                 .build();
 
-        TransactionRequest trxInstance = TransactionRequest.getInstance();
-        MidtransSdk.getInstance().setTransactionRequest(trxRequest);
+        CheckoutTransaction trxInstance = CheckoutTransaction.getInstance();
+        MidtransSdk.getInstance().setCheckoutTransaction(trxRequest);
         MidtransSdk.getInstance().checkout(new MidtransCallback<CheckoutResponse>() {
             @Override
             public void onFailed(Throwable throwable) {

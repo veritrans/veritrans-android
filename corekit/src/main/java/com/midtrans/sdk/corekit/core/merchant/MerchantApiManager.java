@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.base.network.BaseServiceManager;
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.TransactionRequest;
+import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.CheckoutTransaction;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutResponse;
 import com.midtrans.sdk.corekit.utilities.Constants;
 
@@ -26,10 +26,10 @@ public class MerchantApiManager extends BaseServiceManager {
     /**
      * This method will create a HTTP request to Merchant Server for making Snap Token.
      *
-     * @param request  TransactionRequest model that construct by user.
+     * @param request  CheckoutTransaction model that construct by user.
      * @param callback callback of making Snap Token.
      */
-    public void checkout(final TransactionRequest request,
+    public void checkout(final CheckoutTransaction request,
                          final MidtransCallback<CheckoutResponse> callback) {
         if (request == null) {
             callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));

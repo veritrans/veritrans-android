@@ -130,11 +130,11 @@ SDK instance is a simple way to access and implement all public method from Midt
 
 Checkout securely accepts your customer's payment details and directly passes them to Midtrans servers. Midtrans returns a token representation of those payment details, which can then be submitted to your server for use.
 	
-Our SDK provides a class called `TransactionRequest`, which is designed to make building your app's checkout flow as easy as possible. It handles payment options such as payment chanels, customer information and can also be used to collect shipping info.
+Our SDK provides a class called `CheckoutTransaction`, which is designed to make building your app's checkout flow as easy as possible. It handles payment options such as payment chanels, customer information and can also be used to collect shipping info.
 
 ### 1. Prepare your checkout (Mandatory)
 
-For starting payment with Midtrans, you'll need to write a `TransactionRequest` builder inside your class and set to the `MidtransSDK` instance before checkout. (Note, the code samples in this section are simply examples – your own implementation may differ depending on the structure of your app). Midtrans Checkout has 2 required parameters:
+For starting payment with Midtrans, you'll need to write a `CheckoutTransaction` builder inside your class and set to the `MidtransSDK` instance before checkout. (Note, the code samples in this section are simply examples – your own implementation may differ depending on the structure of your app). Midtrans Checkout has 2 required parameters:
 
  1. **TRANSACTION_ID**
  
@@ -148,7 +148,7 @@ For starting payment with Midtrans, you'll need to write a `TransactionRequest` 
 Then you can put it all together to generate the `Snap Token` (payment token). Since `TRANSACTION_ID` and `AMOUNT` was required and mandatory, to create a transaction request you should use this builder, so the builder will return minimum object required for making payment.
 
 ```Java
-TransactionRequest transactionRequest = TransactionRequest
+CheckoutTransaction checkoutTransaction = CheckoutTransaction
                 .builder(TRANSACTION_ID, AMOUNT)
                 .build();
 ```
@@ -159,10 +159,10 @@ Note :
 
 ### 2. Starting checkout
 
-That's minimum request for making payment, all of payment method you activated will be default setting. Then for making payment you can simply set the `TransactionRequest` object to the SDK Instance.
+That's minimum request for making payment, all of payment method you activated will be default setting. Then for making payment you can simply set the `CheckoutTransaction` object to the SDK Instance.
 
 ```Java
-MidtransSdk.getInstance().setTransactionRequest(transactionRequest);
+MidtransSdk.getInstance().setTransactionRequest(checkoutTransaction);
 MidtransSdk.getInstance().checkout(new MidtransCallback<CheckoutResponse>() {
             @Override
             public void onFailed(Throwable throwable) {
@@ -200,14 +200,14 @@ Note:
 ## Feature
 This guide covers how to use the individual feature of our SDK.
 
-> **From this part, it will assumes you've already declare or making TransactionRequest object as previous section step. And assume you construct TransactionRequest with builder for all payment method, please use your needed.**
+> **From this part, it will assumes you've already declare or making CheckoutTransaction object as previous section step. And assume you construct CheckoutTransaction with builder for all payment method, please use your needed.**
 
 ### Multi Currency
 
 Multi currency is a feature to allow for multiple various currency display formatting. Currently you can use supported currency IDR (Indonesian Rupiah) and SGD (Singaporean Dollar). If you not set the currency, Midtrans will set it as Indonesian Rupiah or IDR.
 
 ```Java
-TransactionRequest transactionRequest = TransactionRequest
+CheckoutTransaction checkoutTransaction = CheckoutTransaction
                 .builder(TRANSACTION_ID, AMOUNT)
                 .setCurrency(Currency.IDR)
                 .build();
@@ -218,7 +218,7 @@ TransactionRequest transactionRequest = TransactionRequest
 The Customer Info, Billing Info, and Shipping Info is optional, so user can pass the customer detail when making transaction and get it in response from SDK.
 
 ```Java
-TransactionRequest transactionRequest = TransactionRequest
+CheckoutTransaction checkoutTransaction = CheckoutTransaction
                 .builder(TRANSACTION_ID, AMOUNT)
                 .setCustomerDetails(new CustomerDetails("First Name",
                         "Lastname",
@@ -245,10 +245,10 @@ TransactionRequest transactionRequest = TransactionRequest
 
 You can set the detail of item of the transaction. If you put the item detail, you have to check the amount that previously you set in builder is same with total of price multiplied by quantity in Item Details ArrayList.
 
-Item details are **required** for `Mandiri Bill/Mandiri Echannel` and `BCA KlikPay` payment, but it is **optional** for **other payment methods**. ItemDetails class holds information about item purchased by user. TransactionRequest takes an array list of item details.
+Item details are **required** for `Mandiri Bill/Mandiri Echannel` and `BCA KlikPay` payment, but it is **optional** for **other payment methods**. ItemDetails class holds information about item purchased by user. CheckoutTransaction takes an array list of item details.
 
 ```Java
-TransactionRequest transactionRequest = TransactionRequest
+CheckoutTransaction checkoutTransaction = CheckoutTransaction
                 .builder(TRANSACTION_ID, AMOUNT)
                 .setItemDetails(new ArrayList<>(Arrays.asList(
                         new ItemDetails(ITEM_ID,ITEM_PRICE,ITEM_QUANTITY,ITEM_NAME))
@@ -261,7 +261,7 @@ TransactionRequest transactionRequest = TransactionRequest
 If you want to enable/disable some payment method without change the MAP setting or calling Midtrans's Support, you can set payment you want to activate.
 
 ```Java
-TransactionRequest transactionRequest = TransactionRequest
+CheckoutTransaction checkoutTransaction = CheckoutTransaction
                 .builder(TRANSACTION_ID, AMOUNT)
                 .setEnabledPayments(new ArrayList<>(Arrays.asList(
                         PaymentType.BCA_VA,
@@ -284,7 +284,7 @@ There is a feature on mobile SDK to enable custom transaction lifetime.
 | unit      	| Expiry unit. (day, hour, minute)                                                                                                	| ExpiryModelUnit 	|
 
 ```Java
-TransactionRequest transactionRequest = TransactionRequest
+CheckoutTransaction checkoutTransaction = CheckoutTransaction
                 .builder(TRANSACTION_ID, AMOUNT) 
                 .setExpiry(new ExpiryModel("", ExpiryModelUnit.EXPIRY_UNIT_DAY, 1))
                 .build();
@@ -295,7 +295,7 @@ TransactionRequest transactionRequest = TransactionRequest
 These 3 fields will be brought at payment so it will be available at MAP and a HTTP notification will be sent to the merchant.
 
 ```Java
-TransactionRequest transactionRequest = TransactionRequest
+CheckoutTransaction checkoutTransaction = CheckoutTransaction
                 .builder(TRANSACTION_ID, AMOUNT)
                 .setCustomField1("Custom Field 1")
                 .setCustomField2("Custom Field 2")
@@ -305,12 +305,12 @@ TransactionRequest transactionRequest = TransactionRequest
 
 ### GO-PAY Callback Deeplink (Specific for GO-PAY)
 
-GO-PAY provide 2 type result of transaction that can be received by host app, first method is with callback deeplink (to host-app) and the second is without callback deeplink. If you want to use callback deeplink for getting result from GO-JEK app, please set your deeplink to `TransactionRequest` object that previously you created. 
+GO-PAY provide 2 type result of transaction that can be received by host app, first method is with callback deeplink (to host-app) and the second is without callback deeplink. If you want to use callback deeplink for getting result from GO-JEK app, please set your deeplink to `CheckoutTransaction` object that previously you created. 
 
 For example if you set your deeplink like this `demo:://midtrans` then GO-JEK app will return callback like this for success `demo://midtrans?order_id=xxxx&result=success` and this for failure `demo://midtrans?order_id=xxxx&result=failure`.
 
 ```Java
-TransactionRequest transactionRequest = TransactionRequest
+CheckoutTransaction checkoutTransaction = CheckoutTransaction
                 .builder(TRANSACTION_ID, AMOUNT)
                 .setGopayCallbackDeepLink("demo://midtrans")
                 .build();
@@ -320,7 +320,7 @@ TransactionRequest transactionRequest = TransactionRequest
 Bill Info is optional for `Mandiri Bill/Mandiri Echannel` payment only.
 
 ```Java
-TransactionRequest transactionRequest = TransactionRequest
+CheckoutTransaction checkoutTransaction = CheckoutTransaction
                 .builder(TRANSACTION_ID, AMOUNT)
                 .setBillInfoModel(new BillInfoModel("Note 1", "Note 2"))
                 .build();
@@ -331,7 +331,7 @@ This feature allows you to pass sub company code in VA payment and Make Custom V
 
 
 ```Java
-TransactionRequest transactionRequest = TransactionRequest
+CheckoutTransaction checkoutTransaction = CheckoutTransaction
                 .builder(TRANSACTION_ID, AMOUNT)
                 .setBcaVa(new BcaBankTransferRequestModel("12345",
                         new BcaBankFreeText(new ArrayList<BcaBankFreeTextLanguage>(),
@@ -345,7 +345,7 @@ This feature allows you to make Custom Virtual Account Number.
 
 
 ```Java
-TransactionRequest transactionRequest = TransactionRequest
+CheckoutTransaction checkoutTransaction = CheckoutTransaction
                 .builder(TRANSACTION_ID, AMOUNT)
                 .setBniVa(new BankTransferRequestModel("123123"))
                 .setPermataVa(new BankTransferRequestModel("123123"))
@@ -355,7 +355,7 @@ TransactionRequest transactionRequest = TransactionRequest
 ### Complete Transaction Request
 
 ```Java
-TransactionRequest transactionRequest = TransactionRequest
+CheckoutTransaction checkoutTransaction = CheckoutTransaction
                 .builder(TRANSACTION_ID, AMOUNT)
                 .setCurrency(Currency.IDR)
                 .setCustomerDetails(new CustomerDetails("First Name",
