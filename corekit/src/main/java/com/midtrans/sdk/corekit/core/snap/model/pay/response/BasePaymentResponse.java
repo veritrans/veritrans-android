@@ -40,9 +40,6 @@ public class BasePaymentResponse implements Serializable {
     @Expose
     private String finishRedirectUrl;
 
-    public BasePaymentResponse() {
-    }
-
     public String getStatusCode() {
         return statusCode;
     }
