@@ -10,6 +10,7 @@ import com.midtrans.sdk.corekit.core.snap.model.pay.request.CustomerDetailPayReq
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.PaymentRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.klikbca.KlikBcaPaymentRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.BasePaymentResponse;
+import com.midtrans.sdk.corekit.core.snap.model.pay.response.bcaklikpay.BcaKlikPayPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.epaybri.BriEpayPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BcaPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BniPaymentResponse;
@@ -282,7 +283,7 @@ public class SnapApiManager extends BaseServiceManager {
     }
 
     /**
-     * This method is used for Payment Using Klik Bca
+     * This method is used for Payment Using Klik BCA
      *
      * @param snapToken snapToken after get payment info.
      * @param callback  Transaction callback.
@@ -305,6 +306,36 @@ public class SnapApiManager extends BaseServiceManager {
 
             @Override
             public void onFailure(@NonNull Call<BasePaymentResponse> call, @NonNull Throwable throwable) {
+                releaseResources();
+                handleServerResponse(null, callback, throwable);
+            }
+        });
+    }
+
+
+    /**
+     * This method is used for Payment Using BCA Klik Pay
+     *
+     * @param snapToken snapToken after get payment info.
+     * @param callback  Transaction callback.
+     */
+    public void paymentUsingBcaKlikPay(final String snapToken,
+                                       final MidtransCallback<BcaKlikPayPaymentResponse> callback) {
+        if (apiService == null) {
+            callback.onFailed(new Throwable(MESSAGE_ERROR_EMPTY_RESPONSE));
+            return;
+        }
+        BasePaymentRequest paymentRequest = new BasePaymentRequest(PaymentType.KLIK_BCA);
+        Call<BcaKlikPayPaymentResponse> call = apiService.paymentBcaKlikpay(snapToken, paymentRequest);
+        call.enqueue(new Callback<BcaKlikPayPaymentResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<BcaKlikPayPaymentResponse> call, @NonNull Response<BcaKlikPayPaymentResponse> response) {
+                releaseResources();
+                handleServerResponse(response, callback, null);
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<BcaKlikPayPaymentResponse> call, @NonNull Throwable throwable) {
                 releaseResources();
                 handleServerResponse(null, callback, throwable);
             }
