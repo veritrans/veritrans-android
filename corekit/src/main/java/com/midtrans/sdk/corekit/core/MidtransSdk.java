@@ -318,6 +318,60 @@ public class MidtransSdk {
     }
 
     /**
+     * Start payment using bank transfer and va with Akulaku.
+     *
+     * @param snapToken token after making checkoutWithTransaction.
+     * @param callback  for receiving callback from request.
+     */
+    public void paymentUsingAkulaku(final String snapToken,
+                                    final MidtransCallback<BasePaymentResponse> callback) {
+        if (isValidForNetworkCall(callback)) {
+            snapApiManager.paymentUsingAkulaku(snapToken, callback);
+        }
+    }
+
+    /**
+     * Start payment using bank transfer and va with Gopay.
+     *
+     * @param snapToken token after making checkoutWithTransaction.
+     * @param callback  for receiving callback from request.
+     */
+    public void paymentUsingGopay(final String snapToken,
+                                    final String gopayAccountNumber,
+                                    final MidtransCallback<BasePaymentResponse> callback) {
+        if (isValidForNetworkCall(callback)) {
+            snapApiManager.paymentUsingGopay(snapToken, gopayAccountNumber, callback);
+        }
+    }
+
+    /**
+     * Start payment using bank transfer and va with Telkomsel Cash.
+     *
+     * @param snapToken token after making checkoutWithTransaction.
+     * @param callback  for receiving callback from request.
+     */
+    public void paymentUsingTelkomselCash(final String snapToken,
+                                          final String customerNumber,
+                                          final MidtransCallback<BasePaymentResponse> callback) {
+        if (isValidForNetworkCall(callback)) {
+            snapApiManager.paymentUsingTelkomselCash(snapToken, customerNumber, callback);
+        }
+    }
+
+    /**
+     * Start payment using bank transfer and va with Indomaret.
+     *
+     * @param snapToken token after making checkoutWithTransaction.
+     * @param callback  for receiving callback from request.
+     */
+    public void paymentUsingIndomaret(final String snapToken,
+                                      final MidtransCallback<BasePaymentResponse> callback) {
+        if (isValidForNetworkCall(callback)) {
+            snapApiManager.paymentUsingIndomaret(snapToken, callback);
+        }
+    }
+
+    /**
      * Start payment using bank transfer and va with BRI Epay.
      *
      * @param snapToken token after making checkoutWithTransaction.

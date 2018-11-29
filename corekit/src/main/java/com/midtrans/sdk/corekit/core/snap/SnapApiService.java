@@ -2,8 +2,10 @@ package com.midtrans.sdk.corekit.core.snap;
 
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.BasePaymentRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.PaymentRequest;
+import com.midtrans.sdk.corekit.core.snap.model.pay.request.gopay.GopayPaymentRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.klikbca.KlikBcaPaymentRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.mandiriclick.MandiriClickpayPaymentRequest;
+import com.midtrans.sdk.corekit.core.snap.model.pay.request.telkomsel.TelkomselCashPaymentRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.BasePaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.bcaklikpay.BcaKlikPayPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.epaybri.BriEpayPaymentResponse;
@@ -82,6 +84,22 @@ public interface SnapApiService {
     Call<BasePaymentResponse> paymentCimbClicks(@Path("snap_token") String snapToken, @Body BasePaymentRequest paymentRequest);
 
     /**
+     * Charge payment using Akulaku.
+     *
+     * @param paymentRequest Payment Request Details.
+     */
+    @POST(PAYMENT_PAY)
+    Call<BasePaymentResponse> paymentAkulaku(@Path("snap_token") String snapToken, @Body BasePaymentRequest paymentRequest);
+
+    /**
+     * Charge payment using Indomaret.
+     *
+     * @param paymentRequest Payment Request Details.
+     */
+    @POST(PAYMENT_PAY)
+    Call<BasePaymentResponse> paymentIndomaret(@Path("snap_token") String snapToken, @Body BasePaymentRequest paymentRequest);
+
+    /**
      * Charge payment using BRI Epay.
      *
      * @param paymentRequest Payment Request Details.
@@ -114,5 +132,25 @@ public interface SnapApiService {
      */
     @POST(PAYMENT_PAY)
     Call<BcaKlikPayPaymentResponse> paymentBcaKlikpay(@Path("snap_token") String snapToken, @Body BasePaymentRequest paymentRequest);
+
+    /**
+     * Charge payment using GoPay
+     *
+     * @param snapToken
+     * @param paymentRequest
+     */
+    @POST("v1/transactions/{snap_token}/pay")
+    Call<BasePaymentResponse> paymentUsingGoPay(@Path("snap_token") String snapToken, @Body GopayPaymentRequest paymentRequest);
+
+    /**
+     * Charge payment using Telkomsel Cash
+     *
+     * @param snapToken
+     * @param paymentRequest
+     */
+    @POST("v1/transactions/{snap_token}/pay")
+    Call<BasePaymentResponse> paymentUsingTelkomselCash(@Path("snap_token") String snapToken, @Body TelkomselCashPaymentRequest paymentRequest);
+
+
 
 }
