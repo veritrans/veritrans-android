@@ -318,6 +318,19 @@ public class MidtransSdk {
     }
 
     /**
+     * Start payment using bank transfer and va with Akulaku.
+     *
+     * @param snapToken token after making checkoutWithTransaction.
+     * @param callback  for receiving callback from request.
+     */
+    public void paymentUsingAkulaku(final String snapToken,
+                                    final MidtransCallback<BasePaymentResponse> callback) {
+        if (isValidForNetworkCall(callback)) {
+            snapApiManager.paymentUsingAkulaku(snapToken, callback);
+        }
+    }
+
+    /**
      * Start payment using bank transfer and va with BRI Epay.
      *
      * @param snapToken token after making checkoutWithTransaction.

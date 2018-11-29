@@ -82,6 +82,14 @@ public interface SnapApiService {
     Call<BasePaymentResponse> paymentCimbClicks(@Path("snap_token") String snapToken, @Body BasePaymentRequest paymentRequest);
 
     /**
+     * Charge payment using Akulaku.
+     *
+     * @param paymentRequest Payment Request Details.
+     */
+    @POST(PAYMENT_PAY)
+    Call<BasePaymentResponse> paymentAkulaku(@Path("snap_token") String snapToken, @Body BasePaymentRequest paymentRequest);
+
+    /**
      * Charge payment using BRI Epay.
      *
      * @param paymentRequest Payment Request Details.
