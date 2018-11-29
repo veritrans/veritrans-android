@@ -266,7 +266,7 @@ public class SnapApiManager extends BaseServiceManager {
         if (isSnapTokenAvailable(callback,
                 snapToken,
                 apiService)) {
-            BasePaymentRequest basePaymentRequest = new BasePaymentRequest(PaymentType.CIMB_CLICKS);
+            BasePaymentRequest basePaymentRequest = new BasePaymentRequest(PaymentType.AKULAKU);
             Call<BasePaymentResponse> call = apiService.paymentAkulaku(snapToken, basePaymentRequest);
             call.enqueue(new Callback<BasePaymentResponse>() {
                 @Override
@@ -296,7 +296,7 @@ public class SnapApiManager extends BaseServiceManager {
         if (isSnapTokenAvailable(callback,
                 snapToken,
                 apiService)) {
-            GopayPaymentRequest gopayPaymentRequest = new GopayPaymentRequest(PaymentType.CIMB_CLICKS, gopayAccountNumber);
+            GopayPaymentRequest gopayPaymentRequest = new GopayPaymentRequest(PaymentType.GOPAY, gopayAccountNumber);
             Call<BasePaymentResponse> call = apiService.paymentUsingGoPay(snapToken, gopayPaymentRequest);
             call.enqueue(new Callback<BasePaymentResponse>() {
                 @Override
@@ -355,7 +355,7 @@ public class SnapApiManager extends BaseServiceManager {
         if (isSnapTokenAvailable(callback,
                 snapToken,
                 apiService)) {
-            BasePaymentRequest basePaymentRequest = new BasePaymentRequest(PaymentType.CIMB_CLICKS);
+            BasePaymentRequest basePaymentRequest = new BasePaymentRequest(PaymentType.INDOMARET);
             Call<BasePaymentResponse> call = apiService.paymentIndomaret(snapToken, basePaymentRequest);
             call.enqueue(new Callback<BasePaymentResponse>() {
                 @Override

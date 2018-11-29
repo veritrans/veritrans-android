@@ -26,4 +26,6 @@ public class PaymentType {
     public static String CSTORE = "cstore";
     public static String KIOSON = "kioson";
     public static String INDOMARET = "indomaret";
+
+    public static String AKULAKU = "akulaku";
 }
