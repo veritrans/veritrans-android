@@ -9,8 +9,11 @@ import com.midtrans.sdk.corekit.core.snap.model.pay.request.BasePaymentRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.CustomerDetailPayRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.PaymentRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.klikbca.KlikBcaPaymentRequest;
+import com.midtrans.sdk.corekit.core.snap.model.pay.request.mandiriclick.MandiriClickpayParams;
+import com.midtrans.sdk.corekit.core.snap.model.pay.request.mandiriclick.MandiriClickpayPaymentRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.BasePaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.epaybri.BriEpayPaymentResponse;
+import com.midtrans.sdk.corekit.core.snap.model.pay.response.klikbca.KlikBcaPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BcaPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BniPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.OtherPaymentResponse;
@@ -287,6 +290,57 @@ public class SnapApiManager extends BaseServiceManager {
      */
     public void paymentUsingKlikBca(final String snapToken,
                                     final String klikBcaUserId,
+<<<<<<< HEAD
+                                    final MidtransCallback<KlikBcaPaymentResponse> callback) {
+        if (apiService == null) {
+            callback.onFailed(new Throwable(MESSAGE_ERROR_EMPTY_RESPONSE));
+            return;
+        }
+        KlikBcaPaymentRequest paymentRequest = new KlikBcaPaymentRequest(PaymentType.KLIK_BCA, klikBcaUserId);
+        Call<KlikBcaPaymentResponse> call = apiService.paymentKlikBca(snapToken, paymentRequest);
+        call.enqueue(new Callback<KlikBcaPaymentResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<KlikBcaPaymentResponse> call, @NonNull Response<KlikBcaPaymentResponse> response) {
+                releaseResources();
+                handleServerResponse(response, callback, null);
+            }
+
+            public void onFailure(@NonNull Call<KlikBcaPaymentResponse> call, @NonNull Throwable throwable) {
+                releaseResources();
+                handleServerResponse(null, callback, throwable);
+            }
+        });
+    }
+
+    /**
+     * This method is used for Payment Using Mandiri ClickPay
+     *
+     * @param snapToken             snapToken after get payment info.
+     * @param mandiriClickpayParams parameter for Mandiri Clickpay
+     * @param callback              Transaction callback.
+     */
+    public void paymentUsingMandiriClickPay(final String snapToken,
+                                            final MandiriClickpayParams mandiriClickpayParams,
+                                            final MidtransCallback<BasePaymentResponse> callback) {
+        if (apiService == null) {
+            callback.onFailed(new Throwable(MESSAGE_ERROR_EMPTY_RESPONSE));
+            return;
+        }
+        MandiriClickpayPaymentRequest paymentRequest = new MandiriClickpayPaymentRequest(PaymentType.KLIK_BCA, mandiriClickpayParams);
+        Call<BasePaymentResponse> call = apiService.paymentMandiriClickpay(snapToken, paymentRequest);
+        call.enqueue(new Callback<BasePaymentResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<BasePaymentResponse> call, @NonNull Response<BasePaymentResponse> response) {
+                releaseResources();
+                handleServerResponse(response, callback, null);
+            }
+
+            public void onFailure(@NonNull Call<BasePaymentResponse> call, @NonNull Throwable throwable) {
+                releaseResources();
+                handleServerResponse(null, callback, throwable);
+            }
+        });
+=======
                                     final MidtransCallback<BasePaymentResponse> callback) {
         if (isSnapTokenAvailable(callback,
                 snapToken,
@@ -324,6 +378,7 @@ public class SnapApiManager extends BaseServiceManager {
             return true;
         }
         return null;
+>>>>>>> feature/revamp
     }
 
     private <T> void handleServerResponse(Response<T> response,

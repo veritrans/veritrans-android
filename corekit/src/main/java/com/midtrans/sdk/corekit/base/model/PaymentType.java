@@ -5,7 +5,6 @@ public class PaymentType {
 
     public static String BNI_VA = "bni_va";
     public static String BCA_VA = "bca_va";
-    public static String BANK_TRANSFER = "bank_transfer";
     public static String PERMATA_VA = "permata_va";
     public static String E_CHANNEL = "echannel";
     public static String OTHER_VA = "other_va";

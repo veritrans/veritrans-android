@@ -11,6 +11,7 @@ import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.Transaction
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutResponse;
 import com.midtrans.sdk.corekit.core.snap.SnapApiManager;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.CustomerDetailPayRequest;
+import com.midtrans.sdk.corekit.core.snap.model.pay.request.mandiriclick.MandiriClickpayParams;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.BasePaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.epaybri.BriEpayPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BcaPaymentResponse;
@@ -278,6 +279,27 @@ public class MidtransSdk {
                                          final MidtransCallback<BasePaymentResponse> callback) {
         if (isValidForNetworkCall(callback)) {
             snapApiManager.paymentUsingMandiriEcash(snapToken, customerDetailPayRequest, callback);
+        }
+    }
+
+    /**
+     * Start payment using bank transfer and va with Mandiri Ecash.
+     *
+     * @param snapToken             token after making checkout.
+     * @param mandiriClickpayParams for putting bank transfer request.
+     * @param callback              for receiving callback from request.
+     */
+    public void paymentUsingMandiriClickPayt(final String snapToken,
+                                             final MandiriClickpayParams mandiriClickpayParams,
+                                             final MidtransCallback<BasePaymentResponse> callback) {
+        if (callback == null) {
+            Logger.error(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
+            return;
+        }
+        if (isNetworkAvailable()) {
+            snapApiManager.paymentUsingMandiriClickPay(snapToken, mandiriClickpayParams, callback);
+        } else {
+            callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 
