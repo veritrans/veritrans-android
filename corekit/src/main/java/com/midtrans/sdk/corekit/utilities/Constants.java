@@ -4,7 +4,6 @@ public class Constants {
 
     public static final String TAG = "MidtransSdk";
 
-
     public static final String USER_AGENT = "User-Agent";
     public static final String APPLICATION_JSON_FORMAT = "application/json";
     public static final String AUTHORIZATION_HEADER = "Authentication";
