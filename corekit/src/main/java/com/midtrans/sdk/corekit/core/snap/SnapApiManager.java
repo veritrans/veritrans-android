@@ -283,6 +283,35 @@ public class SnapApiManager extends BaseServiceManager {
     }
 
     /**
+     * This method is used for Payment Using Indomaret
+     *
+     * @param snapToken snapToken after get payment info.
+     * @param callback  Transaction callback.
+     */
+    public void paymentUsingIndomaret(final String snapToken,
+                                      final MidtransCallback<BasePaymentResponse> callback) {
+        if (isSnapTokenAvailable(callback,
+                snapToken,
+                apiService)) {
+            BasePaymentRequest basePaymentRequest = new BasePaymentRequest(PaymentType.CIMB_CLICKS);
+            Call<BasePaymentResponse> call = apiService.paymentIndomaret(snapToken, basePaymentRequest);
+            call.enqueue(new Callback<BasePaymentResponse>() {
+                @Override
+                public void onResponse(@NonNull Call<BasePaymentResponse> call, @NonNull Response<BasePaymentResponse> response) {
+                    releaseResources();
+                    handleServerResponse(response, callback, null);
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<BasePaymentResponse> call, @NonNull Throwable throwable) {
+                    releaseResources();
+                    handleServerResponse(null, callback, throwable);
+                }
+            });
+        }
+    }
+
+    /**
      * This method is used for Payment Using BRI Epay
      *
      * @param snapToken snapToken after get payment info.

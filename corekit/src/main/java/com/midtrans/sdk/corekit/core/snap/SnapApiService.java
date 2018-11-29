@@ -90,6 +90,14 @@ public interface SnapApiService {
     Call<BasePaymentResponse> paymentAkulaku(@Path("snap_token") String snapToken, @Body BasePaymentRequest paymentRequest);
 
     /**
+     * Charge payment using Indomaret.
+     *
+     * @param paymentRequest Payment Request Details.
+     */
+    @POST(PAYMENT_PAY)
+    Call<BasePaymentResponse> paymentIndomaret(@Path("snap_token") String snapToken, @Body BasePaymentRequest paymentRequest);
+
+    /**
      * Charge payment using BRI Epay.
      *
      * @param paymentRequest Payment Request Details.

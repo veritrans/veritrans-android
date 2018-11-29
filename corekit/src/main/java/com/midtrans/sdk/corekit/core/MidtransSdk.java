@@ -331,6 +331,19 @@ public class MidtransSdk {
     }
 
     /**
+     * Start payment using bank transfer and va with Indomaret.
+     *
+     * @param snapToken token after making checkoutWithTransaction.
+     * @param callback  for receiving callback from request.
+     */
+    public void paymentUsingIndomaret(final String snapToken,
+                                      final MidtransCallback<BasePaymentResponse> callback) {
+        if (isValidForNetworkCall(callback)) {
+            snapApiManager.paymentUsingIndomaret(snapToken, callback);
+        }
+    }
+
+    /**
      * Start payment using bank transfer and va with BRI Epay.
      *
      * @param snapToken token after making checkoutWithTransaction.
