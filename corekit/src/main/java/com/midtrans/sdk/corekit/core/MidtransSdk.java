@@ -336,7 +336,7 @@ public class MidtransSdk {
      * @param snapToken token after making checkoutWithTransaction.
      * @param callback  for receiving callback from request.
      */
-    public void paymentUsingAkulaku(final String snapToken,
+    public void paymentUsingGopay(final String snapToken,
                                     final String gopayAccountNumber,
                                     final MidtransCallback<BasePaymentResponse> callback) {
         if (isValidForNetworkCall(callback)) {
