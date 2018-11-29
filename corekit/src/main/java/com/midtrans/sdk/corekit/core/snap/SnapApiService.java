@@ -94,4 +94,13 @@ public interface SnapApiService {
     @POST(PAYMENT_PAY)
     Call<BasePaymentResponse> paymentKlikBca(@Path("snap_token") String snapToken, @Body KlikBcaPaymentRequest paymentRequest);
 
+
+    /**
+     * Charge payment using Mandiri bill / Echannel.
+     *
+     * @param paymentRequest Payment Request Details.
+     */
+    @POST(PAYMENT_PAY)
+    Call<BasePaymentResponse> paymentMandiriBillEchannel(@Path("snap_token") String snapToken, @Body PaymentRequest paymentRequest);
+
 }

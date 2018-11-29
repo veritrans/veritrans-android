@@ -379,6 +379,26 @@ public class MidtransSdk {
     }
 
     /**
+     * Start payment using bank transfer and va with Mandiri Bill / Echannel.
+     *
+     * @param snapToken token after making checkout.
+     * @param callback  for receiving callback from request.
+     */
+    public void paymentUsingMandiriBillEchannel(final String snapToken,
+                                    final CustomerDetailPayRequest customerDetailPayRequest,
+                                    final MidtransCallback<BasePaymentResponse> callback) {
+        if (callback == null) {
+            Logger.error(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
+            return;
+        }
+        if (isNetworkAvailable()) {
+            snapApiManager.paymentUsingBankMandiriBillEchannel(snapToken, customerDetailPayRequest, callback);
+        } else {
+            callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
+        }
+    }
+
+    /**
      * Open utils for checking network status
      *
      * @return boolean based on network status

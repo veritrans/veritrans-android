@@ -311,6 +311,37 @@ public class SnapApiManager extends BaseServiceManager {
         });
     }
 
+    /**
+     * This method is used for Payment Using Mandiri Bill / Echannel
+     *
+     * @param snapToken       snapToken after get payment info.
+     * @param customerDetails Customer Details.
+     * @param callback        Transaction callback.
+     */
+    public void paymentUsingBankMandiriBillEchannel(final String snapToken,
+                                                    final CustomerDetailPayRequest customerDetails,
+                                                    final MidtransCallback<BasePaymentResponse> callback) {
+        if (apiService == null) {
+            callback.onFailed(new Throwable(MESSAGE_ERROR_EMPTY_RESPONSE));
+            return;
+        }
+        PaymentRequest paymentRequest = new PaymentRequest(PaymentType.E_CHANNEL, customerDetails);
+        Call<BasePaymentResponse> call = apiService.paymentMandiriBillEchannel(snapToken, paymentRequest);
+        call.enqueue(new Callback<BasePaymentResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<BasePaymentResponse> call, @NonNull Response<BasePaymentResponse> response) {
+                releaseResources();
+                handleServerResponse(response, callback, null);
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<BasePaymentResponse> call, @NonNull Throwable throwable) {
+                releaseResources();
+                handleServerResponse(null, callback, throwable);
+            }
+        });
+    }
+
     private <T> void handleServerResponse(Response<T> response,
                                           MidtransCallback<T> callback,
                                           Throwable throwable) {
