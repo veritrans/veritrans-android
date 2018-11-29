@@ -1,9 +1,9 @@
 package com.midtrans.sdk.corekit.utilities;
 
-/**
- * It contains all constant and sdk related static information. Created by chetan on 16/10/15.
- */
 public class Constants {
+
+    public static final String TAG = "MidtransSdk";
+
 
     public static final String USER_AGENT = "User-Agent";
     public static final String APPLICATION_JSON_FORMAT = "application/json";
@@ -33,8 +33,6 @@ public class Constants {
     public static final int BANK_TRANSFER_PERMATA = 1003;
     public static final int BANK_TRANSFER_BNI = 1004;
 
-    public static final String TAG = "MidtransSdk";
-
     public static final int PHONE_NUMBER_LENGTH = 9;
     public static final int PHONE_NUMBER_MAX_LENGTH = 15;
     public static final int ZIPCODE_LENGTH = 5;
@@ -61,45 +59,41 @@ public class Constants {
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
     /**
-     * If trying to create api request before initializing sdk.
-     */
-    public static final String ERROR_SDK_IS_NOT_INITIALIZED = "sdk is not initialized.";
-
-
-    public static final String WEBURL = "weburl";
-    public static final String TYPE = "type";
-
-    /**
      * result code used for payment transfer activities
      */
     public static final int RESULT_CODE_PAYMENT_TRANSFER = 5102;
-    //payment types to send in rerquest
-    public static final String PAYMENT_EPAY_BRI = "bri_epay";
-    public static final String PAYMENT_CIMB_CLICKS = "cimb_clicks";
-
-    public static final String PAYMENT_CREDIT_DEBIT = "credit_card";
     public static final long FADE_IN_FORM_TIME = 300;
-
-    public static final String AUTH_TOKEN = "authentication.token";
-    public static final String WEBVIEW_REDIRECT_URL = "redirect_url";
 
     /**
      * result code used for payment transfer activities
      */
-
-    // status code
     public static final String STATUS_CODE_200 = "200";
     public static final String STATUS_CODE_201 = "201";
     public static final String STATUS_CODE_400 = "400";
 
-    // messages
-    public static final String MESSAGE_ERROR_EMPTY_RESPONSE = "Failed to retrieve response from server";
+    /**
+     * Error Message
+     * Midtrans SDK instance
+     */
+    public static final String ERROR_SDK_IS_NOT_INITIALIZE_PROPERLY = "Midtrans SDK is not initialize properly, please use MidtransSdk.builder().";
+    public static final String ERROR_SDK_CLIENT_KEY_AND_CONTEXT_PROPERLY = "Client key and context cannot be null or empty. Please set the client key and context.";
+    public static final String ERROR_SDK_MERCHANT_BASE_URL_PROPERLY = "Merchant base url cannot be null or empty (required) and must url valid format. Please set your merchant base url.";
+    public static final String MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED = "Callback Unimplemented, please put callback.";
+
+    /**
+     * Error Message
+     * Api Service Validation
+     */
+    public static final String MESSAGE_ERROR_SNAP_TOKEN = "Snap Token must not empty.";
     public static final String MESSAGE_ERROR_EMPTY_MERCHANT_URL = "Merchant base url is empty. Please set merchant base url on SDK";
-    public static final String MESSAGE_ERROR_INVALID_DATA_SUPPLIED = "Invalid data supplied to SDK.";
-    public static final String MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED = "Callback Unimplemented";
+
+    /**
+     * Error Message
+     * Network Call
+     */
+    public static final String MESSAGE_ERROR_EMPTY_RESPONSE = "Failed to retrieve response from server.";
+    public static final String MESSAGE_ERROR_FAILURE_RESPONSE = "Error message not catchable";
     public static final String MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER = "Failed to connect to server.";
-    public static final String MESSAGE_ERROR_ALREADY_RUNNING = "Failed to connect to server.";
-    public static final String MESSAGE_ERROR_CC_AUTH_UNIMPLEMENTED = "CreditCard Authentication not Unimplemented";
 
     public static final String KEY_PREFERENCES_VERSION = "preferences.version";
     public static final String USER_DETAILS = "user_details";

@@ -3,8 +3,11 @@ package com.midtrans.sdk.corekit.core.snap;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.BasePaymentRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.PaymentRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.klikbca.KlikBcaPaymentRequest;
+import com.midtrans.sdk.corekit.core.snap.model.pay.request.mandiriclick.MandiriClickpayPaymentRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.BasePaymentResponse;
+import com.midtrans.sdk.corekit.core.snap.model.pay.response.bcaklikpay.BcaKlikPayPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.epaybri.BriEpayPaymentResponse;
+import com.midtrans.sdk.corekit.core.snap.model.pay.response.klikbca.KlikBcaPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BcaPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BniPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.OtherPaymentResponse;
@@ -87,11 +90,29 @@ public interface SnapApiService {
     Call<BriEpayPaymentResponse> paymentBriEpay(@Path("snap_token") String snapToken, @Body BasePaymentRequest paymentRequest);
 
     /**
+     * Charge payment using Klik BCA.
+     *
+     * @param paymentRequest Payment Request Details.
+     */
+    @POST(PAYMENT_PAY)
+    Call<KlikBcaPaymentResponse> paymentKlikBca(@Path("snap_token") String snapToken, @Body KlikBcaPaymentRequest paymentRequest);
+
+
+    /**
      * Charge payment using BRI Epay.
      *
      * @param paymentRequest Payment Request Details.
      */
     @POST(PAYMENT_PAY)
-    Call<BasePaymentResponse> paymentKlikBca(@Path("snap_token") String snapToken, @Body KlikBcaPaymentRequest paymentRequest);
+    Call<BasePaymentResponse> paymentMandiriClickpay(@Path("snap_token") String snapToken, @Body MandiriClickpayPaymentRequest paymentRequest);
+
+
+    /**
+     * Charge payment using BCA Klik Pay.
+     *
+     * @param paymentRequest Payment Request Details.
+     */
+    @POST(PAYMENT_PAY)
+    Call<BcaKlikPayPaymentResponse> paymentBcaKlikpay(@Path("snap_token") String snapToken, @Body BasePaymentRequest paymentRequest);
 
 }
