@@ -290,7 +290,6 @@ public class SnapApiManager extends BaseServiceManager {
      */
     public void paymentUsingKlikBca(final String snapToken,
                                     final String klikBcaUserId,
-<<<<<<< HEAD
                                     final MidtransCallback<KlikBcaPaymentResponse> callback) {
         if (apiService == null) {
             callback.onFailed(new Throwable(MESSAGE_ERROR_EMPTY_RESPONSE));
@@ -322,31 +321,11 @@ public class SnapApiManager extends BaseServiceManager {
     public void paymentUsingMandiriClickPay(final String snapToken,
                                             final MandiriClickpayParams mandiriClickpayParams,
                                             final MidtransCallback<BasePaymentResponse> callback) {
-        if (apiService == null) {
-            callback.onFailed(new Throwable(MESSAGE_ERROR_EMPTY_RESPONSE));
-            return;
-        }
-        MandiriClickpayPaymentRequest paymentRequest = new MandiriClickpayPaymentRequest(PaymentType.KLIK_BCA, mandiriClickpayParams);
-        Call<BasePaymentResponse> call = apiService.paymentMandiriClickpay(snapToken, paymentRequest);
-        call.enqueue(new Callback<BasePaymentResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<BasePaymentResponse> call, @NonNull Response<BasePaymentResponse> response) {
-                releaseResources();
-                handleServerResponse(response, callback, null);
-            }
-
-            public void onFailure(@NonNull Call<BasePaymentResponse> call, @NonNull Throwable throwable) {
-                releaseResources();
-                handleServerResponse(null, callback, throwable);
-            }
-        });
-=======
-                                    final MidtransCallback<BasePaymentResponse> callback) {
         if (isSnapTokenAvailable(callback,
                 snapToken,
                 apiService)) {
-            KlikBcaPaymentRequest paymentRequest = new KlikBcaPaymentRequest(PaymentType.KLIK_BCA, klikBcaUserId);
-            Call<BasePaymentResponse> call = apiService.paymentKlikBca(snapToken, paymentRequest);
+            MandiriClickpayPaymentRequest paymentRequest = new MandiriClickpayPaymentRequest(PaymentType.KLIK_BCA, mandiriClickpayParams);
+            Call<BasePaymentResponse> call = apiService.paymentMandiriClickpay(snapToken, paymentRequest);
             call.enqueue(new Callback<BasePaymentResponse>() {
                 @Override
                 public void onResponse(@NonNull Call<BasePaymentResponse> call, @NonNull Response<BasePaymentResponse> response) {
@@ -378,7 +357,6 @@ public class SnapApiManager extends BaseServiceManager {
             return true;
         }
         return null;
->>>>>>> feature/revamp
     }
 
     private <T> void handleServerResponse(Response<T> response,

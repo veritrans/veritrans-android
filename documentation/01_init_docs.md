@@ -163,14 +163,14 @@ That's minimum request for making payment, all of payment method you activated w
 
 ```Java
 MidtransSdk.getInstance().setTransactionRequest(checkoutTransaction);
-MidtransSdk.getInstance().checkout(new MidtransCallback<CheckoutResponse>() {
+MidtransSdk.getInstance().checkoutWithTransaction(new MidtransCallback<CheckoutWithTransactionResponse>() {
             @Override
             public void onFailed(Throwable throwable) {
                 Logger.debug("Failed return error >>> " + throwable.getMessage());
             }
 
             @Override
-            public void onSuccess(CheckoutResponse data) {
+            public void onSuccess(CheckoutWithTransactionResponse data) {
                 Logger.debug("Success return snapToken " + data.getSnapToken());
             }
         });

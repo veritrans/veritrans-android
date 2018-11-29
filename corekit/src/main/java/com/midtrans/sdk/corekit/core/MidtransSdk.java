@@ -8,12 +8,13 @@ import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.base.enums.Environment;
 import com.midtrans.sdk.corekit.core.merchant.MerchantApiManager;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.CheckoutTransaction;
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutResponse;
+import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutWithTransactionResponse;
 import com.midtrans.sdk.corekit.core.snap.SnapApiManager;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.CustomerDetailPayRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.mandiriclick.MandiriClickpayParams;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.BasePaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.epaybri.BriEpayPaymentResponse;
+import com.midtrans.sdk.corekit.core.snap.model.pay.response.klikbca.KlikBcaPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BcaPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BniPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.OtherPaymentResponse;
@@ -54,13 +55,9 @@ public class MidtransSdk {
      */
     private Environment midtransEnvironment;
     /**
-     * Mandatory checkout property.
+     * Mandatory checkoutWithTransaction property.
      */
-<<<<<<< HEAD
     private CheckoutTransaction checkoutTransaction = null;
-=======
-    private TransactionRequest checkoutTransaction = null;
->>>>>>> feature/revamp
     private MerchantApiManager merchantApiManager;
     private SnapApiManager snapApiManager;
 
@@ -163,66 +160,45 @@ public class MidtransSdk {
      *
      * @return transaction request object.
      */
-<<<<<<< HEAD
     public CheckoutTransaction getCheckoutTransaction() {
-=======
-    public TransactionRequest getCheckoutTransaction() {
->>>>>>> feature/revamp
         return checkoutTransaction;
     }
 
     /**
-     * Set value to transaction request for begin checkout.
+     * Set value to transaction request for begin checkoutWithTransaction.
      */
-<<<<<<< HEAD
     public void setCheckoutTransaction(CheckoutTransaction checkoutTransaction) {
-=======
-    public void setCheckoutTransaction(TransactionRequest checkoutTransaction) {
->>>>>>> feature/revamp
         this.checkoutTransaction = checkoutTransaction;
     }
 
     /**
-     * Begin checkout for all Payment Method that merchant activate in MAP
+     * Begin checkoutWithTransaction for all Payment Method that merchant activate in MAP
      * for use this method you have to set checkoutTransaction first.
      *
      * @param callback for receiving callback from request.
      */
-    public void checkout(final MidtransCallback<CheckoutResponse> callback) {
-        checkout(this.checkoutTransaction, callback);
+    public void checkoutWithTransaction(final MidtransCallback<CheckoutWithTransactionResponse> callback) {
+        checkoutWithTransaction(this.checkoutTransaction, callback);
     }
 
     /**
-     * Begin checkout for all Payment Method that merchant activate in MAP
+     * Begin checkoutWithTransaction for all Payment Method that merchant activate in MAP
      * for use this method you must to include checkoutTransaction as parameter.
      *
-     * @param checkoutTransaction transaction request for making checkout.
+     * @param checkoutTransaction transaction request for making checkoutWithTransaction.
      * @param callback            for receiving callback from request.
      */
-<<<<<<< HEAD
-    public void checkout(@NonNull final CheckoutTransaction checkoutTransaction,
-                         final MidtransCallback<CheckoutResponse> callback) {
-        if (callback == null) {
-            Logger.error(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
-            return;
-        }
-        if (isNetworkAvailable()) {
-            merchantApiManager.checkout(checkoutTransaction, callback);
-        } else {
-            callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
-=======
-    public void checkout(@NonNull final TransactionRequest checkoutTransaction,
-                         final MidtransCallback<CheckoutResponse> callback) {
+    public void checkoutWithTransaction(@NonNull final CheckoutTransaction checkoutTransaction,
+                                        final MidtransCallback<CheckoutWithTransactionResponse> callback) {
         if (isValidForNetworkCall(callback)) {
             merchantApiManager.checkout(checkoutTransaction, callback);
->>>>>>> feature/revamp
         }
     }
 
     /**
      * Getting Payment Info including enabled payment method and others information.
      *
-     * @param snapToken token after making checkout.
+     * @param snapToken token after making checkoutWithTransaction.
      * @param callback  for receiving callback from request.
      */
     public void getPaymentInfo(final String snapToken,
@@ -235,7 +211,7 @@ public class MidtransSdk {
     /**
      * Start payment using bank transfer and va with BCA.
      *
-     * @param snapToken       token after making checkout.
+     * @param snapToken       token after making checkoutWithTransaction.
      * @param customerDetails for putting bank transfer request.
      * @param callback        for receiving callback from request.
      */
@@ -250,7 +226,7 @@ public class MidtransSdk {
     /**
      * Start payment using bank transfer and va with BNI.
      *
-     * @param snapToken       token after making checkout.
+     * @param snapToken       token after making checkoutWithTransaction.
      * @param customerDetails for putting bank transfer request.
      * @param callback        for receiving callback from request.
      */
@@ -265,7 +241,7 @@ public class MidtransSdk {
     /**
      * Start payment using bank transfer and va with PERMATA.
      *
-     * @param snapToken       token after making checkout.
+     * @param snapToken       token after making checkoutWithTransaction.
      * @param customerDetails for putting bank transfer request.
      * @param callback        for receiving callback from request.
      */
@@ -280,7 +256,7 @@ public class MidtransSdk {
     /**
      * Start payment using bank transfer and va with Other Bank.
      *
-     * @param snapToken       token after making checkout.
+     * @param snapToken       token after making checkoutWithTransaction.
      * @param customerDetails for putting bank transfer request.
      * @param callback        for receiving callback from request.
      */
@@ -295,7 +271,7 @@ public class MidtransSdk {
     /**
      * Start payment using bank transfer and va with Mandiri Ecash.
      *
-     * @param snapToken                token after making checkout.
+     * @param snapToken                token after making checkoutWithTransaction.
      * @param customerDetailPayRequest for putting bank transfer request.
      * @param callback                 for receiving callback from request.
      */
@@ -310,7 +286,7 @@ public class MidtransSdk {
     /**
      * Start payment using bank transfer and va with Mandiri Ecash.
      *
-     * @param snapToken             token after making checkout.
+     * @param snapToken             token after making checkoutWithTransaction.
      * @param mandiriClickpayParams for putting bank transfer request.
      * @param callback              for receiving callback from request.
      */
@@ -331,7 +307,7 @@ public class MidtransSdk {
     /**
      * Start payment using bank transfer and va with CIMB Clicks.
      *
-     * @param snapToken token after making checkout.
+     * @param snapToken token after making checkoutWithTransaction.
      * @param callback  for receiving callback from request.
      */
     public void paymentUsingCimbClicks(final String snapToken,
@@ -344,7 +320,7 @@ public class MidtransSdk {
     /**
      * Start payment using bank transfer and va with BRI Epay.
      *
-     * @param snapToken token after making checkout.
+     * @param snapToken token after making checkoutWithTransaction.
      * @param callback  for receiving callback from request.
      */
     public void paymentUsingBriEpay(final String snapToken,
@@ -357,12 +333,12 @@ public class MidtransSdk {
     /**
      * Start payment using bank transfer and va with Klik BCA.
      *
-     * @param snapToken token after making checkout.
+     * @param snapToken token after making checkoutWithTransaction.
      * @param callback  for receiving callback from request.
      */
     public void paymentUsingKlikBca(final String snapToken,
                                     final String klikBcaUserId,
-                                    final MidtransCallback<BasePaymentResponse> callback) {
+                                    final MidtransCallback<KlikBcaPaymentResponse> callback) {
         if (isValidForNetworkCall(callback)) {
             snapApiManager.paymentUsingKlikBca(snapToken, klikBcaUserId, callback);
         }

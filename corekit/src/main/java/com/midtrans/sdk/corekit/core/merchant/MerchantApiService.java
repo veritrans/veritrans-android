@@ -1,7 +1,7 @@
 package com.midtrans.sdk.corekit.core.merchant;
 
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.CheckoutTransaction;
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutResponse;
+import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutWithTransactionResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -17,6 +17,6 @@ public interface MerchantApiService {
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("charge")
-    Call<CheckoutResponse> checkout(@Body CheckoutTransaction requestModel);
+    Call<CheckoutWithTransactionResponse> checkout(@Body CheckoutTransaction requestModel);
 
 }

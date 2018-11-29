@@ -20,7 +20,7 @@ import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.specific.ba
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.specific.banktransfer.BcaBankTransferRequestModel;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.specific.creditcard.CreditCard;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.specific.creditcard.SavedToken;
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutResponse;
+import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutWithTransactionResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.CustomerDetailPayRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.BasePaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.transaction.response.PaymentInfoResponse;
@@ -93,14 +93,14 @@ public class MainActivity extends AppCompatActivity {
 
         CheckoutTransaction trxInstance = CheckoutTransaction.getInstance();
         MidtransSdk.getInstance().setCheckoutTransaction(trxRequest);
-        MidtransSdk.getInstance().checkout(new MidtransCallback<CheckoutResponse>() {
+        MidtransSdk.getInstance().checkoutWithTransaction(new MidtransCallback<CheckoutWithTransactionResponse>() {
             @Override
             public void onFailed(Throwable throwable) {
                 Logger.debug("MIDTRANS SDK NEW RETURN ERROR >>> " + throwable.getMessage());
             }
 
             @Override
-            public void onSuccess(CheckoutResponse data) {
+            public void onSuccess(CheckoutWithTransactionResponse data) {
                 Logger.debug("RESULT TOKEN CHECKOUT " + data.getSnapToken());
                 getTransactionOptions(data.getSnapToken());
             }

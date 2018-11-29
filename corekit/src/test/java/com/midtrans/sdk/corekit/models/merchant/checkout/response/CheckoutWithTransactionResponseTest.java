@@ -1,6 +1,6 @@
 package com.midtrans.sdk.corekit.models.merchant.checkout.response;
 
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutResponse;
+import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutWithTransactionResponse;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -8,14 +8,14 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-public class CheckoutResponseTest {
-    private CheckoutResponse response;
+public class CheckoutWithTransactionResponseTest {
+    private CheckoutWithTransactionResponse response;
     private String exampleTextPositive;
     private String exampleTextNegative;
 
     @Before
     public void test_setup() {
-        this.response = new CheckoutResponse();
+        this.response = new CheckoutWithTransactionResponse();
         this.exampleTextPositive = "exampleTextPositive";
         this.exampleTextNegative = "exampleTextNegative";
     }

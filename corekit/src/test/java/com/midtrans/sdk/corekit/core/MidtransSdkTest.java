@@ -13,7 +13,7 @@ import com.midtrans.sdk.corekit.base.enums.Environment;
 import com.midtrans.sdk.corekit.base.network.MidtransRestAdapter;
 import com.midtrans.sdk.corekit.core.merchant.MerchantApiManager;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.CheckoutTransaction;
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutResponse;
+import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutWithTransactionResponse;
 import com.midtrans.sdk.corekit.core.snap.SnapApiManager;
 import com.midtrans.sdk.corekit.core.snap.model.transaction.response.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.utilities.Logger;
@@ -47,7 +47,7 @@ public class MidtransSdkTest {
     @Mock
     private NetworkInfo networkInfo;
     @Mock
-    private MidtransCallback<CheckoutResponse> checkoutResponseMidtransCallback;
+    private MidtransCallback<CheckoutWithTransactionResponse> checkoutResponseMidtransCallback;
     @Mock
     private MidtransCallback<PaymentInfoResponse> paymentInfoResponseMidtransCallback;
 
@@ -160,20 +160,20 @@ public class MidtransSdkTest {
     }
 
     /**
-     * test checkout
+     * test checkoutWithTransaction
      */
 
     @Test
     public void test_checkout() {
         midtransSdkSpy.setCheckoutTransaction(checkoutTransactionMock);
         when(midtransSdkSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSdkSpy.checkout(checkoutResponseMidtransCallback);
-        Mockito.verify(midtransSdkSpy).checkout(checkoutResponseMidtransCallback);
+        midtransSdkSpy.checkoutWithTransaction(checkoutResponseMidtransCallback);
+        Mockito.verify(midtransSdkSpy).checkoutWithTransaction(checkoutResponseMidtransCallback);
     }
 
     @Test
     public void test_checkout_whenCallbackNull() {
-        midtransSdkSpy.checkout(null);
+        midtransSdkSpy.checkoutWithTransaction(null);
         verifyStatic(Mockito.times(1));
         Logger.error(Matchers.anyString(), Matchers.anyString());
     }
@@ -182,7 +182,7 @@ public class MidtransSdkTest {
     public void test_checkout_whenNetworkUnAvailable() {
         midtransSdkSpy.setCheckoutTransaction(checkoutTransactionMock);
         when(midtransSdkSpy.isNetworkAvailable()).thenReturn(false);
-        midtransSdkSpy.checkout(checkoutResponseMidtransCallback);
+        midtransSdkSpy.checkoutWithTransaction(checkoutResponseMidtransCallback);
         Mockito.verify(checkoutResponseMidtransCallback).onFailed(Matchers.any(Throwable.class));
     }
 
