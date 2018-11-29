@@ -5,6 +5,7 @@ import com.midtrans.sdk.corekit.core.snap.model.pay.request.PaymentRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.gopay.GopayPaymentRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.klikbca.KlikBcaPaymentRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.mandiriclick.MandiriClickpayPaymentRequest;
+import com.midtrans.sdk.corekit.core.snap.model.pay.request.telkomsel.TelkomselCashPaymentRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.BasePaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.bcaklikpay.BcaKlikPayPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.epaybri.BriEpayPaymentResponse;
@@ -140,5 +141,16 @@ public interface SnapApiService {
      */
     @POST("v1/transactions/{snap_token}/pay")
     Call<BasePaymentResponse> paymentUsingGoPay(@Path("snap_token") String snapToken, @Body GopayPaymentRequest paymentRequest);
+
+    /**
+     * Charge payment using Telkomsel Cash
+     *
+     * @param snapToken
+     * @param paymentRequest
+     */
+    @POST("v1/transactions/{snap_token}/pay")
+    Call<BasePaymentResponse> paymentUsingTelkomselCash(@Path("snap_token") String snapToken, @Body TelkomselCashPaymentRequest paymentRequest);
+
+
 
 }

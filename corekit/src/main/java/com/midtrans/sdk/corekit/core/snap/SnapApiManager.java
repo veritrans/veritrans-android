@@ -12,6 +12,7 @@ import com.midtrans.sdk.corekit.core.snap.model.pay.request.gopay.GopayPaymentRe
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.klikbca.KlikBcaPaymentRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.mandiriclick.MandiriClickpayParams;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.mandiriclick.MandiriClickpayPaymentRequest;
+import com.midtrans.sdk.corekit.core.snap.model.pay.request.telkomsel.TelkomselCashPaymentRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.BasePaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.epaybri.BriEpayPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.klikbca.KlikBcaPaymentResponse;
@@ -297,6 +298,36 @@ public class SnapApiManager extends BaseServiceManager {
                 apiService)) {
             GopayPaymentRequest gopayPaymentRequest = new GopayPaymentRequest(PaymentType.CIMB_CLICKS, gopayAccountNumber);
             Call<BasePaymentResponse> call = apiService.paymentUsingGoPay(snapToken, gopayPaymentRequest);
+            call.enqueue(new Callback<BasePaymentResponse>() {
+                @Override
+                public void onResponse(@NonNull Call<BasePaymentResponse> call, @NonNull Response<BasePaymentResponse> response) {
+                    releaseResources();
+                    handleServerResponse(response, callback, null);
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<BasePaymentResponse> call, @NonNull Throwable throwable) {
+                    releaseResources();
+                    handleServerResponse(null, callback, throwable);
+                }
+            });
+        }
+    }
+
+    /**
+     * This method is used for Payment Using Telkomsel Cash
+     *
+     * @param snapToken snapToken after get payment info.
+     * @param callback  Transaction callback.
+     */
+    public void paymentUsingTelkomselCash(final String snapToken,
+                                          final String customerNumber,
+                                          final MidtransCallback<BasePaymentResponse> callback) {
+        if (isSnapTokenAvailable(callback,
+                snapToken,
+                apiService)) {
+            TelkomselCashPaymentRequest telkomselCashPaymentRequest = new TelkomselCashPaymentRequest(PaymentType.TELKOMSEL_CASH, customerNumber);
+            Call<BasePaymentResponse> call = apiService.paymentUsingTelkomselCash(snapToken, telkomselCashPaymentRequest);
             call.enqueue(new Callback<BasePaymentResponse>() {
                 @Override
                 public void onResponse(@NonNull Call<BasePaymentResponse> call, @NonNull Response<BasePaymentResponse> response) {

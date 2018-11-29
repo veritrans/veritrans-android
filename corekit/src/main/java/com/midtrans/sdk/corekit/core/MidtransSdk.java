@@ -345,6 +345,20 @@ public class MidtransSdk {
     }
 
     /**
+     * Start payment using bank transfer and va with Telkomsel Cash.
+     *
+     * @param snapToken token after making checkoutWithTransaction.
+     * @param callback  for receiving callback from request.
+     */
+    public void paymentUsingTelkomselCash(final String snapToken,
+                                          final String customerNumber,
+                                          final MidtransCallback<BasePaymentResponse> callback) {
+        if (isValidForNetworkCall(callback)) {
+            snapApiManager.paymentUsingTelkomselCash(snapToken, customerNumber, callback);
+        }
+    }
+
+    /**
      * Start payment using bank transfer and va with Indomaret.
      *
      * @param snapToken token after making checkoutWithTransaction.
