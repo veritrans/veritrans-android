@@ -139,7 +139,7 @@ SDK instance is a simple way to access and implement all public method from Midt
 
 **This is quick payment guide, it's use very minimum requirements for making payment. First step is doing checkout, checkout provides your customers with a streamlined, mobile-ready payment experience.**
 
-Our SDK provides a class called `CheckoutTransaction`, which is designed to make building your app's checkout flow as easy as possible. It handles payment options such as payment chanels, customer information and can also be used to collect shipping info.
+Our SDK provides a class called `CheckoutTransaction`, whTich is designed to make building your app's checkout flow as easy as possible. It handles payment options such as payment chanels, customer information and can also be used to collect shipping info.
 
 ### 1. Prepare your CheckoutTransaction (Mandatory)
 > **This is very minimum requirements for making CheckoutTransaction object, it's will use many default setting. If you want to use some specific feature or other feature, please follow section `FEATURE` and combine it with this minimum CheckoutTransaction object.**
@@ -263,33 +263,28 @@ Table of payment codes for payment.
 	> **Once again, this is very minimum requirements for making CheckoutTransaction object and only sample for you, so it will use default setting. If you want to use some specific feature or other feature, please follow section `FEATURE` and combine it with this minimum CheckoutTransaction object.**
 
 	For starting payment with Midtrans, you'll need to write a `CheckoutTransaction` builder inside your class and set to the `MidtransSDK` instance before checkout. (Note, the code samples in this section are simply examples – your own implementation may differ depending on the structure of your app). Midtrans Checkout has 2 required parameters:
-
- **TRANSACTION_ID**
- 
- This value must be unique, you can use it only once
- 
- **AMOUNT**
- 
- This value is your amount for making payment
-
-	Since `TRANSACTION_ID` and `AMOUNT` was required and mandatory, to create a checkout request you should use this builder, so the builder will return minimum object required for making payment.
 	
-	```Java
-	CheckoutTransaction checkoutTransaction = CheckoutTransaction
-	                .builder(TRANSACTION_ID, AMOUNT)
-	                .build();
-	```
-	Note :
+	**TRANSACTION_ID**
 	
-	- `TRANSACTION_ID` is an unique id for your transaction, maximum character length is 50.
-	- `AMOUNT` is charge amount.
-
-- **The Method**
+	This value must be unique, you can use it only once
+ 
+    **AMOUNT**
+ 
+    This value is your amount for making payment Since `TRANSACTION_ID` and `AMOUNT` was required and mandatory, to create a checkout request you should use this builder, so the builder will return minimum object required for making payment.
+    
+    ``` Java
+    CheckoutTransaction trxRequest = CheckoutTransaction
+                .builder(TRANSAXTION_ID, 
+                        AMOUNT)
+                .build(); 
+    ```
+    
+    **The Method**
 	
 	Put CheckoutTransaction object together with callback in `checkoutWithTransaction()` method.
 
 	```Java
-MidtransSdk.getInstance().checkoutWithTransaction(checkoutTransaction, new MidtransCallback<CheckoutWithTransactionResponse>() {
+    MidtransSdk.getInstance().checkoutWithTransaction(checkoutTransaction, new MidtransCallback<CheckoutWithTransactionResponse>() {
             @Override
             public void onFailed(Throwable throwable) {
                 Logger.debug("Failed return error >>> " + throwable.getMessage());
@@ -300,7 +295,7 @@ MidtransSdk.getInstance().checkoutWithTransaction(checkoutTransaction, new Midtr
                 Logger.debug("Success return snapToken " + data.getSnapToken());
             }
         });
-```
+    ```
 
 - **Success Midtrans Callback**
 	
