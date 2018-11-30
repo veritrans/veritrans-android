@@ -290,17 +290,11 @@ public class MidtransSdk {
      * @param mandiriClickpayParams for putting bank transfer request.
      * @param callback              for receiving callback from request.
      */
-    public void paymentUsingMandiriClickPayt(final String snapToken,
+    public void paymentUsingMandiriClickPay(final String snapToken,
                                              final MandiriClickpayParams mandiriClickpayParams,
                                              final MidtransCallback<BasePaymentResponse> callback) {
-        if (callback == null) {
-            Logger.error(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
-            return;
-        }
-        if (isNetworkAvailable()) {
+        if (isValidForNetworkCall(callback)) {
             snapApiManager.paymentUsingMandiriClickPay(snapToken, mandiriClickpayParams, callback);
-        } else {
-            callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 
