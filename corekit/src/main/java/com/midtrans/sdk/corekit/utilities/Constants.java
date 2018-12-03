@@ -78,6 +78,7 @@ public class Constants {
     public static final String ERROR_SDK_CLIENT_KEY_AND_CONTEXT_PROPERLY = "Client key and context cannot be null or empty. Please set the client key and context.";
     public static final String ERROR_SDK_MERCHANT_BASE_URL_PROPERLY = "Merchant base url cannot be null or empty (required) and must url valid format. Please set your merchant base url.";
     public static final String MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED = "Callback Unimplemented, please put callback.";
+    public static final String MESSAGE_ERROR_MISSING_CONTEXT = "Context is Missing, please add context.";
 
     /**
      * Error Message

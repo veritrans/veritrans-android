@@ -10,19 +10,10 @@ import com.midtrans.sdk.corekit.core.merchant.MerchantApiManager;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.CheckoutTransaction;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutWithTransactionResponse;
 import com.midtrans.sdk.corekit.core.snap.SnapApiManager;
-import com.midtrans.sdk.corekit.core.snap.model.pay.request.CustomerDetailPayRequest;
-import com.midtrans.sdk.corekit.core.snap.model.pay.request.mandiriclick.MandiriClickpayParams;
-import com.midtrans.sdk.corekit.core.snap.model.pay.response.BasePaymentResponse;
-import com.midtrans.sdk.corekit.core.snap.model.pay.response.epaybri.BriEpayPaymentResponse;
-import com.midtrans.sdk.corekit.core.snap.model.pay.response.klikbca.KlikBcaPaymentResponse;
-import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BcaPaymentResponse;
-import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BniPaymentResponse;
-import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.OtherPaymentResponse;
-import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.PermataPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.transaction.response.PaymentInfoResponse;
-import com.midtrans.sdk.corekit.utilities.Constants;
 import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.corekit.utilities.NetworkHelper;
+import com.midtrans.sdk.corekit.utilities.Validation;
 
 import static android.webkit.URLUtil.isValidUrl;
 import static com.midtrans.sdk.corekit.utilities.Constants.ERROR_SDK_CLIENT_KEY_AND_CONTEXT_PROPERLY;
@@ -30,8 +21,6 @@ import static com.midtrans.sdk.corekit.utilities.Constants.ERROR_SDK_IS_NOT_INIT
 import static com.midtrans.sdk.corekit.utilities.Constants.ERROR_SDK_MERCHANT_BASE_URL_PROPERLY;
 
 public class MidtransSdk {
-
-    private static final String TAG = "MidtransSdk";
 
     /**
      * Instance variable.
@@ -61,10 +50,10 @@ public class MidtransSdk {
     private MerchantApiManager merchantApiManager;
     private SnapApiManager snapApiManager;
 
-    private MidtransSdk(Context context,
-                        String clientId,
-                        String merchantUrl,
-                        Environment environment) {
+    MidtransSdk(Context context,
+                String clientId,
+                String merchantUrl,
+                Environment environment) {
         this.context = context.getApplicationContext();
         this.merchantClientId = clientId;
         this.merchantBaseUrl = merchantUrl;
@@ -108,6 +97,13 @@ public class MidtransSdk {
             Logger.error(message, runtimeException);
         }
         return SINGLETON_INSTANCE;
+    }
+
+    /**
+     * @return snap api manager
+     */
+    public SnapApiManager getSnapApiManager() {
+        return snapApiManager;
     }
 
     /**
@@ -190,7 +186,7 @@ public class MidtransSdk {
      */
     public void checkoutWithTransaction(@NonNull final CheckoutTransaction checkoutTransaction,
                                         final MidtransCallback<CheckoutWithTransactionResponse> callback) {
-        if (isValidForNetworkCall(callback)) {
+        if (Validation.isValidForNetworkCall(context, callback)) {
             merchantApiManager.checkout(checkoutTransaction, callback);
         }
     }
@@ -203,208 +199,9 @@ public class MidtransSdk {
      */
     public void getPaymentInfo(final String snapToken,
                                final MidtransCallback<PaymentInfoResponse> callback) {
-        if (isValidForNetworkCall(callback)) {
+        if (Validation.isValidForNetworkCall(context, callback)) {
             snapApiManager.getPaymentInfo(snapToken, callback);
         }
-    }
-
-    /**
-     * Start payment using bank transfer and va with BCA.
-     *
-     * @param snapToken       token after making checkoutWithTransaction.
-     * @param customerDetails for putting bank transfer request.
-     * @param callback        for receiving callback from request.
-     */
-    public void paymentUsingBankTransferVaBca(final String snapToken,
-                                              final CustomerDetailPayRequest customerDetails,
-                                              final MidtransCallback<BcaPaymentResponse> callback) {
-        if (isValidForNetworkCall(callback)) {
-            snapApiManager.paymentUsingBankTransferVaBca(snapToken, customerDetails, callback);
-        }
-    }
-
-    /**
-     * Start payment using bank transfer and va with BNI.
-     *
-     * @param snapToken       token after making checkoutWithTransaction.
-     * @param customerDetails for putting bank transfer request.
-     * @param callback        for receiving callback from request.
-     */
-    public void paymentUsingBankTransferVaBni(final String snapToken,
-                                              final CustomerDetailPayRequest customerDetails,
-                                              final MidtransCallback<BniPaymentResponse> callback) {
-        if (isValidForNetworkCall(callback)) {
-            snapApiManager.paymentUsingBankTransferVaBni(snapToken, customerDetails, callback);
-        }
-    }
-
-    /**
-     * Start payment using bank transfer and va with PERMATA.
-     *
-     * @param snapToken       token after making checkoutWithTransaction.
-     * @param customerDetails for putting bank transfer request.
-     * @param callback        for receiving callback from request.
-     */
-    public void paymentUsingBankTransferVaPermata(final String snapToken,
-                                                  final CustomerDetailPayRequest customerDetails,
-                                                  final MidtransCallback<PermataPaymentResponse> callback) {
-        if (isValidForNetworkCall(callback)) {
-            snapApiManager.paymentUsingBankTransferVaPermata(snapToken, customerDetails, callback);
-        }
-    }
-
-    /**
-     * Start payment using bank transfer and va with Other Bank.
-     *
-     * @param snapToken       token after making checkoutWithTransaction.
-     * @param customerDetails for putting bank transfer request.
-     * @param callback        for receiving callback from request.
-     */
-    public void paymentUsingBankTransferVaOther(final String snapToken,
-                                                final CustomerDetailPayRequest customerDetails,
-                                                final MidtransCallback<OtherPaymentResponse> callback) {
-        if (isValidForNetworkCall(callback)) {
-            snapApiManager.paymentUsingBankTransferVaOther(snapToken, customerDetails, callback);
-        }
-    }
-
-    /**
-     * Start payment using bank transfer and va with Mandiri Ecash.
-     *
-     * @param snapToken                token after making checkoutWithTransaction.
-     * @param customerDetailPayRequest for putting bank transfer request.
-     * @param callback                 for receiving callback from request.
-     */
-    public void paymentUsingMandiriEcash(final String snapToken,
-                                         final CustomerDetailPayRequest customerDetailPayRequest,
-                                         final MidtransCallback<BasePaymentResponse> callback) {
-        if (isValidForNetworkCall(callback)) {
-            snapApiManager.paymentUsingMandiriEcash(snapToken, customerDetailPayRequest, callback);
-        }
-    }
-
-    /**
-     * Start payment using bank transfer and va with Mandiri Ecash.
-     *
-     * @param snapToken             token after making checkoutWithTransaction.
-     * @param mandiriClickpayParams for putting bank transfer request.
-     * @param callback              for receiving callback from request.
-     */
-    public void paymentUsingMandiriClickPayt(final String snapToken,
-                                             final MandiriClickpayParams mandiriClickpayParams,
-                                             final MidtransCallback<BasePaymentResponse> callback) {
-        if (callback == null) {
-            Logger.error(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
-            return;
-        }
-        if (isNetworkAvailable()) {
-            snapApiManager.paymentUsingMandiriClickPay(snapToken, mandiriClickpayParams, callback);
-        } else {
-            callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
-        }
-    }
-
-    /**
-     * Start payment using bank transfer and va with CIMB Clicks.
-     *
-     * @param snapToken token after making checkoutWithTransaction.
-     * @param callback  for receiving callback from request.
-     */
-    public void paymentUsingCimbClicks(final String snapToken,
-                                       final MidtransCallback<BasePaymentResponse> callback) {
-        if (isValidForNetworkCall(callback)) {
-            snapApiManager.paymentUsingCimbClick(snapToken, callback);
-        }
-    }
-
-    /**
-     * Start payment using bank transfer and va with Akulaku.
-     *
-     * @param snapToken token after making checkoutWithTransaction.
-     * @param callback  for receiving callback from request.
-     */
-    public void paymentUsingAkulaku(final String snapToken,
-                                    final MidtransCallback<BasePaymentResponse> callback) {
-        if (isValidForNetworkCall(callback)) {
-            snapApiManager.paymentUsingAkulaku(snapToken, callback);
-        }
-    }
-
-    /**
-     * Start payment using bank transfer and va with Gopay.
-     *
-     * @param snapToken token after making checkoutWithTransaction.
-     * @param callback  for receiving callback from request.
-     */
-    public void paymentUsingGopay(final String snapToken,
-                                    final String gopayAccountNumber,
-                                    final MidtransCallback<BasePaymentResponse> callback) {
-        if (isValidForNetworkCall(callback)) {
-            snapApiManager.paymentUsingGopay(snapToken, gopayAccountNumber, callback);
-        }
-    }
-
-    /**
-     * Start payment using bank transfer and va with Telkomsel Cash.
-     *
-     * @param snapToken token after making checkoutWithTransaction.
-     * @param callback  for receiving callback from request.
-     */
-    public void paymentUsingTelkomselCash(final String snapToken,
-                                          final String customerNumber,
-                                          final MidtransCallback<BasePaymentResponse> callback) {
-        if (isValidForNetworkCall(callback)) {
-            snapApiManager.paymentUsingTelkomselCash(snapToken, customerNumber, callback);
-        }
-    }
-
-    /**
-     * Start payment using bank transfer and va with Indomaret.
-     *
-     * @param snapToken token after making checkoutWithTransaction.
-     * @param callback  for receiving callback from request.
-     */
-    public void paymentUsingIndomaret(final String snapToken,
-                                      final MidtransCallback<BasePaymentResponse> callback) {
-        if (isValidForNetworkCall(callback)) {
-            snapApiManager.paymentUsingIndomaret(snapToken, callback);
-        }
-    }
-
-    /**
-     * Start payment using bank transfer and va with BRI Epay.
-     *
-     * @param snapToken token after making checkoutWithTransaction.
-     * @param callback  for receiving callback from request.
-     */
-    public void paymentUsingBriEpay(final String snapToken,
-                                    final MidtransCallback<BriEpayPaymentResponse> callback) {
-        if (isValidForNetworkCall(callback)) {
-            snapApiManager.paymentUsingBriEpay(snapToken, callback);
-        }
-    }
-
-    /**
-     * Start payment using bank transfer and va with Klik BCA.
-     *
-     * @param snapToken token after making checkoutWithTransaction.
-     * @param callback  for receiving callback from request.
-     */
-    public void paymentUsingKlikBca(final String snapToken,
-                                    final String klikBcaUserId,
-                                    final MidtransCallback<KlikBcaPaymentResponse> callback) {
-        if (isValidForNetworkCall(callback)) {
-            snapApiManager.paymentUsingKlikBca(snapToken, klikBcaUserId, callback);
-        }
-    }
-
-    /**
-     * Open utils for checking network status
-     *
-     * @return boolean based on network status
-     */
-    public boolean isNetworkAvailable() {
-        return NetworkHelper.isNetworkAvailable(this.context);
     }
 
     /**
@@ -473,18 +270,4 @@ public class MidtransSdk {
             return true;
         }
     }
-
-    private <T> Boolean isValidForNetworkCall(MidtransCallback<T> callback) {
-        if (callback == null) {
-            Logger.error(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
-            return false;
-        }
-        if (!isNetworkAvailable()) {
-            callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
-            return false;
-        } else {
-            return true;
-        }
-    }
-
 }
