@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.BasePaymentResponse;
 
-public class BcaKlikPayPaymentResponse extends BasePaymentResponse {
+public class BcaClickPayPaymentResponse extends BasePaymentResponse {
 
     @SerializedName("redirect_data")
     BcaKlikPayDataResponse dataResponse;

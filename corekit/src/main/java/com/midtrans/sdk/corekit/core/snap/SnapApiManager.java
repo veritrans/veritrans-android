@@ -14,6 +14,7 @@ import com.midtrans.sdk.corekit.core.snap.model.pay.request.mandiriclick.Mandiri
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.mandiriclick.MandiriClickpayPaymentRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.telkomsel.TelkomselCashPaymentRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.BasePaymentResponse;
+import com.midtrans.sdk.corekit.core.snap.model.pay.response.bcaklikpay.BcaClickPayPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.epaybri.BriEpayPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.klikbca.KlikBcaPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BcaPaymentResponse;
@@ -395,6 +396,35 @@ public class SnapApiManager extends BaseServiceManager {
 
                 @Override
                 public void onFailure(@NonNull Call<BriEpayPaymentResponse> call, @NonNull Throwable throwable) {
+                    releaseResources();
+                    handleServerResponse(null, callback, throwable);
+                }
+            });
+        }
+    }
+
+    /**
+     * This method is used for Payment Using BCA Click Pay
+     *
+     * @param snapToken snapToken after get payment info.
+     * @param callback  Transaction callback.
+     */
+    public void paymentUsingBcaClickPay(final String snapToken,
+                                        final MidtransCallback<BcaClickPayPaymentResponse> callback) {
+        if (isSnapTokenAvailable(callback,
+                snapToken,
+                apiService)) {
+            BasePaymentRequest basePaymentRequest = new BasePaymentRequest(PaymentType.BCA_KLIKPAY);
+            Call<BcaClickPayPaymentResponse> call = apiService.paymentBcaClickPay(snapToken, basePaymentRequest);
+            call.enqueue(new Callback<BcaClickPayPaymentResponse>() {
+                @Override
+                public void onResponse(@NonNull Call<BcaClickPayPaymentResponse> call, @NonNull Response<BcaClickPayPaymentResponse> response) {
+                    releaseResources();
+                    handleServerResponse(response, callback, null);
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<BcaClickPayPaymentResponse> call, @NonNull Throwable throwable) {
                     releaseResources();
                     handleServerResponse(null, callback, throwable);
                 }
