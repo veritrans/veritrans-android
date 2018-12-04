@@ -6,7 +6,7 @@ import com.midtrans.sdk.corekit.core.snap.model.pay.response.bcaklikpay.BcaClick
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.epaybri.BriEpayPaymentResponse;
 import com.midtrans.sdk.corekit.utilities.Validation;
 
-public class MidtransOnlineDebit extends BaseMidtransGroupPayments {
+public class OnlineDebitCharge extends BaseGroupPayments {
     /**
      * Start payment using bank transfer and va with CIMB Clicks.
      *
