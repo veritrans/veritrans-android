@@ -436,25 +436,27 @@ public class SnapApiManager extends BaseServiceManager {
      * This method is used for Payment Using Klik Bca
      *
      * @param snapToken snapToken after get payment info.
-     * @param callback  Transaction callback.
+     * @param callback Transaction callback.
      */
     public void paymentUsingKlikBca(final String snapToken,
                                     final String klikBcaUserId,
-                                    final MidtransCallback<KlikBcaPaymentResponse> callback) {
+                                    final MidtransCallback<BasePaymentResponse> callback) {
         if (apiService == null) {
             callback.onFailed(new Throwable(MESSAGE_ERROR_EMPTY_RESPONSE));
             return;
         }
         KlikBcaPaymentRequest paymentRequest = new KlikBcaPaymentRequest(PaymentType.KLIK_BCA, klikBcaUserId);
-        Call<KlikBcaPaymentResponse> call = apiService.paymentKlikBca(snapToken, paymentRequest);
-        call.enqueue(new Callback<KlikBcaPaymentResponse>() {
+        Call<BasePaymentResponse> call = apiService.paymentKlikBca(snapToken, paymentRequest);
+        call.enqueue(new Callback<BasePaymentResponse>() {
             @Override
-            public void onResponse(@NonNull Call<KlikBcaPaymentResponse> call, @NonNull Response<KlikBcaPaymentResponse> response) {
+            public void onResponse(@NonNull Call<BasePaymentResponse> call,
+                                   @NonNull Response<BasePaymentResponse> response) {
                 releaseResources();
                 handleServerResponse(response, callback, null);
             }
 
-            public void onFailure(@NonNull Call<KlikBcaPaymentResponse> call, @NonNull Throwable throwable) {
+            public void onFailure(@NonNull Call<BasePaymentResponse> call,
+                                  @NonNull Throwable throwable) {
                 releaseResources();
                 handleServerResponse(null, callback, throwable);
             }

@@ -41,9 +41,11 @@ public class BasePaymentResponse implements Serializable {
     @Expose
     protected String finishRedirectUrl;
 
-    public String getTransactionId() {
-        return transactionId;
-    }
+    /**
+     * KlikBCA
+     */
+    @SerializedName("approval_code")
+    protected String approvalCode;
 
     public void setTransactionId(String transactionId) {
         this.transactionId = transactionId;

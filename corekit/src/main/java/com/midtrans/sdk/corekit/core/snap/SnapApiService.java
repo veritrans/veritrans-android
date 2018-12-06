@@ -113,7 +113,7 @@ public interface SnapApiService {
      * @param paymentRequest Payment Request Details.
      */
     @POST(PAYMENT_PAY)
-    Call<KlikBcaPaymentResponse> paymentKlikBca(@Path("snap_token") String snapToken, @Body KlikBcaPaymentRequest paymentRequest);
+    Call<BasePaymentResponse> paymentKlikBca(@Path("snap_token") String snapToken, @Body KlikBcaPaymentRequest paymentRequest);
 
 
     /**
