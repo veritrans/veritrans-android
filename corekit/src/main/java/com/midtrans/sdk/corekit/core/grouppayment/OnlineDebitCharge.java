@@ -2,7 +2,6 @@ package com.midtrans.sdk.corekit.core.grouppayment;
 
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.BasePaymentResponse;
-import com.midtrans.sdk.corekit.core.snap.model.pay.response.epaybri.BriEpayPaymentResponse;
 import com.midtrans.sdk.corekit.utilities.Validation;
 
 public class OnlineDebitCharge extends BaseGroupPayments {
@@ -39,7 +38,7 @@ public class OnlineDebitCharge extends BaseGroupPayments {
      * @param callback  for receiving callback from request.
      */
     public static void paymentUsingBriEpay(final String snapToken,
-                                           final MidtransCallback<BriEpayPaymentResponse> callback) {
+                                           final MidtransCallback<BasePaymentResponse> callback) {
         if (Validation.isValidForNetworkCall(getSdkContext(), callback)) {
             getSnapApiManager().paymentUsingBriEpay(snapToken, callback);
         }

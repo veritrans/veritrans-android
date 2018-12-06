@@ -1,5 +1,7 @@
 package com.midtrans.sdk.corekit.core.snap.model.pay.response;
 
+import com.midtrans.sdk.corekit.core.snap.model.pay.response.bcaklikpay.BcaKlikPayDataResponse;
+
 public class BasePaymentResponseMethod extends BasePaymentResponse {
 
     public String getStatusCode() {
@@ -96,5 +98,21 @@ public class BasePaymentResponseMethod extends BasePaymentResponse {
 
     public void setApprovalCode(String approvalCode) {
         this.approvalCode = approvalCode;
+    }
+
+    public BcaKlikPayDataResponse getDataResponse() {
+        return dataResponse;
+    }
+
+    public void setDataResponse(BcaKlikPayDataResponse dataResponse) {
+        this.dataResponse = dataResponse;
+    }
+
+    public String getFraudStatus() {
+        return fraudStatus;
+    }
+
+    public void setFraudStatus(String fraudStatus) {
+        this.fraudStatus = fraudStatus;
     }
 }

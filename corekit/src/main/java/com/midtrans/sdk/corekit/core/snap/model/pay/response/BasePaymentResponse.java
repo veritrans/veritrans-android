@@ -46,12 +46,20 @@ public class BasePaymentResponse implements Serializable {
      * KlikBCA
      */
     @SerializedName("approval_code")
+    @Expose
     protected String approvalCode;
 
     /**
      * BcaKlikPay
      */
     @SerializedName("redirect_data")
-    BcaKlikPayDataResponse dataResponse;
+    @Expose
+    protected BcaKlikPayDataResponse dataResponse;
 
+    /**
+     * BRIEpay
+     */
+    @SerializedName("fraud_status")
+    @Expose
+    protected String fraudStatus;
 }
