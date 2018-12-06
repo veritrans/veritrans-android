@@ -62,4 +62,18 @@ public class BasePaymentResponse implements Serializable {
     @SerializedName("fraud_status")
     @Expose
     protected String fraudStatus;
+
+    /**
+     * Base Bank Transfer Va
+     */
+    @SerializedName("type")
+    @Expose
+    protected String type;
+    @SerializedName("pdf_url")
+    @Expose
+    protected String pdfUrl;
+    @SerializedName("atm_channel")
+    @Expose
+    protected String atmChannel;
+
 }

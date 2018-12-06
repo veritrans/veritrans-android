@@ -2,11 +2,12 @@ package com.midtrans.sdk.corekit.core.snap.model.pay.response.va;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.midtrans.sdk.corekit.core.snap.model.pay.response.BasePaymentResponse;
 
 import java.io.Serializable;
 import java.util.List;
 
-public class BniPaymentResponse extends BaseBankTransferVa implements Serializable {
+public class BniPaymentResponse extends BasePaymentResponse implements Serializable {
     @SerializedName("bni_va_number")
     @Expose
     private String bniVaNumber;

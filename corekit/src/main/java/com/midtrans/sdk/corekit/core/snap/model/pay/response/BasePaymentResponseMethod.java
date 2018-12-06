@@ -115,4 +115,28 @@ public class BasePaymentResponseMethod extends BasePaymentResponse {
     public void setFraudStatus(String fraudStatus) {
         this.fraudStatus = fraudStatus;
     }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getPdfUrl() {
+        return pdfUrl;
+    }
+
+    public void setPdfUrl(String pdfUrl) {
+        this.pdfUrl = pdfUrl;
+    }
+
+    public String getAtmChannel() {
+        return atmChannel;
+    }
+
+    public void setAtmChannel(String atmChannel) {
+        this.atmChannel = atmChannel;
+    }
 }

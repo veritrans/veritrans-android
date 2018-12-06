@@ -404,7 +404,7 @@ public class SnapApiManager extends BaseServiceManager {
      * This method is used for Payment Using BCA Click Pay
      *
      * @param snapToken snapToken after get payment info.
-     * @param callback Transaction callback.
+     * @param callback  Transaction callback.
      */
     public void paymentUsingBcaClickPay(final String snapToken,
                                         final MidtransCallback<BasePaymentResponse> callback) {
@@ -433,7 +433,7 @@ public class SnapApiManager extends BaseServiceManager {
      * This method is used for Payment Using Klik Bca
      *
      * @param snapToken snapToken after get payment info.
-     * @param callback Transaction callback.
+     * @param callback  Transaction callback.
      */
     public void paymentUsingKlikBca(final String snapToken,
                                     final String klikBcaUserId,
