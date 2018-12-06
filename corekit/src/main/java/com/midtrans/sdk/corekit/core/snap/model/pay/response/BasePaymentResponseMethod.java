@@ -182,4 +182,20 @@ public class BasePaymentResponseMethod extends BasePaymentResponse {
     public void setBniExpiration(String bniExpiration) {
         this.bniExpiration = bniExpiration;
     }
+
+    public String getPermataVaNumber() {
+        return permataVaNumber;
+    }
+
+    public void setPermataVaNumber(String permataVaNumber) {
+        this.permataVaNumber = permataVaNumber;
+    }
+
+    public String getPermataExpiration() {
+        return permataExpiration;
+    }
+
+    public void setPermataExpiration(String permataExpiration) {
+        this.permataExpiration = permataExpiration;
+    }
 }

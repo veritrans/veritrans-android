@@ -8,7 +8,6 @@ import com.midtrans.sdk.corekit.core.snap.model.pay.request.mandiriclick.Mandiri
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.telkomsel.TelkomselCashPaymentRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.BasePaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.OtherPaymentResponse;
-import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.PermataPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.transaction.response.PaymentInfoResponse;
 
 import retrofit2.Call;
@@ -52,7 +51,7 @@ public interface SnapApiService {
      * @param paymentRequest Payment Request Details.
      */
     @POST(PAYMENT_PAY)
-    Call<PermataPaymentResponse> paymentBankTransferPermata(@Path("snap_token") String snapToken, @Body PaymentRequest paymentRequest);
+    Call<BasePaymentResponse> paymentBankTransferPermata(@Path("snap_token") String snapToken, @Body PaymentRequest paymentRequest);
 
     /**
      * Charge payment using bank transfer Virtual account.

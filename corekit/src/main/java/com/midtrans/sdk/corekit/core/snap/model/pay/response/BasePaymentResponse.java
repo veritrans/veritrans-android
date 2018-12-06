@@ -100,4 +100,14 @@ public class BasePaymentResponse implements Serializable {
     @SerializedName("bni_expiration")
     @Expose
     protected String bniExpiration;
+
+    /**
+     * Permata Bank Tranfer Va
+     */
+    @SerializedName("permata_va_number")
+    @Expose
+    protected String permataVaNumber;
+    @SerializedName("permata_expiration")
+    @Expose
+    protected String permataExpiration;
 }

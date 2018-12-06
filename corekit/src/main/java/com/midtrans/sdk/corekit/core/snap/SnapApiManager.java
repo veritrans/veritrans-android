@@ -15,7 +15,6 @@ import com.midtrans.sdk.corekit.core.snap.model.pay.request.mandiriclick.Mandiri
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.telkomsel.TelkomselCashPaymentRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.BasePaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.OtherPaymentResponse;
-import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.PermataPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.transaction.response.PaymentInfoResponse;
 
 import retrofit2.Call;
@@ -138,21 +137,21 @@ public class SnapApiManager extends BaseServiceManager {
      */
     public void paymentUsingBankTransferVaPermata(final String snapToken,
                                                   final CustomerDetailPayRequest customerDetails,
-                                                  final MidtransCallback<PermataPaymentResponse> callback) {
+                                                  final MidtransCallback<BasePaymentResponse> callback) {
         if (isSnapTokenAvailable(callback,
                 snapToken,
                 apiService)) {
             PaymentRequest paymentRequest = new PaymentRequest(PaymentType.PERMATA_VA, customerDetails);
-            Call<PermataPaymentResponse> call = apiService.paymentBankTransferPermata(snapToken, paymentRequest);
-            call.enqueue(new Callback<PermataPaymentResponse>() {
+            Call<BasePaymentResponse> call = apiService.paymentBankTransferPermata(snapToken, paymentRequest);
+            call.enqueue(new Callback<BasePaymentResponse>() {
                 @Override
-                public void onResponse(@NonNull Call<PermataPaymentResponse> call, @NonNull Response<PermataPaymentResponse> response) {
+                public void onResponse(@NonNull Call<BasePaymentResponse> call, @NonNull Response<BasePaymentResponse> response) {
                     releaseResources();
                     handleServerResponse(response, callback, null);
                 }
 
                 @Override
-                public void onFailure(@NonNull Call<PermataPaymentResponse> call, @NonNull Throwable throwable) {
+                public void onFailure(@NonNull Call<BasePaymentResponse> call, @NonNull Throwable throwable) {
                     releaseResources();
                     handleServerResponse(null, callback, throwable);
                 }
