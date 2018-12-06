@@ -2,7 +2,7 @@ package com.midtrans.sdk.corekit.core.grouppayment;
 
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.CustomerDetailPayRequest;
-import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BcaPaymentResponse;
+import com.midtrans.sdk.corekit.core.snap.model.pay.response.BasePaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BniPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.OtherPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.PermataPaymentResponse;
@@ -19,7 +19,7 @@ public class BankTransferCharge extends BaseGroupPayments {
      */
     public static void paymentUsingBankTransferVaBca(final String snapToken,
                                                      final CustomerDetailPayRequest customerDetails,
-                                                     final MidtransCallback<BcaPaymentResponse> callback) {
+                                                     final MidtransCallback<BasePaymentResponse> callback) {
         if (Validation.isValidForNetworkCall(getSdkContext(), callback)) {
             getSnapApiManager().paymentUsingBankTransferVaBca(snapToken, customerDetails, callback);
         }

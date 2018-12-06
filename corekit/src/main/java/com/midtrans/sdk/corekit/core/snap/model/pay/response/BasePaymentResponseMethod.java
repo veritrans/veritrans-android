@@ -1,6 +1,9 @@
 package com.midtrans.sdk.corekit.core.snap.model.pay.response;
 
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.bcaklikpay.BcaKlikPayDataResponse;
+import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.VaNumber;
+
+import java.util.List;
 
 public class BasePaymentResponseMethod extends BasePaymentResponse {
 
@@ -138,5 +141,29 @@ public class BasePaymentResponseMethod extends BasePaymentResponse {
 
     public void setAtmChannel(String atmChannel) {
         this.atmChannel = atmChannel;
+    }
+
+    public String getBcaVaNumber() {
+        return bcaVaNumber;
+    }
+
+    public void setBcaVaNumber(String bcaVaNumber) {
+        this.bcaVaNumber = bcaVaNumber;
+    }
+
+    public String getBcaExpiration() {
+        return bcaExpiration;
+    }
+
+    public void setBcaExpiration(String bcaExpiration) {
+        this.bcaExpiration = bcaExpiration;
+    }
+
+    public List<VaNumber> getVaNumbersList() {
+        return vaNumbersList;
+    }
+
+    public void setVaNumbersList(List<VaNumber> vaNumbersList) {
+        this.vaNumbersList = vaNumbersList;
     }
 }

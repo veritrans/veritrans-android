@@ -3,8 +3,10 @@ package com.midtrans.sdk.corekit.core.snap.model.pay.response;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.bcaklikpay.BcaKlikPayDataResponse;
+import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.VaNumber;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class BasePaymentResponse implements Serializable {
 
@@ -76,4 +78,16 @@ public class BasePaymentResponse implements Serializable {
     @Expose
     protected String atmChannel;
 
+    /**
+     * Bca Bank Transfer Va
+     */
+    @SerializedName("bca_va_number")
+    @Expose
+    protected String bcaVaNumber;
+    @SerializedName("bca_expiration")
+    @Expose
+    protected String bcaExpiration;
+    @SerializedName("va_numbers")
+    @Expose
+    protected List<VaNumber> vaNumbersList;
 }
