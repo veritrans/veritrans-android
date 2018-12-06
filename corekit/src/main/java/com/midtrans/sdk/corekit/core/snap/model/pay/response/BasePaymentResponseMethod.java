@@ -166,4 +166,20 @@ public class BasePaymentResponseMethod extends BasePaymentResponse {
     public void setVaNumbersList(List<VaNumber> vaNumbersList) {
         this.vaNumbersList = vaNumbersList;
     }
+
+    public String getBniVaNumber() {
+        return bniVaNumber;
+    }
+
+    public void setBniVaNumber(String bniVaNumber) {
+        this.bniVaNumber = bniVaNumber;
+    }
+
+    public String getBniExpiration() {
+        return bniExpiration;
+    }
+
+    public void setBniExpiration(String bniExpiration) {
+        this.bniExpiration = bniExpiration;
+    }
 }

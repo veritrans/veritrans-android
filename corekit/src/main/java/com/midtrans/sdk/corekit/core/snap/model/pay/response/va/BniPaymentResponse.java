@@ -8,15 +8,7 @@ import java.io.Serializable;
 import java.util.List;
 
 public class BniPaymentResponse extends BasePaymentResponse implements Serializable {
-    @SerializedName("bni_va_number")
-    @Expose
-    private String bniVaNumber;
-    @SerializedName("bni_expiration")
-    @Expose
-    private String bniExpiration;
-    @SerializedName("va_numbers")
-    @Expose
-    private List<VaNumber> vaNumbersList;
+
 
     public String getBniVaNumber() {
         return bniVaNumber;

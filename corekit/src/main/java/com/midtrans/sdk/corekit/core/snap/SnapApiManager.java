@@ -14,7 +14,6 @@ import com.midtrans.sdk.corekit.core.snap.model.pay.request.mandiriclick.Mandiri
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.mandiriclick.MandiriClickpayPaymentRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.telkomsel.TelkomselCashPaymentRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.BasePaymentResponse;
-import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BniPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.OtherPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.PermataPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.transaction.response.PaymentInfoResponse;
@@ -108,21 +107,21 @@ public class SnapApiManager extends BaseServiceManager {
      */
     public void paymentUsingBankTransferVaBni(final String snapToken,
                                               final CustomerDetailPayRequest customerDetails,
-                                              final MidtransCallback<BniPaymentResponse> callback) {
+                                              final MidtransCallback<BasePaymentResponse> callback) {
         if (isSnapTokenAvailable(callback,
                 snapToken,
                 apiService)) {
             PaymentRequest paymentRequest = new PaymentRequest(PaymentType.BNI_VA, customerDetails);
-            Call<BniPaymentResponse> call = apiService.paymentBankTransferBni(snapToken, paymentRequest);
-            call.enqueue(new Callback<BniPaymentResponse>() {
+            Call<BasePaymentResponse> call = apiService.paymentBankTransferBni(snapToken, paymentRequest);
+            call.enqueue(new Callback<BasePaymentResponse>() {
                 @Override
-                public void onResponse(@NonNull Call<BniPaymentResponse> call, @NonNull Response<BniPaymentResponse> response) {
+                public void onResponse(@NonNull Call<BasePaymentResponse> call, @NonNull Response<BasePaymentResponse> response) {
                     releaseResources();
                     handleServerResponse(response, callback, null);
                 }
 
                 @Override
-                public void onFailure(@NonNull Call<BniPaymentResponse> call, @NonNull Throwable throwable) {
+                public void onFailure(@NonNull Call<BasePaymentResponse> call, @NonNull Throwable throwable) {
                     releaseResources();
                     handleServerResponse(null, callback, throwable);
                 }

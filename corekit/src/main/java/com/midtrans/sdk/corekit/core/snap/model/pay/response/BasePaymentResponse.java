@@ -90,4 +90,14 @@ public class BasePaymentResponse implements Serializable {
     @SerializedName("va_numbers")
     @Expose
     protected List<VaNumber> vaNumbersList;
+
+    /**
+     * BNI Bank Transfer Va
+     */
+    @SerializedName("bni_va_number")
+    @Expose
+    protected String bniVaNumber;
+    @SerializedName("bni_expiration")
+    @Expose
+    protected String bniExpiration;
 }
