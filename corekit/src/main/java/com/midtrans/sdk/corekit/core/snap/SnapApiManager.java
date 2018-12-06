@@ -407,24 +407,24 @@ public class SnapApiManager extends BaseServiceManager {
      * This method is used for Payment Using BCA Click Pay
      *
      * @param snapToken snapToken after get payment info.
-     * @param callback  Transaction callback.
+     * @param callback Transaction callback.
      */
     public void paymentUsingBcaClickPay(final String snapToken,
-                                        final MidtransCallback<BcaClickPayPaymentResponse> callback) {
-        if (isSnapTokenAvailable(callback,
-                snapToken,
-                apiService)) {
+                                        final MidtransCallback<BasePaymentResponse> callback) {
+        if (isSnapTokenAvailable(callback, snapToken, apiService)) {
             BasePaymentRequest basePaymentRequest = new BasePaymentRequest(PaymentType.BCA_KLIKPAY);
-            Call<BcaClickPayPaymentResponse> call = apiService.paymentBcaClickPay(snapToken, basePaymentRequest);
-            call.enqueue(new Callback<BcaClickPayPaymentResponse>() {
+            Call<BasePaymentResponse> call = apiService.paymentBcaClickPay(snapToken, basePaymentRequest);
+            call.enqueue(new Callback<BasePaymentResponse>() {
                 @Override
-                public void onResponse(@NonNull Call<BcaClickPayPaymentResponse> call, @NonNull Response<BcaClickPayPaymentResponse> response) {
+                public void onResponse(@NonNull Call<BasePaymentResponse> call,
+                                       @NonNull Response<BasePaymentResponse> response) {
                     releaseResources();
                     handleServerResponse(response, callback, null);
                 }
 
                 @Override
-                public void onFailure(@NonNull Call<BcaClickPayPaymentResponse> call, @NonNull Throwable throwable) {
+                public void onFailure(@NonNull Call<BasePaymentResponse> call,
+                                      @NonNull Throwable throwable) {
                     releaseResources();
                     handleServerResponse(null, callback, throwable);
                 }

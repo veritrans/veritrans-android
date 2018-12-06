@@ -2,6 +2,7 @@ package com.midtrans.sdk.corekit.core.snap.model.pay.response;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.midtrans.sdk.corekit.core.snap.model.pay.response.bcaklikpay.BcaKlikPayDataResponse;
 
 import java.io.Serializable;
 
@@ -47,8 +48,10 @@ public class BasePaymentResponse implements Serializable {
     @SerializedName("approval_code")
     protected String approvalCode;
 
-    public void setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
-    }
+    /**
+     * BcaKlikPay
+     */
+    @SerializedName("redirect_data")
+    BcaKlikPayDataResponse dataResponse;
 
 }
