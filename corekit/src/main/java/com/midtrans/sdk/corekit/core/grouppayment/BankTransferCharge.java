@@ -6,7 +6,7 @@ import com.midtrans.sdk.corekit.core.snap.model.pay.response.BasePaymentResponse
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.OtherPaymentResponse;
 import com.midtrans.sdk.corekit.utilities.Validation;
 
-public class BankTransferCharge extends BaseGroupPayments {
+public class BankTransferCharge extends PaymentsGroupBase {
 
     /**
      * Start payment using bank transfer and va with BCA.

@@ -4,7 +4,7 @@ import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.BasePaymentResponse;
 import com.midtrans.sdk.corekit.utilities.Validation;
 
-public class StoreCharge extends BaseGroupPayments {
+public class StoreCharge extends PaymentsGroupBase {
 
     /**
      * Start payment using bank transfer and va with Indomaret.

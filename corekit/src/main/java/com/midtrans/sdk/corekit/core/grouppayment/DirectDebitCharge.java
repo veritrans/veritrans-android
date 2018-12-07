@@ -9,7 +9,7 @@ import com.midtrans.sdk.corekit.utilities.Validation;
 
 import static com.midtrans.sdk.corekit.utilities.Constants.TAG;
 
-public class DirectDebitCharge extends BaseGroupPayments {
+public class DirectDebitCharge extends PaymentsGroupBase {
 
     /**
      * Start payment using bank transfer and va with Klik BCA.
