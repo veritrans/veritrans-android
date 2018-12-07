@@ -3,14 +3,13 @@ package com.midtrans.sdk.corekit.core.grouppayment;
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.mandiriclick.MandiriClickpayParams;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.BasePaymentResponse;
-import com.midtrans.sdk.corekit.core.snap.model.pay.response.klikbca.KlikBcaPaymentResponse;
 import com.midtrans.sdk.corekit.utilities.Constants;
 import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.corekit.utilities.Validation;
 
 import static com.midtrans.sdk.corekit.utilities.Constants.TAG;
 
-public class MidtransDirectDebit extends BaseMidtransGroupPayments {
+public class DirectDebitCharge extends PaymentsGroupBase {
 
     /**
      * Start payment using bank transfer and va with Klik BCA.
@@ -20,7 +19,7 @@ public class MidtransDirectDebit extends BaseMidtransGroupPayments {
      */
     public static void paymentUsingKlikBca(final String snapToken,
                                            final String klikBcaUserId,
-                                           final MidtransCallback<KlikBcaPaymentResponse> callback) {
+                                           final MidtransCallback<BasePaymentResponse> callback) {
         if (Validation.isValidForNetworkCall(getSdkContext(), callback)) {
             getSnapApiManager().paymentUsingKlikBca(snapToken, klikBcaUserId, callback);
         }

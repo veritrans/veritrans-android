@@ -5,7 +5,7 @@ import com.midtrans.sdk.corekit.core.snap.model.pay.request.CustomerDetailPayReq
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.BasePaymentResponse;
 import com.midtrans.sdk.corekit.utilities.Validation;
 
-public class MidtransEWallet extends BaseMidtransGroupPayments {
+public class EWalletCharge extends PaymentsGroupBase {
     /**
      * Start payment using bank transfer and va with Mandiri Ecash.
      *

@@ -2,13 +2,11 @@ package com.midtrans.sdk.corekit.core.grouppayment;
 
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.CustomerDetailPayRequest;
-import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BcaPaymentResponse;
-import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BniPaymentResponse;
+import com.midtrans.sdk.corekit.core.snap.model.pay.response.BasePaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.OtherPaymentResponse;
-import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.PermataPaymentResponse;
 import com.midtrans.sdk.corekit.utilities.Validation;
 
-public class MidtransBankTransfer extends BaseMidtransGroupPayments {
+public class BankTransferCharge extends PaymentsGroupBase {
 
     /**
      * Start payment using bank transfer and va with BCA.
@@ -19,7 +17,7 @@ public class MidtransBankTransfer extends BaseMidtransGroupPayments {
      */
     public static void paymentUsingBankTransferVaBca(final String snapToken,
                                                      final CustomerDetailPayRequest customerDetails,
-                                                     final MidtransCallback<BcaPaymentResponse> callback) {
+                                                     final MidtransCallback<BasePaymentResponse> callback) {
         if (Validation.isValidForNetworkCall(getSdkContext(), callback)) {
             getSnapApiManager().paymentUsingBankTransferVaBca(snapToken, customerDetails, callback);
         }
@@ -34,7 +32,7 @@ public class MidtransBankTransfer extends BaseMidtransGroupPayments {
      */
     public static void paymentUsingBankTransferVaBni(final String snapToken,
                                                      final CustomerDetailPayRequest customerDetails,
-                                                     final MidtransCallback<BniPaymentResponse> callback) {
+                                                     final MidtransCallback<BasePaymentResponse> callback) {
         if (Validation.isValidForNetworkCall(getSdkContext(), callback)) {
             getSnapApiManager().paymentUsingBankTransferVaBni(snapToken, customerDetails, callback);
         }
@@ -49,7 +47,7 @@ public class MidtransBankTransfer extends BaseMidtransGroupPayments {
      */
     public static void paymentUsingBankTransferVaPermata(final String snapToken,
                                                          final CustomerDetailPayRequest customerDetails,
-                                                         final MidtransCallback<PermataPaymentResponse> callback) {
+                                                         final MidtransCallback<BasePaymentResponse> callback) {
         if (Validation.isValidForNetworkCall(getSdkContext(), callback)) {
             getSnapApiManager().paymentUsingBankTransferVaPermata(snapToken, customerDetails, callback);
         }

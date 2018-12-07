@@ -2,129 +2,112 @@ package com.midtrans.sdk.corekit.core.snap.model.pay.response;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.midtrans.sdk.corekit.core.snap.model.pay.response.bcaklikpay.BcaKlikPayDataResponse;
+import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.VaNumber;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class BasePaymentResponse implements Serializable {
+
     @SerializedName("status_code")
     @Expose
-    private String statusCode;
+    protected String statusCode;
     @SerializedName("status_message")
     @Expose
-    private String statusMessage;
+    protected String statusMessage;
     @SerializedName("redirect_url")
     @Expose
-    private String redirectUrl;
+    protected String redirectUrl;
     @SerializedName("transaction_id")
     @Expose
-    private String transactionId;
+    protected String transactionId;
     @SerializedName("order_id")
     @Expose
-    private String orderId;
+    protected String orderId;
     @SerializedName("gross_amount")
     @Expose
-    private String grossAmount;
+    protected String grossAmount;
     @SerializedName("currency")
     @Expose
-    private String currency;
+    protected String currency;
     @SerializedName("payment_type")
     @Expose
-    private String paymentType;
+    protected String paymentType;
     @SerializedName("transaction_time")
     @Expose
-    private String transactionTime;
+    protected String transactionTime;
     @SerializedName("transaction_status")
     @Expose
-    private String transactionStatus;
+    protected String transactionStatus;
     @SerializedName("finish_redirect_url")
     @Expose
-    private String finishRedirectUrl;
+    protected String finishRedirectUrl;
 
-    public String getStatusCode() {
-        return statusCode;
-    }
+    /**
+     * KlikBCA
+     */
+    @SerializedName("approval_code")
+    @Expose
+    protected String approvalCode;
 
-    public void setStatusCode(String statusCode) {
-        this.statusCode = statusCode;
-    }
+    /**
+     * BcaKlikPay
+     */
+    @SerializedName("redirect_data")
+    @Expose
+    protected BcaKlikPayDataResponse dataResponse;
 
-    public String getStatusMessage() {
-        return statusMessage;
-    }
+    /**
+     * BRIEpay
+     */
+    @SerializedName("fraud_status")
+    @Expose
+    protected String fraudStatus;
 
-    public void setStatusMessage(String statusMessage) {
-        this.statusMessage = statusMessage;
-    }
+    /**
+     * Base Bank Transfer Va
+     */
+    @SerializedName("type")
+    @Expose
+    protected String type;
+    @SerializedName("pdf_url")
+    @Expose
+    protected String pdfUrl;
+    @SerializedName("atm_channel")
+    @Expose
+    protected String atmChannel;
 
-    public String getRedirectUrl() {
-        return redirectUrl;
-    }
+    /**
+     * Bca Bank Transfer Va
+     */
+    @SerializedName("bca_va_number")
+    @Expose
+    protected String bcaVaNumber;
+    @SerializedName("bca_expiration")
+    @Expose
+    protected String bcaExpiration;
+    @SerializedName("va_numbers")
+    @Expose
+    protected List<VaNumber> vaNumbersList;
 
-    public void setRedirectUrl(String redirectUrl) {
-        this.redirectUrl = redirectUrl;
-    }
+    /**
+     * BNI Bank Transfer Va
+     */
+    @SerializedName("bni_va_number")
+    @Expose
+    protected String bniVaNumber;
+    @SerializedName("bni_expiration")
+    @Expose
+    protected String bniExpiration;
 
-    public String getTransactionId() {
-        return transactionId;
-    }
-
-    public void setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
-    }
-
-    public String getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
-
-    public String getGrossAmount() {
-        return grossAmount;
-    }
-
-    public void setGrossAmount(String grossAmount) {
-        this.grossAmount = grossAmount;
-    }
-
-    public String getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
-    }
-
-    public String getPaymentType() {
-        return paymentType;
-    }
-
-    public void setPaymentType(String paymentType) {
-        this.paymentType = paymentType;
-    }
-
-    public String getTransactionTime() {
-        return transactionTime;
-    }
-
-    public void setTransactionTime(String transactionTime) {
-        this.transactionTime = transactionTime;
-    }
-
-    public String getTransactionStatus() {
-        return transactionStatus;
-    }
-
-    public void setTransactionStatus(String transactionStatus) {
-        this.transactionStatus = transactionStatus;
-    }
-
-    public String getFinishRedirectUrl() {
-        return finishRedirectUrl;
-    }
-
-    public void setFinishRedirectUrl(String finishRedirectUrl) {
-        this.finishRedirectUrl = finishRedirectUrl;
-    }
+    /**
+     * Permata Bank Tranfer Va
+     */
+    @SerializedName("permata_va_number")
+    @Expose
+    protected String permataVaNumber;
+    @SerializedName("permata_expiration")
+    @Expose
+    protected String permataExpiration;
 }

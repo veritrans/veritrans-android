@@ -14,13 +14,7 @@ import com.midtrans.sdk.corekit.core.snap.model.pay.request.mandiriclick.Mandiri
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.mandiriclick.MandiriClickpayPaymentRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.telkomsel.TelkomselCashPaymentRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.BasePaymentResponse;
-import com.midtrans.sdk.corekit.core.snap.model.pay.response.bcaklikpay.BcaClickPayPaymentResponse;
-import com.midtrans.sdk.corekit.core.snap.model.pay.response.epaybri.BriEpayPaymentResponse;
-import com.midtrans.sdk.corekit.core.snap.model.pay.response.klikbca.KlikBcaPaymentResponse;
-import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BcaPaymentResponse;
-import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BniPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.OtherPaymentResponse;
-import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.PermataPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.transaction.response.PaymentInfoResponse;
 
 import retrofit2.Call;
@@ -81,21 +75,21 @@ public class SnapApiManager extends BaseServiceManager {
      */
     public void paymentUsingBankTransferVaBca(final String snapToken,
                                               final CustomerDetailPayRequest customerDetails,
-                                              final MidtransCallback<BcaPaymentResponse> callback) {
+                                              final MidtransCallback<BasePaymentResponse> callback) {
         if (isSnapTokenAvailable(callback,
                 snapToken,
                 apiService)) {
             PaymentRequest paymentRequest = new PaymentRequest(PaymentType.BCA_VA, customerDetails);
-            Call<BcaPaymentResponse> call = apiService.paymentBankTransferBca(snapToken, paymentRequest);
-            call.enqueue(new Callback<BcaPaymentResponse>() {
+            Call<BasePaymentResponse> call = apiService.paymentBankTransferBca(snapToken, paymentRequest);
+            call.enqueue(new Callback<BasePaymentResponse>() {
                 @Override
-                public void onResponse(@NonNull Call<BcaPaymentResponse> call, @NonNull Response<BcaPaymentResponse> response) {
+                public void onResponse(@NonNull Call<BasePaymentResponse> call, @NonNull Response<BasePaymentResponse> response) {
                     releaseResources();
                     handleServerResponse(response, callback, null);
                 }
 
                 @Override
-                public void onFailure(@NonNull Call<BcaPaymentResponse> call, @NonNull Throwable throwable) {
+                public void onFailure(@NonNull Call<BasePaymentResponse> call, @NonNull Throwable throwable) {
                     releaseResources();
                     handleServerResponse(null, callback, throwable);
                 }
@@ -112,21 +106,21 @@ public class SnapApiManager extends BaseServiceManager {
      */
     public void paymentUsingBankTransferVaBni(final String snapToken,
                                               final CustomerDetailPayRequest customerDetails,
-                                              final MidtransCallback<BniPaymentResponse> callback) {
+                                              final MidtransCallback<BasePaymentResponse> callback) {
         if (isSnapTokenAvailable(callback,
                 snapToken,
                 apiService)) {
             PaymentRequest paymentRequest = new PaymentRequest(PaymentType.BNI_VA, customerDetails);
-            Call<BniPaymentResponse> call = apiService.paymentBankTransferBni(snapToken, paymentRequest);
-            call.enqueue(new Callback<BniPaymentResponse>() {
+            Call<BasePaymentResponse> call = apiService.paymentBankTransferBni(snapToken, paymentRequest);
+            call.enqueue(new Callback<BasePaymentResponse>() {
                 @Override
-                public void onResponse(@NonNull Call<BniPaymentResponse> call, @NonNull Response<BniPaymentResponse> response) {
+                public void onResponse(@NonNull Call<BasePaymentResponse> call, @NonNull Response<BasePaymentResponse> response) {
                     releaseResources();
                     handleServerResponse(response, callback, null);
                 }
 
                 @Override
-                public void onFailure(@NonNull Call<BniPaymentResponse> call, @NonNull Throwable throwable) {
+                public void onFailure(@NonNull Call<BasePaymentResponse> call, @NonNull Throwable throwable) {
                     releaseResources();
                     handleServerResponse(null, callback, throwable);
                 }
@@ -143,21 +137,21 @@ public class SnapApiManager extends BaseServiceManager {
      */
     public void paymentUsingBankTransferVaPermata(final String snapToken,
                                                   final CustomerDetailPayRequest customerDetails,
-                                                  final MidtransCallback<PermataPaymentResponse> callback) {
+                                                  final MidtransCallback<BasePaymentResponse> callback) {
         if (isSnapTokenAvailable(callback,
                 snapToken,
                 apiService)) {
             PaymentRequest paymentRequest = new PaymentRequest(PaymentType.PERMATA_VA, customerDetails);
-            Call<PermataPaymentResponse> call = apiService.paymentBankTransferPermata(snapToken, paymentRequest);
-            call.enqueue(new Callback<PermataPaymentResponse>() {
+            Call<BasePaymentResponse> call = apiService.paymentBankTransferPermata(snapToken, paymentRequest);
+            call.enqueue(new Callback<BasePaymentResponse>() {
                 @Override
-                public void onResponse(@NonNull Call<PermataPaymentResponse> call, @NonNull Response<PermataPaymentResponse> response) {
+                public void onResponse(@NonNull Call<BasePaymentResponse> call, @NonNull Response<BasePaymentResponse> response) {
                     releaseResources();
                     handleServerResponse(response, callback, null);
                 }
 
                 @Override
-                public void onFailure(@NonNull Call<PermataPaymentResponse> call, @NonNull Throwable throwable) {
+                public void onFailure(@NonNull Call<BasePaymentResponse> call, @NonNull Throwable throwable) {
                     releaseResources();
                     handleServerResponse(null, callback, throwable);
                 }
@@ -381,21 +375,21 @@ public class SnapApiManager extends BaseServiceManager {
      * @param callback  Transaction callback.
      */
     public void paymentUsingBriEpay(final String snapToken,
-                                    final MidtransCallback<BriEpayPaymentResponse> callback) {
+                                    final MidtransCallback<BasePaymentResponse> callback) {
         if (isSnapTokenAvailable(callback,
                 snapToken,
                 apiService)) {
             BasePaymentRequest basePaymentRequest = new BasePaymentRequest(PaymentType.BRI_EPAY);
-            Call<BriEpayPaymentResponse> call = apiService.paymentBriEpay(snapToken, basePaymentRequest);
-            call.enqueue(new Callback<BriEpayPaymentResponse>() {
+            Call<BasePaymentResponse> call = apiService.paymentBriEpay(snapToken, basePaymentRequest);
+            call.enqueue(new Callback<BasePaymentResponse>() {
                 @Override
-                public void onResponse(@NonNull Call<BriEpayPaymentResponse> call, @NonNull Response<BriEpayPaymentResponse> response) {
+                public void onResponse(@NonNull Call<BasePaymentResponse> call, @NonNull Response<BasePaymentResponse> response) {
                     releaseResources();
                     handleServerResponse(response, callback, null);
                 }
 
                 @Override
-                public void onFailure(@NonNull Call<BriEpayPaymentResponse> call, @NonNull Throwable throwable) {
+                public void onFailure(@NonNull Call<BasePaymentResponse> call, @NonNull Throwable throwable) {
                     releaseResources();
                     handleServerResponse(null, callback, throwable);
                 }
@@ -410,21 +404,21 @@ public class SnapApiManager extends BaseServiceManager {
      * @param callback  Transaction callback.
      */
     public void paymentUsingBcaClickPay(final String snapToken,
-                                        final MidtransCallback<BcaClickPayPaymentResponse> callback) {
-        if (isSnapTokenAvailable(callback,
-                snapToken,
-                apiService)) {
+                                        final MidtransCallback<BasePaymentResponse> callback) {
+        if (isSnapTokenAvailable(callback, snapToken, apiService)) {
             BasePaymentRequest basePaymentRequest = new BasePaymentRequest(PaymentType.BCA_KLIKPAY);
-            Call<BcaClickPayPaymentResponse> call = apiService.paymentBcaClickPay(snapToken, basePaymentRequest);
-            call.enqueue(new Callback<BcaClickPayPaymentResponse>() {
+            Call<BasePaymentResponse> call = apiService.paymentBcaClickPay(snapToken, basePaymentRequest);
+            call.enqueue(new Callback<BasePaymentResponse>() {
                 @Override
-                public void onResponse(@NonNull Call<BcaClickPayPaymentResponse> call, @NonNull Response<BcaClickPayPaymentResponse> response) {
+                public void onResponse(@NonNull Call<BasePaymentResponse> call,
+                                       @NonNull Response<BasePaymentResponse> response) {
                     releaseResources();
                     handleServerResponse(response, callback, null);
                 }
 
                 @Override
-                public void onFailure(@NonNull Call<BcaClickPayPaymentResponse> call, @NonNull Throwable throwable) {
+                public void onFailure(@NonNull Call<BasePaymentResponse> call,
+                                      @NonNull Throwable throwable) {
                     releaseResources();
                     handleServerResponse(null, callback, throwable);
                 }
@@ -440,21 +434,23 @@ public class SnapApiManager extends BaseServiceManager {
      */
     public void paymentUsingKlikBca(final String snapToken,
                                     final String klikBcaUserId,
-                                    final MidtransCallback<KlikBcaPaymentResponse> callback) {
+                                    final MidtransCallback<BasePaymentResponse> callback) {
         if (apiService == null) {
             callback.onFailed(new Throwable(MESSAGE_ERROR_EMPTY_RESPONSE));
             return;
         }
         KlikBcaPaymentRequest paymentRequest = new KlikBcaPaymentRequest(PaymentType.KLIK_BCA, klikBcaUserId);
-        Call<KlikBcaPaymentResponse> call = apiService.paymentKlikBca(snapToken, paymentRequest);
-        call.enqueue(new Callback<KlikBcaPaymentResponse>() {
+        Call<BasePaymentResponse> call = apiService.paymentKlikBca(snapToken, paymentRequest);
+        call.enqueue(new Callback<BasePaymentResponse>() {
             @Override
-            public void onResponse(@NonNull Call<KlikBcaPaymentResponse> call, @NonNull Response<KlikBcaPaymentResponse> response) {
+            public void onResponse(@NonNull Call<BasePaymentResponse> call,
+                                   @NonNull Response<BasePaymentResponse> response) {
                 releaseResources();
                 handleServerResponse(response, callback, null);
             }
 
-            public void onFailure(@NonNull Call<KlikBcaPaymentResponse> call, @NonNull Throwable throwable) {
+            public void onFailure(@NonNull Call<BasePaymentResponse> call,
+                                  @NonNull Throwable throwable) {
                 releaseResources();
                 handleServerResponse(null, callback, throwable);
             }

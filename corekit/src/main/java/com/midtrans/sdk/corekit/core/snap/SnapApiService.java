@@ -7,13 +7,7 @@ import com.midtrans.sdk.corekit.core.snap.model.pay.request.klikbca.KlikBcaPayme
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.mandiriclick.MandiriClickpayPaymentRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.telkomsel.TelkomselCashPaymentRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.BasePaymentResponse;
-import com.midtrans.sdk.corekit.core.snap.model.pay.response.bcaklikpay.BcaClickPayPaymentResponse;
-import com.midtrans.sdk.corekit.core.snap.model.pay.response.epaybri.BriEpayPaymentResponse;
-import com.midtrans.sdk.corekit.core.snap.model.pay.response.klikbca.KlikBcaPaymentResponse;
-import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BcaPaymentResponse;
-import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.BniPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.OtherPaymentResponse;
-import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.PermataPaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.transaction.response.PaymentInfoResponse;
 
 import retrofit2.Call;
@@ -41,7 +35,7 @@ public interface SnapApiService {
      * @param paymentRequest Payment Request Details.
      */
     @POST(PAYMENT_PAY)
-    Call<BcaPaymentResponse> paymentBankTransferBca(@Path("snap_token") String snapToken, @Body PaymentRequest paymentRequest);
+    Call<BasePaymentResponse> paymentBankTransferBca(@Path("snap_token") String snapToken, @Body PaymentRequest paymentRequest);
 
     /**
      * Charge payment using bank transfer Virtual account.
@@ -49,7 +43,7 @@ public interface SnapApiService {
      * @param paymentRequest Payment Request Details.
      */
     @POST(PAYMENT_PAY)
-    Call<BniPaymentResponse> paymentBankTransferBni(@Path("snap_token") String snapToken, @Body PaymentRequest paymentRequest);
+    Call<BasePaymentResponse> paymentBankTransferBni(@Path("snap_token") String snapToken, @Body PaymentRequest paymentRequest);
 
     /**
      * Charge payment using bank transfer Virtual account.
@@ -57,7 +51,7 @@ public interface SnapApiService {
      * @param paymentRequest Payment Request Details.
      */
     @POST(PAYMENT_PAY)
-    Call<PermataPaymentResponse> paymentBankTransferPermata(@Path("snap_token") String snapToken, @Body PaymentRequest paymentRequest);
+    Call<BasePaymentResponse> paymentBankTransferPermata(@Path("snap_token") String snapToken, @Body PaymentRequest paymentRequest);
 
     /**
      * Charge payment using bank transfer Virtual account.
@@ -105,7 +99,7 @@ public interface SnapApiService {
      * @param paymentRequest Payment Request Details.
      */
     @POST(PAYMENT_PAY)
-    Call<BriEpayPaymentResponse> paymentBriEpay(@Path("snap_token") String snapToken, @Body BasePaymentRequest paymentRequest);
+    Call<BasePaymentResponse> paymentBriEpay(@Path("snap_token") String snapToken, @Body BasePaymentRequest paymentRequest);
 
     /**
      * Charge payment using Klik BCA.
@@ -113,7 +107,7 @@ public interface SnapApiService {
      * @param paymentRequest Payment Request Details.
      */
     @POST(PAYMENT_PAY)
-    Call<KlikBcaPaymentResponse> paymentKlikBca(@Path("snap_token") String snapToken, @Body KlikBcaPaymentRequest paymentRequest);
+    Call<BasePaymentResponse> paymentKlikBca(@Path("snap_token") String snapToken, @Body KlikBcaPaymentRequest paymentRequest);
 
 
     /**
@@ -131,7 +125,7 @@ public interface SnapApiService {
      * @param paymentRequest Payment Request Details.
      */
     @POST(PAYMENT_PAY)
-    Call<BcaClickPayPaymentResponse> paymentBcaClickPay(@Path("snap_token") String snapToken, @Body BasePaymentRequest paymentRequest);
+    Call<BasePaymentResponse> paymentBcaClickPay(@Path("snap_token") String snapToken, @Body BasePaymentRequest paymentRequest);
 
     /**
      * Charge payment using GoPay
