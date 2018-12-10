@@ -11,10 +11,19 @@ import com.midtrans.sdk.corekit.SDKConfigTest;
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.base.enums.Environment;
 import com.midtrans.sdk.corekit.base.network.MidtransRestAdapter;
+import com.midtrans.sdk.corekit.core.grouppayment.BankTransferCharge;
+import com.midtrans.sdk.corekit.core.grouppayment.CardlessCreditCharge;
+import com.midtrans.sdk.corekit.core.grouppayment.DirectDebitCharge;
+import com.midtrans.sdk.corekit.core.grouppayment.EWalletCharge;
+import com.midtrans.sdk.corekit.core.grouppayment.OnlineDebitCharge;
+import com.midtrans.sdk.corekit.core.grouppayment.StoreCharge;
 import com.midtrans.sdk.corekit.core.merchant.MerchantApiManager;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.CheckoutTransaction;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutWithTransactionResponse;
 import com.midtrans.sdk.corekit.core.snap.SnapApiManager;
+import com.midtrans.sdk.corekit.core.snap.model.pay.request.CustomerDetailPayRequest;
+import com.midtrans.sdk.corekit.core.snap.model.pay.request.mandiriclick.MandiriClickpayParams;
+import com.midtrans.sdk.corekit.core.snap.model.pay.response.BasePaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.transaction.response.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.corekit.utilities.NetworkHelper;
@@ -51,6 +60,8 @@ public class MidtransSdkTest {
     private MidtransCallback<CheckoutWithTransactionResponse> checkoutResponseMidtransCallback;
     @Mock
     private MidtransCallback<PaymentInfoResponse> paymentInfoResponseMidtransCallback;
+    @Mock
+    private MidtransCallback<BasePaymentResponse> basePaymentResponseMidtransCallback;
 
     @Mock
     private SnapApiManager snapApiManager;
@@ -63,6 +74,13 @@ public class MidtransSdkTest {
     private SnapApiManager snapServiceManager;
     @Mock
     private MerchantApiManager merchantServiceManager;
+
+    @Mock
+    private CustomerDetailPayRequest customerDetailPayRequest;
+    @Mock
+    private MandiriClickpayParams mandiriClickpayParams;
+    @Mock
+    private String customerNumber;
 
     @Test
     public void test() {
@@ -221,4 +239,68 @@ public class MidtransSdkTest {
         Mockito.verify(paymentInfoResponseMidtransCallback).onFailed(Matchers.any(Throwable.class));
     }
 
+    @Test
+    public void test_PaymentUsingBankTransferVaBca() {
+        BankTransferCharge.paymentUsingBankTransferVaBca(SDKConfigTest.SNAP_TOKEN,customerDetailPayRequest,basePaymentResponseMidtransCallback);
+    }
+
+    @Test
+    public void test_PaymentUsingBankTransferVaBni() {
+        BankTransferCharge.paymentUsingBankTransferVaBni(SDKConfigTest.SNAP_TOKEN,customerDetailPayRequest,basePaymentResponseMidtransCallback);
+    }
+
+    @Test
+    public void test_PaymentUsingBankTransferVaPermata() {
+        BankTransferCharge.paymentUsingBankTransferVaPermata(SDKConfigTest.SNAP_TOKEN,customerDetailPayRequest,basePaymentResponseMidtransCallback);
+    }
+
+    @Test
+    public void test_PaymentUsingCardLessCreditAkulaku(){
+        CardlessCreditCharge.paymentUsingAkulaku(SDKConfigTest.SNAP_TOKEN,basePaymentResponseMidtransCallback);
+    }
+
+    @Test
+    public void test_PaymentUsingDirectDebitKlikBca(){
+        DirectDebitCharge.paymentUsingKlikBca(SDKConfigTest.SNAP_TOKEN,SDKConfigTest.USER_ID,basePaymentResponseMidtransCallback);
+    }
+
+    @Test
+    public void test_PaymentUsingDirectDebitMandiriClickPay(){
+        DirectDebitCharge.paymentUsingMandiriClickPayt(SDKConfigTest.SNAP_TOKEN,mandiriClickpayParams,basePaymentResponseMidtransCallback);
+    }
+
+    @Test
+    public void test_PaymentUsingEwalletGopay(){
+        EWalletCharge.paymentUsingGopay(SDKConfigTest.SNAP_TOKEN, customerNumber,basePaymentResponseMidtransCallback);
+    }
+
+    @Test
+    public void test_PaymentUsingEwalletMandiriEcash(){
+        EWalletCharge.paymentUsingMandiriEcash(SDKConfigTest.SNAP_TOKEN,customerDetailPayRequest,basePaymentResponseMidtransCallback);
+    }
+
+    @Test
+    public void test_PaymentUsingEwalletTelkomselEcash(){
+        EWalletCharge.paymentUsingTelkomselCash(SDKConfigTest.SNAP_TOKEN, customerNumber,basePaymentResponseMidtransCallback);
+    }
+
+    @Test
+    public void test_OnlineDebitChargeBcaClickPay(){
+        OnlineDebitCharge.paymentUsingBcaClickPay(SDKConfigTest.SNAP_TOKEN,basePaymentResponseMidtransCallback);
+    }
+
+    @Test
+    public void test_OnlineDebitChargeBriEpay(){
+        OnlineDebitCharge.paymentUsingBriEpay(SDKConfigTest.SNAP_TOKEN,basePaymentResponseMidtransCallback);
+    }
+
+    @Test
+    public void test_OnlineDebitChargeCimbClicks(){
+        OnlineDebitCharge.paymentUsingCimbClicks(SDKConfigTest.SNAP_TOKEN,basePaymentResponseMidtransCallback);
+    }
+
+    @Test
+    public void test_StoreChargeIndomaret(){
+        StoreCharge.paymentUsingIndomaret(SDKConfigTest.SNAP_TOKEN,basePaymentResponseMidtransCallback);
+    }
 }
