@@ -1,9 +1,13 @@
 package com.midtrans.sdk.corekit.models.merchant.checkout.request.specific.banktransfer;
 
+import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.specific.banktransfer.BcaBankFreeText;
+import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.specific.banktransfer.BcaBankFreeTextLanguage;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.specific.banktransfer.BcaBankTransferRequestModel;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -17,7 +21,10 @@ public class BcaBankTransferRequestModelTest {
     public void test_setup() {
         this.exampleTextPositive = "exampleTextPositive";
         this.exampleTextNegative = "exampleTextNegative";
-        this.bcaBankTransferRequestModel = new BcaBankTransferRequestModel();
+        this.bcaBankTransferRequestModel = new BcaBankTransferRequestModel("",
+                new BcaBankFreeText(new ArrayList<BcaBankFreeTextLanguage>(),
+                        new ArrayList<BcaBankFreeTextLanguage>()),
+                "");
     }
 
     @Test
