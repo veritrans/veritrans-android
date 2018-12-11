@@ -13,10 +13,10 @@ public class EWalletCharge extends PaymentsGroupBase {
      * @param customerDetailPayRequest for putting bank transfer request.
      * @param callback                 for receiving callback from request.
      */
-    public static void paymentUsingMandiriEcash(final String snapToken,
+    public void paymentUsingMandiriEcash(final String snapToken,
                                                 final CustomerDetailPayRequest customerDetailPayRequest,
                                                 final MidtransCallback<BasePaymentResponse> callback) {
-        if (Validation.isValidForNetworkCall(getSdkContext(), callback)) {
+        if (isValidForNetworkCall(getSdkContext(), callback)) {
             getSnapApiManager().paymentUsingMandiriEcash(snapToken, customerDetailPayRequest, callback);
         }
     }
@@ -27,10 +27,10 @@ public class EWalletCharge extends PaymentsGroupBase {
      * @param snapToken token after making checkoutWithTransaction.
      * @param callback  for receiving callback from request.
      */
-    public static void paymentUsingGopay(final String snapToken,
+    public void paymentUsingGopay(final String snapToken,
                                          final String gopayAccountNumber,
                                          final MidtransCallback<BasePaymentResponse> callback) {
-        if (Validation.isValidForNetworkCall(getSdkContext(), callback)) {
+        if (isValidForNetworkCall(getSdkContext(), callback)) {
             getSnapApiManager().paymentUsingGopay(snapToken, gopayAccountNumber, callback);
         }
     }
@@ -41,10 +41,10 @@ public class EWalletCharge extends PaymentsGroupBase {
      * @param snapToken token after making checkoutWithTransaction.
      * @param callback  for receiving callback from request.
      */
-    public static void paymentUsingTelkomselCash(final String snapToken,
+    public void paymentUsingTelkomselCash(final String snapToken,
                                                  final String customerNumber,
                                                  final MidtransCallback<BasePaymentResponse> callback) {
-        if (Validation.isValidForNetworkCall(getSdkContext(), callback)) {
+        if (isValidForNetworkCall(getSdkContext(), callback)) {
             getSnapApiManager().paymentUsingTelkomselCash(snapToken, customerNumber, callback);
         }
     }

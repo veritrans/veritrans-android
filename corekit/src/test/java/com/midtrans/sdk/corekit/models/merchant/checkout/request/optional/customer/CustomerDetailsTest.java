@@ -14,12 +14,12 @@ public class CustomerDetailsTest {
 
     @Before
     public void test_setup() {
+        this.exampleTextPositive = "exampleTextPositive";
+        this.exampleTextNegative = "exampleTextNegative";
         this.customerDetails = new CustomerDetails(exampleTextPositive,
                 exampleTextPositive,
                 exampleTextPositive,
                 exampleTextPositive);
-        this.exampleTextPositive = "exampleTextPositive";
-        this.exampleTextNegative = "exampleTextNegative";
     }
 
     @Test

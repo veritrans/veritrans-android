@@ -17,10 +17,10 @@ public class DirectDebitCharge extends PaymentsGroupBase {
      * @param snapToken token after making checkoutWithTransaction.
      * @param callback  for receiving callback from request.
      */
-    public static void paymentUsingKlikBca(final String snapToken,
+    public void paymentUsingKlikBca(final String snapToken,
                                            final String klikBcaUserId,
                                            final MidtransCallback<BasePaymentResponse> callback) {
-        if (Validation.isValidForNetworkCall(getSdkContext(), callback)) {
+        if (isValidForNetworkCall(getSdkContext(), callback)) {
             getSnapApiManager().paymentUsingKlikBca(snapToken, klikBcaUserId, callback);
         }
     }
@@ -33,17 +33,11 @@ public class DirectDebitCharge extends PaymentsGroupBase {
      * @param mandiriClickpayParams for putting bank transfer request.
      * @param callback              for receiving callback from request.
      */
-    public static void paymentUsingMandiriClickPayt(final String snapToken,
-                                                    final MandiriClickpayParams mandiriClickpayParams,
-                                                    final MidtransCallback<BasePaymentResponse> callback) {
-        if (callback == null) {
-            Logger.error(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
-            return;
-        }
-        if (Validation.isValidForNetworkCall(getSdkContext(), callback)) {
+    public void paymentUsingMandiriClickPay(final String snapToken,
+                                            final MandiriClickpayParams mandiriClickpayParams,
+                                            final MidtransCallback<BasePaymentResponse> callback) {
+        if (isValidForNetworkCall(getSdkContext(), callback)) {
             getSnapApiManager().paymentUsingMandiriClickPay(snapToken, mandiriClickpayParams, callback);
-        } else {
-            callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 

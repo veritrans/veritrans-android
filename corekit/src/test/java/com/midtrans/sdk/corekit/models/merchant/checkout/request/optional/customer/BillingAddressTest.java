@@ -14,6 +14,8 @@ public class BillingAddressTest {
 
     @Before
     public void test_setup() {
+        this.exampleTextPositive = "exampleTextPositive";
+        this.exampleTextNegative = "exampleTextNegative";
         this.billingAddress = new BillingAddress(exampleTextPositive,
                 exampleTextPositive,
                 exampleTextPositive,
@@ -21,8 +23,6 @@ public class BillingAddressTest {
                 exampleTextPositive,
                 exampleTextPositive,
                 exampleTextPositive);
-        this.exampleTextPositive = "exampleTextPositive";
-        this.exampleTextNegative = "exampleTextNegative";
     }
 
     @Test

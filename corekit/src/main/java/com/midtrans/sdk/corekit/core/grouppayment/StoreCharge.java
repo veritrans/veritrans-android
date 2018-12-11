@@ -12,9 +12,9 @@ public class StoreCharge extends PaymentsGroupBase {
      * @param snapToken token after making checkoutWithTransaction.
      * @param callback  for receiving callback from request.
      */
-    public static void paymentUsingIndomaret(final String snapToken,
+    public void paymentUsingIndomaret(final String snapToken,
                                              final MidtransCallback<BasePaymentResponse> callback) {
-        if (Validation.isValidForNetworkCall(getSdkContext(), callback)) {
+        if (isValidForNetworkCall(getSdkContext(), callback)) {
             getSnapApiManager().paymentUsingIndomaret(snapToken, callback);
         }
     }

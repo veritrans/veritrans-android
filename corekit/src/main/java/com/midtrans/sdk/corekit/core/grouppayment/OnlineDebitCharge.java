@@ -11,9 +11,9 @@ public class OnlineDebitCharge extends PaymentsGroupBase {
      * @param snapToken token after making checkoutWithTransaction.
      * @param callback  for receiving callback from request.
      */
-    public static void paymentUsingCimbClicks(final String snapToken,
+    public void paymentUsingCimbClicks(final String snapToken,
                                               final MidtransCallback<BasePaymentResponse> callback) {
-        if (Validation.isValidForNetworkCall(getSdkContext(), callback)) {
+        if (isValidForNetworkCall(getSdkContext(), callback)) {
             getSnapApiManager().paymentUsingCimbClick(snapToken, callback);
         }
     }
@@ -24,9 +24,9 @@ public class OnlineDebitCharge extends PaymentsGroupBase {
      * @param snapToken token after making checkoutWithTransaction.
      * @param callback  for receiving callback from request.
      */
-    public static void paymentUsingBcaClickPay(final String snapToken,
+    public void paymentUsingBcaClickPay(final String snapToken,
                                                final MidtransCallback<BasePaymentResponse> callback) {
-        if (Validation.isValidForNetworkCall(getSdkContext(), callback)) {
+        if (isValidForNetworkCall(getSdkContext(), callback)) {
             getSnapApiManager().paymentUsingBcaClickPay(snapToken, callback);
         }
     }
@@ -37,9 +37,9 @@ public class OnlineDebitCharge extends PaymentsGroupBase {
      * @param snapToken token after making checkoutWithTransaction.
      * @param callback  for receiving callback from request.
      */
-    public static void paymentUsingBriEpay(final String snapToken,
+    public void paymentUsingBriEpay(final String snapToken,
                                            final MidtransCallback<BasePaymentResponse> callback) {
-        if (Validation.isValidForNetworkCall(getSdkContext(), callback)) {
+        if (isValidForNetworkCall(getSdkContext(), callback)) {
             getSnapApiManager().paymentUsingBriEpay(snapToken, callback);
         }
     }
