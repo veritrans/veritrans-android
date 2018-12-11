@@ -12,9 +12,9 @@ public class CardlessCreditCharge extends PaymentsGroupBase {
      * @param snapToken token after making checkoutWithTransaction.
      * @param callback  for receiving callback from request.
      */
-    public static void paymentUsingAkulaku(final String snapToken,
+    public void paymentUsingAkulaku(final String snapToken,
                                            final MidtransCallback<BasePaymentResponse> callback) {
-        if (Validation.isValidForNetworkCall(getSdkContext(), callback)) {
+        if (isValidForNetworkCall(getSdkContext(), callback)) {
             getSnapApiManager().paymentUsingAkulaku(snapToken, callback);
         }
     }
