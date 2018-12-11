@@ -18,7 +18,6 @@ public class BillInfoModelTest {
         this.exampleTextPositive = "exampleTextPositive";
         this.exampleTextNegative = "exampleTextNegative";
         this.billInfoModel = new BillInfoModel(exampleTextPositive, exampleTextPositive);
-
     }
 
     @Test
