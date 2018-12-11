@@ -11,12 +11,6 @@ import com.midtrans.sdk.corekit.SDKConfigTest;
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.base.enums.Environment;
 import com.midtrans.sdk.corekit.base.network.MidtransRestAdapter;
-import com.midtrans.sdk.corekit.core.grouppayment.BankTransferCharge;
-import com.midtrans.sdk.corekit.core.grouppayment.CardlessCreditCharge;
-import com.midtrans.sdk.corekit.core.grouppayment.DirectDebitCharge;
-import com.midtrans.sdk.corekit.core.grouppayment.EWalletCharge;
-import com.midtrans.sdk.corekit.core.grouppayment.OnlineDebitCharge;
-import com.midtrans.sdk.corekit.core.grouppayment.StoreCharge;
 import com.midtrans.sdk.corekit.core.merchant.MerchantApiManager;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.CheckoutTransaction;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutWithTransactionResponse;
@@ -217,7 +211,6 @@ public class MidtransSdkTest {
         midtransSdkSpy.getPaymentInfo(SDKConfigTest.SNAP_TOKEN, paymentInfoResponseMidtransCallback);
         Mockito.verify(paymentInfoResponseMidtransCallback).onSuccess(Matchers.any(PaymentInfoResponse.class));
     }*/
-
     @Test
     public void test_getSnapTransaction_whenCallbackNull() {
         midtransSdkSpy.getPaymentInfo(SDKConfigTest.SNAP_TOKEN, null);
@@ -237,70 +230,5 @@ public class MidtransSdkTest {
         when(Validation.isNetworkAvailable(midtransSdkSpy.getContext())).thenReturn(false);
         midtransSdkSpy.getPaymentInfo(null, paymentInfoResponseMidtransCallback);
         Mockito.verify(paymentInfoResponseMidtransCallback).onFailed(Matchers.any(Throwable.class));
-    }
-
-    @Test
-    public void test_PaymentUsingBankTransferVaBca() {
-        BankTransferCharge.paymentUsingBankTransferVaBca(SDKConfigTest.SNAP_TOKEN,customerDetailPayRequest,basePaymentResponseMidtransCallback);
-    }
-
-    @Test
-    public void test_PaymentUsingBankTransferVaBni() {
-        BankTransferCharge.paymentUsingBankTransferVaBni(SDKConfigTest.SNAP_TOKEN,customerDetailPayRequest,basePaymentResponseMidtransCallback);
-    }
-
-    @Test
-    public void test_PaymentUsingBankTransferVaPermata() {
-        BankTransferCharge.paymentUsingBankTransferVaPermata(SDKConfigTest.SNAP_TOKEN,customerDetailPayRequest,basePaymentResponseMidtransCallback);
-    }
-
-    @Test
-    public void test_PaymentUsingCardLessCreditAkulaku(){
-        CardlessCreditCharge.paymentUsingAkulaku(SDKConfigTest.SNAP_TOKEN,basePaymentResponseMidtransCallback);
-    }
-
-    @Test
-    public void test_PaymentUsingDirectDebitKlikBca(){
-        DirectDebitCharge.paymentUsingKlikBca(SDKConfigTest.SNAP_TOKEN,SDKConfigTest.USER_ID,basePaymentResponseMidtransCallback);
-    }
-
-    @Test
-    public void test_PaymentUsingDirectDebitMandiriClickPay(){
-        DirectDebitCharge.paymentUsingMandiriClickPayt(SDKConfigTest.SNAP_TOKEN,mandiriClickpayParams,basePaymentResponseMidtransCallback);
-    }
-
-    @Test
-    public void test_PaymentUsingEwalletGopay(){
-        EWalletCharge.paymentUsingGopay(SDKConfigTest.SNAP_TOKEN, customerNumber,basePaymentResponseMidtransCallback);
-    }
-
-    @Test
-    public void test_PaymentUsingEwalletMandiriEcash(){
-        EWalletCharge.paymentUsingMandiriEcash(SDKConfigTest.SNAP_TOKEN,customerDetailPayRequest,basePaymentResponseMidtransCallback);
-    }
-
-    @Test
-    public void test_PaymentUsingEwalletTelkomselEcash(){
-        EWalletCharge.paymentUsingTelkomselCash(SDKConfigTest.SNAP_TOKEN, customerNumber,basePaymentResponseMidtransCallback);
-    }
-
-    @Test
-    public void test_OnlineDebitChargeBcaClickPay(){
-        OnlineDebitCharge.paymentUsingBcaClickPay(SDKConfigTest.SNAP_TOKEN,basePaymentResponseMidtransCallback);
-    }
-
-    @Test
-    public void test_OnlineDebitChargeBriEpay(){
-        OnlineDebitCharge.paymentUsingBriEpay(SDKConfigTest.SNAP_TOKEN,basePaymentResponseMidtransCallback);
-    }
-
-    @Test
-    public void test_OnlineDebitChargeCimbClicks(){
-        OnlineDebitCharge.paymentUsingCimbClicks(SDKConfigTest.SNAP_TOKEN,basePaymentResponseMidtransCallback);
-    }
-
-    @Test
-    public void test_StoreChargeIndomaret(){
-        StoreCharge.paymentUsingIndomaret(SDKConfigTest.SNAP_TOKEN,basePaymentResponseMidtransCallback);
     }
 }
