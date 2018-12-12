@@ -1,23 +1,4 @@
-<!-- vscode-markdown-toc -->
-* 1. [Overview](#Overview)
-* 2. [Supported Payments](#SupportedPayments)
-* 3. [Prerequsites](#Prerequsites)
-* 4. [Quick Start](#QuickStart)
-* 5. [Installation](#Installation)
-* 6. [Configure & Initialize SDK](#ConfigureInitializeSDK)
-* 7. [Quick Payment](#QuickPayment)
-	* 7.1. [1. Prepare your CheckoutTransaction (Mandatory)](#PrepareyourCheckoutTransactionMandatory)
-	* 7.2. [2. Starting Checkout](#StartingCheckout)
-	* 7.3. [3. Get Payment Info](#GetPaymentInfo)
-	* 7.4. [4. Starting Payment](#StartingPayment)
-* 8. [SDK API Method Explanation](#SDKAPIMethodExplanation)
-	* 8.1. [Begin Checkout With Transaction](#BeginCheckoutWithTransaction)
-
-<!-- vscode-markdown-toc-config
-	numbering=true
-	autoSave=true
-	/vscode-markdown-toc-config -->
-<!-- /vscode-markdown-toc --># Midtrans SDK Guide
+# Midtrans SDK Guide
 
 ##  1. <a name='Overview'></a>Overview
 Midtrans Android SDK makes it easy to build an excellent payment experience in your native Android application. It provides powerful, customizable to collect your users' payment details.
