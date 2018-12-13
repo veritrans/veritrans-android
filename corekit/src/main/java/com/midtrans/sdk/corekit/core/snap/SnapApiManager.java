@@ -8,6 +8,8 @@ import com.midtrans.sdk.corekit.base.network.BaseServiceManager;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.BasePaymentRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.CustomerDetailPayRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.PaymentRequest;
+import com.midtrans.sdk.corekit.core.snap.model.pay.request.creditcard.CreditCardPaymentParams;
+import com.midtrans.sdk.corekit.core.snap.model.pay.request.creditcard.CreditCardPaymentRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.gopay.GopayPaymentRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.klikbca.KlikBcaPaymentRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.mandiriclick.MandiriClickpayParams;
@@ -282,6 +284,25 @@ public class SnapApiManager extends BaseServiceManager {
         if (isSnapTokenAvailable(callback, snapToken, apiService)) {
             KlikBcaPaymentRequest paymentRequest = new KlikBcaPaymentRequest(PaymentType.KLIK_BCA, klikBcaUserId);
             basePaymentResponseCall = apiService.paymentKlikBca(snapToken, paymentRequest);
+            handleCallbackResponse(basePaymentResponseCall, callback);
+        }
+    }
+
+    /**
+     * This method is used for card payment using snap backend.
+     *
+    // * @param paymentRequest Payment details.
+     * @param callback       Transaction callback
+     */
+
+    public void paymentUsingCreditCard(final String snapToken,
+                                       final CreditCardPaymentParams creditCardPaymentParams,
+                                       final CustomerDetailPayRequest customerDetailPayRequest,
+                                       final MidtransCallback<BasePaymentResponse> callback) {
+
+        if (isSnapTokenAvailable(callback, snapToken, apiService)) {
+            CreditCardPaymentRequest creditCardPaymentRequest = new CreditCardPaymentRequest(PaymentType.CREDIT_CARD, creditCardPaymentParams, customerDetailPayRequest);
+            basePaymentResponseCall = apiService.paymentUsingCreditCard(snapToken, creditCardPaymentRequest);
             handleCallbackResponse(basePaymentResponseCall, callback);
         }
     }
