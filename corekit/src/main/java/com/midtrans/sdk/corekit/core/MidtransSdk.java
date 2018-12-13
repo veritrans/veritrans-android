@@ -112,6 +112,20 @@ public class MidtransSdk {
     }
 
     /**
+     * @return midtrans service manager
+     */
+    public MidtransServiceManager getMidtransServiceManager() {
+        return midtransServiceManager;
+    }
+
+    /**
+     * @return merchant api manager
+     */
+    public MerchantApiManager getMerchantApiManager() {
+        return merchantApiManager;
+    }
+
+    /**
      * Returns value of merchant url.
      *
      * @return merchant url value.
