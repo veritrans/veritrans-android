@@ -9,9 +9,6 @@ import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutWi
 import com.midtrans.sdk.corekit.utilities.Constants;
 
 import retrofit2.Call;
-import retrofit2.Response;
-
-import static com.midtrans.sdk.corekit.utilities.Constants.MESSAGE_ERROR_EMPTY_RESPONSE;
 
 public class MerchantApiManager extends BaseServiceManager {
 
@@ -54,24 +51,4 @@ public class MerchantApiManager extends BaseServiceManager {
             }
         }
     }
-
-    private <T> void handleServerResponse(Response<T> response,
-                                          MidtransCallback<T> callback,
-                                          Throwable throwable) {
-        if (response != null && response.isSuccessful()) {
-            if (response.code() != 204) {
-                T responseBody = response.body();
-                callback.onSuccess(responseBody);
-            } else {
-                callback.onFailed(new Throwable(MESSAGE_ERROR_EMPTY_RESPONSE));
-            }
-        } else {
-            if (throwable != null) {
-                callback.onFailed(new Throwable(throwable.getMessage(), throwable.getCause()));
-            } else {
-                callback.onFailed(new Throwable(MESSAGE_ERROR_EMPTY_RESPONSE));
-            }
-        }
-    }
-
 }
