@@ -6,7 +6,7 @@ import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.CustomerDetailPayRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.creditcard.CreditCardPaymentParams;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.BasePaymentResponse;
-import com.midtrans.sdk.corekit.core.snap.model.transaction.response.callback.CardRegistrationCallback;
+import com.midtrans.sdk.corekit.core.midtrans.callback.CardRegistrationCallback;
 
 public class CreditCardCharge extends PaymentsGroupBase {
 
