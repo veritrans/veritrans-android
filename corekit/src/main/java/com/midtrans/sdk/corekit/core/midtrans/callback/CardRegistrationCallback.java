@@ -1,7 +1,7 @@
-package com.midtrans.sdk.corekit.core.snap.model.transaction.response.callback;
+package com.midtrans.sdk.corekit.core.midtrans.callback;
 
 import com.midtrans.sdk.corekit.base.callback.HttpRequestCallback;
-import com.midtrans.sdk.corekit.core.midtrans.charge.CardRegistrationResponse;
+import com.midtrans.sdk.corekit.core.midtrans.response.CardRegistrationResponse;
 
 /**
  * Created by ziahaqi on 8/31/16.
