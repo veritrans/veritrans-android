@@ -5,7 +5,7 @@ apply from: '../jacoco.gradle'
 apply plugin: 'com.vanniktech.android.junit.jacoco'
 
 group = 'com.midtrans'
-version = '1.10.0'
+version = '1.10.14'
 
 buildscript {
     repositories {
@@ -13,7 +13,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.1'
+        classpath 'com.android.tools.build:gradle:2.3.3'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6'
         classpath 'com.vanniktech:gradle-android-junit-jacoco-plugin:0.4.0'
     }
@@ -26,8 +26,8 @@ repositories {
 
 android {
     def DEFAULT_PUBLISH
-    compileSdkVersion 25
-    buildToolsVersion '25.0.3'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
 
     lintOptions {
         abortOnError false
@@ -35,7 +35,7 @@ android {
 
     defaultConfig {
         minSdkVersion 9
-        targetSdkVersion 25
+        targetSdkVersion 27
         versionCode 2
         versionName version
         buildConfigField "String", "CALLBACK_STRING", "\"/token/callback/\""
@@ -100,7 +100,7 @@ tasks.withType(Test) {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:appcompat-v7:27.1.1'
     compile 'com.squareup.okhttp3:okhttp:3.6.0'
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile 'com.jakewharton.retrofit:retrofit1-okhttp3-client:1.1.0'
@@ -245,8 +245,8 @@ publishing {
 }
 
 bintray {
-    user = System.getenv('BINTRAY_USER')
-    key = System.getenv('BINTRAY_KEY')
+    user = 'farhanpahlevi'
+    key = '86803717e5f2e96d4b4cbda13c0a6edc8a74f09c'
     configurations = ['archives']
     pkg {
         repo = 'maven'

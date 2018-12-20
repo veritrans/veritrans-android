@@ -11,12 +11,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-
+import android.webkit.*;
 import com.midtrans.sdk.corekit.BuildConfig;
+import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.activities.PaymentWebActivity;
@@ -88,14 +85,25 @@ public class WebviewFragment extends Fragment {
     private void initwebview() {
         webView.getSettings().setAllowFileAccess(false);
         webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+        webView.getSettings().setDomStorageEnabled(true);
         webView.setInitialScale(1);
         webView.getSettings().setLoadWithOverviewMode(true);
         webView.getSettings().setUseWideViewPort(true);
+        webView.getSettings().setBuiltInZoomControls(true);
+        webView.getSettings().setDisplayZoomControls(false);
+        webView.resumeTimers();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
         webView.setWebViewClient(new MidtransWebViewClient(((PaymentWebActivity) getActivity()), type));
-        webView.setWebChromeClient(new WebChromeClient());
+        webView.setWebChromeClient(new WebChromeClient(){
+            @Override
+            public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
+                Logger.d(TAG,"JS MESSAGE >>> "+consoleMessage.message()+"\nFrom : "+consoleMessage.sourceId());
+                return super.onConsoleMessage(consoleMessage);
+            }
+        });
     }
 
 
@@ -152,14 +160,12 @@ public class WebviewFragment extends Fragment {
         }
 
         @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            Log.d(TAG, "shouldOverrideUrlLoading()>url:" + url);
-            view.loadUrl(url);
-            return true;
+        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+            return super.shouldOverrideUrlLoading(view, request);
         }
 
         @Override
-        public void onPageFinished(WebView view, String url) {
+        public void onPageFinished(final WebView view, String url) {
             super.onPageFinished(view, url);
             Log.d(TAG, "onPageFinished()>url:" + url);
             if (activity != null && !activity.isFinishing()) {
@@ -224,6 +230,7 @@ public class WebviewFragment extends Fragment {
                 }
             }
         }
+
     }
 
 }

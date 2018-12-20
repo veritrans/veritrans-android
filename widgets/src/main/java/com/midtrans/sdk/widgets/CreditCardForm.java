@@ -914,7 +914,7 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
         webView.loadUrl(redirectUrl);
         webViewDialog = new AlertDialog.Builder(getContext())
                 .setCancelable(false)
-                .setNegativeButton(R.string.btn_close, new DialogInterface.OnClickListener() {
+                .setNegativeButton("Close", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();

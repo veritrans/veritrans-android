@@ -26,6 +26,11 @@
         <activity android:name=".DemoAccountActivity" />
         <activity android:name=".DemoCardRegisterActivity" />
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="9c3548eaa37c57b1cdd980bc882bad96410b970a"
+            />
+
     </application>
 
 </manifest>

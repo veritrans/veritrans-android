@@ -3,7 +3,7 @@ apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven-publish'
 
 group = 'com.midtrans'
-version = '1.10.0'
+version = '1.10.8'
 
 repositories {
     jcenter()
@@ -12,12 +12,12 @@ repositories {
 
 android {
     def DEFAULT_PUBLISH
-    compileSdkVersion 25
-    buildToolsVersion '25.0.3'
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
 
     defaultConfig {
         minSdkVersion 9
-        targetSdkVersion 25
+        targetSdkVersion 28
         versionCode 1
         versionName version
     }
@@ -47,16 +47,16 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:25.2.0'
-    compile 'com.android.support:design:25.2.0'
+    compile 'com.android.support:appcompat-v7:28.0.0'
+    compile 'com.android.support:design:28.0.0'
     developmentCompile project(path: ':corekit', configuration: 'developmentRelease')
     stagingCompile project(path: ':corekit', configuration: 'stagingRelease')
     productionCompile project(path: ':corekit', configuration: 'productionRelease')
 }
 
 bintray {
-    user = System.getenv('BINTRAY_USER')
-    key = System.getenv('BINTRAY_KEY')
+    user = 'farhanpahlevi'
+    key = '86803717e5f2e96d4b4cbda13c0a6edc8a74f09c'
     configurations = ['archives']
     pkg {
         repo = 'maven'

@@ -20,23 +20,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
 import com.midtrans.sdk.corekit.callback.CheckoutCallback;
 import com.midtrans.sdk.corekit.callback.TransactionOptionsCallback;
-import com.midtrans.sdk.corekit.core.Constants;
-import com.midtrans.sdk.corekit.core.LocalDataHandler;
-import com.midtrans.sdk.corekit.core.Logger;
-import com.midtrans.sdk.corekit.core.MidtransSDK;
-import com.midtrans.sdk.corekit.core.SdkUtil;
-import com.midtrans.sdk.corekit.core.TransactionRequest;
+import com.midtrans.sdk.corekit.core.*;
 import com.midtrans.sdk.corekit.core.themes.ColorTheme;
 import com.midtrans.sdk.corekit.core.themes.CustomColorTheme;
-import com.midtrans.sdk.corekit.models.CustomerDetails;
-import com.midtrans.sdk.corekit.models.ItemDetails;
-import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
-import com.midtrans.sdk.corekit.models.TransactionResponse;
-import com.midtrans.sdk.corekit.models.UserDetail;
+import com.midtrans.sdk.corekit.models.*;
 import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
 import com.midtrans.sdk.corekit.models.snap.Token;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
@@ -361,6 +351,10 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 try {
                     String logoUrl = transaction.getMerchantData().getPreference().getLogoUrl();
                     String merchantName = transaction.getMerchantData().getPreference().getDisplayName();
+                    Logger.d(TAG, "Enable Payment is:" + transaction.getEnabledPayments().toString());
+                    for (int i = 0; i < transaction.getEnabledPayments().size(); i++) {
+                        Logger.d(TAG, "FROM SERVER: " + transaction.getEnabledPayments().get(i).getType() + " = " + transaction.getEnabledPayments().get(i).getStatus());
+                    }
                     midtransSDK.setTransaction(transaction);
                     midtransSDK.setPromoResponses(transaction.getPromos());
                     midtransSDK.setMerchantLogo(logoUrl);
@@ -783,10 +777,12 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             if ((enabledPayment.getCategory() != null && enabledPayment.getCategory().equals(getString(R.string.enabled_payment_category_banktransfer)))
                     || enabledPayment.getType().equalsIgnoreCase(getString(R.string.payment_mandiri_bill_payment))) {
                 bankTransfers.add(enabledPayment);
+                Logger.d(TAG, "BUILD BANK TRANSFER PAYMENT FOR ADAPTER: " + enabledPayment.getType() + " = " + enabledPayment.getStatus());
             } else {
                 PaymentMethodsModel model = PaymentMethods.getMethods(this, enabledPayment.getType(), enabledPayment.getStatus());
                 if (model != null) {
                     data.add(model);
+                    Logger.d(TAG, "BUILD PAYMENT FOR ADAPTER: " + model.getName() + " = " + model.getStatus());
                 }
             }
         }

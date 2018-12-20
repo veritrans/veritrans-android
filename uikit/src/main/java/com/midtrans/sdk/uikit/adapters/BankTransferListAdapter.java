@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.models.BankTransferModel;
 import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
@@ -52,12 +51,13 @@ public class BankTransferListAdapter extends RecyclerView.Adapter<BankTransferLi
         holder.bankName.setText(mData.get(position).getBankName());
         holder.bankIcon.setImageResource(mData.get(position).getImage());
         holder.bankDescription.setText(mData.get(position).getDescription());
-        Logger.d(TAG, "Bank Item: " + mData.get(position).getBankName());
+        Logger.d(TAG, "Bank Item: " + mData.get(position).getBankName() + " = " + mData.get(position).getStatus() + " IS EQUALS " + EnabledPayment.STATUS_DOWN + " = " + mData.get(position).getStatus().equals(EnabledPayment.STATUS_DOWN));
 
         disablePaymentView(holder, mData.get(position));
     }
 
     private void disablePaymentView(BankTransferViewHolder holder, BankTransferModel paymentMethod) {
+        Logger.d(TAG, "Disable Bank Item: " + paymentMethod.getBankName() + " = " + paymentMethod.getStatus() + " IS EQUALS " + EnabledPayment.STATUS_DOWN + " = " + paymentMethod.getStatus().equals(EnabledPayment.STATUS_DOWN));
         if (paymentMethod.getStatus().equals(EnabledPayment.STATUS_DOWN)) {
             holder.layoutPaymentUnavailable.setVisibility(View.VISIBLE);
             holder.itemView.setClickable(false);

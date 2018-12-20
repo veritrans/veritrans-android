@@ -1,9 +1,12 @@
 buildscript {
     repositories {
+        maven {
+            url 'https://maven.google.com'
+        }
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.1'
+        classpath 'com.android.tools.build:gradle:2.3.3'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6'
     }
 }
@@ -12,6 +15,7 @@ allprojects {
     repositories {
         jcenter()
         maven { url "http://dl.bintray.com/pt-midtrans/maven" }
+        maven { url "https://maven.google.com" }
     }
 
     project.plugins.whenPluginAdded { plugin ->

@@ -22,13 +22,13 @@ repositories {
 }
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    compileSdkVersion 28
+    buildToolsVersion '27.0.3'
 
     defaultConfig {
         applicationId "com.midtrans.demo"
         minSdkVersion 14
-        targetSdkVersion 25
+        targetSdkVersion 27
         versionCode 1
         versionName "1.10.0"
 
@@ -38,10 +38,10 @@ android {
 
     signingConfigs {
         release {
-            storeFile file("$KEYSTORE")
-            storePassword "$KEYSTORE_PASSWORD"
-            keyAlias "$KEY_ALIAS"
-            keyPassword "$KEY_PASSWORD"
+            storeFile file('/Users/farhan.pahlevi/AndroidStudioProjects/AndroidSdk/demosdk.jks')
+            storePassword 'demo1234'
+            keyAlias 'demosdk'
+            keyPassword 'demo1234'
         }
     }
 
@@ -77,11 +77,11 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:appcompat-v7:27.0.3'
     testCompile 'junit:junit:4.12'
     developmentCompile project(path: ':uikit', configuration: 'developmentRelease')
     productionCompile project(path: ':uikit', configuration: 'productionRelease')

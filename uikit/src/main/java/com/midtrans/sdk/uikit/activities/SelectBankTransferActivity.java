@@ -32,6 +32,8 @@ import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.midtrans.sdk.uikit.views.banktransfer.list.BankTransferListActivity.EXTRA_BANK_LIST;
+
 /**
  * @author rakawm
  */
@@ -108,7 +110,12 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
         prepareToolbar();
         // setUp recyclerView
 
-        EnabledPayments enabledPayments = (EnabledPayments) getIntent().getSerializableExtra(EXTRA_BANK);
+        EnabledPayments enabledPayments;
+        if (getIntent().getSerializableExtra(EXTRA_BANK_LIST)==null){
+            enabledPayments = (EnabledPayments) getIntent().getSerializableExtra(EXTRA_BANK);
+        }else{
+            enabledPayments = (EnabledPayments) getIntent().getSerializableExtra(EXTRA_BANK_LIST);
+        }
         List<EnabledPayment> banks = new ArrayList<>();
         if (enabledPayments != null) {
             banks.addAll(enabledPayments.getEnabledPayments());
@@ -186,7 +193,7 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
         } else {
-            if (banks != null && banks.size() > 0) {
+            if (banks.size() > 0) {
                 initialiseBankTransfersModel(banks);
                 if (data.size() == 1) {
                     startBankTransferPayment(data.get(0));
@@ -223,13 +230,13 @@ public class SelectBankTransferActivity extends BaseActivity implements BankTran
         data.clear();
         if (banks.size() > 0) {
             for (EnabledPayment bank : banks) {
-                BankTransferModel model = PaymentMethods.getBankTransferModel(this, bank.getType(), bank.getStatus());
+                BankTransferModel model = PaymentMethods.getBankTransferModel(this, bank.getType(), bank.getStatus().trim());
                 if (model != null) {
                     data.add(model);
                 }
             }
         }
-        SdkUIFlowUtil.sortBankPaymentMethodsByPriority(data);
+//        SdkUIFlowUtil.sortBankPaymentMethodsByPriority(data);
     }
 
     /**

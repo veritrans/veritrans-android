@@ -101,6 +101,8 @@ public class WebViewPaymentActivity extends BasePaymentActivity {
     private void initWebViewContainer() {
         webviewContainer.getSettings().setAllowFileAccess(false);
         webviewContainer.getSettings().setJavaScriptEnabled(true);
+        webviewContainer.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+        webviewContainer.getSettings().setDomStorageEnabled(true);
         webviewContainer.setInitialScale(1);
         webviewContainer.getSettings().setLoadWithOverviewMode(true);
         webviewContainer.getSettings().setUseWideViewPort(true);
@@ -112,6 +114,8 @@ public class WebViewPaymentActivity extends BasePaymentActivity {
         webviewContainer.setWebViewClient(new MidtransWebViewClient(this, paymentType));
         webviewContainer.setWebChromeClient(new WebChromeClient());
         webviewContainer.loadUrl(webUrl);
+        webviewContainer.getSettings().setDisplayZoomControls(false);
+        webviewContainer.resumeTimers();
     }
 
     @Override

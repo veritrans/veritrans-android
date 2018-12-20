@@ -251,8 +251,13 @@ public static final *** NULL; }
    public *;
 }
 
+-keep class com.midtrans.uikit.fragments.WebviewFragment.webinterfaces.** { *; }
+-keep class com.midtrans.sdk.uikit.views.webview.WebViewPaymentActivity.webinterfaces.** { *; }
+
 -keepclassmembers class * {
     @android.webkit.JavascriptInterface <methods>;
 }
+-keepattributes JavascriptInterface
+-keepattributes *Annotation*
 
 -keep class com.viewpagerindicator.** {*;}

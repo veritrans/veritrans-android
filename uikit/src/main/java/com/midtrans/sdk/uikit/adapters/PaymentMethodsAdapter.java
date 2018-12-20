@@ -67,7 +67,7 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
             holder.itemView.setClickable(false);
             holder.textUnavailable.setVisibility(View.VISIBLE);
         } else {
-            holder.layoutPaymentUnavailable.setVisibility(View.GONE);
+                holder.layoutPaymentUnavailable.setVisibility(View.GONE);
             holder.itemView.setClickable(true);
             holder.textUnavailable.setVisibility(View.GONE);
         }
