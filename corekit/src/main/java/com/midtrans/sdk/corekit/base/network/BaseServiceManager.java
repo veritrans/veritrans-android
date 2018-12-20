@@ -4,10 +4,13 @@ import android.support.annotation.NonNull;
 
 import com.midtrans.sdk.corekit.base.callback.HttpRequestCallback;
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
+import com.midtrans.sdk.corekit.core.midtrans.callback.SaveCardCallback;
+import com.midtrans.sdk.corekit.core.midtrans.response.SaveCardResponse;
 import com.midtrans.sdk.corekit.core.snap.SnapApiService;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.BasePaymentResponse;
 import com.midtrans.sdk.corekit.utilities.Constants;
 
+import retrofit.converter.ConversionException;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -81,4 +84,31 @@ public abstract class BaseServiceManager {
         String errorMessage = Constants.MESSAGE_ERROR_EMPTY_MERCHANT_URL;
         callback.onError(new Throwable(errorMessage));
     }
+
+    protected void doOnResponseFailure(Throwable error, HttpRequestCallback callback) {
+
+        releaseResources();
+        try {
+            //Logger.e(TAG, "Error > cause:" + error.getCause() + "| message:" + error.getMessage());
+
+            if (callback instanceof SaveCardCallback && error.getCause() instanceof ConversionException) {
+
+                SaveCardResponse saveCardResponse = new SaveCardResponse();
+                saveCardResponse.setCode(200);
+                saveCardResponse.setMessage(error.getMessage());
+                ((SaveCardCallback) callback).onSuccess(saveCardResponse);
+                return;
+            }
+            callback.onError(error);
+
+        } catch (Exception e) {
+            callback.onError(new Throwable(e.getMessage(), e.getCause()));
+        }
+    }
+
+    protected void doOnInvalidDataSupplied(HttpRequestCallback callback) {
+        releaseResources();
+        callback.onError(new Throwable(Constants.MESSAGE_ERROR_INVALID_DATA_SUPPLIED));
+    }
+
 }
