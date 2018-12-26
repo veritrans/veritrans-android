@@ -1,6 +1,6 @@
 package com.midtrans.sdk.corekit.core.midtrans;
 
-import com.midtrans.sdk.corekit.core.midtrans.charge.CardRegistrationResponse;
+import com.midtrans.sdk.corekit.core.midtrans.response.CardRegistrationResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
