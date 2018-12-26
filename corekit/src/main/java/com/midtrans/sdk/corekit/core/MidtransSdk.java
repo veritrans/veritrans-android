@@ -11,10 +11,15 @@ import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.CheckoutTra
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutWithTransactionResponse;
 import com.midtrans.sdk.corekit.core.midtrans.MidtransServiceManager;
 import com.midtrans.sdk.corekit.core.snap.SnapApiManager;
+import com.midtrans.sdk.corekit.core.snap.model.pay.request.creditcard.SaveCardRequest;
 import com.midtrans.sdk.corekit.core.snap.model.transaction.response.PaymentInfoResponse;
+import com.midtrans.sdk.corekit.core.midtrans.callback.SaveCardCallback;
+import com.midtrans.sdk.corekit.utilities.Constants;
 import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.corekit.utilities.NetworkHelper;
 import com.midtrans.sdk.corekit.utilities.Validation;
+
+import java.util.ArrayList;
 
 import static android.webkit.URLUtil.isValidUrl;
 import static com.midtrans.sdk.corekit.utilities.Constants.ERROR_SDK_CLIENT_KEY_AND_CONTEXT_PROPERLY;
@@ -209,6 +214,59 @@ public class MidtransSdk {
             merchantApiManager.checkout(checkoutTransaction, callback);
         }
     }
+
+    /**
+     * It will run backround task to get card from merchant server
+     *
+     * @param userId   id user
+     * @param callback Get credit card callback
+     */
+    public void getCards(@NonNull String userId, MidtransCallback<ArrayList<SaveCardRequest>> callback) {
+        if (callback == null) {
+           // Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
+            return;
+        }
+
+        if (Validation.isValidForNetworkCall(context,callback)) {
+            if (merchantApiManager != null) {
+                merchantApiManager.getCards(userId, callback);
+            } else {
+                callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_EMPTY_MERCHANT_URL));
+            }
+        } else {
+            callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
+        }
+    }
+
+    /**
+     * It will run backround task to save card to merchant server
+     *
+     * @param userId   id user
+     * @param requests save card request model
+     * @param callback save card callback
+     */
+    public void saveCards(@NonNull String userId, @NonNull ArrayList<SaveCardRequest> requests,
+                          @NonNull SaveCardCallback callback) {
+        if (callback == null) {
+            //Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
+            return;
+        }
+
+        if (requests != null) {
+            if(Validation.isNetworkAvailable(context)){
+                if (merchantApiManager != null) {
+                    merchantApiManager.saveCards(userId, requests, callback);
+                } else {
+                    callback.onError(new Throwable(Constants.MESSAGE_ERROR_EMPTY_MERCHANT_URL));
+                }
+            } else {
+                callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
+            }
+        } else {
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
+        }
+    }
+
 
     /**
      * Getting Payment Info including enabled payment method and others information.
