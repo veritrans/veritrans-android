@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import com.midtrans.sdk.corekit.base.network.MidtransRestAdapter;
 import com.midtrans.sdk.corekit.core.merchant.MerchantApiManager;
+import com.midtrans.sdk.corekit.core.midtrans.MidtransServiceManager;
 import com.midtrans.sdk.corekit.core.snap.SnapApiManager;
 
 public class NetworkHelper {
@@ -37,5 +38,11 @@ public class NetworkHelper {
             return null;
         }
         return new SnapApiManager(MidtransRestAdapter.newSnapApiService(merchantServerUrl, requestTimeOut));
+    }
+    public static MidtransServiceManager newMidtransServiceManager(String merchantServerUrl,int requestTimeOut) {
+        if (TextUtils.isEmpty(merchantServerUrl)) {
+            return null;
+        }
+        return new MidtransServiceManager(MidtransRestAdapter.newMidtransApiService(merchantServerUrl,requestTimeOut));
     }
 }

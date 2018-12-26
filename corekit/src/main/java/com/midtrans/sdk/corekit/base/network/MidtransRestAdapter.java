@@ -1,13 +1,13 @@
 package com.midtrans.sdk.corekit.base.network;
 
+import android.os.Build;
+
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.internal.bind.DateTypeAdapter;
-
-import android.os.Build;
-
 import com.midtrans.sdk.corekit.core.merchant.MerchantApiService;
+import com.midtrans.sdk.corekit.core.midtrans.MidtransApiService;
 import com.midtrans.sdk.corekit.core.snap.SnapApiService;
 import com.midtrans.sdk.corekit.utilities.Logger;
 
@@ -54,6 +54,22 @@ public class MidtransRestAdapter {
                 .build();
 
         return retrofit.create(MerchantApiService.class);
+    }
+
+    /**
+     * It will return instance of PaymentAPI using that we can execute api calls.
+     *
+     * @return Payment API implementation
+     */
+    public static MidtransApiService newMidtransApiService(String merchantBaseUrl, int timeout) {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(merchantBaseUrl)
+                .client(newOkHttpClient(timeout))
+                .addConverterFactory(GsonConverterFactory.create(newGson()))
+                .build();
+
+        return retrofit.create(MidtransApiService.class);
     }
 
     public static SnapApiService newSnapApiService(String merchantBaseUrl, int timeout) {

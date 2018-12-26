@@ -9,6 +9,7 @@ import com.midtrans.sdk.corekit.base.enums.Environment;
 import com.midtrans.sdk.corekit.core.merchant.MerchantApiManager;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.CheckoutTransaction;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutWithTransactionResponse;
+import com.midtrans.sdk.corekit.core.midtrans.MidtransServiceManager;
 import com.midtrans.sdk.corekit.core.snap.SnapApiManager;
 import com.midtrans.sdk.corekit.core.snap.model.transaction.response.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.utilities.Logger;
@@ -49,6 +50,7 @@ public class MidtransSdk {
     private CheckoutTransaction checkoutTransaction = null;
     private MerchantApiManager merchantApiManager;
     private SnapApiManager snapApiManager;
+    private MidtransServiceManager midtransServiceManager;
 
     MidtransSdk(Context context,
                 String clientId,
@@ -58,14 +60,17 @@ public class MidtransSdk {
         this.merchantClientId = clientId;
         this.merchantBaseUrl = merchantUrl;
         this.midtransEnvironment = environment;
-        this.merchantApiManager = NetworkHelper.newMerchantServiceManager(merchantBaseUrl, apiRequestTimeOut);
-        String snapBaseUrl;
+        String snapBaseUrl, midtransBaseUrl;
         if (this.midtransEnvironment == Environment.SANDBOX) {
             snapBaseUrl = SNAP_BASE_URL_SANDBOX;
+            midtransBaseUrl = BASE_URL_SANDBOX;
         } else {
             snapBaseUrl = SNAP_BASE_URL_PRODUCTION;
+            midtransBaseUrl = BASE_URL_PRODUCTION;
         }
+        this.merchantApiManager = NetworkHelper.newMerchantServiceManager(merchantBaseUrl, apiRequestTimeOut);
         this.snapApiManager = NetworkHelper.newSnapServiceManager(snapBaseUrl, apiRequestTimeOut);
+        this.midtransServiceManager = NetworkHelper.newMidtransServiceManager(midtransBaseUrl, apiRequestTimeOut);
     }
 
     /**
@@ -104,6 +109,20 @@ public class MidtransSdk {
      */
     public SnapApiManager getSnapApiManager() {
         return snapApiManager;
+    }
+
+    /**
+     * @return midtrans service manager
+     */
+    public MidtransServiceManager getMidtransServiceManager() {
+        return midtransServiceManager;
+    }
+
+    /**
+     * @return merchant api manager
+     */
+    public MerchantApiManager getMerchantApiManager() {
+        return merchantApiManager;
     }
 
     /**
