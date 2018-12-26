@@ -4,8 +4,8 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.midtrans.sdk.corekit.base.network.BaseServiceManager;
-import com.midtrans.sdk.corekit.core.midtrans.charge.CardRegistrationResponse;
-import com.midtrans.sdk.corekit.core.snap.model.transaction.response.callback.CardRegistrationCallback;
+import com.midtrans.sdk.corekit.core.midtrans.response.CardRegistrationResponse;
+import com.midtrans.sdk.corekit.core.midtrans.callback.CardRegistrationCallback;
 import com.midtrans.sdk.corekit.utilities.Constants;
 
 import retrofit2.Call;
@@ -64,7 +64,7 @@ public class MidtransServiceManager extends BaseServiceManager {
 
             @Override
             public void onFailure(Call<CardRegistrationResponse> call, Throwable t) {
-                //doOnResponseFailure(t, callback);
+                doOnResponseFailure(t, callback);
             }
         });
     }
