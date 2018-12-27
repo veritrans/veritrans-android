@@ -4,8 +4,10 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.midtrans.sdk.corekit.base.network.BaseServiceManager;
+import com.midtrans.sdk.corekit.core.midtrans.callback.CardTokenCallback;
 import com.midtrans.sdk.corekit.core.midtrans.response.CardRegistrationResponse;
 import com.midtrans.sdk.corekit.core.midtrans.callback.CardRegistrationCallback;
+import com.midtrans.sdk.corekit.core.midtrans.response.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.utilities.Constants;
 
 import retrofit2.Call;
@@ -64,6 +66,118 @@ public class MidtransServiceManager extends BaseServiceManager {
 
             @Override
             public void onFailure(Call<CardRegistrationResponse> call, Throwable t) {
+                doOnResponseFailure(t, callback);
+            }
+        });
+    }
+
+    /**
+     * It will execute an api call to get token from server, and after completion of request it
+     *
+     * @param cardTokenRequest information about credit card.
+     * @param callback         get creditcard token callback
+     */
+    public void getToken(CardTokenRequest cardTokenRequest, final CardTokenCallback callback) {
+
+        if (service == null) {
+            doOnApiServiceUnAvailable(callback);
+            return;
+        }
+
+        Call<TokenDetailsResponse> call;
+        if (cardTokenRequest.isTwoClick()) {
+
+            if (cardTokenRequest.isInstallment()) {
+                call = service.getTokenInstalmentOfferTwoClick(
+                        cardTokenRequest.getCardCVV(),
+                        cardTokenRequest.getSavedTokenId(),
+                        cardTokenRequest.isTwoClick(),
+                        cardTokenRequest.isSecure(),
+                        cardTokenRequest.getGrossAmount(),
+                        cardTokenRequest.getBank(),
+                        cardTokenRequest.getClientKey(),
+                        cardTokenRequest.isInstallment(),
+                        cardTokenRequest.getFormattedInstalmentTerm(),
+                        cardTokenRequest.getChannel(),
+                        cardTokenRequest.getType(),
+                        cardTokenRequest.getCurrency(),
+                        cardTokenRequest.isPoint());
+            } else {
+                call = service.getTokenTwoClick(
+                        cardTokenRequest.getCardCVV(),
+                        cardTokenRequest.getSavedTokenId(),
+                        cardTokenRequest.isTwoClick(),
+                        cardTokenRequest.isSecure(),
+                        cardTokenRequest.getGrossAmount(),
+                        cardTokenRequest.getBank(),
+                        cardTokenRequest.getClientKey(),
+                        cardTokenRequest.getChannel(),
+                        cardTokenRequest.getType(),
+                        cardTokenRequest.getCurrency(),
+                        cardTokenRequest.isPoint());
+            }
+
+        } else {
+            if (cardTokenRequest.isInstallment()) {
+
+                call = service.get3DSTokenInstalmentOffers(cardTokenRequest.getCardNumber(),
+                        cardTokenRequest.getCardCVV(),
+                        cardTokenRequest.getCardExpiryMonth(), cardTokenRequest
+                                .getCardExpiryYear(),
+                        cardTokenRequest.getClientKey(),
+                        cardTokenRequest.getBank(),
+                        cardTokenRequest.isSecure(),
+                        cardTokenRequest.isTwoClick(),
+                        cardTokenRequest.getGrossAmount(),
+                        cardTokenRequest.isInstallment(),
+                        cardTokenRequest.getChannel(),
+                        cardTokenRequest.getFormattedInstalmentTerm(),
+                        cardTokenRequest.getType(),
+                        cardTokenRequest.getCurrency(),
+                        cardTokenRequest.isPoint());
+
+            } else {
+                //normal request
+                if (!cardTokenRequest.isSecure()) {
+
+                    call = service.getToken(
+                            cardTokenRequest.getCardNumber(),
+                            cardTokenRequest.getCardCVV(),
+                            cardTokenRequest.getCardExpiryMonth(),
+                            cardTokenRequest.getCardExpiryYear(),
+                            cardTokenRequest.getClientKey(),
+                            cardTokenRequest.getGrossAmount(),
+                            cardTokenRequest.getChannel(),
+                            cardTokenRequest.getType(),
+                            cardTokenRequest.getCurrency(),
+                            cardTokenRequest.isPoint());
+                } else {
+                    call = service.get3DSToken(cardTokenRequest.getCardNumber(),
+                            cardTokenRequest.getCardCVV(),
+                            cardTokenRequest.getCardExpiryMonth(),
+                            cardTokenRequest.getCardExpiryYear(),
+                            cardTokenRequest.getClientKey(),
+                            cardTokenRequest.getBank(),
+                            cardTokenRequest.isSecure(),
+                            cardTokenRequest.isTwoClick(),
+                            cardTokenRequest.getGrossAmount(),
+                            cardTokenRequest.getChannel(),
+                            cardTokenRequest.getType(),
+                            cardTokenRequest.getCurrency(),
+                            cardTokenRequest.isPoint());
+                }
+            }
+
+        }
+
+        call.enqueue(new Callback<TokenDetailsResponse>() {
+            @Override
+            public void onResponse(Call<TokenDetailsResponse> call, Response<TokenDetailsResponse> response) {
+                doOnGetCardTokenSuccess(response, callback);
+            }
+
+            @Override
+            public void onFailure(Call<TokenDetailsResponse> call, Throwable t) {
                 doOnResponseFailure(t, callback);
             }
         });

@@ -216,59 +216,6 @@ public class MidtransSdk {
     }
 
     /**
-     * It will run backround task to get card from merchant server
-     *
-     * @param userId   id user
-     * @param callback Get credit card callback
-     */
-    public void getCards(@NonNull String userId, MidtransCallback<ArrayList<SaveCardRequest>> callback) {
-        if (callback == null) {
-           // Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
-            return;
-        }
-
-        if (Validation.isValidForNetworkCall(context,callback)) {
-            if (merchantApiManager != null) {
-                merchantApiManager.getCards(userId, callback);
-            } else {
-                callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_EMPTY_MERCHANT_URL));
-            }
-        } else {
-            callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
-        }
-    }
-
-    /**
-     * It will run backround task to save card to merchant server
-     *
-     * @param userId   id user
-     * @param requests save card request model
-     * @param callback save card callback
-     */
-    public void saveCards(@NonNull String userId, @NonNull ArrayList<SaveCardRequest> requests,
-                          @NonNull SaveCardCallback callback) {
-        if (callback == null) {
-            //Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
-            return;
-        }
-
-        if (requests != null) {
-            if(Validation.isNetworkAvailable(context)){
-                if (merchantApiManager != null) {
-                    merchantApiManager.saveCards(userId, requests, callback);
-                } else {
-                    callback.onError(new Throwable(Constants.MESSAGE_ERROR_EMPTY_MERCHANT_URL));
-                }
-            } else {
-                callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
-            }
-        } else {
-            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
-        }
-    }
-
-
-    /**
      * Getting Payment Info including enabled payment method and others information.
      *
      * @param snapToken token after making checkoutWithTransaction.

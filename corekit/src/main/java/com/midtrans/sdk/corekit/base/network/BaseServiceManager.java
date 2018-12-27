@@ -1,11 +1,14 @@
 package com.midtrans.sdk.corekit.base.network;
 
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.midtrans.sdk.corekit.base.callback.HttpRequestCallback;
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
+import com.midtrans.sdk.corekit.core.midtrans.callback.CardTokenCallback;
 import com.midtrans.sdk.corekit.core.midtrans.callback.SaveCardCallback;
 import com.midtrans.sdk.corekit.core.midtrans.response.SaveCardResponse;
+import com.midtrans.sdk.corekit.core.midtrans.response.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.core.snap.SnapApiService;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.BasePaymentResponse;
 import com.midtrans.sdk.corekit.utilities.Constants;
@@ -85,6 +88,27 @@ public abstract class BaseServiceManager {
         callback.onError(new Throwable(errorMessage));
     }
 
+    protected void doOnGetCardTokenSuccess(Response<TokenDetailsResponse> response, CardTokenCallback callback) {
+        releaseResources();
+
+        TokenDetailsResponse tokenDetailsResponse = response.body();
+
+        if (tokenDetailsResponse != null) {
+            if (tokenDetailsResponse.getStatusCode().trim().equalsIgnoreCase(Constants.STATUS_CODE_200)) {
+                callback.onSuccess(tokenDetailsResponse);
+            } else {
+                if (!TextUtils.isEmpty(tokenDetailsResponse.getStatusMessage())) {
+                    callback.onFailure(tokenDetailsResponse, tokenDetailsResponse.getStatusMessage());
+                } else {
+                    callback.onFailure(tokenDetailsResponse,
+                            Constants.MESSAGE_ERROR_EMPTY_RESPONSE);
+                }
+            }
+        } else {
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_EMPTY_RESPONSE));
+          //  Logger.e(TAG, Constants.MESSAGE_ERROR_EMPTY_RESPONSE);
+        }
+    }
     protected void doOnResponseFailure(Throwable error, HttpRequestCallback callback) {
 
         releaseResources();
