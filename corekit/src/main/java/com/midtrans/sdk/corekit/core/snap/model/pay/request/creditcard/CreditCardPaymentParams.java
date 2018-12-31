@@ -1,14 +1,13 @@
 package com.midtrans.sdk.corekit.core.snap.model.pay.request.creditcard;
 
 import com.google.gson.annotations.SerializedName;
-import com.midtrans.sdk.corekit.base.model.BankType;
 
 public class CreditCardPaymentParams {
     @SerializedName("masked_card")
     private String maskedCard;
     @SerializedName("card_token")
     private String cardToken;
-    private String bank = BankType.BNI;
+    private String bank;
     @SerializedName("installment")
     private String installmentTerm;
     @SerializedName("save_card")
