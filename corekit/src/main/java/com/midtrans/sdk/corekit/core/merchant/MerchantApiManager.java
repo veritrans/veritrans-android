@@ -11,7 +11,6 @@ import com.midtrans.sdk.corekit.core.midtrans.response.SaveCardResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.creditcard.SaveCardRequest;
 import com.midtrans.sdk.corekit.utilities.Constants;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -58,44 +57,6 @@ public class MerchantApiManager extends BaseServiceManager {
                 });
             }
         }
-    }
-
-    /**
-     * this method is used to get saved card list on merchant server
-     *
-     * @param userId   unique id to each user
-     * @param callback Transaction callback
-     */
-    public void getCards(final String userId, final MidtransCallback<ArrayList<SaveCardRequest>> callback) {
-
-        if (apiService == null) {
-            doOnApiServiceUnAvailable(callback);
-            return;
-        }
-
-        Call<List<SaveCardRequest>> call = apiService.getCards(userId);
-        call.enqueue(new Callback<List<SaveCardRequest>>() {
-            @Override
-            public void onResponse(Call<List<SaveCardRequest>> call, Response<List<SaveCardRequest>> response) {
-                releaseResources();
-
-                List<SaveCardRequest> cardsResponses = response.body();
-                if (cardsResponses != null && cardsResponses.size() > 0) {
-                    if (response.code() == 200 || response.code() == 201) {
-                        callback.onSuccess(new ArrayList<>(cardsResponses));
-                    } else {
-                        callback.onFailed(new Throwable(response.message()));
-                    }
-                } else {
-                    callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_EMPTY_RESPONSE));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<SaveCardRequest>> call, Throwable t) {
-                handleServerResponse(null, callback, t);
-            }
-        });
     }
 
     /**

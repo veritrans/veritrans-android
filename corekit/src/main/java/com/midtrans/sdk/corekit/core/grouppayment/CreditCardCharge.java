@@ -71,25 +71,6 @@ public class CreditCardCharge extends PaymentsGroupBase {
     }
 
     /**
-     * It will run backround task to get card from merchant server
-     *
-     * @param userId   id user
-     * @param callback Get credit card callback
-     */
-    public void getCards(@NonNull String userId,
-                         @NonNull MidtransCallback<ArrayList<SaveCardRequest>> callback) {
-        if (Validation.isValidForNetworkCall(getSdkContext(), callback)) {
-            if (getMerchantApiManager() != null) {
-                getMerchantApiManager().getCards(userId, callback);
-            } else {
-                callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_EMPTY_MERCHANT_URL));
-            }
-        } else {
-            callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
-        }
-    }
-
-    /**
      * It will run backround task to save card to merchant server
      *
      * @param userId   id user
