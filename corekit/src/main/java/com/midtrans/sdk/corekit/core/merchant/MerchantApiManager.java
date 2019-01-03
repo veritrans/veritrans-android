@@ -3,7 +3,6 @@ package com.midtrans.sdk.corekit.core.merchant;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.midtrans.sdk.corekit.base.callback.HttpRequestCallback;
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.base.network.BaseServiceManager;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.CheckoutTransaction;
@@ -70,7 +69,7 @@ public class MerchantApiManager extends BaseServiceManager {
     public void getCards(final String userId, final MidtransCallback<ArrayList<SaveCardRequest>> callback) {
 
         if (apiService == null) {
-            doOnApiServiceUnAvailable((HttpRequestCallback) callback);
+            doOnApiServiceUnAvailable(callback);
             return;
         }
 
@@ -94,7 +93,7 @@ public class MerchantApiManager extends BaseServiceManager {
 
             @Override
             public void onFailure(Call<List<SaveCardRequest>> call, Throwable t) {
-                doOnResponseFailure(t, (HttpRequestCallback) callback);
+                doOnResponseFailure(t, callback);
             }
         });
     }

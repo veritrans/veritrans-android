@@ -83,9 +83,9 @@ public abstract class BaseServiceManager {
         }
     }
 
-    protected void doOnApiServiceUnAvailable(HttpRequestCallback callback) {
+    protected void doOnApiServiceUnAvailable(MidtransCallback callback) {
         String errorMessage = Constants.MESSAGE_ERROR_EMPTY_MERCHANT_URL;
-        callback.onError(new Throwable(errorMessage));
+        callback.onFailed(new Throwable(errorMessage));
     }
 
     protected void doOnGetCardTokenSuccess(Response<TokenDetailsResponse> response, MidtransCallback<TokenDetailsResponse> callback) {
@@ -104,12 +104,12 @@ public abstract class BaseServiceManager {
                 }
             }
         } else {
-            callback.onError(new Throwable(Constants.MESSAGE_ERROR_EMPTY_RESPONSE));
+            callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_EMPTY_RESPONSE));
             Log.e(TAG, Constants.MESSAGE_ERROR_EMPTY_RESPONSE);
         }
     }
 
-    protected void doOnResponseFailure(Throwable error, HttpRequestCallback callback) {
+    protected void doOnResponseFailure(Throwable error, MidtransCallback callback) {
         releaseResources();
         try {
             Log.e(TAG, "Error > cause:" + error.getCause() + "| message:" + error.getMessage());
@@ -122,16 +122,16 @@ public abstract class BaseServiceManager {
                 ((SaveCardCallback) callback).onSuccess(saveCardResponse);
                 return;
             }
-            callback.onError(error);
+            callback.onFailed(error);
 
         } catch (Exception e) {
-            callback.onError(new Throwable(e.getMessage(), e.getCause()));
+            callback.onFailed(new Throwable(e.getMessage(), e.getCause()));
         }
     }
 
-    protected void doOnInvalidDataSupplied(HttpRequestCallback callback) {
+    protected void doOnInvalidDataSupplied(MidtransCallback callback) {
         releaseResources();
-        callback.onError(new Throwable(Constants.MESSAGE_ERROR_INVALID_DATA_SUPPLIED));
+        callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_INVALID_DATA_SUPPLIED));
     }
 
 }

@@ -64,11 +64,9 @@ public class CreditCardCharge extends PaymentsGroupBase {
         if (Validation.isNotEmpty(cardTokenRequest)) {
             if (Validation.isValidForNetworkCall(getSdkContext(), callback)) {
                 getMidtransServiceManager().getToken(cardTokenRequest, callback);
-            } else {
-                callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
-            callback.onError(new Throwable(Constants.MESSAGE_ERROR_INVALID_DATA_SUPPLIED));
+            callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_INVALID_DATA_SUPPLIED));
         }
     }
 
@@ -102,16 +100,14 @@ public class CreditCardCharge extends PaymentsGroupBase {
                           @NonNull MidtransCallback<SaveCardResponse> callback) {
         if (requests != null) {
             if (Validation.isNetworkAvailable(getSdkContext())) {
-                if (getMerchantApiManager() != null) {
+                if (Validation.isNotEmpty(getMerchantApiManager())) {
                     getMerchantApiManager().saveCards(userId, requests, callback);
                 } else {
-                    callback.onError(new Throwable(Constants.MESSAGE_ERROR_EMPTY_MERCHANT_URL));
+                    callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_EMPTY_MERCHANT_URL));
                 }
-            } else {
-                callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
-            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
+            callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 }
