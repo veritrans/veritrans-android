@@ -10,7 +10,6 @@ import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.CheckoutTra
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutWithTransactionResponse;
 import com.midtrans.sdk.corekit.core.midtrans.response.SaveCardResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.creditcard.SaveCardRequest;
-import com.midtrans.sdk.corekit.core.midtrans.callback.SaveCardCallback;
 import com.midtrans.sdk.corekit.utilities.Constants;
 
 import java.util.ArrayList;
@@ -107,7 +106,7 @@ public class MerchantApiManager extends BaseServiceManager {
      * @param userId       unique id for every user
      * @param callback     save card callback
      */
-    public void saveCards(String userId, final List<SaveCardRequest> cardRequests, final SaveCardCallback callback) {
+    public void saveCards(String userId, final List<SaveCardRequest> cardRequests, final MidtransCallback<SaveCardResponse> callback) {
         if (apiService == null) {
             doOnApiServiceUnAvailable(callback);
             return;
@@ -138,7 +137,7 @@ public class MerchantApiManager extends BaseServiceManager {
 
                         callback.onSuccess(saveCardResponse);
                     } else {
-                        callback.onFailure(response.message());
+                        callback.onFailed(new Throwable(response.message()));
                     }
                 }
 
