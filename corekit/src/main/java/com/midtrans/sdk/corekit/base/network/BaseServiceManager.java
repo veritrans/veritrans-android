@@ -2,9 +2,7 @@ package com.midtrans.sdk.corekit.base.network;
 
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.util.Log;
 
-import com.midtrans.sdk.corekit.base.callback.HttpRequestCallback;
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.core.midtrans.callback.SaveCardCallback;
 import com.midtrans.sdk.corekit.core.midtrans.response.SaveCardResponse;
@@ -12,6 +10,7 @@ import com.midtrans.sdk.corekit.core.midtrans.response.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.core.snap.SnapApiService;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.BasePaymentResponse;
 import com.midtrans.sdk.corekit.utilities.Constants;
+import com.midtrans.sdk.corekit.utilities.Logger;
 
 import retrofit.converter.ConversionException;
 import retrofit2.Call;
@@ -105,14 +104,14 @@ public abstract class BaseServiceManager {
             }
         } else {
             callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_EMPTY_RESPONSE));
-            Log.e(TAG, Constants.MESSAGE_ERROR_EMPTY_RESPONSE);
+            Logger.error(TAG, Constants.MESSAGE_ERROR_EMPTY_RESPONSE);
         }
     }
 
     protected void doOnResponseFailure(Throwable error, MidtransCallback callback) {
         releaseResources();
         try {
-            Log.e(TAG, "Error > cause:" + error.getCause() + "| message:" + error.getMessage());
+            Logger.error(TAG, "Error > cause:" + error.getCause() + "| message:" + error.getMessage());
 
             if (callback instanceof SaveCardCallback && error.getCause() instanceof ConversionException) {
 
