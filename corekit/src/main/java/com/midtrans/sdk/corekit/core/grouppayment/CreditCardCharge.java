@@ -17,8 +17,6 @@ import com.midtrans.sdk.corekit.utilities.Validation;
 import java.util.ArrayList;
 
 public class CreditCardCharge extends PaymentsGroupBase {
-    private static final String TAG = "Credit Card Charge";
-
 
     /**
      * It will run backgrond task to charge payment using Credit Card
@@ -68,10 +66,8 @@ public class CreditCardCharge extends PaymentsGroupBase {
                 getMidtransServiceManager().getToken(cardTokenRequest, callback);
             } else {
                 callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
-                Log.e(TAG, Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER);
             }
         } else {
-            Log.e(TAG, Constants.MESSAGE_ERROR_INVALID_DATA_SUPPLIED);
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_INVALID_DATA_SUPPLIED));
         }
     }
