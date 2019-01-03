@@ -3,10 +3,9 @@ package com.midtrans.sdk.corekit.core.midtrans;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.base.network.BaseServiceManager;
-import com.midtrans.sdk.corekit.core.midtrans.callback.CardTokenCallback;
 import com.midtrans.sdk.corekit.core.midtrans.response.CardRegistrationResponse;
-import com.midtrans.sdk.corekit.core.midtrans.callback.CardRegistrationCallback;
 import com.midtrans.sdk.corekit.core.midtrans.response.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.utilities.Constants;
 
@@ -39,7 +38,7 @@ public class MidtransServiceManager extends BaseServiceManager {
                                  String cardCvv,
                                  String cardExpMonth,
                                  String cardExpYear, String clientKey,
-                                 final CardRegistrationCallback callback) {
+                                 final MidtransCallback<CardRegistrationResponse> callback) {
         if (service == null) {
             doOnApiServiceUnAvailable(callback);
             return;
@@ -53,14 +52,13 @@ public class MidtransServiceManager extends BaseServiceManager {
                 CardRegistrationResponse cardRegistrationResponse = response.body();
                 if (cardRegistrationResponse != null) {
                     String statusCode = cardRegistrationResponse.getStatusCode();
-
                     if (!TextUtils.isEmpty(statusCode) && statusCode.equals(Constants.STATUS_CODE_200)) {
                         callback.onSuccess(cardRegistrationResponse);
                     } else {
-                        callback.onFailure(cardRegistrationResponse, cardRegistrationResponse.getStatusMessage());
+                        callback.onFailed(new Throwable(cardRegistrationResponse.getStatusMessage()));
                     }
                 } else {
-                    callback.onError(new Throwable(Constants.MESSAGE_ERROR_EMPTY_RESPONSE));
+                    callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_EMPTY_RESPONSE));
                 }
             }
 
@@ -77,7 +75,7 @@ public class MidtransServiceManager extends BaseServiceManager {
      * @param cardTokenRequest information about credit card.
      * @param callback         get creditcard token callback
      */
-    public void getToken(CardTokenRequest cardTokenRequest, final CardTokenCallback callback) {
+    public void getToken(CardTokenRequest cardTokenRequest, final MidtransCallback<TokenDetailsResponse> callback) {
 
         if (service == null) {
             doOnApiServiceUnAvailable(callback);
