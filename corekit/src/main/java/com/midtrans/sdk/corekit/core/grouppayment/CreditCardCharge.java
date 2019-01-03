@@ -27,9 +27,9 @@ public class CreditCardCharge extends PaymentsGroupBase {
      * @param snapToken authentication token
      * @param callback  transaction callback
      */
-    public void paymentUsingCard(String snapToken,
-                                 final CreditCardPaymentParams creditCardPaymentParams,
-                                 final CustomerDetailPayRequest customerDetailPayRequest,
+    public void paymentUsingCard(@NonNull String snapToken,
+                                 @NonNull final CreditCardPaymentParams creditCardPaymentParams,
+                                 @NonNull final CustomerDetailPayRequest customerDetailPayRequest,
                                  MidtransCallback<BasePaymentResponse> callback) {
         if (isValidForNetworkCall(getSdkContext(), callback)) {
             getSnapApiManager().paymentUsingCreditCard(snapToken, creditCardPaymentParams, customerDetailPayRequest, callback);
@@ -61,9 +61,10 @@ public class CreditCardCharge extends PaymentsGroupBase {
      * @param cardTokenRequest get card token  request object
      * @param callback         get card token callback
      */
-    public void getCardToken(CardTokenRequest cardTokenRequest, MidtransCallback<TokenDetailsResponse> callback) {
+    public void getCardToken(@NonNull CardTokenRequest cardTokenRequest,
+                             @NonNull MidtransCallback<TokenDetailsResponse> callback) {
         if (callback == null) {
-            //Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
+            Log.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
 
@@ -72,11 +73,11 @@ public class CreditCardCharge extends PaymentsGroupBase {
                 getMidtransServiceManager().getToken(cardTokenRequest, callback);
             } else {
                 callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
-                //Logger.e(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER);
+                Log.e(TAG, Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER);
             }
 
         } else {
-            //Logger.e(Constants.MESSAGE_ERROR_INVALID_DATA_SUPPLIED);
+            Log.e(TAG, Constants.MESSAGE_ERROR_INVALID_DATA_SUPPLIED);
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_INVALID_DATA_SUPPLIED));
         }
     }
@@ -87,9 +88,10 @@ public class CreditCardCharge extends PaymentsGroupBase {
      * @param userId   id user
      * @param callback Get credit card callback
      */
-    public void getCards(@NonNull String userId, MidtransCallback<ArrayList<SaveCardRequest>> callback) {
+    public void getCards(@NonNull String userId,
+                         @NonNull MidtransCallback<ArrayList<SaveCardRequest>> callback) {
         if (callback == null) {
-            // Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
+            Log.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
 
@@ -114,7 +116,7 @@ public class CreditCardCharge extends PaymentsGroupBase {
     public void saveCards(@NonNull String userId, @NonNull ArrayList<SaveCardRequest> requests,
                           @NonNull MidtransCallback<SaveCardResponse> callback) {
         if (callback == null) {
-            //Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
+            Log.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
 
