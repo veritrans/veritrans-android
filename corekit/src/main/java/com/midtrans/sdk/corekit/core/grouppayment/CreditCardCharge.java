@@ -1,7 +1,6 @@
 package com.midtrans.sdk.corekit.core.grouppayment;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.core.midtrans.CardTokenRequest;
@@ -63,19 +62,14 @@ public class CreditCardCharge extends PaymentsGroupBase {
      */
     public void getCardToken(@NonNull CardTokenRequest cardTokenRequest,
                              @NonNull MidtransCallback<TokenDetailsResponse> callback) {
-        if (callback == null) {
-            Log.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
-            return;
-        }
 
-        if (cardTokenRequest != null) {
-            if (isNetworkAvailable(getSdkContext())) {
+        if (Validation.isNotEmpty(cardTokenRequest)) {
+            if (Validation.isValidForNetworkCall(getSdkContext(), callback)) {
                 getMidtransServiceManager().getToken(cardTokenRequest, callback);
             } else {
                 callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
                 Log.e(TAG, Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER);
             }
-
         } else {
             Log.e(TAG, Constants.MESSAGE_ERROR_INVALID_DATA_SUPPLIED);
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_INVALID_DATA_SUPPLIED));
@@ -90,11 +84,6 @@ public class CreditCardCharge extends PaymentsGroupBase {
      */
     public void getCards(@NonNull String userId,
                          @NonNull MidtransCallback<ArrayList<SaveCardRequest>> callback) {
-        if (callback == null) {
-            Log.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
-            return;
-        }
-
         if (Validation.isValidForNetworkCall(getSdkContext(), callback)) {
             if (getMerchantApiManager() != null) {
                 getMerchantApiManager().getCards(userId, callback);
@@ -115,11 +104,6 @@ public class CreditCardCharge extends PaymentsGroupBase {
      */
     public void saveCards(@NonNull String userId, @NonNull ArrayList<SaveCardRequest> requests,
                           @NonNull MidtransCallback<SaveCardResponse> callback) {
-        if (callback == null) {
-            Log.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
-            return;
-        }
-
         if (requests != null) {
             if (Validation.isNetworkAvailable(getSdkContext())) {
                 if (getMerchantApiManager() != null) {
