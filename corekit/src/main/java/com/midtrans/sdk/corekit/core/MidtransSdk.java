@@ -11,15 +11,11 @@ import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.CheckoutTra
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutWithTransactionResponse;
 import com.midtrans.sdk.corekit.core.midtrans.MidtransServiceManager;
 import com.midtrans.sdk.corekit.core.snap.SnapApiManager;
-import com.midtrans.sdk.corekit.core.snap.model.pay.request.creditcard.SaveCardRequest;
+import com.midtrans.sdk.corekit.core.snap.model.pay.response.BasePaymentResponse;
 import com.midtrans.sdk.corekit.core.snap.model.transaction.response.PaymentInfoResponse;
-import com.midtrans.sdk.corekit.core.midtrans.callback.SaveCardCallback;
-import com.midtrans.sdk.corekit.utilities.Constants;
 import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.corekit.utilities.NetworkHelper;
 import com.midtrans.sdk.corekit.utilities.Validation;
-
-import java.util.ArrayList;
 
 import static android.webkit.URLUtil.isValidUrl;
 import static com.midtrans.sdk.corekit.utilities.Constants.ERROR_SDK_CLIENT_KEY_AND_CONTEXT_PROPERLY;
@@ -292,6 +288,18 @@ public class MidtransSdk {
                 Logger.error(ERROR_SDK_MERCHANT_BASE_URL_PROPERLY, runtimeException);
             }
             return true;
+        }
+    }
+
+    /**
+     * it will get bank points (BNI or Mandiri) from snap backend
+     *
+     * @param cardToken credit card token
+     * @param callback  bni point callback instance
+     */
+    public void getBanksPoint(String snapToken, String cardToken, @NonNull final MidtransCallback<BasePaymentResponse> callback) {
+        if (Validation.isValidForNetworkCall(context, callback)) {
+            snapApiManager.getBanksPoint(snapToken, cardToken, callback);
         }
     }
 }

@@ -114,4 +114,14 @@ public class BasePaymentResponse implements Serializable {
 
     @SerializedName("user_id")
     protected String userId;
+
+    /**
+     * get bank point
+     */
+    @SerializedName("validation_messages")
+    private ArrayList<String> validationMessages;
+    @SerializedName("point_balance")
+    private Long pointBalance;
+    @SerializedName("point_balance_amount")
+    private String pointBalanceAmount;
 }
