@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.core.MidtransSdk;
+import com.midtrans.sdk.corekit.core.merchant.MerchantApiManager;
 import com.midtrans.sdk.corekit.core.midtrans.MidtransServiceManager;
 import com.midtrans.sdk.corekit.core.snap.SnapApiManager;
 import com.midtrans.sdk.corekit.utilities.Constants;
@@ -24,6 +25,12 @@ public class PaymentsGroupBase {
         return MidtransSdk
                 .getInstance()
                 .getMidtransServiceManager();
+    }
+
+    public static MerchantApiManager getMerchantApiManager() {
+        return MidtransSdk
+                .getInstance()
+                .getMerchantApiManager();
     }
 
     Context getSdkContext() {

@@ -3,13 +3,20 @@ package com.midtrans.sdk.corekit.core.grouppayment;
 import android.support.annotation.NonNull;
 
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
+import com.midtrans.sdk.corekit.core.midtrans.CardTokenRequest;
+import com.midtrans.sdk.corekit.core.midtrans.response.CardRegistrationResponse;
+import com.midtrans.sdk.corekit.core.midtrans.response.SaveCardResponse;
+import com.midtrans.sdk.corekit.core.midtrans.response.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.CustomerDetailPayRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.creditcard.CreditCardPaymentParams;
+import com.midtrans.sdk.corekit.core.snap.model.pay.request.creditcard.SaveCardRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.BasePaymentResponse;
-import com.midtrans.sdk.corekit.core.snap.model.transaction.response.callback.CardRegistrationCallback;
+import com.midtrans.sdk.corekit.utilities.Constants;
+import com.midtrans.sdk.corekit.utilities.Validation;
+
+import java.util.ArrayList;
 
 public class CreditCardCharge extends PaymentsGroupBase {
-
 
     /**
      * It will run backgrond task to charge payment using Credit Card
@@ -17,9 +24,9 @@ public class CreditCardCharge extends PaymentsGroupBase {
      * @param snapToken authentication token
      * @param callback  transaction callback
      */
-    public void paymentUsingCard(String snapToken,
-                                 final CreditCardPaymentParams creditCardPaymentParams,
-                                 final CustomerDetailPayRequest customerDetailPayRequest,
+    public void paymentUsingCard(@NonNull String snapToken,
+                                 @NonNull final CreditCardPaymentParams creditCardPaymentParams,
+                                 @NonNull final CustomerDetailPayRequest customerDetailPayRequest,
                                  MidtransCallback<BasePaymentResponse> callback) {
         if (isValidForNetworkCall(getSdkContext(), callback)) {
             getSnapApiManager().paymentUsingCreditCard(snapToken, creditCardPaymentParams, customerDetailPayRequest, callback);
@@ -38,10 +45,50 @@ public class CreditCardCharge extends PaymentsGroupBase {
      */
     public void cardRegistration(@NonNull String cardNumber, @NonNull String clientKey,
                                  @NonNull String cardCvv, @NonNull String cardExpMonth,
-                                 @NonNull String cardExpYear, @NonNull CardRegistrationCallback callback) {
+                                 @NonNull String cardExpYear, @NonNull MidtransCallback<CardRegistrationResponse> callback) {
 
         if (isNetworkAvailable(getSdkContext())) {
             getMidtransServiceManager().cardRegistration(cardNumber, cardCvv, cardExpMonth, cardExpYear, clientKey, callback);
+        }
+    }
+
+    /**
+     * It will execute an api request to retrieve a authentication token.
+     *
+     * @param cardTokenRequest get card token  request object
+     * @param callback         get card token callback
+     */
+    public void getCardToken(@NonNull CardTokenRequest cardTokenRequest,
+                             @NonNull MidtransCallback<TokenDetailsResponse> callback) {
+
+        if (Validation.isNotEmpty(cardTokenRequest)) {
+            if (Validation.isValidForNetworkCall(getSdkContext(), callback)) {
+                getMidtransServiceManager().getToken(cardTokenRequest, callback);
+            }
+        } else {
+            callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_INVALID_DATA_SUPPLIED));
+        }
+    }
+
+    /**
+     * It will run backround task to save card to merchant server
+     *
+     * @param userId   id user
+     * @param requests save card request model
+     * @param callback save card callback
+     */
+    public void saveCards(@NonNull String userId, @NonNull ArrayList<SaveCardRequest> requests,
+                          @NonNull MidtransCallback<SaveCardResponse> callback) {
+        if (requests != null) {
+            if (Validation.isNetworkAvailable(getSdkContext())) {
+                if (Validation.isNotEmpty(getMerchantApiManager())) {
+                    getMerchantApiManager().saveCards(userId, requests, callback);
+                } else {
+                    callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_EMPTY_MERCHANT_URL));
+                }
+            }
+        } else {
+            callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
 }

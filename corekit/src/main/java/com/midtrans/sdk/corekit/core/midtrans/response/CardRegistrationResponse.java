@@ -1,4 +1,4 @@
-package com.midtrans.sdk.corekit.core.midtrans.charge;
+package com.midtrans.sdk.corekit.core.midtrans.response;
 
 import com.google.gson.annotations.SerializedName;
 

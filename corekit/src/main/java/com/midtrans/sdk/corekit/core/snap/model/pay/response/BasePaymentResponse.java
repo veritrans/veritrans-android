@@ -6,6 +6,7 @@ import com.midtrans.sdk.corekit.core.snap.model.pay.response.bcaklikpay.BcaKlikP
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.va.VaNumber;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BasePaymentResponse implements Serializable {
@@ -110,4 +111,17 @@ public class BasePaymentResponse implements Serializable {
     @SerializedName("permata_expiration")
     @Expose
     protected String permataExpiration;
+
+    @SerializedName("user_id")
+    protected String userId;
+
+    /**
+     * get bank point
+     */
+    @SerializedName("validation_messages")
+    private ArrayList<String> validationMessages;
+    @SerializedName("point_balance")
+    private Long pointBalance;
+    @SerializedName("point_balance_amount")
+    private String pointBalanceAmount;
 }

@@ -1,14 +1,21 @@
 package com.midtrans.sdk.corekit.core.merchant;
 
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.base.network.BaseServiceManager;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.CheckoutTransaction;
 import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutWithTransactionResponse;
+import com.midtrans.sdk.corekit.core.midtrans.response.SaveCardResponse;
+import com.midtrans.sdk.corekit.core.snap.model.pay.request.creditcard.SaveCardRequest;
 import com.midtrans.sdk.corekit.utilities.Constants;
 
+import java.util.List;
+
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MerchantApiManager extends BaseServiceManager {
 
@@ -50,5 +57,80 @@ public class MerchantApiManager extends BaseServiceManager {
                 });
             }
         }
+    }
+
+    /**
+     * This method is used to save credit cards to merchant server
+     *
+     * @param cardRequests credit card Request model
+     * @param userId       unique id for every user
+     * @param callback     save card callback
+     */
+    public void saveCards(String userId, final List<SaveCardRequest> cardRequests, final MidtransCallback<SaveCardResponse> callback) {
+        if (apiService == null) {
+            doOnApiServiceUnAvailable(callback);
+            return;
+        }
+
+        if (cardRequests != null) {
+            Call<List<SaveCardRequest>> call = apiService.saveCards(userId, cardRequests);
+
+            call.enqueue(new Callback<List<SaveCardRequest>>() {
+                @Override
+                public void onResponse(Call<List<SaveCardRequest>> call, Response<List<SaveCardRequest>> response) {
+                    releaseResources();
+
+                    String statusCode = "";
+                    List<SaveCardRequest> data = response.body();
+
+                    if (data != null && !data.isEmpty()) {
+                        SaveCardRequest cardResponse = data.get(0);
+                        if (cardResponse != null) {
+                            statusCode = cardResponse.getCode();
+                        }
+                    }
+
+                    if (isSuccess(response.code(), statusCode)) {
+                        SaveCardResponse saveCardResponse = new SaveCardResponse();
+                        saveCardResponse.setCode(response.code());
+                        saveCardResponse.setMessage(response.message());
+
+                        callback.onSuccess(saveCardResponse);
+                    } else {
+                        callback.onFailed(new Throwable(response.message()));
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<SaveCardRequest>> call, Throwable t) {
+                    handleServerResponse(null, callback, t);
+                }
+            });
+
+        } else {
+            doOnInvalidDataSupplied(callback);
+        }
+    }
+
+    private boolean isSuccess(int httpStatusCode, String responseStatusCode) {
+
+        if (httpStatusCode == 200
+                || httpStatusCode == 201
+                || isResponseStatusCodeSuccess(responseStatusCode)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean isResponseStatusCodeSuccess(String responseStatusCode) {
+
+        if (!TextUtils.isEmpty(responseStatusCode)
+                && (responseStatusCode.equals(Constants.STATUS_CODE_200)
+                || responseStatusCode.equals(Constants.STATUS_CODE_201))) {
+            return true;
+        }
+
+        return false;
     }
 }

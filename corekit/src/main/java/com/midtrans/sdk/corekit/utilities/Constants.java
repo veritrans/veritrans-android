@@ -87,6 +87,8 @@ public class Constants {
     public static final String MESSAGE_ERROR_SNAP_TOKEN = "Snap Token must not empty.";
     public static final String MESSAGE_ERROR_EMPTY_MERCHANT_URL = "Merchant base url is empty. Please set merchant base url on SDK";
 
+
+    public static final String MESSAGE_ERROR_INVALID_DATA_SUPPLIED = "Invalid data supplied to SDK.";
     /**
      * Error Message
      * Network Call

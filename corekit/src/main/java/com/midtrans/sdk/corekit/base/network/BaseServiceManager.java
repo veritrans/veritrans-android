@@ -2,7 +2,6 @@ package com.midtrans.sdk.corekit.base.network;
 
 import android.support.annotation.NonNull;
 
-import com.midtrans.sdk.corekit.base.callback.HttpRequestCallback;
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.core.snap.SnapApiService;
 import com.midtrans.sdk.corekit.core.snap.model.pay.response.BasePaymentResponse;
@@ -77,8 +76,14 @@ public abstract class BaseServiceManager {
         }
     }
 
-    protected void doOnApiServiceUnAvailable(HttpRequestCallback callback) {
+    protected void doOnApiServiceUnAvailable(MidtransCallback callback) {
         String errorMessage = Constants.MESSAGE_ERROR_EMPTY_MERCHANT_URL;
-        callback.onError(new Throwable(errorMessage));
+        callback.onFailed(new Throwable(errorMessage));
     }
+
+    protected void doOnInvalidDataSupplied(MidtransCallback callback) {
+        releaseResources();
+        callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_INVALID_DATA_SUPPLIED));
+    }
+
 }

@@ -155,6 +155,14 @@ public interface SnapApiService {
     @POST("v1/transactions/{snap_token}/pay")
     Call<BasePaymentResponse> paymentUsingCreditCard(@Path("snap_token") String snapToken, @Body CreditCardPaymentRequest creditCardPaymentRequest);
 
+    /**
+     * Get Banks Points from snap backend.
+     *
+     * @param snapToken snap token
+     * @param cardToken credit card token
+     */
+    @GET("v1/transactions/{snap_token}/point_inquiry/{card_token}")
+    Call<BasePaymentResponse> getBanksPoint(@Path("snap_token") String snapToken, @Path("card_token") String cardToken);
 
 
 }

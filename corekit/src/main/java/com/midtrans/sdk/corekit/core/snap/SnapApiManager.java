@@ -285,9 +285,10 @@ public class SnapApiManager extends BaseServiceManager {
 
     /**
      * This method is used for card payment using snap backend.
+     * <p>
+     * // * @param paymentRequest Payment details.
      *
-    // * @param paymentRequest Payment details.
-     * @param callback       Transaction callback
+     * @param callback Transaction callback
      */
 
     public void paymentUsingCreditCard(final String snapToken,
@@ -315,6 +316,20 @@ public class SnapApiManager extends BaseServiceManager {
         if (isSnapTokenAvailable(callback, snapToken, apiService)) {
             MandiriClickpayPaymentRequest paymentRequest = new MandiriClickpayPaymentRequest(PaymentType.KLIK_BCA, mandiriClickpayParams);
             basePaymentResponseCall = apiService.paymentMandiriClickpay(snapToken, paymentRequest);
+            handleCallbackResponse(basePaymentResponseCall, callback);
+        }
+    }
+
+    /**
+     * Get points of given card
+     *
+     * @param snapToken snap token
+     * @param cardToken credit card token
+     * @param callback  BNI points callback instance
+     */
+    public void getBanksPoint(String snapToken, String cardToken, final MidtransCallback<BasePaymentResponse> callback) {
+        if (isSnapTokenAvailable(callback, snapToken, apiService)) {
+            basePaymentResponseCall = apiService.getBanksPoint(snapToken, cardToken);
             handleCallbackResponse(basePaymentResponseCall, callback);
         }
     }
