@@ -1,12 +1,13 @@
 package com.midtrans.sdk.corekit.core.grouppayment;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.core.midtrans.CardTokenRequest;
-import com.midtrans.sdk.corekit.core.midtrans.callback.CardRegistrationCallback;
-import com.midtrans.sdk.corekit.core.midtrans.callback.CardTokenCallback;
-import com.midtrans.sdk.corekit.core.midtrans.callback.SaveCardCallback;
+import com.midtrans.sdk.corekit.core.midtrans.response.CardRegistrationResponse;
+import com.midtrans.sdk.corekit.core.midtrans.response.SaveCardResponse;
+import com.midtrans.sdk.corekit.core.midtrans.response.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.CustomerDetailPayRequest;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.creditcard.CreditCardPaymentParams;
 import com.midtrans.sdk.corekit.core.snap.model.pay.request.creditcard.SaveCardRequest;
@@ -17,6 +18,7 @@ import com.midtrans.sdk.corekit.utilities.Validation;
 import java.util.ArrayList;
 
 public class CreditCardCharge extends PaymentsGroupBase {
+    private static final String TAG = "Credit Card Charge";
 
 
     /**
@@ -46,7 +48,7 @@ public class CreditCardCharge extends PaymentsGroupBase {
      */
     public void cardRegistration(@NonNull String cardNumber, @NonNull String clientKey,
                                  @NonNull String cardCvv, @NonNull String cardExpMonth,
-                                 @NonNull String cardExpYear, @NonNull CardRegistrationCallback callback) {
+                                 @NonNull String cardExpYear, @NonNull MidtransCallback<CardRegistrationResponse> callback) {
 
         if (isNetworkAvailable(getSdkContext())) {
             getMidtransServiceManager().cardRegistration(cardNumber, cardCvv, cardExpMonth, cardExpYear, clientKey, callback);
@@ -59,7 +61,7 @@ public class CreditCardCharge extends PaymentsGroupBase {
      * @param cardTokenRequest get card token  request object
      * @param callback         get card token callback
      */
-    public void getCardToken(CardTokenRequest cardTokenRequest, CardTokenCallback callback) {
+    public void getCardToken(CardTokenRequest cardTokenRequest, MidtransCallback<TokenDetailsResponse> callback) {
         if (callback == null) {
             //Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
@@ -110,7 +112,7 @@ public class CreditCardCharge extends PaymentsGroupBase {
      * @param callback save card callback
      */
     public void saveCards(@NonNull String userId, @NonNull ArrayList<SaveCardRequest> requests,
-                          @NonNull SaveCardCallback callback) {
+                          @NonNull MidtransCallback<SaveCardResponse> callback) {
         if (callback == null) {
             //Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
