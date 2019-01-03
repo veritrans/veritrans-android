@@ -64,7 +64,7 @@ public class MidtransServiceManager extends BaseServiceManager {
 
             @Override
             public void onFailure(Call<CardRegistrationResponse> call, Throwable t) {
-                doOnResponseFailure(t, callback);
+                handleServerResponse(null, callback, t);
             }
         });
     }
@@ -171,12 +171,12 @@ public class MidtransServiceManager extends BaseServiceManager {
         call.enqueue(new Callback<TokenDetailsResponse>() {
             @Override
             public void onResponse(Call<TokenDetailsResponse> call, Response<TokenDetailsResponse> response) {
-                doOnGetCardTokenSuccess(response, callback);
+                handleServerResponse(response, callback, null);
             }
 
             @Override
             public void onFailure(Call<TokenDetailsResponse> call, Throwable t) {
-                doOnResponseFailure(t, callback);
+                handleServerResponse(null, callback, t);
             }
         });
     }

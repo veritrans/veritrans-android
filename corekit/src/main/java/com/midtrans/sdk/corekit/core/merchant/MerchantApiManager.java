@@ -93,7 +93,7 @@ public class MerchantApiManager extends BaseServiceManager {
 
             @Override
             public void onFailure(Call<List<SaveCardRequest>> call, Throwable t) {
-                doOnResponseFailure(t, callback);
+                handleServerResponse(null, callback, t);
             }
         });
     }
@@ -142,7 +142,7 @@ public class MerchantApiManager extends BaseServiceManager {
 
                 @Override
                 public void onFailure(Call<List<SaveCardRequest>> call, Throwable t) {
-                    doOnResponseFailure(t, callback);
+                    handleServerResponse(null, callback, t);
                 }
             });
 

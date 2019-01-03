@@ -87,47 +87,6 @@ public abstract class BaseServiceManager {
         callback.onFailed(new Throwable(errorMessage));
     }
 
-    protected void doOnGetCardTokenSuccess(Response<TokenDetailsResponse> response, MidtransCallback<TokenDetailsResponse> callback) {
-        releaseResources();
-
-        TokenDetailsResponse tokenDetailsResponse = response.body();
-
-        if (tokenDetailsResponse != null) {
-            if (tokenDetailsResponse.getStatusCode().trim().equalsIgnoreCase(Constants.STATUS_CODE_200)) {
-                callback.onSuccess(tokenDetailsResponse);
-            } else {
-                if (!TextUtils.isEmpty(tokenDetailsResponse.getStatusMessage())) {
-                    callback.onFailed(new Throwable(tokenDetailsResponse.getStatusMessage()));
-                } else {
-                    callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_EMPTY_RESPONSE));
-                }
-            }
-        } else {
-            callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_EMPTY_RESPONSE));
-            Logger.error(TAG, Constants.MESSAGE_ERROR_EMPTY_RESPONSE);
-        }
-    }
-
-    protected void doOnResponseFailure(Throwable error, MidtransCallback callback) {
-        releaseResources();
-        try {
-            Logger.error(TAG, "Error > cause:" + error.getCause() + "| message:" + error.getMessage());
-
-            if (callback instanceof SaveCardCallback && error.getCause() instanceof ConversionException) {
-
-                SaveCardResponse saveCardResponse = new SaveCardResponse();
-                saveCardResponse.setCode(200);
-                saveCardResponse.setMessage(error.getMessage());
-                ((SaveCardCallback) callback).onSuccess(saveCardResponse);
-                return;
-            }
-            callback.onFailed(error);
-
-        } catch (Exception e) {
-            callback.onFailed(new Throwable(e.getMessage(), e.getCause()));
-        }
-    }
-
     protected void doOnInvalidDataSupplied(MidtransCallback callback) {
         releaseResources();
         callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_INVALID_DATA_SUPPLIED));
