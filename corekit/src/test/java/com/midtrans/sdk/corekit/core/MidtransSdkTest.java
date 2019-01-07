@@ -11,18 +11,18 @@ import com.midtrans.sdk.corekit.SDKConfigTest;
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.base.enums.Environment;
 import com.midtrans.sdk.corekit.base.network.MidtransRestAdapter;
-import com.midtrans.sdk.corekit.core.merchant.MerchantApiManager;
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.CheckoutTransaction;
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutWithTransactionResponse;
-import com.midtrans.sdk.corekit.core.snap.SnapApiManager;
-import com.midtrans.sdk.corekit.core.snap.model.pay.request.CustomerDetailPayRequest;
-import com.midtrans.sdk.corekit.core.snap.model.pay.request.mandiriclick.MandiriClickpayParams;
-import com.midtrans.sdk.corekit.core.snap.model.pay.response.BasePaymentResponse;
-import com.midtrans.sdk.corekit.core.snap.model.transaction.response.PaymentInfoResponse;
+import com.midtrans.sdk.corekit.core.api.merchant.MerchantApiManager;
+import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.CheckoutTransaction;
+import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.response.CheckoutWithTransactionResponse;
+import com.midtrans.sdk.corekit.core.api.snap.SnapApiManager;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.CustomerDetailPayRequest;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.mandiriclick.MandiriClickpayParams;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BasePaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.corekit.utilities.NetworkHelper;
-import com.midtrans.sdk.corekit.utilities.Utils;
-import com.midtrans.sdk.corekit.utilities.Validation;
+import com.midtrans.sdk.corekit.utilities.Helper;
+import com.midtrans.sdk.corekit.utilities.ValidationHelper;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -39,7 +39,7 @@ import static org.powermock.api.mockito.PowerMockito.verifyStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({NetworkHelper.class, Looper.class, Utils.class, Log.class, TextUtils.class,
+@PrepareForTest({NetworkHelper.class, Looper.class, Helper.class, Log.class, TextUtils.class,
         Logger.class, MidtransRestAdapter.class})
 public class MidtransSdkTest {
 
@@ -87,7 +87,7 @@ public class MidtransSdkTest {
         PowerMockito.mockStatic(Log.class);
         PowerMockito.mockStatic(Logger.class);
         PowerMockito.mockStatic(Looper.class);
-        PowerMockito.mockStatic(Utils.class);
+        PowerMockito.mockStatic(Helper.class);
         PowerMockito.mockStatic(NetworkHelper.class);
         PowerMockito.mockStatic(MidtransRestAdapter.class);
 
@@ -95,6 +95,7 @@ public class MidtransSdkTest {
         Mockito.when(contextMock.getSystemService(Context.CONNECTIVITY_SERVICE)).thenReturn(connectivityManager);
         Mockito.when(connectivityManager.getActiveNetworkInfo()).thenReturn(networkInfo);
         Mockito.when(networkInfo.isConnected()).thenReturn(false);
+        Mockito.when(midtransSdkSpy.getApiRequestTimeOut()).thenReturn(30);
         Mockito.when(TextUtils.isEmpty(Matchers.anyString())).thenReturn(false);
         Mockito.when(TextUtils.isEmpty(null)).thenReturn(true);
         Mockito.when(TextUtils.isEmpty("")).thenReturn(true);
@@ -181,7 +182,7 @@ public class MidtransSdkTest {
     @Test
     public void test_checkout() {
         midtransSdkSpy.setCheckoutTransaction(checkoutTransactionMock);
-        when(Validation.isNetworkAvailable(midtransSdkSpy.getContext())).thenReturn(true);
+        when(ValidationHelper.isNetworkAvailable(midtransSdkSpy.getContext())).thenReturn(true);
         midtransSdkSpy.checkoutWithTransaction(checkoutResponseMidtransCallback);
         Mockito.verify(midtransSdkSpy).checkoutWithTransaction(checkoutResponseMidtransCallback);
     }
@@ -196,7 +197,7 @@ public class MidtransSdkTest {
     @Test
     public void test_checkout_whenNetworkUnAvailable() {
         midtransSdkSpy.setCheckoutTransaction(checkoutTransactionMock);
-        when(Validation.isNetworkAvailable(midtransSdkSpy.getContext())).thenReturn(false);
+        when(ValidationHelper.isNetworkAvailable(midtransSdkSpy.getContext())).thenReturn(false);
         midtransSdkSpy.checkoutWithTransaction(checkoutResponseMidtransCallback);
         Mockito.verify(checkoutResponseMidtransCallback).onFailed(Matchers.any(Throwable.class));
     }
@@ -220,14 +221,14 @@ public class MidtransSdkTest {
 
     /*@Test
     public void test_getSnapTransaction_whenTokenNull() {
-        when(Validation.isNetworkAvailable(midtransSdkSpy.getContext())).thenReturn(true);
+        when(ValidationHelper.isNetworkAvailable(midtransSdkSpy.getContext())).thenReturn(true);
         midtransSdkSpy.getPaymentInfo(null, paymentInfoResponseMidtransCallback);
         Mockito.verify(paymentInfoResponseMidtransCallback).onFailed(Matchers.any(Throwable.class));
     }*/
 
     @Test
     public void test_getSnapTransaction_whenNetworkUnAvailable() {
-        when(Validation.isNetworkAvailable(midtransSdkSpy.getContext())).thenReturn(false);
+        when(ValidationHelper.isNetworkAvailable(midtransSdkSpy.getContext())).thenReturn(false);
         midtransSdkSpy.getPaymentInfo(null, paymentInfoResponseMidtransCallback);
         Mockito.verify(paymentInfoResponseMidtransCallback).onFailed(Matchers.any(Throwable.class));
     }

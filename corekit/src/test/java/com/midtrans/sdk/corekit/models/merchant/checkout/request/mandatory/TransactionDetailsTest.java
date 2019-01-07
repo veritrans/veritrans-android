@@ -2,8 +2,8 @@ package com.midtrans.sdk.corekit.models.merchant.checkout.request.mandatory;
 
 import android.text.TextUtils;
 
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.mandatory.TransactionDetails;
-import com.midtrans.sdk.corekit.utilities.Currency;
+import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.mandatory.TransactionDetails;
+import com.midtrans.sdk.corekit.base.model.Currency;
 
 import org.junit.Before;
 import org.junit.Test;

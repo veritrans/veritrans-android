@@ -1,6 +1,6 @@
 package com.midtrans.sdk.corekit.models.merchant.checkout.response;
 
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutWithTransactionResponse;
+import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.response.CheckoutWithTransactionResponse;
 
 import org.junit.Before;
 import org.junit.Test;
