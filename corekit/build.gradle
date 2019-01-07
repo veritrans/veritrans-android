@@ -6,8 +6,6 @@ group = 'com.midtrans'
 version = '2.0.0'
 
 android {
-    def DEFAULT_PUBLISH
-
     compileSdkVersion rootProject.sdkVersion
     buildToolsVersion rootProject.buildToolsVersion
     flavorDimensions("mode")
@@ -36,29 +34,6 @@ android {
         }
         debug {
             testCoverageEnabled = true
-        }
-    }
-    productFlavors {
-        development {
-            dimension = "mode"
-            DEFAULT_PUBLISH = "developmentRelease"
-            buildConfigField "String", "BASE_URL", "\"https://api.sandbox.midtrans.com/v2/\""
-            buildConfigField "String", "SNAP_BASE_URL", "\"https://app.sandbox.midtrans.com/snap/\""
-            buildConfigField "String", "PROMO_ENGINE_URL", "\"https://promo.vt-stage.info/\""
-        }
-        staging {
-            dimension = "mode"
-            DEFAULT_PUBLISH = "stagingRelease"
-            buildConfigField "String", "BASE_URL", "\"https://api.stg.veritrans.co.id/v2/\""
-            buildConfigField "String", "SNAP_BASE_URL", "\"https://midtrans-checkout1.stg.veritrans.co.id/snap/\""
-            buildConfigField "String", "PROMO_ENGINE_URL", "\"https://promo.vt-stage.info/\""
-        }
-        production {
-            dimension = "mode"
-            DEFAULT_PUBLISH = "productionRelease"
-            buildConfigField "String", "BASE_URL", "\"https://api.midtrans.com/v2/\""
-            buildConfigField "String", "SNAP_BASE_URL", "\"https://app.midtrans.com/snap/\""
-            buildConfigField "String", "PROMO_ENGINE_URL", "\"https://promo.vt-stage.info/\""
         }
     }
 }
