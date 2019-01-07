@@ -3,7 +3,7 @@ package com.midtrans.sdk.corekit.core.payment;
 import android.content.Context;
 
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
-import com.midtrans.sdk.corekit.core.MidtransSdk;
+import com.midtrans.sdk.corekit.MidtransSdk;
 import com.midtrans.sdk.corekit.core.api.merchant.MerchantApiManager;
 import com.midtrans.sdk.corekit.core.api.midtrans.MidtransApiManager;
 import com.midtrans.sdk.corekit.core.api.snap.SnapApiManager;

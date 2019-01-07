@@ -1,4 +1,4 @@
-package com.midtrans.sdk.corekit.core;
+package com.midtrans.sdk.corekit;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

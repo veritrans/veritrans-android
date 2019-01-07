@@ -9,7 +9,7 @@ import com.midtrans.sdk.corekit.SDKConfigTest;
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.base.enums.Environment;
 import com.midtrans.sdk.corekit.base.network.MidtransRestAdapter;
-import com.midtrans.sdk.corekit.core.MidtransSdk;
+import com.midtrans.sdk.corekit.MidtransSdk;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.CustomerDetailPayRequest;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.mandiriclick.MandiriClickpayParams;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BasePaymentResponse;

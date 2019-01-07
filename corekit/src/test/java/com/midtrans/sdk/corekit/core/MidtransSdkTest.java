@@ -7,6 +7,7 @@ import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.midtrans.sdk.corekit.MidtransSdk;
 import com.midtrans.sdk.corekit.SDKConfigTest;
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.base.enums.Environment;
