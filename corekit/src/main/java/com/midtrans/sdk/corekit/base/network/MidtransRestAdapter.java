@@ -1,14 +1,15 @@
 package com.midtrans.sdk.corekit.base.network;
 
-import android.os.Build;
-
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.internal.bind.DateTypeAdapter;
-import com.midtrans.sdk.corekit.core.merchant.MerchantApiService;
-import com.midtrans.sdk.corekit.core.midtrans.MidtransApiService;
-import com.midtrans.sdk.corekit.core.snap.SnapApiService;
+
+import android.os.Build;
+
+import com.midtrans.sdk.corekit.core.api.merchant.MerchantApiService;
+import com.midtrans.sdk.corekit.core.api.midtrans.MidtransApiService;
+import com.midtrans.sdk.corekit.core.api.snap.SnapApiService;
 import com.midtrans.sdk.corekit.utilities.Logger;
 
 import java.io.IOException;
@@ -36,10 +37,15 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static com.midtrans.sdk.corekit.utilities.Constants.ACCEPT;
+import static com.midtrans.sdk.corekit.utilities.Constants.APPLICATION_JSON_FORMAT;
+import static com.midtrans.sdk.corekit.utilities.Constants.CONTENT_TYPE;
+
 public class MidtransRestAdapter {
 
     /**
      * Create Merchant API implementation
+     * It will return instance of Merchant service using that we can execute api calls.
      *
      * @param merchantBaseUrl Merchant base URL
      * @return Merchant API implementation
@@ -57,9 +63,10 @@ public class MidtransRestAdapter {
     }
 
     /**
-     * It will return instance of PaymentAPI using that we can execute api calls.
+     * Create Midtrans API implementation
+     * It will return instance of MidtransAPI service using that we can execute api calls.
      *
-     * @return Payment API implementation
+     * @return Midtrans API implementation
      */
     public static MidtransApiService newMidtransApiService(String merchantBaseUrl, int timeout) {
 
@@ -72,6 +79,12 @@ public class MidtransRestAdapter {
         return retrofit.create(MidtransApiService.class);
     }
 
+    /**
+     * Create Snap API implementation
+     * It will return instance of SnapAPI service using that we can execute api calls.
+     *
+     * @return Payment API implementation
+     */
     public static SnapApiService newSnapApiService(String merchantBaseUrl, int timeout) {
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -83,6 +96,26 @@ public class MidtransRestAdapter {
         return retrofit.create(SnapApiService.class);
     }
 
+    /**
+     * Create GSON implementation
+     * It will return instance of GSON adapter.
+     *
+     * @return GSON implementation
+     */
+    private static Gson newGson() {
+        return new GsonBuilder()
+                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+                .registerTypeAdapter(Date.class, new DateTypeAdapter())
+//                .registerTypeAdapter(CreditCardPaymentParams.class, new CustomTypeAdapter())
+                .create();
+    }
+
+    /**
+     * Create HttpLoggingInterceptor implementation
+     * It will return instance of HttpLoggingInterceptor.
+     *
+     * @return HttpLoggingInterceptor
+     */
     private static HttpLoggingInterceptor newHttpLoggingInterceptor() {
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor
@@ -92,22 +125,20 @@ public class MidtransRestAdapter {
         return httpLoggingInterceptor;
     }
 
-    private static Gson newGson() {
-        return new GsonBuilder()
-                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
-                .registerTypeAdapter(Date.class, new DateTypeAdapter())
-//                .registerTypeAdapter(CreditCardPaymentParams.class, new CustomTypeAdapter())
-                .create();
-    }
-
+    /**
+     * Create Interceptor implementation
+     * It will return instance of Interceptor.
+     *
+     * @return Interceptor
+     */
     private static Interceptor newHeaderInterceptor() {
         return new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
                 Request request = chain.request();
                 Request headerInterceptedRequest = request.newBuilder()
-                        .addHeader("Content-Type", "application/json")
-                        .addHeader("Accept", "application/json")
+                        .addHeader(CONTENT_TYPE, APPLICATION_JSON_FORMAT)
+                        .addHeader(ACCEPT, APPLICATION_JSON_FORMAT)
                         .build();
 
                 return chain.proceed(headerInterceptedRequest);
@@ -115,6 +146,12 @@ public class MidtransRestAdapter {
         };
     }
 
+    /**
+     * Create TLS for passing ssl under KitKat
+     * It will return OkHttpClient.Builder.
+     *
+     * @return OkHttpClient.Builder
+     */
     private static OkHttpClient.Builder delegateTlsCompat(OkHttpClient.Builder builder) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN && Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
             try {
@@ -141,6 +178,12 @@ public class MidtransRestAdapter {
         return builder;
     }
 
+    /**
+     * Create X509TrustManager
+     * It will return X509TrustManager.
+     *
+     * @return X509TrustManager
+     */
     private static X509TrustManager getTrustManager() throws NoSuchAlgorithmException, KeyStoreException {
         TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(
                 TrustManagerFactory.getDefaultAlgorithm());
@@ -154,6 +197,12 @@ public class MidtransRestAdapter {
         return (X509TrustManager) trustManagers[0];
     }
 
+    /**
+     * Create OkHttpClient for making network call
+     * It will return OkHttpClient.
+     *
+     * @return OkHttpClient
+     */
     private static OkHttpClient newOkHttpClient(int timeout) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         delegateTlsCompat(builder);
