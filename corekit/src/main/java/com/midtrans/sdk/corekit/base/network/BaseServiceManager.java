@@ -3,9 +3,11 @@ package com.midtrans.sdk.corekit.base.network;
 import android.support.annotation.NonNull;
 
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
-import com.midtrans.sdk.corekit.core.snap.SnapApiService;
-import com.midtrans.sdk.corekit.core.snap.model.pay.response.BasePaymentResponse;
-import com.midtrans.sdk.corekit.utilities.Constants;
+import com.midtrans.sdk.corekit.core.api.merchant.model.savecard.SaveCardResponse;
+import com.midtrans.sdk.corekit.core.api.snap.SnapApiService;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.creditcard.SaveCardRequest;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -14,25 +16,21 @@ import retrofit2.Response;
 import static com.midtrans.sdk.corekit.utilities.Constants.MESSAGE_ERROR_EMPTY_MERCHANT_URL;
 import static com.midtrans.sdk.corekit.utilities.Constants.MESSAGE_ERROR_EMPTY_RESPONSE;
 import static com.midtrans.sdk.corekit.utilities.Constants.MESSAGE_ERROR_FAILURE_RESPONSE;
+import static com.midtrans.sdk.corekit.utilities.Constants.MESSAGE_ERROR_INVALID_DATA_SUPPLIED;
 import static com.midtrans.sdk.corekit.utilities.Constants.MESSAGE_ERROR_SNAP_TOKEN;
+import static com.midtrans.sdk.corekit.utilities.NetworkHelper.isSuccess;
 
 public abstract class BaseServiceManager {
-    private static String TAG = BaseServiceManager.class.getSimpleName();
-    Boolean isRunning;
 
-    protected void releaseResources() {
-        this.isRunning = false;
-    }
-
-    public <T> Boolean isSnapTokenAvailable(MidtransCallback<T> callback,
-                                            String snapToken,
-                                            SnapApiService apiService) {
+    protected <T> Boolean isSnapTokenAvailable(MidtransCallback<T> callback,
+                                               String snapToken,
+                                               SnapApiService apiService) {
         if (snapToken == null) {
-            callback.onFailed(new Throwable(MESSAGE_ERROR_SNAP_TOKEN));
+            doOnSnapTokenUnAvailable(callback);
             return false;
         }
         if (apiService == null) {
-            callback.onFailed(new Throwable(MESSAGE_ERROR_EMPTY_MERCHANT_URL));
+            doOnApiServiceUnAvailable(callback);
             return false;
         }
         if (apiService != null && snapToken != null) {
@@ -41,25 +39,57 @@ public abstract class BaseServiceManager {
         return null;
     }
 
-    public void handleCallbackResponse(Call<BasePaymentResponse> basePaymentResponseCall, final MidtransCallback<BasePaymentResponse> basePaymentResponseMidtransCallback) {
-        basePaymentResponseCall.enqueue(new Callback<BasePaymentResponse>() {
+    protected <T> void handleCall(Call<T> basePaymentResponseCall,
+                                  final MidtransCallback<T> basePaymentResponseMidtransCallback) {
+        basePaymentResponseCall.enqueue(new Callback<T>() {
             @Override
-            public void onResponse(@NonNull Call<BasePaymentResponse> call, @NonNull Response<BasePaymentResponse> response) {
-                releaseResources();
+            public void onResponse(@NonNull Call<T> call, @NonNull Response<T> response) {
                 handleServerResponse(response, basePaymentResponseMidtransCallback, null);
             }
 
             @Override
-            public void onFailure(@NonNull Call<BasePaymentResponse> call, @NonNull Throwable throwable) {
-                releaseResources();
+            public void onFailure(@NonNull Call<T> call, @NonNull Throwable throwable) {
                 handleServerResponse(null, basePaymentResponseMidtransCallback, throwable);
             }
         });
     }
 
-    public <T> void handleServerResponse(Response<T> response,
-                                         MidtransCallback<T> callback,
-                                         Throwable throwable) {
+    protected void handleCallForSaveCard(Call<List<SaveCardRequest>> basePaymentResponseCall,
+                                         final MidtransCallback<SaveCardResponse> basePaymentResponseMidtransCallback) {
+        basePaymentResponseCall.enqueue(new Callback<List<SaveCardRequest>>() {
+            @Override
+            public void onResponse(Call<List<SaveCardRequest>> call, Response<List<SaveCardRequest>> response) {
+                String statusCode = "";
+                List<SaveCardRequest> data = response.body();
+
+                if (data != null && !data.isEmpty()) {
+                    SaveCardRequest cardResponse = data.get(0);
+                    if (cardResponse != null) {
+                        statusCode = cardResponse.getCode();
+                    }
+                }
+
+                if (isSuccess(response.code(), statusCode)) {
+                    SaveCardResponse saveCardResponse = new SaveCardResponse();
+                    saveCardResponse.setCode(response.code());
+                    saveCardResponse.setMessage(response.message());
+
+                    basePaymentResponseMidtransCallback.onSuccess(saveCardResponse);
+                } else {
+                    basePaymentResponseMidtransCallback.onFailed(new Throwable(response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<SaveCardRequest>> call, Throwable t) {
+                handleServerResponse(null, basePaymentResponseMidtransCallback, t);
+            }
+        });
+    }
+
+    private <T> void handleServerResponse(Response<T> response,
+                                          MidtransCallback<T> callback,
+                                          Throwable throwable) {
         if (response != null && response.isSuccessful()) {
             if (response.code() != 204) {
                 T responseBody = response.body();
@@ -76,14 +106,16 @@ public abstract class BaseServiceManager {
         }
     }
 
+    protected void doOnSnapTokenUnAvailable(MidtransCallback callback) {
+        callback.onFailed(new Throwable(MESSAGE_ERROR_SNAP_TOKEN));
+    }
+
     protected void doOnApiServiceUnAvailable(MidtransCallback callback) {
-        String errorMessage = Constants.MESSAGE_ERROR_EMPTY_MERCHANT_URL;
-        callback.onFailed(new Throwable(errorMessage));
+        callback.onFailed(new Throwable(MESSAGE_ERROR_EMPTY_MERCHANT_URL));
     }
 
     protected void doOnInvalidDataSupplied(MidtransCallback callback) {
-        releaseResources();
-        callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_INVALID_DATA_SUPPLIED));
+        callback.onFailed(new Throwable(MESSAGE_ERROR_INVALID_DATA_SUPPLIED));
     }
 
 }
