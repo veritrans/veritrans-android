@@ -41,15 +41,8 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     testImplementation 'junit:junit:4.12'
-    implementation "com.android.support:appcompat-v7:${rootProject.supportLibVersion}"
-    implementation "com.jakewharton.retrofit:retrofit1-okhttp3-client:1.1.0"
-    implementation "com.squareup.okhttp3:okhttp:${rootProject.okHttpVersion}"
-    implementation "com.squareup.okhttp3:logging-interceptor:${rootProject.okHttpVersion}"
-    implementation "com.squareup.retrofit2:retrofit:${rootProject.retrofitVersion}"
-    implementation "com.squareup.retrofit2:converter-gson:${rootProject.retrofitVersion}"
-
-    testImplementation 'org.mockito:mockito-core:2.21.0'
-    testImplementation 'org.mockito:mockito-inline:2.7.22'
+    testImplementation "org.mockito:mockito-core:${rootProject.mockitoCoreVersion}"
+    testImplementation "org.mockito:mockito-inline:${rootProject.mockitoInlineVersion}"
     testImplementation("org.powermock:powermock-api-mockito:${rootProject.powerMockVersion}") {
         exclude module: 'hamcrest-core'
         exclude module: 'objenesis'
@@ -67,10 +60,17 @@ dependencies {
         exclude module: 'objenesis'
     }
 
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation "com.android.support.test:runner:${rootProject.androidRunnerVersion}"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:${rootProject.espressoCoreVersion}"
     androidTestImplementation("org.powermock:powermock-mockito-release-full:${rootProject.powerMockVersion}") {
         exclude module: 'hamcrest-core'
         exclude module: 'objenesis'
     }
+
+    implementation "com.android.support:appcompat-v7:${rootProject.supportLibVersion}"
+    implementation "com.jakewharton.retrofit:retrofit1-okhttp3-client:${rootProject.okHttpClientVersion}"
+    implementation "com.squareup.okhttp3:okhttp:${rootProject.okHttpVersion}"
+    implementation "com.squareup.okhttp3:logging-interceptor:${rootProject.okHttpVersion}"
+    implementation "com.squareup.retrofit2:retrofit:${rootProject.retrofitVersion}"
+    implementation "com.squareup.retrofit2:converter-gson:${rootProject.retrofitVersion}"
 }
