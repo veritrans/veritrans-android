@@ -6,21 +6,21 @@ import android.text.TextUtils;
 
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.base.enums.Environment;
-import com.midtrans.sdk.corekit.core.merchant.MerchantApiManager;
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.CheckoutTransaction;
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutWithTransactionResponse;
-import com.midtrans.sdk.corekit.core.midtrans.MidtransServiceManager;
-import com.midtrans.sdk.corekit.core.snap.SnapApiManager;
-import com.midtrans.sdk.corekit.core.snap.model.pay.response.BasePaymentResponse;
-import com.midtrans.sdk.corekit.core.snap.model.transaction.response.PaymentInfoResponse;
+import com.midtrans.sdk.corekit.core.api.merchant.MerchantApiManager;
+import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.CheckoutTransaction;
+import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.response.CheckoutWithTransactionResponse;
+import com.midtrans.sdk.corekit.core.api.midtrans.MidtransApiManager;
+import com.midtrans.sdk.corekit.core.api.snap.SnapApiManager;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BasePaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.corekit.utilities.NetworkHelper;
-import com.midtrans.sdk.corekit.utilities.Validation;
 
 import static android.webkit.URLUtil.isValidUrl;
 import static com.midtrans.sdk.corekit.utilities.Constants.ERROR_SDK_CLIENT_KEY_AND_CONTEXT_PROPERLY;
 import static com.midtrans.sdk.corekit.utilities.Constants.ERROR_SDK_IS_NOT_INITIALIZE_PROPERLY;
 import static com.midtrans.sdk.corekit.utilities.Constants.ERROR_SDK_MERCHANT_BASE_URL_PROPERLY;
+import static com.midtrans.sdk.corekit.utilities.NetworkHelper.isValidForNetworkCall;
 
 public class MidtransSdk {
 
@@ -28,7 +28,6 @@ public class MidtransSdk {
      * Instance variable.
      */
     private static volatile MidtransSdk SINGLETON_INSTANCE = null;
-    private final int apiRequestTimeOut = 30;
     private final String BASE_URL_SANDBOX = "https://api.sandbox.midtrans.com/v2/";
     private final String BASE_URL_PRODUCTION = "https://api.midtrans.com/v2/";
     private final String SNAP_BASE_URL_SANDBOX = "https://app.sandbox.midtrans.com/snap/";
@@ -45,22 +44,25 @@ public class MidtransSdk {
      * Optional property.
      */
     private Environment midtransEnvironment;
+    private int apiRequestTimeOut;
     /**
      * Mandatory checkoutWithTransaction property.
      */
     private CheckoutTransaction checkoutTransaction = null;
     private MerchantApiManager merchantApiManager;
     private SnapApiManager snapApiManager;
-    private MidtransServiceManager midtransServiceManager;
+    private MidtransApiManager midtransApiManager;
 
     MidtransSdk(Context context,
                 String clientId,
                 String merchantUrl,
-                Environment environment) {
+                Environment environment,
+                int apiRequestTimeOut) {
         this.context = context.getApplicationContext();
         this.merchantClientId = clientId;
         this.merchantBaseUrl = merchantUrl;
         this.midtransEnvironment = environment;
+        this.apiRequestTimeOut = apiRequestTimeOut;
         String snapBaseUrl, midtransBaseUrl;
         if (this.midtransEnvironment == Environment.SANDBOX) {
             snapBaseUrl = SNAP_BASE_URL_SANDBOX;
@@ -71,7 +73,7 @@ public class MidtransSdk {
         }
         this.merchantApiManager = NetworkHelper.newMerchantServiceManager(merchantBaseUrl, apiRequestTimeOut);
         this.snapApiManager = NetworkHelper.newSnapServiceManager(snapBaseUrl, apiRequestTimeOut);
-        this.midtransServiceManager = NetworkHelper.newMidtransServiceManager(midtransBaseUrl, apiRequestTimeOut);
+        this.midtransApiManager = NetworkHelper.newMidtransServiceManager(midtransBaseUrl, apiRequestTimeOut);
     }
 
     /**
@@ -98,9 +100,7 @@ public class MidtransSdk {
      */
     public synchronized static MidtransSdk getInstance() {
         if (SINGLETON_INSTANCE == null) {
-            String message = "MidtransSdk isn't initialized. Please use MidtransSdk.builder() to initialize.";
-            RuntimeException runtimeException = new RuntimeException(message);
-            Logger.error(message, runtimeException);
+            doOnSdkNotInitialize();
         }
         return SINGLETON_INSTANCE;
     }
@@ -109,20 +109,29 @@ public class MidtransSdk {
      * @return snap api manager
      */
     public SnapApiManager getSnapApiManager() {
+        if (snapApiManager == null) {
+            doOnSdkNotInitialize();
+        }
         return snapApiManager;
     }
 
     /**
      * @return midtrans service manager
      */
-    public MidtransServiceManager getMidtransServiceManager() {
-        return midtransServiceManager;
+    public MidtransApiManager getMidtransApiManager() {
+        if (midtransApiManager == null) {
+            doOnSdkNotInitialize();
+        }
+        return midtransApiManager;
     }
 
     /**
      * @return merchant api manager
      */
     public MerchantApiManager getMerchantApiManager() {
+        if (merchantApiManager == null) {
+            doOnSdkNotInitialize();
+        }
         return merchantApiManager;
     }
 
@@ -132,6 +141,9 @@ public class MidtransSdk {
      * @return merchant url value.
      */
     public Environment getEnvironment() {
+        if (midtransEnvironment == null) {
+            doOnSdkNotInitialize();
+        }
         return midtransEnvironment;
     }
 
@@ -141,6 +153,9 @@ public class MidtransSdk {
      * @return context value.
      */
     public Context getContext() {
+        if (context == null) {
+            doOnSdkNotInitialize();
+        }
         return context;
     }
 
@@ -150,6 +165,9 @@ public class MidtransSdk {
      * @return merchant client id value.
      */
     public String getMerchantClientId() {
+        if (merchantClientId == null) {
+            doOnSdkNotInitialize();
+        }
         return merchantClientId;
     }
 
@@ -159,6 +177,9 @@ public class MidtransSdk {
      * @return merchant base url value.
      */
     public String getMerchantBaseUrl() {
+        if (merchantBaseUrl == null) {
+            doOnSdkNotInitialize();
+        }
         return merchantBaseUrl;
     }
 
@@ -168,6 +189,9 @@ public class MidtransSdk {
      * @return timeout value.
      */
     public int getApiRequestTimeOut() {
+        if (apiRequestTimeOut == 0) {
+            doOnSdkNotInitialize();
+        }
         return apiRequestTimeOut;
     }
 
@@ -206,7 +230,7 @@ public class MidtransSdk {
      */
     public void checkoutWithTransaction(@NonNull final CheckoutTransaction checkoutTransaction,
                                         final MidtransCallback<CheckoutWithTransactionResponse> callback) {
-        if (Validation.isValidForNetworkCall(context, callback)) {
+        if (isValidForNetworkCall(context, callback)) {
             merchantApiManager.checkout(checkoutTransaction, callback);
         }
     }
@@ -219,8 +243,20 @@ public class MidtransSdk {
      */
     public void getPaymentInfo(final String snapToken,
                                final MidtransCallback<PaymentInfoResponse> callback) {
-        if (Validation.isValidForNetworkCall(context, callback)) {
+        if (isValidForNetworkCall(context, callback)) {
             snapApiManager.getPaymentInfo(snapToken, callback);
+        }
+    }
+
+    /**
+     * it will get bank points (BNI or Mandiri) from snap backend
+     *
+     * @param cardToken credit card token
+     * @param callback  bni point callback instance
+     */
+    public void getBanksPoint(String snapToken, String cardToken, @NonNull final MidtransCallback<BasePaymentResponse> callback) {
+        if (isValidForNetworkCall(context, callback)) {
+            snapApiManager.getBanksPoint(snapToken, cardToken, callback);
         }
     }
 
@@ -235,6 +271,7 @@ public class MidtransSdk {
         protected boolean enableLog = false;
         protected String merchantBaseUrl;
         protected Environment midtransEnvironment = Environment.SANDBOX;
+        protected int apiRequestTimeOut = 30;
 
         private Builder(Context context, String clientId, String merchantUrl) {
             this.context = context;
@@ -260,6 +297,14 @@ public class MidtransSdk {
         }
 
         /**
+         * set Logger visible or not.
+         */
+        public Builder setApiRequestTimeOut(int apiRequestTimeOutInSecond) {
+            this.apiRequestTimeOut = apiRequestTimeOutInSecond;
+            return this;
+        }
+
+        /**
          * This method will start payment flow if you have set useUi field to true.
          *
          * @return it returns fully initialized object of midtrans sdk.
@@ -269,7 +314,8 @@ public class MidtransSdk {
                 SINGLETON_INSTANCE = new MidtransSdk(context,
                         merchantClientId,
                         merchantBaseUrl,
-                        midtransEnvironment);
+                        midtransEnvironment,
+                        apiRequestTimeOut);
                 return SINGLETON_INSTANCE;
             } else {
                 Logger.error(ERROR_SDK_IS_NOT_INITIALIZE_PROPERLY);
@@ -291,15 +337,9 @@ public class MidtransSdk {
         }
     }
 
-    /**
-     * it will get bank points (BNI or Mandiri) from snap backend
-     *
-     * @param cardToken credit card token
-     * @param callback  bni point callback instance
-     */
-    public void getBanksPoint(String snapToken, String cardToken, @NonNull final MidtransCallback<BasePaymentResponse> callback) {
-        if (Validation.isValidForNetworkCall(context, callback)) {
-            snapApiManager.getBanksPoint(snapToken, cardToken, callback);
-        }
+    private static void doOnSdkNotInitialize() {
+        String message = "MidtransSdk isn't initialized. Please use MidtransSdk.builder() to initialize.";
+        RuntimeException runtimeException = new RuntimeException(message);
+        Logger.error(message, runtimeException);
     }
 }
