@@ -1,7 +1,7 @@
 package com.midtrans.sdk.corekit.models.merchant.checkout.request.optional;
 
 import com.midtrans.sdk.corekit.base.enums.ExpiryModelUnit;
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.ExpiryModel;
+import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.ExpiryModel;
 
 import org.junit.Before;
 import org.junit.Test;

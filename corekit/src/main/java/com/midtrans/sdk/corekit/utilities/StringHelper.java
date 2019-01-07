@@ -1,5 +1,7 @@
 package com.midtrans.sdk.corekit.utilities;
 
+import com.midtrans.sdk.corekit.base.model.Currency;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DecimalFormat;
@@ -7,6 +9,8 @@ import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
 public class StringHelper {
+
+    private static final String TAG = "StringHelper";
 
     public static String checkCurrency(String currency) {
         if (currency == null) {

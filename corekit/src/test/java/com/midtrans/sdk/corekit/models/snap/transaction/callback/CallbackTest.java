@@ -1,6 +1,6 @@
 package com.midtrans.sdk.corekit.models.snap.transaction.callback;
 
-import com.midtrans.sdk.corekit.core.snap.model.transaction.response.callback.Callbacks;
+import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.callback.Callbacks;
 
 import org.junit.Before;
 import org.junit.Test;

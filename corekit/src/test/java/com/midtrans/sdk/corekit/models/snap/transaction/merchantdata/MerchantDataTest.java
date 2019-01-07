@@ -1,7 +1,7 @@
 package com.midtrans.sdk.corekit.models.snap.transaction.merchantdata;
 
-import com.midtrans.sdk.corekit.core.snap.model.transaction.response.merchantdata.MerchantData;
-import com.midtrans.sdk.corekit.core.snap.model.transaction.response.merchantdata.MerchantPreferences;
+import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.merchantdata.MerchantData;
+import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.merchantdata.MerchantPreferences;
 
 import org.junit.Before;
 import org.junit.Test;

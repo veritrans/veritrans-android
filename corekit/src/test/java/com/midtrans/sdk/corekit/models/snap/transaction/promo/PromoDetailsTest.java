@@ -1,7 +1,7 @@
 package com.midtrans.sdk.corekit.models.snap.transaction.promo;
 
-import com.midtrans.sdk.corekit.core.snap.model.transaction.response.promo.Promo;
-import com.midtrans.sdk.corekit.core.snap.model.transaction.response.promo.PromoDetails;
+import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.promo.Promo;
+import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.promo.PromoDetails;
 
 import org.junit.Before;
 import org.junit.Test;
