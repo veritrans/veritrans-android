@@ -89,27 +89,6 @@ public class HelperTest {
     }
 
     @Test
-    public void test_hideKeyboard_positive() {
-        Mockito.when(contextMock.getSystemService(Context.INPUT_METHOD_SERVICE)).thenReturn(inputMethodMock);
-        Mockito.when(viewMock.getWindowToken()).thenReturn(binderMock);
-        Mockito.when(inputMethodMock.hideSoftInputFromWindow(binderMock, 0)).thenReturn(true);
-        Helper.hideKeyboard(contextMock, viewMock);
-
-        Mockito.verify(inputMethodMock).hideSoftInputFromWindow(binderMock, 0);
-    }
-
-    @Test
-    public void test_hideKeyboard_negative_exception() {
-        Mockito.when(contextMock.getSystemService(Context.INPUT_METHOD_SERVICE)).thenReturn(null);
-        Mockito.when(viewMock.getWindowToken()).thenReturn(null);
-        Mockito.when(inputMethodMock.hideSoftInputFromWindow(binderMock, 0)).thenReturn(true);
-        Helper.hideKeyboard(contextMock, viewMock);
-        PowerMockito.verifyStatic(Mockito.times(1));
-        Logger.error(Matchers.anyString());
-
-    }
-
-    @Test
     public void test_getMonth_positive() {
         Assert.assertEquals("January", DateTimeHelper.getMonth(1));
         Assert.assertEquals("February", DateTimeHelper.getMonth(2));
