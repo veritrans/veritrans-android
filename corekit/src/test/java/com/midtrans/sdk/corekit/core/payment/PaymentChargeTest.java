@@ -200,6 +200,40 @@ public class PaymentChargeTest {
     }
 
     @Test
+    public void test_paymentUsingOtherVa_positive() {
+        bankTransferCharge.paymentUsingBankTransferVaOther(SDKConfigTest.SNAP_TOKEN, customerDetailPayRequest, callbackMock);
+        Mockito.verify(callbackMock).onSuccess(Matchers.any(BasePaymentResponse.class));
+    }
+
+    @Test
+    public void test_paymentUsingOtherVa_negative_callback() {
+        bankTransferCharge.paymentUsingBankTransferVaOther(SDKConfigTest.SNAP_TOKEN, customerDetailPayRequest, callbackMock);
+        Mockito.verify(callbackMock).onFailed(Matchers.any(Throwable.class));
+    }
+
+    @Test
+    public void test_paymentUsingOtherVa_negative_snapTokenNull() {
+        bankTransferCharge.paymentUsingBankTransferVaOther(null, customerDetailPayRequest, callbackMock);
+        verifyStatic(Mockito.times(0));
+        Logger.error(Matchers.anyString(), Matchers.anyString());
+    }
+
+    @Test
+    public void test_paymentUsingOtherVa_negative_callbackNull() {
+        bankTransferCharge.paymentUsingBankTransferVaOther(SDKConfigTest.SNAP_TOKEN, customerDetailPayRequest, null);
+        verifyStatic(Mockito.times(0));
+        Logger.error(Matchers.anyString(), Matchers.anyString());
+    }
+
+    @Test
+    public void test_paymentUsingOtherVa_negative_noNetwork() {
+        when(NetworkHelper.isNetworkAvailable(midtransSdkMock.getContext())).thenReturn(false);
+        bankTransferCharge.paymentUsingBankTransferVaOther(SDKConfigTest.SNAP_TOKEN, customerDetailPayRequest, callbackMock);
+        Mockito.verify(callbackMock).onFailed(Matchers.any(Throwable.class));
+    }
+
+
+    @Test
     public void test_paymentUsingCardlessCreditAkulaku_positive() {
         cardlessCreditCharge.paymentUsingAkulaku(SDKConfigTest.SNAP_TOKEN, callbackMock);
         Mockito.verify(callbackMock).onSuccess(Matchers.any(BasePaymentResponse.class));
