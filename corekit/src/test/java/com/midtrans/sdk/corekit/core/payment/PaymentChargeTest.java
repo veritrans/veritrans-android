@@ -30,8 +30,13 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({NetworkHelper.class, Looper.class, Helper.class, Log.class, TextUtils.class,
-        Logger.class, MidtransRestAdapter.class, ValidationHelper.class, MidtransCallback.class})
+@PrepareForTest({NetworkHelper.class,
+        Looper.class,
+        Helper.class,
+        Log.class,
+        TextUtils.class,
+        Logger.class,
+        ValidationHelper.class})
 public class PaymentChargeTest {
 
     @InjectMocks
@@ -52,11 +57,14 @@ public class PaymentChargeTest {
     @Mock
     private CustomerDetailPayRequest customerDetailPayRequest;
     @Mock
-    private MidtransCallback<BasePaymentResponse> basePaymentResponseMidtransCallback;
+    private BasePaymentResponse responseMock;
+    @Mock
+    private MidtransCallback<BasePaymentResponse> callbackMock;
     @Mock
     private String userId, customerNumber;
     @Mock
     private MandiriClickpayParams mandiriClickpayParams;
+
     @Before
     public void setup() {
         PowerMockito.mockStatic(MidtransCallback.class);
@@ -66,9 +74,11 @@ public class PaymentChargeTest {
         PowerMockito.mockStatic(Looper.class);
         PowerMockito.mockStatic(Helper.class);
         PowerMockito.mockStatic(NetworkHelper.class);
-        PowerMockito.mockStatic(MidtransRestAdapter.class);
-        PowerMockito.mockStatic(BankTransferCharge.class);
         PowerMockito.mockStatic(ValidationHelper.class);
+
+        Mockito.when(TextUtils.isEmpty(Matchers.anyString())).thenReturn(false);
+        Mockito.when(TextUtils.isEmpty(null)).thenReturn(true);
+        Mockito.when(TextUtils.isEmpty("")).thenReturn(true);
 
         MidtransSdk.builder(contextMock,
                 SDKConfigTest.CLIENT_KEY,
@@ -77,85 +87,164 @@ public class PaymentChargeTest {
                 .setEnvironment(Environment.SANDBOX)
                 .build();
 
-        Mockito.when(TextUtils.isEmpty(Matchers.anyString())).thenReturn(false);
-        Mockito.when(TextUtils.isEmpty(null)).thenReturn(true);
-        Mockito.when(TextUtils.isEmpty("")).thenReturn(true);
+        callbackMock.onSuccess(responseMock);
+        callbackMock.onFailed(new Throwable());
+    }
+
+    @Test
+    public void test_PaymentUsingBankTransferVaBca_positive() {
+        bankTransferCharge.paymentUsingBankTransferVaBca(SDKConfigTest.SNAP_TOKEN, customerDetailPayRequest, callbackMock);
+        Mockito.verify(callbackMock).onSuccess(Matchers.any(BasePaymentResponse.class));
     }
 
     @Test
     public void test_PaymentUsingBankTransferVaBca_negative() {
-        bankTransferCharge.paymentUsingBankTransferVaBca(SDKConfigTest.SNAP_TOKEN, customerDetailPayRequest, basePaymentResponseMidtransCallback);
-        Mockito.verify(basePaymentResponseMidtransCallback).onFailed(Matchers.any(Throwable.class));
+        bankTransferCharge.paymentUsingBankTransferVaBca(SDKConfigTest.SNAP_TOKEN, customerDetailPayRequest, callbackMock);
+        Mockito.verify(callbackMock).onFailed(Matchers.any(Throwable.class));
+    }
+
+    @Test
+    public void test_PaymentUsingBankTransferVaPermata_positive() {
+        bankTransferCharge.paymentUsingBankTransferVaPermata(SDKConfigTest.SNAP_TOKEN, customerDetailPayRequest, callbackMock);
+        Mockito.verify(callbackMock).onSuccess(Matchers.any(BasePaymentResponse.class));
     }
 
     @Test
     public void test_PaymentUsingBankTransferVaPermata_negative() {
-        bankTransferCharge.paymentUsingBankTransferVaPermata(SDKConfigTest.SNAP_TOKEN, customerDetailPayRequest, basePaymentResponseMidtransCallback);
-        Mockito.verify(basePaymentResponseMidtransCallback).onFailed(Matchers.any(Throwable.class));
+        bankTransferCharge.paymentUsingBankTransferVaPermata(SDKConfigTest.SNAP_TOKEN, customerDetailPayRequest, callbackMock);
+        Mockito.verify(callbackMock).onFailed(Matchers.any(Throwable.class));
+    }
+
+    @Test
+    public void test_PaymentUsingBankTransferVaBni_positive() {
+        bankTransferCharge.paymentUsingBankTransferVaBni(SDKConfigTest.SNAP_TOKEN, customerDetailPayRequest, callbackMock);
+        Mockito.verify(callbackMock).onSuccess(Matchers.any(BasePaymentResponse.class));
     }
 
     @Test
     public void test_PaymentUsingBankTransferVaBni_negative() {
-        bankTransferCharge.paymentUsingBankTransferVaBni(SDKConfigTest.SNAP_TOKEN, customerDetailPayRequest, basePaymentResponseMidtransCallback);
-        Mockito.verify(basePaymentResponseMidtransCallback).onFailed(Matchers.any(Throwable.class));
+        bankTransferCharge.paymentUsingBankTransferVaBni(SDKConfigTest.SNAP_TOKEN, customerDetailPayRequest, callbackMock);
+        Mockito.verify(callbackMock).onFailed(Matchers.any(Throwable.class));
+    }
+
+    @Test
+    public void test_PaymentUsingCardlessCreditAkulaku_positive() {
+        cardlessCreditCharge.paymentUsingAkulaku(SDKConfigTest.SNAP_TOKEN, callbackMock);
+        Mockito.verify(callbackMock).onSuccess(Matchers.any(BasePaymentResponse.class));
     }
 
     @Test
     public void test_PaymentUsingCardlessCreditAkulaku_negative() {
-        cardlessCreditCharge.paymentUsingAkulaku(SDKConfigTest.SNAP_TOKEN, basePaymentResponseMidtransCallback);
-        Mockito.verify(basePaymentResponseMidtransCallback).onFailed(Matchers.any(Throwable.class));
+        cardlessCreditCharge.paymentUsingAkulaku(SDKConfigTest.SNAP_TOKEN, callbackMock);
+        Mockito.verify(callbackMock).onFailed(Matchers.any(Throwable.class));
+    }
+
+    @Test
+    public void test_PaymentUsingDirectDebitKlikBca_positive(){
+        directDebitCharge.paymentUsingKlikBca(SDKConfigTest.SNAP_TOKEN,userId, callbackMock);
+        Mockito.verify(callbackMock).onSuccess(Matchers.any(BasePaymentResponse.class));
     }
 
     @Test
     public void test_PaymentUsingDirectDebitKlikBca_negative(){
-        directDebitCharge.paymentUsingKlikBca(SDKConfigTest.SNAP_TOKEN,userId,basePaymentResponseMidtransCallback);
-        Mockito.verify(basePaymentResponseMidtransCallback).onFailed(Matchers.any(Throwable.class));
+        directDebitCharge.paymentUsingKlikBca(SDKConfigTest.SNAP_TOKEN,userId, callbackMock);
+        Mockito.verify(callbackMock).onFailed(Matchers.any(Throwable.class));
     }
 
     @Test
-    public void testPaymentUsingDirectDebitMandiriClickPay(){
-        directDebitCharge.paymentUsingMandiriClickPay(SDKConfigTest.SNAP_TOKEN,mandiriClickpayParams,basePaymentResponseMidtransCallback);
-        Mockito.verify(basePaymentResponseMidtransCallback).onFailed(Matchers.any(Throwable.class));
+    public void testPaymentUsingDirectDebitMandiriClickPay_positive(){
+        directDebitCharge.paymentUsingMandiriClickPay(SDKConfigTest.SNAP_TOKEN,mandiriClickpayParams, callbackMock);
+        Mockito.verify(callbackMock).onSuccess(Matchers.any(BasePaymentResponse.class));
+    }
+
+    @Test
+    public void testPaymentUsingDirectDebitMandiriClickPay_negative(){
+        directDebitCharge.paymentUsingMandiriClickPay(SDKConfigTest.SNAP_TOKEN,mandiriClickpayParams, callbackMock);
+        Mockito.verify(callbackMock).onFailed(Matchers.any(Throwable.class));
+    }
+
+    @Test
+    public void test_paymentUsingEwalletTelkkomselCash_positive(){
+        eWalletCharge.paymentUsingTelkomselCash(SDKConfigTest.SNAP_TOKEN,customerNumber, callbackMock);
+        Mockito.verify(callbackMock).onSuccess(Matchers.any(BasePaymentResponse.class));
     }
 
     @Test
     public void test_paymentUsingEwalletTelkkomselCash_negative(){
-        eWalletCharge.paymentUsingTelkomselCash(SDKConfigTest.SNAP_TOKEN,customerNumber,basePaymentResponseMidtransCallback);
-        Mockito.verify(basePaymentResponseMidtransCallback).onFailed(Matchers.any(Throwable.class));
+        eWalletCharge.paymentUsingTelkomselCash(SDKConfigTest.SNAP_TOKEN,customerNumber, callbackMock);
+        Mockito.verify(callbackMock).onFailed(Matchers.any(Throwable.class));
+    }
+
+    @Test
+    public void test_paymentUsingEwalletMandiriEcash_positive(){
+        eWalletCharge.paymentUsingMandiriEcash(SDKConfigTest.SNAP_TOKEN,customerDetailPayRequest, callbackMock);
+        Mockito.verify(callbackMock).onSuccess(Matchers.any(BasePaymentResponse.class));
     }
 
     @Test
     public void test_paymentUsingEwalletMandiriEcash_negative(){
-        eWalletCharge.paymentUsingMandiriEcash(SDKConfigTest.SNAP_TOKEN,customerDetailPayRequest,basePaymentResponseMidtransCallback);
-        Mockito.verify(basePaymentResponseMidtransCallback).onFailed(Matchers.any(Throwable.class));
+        eWalletCharge.paymentUsingMandiriEcash(SDKConfigTest.SNAP_TOKEN,customerDetailPayRequest, callbackMock);
+        Mockito.verify(callbackMock).onFailed(Matchers.any(Throwable.class));
+    }
+
+    @Test
+    public void test_paymentUsingEwalletGopay_positive(){
+        eWalletCharge.paymentUsingGopay(SDKConfigTest.SNAP_TOKEN,customerNumber, callbackMock);
+        Mockito.verify(callbackMock).onSuccess(Matchers.any(BasePaymentResponse.class));
     }
 
     @Test
     public void test_paymentUsingEwalletGopay_negative(){
-        eWalletCharge.paymentUsingGopay(SDKConfigTest.SNAP_TOKEN,customerNumber,basePaymentResponseMidtransCallback);
-        Mockito.verify(basePaymentResponseMidtransCallback).onFailed(Matchers.any(Throwable.class));
+        eWalletCharge.paymentUsingGopay(SDKConfigTest.SNAP_TOKEN,customerNumber, callbackMock);
+        Mockito.verify(callbackMock).onFailed(Matchers.any(Throwable.class));
+    }
+
+    @Test
+    public void test_paymentUsingOnlineDebitChargeCimbClicks_positive(){
+        onlineDebitCharge.paymentUsingCimbClicks(SDKConfigTest.SNAP_TOKEN, callbackMock);
+        Mockito.verify(callbackMock).onSuccess(Matchers.any(BasePaymentResponse.class));
     }
 
     @Test
     public void test_paymentUsingOnlineDebitChargeCimbClicks_negative(){
-        onlineDebitCharge.paymentUsingCimbClicks(SDKConfigTest.SNAP_TOKEN,basePaymentResponseMidtransCallback);
-        Mockito.verify(basePaymentResponseMidtransCallback).onFailed(Matchers.any(Throwable.class));
+        onlineDebitCharge.paymentUsingCimbClicks(SDKConfigTest.SNAP_TOKEN, callbackMock);
+        Mockito.verify(callbackMock).onFailed(Matchers.any(Throwable.class));
     }
+
+    @Test
+    public void test_paymentUsingOnlineDebitChargeBcaClickPay_positive(){
+        onlineDebitCharge.paymentUsingBcaClickPay(SDKConfigTest.SNAP_TOKEN, callbackMock);
+        Mockito.verify(callbackMock).onSuccess(Matchers.any(BasePaymentResponse.class));
+    }
+
     @Test
     public void test_paymentUsingOnlineDebitChargeBcaClickPay_negative(){
-        onlineDebitCharge.paymentUsingBcaClickPay(SDKConfigTest.SNAP_TOKEN,basePaymentResponseMidtransCallback);
-        Mockito.verify(basePaymentResponseMidtransCallback).onFailed(Matchers.any(Throwable.class));
+        onlineDebitCharge.paymentUsingBcaClickPay(SDKConfigTest.SNAP_TOKEN, callbackMock);
+        Mockito.verify(callbackMock).onFailed(Matchers.any(Throwable.class));
     }
+
+    @Test
+    public void test_paymentUsingOnlineDebitChargeBriEpay_positive(){
+        onlineDebitCharge.paymentUsingBriEpay(SDKConfigTest.SNAP_TOKEN, callbackMock);
+        Mockito.verify(callbackMock).onSuccess(Matchers.any(BasePaymentResponse.class));
+    }
+
     @Test
     public void test_paymentUsingOnlineDebitChargeBriEpay_negative(){
-        onlineDebitCharge.paymentUsingBriEpay(SDKConfigTest.SNAP_TOKEN,basePaymentResponseMidtransCallback);
-        Mockito.verify(basePaymentResponseMidtransCallback).onFailed(Matchers.any(Throwable.class));
+        onlineDebitCharge.paymentUsingBriEpay(SDKConfigTest.SNAP_TOKEN, callbackMock);
+        Mockito.verify(callbackMock).onFailed(Matchers.any(Throwable.class));
+    }
+
+    @Test
+    public void test_paymentUsingStoreChange_positive(){
+        convenienceStoreCharge.paymentUsingIndomaret(SDKConfigTest.SNAP_TOKEN, callbackMock);
+        Mockito.verify(callbackMock).onSuccess(Matchers.any(BasePaymentResponse.class));
     }
 
     @Test
     public void test_paymentUsingStoreChange_negative(){
-        convenienceStoreCharge.paymentUsingIndomaret(SDKConfigTest.SNAP_TOKEN,basePaymentResponseMidtransCallback);
-        Mockito.verify(basePaymentResponseMidtransCallback).onFailed(Matchers.any(Throwable.class));
+        convenienceStoreCharge.paymentUsingIndomaret(SDKConfigTest.SNAP_TOKEN, callbackMock);
+        Mockito.verify(callbackMock).onFailed(Matchers.any(Throwable.class));
     }
 
 }
