@@ -4,10 +4,13 @@ import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.response.Checko
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
+@RunWith(PowerMockRunner.class)
 public class CheckoutWithTransactionResponseTest {
     private CheckoutWithTransactionResponse response;
     private String exampleTextPositive;
