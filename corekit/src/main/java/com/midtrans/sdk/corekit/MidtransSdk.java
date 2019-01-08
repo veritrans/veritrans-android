@@ -115,6 +115,10 @@ public class MidtransSdk {
         return snapApiManager;
     }
 
+    public void setSnapApiManager(SnapApiManager snapApiManager) {
+        this.snapApiManager = snapApiManager;
+    }
+
     /**
      * @return midtrans service manager
      */
@@ -133,6 +137,10 @@ public class MidtransSdk {
             doOnSdkNotInitialize();
         }
         return merchantApiManager;
+    }
+
+    public void setMerchantApiManager(MerchantApiManager merchantApiManager) {
+        this.merchantApiManager = merchantApiManager;
     }
 
     /**

@@ -11,19 +11,13 @@ import com.midtrans.sdk.corekit.MidtransSdk;
 import com.midtrans.sdk.corekit.SDKConfigTest;
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.base.enums.Environment;
-import com.midtrans.sdk.corekit.base.network.MidtransRestAdapter;
 import com.midtrans.sdk.corekit.core.api.merchant.MerchantApiManager;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.CheckoutTransaction;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.response.CheckoutWithTransactionResponse;
 import com.midtrans.sdk.corekit.core.api.snap.SnapApiManager;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.CustomerDetailPayRequest;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.mandiriclick.MandiriClickpayParams;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BasePaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.corekit.utilities.NetworkHelper;
-import com.midtrans.sdk.corekit.utilities.Helper;
-import com.midtrans.sdk.corekit.utilities.ValidationHelper;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -36,51 +30,46 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import static org.mockito.Matchers.any;
 import static org.powermock.api.mockito.PowerMockito.verifyStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({NetworkHelper.class, Looper.class, Helper.class, Log.class, TextUtils.class,
-        Logger.class, MidtransRestAdapter.class})
+@PrepareForTest({NetworkHelper.class,
+        Looper.class,
+        TextUtils.class,
+        Log.class,
+        Logger.class})
 public class MidtransSdkTest {
 
     @Mock
     private Context contextMock;
+    @Mock
+    private ConnectivityManager connectivityManagerMock;
+    @Mock
+    private NetworkInfo networkInfoMock;
+    @Mock
+    private MidtransSdk midtransSdkMock;
 
+    // Mock Callback
     @Mock
-    private ConnectivityManager connectivityManager;
+    private MidtransCallback<CheckoutWithTransactionResponse> checkoutCallbackMock;
     @Mock
-    private NetworkInfo networkInfo;
-    @Mock
-    private MidtransCallback<CheckoutWithTransactionResponse> checkoutResponseMidtransCallback;
-    @Mock
-    private MidtransCallback<PaymentInfoResponse> paymentInfoResponseMidtransCallback;
-    @Mock
-    private MidtransCallback<BasePaymentResponse> basePaymentResponseMidtransCallback;
+    private MidtransCallback<PaymentInfoResponse> infoCallbackMock;
 
-    @Mock
-    private SnapApiManager snapApiManager;
-    @Mock
-    private MidtransSdk midtransSdkSpy;
+    // Mock Model
     @Mock
     private CheckoutTransaction checkoutTransactionMock;
+    @Mock
+    private PaymentInfoResponse paymentInfoResponse;
+    @Mock
+    private CheckoutWithTransactionResponse checkoutWithTransactionResponse;
 
+    // Mock Api Manager
     @Mock
     private SnapApiManager snapServiceManager;
     @Mock
     private MerchantApiManager merchantServiceManager;
-
-    @Mock
-    private CustomerDetailPayRequest customerDetailPayRequest;
-    @Mock
-    private MandiriClickpayParams mandiriClickpayParams;
-    @Mock
-    private String customerNumber;
-
-    @Test
-    public void test() {
-        Assert.assertEquals(1, 1);
-    }
 
     @Before
     public void setup() {
@@ -88,15 +77,13 @@ public class MidtransSdkTest {
         PowerMockito.mockStatic(Log.class);
         PowerMockito.mockStatic(Logger.class);
         PowerMockito.mockStatic(Looper.class);
-        PowerMockito.mockStatic(Helper.class);
         PowerMockito.mockStatic(NetworkHelper.class);
-        PowerMockito.mockStatic(MidtransRestAdapter.class);
 
         Mockito.when(contextMock.getApplicationContext()).thenReturn(contextMock);
-        Mockito.when(contextMock.getSystemService(Context.CONNECTIVITY_SERVICE)).thenReturn(connectivityManager);
-        Mockito.when(connectivityManager.getActiveNetworkInfo()).thenReturn(networkInfo);
-        Mockito.when(networkInfo.isConnected()).thenReturn(false);
-        Mockito.when(midtransSdkSpy.getApiRequestTimeOut()).thenReturn(30);
+        Mockito.when(contextMock.getSystemService(Context.CONNECTIVITY_SERVICE)).thenReturn(connectivityManagerMock);
+        Mockito.when(connectivityManagerMock.getActiveNetworkInfo()).thenReturn(networkInfoMock);
+        Mockito.when(networkInfoMock.isConnected()).thenReturn(false);
+        Mockito.when(midtransSdkMock.getApiRequestTimeOut()).thenReturn(30);
         Mockito.when(TextUtils.isEmpty(Matchers.anyString())).thenReturn(false);
         Mockito.when(TextUtils.isEmpty(null)).thenReturn(true);
         Mockito.when(TextUtils.isEmpty("")).thenReturn(true);
@@ -108,72 +95,78 @@ public class MidtransSdkTest {
                 SDKConfigTest.MERCHANT_BASE_URL)
                 .setLogEnabled(true)
                 .setEnvironment(Environment.SANDBOX)
+                .setApiRequestTimeOut(60)
                 .build();
 
-        midtransSdkSpy = Mockito.spy(midtransSDK);
+        infoCallbackMock.onSuccess(paymentInfoResponse);
+        infoCallbackMock.onFailed(new Throwable());
+        checkoutCallbackMock.onSuccess(checkoutWithTransactionResponse);
+        checkoutCallbackMock.onFailed(new Throwable());
+        midtransSdkMock.checkoutWithTransaction(checkoutCallbackMock);
+
+        midtransSdkMock = Mockito.spy(midtransSDK);
     }
 
     @Test
     public void test_setTransactionRequest_positive() {
-        midtransSdkSpy.setCheckoutTransaction(checkoutTransactionMock);
-        Assert.assertEquals(checkoutTransactionMock, midtransSdkSpy.getCheckoutTransaction());
+        midtransSdkMock.setCheckoutTransaction(checkoutTransactionMock);
+        Assert.assertEquals(checkoutTransactionMock, midtransSdkMock.getCheckoutTransaction());
     }
 
     @Test
     public void test_setTransactionRequest_negative() {
-        midtransSdkSpy.setCheckoutTransaction(checkoutTransactionMock);
+        midtransSdkMock.setCheckoutTransaction(checkoutTransactionMock);
         Assert.assertNotEquals(checkoutTransactionMock, null);
     }
 
     @Test
     public void test_getMerchantBaseUrl_positive() {
-        Assert.assertEquals(midtransSdkSpy.getMerchantBaseUrl(), SDKConfigTest.MERCHANT_BASE_URL);
+        Assert.assertEquals(midtransSdkMock.getMerchantBaseUrl(), SDKConfigTest.MERCHANT_BASE_URL);
     }
 
     @Test
     public void test_getMerchantBaseUrl_negative() {
-        Assert.assertNotEquals(midtransSdkSpy.getMerchantBaseUrl(), null);
+        Assert.assertNotEquals(midtransSdkMock.getMerchantBaseUrl(), null);
     }
 
     @Test
     public void test_getEnvironment_positive() {
-        Assert.assertEquals(midtransSdkSpy.getEnvironment(), Environment.SANDBOX);
+        Assert.assertEquals(midtransSdkMock.getEnvironment(), Environment.SANDBOX);
     }
 
     @Test
     public void test_getEnvironment_negative() {
-        Assert.assertNotEquals(midtransSdkSpy.getEnvironment(), Environment.PRODUCTION);
+        Assert.assertNotEquals(midtransSdkMock.getEnvironment(), Environment.PRODUCTION);
     }
-
 
     @Test
     public void test_getClientId_positive() {
-        Assert.assertEquals(midtransSdkSpy.getMerchantClientId(), SDKConfigTest.CLIENT_KEY);
+        Assert.assertEquals(midtransSdkMock.getMerchantClientId(), SDKConfigTest.CLIENT_KEY);
     }
 
     @Test
     public void test_getClientId_negative() {
-        Assert.assertNotEquals(midtransSdkSpy.getMerchantClientId(), "123");
+        Assert.assertNotEquals(midtransSdkMock.getMerchantClientId(), "123");
     }
 
     @Test
-    public void test_getContext_positive() throws Exception {
-        Assert.assertEquals(contextMock, midtransSdkSpy.getContext());
+    public void test_getContext_positive() {
+        Assert.assertEquals(contextMock, midtransSdkMock.getContext());
     }
 
     @Test
-    public void test_getContext_negative() throws Exception {
+    public void test_getContext_negative() {
         Assert.assertNotEquals(contextMock, null);
     }
 
     @Test
-    public void test_sdkTimeout_positive() throws Exception {
-        Assert.assertEquals(midtransSdkSpy.getApiRequestTimeOut(), 30);
+    public void test_sdkTimeout_positive() {
+        Assert.assertEquals(midtransSdkMock.getApiRequestTimeOut(), 60);
     }
 
     @Test
-    public void test_sdkTimeout_negative() throws Exception {
-        Assert.assertNotEquals(midtransSdkSpy.getApiRequestTimeOut(), 0);
+    public void test_sdkTimeout_negative() {
+        Assert.assertNotEquals(midtransSdkMock.getApiRequestTimeOut(), 30);
     }
 
     /**
@@ -181,56 +174,76 @@ public class MidtransSdkTest {
      */
 
     @Test
-    public void test_checkout() {
-        midtransSdkSpy.setCheckoutTransaction(checkoutTransactionMock);
-        when(ValidationHelper.isNetworkAvailable(midtransSdkSpy.getContext())).thenReturn(true);
-        midtransSdkSpy.checkoutWithTransaction(checkoutResponseMidtransCallback);
-        Mockito.verify(midtransSdkSpy).checkoutWithTransaction(checkoutResponseMidtransCallback);
+    public void test_checkout_positive_perform() {
+        midtransSdkMock.setCheckoutTransaction(checkoutTransactionMock);
+        when(NetworkHelper.isNetworkAvailable(midtransSdkMock.getContext())).thenReturn(true);
+        midtransSdkMock.checkoutWithTransaction(checkoutCallbackMock);
+        Mockito.verify(midtransSdkMock).checkoutWithTransaction(checkoutCallbackMock);
     }
 
     @Test
-    public void test_checkout_whenCallbackNull() {
-        midtransSdkSpy.checkoutWithTransaction(null);
-        verifyStatic(Mockito.times(1));
+    public void test_checkout_positive_callback() {
+        midtransSdkMock.setCheckoutTransaction(checkoutTransactionMock);
+        when(NetworkHelper.isNetworkAvailable(midtransSdkMock.getContext())).thenReturn(true);
+        Mockito.verify(checkoutCallbackMock).onSuccess(any(CheckoutWithTransactionResponse.class));
+    }
+
+    @Test
+    public void test_checkout_negative_whenCallbackNull() {
+        midtransSdkMock.checkoutWithTransaction(null);
+        verifyStatic(Mockito.times(0));
         Logger.error(Matchers.anyString(), Matchers.anyString());
     }
 
     @Test
-    public void test_checkout_whenNetworkUnAvailable() {
-        midtransSdkSpy.setCheckoutTransaction(checkoutTransactionMock);
-        when(ValidationHelper.isNetworkAvailable(midtransSdkSpy.getContext())).thenReturn(false);
-        midtransSdkSpy.checkoutWithTransaction(checkoutResponseMidtransCallback);
-        Mockito.verify(checkoutResponseMidtransCallback).onFailed(Matchers.any(Throwable.class));
+    public void test_checkout_negative_whenNetworkUnAvailable() {
+        midtransSdkMock.setCheckoutTransaction(checkoutTransactionMock);
+        when(NetworkHelper.isNetworkAvailable(midtransSdkMock.getContext())).thenReturn(false);
+        Mockito.verify(checkoutCallbackMock).onFailed(any(Throwable.class));
     }
 
     /**
      * get transaction option
      */
 
-    /*@Test
-    public void test_getSnapTransaction() {
-        when(midtransSdkSpy.isNetworkAvailable()).thenReturn(true);
-        midtransSdkSpy.getPaymentInfo(SDKConfigTest.SNAP_TOKEN, paymentInfoResponseMidtransCallback);
-        Mockito.verify(paymentInfoResponseMidtransCallback).onSuccess(Matchers.any(PaymentInfoResponse.class));
-    }*/
     @Test
-    public void test_getSnapTransaction_whenCallbackNull() {
-        midtransSdkSpy.getPaymentInfo(SDKConfigTest.SNAP_TOKEN, null);
-        verifyStatic(Mockito.times(1));
+    public void test_getSnapTransaction_positive_perform() {
+        when(NetworkHelper.isNetworkAvailable(midtransSdkMock.getContext())).thenReturn(true);
+        midtransSdkMock.getPaymentInfo(SDKConfigTest.SNAP_TOKEN, infoCallbackMock);
+        Mockito.verify(midtransSdkMock).getPaymentInfo(SDKConfigTest.SNAP_TOKEN, infoCallbackMock);
+    }
+
+    @Test
+    public void test_getSnapTransaction_positive_callback() {
+        when(NetworkHelper.isNetworkAvailable(midtransSdkMock.getContext())).thenReturn(true);
+        midtransSdkMock.getPaymentInfo(SDKConfigTest.SNAP_TOKEN, infoCallbackMock);
+        Mockito.verify(infoCallbackMock).onSuccess(any(PaymentInfoResponse.class));
+    }
+
+    @Test
+    public void test_getSnapTransaction_negative_whenCallbackNull() {
+        midtransSdkMock.getPaymentInfo(SDKConfigTest.SNAP_TOKEN, null);
+        verifyStatic(Mockito.times(0));
         Logger.error(Matchers.anyString(), Matchers.anyString());
     }
 
-    /*@Test
-    public void test_getSnapTransaction_whenTokenNull() {
-        when(ValidationHelper.isNetworkAvailable(midtransSdkSpy.getContext())).thenReturn(true);
-        midtransSdkSpy.getPaymentInfo(null, paymentInfoResponseMidtransCallback);
-        Mockito.verify(paymentInfoResponseMidtransCallback).onFailed(Matchers.any(Throwable.class));
-    }*/
+    @Test
+    public void test_getSnapTransaction_negative_whenSnapTokenNull() {
+        midtransSdkMock.getPaymentInfo(null, infoCallbackMock);
+        Mockito.verify(infoCallbackMock).onFailed(any(Throwable.class));
+    }
 
     @Test
-    public void test_getSnapTransaction_whenNetworkUnAvailable() {
-        when(ValidationHelper.isNetworkAvailable(midtransSdkSpy.getContext())).thenReturn(false);
-        midtransSdkSpy.getPaymentInfo(null, paymentInfoResponseMidtransCallback);
-        Mockito.verify(paymentInfoResponseMidtransCallback).onFailed(Matchers.any(Throwable.class));
+    public void test_getSnapTransaction_negative_whenTokenNull() {
+        when(NetworkHelper.isNetworkAvailable(midtransSdkMock.getContext())).thenReturn(true);
+        midtransSdkMock.getPaymentInfo(null, infoCallbackMock);
+        Mockito.verify(infoCallbackMock).onFailed(any(Throwable.class));
+    }
+
+    @Test
+    public void test_getSnapTransaction_negative_whenNetworkUnAvailable() {
+        when(NetworkHelper.isNetworkAvailable(midtransSdkMock.getContext())).thenReturn(false);
+        midtransSdkMock.getPaymentInfo(null, infoCallbackMock);
+        Mockito.verify(infoCallbackMock).onFailed(any(Throwable.class));
     }
 }
