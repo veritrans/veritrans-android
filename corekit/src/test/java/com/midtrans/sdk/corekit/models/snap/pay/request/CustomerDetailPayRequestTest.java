@@ -1,16 +1,21 @@
 package com.midtrans.sdk.corekit.models.snap.pay.request;
 
+import android.text.TextUtils;
+
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.CustomerDetailPayRequest;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 @RunWith(PowerMockRunner.class)
+@PrepareForTest({TextUtils.class})
 public class CustomerDetailPayRequestTest {
     private CustomerDetailPayRequest response;
     private String exampleTextPositive;
@@ -18,13 +23,15 @@ public class CustomerDetailPayRequestTest {
 
     @Before
     public void test_setup() {
+        PowerMockito.mockStatic(TextUtils.class);
         this.exampleTextPositive = "exampleTextPositive";
         this.exampleTextNegative = "exampleTextNegative";
+        this.response = new CustomerDetailPayRequest();
     }
 
     @Test
     public void test_setEmail_positive() {
-        this.response.setEmail(exampleTextPositive);
+        response.setEmail(exampleTextPositive);
         assertEquals(response.getEmail(), exampleTextPositive);
     }
 
