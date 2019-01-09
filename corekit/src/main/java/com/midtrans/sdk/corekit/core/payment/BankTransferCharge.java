@@ -63,7 +63,7 @@ public class BankTransferCharge extends BaseGroupPayment {
      */
     public static void paymentUsingBankTransferVaOther(@NonNull final String snapToken,
                                                        @NonNull final CustomerDetailPayRequest customerDetails,
-                                                       @NonNull final MidtransCallback<OtherPaymentResponse> callback) {
+                                                       @NonNull final MidtransCallback<BasePaymentResponse> callback) {
         if (isValidForNetworkCall(callback)) {
             getSnapApiManager().paymentUsingBankTransferVaOther(snapToken, customerDetails, callback);
         }

@@ -4,10 +4,13 @@ import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specifi
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
+@RunWith(MockitoJUnitRunner.class)
 public class CreditCardTest {
 
     private SavedToken savedToken;

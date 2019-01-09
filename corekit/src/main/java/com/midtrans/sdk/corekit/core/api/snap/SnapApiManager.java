@@ -106,10 +106,10 @@ public class SnapApiManager extends BaseServiceManager {
      */
     public void paymentUsingBankTransferVaOther(final String snapToken,
                                                 final CustomerDetailPayRequest customerDetails,
-                                                final MidtransCallback<OtherPaymentResponse> callback) {
+                                                final MidtransCallback<BasePaymentResponse> callback) {
         if (isSnapTokenAvailable(callback, snapToken, apiService)) {
             PaymentRequest paymentRequest = new PaymentRequest(PaymentType.OTHER_VA, customerDetails);
-            Call<OtherPaymentResponse> call = apiService.paymentBankTransferOther(snapToken, paymentRequest);
+            Call<BasePaymentResponse> call = apiService.paymentBankTransferOther(snapToken, paymentRequest);
             handleCall(call, callback);
         }
     }

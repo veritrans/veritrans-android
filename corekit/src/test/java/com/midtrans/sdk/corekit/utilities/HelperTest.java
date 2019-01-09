@@ -95,7 +95,6 @@ public class HelperTest {
         Assert.assertFalse(NetworkHelper.isNetworkAvailable(contextMock));
     }
 
-    @Test
     public void test_getFormattedDate_positive() {
         Assert.assertEquals("1970-01-01 07:00:10 +0700", DateTimeHelper.getFormattedTime(10000));
     }

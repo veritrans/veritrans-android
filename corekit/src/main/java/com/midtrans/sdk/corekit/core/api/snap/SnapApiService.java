@@ -72,7 +72,7 @@ public interface SnapApiService {
      * @param paymentRequest Payment Request Details.
      */
     @POST(PAYMENT_PAY)
-    Call<OtherPaymentResponse> paymentBankTransferOther(
+    Call<BasePaymentResponse> paymentBankTransferOther(
             @Path("snap_token") String snapToken,
             @Body PaymentRequest paymentRequest
     );
