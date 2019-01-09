@@ -94,7 +94,7 @@ public class Constants {
      * Network Call
      */
     public static final String MESSAGE_ERROR_EMPTY_RESPONSE = "Failed to retrieve response from server.";
-    public static final String MESSAGE_ERROR_FAILURE_RESPONSE = "Error message not catchable";
+    public static final String MESSAGE_ERROR_FAILURE_RESPONSE = "Error message not catchable.";
     public static final String MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER = "Failed to connect to server.";
 
     public static final String KEY_PREFERENCES_VERSION = "preferences.version";
