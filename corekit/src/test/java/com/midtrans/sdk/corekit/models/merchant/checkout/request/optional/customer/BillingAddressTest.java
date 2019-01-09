@@ -1,6 +1,6 @@
 package com.midtrans.sdk.corekit.models.merchant.checkout.request.optional.customer;
 
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.customer.BillingAddress;
+import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.customer.BillingAddress;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,6 +14,8 @@ public class BillingAddressTest {
 
     @Before
     public void test_setup() {
+        this.exampleTextPositive = "exampleTextPositive";
+        this.exampleTextNegative = "exampleTextNegative";
         this.billingAddress = new BillingAddress(exampleTextPositive,
                 exampleTextPositive,
                 exampleTextPositive,
@@ -21,8 +23,6 @@ public class BillingAddressTest {
                 exampleTextPositive,
                 exampleTextPositive,
                 exampleTextPositive);
-        this.exampleTextPositive = "exampleTextPositive";
-        this.exampleTextNegative = "exampleTextNegative";
     }
 
     @Test

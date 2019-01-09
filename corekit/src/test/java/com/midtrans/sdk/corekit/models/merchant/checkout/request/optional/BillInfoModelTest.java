@@ -1,6 +1,6 @@
 package com.midtrans.sdk.corekit.models.merchant.checkout.request.optional;
 
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.BillInfoModel;
+import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.BillInfoModel;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,9 +15,9 @@ public class BillInfoModelTest {
 
     @Before
     public void test_setup() {
-        this.billInfoModel = new BillInfoModel();
         this.exampleTextPositive = "exampleTextPositive";
         this.exampleTextNegative = "exampleTextNegative";
+        this.billInfoModel = new BillInfoModel(exampleTextPositive, exampleTextPositive);
     }
 
     @Test

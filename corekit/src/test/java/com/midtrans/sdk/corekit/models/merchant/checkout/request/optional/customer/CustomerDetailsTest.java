@@ -1,6 +1,6 @@
 package com.midtrans.sdk.corekit.models.merchant.checkout.request.optional.customer;
 
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.customer.CustomerDetails;
+import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.customer.CustomerDetails;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,12 +14,12 @@ public class CustomerDetailsTest {
 
     @Before
     public void test_setup() {
+        this.exampleTextPositive = "exampleTextPositive";
+        this.exampleTextNegative = "exampleTextNegative";
         this.customerDetails = new CustomerDetails(exampleTextPositive,
                 exampleTextPositive,
                 exampleTextPositive,
                 exampleTextPositive);
-        this.exampleTextPositive = "exampleTextPositive";
-        this.exampleTextNegative = "exampleTextNegative";
     }
 
     @Test

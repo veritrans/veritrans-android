@@ -1,6 +1,6 @@
 package com.midtrans.sdk.corekit.models.merchant.checkout.request.optional;
 
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.ItemDetails;
+import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.ItemDetails;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -1,13 +1,16 @@
 package com.midtrans.sdk.corekit.models.merchant.checkout.request.specific.creditcard;
 
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.specific.creditcard.SavedToken;
+import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specific.creditcard.SavedToken;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
+@RunWith(MockitoJUnitRunner.class)
 public class CreditCardTest {
 
     private SavedToken savedToken;

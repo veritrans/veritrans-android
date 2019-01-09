@@ -1,6 +1,6 @@
 package com.midtrans.sdk.corekit.models.merchant.checkout.request.specific.banktransfer;
 
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.specific.banktransfer.BankTransferRequestModel;
+import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specific.banktransfer.BankTransferRequestModel;
 
 import org.junit.Before;
 import org.junit.Test;

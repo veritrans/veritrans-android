@@ -1,6 +1,6 @@
 package com.midtrans.sdk.corekit.models.snap.transaction.enablepayment;
 
-import com.midtrans.sdk.corekit.core.snap.model.transaction.response.enablepayment.EnabledPayment;
+import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.enablepayment.EnabledPayment;
 
 import org.junit.Before;
 import org.junit.Test;

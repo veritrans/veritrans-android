@@ -7,35 +7,49 @@ import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.base.enums.Environment;
 import com.midtrans.sdk.corekit.base.enums.ExpiryModelUnit;
 import com.midtrans.sdk.corekit.base.model.BankType;
-import com.midtrans.sdk.corekit.core.MidtransSdk;
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.CheckoutTransaction;
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.BillInfoModel;
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.ExpiryModel;
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.ItemDetails;
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.customer.BillingAddress;
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.customer.CustomerDetails;
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.optional.customer.ShippingAddress;
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.specific.banktransfer.BcaBankFreeText;
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.specific.banktransfer.BcaBankFreeTextLanguage;
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.specific.banktransfer.BcaBankTransferRequestModel;
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.specific.creditcard.CreditCard;
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.request.specific.creditcard.SavedToken;
-import com.midtrans.sdk.corekit.core.merchant.model.checkout.response.CheckoutWithTransactionResponse;
-import com.midtrans.sdk.corekit.core.snap.model.pay.request.CustomerDetailPayRequest;
-import com.midtrans.sdk.corekit.core.snap.model.pay.response.BasePaymentResponse;
-import com.midtrans.sdk.corekit.core.snap.model.transaction.response.PaymentInfoResponse;
-import com.midtrans.sdk.corekit.utilities.Currency;
+import com.midtrans.sdk.corekit.base.model.Currency;
+import com.midtrans.sdk.corekit.MidtransSdk;
+import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.CheckoutTransaction;
+import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.BillInfoModel;
+import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.ExpiryModel;
+import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.ItemDetails;
+import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.customer.BillingAddress;
+import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.customer.CustomerDetails;
+import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.customer.ShippingAddress;
+import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specific.banktransfer.BcaBankFreeText;
+import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specific.banktransfer.BcaBankFreeTextLanguage;
+import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specific.banktransfer.BcaBankTransferRequestModel;
+import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specific.creditcard.CreditCard;
+import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.response.CheckoutWithTransactionResponse;
+import com.midtrans.sdk.corekit.core.api.midtrans.model.cardregistration.CardRegistrationResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.CustomerDetailPayRequest;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.creditcard.CreditCardPaymentParams;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BasePaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
+import com.midtrans.sdk.corekit.core.payment.CreditCardCharge;
 import com.midtrans.sdk.corekit.utilities.Logger;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
+    String snapToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        MidtransSdk.getInstance().checkoutWithTransaction(new MidtransCallback<CheckoutWithTransactionResponse>() {
+            @Override
+            public void onSuccess(CheckoutWithTransactionResponse data) {
+
+            }
+
+            @Override
+            public void onFailed(Throwable throwable) {
+
+            }
+        });
 
         MidtransSdk
                 .builder(this,
@@ -43,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
                         BuildConfig.BASE_URL)
                 .setLogEnabled(true)
                 .setEnvironment(Environment.SANDBOX)
+                .setApiRequestTimeOut(60)
                 .build();
 
         CheckoutTransaction trxRequest = CheckoutTransaction
@@ -51,14 +66,14 @@ public class MainActivity extends AppCompatActivity {
                 .setGopayCallbackDeepLink("demo://midtrans")
                 .setCreditCard(CreditCard
                         .normalClickBuilder(false, CreditCard.AUTHENTICATION_TYPE_NONE)
-                        .setTokenId("")
+                        //.setTokenId("")
                         .setSaveCard(true)
-                        .setBank(BankType.BCA)
-                        .setInstallment(false, new HashMap<String, ArrayList<Integer>>())
-                        .setBlackListBins(new ArrayList<String>())
-                        .setWhiteListBins(new ArrayList<String>())
-                        .setSavedTokens(new ArrayList<SavedToken>())
-                        .setChannel(CreditCard.MIGS)
+                        .setBank(BankType.BNI)
+                        //.setInstallment(false, new HashMap<String, ArrayList<Integer>>())
+                        //.setBlackListBins(new ArrayList<String>())
+                        //.setWhiteListBins(new ArrayList<String>())
+                        //.setSavedTokens(new ArrayList<SavedToken>())
+                        //.setChannel(CreditCard.MIGS)
                         .build())
                 .setCustomerDetails(new CustomerDetails("FirstName",
                         "LastName",
@@ -70,14 +85,14 @@ public class MainActivity extends AppCompatActivity {
                                 "Bogor",
                                 "16710",
                                 "62877",
-                                "id"),
+                                "idn"),
                         new BillingAddress("Firstname",
                                 "LastName",
                                 "mail@mail.com",
                                 "Bogor",
                                 "16710",
                                 "62877",
-                                "id")))
+                                "idn")))
                 .setBillInfoModel(new BillInfoModel("1", "2"))
                 .setEnabledPayments(new ArrayList<String>())
                 .setExpiry(new ExpiryModel("", ExpiryModelUnit.EXPIRY_UNIT_DAY, 1))
@@ -92,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         CheckoutTransaction trxInstance = CheckoutTransaction.getInstance();
-        MidtransSdk.getInstance().setCheckoutTransaction(trxRequest);
+        MidtransSdk.getInstance().setCheckoutTransaction(trxInstance);
         MidtransSdk.getInstance().checkoutWithTransaction(new MidtransCallback<CheckoutWithTransactionResponse>() {
             @Override
             public void onFailed(Throwable throwable) {
@@ -103,6 +118,8 @@ public class MainActivity extends AppCompatActivity {
             public void onSuccess(CheckoutWithTransactionResponse data) {
                 Logger.debug("RESULT TOKEN CHECKOUT " + data.getSnapToken());
                 getTransactionOptions(data.getSnapToken());
+                snapToken = data.getSnapToken();
+                registerCard();
             }
         });
     }
@@ -112,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
         MidtransSdk.getInstance().getPaymentInfo(snapToken, new MidtransCallback<PaymentInfoResponse>() {
             @Override
             public void onSuccess(PaymentInfoResponse data) {
-                startPayment(snapToken);
+                //startPayment(snapToken);
                 Logger.debug("RESULT SUCCESS PAYMENT INFO " + data.getToken());
             }
 
@@ -124,21 +141,43 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void startPayment(final String snapToken) {
-        MidtransSdk.getInstance().paymentUsingMandiriEcash(snapToken,
-                new CustomerDetailPayRequest("FirstName",
-                        "mail@test.com",
-                        "08123456789"),
-                new MidtransCallback<BasePaymentResponse>() {
+    private void registerCard() {
+        CreditCardCharge.cardRegistration(
+                "4105058689481467",
+                "123",
+                "12",
+                "2019",
+                new MidtransCallback<CardRegistrationResponse>() {
                     @Override
-                    public void onSuccess(BasePaymentResponse data) {
-                        Logger.debug("RESULT SUCCESS PAYMENT " + data.getRedirectUrl());
+                    public void onSuccess(CardRegistrationResponse data) {
+
                     }
 
                     @Override
                     public void onFailed(Throwable throwable) {
-                        Logger.debug("RESULT ERROR PAYMENT " + throwable.getMessage());
+
                     }
-                });
+                }
+        );
+    }
+
+    private void startCCPayment(final CardRegistrationResponse cc) {
+        CreditCardCharge.paymentUsingCard(
+                snapToken,
+                new CreditCardPaymentParams(cc.getSavedTokenId(), true, cc.getMaskedCard()),
+                new CustomerDetailPayRequest("Budi Utomo", "budi@utomo.comin", "081808466410"),
+                new MidtransCallback<BasePaymentResponse>() {
+                    @Override
+                    public void onSuccess(BasePaymentResponse data) {
+
+                    }
+
+                    @Override
+                    public void onFailed(Throwable throwable) {
+
+                    }
+                }
+        );
+
     }
 }
