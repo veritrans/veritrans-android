@@ -22,8 +22,8 @@ public class PaymentRequestTest {
     public void test_setup() {
         this.exampleTextPositive = "exampleTextPositive";
         this.exampleTextNegative = "exampleTextNegative";
-        this.customerDetailPayRequest = new CustomerDetailPayRequest(exampleTextPositive,exampleTextPositive,exampleTextPositive);
-        this.response = new PaymentRequest(exampleTextPositive,customerDetailPayRequest);
+        this.customerDetailPayRequest = new CustomerDetailPayRequest(exampleTextPositive, exampleTextPositive, exampleTextPositive);
+        this.response = new PaymentRequest(exampleTextPositive, customerDetailPayRequest);
     }
 
     @Test

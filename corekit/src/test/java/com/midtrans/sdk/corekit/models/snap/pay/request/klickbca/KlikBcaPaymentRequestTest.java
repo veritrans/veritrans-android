@@ -1,6 +1,5 @@
 package com.midtrans.sdk.corekit.models.snap.pay.request.klickbca;
 
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.klikbca.KlikBcaPaymentParams;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.klikbca.KlikBcaPaymentRequest;
 
 import org.junit.Before;
@@ -21,7 +20,7 @@ public class KlikBcaPaymentRequestTest {
     public void test_setup() {
         this.exampleTextPositive = "exampleTextPositive";
         this.exampleTextNegative = "exampleTextNegative";
-        this.response = new KlikBcaPaymentRequest(exampleTextPositive,exampleTextPositive);
+        this.response = new KlikBcaPaymentRequest(exampleTextPositive, exampleTextPositive);
     }
 
     @Test

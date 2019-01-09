@@ -1,6 +1,5 @@
 package com.midtrans.sdk.corekit.models.snap.pay.request.klickbca;
 
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.gopay.GopayPaymentParams;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.klikbca.KlikBcaPaymentParams;
 
 import org.junit.Before;

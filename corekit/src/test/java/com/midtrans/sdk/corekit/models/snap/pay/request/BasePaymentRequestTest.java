@@ -1,7 +1,6 @@
 package com.midtrans.sdk.corekit.models.snap.pay.request;
 
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.BasePaymentRequest;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.telkomsel.TelkomselCashPaymentRequest;
 
 import org.junit.Before;
 import org.junit.Test;
