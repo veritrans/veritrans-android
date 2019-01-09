@@ -1,4 +1,4 @@
-package com.midtrans.sdk.corekit.models.snap.transaction;
+package com.midtrans.sdk.corekit.models.snap.paymentinfo;
 
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
 
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-public class TransactionOptionResponseTest {
+public class PaymentInfoResponseTest {
 
     private PaymentInfoResponse response;
     private String exampleTextPositive, exampleTextNegative;
