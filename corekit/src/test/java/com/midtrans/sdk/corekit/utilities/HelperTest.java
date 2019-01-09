@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.midtrans.sdk.corekit.base.model.Currency;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +19,11 @@ import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import static com.midtrans.sdk.corekit.utilities.ValidationHelper.isNotEmpty;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({Log.class, Logger.class})
@@ -86,6 +93,23 @@ public class HelperTest {
         Mockito.when(networkInfoMock.isConnected()).thenReturn(false);
 
         Assert.assertFalse(NetworkHelper.isNetworkAvailable(contextMock));
+    }
+
+    public void test_getFormattedDate_positive() {
+        Assert.assertEquals("1970-01-01 07:00:10 +0700", DateTimeHelper.getFormattedTime(10000));
+    }
+
+    @Test
+    public void test_isNotEmpty_positive() {
+        Assert.assertTrue(isNotEmpty(new HashMap<>()));
+        Assert.assertTrue(isNotEmpty(new Object()));
+        Assert.assertTrue(isNotEmpty(new String()));
+        Assert.assertTrue(isNotEmpty(new ArrayList<>()));
+    }
+
+    @Test
+    public void test_generatedRandomID_negative() {
+        Assert.assertNull(InstallationHelper.generatedRandomID(null));
     }
 
     @Test
@@ -177,5 +201,22 @@ public class HelperTest {
     @Test
     public void test_getFormattedAmount_positive() {
         Assert.assertEquals("1,000", StringHelper.getFormattedAmount(1000.0));
+    }
+
+    @Test
+    public void test_checkCurrency_positive() {
+        Assert.assertEquals(Currency.IDR, StringHelper.checkCurrency(null));
+        Assert.assertEquals(Currency.IDR, StringHelper.checkCurrency("unknown"));
+        Assert.assertEquals(Currency.IDR, StringHelper.checkCurrency(Currency.IDR));
+    }
+
+    @Test
+    public void test_isValidURL_positive() {
+        Assert.assertTrue(StringHelper.isValidURL("https://www.google.com"));
+    }
+
+    @Test
+    public void test_isValidURL_negative() {
+        Assert.assertFalse(StringHelper.isValidURL("unknown"));
     }
 }

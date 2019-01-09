@@ -1,24 +1,33 @@
 # Midtrans SDK Guide
 
-## Overview
+##  1. <a name='Overview'></a>Overview
 Midtrans Android SDK makes it easy to build an excellent payment experience in your native Android application. It provides powerful, customizable to collect your users' payment details.
 
 We also expose the low-level APIs that power those elements to make it easy to build fully custom forms. This guide will take you all the way from integrating our SDK to accepting payments from your users via our payment method that we provide.
 
-## Supported Payments
+##  2. <a name='SupportedPayments'></a>Supported Payments
 1. Credit Card
 2. VA / Bank Transfer
-3. CIMB Clicks
-4. Indomaret
-5. BCA KlikPay
-6. Klikbca
-7. Mandiri E-Cash
-8. Mandiri Clickpay
-9. BRI E-Pay
-10. GO-PAY
-11. Akulaku
+	* Bank BNI
+	* Bank Permata
+	* Bank BCA
+3. Cardless Credit
+	* Akulaku
+4. Direct Debit
+	* Klik BCA
+	* Mandiri Click Pay
+5. E - Wallet
+	* Mandiri E - Cash
+	* Gopay
+	* Telkomsel Cash
+6. Online Debit Charge
+	* Cimb Clicks
+	* BCA Click Pay
+	* BRI E - Pay
+7. Store
+	* Indomaret
 
-## Prerequsites
+##  3. <a name='Prerequsites'></a>Prerequsites
 
 There are four parties involved in the payment process for making a payment:
 
@@ -47,15 +56,33 @@ Midtrans SDK General Transaction Flow :
 **4. Starting Payment**
 > Host-app can pass begin payment with calling start payment method and pass needed parameter, it will return object based on payment method. Some payment method will return your transaction number for making payment, the other return url link for completion payment and you must to open the url for finish it.
 
-## Midtrans SDK Guide
+##  4. <a name='QuickStart'></a>Quick Start
 
 1. Installation
 2. Configure & Initialize SDK
-3. Quickstart
-4. Detailed Explanation
-	* Method Documentation
-	* Response
-	* Error
+3. Quick Payment
+4. SDK API Method Explanation
+	* Get Payment Info
+	* Starting Payment 
+		+ VA / Bank Transfer 
+			- Bank BNI 
+			- Bank Permata
+			- Bank BCA                                   
+		+ Cardless Credit
+			- Akulaku 
+		+ Direct Debit
+			- Klik BCA 
+			- Mandiri Click Pay                
+		+ E - Wallet
+			- Mandiri E - Cash
+			- Gopay
+			- Telkomsel Cash
+		+ Online Debit Charge
+			- Cimb Clicks
+			- BCA Click Pay
+			- BRI E - Pay
+		+ Store
+			- Indomaret
 5. Feature
  	* Currency
  	* Customer Info, Billing Info, Shipping Info
@@ -66,8 +93,10 @@ Midtrans SDK General Transaction Flow :
 	* Mandiri Bill Options
 	* GO-PAY Options
    	* Credit card options
+6. Status Code
+7. Error Message
 
-## <a id="installation"></a>Installation
+##  5. <a name='Installation'></a>Installation
 We support installation from gradle dependencies.
 
 1. Add Midtrans bintray repository classpath to your `build.gradle`.
@@ -91,7 +120,7 @@ We support installation from gradle dependencies.
 	```
 
 
-## <a id="configure-and-initialize-sdk"></a>Configure & Initialize SDK
+##  6. <a name='ConfigureInitializeSDK'></a>Configure & Initialize SDK
 
 This can be implemented in application class or your main activity class after you install Midtrans SDK from your gradle.
 
@@ -122,17 +151,18 @@ MidtransSDK midtransSDK = MidtransSDK.getInstance();
 SDK instance is a simple way to access and implement all public method from Midtrans Core SDK that already initialize before, so you only need once to initialize the SDK then you can only access it from instance, if you not initialize the SDK first instance will return null and runtime error.
 
 
-## Quickstart
+##  7. <a name='QuickPayment'></a>Quick Payment
 
 > **This guide assumes you've already follow Installation and Configure & Initialize SDK section.**
 
-**For quick payment, first step is doing checkout, checkout provides your customers with a streamlined, mobile-ready payment experience.**
+**This is quick payment guide, it's use very minimum requirements for making payment. First step is doing checkout, checkout provides your customers with a streamlined, mobile-ready payment experience.**
+
+Our SDK provides a class called `CheckoutTransaction`, whTich is designed to make building your app's checkout flow as easy as possible. It handles payment options such as payment chanels, customer information and can also be used to collect shipping info.
+
+###  7.1. <a name='PrepareyourCheckoutTransactionMandatory'></a>1. Prepare your CheckoutTransaction (Mandatory)
+> **This is very minimum requirements for making CheckoutTransaction object, it's will use many default setting. If you want to use some specific feature or other feature, please follow section `FEATURE` and combine it with this minimum CheckoutTransaction object.**
 
 Checkout securely accepts your customer's payment details and directly passes them to Midtrans servers. Midtrans returns a token representation of those payment details, which can then be submitted to your server for use.
-	
-Our SDK provides a class called `CheckoutTransaction`, which is designed to make building your app's checkout flow as easy as possible. It handles payment options such as payment chanels, customer information and can also be used to collect shipping info.
-
-### 1. Prepare your checkout (Mandatory)
 
 For starting payment with Midtrans, you'll need to write a `CheckoutTransaction` builder inside your class and set to the `MidtransSDK` instance before checkout. (Note, the code samples in this section are simply examples – your own implementation may differ depending on the structure of your app). Midtrans Checkout has 2 required parameters:
 
@@ -145,7 +175,7 @@ For starting payment with Midtrans, you'll need to write a `CheckoutTransaction`
  This value is your amount for making payment
 
 
-Then you can put it all together to generate the `Snap Token` (payment token). Since `TRANSACTION_ID` and `AMOUNT` was required and mandatory, to create a transaction request you should use this builder, so the builder will return minimum object required for making payment.
+Then you can put it all together to generate the `Snap Token` (payment token). Since `TRANSACTION_ID` and `AMOUNT` was required and mandatory, to create a CheckoutTransaction you should use this builder, so the builder will return minimum object required for making payment.
 
 ```Java
 CheckoutTransaction checkoutTransaction = CheckoutTransaction
@@ -157,13 +187,12 @@ Note :
 - `TRANSACTION_ID` is an unique id for your transaction, maximum character length is 50.
 - `AMOUNT` is charge amount.
 
-### 2. Starting checkout
+###  7.2. <a name='StartingCheckout'></a>2. Starting Checkout
 
-That's minimum request for making payment, all of payment method you activated will be default setting. Then for making payment you can simply set the `CheckoutTransaction` object to the SDK Instance.
+That's minimum request for making payment, all of payment method you activated will be in default setting. Then for making payment you can simply pass the `CheckoutTransaction` object to the checkout method. Checkout return SnapToken as key for all other method in Midtrans SDK.
 
 ```Java
-MidtransSdk.getInstance().setTransactionRequest(checkoutTransaction);
-MidtransSdk.getInstance().checkoutWithTransaction(new MidtransCallback<CheckoutWithTransactionResponse>() {
+MidtransSdk.getInstance().checkoutWithTransaction(checkoutTransaction, new MidtransCallback<CheckoutWithTransactionResponse>() {
             @Override
             public void onFailed(Throwable throwable) {
                 Logger.debug("Failed return error >>> " + throwable.getMessage());
@@ -180,27 +209,692 @@ Note:
 
 - This work with all default setting because it only pass `TRANSACTION_ID` and `AMOUNT`, not the custom setting. For custom setting please read next section.
 
-## Detail Explanation
+###  7.3. <a name='GetPaymentInfo'></a>3. Get Payment Info
 
-### Begin Checkout
-- **Request Object**
-- **Response**
-- **Error Result**
+After you checkout it will return SnapToken, and you can use snapToken for getting payment information. Before making payment you can get payment information by passing snap token to the method we provide, it will return all information for your account setting like enable payment, whitelist bin, blacklist bin, etc, so you can make your own layout for showing the payment method option and many more all you want. The response will wrap into `PaymentInfoResponse` model.
 
-### Getting Payment Information
-- **Request Object**
-- **Response**
-- **Error Result**
+```Java
+MidtransSdk.getInstance().getPaymentInfo(SNAP_TOKEN, new MidtransCallback<PaymentInfoResponse>() {
+            @Override
+            public void onSuccess(PaymentInfoResponse data) {
+                Logger.debug("RESULT SUCCESS PAYMENT INFO ");
+            }
 
-### Starting Payment
+            @Override
+            public void onFailed(Throwable throwable) {
+                Logger.debug("MIDTRANS SDK NEW RETURN ERROR >>> " + throwable.getMessage());
+
+            }
+        });
+```
+
+###  7.4. <a name='StartingPayment'></a>4. Starting Payment
+
+To making payment, you need a SnapToken from `checkoutWithTransaction()` to identify which transaction will be paid, payment parameters, and available payment method for making payment. Midtrans SDK provide method for each payment, but if method not available and you still use that it never been pay. For example we use GO-PAY for making payment.
+
+```Java
+new EWalletCharge.paymentUsingGopay(SNAP_TOKEN,
+                GOPAY_ACCOUNT_NUMBER,
+                new MidtransCallback<BasePaymentResponse>() {
+                    @Override
+                    public void onSuccess(BasePaymentResponse data) {
+                			Logger.debug("RESULT SUCCESS, CONTINUE PAYMENT BASED ON RESPONSE");  
+                    }
+
+                    @Override
+                    public void onFailed(Throwable throwable) {
+                			Logger.debug("MIDTRANS SDK NEW RETURN ERROR >>> " + throwable.getMessage()); 
+                    }
+                });
+```
+Some Payment Method need specific parameter, for example GO-PAY need `GOPAY_ACCOUNT_NUMBER` as specific paramter for making payment with GO-PAY.
+
+Table of payment codes for payment.
+
+| Group Payment   | Payment Type     | Payment Name          |
+|-----------------|------------------|-----------------------|
+| Bank Transfer   | BCA_VA           | Bank Transfer BCA     |
+|                 | BNI_VA           | Bank Transfer BNI     |
+|                 | PERMATA_VA       | Bank Transfer Permata |
+| Cardless Credit | AKULAKU          | Akulaku               |
+| Direct Debit    | KLIK_BCA         | Klik BCA              |
+|                 | MANDIRI_CLICKPAY | Mandiri Clickpay      |
+| E - Wallet      | MANDIRI_ECASH    | Mandiri E-Cash        |
+|                 | GOPAY            | Gopay                 |
+|                 | TELKOMSEL_CASH   | TELKOMSEL_CASH        |
+| Online Debit    | CIMB_CLICKS      | CIMB Clicks           |
+|                 | BCA_KLIKPAY      | BCA Klikpay           |
+|                 | BRI_EPAY         | BRI E-Pay             |
+| Store           | INDOMARET        | Indomaret             |
+
+##  8. <a name='SDKAPIMethodExplanation'></a>SDK API Method Explanation
+
+###  8.1. <a name='BeginCheckoutWithTransaction'></a>Begin Checkout With Transaction
 - **Request Object**
-- **Response**
-- **Error Result**
+
+	Checkout need `CheckoutTransaction` object as parameter for making payment, for making `CheckoutTransaction` object please follow this instruction.
+
+	> **Once again, this is very minimum requirements for making CheckoutTransaction object and only sample for you, so it will use default setting. If you want to use some specific feature or other feature, please follow section `FEATURE` and combine it with this minimum CheckoutTransaction object.**
+
+	For starting payment with Midtrans, you'll need to write a `CheckoutTransaction` builder inside your class and set to the `MidtransSDK` instance before checkout. (Note, the code samples in this section are simply examples – your own implementation may differ depending on the structure of your app). Midtrans Checkout has 2 required parameters:
+	
+	**TRANSACTION_ID**
+	
+	This value must be unique, you can use it only once
+ 
+    **AMOUNT**
+ 
+    This value is your amount for making payment Since `TRANSACTION_ID` and `AMOUNT` was required and mandatory, to create a checkout request you should use this builder, so the builder will return minimum object required for making payment.
+    
+    ``` Java
+    CheckoutTransaction checkoutTransaction = CheckoutTransaction
+                .builder(TRANSAXTION_ID,AMOUNT)
+                .build(); 
+    ```
+    
+    **The Method**
+	
+	Put CheckoutTransaction object together with callback in `checkoutWithTransaction()` method.
+
+	```Java
+    MidtransSdk.getInstance().checkoutWithTransaction(checkoutTransaction, new MidtransCallback<CheckoutWithTransactionResponse>() {
+            @Override
+            public void onFailed(Throwable throwable) {
+                Logger.debug("Failed return error >>> " + throwable.getMessage());
+            }
+
+            @Override
+            public void onSuccess(CheckoutWithTransactionResponse data) {
+                Logger.debug("Success return snapToken " + data.getSnapToken());
+            }
+        });
+    ```
+
+- **Success Midtrans Callback**
+	
+	Succes response will return `CheckoutWithTransactionResponse` as model, you can access it from `MidtransCallback` interface and here's the detail of `CheckoutWithTransactionResponse` model.
+
+	| Property Name    | Type           |
+	| ---------------- | ---------------------- |
+	| errorMessage      | `ArrayList<String> `           |
+	| snapToken      | `String`          |
+	
+- **Failed Midtrans Callback**
+	
+	Failed response will return `Throwable` as model, you can get error message and identify why it happen. Midtrans SDK provide some validation and it will return here if not pass the validation. So Failed Midtrans callback will return all of error which is from Midtrans SDK validation or from other source like network error, etc. Here's error message from Midtrans SDK Validation
+
+	| Message    | Cause           |
+	| ---------------- | ---------------------- |
+	| Snap Token must not empty.      | You not put the SnapToken and keep it null or empty           |
+	| Merchant base url is empty. Please set merchant base url on SDK.      | You not set the `MERCHATN_BASE_URL` so SDK cannot making network request.          |
+	| Failed to retrieve response from server.      | Server response is success but it never return anyting.           |
+	| Error message not catchable.      | SDK cannot catch the error.           |
+	| Failed to connect to server.      | You not connected to any internet connection.           |
+
+###  8.2. <a name='BeginCheckoutWithTransaction'></a>Begin Checkout With Transaction
+
+- **The Method**
+- **Success Midtrans Callback**
+- **Failed Midtrans Callback**
+
+### 8.3 <a name='PaymentUsingBankTransfer'></a>Payment Using Bank Transfer/VA
+
+#### Payment Using BCA Bank Transfer
+
+- **Request Object**
+        
+	Payment using BCA Bank Transfer need `CustomerDetailPayRequest` object as paramater, for making `CustomerDetailPayRequest` object please follow this instruction.
+
+	> **Once again, this is very minimum requirements for making CustomerDetailPayRequest object and only sample for you, so it will use default setting. If you want to use some specific feature or other feature, please follow section `FEATURE` and combine it with this minimum CheckoutTransaction object.**
+
+	For starting payment using BCA Bank Transfer with Midtrans, you'll need to write a `CustomerDetailPayRequest` object inside your class (Note, the code samples in this section are simply examples – your own implementation may differ depending on the structure of your app). To make `CustomerDetailPayRequest` you will need 3 required parameters as an example below.
+    ```java
+        String fullName, email, phone;
+        CustomerDetailPayRequest customerDetailPayReq = new CustomerDetailPayRequest(fulname, email, phone);
+    ```
+	
+- **The Method**
+  ```Java
+     new BankTransferCharge().paymentUsingBankTransferVaBca(
+                 SNAP_TOKEN,
+                 customerDetailPayReq,
+                 new MidtransCallback<BasePaymentResponse>() {
+                     @Override
+                     public void onSuccess(BasePaymentResponse data) {
+                         
+                     }
+  
+                     @Override
+                     public void onFailed(Throwable throwable) {
+  
+                     }
+                 }
+         );
+  ``
+- **Success Midtrans Callback**
+
+  Succes response will return `BasePaymentResponse` as model, you can access   it from `MidtransCallback` interface and you need to use `BasePaymentResponseMethod` to get any corresponding response you need from `BasePaymentResponse`. As an example below.
+  ```Java
+  String bcaVaNumber = new BasePaymentResponseMethod().getBcaVaNumber();
+  ```
+- **Failed Midtrans Callback**
+	
+	Failed response will return `Throwable` as model, you can get error message and identify why it happen. Midtrans SDK provide some validation and it will return here if not pass the validation. So Failed Midtrans callback will return all of error which is from Midtrans SDK validation or from other source like network error, etc. Here's error message from Midtrans SDK Validation
+
+	| Message    | Cause           |
+	| ---------------- | ---------------------- |
+	| Snap Token must not empty.      | You not put the SnapToken and keep it null or empty           |
+	| Merchant base url is empty. Please set merchant base url on SDK.      | You not set the `MERCHATN_BASE_URL` so SDK cannot making network request.          |
+	| Failed to retrieve response from server.      | Server response is success but it never return anyting.           |
+	| Error message not catchable.      | SDK cannot catch the error.           |
+	| Failed to connect to server.      | You not connected to any internet connection.           |
+
+#### Payment Using BNI Bank Transfer/VA
+- **Request Object**
+        
+	Payment using BNI Bank Transfer need `CustomerDetailPayRequest` object as paramater, for making `CustomerDetailPayRequest` object please follow this instruction.
+
+	> **Once again, this is very minimum requirements for making CustomerDetailPayRequest object and only sample for you, so it will use default setting. If you want to use some specific feature or other feature, please follow section `FEATURE` and combine it with this minimum CheckoutTransaction object.**
+
+	For starting payment using BNI Bank Transfer with Midtrans, you'll need to write a `CustomerDetailPayRequest` object inside your class (Note, the code samples in this section are simply examples – your own implementation may differ depending on the structure of your app). To make `CustomerDetailPayRequest` you will need 3 required parameters as an example below.
+    ```java
+        String fullName, email, phone;
+        CustomerDetailPayRequest customerDetailPayReq = new CustomerDetailPayRequest(fulname, email, phone);
+    ```
+	
+- **The Method**
+  ```Java
+     new BankTransferCharge().paymentUsingBankTransferVaBni(
+                 SNAP_TOKEN,
+                 customerDetailPayReq,
+                 new MidtransCallback<BasePaymentResponse>() {
+                     @Override
+                     public void onSuccess(BasePaymentResponse data) {
+                      
+                     }
+ 
+                     @Override
+                     public void onFailed(Throwable throwable) {
+ 
+                     }
+                 }
+         );
+    ```
+- **Success Midtrans Callback**
+
+  Succes response will return `BasePaymentResponse` as model, you can access   it from `MidtransCallback` interface and you need to use `BasePaymentResponseMethod` to get any corresponding response you need from `BasePaymentResponse`. As an example below.
+  ```Java
+  String bniVaNumber = new BasePaymentResponseMethod().getBniVaNumber();
+  ```
+- **Failed Midtrans Callback**
+	
+	Failed response will return `Throwable` as model, you can get error message and identify why it happen. Midtrans SDK provide some validation and it will return here if not pass the validation. So Failed Midtrans callback will return all of error which is from Midtrans SDK validation or from other source like network error, etc. Here's error message from Midtrans SDK Validation
+
+	| Message    | Cause           |
+	| ---------------- | ---------------------- |
+	| Snap Token must not empty.      | You not put the SnapToken and keep it null or empty           |
+	| Merchant base url is empty. Please set merchant base url on SDK.      | You not set the `MERCHATN_BASE_URL` so SDK cannot making network request.          |
+	| Failed to retrieve response from server.      | Server response is success but it never return anyting.           |
+	| Error message not catchable.      | SDK cannot catch the error.           |
+	| Failed to connect to server.      | You not connected to any internet connection.           |
+
+
+#### Payment Using PERMATA Bank Transfer/VA
+- **Request Object**
+        
+	Payment using PERMATA Bank Transfer need `CustomerDetailPayRequest` object as paramater, for making `CustomerDetailPayRequest` object please follow this instruction.
+
+	> **Once again, this is very minimum requirements for making CustomerDetailPayRequest object and only sample for you, so it will use default setting. If you want to use some specific feature or other feature, please follow section `FEATURE` and combine it with this minimum CheckoutTransaction object.**
+
+	For starting payment using PERMATA Bank Transfer with Midtrans, you'll need to write a `CustomerDetailPayRequest` object inside your class (Note, the code samples in this section are simply examples – your own implementation may differ depending on the structure of your app). To make `CustomerDetailPayRequest` you will need 3 required parameters as an example below.
+    ```java
+        String fullName, email, phone;
+        CustomerDetailPayRequest customerDetailPayReq = new CustomerDetailPayRequest(fulname, email, phone);
+    ```
+- **The Method**
+  ```Java
+     new BankTransferCharge().paymentUsingBankTransferVaPermata(
+                 SNAP_TOKEN,
+                 customerDetailPayReq,
+                 new MidtransCallback<BasePaymentResponse>() {
+                     @Override
+                     public void onSuccess(BasePaymentResponse data) {
+                      
+                     }
+ 
+                     @Override
+                     public void onFailed(Throwable throwable) {
+ 
+                     }
+                 }
+         );
+    ```
+- **Success Midtrans Callback**
+
+  Succes response will return `BasePaymentResponse` as model, you can access   it from `MidtransCallback` interface and you need to use `BasePaymentResponseMethod` to get any corresponding response you need from `BasePaymentResponse`. As an example below.
+  ```Java
+  String permataVaNumber = new BasePaymentResponseMethod().getPermataVaNumber();
+  ```
+- **Failed Midtrans Callback**
+	
+	Failed response will return `Throwable` as model, you can get error message and identify why it happen. Midtrans SDK provide some validation and it will return here if not pass the validation. So Failed Midtrans callback will return all of error which is from Midtrans SDK validation or from other source like network error, etc. Here's error message from Midtrans SDK Validation
+
+	| Message    | Cause           |
+	| ---------------- | ---------------------- |
+	| Snap Token must not empty.      | You not put the SnapToken and keep it null or empty           |
+	| Merchant base url is empty. Please set merchant base url on SDK.      | You not set the `MERCHATN_BASE_URL` so SDK cannot making network request.          |
+	| Failed to retrieve response from server.      | Server response is success but it never return anyting.           |
+	| Error message not catchable.      | SDK cannot catch the error.           |
+	| Failed to connect to server.      | You not connected to any internet connection.           |
+
+### 8.4 <a name='PaymentUsingEwallet'></a>Payment Using E-Wallet/VA
+
+#### Payment Using Mandiri E-Cash
+- **Request Object**
+
+	Payment using Mandiri E-Cash need `CustomerDetailPayRequest` object as paramater, for making `CustomerDetailPayRequest` object please follow this instruction.
+
+	> **Once again, this is very minimum requirements for making CustomerDetailPayRequest object and only sample for you, so it will use default setting. If you want to use some specific feature or other feature, please follow section `FEATURE` and combine it with this minimum CheckoutTransaction object.**
+
+	For starting payment using Mandiri E-Cash with Midtrans, you'll need to write a `CustomerDetailPayRequest` object inside your class (Note, the code samples in this section are simply examples – your own implementation may differ depending on the structure of your app). To make `CustomerDetailPayRequest` you will need 3 required parameters as an example below.
+    ```java
+        String fullName, email, phone;
+        CustomerDetailPayRequest customerDetailPayReq = new CustomerDetailPayRequest(fulname, email, phone);
+    ```
+- **The Method**
+  ```Java
+     new EWalletCharge().paymentUsingMandiriEcash(
+                 SNAP_TOKEN,
+                 customerDetailPayReq,
+                 new MidtransCallback<BasePaymentResponse>() {
+                     @Override
+                     public void onSuccess(BasePaymentResponse data) {
+                      
+                     }
+ 
+                     @Override
+                     public void onFailed(Throwable throwable) {
+ 
+                     }
+                 }
+         );
+    ```
+- **Success Midtrans Callback**
+
+  Succes response will return `BasePaymentResponse` as model, you can access   it from `MidtransCallback` interface and you need to use `BasePaymentResponseMethod` to get any corresponding response you need from `BasePaymentResponse`. As an example below.
+  ```Java
+  String redirect = new BasePaymentResponseMethod().getRedirectUrl();
+  ```
+  and you need to load url inito your webview
+  ```Java
+  webview.loadUrl(redirect);
+  ```
+- **Failed Midtrans Callback**
+	
+	Failed response will return `Throwable` as model, you can get error message and identify why it happen. Midtrans SDK provide some validation and it will return here if not pass the validation. So Failed Midtrans callback will return all of error which is from Midtrans SDK validation or from other source like network error, etc. Here's error message from Midtrans SDK Validation
+
+	| Message    | Cause           |
+	| ---------------- | ---------------------- |
+	| Snap Token must not empty.      | You not put the SnapToken and keep it null or empty           |
+	| Merchant base url is empty. Please set merchant base url on SDK.      | You not set the `MERCHATN_BASE_URL` so SDK cannot making network request.          |
+	| Failed to retrieve response from server.      | Server response is success but it never return anyting.           |
+	| Error message not catchable.      | SDK cannot catch the error.           |
+	| Failed to connect to server.      | You not connected to any internet connection.           |
+
+#### Payment Using GO-PAY
+- **The Method**
+  ```Java
+     new EWalletCharge().paymentUsingGopay(
+                 SNAP_TOKEN,
+                 GOPAY_ACCOUNT_NUMBER,
+                 new MidtransCallback<BasePaymentResponse>() {
+                     @Override
+                     public void onSuccess(BasePaymentResponse data) {
+                      
+                     }
+ 
+                     @Override
+                     public void onFailed(Throwable throwable) {
+ 
+                     }
+                 }
+         );
+    ```
+- **Success Midtrans Callback**
+
+  Succes response will return `BasePaymentResponse` as model, you can access   it from `MidtransCallback` interface and you need to use `BasePaymentResponseMethod` to get any corresponding response you need from `BasePaymentResponse`. As an example below.
+  ```Java
+  String redirect = new BasePaymentResponseMethod().getRedirectUrl();
+  ```
+- **Failed Midtrans Callback**
+	
+	Failed response will return `Throwable` as model, you can get error message and identify why it happen. Midtrans SDK provide some validation and it will return here if not pass the validation. So Failed Midtrans callback will return all of error which is from Midtrans SDK validation or from other source like network error, etc. Here's error message from Midtrans SDK Validation
+
+	| Message    | Cause           |
+	| ---------------- | ---------------------- |
+	| Snap Token must not empty.      | You not put the SnapToken and keep it null or empty           |
+	| Merchant base url is empty. Please set merchant base url on SDK.      | You not set the `MERCHATN_BASE_URL` so SDK cannot making network request.          |
+	| Failed to retrieve response from server.      | Server response is success but it never return anyting.           |
+	| Error message not catchable.      | SDK cannot catch the error.           |
+	| Failed to connect to server.      | You not connected to any internet connection.           |
+
+#### Payment Using Telkomsel Cash (T-Cash)
+- **The Method**
+  ```Java
+     new EWalletCharge().paymentUsingTelkomselCash(
+                 SNAP_TOKEN,
+                 TELKOMSEL_USER_NUMBER,
+                 new MidtransCallback<BasePaymentResponse>() {
+                     @Override
+                     public void onSuccess(BasePaymentResponse data) {
+                      
+                     }
+ 
+                     @Override
+                     public void onFailed(Throwable throwable) {
+ 
+                     }
+                 }
+         );
+    ```
+- **Success Midtrans Callback**
+
+  Succes response will return `BasePaymentResponse` as model, you can access   it from `MidtransCallback` interface and you need to use `BasePaymentResponseMethod` to get any corresponding response you need from `BasePaymentResponse`. As an example below.
+  ```Java
+  String redirect = new BasePaymentResponseMethod().getRedirectUrl();
+  ```
+- **Failed Midtrans Callback**
+	
+	Failed response will return `Throwable` as model, you can get error message and identify why it happen. Midtrans SDK provide some validation and it will return here if not pass the validation. So Failed Midtrans callback will return all of error which is from Midtrans SDK validation or from other source like network error, etc. Here's error message from Midtrans SDK Validation
+
+	| Message    | Cause           |
+	| ---------------- | ---------------------- |
+	| Snap Token must not empty.      | You not put the SnapToken and keep it null or empty           |
+	| Merchant base url is empty. Please set merchant base url on SDK.      | You not set the `MERCHATN_BASE_URL` so SDK cannot making network request.          |
+	| Failed to retrieve response from server.      | Server response is success but it never return anyting.           |
+	| Error message not catchable.      | SDK cannot catch the error.           |
+	| Failed to connect to server.      | You not connected to any internet connection.           |
+
+### 8.3 <a name='PaymentUsingOnlineDebit'></a>Payment Using Online Debit/VA
+
+#### Payment Using CIMB Clicks
+- **The Method**
+  ```Java
+     new OnlineDebitCharge().paymentUsingCimbClicks(
+                 SNAP_TOKEN,
+                 new MidtransCallback<BasePaymentResponse>() {
+                     @Override
+                     public void onSuccess(BasePaymentResponse data) {
+                      
+                     }
+ 
+                     @Override
+                     public void onFailed(Throwable throwable) {
+ 
+                     }
+                 }
+     );
+    ```
+- **Success Midtrans Callback**
+
+  Succes response will return `BasePaymentResponse` as model, you can access   it from `MidtransCallback` interface and you need to use `BasePaymentResponseMethod` to get any corresponding response you need from `BasePaymentResponse`. As an example below.
+  ```Java
+  String redirect = new BasePaymentResponseMethod().getRedirectUrl();
+  ```
+- **Failed Midtrans Callback**
+	
+	Failed response will return `Throwable` as model, you can get error message and identify why it happen. Midtrans SDK provide some validation and it will return here if not pass the validation. So Failed Midtrans callback will return all of error which is from Midtrans SDK validation or from other source like network error, etc. Here's error message from Midtrans SDK Validation
+
+	| Message    | Cause           |
+	| ---------------- | ---------------------- |
+	| Snap Token must not empty.      | You not put the SnapToken and keep it null or empty           |
+	| Merchant base url is empty. Please set merchant base url on SDK.      | You not set the `MERCHATN_BASE_URL` so SDK cannot making network request.          |
+	| Failed to retrieve response from server.      | Server response is success but it never return anyting.           |
+	| Error message not catchable.      | SDK cannot catch the error.           |
+	| Failed to connect to server.      | You not connected to any internet connection.           |
+
+#### Payment Using BRI E-PAY
+- **The Method**
+  ```Java
+     new OnlineDebitCharge().paymentUsingBriEpay(
+                 SNAP_TOKEN,
+                 new MidtransCallback<BasePaymentResponse>() {
+                     @Override
+                     public void onSuccess(BasePaymentResponse data) {
+                      
+                     }
+ 
+                     @Override
+                     public void onFailed(Throwable throwable) {
+ 
+                     }
+                 }
+     );
+    ```
+- **Success Midtrans Callback**
+
+  Succes response will return `BasePaymentResponse` as model, you can access   it from `MidtransCallback` interface and you need to use `BasePaymentResponseMethod` to get any corresponding response you need from `BasePaymentResponse`. As an example below.
+  ```Java
+  String redirect = new BasePaymentResponseMethod().getRedirectUrl();
+  ```
+- **Failed Midtrans Callback**
+	
+	Failed response will return `Throwable` as model, you can get error message and identify why it happen. Midtrans SDK provide some validation and it will return here if not pass the validation. So Failed Midtrans callback will return all of error which is from Midtrans SDK validation or from other source like network error, etc. Here's error message from Midtrans SDK Validation
+
+	| Message    | Cause           |
+	| ---------------- | ---------------------- |
+	| Snap Token must not empty.      | You not put the SnapToken and keep it null or empty           |
+	| Merchant base url is empty. Please set merchant base url on SDK.      | You not set the `MERCHATN_BASE_URL` so SDK cannot making network request.          |
+	| Failed to retrieve response from server.      | Server response is success but it never return anyting.           |
+	| Error message not catchable.      | SDK cannot catch the error.           |
+	| Failed to connect to server.      | You not connected to any internet connection.           |
+
+#### Payment Using BCA CLICK PAY
+- **The Method**
+  ```Java
+     new OnlineDebitCharge().paymentUsingBcaClickPay(
+                 SNAP_TOKEN,
+                 new MidtransCallback<BasePaymentResponse>() {
+                     @Override
+                     public void onSuccess(BasePaymentResponse data) {
+                      
+                     }
+ 
+                     @Override
+                     public void onFailed(Throwable throwable) {
+ 
+                     }
+                 }
+     );
+    ```
+- **Success Midtrans Callback**
+
+  Succes response will return `BasePaymentResponse` as model, you can access   it from `MidtransCallback` interface and you need to use `BasePaymentResponseMethod` to get any corresponding response you need from `BasePaymentResponse`. As an example below.
+  ```Java
+  String redirect = new BasePaymentResponseMethod().getRedirectUrl();
+  ```
+- **Failed Midtrans Callback**
+	
+	Failed response will return `Throwable` as model, you can get error message and identify why it happen. Midtrans SDK provide some validation and it will return here if not pass the validation. So Failed Midtrans callback will return all of error which is from Midtrans SDK validation or from other source like network error, etc. Here's error message from Midtrans SDK Validation
+
+	| Message    | Cause           |
+	| ---------------- | ---------------------- |
+	| Snap Token must not empty.      | You not put the SnapToken and keep it null or empty           |
+	| Merchant base url is empty. Please set merchant base url on SDK.      | You not set the `MERCHATN_BASE_URL` so SDK cannot making network request.          |
+	| Failed to retrieve response from server.      | Server response is success but it never return anyting.           |
+	| Error message not catchable.      | SDK cannot catch the error.           |
+	| Failed to connect to server.      | You not connected to any internet connection.           |
+
+### 8.3 <a name='PaymentUsingDirectDebit'></a>Payment Using Direct Debit/VA
+
+#### Payment Using Mandiri ClickPay
+- **Request Object**
+        
+	Payment using Mandiri Click Pay need `MandiriClickpayParams` object as paramater, for making `MandiriClickpayParams` object please follow this instruction.
+
+	> **Once again, this is very minimum requirements for making MandiriClickpayParams object and only sample for you, so it will use default setting. If you want to use some specific feature or other feature, please follow section `FEATURE` and combine it with this minimum MandiriClickpayParams object.**
+
+	For starting payment using Mandiri Click Pay with Midtrans, you'll need to write a `MandiriClickpayParams` object inside your class (Note, the code samples in this section are simply examples – your own implementation may differ depending on the structure of your app). To make `MandiriClickpayParams` you will need 3 required parameters as an example below.
+    ```java
+        String mandiriCardNumber, input3, tokenResponse;
+        MandiriClickpayParams mandiriClickpayParam = new MandiriClickpayParams(mandiriCardNumber, input3, tokenResponse);
+    ```
+- **The Method**
+  ```Java
+     new DirectDebitCharge().paymentUsingMandiriClickPay(
+                 SNAP_TOKEN,
+                 mandiriClickpayParam,
+                 new MidtransCallback<BasePaymentResponse>() {
+                     @Override
+                     public void onSuccess(BasePaymentResponse data) {
+                      
+                     }
+ 
+                     @Override
+                     public void onFailed(Throwable throwable) {
+ 
+                     }
+                 }
+     );
+    ```
+- **Success Midtrans Callback**
+
+  Succes response will return `BasePaymentResponse` as model, you can access   it from `MidtransCallback` interface and you need to use `BasePaymentResponseMethod` to get any corresponding response you need from `BasePaymentResponse`.
+
+- **Failed Midtrans Callback**
+	
+	Failed response will return `Throwable` as model, you can get error message and identify why it happen. Midtrans SDK provide some validation and it will return here if not pass the validation. So Failed Midtrans callback will return all of error which is from Midtrans SDK validation or from other source like network error, etc. Here's error message from Midtrans SDK Validation
+
+	| Message    | Cause           |
+	| ---------------- | ---------------------- |
+	| Snap Token must not empty.      | You not put the SnapToken and keep it null or empty           |
+	| Merchant base url is empty. Please set merchant base url on SDK.      | You not set the `MERCHATN_BASE_URL` so SDK cannot making network request.          |
+	| Failed to retrieve response from server.      | Server response is success but it never return anyting.           |
+	| Error message not catchable.      | SDK cannot catch the error.           |
+	| Failed to connect to server.      | You not connected to any internet connection.           |
+
+#### Payment Using Klik BCA
+- **The Method**
+  ```Java
+     new DirectDebitCharge().paymentUsingKlikBca(
+                 SNAP_TOKEN,
+                 KLIK_BCA_USER_ID,
+                 new MidtransCallback<BasePaymentResponse>() {
+                     @Override
+                     public void onSuccess(BasePaymentResponse data) {
+                      
+                     }
+ 
+                     @Override
+                     public void onFailed(Throwable throwable) {
+ 
+                     }
+                 }
+     );
+    ```
+- **Success Midtrans Callback**
+
+  Succes response will return `BasePaymentResponse` as model, you can access   it from `MidtransCallback` interface and you need to use `BasePaymentResponseMethod` to get any corresponding response you need from `BasePaymentResponse`.
+  
+- **Failed Midtrans Callback**
+	
+	Failed response will return `Throwable` as model, you can get error message and identify why it happen. Midtrans SDK provide some validation and it will return here if not pass the validation. So Failed Midtrans callback will return all of error which is from Midtrans SDK validation or from other source like network error, etc. Here's error message from Midtrans SDK Validation
+
+	| Message    | Cause           |
+	| ---------------- | ---------------------- |
+	| Snap Token must not empty.      | You not put the SnapToken and keep it null or empty           |
+	| Merchant base url is empty. Please set merchant base url on SDK.      | You not set the `MERCHATN_BASE_URL` so SDK cannot making network request.          |
+	| Failed to retrieve response from server.      | Server response is success but it never return anyting.           |
+	| Error message not catchable.      | SDK cannot catch the error.           |
+	| Failed to connect to server.      | You not connected to any internet connection.           |
+
+### 8.3 <a name='PaymentUsingCardlessCredit'></a>Payment Using Cardless Credit/VA
+
+
+### Payment Using Akulaku
+- **The Method**
+  ```Java
+     new CardlessCreditCharge().paymentUsingAkulaku(
+                 SNAP_TOKEN,
+                 new MidtransCallback<BasePaymentResponse>() {
+                     @Override
+                     public void onSuccess(BasePaymentResponse data) {
+                      
+                     }
+ 
+                     @Override
+                     public void onFailed(Throwable throwable) {
+ 
+                     }
+                 }
+     );
+    ```
+- **Success Midtrans Callback**
+
+  Succes response will return `BasePaymentResponse` as model, you can access   it from `MidtransCallback` interface and you need to use `BasePaymentResponseMethod` to get any corresponding response you need from `BasePaymentResponse`.  As an example below.
+  ```Java
+  String redirect = new BasePaymentResponseMethod().getRedirectUrl();
+  ```
+  and you need to load url inito your webview
+  ```Java
+  webview.loadUrl(redirect);
+  ```
+  
+- **Failed Midtrans Callback**
+	
+	Failed response will return `Throwable` as model, you can get error message and identify why it happen. Midtrans SDK provide some validation and it will return here if not pass the validation. So Failed Midtrans callback will return all of error which is from Midtrans SDK validation or from other source like network error, etc. Here's error message from Midtrans SDK Validation
+
+	| Message    | Cause           |
+	| ---------------- | ---------------------- |
+	| Snap Token must not empty.      | You not put the SnapToken and keep it null or empty           |
+	| Merchant base url is empty. Please set merchant base url on SDK.      | You not set the `MERCHATN_BASE_URL` so SDK cannot making network request.          |
+	| Failed to retrieve response from server.      | Server response is success but it never return anyting.           |
+	| Error message not catchable.      | SDK cannot catch the error.           |
+	| Failed to connect to server.      | You not connected to any internet connection.           |
+
+### 8.3 <a name='PaymentUsingStore'></a>Payment Using Store/VA
+
+### Payment Using Indomaret
+- **The Method**
+  ```Java
+     new StoreCharge().paymentUsingIndomaret(
+                 SNAP_TOKEN,
+                 new MidtransCallback<BasePaymentResponse>() {
+                     @Override
+                     public void onSuccess(BasePaymentResponse data) {
+                      
+                     }
+ 
+                     @Override
+                     public void onFailed(Throwable throwable) {
+ 
+                     }
+                 }
+     );
+    ```
+- **Success Midtrans Callback**
+
+  Succes response will return `BasePaymentResponse` as model, you can access   it from `MidtransCallback` interface and you need to use `BasePaymentResponseMethod` to get any corresponding response you need from `BasePaymentResponse`.  As an example below.
+  ```Java
+  String indomaretPaymentCode = new BasePaymentResponseMethod().getPaymentCodeIndomaret();
+  ```
+- **Failed Midtrans Callback**
+	
+	Failed response will return `Throwable` as model, you can get error message and identify why it happen. Midtrans SDK provide some validation and it will return here if not pass the validation. So Failed Midtrans callback will return all of error which is from Midtrans SDK validation or from other source like network error, etc. Here's error message from Midtrans SDK Validation
+
+	| Message    | Cause           |
+	| ---------------- | ---------------------- |
+	| Snap Token must not empty.      | You not put the SnapToken and keep it null or empty           |
+	| Merchant base url is empty. Please set merchant base url on SDK.      | You not set the `MERCHATN_BASE_URL` so SDK cannot making network request.          |
+	| Failed to retrieve response from server.      | Server response is success but it never return anyting.           |
+	| Error message not catchable.      | SDK cannot catch the error.           |
+	| Failed to connect to server.      | You not connected to any internet connection.           |
+
 
 ## Feature
 This guide covers how to use the individual feature of our SDK.
 
-> **From this part, it will assumes you've already declare or making CheckoutTransaction object as previous section step. And assume you construct CheckoutTransaction with builder for all payment method, please use your needed.**
+> **From this part, it will assumes you've already declare or making CheckoutTransaction object as previous section step. And assume you construct CheckoutTransaction with builder for all payment method because most of feature will configure in CheckoutTransaction object, please use your needed feature.**
 
 ### Multi Currency
 
@@ -264,13 +958,13 @@ If you want to enable/disable some payment method without change the MAP setting
 CheckoutTransaction checkoutTransaction = CheckoutTransaction
                 .builder(TRANSACTION_ID, AMOUNT)
                 .setEnabledPayments(new ArrayList<>(Arrays.asList(
-                        PaymentType.BCA_VA,
-                        PaymentType.BNI_VA,
-                        PaymentType.PERMATA_VA,
-                        PaymentType.CREDIT_CARD,
-                        PaymentType.GOPAY,
-                        PaymentType.INDOMARET,
-                        PaymentType.KLIK_BCA)))
+                        BCA_VA,
+                        BNI_VA,
+                        PERMATA_VA,
+                        CREDIT_CARD,
+                        GOPAY,
+                        INDOMARET,
+                        KLIK_BCA)))
                 .build();
 ```
 ### Custom Expired
@@ -352,7 +1046,7 @@ CheckoutTransaction checkoutTransaction = CheckoutTransaction
                 .build();
 ```
 
-### Complete Transaction Request
+### Complete Checkout Transaction Object
 
 ```Java
 CheckoutTransaction checkoutTransaction = CheckoutTransaction
@@ -380,13 +1074,13 @@ CheckoutTransaction checkoutTransaction = CheckoutTransaction
                         new ItemDetails(ITEM_ID,ITEM_PRICE,ITEM_QUANTITY,ITEM_NAME))
                 ))
                 .setEnabledPayments(new ArrayList<>(Arrays.asList(
-                        PaymentType.BCA_VA,
-                        PaymentType.BNI_VA,
-                        PaymentType.PERMATA_VA,
-                        PaymentType.CREDIT_CARD,
-                        PaymentType.GOPAY,
-                        PaymentType.INDOMARET,
-                        PaymentType.KLIK_BCA)))
+                        BCA_VA,
+                        BNI_VA,
+                        PERMATA_VA,
+                        CREDIT_CARD,
+                        GOPAY,
+                        INDOMARET,
+                        KLIK_BCA)))
                 .setExpiry(new ExpiryModel("", ExpiryModelUnit.EXPIRY_UNIT_DAY, 1))
                 .setCustomField1("Custom Field 1")
                 .setCustomField2("Custom Field 2")
@@ -401,3 +1095,7 @@ CheckoutTransaction checkoutTransaction = CheckoutTransaction
                 .setPermataVa(new BankTransferRequestModel(""))
                 .build();
 ```
+
+## Status Code
+
+## Error Message

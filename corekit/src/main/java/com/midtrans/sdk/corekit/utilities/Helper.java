@@ -69,18 +69,6 @@ public class Helper {
         }
     }
 
-    public static String formatDouble(double d) {
-        String result = "0";
-        try {
-            result = d == (long) d ? String.format("%d", (long) d) : String.format("%s", d);
-
-        } catch (RuntimeException e) {
-            Logger.error("formatDouble():" + e.getMessage());
-        }
-
-        return result;
-    }
-
     public static String getDeviceType(Activity activity) {
         String deviceType;
         DisplayMetrics metrics = new DisplayMetrics();
