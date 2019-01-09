@@ -11,4 +11,8 @@ public class BasePaymentRequest implements Serializable {
     public BasePaymentRequest(String paymentType) {
         this.paymentType = paymentType;
     }
+
+    public String getPaymentType() {
+        return paymentType;
+    }
 }

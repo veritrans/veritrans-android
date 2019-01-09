@@ -12,4 +12,8 @@ public class MandiriClickpayPaymentRequest extends BasePaymentRequest {
         super(paymentType);
         this.paymentParams = paymentParams;
     }
+
+    public MandiriClickpayParams getPaymentParams() {
+        return paymentParams;
+    }
 }

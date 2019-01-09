@@ -14,4 +14,16 @@ public class MandiriClickpayParams {
         this.input3 = input3;
         this.tokenResponse = tokenResponse;
     }
+
+    public String getMandiriCardNumber() {
+        return mandiriCardNumber;
+    }
+
+    public String getInput3() {
+        return input3;
+    }
+
+    public String getTokenResponse() {
+        return tokenResponse;
+    }
 }
