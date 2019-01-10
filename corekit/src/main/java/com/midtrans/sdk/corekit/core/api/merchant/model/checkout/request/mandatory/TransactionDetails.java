@@ -9,6 +9,9 @@ import com.midtrans.sdk.corekit.utilities.Logger;
 
 import java.io.Serializable;
 
+import static com.midtrans.sdk.corekit.utilities.Constants.MESSAGE_INVALID_GROSS_TRANSACTION_DATA;
+import static com.midtrans.sdk.corekit.utilities.Constants.MESSAGE_INVALID_ORDER_TRANSACTION_DATA;
+import static com.midtrans.sdk.corekit.utilities.Constants.MESSAGE_INVALID_TRANSACTION_DATA;
 import static com.midtrans.sdk.corekit.utilities.StringHelper.checkCurrency;
 
 public class TransactionDetails implements Serializable {
@@ -28,7 +31,7 @@ public class TransactionDetails implements Serializable {
             this.grossAmount = grossAmount;
             this.currency = checkCurrency(currency);
         } else {
-            Logger.error("Invalid transaction data.");
+            Logger.error(MESSAGE_INVALID_TRANSACTION_DATA);
         }
     }
 
@@ -39,7 +42,7 @@ public class TransactionDetails implements Serializable {
             this.grossAmount = grossAmount;
             this.currency = Currency.IDR;
         } else {
-            Logger.error("Invalid transaction data.");
+            Logger.error(MESSAGE_INVALID_TRANSACTION_DATA);
         }
     }
 
@@ -59,7 +62,7 @@ public class TransactionDetails implements Serializable {
         if (grossAmount > 0) {
             this.grossAmount = grossAmount;
         } else {
-            Logger.error("Invalid transaction data, invalid grossAmount.");
+            Logger.error(MESSAGE_INVALID_GROSS_TRANSACTION_DATA);
         }
     }
 
@@ -71,7 +74,7 @@ public class TransactionDetails implements Serializable {
         if (!TextUtils.isEmpty(orderId)) {
             this.orderId = orderId;
         } else {
-            Logger.error("Invalid transaction data, empty orderId.");
+            Logger.error(MESSAGE_INVALID_ORDER_TRANSACTION_DATA);
         }
     }
 }

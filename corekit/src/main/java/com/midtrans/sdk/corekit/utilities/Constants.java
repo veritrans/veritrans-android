@@ -83,6 +83,17 @@ public class Constants {
 
     /**
      * Error Message
+     * Invalid Transaction Data
+     */
+    public static final String MESSAGE_INVALID_TRANSACTION_DATA = "Invalid or empty transaction data.";
+    public static final String MESSAGE_INVALID_GROSS_TRANSACTION_DATA = "Invalid transaction data, please check gross amount.";
+    public static final String MESSAGE_INVALID_ORDER_TRANSACTION_DATA = "Invalid transaction data, please check order id, order id must not be null.";
+    public static final String MESSAGE_FAILED_CHECKOUT_TRANSACTION_DATA = "Failed make checkout object, already performing a transaction.";
+    public static final String MESSAGE_ORDER_ID_NOT_SET = "Order id is empty, please set order id.";
+    public static final String MESSAGE_GROSS_AMOUNT_NOT_SET = "Gross amount is empty, please set gross amount.";
+
+    /**
+     * Error Message
      * Api Service ValidationHelper
      */
     public static final String MESSAGE_ERROR_SNAP_TOKEN = "Snap Token must not empty.";

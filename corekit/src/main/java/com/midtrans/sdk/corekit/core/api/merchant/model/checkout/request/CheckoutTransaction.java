@@ -19,6 +19,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static com.midtrans.sdk.corekit.utilities.Constants.MESSAGE_FAILED_CHECKOUT_TRANSACTION_DATA;
+import static com.midtrans.sdk.corekit.utilities.Constants.MESSAGE_GROSS_AMOUNT_NOT_SET;
+import static com.midtrans.sdk.corekit.utilities.Constants.MESSAGE_ORDER_ID_NOT_SET;
+
 public class CheckoutTransaction implements Serializable {
     private static CheckoutTransaction SINGLETON_INSTANCE = null;
     /**
@@ -367,7 +371,7 @@ public class CheckoutTransaction implements Serializable {
                         customObject);
                 return SINGLETON_INSTANCE;
             } else {
-                Logger.error("Already performing an transaction");
+                Logger.error(MESSAGE_FAILED_CHECKOUT_TRANSACTION_DATA);
             }
             return null;
         }
@@ -375,14 +379,12 @@ public class CheckoutTransaction implements Serializable {
         private boolean isValidData(String orderId,
                                     double grossAmount) {
             if (orderId == null) {
-                String message = "Please set order id";
-                RuntimeException runtimeException = new RuntimeException(message);
-                Logger.error(message, runtimeException);
+                RuntimeException runtimeException = new RuntimeException(MESSAGE_ORDER_ID_NOT_SET);
+                Logger.error(runtimeException.getMessage());
             }
             if (grossAmount == 0) {
-                String message = "Please set gross amount";
-                RuntimeException runtimeException = new RuntimeException(message);
-                Logger.error(message, runtimeException);
+                RuntimeException runtimeException = new RuntimeException(MESSAGE_GROSS_AMOUNT_NOT_SET);
+                Logger.error(runtimeException.getMessage());
             }
             return true;
         }
