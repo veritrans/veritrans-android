@@ -1,4 +1,4 @@
-package com.midtrans.sdk.corekit.models.snap.transaction.callback;
+package com.midtrans.sdk.corekit.models.snap.paymentinfo.callback;
 
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.callback.Callbacks;
 

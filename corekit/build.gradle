@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
-apply from: '../jacoco.gradle'
 apply plugin: 'com.vanniktech.android.junit.jacoco'
+apply from: '../jacoco.gradle'
 
 group = 'com.midtrans'
 version = '2.0.0'
@@ -17,14 +17,6 @@ android {
         targetSdkVersion rootProject.sdkVersion
         versionCode 3
         versionName version
-
-        buildConfigField "String", "CALLBACK_STRING", "\"/token/callback/\""
-        buildConfigField "String", "CALLBACK_URL", "\"https://hangout.betas.in/veritrans/api/paymentstatus\""
-        buildConfigField "String", "BBM_MONEY_PACKAGE", "\"com.monitise.client.android.bbmmoney\""
-        buildConfigField "String", "MARKET_URL", "\"market://details?id=\""
-        buildConfigField "String", "PLAY_STORE_URL", "\"https://play.google.com/store/apps/details?id=\""
-        buildConfigField "String", "BBM_PREFIX_URL", "\"bbmmoney://api/payment/imp?data=\""
-
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -40,37 +32,21 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    testImplementation 'junit:junit:4.12'
-    testImplementation "org.mockito:mockito-core:${rootProject.mockitoCoreVersion}"
-    testImplementation "org.mockito:mockito-inline:${rootProject.mockitoInlineVersion}"
-    testImplementation("org.powermock:powermock-api-mockito:${rootProject.powerMockVersion}") {
-        exclude module: 'hamcrest-core'
-        exclude module: 'objenesis'
-    }
-    testImplementation("org.powermock:powermock-module-junit4:${rootProject.powerMockVersion}") {
-        exclude module: 'hamcrest-core'
-        exclude module: 'objenesis'
-    }
-    testImplementation("org.powermock:powermock-api-mockito:${rootProject.powerMockVersion}") {
-        exclude module: 'hamcrest-core'
-        exclude module: 'objenesis'
-    }
-    testImplementation("org.powermock:powermock-module-junit4-rule:${rootProject.powerMockVersion}") {
-        exclude module: 'hamcrest-core'
-        exclude module: 'objenesis'
-    }
+    testImplementation testLibraries.jUnit
+    testImplementation testLibraries.mockitoCore
+    testImplementation testLibraries.mockitoInline
+    testImplementation testLibraries.powermockApi
+    testImplementation testLibraries.powermockModule
+    testImplementation testLibraries.powermockRule
 
-    androidTestImplementation "com.android.support.test:runner:${rootProject.androidRunnerVersion}"
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:${rootProject.espressoCoreVersion}"
-    androidTestImplementation("org.powermock:powermock-mockito-release-full:${rootProject.powerMockVersion}") {
-        exclude module: 'hamcrest-core'
-        exclude module: 'objenesis'
-    }
+    androidTestImplementation testLibraries.runner
+    androidTestImplementation testLibraries.espresso
+    androidTestImplementation testLibraries.powermockFull
 
-    implementation "com.android.support:appcompat-v7:${rootProject.supportLibVersion}"
-    implementation "com.jakewharton.retrofit:retrofit1-okhttp3-client:${rootProject.okHttpClientVersion}"
-    implementation "com.squareup.okhttp3:okhttp:${rootProject.okHttpVersion}"
-    implementation "com.squareup.okhttp3:logging-interceptor:${rootProject.okHttpVersion}"
-    implementation "com.squareup.retrofit2:retrofit:${rootProject.retrofitVersion}"
-    implementation "com.squareup.retrofit2:converter-gson:${rootProject.retrofitVersion}"
+    implementation supportLibraries.appCompat
+    implementation networkLibraries.okhttp
+    implementation networkLibraries.okhttpClient
+    implementation networkLibraries.interceptor
+    implementation networkLibraries.retrofit
+    implementation networkLibraries.gsonConverter
 }

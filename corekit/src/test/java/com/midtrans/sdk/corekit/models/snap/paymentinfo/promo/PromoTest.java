@@ -1,4 +1,4 @@
-package com.midtrans.sdk.corekit.models.snap.transaction.promo;
+package com.midtrans.sdk.corekit.models.snap.paymentinfo.promo;
 
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.promo.Promo;
 

@@ -1,4 +1,4 @@
-package com.midtrans.sdk.corekit.models.snap.transaction.merchantdata;
+package com.midtrans.sdk.corekit.models.snap.paymentinfo.merchantdata;
 
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.merchantdata.MerchantPreferences;
 

@@ -76,10 +76,22 @@ public class Constants {
      * Midtrans SDK instance
      */
     public static final String ERROR_SDK_IS_NOT_INITIALIZE_PROPERLY = "Midtrans SDK is not initialize properly, please use MidtransSdk.builder().";
+    public static final String MESSAGE_INSTANCE_NOT_INITALIZE = "MidtransSdk isn't initialized. Please use MidtransSdk.builder() to initialize.";
     public static final String ERROR_SDK_CLIENT_KEY_AND_CONTEXT_PROPERLY = "Client key and context cannot be null or empty. Please set the client key and context.";
     public static final String ERROR_SDK_MERCHANT_BASE_URL_PROPERLY = "Merchant base url cannot be null or empty (required) and must url valid format. Please set your merchant base url.";
     public static final String MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED = "Callback Unimplemented, please put callback.";
     public static final String MESSAGE_ERROR_MISSING_CONTEXT = "Context is Missing, please initialize sdk first.";
+
+    /**
+     * Error Message
+     * Invalid Transaction Data
+     */
+    public static final String MESSAGE_INVALID_TRANSACTION_DATA = "Invalid or empty transaction data.";
+    public static final String MESSAGE_INVALID_GROSS_TRANSACTION_DATA = "Invalid transaction data, please check gross amount.";
+    public static final String MESSAGE_INVALID_ORDER_TRANSACTION_DATA = "Invalid transaction data, please check order id, order id must not be null.";
+    public static final String MESSAGE_FAILED_CHECKOUT_TRANSACTION_DATA = "Failed make checkout object, already performing a transaction.";
+    public static final String MESSAGE_ORDER_ID_NOT_SET = "Order id is empty, please set order id.";
+    public static final String MESSAGE_GROSS_AMOUNT_NOT_SET = "Gross amount is empty, please set gross amount.";
 
     /**
      * Error Message

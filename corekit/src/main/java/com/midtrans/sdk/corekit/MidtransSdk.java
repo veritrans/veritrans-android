@@ -20,6 +20,7 @@ import static android.webkit.URLUtil.isValidUrl;
 import static com.midtrans.sdk.corekit.utilities.Constants.ERROR_SDK_CLIENT_KEY_AND_CONTEXT_PROPERLY;
 import static com.midtrans.sdk.corekit.utilities.Constants.ERROR_SDK_IS_NOT_INITIALIZE_PROPERLY;
 import static com.midtrans.sdk.corekit.utilities.Constants.ERROR_SDK_MERCHANT_BASE_URL_PROPERLY;
+import static com.midtrans.sdk.corekit.utilities.Constants.MESSAGE_INSTANCE_NOT_INITALIZE;
 import static com.midtrans.sdk.corekit.utilities.NetworkHelper.isValidForNetworkCall;
 
 public class MidtransSdk {
@@ -34,6 +35,11 @@ public class MidtransSdk {
     private final String SNAP_BASE_URL_PRODUCTION = "https://app.midtrans.com/snap/";
     private final String PROMO_BASE_URL_SANDBOX = "https://promo.vt-stage.info/";
     private final String PROMO_BASE_URL_PRODUCTION = "https://promo.vt-stage.info/";
+    private final String APP_MARKET_URL = "market://details?id=";
+    private final String APP_PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=";
+    private final String CALLBACK_URL = "https://hangout.betas.in/veritrans/api/paymentstatus";
+    private final String CALLBACK_STRING = "/token/callback/";
+
     /**
      * Mandatory property.
      */
@@ -346,8 +352,7 @@ public class MidtransSdk {
     }
 
     private static void doOnSdkNotInitialize() {
-        String message = "MidtransSdk isn't initialized. Please use MidtransSdk.builder() to initialize.";
-        RuntimeException runtimeException = new RuntimeException(message);
-        Logger.error(message, runtimeException);
+        RuntimeException runtimeException = new RuntimeException(MESSAGE_INSTANCE_NOT_INITALIZE);
+        Logger.error(runtimeException.getMessage());
     }
 }

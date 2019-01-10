@@ -10,7 +10,7 @@ import static org.junit.Assert.assertNotEquals;
 
 public class CustomerDetailsTest {
     private CustomerDetails customerDetails;
-    private String exampleTextPositive,exampleTextNegative;
+    private String exampleTextPositive, exampleTextNegative;
 
     @Before
     public void test_setup() {
