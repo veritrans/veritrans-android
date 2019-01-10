@@ -1,4 +1,5 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
+apply from: 'dependencies.gradle'
 
 buildscript {
     
@@ -26,27 +27,3 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
-
-// Google
-ext.supportLibVersion = '28.0.0'
-ext.multidexVersion = '1.0.3'
-ext.playServicesVersion = '15.0.0'
-ext.sdkVersion = 28
-ext.minCoreSdkVersion = 9
-ext.minUiSdkVersion = 14
-ext.minSdkVersion = 14
-ext.buildToolsVersion = '28.0.3'
-
-// Runner
-ext.androidRunnerVersion = '1.0.2'
-ext.espressoCoreVersion = '3.0.2'
-ext.mockitoCoreVersion = '2.21.0'
-ext.mockitoInlineVersion = '2.7.22'
-
-// PowerMock
-ext.powerMockVersion = '1.6.2'
-
-// Networking
-ext.okHttpVersion = '3.10.0'
-ext.okHttpClientVersion = '1.1.0'
-ext.retrofitVersion = '2.4.0'
