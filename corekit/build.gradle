@@ -17,14 +17,6 @@ android {
         targetSdkVersion rootProject.sdkVersion
         versionCode 3
         versionName version
-
-        buildConfigField "String", "CALLBACK_STRING", "\"/token/callback/\""
-        buildConfigField "String", "CALLBACK_URL", "\"https://hangout.betas.in/veritrans/api/paymentstatus\""
-        buildConfigField "String", "BBM_MONEY_PACKAGE", "\"com.monitise.client.android.bbmmoney\""
-        buildConfigField "String", "MARKET_URL", "\"market://details?id=\""
-        buildConfigField "String", "PLAY_STORE_URL", "\"https://play.google.com/store/apps/details?id=\""
-        buildConfigField "String", "BBM_PREFIX_URL", "\"bbmmoney://api/payment/imp?data=\""
-
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

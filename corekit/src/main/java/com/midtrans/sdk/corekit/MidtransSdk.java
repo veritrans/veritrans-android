@@ -34,6 +34,11 @@ public class MidtransSdk {
     private final String SNAP_BASE_URL_PRODUCTION = "https://app.midtrans.com/snap/";
     private final String PROMO_BASE_URL_SANDBOX = "https://promo.vt-stage.info/";
     private final String PROMO_BASE_URL_PRODUCTION = "https://promo.vt-stage.info/";
+    private final String APP_MARKET_URL = "market://details?id=";
+    private final String APP_PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=";
+    private final String CALLBACK_URL = "https://hangout.betas.in/veritrans/api/paymentstatus";
+    private final String CALLBACK_STRING = "/token/callback/";
+
     /**
      * Mandatory property.
      */
