@@ -20,6 +20,7 @@ import static android.webkit.URLUtil.isValidUrl;
 import static com.midtrans.sdk.corekit.utilities.Constants.ERROR_SDK_CLIENT_KEY_AND_CONTEXT_PROPERLY;
 import static com.midtrans.sdk.corekit.utilities.Constants.ERROR_SDK_IS_NOT_INITIALIZE_PROPERLY;
 import static com.midtrans.sdk.corekit.utilities.Constants.ERROR_SDK_MERCHANT_BASE_URL_PROPERLY;
+import static com.midtrans.sdk.corekit.utilities.Constants.MESSAGE_INSTANCE_NOT_INITALIZE;
 import static com.midtrans.sdk.corekit.utilities.NetworkHelper.isValidForNetworkCall;
 
 public class MidtransSdk {
@@ -351,8 +352,7 @@ public class MidtransSdk {
     }
 
     private static void doOnSdkNotInitialize() {
-        String message = "MidtransSdk isn't initialized. Please use MidtransSdk.builder() to initialize.";
-        RuntimeException runtimeException = new RuntimeException(message);
-        Logger.error(message, runtimeException);
+        RuntimeException runtimeException = new RuntimeException(MESSAGE_INSTANCE_NOT_INITALIZE);
+        Logger.error(runtimeException.getMessage());
     }
 }
