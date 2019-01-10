@@ -190,7 +190,7 @@ public class PaymentChargeTest {
 
     @Test
     public void test_paymentUsingBankTransferVaPermata_negative_withoutSnapTken() {
-        bankTransferCharge.paymentUsingBankTransferVaPermata(null, customerDetailPayRequest, null);
+        bankTransferCharge.paymentUsingBankTransferVaPermata(null, customerDetailPayRequest, callbackMock);
         Mockito.verify(callbackMock).onFailed(Matchers.any(Throwable.class));
     }
 
