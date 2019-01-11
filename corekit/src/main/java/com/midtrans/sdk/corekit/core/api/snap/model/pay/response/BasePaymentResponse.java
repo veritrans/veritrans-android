@@ -2,6 +2,7 @@ package com.midtrans.sdk.corekit.core.api.snap.model.pay.response;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.bcaklikpay.BcaKlikPayDataResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.va.VaNumber;
 
@@ -166,8 +167,8 @@ public class BasePaymentResponse implements Serializable {
      */
     @SerializedName("bank")
     protected String bank;
-    @SerializedName("masked_card")
-
+    @SerializedName("card_type")
+    protected String cardType;
 
     public ArrayList<String> getValidationMessages() {
         return validationMessages;

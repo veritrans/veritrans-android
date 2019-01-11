@@ -20,6 +20,7 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BankTransferVaP
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BasePaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CardlessCreditAkulakuPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.ConvenienceStoreIndomaretPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CreditCardPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.DirectDebitKlikBcaResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.DirectDebitMandiriClickpayResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.EwalletGopayPaymentResponse;
@@ -293,14 +294,14 @@ public class SnapApiManager extends BaseServiceManager {
     public void paymentUsingCreditCard(final String snapToken,
                                        final CreditCardPaymentParams creditCardPaymentParams,
                                        final CustomerDetailPayRequest customerDetailPayRequest,
-                                       final MidtransCallback<BasePaymentResponse> callback) {
+                                       final MidtransCallback<CreditCardPaymentResponse> callback) {
 
         if (isSnapTokenAvailable(callback, snapToken, apiService)) {
             CreditCardPaymentRequest creditCardPaymentRequest = new CreditCardPaymentRequest(PaymentType.CREDIT_CARD,
                     creditCardPaymentParams,
                     customerDetailPayRequest);
-            basePaymentResponseCall = apiService.paymentUsingCreditCard(snapToken, creditCardPaymentRequest);
-            handleCall(basePaymentResponseCall, callback);
+            Call<CreditCardPaymentResponse> call = apiService.paymentUsingCreditCard(snapToken, creditCardPaymentRequest);
+            handleCall(call, callback);
         }
     }
 
