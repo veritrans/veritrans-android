@@ -3,12 +3,12 @@ package com.midtrans.demo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.midtrans.sdk.corekit.MidtransSdk;
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.base.enums.Environment;
 import com.midtrans.sdk.corekit.base.enums.ExpiryModelUnit;
 import com.midtrans.sdk.corekit.base.model.BankType;
 import com.midtrans.sdk.corekit.base.model.Currency;
-import com.midtrans.sdk.corekit.MidtransSdk;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.CheckoutTransaction;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.BillInfoModel;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.ExpiryModel;
@@ -39,24 +39,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        MidtransSdk.getInstance().checkoutWithTransaction(new MidtransCallback<CheckoutWithTransactionResponse>() {
-            @Override
-            public void onSuccess(CheckoutWithTransactionResponse data) {
-
-            }
-
-            @Override
-            public void onFailed(Throwable throwable) {
-
-            }
-        });
-
+        Environment environment;
+        if (BuildConfig.DEBUG) {
+            environment = Environment.SANDBOX;
+        } else {
+            environment = Environment.PRODUCTION;
+        }
         MidtransSdk
                 .builder(this,
                         BuildConfig.CLIENT_KEY,
                         BuildConfig.BASE_URL)
                 .setLogEnabled(true)
-                .setEnvironment(Environment.SANDBOX)
+                .setEnvironment(environment)
                 .setApiRequestTimeOut(60)
                 .build();
 
@@ -116,9 +110,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(CheckoutWithTransactionResponse data) {
-                Logger.debug("RESULT TOKEN CHECKOUT " + data.getSnapToken());
-                getTransactionOptions(data.getSnapToken());
-                snapToken = data.getSnapToken();
+                Logger.debug("RESULT TOKEN CHECKOUT " + data.getToken());
+                getTransactionOptions(data.getToken());
+                snapToken = data.getToken();
                 registerCard();
             }
         });

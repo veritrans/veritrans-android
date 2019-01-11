@@ -67,6 +67,5 @@ dependencies {
     androidTestImplementation testLibraries.runner
     androidTestImplementation testLibraries.espresso
 
-    developmentImplementation project(path:':corekit')
-    productionImplementation project(path:':corekit')
+    implementation project(path:':corekit')
 }
