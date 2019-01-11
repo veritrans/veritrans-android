@@ -5,6 +5,8 @@ import android.support.annotation.NonNull;
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.CustomerDetailPayRequest;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BasePaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.GopayPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriEcashPaymentResponse;
 
 public class EWalletCharge extends BaseGroupPayment {
     /**
@@ -16,7 +18,7 @@ public class EWalletCharge extends BaseGroupPayment {
      */
     public static void paymentUsingMandiriEcash(@NonNull final String snapToken,
                                                 @NonNull final CustomerDetailPayRequest customerDetailPayRequest,
-                                                @NonNull final MidtransCallback<BasePaymentResponse> callback) {
+                                                @NonNull final MidtransCallback<MandiriEcashPaymentResponse> callback) {
         if (isValidForNetworkCall(callback)) {
             getSnapApiManager().paymentUsingMandiriEcash(snapToken, customerDetailPayRequest, callback);
         }
@@ -30,7 +32,7 @@ public class EWalletCharge extends BaseGroupPayment {
      */
     public static void paymentUsingGopay(@NonNull final String snapToken,
                                          @NonNull final String gopayAccountNumber,
-                                         @NonNull final MidtransCallback<BasePaymentResponse> callback) {
+                                         @NonNull final MidtransCallback<GopayPaymentResponse> callback) {
         if (isValidForNetworkCall(callback)) {
             getSnapApiManager().paymentUsingGopay(snapToken, gopayAccountNumber, callback);
         }

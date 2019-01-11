@@ -44,6 +44,9 @@ public class BasePaymentResponse implements Serializable {
     @SerializedName("finish_redirect_url")
     @Expose
     protected String finishRedirectUrl;
+    @SerializedName("settlement_time")
+    @Expose
+    protected String settlementTime;
 
     /**
      * KlikBCA
@@ -119,9 +122,33 @@ public class BasePaymentResponse implements Serializable {
      * get bank point
      */
     @SerializedName("validation_messages")
-    private ArrayList<String> validationMessages;
+    protected ArrayList<String> validationMessages;
     @SerializedName("point_balance")
-    private Long pointBalance;
+    protected Long pointBalance;
     @SerializedName("point_balance_amount")
-    private String pointBalanceAmount;
+    protected String pointBalanceAmount;
+
+    /**
+     * get gopay
+     */
+    @SerializedName("qr_code_url")
+    protected String qrCodeUrl;
+    @SerializedName("deeplink_url")
+    protected String deeplinkUrl;
+    @SerializedName("gopay_expiration")
+    protected String gopayExpiration;
+    @SerializedName("gopay_expiration_raw")
+    protected String gopayExpirationRaw;
+
+    public ArrayList<String> getValidationMessages() {
+        return validationMessages;
+    }
+
+    public String getStatusCode() {
+        return statusCode;
+    }
+
+    public String getStatusMessage() {
+        return statusMessage;
+    }
 }

@@ -8,7 +8,9 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.klikbca.KlikBcaP
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.mandiriclick.MandiriClickpayPaymentRequest;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.telkomsel.TelkomselCashPaymentRequest;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BasePaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.va.OtherPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.GopayPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriEcashPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.TelkomselCashPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
 
 import retrofit2.Call;
@@ -83,7 +85,7 @@ public interface SnapApiService {
      * @param paymentRequest Payment Request Details.
      */
     @POST(PAYMENT_PAY)
-    Call<BasePaymentResponse> paymentMandiriEcash(
+    Call<MandiriEcashPaymentResponse> paymentMandiriEcash(
             @Path("snap_token") String snapToken,
             @Body PaymentRequest paymentRequest
     );
@@ -168,15 +170,15 @@ public interface SnapApiService {
      * Charge payment using GoPay
      */
     @POST(PAYMENT_PAY)
-    Call<BasePaymentResponse> paymentUsingGoPay(@Path("snap_token") String snapToken,
-                                                @Body GopayPaymentRequest paymentRequest
+    Call<GopayPaymentResponse> paymentUsingGoPay(@Path("snap_token") String snapToken,
+                                                 @Body GopayPaymentRequest paymentRequest
     );
 
     /**
      * Charge payment using Telkomsel Cash
      */
     @POST(PAYMENT_PAY)
-    Call<BasePaymentResponse> paymentUsingTelkomselCash(
+    Call<TelkomselCashPaymentResponse> paymentUsingTelkomselCash(
             @Path("snap_token") String snapToken,
             @Body TelkomselCashPaymentRequest paymentRequest
     );

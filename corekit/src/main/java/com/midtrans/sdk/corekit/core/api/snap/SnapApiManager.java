@@ -14,7 +14,9 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.mandiriclick.Man
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.mandiriclick.MandiriClickpayPaymentRequest;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.telkomsel.TelkomselCashPaymentRequest;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BasePaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.va.OtherPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.GopayPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriEcashPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.TelkomselCashPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
 
 import retrofit2.Call;
@@ -24,8 +26,6 @@ public class SnapApiManager extends BaseServiceManager {
     private static final String TAG = "SnapApiManager";
 
     private SnapApiService apiService;
-
-    private Call<BasePaymentResponse> basePaymentResponseCall;
 
     public SnapApiManager(SnapApiService apiService) {
         this.apiService = apiService;
@@ -115,23 +115,6 @@ public class SnapApiManager extends BaseServiceManager {
     }
 
     /**
-     * This method is used for Payment Using Mandiri Echannel
-     *
-     * @param snapToken                snapToken after get payment info.
-     * @param customerDetailPayRequest Payment Details.zz
-     * @param callback                 Transaction callback.
-     */
-    public void paymentUsingMandiriEcash(final String snapToken,
-                                         final CustomerDetailPayRequest customerDetailPayRequest,
-                                         final MidtransCallback<BasePaymentResponse> callback) {
-        if (isSnapTokenAvailable(callback, snapToken, apiService)) {
-            PaymentRequest paymentRequest = new PaymentRequest(PaymentType.MANDIRI_ECASH, customerDetailPayRequest);
-            basePaymentResponseCall = apiService.paymentMandiriEcash(snapToken, paymentRequest);
-            handleCall(basePaymentResponseCall, callback);
-        }
-    }
-
-    /**
      * This method is used for Payment Using CIMB Clicks
      *
      * @param snapToken snapToken after get payment info.
@@ -162,6 +145,23 @@ public class SnapApiManager extends BaseServiceManager {
     }
 
     /**
+     * This method is used for Payment Using Mandiri Echannel
+     *
+     * @param snapToken                snapToken after get payment info.
+     * @param customerDetailPayRequest Payment Details.zz
+     * @param callback                 Transaction callback.
+     */
+    public void paymentUsingMandiriEcash(final String snapToken,
+                                         final CustomerDetailPayRequest customerDetailPayRequest,
+                                         final MidtransCallback<MandiriEcashPaymentResponse> callback) {
+        if (isSnapTokenAvailable(callback, snapToken, apiService)) {
+            PaymentRequest paymentRequest = new PaymentRequest(PaymentType.MANDIRI_ECASH, customerDetailPayRequest);
+            Call<MandiriEcashPaymentResponse> call = apiService.paymentMandiriEcash(snapToken, paymentRequest);
+            handleCall(call, callback);
+        }
+    }
+
+    /**
      * This method is used for Payment Using Gopay
      *
      * @param snapToken snapToken after get payment info.
@@ -169,11 +169,11 @@ public class SnapApiManager extends BaseServiceManager {
      */
     public void paymentUsingGopay(final String snapToken,
                                   final String gopayAccountNumber,
-                                  final MidtransCallback<BasePaymentResponse> callback) {
+                                  final MidtransCallback<GopayPaymentResponse> callback) {
         if (isSnapTokenAvailable(callback, snapToken, apiService)) {
             GopayPaymentRequest gopayPaymentRequest = new GopayPaymentRequest(PaymentType.GOPAY, gopayAccountNumber);
-            basePaymentResponseCall = apiService.paymentUsingGoPay(snapToken, gopayPaymentRequest);
-            handleCall(basePaymentResponseCall, callback);
+            Call<GopayPaymentResponse> call = apiService.paymentUsingGoPay(snapToken, gopayPaymentRequest);
+            handleCall(call, callback);
         }
     }
 
@@ -185,11 +185,11 @@ public class SnapApiManager extends BaseServiceManager {
      */
     public void paymentUsingTelkomselCash(final String snapToken,
                                           final String customerNumber,
-                                          final MidtransCallback<BasePaymentResponse> callback) {
+                                          final MidtransCallback<TelkomselCashPaymentResponse> callback) {
         if (isSnapTokenAvailable(callback, snapToken, apiService)) {
             TelkomselCashPaymentRequest telkomselCashPaymentRequest = new TelkomselCashPaymentRequest(PaymentType.TELKOMSEL_CASH, customerNumber);
-            basePaymentResponseCall = apiService.paymentUsingTelkomselCash(snapToken, telkomselCashPaymentRequest);
-            handleCall(basePaymentResponseCall, callback);
+            Call<TelkomselCashPaymentResponse> call = apiService.paymentUsingTelkomselCash(snapToken, telkomselCashPaymentRequest);
+            handleCall(call, callback);
         }
     }
 
@@ -287,7 +287,7 @@ public class SnapApiManager extends BaseServiceManager {
                                             final MandiriClickpayParams mandiriClickpayParams,
                                             final MidtransCallback<BasePaymentResponse> callback) {
         if (isSnapTokenAvailable(callback, snapToken, apiService)) {
-            MandiriClickpayPaymentRequest paymentRequest = new MandiriClickpayPaymentRequest(PaymentType.KLIK_BCA, mandiriClickpayParams);
+            MandiriClickpayPaymentRequest paymentRequest = new MandiriClickpayPaymentRequest(PaymentType.MANDIRI_CLICKPAY, mandiriClickpayParams);
             basePaymentResponseCall = apiService.paymentMandiriClickpay(snapToken, paymentRequest);
             handleCall(basePaymentResponseCall, callback);
         }
