@@ -7,6 +7,10 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.gopay.GopayPayme
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.klikbca.KlikBcaPaymentRequest;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.mandiriclick.MandiriClickpayPaymentRequest;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.telkomsel.TelkomselCashPaymentRequest;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BankTransferVaBcaPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BankTransferVaBniPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BankTransferVaOtherPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BankTransferVaPermataPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BasePaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.GopayPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriEcashPaymentResponse;
@@ -41,7 +45,7 @@ public interface SnapApiService {
      * @param paymentRequest Payment Request Details.
      */
     @POST(PAYMENT_PAY)
-    Call<BasePaymentResponse> paymentBankTransferBca(
+    Call<BankTransferVaBcaPaymentResponse> paymentBankTransferBca(
             @Path("snap_token") String snapToken,
             @Body PaymentRequest paymentRequest
     );
@@ -52,7 +56,7 @@ public interface SnapApiService {
      * @param paymentRequest Payment Request Details.
      */
     @POST(PAYMENT_PAY)
-    Call<BasePaymentResponse> paymentBankTransferBni(
+    Call<BankTransferVaBniPaymentResponse> paymentBankTransferBni(
             @Path("snap_token") String snapToken,
             @Body PaymentRequest paymentRequest
     );
@@ -63,7 +67,7 @@ public interface SnapApiService {
      * @param paymentRequest Payment Request Details.
      */
     @POST(PAYMENT_PAY)
-    Call<BasePaymentResponse> paymentBankTransferPermata(
+    Call<BankTransferVaPermataPaymentResponse> paymentBankTransferPermata(
             @Path("snap_token") String snapToken,
             @Body PaymentRequest paymentRequest
     );
@@ -74,7 +78,7 @@ public interface SnapApiService {
      * @param paymentRequest Payment Request Details.
      */
     @POST(PAYMENT_PAY)
-    Call<BasePaymentResponse> paymentBankTransferOther(
+    Call<BankTransferVaOtherPaymentResponse> paymentBankTransferOther(
             @Path("snap_token") String snapToken,
             @Body PaymentRequest paymentRequest
     );

@@ -4,8 +4,10 @@ import android.support.annotation.NonNull;
 
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.CustomerDetailPayRequest;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BasePaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.va.OtherPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BankTransferVaBcaPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BankTransferVaBniPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BankTransferVaOtherPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BankTransferVaPermataPaymentResponse;
 
 public class BankTransferCharge extends BaseGroupPayment {
 
@@ -18,7 +20,7 @@ public class BankTransferCharge extends BaseGroupPayment {
      */
     public static void paymentUsingBankTransferVaBca(@NonNull final String snapToken,
                                                      @NonNull final CustomerDetailPayRequest customerDetails,
-                                                     @NonNull final MidtransCallback<BasePaymentResponse> callback) {
+                                                     @NonNull final MidtransCallback<BankTransferVaBcaPaymentResponse> callback) {
         if (isValidForNetworkCall(callback)) {
             getSnapApiManager().paymentUsingBankTransferVaBca(snapToken, customerDetails, callback);
         }
@@ -33,7 +35,7 @@ public class BankTransferCharge extends BaseGroupPayment {
      */
     public static void paymentUsingBankTransferVaBni(@NonNull final String snapToken,
                                                      @NonNull final CustomerDetailPayRequest customerDetails,
-                                                     @NonNull final MidtransCallback<BasePaymentResponse> callback) {
+                                                     @NonNull final MidtransCallback<BankTransferVaBniPaymentResponse> callback) {
         if (isValidForNetworkCall(callback)) {
             getSnapApiManager().paymentUsingBankTransferVaBni(snapToken, customerDetails, callback);
         }
@@ -48,7 +50,7 @@ public class BankTransferCharge extends BaseGroupPayment {
      */
     public static void paymentUsingBankTransferVaPermata(@NonNull final String snapToken,
                                                          @NonNull final CustomerDetailPayRequest customerDetails,
-                                                         @NonNull final MidtransCallback<BasePaymentResponse> callback) {
+                                                         @NonNull final MidtransCallback<BankTransferVaPermataPaymentResponse> callback) {
         if (isValidForNetworkCall(callback)) {
             getSnapApiManager().paymentUsingBankTransferVaPermata(snapToken, customerDetails, callback);
         }
@@ -63,7 +65,7 @@ public class BankTransferCharge extends BaseGroupPayment {
      */
     public static void paymentUsingBankTransferVaOther(@NonNull final String snapToken,
                                                        @NonNull final CustomerDetailPayRequest customerDetails,
-                                                       @NonNull final MidtransCallback<BasePaymentResponse> callback) {
+                                                       @NonNull final MidtransCallback<BankTransferVaOtherPaymentResponse> callback) {
         if (isValidForNetworkCall(callback)) {
             getSnapApiManager().paymentUsingBankTransferVaOther(snapToken, customerDetails, callback);
         }

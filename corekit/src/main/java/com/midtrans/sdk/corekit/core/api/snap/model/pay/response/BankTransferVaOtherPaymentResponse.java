@@ -4,7 +4,7 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.va.VaNumber;
 
 import java.util.List;
 
-public class BankTransferVaBniPaymentResponse extends BasePaymentResponse {
+public class BankTransferVaOtherPaymentResponse extends BasePaymentResponse {
 
     public String getStatusCode() {
         return statusCode;

@@ -4,7 +4,7 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.va.VaNumber;
 
 import java.util.List;
 
-public class BankTransferVaBcaPaymentResponse extends BasePaymentResponse {
+public class BankTransferVaBniPaymentResponse extends BasePaymentResponse {
 
     public String getStatusCode() {
         return statusCode;
@@ -50,12 +50,12 @@ public class BankTransferVaBcaPaymentResponse extends BasePaymentResponse {
         return vaNumbersList;
     }
 
-    public String getBcaVaNumber() {
-        return bcaVaNumber;
+    public String getBniVaNumber() {
+        return bniVaNumber;
     }
 
-    public String getBcaExpiration() {
-        return bcaExpiration;
+    public String getBniExpiration() {
+        return bniExpiration;
     }
 
     public String getPdfUrl() {
