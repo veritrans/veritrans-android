@@ -6,19 +6,23 @@ import java.util.ArrayList;
 
 public class CheckoutWithTransactionResponse {
     @SerializedName("token")
-    private String tokenId;
+    private String token;
     @SerializedName("error_messages")
     private ArrayList<String> errorMessages;
 
-    public String getSnapToken() {
-        return tokenId;
+    public String getToken() {
+        return token;
     }
 
-    public void setSnapToken(String tokenId) {
-        this.tokenId = tokenId;
+    public void setToken(String token) {
+        this.token = token;
     }
 
-    public ArrayList<String> getErrorMessage() {
+    public ArrayList<String> getErrorMessages() {
         return errorMessages;
+    }
+
+    public void setErrorMessages(ArrayList<String> errorMessages) {
+        this.errorMessages = errorMessages;
     }
 }
