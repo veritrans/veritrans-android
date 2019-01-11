@@ -23,8 +23,6 @@ public class PaymentType {
     public static String XL_TUNAI = "xl_tunai";
     public static String INDOSAT_DOMPETKU = "indosat_dompetku";
     // Convenience Store
-    public static String CSTORE = "cstore";
-    public static String KIOSON = "kioson";
     public static String INDOMARET = "indomaret";
     // Cardless Credit
     public static String AKULAKU = "akulaku";
