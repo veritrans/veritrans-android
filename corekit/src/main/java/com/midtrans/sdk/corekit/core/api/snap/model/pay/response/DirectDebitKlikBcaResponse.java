@@ -1,6 +1,6 @@
 package com.midtrans.sdk.corekit.core.api.snap.model.pay.response;
 
-public class ConvenienceStoreIndomaretPaymentResponse extends BasePaymentResponse {
+public class DirectDebitKlikBcaResponse extends BasePaymentResponse {
 
     public String getStatusCode() {
         return statusCode;
@@ -8,6 +8,10 @@ public class ConvenienceStoreIndomaretPaymentResponse extends BasePaymentRespons
 
     public String getStatusMessage() {
         return statusMessage;
+    }
+
+    public String getRedirectionUrl() {
+        return redirectUrl;
     }
 
     public String getTransactionId() {
@@ -38,20 +42,12 @@ public class ConvenienceStoreIndomaretPaymentResponse extends BasePaymentRespons
         return transactionStatus;
     }
 
-    public String getPaymentCode() {
-        return paymentCode;
+    public String getApprovalCode() {
+        return approvalCode;
     }
 
-    public String getStore() {
-        return store;
-    }
-
-    public String getIndomaretExpireTime() {
-        return indomaretExpireTime;
-    }
-
-    public String getPdfUrl() {
-        return pdfUrl;
+    public String getKlikBcaExpireTime() {
+        return klikBcaExpireTime;
     }
 
     public String getFinishRedirectUrl() {

@@ -148,7 +148,22 @@ public class BasePaymentResponse implements Serializable {
     @SerializedName("store")
     protected String store;
     @SerializedName("indomaret_expire_time")
-    protected String indomaret_expire_time;
+    protected String indomaretExpireTime;
+
+
+    /**
+     * Klik Bca
+     */
+    @SerializedName("bca_klikbca_expire_time")
+    protected String klikBcaExpireTime;
+
+
+    /**
+     * Mandiri Clickpay
+     */
+    @SerializedName("masked_card")
+    protected String maskedCard;
+
 
     public ArrayList<String> getValidationMessages() {
         return validationMessages;
