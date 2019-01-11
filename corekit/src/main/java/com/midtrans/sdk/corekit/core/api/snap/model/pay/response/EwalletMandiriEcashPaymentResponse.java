@@ -1,6 +1,6 @@
 package com.midtrans.sdk.corekit.core.api.snap.model.pay.response;
 
-public class MandiriEcashPaymentResponse extends BasePaymentResponse {
+public class EwalletMandiriEcashPaymentResponse extends BasePaymentResponse {
 
     public String getStatusCode() {
         return statusCode;

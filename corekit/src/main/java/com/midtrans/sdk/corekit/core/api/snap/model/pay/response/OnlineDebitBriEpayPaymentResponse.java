@@ -1,12 +1,17 @@
 package com.midtrans.sdk.corekit.core.api.snap.model.pay.response;
 
-public class TelkomselCashPaymentResponse extends BasePaymentResponse {
+public class OnlineDebitBriEpayPaymentResponse extends BasePaymentResponse {
+
     public String getStatusCode() {
         return statusCode;
     }
 
     public String getStatusMessage() {
         return statusMessage;
+    }
+
+    public String getRedirectUrl() {
+        return redirectUrl;
     }
 
     public String getTransactionId() {
@@ -37,8 +42,8 @@ public class TelkomselCashPaymentResponse extends BasePaymentResponse {
         return transactionStatus;
     }
 
-    public String getSettlementStatus() {
-        return settlementTime;
+    public String getFraudStatus() {
+        return fraudStatus;
     }
 
     public String getFinishRedirectUrl() {

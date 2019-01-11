@@ -1,6 +1,6 @@
 package com.midtrans.sdk.corekit.core.api.snap.model.pay.response;
 
-public class GopayPaymentResponse extends BasePaymentResponse {
+public class EwalletGopayPaymentResponse extends BasePaymentResponse {
 
     public String getStatusCode() {
         return statusCode;
