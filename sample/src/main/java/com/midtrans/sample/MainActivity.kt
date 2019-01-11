@@ -19,11 +19,10 @@ import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specifi
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specific.creditcard.CreditCard
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.response.CheckoutWithTransactionResponse
 import com.midtrans.sdk.corekit.core.api.midtrans.model.cardregistration.CardRegistrationResponse
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.CustomerDetailPayRequest
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.creditcard.CreditCardPaymentParams
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BasePaymentResponse
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse
 import com.midtrans.sdk.corekit.core.payment.CreditCardCharge
+import com.midtrans.sdk.corekit.core.payment.OnlineDebitCharge
 import com.midtrans.sdk.corekit.utilities.InstallationHelper
 import com.midtrans.sdk.corekit.utilities.Logger
 import java.util.*
@@ -46,6 +45,43 @@ class MainActivity : AppCompatActivity() {
             })
             .setApiRequestTimeOut(60)
             .build()
+
+        MidtransSdk
+            .builder(this,
+                BuildConfig.CLIENT_KEY,
+                BuildConfig.BASE_URL)
+            .setApiRequestTimeOut(40)
+            .setEnvironment(Environment.SANDBOX)
+            .setLogEnabled(true)
+            .build()
+
+        val instance = MidtransSdk.getInstance()
+
+        val checkoutTransaction = CheckoutTransaction
+            .builder("", 1.0)
+            .build()
+
+        MidtransSdk.getInstance().checkoutWithTransaction(checkoutTransaction,
+            object : MidtransCallback<CheckoutWithTransactionResponse> {
+                override fun onSuccess(data: CheckoutWithTransactionResponse) {
+                    Logger.debug("Success return snapToken ${data.token}")
+                }
+
+                override fun onFailed(throwable: Throwable) {
+                    Logger.debug("Failed return error >>> ${throwable.message}")
+                }
+            })
+
+        MidtransSdk.getInstance().getPaymentInfo("",
+            object : MidtransCallback<PaymentInfoResponse> {
+                override fun onSuccess(data: PaymentInfoResponse) {
+                    Logger.debug("RESULT SUCCESS PAYMENT INFO")
+                }
+
+                override fun onFailed(throwable: Throwable) {
+                    Logger.debug("Failed return error >>> ${throwable.message}")
+                }
+            })
 
         val trxRequest = CheckoutTransaction
             .builder(InstallationHelper.generatedRandomID(this),

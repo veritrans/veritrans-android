@@ -134,6 +134,17 @@ MidtransSDK
             .build();
 ```
 
+```Kotlin
+MidtransSdk
+            .builder(this,
+                BuildConfig.CLIENT_KEY,
+                BuildConfig.BASE_URL)
+            .setApiRequestTimeOut(40)
+            .setEnvironment(Environment.SANDBOX)
+            .setLogEnabled(true)
+            .build()
+```
+
 Note:
 
 - `CONTEXT` is application or activity context and this is mandatory for Android SDK implementation.
@@ -148,6 +159,11 @@ To get SDK instance you must init the SDK first and you can use this:
 ```Java
 MidtransSDK midtransSDK = MidtransSDK.getInstance();
 ```
+
+```Kotlin
+val midtransSDK = MidtransSDK.getInstance();
+```
+
 SDK instance is a simple way to access and implement all public method from Midtrans Core SDK that already initialize before, so you only need once to initialize the SDK then you can only access it from instance, if you not initialize the SDK first instance will return null and runtime error.
 
 
@@ -182,6 +198,13 @@ CheckoutTransaction checkoutTransaction = CheckoutTransaction
                 .builder(TRANSACTION_ID, AMOUNT)
                 .build();
 ```
+
+```Kotlin
+val checkoutTransaction = CheckoutTransaction
+            .builder(TRANSACTION_ID, AMOUNT)
+            .build()
+```
+
 Note :
 
 - `TRANSACTION_ID` is an unique id for your transaction, maximum character length is 50.
@@ -192,7 +215,9 @@ Note :
 That's minimum request for making payment, all of payment method you activated will be in default setting. Then for making payment you can simply pass the `CheckoutTransaction` object to the checkout method. Checkout return SnapToken as key for all other method in Midtrans SDK.
 
 ```Java
-MidtransSdk.getInstance().checkoutWithTransaction(checkoutTransaction, new MidtransCallback<CheckoutWithTransactionResponse>() {
+MidtransSdk.getInstance().checkoutWithTransaction(checkoutTransaction, 
+                new MidtransCallback<CheckoutWithTransactionResponse>() {
+                
             @Override
             public void onFailed(Throwable throwable) {
                 Logger.debug("Failed return error >>> " + throwable.getMessage());
@@ -205,6 +230,20 @@ MidtransSdk.getInstance().checkoutWithTransaction(checkoutTransaction, new Midtr
         });
 ```
 
+```Kotlin
+MidtransSdk.getInstance().checkoutWithTransaction(checkoutTransaction,
+            object : MidtransCallback<CheckoutWithTransactionResponse> {
+            
+                override fun onFailed(throwable: Throwable) {
+                    Logger.debug("Failed return error >>> ${throwable.message}")
+                }
+                
+                override fun onSuccess(data: CheckoutWithTransactionResponse) {
+                    Logger.debug("Success return snapToken ${data.token}")
+                }
+            })
+```
+
 Note: 
 
 - This work with all default setting because it only pass `TRANSACTION_ID` and `AMOUNT`, not the custom setting. For custom setting please read next section.
@@ -214,18 +253,32 @@ Note:
 After you checkout it will return SnapToken, and you can use snapToken for getting payment information. Before making payment you can get payment information by passing snap token to the method we provide, it will return all information for your account setting like enable payment, whitelist bin, blacklist bin, etc, so you can make your own layout for showing the payment method option and many more all you want. The response will wrap into `PaymentInfoResponse` model.
 
 ```Java
-MidtransSdk.getInstance().getPaymentInfo(SNAP_TOKEN, new MidtransCallback<PaymentInfoResponse>() {
-            @Override
-            public void onSuccess(PaymentInfoResponse data) {
-                Logger.debug("RESULT SUCCESS PAYMENT INFO ");
-            }
+MidtransSdk.getInstance().getPaymentInfo(TOKEN,
+                new MidtransCallback<PaymentInfoResponse>() {
+                    @Override
+                    public void onSuccess(PaymentInfoResponse data) {
+                        Logger.debug("RESULT SUCCESS PAYMENT INFO ");
+                    }
 
-            @Override
-            public void onFailed(Throwable throwable) {
-                Logger.debug("MIDTRANS SDK NEW RETURN ERROR >>> " + throwable.getMessage());
+                    @Override
+                    public void onFailed(Throwable throwable) {
+                        Logger.debug("MIDTRANS SDK NEW RETURN ERROR >>> " + throwable.getMessage());
 
-            }
-        });
+                    }
+                });
+```
+
+```Kotlin
+MidtransSdk.getInstance().getPaymentInfo(TOKEN,
+            object : MidtransCallback<PaymentInfoResponse> {
+                override fun onSuccess(data: PaymentInfoResponse) {
+                    Logger.debug("RESULT SUCCESS PAYMENT INFO")
+                }
+
+                override fun onFailed(throwable: Throwable) {
+                    Logger.debug("Failed return error >>> ${throwable.message}")
+                }
+            })
 ```
 
 ###  7.4. <a name='StartingPayment'></a>4. Starting Payment
@@ -233,9 +286,9 @@ MidtransSdk.getInstance().getPaymentInfo(SNAP_TOKEN, new MidtransCallback<Paymen
 To making payment, you need a SnapToken from `checkoutWithTransaction()` to identify which transaction will be paid, payment parameters, and available payment method for making payment. Midtrans SDK provide method for each payment, but if method not available and you still use that it never been pay. For example we use GO-PAY for making payment.
 
 ```Java
-new EWalletCharge.paymentUsingGopay(SNAP_TOKEN,
+EWalletCharge().paymentUsingGopay(SNAP_TOKEN,
                 GOPAY_ACCOUNT_NUMBER,
-                new MidtransCallback<BasePaymentResponse>() {
+                new MidtransCallback<EwalletGopayPaymentResponse>() {
                     @Override
                     public void onSuccess(BasePaymentResponse data) {
                 			Logger.debug("RESULT SUCCESS, CONTINUE PAYMENT BASED ON RESPONSE");  
@@ -247,6 +300,23 @@ new EWalletCharge.paymentUsingGopay(SNAP_TOKEN,
                     }
                 });
 ```
+
+```Kotlin
+EWalletCharge.paymentUsingGopay(SNAP_TOKEN,
+                GOPAY_ACCOUNT_NUMBER,
+                new MidtransCallback<EwalletGopayPaymentResponse>() {
+                    @Override
+                    public void onSuccess(EwalletGopayPaymentResponse data) {
+
+                    }
+
+                    @Override
+                    public void onFailed(Throwable throwable) {
+
+                    }
+                });
+```
+
 Some Payment Method need specific parameter, for example GO-PAY need `GOPAY_ACCOUNT_NUMBER` as specific paramter for making payment with GO-PAY.
 
 Table of payment codes for payment.
