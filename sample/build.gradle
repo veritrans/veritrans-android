@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 group = 'com.midtrans'
 version = '2.0.0'
@@ -11,12 +13,13 @@ android {
         abortOnError false
     }
     defaultConfig {
-        applicationId "com.midtrans.demo"
+        applicationId "com.midtrans.sample"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.sdkVersion
         versionCode 3
         versionName version
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
     }
     signingConfigs {
         release {
@@ -42,13 +45,13 @@ android {
         development {
             applicationIdSuffix ".development"
             versionNameSuffix "-development"
-            resValue "string", "app_name", "Midtrans Demo Dev"
+            resValue "string", "app_name", "Midtrans Sample Kotlin Dev"
             buildConfigField "String", "BASE_URL", MERCHANT_BASE_URL_SANDBOX
             buildConfigField "String", "CLIENT_KEY", MERCHANT_CLIENT_KEY_SANDBOX
         }
 
         production {
-            resValue "string", "app_name", "Midtrans Demo"
+            resValue "string", "app_name", "Midtrans Sample Kotlin"
             buildConfigField "String", "BASE_URL", MERCHANT_BASE_URL_PRODUCTION
             buildConfigField "String", "CLIENT_KEY", MERCHANT_CLIENT_KEY_PRODUCTION
         }
@@ -64,6 +67,7 @@ dependencies {
     testImplementation testLibraries.jUnit
     androidTestImplementation testLibraries.runner
     androidTestImplementation testLibraries.espresso
+    implementation kotlinLibraries.kotlinStd
     implementation supportLibraries.appCompat
     implementation supportLibraries.constraintLayout
     implementation project(path: ':corekit')
