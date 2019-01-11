@@ -1,6 +1,6 @@
 package com.midtrans.sdk.corekit.core.api.snap.model.pay.response;
 
-public class DirectDebitMandiriClickpayResponse extends BasePaymentResponse {
+public class CreditCardPaymentResponse extends BasePaymentResponse {
 
     public String getStatusCode() {
         return statusCode;
@@ -8,6 +8,10 @@ public class DirectDebitMandiriClickpayResponse extends BasePaymentResponse {
 
     public String getStatusMessage() {
         return statusMessage;
+    }
+
+    public String getMaskedCard() {
+        return maskedCard;
     }
 
     public String getTransactionId() {
@@ -38,16 +42,20 @@ public class DirectDebitMandiriClickpayResponse extends BasePaymentResponse {
         return transactionStatus;
     }
 
+    public String getFraudStatus() {
+        return fraudStatus;
+    }
+
     public String getApprovalCode() {
         return approvalCode;
     }
 
-    public String getMaskedCard() {
-        return maskedCard;
+    public String getBank() {
+        return bank;
     }
 
-    public String getSettlementTime() {
-        return settlementTime;
+    public String getCardType() {
+        return cardType;
     }
 
     public String getFinishRedirectUrl() {

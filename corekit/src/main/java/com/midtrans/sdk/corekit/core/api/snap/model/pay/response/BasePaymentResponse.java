@@ -114,7 +114,6 @@ public class BasePaymentResponse implements Serializable {
     @SerializedName("permata_expiration")
     @Expose
     protected String permataExpiration;
-
     @SerializedName("user_id")
     protected String userId;
 
@@ -150,19 +149,24 @@ public class BasePaymentResponse implements Serializable {
     @SerializedName("indomaret_expire_time")
     protected String indomaretExpireTime;
 
-
     /**
      * Klik Bca
      */
     @SerializedName("bca_klikbca_expire_time")
     protected String klikBcaExpireTime;
 
-
     /**
      * Mandiri Clickpay
      */
     @SerializedName("masked_card")
     protected String maskedCard;
+
+    /**
+     * CreditCard
+     */
+    @SerializedName("bank")
+    protected String bank;
+    @SerializedName("masked_card")
 
 
     public ArrayList<String> getValidationMessages() {
