@@ -48,7 +48,8 @@ public class MerchantApiManager extends BaseServiceManager {
      * @param userId   unique id for every user
      * @param callback save card callback
      */
-    public void saveCards(String userId, final List<SaveCardRequest> requests,
+    public void saveCards(final String userId,
+                          final List<SaveCardRequest> requests,
                           final MidtransCallback<SaveCardResponse> callback) {
         if (requests == null) {
             doOnInvalidDataSupplied(callback);
