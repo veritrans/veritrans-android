@@ -59,11 +59,11 @@ public class MidtransSdk {
     private SnapApiManager snapApiManager;
     private MidtransApiManager midtransApiManager;
 
-    MidtransSdk(Context context,
-                String clientId,
-                String merchantUrl,
-                Environment environment,
-                int apiRequestTimeOut) {
+    MidtransSdk(@NonNull final Context context,
+                @NonNull final String clientId,
+                @NonNull final String merchantUrl,
+                @NonNull final Environment environment,
+                @NonNull final int apiRequestTimeOut) {
         this.context = context.getApplicationContext();
         this.merchantClientId = clientId;
         this.merchantBaseUrl = merchantUrl;
@@ -90,9 +90,9 @@ public class MidtransSdk {
      * @param merchantUrl MerchantUrl or Merchant Base Url, mandatory not null.
      * @return Builder.
      */
-    public static Builder builder(@NonNull Context context,
-                                  @NonNull String clientId,
-                                  @NonNull String merchantUrl) {
+    public static Builder builder(@NonNull final Context context,
+                                  @NonNull final String clientId,
+                                  @NonNull final String merchantUrl) {
 
         return new Builder(context,
                 clientId,
@@ -121,7 +121,7 @@ public class MidtransSdk {
         return snapApiManager;
     }
 
-    public void setSnapApiManager(SnapApiManager snapApiManager) {
+    public void setSnapApiManager(@NonNull final SnapApiManager snapApiManager) {
         this.snapApiManager = snapApiManager;
     }
 
@@ -145,7 +145,7 @@ public class MidtransSdk {
         return merchantApiManager;
     }
 
-    public void setMerchantApiManager(MerchantApiManager merchantApiManager) {
+    public void setMerchantApiManager(@NonNull final MerchantApiManager merchantApiManager) {
         this.merchantApiManager = merchantApiManager;
     }
 
@@ -221,7 +221,7 @@ public class MidtransSdk {
     /**
      * Set value to transaction request for begin checkoutWithTransaction.
      */
-    public void setCheckoutTransaction(CheckoutTransaction checkoutTransaction) {
+    public void setCheckoutTransaction(@NonNull final CheckoutTransaction checkoutTransaction) {
         this.checkoutTransaction = checkoutTransaction;
     }
 
@@ -231,7 +231,7 @@ public class MidtransSdk {
      *
      * @param callback for receiving callback from request.
      */
-    public void checkoutWithTransaction(final MidtransCallback<CheckoutWithTransactionResponse> callback) {
+    public void checkoutWithTransaction(@NonNull final MidtransCallback<CheckoutWithTransactionResponse> callback) {
         checkoutWithTransaction(this.checkoutTransaction, callback);
     }
 
@@ -243,7 +243,7 @@ public class MidtransSdk {
      * @param callback            for receiving callback from request.
      */
     public void checkoutWithTransaction(@NonNull final CheckoutTransaction checkoutTransaction,
-                                        final MidtransCallback<CheckoutWithTransactionResponse> callback) {
+                                        @NonNull final MidtransCallback<CheckoutWithTransactionResponse> callback) {
         if (isValidForNetworkCall(context, callback)) {
             merchantApiManager.checkout(checkoutTransaction, callback);
         }
@@ -252,13 +252,13 @@ public class MidtransSdk {
     /**
      * Getting Payment Info including enabled payment method and others information.
      *
-     * @param snapToken token after making checkoutWithTransaction.
+     * @param token token after making checkoutWithTransaction.
      * @param callback  for receiving callback from request.
      */
-    public void getPaymentInfo(final String snapToken,
-                               final MidtransCallback<PaymentInfoResponse> callback) {
+    public void getPaymentInfo(@NonNull final String token,
+                               @NonNull final MidtransCallback<PaymentInfoResponse> callback) {
         if (isValidForNetworkCall(context, callback)) {
-            snapApiManager.getPaymentInfo(snapToken, callback);
+            snapApiManager.getPaymentInfo(token, callback);
         }
     }
 
@@ -268,9 +268,11 @@ public class MidtransSdk {
      * @param cardToken credit card token
      * @param callback  bni point callback instance
      */
-    public void getBanksPoint(String snapToken, String cardToken, @NonNull final MidtransCallback<BasePaymentResponse> callback) {
+    public void getBanksPoint(@NonNull final String token,
+                              @NonNull final String cardToken,
+                              @NonNull final MidtransCallback<BasePaymentResponse> callback) {
         if (isValidForNetworkCall(context, callback)) {
-            snapApiManager.getBanksPoint(snapToken, cardToken, callback);
+            snapApiManager.getBanksPoint(token, cardToken, callback);
         }
     }
 
@@ -287,7 +289,9 @@ public class MidtransSdk {
         protected Environment midtransEnvironment = Environment.SANDBOX;
         protected int apiRequestTimeOut = 30;
 
-        private Builder(Context context, String clientId, String merchantUrl) {
+        private Builder(@NonNull final Context context,
+                        @NonNull final String clientId,
+                        @NonNull final String merchantUrl) {
             this.context = context;
             this.merchantClientId = clientId;
             this.merchantBaseUrl = merchantUrl;
@@ -296,7 +300,7 @@ public class MidtransSdk {
         /**
          * set Logger visible or not.
          */
-        public Builder setLogEnabled(boolean logEnabled) {
+        public Builder setLogEnabled(final boolean logEnabled) {
             this.enableLog = logEnabled;
             Logger.enabled = this.enableLog;
             return this;
@@ -305,7 +309,7 @@ public class MidtransSdk {
         /**
          * set Logger visible or not.
          */
-        public Builder setEnvironment(Environment environment) {
+        public Builder setEnvironment(final Environment environment) {
             this.midtransEnvironment = environment;
             return this;
         }
@@ -313,7 +317,7 @@ public class MidtransSdk {
         /**
          * set Logger visible or not.
          */
-        public Builder setApiRequestTimeOut(int apiRequestTimeOutInSecond) {
+        public Builder setApiRequestTimeOut(final int apiRequestTimeOutInSecond) {
             this.apiRequestTimeOut = apiRequestTimeOutInSecond;
             return this;
         }
