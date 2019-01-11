@@ -19,6 +19,7 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BankTransferVaO
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BankTransferVaPermataPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BasePaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CardlessCreditAkulakuPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.ConvenienceStoreIndomaretPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.EwalletGopayPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.EwalletMandiriEcashPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.EwalletTelkomselCashPaymentResponse;
@@ -238,11 +239,11 @@ public class SnapApiManager extends BaseServiceManager {
      * @param callback  Transaction callback.
      */
     public void paymentUsingIndomaret(final String snapToken,
-                                      final MidtransCallback<BasePaymentResponse> callback) {
+                                      final MidtransCallback<ConvenienceStoreIndomaretPaymentResponse> callback) {
         if (isSnapTokenAvailable(callback, snapToken, apiService)) {
             BasePaymentRequest basePaymentRequest = new BasePaymentRequest(PaymentType.INDOMARET);
-            basePaymentResponseCall = apiService.paymentIndomaret(snapToken, basePaymentRequest);
-            handleCall(basePaymentResponseCall, callback);
+            Call<ConvenienceStoreIndomaretPaymentResponse> call = apiService.paymentIndomaret(snapToken, basePaymentRequest);
+            handleCall(call, callback);
         }
     }
 

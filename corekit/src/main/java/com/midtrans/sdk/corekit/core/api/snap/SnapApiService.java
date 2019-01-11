@@ -13,6 +13,7 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BankTransferVaO
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BankTransferVaPermataPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BasePaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CardlessCreditAkulakuPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.ConvenienceStoreIndomaretPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.EwalletGopayPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.EwalletMandiriEcashPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.EwalletTelkomselCashPaymentResponse;
@@ -124,7 +125,7 @@ public interface SnapApiService {
      * @param paymentRequest Payment Request Details.
      */
     @POST(PAYMENT_PAY)
-    Call<BasePaymentResponse> paymentIndomaret(
+    Call<ConvenienceStoreIndomaretPaymentResponse> paymentIndomaret(
             @Path("snap_token") String snapToken,
             @Body BasePaymentRequest paymentRequest
     );

@@ -1,7 +1,5 @@
 package com.midtrans.sdk.corekit.models.snap.pay.response;
 
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.PaymentResponse;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
