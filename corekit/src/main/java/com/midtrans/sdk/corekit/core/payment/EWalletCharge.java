@@ -4,9 +4,9 @@ import android.support.annotation.NonNull;
 
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.CustomerDetailPayRequest;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BasePaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.GopayPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriEcashPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.TelkomselCashPaymentResponse;
 
 public class EWalletCharge extends BaseGroupPayment {
     /**
@@ -46,7 +46,7 @@ public class EWalletCharge extends BaseGroupPayment {
      */
     public static void paymentUsingTelkomselCash(@NonNull final String snapToken,
                                                  @NonNull final String customerNumber,
-                                                 @NonNull final MidtransCallback<BasePaymentResponse> callback) {
+                                                 @NonNull final MidtransCallback<TelkomselCashPaymentResponse> callback) {
         if (isValidForNetworkCall(callback)) {
             getSnapApiManager().paymentUsingTelkomselCash(snapToken, customerNumber, callback);
         }
