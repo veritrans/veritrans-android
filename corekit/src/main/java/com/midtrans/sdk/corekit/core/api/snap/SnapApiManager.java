@@ -18,6 +18,7 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BankTransferVaB
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BankTransferVaOtherPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BankTransferVaPermataPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BasePaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CardlessCreditAkulakuPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.EwalletGopayPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.EwalletMandiriEcashPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.EwalletTelkomselCashPaymentResponse;
@@ -173,11 +174,11 @@ public class SnapApiManager extends BaseServiceManager {
      * @param callback  Transaction callback.
      */
     public void paymentUsingAkulaku(final String snapToken,
-                                    final MidtransCallback<BasePaymentResponse> callback) {
+                                    final MidtransCallback<CardlessCreditAkulakuPaymentResponse> callback) {
         if (isSnapTokenAvailable(callback, snapToken, apiService)) {
             BasePaymentRequest basePaymentRequest = new BasePaymentRequest(PaymentType.AKULAKU);
-            basePaymentResponseCall = apiService.paymentAkulaku(snapToken, basePaymentRequest);
-            handleCall(basePaymentResponseCall, callback);
+            Call<CardlessCreditAkulakuPaymentResponse> call = apiService.paymentAkulaku(snapToken, basePaymentRequest);
+            handleCall(call, callback);
         }
     }
 
@@ -262,6 +263,23 @@ public class SnapApiManager extends BaseServiceManager {
     }
 
     /**
+     * This method is used for Payment Using Mandiri ClickPay
+     *
+     * @param snapToken             snapToken after get payment info.
+     * @param mandiriClickpayParams parameter for Mandiri Clickpay
+     * @param callback              Transaction callback.
+     */
+    public void paymentUsingMandiriClickPay(final String snapToken,
+                                            final MandiriClickpayParams mandiriClickpayParams,
+                                            final MidtransCallback<BasePaymentResponse> callback) {
+        if (isSnapTokenAvailable(callback, snapToken, apiService)) {
+            MandiriClickpayPaymentRequest paymentRequest = new MandiriClickpayPaymentRequest(PaymentType.MANDIRI_CLICKPAY, mandiriClickpayParams);
+            basePaymentResponseCall = apiService.paymentMandiriClickpay(snapToken, paymentRequest);
+            handleCall(basePaymentResponseCall, callback);
+        }
+    }
+
+    /**
      * This method is used for card payment using snap backend.
      * <p>
      * // * @param paymentRequest Payment details.
@@ -284,23 +302,6 @@ public class SnapApiManager extends BaseServiceManager {
     }
 
     /**
-     * This method is used for Payment Using Mandiri ClickPay
-     *
-     * @param snapToken             snapToken after get payment info.
-     * @param mandiriClickpayParams parameter for Mandiri Clickpay
-     * @param callback              Transaction callback.
-     */
-    public void paymentUsingMandiriClickPay(final String snapToken,
-                                            final MandiriClickpayParams mandiriClickpayParams,
-                                            final MidtransCallback<BasePaymentResponse> callback) {
-        if (isSnapTokenAvailable(callback, snapToken, apiService)) {
-            MandiriClickpayPaymentRequest paymentRequest = new MandiriClickpayPaymentRequest(PaymentType.MANDIRI_CLICKPAY, mandiriClickpayParams);
-            basePaymentResponseCall = apiService.paymentMandiriClickpay(snapToken, paymentRequest);
-            handleCall(basePaymentResponseCall, callback);
-        }
-    }
-
-    /**
      * Get points of given card
      *
      * @param snapToken snap token
@@ -311,7 +312,7 @@ public class SnapApiManager extends BaseServiceManager {
                               final String cardToken,
                               final MidtransCallback<BasePaymentResponse> callback) {
         if (isSnapTokenAvailable(callback, snapToken, apiService)) {
-            basePaymentResponseCall = apiService.getBanksPoint(snapToken, cardToken);
+            Call<BasePaymentResponse> basePaymentResponseCall = apiService.getBanksPoint(snapToken, cardToken);
             handleCall(basePaymentResponseCall, callback);
         }
     }

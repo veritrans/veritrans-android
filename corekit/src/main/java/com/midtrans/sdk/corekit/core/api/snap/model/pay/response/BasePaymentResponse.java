@@ -151,4 +151,6 @@ public class BasePaymentResponse implements Serializable {
     public String getStatusMessage() {
         return statusMessage;
     }
+
+
 }
