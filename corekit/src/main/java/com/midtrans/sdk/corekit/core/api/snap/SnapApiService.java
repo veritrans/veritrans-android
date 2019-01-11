@@ -14,6 +14,8 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BankTransferVaP
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BasePaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CardlessCreditAkulakuPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.ConvenienceStoreIndomaretPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.DirectDebitKlikBcaResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.DirectDebitMandiriClickpayResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.EwalletGopayPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.EwalletMandiriEcashPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.EwalletTelkomselCashPaymentResponse;
@@ -147,7 +149,7 @@ public interface SnapApiService {
      * @param paymentRequest Payment Request Details.
      */
     @POST(PAYMENT_PAY)
-    Call<BasePaymentResponse> paymentKlikBca(
+    Call<DirectDebitKlikBcaResponse> paymentKlikBca(
             @Path("snap_token") String snapToken,
             @Body KlikBcaPaymentRequest paymentRequest
     );
@@ -159,7 +161,7 @@ public interface SnapApiService {
      * @param paymentRequest Payment Request Details.
      */
     @POST(PAYMENT_PAY)
-    Call<BasePaymentResponse> paymentMandiriClickpay(
+    Call<DirectDebitMandiriClickpayResponse> paymentMandiriClickpay(
             @Path("snap_token") String snapToken,
             @Body MandiriClickpayPaymentRequest paymentRequest
     );

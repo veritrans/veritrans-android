@@ -20,6 +20,8 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BankTransferVaP
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BasePaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CardlessCreditAkulakuPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.ConvenienceStoreIndomaretPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.DirectDebitKlikBcaResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.DirectDebitMandiriClickpayResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.EwalletGopayPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.EwalletMandiriEcashPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.EwalletTelkomselCashPaymentResponse;
@@ -255,11 +257,11 @@ public class SnapApiManager extends BaseServiceManager {
      */
     public void paymentUsingKlikBca(final String snapToken,
                                     final String klikBcaUserId,
-                                    final MidtransCallback<BasePaymentResponse> callback) {
+                                    final MidtransCallback<DirectDebitKlikBcaResponse> callback) {
         if (isSnapTokenAvailable(callback, snapToken, apiService)) {
             KlikBcaPaymentRequest paymentRequest = new KlikBcaPaymentRequest(PaymentType.KLIK_BCA, klikBcaUserId);
-            basePaymentResponseCall = apiService.paymentKlikBca(snapToken, paymentRequest);
-            handleCall(basePaymentResponseCall, callback);
+            Call<DirectDebitKlikBcaResponse> call = apiService.paymentKlikBca(snapToken, paymentRequest);
+            handleCall(call, callback);
         }
     }
 
@@ -272,11 +274,11 @@ public class SnapApiManager extends BaseServiceManager {
      */
     public void paymentUsingMandiriClickPay(final String snapToken,
                                             final MandiriClickpayParams mandiriClickpayParams,
-                                            final MidtransCallback<BasePaymentResponse> callback) {
+                                            final MidtransCallback<DirectDebitMandiriClickpayResponse> callback) {
         if (isSnapTokenAvailable(callback, snapToken, apiService)) {
             MandiriClickpayPaymentRequest paymentRequest = new MandiriClickpayPaymentRequest(PaymentType.MANDIRI_CLICKPAY, mandiriClickpayParams);
-            basePaymentResponseCall = apiService.paymentMandiriClickpay(snapToken, paymentRequest);
-            handleCall(basePaymentResponseCall, callback);
+            Call<DirectDebitMandiriClickpayResponse> call = apiService.paymentMandiriClickpay(snapToken, paymentRequest);
+            handleCall(call, callback);
         }
     }
 
