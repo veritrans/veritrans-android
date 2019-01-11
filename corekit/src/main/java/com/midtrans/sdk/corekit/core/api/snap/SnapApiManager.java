@@ -18,9 +18,12 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BankTransferVaB
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BankTransferVaOtherPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BankTransferVaPermataPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BasePaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.GopayPaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriEcashPaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.TelkomselCashPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.EwalletGopayPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.EwalletMandiriEcashPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.EwalletTelkomselCashPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.OnlineDebitBcaKlikpayPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.OnlineDebitBriEpayPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.OnlineDebitCimbClicksPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
 
 import retrofit2.Call;
@@ -125,11 +128,41 @@ public class SnapApiManager extends BaseServiceManager {
      * @param callback  Transaction callback.
      */
     public void paymentUsingCimbClick(final String snapToken,
-                                      final MidtransCallback<BasePaymentResponse> callback) {
+                                      final MidtransCallback<OnlineDebitCimbClicksPaymentResponse> callback) {
         if (isSnapTokenAvailable(callback, snapToken, apiService)) {
             BasePaymentRequest basePaymentRequest = new BasePaymentRequest(PaymentType.CIMB_CLICKS);
-            basePaymentResponseCall = apiService.paymentCimbClicks(snapToken, basePaymentRequest);
-            handleCall(basePaymentResponseCall, callback);
+            Call<OnlineDebitCimbClicksPaymentResponse> call = apiService.paymentCimbClicks(snapToken, basePaymentRequest);
+            handleCall(call, callback);
+        }
+    }
+
+    /**
+     * This method is used for Payment Using BCA Click Pay
+     *
+     * @param snapToken snapToken after get payment info.
+     * @param callback  Transaction callback.
+     */
+    public void paymentUsingBcaClickPay(final String snapToken,
+                                        final MidtransCallback<OnlineDebitBcaKlikpayPaymentResponse> callback) {
+        if (isSnapTokenAvailable(callback, snapToken, apiService)) {
+            BasePaymentRequest basePaymentRequest = new BasePaymentRequest(PaymentType.BCA_KLIKPAY);
+            Call<OnlineDebitBcaKlikpayPaymentResponse> call = apiService.paymentBcaClickPay(snapToken, basePaymentRequest);
+            handleCall(call, callback);
+        }
+    }
+
+    /**
+     * This method is used for Payment Using BRI Epay
+     *
+     * @param snapToken snapToken after get payment info.
+     * @param callback  Transaction callback.
+     */
+    public void paymentUsingBriEpay(final String snapToken,
+                                    final MidtransCallback<OnlineDebitBriEpayPaymentResponse> callback) {
+        if (isSnapTokenAvailable(callback, snapToken, apiService)) {
+            BasePaymentRequest basePaymentRequest = new BasePaymentRequest(PaymentType.BRI_EPAY);
+            Call<OnlineDebitBriEpayPaymentResponse> call = apiService.paymentBriEpay(snapToken, basePaymentRequest);
+            handleCall(call, callback);
         }
     }
 
@@ -157,10 +190,10 @@ public class SnapApiManager extends BaseServiceManager {
      */
     public void paymentUsingMandiriEcash(final String snapToken,
                                          final CustomerDetailPayRequest customerDetailPayRequest,
-                                         final MidtransCallback<MandiriEcashPaymentResponse> callback) {
+                                         final MidtransCallback<EwalletMandiriEcashPaymentResponse> callback) {
         if (isSnapTokenAvailable(callback, snapToken, apiService)) {
             PaymentRequest paymentRequest = new PaymentRequest(PaymentType.MANDIRI_ECASH, customerDetailPayRequest);
-            Call<MandiriEcashPaymentResponse> call = apiService.paymentMandiriEcash(snapToken, paymentRequest);
+            Call<EwalletMandiriEcashPaymentResponse> call = apiService.paymentMandiriEcash(snapToken, paymentRequest);
             handleCall(call, callback);
         }
     }
@@ -173,10 +206,10 @@ public class SnapApiManager extends BaseServiceManager {
      */
     public void paymentUsingGopay(final String snapToken,
                                   final String gopayAccountNumber,
-                                  final MidtransCallback<GopayPaymentResponse> callback) {
+                                  final MidtransCallback<EwalletGopayPaymentResponse> callback) {
         if (isSnapTokenAvailable(callback, snapToken, apiService)) {
             GopayPaymentRequest gopayPaymentRequest = new GopayPaymentRequest(PaymentType.GOPAY, gopayAccountNumber);
-            Call<GopayPaymentResponse> call = apiService.paymentUsingGoPay(snapToken, gopayPaymentRequest);
+            Call<EwalletGopayPaymentResponse> call = apiService.paymentUsingGoPay(snapToken, gopayPaymentRequest);
             handleCall(call, callback);
         }
     }
@@ -189,10 +222,10 @@ public class SnapApiManager extends BaseServiceManager {
      */
     public void paymentUsingTelkomselCash(final String snapToken,
                                           final String customerNumber,
-                                          final MidtransCallback<TelkomselCashPaymentResponse> callback) {
+                                          final MidtransCallback<EwalletTelkomselCashPaymentResponse> callback) {
         if (isSnapTokenAvailable(callback, snapToken, apiService)) {
             TelkomselCashPaymentRequest telkomselCashPaymentRequest = new TelkomselCashPaymentRequest(PaymentType.TELKOMSEL_CASH, customerNumber);
-            Call<TelkomselCashPaymentResponse> call = apiService.paymentUsingTelkomselCash(snapToken, telkomselCashPaymentRequest);
+            Call<EwalletTelkomselCashPaymentResponse> call = apiService.paymentUsingTelkomselCash(snapToken, telkomselCashPaymentRequest);
             handleCall(call, callback);
         }
     }
@@ -208,36 +241,6 @@ public class SnapApiManager extends BaseServiceManager {
         if (isSnapTokenAvailable(callback, snapToken, apiService)) {
             BasePaymentRequest basePaymentRequest = new BasePaymentRequest(PaymentType.INDOMARET);
             basePaymentResponseCall = apiService.paymentIndomaret(snapToken, basePaymentRequest);
-            handleCall(basePaymentResponseCall, callback);
-        }
-    }
-
-    /**
-     * This method is used for Payment Using BRI Epay
-     *
-     * @param snapToken snapToken after get payment info.
-     * @param callback  Transaction callback.
-     */
-    public void paymentUsingBriEpay(final String snapToken,
-                                    final MidtransCallback<BasePaymentResponse> callback) {
-        if (isSnapTokenAvailable(callback, snapToken, apiService)) {
-            BasePaymentRequest basePaymentRequest = new BasePaymentRequest(PaymentType.BRI_EPAY);
-            basePaymentResponseCall = apiService.paymentBriEpay(snapToken, basePaymentRequest);
-            handleCall(basePaymentResponseCall, callback);
-        }
-    }
-
-    /**
-     * This method is used for Payment Using BCA Click Pay
-     *
-     * @param snapToken snapToken after get payment info.
-     * @param callback  Transaction callback.
-     */
-    public void paymentUsingBcaClickPay(final String snapToken,
-                                        final MidtransCallback<BasePaymentResponse> callback) {
-        if (isSnapTokenAvailable(callback, snapToken, apiService)) {
-            BasePaymentRequest basePaymentRequest = new BasePaymentRequest(PaymentType.BCA_KLIKPAY);
-            basePaymentResponseCall = apiService.paymentBcaClickPay(snapToken, basePaymentRequest);
             handleCall(basePaymentResponseCall, callback);
         }
     }
