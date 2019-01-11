@@ -6,7 +6,9 @@ import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.core.api.merchant.model.savecard.SaveCardResponse;
 import com.midtrans.sdk.corekit.core.api.snap.SnapApiService;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.creditcard.SaveCardRequest;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BasePaymentResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -93,7 +95,21 @@ public abstract class BaseServiceManager {
         if (response != null && response.isSuccessful()) {
             if (response.code() != 204) {
                 T responseBody = response.body();
-                callback.onSuccess(responseBody);
+                if (responseBody instanceof BasePaymentResponse) {
+                    BasePaymentResponse basePaymentResponse = (BasePaymentResponse) responseBody;
+                    if (isSuccess(response.code(), basePaymentResponse.getStatusCode())) {
+                        callback.onSuccess(responseBody);
+                    } else {
+                        String statusMessage = MESSAGE_ERROR_FAILURE_RESPONSE;
+                        ArrayList<String> validationMessages = basePaymentResponse.getValidationMessages();
+                        if (!validationMessages.isEmpty()) {
+                            statusMessage = validationMessages.get(0);
+                        }
+                        callback.onFailed(new Throwable(statusMessage));
+                    }
+                } else {
+                    callback.onSuccess(responseBody);
+                }
             } else {
                 callback.onFailed(new Throwable(MESSAGE_ERROR_EMPTY_RESPONSE));
             }
