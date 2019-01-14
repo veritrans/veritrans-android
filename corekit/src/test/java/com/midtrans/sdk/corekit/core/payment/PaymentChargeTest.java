@@ -589,32 +589,32 @@ public class PaymentChargeTest {
 
     @Test
     public void test_paymentUsingOnlineDebitChargeBcaClickPay_positive() {
-        onlineDebitCharge.paymentUsingBcaClickPay(SDKConfigTest.SNAP_TOKEN, callbackMock);
+        onlineDebitCharge.paymentUsingBcaKlikpay(SDKConfigTest.SNAP_TOKEN, callbackMock);
         Mockito.verify(callbackMock).onSuccess(Matchers.any(BasePaymentResponse.class));
     }
 
     @Test
     public void test_paymentUsingOnlineDebitChargeBcaClickPay_negative() {
-        onlineDebitCharge.paymentUsingBcaClickPay(SDKConfigTest.SNAP_TOKEN, callbackMock);
+        onlineDebitCharge.paymentUsingBcaKlikpay(SDKConfigTest.SNAP_TOKEN, callbackMock);
         Mockito.verify(callbackMock).onFailed(Matchers.any(Throwable.class));
     }
 
     @Test
     public void test_paymentUsingOnlineDebitChargeBcaClickPay_negative_callback() {
-        onlineDebitCharge.paymentUsingBcaClickPay(SDKConfigTest.SNAP_TOKEN, callbackMock);
+        onlineDebitCharge.paymentUsingBcaKlikpay(SDKConfigTest.SNAP_TOKEN, callbackMock);
         Mockito.verify(callbackMock).onFailed(Matchers.any(Throwable.class));
     }
 
     @Test
     public void test_paymentUsingOnlineDebitChargeBcaClickPay_negative_snapTokenNull() {
-        onlineDebitCharge.paymentUsingBcaClickPay(null, callbackMock);
+        onlineDebitCharge.paymentUsingBcaKlikpay(null, callbackMock);
         verifyStatic(Mockito.times(0));
         Logger.error(Matchers.anyString(), Matchers.anyString());
     }
 
     @Test
     public void test_paymentUsingOnlineDebitChargeBcaClickPay_negative_callbackNull() {
-        onlineDebitCharge.paymentUsingBcaClickPay(SDKConfigTest.SNAP_TOKEN, null);
+        onlineDebitCharge.paymentUsingBcaKlikpay(SDKConfigTest.SNAP_TOKEN, null);
         verifyStatic(Mockito.times(0));
         Logger.error(Matchers.anyString(), Matchers.anyString());
     }
@@ -622,13 +622,13 @@ public class PaymentChargeTest {
     @Test
     public void test_paymentUsingOnlineDebitChargeBcaClickPay_negative_noNetwork() {
         when(NetworkHelper.isNetworkAvailable(midtransSdkMock.getContext())).thenReturn(false);
-        onlineDebitCharge.paymentUsingBcaClickPay(SDKConfigTest.SNAP_TOKEN, callbackMock);
+        onlineDebitCharge.paymentUsingBcaKlikpay(SDKConfigTest.SNAP_TOKEN, callbackMock);
         Mockito.verify(callbackMock).onFailed(Matchers.any(Throwable.class));
     }
 
     @Test
     public void test_paymentUsingOnlineDebitChargeBcaClickPay_negative_withoutSnapToken() {
-        onlineDebitCharge.paymentUsingBcaClickPay(null, callbackMock);
+        onlineDebitCharge.paymentUsingBcaKlikpay(null, callbackMock);
         Mockito.verify(callbackMock).onFailed(Matchers.any(Throwable.class));
     }
 

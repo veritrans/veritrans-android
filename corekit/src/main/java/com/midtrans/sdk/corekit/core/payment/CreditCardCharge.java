@@ -3,14 +3,14 @@ package com.midtrans.sdk.corekit.core.payment;
 import android.support.annotation.NonNull;
 
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
-import com.midtrans.sdk.corekit.core.api.midtrans.model.cardtoken.CardTokenRequest;
-import com.midtrans.sdk.corekit.core.api.midtrans.model.cardregistration.CardRegistrationResponse;
 import com.midtrans.sdk.corekit.core.api.merchant.model.savecard.SaveCardResponse;
+import com.midtrans.sdk.corekit.core.api.midtrans.model.cardregistration.CardRegistrationResponse;
+import com.midtrans.sdk.corekit.core.api.midtrans.model.cardtoken.CardTokenRequest;
 import com.midtrans.sdk.corekit.core.api.midtrans.model.tokendetails.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.CustomerDetailPayRequest;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.creditcard.CreditCardPaymentParams;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.creditcard.SaveCardRequest;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BasePaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CreditCardPaymentResponse;
 import com.midtrans.sdk.corekit.utilities.Constants;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public class CreditCardCharge extends BaseGroupPayment {
     public static void paymentUsingCard(@NonNull final String snapToken,
                                         @NonNull final CreditCardPaymentParams creditCardPaymentParams,
                                         @NonNull final CustomerDetailPayRequest customerDetailPayRequest,
-                                        MidtransCallback<BasePaymentResponse> callback) {
+                                        @NonNull final MidtransCallback<CreditCardPaymentResponse> callback) {
         if (isValidForNetworkCall(callback)) {
             getSnapApiManager().paymentUsingCreditCard(snapToken,
                     creditCardPaymentParams,

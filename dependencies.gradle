@@ -13,6 +13,7 @@ ext {
     multidexVersion = '1.0.3'
     playServicesVersion = '15.0.0'
     constraintVersion = '1.1.3'
+    kotlinVersion = '1.3.10'
 
     // Testing
     androidRunnerVersion = '1.0.2'
@@ -56,5 +57,9 @@ ext {
             powermockModule     : [group: 'org.powermock', name: 'powermock-module-junit4', version: powerMockVersion],
             powermockRule       : [group: 'org.powermock', name: 'powermock-module-junit4-rule', version: powerMockVersion],
             powermockFull       : [group: 'org.powermock', name: 'powermock-mockito-release-full', version: powerMockVersion],
+    ]
+
+    kotlinLibraries = [
+            kotlinStd           : [group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8', version: kotlinVersion],
     ]
 }

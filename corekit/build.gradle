@@ -28,6 +28,10 @@ android {
             testCoverageEnabled = true
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -38,11 +42,9 @@ dependencies {
     testImplementation testLibraries.powermockApi
     testImplementation testLibraries.powermockModule
     testImplementation testLibraries.powermockRule
-
     androidTestImplementation testLibraries.runner
     androidTestImplementation testLibraries.espresso
     androidTestImplementation testLibraries.powermockFull
-
     implementation supportLibraries.appCompat
     implementation networkLibraries.okhttp
     implementation networkLibraries.okhttpClient

@@ -2,6 +2,7 @@ package com.midtrans.sdk.corekit.core.api.snap.model.pay.response;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.bcaklikpay.BcaKlikPayDataResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.va.VaNumber;
 
@@ -44,6 +45,9 @@ public class BasePaymentResponse implements Serializable {
     @SerializedName("finish_redirect_url")
     @Expose
     protected String finishRedirectUrl;
+    @SerializedName("settlement_time")
+    @Expose
+    protected String settlementTime;
 
     /**
      * KlikBCA
@@ -111,7 +115,6 @@ public class BasePaymentResponse implements Serializable {
     @SerializedName("permata_expiration")
     @Expose
     protected String permataExpiration;
-
     @SerializedName("user_id")
     protected String userId;
 
@@ -119,9 +122,64 @@ public class BasePaymentResponse implements Serializable {
      * get bank point
      */
     @SerializedName("validation_messages")
-    private ArrayList<String> validationMessages;
+    protected ArrayList<String> validationMessages;
     @SerializedName("point_balance")
-    private Long pointBalance;
+    protected Long pointBalance;
     @SerializedName("point_balance_amount")
-    private String pointBalanceAmount;
+    protected String pointBalanceAmount;
+
+    /**
+     * get gopay
+     */
+    @SerializedName("qr_code_url")
+    protected String qrCodeUrl;
+    @SerializedName("deeplink_url")
+    protected String deeplinkUrl;
+    @SerializedName("gopay_expiration")
+    protected String gopayExpiration;
+    @SerializedName("gopay_expiration_raw")
+    protected String gopayExpirationRaw;
+
+    /**
+     * Indomaret
+     */
+    @SerializedName("payment_code")
+    protected String paymentCode;
+    @SerializedName("store")
+    protected String store;
+    @SerializedName("indomaret_expire_time")
+    protected String indomaretExpireTime;
+
+    /**
+     * Klik Bca
+     */
+    @SerializedName("bca_klikbca_expire_time")
+    protected String klikBcaExpireTime;
+
+    /**
+     * Mandiri Clickpay
+     */
+    @SerializedName("masked_card")
+    protected String maskedCard;
+
+    /**
+     * CreditCard
+     */
+    @SerializedName("bank")
+    protected String bank;
+    @SerializedName("card_type")
+    protected String cardType;
+
+    public ArrayList<String> getValidationMessages() {
+        return validationMessages;
+    }
+
+    public String getStatusCode() {
+        return statusCode;
+    }
+
+    public String getStatusMessage() {
+        return statusMessage;
+    }
+
 }
