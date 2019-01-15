@@ -11,7 +11,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 @RunWith(PowerMockRunner.class)
-public class EwalletTelkomselCashResponseTest {
+public class EwalletTelkomselCashPaymentResponseTest {
     private EwalletTelkomselCashPaymentResponse response;
     private String exampleTextPositive;
     private String exampleTextNegative;
