@@ -25,13 +25,13 @@ public class CheckoutWithTransactionResponseTest {
 
     @Test
     public void test_SetSnapToken_positive() {
-        response.setSnapToken(exampleTextPositive);
-        assertEquals(response.getSnapToken(), exampleTextPositive);
+        response.setToken(exampleTextPositive);
+        assertEquals(response.getToken(), exampleTextPositive);
     }
 
     @Test
     public void test_SetSnapToken_negative() {
-        response.setSnapToken(exampleTextPositive);
-        assertNotEquals(response.getSnapToken(), exampleTextNegative);
+        response.setToken(exampleTextPositive);
+        assertNotEquals(response.getToken(), exampleTextNegative);
     }
 }
