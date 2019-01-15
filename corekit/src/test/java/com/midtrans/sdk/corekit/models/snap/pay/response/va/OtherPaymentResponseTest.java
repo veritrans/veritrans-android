@@ -1,5 +1,7 @@
 package com.midtrans.sdk.corekit.models.snap.pay.response.va;
 
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BankTransferVaOtherPaymentResponse;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,7 +12,7 @@ import static org.junit.Assert.assertNotEquals;
 
 @RunWith(PowerMockRunner.class)
 public class OtherPaymentResponseTest {
-    private OtherPaymentResponse response;
+    private BankTransferVaOtherPaymentResponse response;
     private String exampleTextPositive;
     private String exampleTextNegative;
 
@@ -18,31 +20,31 @@ public class OtherPaymentResponseTest {
     public void test_setup() {
         this.exampleTextPositive = "exampleTextPositive";
         this.exampleTextNegative = "exampleTextNegative";
-        this.response = new OtherPaymentResponse();
+        this.response = new BankTransferVaOtherPaymentResponse();
     }
 
     @Test
     public void test_setOtherExpiration_positive() {
-        this.response.setOtherExpiration(exampleTextPositive);
-        assertEquals(response.getOtherExpiration(), exampleTextPositive);
+        this.response.setBniExpiration(exampleTextPositive);
+        assertEquals(response.getBniExpiration(), exampleTextPositive);
     }
 
     @Test
     public void test_setOtherExpiration_negative() {
-        this.response.setOtherExpiration(exampleTextPositive);
-        assertNotEquals(response.getOtherExpiration(), exampleTextNegative);
+        this.response.setBniExpiration(exampleTextPositive);
+        assertNotEquals(response.getBniExpiration(), exampleTextNegative);
     }
 
     @Test
     public void test_setVaNumber_positive() {
-        this.response.setOtherVaNumber(exampleTextPositive);
-        assertEquals(response.getOtherVaNumber(), exampleTextPositive);
+        this.response.setBniVaNumber(exampleTextPositive);
+        assertEquals(response.getBniVaNumber(), exampleTextPositive);
     }
 
     @Test
     public void test_setVaNumber_negative() {
-        this.response.setOtherVaNumber(exampleTextPositive);
-        assertNotEquals(response.getOtherVaNumber(), exampleTextNegative);
+        this.response.setBniVaNumber(exampleTextPositive);
+        assertNotEquals(response.getBniVaNumber(), exampleTextNegative);
     }
 
 }
