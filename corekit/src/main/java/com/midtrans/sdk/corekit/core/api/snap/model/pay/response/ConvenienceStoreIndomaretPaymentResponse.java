@@ -78,7 +78,7 @@ public class ConvenienceStoreIndomaretPaymentResponse extends BasePaymentRespons
         return paymentCode;
     }
 
-    public void setPaymentCode(String paymentCode){
+    public void setPaymentCode(String paymentCode) {
         this.paymentCode = paymentCode;
     }
 
@@ -109,7 +109,7 @@ public class ConvenienceStoreIndomaretPaymentResponse extends BasePaymentRespons
     public String getFinishRedirectUrl() {
         return finishRedirectUrl;
     }
-    
+
     public void setFinishRedirectUrl(String finishRedirectUrl) {
         this.finishRedirectUrl = finishRedirectUrl;
     }
