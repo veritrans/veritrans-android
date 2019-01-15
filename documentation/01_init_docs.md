@@ -1944,7 +1944,7 @@ CheckoutTransaction checkoutTransaction = CheckoutTransaction
 ```Kotlin
 val checkoutTransaction = CheckoutTransaction
                 .builder(TRANSACTION_ID, AMOUNT)
-                .setBniVa(ankTransferRequestModel("123123"))
+                .setBniVa(BankTransferRequestModel("123123"))
                 .setPermataVa(BankTransferRequestModel("123123"))
                 .build()
 ```
