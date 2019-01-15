@@ -65,4 +65,57 @@ public class BankTransferVaOtherPaymentResponse extends BasePaymentResponse {
     public String getFinishRedirectUrl() {
         return finishRedirectUrl;
     }
+
+    public void setStatusCode(String statusCode){
+        this.statusCode = statusCode;
+    }
+
+    public void setStatusMessage(String statusMessage){
+        this.statusMessage = statusMessage;
+    }
+
+    public void setTransactionId(String transactionId){
+        this.transactionId = transactionId;
+    }
+
+    public void setOrderId(String orderId){
+        this.orderId = orderId;
+    }
+
+    public void setGrossAmount(String grossAmount) {
+        this.grossAmount = grossAmount;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public void setPaymentType(String paymentType) {
+        this.paymentType = paymentType;
+    }
+
+    public void setTransactionTime(String transactionTime) {
+        this.transactionTime = transactionTime;
+    }
+
+    public void setTransactionStatus(String transactionStatus) {
+        this.transactionStatus = transactionStatus;
+    }
+
+    public void setFinishRedirectUrl(String finishRedirectUrl) {
+        this.finishRedirectUrl = finishRedirectUrl;
+    }
+
+    public void setBniVaNumber(String bniVaNumber) {
+        this.bniVaNumber = bniVaNumber;
+    }
+
+    public void setBniExpiration(String bniExpiration) {
+        this.bniExpiration = bniExpiration;
+    }
+
+    public void setPdfUrl(String pdfUrl) {
+        this.pdfUrl = pdfUrl;
+    }
+
 }
