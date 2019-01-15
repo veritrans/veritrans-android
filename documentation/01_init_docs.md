@@ -1683,6 +1683,13 @@ CheckoutTransaction checkoutTransaction = CheckoutTransaction
                 .build();
 ```
 
+```Kotlin
+val checkoutTransaction = CheckoutTransaction
+                .builder(TRANSACTION_ID, AMOUNT)
+                .setCurrency(Currency.IDR)
+                .build()
+```
+
 ### Customer Info, Billing Info, Shipping Info
 
 The Customer Info, Billing Info, and Shipping Info is optional, so user can pass the customer detail when making transaction and get it in response from SDK.
@@ -1711,6 +1718,30 @@ CheckoutTransaction checkoutTransaction = CheckoutTransaction
                 .build();
 ```
 
+```Kotlin
+val checkoutTransaction = CheckoutTransaction
+                .builder(TRANSACTION_ID, AMOUNT)
+                .setCustomerDetails(new CustomerDetails("First Name",
+                        "Lastname",
+                        "email@mail.com",
+                        "6281234567890",
+                        new ShippingAddress("First Name",
+                                "Lastname",
+                                "email@mail.com",
+                                "City",
+                                "1234",
+                                "6281234567890",
+                                "IDN"),
+                        new BillingAddress("First Name",
+                                "LastName",
+                                "email@mail.com",
+                                "City",
+                                "1234",
+                                "6281234567890",
+                                "IDN")))
+                .build()
+```
+
 ### Item Details
 
 You can set the detail of item of the transaction. If you put the item detail, you have to check the amount that previously you set in builder is same with total of price multiplied by quantity in Item Details ArrayList.
@@ -1721,9 +1752,34 @@ Item details are **required** for `Mandiri Bill/Mandiri Echannel` and `BCA KlikP
 CheckoutTransaction checkoutTransaction = CheckoutTransaction
                 .builder(TRANSACTION_ID, AMOUNT)
                 .setItemDetails(new ArrayList<>(Arrays.asList(
-                        new ItemDetails(ITEM_ID,ITEM_PRICE,ITEM_QUANTITY,ITEM_NAME))
+                    new ItemDetails(ITEM_ID,
+                        ITEM_PRICE,
+                        ITEM_QUANTITY,
+                        ITEM_NAME),
+                    new ItemDetails(ITEM_ID,
+                        ITEM_PRICE,
+                        ITEM_QUANTITY,
+                        ITEM_NAME),)
                 ))
                 .build();
+```
+
+```Kotlin
+val checkoutTransaction = CheckoutTransaction
+            .builder("123",2000.0)
+            .setItemDetails(
+                arrayListOf(
+                    ItemDetails(ITEM_ID,
+                        ITEM_PRICE,
+                        ITEM_QUANTITY,
+                        ITEM_NAME),
+                    ItemDetails(ITEM_ID,
+                        ITEM_PRICE,
+                        ITEM_QUANTITY,
+                        ITEM_NAME),
+                )
+            )
+            .build()
 ```
 
 ### Enable payment
@@ -1743,6 +1799,23 @@ CheckoutTransaction checkoutTransaction = CheckoutTransaction
                         KLIK_BCA)))
                 .build();
 ```
+
+```Kotlin
+val checkoutTransaction = CheckoutTransaction
+            .builder(TRANSACTION_ID, AMOUNT)
+            .setEnabledPayments(
+                mutableListOf(
+                    BCA_VA,
+                    BNI_VA,
+                    PERMATA_VA,
+                    CREDIT_CARD,
+                    GOPAY,
+                    INDOMARET,
+                    KLIK_BCA)
+            )
+            .build()
+```
+
 ### Custom Expired
 
 There is a feature on mobile SDK to enable custom transaction lifetime. 
@@ -1760,6 +1833,13 @@ CheckoutTransaction checkoutTransaction = CheckoutTransaction
                 .build();
 ```
 
+```Kotlin
+val checkoutTransaction = CheckoutTransaction
+                .builder(TRANSACTION_ID, AMOUNT) 
+                .setExpiry(ExpiryModel(START_TIME, ExpiryModelUnit.EXPIRY_UNIT_DAY, 1))
+                .build();
+```
+
 ### Custom Field
 
 These 3 fields will be brought at payment so it will be available at MAP and a HTTP notification will be sent to the merchant.
@@ -1771,6 +1851,15 @@ CheckoutTransaction checkoutTransaction = CheckoutTransaction
                 .setCustomField2("Custom Field 2")
                 .setCustomField3("Custom Field 3")
                 .build();
+```
+
+```Kotlin
+val checkoutTransaction = CheckoutTransaction
+                .builder(TRANSACTION_ID, AMOUNT)
+                .setCustomField1("Custom Field 1")
+                .setCustomField2("Custom Field 2")
+                .setCustomField3("Custom Field 3")
+                .build()
 ```
 
 ### GO-PAY Callback Deeplink (Specific for GO-PAY)
@@ -1785,6 +1874,14 @@ CheckoutTransaction checkoutTransaction = CheckoutTransaction
                 .setGopayCallbackDeepLink("demo://midtrans")
                 .build();
 ```
+
+```Kotlin
+val checkoutTransaction = CheckoutTransaction
+                .builder(TRANSACTION_ID, AMOUNT)
+                .setGopayCallbackDeepLink("demo://midtrans")
+                .build()
+```
+
 ### Bill Info (Specific for Mandiri Bill/Mandiri Echannel)
 
 Bill Info is optional for `Mandiri Bill/Mandiri Echannel` payment only.
@@ -1795,6 +1892,14 @@ CheckoutTransaction checkoutTransaction = CheckoutTransaction
                 .setBillInfoModel(new BillInfoModel("Note 1", "Note 2"))
                 .build();
 ```
+
+```Kotlin
+val checkoutTransaction = CheckoutTransaction
+                .builder(TRANSACTION_ID, AMOUNT)
+                .setBillInfoModel(BillInfoModel("Note 1", "Note 2"))
+                .build()
+```
+
 ### Sub Company Code and Custom Virtual Account Number (Specific for BCA Bank Transfer VA)
 
 This feature allows you to pass sub company code in VA payment and Make Custom Virtual Account Number. The sub company code must be exactly 5 digits of number. And you can pass free text to the inquiry and payment with multi language (Indonesia and English)
@@ -1809,6 +1914,20 @@ CheckoutTransaction checkoutTransaction = CheckoutTransaction
                         "123123"))
                 .build();
 ```
+
+```Kotlin
+val checkoutTransaction = CheckoutTransaction
+            .builder(TRANSACTION_ID, AMOUNT)
+            .setBcaVa(BcaBankTransferRequestModel(
+                VA_NUMBER,
+                BcaBankFreeText(
+                    mutableListOf<BcaBankFreeTextLanguage>(), 
+                    mutableListOf<BcaBankFreeTextLanguage>()
+                )
+            ))
+            .build()
+```
+
 ### Custom Virtual Account Number (Permata and BNI)
 
 This feature allows you to make Custom Virtual Account Number.
@@ -1821,6 +1940,15 @@ CheckoutTransaction checkoutTransaction = CheckoutTransaction
                 .setPermataVa(new BankTransferRequestModel("123123"))
                 .build();
 ```
+
+```Kotlin
+val checkoutTransaction = CheckoutTransaction
+                .builder(TRANSACTION_ID, AMOUNT)
+                .setBniVa(ankTransferRequestModel("123123"))
+                .setPermataVa(BankTransferRequestModel("123123"))
+                .build()
+```
+
 
 ### Complete Checkout Transaction Object
 
@@ -1870,4 +1998,86 @@ CheckoutTransaction checkoutTransaction = CheckoutTransaction
                 .setBniVa(new BankTransferRequestModel(""))
                 .setPermataVa(new BankTransferRequestModel(""))
                 .build();
+```
+
+```Kotlin
+val checkoutTransaction = CheckoutTransaction
+            .builder(TRANSACTION_ID, AMOUNT)
+            .setCurrency(Currency.IDR)
+            .setCustomerDetails(
+                CustomerDetails(
+                    "FirstName",
+                    "LastName",
+                    "email@mail.com",
+                    "6281234567890",
+                    ShippingAddress(
+                        "First Name",
+                        "Lastname",
+                        "email@mail.com",
+                        "City",
+                        "1234",
+                        "6281234567890",
+                        "IDN"
+                    ),
+                    BillingAddress(
+                        "First Name",
+                        "LastName",
+                        "email@mail.com",
+                        "City",
+                        "1234",
+                        "6281234567890",
+                        "IDN"
+                    )
+                )
+            )
+            .setItemDetails(
+                mutableListOf(
+                    ItemDetails(ITEM_ID,
+                        ITEM_PRICE,
+                        ITEM_QUANTITY,
+                        ITEM_NAME),
+                    ItemDetails(ITEM_ID,
+                        ITEM_PRICE,
+                        ITEM_QUANTITY,
+                        ITEM_NAME),
+                    )
+            )
+            .setEnabledPayments(
+                mutableListOf(
+                    BCA_VA,
+                    BNI_VA,
+                    PERMATA_VA,
+                    CREDIT_CARD,
+                    GOPAY,
+                    INDOMARET,
+                    KLIK_BCA)
+            )
+            .setExpiry(
+                ExpiryModel(
+                    START_TIME,
+                    ExpiryModelUnit.EXPIRY_UNIT_DAY,
+                    1
+                )
+            )
+            .setCustomField1("Custom Field 1")
+            .setCustomField2("Custom Field 2")
+            .setCustomField3("Custom Field 3")
+            .setGopayCallbackDeepLink("demo://midtrans")
+            .setBillInfoModel(
+                BillInfoModel(
+                    "",
+                    ""
+                )
+            )
+            .setBcaVa(
+                BcaBankTransferRequestModel(
+                    "123",
+                    BcaBankFreeText(
+                        mutableListOf<BcaBankFreeTextLanguage>(),
+                        mutableListOf<BcaBankFreeTextLanguage>()
+                    )
+                ))
+            .setBniVa(BankTransferRequestModel("123123"))
+            .setPermataVa(BankTransferRequestModel("123123"))
+            .build()
 ```
