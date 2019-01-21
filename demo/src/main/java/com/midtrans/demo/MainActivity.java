@@ -12,22 +12,15 @@ import com.midtrans.sdk.corekit.base.model.Currency;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.CheckoutTransaction;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.BillInfoModel;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.ExpiryModel;
-import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.ItemDetails;
-import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.customer.BillingAddress;
+import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.Item;
+import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.customer.Address;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.customer.CustomerDetails;
-import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.customer.ShippingAddress;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specific.banktransfer.BcaBankFreeText;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specific.banktransfer.BcaBankFreeTextLanguage;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specific.banktransfer.BcaBankTransferRequestModel;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specific.creditcard.CreditCard;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.response.CheckoutWithTransactionResponse;
-import com.midtrans.sdk.corekit.core.api.midtrans.model.cardregistration.CardRegistrationResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.CustomerDetailPayRequest;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.creditcard.CreditCardPaymentParams;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BasePaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.EwalletGopayPaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
-import com.midtrans.sdk.corekit.core.payment.CreditCardCharge;
 import com.midtrans.sdk.corekit.core.payment.EWalletCharge;
 import com.midtrans.sdk.corekit.utilities.Logger;
 
@@ -76,14 +69,14 @@ public class MainActivity extends AppCompatActivity {
                         "LastName",
                         "email@mail.com",
                         "6281234567890",
-                        new ShippingAddress("Firstname",
+                        new Address("Firstname",
                                 "LastName",
                                 "mail@mail.com",
                                 "Bogor",
                                 "16710",
                                 "62877",
                                 "idn"),
-                        new BillingAddress("Firstname",
+                        new Address("Firstname",
                                 "LastName",
                                 "mail@mail.com",
                                 "Bogor",
@@ -93,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                 .setBillInfoModel(new BillInfoModel("1", "2"))
                 .setEnabledPayments(new ArrayList<String>())
                 .setExpiry(new ExpiryModel("", ExpiryModelUnit.EXPIRY_UNIT_DAY, 1))
-                .setItemDetails(new ArrayList<ItemDetails>())
+                .setCheckoutItems(new ArrayList<Item>())
                 .setBcaVa(new BcaBankTransferRequestModel("",
                         new BcaBankFreeText(new ArrayList<BcaBankFreeTextLanguage>(),
                                 new ArrayList<BcaBankFreeTextLanguage>()),
@@ -132,6 +125,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 
 }
