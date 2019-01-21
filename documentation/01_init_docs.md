@@ -26,6 +26,10 @@ We also expose the low-level APIs that power those elements to make it easy to b
 	* BRI E - Pay
 7. Store
 	* Indomaret
+8. CreditCard
+	* Tokenize
+	* Save Card
+	* Charge (Payment)
 
 ##  3. <a name='Prerequsites'></a>Prerequsites
 
@@ -2318,3 +2322,71 @@ val checkoutTransaction = CheckoutTransaction
                 .build())
             .build()
 ```
+
+## 8.3. <a name='enum'></a>Enum and Static Variable
+
+### Bank Type
+
+| BankType 	| Description  	|
+|----------	|--------------	|
+| CIMB     	| CIMB         	|
+| BCA      	| BCA          	|
+| MANDIRI  	| Bank Mandiri 	|
+| BNI      	| BNI          	|
+| PERMATA  	| Bank Permata 	|
+| BRI      	| BRI          	|
+
+
+### Currency
+
+| Currency 	| Description      	|
+|----------	|------------------	|
+| IDR      	| Indonesia Rupiah 	|
+| SGD      	| Singapore Dollar 	|
+
+
+### Payment Type
+
+| PaymentType      	| Description              	|
+|------------------	|--------------------------	|
+| CREDIT_CARD      	| Credit Card              	|
+| BNI_VA           	| Bank Transfer/VA BNI     	|
+| BCA_VA           	| Bank Transfer/VA BCA     	|
+| PERMATA_VA       	| Bank Transfer/VA Permata 	|
+| OTHER_VA         	| Bank Transfer/VA Other   	|
+| GOPAY            	| GO-PAY                   	|
+| TELKOMSEL_CASH   	| Telkomsel Cash (T-Cash)  	|
+| MANDIRI_ECASH    	| Mandiri Ecash            	|
+| BCA_KLIKPAY      	| BCA Klikpay              	|
+| CIMB_CLICKS      	| CIMB Clicks              	|
+| BRI_EPAY         	| BRI Epay                 	|
+| MANDIRI_CLICKPAY 	| Mandiri Clickpay         	|
+| KLIK_BCA         	| Klik BCA                 	|
+| INDOMARET        	| Indomaret                	|
+| AKULAKU          	| Akulaku                  	|
+
+
+### Authentication
+
+| Environment 	| Description                 	|
+|-------------	|-----------------------------	|
+| AUTH_3DS    	| Use if you want to use 3DS  	|
+| AUTH_RBA    	| Use if you want to use RBA  	|
+| AUTH_NONE   	| Use if you not use any auth 	|
+
+
+### Environment
+
+| Environment 	| Description                         	|
+|-------------	|-------------------------------------	|
+| SANDBOX     	| Use this for SANDBOX environment    	|
+| PRODUCTION  	| Use this for PRODUCTION environment 	|
+
+
+### Expiry Unit
+
+| ExpiryModelUnit    	| Description     	|
+|--------------------	|-----------------	|
+| `EXPIRY_UNIT_MINUTE`	| count as minute 	|
+| `EXPIRY_UNIT_HOUR`   	| count as hour   	|
+| `EXPIRY_UNIT_DAY`    	| count as day    	|

@@ -19,8 +19,6 @@ public class PaymentType {
     // Direct Debit
     public static String MANDIRI_CLICKPAY = "mandiri_clickpay";
     public static String KLIK_BCA = "bca_klikbca";
-    public static String DANAMON_ONLINE = "danamon_online";
-    public static String E_CHANNEL = "echannel";
     // Convenience Store
     public static String INDOMARET = "indomaret";
     // Cardless Credit
