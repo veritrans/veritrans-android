@@ -1,7 +1,6 @@
 package com.midtrans.sdk.corekit.models.merchant.checkout.request.optional.customer;
 
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.customer.Address;
-import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.customer.ShippingAddress;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,9 +14,9 @@ public class AddressTest {
 
     @Before
     public void test_setup() {
-        this.shippingAddress = new ShippingAddress();
         this.exampleTextPositive = "exampleTextPositive";
         this.exampleTextNegative = "exampleTextNegative";
+        this.shippingAddress = new Address(null,null,null,null,null,null,null);
     }
 
     @Test

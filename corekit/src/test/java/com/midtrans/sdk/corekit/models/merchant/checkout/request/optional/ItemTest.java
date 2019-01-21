@@ -1,6 +1,6 @@
 package com.midtrans.sdk.corekit.models.merchant.checkout.request.optional;
 
-import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.Items;
+import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.Item;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -8,16 +8,16 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-public class ItemsTest {
+public class ItemTest {
 
-    private Items items;
+    private Item item;
     private String exampleTextPositive, exampleTextNegative;
     private int exampleNumber;
     private double examplePrice;
 
     @Before
     public void test_setup() {
-        this.items = new Items();
+        this.item = new Item();
         this.exampleTextPositive = "exampleTextPositive";
         this.exampleTextNegative = "exampleTextNegative";
         this.examplePrice = 10;
@@ -26,31 +26,31 @@ public class ItemsTest {
 
     @Test
     public void test_SetName_positive() {
-        items.setName(exampleTextPositive);
-        assertEquals(items.getName(), exampleTextPositive);
+        item.setName(exampleTextPositive);
+        assertEquals(item.getName(), exampleTextPositive);
     }
 
     @Test
     public void test_SetName_negative() {
-        items.setName(exampleTextPositive);
-        assertNotEquals(items.getName(), exampleTextNegative);
+        item.setName(exampleTextPositive);
+        assertNotEquals(item.getName(), exampleTextNegative);
     }
 
     @Test
     public void test_SetPrice_positive() {
-        items.setPrice(examplePrice);
-        assertEquals(Double.valueOf(items.getPrice()), Double.valueOf(items.getPrice()));
+        item.setPrice(examplePrice);
+        assertEquals(Double.valueOf(item.getPrice()), Double.valueOf(item.getPrice()));
     }
 
     @Test
     public void test_SetPrice_negative() {
-        items.setPrice(examplePrice);
-        assertEquals(Double.valueOf(items.getPrice()), Double.valueOf(items.getPrice()));
+        item.setPrice(examplePrice);
+        assertEquals(Double.valueOf(item.getPrice()), Double.valueOf(item.getPrice()));
     }
 
     @Test
     public void test_SetQuantity_positive() {
-        items.setQuantity(exampleNumber);
-        assertEquals(items.getQuantity(), exampleNumber);
+        item.setQuantity(exampleNumber);
+        assertEquals(item.getQuantity(), exampleNumber);
     }
 }
