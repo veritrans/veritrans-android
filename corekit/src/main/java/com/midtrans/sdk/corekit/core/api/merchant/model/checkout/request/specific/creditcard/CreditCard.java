@@ -33,7 +33,7 @@ public class CreditCard implements Serializable {
     private String tokenId;
     private boolean secure;
     private String channel;
-    private String bank;
+    private String acquiringBank;
     @SerializedName("saved_tokens")
     private List<SavedToken> savedTokens;
     @SerializedName("whitelist_bins")
@@ -52,7 +52,7 @@ public class CreditCard implements Serializable {
                        String tokenId,
                        boolean secure,
                        String channel,
-                       String bank,
+                       String acquiringBank,
                        List<SavedToken> savedTokens,
                        List<String> whitelistBins,
                        List<String> blacklistBins,
@@ -63,7 +63,7 @@ public class CreditCard implements Serializable {
         this.tokenId = tokenId;
         this.secure = secure;
         this.channel = channel;
-        this.bank = bank;
+        this.acquiringBank = acquiringBank;
         this.savedTokens = savedTokens;
         this.whitelistBins = whitelistBins;
         this.blacklistBins = blacklistBins;
@@ -102,12 +102,12 @@ public class CreditCard implements Serializable {
         return secure;
     }
 
-    public String getChannel() {
+    public String getAcquiringChannel() {
         return channel;
     }
 
-    public BankType getBank() {
-        return mappingToBankType(bank);
+    public BankType getAcquiringBank() {
+        return mappingToBankType(acquiringBank);
     }
 
     public List<SavedToken> getSavedTokens() {
@@ -147,7 +147,7 @@ public class CreditCard implements Serializable {
         private String tokenId;
         private boolean secure;
         private String channel;
-        private String bank;
+        private String acquiringBank;
         private List<SavedToken> savedTokens;
         private List<String> whitelistBins;
         private List<String> blacklistBins;
@@ -181,13 +181,13 @@ public class CreditCard implements Serializable {
             return this;
         }
 
-        public Builder setChannel(String channel) {
+        public Builder setAcquiringChannel(String channel) {
             this.channel = channel;
             return this;
         }
 
-        public Builder setBank(BankType bank) {
-            this.bank = Helper.mappingToBankType(bank);
+        public Builder setAcquiringBank(BankType acquiringBank) {
+            this.acquiringBank = Helper.mappingToBankType(acquiringBank);
             return this;
         }
 
@@ -258,7 +258,7 @@ public class CreditCard implements Serializable {
                     tokenId,
                     secure,
                     channel,
-                    bank,
+                    acquiringBank,
                     savedTokens,
                     whitelistBins,
                     blacklistBins,

@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.midtrans.sdk.corekit.MidtransSdk;
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
-import com.midtrans.sdk.corekit.base.enums.Authentication;
 import com.midtrans.sdk.corekit.base.enums.BankType;
 import com.midtrans.sdk.corekit.base.enums.Environment;
 import com.midtrans.sdk.corekit.base.enums.ExpiryModelUnit;
@@ -61,12 +60,12 @@ public class MainActivity extends AppCompatActivity {
                         .twoClickBuilder(false)
                         //.setTokenId("")
                         .setSaveCard(true)
-                        .setBank(BankType.BNI)
+                        .setAcquiringBank(BankType.BNI)
                         .setInstallment(false, new HashMap<BankType, List<Integer>>())
                         //.setBlackListBins(new ArrayList<String>())
                         //.setWhiteListBins(new ArrayList<String>())
                         //.setSavedTokens(new ArrayList<SavedToken>())
-                        //.setChannel(CreditCard.MIGS)
+                        //.setAcquiringChannel(CreditCard.MIGS)
                         .build())
                 .setCustomerDetails(new CustomerDetails("FirstName",
                         "LastName",
