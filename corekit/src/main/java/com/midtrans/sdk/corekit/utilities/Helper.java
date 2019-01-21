@@ -1,7 +1,6 @@
 package com.midtrans.sdk.corekit.utilities;
 
 import android.app.Activity;
-import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 
 public class Helper {
@@ -44,7 +43,7 @@ public class Helper {
      * @param cardNo card number
      * @return card type
      */
-    public static String getCardType(@NonNull String cardNo) {
+    public static String getCardType(String cardNo) {
         try {
             if (cardNo.isEmpty()) {
                 return "";

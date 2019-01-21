@@ -2,8 +2,6 @@ package com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.option
 
 import com.google.gson.annotations.SerializedName;
 
-import android.support.annotation.NonNull;
-
 import java.io.Serializable;
 
 public class Item implements Serializable {
@@ -27,10 +25,10 @@ public class Item implements Serializable {
      * @param name     name of the item.
      */
     public Item(
-            @NonNull String id,
-            @NonNull double price,
-            @NonNull int quantity,
-            @NonNull String name) {
+            String id,
+            double price,
+            int quantity,
+            String name) {
         this.id = id;
         this.price = price;
         this.quantity = quantity;
@@ -38,13 +36,13 @@ public class Item implements Serializable {
     }
 
     public Item(
-            @NonNull String id,
-            @NonNull double price,
-            @NonNull int quantity,
-            @NonNull String name,
-            @NonNull String brand,
-            @NonNull String category,
-            @NonNull String merchantName) {
+            String id,
+            double price,
+            int quantity,
+            String name,
+            String brand,
+            String category,
+            String merchantName) {
         this.id = id;
         this.price = price;
         this.quantity = quantity;

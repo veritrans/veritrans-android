@@ -1,7 +1,5 @@
 package com.midtrans.sdk.corekit.base.network;
 
-import android.support.annotation.NonNull;
-
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.core.api.merchant.model.savecard.SaveCardResponse;
 import com.midtrans.sdk.corekit.core.api.snap.SnapApiService;
@@ -45,12 +43,12 @@ public abstract class BaseServiceManager {
                                   final MidtransCallback<T> basePaymentResponseMidtransCallback) {
         basePaymentResponseCall.enqueue(new Callback<T>() {
             @Override
-            public void onResponse(@NonNull Call<T> call, @NonNull Response<T> response) {
+            public void onResponse(Call<T> call, Response<T> response) {
                 handleServerResponse(response, basePaymentResponseMidtransCallback, null);
             }
 
             @Override
-            public void onFailure(@NonNull Call<T> call, @NonNull Throwable throwable) {
+            public void onFailure(Call<T> call, Throwable throwable) {
                 handleServerResponse(null, basePaymentResponseMidtransCallback, throwable);
             }
         });
