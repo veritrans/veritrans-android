@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class Installment implements Serializable {
@@ -12,9 +12,9 @@ public class Installment implements Serializable {
 
     @SerializedName("terms")
     @Expose
-    private Map<String, ArrayList<Integer>> terms;
+    private Map<String, List<Integer>> terms;
 
-    public Installment(boolean required, Map<String, ArrayList<Integer>> terms) {
+    public Installment(boolean required, Map<String, List<Integer>> terms) {
         this.required = required;
         this.terms = terms;
     }
@@ -23,7 +23,7 @@ public class Installment implements Serializable {
         return required;
     }
 
-    public Map<String, ArrayList<Integer>> getTerms() {
+    public Map<String, List<Integer>> getTerms() {
         return terms;
     }
 }

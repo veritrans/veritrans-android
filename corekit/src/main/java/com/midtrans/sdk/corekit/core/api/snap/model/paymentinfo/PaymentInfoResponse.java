@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.mandatory.TransactionDetails;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.GopayDeepLink;
-import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.ItemDetails;
+import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.Item;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.customer.CustomerDetails;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specific.creditcard.CreditCard;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.callback.Callbacks;
@@ -40,7 +40,7 @@ public class PaymentInfoResponse implements Serializable {
     private PromoDetails promoDetails;
 
     @SerializedName("item_details")
-    private List<ItemDetails> itemDetails;
+    private List<Item> itemDetails;
 
     @SerializedName("customer_details")
     private CustomerDetails customerDetails;
@@ -115,11 +115,11 @@ public class PaymentInfoResponse implements Serializable {
         this.promoDetails = promoDetails;
     }
 
-    public List<ItemDetails> getItemDetails() {
+    public List<Item> getItemDetails() {
         return itemDetails;
     }
 
-    public void setItemDetails(List<ItemDetails> itemDetails) {
+    public void setItemDetails(List<Item> itemDetails) {
         this.itemDetails = itemDetails;
     }
 
