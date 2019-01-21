@@ -1,9 +1,6 @@
 package com.midtrans.sdk.corekit.core.payment;
 
-import android.support.annotation.NonNull;
-
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BasePaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CardlessCreditAkulakuPaymentResponse;
 
 public class CardlessCreditCharge extends BaseGroupPayment {
@@ -14,8 +11,8 @@ public class CardlessCreditCharge extends BaseGroupPayment {
      * @param snapToken token after making checkoutWithTransaction.
      * @param callback  for receiving callback from request.
      */
-    public static void paymentUsingAkulaku(@NonNull final String snapToken,
-                                           @NonNull final MidtransCallback<CardlessCreditAkulakuPaymentResponse> callback) {
+    public static void paymentUsingAkulaku(final String snapToken,
+                                           final MidtransCallback<CardlessCreditAkulakuPaymentResponse> callback) {
         if (isValidForNetworkCall(callback)) {
             getSnapApiManager().paymentUsingAkulaku(snapToken, callback);
         }

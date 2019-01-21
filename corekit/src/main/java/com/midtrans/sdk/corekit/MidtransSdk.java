@@ -1,7 +1,6 @@
 package com.midtrans.sdk.corekit;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
@@ -59,11 +58,11 @@ public class MidtransSdk {
     private SnapApiManager snapApiManager;
     private MidtransApiManager midtransApiManager;
 
-    MidtransSdk(@NonNull final Context context,
-                @NonNull final String clientId,
-                @NonNull final String merchantUrl,
-                @NonNull final Environment environment,
-                @NonNull final int apiRequestTimeOut) {
+    MidtransSdk(final Context context,
+                final String clientId,
+                final String merchantUrl,
+                final Environment environment,
+                final int apiRequestTimeOut) {
         this.context = context.getApplicationContext();
         this.merchantClientId = clientId;
         this.merchantBaseUrl = merchantUrl;
@@ -90,9 +89,9 @@ public class MidtransSdk {
      * @param merchantUrl MerchantUrl or Merchant Base Url, mandatory not null.
      * @return Builder.
      */
-    public static Builder builder(@NonNull final Context context,
-                                  @NonNull final String clientId,
-                                  @NonNull final String merchantUrl) {
+    public static Builder builder(final Context context,
+                                  final String clientId,
+                                  final String merchantUrl) {
 
         return new Builder(context,
                 clientId,
@@ -121,7 +120,7 @@ public class MidtransSdk {
         return snapApiManager;
     }
 
-    public void setSnapApiManager(@NonNull final SnapApiManager snapApiManager) {
+    public void setSnapApiManager(final SnapApiManager snapApiManager) {
         this.snapApiManager = snapApiManager;
     }
 
@@ -145,7 +144,7 @@ public class MidtransSdk {
         return merchantApiManager;
     }
 
-    public void setMerchantApiManager(@NonNull final MerchantApiManager merchantApiManager) {
+    public void setMerchantApiManager(final MerchantApiManager merchantApiManager) {
         this.merchantApiManager = merchantApiManager;
     }
 
@@ -221,7 +220,7 @@ public class MidtransSdk {
     /**
      * Set value to transaction request for begin checkoutWithTransaction.
      */
-    public void setCheckoutTransaction(@NonNull final CheckoutTransaction checkoutTransaction) {
+    public void setCheckoutTransaction(final CheckoutTransaction checkoutTransaction) {
         this.checkoutTransaction = checkoutTransaction;
     }
 
@@ -231,7 +230,7 @@ public class MidtransSdk {
      *
      * @param callback for receiving callback from request.
      */
-    public void checkoutWithTransaction(@NonNull final MidtransCallback<CheckoutWithTransactionResponse> callback) {
+    public void checkoutWithTransaction(final MidtransCallback<CheckoutWithTransactionResponse> callback) {
         checkoutWithTransaction(this.checkoutTransaction, callback);
     }
 
@@ -242,8 +241,8 @@ public class MidtransSdk {
      * @param checkoutTransaction transaction request for making checkoutWithTransaction.
      * @param callback            for receiving callback from request.
      */
-    public void checkoutWithTransaction(@NonNull final CheckoutTransaction checkoutTransaction,
-                                        @NonNull final MidtransCallback<CheckoutWithTransactionResponse> callback) {
+    public void checkoutWithTransaction(final CheckoutTransaction checkoutTransaction,
+                                        final MidtransCallback<CheckoutWithTransactionResponse> callback) {
         if (isValidForNetworkCall(context, callback)) {
             merchantApiManager.checkout(checkoutTransaction, callback);
         }
@@ -252,11 +251,11 @@ public class MidtransSdk {
     /**
      * Getting Payment Info including enabled payment method and others information.
      *
-     * @param token token after making checkoutWithTransaction.
-     * @param callback  for receiving callback from request.
+     * @param token    token after making checkoutWithTransaction.
+     * @param callback for receiving callback from request.
      */
-    public void getPaymentInfo(@NonNull final String token,
-                               @NonNull final MidtransCallback<PaymentInfoResponse> callback) {
+    public void getPaymentInfo(final String token,
+                               final MidtransCallback<PaymentInfoResponse> callback) {
         if (isValidForNetworkCall(context, callback)) {
             snapApiManager.getPaymentInfo(token, callback);
         }
@@ -268,9 +267,9 @@ public class MidtransSdk {
      * @param cardToken credit card token
      * @param callback  bni point callback instance
      */
-    public void getBanksPoint(@NonNull final String token,
-                              @NonNull final String cardToken,
-                              @NonNull final MidtransCallback<BasePaymentResponse> callback) {
+    public void getBanksPoint(final String token,
+                              final String cardToken,
+                              final MidtransCallback<BasePaymentResponse> callback) {
         if (isValidForNetworkCall(context, callback)) {
             snapApiManager.getBanksPoint(token, cardToken, callback);
         }
@@ -289,9 +288,9 @@ public class MidtransSdk {
         protected Environment midtransEnvironment = Environment.SANDBOX;
         protected int apiRequestTimeOut = 30;
 
-        private Builder(@NonNull final Context context,
-                        @NonNull final String clientId,
-                        @NonNull final String merchantUrl) {
+        private Builder(final Context context,
+                        final String clientId,
+                        final String merchantUrl) {
             this.context = context;
             this.merchantClientId = clientId;
             this.merchantBaseUrl = merchantUrl;

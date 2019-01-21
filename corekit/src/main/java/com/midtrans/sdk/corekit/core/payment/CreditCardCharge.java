@@ -1,7 +1,5 @@
 package com.midtrans.sdk.corekit.core.payment;
 
-import android.support.annotation.NonNull;
-
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.core.api.merchant.model.savecard.SaveCardResponse;
 import com.midtrans.sdk.corekit.core.api.midtrans.model.cardregistration.CardRegistrationResponse;
@@ -25,10 +23,10 @@ public class CreditCardCharge extends BaseGroupPayment {
      * @param snapToken authentication token
      * @param callback  transaction callback
      */
-    public static void paymentUsingCard(@NonNull final String snapToken,
-                                        @NonNull final CreditCardPaymentParams creditCardPaymentParams,
-                                        @NonNull final CustomerDetailPayRequest customerDetailPayRequest,
-                                        @NonNull final MidtransCallback<CreditCardPaymentResponse> callback) {
+    public static void paymentUsingCard(final String snapToken,
+                                        final CreditCardPaymentParams creditCardPaymentParams,
+                                        final CustomerDetailPayRequest customerDetailPayRequest,
+                                        final MidtransCallback<CreditCardPaymentResponse> callback) {
         if (isValidForNetworkCall(callback)) {
             getSnapApiManager().paymentUsingCreditCard(snapToken,
                     creditCardPaymentParams,
@@ -46,11 +44,11 @@ public class CreditCardCharge extends BaseGroupPayment {
      * @param cardExpYear  credit card expired year
      * @param callback     Credit card registration callback
      */
-    public static void cardRegistration(@NonNull final String cardNumber,
-                                        @NonNull final String cardCvv,
-                                        @NonNull final String cardExpMonth,
-                                        @NonNull final String cardExpYear,
-                                        @NonNull final MidtransCallback<CardRegistrationResponse> callback) {
+    public static void cardRegistration(final String cardNumber,
+                                        final String cardCvv,
+                                        final String cardExpMonth,
+                                        final String cardExpYear,
+                                        final MidtransCallback<CardRegistrationResponse> callback) {
 
         if (isValidForNetworkCall(callback)) {
             getMidtransServiceManager().cardRegistration(cardNumber,
@@ -68,8 +66,8 @@ public class CreditCardCharge extends BaseGroupPayment {
      * @param cardTokenRequest get card token  request object
      * @param callback         get card token callback
      */
-    public static void getCardToken(@NonNull final CardTokenRequest cardTokenRequest,
-                                    @NonNull final MidtransCallback<TokenDetailsResponse> callback) {
+    public static void getCardToken(final CardTokenRequest cardTokenRequest,
+                                    final MidtransCallback<TokenDetailsResponse> callback) {
 
         if (isNotEmpty(cardTokenRequest)) {
             if (isValidForNetworkCall(callback)) {
@@ -87,9 +85,9 @@ public class CreditCardCharge extends BaseGroupPayment {
      * @param requests save card request model
      * @param callback save card callback
      */
-    public static void saveCards(@NonNull final String userId,
-                                 @NonNull final List<SaveCardRequest> requests,
-                                 @NonNull final MidtransCallback<SaveCardResponse> callback) {
+    public static void saveCards(final String userId,
+                                 final List<SaveCardRequest> requests,
+                                 final MidtransCallback<SaveCardResponse> callback) {
         if (isNotEmpty(requests)) {
             if (isValidForNetworkCall(callback)) {
                 getMerchantApiManager().saveCards(userId, requests, callback);
