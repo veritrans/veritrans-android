@@ -405,11 +405,13 @@ MidtransSdk.getInstance().checkoutWithTransaction(checkoutTransaction,
 - **Success Midtrans Callback**
 	
 	Succes response will return `CheckoutWithTransactionResponse` as model, you can access it from `MidtransCallback` interface and here's the detail of `CheckoutWithTransactionResponse` model.
+	
 
 	| Property Name    | Type           |
 	| ---------------- | ---------------------- |
-	| errorMessage      | `ArrayList<String> `           |
+	| errorMessage      | `List<String> `           |
 	| token      | `String`          |
+	
 	
 - **Failed Midtrans Callback**
 	
@@ -1642,6 +1644,92 @@ Before starting credit card payment, credit card need to be tokenize first, so y
 | Invalid or empty data supplied to SDK.                           	| Empty or wrong data input to the SDK.                                                                      	|
 
 
+### Save Credit Card
+- **Request Object**
+
+	After tokenize you can save your credit card with this method. For the response, you can get it from MidtransCallback with SaveCardResponse model. For start saving card you nee to make list of `SaveCardRequests` model. Please follow step below
+	
+    ```Java
+    	List<SaveCardRequest> saveCardRequests = new ArrayList<>(Arrays
+                .asList(
+                        new SaveCardRequest(
+                                SAVED_TOKEN_ID_FROM_TOKENIZE,
+                                MASKED_CARD,
+                                TYPE)
+                ));
+    ```
+    
+    ```Kotlin
+    	val saveCardRequests = mutableListOf(
+            SaveCardRequest(
+                SAVED_TOKEN_ID_FROM_TOKENIZE,
+                MASKED_CARD,
+                TYPE)
+        )
+	```
+
+- **The Method**
+
+  
+  ```Java
+    CreditCardCharge.saveCards(
+                USER_ID_FOR_SAVE_CARDd ,
+                saveCardRequests,
+                new MidtransCallback<SaveCardResponse>() {
+                    @Override
+                    public void onSuccess(SaveCardResponse data) {
+
+                    }
+
+                    @Override
+                    public void onFailed(Throwable throwable) {
+
+                    }
+                });
+    ```
+
+  ```Kotlin
+    CreditCardCharge.saveCards(
+            USER_ID_FOR_SAVE_CARD,
+            saveCardRequests,
+            object : MidtransCallback<SaveCardResponse> {
+                override fun onSuccess(data: SaveCardResponse) {
+
+                }
+
+                override fun onFailed(throwable: Throwable) {
+
+                }
+            })  
+    ```
+
+
+- **Success Midtrans Callback**
+
+  Succes response will return `SaveCardResponse ` as model, you can access   it from `MidtransCallback` interface and you need to use `SaveCardResponse ` to get any corresponding response you need from `SaveCardResponse `.  As an example below.
+  
+  ```Java
+  String status = data.getTransactionStatus();
+  ```
+  
+  ```Kotlin
+  val status = data?.transactionStatus
+  ```
+  
+- **Failed Midtrans Callback**
+	
+	Failed response will return `Throwable` as model, you can get error message and identify why it happen. Midtrans SDK provide some validation and it will return here if not pass the validation. So Failed Midtrans callback will return all of error which is from Midtrans SDK validation or from other source like network error, etc. Here's error message from Midtrans SDK Validation
+
+	| Message                                                          	| Cause                                                                                                      	|
+|------------------------------------------------------------------	|------------------------------------------------------------------------------------------------------------	|
+| Snap Token must not empty.                                       	| You not put the token and keep it null or empty when making payment or something that need token.          	|
+| Merchant base url is empty. Please set merchant base url on SDK. 	| You not set the `MERCHANT_BASE_URL`, so SDK cannot making network request. Please initialize SDK properly. 	|
+| Failed to retrieve response from server.                         	| Network request to server is success but it not return anything.                                           	|
+| Error message not catchable.                                     	| SDK cannot cacth the error.                                                                                	|
+| Failed to connect to server.                                     	| You not connected to any internet connection.                                                              	|
+| Invalid or empty data supplied to SDK.                           	| Empty or wrong data input to the SDK.                                                                      	|
+
+
 ### 8.2.8. <a name='MidtransCallback'></a> MidtransCallback Payment Response Model
 
   All model for success extending the `BasePaymentResponse` model, so here's the list of model you can use for each type of payment :
@@ -1744,7 +1832,7 @@ val checkoutTransaction = CheckoutTransaction
 
 ### Item Details
 
-You can set the detail of item of the transaction. If you put the item detail, you have to check the amount that previously you set in builder is same with total of price multiplied by quantity in Item Details ArrayList.
+You can set the detail of item of the transaction. If you put the item detail, you have to check the amount that previously you set in builder is same with total of price multiplied by quantity in Item Details List.
 
 Item details are **required** for `Mandiri Bill/Mandiri Echannel` and `BCA KlikPay` payment, but it is **optional** for **other payment methods**. ItemDetails class holds information about item purchased by user. CheckoutTransaction takes an array list of item details.
 
@@ -1766,9 +1854,9 @@ CheckoutTransaction checkoutTransaction = CheckoutTransaction
 
 ```Kotlin
 val checkoutTransaction = CheckoutTransaction
-            .builder("123",2000.0)
+            .builder(TRANSACTION_ID, AMOUNT)
             .setItemDetails(
-                arrayListOf(
+                mutableListOf(
                     ItemDetails(ITEM_ID,
                         ITEM_PRICE,
                         ITEM_QUANTITY,
@@ -1949,6 +2037,147 @@ val checkoutTransaction = CheckoutTransaction
                 .build()
 ```
 
+### Credit Card Options
+
+This feature allows you to custom and setting credit card payment, CreditCard object use builder pattern and give 3 type of constructor based on type of creditcard payment, OneClick, TwoClick, and Normal. 
+
+OneClick
+
+```Java
+        List<String> whiteList = new ArrayList<>(Arrays.asList("493496", "451197"));
+        List<String> blackList = new ArrayList<>(Arrays.asList("493496", "451197"));
+```
+
+```Kotlin
+        val whiteList = mutableListOf(WHITE_LIST_BIN, WHITE_LIST_BIN)
+        val blackList = mutableListOf(BLACK_LIST_BIN, BLACK_LIST_BIN)
+```
+
+TwoClick
+
+```Java
+        CheckoutTransaction checkoutTransaction = CheckoutTransaction
+                .builder("", 20.0)
+                .setCreditCard(CreditCard
+                        .twoClickBuilder(false)
+                        .build())
+                .build();
+```
+
+```Kotlin
+        val whiteList = mutableListOf(WHITE_LIST_BIN, WHITE_LIST_BIN)
+        val blackList = mutableListOf(BLACK_LIST_BIN, BLACK_LIST_BIN)
+```
+
+NormalClick
+
+```Java
+        List<String> whiteList = new ArrayList<>(Arrays.asList("493496", "451197"));
+        List<String> blackList = new ArrayList<>(Arrays.asList("493496", "451197"));
+```
+
+```Kotlin
+        val whiteList = mutableListOf(WHITE_LIST_BIN, WHITE_LIST_BIN)
+        val blackList = mutableListOf(BLACK_LIST_BIN, BLACK_LIST_BIN)
+```
+
+if you want to enable whiteList or blacklist bins, please make new list of bins.
+
+```Java
+        List<String> whiteList = new ArrayList<>(Arrays.asList("493496", "451197"));
+        List<String> blackList = new ArrayList<>(Arrays.asList("493496", "451197"));
+```
+
+```Kotlin
+        val whiteList = mutableListOf(WHITE_LIST_BIN, WHITE_LIST_BIN)
+        val blackList = mutableListOf(BLACK_LIST_BIN, BLACK_LIST_BIN)
+```
+
+If you want to enable installment, please make a hashmap contain bank and terms, it can be required.
+
+```Java
+        HashMap<String,List<Integer>> installment = new HashMap<>();
+        installment.put("bca", new ArrayList<>(Arrays.asList(3,6,12)));
+        installment.put("bni", new ArrayList<>(Arrays.asList(2,4,6)));
+        installment.put("offline", new ArrayList<>(Arrays.asList(6,12,24)));
+```
+
+```Kotlin
+        val installment = hashMapOf<String, MutableList<Int>>()
+        installment["bca"] = mutableListOf(3, 6, 12)
+        installment["bri"] = mutableListOf(2, 4, 6)
+        installment["offline"] = mutableListOf(6,12,24)
+```
+
+If you want to enable save card, just set the saveCard true.
+
+```Java
+CheckoutTransaction checkoutTransaction = CheckoutTransaction
+                .builder(TRANSACTION_ID, AMOUNT)
+                .setCreditCard(CreditCard
+                        .normalClickBuilder(false, CreditCard.AUTHENTICATION_TYPE_NONE)
+                        .setSaveCard(true)
+                        .build())
+                .build();
+
+```
+
+```Kotlin
+        val checkoutTransaction = CheckoutTransaction
+            .builder(TRANSACTION_ID, AMOUNT)
+            .setCreditCard(CreditCard
+                .normalClickBuilder(false, CreditCard.AUTHENTICATION_TYPE_NONE)
+                .setSaveCard(true)
+                .build())
+            .build()
+```
+
+**Complete code of credit card options**
+
+```Java
+        List<String> whiteList = new ArrayList<>(Arrays.asList("493496", "451197"));
+        List<String> blackList = new ArrayList<>(Arrays.asList("493496", "451197"));
+        HashMap<String,List<Integer>> installment = new HashMap<>();
+        installment.put("bca", new ArrayList<>(Arrays.asList(3,6,12)));
+        installment.put("bni", new ArrayList<>(Arrays.asList(2,4,6)));
+        installment.put("offline", new ArrayList<>(Arrays.asList(6,12,24)));
+
+        CheckoutTransaction checkoutTransaction = CheckoutTransaction
+                .builder("", 20.0)
+                .setCreditCard(CreditCard
+                        .normalClickBuilder(false, CreditCard.AUTHENTICATION_TYPE_NONE)
+                        .setSaveCard(true)
+                        .setBank(BankType.BNI)
+                        .setInstallment(true, installment)
+                        .setBlackListBins(blackList)
+                        .setWhiteListBins(whiteList)
+                        .setChannel(CreditCard.MIGS)
+                        .build())
+                .build();
+```
+
+```Kotlin
+        val whiteList = mutableListOf(WHITE_LIST_BIN, WHITE_LIST_BIN)
+        val blackList = mutableListOf(BLACK_LIST_BIN, BLACK_LIST_BIN)
+        val installment = hashMapOf<String, MutableList<Int>>()
+        installment["bca"] = mutableListOf(3, 6, 12)
+        installment["bri"] = mutableListOf(2, 4, 6)
+        installment["offline"] = mutableListOf(6,12,24)
+
+        val checkoutTransaction = CheckoutTransaction
+            .builder(TRANSACTION_ID, AMOUNT)
+            .setCreditCard(CreditCard
+                .normalClickBuilder(false, CreditCard.AUTHENTICATION_TYPE_NONE)
+                .setSaveCard(true)
+                .setBank(BankType.BNI)
+                .setInstallment(true, installment)
+                .setBlackListBins(blackList)
+                .setWhiteListBins(whiteList)
+                .setChannel(CreditCard.MIGS)
+                .build())
+            .build()
+```
+
 
 ### Complete Checkout Transaction Object
 
@@ -1986,15 +2215,14 @@ CheckoutTransaction checkoutTransaction = CheckoutTransaction
                         INDOMARET,
                         KLIK_BCA)))
                 .setExpiry(new ExpiryModel("", ExpiryModelUnit.EXPIRY_UNIT_DAY, 1))
-                .setCustomField1("Custom Field 1")
-                .setCustomField2("Custom Field 2")
-                .setCustomField3("Custom Field 3")
+                .setCustomField1(STRING_CUSTOM_FIELD_1)
+                .setCustomField2(STRING_CUSTOM_FIELD_2)
+                .setCustomField3(STRING_CUSTOM_FIELD_3)
                 .setGopayCallbackDeepLink("demo://midtrans")
-                .setBillInfoModel(new BillInfoModel("Note 1", "Note 2"))
-                .setBcaVa(new BcaBankTransferRequestModel("12345",
+                .setBillInfoModel(new BillInfoModel(BILL_INFO_1, BILL_INFO_2))
+                .setBcaVa(new BcaBankTransferRequestModel(CUSTOM_VA,
                         new BcaBankFreeText(new ArrayList<BcaBankFreeTextLanguage>(),
-                        new ArrayList<BcaBankFreeTextLanguage>()),
-                        "123123"))
+                        new ArrayList<BcaBankFreeTextLanguage>()),FREE_TEXT))
                 .setBniVa(new BankTransferRequestModel(""))
                 .setPermataVa(new BankTransferRequestModel(""))
                 .build();
@@ -2065,13 +2293,13 @@ val checkoutTransaction = CheckoutTransaction
             .setGopayCallbackDeepLink("demo://midtrans")
             .setBillInfoModel(
                 BillInfoModel(
-                    "",
-                    ""
+                    STRING_BILL_INFO,
+                    STRING_BILL_INFO
                 )
             )
             .setBcaVa(
                 BcaBankTransferRequestModel(
-                    "123",
+                    CUSTOM_VA,
                     BcaBankFreeText(
                         mutableListOf<BcaBankFreeTextLanguage>(),
                         mutableListOf<BcaBankFreeTextLanguage>()
@@ -2079,5 +2307,14 @@ val checkoutTransaction = CheckoutTransaction
                 ))
             .setBniVa(BankTransferRequestModel("123123"))
             .setPermataVa(BankTransferRequestModel("123123"))
+            .setCreditCard(CreditCard
+                .normalClickBuilder(false, CreditCard.AUTHENTICATION_TYPE_NONE)
+                .setSaveCard(true)
+                .setBank(BankType.BNI)
+                .setInstallment(false, installment)
+                .setBlackListBins(blackList)
+                .setWhiteListBins(whiteList)
+                .setChannel(CreditCard.MIGS)
+                .build())
             .build()
 ```
