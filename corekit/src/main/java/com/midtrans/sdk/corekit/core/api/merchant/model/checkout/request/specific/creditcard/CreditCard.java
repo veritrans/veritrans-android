@@ -10,8 +10,8 @@ import com.midtrans.sdk.corekit.base.enums.CreditCardType;
 import com.midtrans.sdk.corekit.utilities.Helper;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static com.midtrans.sdk.corekit.utilities.Helper.mappingToBankType;
 import static com.midtrans.sdk.corekit.utilities.Helper.mappingToCreditCardAuthentication;
@@ -156,7 +156,7 @@ public class CreditCard implements Serializable {
         private String authentication;
 
         private boolean installmentRequired;
-        private Map<String, List<Integer>> installmentTerms;
+        private HashMap<String, List<Integer>> installmentTerms;
 
         private boolean isSecureSet = false;
         private boolean isAuthenticationSet = false;
@@ -220,7 +220,7 @@ public class CreditCard implements Serializable {
         }
 
         public Builder setInstallment(boolean installmentRequired,
-                                      Map<String, List<Integer>> installmentTerms) {
+                                      HashMap<BankType, List<Integer>> installmentTerms) {
             if (installmentTerms != null) {
                 this.installment = new Installment(installmentRequired, installmentTerms);
             }
