@@ -80,7 +80,7 @@ class MainActivity : AppCompatActivity() {
                     Logger.debug("Failed return error >>> ${throwable.message}")
                 }
             })
-
+        
         val trxRequest = CheckoutTransaction
             .builder(InstallationHelper.generatedRandomID(this),
                 20000.0)
@@ -91,11 +91,11 @@ class MainActivity : AppCompatActivity() {
                 //.setTokenId("")
                 .setSaveCard(true)
                 .setBank(BankType.BNI)
-                //.setInstallment(false, new HashMap<String, ArrayList<Integer>>())
-                //.setBlackListBins(new ArrayList<String>())
-                //.setWhiteListBins(new ArrayList<String>())
-                //.setSavedTokens(new ArrayList<SavedToken>())
-                //.setChannel(CreditCard.MIGS)
+                .setInstallment(false, HashMap<BankType, MutableList<Int>>())
+                .setBlackListBins(mutableListOf())
+                .setWhiteListBins(mutableListOf())
+                .setSavedTokens(mutableListOf())
+                .setChannel(CreditCard.MIGS)
                 .build())
             .setCustomerDetails(CustomerDetails("FirstName",
                 "LastName",

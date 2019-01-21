@@ -26,6 +26,8 @@ import com.midtrans.sdk.corekit.core.payment.EWalletCharge;
 import com.midtrans.sdk.corekit.utilities.Logger;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     String snapToken;
@@ -60,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                         //.setTokenId("")
                         .setSaveCard(true)
                         .setBank(BankType.BNI)
-                        //.setInstallment(false, new HashMap<String, ArrayList<Integer>>())
+                        .setInstallment(false, new HashMap<BankType, List<Integer>>())
                         //.setBlackListBins(new ArrayList<String>())
                         //.setWhiteListBins(new ArrayList<String>())
                         //.setSavedTokens(new ArrayList<SavedToken>())

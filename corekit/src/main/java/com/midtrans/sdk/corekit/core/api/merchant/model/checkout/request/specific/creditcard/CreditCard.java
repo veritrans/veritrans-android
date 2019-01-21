@@ -19,7 +19,7 @@ import static com.midtrans.sdk.corekit.utilities.Helper.mappingToCreditCardType;
 
 public class CreditCard implements Serializable {
 
-    private static final String MIGS = "migs";
+    public static final String MIGS = "migs";
     private static final String AUTHENTICATION_TYPE_RBA = "rba";
     private static final String AUTHENTICATION_TYPE_3DS = "3ds";
     private static final String AUTHENTICATION_TYPE_NONE = "none";
