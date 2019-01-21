@@ -4,16 +4,26 @@ import com.google.gson.annotations.SerializedName;
 
 import android.text.TextUtils;
 
+import com.midtrans.sdk.corekit.base.enums.Authentication;
+import com.midtrans.sdk.corekit.base.enums.BankType;
+import com.midtrans.sdk.corekit.base.enums.CreditCardType;
+import com.midtrans.sdk.corekit.utilities.Helper;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import static com.midtrans.sdk.corekit.utilities.Helper.mappingToBankType;
+import static com.midtrans.sdk.corekit.utilities.Helper.mappingToCreditCardAuthentication;
+import static com.midtrans.sdk.corekit.utilities.Helper.mappingToCreditCardType;
+
 public class CreditCard implements Serializable {
 
-    public static final String MIGS = "migs";
-    public static final String AUTHENTICATION_TYPE_RBA = "rba";
-    public static final String AUTHENTICATION_TYPE_3DS = "3ds";
-    public static final String AUTHENTICATION_TYPE_NONE = "none";
+    private static final String MIGS = "migs";
+    private static final String AUTHENTICATION_TYPE_RBA = "rba";
+    private static final String AUTHENTICATION_TYPE_3DS = "3ds";
+    private static final String AUTHENTICATION_TYPE_NONE = "none";
+
     @Deprecated
     public static final String RBA = "rba";
     private static volatile CreditCard SINGLETON_INSTANCE = null;
@@ -71,13 +81,13 @@ public class CreditCard implements Serializable {
     }
 
     public static Builder normalClickBuilder(boolean secure,
-                                             String authentication) {
-        return new Builder(secure, authentication);
+                                             Authentication authentication) {
+        return new Builder(secure, mappingToCreditCardAuthentication(authentication));
     }
 
     public static Builder builder(boolean secure,
-                                  String authentication) {
-        return new Builder(secure, authentication);
+                                  Authentication authentication) {
+        return new Builder(secure, mappingToCreditCardAuthentication(authentication));
     }
 
     public boolean isSaveCard() {
@@ -96,8 +106,8 @@ public class CreditCard implements Serializable {
         return channel;
     }
 
-    public String getBank() {
-        return bank;
+    public BankType getBank() {
+        return mappingToBankType(bank);
     }
 
     public List<SavedToken> getSavedTokens() {
@@ -116,8 +126,8 @@ public class CreditCard implements Serializable {
         return installment;
     }
 
-    public String getType() {
-        return type;
+    public CreditCardType getType() {
+        return mappingToCreditCardType(type);
     }
 
     public String getAuthentication() {
@@ -133,7 +143,6 @@ public class CreditCard implements Serializable {
     }
 
     public static class Builder {
-        public static final String RBA = "rba";
         private boolean saveCard;
         private String tokenId;
         private boolean secure;
@@ -177,8 +186,8 @@ public class CreditCard implements Serializable {
             return this;
         }
 
-        public Builder setBank(String bank) {
-            this.bank = bank;
+        public Builder setBank(BankType bank) {
+            this.bank = Helper.mappingToBankType(bank);
             return this;
         }
 
@@ -205,8 +214,8 @@ public class CreditCard implements Serializable {
             return this;
         }
 
-        public Builder setType(String type) {
-            this.type = type;
+        public Builder setType(CreditCardType type) {
+            this.type = mappingToCreditCardType(type);
             return this;
         }
 

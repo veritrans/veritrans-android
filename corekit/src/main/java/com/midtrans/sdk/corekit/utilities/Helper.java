@@ -3,6 +3,10 @@ package com.midtrans.sdk.corekit.utilities;
 import android.app.Activity;
 import android.util.DisplayMetrics;
 
+import com.midtrans.sdk.corekit.base.enums.Authentication;
+import com.midtrans.sdk.corekit.base.enums.BankType;
+import com.midtrans.sdk.corekit.base.enums.CreditCardType;
+
 public class Helper {
 
     private static final String TAG = "Helper";
@@ -16,6 +20,23 @@ public class Helper {
     private static final long MINUTE = 60 * SECOND;
     private static final long HOUR = 60 * MINUTE;
     private static final long DAY = 24 * HOUR;
+
+    private static final String CIMB = "cimb";
+    private static final String BCA = "bca";
+    private static final String MANDIRI = "mandiri";
+    private static final String BNI = "bni";
+    private static final String BRI = "bri";
+    private static final String DANAMON = "danamon";
+    private static final String MAYBANK = "maybank";
+    private static final String MEGA = "mega";
+    private static final String NONE = "offline";
+
+    private static String AUTHORIZE = "authorize";
+    private static String AUTHORIZE_CAPTURE = "authorize_capture";
+
+    private static final String AUTHENTICATION_TYPE_RBA = "rba";
+    private static final String AUTHENTICATION_TYPE_3DS = "3ds";
+    private static final String AUTHENTICATION_TYPE_NONE = "none";
 
     /**
      * Get formatted card number;
@@ -65,6 +86,90 @@ public class Helper {
             }
         } catch (RuntimeException e) {
             return "";
+        }
+    }
+
+    public static Authentication mappingToCreditCardAuthentication(String type) {
+        if (type.equalsIgnoreCase(AUTHENTICATION_TYPE_3DS)) {
+            return Authentication.AUTH_3DS;
+        } else if (type.equalsIgnoreCase(AUTHENTICATION_TYPE_RBA)) {
+            return Authentication.AUTH_RBA;
+        } else {
+            return Authentication.AUTH_NONE;
+        }
+    }
+
+    public static String mappingToCreditCardAuthentication(Authentication authentication) {
+        if (authentication == Authentication.AUTH_3DS) {
+            return AUTHENTICATION_TYPE_3DS;
+        } else if (authentication == Authentication.AUTH_RBA) {
+            return AUTHENTICATION_TYPE_RBA;
+        } else {
+            return AUTHENTICATION_TYPE_NONE;
+        }
+    }
+
+    public static CreditCardType mappingToCreditCardType(String type) {
+        if (type.equalsIgnoreCase(AUTHORIZE)) {
+            return CreditCardType.AUTHORIZE;
+        } else {
+            return CreditCardType.AUTHORIZE_CAPTURE;
+        }
+    }
+
+    public static String mappingToCreditCardType(CreditCardType type) {
+        if (type == CreditCardType.AUTHORIZE) {
+            return AUTHORIZE;
+        } else {
+            return AUTHORIZE_CAPTURE;
+        }
+    }
+
+    public static String mappingToBankType(BankType bank) {
+        if (bank == BankType.CIMB) {
+            return CIMB;
+        } else if (bank == BankType.BCA) {
+            return BCA;
+        } else if (bank == BankType.MANDIRI) {
+            return MANDIRI;
+        } else if (bank == BankType.BNI) {
+            return BNI;
+        } else if (bank == BankType.BRI) {
+            return BRI;
+        } else if (bank == BankType.DANAMON) {
+            return DANAMON;
+        } else if (bank == BankType.MAYBANK) {
+            return MAYBANK;
+        } else if (bank == BankType.MEGA) {
+            return MEGA;
+        } else if (bank == BankType.NONE) {
+            return NONE;
+        } else {
+            return null;
+        }
+    }
+
+    public static BankType mappingToBankType(String bank) {
+        if (bank.equalsIgnoreCase(CIMB)) {
+            return BankType.CIMB;
+        } else if (bank.equalsIgnoreCase(BCA)) {
+            return BankType.BCA;
+        } else if (bank.equalsIgnoreCase(MANDIRI)) {
+            return BankType.MANDIRI;
+        } else if (bank.equalsIgnoreCase(BNI)) {
+            return BankType.BNI;
+        } else if (bank.equalsIgnoreCase(BRI)) {
+            return BankType.BRI;
+        } else if (bank.equalsIgnoreCase(DANAMON)) {
+            return BankType.DANAMON;
+        } else if (bank.equalsIgnoreCase(MAYBANK)) {
+            return BankType.MAYBANK;
+        } else if (bank.equalsIgnoreCase(MEGA)) {
+            return BankType.MEGA;
+        } else if (bank.equalsIgnoreCase(NONE)) {
+            return BankType.NONE;
+        } else {
+            return null;
         }
     }
 
