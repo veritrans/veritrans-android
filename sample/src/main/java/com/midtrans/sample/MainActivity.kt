@@ -11,18 +11,15 @@ import com.midtrans.sdk.corekit.base.model.Currency
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.CheckoutTransaction
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.BillInfoModel
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.ExpiryModel
-import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.customer.BillingAddress
+import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.customer.Address
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.customer.CustomerDetails
-import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.customer.ShippingAddress
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specific.banktransfer.BcaBankFreeText
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specific.banktransfer.BcaBankTransferRequestModel
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specific.creditcard.CreditCard
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.response.CheckoutWithTransactionResponse
 import com.midtrans.sdk.corekit.core.api.midtrans.model.cardregistration.CardRegistrationResponse
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BasePaymentResponse
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse
 import com.midtrans.sdk.corekit.core.payment.CreditCardCharge
-import com.midtrans.sdk.corekit.core.payment.OnlineDebitCharge
 import com.midtrans.sdk.corekit.utilities.InstallationHelper
 import com.midtrans.sdk.corekit.utilities.Logger
 import java.util.*
@@ -103,14 +100,14 @@ class MainActivity : AppCompatActivity() {
                 "LastName",
                 "email@mail.com",
                 "6281234567890",
-                ShippingAddress("Firstname",
+                Address("Firstname",
                     "LastName",
                     "mail@mail.com",
                     "Bogor",
                     "16710",
                     "62877",
                     "idn"),
-                BillingAddress("Firstname",
+                Address("Firstname",
                     "LastName",
                     "mail@mail.com",
                     "Bogor",
@@ -120,7 +117,7 @@ class MainActivity : AppCompatActivity() {
             .setBillInfoModel(BillInfoModel("1", "2"))
             .setEnabledPayments(ArrayList())
             .setExpiry(ExpiryModel("", ExpiryModelUnit.EXPIRY_UNIT_DAY, 1))
-            .setItemDetails(ArrayList())
+            .setCheckoutItems(ArrayList())
             .setBcaVa(BcaBankTransferRequestModel("",
                 BcaBankFreeText(ArrayList(),
                     ArrayList()),

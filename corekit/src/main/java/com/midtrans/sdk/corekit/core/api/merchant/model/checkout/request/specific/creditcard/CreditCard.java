@@ -5,7 +5,6 @@ import com.google.gson.annotations.SerializedName;
 import android.text.TextUtils;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -28,11 +27,9 @@ public class CreditCard implements Serializable {
     @SerializedName("saved_tokens")
     private List<SavedToken> savedTokens;
     @SerializedName("whitelist_bins")
-    private ArrayList<String> whitelistBins;
-
+    private List<String> whitelistBins;
     @SerializedName("blacklist_bins")
     private List<String> blacklistBins;
-
     @SerializedName("installment")
     private Installment installment;
     private String type;
@@ -47,7 +44,7 @@ public class CreditCard implements Serializable {
                        String channel,
                        String bank,
                        List<SavedToken> savedTokens,
-                       ArrayList<String> whitelistBins,
+                       List<String> whitelistBins,
                        List<String> blacklistBins,
                        Installment installment,
                        String type,
@@ -107,7 +104,7 @@ public class CreditCard implements Serializable {
         return savedTokens;
     }
 
-    public ArrayList<String> getWhitelistBins() {
+    public List<String> getWhitelistBins() {
         return whitelistBins;
     }
 
@@ -143,14 +140,14 @@ public class CreditCard implements Serializable {
         private String channel;
         private String bank;
         private List<SavedToken> savedTokens;
-        private ArrayList<String> whitelistBins;
+        private List<String> whitelistBins;
         private List<String> blacklistBins;
         private Installment installment;
         private String type;
         private String authentication;
 
         private boolean installmentRequired;
-        private Map<String, ArrayList<Integer>> installmentTerms;
+        private Map<String, List<Integer>> installmentTerms;
 
         private boolean isSecureSet = false;
         private boolean isAuthenticationSet = false;
@@ -214,7 +211,7 @@ public class CreditCard implements Serializable {
         }
 
         public Builder setInstallment(boolean installmentRequired,
-                                      Map<String, ArrayList<Integer>> installmentTerms) {
+                                      Map<String, List<Integer>> installmentTerms) {
             if (installmentTerms != null) {
                 this.installment = new Installment(installmentRequired, installmentTerms);
             }
@@ -242,7 +239,7 @@ public class CreditCard implements Serializable {
             return this;
         }
 
-        public Builder setWhiteListBins(ArrayList<String> whiteListBins) {
+        public Builder setWhiteListBins(List<String> whiteListBins) {
             this.whitelistBins = whiteListBins;
             return this;
         }

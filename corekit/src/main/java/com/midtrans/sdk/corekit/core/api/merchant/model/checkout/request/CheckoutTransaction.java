@@ -6,7 +6,7 @@ import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.mandato
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.BillInfoModel;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.ExpiryModel;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.GopayDeepLink;
-import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.ItemDetails;
+import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.Item;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.SnapPromo;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.customer.CustomerDetails;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specific.banktransfer.BankTransferRequestModel;
@@ -15,7 +15,6 @@ import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specifi
 import com.midtrans.sdk.corekit.utilities.Logger;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -42,13 +41,13 @@ public class CheckoutTransaction implements Serializable {
      * Mandatory
      */
     @SerializedName("item_details")
-    private ArrayList<ItemDetails> itemDetails = new ArrayList<>();
+    private List<Item> checkoutItems;
     /**
      * List of enable payment.
      * Optional
      */
     @SerializedName("enabled_payments")
-    private List<String> enabledPayments = new ArrayList<>();
+    private List<String> enabledPayments;
     /**
      * Contains user app deeplink for merchant app.
      * Optional
@@ -121,7 +120,7 @@ public class CheckoutTransaction implements Serializable {
                                 String gopayDeepLink,
                                 CreditCard creditCard,
                                 CustomerDetails customerDetails,
-                                ArrayList<ItemDetails> itemDetails,
+                                List<Item> checkoutItems,
                                 List<String> enabledPayments,
                                 ExpiryModel expiry,
                                 BillInfoModel billInfoModel,
@@ -138,7 +137,7 @@ public class CheckoutTransaction implements Serializable {
         this.gopayDeepLink = new GopayDeepLink(gopayDeepLink);
         this.creditCard = creditCard;
         this.customerDetails = customerDetails;
-        this.itemDetails = itemDetails;
+        this.checkoutItems = checkoutItems;
         this.enabledPayments = enabledPayments;
         this.expiry = expiry;
         this.customField1 = customField1;
@@ -151,7 +150,6 @@ public class CheckoutTransaction implements Serializable {
         this.bcaVa = bcaVa;
         this.bniVa = bniVa;
         this.customObject = customObject;
-
     }
 
     public static Builder builder(String orderId,
@@ -204,8 +202,8 @@ public class CheckoutTransaction implements Serializable {
         return customObject;
     }
 
-    public ArrayList<ItemDetails> getItemDetails() {
-        return itemDetails;
+    public List<Item> getCheckoutItems() {
+        return checkoutItems;
     }
 
     public List<String> getEnabledPayments() {
@@ -243,7 +241,7 @@ public class CheckoutTransaction implements Serializable {
         private String gopayDeepLink;
         private CreditCard creditCard;
         private CustomerDetails customerDetails;
-        private ArrayList<ItemDetails> itemDetails;
+        private List<Item> checkoutItem;
         private List<String> enabledPayments;
         private ExpiryModel expiry;
         private BillInfoModel billInfoModel;
@@ -284,8 +282,8 @@ public class CheckoutTransaction implements Serializable {
             return this;
         }
 
-        public Builder setItemDetails(ArrayList<ItemDetails> itemDetails) {
-            this.itemDetails = itemDetails;
+        public Builder setCheckoutItems(List<Item> items) {
+            this.checkoutItem = items;
             return this;
         }
 
@@ -357,7 +355,7 @@ public class CheckoutTransaction implements Serializable {
                         gopayDeepLink,
                         creditCard,
                         customerDetails,
-                        itemDetails,
+                        checkoutItem,
                         enabledPayments,
                         expiry,
                         billInfoModel,

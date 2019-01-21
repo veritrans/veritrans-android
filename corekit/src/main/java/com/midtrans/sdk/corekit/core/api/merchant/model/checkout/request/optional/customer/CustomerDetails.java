@@ -15,16 +15,16 @@ public class CustomerDetails implements Serializable {
     private String phone;
 
     @SerializedName("shipping_address")
-    private ShippingAddress shippingAddress;
+    private Address shippingAddress;
     @SerializedName("billing_address")
-    private BillingAddress billingAddress;
+    private Address billingAddress;
 
     public CustomerDetails(String firstName,
                            String lastName,
                            String email,
                            String phone,
-                           ShippingAddress shippingAddress,
-                           BillingAddress billingAddress) {
+                           Address shippingAddress,
+                           Address billingAddress) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -75,19 +75,19 @@ public class CustomerDetails implements Serializable {
         this.phone = phone;
     }
 
-    public ShippingAddress getShippingAddress() {
+    public Address getShippingAddress() {
         return shippingAddress;
     }
 
-    public void setShippingAddress(ShippingAddress shippingAddress) {
+    public void setShippingAddress(Address shippingAddress) {
         this.shippingAddress = shippingAddress;
     }
 
-    public BillingAddress getBillingAddress() {
+    public Address getBillingAddress() {
         return billingAddress;
     }
 
-    public void setBillingAddress(BillingAddress billingAddress) {
+    public void setBillingAddress(Address billingAddress) {
         this.billingAddress = billingAddress;
     }
 }

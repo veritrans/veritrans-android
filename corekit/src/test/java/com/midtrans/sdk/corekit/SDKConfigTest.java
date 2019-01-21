@@ -27,5 +27,8 @@ public class SDKConfigTest {
     public static final String TWO_CLICK = "two_clicks";
     public static final String PASSWORD = "pasword";
 
+    public static final String IDR = "idr";
+    public static final String SGD = "sgd";
+
     public static final int TIME_OUT = 30;
 }

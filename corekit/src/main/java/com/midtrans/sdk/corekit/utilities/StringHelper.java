@@ -15,11 +15,12 @@ public class StringHelper {
     public static String checkCurrency(String currency) {
         if (currency == null) {
             return Currency.IDR;
-        } else if (!currency.equalsIgnoreCase(Currency.IDR) ||
-                !currency.equalsIgnoreCase(Currency.SGD)) {
+        } else if (currency.equalsIgnoreCase(Currency.IDR)) {
             return Currency.IDR;
+        } else if (currency.equalsIgnoreCase(Currency.SGD)) {
+            return Currency.SGD;
         } else {
-            return currency;
+            return Currency.IDR;
         }
     }
 

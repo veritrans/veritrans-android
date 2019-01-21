@@ -26,6 +26,10 @@ We also expose the low-level APIs that power those elements to make it easy to b
 	* BRI E - Pay
 7. Store
 	* Indomaret
+8. CreditCard
+	* Tokenize
+	* Save Card
+	* Charge (Payment)
 
 ##  3. <a name='Prerequsites'></a>Prerequsites
 
@@ -405,11 +409,13 @@ MidtransSdk.getInstance().checkoutWithTransaction(checkoutTransaction,
 - **Success Midtrans Callback**
 	
 	Succes response will return `CheckoutWithTransactionResponse` as model, you can access it from `MidtransCallback` interface and here's the detail of `CheckoutWithTransactionResponse` model.
+	
 
 	| Property Name    | Type           |
 	| ---------------- | ---------------------- |
-	| errorMessage      | `ArrayList<String> `           |
+	| errorMessage      | `List<String> `           |
 	| token      | `String`          |
+	
 	
 - **Failed Midtrans Callback**
 	
@@ -1642,6 +1648,92 @@ Before starting credit card payment, credit card need to be tokenize first, so y
 | Invalid or empty data supplied to SDK.                           	| Empty or wrong data input to the SDK.                                                                      	|
 
 
+### Save Credit Card
+- **Request Object**
+
+	After tokenize you can save your credit card with this method. For the response, you can get it from MidtransCallback with SaveCardResponse model. For start saving card you nee to make list of `SaveCardRequests` model. Please follow step below
+	
+    ```Java
+    	List<SaveCardRequest> saveCardRequests = new ArrayList<>(Arrays
+                .asList(
+                        new SaveCardRequest(
+                                SAVED_TOKEN_ID_FROM_TOKENIZE,
+                                MASKED_CARD,
+                                TYPE)
+                ));
+    ```
+    
+    ```Kotlin
+    	val saveCardRequests = mutableListOf(
+            SaveCardRequest(
+                SAVED_TOKEN_ID_FROM_TOKENIZE,
+                MASKED_CARD,
+                TYPE)
+        )
+	```
+
+- **The Method**
+
+  
+  ```Java
+    CreditCardCharge.saveCards(
+                USER_ID_FOR_SAVE_CARDd ,
+                saveCardRequests,
+                new MidtransCallback<SaveCardResponse>() {
+                    @Override
+                    public void onSuccess(SaveCardResponse data) {
+
+                    }
+
+                    @Override
+                    public void onFailed(Throwable throwable) {
+
+                    }
+                });
+    ```
+
+  ```Kotlin
+    CreditCardCharge.saveCards(
+            USER_ID_FOR_SAVE_CARD,
+            saveCardRequests,
+            object : MidtransCallback<SaveCardResponse> {
+                override fun onSuccess(data: SaveCardResponse) {
+
+                }
+
+                override fun onFailed(throwable: Throwable) {
+
+                }
+            })  
+    ```
+
+
+- **Success Midtrans Callback**
+
+  Succes response will return `SaveCardResponse ` as model, you can access   it from `MidtransCallback` interface and you need to use `SaveCardResponse ` to get any corresponding response you need from `SaveCardResponse `.  As an example below.
+  
+  ```Java
+  String status = data.getTransactionStatus();
+  ```
+  
+  ```Kotlin
+  val status = data?.transactionStatus
+  ```
+  
+- **Failed Midtrans Callback**
+	
+	Failed response will return `Throwable` as model, you can get error message and identify why it happen. Midtrans SDK provide some validation and it will return here if not pass the validation. So Failed Midtrans callback will return all of error which is from Midtrans SDK validation or from other source like network error, etc. Here's error message from Midtrans SDK Validation
+
+	| Message                                                          	| Cause                                                                                                      	|
+|------------------------------------------------------------------	|------------------------------------------------------------------------------------------------------------	|
+| Snap Token must not empty.                                       	| You not put the token and keep it null or empty when making payment or something that need token.          	|
+| Merchant base url is empty. Please set merchant base url on SDK. 	| You not set the `MERCHANT_BASE_URL`, so SDK cannot making network request. Please initialize SDK properly. 	|
+| Failed to retrieve response from server.                         	| Network request to server is success but it not return anything.                                           	|
+| Error message not catchable.                                     	| SDK cannot cacth the error.                                                                                	|
+| Failed to connect to server.                                     	| You not connected to any internet connection.                                                              	|
+| Invalid or empty data supplied to SDK.                           	| Empty or wrong data input to the SDK.                                                                      	|
+
+
 ### 8.2.8. <a name='MidtransCallback'></a> MidtransCallback Payment Response Model
 
   All model for success extending the `BasePaymentResponse` model, so here's the list of model you can use for each type of payment :
@@ -1683,6 +1775,13 @@ CheckoutTransaction checkoutTransaction = CheckoutTransaction
                 .build();
 ```
 
+```Kotlin
+val checkoutTransaction = CheckoutTransaction
+                .builder(TRANSACTION_ID, AMOUNT)
+                .setCurrency(Currency.IDR)
+                .build()
+```
+
 ### Customer Info, Billing Info, Shipping Info
 
 The Customer Info, Billing Info, and Shipping Info is optional, so user can pass the customer detail when making transaction and get it in response from SDK.
@@ -1711,9 +1810,33 @@ CheckoutTransaction checkoutTransaction = CheckoutTransaction
                 .build();
 ```
 
+```Kotlin
+val checkoutTransaction = CheckoutTransaction
+                .builder(TRANSACTION_ID, AMOUNT)
+                .setCustomerDetails(new CustomerDetails("First Name",
+                        "Lastname",
+                        "email@mail.com",
+                        "6281234567890",
+                        new ShippingAddress("First Name",
+                                "Lastname",
+                                "email@mail.com",
+                                "City",
+                                "1234",
+                                "6281234567890",
+                                "IDN"),
+                        new BillingAddress("First Name",
+                                "LastName",
+                                "email@mail.com",
+                                "City",
+                                "1234",
+                                "6281234567890",
+                                "IDN")))
+                .build()
+```
+
 ### Item Details
 
-You can set the detail of item of the transaction. If you put the item detail, you have to check the amount that previously you set in builder is same with total of price multiplied by quantity in Item Details ArrayList.
+You can set the detail of item of the transaction. If you put the item detail, you have to check the amount that previously you set in builder is same with total of price multiplied by quantity in Item Details List.
 
 Item details are **required** for `Mandiri Bill/Mandiri Echannel` and `BCA KlikPay` payment, but it is **optional** for **other payment methods**. ItemDetails class holds information about item purchased by user. CheckoutTransaction takes an array list of item details.
 
@@ -1721,9 +1844,34 @@ Item details are **required** for `Mandiri Bill/Mandiri Echannel` and `BCA KlikP
 CheckoutTransaction checkoutTransaction = CheckoutTransaction
                 .builder(TRANSACTION_ID, AMOUNT)
                 .setItemDetails(new ArrayList<>(Arrays.asList(
-                        new ItemDetails(ITEM_ID,ITEM_PRICE,ITEM_QUANTITY,ITEM_NAME))
+                    new ItemDetails(ITEM_ID,
+                        ITEM_PRICE,
+                        ITEM_QUANTITY,
+                        ITEM_NAME),
+                    new ItemDetails(ITEM_ID,
+                        ITEM_PRICE,
+                        ITEM_QUANTITY,
+                        ITEM_NAME),)
                 ))
                 .build();
+```
+
+```Kotlin
+val checkoutTransaction = CheckoutTransaction
+            .builder(TRANSACTION_ID, AMOUNT)
+            .setItemDetails(
+                mutableListOf(
+                    ItemDetails(ITEM_ID,
+                        ITEM_PRICE,
+                        ITEM_QUANTITY,
+                        ITEM_NAME),
+                    ItemDetails(ITEM_ID,
+                        ITEM_PRICE,
+                        ITEM_QUANTITY,
+                        ITEM_NAME),
+                )
+            )
+            .build()
 ```
 
 ### Enable payment
@@ -1743,6 +1891,23 @@ CheckoutTransaction checkoutTransaction = CheckoutTransaction
                         KLIK_BCA)))
                 .build();
 ```
+
+```Kotlin
+val checkoutTransaction = CheckoutTransaction
+            .builder(TRANSACTION_ID, AMOUNT)
+            .setEnabledPayments(
+                mutableListOf(
+                    BCA_VA,
+                    BNI_VA,
+                    PERMATA_VA,
+                    CREDIT_CARD,
+                    GOPAY,
+                    INDOMARET,
+                    KLIK_BCA)
+            )
+            .build()
+```
+
 ### Custom Expired
 
 There is a feature on mobile SDK to enable custom transaction lifetime. 
@@ -1760,6 +1925,13 @@ CheckoutTransaction checkoutTransaction = CheckoutTransaction
                 .build();
 ```
 
+```Kotlin
+val checkoutTransaction = CheckoutTransaction
+                .builder(TRANSACTION_ID, AMOUNT) 
+                .setExpiry(ExpiryModel(START_TIME, ExpiryModelUnit.EXPIRY_UNIT_DAY, 1))
+                .build();
+```
+
 ### Custom Field
 
 These 3 fields will be brought at payment so it will be available at MAP and a HTTP notification will be sent to the merchant.
@@ -1771,6 +1943,15 @@ CheckoutTransaction checkoutTransaction = CheckoutTransaction
                 .setCustomField2("Custom Field 2")
                 .setCustomField3("Custom Field 3")
                 .build();
+```
+
+```Kotlin
+val checkoutTransaction = CheckoutTransaction
+                .builder(TRANSACTION_ID, AMOUNT)
+                .setCustomField1("Custom Field 1")
+                .setCustomField2("Custom Field 2")
+                .setCustomField3("Custom Field 3")
+                .build()
 ```
 
 ### GO-PAY Callback Deeplink (Specific for GO-PAY)
@@ -1785,6 +1966,14 @@ CheckoutTransaction checkoutTransaction = CheckoutTransaction
                 .setGopayCallbackDeepLink("demo://midtrans")
                 .build();
 ```
+
+```Kotlin
+val checkoutTransaction = CheckoutTransaction
+                .builder(TRANSACTION_ID, AMOUNT)
+                .setGopayCallbackDeepLink("demo://midtrans")
+                .build()
+```
+
 ### Bill Info (Specific for Mandiri Bill/Mandiri Echannel)
 
 Bill Info is optional for `Mandiri Bill/Mandiri Echannel` payment only.
@@ -1795,6 +1984,14 @@ CheckoutTransaction checkoutTransaction = CheckoutTransaction
                 .setBillInfoModel(new BillInfoModel("Note 1", "Note 2"))
                 .build();
 ```
+
+```Kotlin
+val checkoutTransaction = CheckoutTransaction
+                .builder(TRANSACTION_ID, AMOUNT)
+                .setBillInfoModel(BillInfoModel("Note 1", "Note 2"))
+                .build()
+```
+
 ### Sub Company Code and Custom Virtual Account Number (Specific for BCA Bank Transfer VA)
 
 This feature allows you to pass sub company code in VA payment and Make Custom Virtual Account Number. The sub company code must be exactly 5 digits of number. And you can pass free text to the inquiry and payment with multi language (Indonesia and English)
@@ -1809,6 +2006,20 @@ CheckoutTransaction checkoutTransaction = CheckoutTransaction
                         "123123"))
                 .build();
 ```
+
+```Kotlin
+val checkoutTransaction = CheckoutTransaction
+            .builder(TRANSACTION_ID, AMOUNT)
+            .setBcaVa(BcaBankTransferRequestModel(
+                VA_NUMBER,
+                BcaBankFreeText(
+                    mutableListOf<BcaBankFreeTextLanguage>(), 
+                    mutableListOf<BcaBankFreeTextLanguage>()
+                )
+            ))
+            .build()
+```
+
 ### Custom Virtual Account Number (Permata and BNI)
 
 This feature allows you to make Custom Virtual Account Number.
@@ -1821,6 +2032,156 @@ CheckoutTransaction checkoutTransaction = CheckoutTransaction
                 .setPermataVa(new BankTransferRequestModel("123123"))
                 .build();
 ```
+
+```Kotlin
+val checkoutTransaction = CheckoutTransaction
+                .builder(TRANSACTION_ID, AMOUNT)
+                .setBniVa(BankTransferRequestModel("123123"))
+                .setPermataVa(BankTransferRequestModel("123123"))
+                .build()
+```
+
+### Credit Card Options
+
+This feature allows you to custom and setting credit card payment, CreditCard object use builder pattern and give 3 type of constructor based on type of creditcard payment, OneClick, TwoClick, and Normal. 
+
+OneClick
+
+```Java
+        List<String> whiteList = new ArrayList<>(Arrays.asList("493496", "451197"));
+        List<String> blackList = new ArrayList<>(Arrays.asList("493496", "451197"));
+```
+
+```Kotlin
+        val whiteList = mutableListOf(WHITE_LIST_BIN, WHITE_LIST_BIN)
+        val blackList = mutableListOf(BLACK_LIST_BIN, BLACK_LIST_BIN)
+```
+
+TwoClick
+
+```Java
+        CheckoutTransaction checkoutTransaction = CheckoutTransaction
+                .builder("", 20.0)
+                .setCreditCard(CreditCard
+                        .twoClickBuilder(false)
+                        .build())
+                .build();
+```
+
+```Kotlin
+        val whiteList = mutableListOf(WHITE_LIST_BIN, WHITE_LIST_BIN)
+        val blackList = mutableListOf(BLACK_LIST_BIN, BLACK_LIST_BIN)
+```
+
+NormalClick
+
+```Java
+        List<String> whiteList = new ArrayList<>(Arrays.asList("493496", "451197"));
+        List<String> blackList = new ArrayList<>(Arrays.asList("493496", "451197"));
+```
+
+```Kotlin
+        val whiteList = mutableListOf(WHITE_LIST_BIN, WHITE_LIST_BIN)
+        val blackList = mutableListOf(BLACK_LIST_BIN, BLACK_LIST_BIN)
+```
+
+if you want to enable whiteList or blacklist bins, please make new list of bins.
+
+```Java
+        List<String> whiteList = new ArrayList<>(Arrays.asList("493496", "451197"));
+        List<String> blackList = new ArrayList<>(Arrays.asList("493496", "451197"));
+```
+
+```Kotlin
+        val whiteList = mutableListOf(WHITE_LIST_BIN, WHITE_LIST_BIN)
+        val blackList = mutableListOf(BLACK_LIST_BIN, BLACK_LIST_BIN)
+```
+
+If you want to enable installment, please make a hashmap contain bank and terms, it can be required.
+
+```Java
+        HashMap<String,List<Integer>> installment = new HashMap<>();
+        installment.put("bca", new ArrayList<>(Arrays.asList(3,6,12)));
+        installment.put("bni", new ArrayList<>(Arrays.asList(2,4,6)));
+        installment.put("offline", new ArrayList<>(Arrays.asList(6,12,24)));
+```
+
+```Kotlin
+        val installment = hashMapOf<String, MutableList<Int>>()
+        installment["bca"] = mutableListOf(3, 6, 12)
+        installment["bri"] = mutableListOf(2, 4, 6)
+        installment["offline"] = mutableListOf(6,12,24)
+```
+
+If you want to enable save card, just set the saveCard true.
+
+```Java
+CheckoutTransaction checkoutTransaction = CheckoutTransaction
+                .builder(TRANSACTION_ID, AMOUNT)
+                .setCreditCard(CreditCard
+                        .normalClickBuilder(false, CreditCard.AUTHENTICATION_TYPE_NONE)
+                        .setSaveCard(true)
+                        .build())
+                .build();
+
+```
+
+```Kotlin
+        val checkoutTransaction = CheckoutTransaction
+            .builder(TRANSACTION_ID, AMOUNT)
+            .setCreditCard(CreditCard
+                .normalClickBuilder(false, CreditCard.AUTHENTICATION_TYPE_NONE)
+                .setSaveCard(true)
+                .build())
+            .build()
+```
+
+**Complete code of credit card options**
+
+```Java
+        List<String> whiteList = new ArrayList<>(Arrays.asList("493496", "451197"));
+        List<String> blackList = new ArrayList<>(Arrays.asList("493496", "451197"));
+        HashMap<String,List<Integer>> installment = new HashMap<>();
+        installment.put("bca", new ArrayList<>(Arrays.asList(3,6,12)));
+        installment.put("bni", new ArrayList<>(Arrays.asList(2,4,6)));
+        installment.put("offline", new ArrayList<>(Arrays.asList(6,12,24)));
+
+        CheckoutTransaction checkoutTransaction = CheckoutTransaction
+                .builder("", 20.0)
+                .setCreditCard(CreditCard
+                        .normalClickBuilder(false, CreditCard.AUTHENTICATION_TYPE_NONE)
+                        .setSaveCard(true)
+                        .setBank(BankType.BNI)
+                        .setInstallment(true, installment)
+                        .setBlackListBins(blackList)
+                        .setWhiteListBins(whiteList)
+                        .setChannel(CreditCard.MIGS)
+                        .build())
+                .build();
+```
+
+```Kotlin
+        val whiteList = mutableListOf(WHITE_LIST_BIN, WHITE_LIST_BIN)
+        val blackList = mutableListOf(BLACK_LIST_BIN, BLACK_LIST_BIN)
+        val installment = hashMapOf<String, MutableList<Int>>()
+        installment["bca"] = mutableListOf(3, 6, 12)
+        installment["bri"] = mutableListOf(2, 4, 6)
+        installment["offline"] = mutableListOf(6,12,24)
+
+        val checkoutTransaction = CheckoutTransaction
+            .builder(TRANSACTION_ID, AMOUNT)
+            .setCreditCard(CreditCard
+                .normalClickBuilder(false, CreditCard.AUTHENTICATION_TYPE_NONE)
+                .setSaveCard(true)
+                .setBank(BankType.BNI)
+                .setInstallment(true, installment)
+                .setBlackListBins(blackList)
+                .setWhiteListBins(whiteList)
+                .setChannel(CreditCard.MIGS)
+                .build())
+            .build()
+```
+
 
 ### Complete Checkout Transaction Object
 
@@ -1858,16 +2219,174 @@ CheckoutTransaction checkoutTransaction = CheckoutTransaction
                         INDOMARET,
                         KLIK_BCA)))
                 .setExpiry(new ExpiryModel("", ExpiryModelUnit.EXPIRY_UNIT_DAY, 1))
-                .setCustomField1("Custom Field 1")
-                .setCustomField2("Custom Field 2")
-                .setCustomField3("Custom Field 3")
+                .setCustomField1(STRING_CUSTOM_FIELD_1)
+                .setCustomField2(STRING_CUSTOM_FIELD_2)
+                .setCustomField3(STRING_CUSTOM_FIELD_3)
                 .setGopayCallbackDeepLink("demo://midtrans")
-                .setBillInfoModel(new BillInfoModel("Note 1", "Note 2"))
-                .setBcaVa(new BcaBankTransferRequestModel("12345",
+                .setBillInfoModel(new BillInfoModel(BILL_INFO_1, BILL_INFO_2))
+                .setBcaVa(new BcaBankTransferRequestModel(CUSTOM_VA,
                         new BcaBankFreeText(new ArrayList<BcaBankFreeTextLanguage>(),
-                        new ArrayList<BcaBankFreeTextLanguage>()),
-                        "123123"))
+                        new ArrayList<BcaBankFreeTextLanguage>()),FREE_TEXT))
                 .setBniVa(new BankTransferRequestModel(""))
                 .setPermataVa(new BankTransferRequestModel(""))
                 .build();
 ```
+
+```Kotlin
+val checkoutTransaction = CheckoutTransaction
+            .builder(TRANSACTION_ID, AMOUNT)
+            .setCurrency(Currency.IDR)
+            .setCustomerDetails(
+                CustomerDetails(
+                    "FirstName",
+                    "LastName",
+                    "email@mail.com",
+                    "6281234567890",
+                    ShippingAddress(
+                        "First Name",
+                        "Lastname",
+                        "email@mail.com",
+                        "City",
+                        "1234",
+                        "6281234567890",
+                        "IDN"
+                    ),
+                    BillingAddress(
+                        "First Name",
+                        "LastName",
+                        "email@mail.com",
+                        "City",
+                        "1234",
+                        "6281234567890",
+                        "IDN"
+                    )
+                )
+            )
+            .setItemDetails(
+                mutableListOf(
+                    ItemDetails(ITEM_ID,
+                        ITEM_PRICE,
+                        ITEM_QUANTITY,
+                        ITEM_NAME),
+                    ItemDetails(ITEM_ID,
+                        ITEM_PRICE,
+                        ITEM_QUANTITY,
+                        ITEM_NAME),
+                    )
+            )
+            .setEnabledPayments(
+                mutableListOf(
+                    BCA_VA,
+                    BNI_VA,
+                    PERMATA_VA,
+                    CREDIT_CARD,
+                    GOPAY,
+                    INDOMARET,
+                    KLIK_BCA)
+            )
+            .setExpiry(
+                ExpiryModel(
+                    START_TIME,
+                    ExpiryModelUnit.EXPIRY_UNIT_DAY,
+                    1
+                )
+            )
+            .setCustomField1("Custom Field 1")
+            .setCustomField2("Custom Field 2")
+            .setCustomField3("Custom Field 3")
+            .setGopayCallbackDeepLink("demo://midtrans")
+            .setBillInfoModel(
+                BillInfoModel(
+                    STRING_BILL_INFO,
+                    STRING_BILL_INFO
+                )
+            )
+            .setBcaVa(
+                BcaBankTransferRequestModel(
+                    CUSTOM_VA,
+                    BcaBankFreeText(
+                        mutableListOf<BcaBankFreeTextLanguage>(),
+                        mutableListOf<BcaBankFreeTextLanguage>()
+                    )
+                ))
+            .setBniVa(BankTransferRequestModel("123123"))
+            .setPermataVa(BankTransferRequestModel("123123"))
+            .setCreditCard(CreditCard
+                .normalClickBuilder(false, CreditCard.AUTHENTICATION_TYPE_NONE)
+                .setSaveCard(true)
+                .setBank(BankType.BNI)
+                .setInstallment(false, installment)
+                .setBlackListBins(blackList)
+                .setWhiteListBins(whiteList)
+                .setChannel(CreditCard.MIGS)
+                .build())
+            .build()
+```
+
+## 8.3. <a name='enum'></a>Enum and Static Variable
+
+### Bank Type
+
+| BankType 	| Description  	|
+|----------	|--------------	|
+| CIMB     	| CIMB         	|
+| BCA      	| BCA          	|
+| MANDIRI  	| Bank Mandiri 	|
+| BNI      	| BNI          	|
+| PERMATA  	| Bank Permata 	|
+| BRI      	| BRI          	|
+
+
+### Currency
+
+| Currency 	| Description      	|
+|----------	|------------------	|
+| IDR      	| Indonesia Rupiah 	|
+| SGD      	| Singapore Dollar 	|
+
+
+### Payment Type
+
+| PaymentType      	| Description              	|
+|------------------	|--------------------------	|
+| CREDIT_CARD      	| Credit Card              	|
+| BNI_VA           	| Bank Transfer/VA BNI     	|
+| BCA_VA           	| Bank Transfer/VA BCA     	|
+| PERMATA_VA       	| Bank Transfer/VA Permata 	|
+| OTHER_VA         	| Bank Transfer/VA Other   	|
+| GOPAY            	| GO-PAY                   	|
+| TELKOMSEL_CASH   	| Telkomsel Cash (T-Cash)  	|
+| MANDIRI_ECASH    	| Mandiri Ecash            	|
+| BCA_KLIKPAY      	| BCA Klikpay              	|
+| CIMB_CLICKS      	| CIMB Clicks              	|
+| BRI_EPAY         	| BRI Epay                 	|
+| MANDIRI_CLICKPAY 	| Mandiri Clickpay         	|
+| KLIK_BCA         	| Klik BCA                 	|
+| INDOMARET        	| Indomaret                	|
+| AKULAKU          	| Akulaku                  	|
+
+
+### Authentication
+
+| Environment 	| Description                 	|
+|-------------	|-----------------------------	|
+| AUTH_3DS    	| Use if you want to use 3DS  	|
+| AUTH_RBA    	| Use if you want to use RBA  	|
+| AUTH_NONE   	| Use if you not use any auth 	|
+
+
+### Environment
+
+| Environment 	| Description                         	|
+|-------------	|-------------------------------------	|
+| SANDBOX     	| Use this for SANDBOX environment    	|
+| PRODUCTION  	| Use this for PRODUCTION environment 	|
+
+
+### Expiry Unit
+
+| ExpiryModelUnit    	| Description     	|
+|--------------------	|-----------------	|
+| `EXPIRY_UNIT_MINUTE`	| count as minute 	|
+| `EXPIRY_UNIT_HOUR`   	| count as hour   	|
+| `EXPIRY_UNIT_DAY`    	| count as day    	|
