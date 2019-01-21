@@ -13,7 +13,7 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.creditcard.SaveC
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CreditCardPaymentResponse;
 import com.midtrans.sdk.corekit.utilities.Constants;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import static com.midtrans.sdk.corekit.utilities.ValidationHelper.isNotEmpty;
 
@@ -88,7 +88,7 @@ public class CreditCardCharge extends BaseGroupPayment {
      * @param callback save card callback
      */
     public static void saveCards(@NonNull final String userId,
-                                 @NonNull final ArrayList<SaveCardRequest> requests,
+                                 @NonNull final List<SaveCardRequest> requests,
                                  @NonNull final MidtransCallback<SaveCardResponse> callback) {
         if (isNotEmpty(requests)) {
             if (isValidForNetworkCall(callback)) {
