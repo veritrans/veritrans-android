@@ -4,9 +4,10 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.midtrans.sdk.corekit.MidtransSdk
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback
+import com.midtrans.sdk.corekit.base.enums.Authentication
+import com.midtrans.sdk.corekit.base.enums.BankType
 import com.midtrans.sdk.corekit.base.enums.Environment
 import com.midtrans.sdk.corekit.base.enums.ExpiryModelUnit
-import com.midtrans.sdk.corekit.base.model.BankType
 import com.midtrans.sdk.corekit.base.model.Currency
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.CheckoutTransaction
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.BillInfoModel
@@ -86,7 +87,7 @@ class MainActivity : AppCompatActivity() {
             .setCurrency(Currency.IDR)
             .setGopayCallbackDeepLink("demo://midtrans")
             .setCreditCard(CreditCard
-                .normalClickBuilder(false, CreditCard.AUTHENTICATION_TYPE_NONE)
+                .normalClickBuilder(false, Authentication.AUTH_3DS)
                 //.setTokenId("")
                 .setSaveCard(true)
                 .setBank(BankType.BNI)
