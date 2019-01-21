@@ -7,6 +7,11 @@ import com.midtrans.sdk.corekit.base.enums.Authentication;
 import com.midtrans.sdk.corekit.base.enums.BankType;
 import com.midtrans.sdk.corekit.base.enums.CreditCardType;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
 public class Helper {
 
     private static final String TAG = "Helper";
@@ -87,6 +92,22 @@ public class Helper {
         } catch (RuntimeException e) {
             return "";
         }
+    }
+
+    public static Map<String, List<Integer>> mappingHashmapToBankTypeForSet(Map<BankType, List<Integer>> installmentMap) {
+        HashMap<String, List<Integer>> mappedHash = new HashMap<>();
+        for (Map.Entry<BankType, List<Integer>> entry : installmentMap.entrySet()) {
+            mappedHash.put(Objects.requireNonNull(mappingToBankType(entry.getKey())), entry.getValue());
+        }
+        return mappedHash;
+    }
+
+    public static Map<BankType, List<Integer>> mappingHashmapToBankTypeForGet(Map<String, List<Integer>> installmentMap) {
+        HashMap<BankType, List<Integer>> mappedHash = new HashMap<>();
+        for (Map.Entry<String, List<Integer>> entry : installmentMap.entrySet()) {
+            mappedHash.put(Objects.requireNonNull(mappingToBankType(entry.getKey())), entry.getValue());
+        }
+        return mappedHash;
     }
 
     public static Authentication mappingToCreditCardAuthentication(String type) {
