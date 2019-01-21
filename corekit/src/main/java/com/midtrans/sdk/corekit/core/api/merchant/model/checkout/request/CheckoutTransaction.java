@@ -41,7 +41,7 @@ public class CheckoutTransaction implements Serializable {
      * Mandatory
      */
     @SerializedName("item_details")
-    private List<Item> checkoutItem;
+    private List<Item> checkoutItems;
     /**
      * List of enable payment.
      * Optional
@@ -120,7 +120,7 @@ public class CheckoutTransaction implements Serializable {
                                 String gopayDeepLink,
                                 CreditCard creditCard,
                                 CustomerDetails customerDetails,
-                                List<Item> checkoutItem,
+                                List<Item> checkoutItems,
                                 List<String> enabledPayments,
                                 ExpiryModel expiry,
                                 BillInfoModel billInfoModel,
@@ -137,7 +137,7 @@ public class CheckoutTransaction implements Serializable {
         this.gopayDeepLink = new GopayDeepLink(gopayDeepLink);
         this.creditCard = creditCard;
         this.customerDetails = customerDetails;
-        this.checkoutItem = checkoutItem;
+        this.checkoutItems = checkoutItems;
         this.enabledPayments = enabledPayments;
         this.expiry = expiry;
         this.customField1 = customField1;
@@ -150,7 +150,6 @@ public class CheckoutTransaction implements Serializable {
         this.bcaVa = bcaVa;
         this.bniVa = bniVa;
         this.customObject = customObject;
-
     }
 
     public static Builder builder(String orderId,
@@ -203,8 +202,8 @@ public class CheckoutTransaction implements Serializable {
         return customObject;
     }
 
-    public List<Item> getCheckoutItem() {
-        return checkoutItem;
+    public List<Item> getCheckoutItems() {
+        return checkoutItems;
     }
 
     public List<String> getEnabledPayments() {
