@@ -1,6 +1,6 @@
 package com.midtrans.sdk.corekit.base.enums;
 
-public enum CreditCardType {
+public enum CreditCardTransactionType {
     AUTHORIZE,
     AUTHORIZE_CAPTURE
 }

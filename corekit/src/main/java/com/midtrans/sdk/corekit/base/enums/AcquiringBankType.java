@@ -1,6 +1,6 @@
 package com.midtrans.sdk.corekit.base.enums;
 
-public enum BankType {
+public enum AcquiringBankType {
     CIMB,
     BCA,
     MANDIRI,

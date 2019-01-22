@@ -1,4 +1,5 @@
 package com.midtrans.sdk.corekit.base.enums;
 
-public class AcquiringChannel {
+public enum AcquiringChannel {
+    MIGS
 }
