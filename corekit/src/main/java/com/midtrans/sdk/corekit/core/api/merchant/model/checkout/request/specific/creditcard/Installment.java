@@ -3,14 +3,14 @@ package com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specif
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import com.midtrans.sdk.corekit.base.enums.BankType;
+import com.midtrans.sdk.corekit.base.enums.AcquiringBankType;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import static com.midtrans.sdk.corekit.utilities.Helper.mappingHashmapToBankTypeForGet;
-import static com.midtrans.sdk.corekit.utilities.Helper.mappingHashmapToBankTypeForSet;
+import static com.midtrans.sdk.corekit.utilities.Helper.mappingMapToBankTypeForGet;
+import static com.midtrans.sdk.corekit.utilities.Helper.mappingMapToBankTypeForSet;
 
 public class Installment implements Serializable {
     private boolean required;
@@ -19,16 +19,16 @@ public class Installment implements Serializable {
     @Expose
     private Map<String, List<Integer>> terms;
 
-    public Installment(boolean required, Map<BankType, List<Integer>> terms) {
+    public Installment(boolean required, Map<AcquiringBankType, List<Integer>> terms) {
         this.required = required;
-        this.terms = mappingHashmapToBankTypeForSet(terms);
+        this.terms = mappingMapToBankTypeForSet(terms);
     }
 
     public boolean isRequired() {
         return required;
     }
 
-    public Map<BankType, List<Integer>> getTerms() {
-        return mappingHashmapToBankTypeForGet(terms);
+    public Map<AcquiringBankType, List<Integer>> getTerms() {
+        return mappingMapToBankTypeForGet(terms);
     }
 }

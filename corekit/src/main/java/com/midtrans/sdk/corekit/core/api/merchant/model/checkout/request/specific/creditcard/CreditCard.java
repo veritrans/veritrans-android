@@ -4,25 +4,26 @@ import com.google.gson.annotations.SerializedName;
 
 import android.text.TextUtils;
 
+import com.midtrans.sdk.corekit.base.enums.AcquiringBankType;
+import com.midtrans.sdk.corekit.base.enums.AcquiringChannel;
 import com.midtrans.sdk.corekit.base.enums.Authentication;
-import com.midtrans.sdk.corekit.base.enums.BankType;
-import com.midtrans.sdk.corekit.base.enums.CreditCardType;
+import com.midtrans.sdk.corekit.base.enums.CreditCardTransactionType;
 import com.midtrans.sdk.corekit.utilities.Helper;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import static com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specific.creditcard.AuthenticationType.AUTHENTICATION_TYPE_3DS;
+import static com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specific.creditcard.AuthenticationType.AUTHENTICATION_TYPE_NONE;
+import static com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specific.creditcard.AuthenticationType.AUTHENTICATION_TYPE_RBA;
+import static com.midtrans.sdk.corekit.utilities.Helper.mappingToAcquiringChannel;
 import static com.midtrans.sdk.corekit.utilities.Helper.mappingToBankType;
 import static com.midtrans.sdk.corekit.utilities.Helper.mappingToCreditCardAuthentication;
 import static com.midtrans.sdk.corekit.utilities.Helper.mappingToCreditCardType;
 
 public class CreditCard implements Serializable {
 
-    public static final String MIGS = "migs";
-    private static final String AUTHENTICATION_TYPE_RBA = "rba";
-    private static final String AUTHENTICATION_TYPE_3DS = "3ds";
-    private static final String AUTHENTICATION_TYPE_NONE = "none";
 
     @Deprecated
     public static final String RBA = "rba";
@@ -72,22 +73,8 @@ public class CreditCard implements Serializable {
         this.authentication = authentication;
     }
 
-    public static Builder oneClickBuilder() {
+    public static Builder builder() {
         return new Builder();
-    }
-
-    public static Builder twoClickBuilder(boolean secure) {
-        return new Builder(secure);
-    }
-
-    public static Builder normalClickBuilder(boolean secure,
-                                             Authentication authentication) {
-        return new Builder(secure, mappingToCreditCardAuthentication(authentication));
-    }
-
-    public static Builder builder(boolean secure,
-                                  Authentication authentication) {
-        return new Builder(secure, mappingToCreditCardAuthentication(authentication));
     }
 
     public boolean isSaveCard() {
@@ -102,11 +89,11 @@ public class CreditCard implements Serializable {
         return secure;
     }
 
-    public String getAcquiringChannel() {
-        return channel;
+    public AcquiringChannel getAcquiringChannel() {
+        return mappingToAcquiringChannel(channel);
     }
 
-    public BankType getAcquiringBank() {
+    public AcquiringBankType getAcquiringBank() {
         return mappingToBankType(acquiringBank);
     }
 
@@ -126,12 +113,12 @@ public class CreditCard implements Serializable {
         return installment;
     }
 
-    public CreditCardType getType() {
+    public CreditCardTransactionType getType() {
         return mappingToCreditCardType(type);
     }
 
-    public String getAuthentication() {
-        return authentication;
+    public Authentication getAuthentication() {
+        return mappingToCreditCardAuthentication(authentication);
     }
 
     public boolean isSecureSet() {
@@ -155,25 +142,10 @@ public class CreditCard implements Serializable {
         private String type;
         private String authentication;
 
-        private boolean installmentRequired;
-        private HashMap<String, List<Integer>> installmentTerms;
-
         private boolean isSecureSet = false;
         private boolean isAuthenticationSet = false;
 
-        Builder(boolean secure,
-                String authentication) {
-            setSecure(secure);
-            setAuthentication(authentication);
-        }
-
-        Builder(boolean secure) {
-            setSecure(secure);
-        }
-
         Builder() {
-            setAuthentication(AUTHENTICATION_TYPE_3DS);
-            setSecure(true);
         }
 
         public Builder setTokenId(String tokenId) {
@@ -181,12 +153,12 @@ public class CreditCard implements Serializable {
             return this;
         }
 
-        public Builder setAcquiringChannel(String channel) {
-            this.channel = channel;
+        public Builder setAcquiringChannel(AcquiringChannel channel) {
+            this.channel = mappingToAcquiringChannel(channel);
             return this;
         }
 
-        public Builder setAcquiringBank(BankType acquiringBank) {
+        public Builder setAcquiringBank(AcquiringBankType acquiringBank) {
             this.acquiringBank = Helper.mappingToBankType(acquiringBank);
             return this;
         }
@@ -214,20 +186,21 @@ public class CreditCard implements Serializable {
             return this;
         }
 
-        public Builder setType(CreditCardType type) {
+        public Builder setType(CreditCardTransactionType type) {
             this.type = mappingToCreditCardType(type);
             return this;
         }
 
         public Builder setInstallment(boolean installmentRequired,
-                                      HashMap<BankType, List<Integer>> installmentTerms) {
+                                      Map<AcquiringBankType, List<Integer>> installmentTerms) {
             if (installmentTerms != null) {
                 this.installment = new Installment(installmentRequired, installmentTerms);
             }
             return this;
         }
 
-        public Builder setAuthentication(String authentication) {
+        public Builder setAuthentication(Authentication auth) {
+            String authentication = mappingToCreditCardAuthentication(auth);
             if (!TextUtils.isEmpty(authentication)) {
                 if (authentication.equals(AUTHENTICATION_TYPE_RBA)
                         || authentication.equals(AUTHENTICATION_TYPE_NONE)) {
