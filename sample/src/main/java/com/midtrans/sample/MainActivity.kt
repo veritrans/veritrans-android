@@ -4,9 +4,10 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.midtrans.sdk.corekit.MidtransSdk
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback
+import com.midtrans.sdk.corekit.base.enums.Authentication
+import com.midtrans.sdk.corekit.base.enums.BankType
 import com.midtrans.sdk.corekit.base.enums.Environment
 import com.midtrans.sdk.corekit.base.enums.ExpiryModelUnit
-import com.midtrans.sdk.corekit.base.model.BankType
 import com.midtrans.sdk.corekit.base.model.Currency
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.CheckoutTransaction
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.BillInfoModel
@@ -86,15 +87,15 @@ class MainActivity : AppCompatActivity() {
             .setCurrency(Currency.IDR)
             .setGopayCallbackDeepLink("demo://midtrans")
             .setCreditCard(CreditCard
-                .normalClickBuilder(false, CreditCard.AUTHENTICATION_TYPE_NONE)
+                .normalClickBuilder(false, Authentication.AUTH_3DS)
                 //.setTokenId("")
                 .setSaveCard(true)
-                .setBank(BankType.BNI)
-                //.setInstallment(false, new HashMap<String, ArrayList<Integer>>())
-                //.setBlackListBins(new ArrayList<String>())
-                //.setWhiteListBins(new ArrayList<String>())
-                //.setSavedTokens(new ArrayList<SavedToken>())
-                //.setChannel(CreditCard.MIGS)
+                .setAcquiringBank(BankType.BNI)
+                .setInstallment(false, HashMap<BankType, MutableList<Int>>())
+                .setBlackListBins(mutableListOf())
+                .setWhiteListBins(mutableListOf())
+                .setSavedTokens(mutableListOf())
+                .setAcquiringChannel(CreditCard.MIGS)
                 .build())
             .setCustomerDetails(CustomerDetails("FirstName",
                 "LastName",
