@@ -1,5 +1,9 @@
 package com.midtrans.sdk.corekit.core.api.snap.model.pay.response;
 
+import com.midtrans.sdk.corekit.base.enums.Currency;
+
+import static com.midtrans.sdk.corekit.utilities.StringHelper.checkCurrency;
+
 public class CreditCardPaymentResponse extends BasePaymentResponse {
 
     public String getStatusCode() {
@@ -50,12 +54,12 @@ public class CreditCardPaymentResponse extends BasePaymentResponse {
         this.grossAmount = grossAmount;
     }
 
-    public String getCurrency() {
-        return currency;
+    public Currency getCurrency() {
+        return checkCurrency(currency);
     }
 
-    public void setCurrency(String currency) {
-        this.currency = currency;
+    public void setCurrency(Currency currency) {
+        this.currency = checkCurrency(currency);
     }
 
     public String getPaymentType() {
