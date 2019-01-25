@@ -186,7 +186,7 @@ Checkout securely accepts your customer's payment details and directly passes th
 
 For starting payment with Midtrans, you'll need to write a `CheckoutTransaction` builder inside your class and set to the `MidtransSDK` instance before checkout. (Note, the code samples in this section are simply examples – your own implementation may differ depending on the structure of your app). Midtrans Checkout has 2 required parameters:
 
- 1. **TRANSACTION_ID**
+ 1. **ORDER_ID**
  
  This value must be unique, you can use it only once
  
@@ -195,23 +195,23 @@ For starting payment with Midtrans, you'll need to write a `CheckoutTransaction`
  This value is your amount for making payment
 
 
-Then you can put it all together to generate the `Snap Token` (payment token). Since `TRANSACTION_ID` and `AMOUNT` was required and mandatory, to create a CheckoutTransaction you should use this builder, so the builder will return minimum object required for making payment.
+Then you can put it all together to generate the `Snap Token` (payment token). Since `ORDER_ID` and `AMOUNT` was required and mandatory, to create a CheckoutTransaction you should use this builder, so the builder will return minimum object required for making payment.
 
 ```Java
 CheckoutTransaction checkoutTransaction = CheckoutTransaction
-                .builder(TRANSACTION_ID, AMOUNT)
+                .builder(ORDER_ID, AMOUNT)
                 .build();
 ```
 
 ```Kotlin
 val checkoutTransaction = CheckoutTransaction
-            .builder(TRANSACTION_ID, AMOUNT)
+            .builder(ORDER_ID, AMOUNT)
             .build()
 ```
 
 Note :
 
-- `TRANSACTION_ID` is an unique id for your transaction, maximum character length is 50.
+- `ORDER_ID` is an unique id for your transaction, maximum character length is 50.
 - `AMOUNT` is charge amount.
 
 ###  7.2. <a name='StartingCheckout'></a>2. Starting Checkout
@@ -250,7 +250,7 @@ MidtransSdk.getInstance().checkoutWithTransaction(checkoutTransaction,
 
 Note: 
 
-- This work with all default setting because it only pass `TRANSACTION_ID` and `AMOUNT`, not the custom setting. For custom setting please read next section.
+- This work with all default setting because it only pass `ORDER_ID` and `AMOUNT`, not the custom setting. For custom setting please read next section.
 
 ###  7.3. <a name='GetPaymentInfo'></a>3. Get Payment Info
 
@@ -352,23 +352,23 @@ Table of payment codes for payment.
 
 	For starting payment with Midtrans, you'll need to write a `CheckoutTransaction` builder inside your class and set to the `MidtransSDK` instance before checkout. (Note, the code samples in this section are simply examples – your own implementation may differ depending on the structure of your app). Midtrans Checkout has 2 required parameters:
 	
-	**TRANSACTION_ID**
+	**ORDER_ID**
 	
 	This value must be unique, you can use it only once
  
     **AMOUNT**
  
-    This value is your amount for making payment Since `TRANSACTION_ID` and `AMOUNT` was required and mandatory, to create a checkout request you should use this builder, so the builder will return minimum object required for making payment.
+    This value is your amount for making payment Since `ORDER_ID` and `AMOUNT` was required and mandatory, to create a checkout request you should use this builder, so the builder will return minimum object required for making payment.
         
  	```Java
 CheckoutTransaction checkoutTransaction = CheckoutTransaction
-                .builder(TRANSACTION_ID, AMOUNT)
+                .builder(ORDER_ID, AMOUNT)
                 .build();
 	```
 
 	```Kotlin
 val checkoutTransaction = CheckoutTransaction
-            .builder(TRANSACTION_ID, AMOUNT)
+            .builder(ORDER_ID, AMOUNT)
             .build()
 	```
     
@@ -1770,14 +1770,14 @@ Multi currency is a feature to allow for multiple various currency display forma
 
 ```Java
 CheckoutTransaction checkoutTransaction = CheckoutTransaction
-                .builder(TRANSACTION_ID, AMOUNT)
+                .builder(ORDER_ID, AMOUNT)
                 .setCurrency(Currency.IDR)
                 .build();
 ```
 
 ```Kotlin
 val checkoutTransaction = CheckoutTransaction
-                .builder(TRANSACTION_ID, AMOUNT)
+                .builder(ORDER_ID, AMOUNT)
                 .setCurrency(Currency.IDR)
                 .build()
 ```
@@ -1788,7 +1788,7 @@ The Customer Info, Billing Info, and Shipping Info is optional, so user can pass
 
 ```Java
 CheckoutTransaction checkoutTransaction = CheckoutTransaction
-                .builder(TRANSACTION_ID, AMOUNT)
+                .builder(ORDER_ID, AMOUNT)
                 .setCustomerDetails(new CustomerDetails("First Name",
                         "Lastname",
                         "email@mail.com",
@@ -1812,7 +1812,7 @@ CheckoutTransaction checkoutTransaction = CheckoutTransaction
 
 ```Kotlin
 val checkoutTransaction = CheckoutTransaction
-                .builder(TRANSACTION_ID, AMOUNT)
+                .builder(ORDER_ID, AMOUNT)
                 .setCustomerDetails(new CustomerDetails("First Name",
                         "Lastname",
                         "email@mail.com",
@@ -1842,7 +1842,7 @@ Item details are **required** for `Mandiri Bill/Mandiri Echannel` and `BCA KlikP
 
 ```Java
 CheckoutTransaction checkoutTransaction = CheckoutTransaction
-                .builder(TRANSACTION_ID, AMOUNT)
+                .builder(ORDER_ID, AMOUNT)
                 .setItemDetails(new ArrayList<>(Arrays.asList(
                     new ItemDetails(ITEM_ID,
                         ITEM_PRICE,
@@ -1858,7 +1858,7 @@ CheckoutTransaction checkoutTransaction = CheckoutTransaction
 
 ```Kotlin
 val checkoutTransaction = CheckoutTransaction
-            .builder(TRANSACTION_ID, AMOUNT)
+            .builder(ORDER_ID, AMOUNT)
             .setItemDetails(
                 mutableListOf(
                     ItemDetails(ITEM_ID,
@@ -1880,7 +1880,7 @@ If you want to enable/disable some payment method without change the MAP setting
 
 ```Java
 CheckoutTransaction checkoutTransaction = CheckoutTransaction
-                .builder(TRANSACTION_ID, AMOUNT)
+                .builder(ORDER_ID, AMOUNT)
                 .setEnabledPayments(new ArrayList<>(Arrays.asList(
                         BCA_VA,
                         BNI_VA,
@@ -1894,7 +1894,7 @@ CheckoutTransaction checkoutTransaction = CheckoutTransaction
 
 ```Kotlin
 val checkoutTransaction = CheckoutTransaction
-            .builder(TRANSACTION_ID, AMOUNT)
+            .builder(ORDER_ID, AMOUNT)
             .setEnabledPayments(
                 mutableListOf(
                     BCA_VA,
@@ -1920,14 +1920,14 @@ There is a feature on mobile SDK to enable custom transaction lifetime.
 
 ```Java
 CheckoutTransaction checkoutTransaction = CheckoutTransaction
-                .builder(TRANSACTION_ID, AMOUNT) 
+                .builder(ORDER_ID, AMOUNT) 
                 .setExpiry(new ExpiryModel("", ExpiryModelUnit.EXPIRY_UNIT_DAY, 1))
                 .build();
 ```
 
 ```Kotlin
 val checkoutTransaction = CheckoutTransaction
-                .builder(TRANSACTION_ID, AMOUNT) 
+                .builder(ORDER_ID, AMOUNT) 
                 .setExpiry(ExpiryModel(START_TIME, ExpiryModelUnit.EXPIRY_UNIT_DAY, 1))
                 .build();
 ```
@@ -1938,7 +1938,7 @@ These 3 fields will be brought at payment so it will be available at MAP and a H
 
 ```Java
 CheckoutTransaction checkoutTransaction = CheckoutTransaction
-                .builder(TRANSACTION_ID, AMOUNT)
+                .builder(ORDER_ID, AMOUNT)
                 .setCustomField1("Custom Field 1")
                 .setCustomField2("Custom Field 2")
                 .setCustomField3("Custom Field 3")
@@ -1947,7 +1947,7 @@ CheckoutTransaction checkoutTransaction = CheckoutTransaction
 
 ```Kotlin
 val checkoutTransaction = CheckoutTransaction
-                .builder(TRANSACTION_ID, AMOUNT)
+                .builder(ORDER_ID, AMOUNT)
                 .setCustomField1("Custom Field 1")
                 .setCustomField2("Custom Field 2")
                 .setCustomField3("Custom Field 3")
@@ -1962,14 +1962,14 @@ For example if you set your deeplink like this `demo:://midtrans` then GO-JEK ap
 
 ```Java
 CheckoutTransaction checkoutTransaction = CheckoutTransaction
-                .builder(TRANSACTION_ID, AMOUNT)
+                .builder(ORDER_ID, AMOUNT)
                 .setGopayCallbackDeepLink("demo://midtrans")
                 .build();
 ```
 
 ```Kotlin
 val checkoutTransaction = CheckoutTransaction
-                .builder(TRANSACTION_ID, AMOUNT)
+                .builder(ORDER_ID, AMOUNT)
                 .setGopayCallbackDeepLink("demo://midtrans")
                 .build()
 ```
@@ -1980,14 +1980,14 @@ Bill Info is optional for `Mandiri Bill/Mandiri Echannel` payment only.
 
 ```Java
 CheckoutTransaction checkoutTransaction = CheckoutTransaction
-                .builder(TRANSACTION_ID, AMOUNT)
+                .builder(ORDER_ID, AMOUNT)
                 .setBillInfoModel(new BillInfoModel("Note 1", "Note 2"))
                 .build();
 ```
 
 ```Kotlin
 val checkoutTransaction = CheckoutTransaction
-                .builder(TRANSACTION_ID, AMOUNT)
+                .builder(ORDER_ID, AMOUNT)
                 .setBillInfoModel(BillInfoModel("Note 1", "Note 2"))
                 .build()
 ```
@@ -1999,7 +1999,7 @@ This feature allows you to pass sub company code in VA payment and Make Custom V
 
 ```Java
 CheckoutTransaction checkoutTransaction = CheckoutTransaction
-                .builder(TRANSACTION_ID, AMOUNT)
+                .builder(ORDER_ID, AMOUNT)
                 .setBcaVa(new BcaBankTransferRequestModel("12345",
                         new BcaBankFreeText(new ArrayList<BcaBankFreeTextLanguage>(),
                         new ArrayList<BcaBankFreeTextLanguage>()),
@@ -2009,7 +2009,7 @@ CheckoutTransaction checkoutTransaction = CheckoutTransaction
 
 ```Kotlin
 val checkoutTransaction = CheckoutTransaction
-            .builder(TRANSACTION_ID, AMOUNT)
+            .builder(ORDER_ID, AMOUNT)
             .setBcaVa(BcaBankTransferRequestModel(
                 VA_NUMBER,
                 BcaBankFreeText(
@@ -2027,7 +2027,7 @@ This feature allows you to make Custom Virtual Account Number.
 
 ```Java
 CheckoutTransaction checkoutTransaction = CheckoutTransaction
-                .builder(TRANSACTION_ID, AMOUNT)
+                .builder(ORDER_ID, AMOUNT)
                 .setBniVa(new BankTransferRequestModel("123123"))
                 .setPermataVa(new BankTransferRequestModel("123123"))
                 .build();
@@ -2035,7 +2035,7 @@ CheckoutTransaction checkoutTransaction = CheckoutTransaction
 
 ```Kotlin
 val checkoutTransaction = CheckoutTransaction
-                .builder(TRANSACTION_ID, AMOUNT)
+                .builder(ORDER_ID, AMOUNT)
                 .setBniVa(BankTransferRequestModel("123123"))
                 .setPermataVa(BankTransferRequestModel("123123"))
                 .build()
@@ -2117,7 +2117,7 @@ If you want to enable save card, just set the saveCard true.
 
 ```Java
 CheckoutTransaction checkoutTransaction = CheckoutTransaction
-                .builder(TRANSACTION_ID, AMOUNT)
+                .builder(ORDER_ID, AMOUNT)
                 .setCreditCard(CreditCard
                         .normalClickBuilder(false, CreditCard.AUTHENTICATION_TYPE_NONE)
                         .setSaveCard(true)
@@ -2128,7 +2128,7 @@ CheckoutTransaction checkoutTransaction = CheckoutTransaction
 
 ```Kotlin
         val checkoutTransaction = CheckoutTransaction
-            .builder(TRANSACTION_ID, AMOUNT)
+            .builder(ORDER_ID, AMOUNT)
             .setCreditCard(CreditCard
                 .normalClickBuilder(false, CreditCard.AUTHENTICATION_TYPE_NONE)
                 .setSaveCard(true)
@@ -2169,7 +2169,7 @@ CheckoutTransaction checkoutTransaction = CheckoutTransaction
         installment["offline"] = mutableListOf(6,12,24)
 
         val checkoutTransaction = CheckoutTransaction
-            .builder(TRANSACTION_ID, AMOUNT)
+            .builder(ORDER_ID, AMOUNT)
             .setCreditCard(CreditCard
                 .normalClickBuilder(false, CreditCard.AUTHENTICATION_TYPE_NONE)
                 .setSaveCard(true)
@@ -2187,7 +2187,7 @@ CheckoutTransaction checkoutTransaction = CheckoutTransaction
 
 ```Java
 CheckoutTransaction checkoutTransaction = CheckoutTransaction
-                .builder(TRANSACTION_ID, AMOUNT)
+                .builder(ORDER_ID, AMOUNT)
                 .setCurrency(Currency.IDR)
                 .setCustomerDetails(new CustomerDetails("First Name",
                         "Lastname",
@@ -2234,7 +2234,7 @@ CheckoutTransaction checkoutTransaction = CheckoutTransaction
 
 ```Kotlin
 val checkoutTransaction = CheckoutTransaction
-            .builder(TRANSACTION_ID, AMOUNT)
+            .builder(ORDER_ID, AMOUNT)
             .setCurrency(Currency.IDR)
             .setCustomerDetails(
                 CustomerDetails(
