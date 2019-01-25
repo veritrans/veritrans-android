@@ -6,10 +6,11 @@ import com.midtrans.sdk.corekit.base.enums.ExpiryTimeUnit;
 
 import java.io.Serializable;
 
+import static com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.TimeUnit.UNIT_DAY;
+import static com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.TimeUnit.UNIT_HOUR;
+import static com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.TimeUnit.UNIT_MINUTE;
+
 public class ExpiryModel implements Serializable {
-    private final String UNIT_HOUR = "hours";
-    private final String UNIT_MINUTE = "minutes";
-    private final String UNIT_DAY = "days";
 
     @SerializedName("start_time")
     private String startTime;
