@@ -24,7 +24,6 @@ import static com.midtrans.sdk.corekit.utilities.Helper.mappingToCreditCardType;
 
 public class CreditCard implements Serializable {
 
-
     @Deprecated
     public static final String RBA = "rba";
     private static volatile CreditCard SINGLETON_INSTANCE = null;

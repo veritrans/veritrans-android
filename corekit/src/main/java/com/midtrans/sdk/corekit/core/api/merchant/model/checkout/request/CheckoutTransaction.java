@@ -2,6 +2,7 @@ package com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request;
 
 import com.google.gson.annotations.SerializedName;
 
+import com.midtrans.sdk.corekit.base.enums.Currency;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.mandatory.TransactionDetails;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.BillInfoModel;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.ExpiryModel;
@@ -116,7 +117,7 @@ public class CheckoutTransaction implements Serializable {
 
     private CheckoutTransaction(String orderId,
                                 double grossAmount,
-                                String currency,
+                                Currency currency,
                                 String gopayDeepLink,
                                 CreditCard creditCard,
                                 CustomerDetails customerDetails,
@@ -237,7 +238,7 @@ public class CheckoutTransaction implements Serializable {
     public static class Builder {
         private String orderId;
         private double grossAmount;
-        private String currency;
+        private Currency currency;
         private String gopayDeepLink;
         private CreditCard creditCard;
         private CustomerDetails customerDetails;
@@ -262,7 +263,7 @@ public class CheckoutTransaction implements Serializable {
             this.grossAmount = grossAmount;
         }
 
-        public Builder setCurrency(String currency) {
+        public Builder setCurrency(Currency currency) {
             this.currency = currency;
             return this;
         }

@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import android.text.TextUtils;
 
-import com.midtrans.sdk.corekit.base.model.Currency;
+import com.midtrans.sdk.corekit.base.enums.Currency;
 import com.midtrans.sdk.corekit.utilities.Logger;
 
 import java.io.Serializable;
@@ -25,7 +25,7 @@ public class TransactionDetails implements Serializable {
 
     public TransactionDetails(String orderId,
                               double grossAmount,
-                              String currency) {
+                              Currency currency) {
         if (!TextUtils.isEmpty(orderId) && grossAmount > 0) {
             this.orderId = orderId;
             this.grossAmount = grossAmount;
@@ -40,17 +40,17 @@ public class TransactionDetails implements Serializable {
         if (!TextUtils.isEmpty(orderId) && grossAmount > 0) {
             this.orderId = orderId;
             this.grossAmount = grossAmount;
-            this.currency = Currency.IDR;
+            this.currency = checkCurrency(Currency.IDR);
         } else {
             Logger.error(MESSAGE_INVALID_TRANSACTION_DATA);
         }
     }
 
-    public String getCurrency() {
-        return currency;
+    public Currency getCurrency() {
+        return checkCurrency(currency);
     }
 
-    public void setCurrency(String currency) {
+    public void setCurrency(Currency currency) {
         this.currency = checkCurrency(currency);
     }
 
