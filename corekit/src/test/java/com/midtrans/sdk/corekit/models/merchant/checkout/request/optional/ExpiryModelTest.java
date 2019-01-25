@@ -1,12 +1,12 @@
 package com.midtrans.sdk.corekit.models.merchant.checkout.request.optional;
 
-import com.midtrans.sdk.corekit.base.enums.ExpiryModelUnit;
+import com.midtrans.sdk.corekit.base.enums.ExpiryTimeUnit;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.ExpiryModel;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import static com.midtrans.sdk.corekit.base.enums.ExpiryModelUnit.EXPIRY_UNIT_DAY;
+import static com.midtrans.sdk.corekit.base.enums.ExpiryTimeUnit.DAY;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
@@ -18,7 +18,7 @@ public class ExpiryModelTest {
 
     @Before
     public void test_setup() {
-        this.expiryModel = new ExpiryModel("", EXPIRY_UNIT_DAY, 1);
+        this.expiryModel = new ExpiryModel("", DAY, 1);
         this.exampleTextPositive = "exampleTextPositive";
         this.exampleTextNegative = "exampleTextNegative";
         this.exampleIntNegative = 0;
@@ -45,13 +45,13 @@ public class ExpiryModelTest {
 
     @Test
     public void test_SetUnit_positive() {
-        expiryModel.setUnit(EXPIRY_UNIT_DAY);
-        assertEquals(expiryModel.getUnit(), EXPIRY_UNIT_DAY);
+        expiryModel.setUnit(DAY);
+        assertEquals(expiryModel.getUnit(), DAY);
     }
 
     @Test
     public void test_SetUnit_negative() {
-        expiryModel.setUnit(ExpiryModelUnit.EXPIRY_UNIT_HOUR);
+        expiryModel.setUnit(ExpiryTimeUnit.HOUR);
         assertNotEquals(expiryModel.getUnit(), exampleTextNegative);
     }
 

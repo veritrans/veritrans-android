@@ -7,7 +7,7 @@ import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.base.enums.AcquiringBankType;
 import com.midtrans.sdk.corekit.base.enums.AcquiringChannel;
 import com.midtrans.sdk.corekit.base.enums.Environment;
-import com.midtrans.sdk.corekit.base.enums.ExpiryModelUnit;
+import com.midtrans.sdk.corekit.base.enums.ExpiryTimeUnit;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.Currency;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.CheckoutTransaction;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.BillInfoModel;
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
                                 "idn")))
                 .setBillInfoModel(new BillInfoModel("1", "2"))
                 .setEnabledPayments(new ArrayList<String>())
-                .setExpiry(new ExpiryModel("", ExpiryModelUnit.EXPIRY_UNIT_DAY, 1))
+                .setExpiry(new ExpiryModel("", ExpiryTimeUnit.DAY, 1))
                 .setCheckoutItems(new ArrayList<Item>())
                 .setBcaVa(new BcaBankTransferRequestModel("",
                         new BcaBankFreeText(new ArrayList<BcaBankFreeTextLanguage>(),

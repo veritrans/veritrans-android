@@ -114,7 +114,7 @@ class MainActivity : AppCompatActivity() {
                     "idn")))
             .setBillInfoModel(BillInfoModel("1", "2"))
             .setEnabledPayments(ArrayList())
-            .setExpiry(ExpiryModel("", ExpiryModelUnit.EXPIRY_UNIT_DAY, 1))
+            .setExpiry(ExpiryModel("", ExpiryTimeUnit.DAY, 1))
             .setCheckoutItems(ArrayList())
             .setBcaVa(BcaBankTransferRequestModel("",
                 BcaBankFreeText(ArrayList(),
