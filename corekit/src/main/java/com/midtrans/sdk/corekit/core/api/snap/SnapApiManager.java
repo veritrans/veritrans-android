@@ -29,6 +29,7 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.EwalletTelkomse
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.OnlineDebitBcaKlikpayPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.OnlineDebitBriEpayPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.OnlineDebitCimbClicksPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.OnlineDebitDanamonOnlinePaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
 
 import retrofit2.Call;
@@ -301,6 +302,15 @@ public class SnapApiManager extends BaseServiceManager {
                     creditCardPaymentParams,
                     customerDetailPayRequest);
             Call<CreditCardPaymentResponse> call = apiService.paymentUsingCreditCard(snapToken, creditCardPaymentRequest);
+            handleCall(call, callback);
+        }
+    }
+
+    public void paymentUsingDanamonOnline(final String snapToken,
+                                          final MidtransCallback<OnlineDebitDanamonOnlinePaymentResponse> callback) {
+        if (isSnapTokenAvailable(callback, snapToken, apiService)) {
+            BasePaymentRequest basePaymentRequest = new BasePaymentRequest(PaymentType.DANAMON_ONLINE);
+            Call<OnlineDebitDanamonOnlinePaymentResponse> call = apiService.paymentUsingDanamonOnline(snapToken, basePaymentRequest);
             handleCall(call, callback);
         }
     }
