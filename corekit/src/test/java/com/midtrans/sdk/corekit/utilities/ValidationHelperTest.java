@@ -2,8 +2,6 @@ package com.midtrans.sdk.corekit.utilities;
 
 import android.util.Log;
 
-import com.midtrans.sdk.corekit.base.model.Currency;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
