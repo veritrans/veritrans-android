@@ -62,9 +62,9 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     testImplementation testLibraries.jUnit
-    androidTestImplementation testLibraries.runner
-    androidTestImplementation testLibraries.espresso
-    implementation supportLibraries.appCompat
-    implementation supportLibraries.constraintLayout
+    androidTestImplementation androidxTestLibraries.runner
+    androidTestImplementation androidxTestLibraries.espresso
+    implementation androidxLibraries.appCompat
+    implementation androidxLibraries.constraintLayout
     implementation project(path: ':corekit')
 }

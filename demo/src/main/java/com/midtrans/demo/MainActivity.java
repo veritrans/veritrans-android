@@ -1,14 +1,14 @@
 package com.midtrans.demo;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
 import com.midtrans.sdk.corekit.MidtransSdk;
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
-import com.midtrans.sdk.corekit.base.enums.BankType;
+import com.midtrans.sdk.corekit.base.enums.AcquiringBankType;
+import com.midtrans.sdk.corekit.base.enums.AcquiringChannel;
 import com.midtrans.sdk.corekit.base.enums.Environment;
 import com.midtrans.sdk.corekit.base.enums.ExpiryModelUnit;
-import com.midtrans.sdk.corekit.base.model.Currency;
+import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.Currency;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.CheckoutTransaction;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.BillInfoModel;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.ExpiryModel;
@@ -25,8 +25,8 @@ import com.midtrans.sdk.corekit.core.payment.EWalletCharge;
 import com.midtrans.sdk.corekit.utilities.Logger;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
     String snapToken;
@@ -57,15 +57,11 @@ public class MainActivity extends AppCompatActivity {
                 .setCurrency(Currency.IDR)
                 .setGopayCallbackDeepLink("demo://midtrans")
                 .setCreditCard(CreditCard
-                        .twoClickBuilder(false)
+                        .builder()
                         //.setTokenId("")
                         .setSaveCard(true)
-                        .setAcquiringBank(BankType.BNI)
-                        .setInstallment(false, new HashMap<BankType, List<Integer>>())
-                        //.setBlackListBins(new ArrayList<String>())
-                        //.setWhiteListBins(new ArrayList<String>())
-                        //.setSavedTokens(new ArrayList<SavedToken>())
-                        //.setAcquiringChannel(CreditCard.MIGS)
+                        .setAcquiringBank(AcquiringBankType.BCA)
+                        .setAcquiringChannel(AcquiringChannel.MIGS)
                         .build())
                 .setCustomerDetails(new CustomerDetails("FirstName",
                         "LastName",
