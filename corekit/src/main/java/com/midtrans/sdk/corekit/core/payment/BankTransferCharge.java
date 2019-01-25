@@ -4,8 +4,9 @@ import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.CustomerDetailPayRequest;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BankTransferVaBcaPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BankTransferVaBniPaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BankTransferVaOtherPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BankTransferVaPermataPaymentResponse;
+
+import okhttp3.ResponseBody;
 
 public class BankTransferCharge extends BaseGroupPayment {
 
@@ -63,7 +64,7 @@ public class BankTransferCharge extends BaseGroupPayment {
      */
     public static void paymentUsingBankTransferVaOther(final String snapToken,
                                                        final CustomerDetailPayRequest customerDetails,
-                                                       final MidtransCallback<BankTransferVaOtherPaymentResponse> callback) {
+                                                       final MidtransCallback<ResponseBody> callback) {
         if (isValidForNetworkCall(callback)) {
             getSnapApiManager().paymentUsingBankTransferVaOther(snapToken, customerDetails, callback);
         }

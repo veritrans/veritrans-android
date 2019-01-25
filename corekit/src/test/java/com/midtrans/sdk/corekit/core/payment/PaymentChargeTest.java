@@ -43,6 +43,8 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import okhttp3.ResponseBody;
+
 import static org.powermock.api.mockito.PowerMockito.verifyStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
 
@@ -100,9 +102,9 @@ public class PaymentChargeTest {
     @Mock
     private MidtransCallback<BankTransferVaBniPaymentResponse> callbackBniVaMock;
     @Mock
-    private BankTransferVaOtherPaymentResponse responseOtherVaMock;
+    private ResponseBody responseOtherVaMock;
     @Mock
-    private MidtransCallback<BankTransferVaOtherPaymentResponse> callbackOtherVaMock;
+    private MidtransCallback<ResponseBody> callbackOtherVaMock;
     @Mock
     private CardlessCreditAkulakuPaymentResponse responseAkulakuMock;
     @Mock
@@ -348,7 +350,7 @@ public class PaymentChargeTest {
     @Test
     public void test_paymentUsingOtherVa_positive() {
         bankTransferCharge.paymentUsingBankTransferVaOther(SDKConfigTest.SNAP_TOKEN, customerDetailPayRequest, callbackOtherVaMock);
-        Mockito.verify(callbackOtherVaMock).onSuccess(Matchers.any(BankTransferVaOtherPaymentResponse.class));
+        Mockito.verify(callbackOtherVaMock).onSuccess(Matchers.any(ResponseBody.class));
     }
 
     @Test

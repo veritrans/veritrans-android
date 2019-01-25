@@ -26,6 +26,7 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.OnlineDebitCimb
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.OnlineDebitDanamonOnlinePaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -87,7 +88,7 @@ public interface SnapApiService {
      * @param paymentRequest Payment Request Details.
      */
     @POST(PAYMENT_PAY)
-    Call<BankTransferVaOtherPaymentResponse> paymentBankTransferOther(
+    Call<ResponseBody> paymentBankTransferOther(
             @Path("snap_token") String snapToken,
             @Body PaymentRequest paymentRequest
     );

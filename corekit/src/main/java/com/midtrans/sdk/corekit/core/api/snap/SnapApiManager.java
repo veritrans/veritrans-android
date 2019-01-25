@@ -32,6 +32,7 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.OnlineDebitCimb
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.OnlineDebitDanamonOnlinePaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 
 public class SnapApiManager extends BaseServiceManager {
@@ -119,10 +120,10 @@ public class SnapApiManager extends BaseServiceManager {
      */
     public void paymentUsingBankTransferVaOther(final String snapToken,
                                                 final CustomerDetailPayRequest customerDetails,
-                                                final MidtransCallback<BankTransferVaOtherPaymentResponse> callback) {
+                                                final MidtransCallback<ResponseBody> callback) {
         if (isSnapTokenAvailable(callback, snapToken, apiService)) {
             PaymentRequest paymentRequest = new PaymentRequest(PaymentType.OTHER_VA, customerDetails);
-            Call<BankTransferVaOtherPaymentResponse> call = apiService.paymentBankTransferOther(snapToken, paymentRequest);
+            Call<ResponseBody> call = apiService.paymentBankTransferOther(snapToken, paymentRequest);
             handleCall(call, callback);
         }
     }
