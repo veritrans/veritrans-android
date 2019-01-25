@@ -2,7 +2,7 @@ package com.midtrans.sdk.corekit.models.merchant.checkout.request.mandatory;
 
 import android.text.TextUtils;
 
-import com.midtrans.sdk.corekit.base.model.Currency;
+import com.midtrans.sdk.corekit.base.enums.Currency;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.mandatory.TransactionDetails;
 
 import org.junit.Before;
@@ -41,7 +41,7 @@ public class TransactionDetailsTest {
 
     @Test
     public void test_SetCurrency_negative() {
-        this.transactionDetails.setCurrency(exampleTextPositive);
+        this.transactionDetails.setCurrency(Currency.IDR);
         assertNotEquals(transactionDetails.getCurrency(), exampleTextNegative);
     }
 
