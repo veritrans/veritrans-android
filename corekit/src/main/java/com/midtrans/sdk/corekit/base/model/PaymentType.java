@@ -16,6 +16,7 @@ public class PaymentType {
     public static String BCA_KLIKPAY = "bca_klikpay";
     public static String CIMB_CLICKS = "cimb_clicks";
     public static String BRI_EPAY = "bri_epay";
+    public static String DANAMON_ONLINE = "danamon_online";
     // Direct Debit
     public static String MANDIRI_CLICKPAY = "mandiri_clickpay";
     public static String KLIK_BCA = "bca_klikbca";
