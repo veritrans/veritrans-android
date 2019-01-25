@@ -10,7 +10,7 @@ import static com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.
 import static com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.TimeUnit.UNIT_HOUR;
 import static com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.TimeUnit.UNIT_MINUTE;
 
-public class ExpiryModel implements Serializable {
+public class CheckoutExpiry implements Serializable {
 
     @SerializedName("start_time")
     private String startTime;
@@ -19,9 +19,9 @@ public class ExpiryModel implements Serializable {
     @SerializedName("duration")
     private int duration;
 
-    public ExpiryModel(String startTime,
-                       ExpiryTimeUnit unit,
-                       int duration) {
+    public CheckoutExpiry(String startTime,
+                          ExpiryTimeUnit unit,
+                          int duration) {
         this.startTime = startTime;
         this.duration = duration;
         setUnit(unit);

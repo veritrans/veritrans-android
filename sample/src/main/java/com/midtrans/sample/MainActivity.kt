@@ -8,7 +8,7 @@ import com.midtrans.sdk.corekit.base.enums.*
 import com.midtrans.sdk.corekit.base.enums.Currency
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.CheckoutTransaction
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.BillInfoModel
-import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.ExpiryModel
+import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.CheckoutExpiry
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.customer.Address
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.customer.CustomerDetails
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specific.banktransfer.BcaBankFreeText
@@ -114,7 +114,7 @@ class MainActivity : AppCompatActivity() {
                     "idn")))
             .setBillInfoModel(BillInfoModel("1", "2"))
             .setEnabledPayments(ArrayList())
-            .setExpiry(ExpiryModel("", ExpiryTimeUnit.DAY, 1))
+            .setCheckoutExpiry(CheckoutExpiry("", ExpiryTimeUnit.DAY, 1))
             .setCheckoutItems(ArrayList())
             .setBcaVa(BcaBankTransferRequestModel("",
                 BcaBankFreeText(ArrayList(),

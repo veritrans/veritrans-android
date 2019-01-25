@@ -11,7 +11,7 @@ import com.midtrans.sdk.corekit.base.enums.ExpiryTimeUnit;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.Currency;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.CheckoutTransaction;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.BillInfoModel;
-import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.ExpiryModel;
+import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.CheckoutExpiry;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.Item;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.customer.Address;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.customer.CustomerDetails;
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
                                 "idn")))
                 .setBillInfoModel(new BillInfoModel("1", "2"))
                 .setEnabledPayments(new ArrayList<String>())
-                .setExpiry(new ExpiryModel("", ExpiryTimeUnit.DAY, 1))
+                .setCheckoutExpiry(new CheckoutExpiry("", ExpiryTimeUnit.DAY, 1))
                 .setCheckoutItems(new ArrayList<Item>())
                 .setBcaVa(new BcaBankTransferRequestModel("",
                         new BcaBankFreeText(new ArrayList<BcaBankFreeTextLanguage>(),

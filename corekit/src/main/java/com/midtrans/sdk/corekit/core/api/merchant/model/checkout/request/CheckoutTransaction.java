@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import com.midtrans.sdk.corekit.base.enums.Currency;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.mandatory.TransactionDetails;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.BillInfoModel;
-import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.ExpiryModel;
+import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.CheckoutExpiry;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.GopayDeepLink;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.Item;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.SnapPromo;
@@ -59,7 +59,7 @@ public class CheckoutTransaction implements Serializable {
      * Set custom expiry of token that will be created
      */
     @SerializedName("expiry")
-    private ExpiryModel expiry = null;
+    private CheckoutExpiry expiry = null;
     /**
      * Contain maximum 3 of custom field for user.
      * Optional
@@ -123,7 +123,7 @@ public class CheckoutTransaction implements Serializable {
                                 CustomerDetails customerDetails,
                                 List<Item> checkoutItems,
                                 List<String> enabledPayments,
-                                ExpiryModel expiry,
+                                CheckoutExpiry expiry,
                                 BillInfoModel billInfoModel,
                                 String customField1,
                                 String customField2,
@@ -211,7 +211,7 @@ public class CheckoutTransaction implements Serializable {
         return enabledPayments;
     }
 
-    public ExpiryModel getExpiry() {
+    public CheckoutExpiry getCheckoutExpiry() {
         return expiry;
     }
 
@@ -244,7 +244,7 @@ public class CheckoutTransaction implements Serializable {
         private CustomerDetails customerDetails;
         private List<Item> checkoutItem;
         private List<String> enabledPayments;
-        private ExpiryModel expiry;
+        private CheckoutExpiry expiry;
         private BillInfoModel billInfoModel;
         private String customField1;
         private String customField2;
@@ -293,7 +293,7 @@ public class CheckoutTransaction implements Serializable {
             return this;
         }
 
-        public Builder setExpiry(ExpiryModel expiry) {
+        public Builder setCheckoutExpiry(CheckoutExpiry expiry) {
             this.expiry = expiry;
             return this;
         }
