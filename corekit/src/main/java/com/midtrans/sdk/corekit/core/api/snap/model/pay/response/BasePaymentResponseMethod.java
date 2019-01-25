@@ -1,9 +1,12 @@
 package com.midtrans.sdk.corekit.core.api.snap.model.pay.response;
 
+import com.midtrans.sdk.corekit.base.enums.Currency;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.bcaklikpay.BcaKlikPayDataResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.va.VaNumber;
 
 import java.util.List;
+
+import static com.midtrans.sdk.corekit.utilities.StringHelper.checkCurrency;
 
 public class BasePaymentResponseMethod extends BasePaymentResponse {
 
@@ -55,12 +58,12 @@ public class BasePaymentResponseMethod extends BasePaymentResponse {
         this.grossAmount = grossAmount;
     }
 
-    public String getCurrency() {
-        return currency;
+    public Currency getCurrency() {
+        return checkCurrency(currency);
     }
 
-    public void setCurrency(String currency) {
-        this.currency = currency;
+    public void setCurrency(Currency currency) {
+        this.currency = checkCurrency(currency);
     }
 
     public String getPaymentType() {
