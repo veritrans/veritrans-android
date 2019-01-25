@@ -1,5 +1,6 @@
 package com.midtrans.sdk.corekit.models.snap.pay.response;
 
+import com.midtrans.sdk.corekit.base.enums.Currency;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BasePaymentResponseMethod;
 
 import org.junit.Before;
@@ -85,14 +86,14 @@ public class BasePaymentResponseMethodTest {
 
     @Test
     public void test_setCurrency_positive() {
-        this.response.setCurrency(exampleTextPositive);
-        assertEquals(response.getCurrency(), exampleTextPositive);
+        this.response.setCurrency(Currency.IDR);
+        assertEquals(Currency.IDR, response.getCurrency());
     }
 
     @Test
     public void test_setCurrency_negative() {
-        this.response.setCurrency(exampleTextPositive);
-        assertNotEquals(response.getCurrency(), exampleTextNegative);
+        this.response.setCurrency(Currency.IDR);
+        assertNotEquals("SGD", response.getCurrency());
     }
 
 }
