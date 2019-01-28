@@ -60,12 +60,13 @@ class MainActivity : AppCompatActivity() {
                     .builder()
                     .setSaveCard(true)
                     .setType(CreditCardTransactionType.AUTHORIZE_CAPTURE)
-                    .setAcquiringBank(AcquiringBankType.BNI)
+                    .setAcquiringBank(AcquiringBankType.BCA)
+                    .setAcquiringChannel(AcquiringChannel.MIGS)
                     .setInstallment(false, HashMap<AcquiringBankType, MutableList<Int>>())
                     .setBlackListBins(mutableListOf())
                     .setWhiteListBins(mutableListOf())
                     .setSavedTokens(mutableListOf())
-                    .setAcquiringChannel(AcquiringChannel.MIGS)
+                    .setSecure(Authentication.AUTH_3DS)
                     .build())
             .setCustomerDetails(
                 CustomerDetails

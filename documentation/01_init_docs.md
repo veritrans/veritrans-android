@@ -2075,56 +2075,38 @@ val checkoutTransaction = CheckoutTransaction
 
 This feature allows you to custom and setting credit card payment, CreditCard object use builder pattern and give 3 type of constructor based on type of creditcard payment, OneClick, TwoClick, and Normal. 
 
-OneClick
+if you want to enable whiteList or blacklist bins, please make new list of bins.
 
 ```Java
         List<String> whiteList = new ArrayList<>(Arrays.asList("493496", "451197"));
         List<String> blackList = new ArrayList<>(Arrays.asList("493496", "451197"));
-```
-
-```Kotlin
-        val whiteList = mutableListOf(WHITE_LIST_BIN, WHITE_LIST_BIN)
-        val blackList = mutableListOf(BLACK_LIST_BIN, BLACK_LIST_BIN)
-```
-
-TwoClick
-
-```Java
-        CheckoutTransaction checkoutTransaction = CheckoutTransaction
-                .builder("", 20.0)
-                .setCreditCard(CreditCard
-                        .twoClickBuilder(false)
-                        .build())
+        
+        CheckoutTransaction checkoutTransaction = new CheckoutTransaction
+                .builder(ORDER_ID, AMOUNT)
+                .setCreditCard(
+                	CreditCard
+                        .builder()
+                        .setBlackListBins(blackList)
+                        .setWhiteListBins(whiteList)
+                        .build()
+                )
                 .build();
 ```
 
 ```Kotlin
         val whiteList = mutableListOf(WHITE_LIST_BIN, WHITE_LIST_BIN)
         val blackList = mutableListOf(BLACK_LIST_BIN, BLACK_LIST_BIN)
-```
-
-NormalClick
-
-```Java
-        List<String> whiteList = new ArrayList<>(Arrays.asList("493496", "451197"));
-        List<String> blackList = new ArrayList<>(Arrays.asList("493496", "451197"));
-```
-
-```Kotlin
-        val whiteList = mutableListOf(WHITE_LIST_BIN, WHITE_LIST_BIN)
-        val blackList = mutableListOf(BLACK_LIST_BIN, BLACK_LIST_BIN)
-```
-
-if you want to enable whiteList or blacklist bins, please make new list of bins.
-
-```Java
-        List<String> whiteList = new ArrayList<>(Arrays.asList("493496", "451197"));
-        List<String> blackList = new ArrayList<>(Arrays.asList("493496", "451197"));
-```
-
-```Kotlin
-        val whiteList = mutableListOf(WHITE_LIST_BIN, WHITE_LIST_BIN)
-        val blackList = mutableListOf(BLACK_LIST_BIN, BLACK_LIST_BIN)
+        
+        val checkoutTransaction = CheckoutTransaction
+                .builder(ORDER_ID, AMOUNT)
+                .setCreditCard(
+                	CreditCard
+                        .builder()
+                        .setBlackListBins(blackList)
+                        .setWhiteListBins(whiteList)
+                        .build()
+                )
+                .build();
 ```
 
 If you want to enable installment, please make a hashmap contain bank and terms, it can be required.
@@ -2134,6 +2116,24 @@ If you want to enable installment, please make a hashmap contain bank and terms,
         installment.put("bca", new ArrayList<>(Arrays.asList(3,6,12)));
         installment.put("bni", new ArrayList<>(Arrays.asList(2,4,6)));
         installment.put("offline", new ArrayList<>(Arrays.asList(6,12,24)));
+        
+        CheckoutTransaction checkoutTransaction = new CheckoutTransaction
+                .builder(ORDER_ID, AMOUNT)
+                .setCreditCard(
+                	CreditCard
+                        .builder()
+                        .setSaveCard(true)
+                        .setInstallment(true, installment)
+                        .setBlackListBins(blackList)
+                        .setWhiteListBins(whiteList)
+                        .setAcquiringBank(AcquiringBankType.BCA)
+                        .setAcquiringChannel(AcquiringChannel.MIGS)
+                        .setType(CreditCardTransactionType.AUTHORIZE_CAPTURE)
+                        .setSavedTokens(new List())
+                        .setSecure(Authentication.AUTH_3DS)
+                        .build()
+                )
+                .build();
 ```
 
 ```Kotlin
@@ -2141,6 +2141,24 @@ If you want to enable installment, please make a hashmap contain bank and terms,
         installment["bca"] = mutableListOf(3, 6, 12)
         installment["bri"] = mutableListOf(2, 4, 6)
         installment["offline"] = mutableListOf(6,12,24)
+        
+        val checkoutTransaction = new CheckoutTransaction
+                .builder(ORDER_ID, AMOUNT)
+                .setCreditCard(
+                	CreditCard
+                        .builder()
+                        .setSaveCard(true)
+                        .setInstallment(true, installment)
+                        .setBlackListBins(blackList)
+                        .setWhiteListBins(whiteList)
+                        .setAcquiringBank(AcquiringBankType.BCA)
+                        .setAcquiringChannel(AcquiringChannel.MIGS)
+                        .setType(CreditCardTransactionType.AUTHORIZE_CAPTURE)
+                        .setSavedTokens(new List())
+                        .setSecure(Authentication.AUTH_3DS)
+                        .build()
+                )
+                .build()
 ```
 
 If you want to enable save card, just set the saveCard true.
@@ -2148,10 +2166,10 @@ If you want to enable save card, just set the saveCard true.
 ```Java
 CheckoutTransaction checkoutTransaction = CheckoutTransaction
                 .builder(ORDER_ID, AMOUNT)
-                .setCreditCard(CreditCard
-                        .normalClickBuilder(false, CreditCard.AUTHENTICATION_TYPE_NONE)
-                        .setSaveCard(true)
-                        .build())
+                		.setCreditCard(CreditCard
+                		.builder()
+                		.setSaveCard(true)
+                		.build())
                 .build();
 
 ```
@@ -2160,7 +2178,7 @@ CheckoutTransaction checkoutTransaction = CheckoutTransaction
         val checkoutTransaction = CheckoutTransaction
             .builder(ORDER_ID, AMOUNT)
             .setCreditCard(CreditCard
-                .normalClickBuilder(false, CreditCard.AUTHENTICATION_TYPE_NONE)
+                .builder()
                 .setSaveCard(true)
                 .build())
             .build()
@@ -2176,17 +2194,22 @@ CheckoutTransaction checkoutTransaction = CheckoutTransaction
         installment.put("bni", new ArrayList<>(Arrays.asList(2,4,6)));
         installment.put("offline", new ArrayList<>(Arrays.asList(6,12,24)));
 
-        CheckoutTransaction checkoutTransaction = CheckoutTransaction
+        CheckoutTransaction checkoutTransaction = new CheckoutTransaction
                 .builder("", 20.0)
-                .setCreditCard(CreditCard
-                        .normalClickBuilder(false, CreditCard.AUTHENTICATION_TYPE_NONE)
+                .setCreditCard(
+                	CreditCard
+                        .builder()
                         .setSaveCard(true)
-                        .setBank(BankType.BNI)
                         .setInstallment(true, installment)
                         .setBlackListBins(blackList)
                         .setWhiteListBins(whiteList)
-                        .setChannel(CreditCard.MIGS)
-                        .build())
+                        .setAcquiringBank(AcquiringBankType.BCA)
+                        .setAcquiringChannel(AcquiringChannel.MIGS)
+                        .setType(CreditCardTransactionType.AUTHORIZE_CAPTURE)
+                        .setSavedTokens(new List())
+                        .setSecure(Authentication.AUTH_3DS)
+                        .build()
+                )
                 .build();
 ```
 
@@ -2200,15 +2223,20 @@ CheckoutTransaction checkoutTransaction = CheckoutTransaction
 
         val checkoutTransaction = CheckoutTransaction
             .builder(ORDER_ID, AMOUNT)
-            .setCreditCard(CreditCard
-                .normalClickBuilder(false, CreditCard.AUTHENTICATION_TYPE_NONE)
-                .setSaveCard(true)
-                .setBank(BankType.BNI)
-                .setInstallment(true, installment)
-                .setBlackListBins(blackList)
-                .setWhiteListBins(whiteList)
-                .setChannel(CreditCard.MIGS)
-                .build())
+            .setCreditCard(
+            	CreditCard
+                    .builder()
+                    .setSaveCard(true)
+                    .setInstallment(true, installment)
+                    .setBlackListBins(blackList)
+                    .setWhiteListBins(whiteList)
+                    .setType(CreditCardTransactionType.AUTHORIZE_CAPTURE)
+                    .setAcquiringBank(AcquiringBankType.BCA)
+                    .setAcquiringChannel(AcquiringChannel.MIGS)
+                    .setSavedTokens(mutableListOf())
+                    .setSecure(Authentication.AUTH_3DS)
+                    .build()
+            )
             .build()
 ```
 
@@ -2219,24 +2247,39 @@ CheckoutTransaction checkoutTransaction = CheckoutTransaction
 CheckoutTransaction checkoutTransaction = CheckoutTransaction
                 .builder(ORDER_ID, AMOUNT)
                 .setCurrency(Currency.IDR)
-                .setCustomerDetails(new CustomerDetails("First Name",
-                        "Lastname",
-                        "email@mail.com",
-                        "6281234567890",
-                        new ShippingAddress("First Name",
-                                "Lastname",
-                                "email@mail.com",
-                                "City",
-                                "1234",
-                                "6281234567890",
-                                "IDN"),
-                        new BillingAddress("First Name",
-                                "LastName",
-                                "email@mail.com",
-                                "City",
-                                "1234",
-                                "6281234567890",
-                                "IDN")))
+                .setCustomerDetails(
+                CustomerDetails
+                    .builder()
+                    .setFirstName("FirstName")
+                    .setLastName("LastName")
+                    .setEmail("mail@mailbox.com")
+                    .setPhone("08123456789")
+                    .setBillingAddress(
+                        Address
+                            .builder()
+                            .setFirstName("FirstName")
+                            .setLastName("LastName")
+                            .setAddress("address")
+                            .setCity("City")
+                            .setPostalCode("12345")
+                            .setPhone("08123456789")
+                            .setCountryCode("IDR")
+                            .build()
+                    )
+                    .setShippingAddress(
+                        Address
+                            .builder()
+                            .setFirstName("FirstName")
+                            .setLastName("LastName")
+                            .setAddress("address")
+                            .setCity("City")
+                            .setPostalCode("12345")
+                            .setPhone("08123456789")
+                            .setCountryCode("IDR")
+                            .build()
+                    )
+                    .build()
+            	)
                 .setItemDetails(new ArrayList<>(Arrays.asList(
                         new ItemDetails(ITEM_ID,ITEM_PRICE,ITEM_QUANTITY,ITEM_NAME))
                 ))
@@ -2259,6 +2302,19 @@ CheckoutTransaction checkoutTransaction = CheckoutTransaction
                         new ArrayList<BcaBankFreeTextLanguage>()),FREE_TEXT))
                 .setBniVa(new BankTransferRequestModel(""))
                 .setPermataVa(new BankTransferRequestModel(""))
+                .setCreditCard(
+                	CreditCard
+	                    .builder()
+                    	.setSaveCard(true)
+                    	.setType(CreditCardTransactionType.AUTHORIZE_CAPTURE)
+                    	.setAcquiringBank(AcquiringBankType.BCA)
+                    	.setAcquiringChannel(AcquiringChannel.MIGS)
+                    	.setInstallment(false, new HashMap<AcquiringBankType, new List<Int>>())
+                    	.setBlackListBins(new List())
+                    	.setWhiteListBins(new List())
+                    	.setSavedTokens(new List())
+                    	.setSecure(Authentication.AUTH_3DS)
+                    .build())
                 .build();
 ```
 
@@ -2267,30 +2323,37 @@ val checkoutTransaction = CheckoutTransaction
             .builder(ORDER_ID, AMOUNT)
             .setCurrency(Currency.IDR)
             .setCustomerDetails(
-                CustomerDetails(
-                    "FirstName",
-                    "LastName",
-                    "email@mail.com",
-                    "6281234567890",
-                    ShippingAddress(
-                        "First Name",
-                        "Lastname",
-                        "email@mail.com",
-                        "City",
-                        "1234",
-                        "6281234567890",
-                        "IDN"
-                    ),
-                    BillingAddress(
-                        "First Name",
-                        "LastName",
-                        "email@mail.com",
-                        "City",
-                        "1234",
-                        "6281234567890",
-                        "IDN"
+                CustomerDetails
+                    .builder()
+                    .setFirstName("FirstName")
+                    .setLastName("LastName")
+                    .setEmail("mail@mailbox.com")
+                    .setPhone("08123456789")
+                    .setBillingAddress(
+                        Address
+                            .builder()
+                            .setFirstName("FirstName")
+                            .setLastName("LastName")
+                            .setAddress("address")
+                            .setCity("City")
+                            .setPostalCode("12345")
+                            .setPhone("08123456789")
+                            .setCountryCode("IDR")
+                            .build()
                     )
-                )
+                    .setShippingAddress(
+                        Address
+                            .builder()
+                            .setFirstName("FirstName")
+                            .setLastName("LastName")
+                            .setAddress("address")
+                            .setCity("City")
+                            .setPostalCode("12345")
+                            .setPhone("08123456789")
+                            .setCountryCode("IDR")
+                            .build()
+                    )
+                    .build()
             )
             .setItemDetails(
                 mutableListOf(
@@ -2342,13 +2405,15 @@ val checkoutTransaction = CheckoutTransaction
             .setBniVa(BankTransferRequestModel("123123"))
             .setPermataVa(BankTransferRequestModel("123123"))
             .setCreditCard(CreditCard
-                .normalClickBuilder(false, CreditCard.AUTHENTICATION_TYPE_NONE)
+                .builder()
                 .setSaveCard(true)
-                .setBank(BankType.BNI)
-                .setInstallment(false, installment)
+                .setType(CreditCardTransactionType.AUTHORIZE_CAPTURE)
+                .setAcquiringBank(AcquiringBankType.BCA)
+                .setAcquiringChannel(AcquiringChannel.MIGS)
+                .setInstallment(false, HashMap<AcquiringBankType, MutableList<Int>>())
                 .setBlackListBins(blackList)
                 .setWhiteListBins(whiteList)
-                .setChannel(CreditCard.MIGS)
+                .setSecure(Authentication.AUTH_3DS)
                 .build())
             .build()
 ```
@@ -2400,9 +2465,10 @@ val checkoutTransaction = CheckoutTransaction
 
 | Environment 	| Description                 	|
 |-------------	|-----------------------------	|
-| AUTH_3DS    	| Use if you want to use 3DS  	|
-| AUTH_RBA    	| Use if you want to use RBA  	|
-| AUTH_NONE   	| Use if you not use any auth 	|
+| `AUTH_3DS`    	| Use if you want to use 3DS  	|
+| `AUTH_RBA`    	| Use if you want to use RBA without 3DS case	|
+| `AUTH_RBA_SECURE`   	| Use if you want to use RBA with 3DS case	|
+| `AUTH_NONE`   	| Use if you not use any auth 	|
 
 
 ### Environment

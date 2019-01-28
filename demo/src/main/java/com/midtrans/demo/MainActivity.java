@@ -6,6 +6,7 @@ import com.midtrans.sdk.corekit.MidtransSdk;
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.base.enums.AcquiringBankType;
 import com.midtrans.sdk.corekit.base.enums.AcquiringChannel;
+import com.midtrans.sdk.corekit.base.enums.Authentication;
 import com.midtrans.sdk.corekit.base.enums.CreditCardTransactionType;
 import com.midtrans.sdk.corekit.base.enums.Currency;
 import com.midtrans.sdk.corekit.base.enums.Environment;
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
                         .builder()
                         //.setTokenId("")
                         .setSaveCard(true)
+                        .setSecure(Authentication.AUTH_3DS)
                         .setType(CreditCardTransactionType.AUTHORIZE)
                         .setAcquiringBank(AcquiringBankType.BCA)
                         .setAcquiringChannel(AcquiringChannel.MIGS)
