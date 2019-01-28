@@ -1789,48 +1789,78 @@ The Customer Info, Billing Info, and Shipping Info is optional, so user can pass
 ```Java
 CheckoutTransaction checkoutTransaction = CheckoutTransaction
                 .builder(ORDER_ID, AMOUNT)
-                .setCustomerDetails(new CustomerDetails("First Name",
-                        "Lastname",
-                        "email@mail.com",
-                        "6281234567890",
-                        new ShippingAddress("First Name",
-                                "Lastname",
-                                "email@mail.com",
-                                "City",
-                                "1234",
-                                "6281234567890",
-                                "IDN"),
-                        new BillingAddress("First Name",
-                                "LastName",
-                                "email@mail.com",
-                                "City",
-                                "1234",
-                                "6281234567890",
-                                "IDN")))
+                .setCustomerDetails(
+                CustomerDetails
+                    .builder()
+                    .setFirstName("FirstName")
+                    .setLastName("LastName")
+                    .setEmail("mail@mailbox.com")
+                    .setPhone("08123456789")
+                    .setBillingAddress(
+                        Address
+                            .builder()
+                            .setFirstName("FirstName")
+                            .setLastName("LastName")
+                            .setAddress("address")
+                            .setCity("City")
+                            .setPostalCode("12345")
+                            .setPhone("08123456789")
+                            .setCountryCode("IDR")
+                            .build()
+                    )
+                    .setShippingAddress(
+                        Address
+                            .builder()
+                            .setFirstName("FirstName")
+                            .setLastName("LastName")
+                            .setAddress("address")
+                            .setCity("City")
+                            .setPostalCode("12345")
+                            .setPhone("08123456789")
+                            .setCountryCode("IDR")
+                            .build()
+                    )
+                    .build()
+            	)
                 .build();
 ```
 
 ```Kotlin
 val checkoutTransaction = CheckoutTransaction
                 .builder(ORDER_ID, AMOUNT)
-                .setCustomerDetails(new CustomerDetails("First Name",
-                        "Lastname",
-                        "email@mail.com",
-                        "6281234567890",
-                        new ShippingAddress("First Name",
-                                "Lastname",
-                                "email@mail.com",
-                                "City",
-                                "1234",
-                                "6281234567890",
-                                "IDN"),
-                        new BillingAddress("First Name",
-                                "LastName",
-                                "email@mail.com",
-                                "City",
-                                "1234",
-                                "6281234567890",
-                                "IDN")))
+                .setCustomerDetails(
+                CustomerDetails
+                    .builder()
+                    .setFirstName("FirstName")
+                    .setLastName("LastName")
+                    .setEmail("mail@mailbox.com")
+                    .setPhone("08123456789")
+                    .setBillingAddress(
+                        Address
+                            .builder()
+                            .setFirstName("FirstName")
+                            .setLastName("LastName")
+                            .setAddress("address")
+                            .setCity("City")
+                            .setPostalCode("12345")
+                            .setPhone("08123456789")
+                            .setCountryCode("IDR")
+                            .build()
+                    )
+                    .setShippingAddress(
+                        Address
+                            .builder()
+                            .setFirstName("FirstName")
+                            .setLastName("LastName")
+                            .setAddress("address")
+                            .setCity("City")
+                            .setPostalCode("12345")
+                            .setPhone("08123456789")
+                            .setCountryCode("IDR")
+                            .build()
+                    )
+                    .build()
+            	)
                 .build()
 ```
 
