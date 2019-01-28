@@ -79,10 +79,6 @@ public class CreditCard implements Serializable {
         return tokenId;
     }
 
-    public boolean isSecure() {
-        return secure;
-    }
-
     public AcquiringChannel getAcquiringChannel() {
         return mappingToAcquiringChannel(channel);
     }
@@ -111,7 +107,7 @@ public class CreditCard implements Serializable {
         return mappingToCreditCardType(type);
     }
 
-    public Authentication getSecure() {
+    public Authentication getAuthentication() {
         return mappingToCreditCardAuthentication(authentication, secure);
     }
 
@@ -155,7 +151,7 @@ public class CreditCard implements Serializable {
             return this;
         }
 
-        public Builder setSecure(Authentication authentication) {
+        public Builder setAuthentication(Authentication authentication) {
             if (authentication == null) {
                 this.secure = false;
             } else {

@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
                     .setBlackListBins(mutableListOf())
                     .setWhiteListBins(mutableListOf())
                     .setSavedTokens(mutableListOf())
-                    .setSecure(Authentication.AUTH_3DS)
+                    .setAuthentication(Authentication.AUTH_3DS)
                     .build())
             .setCustomerDetails(
                 CustomerDetails

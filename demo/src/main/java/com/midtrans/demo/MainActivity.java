@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
                         .builder()
                         //.setTokenId("")
                         .setSaveCard(true)
-                        .setSecure(Authentication.AUTH_3DS)
+                        .setAuthentication(Authentication.AUTH_3DS)
                         .setType(CreditCardTransactionType.AUTHORIZE)
                         .setAcquiringBank(AcquiringBankType.BCA)
                         .setAcquiringChannel(AcquiringChannel.MIGS)
