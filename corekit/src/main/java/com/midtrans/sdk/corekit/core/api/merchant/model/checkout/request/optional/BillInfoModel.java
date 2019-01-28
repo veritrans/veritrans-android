@@ -30,10 +30,25 @@ public class BillInfoModel implements Serializable {
     @SerializedName("bill_info8")
     private String billInfo8;
 
-    public BillInfoModel(String billInfo1,
-                         String billInfo2) {
+    public BillInfoModel() {
+    }
+
+    public BillInfoModel(
+            String billInfo1,
+            String billInfo2
+    ) {
         this.billInfo1 = billInfo1;
         this.billInfo2 = billInfo2;
+    }
+
+    public BillInfoModel(
+            String billInfo1,
+            String billInfo2,
+            String billInfo3
+    ) {
+        this.billInfo1 = billInfo1;
+        this.billInfo2 = billInfo2;
+        this.billInfo3 = billInfo3;
     }
 
     public String getBillInfo1() {
