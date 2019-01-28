@@ -6,9 +6,11 @@ import com.midtrans.sdk.corekit.MidtransSdk;
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.base.enums.AcquiringBankType;
 import com.midtrans.sdk.corekit.base.enums.AcquiringChannel;
+import com.midtrans.sdk.corekit.base.enums.Authentication;
+import com.midtrans.sdk.corekit.base.enums.CreditCardTransactionType;
+import com.midtrans.sdk.corekit.base.enums.Currency;
 import com.midtrans.sdk.corekit.base.enums.Environment;
 import com.midtrans.sdk.corekit.base.enums.ExpiryTimeUnit;
-import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.Currency;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.CheckoutTransaction;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.BillInfoModel;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.CheckoutExpiry;
@@ -20,8 +22,6 @@ import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specifi
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specific.banktransfer.BcaBankTransferRequestModel;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specific.creditcard.CreditCard;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.response.CheckoutWithTransactionResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.EwalletGopayPaymentResponse;
-import com.midtrans.sdk.corekit.core.payment.EWalletCharge;
 import com.midtrans.sdk.corekit.utilities.Logger;
 
 import java.util.ArrayList;
@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
                 .setApiRequestTimeOut(60)
                 .build();
 
-        CheckoutTransaction trxRequest = CheckoutTransaction
+        CheckoutTransaction checkoutTransaction = CheckoutTransaction
                 .builder("sample_sdk_test_core_" + System.currentTimeMillis(), 20000.0)
                 .setCurrency(Currency.IDR)
                 .setGopayCallbackDeepLink("demo://midtrans")
@@ -60,27 +60,44 @@ public class MainActivity extends AppCompatActivity {
                         .builder()
                         //.setTokenId("")
                         .setSaveCard(true)
+                        .setAuthentication(Authentication.AUTH_3DS)
+                        .setType(CreditCardTransactionType.AUTHORIZE)
                         .setAcquiringBank(AcquiringBankType.BCA)
                         .setAcquiringChannel(AcquiringChannel.MIGS)
                         .build())
-                .setCustomerDetails(new CustomerDetails("FirstName",
-                        "LastName",
-                        "email@mail.com",
-                        "6281234567890",
-                        new Address("Firstname",
-                                "LastName",
-                                "mail@mail.com",
-                                "Bogor",
-                                "16710",
-                                "62877",
-                                "idn"),
-                        new Address("Firstname",
-                                "LastName",
-                                "mail@mail.com",
-                                "Bogor",
-                                "16710",
-                                "62877",
-                                "idn")))
+                .setCustomerDetails(
+                        CustomerDetails
+                                .builder()
+                                .setFirstName("FirstName")
+                                .setLastName("LastName")
+                                .setEmail("mail@mailbox.com")
+                                .setPhone("08123456789")
+                                .setBillingAddress(
+                                        Address
+                                                .builder()
+                                                .setFirstName("FirstName")
+                                                .setLastName("LastName")
+                                                .setAddress("address")
+                                                .setCity("City")
+                                                .setPostalCode("12345")
+                                                .setPhone("08123456789")
+                                                .setCountryCode("IDR")
+                                                .build()
+                                )
+                                .setShippingAddress(
+                                        Address
+                                                .builder()
+                                                .setFirstName("FirstName")
+                                                .setLastName("LastName")
+                                                .setAddress("address")
+                                                .setCity("City")
+                                                .setPostalCode("12345")
+                                                .setPhone("08123456789")
+                                                .setCountryCode("IDR")
+                                                .build()
+                                )
+                                .build()
+                )
                 .setBillInfoModel(new BillInfoModel("1", "2"))
                 .setEnabledPayments(new ArrayList<String>())
                 .setCheckoutExpiry(new CheckoutExpiry("", ExpiryTimeUnit.DAY, 1))
@@ -94,23 +111,7 @@ public class MainActivity extends AppCompatActivity {
                 .setCustomField3("Custom Field 3")
                 .build();
 
-        EWalletCharge.paymentUsingGopay("snapToken",
-                "08123456789",
-                new MidtransCallback<EwalletGopayPaymentResponse>() {
-                    @Override
-                    public void onSuccess(EwalletGopayPaymentResponse data) {
-
-                    }
-
-                    @Override
-                    public void onFailed(Throwable throwable) {
-
-                    }
-                });
-
-        CheckoutTransaction trxInstance = CheckoutTransaction.getInstance();
-        MidtransSdk.getInstance().setCheckoutTransaction(trxInstance);
-        MidtransSdk.getInstance().checkoutWithTransaction(new MidtransCallback<CheckoutWithTransactionResponse>() {
+        MidtransSdk.getInstance().checkoutWithTransaction(checkoutTransaction, new MidtransCallback<CheckoutWithTransactionResponse>() {
             @Override
             public void onFailed(Throwable throwable) {
                 Logger.debug("MIDTRANS SDK NEW RETURN ERROR >>> " + throwable.getMessage());

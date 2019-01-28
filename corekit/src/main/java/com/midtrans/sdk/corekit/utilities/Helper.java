@@ -3,9 +3,9 @@ package com.midtrans.sdk.corekit.utilities;
 import android.app.Activity;
 import android.util.DisplayMetrics;
 
+import com.midtrans.sdk.corekit.base.enums.AcquiringBankType;
 import com.midtrans.sdk.corekit.base.enums.AcquiringChannel;
 import com.midtrans.sdk.corekit.base.enums.Authentication;
-import com.midtrans.sdk.corekit.base.enums.AcquiringBankType;
 import com.midtrans.sdk.corekit.base.enums.CreditCardTransactionType;
 
 import java.util.HashMap;
@@ -113,10 +113,12 @@ public class Helper {
         return mappedHash;
     }
 
-    public static Authentication mappingToCreditCardAuthentication(String type) {
+    public static Authentication mappingToCreditCardAuthentication(String type, boolean secure) {
         if (type.equalsIgnoreCase(AUTHENTICATION_TYPE_3DS)) {
             return Authentication.AUTH_3DS;
-        } else if (type.equalsIgnoreCase(AUTHENTICATION_TYPE_RBA)) {
+        } else if (type.equalsIgnoreCase(AUTHENTICATION_TYPE_RBA) && secure) {
+            return Authentication.AUTH_RBA_SECURE;
+        } else if (type.equalsIgnoreCase(AUTHENTICATION_TYPE_RBA) && !secure) {
             return Authentication.AUTH_RBA;
         } else {
             return Authentication.AUTH_NONE;
@@ -126,7 +128,7 @@ public class Helper {
     public static String mappingToCreditCardAuthentication(Authentication authentication) {
         if (authentication == Authentication.AUTH_3DS) {
             return AUTHENTICATION_TYPE_3DS;
-        } else if (authentication == Authentication.AUTH_RBA) {
+        } else if (authentication == Authentication.AUTH_RBA || authentication == Authentication.AUTH_RBA_SECURE) {
             return AUTHENTICATION_TYPE_RBA;
         } else {
             return AUTHENTICATION_TYPE_NONE;
@@ -158,7 +160,7 @@ public class Helper {
     }
 
     public static String mappingToCreditCardType(CreditCardTransactionType type) {
-        if (type == CreditCardTransactionType.AUTHORIZE) {
+        if (type != null && type == CreditCardTransactionType.AUTHORIZE) {
             return AUTHORIZE;
         } else {
             return AUTHORIZE_CAPTURE;

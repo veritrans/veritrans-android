@@ -30,13 +30,11 @@ public class BcaBankTransferRequestModelTest {
 
     @Test
     public void test_SetSubCompany_positive() {
-        bcaBankTransferRequestModel.setSubCompanyCode(exampleTextPositive);
-        assertEquals(bcaBankTransferRequestModel.getSubCompanyCode(), exampleTextPositive);
+        assertEquals(bcaBankTransferRequestModel.getSubCompanyCode(), SDKConfigTest.BANK);
     }
 
     @Test
     public void test_SetSubCompany_negative() {
-        bcaBankTransferRequestModel.setSubCompanyCode(exampleTextPositive);
         assertNotEquals(bcaBankTransferRequestModel.getSubCompanyCode(), exampleTextNegative);
     }
 

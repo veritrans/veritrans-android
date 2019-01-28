@@ -50,10 +50,72 @@ class MainActivity : AppCompatActivity() {
             .setLogEnabled(true)
             .build()
 
-        val instance = MidtransSdk.getInstance()
-
         val checkoutTransaction = CheckoutTransaction
-            .builder("", 1.0)
+            .builder(InstallationHelper.generatedRandomID(this),
+                20000.0)
+            .setCurrency(Currency.IDR)
+            .setGopayCallbackDeepLink("demo://midtrans")
+            .setCreditCard(
+                CreditCard
+                    .builder()
+                    .setSaveCard(true)
+                    .setType(CreditCardTransactionType.AUTHORIZE_CAPTURE)
+                    .setAcquiringBank(AcquiringBankType.BCA)
+                    .setAcquiringChannel(AcquiringChannel.MIGS)
+                    .setInstallment(false, HashMap<AcquiringBankType, MutableList<Int>>())
+                    .setBlackListBins(mutableListOf())
+                    .setWhiteListBins(mutableListOf())
+                    .setSavedTokens(mutableListOf())
+                    .setAuthentication(Authentication.AUTH_3DS)
+                    .build())
+            .setCustomerDetails(
+                CustomerDetails
+                    .builder()
+                    .setFirstName("FirstName")
+                    .setLastName("LastName")
+                    .setEmail("mail@mailbox.com")
+                    .setPhone("08123456789")
+                    .setBillingAddress(
+                        Address
+                            .builder()
+                            .setFirstName("FirstName")
+                            .setLastName("LastName")
+                            .setAddress("address")
+                            .setCity("City")
+                            .setPostalCode("12345")
+                            .setPhone("08123456789")
+                            .setCountryCode("IDR")
+                            .build()
+                    )
+                    .setShippingAddress(
+                        Address
+                            .builder()
+                            .setFirstName("FirstName")
+                            .setLastName("LastName")
+                            .setAddress("address")
+                            .setCity("City")
+                            .setPostalCode("12345")
+                            .setPhone("08123456789")
+                            .setCountryCode("IDR")
+                            .build()
+                    )
+                    .build()
+            )
+            .setBillInfoModel(BillInfoModel("1", "2"))
+            .setEnabledPayments(ArrayList())
+            .setCheckoutExpiry(CheckoutExpiry("", ExpiryTimeUnit.DAY, 1))
+            .setCheckoutItems(ArrayList())
+            .setBcaVa(BcaBankTransferRequestModel(
+                "",
+                BcaBankFreeText(
+                    ArrayList(),
+                    ArrayList()
+                ),
+                "")
+            )
+            .setCustomField1("Custom Field 1")
+            .setCustomField2("Custom Field 2")
+            .setCustomField3("Custom Field 3")
             .build()
 
         MidtransSdk.getInstance().checkoutWithTransaction(checkoutTransaction,
@@ -66,77 +128,6 @@ class MainActivity : AppCompatActivity() {
                     Logger.debug("Failed return error >>> ${throwable.message}")
                 }
             })
-
-        MidtransSdk.getInstance().getPaymentInfo("",
-            object : MidtransCallback<PaymentInfoResponse> {
-                override fun onSuccess(data: PaymentInfoResponse) {
-                    Logger.debug("RESULT SUCCESS PAYMENT INFO")
-                }
-
-                override fun onFailed(throwable: Throwable) {
-                    Logger.debug("Failed return error >>> ${throwable.message}")
-                }
-            })
-
-        val trxRequest = CheckoutTransaction
-            .builder(InstallationHelper.generatedRandomID(this),
-                20000.0)
-            .setCurrency(Currency.IDR)
-            .setGopayCallbackDeepLink("demo://midtrans")
-            .setCreditCard(CreditCard
-                .builder()
-                //.setTokenId("")
-                .setSaveCard(true)
-                .setAcquiringBank(AcquiringBankType.BNI)
-                .setInstallment(false, HashMap<AcquiringBankType, MutableList<Int>>())
-                .setBlackListBins(mutableListOf())
-                .setWhiteListBins(mutableListOf())
-                .setSavedTokens(mutableListOf())
-                .setAcquiringChannel(AcquiringChannel.MIGS)
-                .build())
-            .setCustomerDetails(CustomerDetails("FirstName",
-                "LastName",
-                "email@mail.com",
-                "6281234567890",
-                Address("Firstname",
-                    "LastName",
-                    "mail@mail.com",
-                    "Bogor",
-                    "16710",
-                    "62877",
-                    "idn"),
-                Address("Firstname",
-                    "LastName",
-                    "mail@mail.com",
-                    "Bogor",
-                    "16710",
-                    "62877",
-                    "idn")))
-            .setBillInfoModel(BillInfoModel("1", "2"))
-            .setEnabledPayments(ArrayList())
-            .setCheckoutExpiry(CheckoutExpiry("", ExpiryTimeUnit.DAY, 1))
-            .setCheckoutItems(ArrayList())
-            .setBcaVa(BcaBankTransferRequestModel("",
-                BcaBankFreeText(ArrayList(),
-                    ArrayList()),
-                ""))
-            .setCustomField1("Custom Field 1")
-            .setCustomField2("Custom Field 2")
-            .setCustomField3("Custom Field 3")
-            .build()
-
-        MidtransSdk.getInstance().checkoutTransaction = trxRequest
-        MidtransSdk.getInstance().checkoutWithTransaction(object : MidtransCallback<CheckoutWithTransactionResponse> {
-            override fun onFailed(throwable: Throwable) {
-                Logger.debug("MIDTRANS SDK NEW RETURN ERROR >>> " + throwable.message)
-            }
-
-            override fun onSuccess(data: CheckoutWithTransactionResponse) {
-                Logger.debug("RESULT TOKEN CHECKOUT " + data.token)
-                getTransactionOptions(data.token)
-                registerCard()
-            }
-        })
     }
 
     private fun getTransactionOptions(snapToken: String) {

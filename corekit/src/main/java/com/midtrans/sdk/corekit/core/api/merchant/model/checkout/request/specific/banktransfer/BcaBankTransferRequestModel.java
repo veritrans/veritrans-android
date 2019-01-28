@@ -11,26 +11,36 @@ public class BcaBankTransferRequestModel extends BankTransferRequestModel implem
     @SerializedName("sub_company_code")
     private String subCompanyCode;
 
-    public BcaBankTransferRequestModel(String vaNumber, BcaBankFreeText freeText, String subCompanyCode) {
+    public BcaBankTransferRequestModel(
+            String vaNumber
+    ) {
+        super(vaNumber);
+    }
+
+    public BcaBankTransferRequestModel(
+            String vaNumber,
+            BcaBankFreeText freeText
+    ) {
+        super(vaNumber);
+        this.freeText = freeText;
+    }
+
+    public BcaBankTransferRequestModel(
+            String vaNumber,
+            BcaBankFreeText freeText,
+            String subCompanyCode
+    ) {
         super(vaNumber);
         this.freeText = freeText;
         this.subCompanyCode = subCompanyCode;
-    }
-
-    public BcaBankTransferRequestModel(String vaNumber) {
-        super(vaNumber);
-    }
-
-    public BcaBankTransferRequestModel(String vaNumber, BcaBankFreeText freeText) {
-        super(vaNumber);
-        this.freeText = freeText;
     }
 
     public String getSubCompanyCode() {
         return subCompanyCode;
     }
 
-    public void setSubCompanyCode(String subCompanyCode) {
-        this.subCompanyCode = subCompanyCode;
+    public BcaBankFreeText getFreeText() {
+        return freeText;
     }
+
 }

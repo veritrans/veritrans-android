@@ -1,5 +1,6 @@
 package com.midtrans.sdk.corekit.models.merchant.checkout.request.optional.customer;
 
+import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.customer.Address;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.customer.CustomerDetails;
 
 import org.junit.Before;
@@ -16,10 +17,37 @@ public class CustomerDetailsTest {
     public void test_setup() {
         this.exampleTextPositive = "exampleTextPositive";
         this.exampleTextNegative = "exampleTextNegative";
-        this.customerDetails = new CustomerDetails(exampleTextPositive,
-                exampleTextPositive,
-                exampleTextPositive,
-                exampleTextPositive);
+        this.customerDetails = CustomerDetails
+                .builder()
+                .setFirstName(exampleTextPositive)
+                .setLastName(exampleTextPositive)
+                .setEmail(exampleTextPositive)
+                .setPhone(exampleTextPositive)
+                .setBillingAddress(
+                        Address
+                                .builder()
+                                .setFirstName(exampleTextPositive)
+                                .setLastName(exampleTextPositive)
+                                .setAddress(exampleTextPositive)
+                                .setCity(exampleTextPositive)
+                                .setPostalCode(exampleTextPositive)
+                                .setPhone(exampleTextPositive)
+                                .setCountryCode(exampleTextPositive)
+                                .build()
+                )
+                .setShippingAddress(
+                        Address
+                                .builder()
+                                .setFirstName(exampleTextPositive)
+                                .setLastName(exampleTextPositive)
+                                .setAddress(exampleTextPositive)
+                                .setCity(exampleTextPositive)
+                                .setPostalCode(exampleTextPositive)
+                                .setPhone(exampleTextPositive)
+                                .setCountryCode(exampleTextPositive)
+                                .build()
+                )
+                .build();
     }
 
     @Test

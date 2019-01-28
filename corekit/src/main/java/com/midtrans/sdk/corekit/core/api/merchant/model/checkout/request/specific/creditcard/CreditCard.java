@@ -2,8 +2,6 @@ package com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specif
 
 import com.google.gson.annotations.SerializedName;
 
-import android.text.TextUtils;
-
 import com.midtrans.sdk.corekit.base.enums.AcquiringBankType;
 import com.midtrans.sdk.corekit.base.enums.AcquiringChannel;
 import com.midtrans.sdk.corekit.base.enums.Authentication;
@@ -14,9 +12,6 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import static com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specific.creditcard.AuthenticationType.AUTHENTICATION_TYPE_3DS;
-import static com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specific.creditcard.AuthenticationType.AUTHENTICATION_TYPE_NONE;
-import static com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specific.creditcard.AuthenticationType.AUTHENTICATION_TYPE_RBA;
 import static com.midtrans.sdk.corekit.utilities.Helper.mappingToAcquiringChannel;
 import static com.midtrans.sdk.corekit.utilities.Helper.mappingToBankType;
 import static com.midtrans.sdk.corekit.utilities.Helper.mappingToCreditCardAuthentication;
@@ -84,10 +79,6 @@ public class CreditCard implements Serializable {
         return tokenId;
     }
 
-    public boolean isSecure() {
-        return secure;
-    }
-
     public AcquiringChannel getAcquiringChannel() {
         return mappingToAcquiringChannel(channel);
     }
@@ -117,11 +108,7 @@ public class CreditCard implements Serializable {
     }
 
     public Authentication getAuthentication() {
-        return mappingToCreditCardAuthentication(authentication);
-    }
-
-    public boolean isSecureSet() {
-        return isSecureSet;
+        return mappingToCreditCardAuthentication(authentication, secure);
     }
 
     public boolean isAuthenticationSet() {
@@ -140,9 +127,6 @@ public class CreditCard implements Serializable {
         private Installment installment;
         private String type;
         private String authentication;
-
-        private boolean isSecureSet = false;
-        private boolean isAuthenticationSet = false;
 
         Builder() {
         }
@@ -167,16 +151,13 @@ public class CreditCard implements Serializable {
             return this;
         }
 
-        public Builder setSecure(boolean secure) {
-            if (authentication == null ||
-                    !(authentication.equals(AUTHENTICATION_TYPE_RBA)
-                            || authentication.equals(AUTHENTICATION_TYPE_3DS)
-                            || authentication.equals(AUTHENTICATION_TYPE_NONE))) {
-                if (!isSecureSet) {
-                    this.secure = secure;
-                    isSecureSet = true;
-                }
+        public Builder setAuthentication(Authentication authentication) {
+            if (authentication == null) {
+                this.secure = false;
+            } else {
+                this.secure = authentication == Authentication.AUTH_3DS || authentication == Authentication.AUTH_RBA_SECURE;
             }
+            this.authentication = mappingToCreditCardAuthentication(authentication);
             return this;
         }
 
@@ -194,23 +175,6 @@ public class CreditCard implements Serializable {
                                       Map<AcquiringBankType, List<Integer>> installmentTerms) {
             if (installmentTerms != null) {
                 this.installment = new Installment(installmentRequired, installmentTerms);
-            }
-            return this;
-        }
-
-        public Builder setAuthentication(Authentication auth) {
-            String authentication = mappingToCreditCardAuthentication(auth);
-            if (!TextUtils.isEmpty(authentication)) {
-                if (authentication.equals(AUTHENTICATION_TYPE_RBA)
-                        || authentication.equals(AUTHENTICATION_TYPE_NONE)) {
-                    this.secure = false;
-                } else if (authentication.equals(AUTHENTICATION_TYPE_3DS)) {
-                    this.secure = true;
-                }
-            }
-            if (!isAuthenticationSet) {
-                this.authentication = authentication;
-                isAuthenticationSet = true;
             }
             return this;
         }
