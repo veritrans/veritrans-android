@@ -27,6 +27,7 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.EwalletTelkomse
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.OnlineDebitBcaKlikpayPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.OnlineDebitBriEpayPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.OnlineDebitCimbClicksPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.OnlineDebitDanamonOnlinePaymentResponse;
 import com.midtrans.sdk.corekit.utilities.Helper;
 import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.corekit.utilities.NetworkHelper;
@@ -41,6 +42,8 @@ import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+
+import okhttp3.ResponseBody;
 
 import static org.powermock.api.mockito.PowerMockito.verifyStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
@@ -99,9 +102,9 @@ public class PaymentChargeTest {
     @Mock
     private MidtransCallback<BankTransferVaBniPaymentResponse> callbackBniVaMock;
     @Mock
-    private BankTransferVaOtherPaymentResponse responseOtherVaMock;
+    private ResponseBody responseOtherVaMock;
     @Mock
-    private MidtransCallback<BankTransferVaOtherPaymentResponse> callbackOtherVaMock;
+    private MidtransCallback<ResponseBody> callbackOtherVaMock;
     @Mock
     private CardlessCreditAkulakuPaymentResponse responseAkulakuMock;
     @Mock
@@ -138,6 +141,10 @@ public class PaymentChargeTest {
     private OnlineDebitBriEpayPaymentResponse responseBriEpay;
     @Mock
     private MidtransCallback<OnlineDebitBriEpayPaymentResponse> callbackBriEpay;
+    @Mock
+    private OnlineDebitDanamonOnlinePaymentResponse responseDanamonOnline;
+    @Mock
+    private MidtransCallback<OnlineDebitDanamonOnlinePaymentResponse> callbackDanamonOnline;
     @Mock
     private ConvenienceStoreIndomaretPaymentResponse responseIndomaret;
     @Mock
@@ -200,6 +207,8 @@ public class PaymentChargeTest {
         callbackIndomaret.onFailed(throwable);
         callbackCreditCard.onSuccess(responseCreditCard);
         callbackCreditCard.onFailed(throwable);
+        callbackDanamonOnline.onSuccess(responseDanamonOnline);
+        callbackDanamonOnline.onFailed(throwable);
     }
 
     @Test
@@ -341,7 +350,7 @@ public class PaymentChargeTest {
     @Test
     public void test_paymentUsingOtherVa_positive() {
         bankTransferCharge.paymentUsingBankTransferVaOther(SDKConfigTest.SNAP_TOKEN, customerDetailPayRequest, callbackOtherVaMock);
-        Mockito.verify(callbackOtherVaMock).onSuccess(Matchers.any(BankTransferVaOtherPaymentResponse.class));
+        Mockito.verify(callbackOtherVaMock).onSuccess(Matchers.any(ResponseBody.class));
     }
 
     @Test
@@ -729,6 +738,51 @@ public class PaymentChargeTest {
     public void test_paymentUsingOnlineDebitChargeBcaClickPay_negative_withoutSnapToken() {
         onlineDebitCharge.paymentUsingBcaKlikpay(null, callbackBcaKlikpay);
         Mockito.verify(callbackBcaKlikpay).onFailed(Matchers.any(Throwable.class));
+    }
+
+    @Test
+    public void test_paymentUsingOnlineDebitChargeDanamonOnline_positive() {
+        onlineDebitCharge.paymentUsingDanamonOnline(SDKConfigTest.SNAP_TOKEN, callbackDanamonOnline);
+        Mockito.verify(callbackDanamonOnline).onSuccess(Matchers.any(OnlineDebitDanamonOnlinePaymentResponse.class));
+    }
+
+    @Test
+    public void test_paymentUsingOnlineDebitChargeDanamonOnline_negative() {
+        onlineDebitCharge.paymentUsingDanamonOnline(SDKConfigTest.SNAP_TOKEN, callbackDanamonOnline);
+        Mockito.verify(callbackDanamonOnline).onFailed(Matchers.any(Throwable.class));
+    }
+
+    @Test
+    public void test_paymentUsingOnlineDebitChargeDanamonOnline_negative_callback() {
+        onlineDebitCharge.paymentUsingDanamonOnline(SDKConfigTest.SNAP_TOKEN, callbackDanamonOnline);
+        Mockito.verify(callbackDanamonOnline).onFailed(Matchers.any(Throwable.class));
+    }
+
+    @Test
+    public void test_paymentUsingOnlineDebitChargeDanamonOnline_negative_snapTokenNull() {
+        onlineDebitCharge.paymentUsingDanamonOnline(null, callbackDanamonOnline);
+        verifyStatic(Mockito.times(0));
+        Logger.error(Matchers.anyString(), Matchers.anyString());
+    }
+
+    @Test
+    public void test_paymentUsingOnlineDebitChargeDanamonOnline_negative_callbackNull() {
+        onlineDebitCharge.paymentUsingDanamonOnline(SDKConfigTest.SNAP_TOKEN, null);
+        verifyStatic(Mockito.times(0));
+        Logger.error(Matchers.anyString(), Matchers.anyString());
+    }
+
+    @Test
+    public void test_paymentUsingOnlineDebitChargeDanamonOnline_negative_noNetwork() {
+        when(NetworkHelper.isNetworkAvailable(midtransSdkMock.getContext())).thenReturn(false);
+        onlineDebitCharge.paymentUsingDanamonOnline(SDKConfigTest.SNAP_TOKEN, callbackDanamonOnline);
+        Mockito.verify(callbackDanamonOnline).onFailed(Matchers.any(Throwable.class));
+    }
+
+    @Test
+    public void test_paymentUsingOnlineDebitChargeDanamonOnline_negative_withoutSnapToken() {
+        onlineDebitCharge.paymentUsingDanamonOnline(null, callbackDanamonOnline);
+        Mockito.verify(callbackDanamonOnline).onFailed(Matchers.any(Throwable.class));
     }
 
     @Test

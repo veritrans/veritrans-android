@@ -1,6 +1,6 @@
 package com.midtrans.sdk.corekit.utilities;
 
-import com.midtrans.sdk.corekit.base.model.Currency;
+import com.midtrans.sdk.corekit.base.enums.Currency;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -12,12 +12,27 @@ public class StringHelper {
 
     private static final String TAG = "StringHelper";
 
-    public static String checkCurrency(String currency) {
+    private static final String IDR = "IDR";
+    private static final String SGD = "SGD";
+
+    public static String checkCurrency(Currency currency) {
+        if (currency == null) {
+            return IDR;
+        } else if (currency == Currency.IDR) {
+            return IDR;
+        } else if (currency == Currency.SGD) {
+            return SGD;
+        } else {
+            return IDR;
+        }
+    }
+
+    public static Currency checkCurrency(String currency) {
         if (currency == null) {
             return Currency.IDR;
-        } else if (currency.equalsIgnoreCase(Currency.IDR)) {
+        } else if (currency.equalsIgnoreCase(IDR)) {
             return Currency.IDR;
-        } else if (currency.equalsIgnoreCase(Currency.SGD)) {
+        } else if (currency.equalsIgnoreCase(SGD)) {
             return Currency.SGD;
         } else {
             return Currency.IDR;

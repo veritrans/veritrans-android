@@ -4,7 +4,7 @@ import com.midtrans.sdk.corekit.base.enums.Currency;
 
 import static com.midtrans.sdk.corekit.utilities.StringHelper.checkCurrency;
 
-public class EwalletMandiriEcashPaymentResponse extends BasePaymentResponse {
+public class OnlineDebitDanamonOnlinePaymentResponse extends BasePaymentResponse {
 
     public String getStatusCode() {
         return statusCode;
@@ -22,12 +22,12 @@ public class EwalletMandiriEcashPaymentResponse extends BasePaymentResponse {
         this.statusMessage = statusMessage;
     }
 
-    public String getRedirectionUrl() {
+    public String getRedirectUrl() {
         return redirectUrl;
     }
 
-    public void setRedirectionUrl(String redirectionUrl) {
-        this.redirectUrl = redirectionUrl;
+    public void setRedirectUrl(String redirectUrl){
+        this.redirectUrl = redirectUrl;
     }
 
     public String getTransactionId() {
@@ -82,12 +82,20 @@ public class EwalletMandiriEcashPaymentResponse extends BasePaymentResponse {
         return transactionStatus;
     }
 
-    public String getFinishRedirectUrl() {
-        return finishRedirectUrl;
-    }
-
     public void setTransactionStatus(String transactionStatus) {
         this.transactionStatus = transactionStatus;
+    }
+
+    public String getFraudStatus() {
+        return fraudStatus;
+    }
+
+    public void setFraudStatus(String fraudStatus) {
+        this.fraudStatus = fraudStatus;
+    }
+
+    public String getFinishRedirectUrl() {
+        return finishRedirectUrl;
     }
 
     public void setFinishRedirectUrl(String finishRedirectUrl) {

@@ -2,7 +2,7 @@ package com.midtrans.sdk.corekit.utilities;
 
 import android.util.Log;
 
-import com.midtrans.sdk.corekit.base.model.Currency;
+import com.midtrans.sdk.corekit.base.enums.Currency;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -24,18 +24,17 @@ public class StringHelperTest {
 
     @Test
     public void test_checkCurrency_positive() {
-        Assert.assertEquals(Currency.IDR, StringHelper.checkCurrency(null));
         Assert.assertEquals(Currency.IDR, StringHelper.checkCurrency("unknown"));
-        Assert.assertEquals(Currency.IDR, StringHelper.checkCurrency(Currency.IDR));
-        Assert.assertEquals(Currency.SGD, StringHelper.checkCurrency(Currency.SGD));
+        Assert.assertEquals(Currency.IDR, StringHelper.checkCurrency("IDR"));
+        Assert.assertEquals(Currency.SGD, StringHelper.checkCurrency("SGD"));
     }
 
     @Test
     public void test_checkCurrency_negative() {
-        Assert.assertNotEquals(Currency.SGD, StringHelper.checkCurrency(null));
+        Assert.assertNotEquals(Currency.SGD, StringHelper.checkCurrency("IDR"));
         Assert.assertNotEquals(Currency.SGD, StringHelper.checkCurrency("unknown"));
-        Assert.assertNotEquals(Currency.SGD, StringHelper.checkCurrency(Currency.IDR));
-        Assert.assertNotEquals(Currency.IDR, StringHelper.checkCurrency(Currency.SGD));
+        Assert.assertNotEquals(Currency.SGD, StringHelper.checkCurrency("IDR"));
+        Assert.assertNotEquals(Currency.IDR, StringHelper.checkCurrency("SGD"));
     }
 
     @Test

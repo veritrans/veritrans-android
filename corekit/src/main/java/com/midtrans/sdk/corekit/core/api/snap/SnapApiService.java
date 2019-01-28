@@ -23,8 +23,10 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.EwalletTelkomse
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.OnlineDebitBcaKlikpayPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.OnlineDebitBriEpayPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.OnlineDebitCimbClicksPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.OnlineDebitDanamonOnlinePaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -86,7 +88,7 @@ public interface SnapApiService {
      * @param paymentRequest Payment Request Details.
      */
     @POST(PAYMENT_PAY)
-    Call<BankTransferVaOtherPaymentResponse> paymentBankTransferOther(
+    Call<ResponseBody> paymentBankTransferOther(
             @Path("snap_token") String snapToken,
             @Body PaymentRequest paymentRequest
     );
@@ -204,6 +206,17 @@ public interface SnapApiService {
     Call<CreditCardPaymentResponse> paymentUsingCreditCard(
             @Path("snap_token") String snapToken,
             @Body CreditCardPaymentRequest creditCardPaymentRequest
+    );
+
+    /**
+     * Charge payment using credit card token.
+     *
+     * @param basePaymentRequest Payment Request Details.
+     */
+    @POST(PAYMENT_PAY)
+    Call<OnlineDebitDanamonOnlinePaymentResponse> paymentUsingDanamonOnline(
+            @Path("snap_token") String snapToken,
+            @Body BasePaymentRequest basePaymentRequest
     );
 
     /**

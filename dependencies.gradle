@@ -31,6 +31,12 @@ ext {
     okHttpClientVersion = '1.1.0'
     retrofitVersion = '2.4.0'
 
+    androidxVersion = '1.0.0'
+    androidxMultidexVersion = '2.0.0'
+    androidxConstraintVersion = '1.1.2'
+    androidxEspressoVersion = '3.1.0'
+    androidxRunnerVersion = '1.1.0'
+
     // Dependencies //
     networkLibraries = [
             retrofit            : [group: 'com.squareup.retrofit2', name: 'retrofit', version: retrofitVersion],
@@ -43,6 +49,23 @@ ext {
     supportLibraries = [
             appCompat           : [group: 'com.android.support', name: 'appcompat-v7', version: supportLibVersion],
             constraintLayout    : [group: 'com.android.support.constraint', name: 'constraint-layout', version: constraintVersion],
+    ]
+
+    androidxLibraries = [
+            appCompat           : [group: 'androidx.appcompat', name:'appcompat',version: androidxVersion],
+            cardView            : [group: 'androidx.cardview', name:'cardview-v7',version: androidxVersion],
+            coordinatorLayout   : [group: 'androidx.coordinatorlayout', name:'coordinatorlayout',version: androidxVersion],
+            recyclerview        : [group: 'androidx.recyclerview', name:'recyclerview',version: androidxVersion],
+            supportv13          : [group: 'androidx.legacy:', name:'legacy-support-v13',version: androidxVersion],
+            supportv4           : [group: 'androidx.legacy:', name:'legacy-support-v4',version: androidxVersion],
+            design              : [group: 'com.google.android.material', name:'material',version: androidxVersion],
+            multidex            : [group: 'androidx.multidex', name:'multidex',version: androidxMultidexVersion],
+            constraintLayout    : [group: 'androidx.constraintlayout', name:'constraintlayout', version:androidxConstraintVersion],
+    ]
+
+    androidxTestLibraries = [
+            runner              : [group: 'androidx.test', name: 'runner', version: androidxRunnerVersion],
+            espresso            : [group: 'androidx.test.espresso', name:'espresso-core',version: androidxEspressoVersion],
     ]
 
     testLibraries = [

@@ -1,7 +1,6 @@
 package com.midtrans.sdk.corekit.models.snap.pay.response;
 
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BankTransferVaBcaPaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BasePaymentResponseMethod;
 
 import org.junit.Before;
 import org.junit.Test;
