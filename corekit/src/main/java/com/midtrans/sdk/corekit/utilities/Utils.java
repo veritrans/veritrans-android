@@ -14,6 +14,7 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.midtrans.sdk.corekit.core.Authentication;
 import com.midtrans.sdk.corekit.core.Logger;
 
 import java.text.DateFormat;
@@ -36,10 +37,36 @@ public class Utils {
     public static final String CARD_TYPE_AMEX = "AMEX";
     public static final String CARD_TYPE_JCB = "JCB";
 
+    private static final String AUTHENTICATION_TYPE_RBA = "rba";
+    private static final String AUTHENTICATION_TYPE_3DS = "3ds";
+    private static final String AUTHENTICATION_TYPE_NONE = "none";
+
     private static final long SECOND = 1000;
     private static final long MINUTE = 60 * SECOND;
     private static final long HOUR = 60 * MINUTE;
     private static final long DAY = 24 * HOUR;
+
+    public static Authentication mappingToCreditCardAuthentication(String type, boolean secure) {
+        if (type.equalsIgnoreCase(AUTHENTICATION_TYPE_3DS)) {
+            return Authentication.AUTH_3DS;
+        } else if (type.equalsIgnoreCase(AUTHENTICATION_TYPE_RBA) && secure) {
+            return Authentication.AUTH_RBA_SECURE;
+        } else if (type.equalsIgnoreCase(AUTHENTICATION_TYPE_RBA) && !secure) {
+            return Authentication.AUTH_RBA;
+        } else {
+            return Authentication.AUTH_NONE;
+        }
+    }
+
+    public static String mappingToCreditCardAuthentication(Authentication authentication) {
+        if (authentication == Authentication.AUTH_3DS) {
+            return AUTHENTICATION_TYPE_3DS;
+        } else if (authentication == Authentication.AUTH_RBA || authentication == Authentication.AUTH_RBA_SECURE) {
+            return AUTHENTICATION_TYPE_RBA;
+        } else {
+            return AUTHENTICATION_TYPE_NONE;
+        }
+    }
 
     public static boolean isNetworkAvailable(Context context) {
         try {
