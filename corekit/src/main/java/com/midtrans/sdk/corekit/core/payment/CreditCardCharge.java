@@ -2,13 +2,13 @@ package com.midtrans.sdk.corekit.core.payment;
 
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.core.api.merchant.model.savecard.SaveCardResponse;
-import com.midtrans.sdk.corekit.core.api.midtrans.model.cardregistration.CardRegistrationResponse;
 import com.midtrans.sdk.corekit.core.api.midtrans.model.cardtoken.CardTokenRequest;
+import com.midtrans.sdk.corekit.core.api.midtrans.model.registration.TokenizeResponse;
 import com.midtrans.sdk.corekit.core.api.midtrans.model.tokendetails.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.CustomerDetailPayRequest;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.creditcard.CreditCardPaymentParams;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.creditcard.SaveCardRequest;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CreditCardPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CreditCardResponse;
 import com.midtrans.sdk.corekit.utilities.Constants;
 
 import java.util.List;
@@ -26,7 +26,7 @@ public class CreditCardCharge extends BaseGroupPayment {
     public static void paymentUsingCard(final String snapToken,
                                         final CreditCardPaymentParams creditCardPaymentParams,
                                         final CustomerDetailPayRequest customerDetailPayRequest,
-                                        final MidtransCallback<CreditCardPaymentResponse> callback) {
+                                        final MidtransCallback<CreditCardResponse> callback) {
         if (isValidForNetworkCall(callback)) {
             getSnapApiManager().paymentUsingCreditCard(snapToken,
                     creditCardPaymentParams,
@@ -44,14 +44,14 @@ public class CreditCardCharge extends BaseGroupPayment {
      * @param cardExpYear  credit card expired year
      * @param callback     Credit card registration callback
      */
-    public static void cardRegistration(final String cardNumber,
-                                        final String cardCvv,
-                                        final String cardExpMonth,
-                                        final String cardExpYear,
-                                        final MidtransCallback<CardRegistrationResponse> callback) {
+    public static void tokenizeCard(final String cardNumber,
+                                    final String cardCvv,
+                                    final String cardExpMonth,
+                                    final String cardExpYear,
+                                    final MidtransCallback<TokenizeResponse> callback) {
 
         if (isValidForNetworkCall(callback)) {
-            getMidtransServiceManager().cardRegistration(cardNumber,
+            getMidtransServiceManager().tokenizeCard(cardNumber,
                     cardCvv,
                     cardExpMonth,
                     cardExpYear,
@@ -71,7 +71,7 @@ public class CreditCardCharge extends BaseGroupPayment {
 
         if (isNotEmpty(cardTokenRequest)) {
             if (isValidForNetworkCall(callback)) {
-                getMidtransServiceManager().getToken(cardTokenRequest, callback);
+                getMidtransServiceManager().getCardToken(cardTokenRequest, callback);
             }
         } else {
             callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_INVALID_DATA_SUPPLIED));

@@ -1,7 +1,7 @@
 package com.midtrans.sdk.corekit.core.payment;
 
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.ConvenienceStoreIndomaretPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.IndomaretPaymentResponse;
 
 public class ConvenienceStoreCharge extends BaseGroupPayment {
 
@@ -12,7 +12,7 @@ public class ConvenienceStoreCharge extends BaseGroupPayment {
      * @param callback  for receiving callback from request.
      */
     public static void paymentUsingIndomaret(final String snapToken,
-                                             final MidtransCallback<ConvenienceStoreIndomaretPaymentResponse> callback) {
+                                             final MidtransCallback<IndomaretPaymentResponse> callback) {
         if (isValidForNetworkCall(callback)) {
             getSnapApiManager().paymentUsingIndomaret(snapToken, callback);
         }

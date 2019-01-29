@@ -2,8 +2,8 @@ package com.midtrans.sdk.corekit.core.payment;
 
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.mandiriclick.MandiriClickpayParams;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.DirectDebitKlikBcaResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.DirectDebitMandiriClickpayResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.KlikBcaResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriClickpayResponse;
 
 public class DirectDebitCharge extends BaseGroupPayment {
 
@@ -15,7 +15,7 @@ public class DirectDebitCharge extends BaseGroupPayment {
      */
     public static void paymentUsingKlikBca(final String snapToken,
                                            final String klikBcaUserId,
-                                           final MidtransCallback<DirectDebitKlikBcaResponse> callback) {
+                                           final MidtransCallback<KlikBcaResponse> callback) {
         if (isValidForNetworkCall(callback)) {
             getSnapApiManager().paymentUsingKlikBca(snapToken, klikBcaUserId, callback);
         }
@@ -31,7 +31,7 @@ public class DirectDebitCharge extends BaseGroupPayment {
      */
     public static void paymentUsingMandiriClickPay(final String snapToken,
                                                    final MandiriClickpayParams mandiriClickpayParams,
-                                                   final MidtransCallback<DirectDebitMandiriClickpayResponse> callback) {
+                                                   final MidtransCallback<MandiriClickpayResponse> callback) {
         if (isValidForNetworkCall(callback)) {
             getSnapApiManager().paymentUsingMandiriClickPay(snapToken, mandiriClickpayParams, callback);
         }
