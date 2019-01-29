@@ -134,13 +134,13 @@ public class CardTokenRequestTest {
 
     @Test
     public void test_setSaved_positive() {
-        response.setIsSaved(true);
+        response.setSaved(true);
         assertTrue(response.isSaved());
     }
 
     @Test
     public void test_setSaved_negative() {
-        response.setIsSaved(true);
+        response.setSaved(true);
         assertNotEquals(response.isSaved(), false);
     }
 }

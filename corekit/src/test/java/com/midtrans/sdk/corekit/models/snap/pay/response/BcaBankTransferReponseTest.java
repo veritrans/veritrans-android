@@ -1,6 +1,6 @@
 package com.midtrans.sdk.corekit.models.snap.pay.response;
 
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.IndomaretPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaBankTransferReponse;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -11,8 +11,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 @RunWith(PowerMockRunner.class)
-public class ConvenienceStoreIndomaretResponseTest {
-    private IndomaretPaymentResponse response;
+public class BcaBankTransferReponseTest {
+    private BcaBankTransferReponse response;
     private String exampleTextPositive;
     private String exampleTextNegative;
 
@@ -20,7 +20,7 @@ public class ConvenienceStoreIndomaretResponseTest {
     public void test_setup() {
         this.exampleTextPositive = "exampleTextPositive";
         this.exampleTextNegative = "exampleTextNegative";
-        this.response = new IndomaretPaymentResponse();
+        this.response = new BcaBankTransferReponse();
     }
 
     @Test

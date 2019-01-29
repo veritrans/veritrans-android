@@ -1,6 +1,6 @@
-package com.midtrans.sdk.corekit.models.snap.pay.response;
+package com.midtrans.sdk.corekit.models.snap.pay.response.va;
 
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.IndomaretPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriEcashResponse;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -11,8 +11,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 @RunWith(PowerMockRunner.class)
-public class ConvenienceStoreIndomaretResponseTest {
-    private IndomaretPaymentResponse response;
+public class OtherMandiriEcashResponseTest {
+    private MandiriEcashResponse response;
     private String exampleTextPositive;
     private String exampleTextNegative;
 
@@ -20,7 +20,19 @@ public class ConvenienceStoreIndomaretResponseTest {
     public void test_setup() {
         this.exampleTextPositive = "exampleTextPositive";
         this.exampleTextNegative = "exampleTextNegative";
-        this.response = new IndomaretPaymentResponse();
+        this.response = new MandiriEcashResponse();
+    }
+
+    @Test
+    public void test_setRedirectUrl_positive() {
+        this.response.setRedirectUrl(exampleTextPositive);
+        assertEquals(response.getRedirectUrl(), exampleTextPositive);
+    }
+
+    @Test
+    public void test_setRedirectUrl_negative() {
+        this.response.setRedirectUrl(exampleTextPositive);
+        assertNotEquals(response.getRedirectUrl(), exampleTextNegative);
     }
 
     @Test

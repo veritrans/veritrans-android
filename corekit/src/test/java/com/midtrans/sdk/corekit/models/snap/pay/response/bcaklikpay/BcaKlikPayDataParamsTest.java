@@ -1,6 +1,6 @@
 package com.midtrans.sdk.corekit.models.snap.pay.response.bcaklikpay;
 
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.bcaklikpay.BcaKlikPayDataParamsResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.bcaklikpay.BcaKlikPayDataParams;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +12,7 @@ import static org.junit.Assert.assertNotEquals;
 
 @RunWith(PowerMockRunner.class)
 public class BcaKlikPayDataParamsTest {
-    private BcaKlikPayDataParamsResponse response;
+    private BcaKlikPayDataParams response;
     private String exampleTextPositive;
     private String exampleTextNegative;
 
@@ -20,7 +20,7 @@ public class BcaKlikPayDataParamsTest {
     public void test_setup() {
         this.exampleTextPositive = "exampleTextPositive";
         this.exampleTextNegative = "exampleTextNegative";
-        this.response = new BcaKlikPayDataParamsResponse();
+        this.response = new BcaKlikPayDataParams();
     }
 
     @Test
