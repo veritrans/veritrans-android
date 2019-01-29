@@ -7,6 +7,5 @@ package com.midtrans.sdk.corekit.core;
 public enum Authentication {
     AUTH_3DS,
     AUTH_RBA,
-    AUTH_RBA_SECURE,
     AUTH_NONE,
 }

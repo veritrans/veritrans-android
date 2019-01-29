@@ -107,7 +107,7 @@ public class CreditCard {
     }
 
     public void setAuthentication(Authentication authentication) {
-        this.secure = authentication != null && (authentication == Authentication.AUTH_3DS || authentication == Authentication.AUTH_RBA_SECURE);
+        this.secure = authentication != null && authentication == Authentication.AUTH_3DS;
         this.authentication = mappingToCreditCardAuthentication(authentication);
     }
 
