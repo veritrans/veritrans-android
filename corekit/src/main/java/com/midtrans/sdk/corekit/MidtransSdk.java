@@ -10,8 +10,8 @@ import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.Checkou
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.response.CheckoutWithTransactionResponse;
 import com.midtrans.sdk.corekit.core.api.midtrans.MidtransApiManager;
 import com.midtrans.sdk.corekit.core.api.snap.SnapApiManager;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BasePaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.point.PointResponse;
 import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.corekit.utilities.NetworkHelper;
 
@@ -269,7 +269,7 @@ public class MidtransSdk {
      */
     public void getBanksPoint(final String token,
                               final String cardToken,
-                              final MidtransCallback<BasePaymentResponse> callback) {
+                              final MidtransCallback<PointResponse> callback) {
         if (isValidForNetworkCall(context, callback)) {
             snapApiManager.getBanksPoint(token, cardToken, callback);
         }
