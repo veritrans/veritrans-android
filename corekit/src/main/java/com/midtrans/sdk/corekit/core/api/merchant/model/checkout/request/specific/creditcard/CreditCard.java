@@ -152,11 +152,7 @@ public class CreditCard implements Serializable {
         }
 
         public Builder setAuthentication(Authentication authentication) {
-            if (authentication == null) {
-                this.secure = false;
-            } else {
-                this.secure = authentication == Authentication.AUTH_3DS || authentication == Authentication.AUTH_RBA_SECURE;
-            }
+            this.secure = authentication != null && authentication == Authentication.AUTH_3DS;
             this.authentication = mappingToCreditCardAuthentication(authentication);
             return this;
         }

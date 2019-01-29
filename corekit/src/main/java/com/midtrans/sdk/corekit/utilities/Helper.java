@@ -115,8 +115,6 @@ public class Helper {
     public static Authentication mappingToCreditCardAuthentication(String type, boolean secure) {
         if (type.equalsIgnoreCase(AUTHENTICATION_TYPE_3DS)) {
             return Authentication.AUTH_3DS;
-        } else if (type.equalsIgnoreCase(AUTHENTICATION_TYPE_RBA) && secure) {
-            return Authentication.AUTH_RBA_SECURE;
         } else if (type.equalsIgnoreCase(AUTHENTICATION_TYPE_RBA) && !secure) {
             return Authentication.AUTH_RBA;
         } else {
@@ -127,7 +125,7 @@ public class Helper {
     public static String mappingToCreditCardAuthentication(Authentication authentication) {
         if (authentication == Authentication.AUTH_3DS) {
             return AUTHENTICATION_TYPE_3DS;
-        } else if (authentication == Authentication.AUTH_RBA || authentication == Authentication.AUTH_RBA_SECURE) {
+        } else if (authentication == Authentication.AUTH_RBA) {
             return AUTHENTICATION_TYPE_RBA;
         } else {
             return AUTHENTICATION_TYPE_NONE;
