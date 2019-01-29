@@ -58,6 +58,10 @@ public class CreditCard {
         return saveCard;
     }
 
+    public boolean isSecure() {
+        return secure;
+    }
+
     public void setSaveCard(boolean saveCard) {
         this.saveCard = saveCard;
     }
