@@ -7,24 +7,23 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.gopay.GopayPayme
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.klikbca.KlikBcaPaymentRequest;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.mandiriclick.MandiriClickpayPaymentRequest;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.telkomsel.TelkomselCashPaymentRequest;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BankTransferVaBcaPaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BankTransferVaBniPaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BankTransferVaOtherPaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BankTransferVaPermataPaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BasePaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CardlessCreditAkulakuPaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.ConvenienceStoreIndomaretPaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CreditCardPaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.DirectDebitKlikBcaResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.DirectDebitMandiriClickpayResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.EwalletGopayPaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.EwalletMandiriEcashPaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.EwalletTelkomselCashPaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.OnlineDebitBcaKlikpayPaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.OnlineDebitBriEpayPaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.OnlineDebitCimbClicksPaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.OnlineDebitDanamonOnlinePaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.AkulakuResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaBankTransferReponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaKlikpayResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BniBankTransferResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BriEpayPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CimbClicksResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CreditCardResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.DanamonOnlineResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.GopayResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.IndomaretPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.KlikBcaResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriClickpayResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriEcashResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.PermataBankTransferResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.TelkomselCashResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.point.PointResponse;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -55,7 +54,7 @@ public interface SnapApiService {
      * @param paymentRequest Payment Request Details.
      */
     @POST(PAYMENT_PAY)
-    Call<BankTransferVaBcaPaymentResponse> paymentBankTransferBca(
+    Call<BcaBankTransferReponse> paymentBankTransferBca(
             @Path("snap_token") String snapToken,
             @Body PaymentRequest paymentRequest
     );
@@ -66,7 +65,7 @@ public interface SnapApiService {
      * @param paymentRequest Payment Request Details.
      */
     @POST(PAYMENT_PAY)
-    Call<BankTransferVaBniPaymentResponse> paymentBankTransferBni(
+    Call<BniBankTransferResponse> paymentBankTransferBni(
             @Path("snap_token") String snapToken,
             @Body PaymentRequest paymentRequest
     );
@@ -77,7 +76,7 @@ public interface SnapApiService {
      * @param paymentRequest Payment Request Details.
      */
     @POST(PAYMENT_PAY)
-    Call<BankTransferVaPermataPaymentResponse> paymentBankTransferPermata(
+    Call<PermataBankTransferResponse> paymentBankTransferPermata(
             @Path("snap_token") String snapToken,
             @Body PaymentRequest paymentRequest
     );
@@ -99,7 +98,7 @@ public interface SnapApiService {
      * @param paymentRequest Payment Request Details.
      */
     @POST(PAYMENT_PAY)
-    Call<EwalletMandiriEcashPaymentResponse> paymentMandiriEcash(
+    Call<MandiriEcashResponse> paymentMandiriEcash(
             @Path("snap_token") String snapToken,
             @Body PaymentRequest paymentRequest
     );
@@ -110,8 +109,8 @@ public interface SnapApiService {
      * @param paymentRequest Payment Request Details.
      */
     @POST(PAYMENT_PAY)
-    Call<OnlineDebitCimbClicksPaymentResponse> paymentCimbClicks(@Path("snap_token") String snapToken,
-                                                                 @Body BasePaymentRequest paymentRequest);
+    Call<CimbClicksResponse> paymentCimbClicks(@Path("snap_token") String snapToken,
+                                               @Body BasePaymentRequest paymentRequest);
 
     /**
      * Charge payment using Akulaku.
@@ -119,7 +118,7 @@ public interface SnapApiService {
      * @param paymentRequest Payment Request Details.
      */
     @POST(PAYMENT_PAY)
-    Call<CardlessCreditAkulakuPaymentResponse> paymentAkulaku(
+    Call<AkulakuResponse> paymentAkulaku(
             @Path("snap_token") String snapToken,
             @Body BasePaymentRequest paymentRequest
     );
@@ -130,7 +129,7 @@ public interface SnapApiService {
      * @param paymentRequest Payment Request Details.
      */
     @POST(PAYMENT_PAY)
-    Call<ConvenienceStoreIndomaretPaymentResponse> paymentIndomaret(
+    Call<IndomaretPaymentResponse> paymentIndomaret(
             @Path("snap_token") String snapToken,
             @Body BasePaymentRequest paymentRequest
     );
@@ -141,7 +140,7 @@ public interface SnapApiService {
      * @param paymentRequest Payment Request Details.
      */
     @POST(PAYMENT_PAY)
-    Call<OnlineDebitBriEpayPaymentResponse> paymentBriEpay(
+    Call<BriEpayPaymentResponse> paymentBriEpay(
             @Path("snap_token") String snapToken,
             @Body BasePaymentRequest paymentRequest
     );
@@ -152,7 +151,7 @@ public interface SnapApiService {
      * @param paymentRequest Payment Request Details.
      */
     @POST(PAYMENT_PAY)
-    Call<DirectDebitKlikBcaResponse> paymentKlikBca(
+    Call<KlikBcaResponse> paymentKlikBca(
             @Path("snap_token") String snapToken,
             @Body KlikBcaPaymentRequest paymentRequest
     );
@@ -164,7 +163,7 @@ public interface SnapApiService {
      * @param paymentRequest Payment Request Details.
      */
     @POST(PAYMENT_PAY)
-    Call<DirectDebitMandiriClickpayResponse> paymentMandiriClickpay(
+    Call<MandiriClickpayResponse> paymentMandiriClickpay(
             @Path("snap_token") String snapToken,
             @Body MandiriClickpayPaymentRequest paymentRequest
     );
@@ -176,7 +175,7 @@ public interface SnapApiService {
      * @param paymentRequest Payment Request Details.
      */
     @POST(PAYMENT_PAY)
-    Call<OnlineDebitBcaKlikpayPaymentResponse> paymentBcaClickPay(
+    Call<BcaKlikpayResponse> paymentBcaClickPay(
             @Path("snap_token") String snapToken,
             @Body BasePaymentRequest paymentRequest);
 
@@ -184,15 +183,15 @@ public interface SnapApiService {
      * Charge payment using GoPay
      */
     @POST(PAYMENT_PAY)
-    Call<EwalletGopayPaymentResponse> paymentUsingGoPay(@Path("snap_token") String snapToken,
-                                                        @Body GopayPaymentRequest paymentRequest
+    Call<GopayResponse> paymentUsingGoPay(@Path("snap_token") String snapToken,
+                                          @Body GopayPaymentRequest paymentRequest
     );
 
     /**
      * Charge payment using Telkomsel Cash
      */
     @POST(PAYMENT_PAY)
-    Call<EwalletTelkomselCashPaymentResponse> paymentUsingTelkomselCash(
+    Call<TelkomselCashResponse> paymentUsingTelkomselCash(
             @Path("snap_token") String snapToken,
             @Body TelkomselCashPaymentRequest paymentRequest
     );
@@ -203,7 +202,7 @@ public interface SnapApiService {
      * @param creditCardPaymentRequest Payment Request Details.
      */
     @POST(PAYMENT_PAY)
-    Call<CreditCardPaymentResponse> paymentUsingCreditCard(
+    Call<CreditCardResponse> paymentUsingCreditCard(
             @Path("snap_token") String snapToken,
             @Body CreditCardPaymentRequest creditCardPaymentRequest
     );
@@ -214,7 +213,7 @@ public interface SnapApiService {
      * @param basePaymentRequest Payment Request Details.
      */
     @POST(PAYMENT_PAY)
-    Call<OnlineDebitDanamonOnlinePaymentResponse> paymentUsingDanamonOnline(
+    Call<DanamonOnlineResponse> paymentUsingDanamonOnline(
             @Path("snap_token") String snapToken,
             @Body BasePaymentRequest basePaymentRequest
     );
@@ -226,7 +225,7 @@ public interface SnapApiService {
      * @param cardToken credit card token
      */
     @GET(BANK_POINT)
-    Call<BasePaymentResponse> getBanksPoint(
+    Call<PointResponse> getBanksPoint(
             @Path("snap_token") String snapToken,
             @Path("card_token") String cardToken
     );

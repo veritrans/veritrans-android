@@ -38,9 +38,13 @@ public class CardTokenRequest implements Serializable {
     public CardTokenRequest() {
     }
 
-    public CardTokenRequest(String cardNumber, String cardCVV,
-                            String cardExpiryMonth, String cardExpiryYear, String clientKey) {
-
+    public CardTokenRequest(
+            String cardNumber,
+            String cardCVV,
+            String cardExpiryMonth,
+            String cardExpiryYear,
+            String clientKey
+    ) {
         this.cardNumber = cardNumber;
         this.cardCVV = cardCVV;
         this.cardExpiryMonth = cardExpiryMonth;
@@ -134,7 +138,7 @@ public class CardTokenRequest implements Serializable {
         return isSaved;
     }
 
-    public void setIsSaved(boolean isSaved) {
+    public void setSaved(boolean isSaved) {
         this.isSaved = isSaved;
     }
 
@@ -191,7 +195,6 @@ public class CardTokenRequest implements Serializable {
         this.installment = installment;
     }
 
-
     public int getInstalmentTerm() {
         return instalmentTerm;
     }
@@ -243,4 +246,5 @@ public class CardTokenRequest implements Serializable {
     public void setCurrency(String currency) {
         this.currency = currency;
     }
+
 }
