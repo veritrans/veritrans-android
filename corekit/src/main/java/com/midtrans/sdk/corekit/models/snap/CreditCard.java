@@ -1,7 +1,6 @@
 package com.midtrans.sdk.corekit.models.snap;
 
 import com.google.gson.annotations.SerializedName;
-import com.midtrans.sdk.corekit.core.Authentication;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,13 +105,13 @@ public class CreditCard {
         this.whitelistBins = whiteListBins;
     }
 
-    public Authentication getAuthentication() {
-        return mappingToCreditCardAuthentication(authentication, secure);
+    public String getAuthentication() {
+        return authentication;
     }
 
-    public void setAuthentication(Authentication authentication) {
-        this.secure = authentication != null && authentication == Authentication.AUTH_3DS;
-        this.authentication = mappingToCreditCardAuthentication(authentication);
+    public void setAuthentication(@Authentication.CreditCardAuth String cardAuthentication) {
+        this.secure = cardAuthentication != null && cardAuthentication.equals(Authentication.AUTH_3DS);
+        this.authentication = mappingToCreditCardAuthentication(cardAuthentication, this.secure);
     }
 
     public List<String> getBlacklistBins() {
