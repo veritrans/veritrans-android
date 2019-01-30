@@ -109,7 +109,7 @@ public class CreditCard {
         return authentication;
     }
 
-    public void setAuthentication(@Authentication.CreditCardAuth String cardAuthentication) {
+    public void setAuthentication(@Authentication String cardAuthentication) {
         this.secure = cardAuthentication != null && cardAuthentication.equals(Authentication.AUTH_3DS);
         this.authentication = mappingToCreditCardAuthentication(cardAuthentication, this.secure);
     }
