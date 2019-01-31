@@ -22,6 +22,7 @@ import java.util.Map;
 import static com.midtrans.sdk.corekit.utilities.Constants.MESSAGE_FAILED_CHECKOUT_TRANSACTION_DATA;
 import static com.midtrans.sdk.corekit.utilities.Constants.MESSAGE_GROSS_AMOUNT_NOT_SET;
 import static com.midtrans.sdk.corekit.utilities.Constants.MESSAGE_ORDER_ID_NOT_SET;
+import static com.midtrans.sdk.corekit.utilities.StringHelper.checkCurrency;
 
 public class CheckoutTransaction implements Serializable {
     private static CheckoutTransaction SINGLETON_INSTANCE = null;
@@ -117,7 +118,7 @@ public class CheckoutTransaction implements Serializable {
 
     private CheckoutTransaction(String orderId,
                                 double grossAmount,
-                                Currency currency,
+                                String currency,
                                 String gopayDeepLink,
                                 CreditCard creditCard,
                                 CustomerDetails customerDetails,
@@ -238,7 +239,7 @@ public class CheckoutTransaction implements Serializable {
     public static class Builder {
         private String orderId;
         private double grossAmount;
-        private Currency currency;
+        private String currency;
         private String gopayDeepLink;
         private CreditCard creditCard;
         private CustomerDetails customerDetails;
@@ -263,8 +264,8 @@ public class CheckoutTransaction implements Serializable {
             this.grossAmount = grossAmount;
         }
 
-        public Builder setCurrency(Currency currency) {
-            this.currency = currency;
+        public Builder setCurrency(@Currency String currency) {
+            this.currency = checkCurrency(currency);
             return this;
         }
 
