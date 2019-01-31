@@ -25,7 +25,7 @@ public class TransactionDetails implements Serializable {
 
     public TransactionDetails(String orderId,
                               double grossAmount,
-                              Currency currency) {
+                              @Currency String currency) {
         if (!TextUtils.isEmpty(orderId) && grossAmount > 0) {
             this.orderId = orderId;
             this.grossAmount = grossAmount;
@@ -40,17 +40,17 @@ public class TransactionDetails implements Serializable {
         if (!TextUtils.isEmpty(orderId) && grossAmount > 0) {
             this.orderId = orderId;
             this.grossAmount = grossAmount;
-            this.currency = checkCurrency(Currency.IDR);
+            this.currency = Currency.IDR;
         } else {
             Logger.error(MESSAGE_INVALID_TRANSACTION_DATA);
         }
     }
 
-    public Currency getCurrency() {
-        return checkCurrency(currency);
+    public @Currency String getCurrency() {
+        return currency;
     }
 
-    public void setCurrency(Currency currency) {
+    public void setCurrency(String currency) {
         this.currency = checkCurrency(currency);
     }
 
