@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
 
-public class TokenizeResponse implements Serializable {
+public class CreditCardTokenizeResponse implements Serializable {
 
     @SerializedName("status_code")
     private String statusCode;

@@ -1,6 +1,6 @@
 package com.midtrans.sdk.corekit.models.midtrans.cardregistration;
 
-import com.midtrans.sdk.corekit.core.api.midtrans.model.registration.TokenizeResponse;
+import com.midtrans.sdk.corekit.core.api.midtrans.model.registration.CreditCardTokenizeResponse;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -11,14 +11,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 @RunWith(PowerMockRunner.class)
-public class TokenizeResponseTest {
-    private TokenizeResponse response;
+public class CreditCardTokenizeResponseTest {
+    private CreditCardTokenizeResponse response;
     private String exampleTextPositive;
     private String exampleTextNegative;
 
     @Before
     public void test_setup() {
-        this.response = new TokenizeResponse();
+        this.response = new CreditCardTokenizeResponse();
         this.exampleTextPositive = "exampleTextPositive";
         this.exampleTextNegative = "exampleTextNegative";
     }

@@ -3,7 +3,7 @@ package com.midtrans.sdk.corekit.core.api.midtrans;
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.base.network.BaseServiceManager;
 import com.midtrans.sdk.corekit.core.api.midtrans.model.cardtoken.CardTokenRequest;
-import com.midtrans.sdk.corekit.core.api.midtrans.model.registration.TokenizeResponse;
+import com.midtrans.sdk.corekit.core.api.midtrans.model.registration.CreditCardTokenizeResponse;
 import com.midtrans.sdk.corekit.core.api.midtrans.model.tokendetails.TokenDetailsResponse;
 
 import retrofit2.Call;
@@ -32,11 +32,11 @@ public class MidtransApiManager extends BaseServiceManager {
                              final String cardExpMonth,
                              final String cardExpYear,
                              final String clientKey,
-                             final MidtransCallback<TokenizeResponse> callback) {
+                             final MidtransCallback<CreditCardTokenizeResponse> callback) {
         if (apiService == null) {
             doOnApiServiceUnAvailable(callback);
         } else {
-            Call<TokenizeResponse> call = apiService.tokenizeCard(cardNumber,
+            Call<CreditCardTokenizeResponse> call = apiService.tokenizeCard(cardNumber,
                     cardCvv,
                     cardExpMonth,
                     cardExpYear,

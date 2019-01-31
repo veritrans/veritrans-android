@@ -3,7 +3,7 @@ package com.midtrans.sdk.corekit.core.payment;
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.core.api.merchant.model.savecard.SaveCardResponse;
 import com.midtrans.sdk.corekit.core.api.midtrans.model.cardtoken.CardTokenRequest;
-import com.midtrans.sdk.corekit.core.api.midtrans.model.registration.TokenizeResponse;
+import com.midtrans.sdk.corekit.core.api.midtrans.model.registration.CreditCardTokenizeResponse;
 import com.midtrans.sdk.corekit.core.api.midtrans.model.tokendetails.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.CustomerDetailPayRequest;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.creditcard.CreditCardPaymentParams;
@@ -48,7 +48,7 @@ public class CreditCardCharge extends BaseGroupPayment {
                                     final String cardCvv,
                                     final String cardExpMonth,
                                     final String cardExpYear,
-                                    final MidtransCallback<TokenizeResponse> callback) {
+                                    final MidtransCallback<CreditCardTokenizeResponse> callback) {
 
         if (isValidForNetworkCall(callback)) {
             getMidtransServiceManager().tokenizeCard(cardNumber,

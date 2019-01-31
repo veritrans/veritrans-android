@@ -14,7 +14,7 @@ import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specifi
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specific.banktransfer.BcaBankTransferRequestModel
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specific.creditcard.CreditCard
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.response.CheckoutWithTransactionResponse
-import com.midtrans.sdk.corekit.core.api.midtrans.model.registration.TokenizeResponse
+import com.midtrans.sdk.corekit.core.api.midtrans.model.registration.CreditCardTokenizeResponse
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse
 import com.midtrans.sdk.corekit.core.payment.CreditCardCharge
 import com.midtrans.sdk.corekit.utilities.InstallationHelper
@@ -148,8 +148,8 @@ class MainActivity : AppCompatActivity() {
             "123",
             "12",
             "2019",
-            object : MidtransCallback<TokenizeResponse> {
-                override fun onSuccess(data: TokenizeResponse) {
+            object : MidtransCallback<CreditCardTokenizeResponse> {
+                override fun onSuccess(data: CreditCardTokenizeResponse) {
 
                 }
 
