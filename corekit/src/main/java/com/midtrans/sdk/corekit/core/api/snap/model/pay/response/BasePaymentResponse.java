@@ -221,11 +221,11 @@ public class BasePaymentResponse implements Serializable {
         this.grossAmount = grossAmount;
     }
 
-    public Currency getCurrency() {
-        return checkCurrency(currency);
+    public String getCurrency() {
+        return currency;
     }
 
-    public void setCurrency(Currency currency) {
+    public void setCurrency(String currency) {
         this.currency = checkCurrency(currency);
     }
 
