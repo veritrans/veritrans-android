@@ -45,6 +45,7 @@ dependencies {
     androidTestImplementation testLibraries.runner
     androidTestImplementation testLibraries.espresso
     androidTestImplementation testLibraries.powermockFull
+    implementation androidxLibraries.appCompat
     implementation networkLibraries.okhttp
     implementation networkLibraries.okhttpClient
     implementation networkLibraries.interceptor
