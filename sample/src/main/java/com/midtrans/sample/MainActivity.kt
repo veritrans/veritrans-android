@@ -7,7 +7,6 @@ import com.midtrans.sdk.corekit.base.callback.MidtransCallback
 import com.midtrans.sdk.corekit.base.enums.*
 import com.midtrans.sdk.corekit.base.enums.Currency
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.CheckoutTransaction
-import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.BillInfoModel
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.CheckoutExpiry
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.customer.Address
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.customer.CustomerDetails
@@ -62,7 +61,7 @@ class MainActivity : AppCompatActivity() {
                     .setType(CreditCardTransactionType.AUTHORIZE_CAPTURE)
                     .setAcquiringBank(AcquiringBankType.BCA)
                     .setAcquiringChannel(AcquiringChannel.MIGS)
-                    .setInstallment(false, HashMap<AcquiringBankType, MutableList<Int>>())
+                    .setInstallment(false, HashMap<String, MutableList<Int>>())
                     .setBlackListBins(mutableListOf())
                     .setWhiteListBins(mutableListOf())
                     .setSavedTokens(mutableListOf())
@@ -101,7 +100,6 @@ class MainActivity : AppCompatActivity() {
                     )
                     .build()
             )
-            .setBillInfoModel(BillInfoModel("1", "2"))
             .setEnabledPayments(ArrayList())
             .setCheckoutExpiry(CheckoutExpiry("", ExpiryTimeUnit.DAY, 1))
             .setCheckoutItems(ArrayList())
