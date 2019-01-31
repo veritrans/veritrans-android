@@ -6,28 +6,25 @@ import com.midtrans.sdk.corekit.base.enums.AcquiringBankType;
 import com.midtrans.sdk.corekit.base.enums.AcquiringChannel;
 import com.midtrans.sdk.corekit.base.enums.Authentication;
 import com.midtrans.sdk.corekit.base.enums.CreditCardTransactionType;
-import com.midtrans.sdk.corekit.utilities.Helper;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import static com.midtrans.sdk.corekit.utilities.Helper.mappingToAcquiringChannel;
-import static com.midtrans.sdk.corekit.utilities.Helper.mappingToCreditCardAuthentication;
-import static com.midtrans.sdk.corekit.utilities.Helper.mappingToCreditCardType;
+import static com.midtrans.sdk.corekit.utilities.EnumHelper.mappingToAcquiringChannel;
+import static com.midtrans.sdk.corekit.utilities.EnumHelper.mappingToBankType;
+import static com.midtrans.sdk.corekit.utilities.EnumHelper.mappingToCreditCardAuthentication;
+import static com.midtrans.sdk.corekit.utilities.EnumHelper.mappingToCreditCardType;
 
 public class CreditCard implements Serializable {
 
-    @Deprecated
-    public static final String RBA = "rba";
     private static volatile CreditCard SINGLETON_INSTANCE = null;
+
     @SerializedName("save_card")
     private boolean saveCard;
     @SerializedName("token_id")
     private String tokenId;
     private boolean secure;
-    private String channel;
-    private String acquiringBank;
     @SerializedName("saved_tokens")
     private List<SavedToken> savedTokens;
     @SerializedName("whitelist_bins")
@@ -36,20 +33,30 @@ public class CreditCard implements Serializable {
     private List<String> blacklistBins;
     @SerializedName("installment")
     private Installment installment;
-    private String type;
-    private String authentication;
+    @SerializedName("type")
+    private @CreditCardTransactionType
+    String type;
+    @SerializedName("authentication")
+    private @Authentication
+    String authentication;
+    @SerializedName("channel")
+    @AcquiringChannel
+    private String channel;
+    @SerializedName("bank")
+    @AcquiringBankType
+    private String acquiringBank;
 
     private CreditCard(boolean saveCard,
                        String tokenId,
                        boolean secure,
-                       String channel,
-                       String acquiringBank,
+                       @AcquiringChannel String channel,
+                       @AcquiringBankType String acquiringBank,
                        List<SavedToken> savedTokens,
                        List<String> whitelistBins,
                        List<String> blacklistBins,
                        Installment installment,
-                       String type,
-                       String authentication) {
+                       @CreditCardTransactionType String type,
+                       @Authentication String authentication) {
         this.saveCard = saveCard;
         this.tokenId = tokenId;
         this.secure = secure;
@@ -75,13 +82,14 @@ public class CreditCard implements Serializable {
         return tokenId;
     }
 
-    public @CreditCardTransactionType
+    public @AcquiringChannel
     String getAcquiringChannel() {
         return mappingToAcquiringChannel(channel);
     }
 
-    public String getAcquiringBank() {
-        return acquiringBank;
+    public @AcquiringBankType
+    String getAcquiringBank() {
+        return mappingToBankType(acquiringBank);
     }
 
     public List<SavedToken> getSavedTokens() {
@@ -105,6 +113,10 @@ public class CreditCard implements Serializable {
         return mappingToCreditCardType(type);
     }
 
+    public boolean isSecure() {
+        return secure;
+    }
+
     public @Authentication
     String getAuthentication() {
         return mappingToCreditCardAuthentication(authentication, secure);
@@ -114,13 +126,15 @@ public class CreditCard implements Serializable {
         private boolean saveCard;
         private String tokenId;
         private boolean secure;
-        private String channel;
+        private @AcquiringChannel
+        String channel;
         private String acquiringBank;
         private List<SavedToken> savedTokens;
         private List<String> whitelistBins;
         private List<String> blacklistBins;
         private Installment installment;
-        private String type;
+        private @CreditCardTransactionType
+        String type;
         private String authentication;
 
         public Builder setTokenId(String tokenId) {
@@ -133,8 +147,8 @@ public class CreditCard implements Serializable {
             return this;
         }
 
-        public Builder setAcquiringBank(AcquiringBankType acquiringBank) {
-            this.acquiringBank = Helper.mappingToBankType(acquiringBank);
+        public Builder setAcquiringBank(@AcquiringBankType String acquiringBank) {
+            this.acquiringBank = mappingToBankType(acquiringBank);
             return this;
         }
 
@@ -160,7 +174,7 @@ public class CreditCard implements Serializable {
         }
 
         public Builder setInstallment(boolean installmentRequired,
-                                      Map<AcquiringBankType, List<Integer>> installmentTerms) {
+                                      Map<String, List<Integer>> installmentTerms) {
             if (installmentTerms != null) {
                 this.installment = new Installment(installmentRequired, installmentTerms);
             }

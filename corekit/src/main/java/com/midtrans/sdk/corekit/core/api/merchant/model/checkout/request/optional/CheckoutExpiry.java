@@ -6,13 +6,14 @@ import com.midtrans.sdk.corekit.base.enums.ExpiryTimeUnit;
 
 import java.io.Serializable;
 
-import static com.midtrans.sdk.corekit.utilities.Helper.mappingToExpiryTimeUnit;
+import static com.midtrans.sdk.corekit.utilities.EnumHelper.mappingToExpiryTimeUnit;
 
 public class CheckoutExpiry implements Serializable {
 
     @SerializedName("start_time")
     private String startTime;
     @SerializedName("unit")
+    @ExpiryTimeUnit
     private String unit;
     @SerializedName("duration")
     private int duration;
