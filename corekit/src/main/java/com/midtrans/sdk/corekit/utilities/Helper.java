@@ -7,11 +7,11 @@ import com.midtrans.sdk.corekit.base.enums.AcquiringBankType;
 import com.midtrans.sdk.corekit.base.enums.AcquiringChannel;
 import com.midtrans.sdk.corekit.base.enums.Authentication;
 import com.midtrans.sdk.corekit.base.enums.CreditCardTransactionType;
+import com.midtrans.sdk.corekit.base.enums.ExpiryTimeUnit;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class Helper {
 
@@ -26,25 +26,6 @@ public class Helper {
     private static final long MINUTE = 60 * SECOND;
     private static final long HOUR = 60 * MINUTE;
     private static final long DAY = 24 * HOUR;
-
-    private static final String CIMB = "cimb";
-    private static final String BCA = "bca";
-    private static final String MANDIRI = "mandiri";
-    private static final String BNI = "bni";
-    private static final String BRI = "bri";
-    private static final String DANAMON = "danamon";
-    private static final String MAYBANK = "maybank";
-    private static final String MEGA = "mega";
-    private static final String NONE = "offline";
-
-    private static String AUTHORIZE = "authorize";
-    private static String AUTHORIZE_CAPTURE = "authorize_capture";
-
-    private static final String AUTHENTICATION_TYPE_RBA = "rba";
-    private static final String AUTHENTICATION_TYPE_3DS = "3ds";
-    private static final String AUTHENTICATION_TYPE_NONE = "none";
-
-    private static final String ACQUIRING_CHANNEL_MIGS = "MIGS";
 
     /**
      * Get formatted card number;
@@ -96,116 +77,74 @@ public class Helper {
         }
     }
 
-    public static Map<String, List<Integer>> mappingMapToBankTypeForSet(Map<AcquiringBankType, List<Integer>> installmentMap) {
+    public static Map<String, List<Integer>> mappingMapToBankTypeForSet(Map<String, List<Integer>> installmentMap) {
         HashMap<String, List<Integer>> mappedHash = new HashMap<>();
-        for (Map.Entry<AcquiringBankType, List<Integer>> entry : installmentMap.entrySet()) {
-            mappedHash.put(Objects.requireNonNull(mappingToBankType(entry.getKey())), entry.getValue());
-        }
-        return mappedHash;
-    }
-
-    public static Map<AcquiringBankType, List<Integer>> mappingMapToBankTypeForGet(Map<String, List<Integer>> installmentMap) {
-        HashMap<AcquiringBankType, List<Integer>> mappedHash = new HashMap<>();
         for (Map.Entry<String, List<Integer>> entry : installmentMap.entrySet()) {
-            mappedHash.put(Objects.requireNonNull(mappingToBankType(entry.getKey())), entry.getValue());
+            mappedHash.put(mappingToBankType(entry.getKey()), entry.getValue());
         }
         return mappedHash;
     }
 
-    public static Authentication mappingToCreditCardAuthentication(String type, boolean secure) {
-        if (type.equalsIgnoreCase(AUTHENTICATION_TYPE_3DS)) {
+    public static @ExpiryTimeUnit
+    String mappingToExpiryTimeUnit(@ExpiryTimeUnit String unit) {
+        switch (unit) {
+            case ExpiryTimeUnit.DAY:
+                return ExpiryTimeUnit.DAY;
+            case ExpiryTimeUnit.HOUR:
+                return ExpiryTimeUnit.HOUR;
+            case ExpiryTimeUnit.MINUTE:
+                return ExpiryTimeUnit.MINUTE;
+        }
+        return null;
+    }
+
+    public static @Authentication
+    String mappingToCreditCardAuthentication(@Authentication String authentication, boolean secure) {
+        if (authentication.equalsIgnoreCase(Authentication.AUTH_3DS) && secure) {
             return Authentication.AUTH_3DS;
-        } else if (type.equalsIgnoreCase(AUTHENTICATION_TYPE_RBA) && !secure) {
+        } else if (authentication.equalsIgnoreCase(Authentication.AUTH_RBA) && !secure) {
             return Authentication.AUTH_RBA;
         } else {
             return Authentication.AUTH_NONE;
         }
     }
 
-    public static String mappingToCreditCardAuthentication(Authentication authentication) {
-        if (authentication == Authentication.AUTH_3DS) {
-            return AUTHENTICATION_TYPE_3DS;
-        } else if (authentication == Authentication.AUTH_RBA) {
-            return AUTHENTICATION_TYPE_RBA;
-        } else {
-            return AUTHENTICATION_TYPE_NONE;
-        }
-    }
-
-    public static String mappingToAcquiringChannel(AcquiringChannel acquiringChannel) {
-        if (acquiringChannel == AcquiringChannel.MIGS) {
-            return ACQUIRING_CHANNEL_MIGS;
-        } else {
-            return null;
-        }
-    }
-
-    public static AcquiringChannel mappingToAcquiringChannel(String acquiringChannel) {
-        if (acquiringChannel.equalsIgnoreCase(ACQUIRING_CHANNEL_MIGS)) {
+    public static @AcquiringChannel
+    String mappingToAcquiringChannel(@AcquiringChannel String acquiringChannel) {
+        if (acquiringChannel.equalsIgnoreCase(AcquiringChannel.MIGS) || acquiringChannel == null) {
             return AcquiringChannel.MIGS;
         } else {
             return null;
         }
     }
 
-    public static CreditCardTransactionType mappingToCreditCardType(String type) {
-        if (type.equalsIgnoreCase(AUTHORIZE)) {
+    public static @CreditCardTransactionType
+    String mappingToCreditCardType(@CreditCardTransactionType String type) {
+        if (type.equalsIgnoreCase(CreditCardTransactionType.AUTHORIZE)) {
             return CreditCardTransactionType.AUTHORIZE;
         } else {
             return CreditCardTransactionType.AUTHORIZE_CAPTURE;
         }
     }
 
-    public static String mappingToCreditCardType(CreditCardTransactionType type) {
-        if (type != null && type == CreditCardTransactionType.AUTHORIZE) {
-            return AUTHORIZE;
-        } else {
-            return AUTHORIZE_CAPTURE;
-        }
-    }
-
-    public static String mappingToBankType(AcquiringBankType bank) {
-        if (bank == AcquiringBankType.CIMB) {
-            return CIMB;
-        } else if (bank == AcquiringBankType.BCA) {
-            return BCA;
-        } else if (bank == AcquiringBankType.MANDIRI) {
-            return MANDIRI;
-        } else if (bank == AcquiringBankType.BNI) {
-            return BNI;
-        } else if (bank == AcquiringBankType.BRI) {
-            return BRI;
-        } else if (bank == AcquiringBankType.DANAMON) {
-            return DANAMON;
-        } else if (bank == AcquiringBankType.MAYBANK) {
-            return MAYBANK;
-        } else if (bank == AcquiringBankType.MEGA) {
-            return MEGA;
-        } else if (bank == AcquiringBankType.NONE) {
-            return NONE;
-        } else {
-            return null;
-        }
-    }
-
-    public static AcquiringBankType mappingToBankType(String bank) {
-        if (bank.equalsIgnoreCase(CIMB)) {
+    public static String mappingToBankType(@AcquiringBankType String bank) {
+        if (bank.equals(AcquiringBankType.CIMB)) {
             return AcquiringBankType.CIMB;
-        } else if (bank.equalsIgnoreCase(BCA)) {
+        } else if (bank.equals(AcquiringBankType.BCA)) {
             return AcquiringBankType.BCA;
-        } else if (bank.equalsIgnoreCase(MANDIRI)) {
+        } else if (bank.equals(AcquiringBankType.MANDIRI)) {
             return AcquiringBankType.MANDIRI;
-        } else if (bank.equalsIgnoreCase(BNI)) {
+        } else if (bank.equals(AcquiringBankType.BNI)) {
             return AcquiringBankType.BNI;
-        } else if (bank.equalsIgnoreCase(BRI)) {
+        } else if (bank.equals(AcquiringBankType.BRI)) {
             return AcquiringBankType.BRI;
-        } else if (bank.equalsIgnoreCase(DANAMON)) {
+        } else if (bank.equals(AcquiringBankType.DANAMON)) {
             return AcquiringBankType.DANAMON;
-        } else if (bank.equalsIgnoreCase(MAYBANK)) {
+        } else if (bank.equals(AcquiringBankType.MAYBANK)) {
             return AcquiringBankType.MAYBANK;
-        } else if (bank.equalsIgnoreCase(MEGA)) {
+        } else if (bank.equals(AcquiringBankType.MEGA)) {
             return AcquiringBankType.MEGA;
-        } else if (bank.equalsIgnoreCase(NONE)) {
+        } else if (bank.equals(AcquiringBankType.NONE)) {
             return AcquiringBankType.NONE;
         } else {
             return null;
