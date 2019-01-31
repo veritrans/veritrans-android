@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 
 import static com.midtrans.sdk.corekit.utilities.Helper.mappingToAcquiringChannel;
-import static com.midtrans.sdk.corekit.utilities.Helper.mappingToBankType;
 import static com.midtrans.sdk.corekit.utilities.Helper.mappingToCreditCardAuthentication;
 import static com.midtrans.sdk.corekit.utilities.Helper.mappingToCreditCardType;
 
@@ -39,9 +38,6 @@ public class CreditCard implements Serializable {
     private Installment installment;
     private String type;
     private String authentication;
-
-    private boolean isSecureSet = false;
-    private boolean isAuthenticationSet = false;
 
     private CreditCard(boolean saveCard,
                        String tokenId,
@@ -79,12 +75,13 @@ public class CreditCard implements Serializable {
         return tokenId;
     }
 
-    public AcquiringChannel getAcquiringChannel() {
+    public @CreditCardTransactionType
+    String getAcquiringChannel() {
         return mappingToAcquiringChannel(channel);
     }
 
-    public AcquiringBankType getAcquiringBank() {
-        return mappingToBankType(acquiringBank);
+    public String getAcquiringBank() {
+        return acquiringBank;
     }
 
     public List<SavedToken> getSavedTokens() {
@@ -103,16 +100,14 @@ public class CreditCard implements Serializable {
         return installment;
     }
 
-    public CreditCardTransactionType getType() {
+    public @CreditCardTransactionType
+    String getType() {
         return mappingToCreditCardType(type);
     }
 
-    public Authentication getAuthentication() {
+    public @Authentication
+    String getAuthentication() {
         return mappingToCreditCardAuthentication(authentication, secure);
-    }
-
-    public boolean isAuthenticationSet() {
-        return isAuthenticationSet;
     }
 
     public static class Builder {
@@ -128,15 +123,12 @@ public class CreditCard implements Serializable {
         private String type;
         private String authentication;
 
-        Builder() {
-        }
-
         public Builder setTokenId(String tokenId) {
             this.tokenId = tokenId;
             return this;
         }
 
-        public Builder setAcquiringChannel(AcquiringChannel channel) {
+        public Builder setAcquiringChannel(@AcquiringChannel String channel) {
             this.channel = mappingToAcquiringChannel(channel);
             return this;
         }
@@ -151,9 +143,9 @@ public class CreditCard implements Serializable {
             return this;
         }
 
-        public Builder setAuthentication(Authentication authentication) {
-            this.secure = authentication != null && authentication == Authentication.AUTH_3DS;
-            this.authentication = mappingToCreditCardAuthentication(authentication);
+        public Builder setAuthentication(@Authentication String authentication) {
+            this.secure = authentication != null && authentication.equalsIgnoreCase(Authentication.AUTH_3DS);
+            this.authentication = mappingToCreditCardAuthentication(authentication, secure);
             return this;
         }
 
@@ -162,7 +154,7 @@ public class CreditCard implements Serializable {
             return this;
         }
 
-        public Builder setType(CreditCardTransactionType type) {
+        public Builder setType(@CreditCardTransactionType String type) {
             this.type = mappingToCreditCardType(type);
             return this;
         }
