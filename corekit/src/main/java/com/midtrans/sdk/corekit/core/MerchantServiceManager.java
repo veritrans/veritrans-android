@@ -1,7 +1,6 @@
 package com.midtrans.sdk.corekit.core;
 
 import android.text.TextUtils;
-
 import com.midtrans.sdk.corekit.callback.CheckoutCallback;
 import com.midtrans.sdk.corekit.callback.GetCardCallback;
 import com.midtrans.sdk.corekit.callback.SaveCardCallback;
@@ -9,13 +8,12 @@ import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.SaveCardResponse;
 import com.midtrans.sdk.corekit.models.TokenRequestModel;
 import com.midtrans.sdk.corekit.models.snap.Token;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by ziahaqi on 3/27/18.
@@ -80,6 +78,7 @@ public class MerchantServiceManager extends BaseServiceManager {
 
         if (cardRequests != null) {
             Call<List<SaveCardRequest>> call = service.saveCards(userId, cardRequests);
+            final SaveCardResponse saveCardResponse = new SaveCardResponse();
 
             call.enqueue(new Callback<List<SaveCardRequest>>() {
                 @Override
@@ -97,7 +96,6 @@ public class MerchantServiceManager extends BaseServiceManager {
                     }
 
                     if (isSuccess(response.code(), statusCode)) {
-                        SaveCardResponse saveCardResponse = new SaveCardResponse();
                         saveCardResponse.setCode(response.code());
                         saveCardResponse.setMessage(response.message());
 
@@ -109,7 +107,11 @@ public class MerchantServiceManager extends BaseServiceManager {
 
                 @Override
                 public void onFailure(Call<List<SaveCardRequest>> call, Throwable t) {
-                    doOnResponseFailure(t, callback);
+                    if (t instanceof IllegalStateException) {
+                        callback.onSuccess(saveCardResponse);
+                    } else {
+                        doOnResponseFailure(t, callback);
+                    }
                 }
             });
 
