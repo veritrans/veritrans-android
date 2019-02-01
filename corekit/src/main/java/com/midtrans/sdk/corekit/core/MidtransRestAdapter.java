@@ -102,6 +102,7 @@ public class MidtransRestAdapter {
                 .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
                 .registerTypeAdapter(Date.class, new DateTypeAdapter())
                 .registerTypeAdapter(CreditCardPaymentParams.class, new CustomTypeAdapter())
+                .setLenient()
                 .create();
     }
 
