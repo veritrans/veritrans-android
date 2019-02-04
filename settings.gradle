@@ -1,1 +1,1 @@
-include ':demo', ':corekit', ':sample'
+include ':demo', ':sample', ':uikit', ':corekit'
