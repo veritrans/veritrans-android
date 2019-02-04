@@ -35,18 +35,19 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     testImplementation testLibraries.jUnit
     testImplementation testLibraries.mockitoCore
     testImplementation testLibraries.mockitoInline
     testImplementation testLibraries.powermockApi
     testImplementation testLibraries.powermockModule
     testImplementation testLibraries.powermockRule
-
     androidTestImplementation testLibraries.runner
     androidTestImplementation testLibraries.espresso
     androidTestImplementation testLibraries.powermockFull
-
     implementation androidxLibraries.appCompat
+    implementation project(path:':corekit')
+    api (project(':corekit')) {
+        exclude module: 'appcompat'
+    }
 }
