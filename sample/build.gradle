@@ -70,5 +70,5 @@ dependencies {
     implementation androidxLibraries.appCompat
     implementation androidxLibraries.constraintLayout
     implementation kotlinLibraries.kotlinStd
-    implementation project(path: ':corekit')
+    implementation project(':uikit')
 }

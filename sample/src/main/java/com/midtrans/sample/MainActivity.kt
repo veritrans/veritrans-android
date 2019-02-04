@@ -19,6 +19,7 @@ import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoRespo
 import com.midtrans.sdk.corekit.core.payment.CreditCardCharge
 import com.midtrans.sdk.corekit.utilities.InstallationHelper
 import com.midtrans.sdk.corekit.utilities.Logger
+import com.midtrans.sdk.uikit.MidtransUi
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -27,26 +28,20 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        MidtransSdk
-            .builder(this,
+        MidtransUi
+            .builder(
+                this,
                 BuildConfig.CLIENT_KEY,
-                BuildConfig.BASE_URL)
-            .setLogEnabled(true)
+                BuildConfig.BASE_URL
+            )
             .setEnvironment(if (BuildConfig.DEBUG) {
                 Environment.SANDBOX
             } else {
                 Environment.PRODUCTION
             })
             .setApiRequestTimeOut(60)
-            .build()
-
-        MidtransSdk
-            .builder(this,
-                BuildConfig.CLIENT_KEY,
-                BuildConfig.BASE_URL)
-            .setApiRequestTimeOut(40)
-            .setEnvironment(Environment.SANDBOX)
             .setLogEnabled(true)
+            .setBuiltinStorageEnabled(false)
             .build()
 
         val checkoutTransaction = CheckoutTransaction
