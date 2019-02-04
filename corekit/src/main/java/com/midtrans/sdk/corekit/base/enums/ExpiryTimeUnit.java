@@ -9,7 +9,11 @@ import static com.midtrans.sdk.corekit.base.enums.ExpiryTimeUnit.DAY;
 import static com.midtrans.sdk.corekit.base.enums.ExpiryTimeUnit.HOUR;
 import static com.midtrans.sdk.corekit.base.enums.ExpiryTimeUnit.MINUTE;
 
-@StringDef({MINUTE,HOUR,DAY})
+@StringDef({
+        MINUTE,
+        HOUR,
+        DAY
+})
 @Retention(RetentionPolicy.SOURCE)
 public @interface ExpiryTimeUnit {
     String HOUR = "hour";

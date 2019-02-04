@@ -9,7 +9,11 @@ import static com.midtrans.sdk.corekit.base.enums.Authentication.AUTH_3DS;
 import static com.midtrans.sdk.corekit.base.enums.Authentication.AUTH_NONE;
 import static com.midtrans.sdk.corekit.base.enums.Authentication.AUTH_RBA;
 
-@StringDef({AUTH_3DS, AUTH_RBA, AUTH_NONE})
+@StringDef({
+        AUTH_3DS,
+        AUTH_RBA,
+        AUTH_NONE
+})
 @Retention(RetentionPolicy.SOURCE)
 public @interface Authentication {
     String AUTH_3DS = "3ds";

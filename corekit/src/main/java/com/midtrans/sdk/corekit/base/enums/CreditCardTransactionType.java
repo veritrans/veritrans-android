@@ -8,7 +8,10 @@ import androidx.annotation.StringDef;
 import static com.midtrans.sdk.corekit.base.enums.CreditCardTransactionType.AUTHORIZE;
 import static com.midtrans.sdk.corekit.base.enums.CreditCardTransactionType.AUTHORIZE_CAPTURE;
 
-@StringDef({AUTHORIZE, AUTHORIZE_CAPTURE})
+@StringDef({
+        AUTHORIZE,
+        AUTHORIZE_CAPTURE
+})
 @Retention(RetentionPolicy.SOURCE)
 public @interface CreditCardTransactionType {
     String AUTHORIZE = "authorize";
