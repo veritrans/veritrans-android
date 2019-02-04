@@ -50,6 +50,7 @@ public class MidtransSdk {
      */
     private Environment midtransEnvironment;
     private int apiRequestTimeOut;
+    private boolean isBuiltinStorageEnabled;
     /**
      * Mandatory checkoutWithTransaction property.
      */
@@ -62,13 +63,17 @@ public class MidtransSdk {
                 final String clientId,
                 final String merchantUrl,
                 final Environment environment,
-                final int apiRequestTimeOut) {
+                final int apiRequestTimeOut,
+                final boolean isLogEnabled,
+                final boolean isBuiltinStorageEnabled) {
+        String snapBaseUrl, midtransBaseUrl;
+        Logger.enabled = isLogEnabled;
         this.context = context.getApplicationContext();
         this.merchantClientId = clientId;
         this.merchantBaseUrl = merchantUrl;
         this.midtransEnvironment = environment;
         this.apiRequestTimeOut = apiRequestTimeOut;
-        String snapBaseUrl, midtransBaseUrl;
+        this.isBuiltinStorageEnabled = isBuiltinStorageEnabled;
         if (this.midtransEnvironment == Environment.SANDBOX) {
             snapBaseUrl = SNAP_BASE_URL_SANDBOX;
             midtransBaseUrl = BASE_URL_SANDBOX;
