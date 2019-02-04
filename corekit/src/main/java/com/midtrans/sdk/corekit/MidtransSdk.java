@@ -289,10 +289,11 @@ public class MidtransSdk {
 
         protected String merchantClientId;
         protected Context context;
-        protected boolean enableLog = false;
         protected String merchantBaseUrl;
         protected Environment midtransEnvironment = Environment.SANDBOX;
         protected int apiRequestTimeOut = 30;
+        protected boolean isLogEnabled = false;
+        protected boolean isBuiltinStorageEnabled = true;
 
         private Builder(final Context context,
                         final String clientId,
@@ -305,9 +306,13 @@ public class MidtransSdk {
         /**
          * set Logger visible or not.
          */
-        public Builder setLogEnabled(final boolean logEnabled) {
-            this.enableLog = logEnabled;
-            Logger.enabled = this.enableLog;
+        public Builder setLogEnabled(final boolean isLogEnabled) {
+            this.isLogEnabled = isLogEnabled;
+            return this;
+        }
+
+        public Builder setBuiltinStorageEnabled(final boolean isBuiltinStorageEnabled) {
+            this.isBuiltinStorageEnabled = isBuiltinStorageEnabled;
             return this;
         }
 
