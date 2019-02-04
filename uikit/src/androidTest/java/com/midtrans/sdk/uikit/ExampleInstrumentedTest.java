@@ -1,4 +1,4 @@
-package com.midtrans.uikit;
+package com.midtrans.sdk.uikit;
 
 import android.content.Context;
 import androidx.test.InstrumentationRegistry;
