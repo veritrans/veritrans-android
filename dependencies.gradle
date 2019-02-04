@@ -17,12 +17,12 @@ ext {
 
     // Testing
     androidRunnerVersion = '1.0.2'
-    espressoCoreVersion = '3.0.2'
+    espressoCoreVersion = '3.1.0-alpha4'
     mockitoCoreVersion = '2.21.0'
     mockitoInlineVersion = '2.7.22'
     powerMockVersion = '1.6.2'
     jUnitVersion = '4.12'
-    runnerVersion = '1.0.2'
+    runnerVersion = '1.1.0-alpha4'
     spoonClientVersion = '1.7.1'
     falconSpoonVersion = '1.0.4'
 
@@ -70,8 +70,8 @@ ext {
 
     testLibraries = [
             jUnit               : [group: 'junit', name: 'junit', version: jUnitVersion],
-            runner              : [group: 'com.android.support.test', name: 'runner', version: runnerVersion],
-            espresso            : [group: 'com.android.support.test.espresso', name: 'espresso-core', version: espressoCoreVersion],
+            runner              : [group: 'androidx.test', name: 'runner', version: runnerVersion],
+            espresso            : [group: 'androidx.test.espresso', name: 'espresso-core', version: espressoCoreVersion],
             mockitoCore         : [group: 'org.mockito', name: 'mockito-core', version: mockitoCoreVersion],
             mockitoInline       : [group: 'org.mockito', name: 'mockito-inline', version: mockitoCoreVersion],
             spoon               : [group: 'com.squareup.spoon', name: 'spoon-client', version: spoonClientVersion],

@@ -8,7 +8,7 @@ version = '2.0.0'
 android {
     compileSdkVersion rootProject.sdkVersion
     buildToolsVersion rootProject.buildToolsVersion
-    flavorDimensions("mode")
+    flavorDimensions("default")
     lintOptions {
         abortOnError false
     }
@@ -17,7 +17,7 @@ android {
         targetSdkVersion rootProject.sdkVersion
         versionCode 3
         versionName version
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -42,9 +42,6 @@ dependencies {
     testImplementation testLibraries.powermockApi
     testImplementation testLibraries.powermockModule
     testImplementation testLibraries.powermockRule
-    androidTestImplementation testLibraries.runner
-    androidTestImplementation testLibraries.espresso
-    androidTestImplementation testLibraries.powermockFull
     implementation androidxLibraries.appCompat
     implementation networkLibraries.okhttp
     implementation networkLibraries.okhttpClient
