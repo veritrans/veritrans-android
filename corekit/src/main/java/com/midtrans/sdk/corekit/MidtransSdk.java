@@ -339,11 +339,15 @@ public class MidtransSdk {
          */
         public MidtransSdk build() {
             if (isValidData()) {
-                SINGLETON_INSTANCE = new MidtransSdk(context,
+                SINGLETON_INSTANCE = new MidtransSdk(
+                        context,
                         merchantClientId,
                         merchantBaseUrl,
                         midtransEnvironment,
-                        apiRequestTimeOut);
+                        apiRequestTimeOut,
+                        isLogEnabled,
+                        isBuiltinStorageEnabled
+                );
                 return SINGLETON_INSTANCE;
             } else {
                 Logger.error(ERROR_SDK_IS_NOT_INITIALIZE_PROPERLY);
