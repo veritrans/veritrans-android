@@ -1,7 +1,7 @@
 package com.midtrans.sdk.corekit.core.api.snap;
 
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
-import com.midtrans.sdk.corekit.base.model.PaymentType;
+import com.midtrans.sdk.corekit.base.enums.PaymentType;
 import com.midtrans.sdk.corekit.base.network.BaseServiceManager;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.BasePaymentRequest;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.CustomerDetailPayRequest;
