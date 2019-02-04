@@ -206,6 +206,15 @@ public class MidtransSdk {
     }
 
     /**
+     * Returns value of builtinstorage
+     *
+     * @return builtinstorage value
+     */
+    public boolean isBuiltinStorageEnabled() {
+        return isBuiltinStorageEnabled;
+    }
+
+    /**
      * Returns value of transaction request.
      *
      * @return transaction request object.
