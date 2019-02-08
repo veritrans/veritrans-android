@@ -1,11 +1,11 @@
 package com.midtrans.sdk.corekit.models.snap;
 
-import android.text.TextUtils;
-
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.midtrans.sdk.corekit.utilities.Utils.mappingToCreditCardAuthentication;
 
 /**
  * Created by ziahaqi on 8/5/16.
@@ -13,9 +13,6 @@ import java.util.List;
 public class CreditCard {
 
     public static final String MIGS = "migs";
-    public static final String AUTHENTICATION_TYPE_RBA = "rba";
-    public static final String AUTHENTICATION_TYPE_3DS = "3ds";
-    public static final String AUTHENTICATION_TYPE_NONE = "none";
 
     @Deprecated
     public static final String RBA = "rba";
@@ -60,22 +57,12 @@ public class CreditCard {
         return saveCard;
     }
 
-    public void setSaveCard(boolean saveCard) {
-        this.saveCard = saveCard;
-    }
-
     public boolean isSecure() {
         return secure;
     }
 
-    public void setSecure(boolean secure) {
-        if (authentication == null ||
-                !(authentication.equals(AUTHENTICATION_TYPE_RBA)
-                        || authentication.equals(AUTHENTICATION_TYPE_3DS)
-                        || authentication.equals(AUTHENTICATION_TYPE_NONE))) {
-
-            this.secure = secure;
-        }
+    public void setSaveCard(boolean saveCard) {
+        this.saveCard = saveCard;
     }
 
     public String getTokenId() {
@@ -122,16 +109,9 @@ public class CreditCard {
         return authentication;
     }
 
-    public void setAuthentication(String authentication) {
-        if (!TextUtils.isEmpty(authentication)) {
-            if (authentication.equals(AUTHENTICATION_TYPE_RBA)
-                    || authentication.equals(AUTHENTICATION_TYPE_NONE)) {
-                this.secure = false;
-            } else if (authentication.equals(AUTHENTICATION_TYPE_3DS)) {
-                this.secure = true;
-            }
-        }
-        this.authentication = authentication;
+    public void setAuthentication(@Authentication String cardAuthentication) {
+        this.secure = cardAuthentication != null && cardAuthentication.equals(Authentication.AUTH_3DS);
+        this.authentication = mappingToCreditCardAuthentication(cardAuthentication, this.secure);
     }
 
     public List<String> getBlacklistBins() {
