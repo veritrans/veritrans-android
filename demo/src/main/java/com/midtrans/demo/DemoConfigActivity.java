@@ -3053,12 +3053,12 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         if (normalSelection.isChecked()) {
             cardClickType = getString(R.string.card_click_type_none);
             if (secureEnabledSelection.isChecked()) {
-                creditCard.setAuthentication(CreditCard.AUTHENTICATION_TYPE_3DS);
+                creditCard.setAuthentication(Authentication.AUTH_3DS);
             } else if (secureRbaWith3dsSelection.isChecked()
                     || secureRbaNon3dsSelection.isChecked()) {
-                creditCard.setAuthentication(CreditCard.AUTHENTICATION_TYPE_RBA);
+                creditCard.setAuthentication(Authentication.AUTH_RBA);
             } else {
-                creditCard.setAuthentication(CreditCard.AUTHENTICATION_TYPE_NONE);
+                creditCard.setAuthentication(Authentication.AUTH_NONE);
             }
 
             transactionRequestNew.setCreditCard(creditCard);
@@ -3070,7 +3070,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         } else {
             cardClickType = getString(R.string.card_click_type_one_click);
             creditCard.setSaveCard(true);
-            creditCard.setAuthentication(CreditCard.AUTHENTICATION_TYPE_3DS);
+            creditCard.setAuthentication(Authentication.AUTH_3DS);
             transactionRequestNew.setCreditCard(creditCard);
         }
 
@@ -3096,12 +3096,12 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         MidtransSDK.getInstance().setUIKitCustomSetting(uiKitCustomSetting);
 
         if (secureEnabledSelection.isChecked()) {
-            creditCard.setAuthentication(CreditCard.AUTHENTICATION_TYPE_3DS);
+            creditCard.setAuthentication(Authentication.AUTH_3DS);
 
             // this method being deprecated, please use creditCard.setAuthentication() method
             transactionRequestNew.setCardPaymentInfo(cardClickType, true);
         } else {
-            creditCard.setAuthentication(CreditCard.AUTHENTICATION_TYPE_NONE);
+            creditCard.setAuthentication(Authentication.AUTH_NONE);
 
             // this method being deprecated, please use creditCard.setAuthentication() method
             transactionRequestNew.setCardPaymentInfo(cardClickType, false);
@@ -3158,10 +3158,10 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         // if rba activated
         if (secureRbaWith3dsSelection.isChecked()) {
             userDetail.setEmail("secure_email_rba@example.com");
-            creditCard.setAuthentication(CreditCard.AUTHENTICATION_TYPE_RBA);
+            creditCard.setAuthentication(Authentication.AUTH_RBA);
         } else if (secureRbaNon3dsSelection.isChecked()) {
             userDetail.setEmail("not_secure_email_rba@example.com");
-            creditCard.setAuthentication(CreditCard.AUTHENTICATION_TYPE_RBA);
+            creditCard.setAuthentication(Authentication.AUTH_RBA);
         }
         LocalDataHandler.saveObject(getString(R.string.user_details), userDetail);
         if (customPermataVaEnabledSelection.isChecked()) {
