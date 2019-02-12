@@ -2,6 +2,7 @@ package com.midtrans.sdk.uikit;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.text.TextUtils;
 
 import com.midtrans.sdk.corekit.MidtransSdk;
@@ -11,6 +12,7 @@ import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.Checkou
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.PaymentResponse;
 import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.uikit.base.callback.PaymentResult;
+import com.midtrans.sdk.uikit.view.UserDetailActivity;
 
 import androidx.annotation.NonNull;
 
@@ -196,7 +198,7 @@ public class MidtransKit {
             @NonNull CheckoutTransaction checkoutTransaction,
             @NonNull PaymentResult<PaymentResponse> callback
     ) {
-
+        context.startActivity(new Intent(context, UserDetailActivity.class));
     }
 
     public void startPaymentUiWithToken(

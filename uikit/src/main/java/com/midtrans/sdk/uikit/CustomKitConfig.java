@@ -1,5 +1,7 @@
 package com.midtrans.sdk.uikit;
 
+import com.midtrans.sdk.uikit.base.theme.BaseColorTheme;
+
 public class CustomKitConfig {
 
     private String defaultText;
@@ -11,6 +13,7 @@ public class CustomKitConfig {
     private boolean enableAutoReadSms;
     private boolean skipCustomerDetailsPages;
     private boolean showEmailInCcForm;
+    private BaseColorTheme baseColorTheme;
 
     CustomKitConfig(
             String defaultText,
@@ -21,7 +24,8 @@ public class CustomKitConfig {
             boolean enabledAnimation,
             boolean enableAutoReadSms,
             boolean skipCustomerDetailsPages,
-            boolean showEmailInCcForm
+            boolean showEmailInCcForm,
+            BaseColorTheme baseColorTheme
     ) {
         this.defaultText = defaultText;
         this.boldText = boldText;
@@ -70,6 +74,10 @@ public class CustomKitConfig {
         return showEmailInCcForm;
     }
 
+    public BaseColorTheme getColorTheme() {
+        return baseColorTheme;
+    }
+
     public static Builder builder() {
         return new Builder();
     }
@@ -84,6 +92,7 @@ public class CustomKitConfig {
         private boolean enableAutoReadSms = false;
         private boolean skipCustomerDetailsPages = false;
         private boolean showEmailInCcForm = false;
+        private BaseColorTheme baseColorTheme;
 
         public Builder setDefaultText(String defaultText) {
             this.defaultText = defaultText;
@@ -130,6 +139,11 @@ public class CustomKitConfig {
             return this;
         }
 
+        public Builder setColorTheme(BaseColorTheme baseColorTheme) {
+            this.baseColorTheme = baseColorTheme;
+            return this;
+        }
+
         public CustomKitConfig build() {
             return new CustomKitConfig(
                     this.defaultText,
@@ -140,7 +154,8 @@ public class CustomKitConfig {
                     this.enabledAnimation,
                     this.enableAutoReadSms,
                     this.skipCustomerDetailsPages,
-                    this.showEmailInCcForm
+                    this.showEmailInCcForm,
+                    this.baseColorTheme
             );
         }
     }
