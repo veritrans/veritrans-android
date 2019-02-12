@@ -42,11 +42,18 @@ dependencies {
     testImplementation testLibraries.powermockApi
     testImplementation testLibraries.powermockModule
     testImplementation testLibraries.powermockRule
+
     androidTestImplementation testLibraries.runner
     androidTestImplementation testLibraries.espresso
     androidTestImplementation testLibraries.powermockFull
+
     implementation androidxLibraries.appCompat
-    implementation project(path:':corekit')
+    implementation 'ru.rambler.android:swipe-layout:1.0.14'
+    implementation 'me.saket:better-link-movement-method:1.2'
+    implementation 'com.github.stfalcon:smsverifycatcher:0.3.1'
+    implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
+    implementation 'com.koushikdutta.ion:ion:2.2.1'
+
     api (project(':corekit')) {
         exclude module: 'appcompat'
     }
