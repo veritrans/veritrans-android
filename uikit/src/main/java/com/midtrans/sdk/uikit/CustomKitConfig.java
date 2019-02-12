@@ -1,6 +1,6 @@
 package com.midtrans.sdk.uikit;
 
-public class KitSetting {
+public class CustomKitConfig {
 
     private String defaultText;
     private String boldText;
@@ -12,7 +12,7 @@ public class KitSetting {
     private boolean skipCustomerDetailsPages;
     private boolean showEmailInCcForm;
 
-    KitSetting(
+    CustomKitConfig(
             String defaultText,
             String boldText,
             String semiBoldText,
@@ -130,8 +130,8 @@ public class KitSetting {
             return this;
         }
 
-        public KitSetting build() {
-            return new KitSetting(
+        public CustomKitConfig build() {
+            return new CustomKitConfig(
                     this.defaultText,
                     this.boldText,
                     this.semiBoldText,
