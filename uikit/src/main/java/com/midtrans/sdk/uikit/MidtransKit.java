@@ -37,7 +37,7 @@ public class MidtransKit {
     private int apiRequestTimeOut;
     private boolean isBuiltinStorageEnabled;
     private boolean isLogEnabled;
-    private KitSetting kitSetting;
+    private CustomKitConfig customKitConfig;
 
     MidtransKit(
             Context context,
@@ -47,7 +47,7 @@ public class MidtransKit {
             int apiRequestTimeOut,
             boolean isBuiltinStorageEnabled,
             boolean isLogEnabled,
-            KitSetting kitSetting
+            CustomKitConfig customKitConfig
     ) {
         this.context = context;
         this.merchantClientId = merchantClientId;
@@ -56,7 +56,7 @@ public class MidtransKit {
         this.apiRequestTimeOut = apiRequestTimeOut;
         this.isBuiltinStorageEnabled = isBuiltinStorageEnabled;
         this.isLogEnabled = isLogEnabled;
-        this.kitSetting = kitSetting;
+        this.customKitConfig = customKitConfig;
         initMidtransSdk();
     }
 
@@ -171,12 +171,12 @@ public class MidtransKit {
     }
 
     /**
-     * Returns value of KitSetting
+     * Returns value of CustomKitConfig
      *
-     * @return object for kitSetting
+     * @return object for customKitConfig
      */
-    public KitSetting getKitSetting() {
-        return kitSetting;
+    public CustomKitConfig getCustomKitConfig() {
+        return customKitConfig;
     }
 
     /**
@@ -247,7 +247,7 @@ public class MidtransKit {
         private int apiRequestTimeOut = API_TIMEOUT_DEFAULT;
         private boolean isLogEnabled = false;
         private boolean isBuiltinStorageEnabled = true;
-        private KitSetting kitSetting;
+        private CustomKitConfig customKitConfig;
 
         private Builder(
                 Context context,
@@ -291,8 +291,8 @@ public class MidtransKit {
         /**
          * set Custom Kit Setting.
          */
-        public Builder setKitSetting(KitSetting kitSetting) {
-            this.kitSetting = kitSetting;
+        public Builder setCustomKitConfig(CustomKitConfig customKitConfig) {
+            this.customKitConfig = customKitConfig;
             return this;
         }
 
@@ -311,7 +311,7 @@ public class MidtransKit {
                         apiRequestTimeOut,
                         isBuiltinStorageEnabled,
                         isLogEnabled,
-                        kitSetting
+                        customKitConfig
                 );
                 return SINGLETON_INSTANCE;
             } else {
