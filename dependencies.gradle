@@ -46,11 +46,6 @@ ext {
             interceptor         : [group: 'com.squareup.okhttp3', name: 'logging-interceptor', version: okHttpVersion],
     ]
 
-    supportLibraries = [
-            appCompat           : [group: 'com.android.support', name: 'appcompat-v7', version: supportLibVersion],
-            constraintLayout    : [group: 'com.android.support.constraint', name: 'constraint-layout', version: constraintVersion],
-    ]
-
     androidxLibraries = [
             appCompat           : [group: 'androidx.appcompat', name:'appcompat',version: androidxVersion],
             cardView            : [group: 'androidx.cardview', name:'cardview-v7',version: androidxVersion],
