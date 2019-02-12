@@ -27,12 +27,12 @@ public class MidtransApiManager extends BaseServiceManager {
      * @param cardExpYear  credit card expired year
      * @param callback     card transaction callback
      */
-    public void tokenizeCard(final String cardNumber,
-                             final String cardCvv,
-                             final String cardExpMonth,
-                             final String cardExpYear,
-                             final String clientKey,
-                             final MidtransCallback<CreditCardTokenizeResponse> callback) {
+    public void tokenizeCard(String cardNumber,
+                             String cardCvv,
+                             String cardExpMonth,
+                             String cardExpYear,
+                             String clientKey,
+                             MidtransCallback<CreditCardTokenizeResponse> callback) {
         if (apiService == null) {
             doOnApiServiceUnAvailable(callback);
         } else {
@@ -51,8 +51,8 @@ public class MidtransApiManager extends BaseServiceManager {
      * @param cardTokenRequest information about credit card.
      * @param callback         get creditcard token callback
      */
-    public void getCardToken(final CardTokenRequest cardTokenRequest,
-                             final MidtransCallback<TokenDetailsResponse> callback) {
+    public void getCardToken(CardTokenRequest cardTokenRequest,
+                             MidtransCallback<TokenDetailsResponse> callback) {
 
         if (apiService == null) {
             doOnApiServiceUnAvailable(callback);
