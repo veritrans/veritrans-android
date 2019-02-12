@@ -30,8 +30,8 @@ public class GopayResponse extends BasePaymentResponse {
         return gopayExpiration;
     }
 
-    public void setGopayEpiration(String gopayEpiration) {
-        this.gopayExpiration = gopayEpiration;
+    public void setGopayExpiration(String gopayExpiration) {
+        this.gopayExpiration = gopayExpiration;
     }
 
     public String getGopayExpirationRaw() {
