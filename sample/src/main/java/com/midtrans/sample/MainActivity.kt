@@ -23,6 +23,7 @@ import com.midtrans.sdk.corekit.utilities.Logger
 import com.midtrans.sdk.uikit.CustomKitConfig
 import com.midtrans.sdk.uikit.MidtransKit
 import com.midtrans.sdk.uikit.base.callback.PaymentResult
+import com.midtrans.sdk.uikit.base.theme.CustomColorTheme
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -55,6 +56,7 @@ class MainActivity : AppCompatActivity() {
                     .setShowPaymentStatus(false)
                     .setShowEmailInCcForm(false)
                     .setEnabledAnimation(true)
+                    .setColorTheme(CustomColorTheme("#0e4e95", "#0b3b70", "#3e71aa"))
                     .build()
             )
             .build()
