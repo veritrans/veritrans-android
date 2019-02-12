@@ -15,11 +15,14 @@ import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specifi
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specific.creditcard.CreditCard
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.response.CheckoutWithTransactionResponse
 import com.midtrans.sdk.corekit.core.api.midtrans.model.registration.CreditCardTokenizeResponse
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.PaymentResponse
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse
 import com.midtrans.sdk.corekit.core.payment.CreditCardCharge
 import com.midtrans.sdk.corekit.utilities.InstallationHelper
 import com.midtrans.sdk.corekit.utilities.Logger
-import com.midtrans.sdk.uikit.MidtransUi
+import com.midtrans.sdk.uikit.CustomKitConfig
+import com.midtrans.sdk.uikit.MidtransKit
+import com.midtrans.sdk.uikit.base.callback.PaymentResult
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -28,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        MidtransUi
+        MidtransKit
             .builder(
                 this,
                 BuildConfig.CLIENT_KEY,
@@ -42,11 +45,20 @@ class MainActivity : AppCompatActivity() {
             .setApiRequestTimeOut(60)
             .setLogEnabled(true)
             .setBuiltinStorageEnabled(false)
+            .setCustomKitConfig(
+                CustomKitConfig
+                    .builder()
+                    .setShowEmailInCcForm(false)
+                    .setEnabledAnimation(false)
+                    .build()
+            )
             .build()
 
         val checkoutTransaction = CheckoutTransaction
-            .builder(InstallationHelper.generatedRandomID(this),
-                20000.0)
+            .builder(
+                InstallationHelper.generatedRandomID(this),
+                20000.0
+            )
             .setCurrency(Currency.IDR)
             .setGopayCallbackDeepLink("demo://midtrans")
             .setCreditCard(
@@ -111,6 +123,24 @@ class MainActivity : AppCompatActivity() {
             .setCustomField3("Custom Field 3")
             .build()
 
+        MidtransKit
+            .getInstance()
+            .startUiPaymentWithTransaction(
+                this,
+                checkoutTransaction,
+                object : PaymentResult<PaymentResponse> {
+                    override fun onPaymentFinished(statusMessage: String?, paymentType: String?, response: PaymentResponse?) {
+
+                    }
+
+                    override fun onFailed(throwable: Throwable?) {
+
+                    }
+                }
+            )
+    }
+
+    private fun checkout(checkoutTransaction: CheckoutTransaction) {
         MidtransSdk.getInstance().checkoutWithTransaction(checkoutTransaction,
             object : MidtransCallback<CheckoutWithTransactionResponse> {
                 override fun onSuccess(data: CheckoutWithTransactionResponse) {
