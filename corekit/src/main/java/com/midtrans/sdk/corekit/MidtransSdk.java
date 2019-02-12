@@ -10,8 +10,8 @@ import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.Checkou
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.response.CheckoutWithTransactionResponse;
 import com.midtrans.sdk.corekit.core.api.midtrans.MidtransApiManager;
 import com.midtrans.sdk.corekit.core.api.snap.SnapApiManager;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BasePaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.point.PointResponse;
 import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.corekit.utilities.NetworkHelper;
 
@@ -28,6 +28,7 @@ public class MidtransSdk {
      * Instance variable.
      */
     private static volatile MidtransSdk SINGLETON_INSTANCE = null;
+    private static final int API_TIMEOUT_DEFAULT = 30;
     private final String BASE_URL_SANDBOX = "https://api.sandbox.midtrans.com/v2/";
     private final String BASE_URL_PRODUCTION = "https://api.midtrans.com/v2/";
     private final String SNAP_BASE_URL_SANDBOX = "https://app.sandbox.midtrans.com/snap/";
@@ -50,6 +51,7 @@ public class MidtransSdk {
      */
     private Environment midtransEnvironment;
     private int apiRequestTimeOut;
+    private boolean isBuiltinStorageEnabled;
     /**
      * Mandatory checkoutWithTransaction property.
      */
@@ -58,17 +60,23 @@ public class MidtransSdk {
     private SnapApiManager snapApiManager;
     private MidtransApiManager midtransApiManager;
 
-    MidtransSdk(final Context context,
-                final String clientId,
-                final String merchantUrl,
-                final Environment environment,
-                final int apiRequestTimeOut) {
+    MidtransSdk(
+            Context context,
+            String clientId,
+            String merchantUrl,
+            Environment environment,
+            int apiRequestTimeOut,
+            boolean isLogEnabled,
+            boolean isBuiltinStorageEnabled
+    ) {
+        String snapBaseUrl, midtransBaseUrl;
+        Logger.enabled = isLogEnabled;
         this.context = context.getApplicationContext();
         this.merchantClientId = clientId;
         this.merchantBaseUrl = merchantUrl;
         this.midtransEnvironment = environment;
         this.apiRequestTimeOut = apiRequestTimeOut;
-        String snapBaseUrl, midtransBaseUrl;
+        this.isBuiltinStorageEnabled = isBuiltinStorageEnabled;
         if (this.midtransEnvironment == Environment.SANDBOX) {
             snapBaseUrl = SNAP_BASE_URL_SANDBOX;
             midtransBaseUrl = BASE_URL_SANDBOX;
@@ -89,13 +97,16 @@ public class MidtransSdk {
      * @param merchantUrl MerchantUrl or Merchant Base Url, mandatory not null.
      * @return Builder.
      */
-    public static Builder builder(final Context context,
-                                  final String clientId,
-                                  final String merchantUrl) {
-
-        return new Builder(context,
+    public static Builder builder(
+            final Context context,
+            final String clientId,
+            final String merchantUrl
+    ) {
+        return new Builder(
+                context,
                 clientId,
-                merchantUrl);
+                merchantUrl
+        );
     }
 
     /**
@@ -104,48 +115,40 @@ public class MidtransSdk {
      * @return MidtransSdk instance.
      */
     public synchronized static MidtransSdk getInstance() {
-        if (SINGLETON_INSTANCE == null) {
-            doOnSdkNotInitialize();
+        if (doCheckSdkInitialization(SINGLETON_INSTANCE)) {
+            return SINGLETON_INSTANCE;
         }
-        return SINGLETON_INSTANCE;
+        return null;
     }
 
     /**
      * @return snap api manager
      */
     public SnapApiManager getSnapApiManager() {
-        if (snapApiManager == null) {
-            doOnSdkNotInitialize();
+        if (doCheckSdkInitialization(snapApiManager)) {
+            return snapApiManager;
         }
-        return snapApiManager;
-    }
-
-    public void setSnapApiManager(final SnapApiManager snapApiManager) {
-        this.snapApiManager = snapApiManager;
+        return null;
     }
 
     /**
      * @return midtrans service manager
      */
     public MidtransApiManager getMidtransApiManager() {
-        if (midtransApiManager == null) {
-            doOnSdkNotInitialize();
+        if (doCheckSdkInitialization(midtransApiManager)) {
+            return midtransApiManager;
         }
-        return midtransApiManager;
+        return null;
     }
 
     /**
      * @return merchant api manager
      */
     public MerchantApiManager getMerchantApiManager() {
-        if (merchantApiManager == null) {
-            doOnSdkNotInitialize();
+        if (doCheckSdkInitialization(merchantApiManager)) {
+            return merchantApiManager;
         }
-        return merchantApiManager;
-    }
-
-    public void setMerchantApiManager(final MerchantApiManager merchantApiManager) {
-        this.merchantApiManager = merchantApiManager;
+        return null;
     }
 
     /**
@@ -154,10 +157,10 @@ public class MidtransSdk {
      * @return merchant url value.
      */
     public Environment getEnvironment() {
-        if (midtransEnvironment == null) {
-            doOnSdkNotInitialize();
+        if (doCheckSdkInitialization(midtransEnvironment)) {
+            return midtransEnvironment;
         }
-        return midtransEnvironment;
+        return null;
     }
 
     /**
@@ -166,10 +169,10 @@ public class MidtransSdk {
      * @return context value.
      */
     public Context getContext() {
-        if (context == null) {
-            doOnSdkNotInitialize();
+        if (doCheckSdkInitialization(context)) {
+            return context;
         }
-        return context;
+        return null;
     }
 
     /**
@@ -178,10 +181,10 @@ public class MidtransSdk {
      * @return merchant client id value.
      */
     public String getMerchantClientId() {
-        if (merchantClientId == null) {
-            doOnSdkNotInitialize();
+        if (doCheckSdkInitialization(merchantClientId)) {
+            return merchantClientId;
         }
-        return merchantClientId;
+        return null;
     }
 
     /**
@@ -190,10 +193,10 @@ public class MidtransSdk {
      * @return merchant base url value.
      */
     public String getMerchantBaseUrl() {
-        if (merchantBaseUrl == null) {
-            doOnSdkNotInitialize();
+        if (doCheckSdkInitialization(merchantBaseUrl)) {
+            return merchantBaseUrl;
         }
-        return merchantBaseUrl;
+        return null;
     }
 
     /**
@@ -202,10 +205,22 @@ public class MidtransSdk {
      * @return timeout value.
      */
     public int getApiRequestTimeOut() {
-        if (apiRequestTimeOut == 0) {
-            doOnSdkNotInitialize();
+        if (doCheckSdkInitialization(apiRequestTimeOut)) {
+            return apiRequestTimeOut;
         }
-        return apiRequestTimeOut;
+        return API_TIMEOUT_DEFAULT;
+    }
+
+    /**
+     * Returns value of builtinstorage
+     *
+     * @return builtinstorage value
+     */
+    public boolean isBuiltinStorageEnabled() {
+        if (doCheckSdkInitialization(isBuiltinStorageEnabled)) {
+            return isBuiltinStorageEnabled;
+        }
+        return true;
     }
 
     /**
@@ -214,13 +229,18 @@ public class MidtransSdk {
      * @return transaction request object.
      */
     public CheckoutTransaction getCheckoutTransaction() {
-        return checkoutTransaction;
+        if (doCheckSdkInitialization(checkoutTransaction)) {
+            return checkoutTransaction;
+        }
+        return null;
     }
 
     /**
      * Set value to transaction request for begin checkoutWithTransaction.
      */
-    public void setCheckoutTransaction(final CheckoutTransaction checkoutTransaction) {
+    public void setCheckoutTransaction(
+            final CheckoutTransaction checkoutTransaction
+    ) {
         this.checkoutTransaction = checkoutTransaction;
     }
 
@@ -230,7 +250,9 @@ public class MidtransSdk {
      *
      * @param callback for receiving callback from request.
      */
-    public void checkoutWithTransaction(final MidtransCallback<CheckoutWithTransactionResponse> callback) {
+    public void checkoutWithTransaction(
+            final MidtransCallback<CheckoutWithTransactionResponse> callback
+    ) {
         checkoutWithTransaction(this.checkoutTransaction, callback);
     }
 
@@ -241,8 +263,10 @@ public class MidtransSdk {
      * @param checkoutTransaction transaction request for making checkoutWithTransaction.
      * @param callback            for receiving callback from request.
      */
-    public void checkoutWithTransaction(final CheckoutTransaction checkoutTransaction,
-                                        final MidtransCallback<CheckoutWithTransactionResponse> callback) {
+    public void checkoutWithTransaction(
+            final CheckoutTransaction checkoutTransaction,
+            final MidtransCallback<CheckoutWithTransactionResponse> callback
+    ) {
         if (isValidForNetworkCall(context, callback)) {
             merchantApiManager.checkout(checkoutTransaction, callback);
         }
@@ -254,8 +278,10 @@ public class MidtransSdk {
      * @param token    token after making checkoutWithTransaction.
      * @param callback for receiving callback from request.
      */
-    public void getPaymentInfo(final String token,
-                               final MidtransCallback<PaymentInfoResponse> callback) {
+    public void getPaymentInfo(
+            final String token,
+            final MidtransCallback<PaymentInfoResponse> callback
+    ) {
         if (isValidForNetworkCall(context, callback)) {
             snapApiManager.getPaymentInfo(token, callback);
         }
@@ -267,9 +293,11 @@ public class MidtransSdk {
      * @param cardToken credit card token
      * @param callback  bni point callback instance
      */
-    public void getBanksPoint(final String token,
-                              final String cardToken,
-                              final MidtransCallback<BasePaymentResponse> callback) {
+    public void getBanksPoint(
+            final String token,
+            final String cardToken,
+            final MidtransCallback<PointResponse> callback
+    ) {
         if (isValidForNetworkCall(context, callback)) {
             snapApiManager.getBanksPoint(token, cardToken, callback);
         }
@@ -281,16 +309,19 @@ public class MidtransSdk {
      */
     public static class Builder {
 
-        protected String merchantClientId;
-        protected Context context;
-        protected boolean enableLog = false;
-        protected String merchantBaseUrl;
-        protected Environment midtransEnvironment = Environment.SANDBOX;
-        protected int apiRequestTimeOut = 30;
+        private String merchantClientId;
+        private Context context;
+        private String merchantBaseUrl;
+        private Environment midtransEnvironment = Environment.SANDBOX;
+        private int apiRequestTimeOut = API_TIMEOUT_DEFAULT;
+        private boolean isLogEnabled = false;
+        private boolean isBuiltinStorageEnabled = true;
 
-        private Builder(final Context context,
-                        final String clientId,
-                        final String merchantUrl) {
+        private Builder(
+                Context context,
+                String clientId,
+                String merchantUrl
+        ) {
             this.context = context;
             this.merchantClientId = clientId;
             this.merchantBaseUrl = merchantUrl;
@@ -299,16 +330,20 @@ public class MidtransSdk {
         /**
          * set Logger visible or not.
          */
-        public Builder setLogEnabled(final boolean logEnabled) {
-            this.enableLog = logEnabled;
-            Logger.enabled = this.enableLog;
+        public Builder setLogEnabled(boolean isLogEnabled) {
+            this.isLogEnabled = isLogEnabled;
+            return this;
+        }
+
+        public Builder setBuiltinStorageEnabled(boolean isBuiltinStorageEnabled) {
+            this.isBuiltinStorageEnabled = isBuiltinStorageEnabled;
             return this;
         }
 
         /**
          * set Logger visible or not.
          */
-        public Builder setEnvironment(final Environment environment) {
+        public Builder setEnvironment(Environment environment) {
             this.midtransEnvironment = environment;
             return this;
         }
@@ -316,7 +351,7 @@ public class MidtransSdk {
         /**
          * set Logger visible or not.
          */
-        public Builder setApiRequestTimeOut(final int apiRequestTimeOutInSecond) {
+        public Builder setApiRequestTimeOut(int apiRequestTimeOutInSecond) {
             this.apiRequestTimeOut = apiRequestTimeOutInSecond;
             return this;
         }
@@ -328,11 +363,15 @@ public class MidtransSdk {
          */
         public MidtransSdk build() {
             if (isValidData()) {
-                SINGLETON_INSTANCE = new MidtransSdk(context,
+                SINGLETON_INSTANCE = new MidtransSdk(
+                        context,
                         merchantClientId,
                         merchantBaseUrl,
                         midtransEnvironment,
-                        apiRequestTimeOut);
+                        apiRequestTimeOut,
+                        isLogEnabled,
+                        isBuiltinStorageEnabled
+                );
                 return SINGLETON_INSTANCE;
             } else {
                 Logger.error(ERROR_SDK_IS_NOT_INITIALIZE_PROPERLY);
@@ -343,19 +382,23 @@ public class MidtransSdk {
         private boolean isValidData() {
             if (merchantClientId == null || context == null) {
                 RuntimeException runtimeException = new RuntimeException(ERROR_SDK_CLIENT_KEY_AND_CONTEXT_PROPERLY);
-                Logger.error(ERROR_SDK_CLIENT_KEY_AND_CONTEXT_PROPERLY, runtimeException);
+                Logger.error(runtimeException.getMessage());
             }
 
             if (TextUtils.isEmpty(merchantBaseUrl) && isValidUrl(merchantBaseUrl)) {
                 RuntimeException runtimeException = new RuntimeException(ERROR_SDK_MERCHANT_BASE_URL_PROPERLY);
-                Logger.error(ERROR_SDK_MERCHANT_BASE_URL_PROPERLY, runtimeException);
+                Logger.error(runtimeException.getMessage());
             }
             return true;
         }
     }
 
-    private static void doOnSdkNotInitialize() {
-        RuntimeException runtimeException = new RuntimeException(MESSAGE_INSTANCE_NOT_INITALIZE);
-        Logger.error(runtimeException.getMessage());
+    private static <T> boolean doCheckSdkInitialization(T itemForCheck) {
+        if (itemForCheck == null) {
+            RuntimeException runtimeException = new RuntimeException(MESSAGE_INSTANCE_NOT_INITALIZE);
+            Logger.error(runtimeException.getMessage());
+            return false;
+        }
+        return true;
     }
 }

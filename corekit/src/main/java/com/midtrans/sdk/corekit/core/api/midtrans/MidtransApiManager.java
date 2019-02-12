@@ -3,7 +3,7 @@ package com.midtrans.sdk.corekit.core.api.midtrans;
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.base.network.BaseServiceManager;
 import com.midtrans.sdk.corekit.core.api.midtrans.model.cardtoken.CardTokenRequest;
-import com.midtrans.sdk.corekit.core.api.midtrans.model.cardregistration.CardRegistrationResponse;
+import com.midtrans.sdk.corekit.core.api.midtrans.model.registration.CreditCardTokenizeResponse;
 import com.midtrans.sdk.corekit.core.api.midtrans.model.tokendetails.TokenDetailsResponse;
 
 import retrofit2.Call;
@@ -27,16 +27,16 @@ public class MidtransApiManager extends BaseServiceManager {
      * @param cardExpYear  credit card expired year
      * @param callback     card transaction callback
      */
-    public void cardRegistration(final String cardNumber,
-                                 final String cardCvv,
-                                 final String cardExpMonth,
-                                 final String cardExpYear,
-                                 final String clientKey,
-                                 final MidtransCallback<CardRegistrationResponse> callback) {
+    public void tokenizeCard(String cardNumber,
+                             String cardCvv,
+                             String cardExpMonth,
+                             String cardExpYear,
+                             String clientKey,
+                             MidtransCallback<CreditCardTokenizeResponse> callback) {
         if (apiService == null) {
             doOnApiServiceUnAvailable(callback);
         } else {
-            Call<CardRegistrationResponse> call = apiService.registerCard(cardNumber,
+            Call<CreditCardTokenizeResponse> call = apiService.tokenizeCard(cardNumber,
                     cardCvv,
                     cardExpMonth,
                     cardExpYear,
@@ -51,8 +51,8 @@ public class MidtransApiManager extends BaseServiceManager {
      * @param cardTokenRequest information about credit card.
      * @param callback         get creditcard token callback
      */
-    public void getToken(final CardTokenRequest cardTokenRequest,
-                         final MidtransCallback<TokenDetailsResponse> callback) {
+    public void getCardToken(CardTokenRequest cardTokenRequest,
+                             MidtransCallback<TokenDetailsResponse> callback) {
 
         if (apiService == null) {
             doOnApiServiceUnAvailable(callback);

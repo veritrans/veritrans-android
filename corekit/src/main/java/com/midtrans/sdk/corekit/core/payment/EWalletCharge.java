@@ -2,9 +2,9 @@ package com.midtrans.sdk.corekit.core.payment;
 
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.CustomerDetailPayRequest;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.EwalletGopayPaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.EwalletMandiriEcashPaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.EwalletTelkomselCashPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.GopayResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriEcashResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.TelkomselCashResponse;
 
 public class EWalletCharge extends BaseGroupPayment {
     /**
@@ -16,7 +16,7 @@ public class EWalletCharge extends BaseGroupPayment {
      */
     public static void paymentUsingMandiriEcash(final String snapToken,
                                                 final CustomerDetailPayRequest customerDetailPayRequest,
-                                                final MidtransCallback<EwalletMandiriEcashPaymentResponse> callback) {
+                                                final MidtransCallback<MandiriEcashResponse> callback) {
         if (isValidForNetworkCall(callback)) {
             getSnapApiManager().paymentUsingMandiriEcash(snapToken, customerDetailPayRequest, callback);
         }
@@ -30,7 +30,7 @@ public class EWalletCharge extends BaseGroupPayment {
      */
     public static void paymentUsingGopay(final String snapToken,
                                          final String gopayAccountNumber,
-                                         final MidtransCallback<EwalletGopayPaymentResponse> callback) {
+                                         final MidtransCallback<GopayResponse> callback) {
         if (isValidForNetworkCall(callback)) {
             getSnapApiManager().paymentUsingGopay(snapToken, gopayAccountNumber, callback);
         }
@@ -44,7 +44,7 @@ public class EWalletCharge extends BaseGroupPayment {
      */
     public static void paymentUsingTelkomselCash(final String snapToken,
                                                  final String customerNumber,
-                                                 final MidtransCallback<EwalletTelkomselCashPaymentResponse> callback) {
+                                                 final MidtransCallback<TelkomselCashResponse> callback) {
         if (isValidForNetworkCall(callback)) {
             getSnapApiManager().paymentUsingTelkomselCash(snapToken, customerNumber, callback);
         }

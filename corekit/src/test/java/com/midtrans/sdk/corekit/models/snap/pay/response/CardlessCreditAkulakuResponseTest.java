@@ -1,6 +1,6 @@
 package com.midtrans.sdk.corekit.models.snap.pay.response;
 
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CardlessCreditAkulakuPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.AkulakuResponse;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +12,7 @@ import static org.junit.Assert.assertNotEquals;
 
 @RunWith(PowerMockRunner.class)
 public class CardlessCreditAkulakuResponseTest {
-    private CardlessCreditAkulakuPaymentResponse response;
+    private AkulakuResponse response;
     private String exampleTextPositive;
     private String exampleTextNegative;
 
@@ -20,7 +20,7 @@ public class CardlessCreditAkulakuResponseTest {
     public void test_setup() {
         this.exampleTextPositive = "exampleTextPositive";
         this.exampleTextNegative = "exampleTextNegative";
-        this.response = new CardlessCreditAkulakuPaymentResponse();
+        this.response = new AkulakuResponse();
     }
 
     @Test

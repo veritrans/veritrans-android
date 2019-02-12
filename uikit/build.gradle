@@ -1,0 +1,53 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.vanniktech.android.junit.jacoco'
+apply from: '../jacoco.gradle'
+
+group = 'com.midtrans'
+version = '2.0.0'
+
+android {
+    compileSdkVersion rootProject.sdkVersion
+    buildToolsVersion rootProject.buildToolsVersion
+    flavorDimensions("default")
+    lintOptions {
+        abortOnError false
+    }
+    defaultConfig {
+        minSdkVersion rootProject.minCoreSdkVersion
+        targetSdkVersion rootProject.sdkVersion
+        versionCode 3
+        versionName version
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            testCoverageEnabled = true
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    testImplementation testLibraries.jUnit
+    testImplementation testLibraries.mockitoCore
+    testImplementation testLibraries.mockitoInline
+    testImplementation testLibraries.powermockApi
+    testImplementation testLibraries.powermockModule
+    testImplementation testLibraries.powermockRule
+    androidTestImplementation testLibraries.runner
+    androidTestImplementation testLibraries.espresso
+    androidTestImplementation testLibraries.powermockFull
+    implementation androidxLibraries.appCompat
+    implementation project(path:':corekit')
+    api (project(':corekit')) {
+        exclude module: 'appcompat'
+    }
+}

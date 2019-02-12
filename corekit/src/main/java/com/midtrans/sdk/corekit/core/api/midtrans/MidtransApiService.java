@@ -1,6 +1,6 @@
 package com.midtrans.sdk.corekit.core.api.midtrans;
 
-import com.midtrans.sdk.corekit.core.api.midtrans.model.cardregistration.CardRegistrationResponse;
+import com.midtrans.sdk.corekit.core.api.midtrans.model.registration.CreditCardTokenizeResponse;
 import com.midtrans.sdk.corekit.core.api.midtrans.model.tokendetails.TokenDetailsResponse;
 
 import retrofit2.Call;
@@ -145,7 +145,7 @@ public interface MidtransApiService {
      */
     @Headers({HEADER_X_AUTH})
     @GET(CARD_REGISTER)
-    Call<CardRegistrationResponse> registerCard(
+    Call<CreditCardTokenizeResponse> tokenizeCard(
             @Query("card_number") String cardNumber,
             @Query("card_cvv") String cardCVV,
             @Query("card_exp_month") String cardExpiryMonth,

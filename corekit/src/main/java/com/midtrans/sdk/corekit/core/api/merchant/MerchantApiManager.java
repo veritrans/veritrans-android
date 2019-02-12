@@ -13,7 +13,7 @@ import retrofit2.Call;
 
 public class MerchantApiManager extends BaseServiceManager {
 
-    private static final String TAG = "MerchantApiManager";
+    private final static String TAG = "MerchantApiManager";
 
     private MerchantApiService apiService;
 
@@ -27,8 +27,8 @@ public class MerchantApiManager extends BaseServiceManager {
      * @param request  CheckoutTransaction model that construct by user.
      * @param callback callback of making Snap Token.
      */
-    public void checkout(final CheckoutTransaction request,
-                         final MidtransCallback<CheckoutWithTransactionResponse> callback) {
+    public void checkout(CheckoutTransaction request,
+                         MidtransCallback<CheckoutWithTransactionResponse> callback) {
         if (request == null) {
             doOnInvalidDataSupplied(callback);
         } else {
@@ -48,9 +48,9 @@ public class MerchantApiManager extends BaseServiceManager {
      * @param userId   unique id for every user
      * @param callback save card callback
      */
-    public void saveCards(final String userId,
-                          final List<SaveCardRequest> requests,
-                          final MidtransCallback<SaveCardResponse> callback) {
+    public void saveCards(String userId,
+                          List<SaveCardRequest> requests,
+                          MidtransCallback<SaveCardResponse> callback) {
         if (requests == null) {
             doOnInvalidDataSupplied(callback);
         } else {

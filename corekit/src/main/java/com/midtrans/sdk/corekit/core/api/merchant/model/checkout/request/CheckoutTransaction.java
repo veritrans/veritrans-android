@@ -4,7 +4,6 @@ import com.google.gson.annotations.SerializedName;
 
 import com.midtrans.sdk.corekit.base.enums.Currency;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.mandatory.TransactionDetails;
-import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.BillInfoModel;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.CheckoutExpiry;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.GopayDeepLink;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.Item;
@@ -22,6 +21,7 @@ import java.util.Map;
 import static com.midtrans.sdk.corekit.utilities.Constants.MESSAGE_FAILED_CHECKOUT_TRANSACTION_DATA;
 import static com.midtrans.sdk.corekit.utilities.Constants.MESSAGE_GROSS_AMOUNT_NOT_SET;
 import static com.midtrans.sdk.corekit.utilities.Constants.MESSAGE_ORDER_ID_NOT_SET;
+import static com.midtrans.sdk.corekit.utilities.StringHelper.checkCurrency;
 
 public class CheckoutTransaction implements Serializable {
     private static CheckoutTransaction SINGLETON_INSTANCE = null;
@@ -70,11 +70,7 @@ public class CheckoutTransaction implements Serializable {
     private String customField2 = null;
     @SerializedName("custom_field3")
     private String customField3 = null;
-    /**
-     * It contains an extra information that you want to display on bill.
-     * Optional
-     */
-    private BillInfoModel billInfoModel = null;
+
     /**
      * It's user id.
      * Optional
@@ -117,14 +113,13 @@ public class CheckoutTransaction implements Serializable {
 
     private CheckoutTransaction(String orderId,
                                 double grossAmount,
-                                Currency currency,
+                                String currency,
                                 String gopayDeepLink,
                                 CreditCard creditCard,
                                 CustomerDetails customerDetails,
                                 List<Item> checkoutItems,
                                 List<String> enabledPayments,
                                 CheckoutExpiry expiry,
-                                BillInfoModel billInfoModel,
                                 String customField1,
                                 String customField2,
                                 String customField3,
@@ -144,7 +139,6 @@ public class CheckoutTransaction implements Serializable {
         this.customField1 = customField1;
         this.customField2 = customField2;
         this.customField3 = customField3;
-        this.billInfoModel = billInfoModel;
         this.userId = userId;
         this.promo = promo;
         this.permataVa = permataVa;
@@ -215,10 +209,6 @@ public class CheckoutTransaction implements Serializable {
         return expiry;
     }
 
-    public BillInfoModel getBillInfoModel() {
-        return billInfoModel;
-    }
-
     public TransactionDetails getTransactionDetails() {
         return transactionDetails;
     }
@@ -238,14 +228,13 @@ public class CheckoutTransaction implements Serializable {
     public static class Builder {
         private String orderId;
         private double grossAmount;
-        private Currency currency;
+        private String currency;
         private String gopayDeepLink;
         private CreditCard creditCard;
         private CustomerDetails customerDetails;
         private List<Item> checkoutItem;
         private List<String> enabledPayments;
         private CheckoutExpiry expiry;
-        private BillInfoModel billInfoModel;
         private String customField1;
         private String customField2;
         private String customField3;
@@ -263,8 +252,8 @@ public class CheckoutTransaction implements Serializable {
             this.grossAmount = grossAmount;
         }
 
-        public Builder setCurrency(Currency currency) {
-            this.currency = currency;
+        public Builder setCurrency(@Currency String currency) {
+            this.currency = checkCurrency(currency);
             return this;
         }
 
@@ -295,11 +284,6 @@ public class CheckoutTransaction implements Serializable {
 
         public Builder setCheckoutExpiry(CheckoutExpiry expiry) {
             this.expiry = expiry;
-            return this;
-        }
-
-        public Builder setBillInfoModel(BillInfoModel billInfoModel) {
-            this.billInfoModel = billInfoModel;
             return this;
         }
 
@@ -359,12 +343,12 @@ public class CheckoutTransaction implements Serializable {
                         checkoutItem,
                         enabledPayments,
                         expiry,
-                        billInfoModel,
                         customField1,
                         customField2,
                         customField3,
                         userId,
-                        promo, permataVa,
+                        promo,
+                        permataVa,
                         bcaVa,
                         bniVa,
                         customObject);

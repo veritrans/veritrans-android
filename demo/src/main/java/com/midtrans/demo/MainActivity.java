@@ -12,7 +12,6 @@ import com.midtrans.sdk.corekit.base.enums.Currency;
 import com.midtrans.sdk.corekit.base.enums.Environment;
 import com.midtrans.sdk.corekit.base.enums.ExpiryTimeUnit;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.CheckoutTransaction;
-import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.BillInfoModel;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.CheckoutExpiry;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.Item;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.customer.Address;
@@ -98,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
                                 )
                                 .build()
                 )
-                .setBillInfoModel(new BillInfoModel("1", "2"))
                 .setEnabledPayments(new ArrayList<String>())
                 .setCheckoutExpiry(new CheckoutExpiry("", ExpiryTimeUnit.DAY, 1))
                 .setCheckoutItems(new ArrayList<Item>())

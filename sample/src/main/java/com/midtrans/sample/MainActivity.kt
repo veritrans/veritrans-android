@@ -7,7 +7,6 @@ import com.midtrans.sdk.corekit.base.callback.MidtransCallback
 import com.midtrans.sdk.corekit.base.enums.*
 import com.midtrans.sdk.corekit.base.enums.Currency
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.CheckoutTransaction
-import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.BillInfoModel
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.CheckoutExpiry
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.customer.Address
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.customer.CustomerDetails
@@ -15,11 +14,15 @@ import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specifi
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specific.banktransfer.BcaBankTransferRequestModel
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specific.creditcard.CreditCard
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.response.CheckoutWithTransactionResponse
-import com.midtrans.sdk.corekit.core.api.midtrans.model.cardregistration.CardRegistrationResponse
+import com.midtrans.sdk.corekit.core.api.midtrans.model.registration.CreditCardTokenizeResponse
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.PaymentResponse
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse
 import com.midtrans.sdk.corekit.core.payment.CreditCardCharge
 import com.midtrans.sdk.corekit.utilities.InstallationHelper
 import com.midtrans.sdk.corekit.utilities.Logger
+import com.midtrans.sdk.uikit.CustomKitConfig
+import com.midtrans.sdk.uikit.MidtransKit
+import com.midtrans.sdk.uikit.base.callback.PaymentResult
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -28,31 +31,39 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        MidtransSdk
-            .builder(this,
+        MidtransKit
+            .builder(
+                this,
                 BuildConfig.CLIENT_KEY,
-                BuildConfig.BASE_URL)
-            .setLogEnabled(true)
+                BuildConfig.BASE_URL
+            )
             .setEnvironment(if (BuildConfig.DEBUG) {
                 Environment.SANDBOX
             } else {
                 Environment.PRODUCTION
             })
             .setApiRequestTimeOut(60)
-            .build()
-
-        MidtransSdk
-            .builder(this,
-                BuildConfig.CLIENT_KEY,
-                BuildConfig.BASE_URL)
-            .setApiRequestTimeOut(40)
-            .setEnvironment(Environment.SANDBOX)
             .setLogEnabled(true)
+            .setBuiltinStorageEnabled(false)
+            .setCustomKitConfig(
+                CustomKitConfig
+                    .builder()
+                    .setDefaultText("")
+                    .setBoldText("")
+                    .setSemiBoldText("")
+                    .setEnableAutoReadSms(false)
+                    .setShowPaymentStatus(false)
+                    .setShowEmailInCcForm(false)
+                    .setEnabledAnimation(true)
+                    .build()
+            )
             .build()
 
         val checkoutTransaction = CheckoutTransaction
-            .builder(InstallationHelper.generatedRandomID(this),
-                20000.0)
+            .builder(
+                InstallationHelper.generatedRandomID(this),
+                20000.0
+            )
             .setCurrency(Currency.IDR)
             .setGopayCallbackDeepLink("demo://midtrans")
             .setCreditCard(
@@ -62,7 +73,7 @@ class MainActivity : AppCompatActivity() {
                     .setType(CreditCardTransactionType.AUTHORIZE_CAPTURE)
                     .setAcquiringBank(AcquiringBankType.BCA)
                     .setAcquiringChannel(AcquiringChannel.MIGS)
-                    .setInstallment(false, HashMap<AcquiringBankType, MutableList<Int>>())
+                    .setInstallment(false, HashMap<String, MutableList<Int>>())
                     .setBlackListBins(mutableListOf())
                     .setWhiteListBins(mutableListOf())
                     .setSavedTokens(mutableListOf())
@@ -101,7 +112,6 @@ class MainActivity : AppCompatActivity() {
                     )
                     .build()
             )
-            .setBillInfoModel(BillInfoModel("1", "2"))
             .setEnabledPayments(ArrayList())
             .setCheckoutExpiry(CheckoutExpiry("", ExpiryTimeUnit.DAY, 1))
             .setCheckoutItems(ArrayList())
@@ -118,6 +128,24 @@ class MainActivity : AppCompatActivity() {
             .setCustomField3("Custom Field 3")
             .build()
 
+        MidtransKit
+            .getInstance()
+            .startPaymentUiWithTransaction(
+                this,
+                checkoutTransaction,
+                object : PaymentResult<PaymentResponse> {
+                    override fun onPaymentFinished(statusMessage: String?, paymentType: String?, response: PaymentResponse?) {
+
+                    }
+
+                    override fun onFailed(throwable: Throwable?) {
+
+                    }
+                }
+            )
+    }
+
+    private fun checkout(checkoutTransaction: CheckoutTransaction) {
         MidtransSdk.getInstance().checkoutWithTransaction(checkoutTransaction,
             object : MidtransCallback<CheckoutWithTransactionResponse> {
                 override fun onSuccess(data: CheckoutWithTransactionResponse) {
@@ -145,13 +173,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun registerCard() {
-        CreditCardCharge.cardRegistration(
+        CreditCardCharge.tokenizeCard(
             "4105058689481467",
             "123",
             "12",
             "2019",
-            object : MidtransCallback<CardRegistrationResponse> {
-                override fun onSuccess(data: CardRegistrationResponse) {
+            object : MidtransCallback<CreditCardTokenizeResponse> {
+                override fun onSuccess(data: CreditCardTokenizeResponse) {
 
                 }
 

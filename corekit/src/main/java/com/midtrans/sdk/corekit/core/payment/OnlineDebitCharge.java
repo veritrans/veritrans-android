@@ -1,10 +1,10 @@
 package com.midtrans.sdk.corekit.core.payment;
 
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.OnlineDebitBcaKlikpayPaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.OnlineDebitBriEpayPaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.OnlineDebitCimbClicksPaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.OnlineDebitDanamonOnlinePaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaKlikpayResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BriEpayPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CimbClicksResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.DanamonOnlineResponse;
 
 public class OnlineDebitCharge extends BaseGroupPayment {
     /**
@@ -14,7 +14,7 @@ public class OnlineDebitCharge extends BaseGroupPayment {
      * @param callback  for receiving callback from request.
      */
     public static void paymentUsingCimbClicks(final String snapToken,
-                                              final MidtransCallback<OnlineDebitCimbClicksPaymentResponse> callback) {
+                                              final MidtransCallback<CimbClicksResponse> callback) {
         if (isValidForNetworkCall(callback)) {
             getSnapApiManager().paymentUsingCimbClick(snapToken, callback);
         }
@@ -27,7 +27,7 @@ public class OnlineDebitCharge extends BaseGroupPayment {
      * @param callback  for receiving callback from request.
      */
     public static void paymentUsingBcaKlikpay(final String snapToken,
-                                              final MidtransCallback<OnlineDebitBcaKlikpayPaymentResponse> callback) {
+                                              final MidtransCallback<BcaKlikpayResponse> callback) {
         if (isValidForNetworkCall(callback)) {
             getSnapApiManager().paymentUsingBcaClickPay(snapToken, callback);
         }
@@ -40,7 +40,7 @@ public class OnlineDebitCharge extends BaseGroupPayment {
      * @param callback  for receiving callback from request.
      */
     public static void paymentUsingDanamonOnline(final String snapToken,
-                                                 final MidtransCallback<OnlineDebitDanamonOnlinePaymentResponse> callback) {
+                                                 final MidtransCallback<DanamonOnlineResponse> callback) {
         if (isValidForNetworkCall(callback)) {
             getSnapApiManager().paymentUsingDanamonOnline(snapToken, callback);
         }
@@ -53,7 +53,7 @@ public class OnlineDebitCharge extends BaseGroupPayment {
      * @param callback  for receiving callback from request.
      */
     public static void paymentUsingBriEpay(final String snapToken,
-                                           final MidtransCallback<OnlineDebitBriEpayPaymentResponse> callback) {
+                                           final MidtransCallback<BriEpayPaymentResponse> callback) {
         if (isValidForNetworkCall(callback)) {
             getSnapApiManager().paymentUsingBriEpay(snapToken, callback);
         }

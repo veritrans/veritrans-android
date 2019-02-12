@@ -12,22 +12,21 @@ import com.midtrans.sdk.corekit.base.enums.Environment;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.CustomerDetailPayRequest;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.creditcard.CreditCardPaymentParams;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.mandiriclick.MandiriClickpayParams;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BankTransferVaBcaPaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BankTransferVaBniPaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BankTransferVaOtherPaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BankTransferVaPermataPaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CardlessCreditAkulakuPaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.ConvenienceStoreIndomaretPaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CreditCardPaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.DirectDebitKlikBcaResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.DirectDebitMandiriClickpayResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.EwalletGopayPaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.EwalletMandiriEcashPaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.EwalletTelkomselCashPaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.OnlineDebitBcaKlikpayPaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.OnlineDebitBriEpayPaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.OnlineDebitCimbClicksPaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.OnlineDebitDanamonOnlinePaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaBankTransferReponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BniBankTransferResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.PermataBankTransferResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.AkulakuResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.IndomaretPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CreditCardResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.KlikBcaResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriClickpayResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.GopayResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriEcashResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.TelkomselCashResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaKlikpayResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BriEpayPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CimbClicksResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.DanamonOnlineResponse;
 import com.midtrans.sdk.corekit.utilities.Helper;
 import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.corekit.utilities.NetworkHelper;
@@ -90,69 +89,69 @@ public class PaymentChargeTest {
     private MandiriClickpayParams mandiriClickpayParams;
 
     @Mock
-    private BankTransferVaBcaPaymentResponse responseBcaVaMock;
+    private BcaBankTransferReponse responseBcaVaMock;
     @Mock
-    private MidtransCallback<BankTransferVaBcaPaymentResponse> callbackBcaVaMock;
+    private MidtransCallback<BcaBankTransferReponse> callbackBcaVaMock;
     @Mock
-    private BankTransferVaPermataPaymentResponse responsePermataVaMock;
+    private PermataBankTransferResponse responsePermataVaMock;
     @Mock
-    private MidtransCallback<BankTransferVaPermataPaymentResponse> callbackPermataVaMock;
+    private MidtransCallback<PermataBankTransferResponse> callbackPermataVaMock;
     @Mock
-    private BankTransferVaBniPaymentResponse responseBniVaMock;
+    private BniBankTransferResponse responseBniVaMock;
     @Mock
-    private MidtransCallback<BankTransferVaBniPaymentResponse> callbackBniVaMock;
+    private MidtransCallback<BniBankTransferResponse> callbackBniVaMock;
     @Mock
     private ResponseBody responseOtherVaMock;
     @Mock
     private MidtransCallback<ResponseBody> callbackOtherVaMock;
     @Mock
-    private CardlessCreditAkulakuPaymentResponse responseAkulakuMock;
+    private AkulakuResponse responseAkulakuMock;
     @Mock
-    private MidtransCallback<CardlessCreditAkulakuPaymentResponse> callbacAkulakuMock;
+    private MidtransCallback<AkulakuResponse> callbacAkulakuMock;
     @Mock
-    private DirectDebitKlikBcaResponse responseKlikBca;
+    private KlikBcaResponse responseKlikBca;
     @Mock
-    private MidtransCallback<DirectDebitKlikBcaResponse> callbackKlikBca;
+    private MidtransCallback<KlikBcaResponse> callbackKlikBca;
     @Mock
-    private DirectDebitMandiriClickpayResponse responseMandiriClick;
+    private MandiriClickpayResponse responseMandiriClick;
     @Mock
-    private MidtransCallback<DirectDebitMandiriClickpayResponse> callbackMandiriClick;
+    private MidtransCallback<MandiriClickpayResponse> callbackMandiriClick;
     @Mock
-    private EwalletTelkomselCashPaymentResponse responseTelkomsel;
+    private TelkomselCashResponse responseTelkomsel;
     @Mock
-    private MidtransCallback<EwalletTelkomselCashPaymentResponse> callbackTelkomsel;
+    private MidtransCallback<TelkomselCashResponse> callbackTelkomsel;
     @Mock
-    private EwalletMandiriEcashPaymentResponse responseMandiriEcash;
+    private MandiriEcashResponse responseMandiriEcash;
     @Mock
-    private MidtransCallback<EwalletMandiriEcashPaymentResponse> callbackMandiriEcash;
+    private MidtransCallback<MandiriEcashResponse> callbackMandiriEcash;
     @Mock
-    private EwalletGopayPaymentResponse responseGopay;
+    private GopayResponse responseGopay;
     @Mock
-    private MidtransCallback<EwalletGopayPaymentResponse> callbackGopay;
+    private MidtransCallback<GopayResponse> callbackGopay;
     @Mock
-    private OnlineDebitCimbClicksPaymentResponse responseCimb;
+    private CimbClicksResponse responseCimb;
     @Mock
-    private MidtransCallback<OnlineDebitCimbClicksPaymentResponse> callbackCimb;
+    private MidtransCallback<CimbClicksResponse> callbackCimb;
     @Mock
-    private OnlineDebitBcaKlikpayPaymentResponse responseBcaKlikpay;
+    private BcaKlikpayResponse responseBcaKlikpay;
     @Mock
-    private MidtransCallback<OnlineDebitBcaKlikpayPaymentResponse> callbackBcaKlikpay;
+    private MidtransCallback<BcaKlikpayResponse> callbackBcaKlikpay;
     @Mock
-    private OnlineDebitBriEpayPaymentResponse responseBriEpay;
+    private BriEpayPaymentResponse responseBriEpay;
     @Mock
-    private MidtransCallback<OnlineDebitBriEpayPaymentResponse> callbackBriEpay;
+    private MidtransCallback<BriEpayPaymentResponse> callbackBriEpay;
     @Mock
-    private OnlineDebitDanamonOnlinePaymentResponse responseDanamonOnline;
+    private DanamonOnlineResponse responseDanamonOnline;
     @Mock
-    private MidtransCallback<OnlineDebitDanamonOnlinePaymentResponse> callbackDanamonOnline;
+    private MidtransCallback<DanamonOnlineResponse> callbackDanamonOnline;
     @Mock
-    private ConvenienceStoreIndomaretPaymentResponse responseIndomaret;
+    private IndomaretPaymentResponse responseIndomaret;
     @Mock
-    private MidtransCallback<ConvenienceStoreIndomaretPaymentResponse> callbackIndomaret;
+    private MidtransCallback<IndomaretPaymentResponse> callbackIndomaret;
     @Mock
-    private CreditCardPaymentResponse responseCreditCard;
+    private CreditCardResponse responseCreditCard;
     @Mock
-    private MidtransCallback<CreditCardPaymentResponse> callbackCreditCard;
+    private MidtransCallback<CreditCardResponse> callbackCreditCard;
 
     @Before
     public void setup() {
@@ -215,7 +214,7 @@ public class PaymentChargeTest {
     public void test_paymentUsingBankTransferVaBca_positive() {
         when(NetworkHelper.isNetworkAvailable(midtransSdkMock.getContext())).thenReturn(true);
         bankTransferCharge.paymentUsingBankTransferVaBca(SDKConfigTest.SNAP_TOKEN, customerDetailPayRequest, callbackBcaVaMock);
-        Mockito.verify(callbackBcaVaMock).onSuccess(Matchers.any(BankTransferVaBcaPaymentResponse.class));
+        Mockito.verify(callbackBcaVaMock).onSuccess(Matchers.any(BcaBankTransferReponse.class));
     }
 
     @Test
@@ -260,7 +259,7 @@ public class PaymentChargeTest {
     @Test
     public void test_paymentUsingBankTransferVaPermata_positive() {
         bankTransferCharge.paymentUsingBankTransferVaPermata(SDKConfigTest.SNAP_TOKEN, customerDetailPayRequest, callbackPermataVaMock);
-        Mockito.verify(callbackPermataVaMock).onSuccess(Matchers.any(BankTransferVaPermataPaymentResponse.class));
+        Mockito.verify(callbackPermataVaMock).onSuccess(Matchers.any(PermataBankTransferResponse.class));
     }
 
     @Test
@@ -305,7 +304,7 @@ public class PaymentChargeTest {
     @Test
     public void test_paymentUsingBankTransferVaBni_positive() {
         bankTransferCharge.paymentUsingBankTransferVaBni(SDKConfigTest.SNAP_TOKEN, customerDetailPayRequest, callbackBniVaMock);
-        Mockito.verify(callbackBniVaMock).onSuccess(Matchers.any(BankTransferVaBniPaymentResponse.class));
+        Mockito.verify(callbackBniVaMock).onSuccess(Matchers.any(BniBankTransferResponse.class));
     }
 
     @Test
@@ -395,7 +394,7 @@ public class PaymentChargeTest {
     @Test
     public void test_paymentUsingCardlessCreditAkulaku_positive() {
         cardlessCreditCharge.paymentUsingAkulaku(SDKConfigTest.SNAP_TOKEN, callbacAkulakuMock);
-        Mockito.verify(callbacAkulakuMock).onSuccess(Matchers.any(CardlessCreditAkulakuPaymentResponse.class));
+        Mockito.verify(callbacAkulakuMock).onSuccess(Matchers.any(AkulakuResponse.class));
     }
 
     @Test
@@ -434,7 +433,7 @@ public class PaymentChargeTest {
     @Test
     public void test_paymentUsingDirectDebitKlikBca_positive() {
         directDebitCharge.paymentUsingKlikBca(SDKConfigTest.SNAP_TOKEN, userId, callbackKlikBca);
-        Mockito.verify(callbackKlikBca).onSuccess(Matchers.any(DirectDebitKlikBcaResponse.class));
+        Mockito.verify(callbackKlikBca).onSuccess(Matchers.any(KlikBcaResponse.class));
     }
 
     @Test
@@ -479,7 +478,7 @@ public class PaymentChargeTest {
     @Test
     public void test_paymentUsingDirectDebitMandiriClickPay_positive() {
         directDebitCharge.paymentUsingMandiriClickPay(SDKConfigTest.SNAP_TOKEN, mandiriClickpayParams, callbackMandiriClick);
-        Mockito.verify(callbackMandiriClick).onSuccess(Matchers.any(DirectDebitMandiriClickpayResponse.class));
+        Mockito.verify(callbackMandiriClick).onSuccess(Matchers.any(MandiriClickpayResponse.class));
     }
 
     @Test
@@ -524,7 +523,7 @@ public class PaymentChargeTest {
     @Test
     public void test_paymentUsingEwalletTelkkomselCash_positive() {
         eWalletCharge.paymentUsingTelkomselCash(SDKConfigTest.SNAP_TOKEN, customerNumber, callbackTelkomsel);
-        Mockito.verify(callbackTelkomsel).onSuccess(Matchers.any(EwalletTelkomselCashPaymentResponse.class));
+        Mockito.verify(callbackTelkomsel).onSuccess(Matchers.any(TelkomselCashResponse.class));
     }
 
     @Test
@@ -569,7 +568,7 @@ public class PaymentChargeTest {
     @Test
     public void test_paymentUsingEwalletMandiriEcash_positive() {
         eWalletCharge.paymentUsingMandiriEcash(SDKConfigTest.SNAP_TOKEN, customerDetailPayRequest, callbackMandiriEcash);
-        Mockito.verify(callbackMandiriEcash).onSuccess(Matchers.any(EwalletMandiriEcashPaymentResponse.class));
+        Mockito.verify(callbackMandiriEcash).onSuccess(Matchers.any(MandiriEcashResponse.class));
     }
 
     @Test
@@ -614,7 +613,7 @@ public class PaymentChargeTest {
     @Test
     public void test_paymentUsingEwalletGopay_positive() {
         eWalletCharge.paymentUsingGopay(SDKConfigTest.SNAP_TOKEN, customerNumber, callbackGopay);
-        Mockito.verify(callbackGopay).onSuccess(Matchers.any(EwalletGopayPaymentResponse.class));
+        Mockito.verify(callbackGopay).onSuccess(Matchers.any(GopayResponse.class));
     }
 
     @Test
@@ -659,7 +658,7 @@ public class PaymentChargeTest {
     @Test
     public void test_paymentUsingOnlineDebitChargeCimbClicks_positive() {
         onlineDebitCharge.paymentUsingCimbClicks(SDKConfigTest.SNAP_TOKEN, callbackCimb);
-        Mockito.verify(callbackCimb).onSuccess(Matchers.any(OnlineDebitCimbClicksPaymentResponse.class));
+        Mockito.verify(callbackCimb).onSuccess(Matchers.any(CimbClicksResponse.class));
     }
 
     @Test
@@ -698,7 +697,7 @@ public class PaymentChargeTest {
     @Test
     public void test_paymentUsingOnlineDebitChargeBcaClickPay_positive() {
         onlineDebitCharge.paymentUsingBcaKlikpay(SDKConfigTest.SNAP_TOKEN, callbackBcaKlikpay);
-        Mockito.verify(callbackBcaKlikpay).onSuccess(Matchers.any(OnlineDebitBcaKlikpayPaymentResponse.class));
+        Mockito.verify(callbackBcaKlikpay).onSuccess(Matchers.any(BcaKlikpayResponse.class));
     }
 
     @Test
@@ -743,7 +742,7 @@ public class PaymentChargeTest {
     @Test
     public void test_paymentUsingOnlineDebitChargeDanamonOnline_positive() {
         onlineDebitCharge.paymentUsingDanamonOnline(SDKConfigTest.SNAP_TOKEN, callbackDanamonOnline);
-        Mockito.verify(callbackDanamonOnline).onSuccess(Matchers.any(OnlineDebitDanamonOnlinePaymentResponse.class));
+        Mockito.verify(callbackDanamonOnline).onSuccess(Matchers.any(DanamonOnlineResponse.class));
     }
 
     @Test
@@ -788,7 +787,7 @@ public class PaymentChargeTest {
     @Test
     public void test_paymentUsingOnlineDebitChargeBriEpay_positive() {
         onlineDebitCharge.paymentUsingBriEpay(SDKConfigTest.SNAP_TOKEN, callbackBriEpay);
-        Mockito.verify(callbackBriEpay).onSuccess(Matchers.any(OnlineDebitBriEpayPaymentResponse.class));
+        Mockito.verify(callbackBriEpay).onSuccess(Matchers.any(BriEpayPaymentResponse.class));
     }
 
     @Test
@@ -827,7 +826,7 @@ public class PaymentChargeTest {
     @Test
     public void test_paymentUsingStoreChange_positive() {
         convenienceStoreCharge.paymentUsingIndomaret(SDKConfigTest.SNAP_TOKEN, callbackIndomaret);
-        Mockito.verify(callbackIndomaret).onSuccess(Matchers.any(ConvenienceStoreIndomaretPaymentResponse.class));
+        Mockito.verify(callbackIndomaret).onSuccess(Matchers.any(IndomaretPaymentResponse.class));
     }
 
     @Test
@@ -866,7 +865,7 @@ public class PaymentChargeTest {
     @Test
     public void test_paymentUsingCreditCard_positive() {
         creditCardCharge.paymentUsingCard(SDKConfigTest.SNAP_TOKEN, creditCardPaymentParams, customerDetailPayRequest, callbackCreditCard);
-        Mockito.verify(callbackCreditCard).onSuccess(Matchers.any(CreditCardPaymentResponse.class));
+        Mockito.verify(callbackCreditCard).onSuccess(Matchers.any(CreditCardResponse.class));
     }
 
     @Test
