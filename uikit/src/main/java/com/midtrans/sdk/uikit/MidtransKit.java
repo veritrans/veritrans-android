@@ -1,11 +1,18 @@
 package com.midtrans.sdk.uikit;
 
+import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
 
 import com.midtrans.sdk.corekit.MidtransSdk;
 import com.midtrans.sdk.corekit.base.enums.Environment;
+import com.midtrans.sdk.corekit.base.enums.PaymentType;
+import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.CheckoutTransaction;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.PaymentResponse;
 import com.midtrans.sdk.corekit.utilities.Logger;
+import com.midtrans.sdk.uikit.base.callback.PaymentResult;
+
+import androidx.annotation.NonNull;
 
 import static android.webkit.URLUtil.isValidUrl;
 import static com.midtrans.sdk.corekit.utilities.Constants.ERROR_SDK_CLIENT_KEY_AND_CONTEXT_PROPERLY;
@@ -13,9 +20,9 @@ import static com.midtrans.sdk.corekit.utilities.Constants.ERROR_SDK_IS_NOT_INIT
 import static com.midtrans.sdk.corekit.utilities.Constants.ERROR_SDK_MERCHANT_BASE_URL_PROPERLY;
 import static com.midtrans.sdk.corekit.utilities.Constants.MESSAGE_INSTANCE_NOT_INITALIZE;
 
-public class MidtransUi {
+public class MidtransKit {
 
-    private static volatile MidtransUi SINGLETON_INSTANCE = null;
+    private static volatile MidtransKit SINGLETON_INSTANCE = null;
     private static final int API_TIMEOUT_DEFAULT = 30;
     /**
      * Mandatory property.
@@ -30,15 +37,17 @@ public class MidtransUi {
     private int apiRequestTimeOut;
     private boolean isBuiltinStorageEnabled;
     private boolean isLogEnabled;
+    private KitSetting kitSetting;
 
-    MidtransUi(
+    MidtransKit(
             Context context,
             String merchantClientId,
             String merchantBaseUrl,
             Environment midtransEnvironment,
             int apiRequestTimeOut,
             boolean isBuiltinStorageEnabled,
-            boolean isLogEnabled
+            boolean isLogEnabled,
+            KitSetting kitSetting
     ) {
         this.context = context;
         this.merchantClientId = merchantClientId;
@@ -47,6 +56,7 @@ public class MidtransUi {
         this.apiRequestTimeOut = apiRequestTimeOut;
         this.isBuiltinStorageEnabled = isBuiltinStorageEnabled;
         this.isLogEnabled = isLogEnabled;
+        this.kitSetting = kitSetting;
         initMidtransSdk();
     }
 
@@ -58,10 +68,11 @@ public class MidtransUi {
      * @param merchantUrl MerchantUrl or Merchant Base Url, mandatory not null.
      * @return Builder.
      */
-    public static Builder builder(final Context context,
-                                  final String clientId,
-                                  final String merchantUrl) {
-
+    public static Builder builder(
+            final Context context,
+            final String clientId,
+            final String merchantUrl
+    ) {
         return new Builder(
                 context,
                 clientId,
@@ -142,15 +153,76 @@ public class MidtransUi {
     }
 
     /**
+     * Returns value of midtransEnvironment
+     *
+     * @return enum for midtransEnvironment
+     */
+    public Environment getMidtransEnvironment() {
+        return midtransEnvironment;
+    }
+
+    /**
+     * Returns value of isLogEnabled
+     *
+     * @return boolean for isLogEnabled
+     */
+    public boolean isLogEnabled() {
+        return isLogEnabled;
+    }
+
+    /**
+     * Returns value of KitSetting
+     *
+     * @return object for kitSetting
+     */
+    public KitSetting getKitSetting() {
+        return kitSetting;
+    }
+
+    /**
      * Returns instance of midtrans sdk.
      *
      * @return MidtransSdk instance.
      */
-    public synchronized static MidtransUi getInstance() {
+    public synchronized static MidtransKit getInstance() {
         if (doCheckSdkInitialization(SINGLETON_INSTANCE)) {
             return SINGLETON_INSTANCE;
         }
         return null;
+    }
+
+    public void startUiPaymentWithTransaction(
+            @NonNull Activity context,
+            @NonNull CheckoutTransaction checkoutTransaction,
+            @NonNull PaymentResult<PaymentResponse> callback
+    ) {
+
+    }
+
+    public void startUiPaymentWithToken(
+            @NonNull Activity context,
+            @NonNull String token,
+            @NonNull PaymentResult<PaymentResponse> callback
+    ) {
+
+    }
+
+    public <T> void startUiDirectPaymentWithTransaction(
+            @NonNull Activity context,
+            @NonNull String token,
+            @NonNull @PaymentType String paymentType,
+            @NonNull PaymentResult<T> callback
+    ) {
+
+    }
+
+    public <T> void startUiDirectPaymentWithToken(
+            @NonNull Activity context,
+            @NonNull String token,
+            @NonNull @PaymentType String paymentType,
+            @NonNull PaymentResult<T> callback
+    ) {
+
     }
 
     private void initMidtransSdk() {
@@ -175,11 +247,12 @@ public class MidtransUi {
         private int apiRequestTimeOut = API_TIMEOUT_DEFAULT;
         private boolean isLogEnabled = false;
         private boolean isBuiltinStorageEnabled = true;
+        private KitSetting kitSetting;
 
         private Builder(
-                final Context context,
-                final String clientId,
-                final String merchantUrl
+                Context context,
+                String clientId,
+                String merchantUrl
         ) {
             this.context = context;
             this.merchantClientId = clientId;
@@ -189,16 +262,12 @@ public class MidtransUi {
         /**
          * set Logger visible or not.
          */
-        public Builder setLogEnabled(
-                final boolean isLogEnabled
-        ) {
+        public Builder setLogEnabled(boolean isLogEnabled) {
             this.isLogEnabled = isLogEnabled;
             return this;
         }
 
-        public Builder setBuiltinStorageEnabled(
-                final boolean isBuiltinStorageEnabled
-        ) {
+        public Builder setBuiltinStorageEnabled(boolean isBuiltinStorageEnabled) {
             this.isBuiltinStorageEnabled = isBuiltinStorageEnabled;
             return this;
         }
@@ -206,9 +275,7 @@ public class MidtransUi {
         /**
          * set Logger visible or not.
          */
-        public Builder setEnvironment(
-                final Environment environment
-        ) {
+        public Builder setEnvironment(Environment environment) {
             this.midtransEnvironment = environment;
             return this;
         }
@@ -216,10 +283,16 @@ public class MidtransUi {
         /**
          * set Logger visible or not.
          */
-        public Builder setApiRequestTimeOut(
-                final int apiRequestTimeOutInSecond
-        ) {
+        public Builder setApiRequestTimeOut(int apiRequestTimeOutInSecond) {
             this.apiRequestTimeOut = apiRequestTimeOutInSecond;
+            return this;
+        }
+
+        /**
+         * set Custom Kit Setting.
+         */
+        public Builder setKitSetting(KitSetting kitSetting) {
+            this.kitSetting = kitSetting;
             return this;
         }
 
@@ -228,16 +301,17 @@ public class MidtransUi {
          *
          * @return it returns fully initialized object of midtrans sdk.
          */
-        public MidtransUi build() {
+        public MidtransKit build() {
             if (isValidData()) {
-                SINGLETON_INSTANCE = new MidtransUi(
+                SINGLETON_INSTANCE = new MidtransKit(
                         context,
                         merchantClientId,
                         merchantBaseUrl,
                         midtransEnvironment,
                         apiRequestTimeOut,
                         isBuiltinStorageEnabled,
-                        isLogEnabled
+                        isLogEnabled,
+                        kitSetting
                 );
                 return SINGLETON_INSTANCE;
             } else {
@@ -260,9 +334,7 @@ public class MidtransUi {
         }
     }
 
-    private static <T> boolean doCheckSdkInitialization(
-            T itemForCheck
-    ) {
+    private static <T> boolean doCheckSdkInitialization(T itemForCheck) {
         if (itemForCheck == null) {
             RuntimeException runtimeException = new RuntimeException(MESSAGE_INSTANCE_NOT_INITALIZE);
             Logger.error(runtimeException.getMessage());
