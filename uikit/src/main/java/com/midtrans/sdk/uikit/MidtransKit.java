@@ -191,7 +191,7 @@ public class MidtransKit {
         return null;
     }
 
-    public void startUiPaymentWithTransaction(
+    public void startPaymentUiWithTransaction(
             @NonNull Activity context,
             @NonNull CheckoutTransaction checkoutTransaction,
             @NonNull PaymentResult<PaymentResponse> callback
@@ -199,7 +199,7 @@ public class MidtransKit {
 
     }
 
-    public void startUiPaymentWithToken(
+    public void startPaymentUiWithToken(
             @NonNull Activity context,
             @NonNull String token,
             @NonNull PaymentResult<PaymentResponse> callback
@@ -207,7 +207,7 @@ public class MidtransKit {
 
     }
 
-    public <T> void startUiDirectPaymentWithTransaction(
+    public <T> void startDirectPaymentUiWithTransaction(
             @NonNull Activity context,
             @NonNull String token,
             @NonNull @PaymentType String paymentType,
@@ -216,7 +216,7 @@ public class MidtransKit {
 
     }
 
-    public <T> void startUiDirectPaymentWithToken(
+    public <T> void startDirectPaymentUiWithToken(
             @NonNull Activity context,
             @NonNull String token,
             @NonNull @PaymentType String paymentType,

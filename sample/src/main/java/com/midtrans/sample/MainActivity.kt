@@ -48,8 +48,13 @@ class MainActivity : AppCompatActivity() {
             .setCustomKitConfig(
                 CustomKitConfig
                     .builder()
+                    .setDefaultText("")
+                    .setBoldText("")
+                    .setSemiBoldText("")
+                    .setEnableAutoReadSms(false)
+                    .setShowPaymentStatus(false)
                     .setShowEmailInCcForm(false)
-                    .setEnabledAnimation(false)
+                    .setEnabledAnimation(true)
                     .build()
             )
             .build()
@@ -125,7 +130,7 @@ class MainActivity : AppCompatActivity() {
 
         MidtransKit
             .getInstance()
-            .startUiPaymentWithTransaction(
+            .startPaymentUiWithTransaction(
                 this,
                 checkoutTransaction,
                 object : PaymentResult<PaymentResponse> {
