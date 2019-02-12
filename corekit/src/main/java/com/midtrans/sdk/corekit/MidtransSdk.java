@@ -61,13 +61,13 @@ public class MidtransSdk {
     private MidtransApiManager midtransApiManager;
 
     MidtransSdk(
-            final Context context,
-            final String clientId,
-            final String merchantUrl,
-            final Environment environment,
-            final int apiRequestTimeOut,
-            final boolean isLogEnabled,
-            final boolean isBuiltinStorageEnabled
+            Context context,
+            String clientId,
+            String merchantUrl,
+            Environment environment,
+            int apiRequestTimeOut,
+            boolean isLogEnabled,
+            boolean isBuiltinStorageEnabled
     ) {
         String snapBaseUrl, midtransBaseUrl;
         Logger.enabled = isLogEnabled;
@@ -102,7 +102,6 @@ public class MidtransSdk {
             final String clientId,
             final String merchantUrl
     ) {
-
         return new Builder(
                 context,
                 clientId,
@@ -319,9 +318,9 @@ public class MidtransSdk {
         private boolean isBuiltinStorageEnabled = true;
 
         private Builder(
-                final Context context,
-                final String clientId,
-                final String merchantUrl
+                Context context,
+                String clientId,
+                String merchantUrl
         ) {
             this.context = context;
             this.merchantClientId = clientId;
@@ -331,16 +330,12 @@ public class MidtransSdk {
         /**
          * set Logger visible or not.
          */
-        public Builder setLogEnabled(
-                final boolean isLogEnabled
-        ) {
+        public Builder setLogEnabled(boolean isLogEnabled) {
             this.isLogEnabled = isLogEnabled;
             return this;
         }
 
-        public Builder setBuiltinStorageEnabled(
-                final boolean isBuiltinStorageEnabled
-        ) {
+        public Builder setBuiltinStorageEnabled(boolean isBuiltinStorageEnabled) {
             this.isBuiltinStorageEnabled = isBuiltinStorageEnabled;
             return this;
         }
@@ -348,9 +343,7 @@ public class MidtransSdk {
         /**
          * set Logger visible or not.
          */
-        public Builder setEnvironment(
-                final Environment environment
-        ) {
+        public Builder setEnvironment(Environment environment) {
             this.midtransEnvironment = environment;
             return this;
         }
@@ -358,9 +351,7 @@ public class MidtransSdk {
         /**
          * set Logger visible or not.
          */
-        public Builder setApiRequestTimeOut(
-                final int apiRequestTimeOutInSecond
-        ) {
+        public Builder setApiRequestTimeOut(int apiRequestTimeOutInSecond) {
             this.apiRequestTimeOut = apiRequestTimeOutInSecond;
             return this;
         }
