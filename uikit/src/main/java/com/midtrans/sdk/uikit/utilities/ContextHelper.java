@@ -12,9 +12,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ContextUtilities {
+public class ContextHelper {
 
-    public static final String TAG = ContextUtilities.class.getSimpleName();
+    public static final String TAG = ContextHelper.class.getSimpleName();
 
     private static Map<String, Typeface> cachedFontMap = new HashMap<String, Typeface>();
 
