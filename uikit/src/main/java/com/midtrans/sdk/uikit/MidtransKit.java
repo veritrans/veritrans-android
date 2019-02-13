@@ -2,7 +2,6 @@ package com.midtrans.sdk.uikit;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.text.TextUtils;
 
 import com.midtrans.sdk.corekit.MidtransSdk;
@@ -12,7 +11,6 @@ import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.Checkou
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.PaymentResponse;
 import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.uikit.base.callback.PaymentResult;
-import com.midtrans.sdk.uikit.view.UserDetailActivity;
 
 import androidx.annotation.NonNull;
 
@@ -39,7 +37,7 @@ public class MidtransKit {
     private int apiRequestTimeOut;
     private boolean isBuiltinStorageEnabled;
     private boolean isLogEnabled;
-    private CustomKitConfig customKitConfig;
+    private MidtransKitConfig midtransKitConfig;
 
     MidtransKit(
             Context context,
@@ -49,7 +47,7 @@ public class MidtransKit {
             int apiRequestTimeOut,
             boolean isBuiltinStorageEnabled,
             boolean isLogEnabled,
-            CustomKitConfig customKitConfig
+            MidtransKitConfig midtransKitConfig
     ) {
         this.context = context;
         this.merchantClientId = merchantClientId;
@@ -58,7 +56,7 @@ public class MidtransKit {
         this.apiRequestTimeOut = apiRequestTimeOut;
         this.isBuiltinStorageEnabled = isBuiltinStorageEnabled;
         this.isLogEnabled = isLogEnabled;
-        this.customKitConfig = customKitConfig;
+        this.midtransKitConfig = midtransKitConfig;
         initMidtransSdk();
     }
 
@@ -173,12 +171,12 @@ public class MidtransKit {
     }
 
     /**
-     * Returns value of CustomKitConfig
+     * Returns value of MidtransKitConfig
      *
-     * @return object for customKitConfig
+     * @return object for midtransKitConfig
      */
-    public CustomKitConfig getCustomKitConfig() {
-        return customKitConfig;
+    public MidtransKitConfig getMidtransKitConfig() {
+        return midtransKitConfig;
     }
 
     /**
@@ -198,7 +196,7 @@ public class MidtransKit {
             @NonNull CheckoutTransaction checkoutTransaction,
             @NonNull PaymentResult<PaymentResponse> callback
     ) {
-        context.startActivity(new Intent(context, UserDetailActivity.class));
+        MidtransKitFlow.paymentWithTransactionFlow(context, checkoutTransaction, callback);
     }
 
     public void startPaymentUiWithToken(
@@ -206,16 +204,16 @@ public class MidtransKit {
             @NonNull String token,
             @NonNull PaymentResult<PaymentResponse> callback
     ) {
-
+        MidtransKitFlow.paymentWithTokenFlow(context, token, callback);
     }
 
     public <T> void startDirectPaymentUiWithTransaction(
             @NonNull Activity context,
-            @NonNull String token,
+            @NonNull CheckoutTransaction checkoutTransaction,
             @NonNull @PaymentType String paymentType,
             @NonNull PaymentResult<T> callback
     ) {
-
+        MidtransKitFlow.directPaymentWithTransactionFlow(context,checkoutTransaction,paymentType,callback);
     }
 
     public <T> void startDirectPaymentUiWithToken(
@@ -224,7 +222,7 @@ public class MidtransKit {
             @NonNull @PaymentType String paymentType,
             @NonNull PaymentResult<T> callback
     ) {
-
+        MidtransKitFlow.directPaymentWithTokenFlow(context,token,paymentType,callback);
     }
 
     private void initMidtransSdk() {
@@ -249,7 +247,7 @@ public class MidtransKit {
         private int apiRequestTimeOut = API_TIMEOUT_DEFAULT;
         private boolean isLogEnabled = false;
         private boolean isBuiltinStorageEnabled = true;
-        private CustomKitConfig customKitConfig;
+        private MidtransKitConfig midtransKitConfig;
 
         private Builder(
                 Context context,
@@ -293,8 +291,8 @@ public class MidtransKit {
         /**
          * set Custom Kit Setting.
          */
-        public Builder setCustomKitConfig(CustomKitConfig customKitConfig) {
-            this.customKitConfig = customKitConfig;
+        public Builder setMidtransKitConfig(MidtransKitConfig midtransKitConfig) {
+            this.midtransKitConfig = midtransKitConfig;
             return this;
         }
 
@@ -313,7 +311,7 @@ public class MidtransKit {
                         apiRequestTimeOut,
                         isBuiltinStorageEnabled,
                         isLogEnabled,
-                        customKitConfig
+                        midtransKitConfig
                 );
                 return SINGLETON_INSTANCE;
             } else {

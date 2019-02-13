@@ -20,8 +20,9 @@ import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoRespo
 import com.midtrans.sdk.corekit.core.payment.CreditCardCharge
 import com.midtrans.sdk.corekit.utilities.InstallationHelper
 import com.midtrans.sdk.corekit.utilities.Logger
-import com.midtrans.sdk.uikit.CustomKitConfig
+import com.midtrans.sdk.uikit.MidtransKitConfig
 import com.midtrans.sdk.uikit.MidtransKit
+import com.midtrans.sdk.uikit.MidtransKitFlow
 import com.midtrans.sdk.uikit.base.callback.PaymentResult
 import com.midtrans.sdk.uikit.base.theme.CustomColorTheme
 import java.util.*
@@ -38,16 +39,12 @@ class MainActivity : AppCompatActivity() {
                 BuildConfig.CLIENT_KEY,
                 BuildConfig.BASE_URL
             )
-            .setEnvironment(if (BuildConfig.DEBUG) {
-                Environment.SANDBOX
-            } else {
-                Environment.PRODUCTION
-            })
+            .setEnvironment(Environment.SANDBOX)
             .setApiRequestTimeOut(60)
             .setLogEnabled(true)
             .setBuiltinStorageEnabled(false)
-            .setCustomKitConfig(
-                CustomKitConfig
+            .setMidtransKitConfig(
+                MidtransKitConfig
                     .builder()
                     .setDefaultText("")
                     .setBoldText("")
@@ -114,20 +111,6 @@ class MainActivity : AppCompatActivity() {
                     )
                     .build()
             )
-            .setEnabledPayments(ArrayList())
-            .setCheckoutExpiry(CheckoutExpiry("", ExpiryTimeUnit.DAY, 1))
-            .setCheckoutItems(ArrayList())
-            .setBcaVa(BcaBankTransferRequestModel(
-                "",
-                BcaBankFreeText(
-                    ArrayList(),
-                    ArrayList()
-                ),
-                "")
-            )
-            .setCustomField1("Custom Field 1")
-            .setCustomField2("Custom Field 2")
-            .setCustomField3("Custom Field 3")
             .build()
 
         MidtransKit
@@ -137,11 +120,11 @@ class MainActivity : AppCompatActivity() {
                 checkoutTransaction,
                 object : PaymentResult<PaymentResponse> {
                     override fun onPaymentFinished(statusMessage: String?, paymentType: String?, response: PaymentResponse?) {
-
+                        Logger.debug("RESULT IS >>> $statusMessage")
                     }
 
                     override fun onFailed(throwable: Throwable?) {
-
+                        Logger.debug("ERROR IS >>> ${throwable?.message}")
                     }
                 }
             )

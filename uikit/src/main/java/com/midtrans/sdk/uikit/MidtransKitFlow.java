@@ -65,7 +65,7 @@ public class MidtransKitFlow {
         }
     }
 
-    <T> void directPaymentWithTransactionFlow(
+    static <T> void directPaymentWithTransactionFlow(
             Activity context,
             CheckoutTransaction checkoutTransaction,
             @PaymentType String paymentType,
@@ -79,7 +79,7 @@ public class MidtransKitFlow {
         }
     }
 
-    <T> void directPaymentWithTokenFlow(
+    static <T> void directPaymentWithTokenFlow(
             Activity context,
             String token,
             @PaymentType String paymentType,
@@ -93,7 +93,7 @@ public class MidtransKitFlow {
         }
     }
 
-    private Intent intentDirectWithMapping(Intent intent, @PaymentType String paymentType) {
+    private static Intent intentDirectWithMapping(Intent intent, @PaymentType String paymentType) {
         switch (paymentType) {
             case PaymentType.CREDIT_CARD:
                 intent.putExtra(INTENT_EXTRA_CREDIT_CARD_ONLY, true);
