@@ -26,7 +26,7 @@ import com.midtrans.sdk.uikit.utilities.ActivityHelper;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 
-public class PaymentMethodActivity extends BaseActivity {
+public class KitLandingActivity extends BaseActivity {
 
     private PaymentResult<PaymentResponse> callback;
     private boolean isCreditCardOnly = false;

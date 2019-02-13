@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context=".view.PaymentMethodActivity">
+    tools:context=".view.KitLandingActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/main_appbar"
