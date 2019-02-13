@@ -13,6 +13,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ContextUtilities {
+
+    public static final String TAG = ContextUtilities.class.getSimpleName();
+
     private static Map<String, Typeface> cachedFontMap = new HashMap<String, Typeface>();
 
     public static int pxToSp(final Context context, final float px) {
@@ -62,7 +65,7 @@ public class ContextUtilities {
                 }
 
             } catch (Exception e) {
-                Logger.error(com.midtrans.sdk.uikit.widgets.FancyButton.TAG, String.format("Unable to find %s font. Using Typeface.DEFAULT instead.", fontName));
+                Logger.error(TAG, String.format("Unable to find %s font. Using Typeface.DEFAULT instead.", fontName));
                 cachedFontMap.put(fontName, Typeface.DEFAULT);
                 return Typeface.DEFAULT;
             }
