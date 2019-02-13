@@ -6,6 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import androidx.annotation.StringDef;
 
 import static com.midtrans.sdk.corekit.base.enums.PaymentType.AKULAKU;
+import static com.midtrans.sdk.corekit.base.enums.PaymentType.ALFAMART;
 import static com.midtrans.sdk.corekit.base.enums.PaymentType.BCA_KLIKPAY;
 import static com.midtrans.sdk.corekit.base.enums.PaymentType.BCA_VA;
 import static com.midtrans.sdk.corekit.base.enums.PaymentType.BNI_VA;
@@ -36,6 +37,7 @@ import static com.midtrans.sdk.corekit.base.enums.PaymentType.TELKOMSEL_CASH;
         MANDIRI_CLICKPAY,
         KLIK_BCA,
         INDOMARET,
+        ALFAMART,
         AKULAKU
 })
 @Retention(RetentionPolicy.SOURCE)
@@ -61,6 +63,7 @@ public @interface PaymentType {
     String KLIK_BCA = "bca_klikbca";
     // Convenience Store
     String INDOMARET = "indomaret";
+    String ALFAMART = "alfamart";
     // Cardless Credit
     String AKULAKU = "akulaku";
 }
