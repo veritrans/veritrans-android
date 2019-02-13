@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-sdk tools:overrideLibrary="com.rds.swipelayout,me.saket.bettermovementmethod,com.stfalcon.smsverifycatcher" />
+
     <application
         android:allowBackup="false"
         android:hardwareAccelerated="true"
@@ -12,7 +14,7 @@
         tools:replace="android:allowBackup">
 
         <activity
-            android:name=".view.UserDetailActivity"
+            android:name=".view.PaymentMethodActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan"
             android:theme="@style/VeritransAppTheme"/>
