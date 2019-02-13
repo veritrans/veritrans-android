@@ -7,11 +7,8 @@ import com.midtrans.sdk.corekit.base.callback.MidtransCallback
 import com.midtrans.sdk.corekit.base.enums.*
 import com.midtrans.sdk.corekit.base.enums.Currency
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.CheckoutTransaction
-import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.CheckoutExpiry
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.customer.Address
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.customer.CustomerDetails
-import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specific.banktransfer.BcaBankFreeText
-import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specific.banktransfer.BcaBankTransferRequestModel
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specific.creditcard.CreditCard
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.response.CheckoutWithTransactionResponse
 import com.midtrans.sdk.corekit.core.api.midtrans.model.registration.CreditCardTokenizeResponse
@@ -20,10 +17,10 @@ import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoRespo
 import com.midtrans.sdk.corekit.core.payment.CreditCardCharge
 import com.midtrans.sdk.corekit.utilities.InstallationHelper
 import com.midtrans.sdk.corekit.utilities.Logger
-import com.midtrans.sdk.uikit.MidtransKitConfig
 import com.midtrans.sdk.uikit.MidtransKit
-import com.midtrans.sdk.uikit.MidtransKitFlow
+import com.midtrans.sdk.uikit.MidtransKitConfig
 import com.midtrans.sdk.uikit.base.callback.PaymentResult
+import com.midtrans.sdk.uikit.base.callback.Result
 import com.midtrans.sdk.uikit.base.theme.CustomColorTheme
 import java.util.*
 
@@ -115,12 +112,12 @@ class MainActivity : AppCompatActivity() {
 
         MidtransKit
             .getInstance()
-            .startPaymentUiWithTransaction(
+            .startPaymentUiWithToken(
                 this,
-                checkoutTransaction,
+                "37ea1a6b-aa51-4a41-8126-00b3ea6ff6fb",
                 object : PaymentResult<PaymentResponse> {
-                    override fun onPaymentFinished(statusMessage: String?, paymentType: String?, response: PaymentResponse?) {
-                        Logger.debug("RESULT IS >>> $statusMessage")
+                    override fun onPaymentFinished(result: Result?, response: PaymentResponse?) {
+                        Logger.debug("RESULT IS >>> ${result?.paymentMessage}")
                     }
 
                     override fun onFailed(throwable: Throwable?) {
