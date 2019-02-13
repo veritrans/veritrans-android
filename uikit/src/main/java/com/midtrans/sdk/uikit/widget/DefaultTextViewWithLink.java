@@ -10,7 +10,7 @@ import android.util.AttributeSet;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.midtrans.sdk.uikit.CustomKitConfig;
+import com.midtrans.sdk.uikit.MidtransKitConfig;
 import com.midtrans.sdk.uikit.MidtransKit;
 import com.midtrans.sdk.uikit.R;
 
@@ -55,9 +55,9 @@ public class DefaultTextViewWithLink extends DefaultTextView {
     }
 
     private void initLinkColor() {
-        CustomKitConfig customKitConfig = MidtransKit.getInstance().getCustomKitConfig();
-        if (customKitConfig != null && customKitConfig.getColorTheme() != null) {
-            int color = customKitConfig.getColorTheme().getSecondaryColor();
+        MidtransKitConfig midtransKitConfig = MidtransKit.getInstance().getMidtransKitConfig();
+        if (midtransKitConfig != null && midtransKitConfig.getColorTheme() != null) {
+            int color = midtransKitConfig.getColorTheme().getSecondaryColor();
             if (color != 0) {
                 setLinkTextColor(color);
             }
