@@ -15,6 +15,7 @@ public class MidtransKitFlow {
     public static final String INTENT_EXTRA_CALLBACK = "intent.extra.callback";
     public static final String INTENT_EXTRA_TOKEN = "intent.extra.token";
     public static final String INTENT_EXTRA_TRANSACTION = "intent.extra.transaction";
+    public static final String INTENT_EXTRA_DIRECT = "intent.extra.direct";
     public static final String INTENT_EXTRA_ALL_PAYMENT = "intent.extra.all_payment";
     public static final String INTENT_EXTRA_CREDIT_CARD_ONLY = "intent.extra.cconly";
     public static final String INTENT_EXTRA_BANK_TRANSFER_ONLY = "intent.extra.btonly";
@@ -94,6 +95,7 @@ public class MidtransKitFlow {
     }
 
     private static Intent intentDirectWithMapping(Intent intent, @PaymentType String paymentType) {
+        intent.putExtra(INTENT_EXTRA_DIRECT, paymentType);
         switch (paymentType) {
             case PaymentType.CREDIT_CARD:
                 intent.putExtra(INTENT_EXTRA_CREDIT_CARD_ONLY, true);
