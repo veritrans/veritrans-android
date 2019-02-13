@@ -60,14 +60,17 @@ public class KitLandingActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_payment_method);
+        setContentView(R.layout.activity_kit_landing);
 
         initToolbarAndView();
+        initializeTheme();
         getIntentDataFromMidtransKitFlow();
         checkDataBeforeStartMidtransSdk();
     }
 
     private void initToolbarAndView() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         progressContainer = findViewById(R.id.progress_container);
         progressImage = findViewById(R.id.progress_bar_image);
         progressMessage = findViewById(R.id.progress_bar_message);
