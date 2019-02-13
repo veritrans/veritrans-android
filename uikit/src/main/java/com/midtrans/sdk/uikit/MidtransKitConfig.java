@@ -2,7 +2,7 @@ package com.midtrans.sdk.uikit;
 
 import com.midtrans.sdk.uikit.base.theme.BaseColorTheme;
 
-public class CustomKitConfig {
+public class MidtransKitConfig {
 
     private String defaultText;
     private String boldText;
@@ -15,7 +15,7 @@ public class CustomKitConfig {
     private boolean showEmailInCcForm;
     private BaseColorTheme baseColorTheme;
 
-    CustomKitConfig(
+    MidtransKitConfig(
             String defaultText,
             String boldText,
             String semiBoldText,
@@ -144,8 +144,8 @@ public class CustomKitConfig {
             return this;
         }
 
-        public CustomKitConfig build() {
-            return new CustomKitConfig(
+        public MidtransKitConfig build() {
+            return new MidtransKitConfig(
                     this.defaultText,
                     this.boldText,
                     this.semiBoldText,
