@@ -1,12 +1,13 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context=".view.UserDetailActivity">
+    tools:context=".view.PaymentMethodActivity">
 
-    <android.support.design.widget.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/main_appbar"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
@@ -17,31 +18,103 @@
             style="@style/ThemeOverlay.AppCompat.ActionBar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/white"
-            android:paddingEnd="@dimen/activity_horizontal_margin"
-            android:paddingStart="@dimen/activity_horizontal_margin">
+            android:background="@android:color/white"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp"
+            app:contentInsetStartWithNavigation="0dp">
 
-            <ImageView
-                android:id="@+id/merchant_logo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <com.midtrans.sdk.uikit.widget.DefaultTextView
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="end"
-                android:text="@string/title_user_details"
-                android:textColor="@color/dark_gray"
-                android:textSize="@dimen/tool_bar_title_size"
-                android:visibility="visible"
-                tools:text="User Detail" />
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/fifty_six_dp"
+                android:layout_marginRight="@dimen/fifty_six_dp"
+                android:gravity="center"
+                android:orientation="horizontal">
 
+                <com.midtrans.sdk.uikit.widget.DefaultTextView
+                    android:id="@+id/merchant_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/dark_gray"
+                    android:textSize="@dimen/tool_bar_title_size"
+                    android:visibility="gone"
+                    tools:text="Name"
+                    tools:visibility="visible" />
+
+                <ImageView
+                    android:id="@+id/merchant_logo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/main_logo_height"
+                    android:layout_centerInParent="true"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitStart" />
+            </RelativeLayout>
         </androidx.appcompat.widget.Toolbar>
-    </android.support.design.widget.AppBarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <RelativeLayout
-        android:id="@+id/user_detail_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-</LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_item_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/gray.primary"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_payment_methods"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/secure_badge"
+            android:layout_below="@+id/rv_item_list"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+        <ImageView
+            android:id="@+id/secure_badge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/light_gray"
+            android:padding="@dimen/eight_dp"
+            android:scaleType="centerInside" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/progress_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:gravity="center_vertical|center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <include layout="@layout/layout_midtrans_progress" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/maintenance_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:background="@color/white"
+        android:gravity="center_vertical|center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="gone">
+
+        <include layout="@layout/layout_midtrans_maintenance" />
+    </LinearLayout>
+
+    <include
+        layout="@layout/layout_midtrans_sandbox_badge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
