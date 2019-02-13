@@ -9,14 +9,17 @@ import android.widget.TextView;
 import com.koushikdutta.ion.Ion;
 import com.midtrans.sdk.corekit.MidtransSdk;
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
+import com.midtrans.sdk.corekit.base.enums.PaymentType;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.CheckoutTransaction;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.response.CheckoutWithTransactionResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.PaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
+import com.midtrans.sdk.corekit.utilities.Constants;
 import com.midtrans.sdk.uikit.MidtransKitFlow;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.base.BaseActivity;
 import com.midtrans.sdk.uikit.base.callback.PaymentResult;
+import com.midtrans.sdk.uikit.base.callback.Result;
 import com.midtrans.sdk.uikit.base.enums.PaymentStatus;
 import com.midtrans.sdk.uikit.utilities.ActivityHelper;
 
@@ -46,6 +49,8 @@ public class PaymentMethodActivity extends BaseActivity {
     private boolean isOtherVa = false;
     private String token = null;
     private CheckoutTransaction checkoutTransaction = null;
+    @PaymentType
+    private String paymentType;
 
     private LinearLayout progressContainer;
     private ImageView progressImage;
@@ -75,6 +80,7 @@ public class PaymentMethodActivity extends BaseActivity {
     private void getIntentDataFromMidtransKitFlow() {
         callback = (PaymentResult<PaymentResponse>) getIntent().getSerializableExtra(MidtransKitFlow.INTENT_EXTRA_CALLBACK);
         checkoutTransaction = (CheckoutTransaction) getIntent().getSerializableExtra(MidtransKitFlow.INTENT_EXTRA_TRANSACTION);
+        paymentType = getIntent().getStringExtra(MidtransKitFlow.INTENT_EXTRA_DIRECT);
         token = getIntent().getStringExtra(MidtransKitFlow.INTENT_EXTRA_TOKEN);
 
         isCreditCardOnly = getIntent().getBooleanExtra(MidtransKitFlow.INTENT_EXTRA_CREDIT_CARD_ONLY, false);
@@ -116,10 +122,10 @@ public class PaymentMethodActivity extends BaseActivity {
                     @Override
                     public void onSuccess(CheckoutWithTransactionResponse data) {
                         if (data.getToken() == null) {
-                            if (data.getErrorMessages() != null && !data.getErrorMessages().get(0).isEmpty()) {
-                                setOnFailedCallback(new Throwable(data.getErrorMessages().get(0)));
+                            if (data.getErrorMessages().get(0) != null) {
+                                callback.onPaymentFinished(new Result(PaymentStatus.STATUS_FAILED, data.getErrorMessages().get(0), paymentType), null);
                             } else {
-                                setOnFailedCallback(new Throwable("Can't create token."));
+                                setOnFailedCallback(new Throwable(Constants.MESSAGE_ERROR_FAILURE_RESPONSE));
                             }
                         } else {
                             startGettingPaymentInfoWithMidtransSdk(data.getToken());
@@ -139,8 +145,7 @@ public class PaymentMethodActivity extends BaseActivity {
                 .getPaymentInfo(token, new MidtransCallback<PaymentInfoResponse>() {
                     @Override
                     public void onSuccess(PaymentInfoResponse data) {
-                        callback.onPaymentFinished(PaymentStatus.STATUS_SUCCESS, null, null);
-                        finish();
+
                     }
 
                     @Override
