@@ -5,8 +5,8 @@ ext {
     targetVersion = 28
     sdkVersion = 28
     minCoreSdkVersion = 9
-    minUiSdkVersion = 14
-    minSdkVersion = 14
+    minUiSdkVersion = 15
+    minSdkVersion = 15
     buildToolsVersion = '28.0.3'
 
     supportLibVersion = '28.0.0'
@@ -46,11 +46,6 @@ ext {
             interceptor         : [group: 'com.squareup.okhttp3', name: 'logging-interceptor', version: okHttpVersion],
     ]
 
-    supportLibraries = [
-            appCompat           : [group: 'com.android.support', name: 'appcompat-v7', version: supportLibVersion],
-            constraintLayout    : [group: 'com.android.support.constraint', name: 'constraint-layout', version: constraintVersion],
-    ]
-
     androidxLibraries = [
             appCompat           : [group: 'androidx.appcompat', name:'appcompat',version: androidxVersion],
             cardView            : [group: 'androidx.cardview', name:'cardview-v7',version: androidxVersion],
@@ -84,5 +79,13 @@ ext {
 
     kotlinLibraries = [
             kotlinStd           : [group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8', version: kotlinVersion],
+    ]
+
+    libraries = [
+            swipeLayout         : 'ru.rambler.android:swipe-layout:1.0.14',
+            betterLinkMovement  : 'me.saket:better-link-movement-method:1.2',
+            smsVerifyCatcher    : 'com.github.stfalcon:smsverifycatcher:0.3.1',
+            zXingAndroid        : 'com.journeyapps:zxing-android-embedded:3.6.0',
+            ion                 : 'com.koushikdutta.ion:ion:2.2.1',
     ]
 }

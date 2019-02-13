@@ -1,0 +1,100 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+
+    <!-- dimensions-->
+    <dimen name="four_dp">4dp</dimen>
+    <dimen name="five_dp">5dp</dimen>
+    <dimen name="eight_dp">8dp</dimen>
+    <dimen name="twelve_dp">12dp</dimen>
+    <dimen name="sixteen_dp">16dp</dimen>
+
+    <dimen name="twenty_four_dp">24dp</dimen>
+    <dimen name="sixtyfour_dp">64dp</dimen>
+    <dimen name="fortytwo_dp">54dp</dimen>
+
+    <!-- text size-->
+    <dimen name="eleven_sp">11sp</dimen>
+    <dimen name="big_text">22sp</dimen>
+    <dimen name="va_number_size">20sp</dimen>
+    <dimen name="header_text_size">20sp</dimen>
+    <dimen name="primary_text_size">16sp</dimen>
+    <dimen name="tool_bar_title_size">20sp</dimen>
+    <dimen name="tool_bar_merchant_name_size">14sp</dimen>
+
+    <dimen name="secondary_text_size">14sp</dimen>
+    <dimen name="tertiary_text_size">12sp</dimen>
+    <dimen name="small_text_size">10sp</dimen>
+    <dimen name="thirtytwo_dp">32dp</dimen>
+    <dimen name="sixteen_sp">16sp</dimen>
+
+    <!-- tool bar side view margin-->
+    <dimen name="one_dp">1dp</dimen>
+    <dimen name="two_dp">2dp</dimen>
+    <dimen name="twenty_dp">20dp</dimen>
+    <dimen name="forty_dp">40dp</dimen>
+    <dimen name="fifty_six_dp">56dp</dimen>
+    <dimen name="sixty_four_dp">64dp</dimen>
+
+    <dimen name="logo_height">20dp</dimen>
+    <dimen name="main_logo_height">30dp</dimen>
+    <dimen name="twenty_two_sp">22sp</dimen>
+    <dimen name="thirtytwo_sp">32sp</dimen>
+    <dimen name="payment_logo_size">30dp</dimen>
+    <dimen name="promo_logo_size">20dp</dimen>
+    <dimen name="bank_logo_size">30dp</dimen>
+
+    <dimen name="button_size">60dp</dimen>
+    <dimen name="button_primary_text_size">15sp</dimen>
+    <dimen name="toolbar_expansion_size">8dp</dimen>
+    <dimen name="qr_code_size">350dp</dimen>
+    <dimen name="barcode_width">500dp</dimen>
+    <dimen name="barcode_height">200dp</dimen>
+
+
+    <dimen name="ultra_tiny_font_size">8sp</dimen>
+    <dimen name="extra_tiny_font_size">10sp</dimen>
+    <dimen name="tiny_font_size">11sp</dimen>
+    <dimen name="small_font_size">12sp</dimen>
+    <dimen name="medium_font_size">14sp</dimen>
+    <dimen name="large_font_size">16sp</dimen>
+    <dimen name="extra_large_font_size">18sp</dimen>
+    <dimen name="not_so_huge_font_size">20sp</dimen>
+    <dimen name="not_so_huger_font_size">22sp</dimen>
+    <dimen name="huge_font_size">24sp</dimen>
+    <dimen name="very_huge_font_size">26sp</dimen>
+
+    <dimen name="no_offset_margin">0dp</dimen>
+    <dimen name="really_tiny_margin">1dp</dimen>
+    <dimen name="very_tiny_margin">2dp</dimen>
+    <dimen name="tiny_margin">4dp</dimen>
+    <dimen name="very_small_margin">6dp</dimen>
+    <dimen name="small_margin">8dp</dimen>
+    <dimen name="small_margin_plus">9dp</dimen>
+    <dimen name="small_to_medium_margin">10dp</dimen>
+    <dimen name="small_to_medium_plus_margin">11dp</dimen>
+    <dimen name="medium_small_margin">12dp</dimen>
+    <dimen name="medium_small_plus_margin">14dp</dimen>
+    <dimen name="medium_margin">16dp</dimen>
+    <dimen name="medium_plus_margin">18dp</dimen>
+    <dimen name="medium_large_margin">20dp</dimen>
+    <dimen name="extra_medium_margin">22dp</dimen>
+    <dimen name="large_margin">24dp</dimen>
+    <dimen name="larger_margin">28dp</dimen>
+    <dimen name="larger_margin_plus">30dp</dimen>
+    <dimen name="big_margin">32dp</dimen>
+    <dimen name="extra_big_margin">36dp</dimen>
+    <dimen name="extra_bigger_margin">38dp</dimen>
+    <dimen name="extra_big_margin_plus">40dp</dimen>
+    <dimen name="extra_bigger_margin_plus">44dp</dimen>
+    <dimen name="huge_margin">48dp</dimen>
+    <dimen name="more_huge_margin">56dp</dimen>
+    <dimen name="huger_margin">60dp</dimen>
+    <dimen name="extra_huger_margin">64dp</dimen>
+    <dimen name="very_extra_huge_margin">68dp</dimen>
+    <dimen name="very_huge_margin">72dp</dimen>
+    <dimen name="very_very_huge_margin">96dp</dimen>
+
+    <dimen name="divider_height">1dp</dimen>
+    <dimen name="line_edit_text_height">1.5dp</dimen>
+</resources>

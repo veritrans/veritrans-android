@@ -1,12 +1,23 @@
 <manifest package="com.midtrans.sdk.uikit"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-sdk tools:overrideLibrary="com.rds.swipelayout,me.saket.bettermovementmethod,com.stfalcon.smsverifycatcher" />
+
     <application
         android:allowBackup="false"
-        android:supportsRtl="true">
+        android:hardwareAccelerated="true"
+        android:supportsRtl="true"
+        tools:replace="android:allowBackup">
+
+        <activity
+            android:name=".view.KitLandingActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"
+            android:theme="@style/VeritransAppTheme"/>
 
     </application>
 

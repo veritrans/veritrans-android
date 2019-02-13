@@ -1,10 +1,12 @@
 package com.midtrans.sdk.corekit.base.network;
 
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
+import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.response.CheckoutWithTransactionResponse;
 import com.midtrans.sdk.corekit.core.api.merchant.model.savecard.SaveCardResponse;
 import com.midtrans.sdk.corekit.core.api.snap.SnapApiService;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.creditcard.SaveCardRequest;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BasePaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +42,7 @@ public abstract class BaseServiceManager {
     }
 
     protected <T> void handleCall(Call<T> basePaymentResponseCall,
-                                  final MidtransCallback<T> basePaymentResponseMidtransCallback) {
+                                  MidtransCallback<T> basePaymentResponseMidtransCallback) {
         basePaymentResponseCall.enqueue(new Callback<T>() {
             @Override
             public void onResponse(Call<T> call, Response<T> response) {
@@ -55,7 +57,7 @@ public abstract class BaseServiceManager {
     }
 
     protected void handleCallForSaveCard(Call<List<SaveCardRequest>> basePaymentResponseCall,
-                                         final MidtransCallback<SaveCardResponse> basePaymentResponseMidtransCallback) {
+                                         MidtransCallback<SaveCardResponse> basePaymentResponseMidtransCallback) {
         basePaymentResponseCall.enqueue(new Callback<List<SaveCardRequest>>() {
             @Override
             public void onResponse(Call<List<SaveCardRequest>> call, Response<List<SaveCardRequest>> response) {
@@ -110,6 +112,18 @@ public abstract class BaseServiceManager {
                 }
             } else {
                 callback.onFailed(new Throwable(MESSAGE_ERROR_EMPTY_RESPONSE));
+            }
+        } else if (response != null && !response.isSuccessful()) {
+            T responseBody = response.body();
+            if (responseBody instanceof PaymentInfoResponse) {
+                CheckoutWithTransactionResponse checkoutWithTransactionResponse = (CheckoutWithTransactionResponse) responseBody;
+                if (checkoutWithTransactionResponse.getErrorMessages() != null) {
+                    callback.onSuccess(responseBody);
+                } else {
+                    callback.onFailed(new Throwable(MESSAGE_ERROR_FAILURE_RESPONSE));
+                }
+            } else {
+                callback.onSuccess(responseBody);
             }
         } else {
             if (throwable != null) {

@@ -42,11 +42,19 @@ dependencies {
     testImplementation testLibraries.powermockApi
     testImplementation testLibraries.powermockModule
     testImplementation testLibraries.powermockRule
+
     androidTestImplementation testLibraries.runner
     androidTestImplementation testLibraries.espresso
     androidTestImplementation testLibraries.powermockFull
+
     implementation androidxLibraries.appCompat
-    implementation project(path:':corekit')
+    implementation androidxLibraries.design
+    implementation libraries.swipeLayout
+    implementation libraries.betterLinkMovement
+    implementation libraries.smsVerifyCatcher
+    implementation libraries.zXingAndroid
+    implementation libraries.ion
+
     api (project(':corekit')) {
         exclude module: 'appcompat'
     }

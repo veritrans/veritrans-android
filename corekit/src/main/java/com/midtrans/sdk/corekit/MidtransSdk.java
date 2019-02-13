@@ -246,18 +246,6 @@ public class MidtransSdk {
 
     /**
      * Begin checkoutWithTransaction for all Payment Method that merchant activate in MAP
-     * for use this method you have to set checkoutTransaction first.
-     *
-     * @param callback for receiving callback from request.
-     */
-    public void checkoutWithTransaction(
-            final MidtransCallback<CheckoutWithTransactionResponse> callback
-    ) {
-        checkoutWithTransaction(this.checkoutTransaction, callback);
-    }
-
-    /**
-     * Begin checkoutWithTransaction for all Payment Method that merchant activate in MAP
      * for use this method you must to include checkoutTransaction as parameter.
      *
      * @param checkoutTransaction transaction request for making checkoutWithTransaction.
