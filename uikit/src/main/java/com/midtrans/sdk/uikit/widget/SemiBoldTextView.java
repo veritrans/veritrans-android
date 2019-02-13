@@ -4,7 +4,7 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 
-import com.midtrans.sdk.uikit.CustomKitConfig;
+import com.midtrans.sdk.uikit.MidtransKitConfig;
 import com.midtrans.sdk.uikit.MidtransKit;
 
 import androidx.appcompat.widget.AppCompatTextView;
@@ -27,12 +27,12 @@ public class SemiBoldTextView extends AppCompatTextView {
     }
 
     private void init() {
-        CustomKitConfig customKitConfig = MidtransKit.getInstance().getCustomKitConfig();
-        if (customKitConfig != null) {
-            if (customKitConfig.getSemiBoldText() != null && !customKitConfig.getSemiBoldText().isEmpty()) {
+        MidtransKitConfig midtransKitConfig = MidtransKit.getInstance().getMidtransKitConfig();
+        if (midtransKitConfig != null) {
+            if (midtransKitConfig.getSemiBoldText() != null && !midtransKitConfig.getSemiBoldText().isEmpty()) {
                 Typeface typeface = null;
                 try {
-                    typeface = Typeface.createFromAsset(getContext().getAssets(), customKitConfig.getSemiBoldText());
+                    typeface = Typeface.createFromAsset(getContext().getAssets(), midtransKitConfig.getSemiBoldText());
                 } catch (RuntimeException exception) {
                     exception.printStackTrace();
                 }
