@@ -4,7 +4,7 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 
-import com.midtrans.sdk.uikit.CustomKitConfig;
+import com.midtrans.sdk.uikit.MidtransKitConfig;
 import com.midtrans.sdk.uikit.MidtransKit;
 
 import androidx.appcompat.widget.AppCompatTextView;
@@ -27,12 +27,12 @@ public class BoldTextView extends AppCompatTextView {
     }
 
     private void init() {
-        CustomKitConfig customKitConfig = MidtransKit.getInstance().getCustomKitConfig();
-        if (customKitConfig != null) {
-            if (customKitConfig.getBoldText() != null && !customKitConfig.getBoldText().isEmpty()) {
+        MidtransKitConfig midtransKitConfig = MidtransKit.getInstance().getMidtransKitConfig();
+        if (midtransKitConfig != null) {
+            if (midtransKitConfig.getBoldText() != null && !midtransKitConfig.getBoldText().isEmpty()) {
                 Typeface typeface = null;
                 try {
-                    typeface = Typeface.createFromAsset(getContext().getAssets(), customKitConfig.getBoldText());
+                    typeface = Typeface.createFromAsset(getContext().getAssets(), midtransKitConfig.getBoldText());
                 } catch (RuntimeException exception) {
                     exception.printStackTrace();
                 }
