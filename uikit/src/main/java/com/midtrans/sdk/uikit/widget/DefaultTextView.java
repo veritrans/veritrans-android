@@ -4,7 +4,7 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 
-import com.midtrans.sdk.uikit.CustomKitConfig;
+import com.midtrans.sdk.uikit.MidtransKitConfig;
 import com.midtrans.sdk.uikit.MidtransKit;
 
 public class DefaultTextView extends TextViewWithImages {
@@ -25,12 +25,12 @@ public class DefaultTextView extends TextViewWithImages {
     }
 
     private void init() {
-        CustomKitConfig customKitConfig = MidtransKit.getInstance().getCustomKitConfig();
-        if (customKitConfig != null) {
-            if (customKitConfig.getDefaultText() != null && !customKitConfig.getDefaultText().isEmpty()) {
+        MidtransKitConfig midtransKitConfig = MidtransKit.getInstance().getMidtransKitConfig();
+        if (midtransKitConfig != null) {
+            if (midtransKitConfig.getDefaultText() != null && !midtransKitConfig.getDefaultText().isEmpty()) {
                 Typeface typeface = null;
                 try {
-                    typeface = Typeface.createFromAsset(getContext().getAssets(), customKitConfig.getDefaultText());
+                    typeface = Typeface.createFromAsset(getContext().getAssets(), midtransKitConfig.getDefaultText());
                 } catch (RuntimeException exception) {
                     exception.printStackTrace();
                 }
