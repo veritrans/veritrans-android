@@ -24,6 +24,7 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.DanamonOnlineRe
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.GopayResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.IndomaretPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.KlikBcaResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriBillResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriClickpayResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriEcashResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.PermataBankTransferResponse;
@@ -106,6 +107,23 @@ public class SnapApiManager extends BaseServiceManager {
         if (isSnapTokenAvailable(callback, snapToken, apiService)) {
             PaymentRequest paymentRequest = new PaymentRequest(PaymentType.PERMATA_VA, customerDetails);
             Call<PermataBankTransferResponse> call = apiService.paymentBankTransferPermata(snapToken, paymentRequest);
+            handleCall(call, callback);
+        }
+    }
+
+    /**
+     * This method is used for Payment Using Bank Transfer Permata
+     *
+     * @param snapToken       snapToken after get payment info.
+     * @param customerDetails Payment Details.
+     * @param callback        Transaction callback.
+     */
+    public void paymentUsingBankTransferVaMandiriBill(String snapToken,
+                                                      CustomerDetailPayRequest customerDetails,
+                                                      MidtransCallback<MandiriBillResponse> callback) {
+        if (isSnapTokenAvailable(callback, snapToken, apiService)) {
+            PaymentRequest paymentRequest = new PaymentRequest(PaymentType.PERMATA_VA, customerDetails);
+            Call<MandiriBillResponse> call = apiService.paymentBankTransferMandiriBill(snapToken, paymentRequest);
             handleCall(call, callback);
         }
     }

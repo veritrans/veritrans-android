@@ -4,6 +4,7 @@ import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.CustomerDetailPayRequest;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaBankTransferReponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BniBankTransferResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriBillResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.PermataBankTransferResponse;
 
 import okhttp3.ResponseBody;
@@ -67,6 +68,22 @@ public class BankTransferCharge extends BaseGroupPayment {
                                                        final MidtransCallback<ResponseBody> callback) {
         if (isValidForNetworkCall(callback)) {
             getSnapApiManager().paymentUsingBankTransferVaOther(snapToken, customerDetails, callback);
+        }
+    }
+
+    /**
+     * Start payment using bank transfer and va with Mandiri.
+     * Mandiri Bill = Mandiri Echannel = VA Mandiri
+     *
+     * @param snapToken       token after making checkoutWithTransaction.
+     * @param customerDetails for putting bank transfer request.
+     * @param callback        for receiving callback from request.
+     */
+    public static void paymentUsingBankTransferVaMandiriBill(final String snapToken,
+                                                             final CustomerDetailPayRequest customerDetails,
+                                                             final MidtransCallback<MandiriBillResponse> callback) {
+        if (isValidForNetworkCall(callback)) {
+            getSnapApiManager().paymentUsingBankTransferVaMandiriBill(snapToken, customerDetails, callback);
         }
     }
 }
