@@ -55,5 +55,7 @@ public interface ISdkFlow {
 
     void runAkulaku(Context context, String snapToken);
 
+    void runAlfamart(Context context, String snapToken);
+
     void runCardRegistration(Context context, CardRegistrationCallback callback);
 }
