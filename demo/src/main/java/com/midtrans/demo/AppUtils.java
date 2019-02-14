@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.midtrans.sdk.corekit.core.Logger;
@@ -81,6 +80,7 @@ public class AppUtils {
         paymentNameList.add(new EnabledPayment(PaymentType.GCI, CATEGORY_VOUCHER_CARD));
 //        paymentNameList.add(new EnabledPayment(PaymentType.INDOSAT_DOMPETKU, null)); being deprecated
         paymentNameList.add(new EnabledPayment(PaymentType.AKULAKU, CATEGORY_VOUCHER_CARD));
+        paymentNameList.add(new EnabledPayment(PaymentType.ALFAMART, CATEGORY_CONVENIENT_STORE));
 
         return paymentNameList;
     }
@@ -225,6 +225,10 @@ public class AppUtils {
                 newModel.setCategory(CATEGORY_VOUCHER_CARD);
                 newModel.setPriority(18);
                 break;
+            case PaymentType.ALFAMART:
+                newModel.setCategory(CATEGORY_CONVENIENT_STORE);
+                newModel.setPriority(19);
+                break;
         }
         return newModel;
     }
@@ -333,8 +337,10 @@ public class AppUtils {
                 enabledPayments.add(new EnabledPayment(PaymentType.DANAMON_ONLINE, CATEGORY_DIRECT_DEBIT));
             } else if (name.equals(PaymentType.GOPAY)) {
                 enabledPayments.add(new EnabledPayment(PaymentType.GOPAY, CATEGORY_EMONEY));
-            }else if (name.equals(PaymentType.AKULAKU)) {
+            } else if (name.equals(PaymentType.AKULAKU)) {
                 enabledPayments.add(new EnabledPayment(PaymentType.AKULAKU, CATEGORY_VOUCHER_CARD));
+            } else if (name.equals(PaymentType.ALFAMART)) {
+                enabledPayments.add(new EnabledPayment(PaymentType.ALFAMART, CATEGORY_CONVENIENT_STORE));
             }
         }
         return enabledPayments;
