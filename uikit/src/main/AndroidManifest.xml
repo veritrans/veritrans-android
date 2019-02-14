@@ -1,6 +1,6 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.midtrans.sdk.uikit">
+<manifest package="com.midtrans.sdk.uikit"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-sdk tools:overrideLibrary="com.rds.swipelayout,me.saket.bettermovementmethod,com.stfalcon.smsverifycatcher" />
     <application
@@ -163,6 +163,16 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name=".views.alfamart.payment.AlfamartPaymentActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".views.alfamart.status.AlfamartStatusActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".views.webview.WebViewPaymentActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
@@ -171,7 +181,8 @@
             android:name=".views.creditcard.tnc.TermsAndConditionsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
-        <activity android:name=".views.akulaku.AkulakuActivity"
+        <activity
+            android:name=".views.akulaku.AkulakuActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
 
