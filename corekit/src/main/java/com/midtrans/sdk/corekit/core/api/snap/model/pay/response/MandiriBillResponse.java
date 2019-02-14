@@ -1,7 +1,5 @@
 package com.midtrans.sdk.corekit.core.api.snap.model.pay.response;
 
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.bcaklikpay.BcaKlikPayData;
-
 public class MandiriBillResponse extends BasePaymentResponse {
 
     public String getRedirectUrl() {
@@ -19,7 +17,6 @@ public class MandiriBillResponse extends BasePaymentResponse {
     public void setFraudStatus(String fraudStatus) {
         this.fraudStatus = fraudStatus;
     }
-
 
     public String getBillKey() {
         return billKey;
