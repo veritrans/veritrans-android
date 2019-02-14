@@ -19,7 +19,7 @@
             android:layout_above="@+id/container_item_details"
             android:layout_alignParentTop="true">
 
-            <include layout="@layout/layout_indomaret_status" />
+            <include layout="@layout/layout_alfamart_status" />
         </ScrollView>
 
         <View
