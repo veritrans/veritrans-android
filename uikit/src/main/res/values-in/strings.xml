@@ -218,7 +218,7 @@
     <string name="alfamart_instruction_step3">Kunjungi Alfamart terdekat dan berikan nomor Kode Pembayaran Anda ke kasir (atau dengan scan barcode oleh kasir).</string>
     <string name="alfamart_instruction_step4">Kasir Alfamart akan mengkonfirmasi transaksi dengan menanyakan jumlah transaksi dan nama merchant.</string>
     <string name="alfamart_instruction_step5">Konfirmasi Pembayaran Anda ke kasir.</string>
-    <string name="alfamart_instruction_step6">Transaksi Anda berhasil! Anda akan menerima email konfirmasi pembayaran. Harap simpan struk pembayaran Indomaret Anda, apabila Anda memerlukan bantuan via support.</string>
+    <string name="alfamart_instruction_step6">Transaksi Anda berhasil! Anda akan menerima email konfirmasi pembayaran. Harap simpan struk pembayaran Alfamart Anda, apabila Anda memerlukan bantuan via support.</string>
 
 
     <!-- Permata/Alto bank transfer Instruction-->

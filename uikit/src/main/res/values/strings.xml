@@ -284,7 +284,7 @@
     <string name="alfamart_instruction_step3">Go to an Alfamart store near you and provide the cashier with the Payment Code number or barcode to be scanned.</string>
     <string name="alfamart_instruction_step4">The cashier will then confirm the transaction by asking for the transaction amount and the merchant name.</string>
     <string name="alfamart_instruction_step5">Confirm the payment with the cashier.</string>
-    <string name="alfamart_instruction_step6">Your transaction is successful! You should be receiving an email confirming your payment. Please keep your Indomaret payment receipt just in case you need help via support.</string>
+    <string name="alfamart_instruction_step6">Your transaction is successful! You should be receiving an email confirming your payment. Please keep your Alfamart payment receipt just in case you need help via support.</string>
 
 
     <!-- Permata/Alto bank transfer Instruction-->
