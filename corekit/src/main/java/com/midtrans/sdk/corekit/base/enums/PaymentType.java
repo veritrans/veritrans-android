@@ -13,6 +13,7 @@ import static com.midtrans.sdk.corekit.base.enums.PaymentType.BNI_VA;
 import static com.midtrans.sdk.corekit.base.enums.PaymentType.CIMB_CLICKS;
 import static com.midtrans.sdk.corekit.base.enums.PaymentType.CREDIT_CARD;
 import static com.midtrans.sdk.corekit.base.enums.PaymentType.DANAMON_ONLINE;
+import static com.midtrans.sdk.corekit.base.enums.PaymentType.ECHANNEL;
 import static com.midtrans.sdk.corekit.base.enums.PaymentType.GOPAY;
 import static com.midtrans.sdk.corekit.base.enums.PaymentType.INDOMARET;
 import static com.midtrans.sdk.corekit.base.enums.PaymentType.KLIK_BCA;
@@ -22,8 +23,12 @@ import static com.midtrans.sdk.corekit.base.enums.PaymentType.OTHER_VA;
 import static com.midtrans.sdk.corekit.base.enums.PaymentType.PERMATA_VA;
 import static com.midtrans.sdk.corekit.base.enums.PaymentType.TELKOMSEL_CASH;
 
+/**
+ * Mandiri VA = Mandiri Bill / Echannel
+ */
 @StringDef({
         CREDIT_CARD,
+        ECHANNEL,
         BNI_VA,
         BCA_VA,
         PERMATA_VA,
@@ -48,6 +53,7 @@ public @interface PaymentType {
     String BNI_VA = "bni_va";
     String BCA_VA = "bca_va";
     String PERMATA_VA = "permata_va";
+    String ECHANNEL = "echannel";
     String OTHER_VA = "other_va";
     // Wallet
     String GOPAY = "gopay";

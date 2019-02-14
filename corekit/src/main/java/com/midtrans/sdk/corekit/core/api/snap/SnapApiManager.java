@@ -120,7 +120,7 @@ public class SnapApiManager extends BaseServiceManager {
                                                   MidtransCallback<PermataBankTransferResponse> callback) {
         if (isSnapTokenAvailable(callback, snapToken, apiService)) {
             CustomerDetailPayRequest customerDetails = new CustomerDetailPayRequest(fullName, email, phone);
-            PaymentRequest paymentRequest = new PaymentRequest(PaymentType.PERMATA_VA, customerDetails);
+            PaymentRequest paymentRequest = new PaymentRequest(PaymentType.ECHANNEL, customerDetails);
             Call<PermataBankTransferResponse> call = apiService.paymentBankTransferPermata(snapToken, paymentRequest);
             handleCall(call, callback);
         }
