@@ -1,0 +1,68 @@
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:fitsSystemWindows="true">
+
+    <include layout="@layout/appbar_payment" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/container_item_details"
+            android:layout_alignParentTop="true">
+
+            <include layout="@layout/layout_indomaret_status" />
+        </ScrollView>
+
+        <View
+            android:id="@+id/background_dim"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/container_item_details"
+            android:background="@color/dim_background"
+            android:visibility="gone"/>
+
+        <LinearLayout
+            android:id="@+id/container_item_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/layout_primary_button"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_transaction_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/two_dp"
+                android:background="@color/light_gray" />
+
+            <include
+                layout="@layout/layout_total_amount" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/two_dp"
+            android:layout_above="@+id/layout_primary_button"
+            android:background="@color/light_gray" />
+
+        <include
+            android:id="@+id/layout_primary_button"
+            layout="@layout/layout_primary_button" />
+    </RelativeLayout>
+
+    <include layout="@layout/layout_loading_and_badge" />
+</android.support.design.widget.CoordinatorLayout>
