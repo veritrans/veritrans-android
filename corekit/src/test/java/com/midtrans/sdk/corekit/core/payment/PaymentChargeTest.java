@@ -14,6 +14,7 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.creditcard.Credi
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.mandiriclick.MandiriClickpayParams;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaBankTransferReponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BniBankTransferResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriBillResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.PermataBankTransferResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.AkulakuResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.IndomaretPaymentResponse;
@@ -58,6 +59,8 @@ import static org.powermock.api.mockito.PowerMockito.when;
         ValidationHelper.class})
 public class PaymentChargeTest {
 
+    private String exampleTextPositive, exampleTextNegative;
+
     @Mock
     private BankTransferCharge bankTransferCharge;
     @Mock
@@ -88,6 +91,10 @@ public class PaymentChargeTest {
     @Mock
     private MandiriClickpayParams mandiriClickpayParams;
 
+    @Mock
+    private MandiriBillResponse responseMandiriBill;
+    @Mock
+    private MidtransCallback<MandiriBillResponse> callbackMandiriBill;
     @Mock
     private BcaBankTransferReponse responseBcaVaMock;
     @Mock
@@ -208,43 +215,48 @@ public class PaymentChargeTest {
         callbackCreditCard.onFailed(throwable);
         callbackDanamonOnline.onSuccess(responseDanamonOnline);
         callbackDanamonOnline.onFailed(throwable);
+        callbackMandiriBill.onSuccess(responseMandiriBill);
+        callbackMandiriBill.onFailed(throwable);
+
+        this.exampleTextPositive = "exampleTextPositive";
+        this.exampleTextNegative = "exampleTextNegative";
     }
 
     @Test
     public void test_paymentUsingBankTransferVaBca_positive() {
         when(NetworkHelper.isNetworkAvailable(midtransSdkMock.getContext())).thenReturn(true);
-        bankTransferCharge.paymentUsingBankTransferVaBca(SDKConfigTest.SNAP_TOKEN, customerDetailPayRequest, callbackBcaVaMock);
+        bankTransferCharge.paymentUsingBankTransferVaBca(SDKConfigTest.SNAP_TOKEN, exampleTextPositive, exampleTextPositive, exampleTextPositive, callbackBcaVaMock);
         Mockito.verify(callbackBcaVaMock).onSuccess(Matchers.any(BcaBankTransferReponse.class));
     }
 
     @Test
     public void test_paymentUsingBankTransferVaBca_negative_callback() {
-        bankTransferCharge.paymentUsingBankTransferVaBca(SDKConfigTest.SNAP_TOKEN, customerDetailPayRequest, callbackBcaVaMock);
+        bankTransferCharge.paymentUsingBankTransferVaBca(SDKConfigTest.SNAP_TOKEN, exampleTextPositive, exampleTextPositive, exampleTextPositive, callbackBcaVaMock);
         Mockito.verify(callbackBcaVaMock).onFailed(Matchers.any(Throwable.class));
     }
 
     @Test
     public void test_paymentUsingBankTransferVaBca_negative_snapTokenNull() {
-        bankTransferCharge.paymentUsingBankTransferVaBca(null, customerDetailPayRequest, callbackBcaVaMock);
+        bankTransferCharge.paymentUsingBankTransferVaBca(null, exampleTextPositive, exampleTextPositive, exampleTextPositive, callbackBcaVaMock);
         verifyStatic(Mockito.times(0));
         Logger.error(Matchers.anyString(), Matchers.anyString());
     }
 
     @Test
     public void test_paymentUsingBankTransferVaBca_negative_withoutParams() {
-        bankTransferCharge.paymentUsingBankTransferVaBca(SDKConfigTest.SNAP_TOKEN, null, callbackBcaVaMock);
+        bankTransferCharge.paymentUsingBankTransferVaBca(SDKConfigTest.SNAP_TOKEN, null, null, null, callbackBcaVaMock);
         Mockito.verify(callbackBcaVaMock).onFailed(Matchers.any(Throwable.class));
     }
 
     @Test
     public void test_paymentUsingBankTransferVaBca_negative_withoutSnapTken() {
-        bankTransferCharge.paymentUsingBankTransferVaBca(null, customerDetailPayRequest, null);
+        bankTransferCharge.paymentUsingBankTransferVaBca(null, exampleTextPositive, exampleTextPositive, exampleTextPositive, null);
         Mockito.verify(callbackBcaVaMock).onFailed(Matchers.any(Throwable.class));
     }
 
     @Test
     public void test_paymentUsingBankTransferVaBca_negative_callbackNull() {
-        bankTransferCharge.paymentUsingBankTransferVaBca(SDKConfigTest.SNAP_TOKEN, customerDetailPayRequest, null);
+        bankTransferCharge.paymentUsingBankTransferVaBca(SDKConfigTest.SNAP_TOKEN, exampleTextPositive, exampleTextPositive, exampleTextPositive, null);
         verifyStatic(Mockito.times(0));
         Logger.error(Matchers.anyString(), Matchers.anyString());
     }
@@ -252,32 +264,32 @@ public class PaymentChargeTest {
     @Test
     public void test_paymentUsingBankTransferVaBca_negative_noNetwork() {
         when(NetworkHelper.isNetworkAvailable(midtransSdkMock.getContext())).thenReturn(false);
-        bankTransferCharge.paymentUsingBankTransferVaBca(SDKConfigTest.SNAP_TOKEN, customerDetailPayRequest, callbackBcaVaMock);
+        bankTransferCharge.paymentUsingBankTransferVaBca(SDKConfigTest.SNAP_TOKEN, exampleTextPositive, exampleTextPositive, exampleTextPositive, callbackBcaVaMock);
         Mockito.verify(callbackBcaVaMock).onFailed(Matchers.any(Throwable.class));
     }
 
     @Test
     public void test_paymentUsingBankTransferVaPermata_positive() {
-        bankTransferCharge.paymentUsingBankTransferVaPermata(SDKConfigTest.SNAP_TOKEN, customerDetailPayRequest, callbackPermataVaMock);
+        bankTransferCharge.paymentUsingBankTransferVaPermata(SDKConfigTest.SNAP_TOKEN, exampleTextPositive, exampleTextPositive, exampleTextPositive, callbackPermataVaMock);
         Mockito.verify(callbackPermataVaMock).onSuccess(Matchers.any(PermataBankTransferResponse.class));
     }
 
     @Test
     public void test_paymentUsingBankTransferVaPermata_negative_callback() {
-        bankTransferCharge.paymentUsingBankTransferVaPermata(SDKConfigTest.SNAP_TOKEN, customerDetailPayRequest, callbackPermataVaMock);
+        bankTransferCharge.paymentUsingBankTransferVaPermata(SDKConfigTest.SNAP_TOKEN, exampleTextPositive, exampleTextPositive, exampleTextPositive, callbackPermataVaMock);
         Mockito.verify(callbackPermataVaMock).onFailed(Matchers.any(Throwable.class));
     }
 
     @Test
     public void test_paymentUsingBankTransferVaPermata_negative_snapTokenNull() {
-        bankTransferCharge.paymentUsingBankTransferVaPermata(null, customerDetailPayRequest, callbackPermataVaMock);
+        bankTransferCharge.paymentUsingBankTransferVaPermata(null, exampleTextPositive, exampleTextPositive, exampleTextPositive, callbackPermataVaMock);
         verifyStatic(Mockito.times(0));
         Logger.error(Matchers.anyString(), Matchers.anyString());
     }
 
     @Test
     public void test_paymentUsingBankTransferVaPermata_negative_callbackNull() {
-        bankTransferCharge.paymentUsingBankTransferVaPermata(SDKConfigTest.SNAP_TOKEN, customerDetailPayRequest, null);
+        bankTransferCharge.paymentUsingBankTransferVaPermata(SDKConfigTest.SNAP_TOKEN, exampleTextPositive, exampleTextPositive, exampleTextPositive, null);
         verifyStatic(Mockito.times(0));
         Logger.error(Matchers.anyString(), Matchers.anyString());
     }
@@ -285,44 +297,44 @@ public class PaymentChargeTest {
     @Test
     public void test_paymentUsingBankTransferVaPermata_negative_noNetwork() {
         when(NetworkHelper.isNetworkAvailable(midtransSdkMock.getContext())).thenReturn(false);
-        bankTransferCharge.paymentUsingBankTransferVaPermata(SDKConfigTest.SNAP_TOKEN, customerDetailPayRequest, callbackPermataVaMock);
+        bankTransferCharge.paymentUsingBankTransferVaPermata(SDKConfigTest.SNAP_TOKEN, exampleTextPositive, exampleTextPositive, exampleTextPositive, callbackPermataVaMock);
         Mockito.verify(callbackPermataVaMock).onFailed(Matchers.any(Throwable.class));
     }
 
     @Test
     public void test_paymentUsingBankTransferVaPermata_negative_withoutParams() {
-        bankTransferCharge.paymentUsingBankTransferVaPermata(SDKConfigTest.SNAP_TOKEN, null, callbackPermataVaMock);
+        bankTransferCharge.paymentUsingBankTransferVaPermata(SDKConfigTest.SNAP_TOKEN, null, null, null, callbackPermataVaMock);
         Mockito.verify(callbackPermataVaMock).onFailed(Matchers.any(Throwable.class));
     }
 
     @Test
     public void test_paymentUsingBankTransferVaPermata_negative_withoutSnapTken() {
-        bankTransferCharge.paymentUsingBankTransferVaPermata(null, customerDetailPayRequest, callbackPermataVaMock);
+        bankTransferCharge.paymentUsingBankTransferVaPermata(null, exampleTextPositive, exampleTextPositive, exampleTextPositive, callbackPermataVaMock);
         Mockito.verify(callbackPermataVaMock).onFailed(Matchers.any(Throwable.class));
     }
 
     @Test
     public void test_paymentUsingBankTransferVaBni_positive() {
-        bankTransferCharge.paymentUsingBankTransferVaBni(SDKConfigTest.SNAP_TOKEN, customerDetailPayRequest, callbackBniVaMock);
+        bankTransferCharge.paymentUsingBankTransferVaBni(SDKConfigTest.SNAP_TOKEN, exampleTextPositive, exampleTextPositive, exampleTextPositive, callbackBniVaMock);
         Mockito.verify(callbackBniVaMock).onSuccess(Matchers.any(BniBankTransferResponse.class));
     }
 
     @Test
     public void test_paymentUsingBankTransferVaBni_negative_callback() {
-        bankTransferCharge.paymentUsingBankTransferVaBni(SDKConfigTest.SNAP_TOKEN, customerDetailPayRequest, callbackBniVaMock);
+        bankTransferCharge.paymentUsingBankTransferVaBni(SDKConfigTest.SNAP_TOKEN, exampleTextPositive, exampleTextPositive, exampleTextPositive, callbackBniVaMock);
         Mockito.verify(callbackBniVaMock).onFailed(Matchers.any(Throwable.class));
     }
 
     @Test
     public void test_paymentUsingBankTransferVaBni_negative_snapTokenNull() {
-        bankTransferCharge.paymentUsingBankTransferVaBni(null, customerDetailPayRequest, callbackBniVaMock);
+        bankTransferCharge.paymentUsingBankTransferVaBni(null, exampleTextPositive, exampleTextPositive, exampleTextPositive, callbackBniVaMock);
         verifyStatic(Mockito.times(0));
         Logger.error(Matchers.anyString(), Matchers.anyString());
     }
 
     @Test
     public void test_paymentUsingBankTransferVaBni_negative_callbackNull() {
-        bankTransferCharge.paymentUsingBankTransferVaBni(SDKConfigTest.SNAP_TOKEN, customerDetailPayRequest, null);
+        bankTransferCharge.paymentUsingBankTransferVaBni(SDKConfigTest.SNAP_TOKEN, exampleTextPositive, exampleTextPositive, exampleTextPositive, null);
         verifyStatic(Mockito.times(0));
         Logger.error(Matchers.anyString(), Matchers.anyString());
     }
@@ -330,44 +342,44 @@ public class PaymentChargeTest {
     @Test
     public void test_paymentUsingBankTransferVaBni_negative_noNetwork() {
         when(NetworkHelper.isNetworkAvailable(midtransSdkMock.getContext())).thenReturn(false);
-        bankTransferCharge.paymentUsingBankTransferVaBni(SDKConfigTest.SNAP_TOKEN, customerDetailPayRequest, callbackBniVaMock);
+        bankTransferCharge.paymentUsingBankTransferVaBni(SDKConfigTest.SNAP_TOKEN, exampleTextPositive, exampleTextPositive, exampleTextPositive, callbackBniVaMock);
         Mockito.verify(callbackBniVaMock).onFailed(Matchers.any(Throwable.class));
     }
 
     @Test
     public void test_paymentUsingBankTransferVaBni_negative_withoutParams() {
-        bankTransferCharge.paymentUsingBankTransferVaBni(SDKConfigTest.SNAP_TOKEN, null, callbackBniVaMock);
+        bankTransferCharge.paymentUsingBankTransferVaBni(SDKConfigTest.SNAP_TOKEN, null, null, null, callbackBniVaMock);
         Mockito.verify(callbackBniVaMock).onFailed(Matchers.any(Throwable.class));
     }
 
     @Test
     public void test_paymentUsingBankTransferVaBni_negative_withoutSnapTken() {
-        bankTransferCharge.paymentUsingBankTransferVaBni(null, customerDetailPayRequest, null);
+        bankTransferCharge.paymentUsingBankTransferVaBni(null, exampleTextPositive, exampleTextPositive, exampleTextPositive, null);
         Mockito.verify(callbackBniVaMock).onFailed(Matchers.any(Throwable.class));
     }
 
     @Test
     public void test_paymentUsingOtherVa_positive() {
-        bankTransferCharge.paymentUsingBankTransferVaOther(SDKConfigTest.SNAP_TOKEN, customerDetailPayRequest, callbackOtherVaMock);
+        bankTransferCharge.paymentUsingBankTransferVaOther(SDKConfigTest.SNAP_TOKEN, exampleTextPositive, exampleTextPositive, exampleTextPositive, callbackOtherVaMock);
         Mockito.verify(callbackOtherVaMock).onSuccess(Matchers.any(ResponseBody.class));
     }
 
     @Test
     public void test_paymentUsingOtherVa_negative_callback() {
-        bankTransferCharge.paymentUsingBankTransferVaOther(SDKConfigTest.SNAP_TOKEN, customerDetailPayRequest, callbackOtherVaMock);
+        bankTransferCharge.paymentUsingBankTransferVaOther(SDKConfigTest.SNAP_TOKEN, exampleTextPositive, exampleTextPositive, exampleTextPositive, callbackOtherVaMock);
         Mockito.verify(callbackOtherVaMock).onFailed(Matchers.any(Throwable.class));
     }
 
     @Test
     public void test_paymentUsingOtherVa_negative_snapTokenNull() {
-        bankTransferCharge.paymentUsingBankTransferVaOther(null, customerDetailPayRequest, callbackOtherVaMock);
+        bankTransferCharge.paymentUsingBankTransferVaOther(null, exampleTextPositive, exampleTextPositive, exampleTextPositive, callbackOtherVaMock);
         verifyStatic(Mockito.times(0));
         Logger.error(Matchers.anyString(), Matchers.anyString());
     }
 
     @Test
     public void test_paymentUsingOtherVa_negative_callbackNull() {
-        bankTransferCharge.paymentUsingBankTransferVaOther(SDKConfigTest.SNAP_TOKEN, customerDetailPayRequest, null);
+        bankTransferCharge.paymentUsingBankTransferVaOther(SDKConfigTest.SNAP_TOKEN, exampleTextPositive, exampleTextPositive, exampleTextPositive, null);
         verifyStatic(Mockito.times(0));
         Logger.error(Matchers.anyString(), Matchers.anyString());
     }
@@ -375,19 +387,64 @@ public class PaymentChargeTest {
     @Test
     public void test_paymentUsingOtherVa_negative_noNetwork() {
         when(NetworkHelper.isNetworkAvailable(midtransSdkMock.getContext())).thenReturn(false);
-        bankTransferCharge.paymentUsingBankTransferVaOther(SDKConfigTest.SNAP_TOKEN, customerDetailPayRequest, callbackOtherVaMock);
+        bankTransferCharge.paymentUsingBankTransferVaOther(SDKConfigTest.SNAP_TOKEN, exampleTextPositive, exampleTextPositive, exampleTextPositive, callbackOtherVaMock);
         Mockito.verify(callbackOtherVaMock).onFailed(Matchers.any(Throwable.class));
     }
 
     @Test
     public void test_paymentUsingOtherVa_negative_withoutParams() {
-        bankTransferCharge.paymentUsingBankTransferVaOther(SDKConfigTest.SNAP_TOKEN, null, callbackOtherVaMock);
+        bankTransferCharge.paymentUsingBankTransferVaOther(SDKConfigTest.SNAP_TOKEN, null, null, null, callbackOtherVaMock);
         Mockito.verify(callbackOtherVaMock).onFailed(Matchers.any(Throwable.class));
     }
 
     @Test
     public void test_paymentUsingOtherVa_negative_withoutSnapTken() {
-        bankTransferCharge.paymentUsingBankTransferVaOther(null, customerDetailPayRequest, null);
+        bankTransferCharge.paymentUsingBankTransferVaOther(null, exampleTextPositive, exampleTextPositive, exampleTextPositive, null);
+        Mockito.verify(callbackOtherVaMock).onFailed(Matchers.any(Throwable.class));
+    }
+
+    @Test
+    public void test_paymentMandiriBillVa_positive() {
+        bankTransferCharge.paymentUsingBankTransferVaMandiriBill(SDKConfigTest.SNAP_TOKEN, exampleTextPositive, exampleTextPositive, exampleTextPositive, callbackMandiriBill);
+        Mockito.verify(callbackOtherVaMock).onSuccess(Matchers.any(ResponseBody.class));
+    }
+
+    @Test
+    public void test_paymentUMandiriBillVa_negative_callback() {
+        bankTransferCharge.paymentUsingBankTransferVaMandiriBill(SDKConfigTest.SNAP_TOKEN, exampleTextPositive, exampleTextPositive, exampleTextPositive, callbackMandiriBill);
+        Mockito.verify(callbackOtherVaMock).onFailed(Matchers.any(Throwable.class));
+    }
+
+    @Test
+    public void test_paymentUsingMandiriBillVa_negative_snapTokenNull() {
+        bankTransferCharge.paymentUsingBankTransferVaMandiriBill(null, exampleTextPositive, exampleTextPositive, exampleTextPositive, callbackMandiriBill);
+        verifyStatic(Mockito.times(0));
+        Logger.error(Matchers.anyString(), Matchers.anyString());
+    }
+
+    @Test
+    public void test_paymentUsingMandiriBillVa_negative_callbackNull() {
+        bankTransferCharge.paymentUsingBankTransferVaMandiriBill(SDKConfigTest.SNAP_TOKEN, exampleTextPositive, exampleTextPositive, exampleTextPositive, null);
+        verifyStatic(Mockito.times(0));
+        Logger.error(Matchers.anyString(), Matchers.anyString());
+    }
+
+    @Test
+    public void test_paymentUsingMandiriBillVa_negative_noNetwork() {
+        when(NetworkHelper.isNetworkAvailable(midtransSdkMock.getContext())).thenReturn(false);
+        bankTransferCharge.paymentUsingBankTransferVaMandiriBill(SDKConfigTest.SNAP_TOKEN, exampleTextPositive, exampleTextPositive, exampleTextPositive, callbackMandiriBill);
+        Mockito.verify(callbackOtherVaMock).onFailed(Matchers.any(Throwable.class));
+    }
+
+    @Test
+    public void test_paymentUsingMandiriBillVa_negative_withoutParams() {
+        bankTransferCharge.paymentUsingBankTransferVaMandiriBill(SDKConfigTest.SNAP_TOKEN, null, null, null, callbackMandiriBill);
+        Mockito.verify(callbackOtherVaMock).onFailed(Matchers.any(Throwable.class));
+    }
+
+    @Test
+    public void test_paymentUsingMandiriBillVa_negative_withoutSnapTken() {
+        bankTransferCharge.paymentUsingBankTransferVaMandiriBill(null, exampleTextPositive, exampleTextPositive, exampleTextPositive, null);
         Mockito.verify(callbackOtherVaMock).onFailed(Matchers.any(Throwable.class));
     }
 
