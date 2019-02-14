@@ -277,6 +277,15 @@
     <string name="indomaret_instruction_step5">Confirm the payment with the cashier.</string>
     <string name="indomaret_instruction_step6">Your transaction is successful! You should be receiving an email confirming your payment. Please keep your Indomaret payment receipt just in case you need help via support.</string>
 
+    <!-- Alfamart Instruction-->
+    <string name="alfamart_instruction_step1">After confirming your payment, we will issue you a unique Payment Code number.</string>
+    <string name="alfamart_instruction_step2">Note down your Payment Code and total amount.
+        Don\'t worry, we will also mail you a copy of the payment instructions.</string>
+    <string name="alfamart_instruction_step3">Go to an Alfamart store near you and provide the cashier with the Payment Code number or barcode to be scanned.</string>
+    <string name="alfamart_instruction_step4">The cashier will then confirm the transaction by asking for the transaction amount and the merchant name.</string>
+    <string name="alfamart_instruction_step5">Confirm the payment with the cashier.</string>
+    <string name="alfamart_instruction_step6">Your transaction is successful! You should be receiving an email confirming your payment. Please keep your Alfamart payment receipt just in case you need help via support.</string>
+
 
     <!-- Permata/Alto bank transfer Instruction-->
     <string name="permata_instruction_step1">On the main menu, Choose <b>Other Transaction</b>.</string>
@@ -842,5 +851,10 @@
     <string name="prefix_money">Rp %1$s</string>
     <string name="prefix_money_negative">-Rp %1$s</string>
     <string name="prefix_money_negative_sgd">-SGD %1$s</string>
+    <string name="payment_method_alfamart">Alfamart</string>
+    <string name="payment_alfamart">alfamart</string>
+    <string name="payment_method_description_alfamart">Pay from Alfamart</string>
+    <string name="alfamart">Alfamart</string>
+    <string name="complete_payment_alfamart">Complete payment via Alfamart</string>
 
 </resources>

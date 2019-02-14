@@ -81,6 +81,8 @@ public class TransactionResponse implements Serializable {
     private String installmentTerm;
     @SerializedName("gopay_expiration")
     private String gopayExpiration;
+    @SerializedName("alfamart_expire_time")
+    private String alfamartExpireTime;
 
     @SerializedName("gopay_expiration_raw")
     private String gopayExpirationRaw;
@@ -528,5 +530,21 @@ public class TransactionResponse implements Serializable {
 
     public void setCurrency(String currency) {
         this.currency = currency;
+    }
+
+    public void setInstallmentTerm(String installmentTerm) {
+        this.installmentTerm = installmentTerm;
+    }
+
+    public String getAlfamartExpireTime() {
+        return alfamartExpireTime;
+    }
+
+    public void setAlfamartExpireTime(String alfamartExpireTime) {
+        this.alfamartExpireTime = alfamartExpireTime;
+    }
+
+    public void setGopayExpirationRaw(String gopayExpirationRaw) {
+        this.gopayExpirationRaw = gopayExpirationRaw;
     }
 }

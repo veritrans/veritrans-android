@@ -436,6 +436,8 @@ public class MidtransSDK {
             startDanamonOnlineUIFlow(context, snapToken);
         } else if (paymentMethod.equals(PaymentMethod.AKULAKU)) {
             startAkulakuUIFlow(context, snapToken);
+        }else if (paymentMethod.equals(PaymentMethod.ALFAMART)) {
+            startAlfamartUIFlow(context, snapToken);
         } else {
             if (TextUtils.isEmpty(snapToken)) {
                 startPaymentUiFlow(context);
@@ -817,6 +819,20 @@ public class MidtransSDK {
     private void startAkulakuUIFlow(@NonNull Context context, String snapToken) {
         if (isTransactionRequestAvailable() && uiflow != null) {
             uiflow.runAkulaku(context, snapToken);
+        } else {
+            Logger.e(TAG, ADD_TRANSACTION_DETAILS);
+        }
+    }
+
+    /**
+     * This will start actual execution of Alfamart UI flow.
+     *
+     * @param context   activity context.
+     * @param snapToken checkout token
+     */
+    private void startAlfamartUIFlow(@NonNull Context context, String snapToken) {
+        if (isTransactionRequestAvailable() && uiflow != null) {
+            uiflow.runAlfamart(context, snapToken);
         } else {
             Logger.e(TAG, ADD_TRANSACTION_DETAILS);
         }
@@ -1454,6 +1470,31 @@ public class MidtransSDK {
 
                 snapServiceManager.paymentUsingBaseMethod(authenticationToken,
                         new BasePaymentRequest(PaymentType.AKULAKU), callback);
+            } else {
+
+                callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
+            }
+        } else {
+
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
+        }
+    }
+
+    /**
+     * It will run backround task to charge payment using Alfamart
+     *
+     * @param authenticationToken
+     */
+    public void paymentUsingAlfamart(@NonNull String authenticationToken, TransactionCallback callback) {
+        if (callback == null) {
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
+            return;
+        }
+        if (isTransactionRequestAvailable()) {
+            if (Utils.isNetworkAvailable(context)) {
+
+                snapServiceManager.paymentUsingBaseMethod(authenticationToken,
+                        new BasePaymentRequest(PaymentType.ALFAMART), callback);
             } else {
 
                 callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));

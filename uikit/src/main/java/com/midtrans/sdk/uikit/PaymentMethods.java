@@ -50,6 +50,8 @@ public class PaymentMethods {
             return getDanamonOnline(context, 16, paymentType, status);
         } else if (paymentType.equals(context.getString(R.string.payment_akulaku))) {
             return getMethodAkulaku(context, 17, paymentType, status);
+        } else if (paymentType.equals(context.getString(R.string.payment_alfamart))) {
+            return getMethodAlfamart(context, 18, paymentType, status);
         } else {
             return null;
         }
@@ -113,7 +115,7 @@ public class PaymentMethods {
         return new PaymentMethodsModel(context.getString(R.string.payment_method_indosat_dompetku), context.getString(R.string.payment_method_description_indosat_dompetku), R.drawable.ic_indosat, paymentType, priority, status);
     }
 
-    static PaymentMethodsModel getMethodXLTunai(Context context, int priority, String paymentType, String status) {
+    private static PaymentMethodsModel getMethodXLTunai(Context context, int priority, String paymentType, String status) {
         return new PaymentMethodsModel(context.getString(R.string.payment_method_xl_tunai), context.getString(R.string.payment_method_description_xl_tunai), R.drawable.ic_xl, paymentType, priority, status);
     }
 
@@ -131,6 +133,10 @@ public class PaymentMethods {
 
     private static PaymentMethodsModel getMethodAkulaku(Context context, int priority, String paymentType, String status) {
         return new PaymentMethodsModel(context.getString(R.string.payment_method_akulaku), context.getString(R.string.payment_method_description_akulaku), R.drawable.ic_akulaku, paymentType, priority, status);
+    }
+
+    private static PaymentMethodsModel getMethodAlfamart(Context context, int priority, String paymentType, String status) {
+        return new PaymentMethodsModel(context.getString(R.string.payment_method_alfamart), context.getString(R.string.payment_method_description_alfamart), R.drawable.ic_alfamart, paymentType, priority, status);
     }
 
     public static BankTransfer createBankTransferModel(Context context, String type, String status) {

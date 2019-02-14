@@ -272,6 +272,17 @@ public class UIFlow implements ISdkFlow {
     }
 
     @Override
+    public void runAlfamart(Context context, String snapToken) {
+        MidtransSDK sdk = MidtransSDK.getInstance();
+        if (sdk != null) {
+            Intent intent = new Intent(context, UserDetailsActivity.class);
+            intent.putExtra(UserDetailsActivity.ALFAMART, true);
+            intent.putExtra(UiKitConstants.EXTRA_SNAP_TOKEN, snapToken);
+            context.startActivity(intent);
+        }
+    }
+
+    @Override
     public void runCardRegistration(Context context, CardRegistrationCallback callback) {
         Intent intent = new Intent(context, CardRegistrationActivity.class);
         context.startActivity(intent);
