@@ -152,13 +152,18 @@ public class SnapApiManager extends BaseServiceManager {
      * This method is used for Payment Using Bank Transfer Other Bank
      *
      * @param snapToken       snapToken after get payment info.
-     * @param customerDetails Payment Details.
+     * @param fullName        Fullname, this is nullable.
+     * @param phone           phone, this is nullable.
+     * @param email           email, this is nullable.
      * @param callback        Transaction callback.
      */
     public void paymentUsingBankTransferVaOther(String snapToken,
-                                                CustomerDetailPayRequest customerDetails,
+                                                String fullName,
+                                                String phone,
+                                                String email,
                                                 MidtransCallback<ResponseBody> callback) {
         if (isSnapTokenAvailable(callback, snapToken, apiService)) {
+            CustomerDetailPayRequest customerDetails = new CustomerDetailPayRequest(fullName, email, phone);
             PaymentRequest paymentRequest = new PaymentRequest(PaymentType.OTHER_VA, customerDetails);
             Call<ResponseBody> call = apiService.paymentBankTransferOther(snapToken, paymentRequest);
             handleCall(call, callback);
