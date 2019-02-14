@@ -26,5 +26,6 @@ public enum PaymentMethod {
     TELKOMSEL_CASH,
     XL_TUNAI,
     DANAMON_ONLINE,
-    AKULAKU
+    AKULAKU,
+    ALFAMART
 }
