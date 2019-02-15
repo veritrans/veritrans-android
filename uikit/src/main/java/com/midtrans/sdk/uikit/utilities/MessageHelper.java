@@ -4,9 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 
 import com.midtrans.sdk.corekit.base.enums.Environment;
-import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.response.CheckoutWithTransactionResponse;
 import com.midtrans.sdk.corekit.utilities.Logger;
-import com.midtrans.sdk.uikit.BuildConfig;
 import com.midtrans.sdk.uikit.MidtransKit;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.base.model.MessageInfo;

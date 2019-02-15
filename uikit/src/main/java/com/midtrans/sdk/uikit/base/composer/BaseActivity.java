@@ -1,4 +1,4 @@
-package com.midtrans.sdk.uikit.base;
+package com.midtrans.sdk.uikit.base.composer;
 
 import android.content.DialogInterface;
 import android.content.Intent;

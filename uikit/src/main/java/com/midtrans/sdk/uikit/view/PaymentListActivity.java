@@ -13,28 +13,37 @@ import com.midtrans.sdk.corekit.MidtransSdk;
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.base.enums.PaymentType;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.CheckoutTransaction;
+import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.Item;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.response.CheckoutWithTransactionResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.PaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.utilities.Constants;
+import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.uikit.MidtransKitFlow;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.base.BaseActivity;
+import com.midtrans.sdk.uikit.base.composer.BaseActivity;
 import com.midtrans.sdk.uikit.base.callback.PaymentResult;
 import com.midtrans.sdk.uikit.base.model.MessageInfo;
 import com.midtrans.sdk.uikit.utilities.ActivityHelper;
+import com.midtrans.sdk.uikit.utilities.CurrencyHelper;
 import com.midtrans.sdk.uikit.utilities.MessageHelper;
+import com.midtrans.sdk.uikit.view.adapter.ItemDetailsAdapter;
+import com.midtrans.sdk.uikit.view.model.ItemViewDetails;
 import com.midtrans.sdk.uikit.widget.BoldTextView;
 import com.midtrans.sdk.uikit.widget.DefaultTextView;
 import com.midtrans.sdk.uikit.widget.FancyButton;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-public class KitLandingActivity extends BaseActivity {
+public class PaymentListActivity extends BaseActivity {
 
-    private PaymentResult<PaymentResponse> callback;
     private boolean isCreditCardOnly = false;
     private boolean isBankTransferOnly = false;
     private boolean isBCAKlikpay = false;
@@ -53,30 +62,45 @@ public class KitLandingActivity extends BaseActivity {
     private boolean isBniVa = false;
     private boolean isPermataVa = false;
     private boolean isOtherVa = false;
+    private boolean isMandiriBill = false;
     private String token = null;
     private CheckoutTransaction checkoutTransaction = null;
+    private PaymentResult<PaymentResponse> callback = null;
 
     @PaymentType
     private String paymentType;
-    private boolean isThrowableFromNetworkRequest = false;
-    private Throwable throwableFromNetworkRequest;
+    private Toolbar toolbar;
+    private AppBarLayout appbar;
 
-    private AlertDialog alertDialog;
+    private RecyclerView containerPaymentMethod = null;
+    private RecyclerView containerItemDetails = null;
 
-    private LinearLayout progressContainer;
+    /**
+     * This property used for making loading when performing network request
+     */
     private ImageView progressImage;
     private TextView progressMessage;
+
+    /**
+     * This property used for showing error dialog or maintenance view
+     */
+    private AlertDialog alertDialog;
+    private LinearLayout progressContainer;
     private LinearLayout maintenanceContainer;
     private BoldTextView maintenanceTitle;
     private DefaultTextView maintenanceMessage;
     private FancyButton maintenanceButton;
-    private Toolbar toolbar;
-    private AppBarLayout appbar;
+    /**
+     * This property used for set onFailed callback to host-app
+     * This happen when getting exception in network request or user press back when performing network request
+     */
+    private boolean isThrowableFromNetworkRequest = false;
+    private Throwable throwableFromNetworkRequest;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_kit_landing);
+        setContentView(R.layout.activity_payment_list);
 
         initToolbarAndView();
         initializeTheme();
@@ -94,8 +118,13 @@ public class KitLandingActivity extends BaseActivity {
         maintenanceTitle = findViewById(R.id.text_maintenance_title);
         maintenanceMessage = findViewById(R.id.text_maintenance_message);
         maintenanceButton = findViewById(R.id.button_maintenance_retry);
+        containerItemDetails = findViewById(R.id.recycler_item_list);
 
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
+
         Ion.with(progressImage)
                 .load(ActivityHelper.getImagePath(this) + R.drawable.midtrans_loader);
     }
@@ -139,6 +168,7 @@ public class KitLandingActivity extends BaseActivity {
     }
 
     private void startCheckoutWithMidtransSdk(CheckoutTransaction checkoutTransaction) {
+        progressMessage.setText(R.string.txt_checkout);
         MidtransSdk
                 .getInstance()
                 .checkoutWithTransaction(checkoutTransaction, new MidtransCallback<CheckoutWithTransactionResponse>() {
@@ -149,7 +179,7 @@ public class KitLandingActivity extends BaseActivity {
                                 startGettingPaymentInfoWithMidtransSdk(data.getToken());
                             } else {
                                 if (data.getErrorMessages().get(0) != null) {
-                                    String errorMessage = MessageHelper.createMessageWhenCheckoutFailed(KitLandingActivity.this, data.getErrorMessages());
+                                    String errorMessage = MessageHelper.createMessageWhenCheckoutFailed(PaymentListActivity.this, data.getErrorMessages());
                                     showErrorMessage(errorMessage, true);
                                 } else {
                                     showErrorMessage(Constants.MESSAGE_ERROR_FAILURE_RESPONSE, true);
@@ -169,13 +199,15 @@ public class KitLandingActivity extends BaseActivity {
 
     private void startGettingPaymentInfoWithMidtransSdk(String token) {
         this.token = token;
+        progressMessage.setText(getString(R.string.txt_loading_payment));
         MidtransSdk
                 .getInstance()
                 .getPaymentInfo(this.token, new MidtransCallback<PaymentInfoResponse>() {
                     @Override
                     public void onSuccess(PaymentInfoResponse data) {
                         if (data != null) {
-
+                            hideProgress();
+                            setCheckoutDataToView(data);
                         } else {
                             showErrorMessage(null, false);
                         }
@@ -188,12 +220,63 @@ public class KitLandingActivity extends BaseActivity {
                 });
     }
 
+    private void setCheckoutDataToView(PaymentInfoResponse response) {
+        if (response != null) {
+            List<ItemViewDetails> itemViewDetails = new ArrayList<>();
+            int itemDetailsSize = response.getItemDetails() != null ? response.getItemDetails().size() : 0;
+
+            // Add amount
+            double amount = response.getTransactionDetails().getGrossAmount();
+            String currency = response.getTransactionDetails().getCurrency();
+            String formattedAmount = CurrencyHelper.formatAmount(this, amount, currency);
+
+            // Add header
+            itemViewDetails.add(new ItemViewDetails(
+                    null,
+                    formattedAmount,
+                    ItemViewDetails.TYPE_ITEM_HEADER,
+                    itemDetailsSize > 0));
+
+            // Add item
+            if (itemDetailsSize > 0) {
+                for (Item item : response.getItemDetails()) {
+                    String price = CurrencyHelper.formatAmount(this, item.getPrice(), currency);
+                    String itemName = item.getName();
+
+                    if (item.getQuantity() > 1) {
+                        itemName = getString(
+                                R.string.text_item_name_format,
+                                item.getName(),
+                                item.getQuantity());
+                    }
+
+                    itemViewDetails.add(new ItemViewDetails(itemName,
+                            price,
+                            ItemViewDetails.TYPE_ITEM,
+                            true));
+                }
+            }
+
+            ItemDetailsAdapter adapter = new ItemDetailsAdapter(
+                    itemViewDetails,
+                    response.getTransactionDetails().getOrderId(),
+                    () -> {
+
+                    });
+
+            containerItemDetails.setLayoutManager(new LinearLayoutManager(this));
+            containerItemDetails.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+        }
+    }
+
     private void showErrorMessage(String message, boolean isCheckout) {
         if (!isFinishing()) {
             if (!isCheckout) {
                 message = getString(R.string.error_snap_transaction_details);
             }
             String finalMessage = message;
+            Logger.debug("RESULT MESSAGE",finalMessage);
             alertDialog = new AlertDialog
                     .Builder(this)
                     .setMessage(finalMessage)
@@ -208,6 +291,7 @@ public class KitLandingActivity extends BaseActivity {
                     .setNegativeButton(R.string.btn_cancel, (dialog, which) -> {
                         isThrowableFromNetworkRequest = true;
                         throwableFromNetworkRequest = new Throwable(finalMessage);
+                        setOnFailedCallback(throwableFromNetworkRequest);
                         dialog.dismiss();
                         onBackPressed();
                     })
@@ -237,27 +321,27 @@ public class KitLandingActivity extends BaseActivity {
 
     private void showMaintenance(boolean show) {
         if (show) {
-            appbar.setVisibility(View.GONE);
             maintenanceContainer.setVisibility(View.VISIBLE);
         } else {
-            appbar.setVisibility(View.VISIBLE);
             maintenanceContainer.setVisibility(View.GONE);
         }
     }
 
     private void showProgress() {
         progressContainer.setVisibility(View.VISIBLE);
+        appbar.setVisibility(View.GONE);
     }
 
     private void hideProgress() {
         progressContainer.setVisibility(View.GONE);
+        appbar.setVisibility(View.VISIBLE);
     }
 
     private void setOnFailedCallback(Throwable throwable) {
         callback.onFailed(throwable);
         if (isThrowableFromNetworkRequest) {
-            onBackPressed();
             isThrowableFromNetworkRequest = false;
+            onBackPressed();
         }
     }
 

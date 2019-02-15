@@ -8,7 +8,7 @@ import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.Checkou
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.PaymentResponse;
 import com.midtrans.sdk.uikit.base.callback.PaymentResult;
 import com.midtrans.sdk.uikit.utilities.MidtransKitHelper;
-import com.midtrans.sdk.uikit.view.KitLandingActivity;
+import com.midtrans.sdk.uikit.view.PaymentListActivity;
 
 public class MidtransKitFlow {
 
@@ -44,7 +44,7 @@ public class MidtransKitFlow {
             PaymentResult<PaymentResponse> callback
     ) {
         if (MidtransKitHelper.isValidForStartMidtransKit(context, checkoutTransaction, callback)) {
-            Intent intent = new Intent(context, KitLandingActivity.class);
+            Intent intent = new Intent(context, PaymentListActivity.class);
             intent.putExtra(INTENT_EXTRA_CALLBACK, callback);
             intent.putExtra(INTENT_EXTRA_TRANSACTION, checkoutTransaction);
             intent.putExtra(INTENT_EXTRA_ALL_PAYMENT, true);
@@ -58,7 +58,7 @@ public class MidtransKitFlow {
             PaymentResult<PaymentResponse> callback
     ) {
         if (MidtransKitHelper.isValidForStartMidtransKit(context, token, callback)) {
-            Intent intent = new Intent(context, KitLandingActivity.class);
+            Intent intent = new Intent(context, PaymentListActivity.class);
             intent.putExtra(INTENT_EXTRA_CALLBACK, callback);
             intent.putExtra(INTENT_EXTRA_TOKEN, token);
             intent.putExtra(INTENT_EXTRA_ALL_PAYMENT, true);
@@ -73,7 +73,7 @@ public class MidtransKitFlow {
             PaymentResult<T> callback
     ) {
         if (MidtransKitHelper.isValidForStartMidtransKit(context, checkoutTransaction, callback)) {
-            Intent intent = new Intent(context, KitLandingActivity.class);
+            Intent intent = new Intent(context, PaymentListActivity.class);
             intent.putExtra(INTENT_EXTRA_CALLBACK, callback);
             intent.putExtra(INTENT_EXTRA_TRANSACTION, checkoutTransaction);
             context.startActivity(intentDirectWithMapping(intent, paymentType));
@@ -87,7 +87,7 @@ public class MidtransKitFlow {
             PaymentResult<T> callback
     ) {
         if (MidtransKitHelper.isValidForStartMidtransKit(context, token, callback)) {
-            Intent intent = new Intent(context, KitLandingActivity.class);
+            Intent intent = new Intent(context, PaymentListActivity.class);
             intent.putExtra(INTENT_EXTRA_CALLBACK, callback);
             intent.putExtra(INTENT_EXTRA_TOKEN, token);
             context.startActivity(intentDirectWithMapping(intent, paymentType));
