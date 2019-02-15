@@ -79,7 +79,7 @@ public class MessageHelper {
 
                     errorMessageDetails = getErrorMessage(String.valueOf(statusCode), message, context);
                 } else if (throwable instanceof PaymentException) {
-                    String statusCode = ((PaymentException) throwable).statusCode;
+                    String statusCode = ((PaymentException) throwable).getStatusCode();
                     String message = throwable.getMessage();
 
                     errorMessageDetails = getErrorMessage(statusCode, message, context);
