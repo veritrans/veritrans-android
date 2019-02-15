@@ -49,6 +49,7 @@ dependencies {
 
     implementation androidxLibraries.appCompat
     implementation androidxLibraries.design
+    implementation networkLibraries.retrofit
     implementation libraries.swipeLayout
     implementation libraries.betterLinkMovement
     implementation libraries.smsVerifyCatcher
@@ -57,5 +58,6 @@ dependencies {
 
     api (project(':corekit')) {
         exclude module: 'appcompat'
+        exclude module: 'retrofit'
     }
 }
