@@ -18,6 +18,7 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.DanamonOnlineRe
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.GopayResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.IndomaretPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.KlikBcaResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriBillResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriClickpayResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriEcashResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.PermataBankTransferResponse;
@@ -77,6 +78,17 @@ public interface SnapApiService {
      */
     @POST(PAYMENT_PAY)
     Call<PermataBankTransferResponse> paymentBankTransferPermata(
+            @Path("snap_token") String snapToken,
+            @Body PaymentRequest paymentRequest
+    );
+
+    /**
+     * Charge payment using bank transfer Virtual account.
+     *
+     * @param paymentRequest Payment Request Details.
+     */
+    @POST(PAYMENT_PAY)
+    Call<MandiriBillResponse> paymentBankTransferMandiriBill(
             @Path("snap_token") String snapToken,
             @Body PaymentRequest paymentRequest
     );

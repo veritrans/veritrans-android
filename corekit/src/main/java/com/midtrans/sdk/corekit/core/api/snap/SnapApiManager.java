@@ -24,6 +24,7 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.DanamonOnlineRe
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.GopayResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.IndomaretPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.KlikBcaResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriBillResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriClickpayResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriEcashResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.PermataBankTransferResponse;
@@ -63,13 +64,18 @@ public class SnapApiManager extends BaseServiceManager {
      * This method is used for Payment Using Bank Transfer BCA
      *
      * @param snapToken       snapToken after get payment info.
-     * @param customerDetails Payment Details.
+     * @param fullName        Fullname, this is nullable.
+     * @param phone           phone, this is nullable.
+     * @param email           email, this is nullable.
      * @param callback        Transaction callback.
      */
     public void paymentUsingBankTransferVaBca(String snapToken,
-                                              CustomerDetailPayRequest customerDetails,
+                                              String fullName,
+                                              String phone,
+                                              String email,
                                               MidtransCallback<BcaBankTransferReponse> callback) {
         if (isSnapTokenAvailable(callback, snapToken, apiService)) {
+            CustomerDetailPayRequest customerDetails = new CustomerDetailPayRequest(fullName, email, phone);
             PaymentRequest paymentRequest = new PaymentRequest(PaymentType.BCA_VA, customerDetails);
             Call<BcaBankTransferReponse> call = apiService.paymentBankTransferBca(snapToken, paymentRequest);
             handleCall(call, callback);
@@ -80,13 +86,18 @@ public class SnapApiManager extends BaseServiceManager {
      * This method is used for Payment Using Bank Transfer BNI
      *
      * @param snapToken       snapToken after get payment info.
-     * @param customerDetails Payment Details.
+     * @param fullName        Fullname, this is nullable.
+     * @param phone           phone, this is nullable.
+     * @param email           email, this is nullable.
      * @param callback        Transaction callback.
      */
     public void paymentUsingBankTransferVaBni(String snapToken,
-                                              CustomerDetailPayRequest customerDetails,
+                                              String fullName,
+                                              String phone,
+                                              String email,
                                               MidtransCallback<BniBankTransferResponse> callback) {
         if (isSnapTokenAvailable(callback, snapToken, apiService)) {
+            CustomerDetailPayRequest customerDetails = new CustomerDetailPayRequest(fullName, email, phone);
             PaymentRequest paymentRequest = new PaymentRequest(PaymentType.BNI_VA, customerDetails);
             Call<BniBankTransferResponse> call = apiService.paymentBankTransferBni(snapToken, paymentRequest);
             handleCall(call, callback);
@@ -97,15 +108,42 @@ public class SnapApiManager extends BaseServiceManager {
      * This method is used for Payment Using Bank Transfer Permata
      *
      * @param snapToken       snapToken after get payment info.
-     * @param customerDetails Payment Details.
+     * @param fullName        Fullname, this is nullable.
+     * @param phone           phone, this is nullable.
+     * @param email           email, this is nullable.
      * @param callback        Transaction callback.
      */
     public void paymentUsingBankTransferVaPermata(String snapToken,
-                                                  CustomerDetailPayRequest customerDetails,
+                                                  String fullName,
+                                                  String phone,
+                                                  String email,
                                                   MidtransCallback<PermataBankTransferResponse> callback) {
         if (isSnapTokenAvailable(callback, snapToken, apiService)) {
-            PaymentRequest paymentRequest = new PaymentRequest(PaymentType.PERMATA_VA, customerDetails);
+            CustomerDetailPayRequest customerDetails = new CustomerDetailPayRequest(fullName, email, phone);
+            PaymentRequest paymentRequest = new PaymentRequest(PaymentType.ECHANNEL, customerDetails);
             Call<PermataBankTransferResponse> call = apiService.paymentBankTransferPermata(snapToken, paymentRequest);
+            handleCall(call, callback);
+        }
+    }
+
+    /**
+     * This method is used for Payment Using Bank Transfer Permata
+     *
+     * @param snapToken       snapToken after get payment info.
+     * @param fullName        Fullname, this is nullable.
+     * @param phone           phone, this is nullable.
+     * @param email           email, this is nullable.
+     * @param callback        Transaction callback.
+     */
+    public void paymentUsingBankTransferVaMandiriBill(String snapToken,
+                                                      String fullName,
+                                                      String phone,
+                                                      String email,
+                                                      MidtransCallback<MandiriBillResponse> callback) {
+        if (isSnapTokenAvailable(callback, snapToken, apiService)) {
+            CustomerDetailPayRequest customerDetails = new CustomerDetailPayRequest(fullName, email, phone);
+            PaymentRequest paymentRequest = new PaymentRequest(PaymentType.PERMATA_VA, customerDetails);
+            Call<MandiriBillResponse> call = apiService.paymentBankTransferMandiriBill(snapToken, paymentRequest);
             handleCall(call, callback);
         }
     }
@@ -114,13 +152,18 @@ public class SnapApiManager extends BaseServiceManager {
      * This method is used for Payment Using Bank Transfer Other Bank
      *
      * @param snapToken       snapToken after get payment info.
-     * @param customerDetails Payment Details.
+     * @param fullName        Fullname, this is nullable.
+     * @param phone           phone, this is nullable.
+     * @param email           email, this is nullable.
      * @param callback        Transaction callback.
      */
     public void paymentUsingBankTransferVaOther(String snapToken,
-                                                CustomerDetailPayRequest customerDetails,
+                                                String fullName,
+                                                String phone,
+                                                String email,
                                                 MidtransCallback<ResponseBody> callback) {
         if (isSnapTokenAvailable(callback, snapToken, apiService)) {
+            CustomerDetailPayRequest customerDetails = new CustomerDetailPayRequest(fullName, email, phone);
             PaymentRequest paymentRequest = new PaymentRequest(PaymentType.OTHER_VA, customerDetails);
             Call<ResponseBody> call = apiService.paymentBankTransferOther(snapToken, paymentRequest);
             handleCall(call, callback);

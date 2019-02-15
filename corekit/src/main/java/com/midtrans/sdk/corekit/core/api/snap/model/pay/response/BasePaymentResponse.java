@@ -122,6 +122,16 @@ public class BasePaymentResponse implements Serializable {
     protected String userId;
 
     /**
+     * Echannel
+     */
+    @SerializedName("bill_key")
+    protected String billKey;
+    @SerializedName("biller_code")
+    protected String billerCode;
+    @SerializedName("billpayment_expiration")
+    protected String billPaymentExpiration;
+
+    /**
      * get bank point
      */
     @SerializedName("validation_messages")

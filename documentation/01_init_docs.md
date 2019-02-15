@@ -11,6 +11,8 @@ We also expose the low-level APIs that power those elements to make it easy to b
 	* Bank BNI
 	* Bank Permata
 	* Bank BCA
+	* Bank Mandiri / MandiriBill / Mandiri Echannel
+	* Other
 3. Cardless Credit
 	* Akulaku
 4. Direct Debit
@@ -330,6 +332,8 @@ Table of payment codes for payment.
 | Bank Transfer   | BCA_VA           | Bank Transfer BCA     |
 |                 | BNI_VA           | Bank Transfer BNI     |
 |                 | PERMATA_VA       | Bank Transfer Permata |
+|                 | ECHANNEL       | Mandiri Bill / Echannel |
+|                 | OTHER_VA       | Other Bank Transfer |
 | Cardless Credit | AKULAKU          | Akulaku               |
 | Direct Debit    | KLIK_BCA         | Klik BCA              |
 |                 | MANDIRI_CLICKPAY | Mandiri Clickpay      |
@@ -440,26 +444,11 @@ MidtransSdk.getInstance().checkoutWithTransaction(checkoutTransaction,
 ### 8.2.1. <a name='PaymentUsingBankTransfer'></a>Payment Using Bank Transfer/VA
 
 #### Payment Using BCA Bank Transfer
-
 - **Request Object**
         
-	Payment using BCA Bank Transfer need `CustomerDetailPayRequest` object as paramater, for making `CustomerDetailPayRequest` object please follow this instruction.
+	Payment using Mandiri Bill / Echannel Bank Transfer need `fullname, email, and phone` but all object is nullable.
 
 	> **Once again, this is very minimum requirements for making CustomerDetailPayRequest object and only sample for you, so it will use default setting. If you want to use some specific feature or other feature, please follow section `FEATURE` and combine it with this minimum CheckoutTransaction object.**
-
-	For starting payment using BCA Bank Transfer with Midtrans, you'll need to write a `CustomerDetailPayRequest` object inside your class (Note, the code samples in this section are simply examples – your own implementation may differ depending on the structure of your app). To make `CustomerDetailPayRequest` you will need 3 required parameters as an example below.
-	
-    ```Java
-        String fullName = "fullName", email = "email@mail.com", phone = "08123456789";
-        CustomerDetailPayRequest customerDetailPayReq = new CustomerDetailPayRequest(fullName, email, phone);
-    ```
-    
-    ```Kotlin
-        val fullName = "fullName"
-        val email = "email@mail.com"
-        val phone = "08123456789"
-        val customerDetailPayReq = CustomerDetailPayRequest(fullName, email, phone)
-    ```
 	
 - **The Method**
 
@@ -524,23 +513,9 @@ MidtransSdk.getInstance().checkoutWithTransaction(checkoutTransaction,
 #### Payment Using BNI Bank Transfer/VA
 - **Request Object**
         
-	Payment using BNI Bank Transfer need `CustomerDetailPayRequest` object as paramater, for making `CustomerDetailPayRequest` object please follow this instruction.
+	Payment using Mandiri Bill / Echannel Bank Transfer need `fullname, email, and phone` but all object is nullable.
 
 	> **Once again, this is very minimum requirements for making CustomerDetailPayRequest object and only sample for you, so it will use default setting. If you want to use some specific feature or other feature, please follow section `FEATURE` and combine it with this minimum CheckoutTransaction object.**
-
-	For starting payment using BNI Bank Transfer with Midtrans, you'll need to write a `CustomerDetailPayRequest` object inside your class (Note, the code samples in this section are simply examples – your own implementation may differ depending on the structure of your app). To make `CustomerDetailPayRequest` you will need 3 required parameters as an example below.
-	
-    ```Java
-        String fullName = "fullName", email = "email@mail.com", phone = "08123456789";
-        CustomerDetailPayRequest customerDetailPayReq = new CustomerDetailPayRequest(fullName, email, phone);
-    ```
-    
-    ```Kotlin
-        val fullName = "fullName"
-        val email = "email@mail.com"
-        val phone = "08123456789"
-        val customerDetailPayReq = CustomerDetailPayRequest(fullName, email, phone)
-    ```
 	
 - **The Method**
 
@@ -605,23 +580,10 @@ MidtransSdk.getInstance().checkoutWithTransaction(checkoutTransaction,
 #### Payment Using PERMATA Bank Transfer/VA
 - **Request Object**
         
-	Payment using PERMATA Bank Transfer need `CustomerDetailPayRequest` object as paramater, for making `CustomerDetailPayRequest` object please follow this instruction.
+	Payment using Mandiri Bill / Echannel Bank Transfer need `fullname, email, and phone` but all object is nullable.
 
 	> **Once again, this is very minimum requirements for making CustomerDetailPayRequest object and only sample for you, so it will use default setting. If you want to use some specific feature or other feature, please follow section `FEATURE` and combine it with this minimum CheckoutTransaction object.**
 
-	For starting payment using PERMATA Bank Transfer with Midtrans, you'll need to write a `CustomerDetailPayRequest` object inside your class (Note, the code samples in this section are simply examples – your own implementation may differ depending on the structure of your app). To make `CustomerDetailPayRequest` you will need 3 required parameters as an example below.
-		
-    ```Java
-        String fullName = "fullName", email = "email@mail.com", phone = "08123456789";
-        CustomerDetailPayRequest customerDetailPayReq = new CustomerDetailPayRequest(fullName, email, phone);
-    ```
-    
-    ```Kotlin
-        val fullName = "fullName"
-        val email = "email@mail.com"
-        val phone = "08123456789"
-        val customerDetailPayReq = CustomerDetailPayRequest(fullName, email, phone)
-    ```
     
 - **The Method**
 
@@ -668,6 +630,141 @@ MidtransSdk.getInstance().checkoutWithTransaction(checkoutTransaction,
   ```Kotlin
   val permataVaNumber = data?.permataVaNumber
   ```
+  
+- **Failed Midtrans Callback**
+	
+	Failed response will return `Throwable` as model, you can get error message and identify why it happen. Midtrans SDK provide some validation and it will return here if not pass the validation. So Failed Midtrans callback will return all of error which is from Midtrans SDK validation or from other source like network error, etc. Here's error message from Midtrans SDK Validation
+
+	| Message                                                          	| Cause                                                                                                      	|
+|------------------------------------------------------------------	|------------------------------------------------------------------------------------------------------------	|
+| Snap Token must not empty.                                       	| You not put the token and keep it null or empty when making payment or something that need token.          	|
+| Merchant base url is empty. Please set merchant base url on SDK. 	| You not set the `MERCHANT_BASE_URL`, so SDK cannot making network request. Please initialize SDK properly. 	|
+| Failed to retrieve response from server.                         	| Network request to server is success but it not return anything.                                           	|
+| Error message not catchable.                                     	| SDK cannot cacth the error.                                                                                	|
+| Failed to connect to server.                                     	| You not connected to any internet connection.                                                              	|
+| Invalid or empty data supplied to SDK.                           	| Empty or wrong data input to the SDK.                                                                      	|
+
+#### Payment Using Mandiri Bill / Echannel
+- **Request Object**
+        
+	Payment using Mandiri Bill / Echannel Bank Transfer need `fullname, email, and phone` but all object is nullable.
+
+	> **Once again, this is very minimum requirements for making CustomerDetailPayRequest object and only sample for you, so it will use default setting. If you want to use some specific feature or other feature, please follow section `FEATURE` and combine it with this minimum CheckoutTransaction object.**
+
+- **The Method**
+
+  ```Java
+    BankTransferCharge.paymentUsingOtherBankTransferVaMandiriBill(
+                 TOKEN,
+                 FULL_NAME,
+                 EMAIL,
+                 PHONE,
+                 new MidtransCallback<MandiriBillResponse>() {
+                     @Override
+                     public void onSuccess(MandiriBillResponse data) {
+                      
+                     }
+ 
+                     @Override
+                     public void onFailed(Throwable throwable) {
+ 
+                     }
+                 }
+         );
+    ```
+    
+  ```Kotlin
+    BankTransferCharge.paymentUsingOtherBankTransferVaMandiriBill(
+            TOKEN,
+            FULL_NAME,
+            EMAIL,
+                 PHONE,
+            object : MidtransCallback<MandiriBillResponse> {
+                override fun onSuccess(data: MandiriBillResponse?) {
+
+                }
+
+                override fun onFailed(throwable: Throwable?) {
+                }
+            })
+    ```
+
+- **Success Midtrans Callback**
+
+  Succes response will return `MandiriBill` as model, you can access   it from `MidtransCallback` interface and you need to use `MandiriBill ` to get any corresponding response you need from `BasePaymentResponse`. As an example below.
+  
+  ```Java
+  String billKey = data.getBillKey();
+  String billerCode = data.getBillerCode();
+  ```
+  
+  ```Kotlin
+  val billKey = data?.billKey
+  val billerCode = data?.billerCode
+  ```
+  
+- **Failed Midtrans Callback**
+	
+	Failed response will return `Throwable` as model, you can get error message and identify why it happen. Midtrans SDK provide some validation and it will return here if not pass the validation. So Failed Midtrans callback will return all of error which is from Midtrans SDK validation or from other source like network error, etc. Here's error message from Midtrans SDK Validation
+
+	| Message                                                          	| Cause                                                                                                      	|
+|------------------------------------------------------------------	|------------------------------------------------------------------------------------------------------------	|
+| Snap Token must not empty.                                       	| You not put the token and keep it null or empty when making payment or something that need token.          	|
+| Merchant base url is empty. Please set merchant base url on SDK. 	| You not set the `MERCHANT_BASE_URL`, so SDK cannot making network request. Please initialize SDK properly. 	|
+| Failed to retrieve response from server.                         	| Network request to server is success but it not return anything.                                           	|
+| Error message not catchable.                                     	| SDK cannot cacth the error.                                                                                	|
+| Failed to connect to server.                                     	| You not connected to any internet connection.                                                              	|
+| Invalid or empty data supplied to SDK.                           	| Empty or wrong data input to the SDK.                                                                      	|
+
+
+#### Payment Using Other Bank Transfer/VA
+- **Request Object**
+        
+	Payment using MOther Bank Transfer/VA need `fullname, email, and phone`, all object is nullable but if you not put your email you can''t get how to pay document to your email.
+
+	> **Once again, this is very minimum requirements, so it will use default setting. If you want to use some specific feature or other feature, please follow section `FEATURE` and combine it with this minimum CheckoutTransaction object.**
+
+- **The Method**
+
+  ```Java
+    BankTransferCharge.paymentUsingOtherBankTransferVaOther(
+                 TOKEN,
+                 FULL_NAME,
+                 EMAIL,
+                 PHONE,
+                 new MidtransCallback<ResponseBody>() {
+                     @Override
+                     public void onSuccess(ResponseBody data) {
+                      
+                     }
+ 
+                     @Override
+                     public void onFailed(Throwable throwable) {
+ 
+                     }
+                 }
+         );
+    ```
+    
+  ```Kotlin
+    BankTransferCharge.paymentUsingOtherBankTransferVaOther(
+            TOKEN,
+            FULL_NAME,
+            EMAIL,
+            PHONE,
+            object : MidtransCallback<MandiriBillResponse> {
+                override fun onSuccess(data: ResponseBody?) {
+
+                }
+
+                override fun onFailed(throwable: Throwable?) {
+                }
+            })
+    ```
+
+- **Success Midtrans Callback**
+
+  Succes response will return `ResponseBody ` as model, you can access   it from `MidtransCallback` interface and you need to use parse manually `ResponseBody ` to JSON . 
   
 - **Failed Midtrans Callback**
 	
@@ -1743,6 +1840,7 @@ Before starting credit card payment, credit card need to be tokenize first, so y
 | BCA VA        	| BankTransferVaBcaPaymentResponse         	|
 | BNI VA        	| BankTransferVaBniPaymentResponse         	|
 | PERMATA VA    	| BankTransferVaPermataPaymentResponse     	|
+| MandiriBill    	| BankTransferVaMandiriBillPaymentResponse     	|
 | OTHER VA      	| BankTransferVaOtherPaymentResponse       	|
 | AKULAKU       	| CardlessCreditAkulakuPaymentResponse     	|
 | INDOMARET     	| ConvenienceStoreIndomaretPaymentResponse 	|
