@@ -99,26 +99,26 @@ public class MessageHelper {
         String errorMessageDetails;
 
         switch (String.valueOf(statusCode)) {
-            case KitConstants.STATUS_CODE_400:
+            case Constants.STATUS_CODE_400:
                 errorMessageDetails = context.getString(R.string.error_message_status_code_400);
                 break;
-            case KitConstants.STATUS_CODE_411:
+            case Constants.STATUS_CODE_411:
                 if (isTimeOut(defaultErrorMessage)) {
                     errorMessageDetails = context.getString(R.string.timeout_message);
                 } else {
                     errorMessageDetails = context.getString(R.string.details_message_invalid);
                 }
                 break;
-            case KitConstants.STATUS_CODE_406:
+            case Constants.STATUS_CODE_406:
                 errorMessageDetails = context.getString(R.string.error_message_status_code_406);
                 break;
-            case KitConstants.STATUS_CODE_407:
+            case Constants.STATUS_CODE_407:
                 errorMessageDetails = context.getString(R.string.error_message_status_code_407);
                 break;
-            case KitConstants.STATUS_CODE_500:
+            case Constants.STATUS_CODE_500:
                 errorMessageDetails = context.getString(R.string.error_message_status_code_500);
                 break;
-            case KitConstants.STATUS_CODE_502:
+            case Constants.STATUS_CODE_502:
                 errorMessageDetails = context.getString(R.string.error_message_status_code_502);
                 break;
             default:

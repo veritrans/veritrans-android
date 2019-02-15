@@ -13,7 +13,6 @@ import com.midtrans.sdk.corekit.MidtransSdk;
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.base.enums.PaymentType;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.CheckoutTransaction;
-import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.Item;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.response.CheckoutWithTransactionResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.PaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
@@ -21,12 +20,13 @@ import com.midtrans.sdk.corekit.utilities.Constants;
 import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.uikit.MidtransKitFlow;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.base.composer.BaseActivity;
 import com.midtrans.sdk.uikit.base.callback.PaymentResult;
+import com.midtrans.sdk.uikit.base.composer.BaseActivity;
 import com.midtrans.sdk.uikit.base.model.MessageInfo;
 import com.midtrans.sdk.uikit.utilities.ActivityHelper;
 import com.midtrans.sdk.uikit.utilities.CurrencyHelper;
 import com.midtrans.sdk.uikit.utilities.MessageHelper;
+import com.midtrans.sdk.uikit.utilities.ModelHelper;
 import com.midtrans.sdk.uikit.view.adapter.ItemDetailsAdapter;
 import com.midtrans.sdk.uikit.view.model.ItemViewDetails;
 import com.midtrans.sdk.uikit.widget.BoldTextView;
@@ -236,27 +236,7 @@ public class PaymentListActivity extends BaseActivity {
                     formattedAmount,
                     ItemViewDetails.TYPE_ITEM_HEADER,
                     itemDetailsSize > 0));
-
-            // Add item
-            if (itemDetailsSize > 0) {
-                for (Item item : response.getItemDetails()) {
-                    String price = CurrencyHelper.formatAmount(this, item.getPrice(), currency);
-                    String itemName = item.getName();
-
-                    if (item.getQuantity() > 1) {
-                        itemName = getString(
-                                R.string.text_item_name_format,
-                                item.getName(),
-                                item.getQuantity());
-                    }
-
-                    itemViewDetails.add(new ItemViewDetails(itemName,
-                            price,
-                            ItemViewDetails.TYPE_ITEM,
-                            true));
-                }
-            }
-
+            itemViewDetails.addAll(ModelHelper.mappingItemDetails(this, response));
             ItemDetailsAdapter adapter = new ItemDetailsAdapter(
                     itemViewDetails,
                     response.getTransactionDetails().getOrderId(),
@@ -276,7 +256,7 @@ public class PaymentListActivity extends BaseActivity {
                 message = getString(R.string.error_snap_transaction_details);
             }
             String finalMessage = message;
-            Logger.debug("RESULT MESSAGE",finalMessage);
+            Logger.debug("RESULT MESSAGE", finalMessage);
             alertDialog = new AlertDialog
                     .Builder(this)
                     .setMessage(finalMessage)
