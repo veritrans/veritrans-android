@@ -1,6 +1,6 @@
 package com.midtrans.sdk.uikit.utilities;
 
-public class KitConstants {
+public class Constants {
 
     // response status code
     public static final String STATUS_CODE_200 = "200";
