@@ -1,5 +1,7 @@
 package com.midtrans.sdk.uikit.view;
 
+import com.google.android.material.appbar.AppBarLayout;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,11 +21,15 @@ import com.midtrans.sdk.uikit.MidtransKitFlow;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.base.BaseActivity;
 import com.midtrans.sdk.uikit.base.callback.PaymentResult;
-import com.midtrans.sdk.uikit.base.callback.Result;
-import com.midtrans.sdk.uikit.base.enums.PaymentStatus;
+import com.midtrans.sdk.uikit.base.model.MessageInfo;
 import com.midtrans.sdk.uikit.utilities.ActivityHelper;
+import com.midtrans.sdk.uikit.utilities.MessageHelper;
+import com.midtrans.sdk.uikit.widget.BoldTextView;
+import com.midtrans.sdk.uikit.widget.DefaultTextView;
+import com.midtrans.sdk.uikit.widget.FancyButton;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 
 public class KitLandingActivity extends BaseActivity {
@@ -49,13 +55,23 @@ public class KitLandingActivity extends BaseActivity {
     private boolean isOtherVa = false;
     private String token = null;
     private CheckoutTransaction checkoutTransaction = null;
+
     @PaymentType
     private String paymentType;
+    private boolean isThrowableFromNetworkRequest = false;
+    private Throwable throwableFromNetworkRequest;
+
+    private AlertDialog alertDialog;
 
     private LinearLayout progressContainer;
     private ImageView progressImage;
     private TextView progressMessage;
+    private LinearLayout maintenanceContainer;
+    private BoldTextView maintenanceTitle;
+    private DefaultTextView maintenanceMessage;
+    private FancyButton maintenanceButton;
     private Toolbar toolbar;
+    private AppBarLayout appbar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,12 +85,17 @@ public class KitLandingActivity extends BaseActivity {
     }
 
     private void initToolbarAndView() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        toolbar = findViewById(R.id.toolbar);
+        appbar = findViewById(R.id.main_appbar);
         progressContainer = findViewById(R.id.progress_container);
         progressImage = findViewById(R.id.progress_bar_image);
         progressMessage = findViewById(R.id.progress_bar_message);
+        maintenanceContainer = findViewById(R.id.maintenance_container);
+        maintenanceTitle = findViewById(R.id.text_maintenance_title);
+        maintenanceMessage = findViewById(R.id.text_maintenance_message);
+        maintenanceButton = findViewById(R.id.button_maintenance_retry);
 
+        setSupportActionBar(toolbar);
         Ion.with(progressImage)
                 .load(ActivityHelper.getImagePath(this) + R.drawable.midtrans_loader);
     }
@@ -100,7 +121,6 @@ public class KitLandingActivity extends BaseActivity {
         isDanamonOnline = getIntent().getBooleanExtra(MidtransKitFlow.INTENT_EXTRA_DANAMON_ONLINE, false);
         isAkulaku = getIntent().getBooleanExtra(MidtransKitFlow.INTENT_EXTRA_AKULAKU, false);
         isAlfamart = getIntent().getBooleanExtra(MidtransKitFlow.INTENT_EXTRA_ALFAMART, false);
-
         isBcaVa = getIntent().getBooleanExtra(MidtransKitFlow.INTENT_EXTRA_BANK_TRANSFER_BCA, false);
         isBniVa = getIntent().getBooleanExtra(MidtransKitFlow.INTENT_EXTRA_BANK_TRANSFER_BNI, false);
         isPermataVa = getIntent().getBooleanExtra(MidtransKitFlow.INTENT_EXTRA_BANK_TRANSFER_PERMATA, false);
@@ -124,38 +144,105 @@ public class KitLandingActivity extends BaseActivity {
                 .checkoutWithTransaction(checkoutTransaction, new MidtransCallback<CheckoutWithTransactionResponse>() {
                     @Override
                     public void onSuccess(CheckoutWithTransactionResponse data) {
-                        if (data.getToken() == null) {
-                            if (data.getErrorMessages().get(0) != null) {
-                                callback.onPaymentFinished(new Result(PaymentStatus.STATUS_FAILED, data.getErrorMessages().get(0), paymentType), null);
+                        if (data != null) {
+                            if (data.getToken() != null) {
+                                startGettingPaymentInfoWithMidtransSdk(data.getToken());
                             } else {
-                                setOnFailedCallback(new Throwable(Constants.MESSAGE_ERROR_FAILURE_RESPONSE));
+                                if (data.getErrorMessages().get(0) != null) {
+                                    String errorMessage = MessageHelper.createMessageWhenCheckoutFailed(KitLandingActivity.this, data.getErrorMessages());
+                                    showErrorMessage(errorMessage, true);
+                                } else {
+                                    showErrorMessage(Constants.MESSAGE_ERROR_FAILURE_RESPONSE, true);
+                                }
                             }
                         } else {
-                            startGettingPaymentInfoWithMidtransSdk(data.getToken());
+                            showErrorMessage(Constants.MESSAGE_ERROR_FAILURE_RESPONSE, true);
                         }
                     }
 
                     @Override
                     public void onFailed(Throwable throwable) {
-                        setOnFailedCallback(throwable);
+                        showFallbackErrorPage(throwable, true);
                     }
                 });
     }
 
     private void startGettingPaymentInfoWithMidtransSdk(String token) {
+        this.token = token;
         MidtransSdk
                 .getInstance()
-                .getPaymentInfo(token, new MidtransCallback<PaymentInfoResponse>() {
+                .getPaymentInfo(this.token, new MidtransCallback<PaymentInfoResponse>() {
                     @Override
                     public void onSuccess(PaymentInfoResponse data) {
+                        if (data != null) {
 
+                        } else {
+                            showErrorMessage(null, false);
+                        }
                     }
 
                     @Override
                     public void onFailed(Throwable throwable) {
-                        setOnFailedCallback(throwable);
+                        showFallbackErrorPage(throwable, false);
                     }
                 });
+    }
+
+    private void showErrorMessage(String message, boolean isCheckout) {
+        if (!isFinishing()) {
+            if (!isCheckout) {
+                message = getString(R.string.error_snap_transaction_details);
+            }
+            String finalMessage = message;
+            alertDialog = new AlertDialog
+                    .Builder(this)
+                    .setMessage(finalMessage)
+                    .setPositiveButton(R.string.btn_retry, (dialog, which) -> {
+                        if (isCheckout) {
+                            startCheckoutWithMidtransSdk(checkoutTransaction);
+                        } else {
+                            startGettingPaymentInfoWithMidtransSdk(token);
+                        }
+                        dialog.dismiss();
+                    })
+                    .setNegativeButton(R.string.btn_cancel, (dialog, which) -> {
+                        isThrowableFromNetworkRequest = true;
+                        throwableFromNetworkRequest = new Throwable(finalMessage);
+                        dialog.dismiss();
+                        onBackPressed();
+                    })
+                    .create();
+            alertDialog.show();
+        }
+    }
+
+    private void showFallbackErrorPage(Throwable error, boolean isCheckout) {
+        throwableFromNetworkRequest = error;
+        isThrowableFromNetworkRequest = true;
+        MessageInfo messageInfo = MessageHelper.createMessageOnError(error, this);
+
+        maintenanceTitle.setText(messageInfo.getTitleMessage());
+        maintenanceMessage.setText(messageInfo.getDetailsMessage());
+        maintenanceButton.setText(getString(R.string.try_again));
+        maintenanceButton.setOnClickListener(v -> {
+            if (isCheckout) {
+                checkDataBeforeStartMidtransSdk();
+            } else {
+                startGettingPaymentInfoWithMidtransSdk(token);
+            }
+            showMaintenance(false);
+        });
+        showMaintenance(true);
+    }
+
+    private void showMaintenance(boolean show) {
+        if (show) {
+            appbar.setVisibility(View.GONE);
+            maintenanceContainer.setVisibility(View.VISIBLE);
+        } else {
+            appbar.setVisibility(View.VISIBLE);
+            maintenanceContainer.setVisibility(View.GONE);
+        }
     }
 
     private void showProgress() {
@@ -168,7 +255,17 @@ public class KitLandingActivity extends BaseActivity {
 
     private void setOnFailedCallback(Throwable throwable) {
         callback.onFailed(throwable);
-        finish();
+        if (isThrowableFromNetworkRequest) {
+            onBackPressed();
+            isThrowableFromNetworkRequest = false;
+        }
     }
 
+    @Override
+    public void onBackPressed() {
+        if (isThrowableFromNetworkRequest) {
+            setOnFailedCallback(throwableFromNetworkRequest);
+        }
+        super.onBackPressed();
+    }
 }
