@@ -13,7 +13,7 @@ android {
         abortOnError false
     }
     defaultConfig {
-        minSdkVersion rootProject.minCoreSdkVersion
+        minSdkVersion rootProject.minUiSdkVersion
         targetSdkVersion rootProject.sdkVersion
         versionCode 3
         versionName version
