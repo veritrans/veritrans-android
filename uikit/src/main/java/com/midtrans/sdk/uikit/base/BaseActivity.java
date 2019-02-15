@@ -1,5 +1,6 @@
 package com.midtrans.sdk.uikit.base;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
@@ -9,6 +10,7 @@ import com.midtrans.sdk.uikit.MidtransKit;
 import com.midtrans.sdk.uikit.MidtransKitConfig;
 import com.midtrans.sdk.uikit.R;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class BaseActivity extends AppCompatActivity {
@@ -35,6 +37,13 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
+    private void pendingSlideIn() {
+        MidtransKitConfig midtransKitConfig = MidtransKit.getInstance().getMidtransKitConfig();
+        if (midtransKitConfig != null && midtransKitConfig.isEnabledAnimation()) {
+            overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+        }
+    }
+
     @Override
     public void startActivity(Intent intent) {
         super.startActivity(intent);
@@ -45,13 +54,6 @@ public class BaseActivity extends AppCompatActivity {
     public void startActivityForResult(Intent intent, int requestCode) {
         super.startActivityForResult(intent, requestCode);
         pendingSlideIn();
-    }
-
-    private void pendingSlideIn() {
-        MidtransKitConfig midtransKitConfig = MidtransKit.getInstance().getMidtransKitConfig();
-        if (midtransKitConfig != null && midtransKitConfig.isEnabledAnimation()) {
-            overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
-        }
     }
 
     @Override
