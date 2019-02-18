@@ -1,6 +1,7 @@
 package com.midtrans.sdk.corekit.core.payment;
 
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.AlfamartPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.IndomaretPaymentResponse;
 
 public class ConvenienceStoreCharge extends BaseGroupPayment {
@@ -15,6 +16,19 @@ public class ConvenienceStoreCharge extends BaseGroupPayment {
                                              final MidtransCallback<IndomaretPaymentResponse> callback) {
         if (isValidForNetworkCall(callback)) {
             getSnapApiManager().paymentUsingIndomaret(snapToken, callback);
+        }
+    }
+
+    /**
+     * Start payment using bank transfer and va with Alfamart.
+     *
+     * @param snapToken token after making checkoutWithTransaction.
+     * @param callback  for receiving callback from request.
+     */
+    public static void paymentUsingAlfamart(final String snapToken,
+                                            final MidtransCallback<AlfamartPaymentResponse> callback) {
+        if (isValidForNetworkCall(callback)) {
+            getSnapApiManager().paymentUsingAlfamart(snapToken, callback);
         }
     }
 }
