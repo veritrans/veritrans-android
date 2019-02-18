@@ -29,10 +29,9 @@ public class EWalletCharge extends BaseGroupPayment {
      * @param callback  for receiving callback from request.
      */
     public static void paymentUsingGopay(final String snapToken,
-                                         final String gopayAccountNumber,
                                          final MidtransCallback<GopayResponse> callback) {
         if (isValidForNetworkCall(callback)) {
-            getSnapApiManager().paymentUsingGopay(snapToken, gopayAccountNumber, callback);
+            getSnapApiManager().paymentUsingGopay(snapToken, callback);
         }
     }
 
