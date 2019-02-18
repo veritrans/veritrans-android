@@ -13,6 +13,7 @@
     <color name="light_gray">#F1F1F1</color>
     <color name="light_gray_min">#f4f4f4</color>
     <color name="lighter_gray">#F6F6F6</color>
+    <color name="dark_blue">#0e4e95</color>
 
     <color name="faint_gray">#d3d3d3</color>
     <color name="faint_yellow">#FFF3CD</color>
