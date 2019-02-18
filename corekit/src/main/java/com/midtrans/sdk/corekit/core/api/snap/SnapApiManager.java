@@ -8,7 +8,6 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.CustomerDetailPa
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.PaymentRequest;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.creditcard.CreditCardPaymentParams;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.creditcard.CreditCardPaymentRequest;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.gopay.GopayPaymentRequest;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.klikbca.KlikBcaPaymentRequest;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.mandiriclick.MandiriClickpayParams;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.mandiriclick.MandiriClickpayPaymentRequest;
@@ -63,11 +62,11 @@ public class SnapApiManager extends BaseServiceManager {
     /**
      * This method is used for Payment Using Bank Transfer BCA
      *
-     * @param snapToken       snapToken after get payment info.
-     * @param fullName        Fullname, this is nullable.
-     * @param phone           phone, this is nullable.
-     * @param email           email, this is nullable.
-     * @param callback        Transaction callback.
+     * @param snapToken snapToken after get payment info.
+     * @param fullName  Fullname, this is nullable.
+     * @param phone     phone, this is nullable.
+     * @param email     email, this is nullable.
+     * @param callback  Transaction callback.
      */
     public void paymentUsingBankTransferVaBca(String snapToken,
                                               String fullName,
@@ -85,11 +84,11 @@ public class SnapApiManager extends BaseServiceManager {
     /**
      * This method is used for Payment Using Bank Transfer BNI
      *
-     * @param snapToken       snapToken after get payment info.
-     * @param fullName        Fullname, this is nullable.
-     * @param phone           phone, this is nullable.
-     * @param email           email, this is nullable.
-     * @param callback        Transaction callback.
+     * @param snapToken snapToken after get payment info.
+     * @param fullName  Fullname, this is nullable.
+     * @param phone     phone, this is nullable.
+     * @param email     email, this is nullable.
+     * @param callback  Transaction callback.
      */
     public void paymentUsingBankTransferVaBni(String snapToken,
                                               String fullName,
@@ -107,11 +106,11 @@ public class SnapApiManager extends BaseServiceManager {
     /**
      * This method is used for Payment Using Bank Transfer Permata
      *
-     * @param snapToken       snapToken after get payment info.
-     * @param fullName        Fullname, this is nullable.
-     * @param phone           phone, this is nullable.
-     * @param email           email, this is nullable.
-     * @param callback        Transaction callback.
+     * @param snapToken snapToken after get payment info.
+     * @param fullName  Fullname, this is nullable.
+     * @param phone     phone, this is nullable.
+     * @param email     email, this is nullable.
+     * @param callback  Transaction callback.
      */
     public void paymentUsingBankTransferVaPermata(String snapToken,
                                                   String fullName,
@@ -129,11 +128,11 @@ public class SnapApiManager extends BaseServiceManager {
     /**
      * This method is used for Payment Using Bank Transfer Permata
      *
-     * @param snapToken       snapToken after get payment info.
-     * @param fullName        Fullname, this is nullable.
-     * @param phone           phone, this is nullable.
-     * @param email           email, this is nullable.
-     * @param callback        Transaction callback.
+     * @param snapToken snapToken after get payment info.
+     * @param fullName  Fullname, this is nullable.
+     * @param phone     phone, this is nullable.
+     * @param email     email, this is nullable.
+     * @param callback  Transaction callback.
      */
     public void paymentUsingBankTransferVaMandiriBill(String snapToken,
                                                       String fullName,
@@ -151,11 +150,11 @@ public class SnapApiManager extends BaseServiceManager {
     /**
      * This method is used for Payment Using Bank Transfer Other Bank
      *
-     * @param snapToken       snapToken after get payment info.
-     * @param fullName        Fullname, this is nullable.
-     * @param phone           phone, this is nullable.
-     * @param email           email, this is nullable.
-     * @param callback        Transaction callback.
+     * @param snapToken snapToken after get payment info.
+     * @param fullName  Fullname, this is nullable.
+     * @param phone     phone, this is nullable.
+     * @param email     email, this is nullable.
+     * @param callback  Transaction callback.
      */
     public void paymentUsingBankTransferVaOther(String snapToken,
                                                 String fullName,
@@ -254,11 +253,10 @@ public class SnapApiManager extends BaseServiceManager {
      * @param callback  Transaction callback.
      */
     public void paymentUsingGopay(String snapToken,
-                                  String gopayAccountNumber,
                                   MidtransCallback<GopayResponse> callback) {
         if (isSnapTokenAvailable(callback, snapToken, apiService)) {
-            GopayPaymentRequest gopayPaymentRequest = new GopayPaymentRequest(PaymentType.GOPAY, gopayAccountNumber);
-            Call<GopayResponse> call = apiService.paymentUsingGoPay(snapToken, gopayPaymentRequest);
+            BasePaymentRequest basePaymentRequest = new BasePaymentRequest(PaymentType.GOPAY);
+            Call<GopayResponse> call = apiService.paymentUsingGoPay(snapToken, basePaymentRequest);
             handleCall(call, callback);
         }
     }
