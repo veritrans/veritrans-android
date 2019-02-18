@@ -13,6 +13,7 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.mandiriclick.Man
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.mandiriclick.MandiriClickpayPaymentRequest;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.telkomsel.TelkomselCashPaymentRequest;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.AkulakuResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.AlfamartPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaBankTransferReponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaKlikpayResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BniBankTransferResponse;
@@ -288,6 +289,21 @@ public class SnapApiManager extends BaseServiceManager {
         if (isSnapTokenAvailable(callback, snapToken, apiService)) {
             BasePaymentRequest basePaymentRequest = new BasePaymentRequest(PaymentType.INDOMARET);
             Call<IndomaretPaymentResponse> call = apiService.paymentIndomaret(snapToken, basePaymentRequest);
+            handleCall(call, callback);
+        }
+    }
+
+    /**
+     * This method is used for Payment Using Alfamart
+     *
+     * @param snapToken snapToken after get payment info.
+     * @param callback  Transaction callback.
+     */
+    public void paymentUsingAlfamart(String snapToken,
+                                      MidtransCallback<AlfamartPaymentResponse> callback) {
+        if (isSnapTokenAvailable(callback, snapToken, apiService)) {
+            BasePaymentRequest basePaymentRequest = new BasePaymentRequest(PaymentType.ALFAMART);
+            Call<AlfamartPaymentResponse> call = apiService.paymentAlfamart(snapToken, basePaymentRequest);
             handleCall(call, callback);
         }
     }
