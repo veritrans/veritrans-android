@@ -1,3 +1,5 @@
+package com.midtrans.sample
+
 import android.app.Application
 import com.midtrans.sample.BuildConfig
 import com.midtrans.sdk.corekit.base.enums.Environment
