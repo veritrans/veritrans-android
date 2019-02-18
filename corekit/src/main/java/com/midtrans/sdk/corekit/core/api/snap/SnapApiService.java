@@ -7,6 +7,7 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.klikbca.KlikBcaP
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.mandiriclick.MandiriClickpayPaymentRequest;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.telkomsel.TelkomselCashPaymentRequest;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.AkulakuResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.AlfamartPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaBankTransferReponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaKlikpayResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BniBankTransferResponse;
@@ -141,6 +142,17 @@ public interface SnapApiService {
      */
     @POST(PAYMENT_PAY)
     Call<IndomaretPaymentResponse> paymentIndomaret(
+            @Path("snap_token") String snapToken,
+            @Body BasePaymentRequest paymentRequest
+    );
+
+    /**
+     * Charge payment using Indomaret.
+     *
+     * @param paymentRequest Payment Request Details.
+     */
+    @POST(PAYMENT_PAY)
+    Call<AlfamartPaymentResponse> paymentAlfamart(
             @Path("snap_token") String snapToken,
             @Body BasePaymentRequest paymentRequest
     );
