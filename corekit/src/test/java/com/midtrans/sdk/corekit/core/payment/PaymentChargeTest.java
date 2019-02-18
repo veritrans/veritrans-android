@@ -13,6 +13,7 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.CustomerDetailPa
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.creditcard.CreditCardPaymentParams;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.mandiriclick.MandiriClickpayParams;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.AkulakuResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.AlfamartPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaBankTransferReponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaKlikpayResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BniBankTransferResponse;
@@ -221,6 +222,8 @@ public class PaymentChargeTest {
         callbackDanamonOnline.onFailed(throwable);
         callbackMandiriBill.onSuccess(responseMandiriBill);
         callbackMandiriBill.onFailed(throwable);
+        callbackAlfamart.onSuccess(alfamartPaymentResponse);
+        callbackAlfamart.onFailed(throwable);
 
         this.exampleTextPositive = "exampleTextPositive";
         this.exampleTextNegative = "exampleTextNegative";
