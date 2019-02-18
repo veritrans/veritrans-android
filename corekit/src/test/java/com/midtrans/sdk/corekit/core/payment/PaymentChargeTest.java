@@ -921,6 +921,45 @@ public class PaymentChargeTest {
     }
 
     @Test
+    public void test_paymentUsingStoreAlfamart_positive() {
+        convenienceStoreCharge.paymentUsingAlfamart(SDKConfigTest.SNAP_TOKEN, callbackAlfamart);
+        Mockito.verify(callbackIndomaret).onSuccess(Matchers.any(IndomaretPaymentResponse.class));
+    }
+
+    @Test
+    public void test_paymentUsingStoreAlfamart_negative_callback() {
+        convenienceStoreCharge.paymentUsingAlfamart(SDKConfigTest.SNAP_TOKEN, callbackAlfamart);
+        Mockito.verify(callbackIndomaret).onFailed(Matchers.any(Throwable.class));
+    }
+
+    @Test
+    public void test_paymentUsingStoreAlfamart_negative_snapTokenNull() {
+        convenienceStoreCharge.paymentUsingAlfamart(null, callbackAlfamart);
+        verifyStatic(Mockito.times(0));
+        Logger.error(Matchers.anyString(), Matchers.anyString());
+    }
+
+    @Test
+    public void test_paymentUsingStoreAlfamart_negative_callbackNull() {
+        convenienceStoreCharge.paymentUsingAlfamart(SDKConfigTest.SNAP_TOKEN, null);
+        verifyStatic(Mockito.times(0));
+        Logger.error(Matchers.anyString(), Matchers.anyString());
+    }
+
+    @Test
+    public void test_paymentUsingStoreAlfamart_negative_noNetwork() {
+        when(NetworkHelper.isNetworkAvailable(midtransSdkMock.getContext())).thenReturn(false);
+        convenienceStoreCharge.paymentUsingAlfamart(SDKConfigTest.SNAP_TOKEN, callbackAlfamart);
+        Mockito.verify(callbackIndomaret).onFailed(Matchers.any(Throwable.class));
+    }
+
+    @Test
+    public void test_paymentUsingStoreAlfamart_negative_withoutSnapToken() {
+        convenienceStoreCharge.paymentUsingAlfamart(null, callbackAlfamart);
+        Mockito.verify(callbackIndomaret).onFailed(Matchers.any(Throwable.class));
+    }
+
+    @Test
     public void test_paymentUsingCreditCard_positive() {
         creditCardCharge.paymentUsingCard(SDKConfigTest.SNAP_TOKEN, creditCardPaymentParams, customerDetailPayRequest, callbackCreditCard);
         Mockito.verify(callbackCreditCard).onSuccess(Matchers.any(CreditCardResponse.class));
