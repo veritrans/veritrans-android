@@ -12,22 +12,22 @@ import com.midtrans.sdk.corekit.base.enums.Environment;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.CustomerDetailPayRequest;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.creditcard.CreditCardPaymentParams;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.mandiriclick.MandiriClickpayParams;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaBankTransferReponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BniBankTransferResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriBillResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.PermataBankTransferResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.AkulakuResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.IndomaretPaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CreditCardResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.KlikBcaResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriClickpayResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.GopayResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriEcashResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.TelkomselCashResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaBankTransferReponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaKlikpayResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BniBankTransferResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BriEpayPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CimbClicksResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CreditCardResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.DanamonOnlineResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.GopayResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.IndomaretPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.KlikBcaResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriBillResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriClickpayResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriEcashResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.PermataBankTransferResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.TelkomselCashResponse;
 import com.midtrans.sdk.corekit.utilities.Helper;
 import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.corekit.utilities.NetworkHelper;
@@ -669,26 +669,26 @@ public class PaymentChargeTest {
 
     @Test
     public void test_paymentUsingEwalletGopay_positive() {
-        eWalletCharge.paymentUsingGopay(SDKConfigTest.SNAP_TOKEN, customerNumber, callbackGopay);
+        eWalletCharge.paymentUsingGopay(SDKConfigTest.SNAP_TOKEN, callbackGopay);
         Mockito.verify(callbackGopay).onSuccess(Matchers.any(GopayResponse.class));
     }
 
     @Test
     public void test_paymentUsingEwalletGopay_negative_callback() {
-        eWalletCharge.paymentUsingGopay(SDKConfigTest.SNAP_TOKEN, customerNumber, callbackGopay);
+        eWalletCharge.paymentUsingGopay(SDKConfigTest.SNAP_TOKEN, callbackGopay);
         Mockito.verify(callbackGopay).onFailed(Matchers.any(Throwable.class));
     }
 
     @Test
     public void test_paymentUsingEwalletGopay_negative_snapTokenNull() {
-        eWalletCharge.paymentUsingGopay(null, customerNumber, callbackGopay);
+        eWalletCharge.paymentUsingGopay(null, callbackGopay);
         verifyStatic(Mockito.times(0));
         Logger.error(Matchers.anyString(), Matchers.anyString());
     }
 
     @Test
     public void test_paymentUsingEwalletGopay_negative_callbackNull() {
-        eWalletCharge.paymentUsingGopay(SDKConfigTest.SNAP_TOKEN, customerNumber, null);
+        eWalletCharge.paymentUsingGopay(SDKConfigTest.SNAP_TOKEN, null);
         verifyStatic(Mockito.times(0));
         Logger.error(Matchers.anyString(), Matchers.anyString());
     }
@@ -696,19 +696,13 @@ public class PaymentChargeTest {
     @Test
     public void test_paymentUsingEwalletGopay_negative_noNetwork() {
         when(NetworkHelper.isNetworkAvailable(midtransSdkMock.getContext())).thenReturn(false);
-        eWalletCharge.paymentUsingGopay(SDKConfigTest.SNAP_TOKEN, customerNumber, callbackGopay);
-        Mockito.verify(callbackGopay).onFailed(Matchers.any(Throwable.class));
-    }
-
-    @Test
-    public void test_paymentUsingEwalletGopay_negative_withoutParams() {
-        eWalletCharge.paymentUsingGopay(SDKConfigTest.SNAP_TOKEN, null, callbackGopay);
+        eWalletCharge.paymentUsingGopay(SDKConfigTest.SNAP_TOKEN, callbackGopay);
         Mockito.verify(callbackGopay).onFailed(Matchers.any(Throwable.class));
     }
 
     @Test
     public void test_paymentUsingEwalletGopay_negative_withoutSnapTken() {
-        eWalletCharge.paymentUsingGopay(null, customerNumber, null);
+        eWalletCharge.paymentUsingGopay(null, null);
         Mockito.verify(callbackGopay).onFailed(Matchers.any(Throwable.class));
     }
 
