@@ -875,40 +875,40 @@ public class PaymentChargeTest {
     }
 
     @Test
-    public void test_paymentUsingStoreChange_positive() {
+    public void test_paymentUsingStoreIndomaret_positive() {
         convenienceStoreCharge.paymentUsingIndomaret(SDKConfigTest.SNAP_TOKEN, callbackIndomaret);
         Mockito.verify(callbackIndomaret).onSuccess(Matchers.any(IndomaretPaymentResponse.class));
     }
 
     @Test
-    public void test_paymentUsingStoreChange_negative_callback() {
+    public void test_paymentUsingStoreIndomaret_negative_callback() {
         convenienceStoreCharge.paymentUsingIndomaret(SDKConfigTest.SNAP_TOKEN, callbackIndomaret);
         Mockito.verify(callbackIndomaret).onFailed(Matchers.any(Throwable.class));
     }
 
     @Test
-    public void test_paymentUsingStoreChange_negative_snapTokenNull() {
+    public void test_paymentUsingStoreIndomaret_negative_snapTokenNull() {
         convenienceStoreCharge.paymentUsingIndomaret(null, callbackIndomaret);
         verifyStatic(Mockito.times(0));
         Logger.error(Matchers.anyString(), Matchers.anyString());
     }
 
     @Test
-    public void test_paymentUsingStoreChange_negative_callbackNull() {
+    public void test_paymentUsingStoreIndomaret_negative_callbackNull() {
         convenienceStoreCharge.paymentUsingIndomaret(SDKConfigTest.SNAP_TOKEN, null);
         verifyStatic(Mockito.times(0));
         Logger.error(Matchers.anyString(), Matchers.anyString());
     }
 
     @Test
-    public void test_paymentUsingStoreChange_negative_noNetwork() {
+    public void test_paymentUsingStoreIndomaret_negative_noNetwork() {
         when(NetworkHelper.isNetworkAvailable(midtransSdkMock.getContext())).thenReturn(false);
         convenienceStoreCharge.paymentUsingIndomaret(SDKConfigTest.SNAP_TOKEN, callbackIndomaret);
         Mockito.verify(callbackIndomaret).onFailed(Matchers.any(Throwable.class));
     }
 
     @Test
-    public void test_paymentUsingStoreChange_negative_withoutSnapTken() {
+    public void test_paymentUsingStoreIndomaret_negative_withoutSnapToken() {
         convenienceStoreCharge.paymentUsingIndomaret(null, callbackIndomaret);
         Mockito.verify(callbackIndomaret).onFailed(Matchers.any(Throwable.class));
     }
