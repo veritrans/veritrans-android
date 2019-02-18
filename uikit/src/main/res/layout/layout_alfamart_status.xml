@@ -2,12 +2,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <com.midtrans.sdk.uikit.widgets.DefaultTextView
         android:id="@+id/text_validity"
         style="@style/OtherVaNotification"
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -22,43 +22,34 @@
         android:visibility="gone" />
 
     <com.midtrans.sdk.uikit.widgets.DefaultTextView
-        android:id="@+id/payment_code"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="@dimen/sixteen_dp"
-        android:layout_marginTop="@dimen/four_dp"
-        android:textSize="@dimen/va_number_size" />
-
-    <com.midtrans.sdk.uikit.widgets.DefaultTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/twenty_four_dp"
         android:layout_marginRight="@dimen/sixteen_dp"
         android:layout_marginTop="@dimen/sixteen_dp"
         android:text="@string/payment_code"
-        android:textColor="@color/dark_gray"
+        android:layout_gravity="center"
+        android:textColor="@color/black"
         android:textSize="@dimen/secondary_text_size" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/sixteen_dp"
+        android:layout_marginTop="@dimen/sixteen_dp"
         android:layout_marginRight="@dimen/sixteen_dp"
-        android:background="@color/light_gray"
-        android:gravity="center_vertical">
+        android:gravity="center">
 
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
             android:id="@+id/text_payment_code"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginEnd="@dimen/four_dp"
             android:layout_marginRight="@dimen/four_dp"
-            android:layout_weight="1"
-            android:background="@color/light_gray"
+            android:textStyle="bold"
             android:padding="@dimen/eight_dp"
-            android:text="@string/payment_code"
+            android:textColor="@color/dark_blue"
             android:textSize="@dimen/va_number_size" />
 
         <com.midtrans.sdk.uikit.widgets.FancyButton
@@ -79,10 +70,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/sixteen_dp"
+        android:textAllCaps="true"
         android:layout_marginRight="@dimen/sixteen_dp"
         android:layout_marginTop="@dimen/sixteen_dp"
         android:gravity="center_vertical"
-        android:text="@string/show_instruction" />
+        android:text="@string/instruction" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -93,11 +85,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="gone"
+            tools:visibility="gone">
+
+            <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/sixteen_dp"
+                android:text="@string/alfamart_instruction_step0"
+                android:textColor="@color/black"
+                android:textSize="@dimen/secondary_text_size"
+                android:paddingBottom="@dimen/four_dp"
+                android:paddingLeft="@dimen/sixteen_dp"
+                android:paddingRight="@dimen/sixteen_dp"
+                android:paddingTop="@dimen/four_dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/sixteen_dp"
                 android:background="@color/light_gray"
                 android:paddingBottom="@dimen/four_dp"
                 android:paddingLeft="@dimen/sixteen_dp"
@@ -206,11 +212,9 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/secondary_text_size" />
             </LinearLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/eight_dp"
                 android:lineSpacingExtra="2dp"
                 android:paddingBottom="@dimen/four_dp"
                 android:paddingLeft="@dimen/sixteen_dp"
@@ -228,7 +232,6 @@
                     android:text="@string/alfamart_instruction_step6"
                     android:textColor="@color/black"
                     android:textSize="@dimen/secondary_text_size" />
-
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

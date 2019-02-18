@@ -15,6 +15,7 @@ import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.ItemDetails;
 import com.midtrans.sdk.corekit.models.ShippingAddress;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
+import com.midtrans.sdk.corekit.models.snap.Authentication;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.widgets.CreditCardForm;
 
@@ -134,7 +135,7 @@ public class WidgetExampleActivity extends AppCompatActivity {
             cardClickType = getString(R.string.card_click_type_one_click);
             CreditCard creditCard = new CreditCard();
             creditCard.setSaveCard(true);
-            creditCard.setSecure(true);
+            creditCard.setAuthentication(Authentication.AUTH_3DS);
             transactionRequestNew.setCreditCard(creditCard);
 
         } else if (clickType == TWOCLICK) {

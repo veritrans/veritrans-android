@@ -39,7 +39,6 @@ public class AlfamartStatusActivity extends BasePaymentActivity {
     private SemiBoldTextView textTitle;
     private DefaultTextView textCode;
     private LinearLayout instructionLayout;
-    private ImageView barcodeContainer;
 
     private AppCompatButton buttonInstruction;
     private FancyButton buttonFinish;
@@ -92,9 +91,6 @@ public class AlfamartStatusActivity extends BasePaymentActivity {
                 textExpiry.setText(getString(R.string.text_format_valid_until, response.getAlfamartExpireTime()));
                 if (response.getPaymentCodeResponse() != null) {
                     String formattedCode = getGroupedPaymentCode();
-
-                    ((DefaultTextView) findViewById(R.id.payment_code)).setText(formattedCode);
-                    setBarcode(response.getPaymentCodeResponse());
                     textCode.setText(formattedCode);
                 }
             } else {
@@ -113,7 +109,6 @@ public class AlfamartStatusActivity extends BasePaymentActivity {
 
     @Override
     public void bindViews() {
-        barcodeContainer = findViewById(R.id.barcode_container);
         buttonCopyVa = findViewById(R.id.btn_copy_va);
         buttonFinish = findViewById(R.id.button_primary);
         buttonInstruction = findViewById(R.id.instruction_toggle);
@@ -121,23 +116,6 @@ public class AlfamartStatusActivity extends BasePaymentActivity {
         textExpiry = findViewById(R.id.text_validity);
         textTitle = findViewById(R.id.text_page_title);
         textCode = findViewById(R.id.text_payment_code);
-    }
-
-    private void setBarcode(String paymentCode) {
-        MultiFormatWriter formatWriter = new MultiFormatWriter();
-        try {
-            int width = getResources().getDimensionPixelSize(R.dimen.barcode_width);
-            int height = getResources().getDimensionPixelSize(R.dimen.barcode_height);
-            BitMatrix bitMatrix = formatWriter.encode(paymentCode, BarcodeFormat.CODE_39, width, height);
-            BarcodeEncoder encoder = new BarcodeEncoder();
-            Bitmap bitmap = encoder.createBitmap(bitMatrix);
-            if (barcodeContainer != null) {
-                barcodeContainer.setImageBitmap(bitmap);
-                barcodeContainer.setVisibility(View.VISIBLE);
-            }
-        } catch (Exception e) {
-            Logger.e(e.getMessage());
-        }
     }
 
     private void changeToggleInstructionVisibility() {
