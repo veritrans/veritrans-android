@@ -159,6 +159,10 @@ public class PaymentChargeTest {
     private CreditCardResponse responseCreditCard;
     @Mock
     private MidtransCallback<CreditCardResponse> callbackCreditCard;
+    @Mock
+    private AlfamartPaymentResponse alfamartPaymentResponse;
+    @Mock
+    private MidtransCallback<AlfamartPaymentResponse> callbackAlfamart;
 
     @Before
     public void setup() {
