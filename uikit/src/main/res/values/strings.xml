@@ -278,14 +278,12 @@
     <string name="indomaret_instruction_step6">Your transaction is successful! You should be receiving an email confirming your payment. Please keep your Indomaret payment receipt just in case you need help via support.</string>
 
     <!-- Alfamart Instruction-->
-    <string name="alfamart_instruction_step1">After confirming your payment, we will issue you a unique Payment Code number.</string>
-    <string name="alfamart_instruction_step2">Note down your Payment Code and total amount.
-        Don\'t worry, we will also mail you a copy of the payment instructions.</string>
-    <string name="alfamart_instruction_step3">Go to an Alfamart store near you and provide the cashier with the Payment Code number or barcode to be scanned.</string>
-    <string name="alfamart_instruction_step4">The cashier will then confirm the transaction by asking for the transaction amount and the merchant name.</string>
-    <string name="alfamart_instruction_step5">Confirm the payment with the cashier.</string>
-    <string name="alfamart_instruction_step6">Your transaction is successful! You should be receiving an email confirming your payment. Please keep your Alfamart payment receipt just in case you need help via support.</string>
-
+    <string name="alfamart_instruction_step1">After confirming your payment, we will issue you a unique <b>Payment Code</b> number.</string>
+    <string name="alfamart_instruction_step2">Remember the <b>Payment Code</b> and the <b>total amount</b> of your transaction. A copy of this instruction will also be sent via email.</string>
+    <string name="alfamart_instruction_step3">Go to an <b>Alfamart</b>, <b>Alfamidi</b>, or <b>Dan+Dan</b> store near you and provide the cashier with the Payment <b>Code number</b>.</string>
+    <string name="alfamart_instruction_step4">The cashier will then confirm the transaction by asking for the <b>transaction amount</b> and the <b>merchant name</b>.</string>
+    <string name="alfamart_instruction_step5">Confirm the payment with the cashier to proceed payment.</string>
+    <string name="alfamart_instruction_step6">Your transaction is successful! You should be receiving an email confirming your payment. Please keep your payment receipt just in case you need help via support.</string>
 
     <!-- Permata/Alto bank transfer Instruction-->
     <string name="permata_instruction_step1">On the main menu, Choose <b>Other Transaction</b>.</string>
@@ -295,7 +293,6 @@
     <string name="permata_instruction_step5">Enter <b>16 digits payment Account No.</b> and press <b>Correct</b>.</string>
     <string name="permata_instruction_step6">Amount to be paid, account number, and merchant name will appear on confirmation page. If the confirmation page is right, press <b>Correct</b>.</string>
     <string name="permata_instruction_step7">Choose your payment account and press <b>Correct</b>.</string>
-
 
     <!--credit card -->
     <string name="add_card_message">You can also pay with a new card from here</string>
@@ -856,5 +853,6 @@
     <string name="payment_method_description_alfamart">Pay from Alfamart</string>
     <string name="alfamart">Alfamart</string>
     <string name="complete_payment_alfamart">Complete payment via Alfamart</string>
+    <string name="alfamart_instruction_step0">Pay from any <b>Alfamart</b>, <b>Alfamidi</b>, or <b>Dan+Dan</b> outlet</string>
 
 </resources>

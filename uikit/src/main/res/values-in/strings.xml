@@ -212,14 +212,12 @@
     <string name="indomaret_instruction_step6">Transaksi Anda berhasil! Anda akan menerima email konfirmasi pembayaran. Harap simpan struk pembayaran Indomaret Anda, apabila Anda memerlukan bantuan via support.</string>
 
     <!-- Alfamart Instruction-->
-    <string name="alfamart_instruction_step1">Setelah melakukan <b>Konfirmasi Pembayaran</b>, Anda akan diberikan Kode Pembayaran yang unik.</string>
-    <string name="alfamart_instruction_step2">Salinlah Kode Pembayaran Anda dan jumlah pembayaran yang akan dibayarkan.
-       Jangan khawatir, Kami juga akan mengirimkan salinan kode pembayaran dan instruksi pembayaran melalui email.</string>
-    <string name="alfamart_instruction_step3">Kunjungi Alfamart terdekat dan berikan nomor Kode Pembayaran Anda ke kasir (atau dengan scan barcode oleh kasir).</string>
-    <string name="alfamart_instruction_step4">Kasir Alfamart akan mengkonfirmasi transaksi dengan menanyakan jumlah transaksi dan nama merchant.</string>
-    <string name="alfamart_instruction_step5">Konfirmasi Pembayaran Anda ke kasir.</string>
-    <string name="alfamart_instruction_step6">Transaksi Anda berhasil! Anda akan menerima email konfirmasi pembayaran. Harap simpan struk pembayaran Alfamart Anda, apabila Anda memerlukan bantuan via support.</string>
-
+    <string name="alfamart_instruction_step1">Setelah melakukan konfirmasi pembayaran, Anda akan diberikan <b>Kode Pembayaran</b> yang unik.</string>
+    <string name="alfamart_instruction_step2">Salinlah <b>Kode Pembayaran</b> Anda dan <b>jumlah pembayaran</b> yang akan dibayarkan. Jangan Khawatir, Kami juga akan mengirimkan salinan Kode Pembayaran dan Instruksi Pembayaran melalui email kepada Anda.</string>
+    <string name="alfamart_instruction_step3">Silakan pergi ke gerai <b>Alfamart</b>, <b>Alfamidi</b>, atau <b>Dan+Dan</b> terdekat dan berikanlah nomor <b>Kode Pembayaran</b> Anda ke kasir.</string>
+    <string name="alfamart_instruction_step4">Kasir akan mengkonfirmasi transaksi dengan menanyakan <b>jumlah transaksi</b> dan <b>nama merchant</b>.</string>
+    <string name="alfamart_instruction_step5">Konfirmasikan pembayaran Anda ke kasir.</string>
+    <string name="alfamart_instruction_step6">Transaksi Anda berhasil! Anda akan mendapatkan email konfirmasi pembayaran dan simpanlah struk transaksi Anda.</string>
 
     <!-- Permata/Alto bank transfer Instruction-->
     <string name="permata_instruction_step1">Pada menu utama, pilih <b>Transaksi Lainnya</b>.</string>
@@ -669,4 +667,5 @@
     <string name="payment_method_description_alfamart">Bayar dari Alfamart</string>
     <string name="alfamart">Alfamart</string>
     <string name="complete_payment_alfamart">Selesaikan pembayaran melalui Alfamart</string>
+    <string name="alfamart_instruction_step0">Bayar di gerai <b>Alfamart</b>, <b>Alfamidi</b>, atau <b>Dan+Dan</b>.</string>
 </resources>
