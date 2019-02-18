@@ -34,6 +34,7 @@ import com.midtrans.sdk.corekit.models.ExpiryModel;
 import com.midtrans.sdk.corekit.models.ItemDetails;
 import com.midtrans.sdk.corekit.models.UserAddress;
 import com.midtrans.sdk.corekit.models.UserDetail;
+import com.midtrans.sdk.corekit.models.snap.Authentication;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
 import com.midtrans.sdk.corekit.utilities.Utils;
@@ -234,9 +235,9 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         if (normal.isChecked()) {
             cardClickType = getString(R.string.card_click_type_none);
             if (secure.isChecked()) {
-                creditCard.setAuthentication(CreditCard.AUTHENTICATION_TYPE_3DS);
+                creditCard.setAuthentication(Authentication.AUTH_3DS);
             } else {
-                creditCard.setAuthentication(CreditCard.AUTHENTICATION_TYPE_NONE);
+                creditCard.setAuthentication(Authentication.AUTH_NONE);
             }
             transactionRequestNew.setCreditCard(creditCard);
         } else if (twoClick.isChecked()) {
@@ -246,7 +247,7 @@ public class MainActivity extends AppCompatActivity implements TransactionFinish
         } else {
             cardClickType = getString(R.string.card_click_type_one_click);
             creditCard.setSaveCard(true);
-            creditCard.setAuthentication(CreditCard.AUTHENTICATION_TYPE_3DS);
+            creditCard.setAuthentication(Authentication.AUTH_3DS);
             transactionRequestNew.setCreditCard(creditCard);
         }
 
