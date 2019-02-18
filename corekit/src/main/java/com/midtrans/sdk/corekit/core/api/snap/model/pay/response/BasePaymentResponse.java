@@ -164,6 +164,12 @@ public class BasePaymentResponse implements Serializable {
     protected String indomaretExpireTime;
 
     /**
+     * Alfamart
+     */
+    @SerializedName("alfamart_expire_time")
+    protected String alfamartExpireTime;
+
+    /**
      * Klik Bca
      */
     @SerializedName("bca_klikbca_expire_time")
