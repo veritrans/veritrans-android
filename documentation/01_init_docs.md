@@ -292,8 +292,8 @@ MidtransSdk.getInstance().getPaymentInfo(TOKEN,
 To making payment, you need a token from `checkoutWithTransaction()` to identify which transaction will be paid, payment parameters, and available payment method for making payment. Midtrans SDK provide method for each payment, but if method not available and you still use that it never been pay. For example we use GO-PAY for making payment.
 
 ```Java
-EWalletCharge().paymentUsingGopay(TOKEN,
-                GOPAY_ACCOUNT_NUMBER,
+EWalletCharge().paymentUsingGopay(
+                TOKEN,
                 new MidtransCallback<EwalletGopayPaymentResponse>() {
                     @Override
                     public void onSuccess(BasePaymentResponse data) {
@@ -309,7 +309,6 @@ EWalletCharge().paymentUsingGopay(TOKEN,
 
 ```Kotlin
 EWalletCharge.paymentUsingGopay(TOKEN,
-                GOPAY_ACCOUNT_NUMBER,
                 new MidtransCallback<EwalletGopayPaymentResponse>() {
                     @Override
                     public void onSuccess(EwalletGopayPaymentResponse data) {
@@ -877,22 +876,13 @@ MidtransSdk.getInstance().checkoutWithTransaction(checkoutTransaction,
 #### Payment Using GO-PAY
 - **Request Object**
 
-	For starting payment using GO-PAY with Midtrans, you'll need to put GO-PAY account number to payment method that Midtrans provide.
-   	
-    ```Java
-        String gopayAccountNumber = "08123456789";
-    ```
-    
-    ```Kotlin
-        val gopayAccountNumber = "08123456789"
-    ```
-       
+	For starting payment using GO-PAY with Midtrans, not need any specific parameter, just put the token.
+
 - **The Method**
 
   ```Java
     EWalletCharge.paymentUsingGopay(
                  TOKEN,
-                 gopayAccountNumber,
                  new MidtransCallback<EwalletGopayPaymentResponse>() {
                      @Override
                      public void onSuccess(EwalletGopayPaymentResponse data) {
@@ -910,7 +900,6 @@ MidtransSdk.getInstance().checkoutWithTransaction(checkoutTransaction,
   ```Kotlin
     EWalletCharge.paymentUsingGopay(
                  TOKEN,
-                 customerDetailPayReq,
                  object : MidtransCallback<EwalletGopayPaymentResponse> {
 	                 override fun onSuccess(data: EwalletGopayPaymentResponse?) {
 	                    
