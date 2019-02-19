@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context=".view.KitLandingActivity">
+    tools:context=".view.PaymentListActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/main_appbar"
@@ -32,7 +32,7 @@
                 android:orientation="horizontal">
 
                 <com.midtrans.sdk.uikit.widget.DefaultTextView
-                    android:id="@+id/merchant_name"
+                    android:id="@+id/text_view_merchant_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
@@ -44,7 +44,7 @@
                     tools:visibility="visible" />
 
                 <ImageView
-                    android:id="@+id/merchant_logo"
+                    android:id="@+id/image_view_merchant_logo"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/main_logo_height"
                     android:layout_centerInParent="true"
@@ -60,22 +60,22 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_item_list"
+            android:id="@+id/recycler_view_item_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/gray.primary"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_payment_methods"
+            android:id="@+id/recycler_view_payment_methods"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@id/secure_badge"
-            android:layout_below="@+id/rv_item_list"
+            android:layout_above="@id/image_view_secure_badge"
+            android:layout_below="@+id/recycler_view_item_list"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         <ImageView
-            android:id="@+id/secure_badge"
+            android:id="@+id/image_view_secure_badge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

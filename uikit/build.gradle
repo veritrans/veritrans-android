@@ -13,7 +13,7 @@ android {
         abortOnError false
     }
     defaultConfig {
-        minSdkVersion rootProject.minCoreSdkVersion
+        minSdkVersion rootProject.minUiSdkVersion
         targetSdkVersion rootProject.sdkVersion
         versionCode 3
         versionName version
@@ -49,6 +49,7 @@ dependencies {
 
     implementation androidxLibraries.appCompat
     implementation androidxLibraries.design
+    implementation networkLibraries.retrofit
     implementation libraries.swipeLayout
     implementation libraries.betterLinkMovement
     implementation libraries.smsVerifyCatcher
@@ -57,5 +58,6 @@ dependencies {
 
     api (project(':corekit')) {
         exclude module: 'appcompat'
+        exclude module: 'retrofit'
     }
 }

@@ -14,7 +14,7 @@
         tools:replace="android:allowBackup">
 
         <activity
-            android:name=".view.KitLandingActivity"
+            android:name=".view.PaymentListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan"
             android:theme="@style/VeritransAppTheme"/>

@@ -18,10 +18,9 @@ import com.midtrans.sdk.corekit.core.payment.CreditCardCharge
 import com.midtrans.sdk.corekit.utilities.InstallationHelper
 import com.midtrans.sdk.corekit.utilities.Logger
 import com.midtrans.sdk.uikit.MidtransKit
-import com.midtrans.sdk.uikit.MidtransKitConfig
 import com.midtrans.sdk.uikit.base.callback.PaymentResult
 import com.midtrans.sdk.uikit.base.callback.Result
-import com.midtrans.sdk.uikit.base.theme.CustomColorTheme
+import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -30,101 +29,78 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        MidtransKit
-            .builder(
-                this,
-                BuildConfig.CLIENT_KEY,
-                BuildConfig.BASE_URL
-            )
-            .setEnvironment(Environment.SANDBOX)
-            .setApiRequestTimeOut(60)
-            .setLogEnabled(true)
-            .setBuiltinStorageEnabled(false)
-            .setMidtransKitConfig(
-                MidtransKitConfig
-                    .builder()
-                    .setDefaultText("")
-                    .setBoldText("")
-                    .setSemiBoldText("")
-                    .setEnableAutoReadSms(false)
-                    .setShowPaymentStatus(false)
-                    .setShowEmailInCcForm(false)
-                    .setEnabledAnimation(true)
-                    .setColorTheme(CustomColorTheme("#0e4e95", "#0b3b70", "#3e71aa"))
-                    .build()
-            )
-            .build()
+        text_view_test.setOnClickListener {
+            val checkoutTransaction = CheckoutTransaction
+                .builder(
+                    InstallationHelper.generatedRandomID(this),
+                    20000.0
+                )
+                .setCurrency(Currency.IDR)
+                .setGopayCallbackDeepLink("demo://midtrans")
+                .setCreditCard(
+                    CreditCard
+                        .builder()
+                        .setSaveCard(true)
+                        .setType(CreditCardTransactionType.AUTHORIZE_CAPTURE)
+                        .setAcquiringBank(AcquiringBankType.BCA)
+                        .setAcquiringChannel(AcquiringChannel.MIGS)
+                        .setInstallment(false, HashMap<String, MutableList<Int>>())
+                        .setBlackListBins(mutableListOf())
+                        .setWhiteListBins(mutableListOf())
+                        .setSavedTokens(mutableListOf())
+                        .setAuthentication(Authentication.AUTH_3DS)
+                        .build())
+                .setCustomerDetails(
+                    CustomerDetails
+                        .builder()
+                        .setFirstName("FirstName")
+                        .setLastName("LastName")
+                        .setEmail("mail@mailbox.com")
+                        .setPhone("08123456789")
+                        .setBillingAddress(
+                            Address
+                                .builder()
+                                .setFirstName("FirstName")
+                                .setLastName("LastName")
+                                .setAddress("address")
+                                .setCity("City")
+                                .setPostalCode("12345")
+                                .setPhone("08123456789")
+                                .setCountryCode("IDR")
+                                .build()
+                        )
+                        .setShippingAddress(
+                            Address
+                                .builder()
+                                .setFirstName("FirstName")
+                                .setLastName("LastName")
+                                .setAddress("address")
+                                .setCity("City")
+                                .setPostalCode("12345")
+                                .setPhone("08123456789")
+                                .setCountryCode("IDR")
+                                .build()
+                        )
+                        .build()
+                )
+                .build()
 
-        val checkoutTransaction = CheckoutTransaction
-            .builder(
-                InstallationHelper.generatedRandomID(this),
-                20000.0
-            )
-            .setCurrency(Currency.IDR)
-            .setGopayCallbackDeepLink("demo://midtrans")
-            .setCreditCard(
-                CreditCard
-                    .builder()
-                    .setSaveCard(true)
-                    .setType(CreditCardTransactionType.AUTHORIZE_CAPTURE)
-                    .setAcquiringBank(AcquiringBankType.BCA)
-                    .setAcquiringChannel(AcquiringChannel.MIGS)
-                    .setInstallment(false, HashMap<String, MutableList<Int>>())
-                    .setBlackListBins(mutableListOf())
-                    .setWhiteListBins(mutableListOf())
-                    .setSavedTokens(mutableListOf())
-                    .setAuthentication(Authentication.AUTH_3DS)
-                    .build())
-            .setCustomerDetails(
-                CustomerDetails
-                    .builder()
-                    .setFirstName("FirstName")
-                    .setLastName("LastName")
-                    .setEmail("mail@mailbox.com")
-                    .setPhone("08123456789")
-                    .setBillingAddress(
-                        Address
-                            .builder()
-                            .setFirstName("FirstName")
-                            .setLastName("LastName")
-                            .setAddress("address")
-                            .setCity("City")
-                            .setPostalCode("12345")
-                            .setPhone("08123456789")
-                            .setCountryCode("IDR")
-                            .build()
-                    )
-                    .setShippingAddress(
-                        Address
-                            .builder()
-                            .setFirstName("FirstName")
-                            .setLastName("LastName")
-                            .setAddress("address")
-                            .setCity("City")
-                            .setPostalCode("12345")
-                            .setPhone("08123456789")
-                            .setCountryCode("IDR")
-                            .build()
-                    )
-                    .build()
-            )
-            .build()
+            MidtransKit
+                .getInstance()
+                .startPaymentUiWithTransaction(
+                    this,
+                    checkoutTransaction,
+                    object : PaymentResult<PaymentResponse> {
+                        override fun onPaymentFinished(result: Result?, response: PaymentResponse?) {
+                            Logger.debug("RESULT IS >>> ${result?.paymentMessage}")
+                        }
 
-        MidtransKit
-            .getInstance()
-            .startPaymentUiWithToken(
-                this,
-                "37ea1a6b-aa51-4a41-8126-00b3ea6ff6fb",
-                object : PaymentResult<PaymentResponse> {
-                    override fun onPaymentFinished(result: Result?, response: PaymentResponse?) {
-                        Logger.debug("RESULT IS >>> ${result?.paymentMessage}")
+                        override fun onFailed(throwable: Throwable?) {
+                            Logger.debug("ERROR IS >>> ${throwable?.message}")
+                        }
                     }
-
-                    override fun onFailed(throwable: Throwable?) {
-                        Logger.debug("ERROR IS >>> ${throwable?.message}")
-                    }
-                }
-            )
+                )
+        }
     }
 
     private fun checkout(checkoutTransaction: CheckoutTransaction) {
