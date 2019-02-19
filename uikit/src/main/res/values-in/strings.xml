@@ -219,6 +219,11 @@
     <string name="alfamart_instruction_step5">Konfirmasikan pembayaran Anda ke kasir.</string>
     <string name="alfamart_instruction_step6">Transaksi Anda berhasil! Anda akan mendapatkan email konfirmasi pembayaran dan simpanlah struk transaksi Anda.</string>
 
+    <string name="alfamart_instruction_done_step1">Silakan pergi ke gerai <b>Alfamart</b>, <b>Alfamidi</b>, atau <b>Dan+Dan</b> terdekat dan berikanlah nomor <b>Kode Pembayaran</b> Anda ke kasir.</string>
+    <string name="alfamart_instruction_done_step2">Kasir akan mengkonfirmasi transaksi dengan menanyakan <b>jumlah transaksi</b> dan <b>nama merchant</b>.</string>
+    <string name="alfamart_instruction_done_step3">Konfirmasikan pembayaran Anda ke kasir.</string>
+    <string name="alfamart_instruction_done_step4">Transaksi Anda berhasil! Anda akan mendapatkan email konfirmasi pembayaran dan simpanlah struk transaksi Anda.</string>
+
     <!-- Permata/Alto bank transfer Instruction-->
     <string name="permata_instruction_step1">Pada menu utama, pilih <b>Transaksi Lainnya</b>.</string>
     <string name="permata_instruction_step2">Pilih <b>Pembayaran</b>.</string>
@@ -664,7 +669,7 @@
 
     <string name="payment_method_alfamart">Alfamart</string>
     <string name="payment_alfamart">alfamart</string>
-    <string name="payment_method_description_alfamart">Bayar dari Alfamart</string>
+    <string name="payment_method_description_alfamart">Bayar dari gerai Alfamart, Alfamidi, atau Dan+Dan.</string>
     <string name="alfamart">Alfamart</string>
     <string name="complete_payment_alfamart">Selesaikan pembayaran melalui Alfamart</string>
     <string name="alfamart_instruction_step0">Bayar di gerai <b>Alfamart</b>, <b>Alfamidi</b>, atau <b>Dan+Dan</b>.</string>
