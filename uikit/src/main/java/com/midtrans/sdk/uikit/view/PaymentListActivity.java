@@ -174,29 +174,49 @@ public class PaymentListActivity extends BaseActivity {
                 .checkoutWithTransaction(checkoutTransaction, new MidtransCallback<CheckoutWithTransactionResponse>() {
                     @Override
                     public void onSuccess(CheckoutWithTransactionResponse data) {
-                        if (data != null) {
-                            if (data.getToken() != null) {
-                                startGettingPaymentInfoWithMidtransSdk(data.getToken());
-                            } else {
-                                if (data.getErrorMessages().get(0) != null) {
-                                    String errorMessage = MessageHelper.createMessageWhenCheckoutFailed(PaymentListActivity.this, data.getErrorMessages());
-                                    showErrorMessage(errorMessage, true);
-                                } else {
-                                    showErrorMessage(Constants.MESSAGE_ERROR_FAILURE_RESPONSE, true);
-                                }
-                            }
-                        } else {
-                            showErrorMessage(Constants.MESSAGE_ERROR_FAILURE_RESPONSE, true);
-                        }
+                        doOnCheckoutWithMidtransSdkSucceeded(data);
                     }
 
                     @Override
                     public void onFailed(Throwable throwable) {
-                        showFallbackErrorPage(throwable, true);
+                        doOnCheckoutWithMidtransSdkFailed(throwable);
                     }
                 });
     }
 
+    /**
+     * This method will handle startCheckoutWithMidtransSdk() if success making network call
+     * @param response
+     */
+    private void doOnCheckoutWithMidtransSdkSucceeded(CheckoutWithTransactionResponse response) {
+        if (response != null) {
+            if (response.getToken() != null) {
+                startGettingPaymentInfoWithMidtransSdk(response.getToken());
+            } else {
+                if (response.getErrorMessages().get(0) != null) {
+                    String errorMessage = MessageHelper.createMessageWhenCheckoutFailed(PaymentListActivity.this, response.getErrorMessages());
+                    showErrorMessage(errorMessage, true);
+                } else {
+                    showErrorMessage(Constants.MESSAGE_ERROR_FAILURE_RESPONSE, true);
+                }
+            }
+        } else {
+            showErrorMessage(Constants.MESSAGE_ERROR_FAILURE_RESPONSE, true);
+        }
+    }
+
+    /**
+     * This method will handle startCheckoutWithMidtransSdk() if failed when making network call
+     * @param throwable
+     */
+    private void doOnCheckoutWithMidtransSdkFailed(Throwable throwable) {
+        showFallbackErrorPage(throwable, true);
+    }
+
+    /**
+     * This method use token for getting payment info
+     * @param token
+     */
     private void startGettingPaymentInfoWithMidtransSdk(String token) {
         this.token = token;
         progressMessage.setText(getString(R.string.txt_loading_payment));
@@ -205,22 +225,76 @@ public class PaymentListActivity extends BaseActivity {
                 .getPaymentInfo(this.token, new MidtransCallback<PaymentInfoResponse>() {
                     @Override
                     public void onSuccess(PaymentInfoResponse data) {
-                        if (data != null) {
-                            hideProgress();
-                            setCheckoutDataToView(data);
-                        } else {
-                            showErrorMessage(null, false);
-                        }
+                        doOnGettingPaymentInfoWithMidtransSdkSucceeded(data);
                     }
 
                     @Override
                     public void onFailed(Throwable throwable) {
-                        showFallbackErrorPage(throwable, false);
+                        doOnGettingPaymentInfoWithMidtransSdkFailed(throwable);
                     }
                 });
     }
 
-    private void setCheckoutDataToView(PaymentInfoResponse response) {
+    /**
+     * This method will handle startGettingPaymentInfoWithMidtransSdk() if success making network call
+     * @param data
+     */
+    private void doOnGettingPaymentInfoWithMidtransSdkSucceeded(PaymentInfoResponse data) {
+        if (data != null) {
+            initItemDetailsList(data);
+            initPaymentMethodList(data);
+            initMerchantPreferences(data);
+            hideProgress();
+        } else {
+            showErrorMessage(null, false);
+        }
+    }
+
+    /**
+     * This method will handle startGettingPaymentInfoWithMidtransSdk() if failed when making network call
+     * @param throwable
+     */
+    private void doOnGettingPaymentInfoWithMidtransSdkFailed(Throwable throwable) {
+        showFallbackErrorPage(throwable, false);
+    }
+
+    /**
+     * This method use for setup view stuff based on response and merchant preferences
+     * @param response
+     */
+    private void initMerchantPreferences(PaymentInfoResponse response) {
+        MerchantPreferences preferences = response.getMerchantData().getPreference();
+        if (!TextUtils.isEmpty(preferences.getDisplayName())) {
+            merchantNameInToolbar.setText(preferences.getDisplayName());
+            merchantNameInToolbar.setVisibility(View.VISIBLE);
+        }
+        if (!TextUtils.isEmpty(preferences.getLogoUrl())) {
+            Ion.with(merchantLogoInToolbar)
+                    .load(preferences.getLogoUrl());
+            merchantLogoInToolbar.setVisibility(View.VISIBLE);
+        }
+        containerItemDetails.setBackgroundColor(MidtransKit.getInstance().getMidtransKitConfig().getColorTheme().getPrimaryColor());
+        int secureBadgeType = PaymentListHelper.getCreditCardIconType(response);
+        switch (secureBadgeType) {
+            case 1:
+                secureBadge.setImageResource(R.drawable.badge_full);
+                break;
+            case 3:
+                secureBadge.setImageResource(R.drawable.badge_jcb);
+                break;
+            case 4:
+                secureBadge.setImageResource(R.drawable.badge_amex);
+                break;
+            default:
+                secureBadge.setImageResource(R.drawable.badge_default);
+        }
+    }
+
+    /**
+     * This method used for making list of itemlist
+     * @param response
+     */
+    private void initItemDetailsList(PaymentInfoResponse response) {
         if (response != null) {
             List<ItemViewDetails> itemViewDetails = new ArrayList<>();
             int itemDetailsSize = response.getItemDetails() != null ? response.getItemDetails().size() : 0;
@@ -236,8 +310,8 @@ public class PaymentListActivity extends BaseActivity {
                     formattedAmount,
                     ItemViewDetails.TYPE_ITEM_HEADER,
                     itemDetailsSize > 0));
-            itemViewDetails.addAll(ModelHelper.mappingItemDetails(this, response));
-            ItemDetailsAdapter adapter = new ItemDetailsAdapter(
+            itemViewDetails.addAll(PaymentListHelper.mappingItemDetails(this, response));
+            ItemDetailsAdapter itemDetailsAdapter = new ItemDetailsAdapter(
                     itemViewDetails,
                     response.getTransactionDetails().getOrderId(),
                     () -> {
@@ -245,9 +319,24 @@ public class PaymentListActivity extends BaseActivity {
                     });
 
             containerItemDetails.setLayoutManager(new LinearLayoutManager(this));
-            containerItemDetails.setAdapter(adapter);
-            adapter.notifyDataSetChanged();
+            containerItemDetails.setAdapter(itemDetailsAdapter);
         }
+    }
+
+    /**
+     * This method used for making list of Payment Method
+     * @param response
+     */
+    private void initPaymentMethodList(PaymentInfoResponse response) {
+        PaymentMethodsAdapter paymentMethodsAdapter = new PaymentMethodsAdapter(position -> {
+
+        });
+
+        containerPaymentMethod.setLayoutManager(new LinearLayoutManager(this));
+        containerPaymentMethod.setAdapter(paymentMethodsAdapter);
+
+        List<PaymentMethodsModel> data = mappingEnabledPayment(this, response);
+        paymentMethodsAdapter.setData(data);
     }
 
     private void showErrorMessage(String message, boolean isCheckout) {
@@ -256,7 +345,6 @@ public class PaymentListActivity extends BaseActivity {
                 message = getString(R.string.error_snap_transaction_details);
             }
             String finalMessage = message;
-            Logger.debug("RESULT MESSAGE", finalMessage);
             alertDialog = new AlertDialog
                     .Builder(this)
                     .setMessage(finalMessage)
