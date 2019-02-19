@@ -32,7 +32,6 @@ public class PaymentMethodsAdapter extends BaseAdapter<PaymentMethodsModel> {
     public PaymentMethodsAdapter(PaymentMethodListener listener) {
         this.paymentMethodListener = listener;
         this.paymentMethods = new ArrayList<>();
-        setHasStableIds(true);
     }
 
     @Override
@@ -128,12 +127,9 @@ public class PaymentMethodsAdapter extends BaseAdapter<PaymentMethodsModel> {
             layoutPaymentUnavailable = itemView.findViewById(R.id.layout_payment_unavailable);
             badgePromo = itemView.findViewById(R.id.badge_promo);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (listener != null) {
-                        listener.onItemClick(getAdapterPosition());
-                    }
+            itemView.setOnClickListener(view -> {
+                if (listener != null) {
+                    listener.onItemClick(getAdapterPosition());
                 }
             });
         }

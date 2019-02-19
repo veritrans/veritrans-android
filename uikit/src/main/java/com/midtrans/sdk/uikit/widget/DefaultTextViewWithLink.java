@@ -40,17 +40,13 @@ public class DefaultTextViewWithLink extends DefaultTextView {
     }
 
     private void setLinkMode() {
-        BetterLinkMovementMethod.linkify(Linkify.WEB_URLS, this).setOnLinkClickListener(new BetterLinkMovementMethod.OnLinkClickListener() {
-            @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-            @Override
-            public boolean onClick(TextView textView, String url) {
-                ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText(LABEL_URL, url);
-                clipboard.setPrimaryClip(clip);
-                // Show toast
-                Toast.makeText(getContext(), R.string.copied_to_clipboard, Toast.LENGTH_SHORT).show();
-                return true;
-            }
+        BetterLinkMovementMethod.linkify(Linkify.WEB_URLS, this).setOnLinkClickListener((textView, url) -> {
+            ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clip = ClipData.newPlainText(LABEL_URL, url);
+            clipboard.setPrimaryClip(clip);
+            // Show toast
+            Toast.makeText(getContext(), R.string.copied_to_clipboard, Toast.LENGTH_SHORT).show();
+            return true;
         });
     }
 
