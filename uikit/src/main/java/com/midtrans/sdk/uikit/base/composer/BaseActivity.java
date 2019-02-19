@@ -1,16 +1,15 @@
 package com.midtrans.sdk.uikit.base.composer;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.midtrans.sdk.corekit.base.enums.Environment;
+import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.uikit.MidtransKit;
 import com.midtrans.sdk.uikit.MidtransKitConfig;
 import com.midtrans.sdk.uikit.R;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class BaseActivity extends AppCompatActivity {
@@ -25,7 +24,21 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     private void updateColorTheme(MidtransKit midtransKit) {
-
+        try {
+            MidtransKitConfig midtransKitConfig = midtransKit.getInstance().getMidtransKitConfig();
+            if (midtransKitConfig.getColorTheme() != null) {
+                int primaryColor = midtransKitConfig.getColorTheme().getPrimaryColor();
+                int primaryDarkColor = midtransKitConfig.getColorTheme().getPrimaryDarkColor();
+                if (primaryColor != 0) {
+                    // Set primary button color
+                }
+                if (primaryDarkColor != 0) {
+                    // Set amount text color
+                }
+            }
+        } catch (Exception e) {
+            Logger.error("themes", "init:" + e.getMessage());
+        }
     }
 
     private void initBadgeTestView() {
