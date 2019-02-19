@@ -36,6 +36,7 @@ public class MidtransKitConfig {
         this.enableAutoReadSms = enableAutoReadSms;
         this.skipCustomerDetailsPages = skipCustomerDetailsPages;
         this.showEmailInCcForm = showEmailInCcForm;
+        this.baseColorTheme = baseColorTheme;
     }
 
     public String getDefaultText() {
