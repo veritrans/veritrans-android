@@ -3,6 +3,7 @@ package com.midtrans.sdk.uikit.view;
 import com.google.android.material.appbar.AppBarLayout;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -16,8 +17,9 @@ import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.Checkou
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.response.CheckoutWithTransactionResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.PaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.merchantdata.MerchantPreferences;
 import com.midtrans.sdk.corekit.utilities.Constants;
-import com.midtrans.sdk.corekit.utilities.Logger;
+import com.midtrans.sdk.uikit.MidtransKit;
 import com.midtrans.sdk.uikit.MidtransKitFlow;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.base.callback.PaymentResult;
@@ -26,9 +28,11 @@ import com.midtrans.sdk.uikit.base.model.MessageInfo;
 import com.midtrans.sdk.uikit.utilities.ActivityHelper;
 import com.midtrans.sdk.uikit.utilities.CurrencyHelper;
 import com.midtrans.sdk.uikit.utilities.MessageHelper;
-import com.midtrans.sdk.uikit.utilities.ModelHelper;
+import com.midtrans.sdk.uikit.utilities.PaymentListHelper;
 import com.midtrans.sdk.uikit.view.adapter.ItemDetailsAdapter;
+import com.midtrans.sdk.uikit.view.adapter.PaymentMethodsAdapter;
 import com.midtrans.sdk.uikit.view.model.ItemViewDetails;
+import com.midtrans.sdk.uikit.view.model.PaymentMethodsModel;
 import com.midtrans.sdk.uikit.widget.BoldTextView;
 import com.midtrans.sdk.uikit.widget.DefaultTextView;
 import com.midtrans.sdk.uikit.widget.FancyButton;
@@ -42,8 +46,13 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import static com.midtrans.sdk.uikit.utilities.PaymentListHelper.mappingEnabledPayment;
+
 public class PaymentListActivity extends BaseActivity {
 
+    /**
+     * This property used for direct payment
+     */
     private boolean isCreditCardOnly = false;
     private boolean isBankTransferOnly = false;
     private boolean isBCAKlikpay = false;
@@ -63,15 +72,27 @@ public class PaymentListActivity extends BaseActivity {
     private boolean isPermataVa = false;
     private boolean isOtherVa = false;
     private boolean isMandiriBill = false;
+
+    /**
+     * This property used for token, transaction object, and payment callback
+     * Later, this used for deciding process inside payment method
+     */
     private String token = null;
     private CheckoutTransaction checkoutTransaction = null;
     private PaymentResult<PaymentResponse> callback = null;
 
-    @PaymentType
-    private String paymentType;
+    /**
+     * This property used for layout related stuff
+     */
     private Toolbar toolbar;
     private AppBarLayout appbar;
+    private TextView merchantNameInToolbar;
+    private ImageView merchantLogoInToolbar;
+    private ImageView secureBadge;
 
+    /**
+     * This property used for making list payment and list item
+     */
     private RecyclerView containerPaymentMethod = null;
     private RecyclerView containerItemDetails = null;
 
@@ -90,6 +111,7 @@ public class PaymentListActivity extends BaseActivity {
     private BoldTextView maintenanceTitle;
     private DefaultTextView maintenanceMessage;
     private FancyButton maintenanceButton;
+
     /**
      * This property used for set onFailed callback to host-app
      * This happen when getting exception in network request or user press back when performing network request
@@ -108,6 +130,9 @@ public class PaymentListActivity extends BaseActivity {
         checkDataBeforeStartMidtransSdk();
     }
 
+    /**
+     * This method used for binding view and setup other view stuff like toolbar and progress image
+     */
     private void initToolbarAndView() {
         toolbar = findViewById(R.id.toolbar);
         appbar = findViewById(R.id.main_appbar);
@@ -118,7 +143,11 @@ public class PaymentListActivity extends BaseActivity {
         maintenanceTitle = findViewById(R.id.text_maintenance_title);
         maintenanceMessage = findViewById(R.id.text_maintenance_message);
         maintenanceButton = findViewById(R.id.button_maintenance_retry);
-        containerItemDetails = findViewById(R.id.recycler_item_list);
+        containerItemDetails = findViewById(R.id.recycler_view_item_list);
+        containerPaymentMethod = findViewById(R.id.recycler_view_payment_methods);
+        merchantLogoInToolbar = findViewById(R.id.image_view_merchant_logo);
+        merchantNameInToolbar = findViewById(R.id.text_view_merchant_name);
+        secureBadge = findViewById(R.id.image_view_secure_badge);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -129,11 +158,14 @@ public class PaymentListActivity extends BaseActivity {
                 .load(ActivityHelper.getImagePath(this) + R.drawable.midtrans_loader);
     }
 
+    /**
+     * This method used for getting intent extra from MidtransKitFlow
+     * later it can be used for making direct payment, callback, and deciding sdk process
+     */
     @SuppressWarnings("unchecked")
     private void getIntentDataFromMidtransKitFlow() {
         callback = (PaymentResult<PaymentResponse>) getIntent().getSerializableExtra(MidtransKitFlow.INTENT_EXTRA_CALLBACK);
         checkoutTransaction = (CheckoutTransaction) getIntent().getSerializableExtra(MidtransKitFlow.INTENT_EXTRA_TRANSACTION);
-        paymentType = getIntent().getStringExtra(MidtransKitFlow.INTENT_EXTRA_DIRECT);
         token = getIntent().getStringExtra(MidtransKitFlow.INTENT_EXTRA_TOKEN);
 
         isCreditCardOnly = getIntent().getBooleanExtra(MidtransKitFlow.INTENT_EXTRA_CREDIT_CARD_ONLY, false);
@@ -154,8 +186,14 @@ public class PaymentListActivity extends BaseActivity {
         isBniVa = getIntent().getBooleanExtra(MidtransKitFlow.INTENT_EXTRA_BANK_TRANSFER_BNI, false);
         isPermataVa = getIntent().getBooleanExtra(MidtransKitFlow.INTENT_EXTRA_BANK_TRANSFER_PERMATA, false);
         isOtherVa = getIntent().getBooleanExtra(MidtransKitFlow.INTENT_EXTRA_BANK_TRANSFER_OTHER, false);
+        isMandiriBill = getIntent().getBooleanExtra(MidtransKitFlow.INTENT_EXTRA_BANK_TRANSFER_MANDIRI, false);
     }
 
+    /**
+     * This method is checker for checking the data before starting sdk flow
+     * If host-app not have token, start checkout with object
+     * If host-app have token, start getting payment info with token
+     */
     private void checkDataBeforeStartMidtransSdk() {
         showProgress();
         if (checkoutTransaction == null && token != null) {
@@ -167,6 +205,10 @@ public class PaymentListActivity extends BaseActivity {
         }
     }
 
+    /**
+     * This method use CheckoutTransaction object as parameter and used for creating token
+     * @param checkoutTransaction
+     */
     private void startCheckoutWithMidtransSdk(CheckoutTransaction checkoutTransaction) {
         progressMessage.setText(R.string.txt_checkout);
         MidtransSdk
