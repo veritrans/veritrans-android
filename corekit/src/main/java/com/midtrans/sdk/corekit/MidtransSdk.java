@@ -77,7 +77,7 @@ public class MidtransSdk {
         this.midtransEnvironment = environment;
         this.apiRequestTimeOut = apiRequestTimeOut;
         this.isBuiltinStorageEnabled = isBuiltinStorageEnabled;
-        if (environment == Environment.SANDBOX) {
+        if (this.midtransEnvironment == Environment.SANDBOX) {
             snapBaseUrl = SNAP_BASE_URL_SANDBOX;
             midtransBaseUrl = BASE_URL_SANDBOX;
         } else {
