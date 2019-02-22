@@ -1,0 +1,62 @@
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:fitsSystemWindows="true">
+
+    <include layout="@layout/layout_appbar_payment" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_View_bank_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/container_item_details"
+            android:layout_alignParentTop="true"
+            android:layout_below="@id/container_item_details" />
+
+        <View
+            android:id="@+id/background_dim"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/container_item_details"
+            android:background="@color/dim_background"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/container_item_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_transaction_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/very_tiny_margin"
+                android:background="@color/light_gray" />
+
+            <include layout="@layout/layout_total_amount" />
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <include
+        layout="@layout/layout_midtrans_sandbox_badge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

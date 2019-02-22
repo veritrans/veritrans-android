@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/instruction_toggle"
+            style="@style/ButtonSecondaryExpandable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/sixteen_dp"
+            android:layout_marginRight="@dimen/sixteen_dp"
+            android:layout_marginTop="@dimen/sixteen_dp"
+            android:gravity="center_vertical"
+            android:text="@string/show_instruction" />
+
+        <LinearLayout
+            android:id="@+id/instruction_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/light_gray"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/eight_dp"
+                android:paddingTop="@dimen/eight_dp">
+
+                <com.midtrans.sdk.uikit.widget.DefaultTextView
+                    style="@style/BankTransferInstruction.Number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/instruction_1"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/instruction_atm_bersama_1" />
+
+                <com.midtrans.sdk.uikit.widget.DefaultTextView
+                    style="@style/BankTransferInstruction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/instruction_atm_bersama1"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/eight_dp"
+                android:paddingTop="@dimen/eight_dp">
+
+                <com.midtrans.sdk.uikit.widget.DefaultTextView
+                    style="@style/BankTransferInstruction.Number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/instruction_2"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/instruction_atm_bersama_2" />
+
+                <com.midtrans.sdk.uikit.widget.DefaultTextView
+                    style="@style/BankTransferInstruction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/instruction_atm_bersama2"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/light_gray"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/eight_dp"
+                android:paddingTop="@dimen/eight_dp">
+
+                <com.midtrans.sdk.uikit.widget.DefaultTextView
+                    style="@style/BankTransferInstruction.Number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/instruction_3"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/instruction_atm_bersama_3" />
+
+                <com.midtrans.sdk.uikit.widget.DefaultTextView
+                    style="@style/BankTransferInstruction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/instruction_atm_bersama3"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/eight_dp"
+                android:paddingTop="@dimen/eight_dp">
+
+                <com.midtrans.sdk.uikit.widget.DefaultTextView
+                    style="@style/BankTransferInstruction.Number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/instruction_4"/>
+
+                <ImageView
+                    android:id="@+id/instruction_bank_code_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/instruction_atm_bersama_4_permata" />
+
+                <com.midtrans.sdk.uikit.widget.DefaultTextView
+                    android:id="@+id/instruction_bank_code_text"
+                    style="@style/BankTransferInstruction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/instruction_atm_bersama4_permata"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/light_gray"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/eight_dp"
+                android:paddingTop="@dimen/eight_dp">
+
+                <com.midtrans.sdk.uikit.widget.DefaultTextView
+                    style="@style/BankTransferInstruction.Number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/instruction_5"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/instruction_atm_bersama_5" />
+
+                <com.midtrans.sdk.uikit.widget.DefaultTextView
+                    style="@style/BankTransferInstruction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/instruction_atm_bersama5"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/eight_dp"
+                android:paddingTop="@dimen/eight_dp">
+
+                <com.midtrans.sdk.uikit.widget.DefaultTextView
+                    style="@style/BankTransferInstruction.Number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/instruction_6"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/instruction_atm_bersama_6" />
+
+                <com.midtrans.sdk.uikit.widget.DefaultTextView
+                    style="@style/BankTransferInstruction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/instruction_atm_bersama6"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/light_gray"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/eight_dp"
+                android:paddingTop="@dimen/eight_dp">
+
+                <com.midtrans.sdk.uikit.widget.DefaultTextView
+                    style="@style/BankTransferInstruction.Number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/instruction_7"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/instruction_atm_bersama_7" />
+
+                <com.midtrans.sdk.uikit.widget.DefaultTextView
+                    style="@style/BankTransferInstruction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/instruction_atm_bersama7"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
