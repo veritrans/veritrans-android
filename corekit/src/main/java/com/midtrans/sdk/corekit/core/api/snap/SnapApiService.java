@@ -23,6 +23,7 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriClickpay
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriEcashResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.PermataBankTransferResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.TelkomselCashResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.payment.PaymentStatusResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.point.PointResponse;
 
@@ -252,5 +253,14 @@ public interface SnapApiService {
             @Path("snap_token") String snapToken,
             @Path("card_token") String cardToken
     );
+
+
+    /**
+     * Get Transaction Status.
+     *
+     * @param snapToken snap token
+     */
+    @GET("v1/transactions/{snap_token}/status")
+    Call<PaymentStatusResponse> getPaymentStatus(@Path("snap_token") String snapToken);
 
 }
