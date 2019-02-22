@@ -33,6 +33,7 @@ import com.midtrans.sdk.uikit.utilities.PaymentListHelper;
 import com.midtrans.sdk.uikit.view.banktransfer.instruction.adapter.ListBankAdapter;
 import com.midtrans.sdk.uikit.view.banktransfer.instruction.instruction.adapter.InstructionPagerAdapter;
 import com.midtrans.sdk.uikit.view.banktransfer.instruction.instruction.fragment.InstructionVaOtherFragment;
+import com.midtrans.sdk.uikit.view.banktransfer.list.BankTransferListActivity;
 import com.midtrans.sdk.uikit.view.banktransfer.result.BankPaymentResultActivity;
 import com.midtrans.sdk.uikit.view.banktransfer.result.MandiriBillPaymentResultActivity;
 import com.midtrans.sdk.uikit.widget.DefaultTextView;
@@ -362,21 +363,25 @@ public class BankTransferInstructionActivity extends BaseActivity implements Ban
 
     private void initTopNotification(int position) {
         if (!TextUtils.isEmpty(paymentType)) {
-            if (paymentType.equals(PaymentType.BCA_VA)) {
-                if (position == 1) {
-                    showTokenNotification(true);
-                } else {
-                    showTokenNotification(false);
-                }
-            } else if (paymentType.equals(PaymentType.BNI_VA)) {
-                if (position == 1) {
-                    showOtpNotification(true);
-                } else {
+            switch (paymentType) {
+                case PaymentType.BCA_VA:
+                    if (position == 1) {
+                        showTokenNotification(true);
+                    } else {
+                        showTokenNotification(false);
+                    }
+                    break;
+                case PaymentType.BNI_VA:
+                    if (position == 1) {
+                        showOtpNotification(true);
+                    } else {
+                        showOtpNotification(false);
+                    }
+                    break;
+                default:
                     showOtpNotification(false);
-                }
-            } else {
-                showOtpNotification(false);
-                showTokenNotification(false);
+                    showTokenNotification(false);
+                    break;
             }
         }
 
