@@ -12,7 +12,7 @@ import static com.midtrans.sdk.corekit.utilities.Constants.MESSAGE_ERROR_SNAP_TO
 
 public class MidtransKitHelper {
 
-    public static <T> Boolean isValidForStartMidtransKit(Context context, CheckoutTransaction checkoutTransaction, PaymentResult<T> callback) {
+    public static <T> Boolean isValidForStartMidtransKit(Context context, CheckoutTransaction checkoutTransaction, PaymentResult callback) {
         if (checkoutTransaction == null) {
             callback.onFailed(new Throwable(MESSAGE_ERROR_INVALID_DATA_SUPPLIED));
             return false;
@@ -21,7 +21,7 @@ public class MidtransKitHelper {
         }
     }
 
-    public static <T> Boolean isValidForStartMidtransKit(Context context, String token, PaymentResult<T> callback) {
+    public static <T> Boolean isValidForStartMidtransKit(Context context, String token, PaymentResult callback) {
         if (token == null) {
             callback.onFailed(new Throwable(MESSAGE_ERROR_SNAP_TOKEN));
             return false;
@@ -30,7 +30,7 @@ public class MidtransKitHelper {
         }
     }
 
-    public static <T> Boolean isValidForStartMidtransKit(Context context, PaymentResult<T> callback) {
+    public static <T> Boolean isValidForStartMidtransKit(Context context, PaymentResult callback) {
         if (isParamNotNull(context, callback)) {
             if (NetworkHelper.isNetworkAvailable(context))
                 return true;
