@@ -1,6 +1,6 @@
 package com.midtrans.sdk.uikit.utilities;
 
-import android.app.Activity;
+import android.content.Context;
 import android.text.TextUtils;
 
 import com.midtrans.sdk.corekit.base.enums.Currency;
@@ -11,7 +11,7 @@ import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
 public class CurrencyHelper {
-    public static String formatAmount(Activity context, double totalAmount, @Currency String currency) {
+    public static String formatAmount(Context context, double totalAmount, @Currency String currency) {
         String formattedAmount;
 
         if (TextUtils.isEmpty(currency)) {
