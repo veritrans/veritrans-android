@@ -2,6 +2,7 @@ package com.midtrans.sdk.uikit.view;
 
 import com.google.android.material.appbar.AppBarLayout;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -15,22 +16,27 @@ import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.base.enums.PaymentType;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.CheckoutTransaction;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.response.CheckoutWithTransactionResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.PaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.enablepayment.EnabledPayment;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.merchantdata.MerchantPreferences;
 import com.midtrans.sdk.corekit.utilities.Constants;
+import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.uikit.MidtransKit;
 import com.midtrans.sdk.uikit.MidtransKitFlow;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.base.callback.PaymentResult;
+import com.midtrans.sdk.uikit.base.callback.Result;
 import com.midtrans.sdk.uikit.base.composer.BaseActivity;
+import com.midtrans.sdk.uikit.base.enums.PaymentStatus;
 import com.midtrans.sdk.uikit.base.model.MessageInfo;
 import com.midtrans.sdk.uikit.utilities.ActivityHelper;
 import com.midtrans.sdk.uikit.utilities.CurrencyHelper;
 import com.midtrans.sdk.uikit.utilities.MessageHelper;
 import com.midtrans.sdk.uikit.utilities.PaymentListHelper;
-import com.midtrans.sdk.uikit.view.adapter.ItemDetailsAdapter;
+import com.midtrans.sdk.uikit.view.adapter.PaymentItemDetailsAdapter;
 import com.midtrans.sdk.uikit.view.adapter.PaymentMethodsAdapter;
+import com.midtrans.sdk.uikit.view.banktransfer.list.BankTransferListActivity;
+import com.midtrans.sdk.uikit.view.banktransfer.list.model.EnabledBankTransfer;
 import com.midtrans.sdk.uikit.view.model.ItemViewDetails;
 import com.midtrans.sdk.uikit.view.model.PaymentMethodsModel;
 import com.midtrans.sdk.uikit.widget.BoldTextView;
@@ -46,6 +52,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import static com.midtrans.sdk.uikit.utilities.PaymentListHelper.mappingBankTransfer;
 import static com.midtrans.sdk.uikit.utilities.PaymentListHelper.mappingEnabledPayment;
 
 public class PaymentListActivity extends BaseActivity {
@@ -72,6 +79,7 @@ public class PaymentListActivity extends BaseActivity {
     private boolean isPermataVa = false;
     private boolean isOtherVa = false;
     private boolean isMandiriBill = false;
+    private boolean isDeepLink = false;
 
     /**
      * This property used for token, transaction object, and payment callback
@@ -79,7 +87,7 @@ public class PaymentListActivity extends BaseActivity {
      */
     private String token = null;
     private CheckoutTransaction checkoutTransaction = null;
-    private PaymentResult<PaymentResponse> callback = null;
+    private PaymentResult callback = null;
 
     /**
      * This property used for layout related stuff
@@ -95,6 +103,8 @@ public class PaymentListActivity extends BaseActivity {
      */
     private RecyclerView containerPaymentMethod = null;
     private RecyclerView containerItemDetails = null;
+    private List<EnabledPayment> bankTransferList = new ArrayList<>();
+    private List<PaymentMethodsModel> data = new ArrayList<>();
 
     /**
      * This property used for making loading when performing network request
@@ -105,7 +115,7 @@ public class PaymentListActivity extends BaseActivity {
     /**
      * This property used for showing error dialog or maintenance view
      */
-    private AlertDialog alertDialog;
+    private AlertDialog alertDialog = null;
     private LinearLayout progressContainer;
     private LinearLayout maintenanceContainer;
     private BoldTextView maintenanceTitle;
@@ -164,7 +174,7 @@ public class PaymentListActivity extends BaseActivity {
      */
     @SuppressWarnings("unchecked")
     private void getIntentDataFromMidtransKitFlow() {
-        callback = (PaymentResult<PaymentResponse>) getIntent().getSerializableExtra(MidtransKitFlow.INTENT_EXTRA_CALLBACK);
+        callback = (PaymentResult) getIntent().getSerializableExtra(MidtransKitFlow.INTENT_EXTRA_CALLBACK);
         checkoutTransaction = (CheckoutTransaction) getIntent().getSerializableExtra(MidtransKitFlow.INTENT_EXTRA_TRANSACTION);
         token = getIntent().getStringExtra(MidtransKitFlow.INTENT_EXTRA_TOKEN);
 
@@ -207,7 +217,6 @@ public class PaymentListActivity extends BaseActivity {
 
     /**
      * This method use CheckoutTransaction object as parameter and used for creating token
-     * @param checkoutTransaction
      */
     private void startCheckoutWithMidtransSdk(CheckoutTransaction checkoutTransaction) {
         progressMessage.setText(R.string.txt_checkout);
@@ -228,7 +237,6 @@ public class PaymentListActivity extends BaseActivity {
 
     /**
      * This method will handle startCheckoutWithMidtransSdk() if success making network call
-     * @param response
      */
     private void doOnCheckoutWithMidtransSdkSucceeded(CheckoutWithTransactionResponse response) {
         if (response != null) {
@@ -249,7 +257,6 @@ public class PaymentListActivity extends BaseActivity {
 
     /**
      * This method will handle startCheckoutWithMidtransSdk() if failed when making network call
-     * @param throwable
      */
     private void doOnCheckoutWithMidtransSdkFailed(Throwable throwable) {
         showFallbackErrorPage(throwable, true);
@@ -257,7 +264,6 @@ public class PaymentListActivity extends BaseActivity {
 
     /**
      * This method use token for getting payment info
-     * @param token
      */
     private void startGettingPaymentInfoWithMidtransSdk(String token) {
         this.token = token;
@@ -279,14 +285,12 @@ public class PaymentListActivity extends BaseActivity {
 
     /**
      * This method will handle startGettingPaymentInfoWithMidtransSdk() if success making network call
-     * @param data
      */
     private void doOnGettingPaymentInfoWithMidtransSdkSucceeded(PaymentInfoResponse data) {
         if (data != null) {
             initItemDetailsList(data);
             initPaymentMethodList(data);
             initMerchantPreferences(data);
-            hideProgress();
         } else {
             showErrorMessage(null, false);
         }
@@ -294,7 +298,6 @@ public class PaymentListActivity extends BaseActivity {
 
     /**
      * This method will handle startGettingPaymentInfoWithMidtransSdk() if failed when making network call
-     * @param throwable
      */
     private void doOnGettingPaymentInfoWithMidtransSdkFailed(Throwable throwable) {
         showFallbackErrorPage(throwable, false);
@@ -302,7 +305,6 @@ public class PaymentListActivity extends BaseActivity {
 
     /**
      * This method use for setup view stuff based on response and merchant preferences
-     * @param response
      */
     private void initMerchantPreferences(PaymentInfoResponse response) {
         MerchantPreferences preferences = response.getMerchantData().getPreference();
@@ -334,7 +336,6 @@ public class PaymentListActivity extends BaseActivity {
 
     /**
      * This method used for making list of itemlist
-     * @param response
      */
     private void initItemDetailsList(PaymentInfoResponse response) {
         if (response != null) {
@@ -353,7 +354,7 @@ public class PaymentListActivity extends BaseActivity {
                     ItemViewDetails.TYPE_ITEM_HEADER,
                     itemDetailsSize > 0));
             itemViewDetails.addAll(PaymentListHelper.mappingItemDetails(this, response));
-            ItemDetailsAdapter itemDetailsAdapter = new ItemDetailsAdapter(
+            PaymentItemDetailsAdapter paymentItemDetailsAdapter = new PaymentItemDetailsAdapter(
                     itemViewDetails,
                     response.getTransactionDetails().getOrderId(),
                     () -> {
@@ -361,24 +362,71 @@ public class PaymentListActivity extends BaseActivity {
                     });
 
             containerItemDetails.setLayoutManager(new LinearLayoutManager(this));
-            containerItemDetails.setAdapter(itemDetailsAdapter);
+            containerItemDetails.setAdapter(paymentItemDetailsAdapter);
         }
     }
 
     /**
      * This method used for making list of Payment Method
-     * @param response
      */
     private void initPaymentMethodList(PaymentInfoResponse response) {
-        PaymentMethodsAdapter paymentMethodsAdapter = new PaymentMethodsAdapter(position -> {
-
-        });
+        data = mappingEnabledPayment(this, response);
+        bankTransferList = mappingBankTransfer(response);
+        PaymentMethodsAdapter paymentMethodsAdapter = new PaymentMethodsAdapter(position -> startPaymentMethodScreen(data.get(position), response));
 
         containerPaymentMethod.setLayoutManager(new LinearLayoutManager(this));
         containerPaymentMethod.setAdapter(paymentMethodsAdapter);
 
-        List<PaymentMethodsModel> data = mappingEnabledPayment(this, response);
-        paymentMethodsAdapter.setData(data);
+        if (data.isEmpty()) {
+            showErrorMessage(getString(R.string.message_payment_method_empty), false);
+        } else if (data.size() == 1) {
+            hideProgress();
+            isDeepLink = true;
+            startPaymentMethodScreen(data.get(0), response);
+        } else {
+            hideProgress();
+            paymentMethodsAdapter.setData(data);
+        }
+    }
+
+    private void startPaymentMethodScreen(PaymentMethodsModel paymentMethodsModel, PaymentInfoResponse response) {
+        String method = paymentMethodsModel.getPaymentType();
+        Logger.debug("Payment Method clicked : " + method);
+        switch (method) {
+            case PaymentType.CREDIT_CARD:
+                break;
+            case PaymentListHelper.BANK_TRANSFER:
+                Intent startBankPayment = new Intent(this, BankTransferListActivity.class);
+                startBankPayment.putExtra(BankTransferListActivity.EXTRA_BANK_LIST, new EnabledBankTransfer(bankTransferList));
+                startBankPayment.putExtra(BankTransferListActivity.EXTRA_PAYMENT_INFO, response);
+                startBankPayment.putExtra(BankTransferListActivity.USE_DEEP_LINK, isDeepLink);
+                startActivityForResult(startBankPayment, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+                break;
+            case PaymentType.BCA_KLIKPAY:
+                break;
+            case PaymentType.KLIK_BCA:
+                break;
+            case PaymentType.BRI_EPAY:
+                break;
+            case PaymentType.CIMB_CLICKS:
+                break;
+            case PaymentType.MANDIRI_CLICKPAY:
+                break;
+            case PaymentType.INDOMARET:
+                break;
+            case PaymentType.TELKOMSEL_CASH:
+                break;
+            case PaymentType.MANDIRI_ECASH:
+                break;
+            case PaymentType.GOPAY:
+                break;
+            case PaymentType.DANAMON_ONLINE:
+                break;
+            case PaymentType.AKULAKU:
+                break;
+            case PaymentType.ALFAMART:
+                break;
+        }
     }
 
     private void showErrorMessage(String message, boolean isCheckout) {
@@ -387,26 +435,31 @@ public class PaymentListActivity extends BaseActivity {
                 message = getString(R.string.error_snap_transaction_details);
             }
             String finalMessage = message;
-            alertDialog = new AlertDialog
-                    .Builder(this)
-                    .setMessage(finalMessage)
-                    .setPositiveButton(R.string.btn_retry, (dialog, which) -> {
-                        if (isCheckout) {
-                            startCheckoutWithMidtransSdk(checkoutTransaction);
-                        } else {
-                            startGettingPaymentInfoWithMidtransSdk(token);
-                        }
-                        dialog.dismiss();
-                    })
-                    .setNegativeButton(R.string.btn_cancel, (dialog, which) -> {
-                        isThrowableFromNetworkRequest = true;
-                        throwableFromNetworkRequest = new Throwable(finalMessage);
-                        setOnFailedCallback(throwableFromNetworkRequest);
-                        dialog.dismiss();
-                        onBackPressed();
-                    })
-                    .create();
-            alertDialog.show();
+            if (alertDialog == null) {
+                alertDialog = new AlertDialog
+                        .Builder(this)
+                        .setMessage(finalMessage)
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.btn_retry, (dialog, which) -> {
+                            if (isCheckout) {
+                                startCheckoutWithMidtransSdk(checkoutTransaction);
+                            } else {
+                                startGettingPaymentInfoWithMidtransSdk(token);
+                            }
+                            dialog.dismiss();
+                            alertDialog = null;
+                        })
+                        .setNegativeButton(R.string.btn_cancel, (dialog, which) -> {
+                            isThrowableFromNetworkRequest = true;
+                            throwableFromNetworkRequest = new Throwable(finalMessage);
+                            setOnFailedCallback(throwableFromNetworkRequest);
+                            dialog.dismiss();
+                            onBackPressed();
+                            alertDialog = null;
+                        })
+                        .create();
+                alertDialog.show();
+            }
         }
     }
 
@@ -454,6 +507,38 @@ public class PaymentListActivity extends BaseActivity {
             onBackPressed();
         }
     }
+
+    /**
+     * sends broadcast for transaction details.
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Logger.debug("in onActivity result : request code is " + requestCode + "," + resultCode);
+        Logger.debug("in onActivity result : data:" + data);
+        if (resultCode == com.midtrans.sdk.uikit.utilities.Constants.RESULT_SDK_NOT_AVAILABLE) {
+            onBackPressed();
+            return;
+        }
+        if (requestCode == Constants.RESULT_CODE_PAYMENT_TRANSFER) {
+            Logger.debug("sending result back with code " + requestCode);
+            if (resultCode == RESULT_OK) {
+                PaymentListHelper.setActivityResult(data, callback);
+                onBackPressed();
+            } else if (resultCode == RESULT_CANCELED) {
+                callback.onPaymentFinished(
+                        new Result(
+                                PaymentStatus.STATUS_CANCEL,
+                                null
+                        ),
+                        null
+                );
+            }
+        } else {
+            Logger.debug("failed to send result back " + requestCode);
+        }
+    }
+
 
     @Override
     public void onBackPressed() {
