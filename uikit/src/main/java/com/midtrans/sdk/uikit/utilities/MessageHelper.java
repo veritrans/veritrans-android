@@ -2,6 +2,7 @@ package com.midtrans.sdk.uikit.utilities;
 
 import android.app.Activity;
 import android.content.Context;
+import android.widget.Toast;
 
 import com.midtrans.sdk.corekit.base.enums.Environment;
 import com.midtrans.sdk.corekit.utilities.Logger;
@@ -53,6 +54,10 @@ public class MessageHelper {
             }
         }
         return message;
+    }
+
+    public static void showToast(Context context, String message){
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
     /*public static MessageInfo createPaymentFailedMessage(Context context, CheckoutWithTransactionResponse response) {
