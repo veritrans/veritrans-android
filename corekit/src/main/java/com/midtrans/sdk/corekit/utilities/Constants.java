@@ -4,6 +4,12 @@ public class Constants {
 
     public static final String TAG = "MidtransSdk";
 
+    /**
+     * Used for returning payment result and payment type
+     */
+    public final static String INTENT_DATA_CALLBACK = "intent.data.callback";
+    public final static String INTENT_DATA_TYPE = "intent.data.type";
+
     public static final String USER_AGENT = "User-Agent";
     public static final String APPLICATION_JSON_FORMAT = "application/json";
     public static final String AUTHORIZATION_HEADER = "Authentication";
