@@ -36,6 +36,7 @@ import com.midtrans.sdk.uikit.view.banktransfer.instruction.instruction.fragment
 import com.midtrans.sdk.uikit.view.banktransfer.list.BankTransferListActivity;
 import com.midtrans.sdk.uikit.view.banktransfer.result.BankPaymentResultActivity;
 import com.midtrans.sdk.uikit.view.banktransfer.result.MandiriBillPaymentResultActivity;
+import com.midtrans.sdk.uikit.view.banktransfer.result.OtherBankPaymentResultActivity;
 import com.midtrans.sdk.uikit.widget.DefaultTextView;
 import com.midtrans.sdk.uikit.widget.FancyButton;
 
@@ -443,10 +444,10 @@ public class BankTransferInstructionActivity extends BaseActivity implements Ban
             ResponseBody responseFromServer = (ResponseBody) response;
             try {
                 OtherBankTransferResponse paymentResponse = Helper.parseToModel(responseFromServer.string(), OtherBankTransferResponse.class);
-                Intent otherBank = new Intent(this, OtherBankTransferResponse.class);
+                Intent otherBank = new Intent(this, OtherBankPaymentResultActivity.class);
                 otherBank.putExtra(BankTransferListActivity.EXTRA_PAYMENT_INFO, paymentInfoResponse);
                 otherBank.putExtra(BankPaymentResultActivity.EXTRA_BANK_TYPE, paymentType);
-                otherBank.putExtra(BankPaymentResultActivity.EXTRA_PAYMENT_RESULT_MANDIRI, paymentResponse);
+                otherBank.putExtra(BankPaymentResultActivity.EXTRA_PAYMENT_RESULT_OTHER, paymentResponse);
                 startActivityForResult(otherBank, Constants.INTENT_CODE_PAYMENT_STATUS);
             } catch (IOException exception) {
                 Logger.error("Failed parsing other transfer >>> " + exception);
