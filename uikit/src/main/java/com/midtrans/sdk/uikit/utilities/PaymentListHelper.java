@@ -2,23 +2,40 @@ package com.midtrans.sdk.uikit.utilities;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.text.TextUtils;
 
 import com.midtrans.sdk.corekit.base.enums.PaymentType;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.Item;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaBankTransferReponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BniBankTransferResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriBillResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.OtherBankTransferResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.PermataBankTransferResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.enablepayment.EnabledPayment;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.promo.Promo;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.promo.PromoDetails;
+import com.midtrans.sdk.corekit.utilities.Constants;
+import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.base.callback.PaymentResult;
+import com.midtrans.sdk.uikit.base.callback.Result;
 import com.midtrans.sdk.uikit.base.enums.CreditCardIssuer;
 import com.midtrans.sdk.uikit.base.enums.CreditCardType;
+import com.midtrans.sdk.uikit.base.enums.PaymentStatus;
 import com.midtrans.sdk.uikit.base.model.BankTransfer;
+import com.midtrans.sdk.uikit.base.model.PaymentResponse;
 import com.midtrans.sdk.uikit.view.model.ItemViewDetails;
 import com.midtrans.sdk.uikit.view.model.PaymentMethodsModel;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+
+import static com.midtrans.sdk.corekit.utilities.Constants.INTENT_DATA_CALLBACK;
+import static com.midtrans.sdk.corekit.utilities.Constants.INTENT_DATA_TYPE;
 
 public class PaymentListHelper {
 
@@ -26,7 +43,223 @@ public class PaymentListHelper {
      * Bank Transfer is Payment Group
      * Mandiri Echannel / Mandiri Bill is Bank Transfer Mandiri
      */
-    private final static String BANK_TRANSFER = "bank_transfer";
+    public final static String BANK_TRANSFER = "bank_transfer";
+
+    private static <T> void setCallback(
+            PaymentResult callback,
+            @PaymentStatus String paymentStatus,
+            @PaymentType String paymentType,
+            T response
+    ) {
+        callback.onPaymentFinished(
+                new Result(paymentStatus, paymentType),
+                PaymentListHelper.convertTransactionStatus(response)
+        );
+    }
+
+    public static void setActivityResult(Intent data, PaymentResult callback) {
+        String paymentType = data.getStringExtra(INTENT_DATA_TYPE);
+        switch (paymentType) {
+            case PaymentType.BCA_VA:
+                try {
+                    BcaBankTransferReponse response = (BcaBankTransferReponse) data.getSerializableExtra(INTENT_DATA_CALLBACK);
+                    if (response != null) {
+                        switch (response.getStatusCode()) {
+                            case com.midtrans.sdk.corekit.utilities.Constants.STATUS_CODE_200:
+                                setCallback(callback, PaymentStatus.STATUS_SUCCESS, PaymentType.BCA_VA, response);
+                                break;
+                            case Constants.STATUS_CODE_201:
+                                setCallback(callback, PaymentStatus.STATUS_PENDING, PaymentType.BCA_VA, response);
+                                break;
+                            default:
+                                setCallback(callback, PaymentStatus.STATUS_FAILED, PaymentType.BCA_VA, response);
+                                break;
+                        }
+                    } else {
+                        setCallback(callback, PaymentStatus.STATUS_INVALID, PaymentType.BCA_VA, response);
+                    }
+                } catch (RuntimeException e) {
+                    Logger.error("onActivityResult:" + e.getMessage());
+                    return;
+                }
+                break;
+            case PaymentType.BNI_VA:
+                try {
+                    BniBankTransferResponse response = (BniBankTransferResponse) data.getSerializableExtra(INTENT_DATA_CALLBACK);
+                    if (response != null) {
+                        switch (response.getStatusCode()) {
+                            case com.midtrans.sdk.corekit.utilities.Constants.STATUS_CODE_200:
+                                setCallback(callback, PaymentStatus.STATUS_SUCCESS, PaymentType.BNI_VA, response);
+                                break;
+                            case Constants.STATUS_CODE_201:
+                                setCallback(callback, PaymentStatus.STATUS_PENDING, PaymentType.BNI_VA, response);
+                                break;
+                            default:
+                                setCallback(callback, PaymentStatus.STATUS_FAILED, PaymentType.BNI_VA, response);
+                                break;
+                        }
+                    } else {
+                        setCallback(callback, PaymentStatus.STATUS_INVALID, PaymentType.BNI_VA, response);
+                    }
+                } catch (RuntimeException e) {
+                    Logger.error("onActivityResult:" + e.getMessage());
+                    return;
+                }
+                break;
+            case PaymentType.PERMATA_VA:
+                try {
+                    PermataBankTransferResponse response = (PermataBankTransferResponse) data.getSerializableExtra(INTENT_DATA_CALLBACK);
+                    if (response != null) {
+                        switch (response.getStatusCode()) {
+                            case com.midtrans.sdk.corekit.utilities.Constants.STATUS_CODE_200:
+                                setCallback(callback, PaymentStatus.STATUS_SUCCESS, PaymentType.PERMATA_VA, response);
+                                break;
+                            case Constants.STATUS_CODE_201:
+                                setCallback(callback, PaymentStatus.STATUS_PENDING, PaymentType.PERMATA_VA, response);
+                                break;
+                            default:
+                                setCallback(callback, PaymentStatus.STATUS_FAILED, PaymentType.PERMATA_VA, response);
+                                break;
+                        }
+                    } else {
+                        setCallback(callback, PaymentStatus.STATUS_INVALID, PaymentType.PERMATA_VA, response);
+                    }
+                } catch (RuntimeException e) {
+                    Logger.error("onActivityResult:" + e.getMessage());
+                    return;
+                }
+                break;
+            case PaymentType.ECHANNEL:
+                try {
+                    MandiriBillResponse response = (MandiriBillResponse) data.getSerializableExtra(INTENT_DATA_CALLBACK);
+                    if (response != null) {
+                        switch (response.getStatusCode()) {
+                            case com.midtrans.sdk.corekit.utilities.Constants.STATUS_CODE_200:
+                                setCallback(callback, PaymentStatus.STATUS_SUCCESS, PaymentType.ECHANNEL, response);
+                                break;
+                            case Constants.STATUS_CODE_201:
+                                setCallback(callback, PaymentStatus.STATUS_PENDING, PaymentType.ECHANNEL, response);
+                                break;
+                            default:
+                                setCallback(callback, PaymentStatus.STATUS_FAILED, PaymentType.ECHANNEL, response);
+                                break;
+                        }
+                    } else {
+                        setCallback(callback, PaymentStatus.STATUS_INVALID, PaymentType.ECHANNEL, response);
+                    }
+                } catch (RuntimeException e) {
+                    Logger.error("onActivityResult:" + e.getMessage());
+                    return;
+                }
+                break;
+        }
+    }
+
+    private static <T> PaymentResponse convertTransactionStatus(T response) {
+        PaymentResponse paymentResponse;
+        if (response instanceof BcaBankTransferReponse) {
+            BcaBankTransferReponse rawResponse = (BcaBankTransferReponse) response;
+            paymentResponse = PaymentResponse
+                    .builder(
+                            rawResponse.getStatusCode(),
+                            rawResponse.getStatusMessage(),
+                            rawResponse.getTransactionId(),
+                            rawResponse.getOrderId(),
+                            rawResponse.getGrossAmount(),
+                            rawResponse.getPaymentType(),
+                            rawResponse.getTransactionTime(),
+                            rawResponse.getTransactionStatus()
+                    )
+                    .setBcaExpiration(rawResponse.getBcaExpiration())
+                    .setBcaVaNumber(rawResponse.getBcaVaNumber())
+                    .setPdfUrl(rawResponse.getPdfUrl())
+                    .setFraudStatus(rawResponse.getFraudStatus())
+                    .build();
+            return paymentResponse;
+        } else if (response instanceof BniBankTransferResponse) {
+            BniBankTransferResponse rawResponse = (BniBankTransferResponse) response;
+            paymentResponse = PaymentResponse
+                    .builder(
+                            rawResponse.getStatusCode(),
+                            rawResponse.getStatusMessage(),
+                            rawResponse.getTransactionId(),
+                            rawResponse.getOrderId(),
+                            rawResponse.getGrossAmount(),
+                            rawResponse.getPaymentType(),
+                            rawResponse.getTransactionTime(),
+                            rawResponse.getTransactionStatus()
+                    )
+                    .setBniExpiration(rawResponse.getBniExpiration())
+                    .setBniVaNumber(rawResponse.getBniVaNumber())
+                    .setPdfUrl(rawResponse.getPdfUrl())
+                    .setFraudStatus(rawResponse.getFraudStatus())
+                    .build();
+            return paymentResponse;
+        } else if (response instanceof MandiriBillResponse) {
+            MandiriBillResponse rawResponse = (MandiriBillResponse) response;
+            paymentResponse = PaymentResponse
+                    .builder(
+                            rawResponse.getStatusCode(),
+                            rawResponse.getStatusMessage(),
+                            rawResponse.getTransactionId(),
+                            rawResponse.getOrderId(),
+                            rawResponse.getGrossAmount(),
+                            rawResponse.getPaymentType(),
+                            rawResponse.getTransactionTime(),
+                            rawResponse.getTransactionStatus()
+                    )
+                    .setBillerCode(rawResponse.getBillerCode())
+                    .setBillKey(rawResponse.getBillKey())
+                    .setBillPaymentExpiration(rawResponse.getBillPaymentExpiration())
+                    .setPdfUrl(rawResponse.getPdfUrl())
+                    .setFraudStatus(rawResponse.getFraudStatus())
+                    .build();
+            return paymentResponse;
+        } else if (response instanceof PermataBankTransferResponse) {
+            PermataBankTransferResponse rawResponse = (PermataBankTransferResponse) response;
+            paymentResponse = PaymentResponse
+                    .builder(
+                            rawResponse.getStatusCode(),
+                            rawResponse.getStatusMessage(),
+                            rawResponse.getTransactionId(),
+                            rawResponse.getOrderId(),
+                            rawResponse.getGrossAmount(),
+                            rawResponse.getPaymentType(),
+                            rawResponse.getTransactionTime(),
+                            rawResponse.getTransactionStatus()
+                    )
+                    .setPermataVaNumber(rawResponse.getPermataVaNumber())
+                    .setPermataExpiration(rawResponse.getPermataExpiration())
+                    .setAtmChannel(rawResponse.getAtmChannel())
+                    .setPdfUrl(rawResponse.getPdfUrl())
+                    .setFraudStatus(rawResponse.getFraudStatus())
+                    .build();
+            return paymentResponse;
+        } else if (response instanceof OtherBankTransferResponse) {
+            OtherBankTransferResponse rawResponse = (OtherBankTransferResponse) response;
+            paymentResponse = PaymentResponse
+                    .builder(
+                            rawResponse.getStatusCode(),
+                            rawResponse.getStatusMessage(),
+                            rawResponse.getTransactionId(),
+                            rawResponse.getOrderId(),
+                            rawResponse.getGrossAmount(),
+                            rawResponse.getPaymentType(),
+                            rawResponse.getTransactionTime(),
+                            rawResponse.getTransactionStatus()
+                    )
+                    .setPermataVaNumber(rawResponse.getPermataVaNumber())
+                    .setPermataExpiration(rawResponse.getPermataExpiration())
+                    .setBniExpiration(rawResponse.getBniExpiration())
+                    .setBniVaNumber(rawResponse.getBniVaNumber())
+                    .setAtmChannel(rawResponse.getAtmChannel())
+                    .setPdfUrl(rawResponse.getPdfUrl())
+                    .setFraudStatus(rawResponse.getFraudStatus())
+                    .build();
+            return paymentResponse;
+        }
+        return null;
+    }
 
     /**
      * This method used for mapping Item Details List
@@ -283,7 +516,6 @@ public class PaymentListHelper {
     /**
      * This method use for deciding what type of credit card then show the payment method icon based on type
      *
-     * @param response
      * @return int
      */
     public static int getCreditCardIconType(PaymentInfoResponse response) {
@@ -386,5 +618,62 @@ public class PaymentListHelper {
         }
 
         return bankTransfer;
+    }
+
+    public static String mappingPaymentTitle(Context context, String type) {
+        switch (type) {
+            case PaymentType.CREDIT_CARD:
+                return context.getString(R.string.payment_method_credit_card);
+            case PaymentType.BCA_VA:
+                return context.getString(R.string.bank_bca_transfer);
+            case PaymentType.BNI_VA:
+                return context.getString(R.string.bank_bni_transfer);
+            case PaymentType.ECHANNEL:
+                return context.getString(R.string.mandiri_bill_transfer);
+            case PaymentType.OTHER_VA:
+                return context.getString(R.string.other_bank_transfer);
+            case PaymentType.PERMATA_VA:
+                return context.getString(R.string.payment_permata);
+            case PaymentType.BCA_KLIKPAY:
+                return context.getString(R.string.payment_method_bca_klikpay);
+            case PaymentType.KLIK_BCA:
+                return context.getString(R.string.payment_method_klik_bca);
+            case PaymentType.BRI_EPAY:
+                return context.getString(R.string.payment_method_bri_epay);
+            case PaymentType.CIMB_CLICKS:
+                return context.getString(R.string.payment_method_cimb_clicks);
+            case PaymentType.MANDIRI_CLICKPAY:
+                return context.getString(R.string.payment_method_mandiri_clickpay);
+            case PaymentType.INDOMARET:
+                return context.getString(R.string.payment_method_indomaret);
+            case PaymentType.TELKOMSEL_CASH:
+                return context.getString(R.string.payment_method_telkomsel_cash);
+            case PaymentType.MANDIRI_ECASH:
+                return context.getString(R.string.payment_method_mandiri_ecash);
+            case PaymentType.GOPAY:
+                return context.getString(R.string.payment_method_gopay);
+            case PaymentType.DANAMON_ONLINE:
+                return context.getString(R.string.payment_method_danamon_online);
+            case PaymentType.AKULAKU:
+                return context.getString(R.string.payment_method_akulaku);
+            case PaymentType.ALFAMART:
+                return context.getString(R.string.payment_method_alfamart);
+            default:
+                return null;
+        }
+    }
+
+    /**
+     * Sorting bank payment method by priority (Ascending)
+     */
+    public static void sortBankTransferMethodsByPriority(List<BankTransfer> paymentMethodsModels) {
+        if (paymentMethodsModels != null) {
+            Collections.sort(paymentMethodsModels, new Comparator<BankTransfer>() {
+                @Override
+                public int compare(BankTransfer lhs, BankTransfer rhs) {
+                    return lhs.getPriority().compareTo(rhs.getPriority());
+                }
+            });
+        }
     }
 }
