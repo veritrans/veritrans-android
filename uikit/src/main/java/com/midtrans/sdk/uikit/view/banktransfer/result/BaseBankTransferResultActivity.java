@@ -3,10 +3,12 @@ package com.midtrans.sdk.uikit.view.banktransfer.result;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -271,6 +273,12 @@ public abstract class BaseBankTransferResultActivity extends BaseActivity {
         } else {
             return false;
         }
+    }
+
+    protected void startWebIntent(Activity activity, String instructionUrl) {
+        Intent webIntent = new Intent(Intent.ACTION_VIEW);
+        webIntent.setData(Uri.parse(instructionUrl));
+        activity.startActivity(webIntent);
     }
 
     public void setPageTitle(String pageTitle) {
