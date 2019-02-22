@@ -15,7 +15,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ItemDetailsAdapter extends BaseAdapter<ItemViewDetails> {
+public class PaymentItemDetailsAdapter extends BaseAdapter<ItemViewDetails> {
 
     private static final int TYPE_HEADER = 1002;
     private static final int TYPE_ITEM = 1003;
@@ -29,7 +29,7 @@ public class ItemDetailsAdapter extends BaseAdapter<ItemViewDetails> {
         void onItemShown();
     }
 
-    public ItemDetailsAdapter(List<ItemViewDetails> itemDetails, String orderId, ItemDetailListener listener) {
+    public PaymentItemDetailsAdapter(List<ItemViewDetails> itemDetails, String orderId, ItemDetailListener listener) {
         this.orderId = orderId;
         this.itemDetails = itemDetails;
         this.listener = listener;
