@@ -1,8 +1,5 @@
 package com.midtrans.sdk.uikit.view.banktransfer.result;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -20,7 +17,6 @@ public class BankPaymentResultActivity extends BaseBankTransferResultActivity {
 
     private DefaultTextView textVaNumber;
     private DefaultTextView textValidity;
-
     private FancyButton buttonCopyVa;
     private FancyButton buttonInstruction;
 
@@ -65,7 +61,6 @@ public class BankPaymentResultActivity extends BaseBankTransferResultActivity {
             String instructionUrl = presenter.getInstructionUrl();
             startWebIntent(this, instructionUrl);
         });
-
     }
 
     private void copyVaNumber() {
@@ -117,11 +112,5 @@ public class BankPaymentResultActivity extends BaseBankTransferResultActivity {
         textValidity = findViewById(R.id.text_validity);
         textVaNumber = findViewById(R.id.text_virtual_account_number);
         buttonCompletePayment = findViewById(R.id.button_primary);
-    }
-
-    private void startWebIntent(Activity activity, String instructionUrl) {
-        Intent webIntent = new Intent(Intent.ACTION_VIEW);
-        webIntent.setData(Uri.parse(instructionUrl));
-        activity.startActivity(webIntent);
     }
 }
