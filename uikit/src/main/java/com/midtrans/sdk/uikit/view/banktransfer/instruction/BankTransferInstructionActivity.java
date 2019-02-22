@@ -76,7 +76,6 @@ public class BankTransferInstructionActivity extends BaseActivity implements Ban
     private PaymentInfoResponse paymentInfoResponse;
 
     private String paymentType;
-    private String pageName, buttonName;
 
     //for other ATM network
     private ImageView bankPreview;
