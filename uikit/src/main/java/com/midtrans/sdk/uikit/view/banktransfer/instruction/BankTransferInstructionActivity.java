@@ -419,7 +419,7 @@ public class BankTransferInstructionActivity extends BaseActivity implements Ban
     @Override
     public <T> void onPaymentSuccess(T response) {
         Intent intentNormalBank = new Intent(this, BankPaymentResultActivity.class);
-        intentNormalBank.putExtra(BankPaymentResultActivity.EXTRA_PAYMENT_INFO, paymentInfoResponse);
+        intentNormalBank.putExtra(BankTransferListActivity.EXTRA_PAYMENT_INFO, paymentInfoResponse);
         intentNormalBank.putExtra(BankPaymentResultActivity.EXTRA_BANK_TYPE, paymentType);
         if (response instanceof PermataBankTransferResponse) {
             PermataBankTransferResponse paymentResponse = (PermataBankTransferResponse) response;
@@ -436,7 +436,7 @@ public class BankTransferInstructionActivity extends BaseActivity implements Ban
         } else if (response instanceof MandiriBillResponse) {
             MandiriBillResponse paymentResponse = (MandiriBillResponse) response;
             Intent mandiriBill = new Intent(this, MandiriBillPaymentResultActivity.class);
-            mandiriBill.putExtra(BankPaymentResultActivity.EXTRA_PAYMENT_INFO, paymentInfoResponse);
+            mandiriBill.putExtra(BankTransferListActivity.EXTRA_PAYMENT_INFO, paymentInfoResponse);
             mandiriBill.putExtra(BankPaymentResultActivity.EXTRA_BANK_TYPE, paymentType);
             mandiriBill.putExtra(BankPaymentResultActivity.EXTRA_PAYMENT_RESULT_MANDIRI, paymentResponse);
             startActivityForResult(mandiriBill, Constants.INTENT_CODE_PAYMENT_STATUS);
@@ -445,7 +445,7 @@ public class BankTransferInstructionActivity extends BaseActivity implements Ban
             try {
                 OtherBankTransferResponse paymentResponse = Helper.parseToModel(responseFromServer.string(), OtherBankTransferResponse.class);
                 Intent otherBank = new Intent(this, OtherBankTransferResponse.class);
-                otherBank.putExtra(BankPaymentResultActivity.EXTRA_PAYMENT_INFO, paymentInfoResponse);
+                otherBank.putExtra(BankTransferListActivity.EXTRA_PAYMENT_INFO, paymentInfoResponse);
                 otherBank.putExtra(BankPaymentResultActivity.EXTRA_BANK_TYPE, paymentType);
                 otherBank.putExtra(BankPaymentResultActivity.EXTRA_PAYMENT_RESULT_MANDIRI, paymentResponse);
                 startActivityForResult(otherBank, Constants.INTENT_CODE_PAYMENT_STATUS);
