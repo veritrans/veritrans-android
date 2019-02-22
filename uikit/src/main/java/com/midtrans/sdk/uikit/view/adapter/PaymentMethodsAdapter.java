@@ -37,11 +37,8 @@ public class PaymentMethodsAdapter extends BaseAdapter<PaymentMethodsModel> {
     @Override
     public PaymentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.row_payment_item_method, parent, false);
-
-        PaymentViewHolder paymentViewHolder = new PaymentViewHolder(view, paymentMethodListener);
-        return paymentViewHolder;
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_payment_item_method, parent, false);
+        return new PaymentViewHolder(view, paymentMethodListener);
     }
 
     @Override
