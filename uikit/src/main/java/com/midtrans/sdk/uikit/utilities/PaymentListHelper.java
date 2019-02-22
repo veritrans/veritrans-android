@@ -152,6 +152,29 @@ public class PaymentListHelper {
                     return;
                 }
                 break;
+            case PaymentType.OTHER_VA:
+                try {
+                    MandiriBillResponse response = (MandiriBillResponse) data.getSerializableExtra(INTENT_DATA_CALLBACK);
+                    if (response != null) {
+                        switch (response.getStatusCode()) {
+                            case com.midtrans.sdk.corekit.utilities.Constants.STATUS_CODE_200:
+                                setCallback(callback, PaymentStatus.STATUS_SUCCESS, PaymentType.OTHER_VA, response);
+                                break;
+                            case Constants.STATUS_CODE_201:
+                                setCallback(callback, PaymentStatus.STATUS_PENDING, PaymentType.OTHER_VA, response);
+                                break;
+                            default:
+                                setCallback(callback, PaymentStatus.STATUS_FAILED, PaymentType.OTHER_VA, response);
+                                break;
+                        }
+                    } else {
+                        setCallback(callback, PaymentStatus.STATUS_INVALID, PaymentType.OTHER_VA, response);
+                    }
+                } catch (RuntimeException e) {
+                    Logger.error("onActivityResult:" + e.getMessage());
+                    return;
+                }
+                break;
         }
     }
 
