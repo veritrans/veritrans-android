@@ -1,5 +1,6 @@
 package com.midtrans.sdk.uikit.view.banktransfer.result;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 
 import android.content.ClipData;
@@ -9,8 +10,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.koushikdutta.ion.Ion;
 import com.midtrans.sdk.corekit.base.enums.PaymentType;
@@ -21,17 +20,17 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.OtherBankTransf
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.PermataBankTransferResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.merchantdata.MerchantPreferences;
+import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.base.composer.BaseActivity;
 import com.midtrans.sdk.uikit.utilities.PaymentListHelper;
 import com.midtrans.sdk.uikit.view.banktransfer.instruction.instruction.adapter.InstructionPagerAdapter;
+import com.midtrans.sdk.uikit.view.banktransfer.list.BankTransferListActivity;
 import com.midtrans.sdk.uikit.widget.FancyButton;
 import com.midtrans.sdk.uikit.widget.MagicViewPager;
-import com.midtrans.sdk.uikit.widget.SemiBoldTextView;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
 import static com.midtrans.sdk.corekit.utilities.Constants.INTENT_DATA_CALLBACK;
@@ -39,7 +38,6 @@ import static com.midtrans.sdk.corekit.utilities.Constants.INTENT_DATA_TYPE;
 
 public abstract class BaseBankTransferResultActivity extends BaseActivity {
 
-    public static final String EXTRA_PAYMENT_INFO = "bank.payment.info";
     public static final String EXTRA_PAYMENT_RESULT_BCA = "bank.payment.result.bca";
     public static final String EXTRA_PAYMENT_RESULT_BNI = "bank.payment.result.bni";
     public static final String EXTRA_PAYMENT_RESULT_MANDIRI = "bank.payment.result.mandiri";
@@ -54,11 +52,6 @@ public abstract class BaseBankTransferResultActivity extends BaseActivity {
     protected MagicViewPager pagerInstruction;
     protected FancyButton buttonCompletePayment;
     protected BankTransferResultPresenter presenter;
-    private Toolbar toolbar;
-    private TextView merchantNameInToolbar;
-    private TextView paymentMethodTitleInToolbar;
-    private ImageView merchantLogoInToolbar;
-    private SemiBoldTextView textTitle;
     private PaymentInfoResponse paymentInfoResponse;
     private String paymentType;
 
@@ -86,27 +79,21 @@ public abstract class BaseBankTransferResultActivity extends BaseActivity {
      */
     protected void initToolbarAndView() {
         toolbar = findViewById(R.id.toolbar_base);
-        merchantLogoInToolbar = findViewById(R.id.image_view_merchant_logo);
-        merchantNameInToolbar = findViewById(R.id.text_view_merchant_name);
-        paymentMethodTitleInToolbar = findViewById(R.id.text_view_page_title);
-        textTitle = findViewById(R.id.text_view_page_title);
         buttonCompletePayment = findViewById(R.id.button_primary);
         tabInstruction = findViewById(R.id.tab_instructions);
         pagerInstruction = findViewById(R.id.pager_instruction);
 
         tabInstruction = findViewById(R.id.tab_instructions);
 
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        toolbar.setNavigationOnClickListener(v -> finishPaymentStatus());
+        if (toolbar != null) {
+            toolbar.setNavigationOnClickListener(v -> finishPaymentStatus());
+        }
     }
 
     /**
      * This method use for setup view stuff based on response and merchant preferences
      */
     private void initMerchantPreferences() {
-        PaymentInfoResponse paymentInfoResponse = (PaymentInfoResponse) getIntent().getSerializableExtra(EXTRA_PAYMENT_INFO);
         String paymentType = getIntent().getStringExtra(EXTRA_BANK_TYPE);
         MerchantPreferences preferences = paymentInfoResponse.getMerchantData().getPreference();
         if (!TextUtils.isEmpty(preferences.getDisplayName())) {
@@ -117,6 +104,9 @@ public abstract class BaseBankTransferResultActivity extends BaseActivity {
             Ion.with(merchantLogoInToolbar)
                     .load(preferences.getLogoUrl());
             merchantLogoInToolbar.setVisibility(View.VISIBLE);
+            AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
+            params.height = params.height + (int) getResources().getDimension(R.dimen.toolbar_expansion_size);
+            toolbar.setLayoutParams(params);
         }
         if (!TextUtils.isEmpty(paymentType)) {
             paymentMethodTitleInToolbar.setText(PaymentListHelper.mappingPaymentTitle(this, paymentType));
@@ -130,7 +120,7 @@ public abstract class BaseBankTransferResultActivity extends BaseActivity {
 
     protected void initProperties() {
         paymentType = getIntent().getStringExtra(EXTRA_BANK_TYPE);
-        paymentInfoResponse = (PaymentInfoResponse) getIntent().getSerializableExtra(EXTRA_PAYMENT_INFO);
+        paymentInfoResponse = (PaymentInfoResponse) getIntent().getSerializableExtra(BankTransferListActivity.EXTRA_PAYMENT_INFO);
         BcaBankTransferReponse responseBca = (BcaBankTransferReponse) getIntent().getSerializableExtra(EXTRA_PAYMENT_RESULT_BCA);
         BniBankTransferResponse responseBni = (BniBankTransferResponse) getIntent().getSerializableExtra(EXTRA_PAYMENT_RESULT_BNI);
         MandiriBillResponse responseMandiri = (MandiriBillResponse) getIntent().getSerializableExtra(EXTRA_PAYMENT_RESULT_MANDIRI);
@@ -150,6 +140,7 @@ public abstract class BaseBankTransferResultActivity extends BaseActivity {
 
     protected void finishPaymentStatus() {
         Intent intent = new Intent();
+        Logger.debug("Payment you should finish is >>> " + paymentType);
         switch (paymentType) {
             case PaymentType.BCA_VA:
                 intent.putExtra(INTENT_DATA_CALLBACK, presenter.getBcaResponse());
@@ -283,6 +274,6 @@ public abstract class BaseBankTransferResultActivity extends BaseActivity {
     }
 
     public void setPageTitle(String pageTitle) {
-        this.textTitle.setText(pageTitle);
+        this.paymentMethodTitleInToolbar.setText(pageTitle);
     }
 }
