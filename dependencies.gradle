@@ -48,7 +48,7 @@ ext {
 
     androidxLibraries = [
             appCompat           : [group: 'androidx.appcompat', name:'appcompat',version: androidxVersion],
-            cardView            : [group: 'androidx.cardview', name:'cardview-v7',version: androidxVersion],
+            cardView            : [group: 'androidx.cardview', name:'cardview',version: androidxVersion],
             coordinatorLayout   : [group: 'androidx.coordinatorlayout', name:'coordinatorlayout',version: androidxVersion],
             recyclerview        : [group: 'androidx.recyclerview', name:'recyclerview',version: androidxVersion],
             supportv13          : [group: 'androidx.legacy:', name:'legacy-support-v13',version: androidxVersion],
