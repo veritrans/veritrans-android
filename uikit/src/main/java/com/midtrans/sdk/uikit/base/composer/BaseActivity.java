@@ -2,6 +2,7 @@ package com.midtrans.sdk.uikit.base.composer;
 
 import android.content.Intent;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
@@ -27,11 +28,14 @@ import com.midtrans.sdk.uikit.view.adapter.InstructionDetailAdapter;
 import com.midtrans.sdk.uikit.widget.BoldTextView;
 import com.midtrans.sdk.uikit.widget.DefaultTextView;
 import com.midtrans.sdk.uikit.widget.FancyButton;
+import com.midtrans.sdk.uikit.widget.SemiBoldTextView;
 
 import java.util.List;
 
 import androidx.annotation.LayoutRes;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -46,9 +50,13 @@ public class BaseActivity extends AppCompatActivity {
     private int primaryDarkColor = 0;
     private int secondaryColor = 0;
 
-    private LinearLayout containerProgress;
-    private DefaultTextView textProgressMessage;
-    private ImageView imageProgressLogo;
+    protected LinearLayout containerProgress;
+    protected DefaultTextView textProgressMessage;
+    protected ImageView imageProgressLogo;
+    protected Toolbar toolbar;
+    protected TextView merchantNameInToolbar;
+    protected SemiBoldTextView paymentMethodTitleInToolbar;
+    protected ImageView merchantLogoInToolbar;
 
     protected boolean isDetailShown = false;
 
@@ -76,12 +84,25 @@ public class BaseActivity extends AppCompatActivity {
         textTotalAmount = findViewById(R.id.text_view_amount);
         textOrderId = findViewById(R.id.text_view_order_id);
 
+        toolbar = findViewById(R.id.toolbar_base);
         textProgressMessage = findViewById(R.id.progress_bar_message);
         containerProgress = findViewById(R.id.progress_container);
         imageProgressLogo = findViewById(R.id.progress_bar_image);
+        merchantLogoInToolbar = findViewById(R.id.image_view_merchant_logo);
+        merchantNameInToolbar = findViewById(R.id.text_view_merchant_name);
+        paymentMethodTitleInToolbar = findViewById(R.id.text_view_page_title);
 
         if (imageProgressLogo != null) {
             Ion.with(imageProgressLogo).load(ActivityHelper.getImagePath(this) + R.drawable.midtrans_loader);
+        }
+
+        if (toolbar != null) {
+            Drawable backIcon = ContextCompat.getDrawable(this, R.drawable.ic_back);
+            if (backIcon != null) {
+                backIcon.setColorFilter(getPrimaryColor(), PorterDuff.Mode.SRC_ATOP);
+            }
+            toolbar.setNavigationIcon(backIcon);
+            toolbar.setNavigationOnClickListener(view -> onBackPressed());
         }
     }
 
@@ -154,14 +175,13 @@ public class BaseActivity extends AppCompatActivity {
                 setTotalAmount(formattedAmount);
                 setOrderId(paymentInfo.getTransactionDetails().getOrderId());
             }
+            Logger.debug("ITEM DETAILS IS >>> "+paymentInfo.getItemDetails());
             if (paymentInfo.getItemDetails() != null) {
                 initTransactionDetail(paymentInfo.getItemDetails());
                 findViewById(R.id.background_dim).setOnClickListener(v -> displayOrHideItemDetails());
 
                 final LinearLayout amountContainer = findViewById(R.id.container_item_details);
-                amountContainer.setOnClickListener(v -> {
-                    displayOrHideItemDetails();
-                });
+                amountContainer.setOnClickListener(v -> displayOrHideItemDetails());
             }
         }
     }
