@@ -8,7 +8,6 @@ import com.midtrans.sdk.corekit.MidtransSdk;
 import com.midtrans.sdk.corekit.base.enums.Environment;
 import com.midtrans.sdk.corekit.base.enums.PaymentType;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.CheckoutTransaction;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.PaymentResponse;
 import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.uikit.base.callback.PaymentResult;
 
@@ -194,7 +193,7 @@ public class MidtransKit {
     public void startPaymentUiWithTransaction(
             @NonNull Activity context,
             @NonNull CheckoutTransaction checkoutTransaction,
-            @NonNull PaymentResult<PaymentResponse> callback
+            @NonNull PaymentResult callback
     ) {
         MidtransKitFlow.paymentWithTransactionFlow(context, checkoutTransaction, callback);
     }
@@ -202,27 +201,27 @@ public class MidtransKit {
     public void startPaymentUiWithToken(
             @NonNull Activity context,
             @NonNull String token,
-            @NonNull PaymentResult<PaymentResponse> callback
+            @NonNull PaymentResult callback
     ) {
         MidtransKitFlow.paymentWithTokenFlow(context, token, callback);
     }
 
-    public <T> void startDirectPaymentUiWithTransaction(
+    public void startDirectPaymentUiWithTransaction(
             @NonNull Activity context,
             @NonNull CheckoutTransaction checkoutTransaction,
             @NonNull @PaymentType String paymentType,
-            @NonNull PaymentResult<T> callback
+            @NonNull PaymentResult callback
     ) {
-        MidtransKitFlow.directPaymentWithTransactionFlow(context,checkoutTransaction,paymentType,callback);
+        MidtransKitFlow.directPaymentWithTransactionFlow(context, checkoutTransaction, paymentType, callback);
     }
 
-    public <T> void startDirectPaymentUiWithToken(
+    public void startDirectPaymentUiWithToken(
             @NonNull Activity context,
             @NonNull String token,
             @NonNull @PaymentType String paymentType,
-            @NonNull PaymentResult<T> callback
+            @NonNull PaymentResult callback
     ) {
-        MidtransKitFlow.directPaymentWithTokenFlow(context,token,paymentType,callback);
+        MidtransKitFlow.directPaymentWithTokenFlow(context, token, paymentType, callback);
     }
 
     private void initMidtransSdk() {
