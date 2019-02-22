@@ -26,6 +26,7 @@ import com.midtrans.sdk.uikit.base.enums.CreditCardType;
 import com.midtrans.sdk.uikit.base.enums.PaymentStatus;
 import com.midtrans.sdk.uikit.base.model.BankTransfer;
 import com.midtrans.sdk.uikit.base.model.PaymentResponse;
+import com.midtrans.sdk.uikit.view.banktransfer.result.OtherBankPaymentResultActivity;
 import com.midtrans.sdk.uikit.view.model.ItemViewDetails;
 import com.midtrans.sdk.uikit.view.model.PaymentMethodsModel;
 
@@ -154,7 +155,7 @@ public class PaymentListHelper {
                 break;
             case PaymentType.OTHER_VA:
                 try {
-                    MandiriBillResponse response = (MandiriBillResponse) data.getSerializableExtra(INTENT_DATA_CALLBACK);
+                    OtherBankTransferResponse response = (OtherBankTransferResponse) data.getSerializableExtra(INTENT_DATA_CALLBACK);
                     if (response != null) {
                         switch (response.getStatusCode()) {
                             case com.midtrans.sdk.corekit.utilities.Constants.STATUS_CODE_200:
