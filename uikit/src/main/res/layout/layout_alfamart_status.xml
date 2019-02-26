@@ -1,0 +1,194 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <com.midtrans.sdk.uikit.widgets.DefaultTextView
+        android:id="@+id/text_validity"
+        style="@style/OtherVaNotification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:id="@+id/barcode_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/sixteen_dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerInside"
+        android:visibility="gone" />
+
+    <com.midtrans.sdk.uikit.widgets.DefaultTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/twenty_four_dp"
+        android:layout_marginRight="@dimen/sixteen_dp"
+        android:layout_marginTop="@dimen/sixteen_dp"
+        android:text="@string/payment_code"
+        android:layout_gravity="center"
+        android:textColor="@color/black"
+        android:textSize="@dimen/secondary_text_size" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/sixteen_dp"
+        android:layout_marginTop="@dimen/sixteen_dp"
+        android:layout_marginRight="@dimen/sixteen_dp"
+        android:gravity="center">
+
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:id="@+id/text_payment_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/four_dp"
+            android:layout_marginRight="@dimen/four_dp"
+            android:textStyle="bold"
+            android:padding="@dimen/eight_dp"
+            android:textColor="@color/dark_blue"
+            android:textSize="@dimen/va_number_size" />
+
+        <com.midtrans.sdk.uikit.widgets.FancyButton
+            android:id="@+id/btn_copy_va"
+            style="@style/ButtonSecondaryTransparent"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:paddingLeft="@dimen/sixteen_dp"
+            android:paddingRight="@dimen/sixteen_dp"
+            android:visibility="visible"
+            app:fb_text="@string/copy" />
+    </LinearLayout>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/instruction_toggle"
+        style="@style/ButtonSecondaryExpandable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/sixteen_dp"
+        android:textAllCaps="true"
+        android:layout_marginRight="@dimen/sixteen_dp"
+        android:layout_marginTop="@dimen/sixteen_dp"
+        android:gravity="center_vertical"
+        android:text="@string/instruction" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/instruction_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/sixteen_dp"
+                android:text="@string/alfamart_instruction_step0"
+                android:textColor="@color/black"
+                android:textSize="@dimen/secondary_text_size"
+                android:paddingBottom="@dimen/four_dp"
+                android:paddingLeft="@dimen/sixteen_dp"
+                android:paddingRight="@dimen/sixteen_dp"
+                android:paddingTop="@dimen/four_dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/sixteen_dp"
+                android:background="@color/light_gray"
+                android:paddingBottom="@dimen/four_dp"
+                android:paddingLeft="@dimen/sixteen_dp"
+                android:paddingRight="@dimen/sixteen_dp"
+                android:paddingTop="@dimen/four_dp">
+
+                <TextView
+                    android:layout_width="@dimen/twenty_four_dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/number_instruction1" />
+
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/alfamart_instruction_done_step1"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/secondary_text_size" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="2dp"
+                android:paddingBottom="@dimen/four_dp"
+                android:paddingLeft="@dimen/sixteen_dp"
+                android:paddingRight="@dimen/sixteen_dp"
+                android:paddingTop="@dimen/four_dp">
+
+                <TextView
+                    android:layout_width="@dimen/twenty_four_dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/number_instruction2" />
+
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/alfamart_instruction_done_step2"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/secondary_text_size" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/light_gray"
+                android:lineSpacingExtra="2dp"
+                android:paddingBottom="@dimen/four_dp"
+                android:paddingLeft="@dimen/sixteen_dp"
+                android:paddingRight="@dimen/sixteen_dp"
+                android:paddingTop="@dimen/four_dp">
+
+                <TextView
+                    android:layout_width="@dimen/twenty_four_dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/number_instruction3" />
+
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/alfamart_instruction_done_step3"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/secondary_text_size" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="2dp"
+                android:paddingBottom="@dimen/four_dp"
+                android:paddingLeft="@dimen/sixteen_dp"
+                android:paddingRight="@dimen/sixteen_dp"
+                android:paddingTop="@dimen/four_dp">
+
+                <TextView
+                    android:layout_width="@dimen/twenty_four_dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/number_instruction4" />
+
+                <com.midtrans.sdk.uikit.widgets.DefaultTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/alfamart_instruction_done_step4"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/secondary_text_size" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

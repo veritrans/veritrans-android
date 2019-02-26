@@ -47,6 +47,7 @@ import com.midtrans.sdk.uikit.utilities.MessageUtil;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.views.akulaku.AkulakuActivity;
+import com.midtrans.sdk.uikit.views.alfamart.payment.AlfamartPaymentActivity;
 import com.midtrans.sdk.uikit.views.banktransfer.list.BankTransferListActivity;
 import com.midtrans.sdk.uikit.views.bca_klikbca.payment.KlikBcaPaymentActivity;
 import com.midtrans.sdk.uikit.views.bca_klikpay.BcaKlikPayPaymentActivity;
@@ -97,6 +98,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     private boolean isGopay = false;
     private boolean isDanamonOnline = false;
     private boolean isAkulaku = false;
+    private boolean isAlfamart = false;
     private boolean backButtonEnabled;
     private boolean isDeepLink;
 
@@ -144,6 +146,9 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         isGci = getIntent().getBooleanExtra(UserDetailsActivity.GIFT_CARD, false);
         isDanamonOnline = getIntent().getBooleanExtra(UserDetailsActivity.DANAMON_ONLINE, false);
         isAkulaku = getIntent().getBooleanExtra(UserDetailsActivity.AKULAKU, false);
+        isAlfamart = getIntent().getBooleanExtra(UserDetailsActivity.ALFAMART, false);
+
+        Logger.d("CLICK ALFAMART "+isAlfamart);
 
         midtransSDK = MidtransSDK.getInstance();
         initializeTheme();
@@ -742,6 +747,17 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             } else {
                 showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
             }
+        } else if (isAlfamart) {
+            if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_alfamart))) {
+                Intent alfamartIntent = new Intent(this, AlfamartPaymentActivity.class);
+                startActivityForResult(alfamartIntent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+                if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
+                        && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                    overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                }
+            } else {
+                showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
+            }
         } else {
             if (data.isEmpty()) {
                 showErrorAlertDialog(getString(R.string.message_payment_method_empty));
@@ -890,8 +906,16 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             }
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_akulaku))) {
             Intent akulakuIntent = new Intent(this, AkulakuActivity.class);
-            akulakuIntent.putExtra(DanamonOnlineActivity.USE_DEEP_LINK, isDeepLink);
+            akulakuIntent.putExtra(AkulakuActivity.USE_DEEP_LINK, isDeepLink);
             startActivityForResult(akulakuIntent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
+                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+            }
+        } else if (name.equalsIgnoreCase(getString(R.string.payment_method_alfamart))) {
+            Intent alfamartIntent = new Intent(this, AlfamartPaymentActivity.class);
+            alfamartIntent.putExtra(AlfamartPaymentActivity.USE_DEEP_LINK, isDeepLink);
+            startActivityForResult(alfamartIntent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
             if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                     && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
