@@ -5,13 +5,13 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.IndomaretPaymen
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.core.payment.ConvenienceStoreCharge;
 import com.midtrans.sdk.uikit.base.composer.BasePaymentPresenter;
-import com.midtrans.sdk.uikit.view.gopay.instruction.GopayInstructionContract;
+import com.midtrans.sdk.uikit.base.contract.BasePaymentContract;
 
-public class IndomaretInstructionPresenter extends BasePaymentPresenter<GopayInstructionContract> {
+public class IndomaretInstructionPresenter extends BasePaymentPresenter<BasePaymentContract> {
 
     private PaymentInfoResponse paymentInfoResponse;
 
-    IndomaretInstructionPresenter(GopayInstructionContract view, PaymentInfoResponse paymentInfoResponse) {
+    IndomaretInstructionPresenter(BasePaymentContract view, PaymentInfoResponse paymentInfoResponse) {
         super();
         this.view = view;
         this.paymentInfoResponse = paymentInfoResponse;
