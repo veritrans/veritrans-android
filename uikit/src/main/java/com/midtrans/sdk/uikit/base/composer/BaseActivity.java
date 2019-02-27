@@ -296,14 +296,6 @@ public class BaseActivity extends AppCompatActivity {
         }, 500);
     }
 
-    protected boolean isShowPaymentStatusView() {
-        if (MidtransKit.getInstance() == null) {
-            return false;
-        } else {
-            return MidtransKit.getInstance().getMidtransKitConfig().isShowPaymentStatus();
-        }
-    }
-
     protected void showOnErrorPaymentStatusMessage(Throwable error) {
         showOnErrorPaymentStatusMessage(error, null);
     }
