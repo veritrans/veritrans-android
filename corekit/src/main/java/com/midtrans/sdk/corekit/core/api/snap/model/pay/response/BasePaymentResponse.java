@@ -140,6 +140,8 @@ public class BasePaymentResponse implements Serializable {
     protected Long pointBalance;
     @SerializedName("point_balance_amount")
     protected String pointBalanceAmount;
+    @SerializedName("point_redeem_amount")
+    protected float pointRedeemAmount;
 
     /**
      * get gopay
@@ -276,5 +278,4 @@ public class BasePaymentResponse implements Serializable {
     public void setFinishRedirectUrl(String finishRedirectUrl) {
         this.finishRedirectUrl = finishRedirectUrl;
     }
-
 }
