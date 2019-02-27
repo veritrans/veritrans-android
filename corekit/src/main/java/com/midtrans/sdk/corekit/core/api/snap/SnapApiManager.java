@@ -29,6 +29,7 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriClickpay
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriEcashResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.PermataBankTransferResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.TelkomselCashResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.payment.PaymentStatusResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.point.PointResponse;
 
@@ -120,7 +121,7 @@ public class SnapApiManager extends BaseServiceManager {
                                                   MidtransCallback<PermataBankTransferResponse> callback) {
         if (isSnapTokenAvailable(callback, snapToken, apiService)) {
             CustomerDetailPayRequest customerDetails = new CustomerDetailPayRequest(fullName, email, phone);
-            PaymentRequest paymentRequest = new PaymentRequest(PaymentType.ECHANNEL, customerDetails);
+            PaymentRequest paymentRequest = new PaymentRequest(PaymentType.PERMATA_VA, customerDetails);
             Call<PermataBankTransferResponse> call = apiService.paymentBankTransferPermata(snapToken, paymentRequest);
             handleCall(call, callback);
         }
@@ -142,7 +143,7 @@ public class SnapApiManager extends BaseServiceManager {
                                                       MidtransCallback<MandiriBillResponse> callback) {
         if (isSnapTokenAvailable(callback, snapToken, apiService)) {
             CustomerDetailPayRequest customerDetails = new CustomerDetailPayRequest(fullName, email, phone);
-            PaymentRequest paymentRequest = new PaymentRequest(PaymentType.PERMATA_VA, customerDetails);
+            PaymentRequest paymentRequest = new PaymentRequest(PaymentType.ECHANNEL, customerDetails);
             Call<MandiriBillResponse> call = apiService.paymentBankTransferMandiriBill(snapToken, paymentRequest);
             handleCall(call, callback);
         }
@@ -384,6 +385,19 @@ public class SnapApiManager extends BaseServiceManager {
                               MidtransCallback<PointResponse> callback) {
         if (isSnapTokenAvailable(callback, snapToken, apiService)) {
             Call<PointResponse> basePaymentResponseCall = apiService.getBanksPoint(snapToken, cardToken);
+            handleCall(basePaymentResponseCall, callback);
+        }
+    }
+
+    /**
+     * Get payment status
+     *
+     * @param snapToken snap token
+     */
+    public void getPaymentStatus(String snapToken,
+                              MidtransCallback<PaymentStatusResponse> callback) {
+        if (isSnapTokenAvailable(callback, snapToken, apiService)) {
+            Call<PaymentStatusResponse> basePaymentResponseCall = apiService.getPaymentStatus(snapToken);
             handleCall(basePaymentResponseCall, callback);
         }
     }

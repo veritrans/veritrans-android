@@ -42,6 +42,9 @@
     <color name="dim_background">#80323232</color>
 
     <color name="promoBadge">#ffd700</color>
+    <color name="promoAmount">#d99906</color>
+
+    <color name="bg_notification">#FEF3C7</color>
 
     <!--SNAP COLOR-->
 

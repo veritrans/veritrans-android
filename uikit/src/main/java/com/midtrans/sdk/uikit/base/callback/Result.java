@@ -6,16 +6,16 @@ import com.midtrans.sdk.uikit.base.enums.PaymentStatus;
 public class Result {
     @PaymentStatus
     private String paymentStatus;
-    private String paymentMessage;
     @PaymentType
     private String paymentType;
 
     public Result() {
     }
 
-    public Result(@PaymentStatus String paymentStatus, String paymentMessage, @PaymentType String paymentType) {
+    public Result(
+            @PaymentStatus String paymentStatus,
+            @PaymentType String paymentType) {
         this.paymentStatus = paymentStatus;
-        this.paymentMessage = paymentMessage;
         this.paymentType = paymentType;
     }
 
@@ -25,14 +25,6 @@ public class Result {
 
     public void setPaymentStatus(@PaymentStatus String paymentStatus) {
         this.paymentStatus = paymentStatus;
-    }
-
-    public String getPaymentMessage() {
-        return paymentMessage;
-    }
-
-    public void setPaymentMessage(String paymentMessage) {
-        this.paymentMessage = paymentMessage;
     }
 
     public String getPaymentType() {

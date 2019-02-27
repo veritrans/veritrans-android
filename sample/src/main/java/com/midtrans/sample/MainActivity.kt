@@ -7,12 +7,12 @@ import com.midtrans.sdk.corekit.base.callback.MidtransCallback
 import com.midtrans.sdk.corekit.base.enums.*
 import com.midtrans.sdk.corekit.base.enums.Currency
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.CheckoutTransaction
+import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.Item
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.customer.Address
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.customer.CustomerDetails
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specific.creditcard.CreditCard
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.response.CheckoutWithTransactionResponse
 import com.midtrans.sdk.corekit.core.api.midtrans.model.registration.CreditCardTokenizeResponse
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.PaymentResponse
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse
 import com.midtrans.sdk.corekit.core.payment.CreditCardCharge
 import com.midtrans.sdk.corekit.utilities.InstallationHelper
@@ -20,6 +20,7 @@ import com.midtrans.sdk.corekit.utilities.Logger
 import com.midtrans.sdk.uikit.MidtransKit
 import com.midtrans.sdk.uikit.base.callback.PaymentResult
 import com.midtrans.sdk.uikit.base.callback.Result
+import com.midtrans.sdk.uikit.base.model.PaymentResponse
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
@@ -30,9 +31,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         text_view_test.setOnClickListener {
+            val random = (Math.random() * 150 + 1).toInt()
             val checkoutTransaction = CheckoutTransaction
                 .builder(
-                    InstallationHelper.generatedRandomID(this),
+                    InstallationHelper.generatedRandomID(this) + "31" + random,
                     20000.0
                 )
                 .setCurrency(Currency.IDR)
@@ -66,7 +68,6 @@ class MainActivity : AppCompatActivity() {
                                 .setCity("City")
                                 .setPostalCode("12345")
                                 .setPhone("08123456789")
-                                .setCountryCode("IDR")
                                 .build()
                         )
                         .setShippingAddress(
@@ -78,11 +79,11 @@ class MainActivity : AppCompatActivity() {
                                 .setCity("City")
                                 .setPostalCode("12345")
                                 .setPhone("08123456789")
-                                .setCountryCode("IDR")
                                 .build()
                         )
                         .build()
                 )
+                .setCheckoutItems(mutableListOf(Item("1", 20000.0, 1, "sabun")))
                 .build()
 
             MidtransKit
@@ -90,9 +91,9 @@ class MainActivity : AppCompatActivity() {
                 .startPaymentUiWithTransaction(
                     this,
                     checkoutTransaction,
-                    object : PaymentResult<PaymentResponse> {
+                    object : PaymentResult {
                         override fun onPaymentFinished(result: Result?, response: PaymentResponse?) {
-                            Logger.debug("RESULT IS >>> ${result?.paymentMessage}")
+                            Logger.debug("RESULT IS >>> ${result?.paymentType} AND ${result?.paymentStatus} >>> ${response?.bcaVaNumber} || ${response?.bniVaNumber} || ${response?.permataVaNumber} || ${response?.billKey}")
                         }
 
                         override fun onFailed(throwable: Throwable?) {

@@ -10,6 +10,7 @@ import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.Checkou
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.response.CheckoutWithTransactionResponse;
 import com.midtrans.sdk.corekit.core.api.midtrans.MidtransApiManager;
 import com.midtrans.sdk.corekit.core.api.snap.SnapApiManager;
+import com.midtrans.sdk.corekit.core.api.snap.model.payment.PaymentStatusResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.point.PointResponse;
 import com.midtrans.sdk.corekit.utilities.Logger;
@@ -288,6 +289,20 @@ public class MidtransSdk {
     ) {
         if (isValidForNetworkCall(context, callback)) {
             snapApiManager.getBanksPoint(token, cardToken, callback);
+        }
+    }
+
+    /**
+     * It will get payment status of transaction
+     *
+     * @param callback bni point callback instance
+     */
+    public void getPaymentStatus(
+            final String token,
+            final MidtransCallback<PaymentStatusResponse> callback
+    ) {
+        if (isValidForNetworkCall(context, callback)) {
+            snapApiManager.getPaymentStatus(token, callback);
         }
     }
 

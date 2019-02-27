@@ -41,4 +41,12 @@ public class MandiriBillResponse extends BasePaymentResponse {
     public void setBillPaymentExpiration(String billPaymentExpiration) {
         this.billPaymentExpiration = billPaymentExpiration;
     }
+
+    public String getPdfUrl() {
+        return pdfUrl;
+    }
+
+    public void setPdfUrl(String pdfUrl) {
+        this.pdfUrl = pdfUrl;
+    }
 }

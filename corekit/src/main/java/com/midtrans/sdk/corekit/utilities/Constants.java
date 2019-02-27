@@ -61,7 +61,7 @@ public class Constants {
     /**
      * result code used for payment transfer activities
      */
-    public static final int RESULT_CODE_PAYMENT_TRANSFER = 5102;
+    public static final int RESULT_CODE_PAYMENT = 5102;
     public static final long FADE_IN_FORM_TIME = 300;
 
     /**

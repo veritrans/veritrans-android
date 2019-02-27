@@ -5,7 +5,6 @@ import android.content.Intent;
 
 import com.midtrans.sdk.corekit.base.enums.PaymentType;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.CheckoutTransaction;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.PaymentResponse;
 import com.midtrans.sdk.uikit.base.callback.PaymentResult;
 import com.midtrans.sdk.uikit.utilities.MidtransKitHelper;
 import com.midtrans.sdk.uikit.view.PaymentListActivity;
@@ -32,7 +31,6 @@ public class MidtransKitFlow {
     public static final String INTENT_EXTRA_CIMB_CLICKS = "intent.extra.cimbclicks";
     public static final String INTENT_EXTRA_BRI_EPAY = "intent.extra.briepay";
     public static final String INTENT_EXTRA_TELKOMSEL_CASH = "intent.extra.tcash";
-    public static final String INTENT_EXTRA_INDOSAT_DOMPETKU = "intent.extra.indosatdompetku";
     public static final String INTENT_EXTRA_INDOMARET = "intent.extra.indomaret";
     public static final String INTENT_EXTRA_DANAMON_ONLINE = "intent.extra.danamon_online";
     public static final String INTENT_EXTRA_AKULAKU = "intent.extra.akulaku";
@@ -41,7 +39,7 @@ public class MidtransKitFlow {
     static void paymentWithTransactionFlow(
             Activity context,
             CheckoutTransaction checkoutTransaction,
-            PaymentResult<PaymentResponse> callback
+            PaymentResult callback
     ) {
         if (MidtransKitHelper.isValidForStartMidtransKit(context, checkoutTransaction, callback)) {
             Intent intent = new Intent(context, PaymentListActivity.class);
@@ -56,7 +54,7 @@ public class MidtransKitFlow {
     static void paymentWithTokenFlow(
             Activity context,
             String token,
-            PaymentResult<PaymentResponse> callback
+            PaymentResult callback
     ) {
         if (MidtransKitHelper.isValidForStartMidtransKit(context, token, callback)) {
             Intent intent = new Intent(context, PaymentListActivity.class);
@@ -68,11 +66,11 @@ public class MidtransKitFlow {
         }
     }
 
-    static <T> void directPaymentWithTransactionFlow(
+    static void directPaymentWithTransactionFlow(
             Activity context,
             CheckoutTransaction checkoutTransaction,
             @PaymentType String paymentType,
-            PaymentResult<T> callback
+            PaymentResult callback
     ) {
         if (MidtransKitHelper.isValidForStartMidtransKit(context, checkoutTransaction, callback)) {
             Intent intent = new Intent(context, PaymentListActivity.class);
@@ -83,11 +81,11 @@ public class MidtransKitFlow {
         }
     }
 
-    static <T> void directPaymentWithTokenFlow(
+    static void directPaymentWithTokenFlow(
             Activity context,
             String token,
             @PaymentType String paymentType,
-            PaymentResult<T> callback
+            PaymentResult callback
     ) {
         if (MidtransKitHelper.isValidForStartMidtransKit(context, token, callback)) {
             Intent intent = new Intent(context, PaymentListActivity.class);
