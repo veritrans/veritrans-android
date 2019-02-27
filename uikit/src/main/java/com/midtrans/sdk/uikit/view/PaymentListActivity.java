@@ -542,19 +542,18 @@ public class PaymentListActivity extends BaseActivity {
             if (resultCode == RESULT_OK) {
                 PaymentListHelper.setActivityResult(resultCode, data, callback);
                 onBackPressed();
-            } else if (resultCode == RESULT_CANCELED) {
-                callback.onPaymentFinished(new Result(PaymentStatus.STATUS_CANCEL, null), null);
             }
         } else {
             Logger.debug("failed to send result back " + requestCode);
         }
     }
 
-
     @Override
     public void onBackPressed() {
         if (isThrowableFromNetworkRequest) {
             setOnFailedCallback(throwableFromNetworkRequest);
+        } else {
+            callback.onPaymentFinished(new Result(PaymentStatus.STATUS_CANCEL, null), null);
         }
         super.onBackPressed();
     }
