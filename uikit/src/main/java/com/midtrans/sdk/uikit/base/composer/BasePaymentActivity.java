@@ -1,7 +1,6 @@
 package com.midtrans.sdk.uikit.base.composer;
 
 import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.tabs.TabLayout;
 
 import android.content.Intent;
 import android.text.TextUtils;
@@ -10,6 +9,7 @@ import android.view.View;
 import com.koushikdutta.ion.Ion;
 import com.midtrans.sdk.corekit.base.enums.PaymentType;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.GopayResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.IndomaretPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.merchantdata.MerchantPreferences;
 import com.midtrans.sdk.uikit.R;
@@ -20,7 +20,6 @@ import com.midtrans.sdk.uikit.view.PaymentListActivity;
 import com.midtrans.sdk.uikit.view.banktransfer.result.BankTransferResultPresenter;
 import com.midtrans.sdk.uikit.view.status.PaymentStatusActivity;
 import com.midtrans.sdk.uikit.widget.FancyButton;
-import com.midtrans.sdk.uikit.widget.MagicViewPager;
 
 import androidx.annotation.LayoutRes;
 
@@ -31,8 +30,6 @@ public abstract class BasePaymentActivity extends BaseActivity {
     private static final int PAGE_MARGIN = 20;
     private static final int CURRENT_POSITION = -1;
 
-    protected TabLayout tabInstruction;
-    protected MagicViewPager pagerInstruction;
     protected FancyButton buttonCompletePayment;
     protected BankTransferResultPresenter presenter;
     protected PaymentInfoResponse paymentInfoResponse;
@@ -46,6 +43,7 @@ public abstract class BasePaymentActivity extends BaseActivity {
         initToolbarAndView();
         initMerchantPreferences();
         initItemDetails(paymentInfoResponse);
+        initTheme();
     }
 
     protected abstract void initTheme();
@@ -90,6 +88,10 @@ public abstract class BasePaymentActivity extends BaseActivity {
             GopayResponse gopayResponse = (GopayResponse) response;
             data.putExtra(Constants.INTENT_DATA_CALLBACK, gopayResponse);
             data.putExtra(Constants.INTENT_DATA_TYPE, PaymentType.GOPAY);
+        } else if (response instanceof IndomaretPaymentResponse) {
+            IndomaretPaymentResponse indomaretResponse = (IndomaretPaymentResponse) response;
+            data.putExtra(Constants.INTENT_DATA_CALLBACK, indomaretResponse);
+            data.putExtra(Constants.INTENT_DATA_TYPE, PaymentType.INDOMARET);
         }
         setResult(resultCode, data);
         super.onBackPressed();
