@@ -1,5 +1,7 @@
 package com.midtrans.sdk.uikit.utilities;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
@@ -69,6 +71,17 @@ public class ContextHelper {
                 cachedFontMap.put(fontName, Typeface.DEFAULT);
                 return Typeface.DEFAULT;
             }
+        }
+    }
+
+    public static boolean copyToClipboard(Context context, String label, String text) {
+        ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText(label, text);
+        if (clipboard != null) {
+            clipboard.setPrimaryClip(clip);
+            return true;
+        } else {
+            return false;
         }
     }
 }
