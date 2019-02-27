@@ -15,6 +15,7 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.GopayResponse;
 import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.base.composer.BasePaymentActivity;
+import com.midtrans.sdk.uikit.utilities.Constants;
 import com.midtrans.sdk.uikit.utilities.DateTimeHelper;
 import com.midtrans.sdk.uikit.widget.BoldTextView;
 import com.midtrans.sdk.uikit.widget.DefaultTextView;
@@ -32,12 +33,9 @@ import androidx.appcompat.app.AlertDialog;
 
 public class GopayResultActivity extends BasePaymentActivity {
 
-    public static final String EXTRA_PAYMENT_STATUS = "extra.status";
     private static final String TAG = GopayResultActivity.class.getSimpleName();
     private final int DEFAULT_EXPIRATION_IN_MINUTE = 15;
-    private FancyButton buttonPrimary;
     private BoldTextView expirationText;
-    private SemiBoldTextView textTitle;
     private BoldTextView merchantName;
     private ImageView qrCodeContainer;
     private FancyButton qrCodeRefresh;
@@ -52,21 +50,20 @@ public class GopayResultActivity extends BasePaymentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_ewallet_gopay_result);
         bindData();
-        initTheme();
         initCompletePaymentButton();
     }
 
     protected void initCompletePaymentButton() {
-        buttonPrimary.setOnClickListener(view -> onBackPressed());
+        buttonCompletePayment.setOnClickListener(view -> onBackPressed());
     }
 
     @Override
     protected void initTheme() {
-        setPrimaryBackgroundColor(buttonPrimary);
+        setPrimaryBackgroundColor(buttonCompletePayment);
     }
 
     private void bindData() {
-        response = (GopayResponse) getIntent().getSerializableExtra(EXTRA_PAYMENT_STATUS);
+        response = (GopayResponse) getIntent().getSerializableExtra(Constants.INTENT_EXTRA_PAYMENT_STATUS);
         if (response != null) {
             showProgressLayout();
 
@@ -115,10 +112,10 @@ public class GopayResultActivity extends BasePaymentActivity {
                 }
             }
 
-            buttonPrimary.setText(getString(R.string.done));
-            buttonPrimary.setTextBold();
+            buttonCompletePayment.setText(getString(R.string.done));
+            buttonCompletePayment.setTextBold();
         }
-        textTitle.setText(getString(R.string.gopay_status_title));
+        setTitle(getString(R.string.gopay_status_title));
     }
 
     private boolean isExpirationTimeNotAvailable(GopayResponse response) {
@@ -156,13 +153,6 @@ public class GopayResultActivity extends BasePaymentActivity {
         }
 
         return endMillis - startMillis;
-    }
-
-    @Override
-    public void initToolbarAndView() {
-        super.initToolbarAndView();
-        textTitle = findViewById(R.id.text_view_page_title);
-        buttonPrimary = findViewById(R.id.button_primary);
     }
 
     /**
