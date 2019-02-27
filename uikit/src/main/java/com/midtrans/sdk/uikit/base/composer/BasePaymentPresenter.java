@@ -8,7 +8,6 @@ import com.midtrans.sdk.uikit.base.contract.BaseContract;
 public class BasePaymentPresenter<V extends BaseContract> extends BasePresenter<V> {
 
     private final String BACK_BUTTON_NAME = "Back";
-    protected PaymentResponse paymentInfoResponse;
     private String currency;
 
     public BasePaymentPresenter() {
@@ -23,10 +22,6 @@ public class BasePaymentPresenter<V extends BaseContract> extends BasePresenter<
     public boolean isShowPaymentStatusPage() {
         return getMidtransKit() != null && getMidtransKit().getMidtransKitConfig() != null
                 && getMidtransKit().getMidtransKitConfig().isShowPaymentStatus();
-    }
-
-    public PaymentResponse getTransactionResponse() {
-        return paymentInfoResponse;
     }
 
     public String getCurrency() {
