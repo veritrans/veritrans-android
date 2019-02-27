@@ -30,10 +30,10 @@ import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.base.composer.BaseActivity;
 import com.midtrans.sdk.uikit.utilities.Constants;
 import com.midtrans.sdk.uikit.utilities.PaymentListHelper;
+import com.midtrans.sdk.uikit.view.PaymentListActivity;
 import com.midtrans.sdk.uikit.view.banktransfer.instruction.adapter.ListBankAdapter;
 import com.midtrans.sdk.uikit.view.banktransfer.instruction.instruction.adapter.InstructionPagerAdapter;
 import com.midtrans.sdk.uikit.view.banktransfer.instruction.instruction.fragment.InstructionVaOtherFragment;
-import com.midtrans.sdk.uikit.view.banktransfer.list.BankTransferListActivity;
 import com.midtrans.sdk.uikit.view.banktransfer.result.BankPaymentResultActivity;
 import com.midtrans.sdk.uikit.view.banktransfer.result.MandiriBillPaymentResultActivity;
 import com.midtrans.sdk.uikit.view.banktransfer.result.OtherBankPaymentResultActivity;
@@ -419,7 +419,7 @@ public class BankTransferInstructionActivity extends BaseActivity implements Ban
     @Override
     public <T> void onPaymentSuccess(T response) {
         Intent intentNormalBank = new Intent(this, BankPaymentResultActivity.class);
-        intentNormalBank.putExtra(BankTransferListActivity.EXTRA_PAYMENT_INFO, paymentInfoResponse);
+        intentNormalBank.putExtra(PaymentListActivity.EXTRA_PAYMENT_INFO, paymentInfoResponse);
         intentNormalBank.putExtra(BankPaymentResultActivity.EXTRA_BANK_TYPE, paymentType);
         if (response instanceof PermataBankTransferResponse) {
             PermataBankTransferResponse paymentResponse = (PermataBankTransferResponse) response;
@@ -436,7 +436,7 @@ public class BankTransferInstructionActivity extends BaseActivity implements Ban
         } else if (response instanceof MandiriBillResponse) {
             MandiriBillResponse paymentResponse = (MandiriBillResponse) response;
             Intent mandiriBill = new Intent(this, MandiriBillPaymentResultActivity.class);
-            mandiriBill.putExtra(BankTransferListActivity.EXTRA_PAYMENT_INFO, paymentInfoResponse);
+            mandiriBill.putExtra(PaymentListActivity.EXTRA_PAYMENT_INFO, paymentInfoResponse);
             mandiriBill.putExtra(BankPaymentResultActivity.EXTRA_BANK_TYPE, paymentType);
             mandiriBill.putExtra(BankPaymentResultActivity.EXTRA_PAYMENT_RESULT_MANDIRI, paymentResponse);
             startActivityForResult(mandiriBill, Constants.INTENT_CODE_PAYMENT_STATUS);
@@ -445,7 +445,7 @@ public class BankTransferInstructionActivity extends BaseActivity implements Ban
             try {
                 OtherBankTransferResponse paymentResponse = Helper.parseToModel(responseFromServer.string(), OtherBankTransferResponse.class);
                 Intent otherBank = new Intent(this, OtherBankPaymentResultActivity.class);
-                otherBank.putExtra(BankTransferListActivity.EXTRA_PAYMENT_INFO, paymentInfoResponse);
+                otherBank.putExtra(PaymentListActivity.EXTRA_PAYMENT_INFO, paymentInfoResponse);
                 otherBank.putExtra(BankPaymentResultActivity.EXTRA_BANK_TYPE, paymentType);
                 otherBank.putExtra(BankPaymentResultActivity.EXTRA_PAYMENT_RESULT_OTHER, paymentResponse);
                 startActivityForResult(otherBank, Constants.INTENT_CODE_PAYMENT_STATUS);
@@ -460,7 +460,7 @@ public class BankTransferInstructionActivity extends BaseActivity implements Ban
     @Override
     public void onPaymentError(Throwable error) {
         hideProgressLayout();
-        showOnErrorPaymentStatusmessage(error);
+        showOnErrorPaymentStatusMessage(error);
     }
 
     @Override
