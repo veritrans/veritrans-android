@@ -42,4 +42,15 @@ public class CreditCardResponse extends BasePaymentResponse {
         this.cardType = cardType;
     }
 
+    public Long getPointBalance() {
+        return pointBalance;
+    }
+
+    public String getPointBalanceAmount() {
+        return pointBalanceAmount;
+    }
+
+    public float getPointRedeemAmount() {
+        return pointRedeemAmount;
+    }
 }
