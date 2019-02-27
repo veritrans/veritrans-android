@@ -4,12 +4,6 @@ public class Constants {
 
     public static final String TAG = "MidtransSdk";
 
-    /**
-     * Used for returning payment result and payment type
-     */
-    public final static String INTENT_DATA_CALLBACK = "intent.data.callback";
-    public final static String INTENT_DATA_TYPE = "intent.data.type";
-
     public static final String USER_AGENT = "User-Agent";
     public static final String APPLICATION_JSON_FORMAT = "application/json";
     public static final String AUTHORIZATION_HEADER = "Authentication";
@@ -67,7 +61,7 @@ public class Constants {
     /**
      * result code used for payment transfer activities
      */
-    public static final int RESULT_CODE_PAYMENT_TRANSFER = 5102;
+    public static final int RESULT_CODE_PAYMENT = 5102;
     public static final long FADE_IN_FORM_TIME = 300;
 
     /**

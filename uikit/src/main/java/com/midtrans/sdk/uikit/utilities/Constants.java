@@ -4,6 +4,12 @@ public class Constants {
 
     public static final int MAX_ATTEMPT = 2;
 
+    /**
+     * Used for returning payment result and payment type
+     */
+    public final static String INTENT_DATA_CALLBACK = "intent.data.callback";
+    public final static String INTENT_DATA_TYPE = "intent.data.type";
+
     // intent request code
     public static final int INTENT_CARD_DETAILS = 501;
     public static final int INTENT_RESULT_DELETE_CARD = 503;
@@ -14,10 +20,11 @@ public class Constants {
     public static final int INTENT_CODE_3DS_BANK_POINT = 104;
     public static final int INTENT_CODE_PAYMENT_STATUS = 210;
     public static final int INTENT_CODE_PAYMENT = 108;
+    public static final int INTENT_CODE_PAYMENT_RESULT = 109;
     public static final int INTENT_VERIFICATION = 110;
     public static final int INTENT_WEBVIEW_PAYMENT = 111;
     public static final int INTENT_CODE_GOPAY = 345;
-
+    public static final int RESULT_CODE_PAYMENT_TRANSFER = 434;
 
     public static final String KEY_USER_DETAILS = "user_details";
 
