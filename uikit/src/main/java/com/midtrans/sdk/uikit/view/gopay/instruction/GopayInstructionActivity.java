@@ -59,7 +59,7 @@ public class GopayInstructionActivity extends BasePaymentActivity implements Gop
         if (isTablet) {
             stub.setLayoutResource(R.layout.layout_payment_ewallet_gopay_tablet);
         } else {
-            stub.setLayoutResource(isGojekInstalled ? R.layout.layout_payment_gopay : R.layout.layout_payment_ewallet_gopay_install);
+            stub.setLayoutResource(isGojekInstalled ? R.layout.layout_payment_ewallet_gopay : R.layout.layout_payment_ewallet_gopay_install);
         }
         stub.inflate();
         buttonPrimaryLayout = findViewById(R.id.layout_primary_button);
@@ -202,7 +202,7 @@ public class GopayInstructionActivity extends BasePaymentActivity implements Gop
     }
 
     private void setCallbackOrSendToStatusPage() {
-        if (isShowPaymentStatusView()) {
+        if (presenter.isShowPaymentStatusPage()) {
             startResultActivity(Constants.INTENT_CODE_PAYMENT_RESULT, PaymentListHelper.convertTransactionStatus(gopayResponse));
         } else {
             finishPayment(RESULT_OK, gopayResponse);
