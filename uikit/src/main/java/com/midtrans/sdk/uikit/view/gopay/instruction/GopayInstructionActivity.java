@@ -225,7 +225,7 @@ public class GopayInstructionActivity extends BasePaymentActivity implements Gop
                     Intent intent = new Intent(this, GopayResultActivity.class);
                     intent.putExtra(Constants.INTENT_EXTRA_PAYMENT_STATUS, gopayResponse);
                     intent.putExtra(PaymentListActivity.EXTRA_PAYMENT_INFO, paymentInfoResponse);
-                    startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT_STATUS);
+                    startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT_RESULT);
                 } else {
                     isAlreadyGotResponse = true;
                     openDeepLink(gopayResponse.getDeeplinkUrl());
