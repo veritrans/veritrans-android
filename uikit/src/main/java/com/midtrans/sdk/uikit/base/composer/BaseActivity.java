@@ -319,10 +319,14 @@ public class BaseActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        MidtransKitConfig midtransKitConfig = MidtransKit.getInstance().getMidtransKitConfig();
-        if (midtransKitConfig != null && midtransKitConfig.isEnabledAnimation()) {
-            overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
+        if (isDetailShown) {
+            displayOrHideItemDetails();
+        } else {
+            super.onBackPressed();
+            MidtransKitConfig midtransKitConfig = MidtransKit.getInstance().getMidtransKitConfig();
+            if (midtransKitConfig != null && midtransKitConfig.isEnabledAnimation()) {
+                overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
+            }
         }
     }
 }
