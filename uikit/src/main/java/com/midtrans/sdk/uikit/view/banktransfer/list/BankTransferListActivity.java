@@ -11,12 +11,12 @@ import com.koushikdutta.ion.Ion;
 import com.midtrans.sdk.corekit.base.enums.PaymentType;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.merchantdata.MerchantPreferences;
-import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.uikit.MidtransKitFlow;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.base.composer.BaseActivity;
 import com.midtrans.sdk.uikit.base.model.BankTransfer;
 import com.midtrans.sdk.uikit.utilities.Constants;
+import com.midtrans.sdk.uikit.view.PaymentListActivity;
 import com.midtrans.sdk.uikit.view.banktransfer.instruction.BankTransferInstructionActivity;
 import com.midtrans.sdk.uikit.view.banktransfer.list.adapter.BankTransferListAdapter;
 import com.midtrans.sdk.uikit.view.banktransfer.list.model.EnabledBankTransfer;
@@ -31,7 +31,6 @@ import androidx.recyclerview.widget.RecyclerView;
 public class BankTransferListActivity extends BaseActivity {
 
     public static final String EXTRA_BANK_LIST = "extra.bank.list";
-    public static final String EXTRA_PAYMENT_INFO = "extra.payment.info";
 
     private RecyclerView containerBankTransfers;
     private TextView merchantNameInToolbar;
@@ -78,7 +77,7 @@ public class BankTransferListActivity extends BaseActivity {
      */
     @SuppressWarnings("unchecked")
     private void getIntentData() {
-        paymentInfo = (PaymentInfoResponse) getIntent().getSerializableExtra(EXTRA_PAYMENT_INFO);
+        paymentInfo = (PaymentInfoResponse) getIntent().getSerializableExtra(PaymentListActivity.EXTRA_PAYMENT_INFO);
         enabledBankTransfer = (EnabledBankTransfer) getIntent().getSerializableExtra(EXTRA_BANK_LIST);
         isDeepLink = getIntent().getBooleanExtra(USE_DEEP_LINK, false);
         presenter = new BankTransferListPresenter(this, enabledBankTransfer);
