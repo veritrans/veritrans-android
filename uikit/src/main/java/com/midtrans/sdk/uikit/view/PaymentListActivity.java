@@ -39,6 +39,7 @@ import com.midtrans.sdk.uikit.view.adapter.PaymentMethodsAdapter;
 import com.midtrans.sdk.uikit.view.banktransfer.list.BankTransferListActivity;
 import com.midtrans.sdk.uikit.view.banktransfer.list.model.EnabledBankTransfer;
 import com.midtrans.sdk.uikit.view.gopay.instruction.GopayInstructionActivity;
+import com.midtrans.sdk.uikit.view.indomaret.instruction.IndomaretInstructionActivity;
 import com.midtrans.sdk.uikit.view.model.ItemViewDetails;
 import com.midtrans.sdk.uikit.view.model.PaymentMethodsModel;
 import com.midtrans.sdk.uikit.widget.BoldTextView;
@@ -418,8 +419,13 @@ public class PaymentListActivity extends BaseActivity {
                 break;
             case PaymentType.MANDIRI_CLICKPAY:
                 break;
-            case PaymentType.INDOMARET:
+            case PaymentType.INDOMARET: {
+                Intent intent = new Intent(this, IndomaretInstructionActivity.class);
+                intent.putExtra(EXTRA_PAYMENT_INFO, response);
+                intent.putExtra(BasePaymentActivity.EXTRA_PAYMENT_TYPE, PaymentType.INDOMARET);
+                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
                 break;
+            }
             case PaymentType.TELKOMSEL_CASH:
                 break;
             case PaymentType.MANDIRI_ECASH:

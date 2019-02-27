@@ -10,6 +10,7 @@ import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optiona
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaBankTransferReponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BniBankTransferResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.GopayResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.IndomaretPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriBillResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.OtherBankTransferResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.PermataBankTransferResponse;
@@ -166,7 +167,7 @@ public class PaymentListHelper {
                             setCallback(callback, PaymentStatus.STATUS_INVALID, PaymentType.ECHANNEL, response);
                         }
                     } else {
-                        setCallback(callback, PaymentStatus.STATUS_CANCEL, PaymentType.PERMATA_VA, response);
+                        setCallback(callback, PaymentStatus.STATUS_CANCEL, PaymentType.ECHANNEL, response);
                     }
                 } catch (RuntimeException e) {
                     Logger.error("onActivityResult:" + e.getMessage());
@@ -222,7 +223,35 @@ public class PaymentListHelper {
                             setCallback(callback, PaymentStatus.STATUS_INVALID, PaymentType.GOPAY, response);
                         }
                     } else {
-                        setCallback(callback, PaymentStatus.STATUS_CANCEL, PaymentType.BCA_VA, response);
+                        setCallback(callback, PaymentStatus.STATUS_CANCEL, PaymentType.GOPAY, response);
+                    }
+                } catch (RuntimeException e) {
+                    Logger.error("onActivityResult:" + e.getMessage());
+                    setFailedCallback(callback, e.getMessage());
+                    return;
+                }
+                break;
+            case PaymentType.INDOMARET:
+                try {
+                    IndomaretPaymentResponse response = (IndomaretPaymentResponse) data.getSerializableExtra(Constants.INTENT_DATA_CALLBACK);
+                    if (resultCode == Activity.RESULT_OK) {
+                        if (response != null) {
+                            switch (response.getStatusCode()) {
+                                case com.midtrans.sdk.corekit.utilities.Constants.STATUS_CODE_200:
+                                    setCallback(callback, PaymentStatus.STATUS_SUCCESS, PaymentType.INDOMARET, response);
+                                    break;
+                                case Constants.STATUS_CODE_201:
+                                    setCallback(callback, PaymentStatus.STATUS_PENDING, PaymentType.INDOMARET, response);
+                                    break;
+                                default:
+                                    setCallback(callback, PaymentStatus.STATUS_FAILED, PaymentType.INDOMARET, response);
+                                    break;
+                            }
+                        } else {
+                            setCallback(callback, PaymentStatus.STATUS_INVALID, PaymentType.INDOMARET, response);
+                        }
+                    } else {
+                        setCallback(callback, PaymentStatus.STATUS_CANCEL, PaymentType.INDOMARET, response);
                     }
                 } catch (RuntimeException e) {
                     Logger.error("onActivityResult:" + e.getMessage());
@@ -356,6 +385,25 @@ public class PaymentListHelper {
                     .setGopayExpiration(rawResponse.getGopayExpiration())
                     .setGopayExpirationRaw(rawResponse.getGopayExpirationRaw())
                     .setFraudStatus(rawResponse.getFraudStatus())
+                    .build();
+            return paymentResponse;
+        }else if (response instanceof IndomaretPaymentResponse) {
+            IndomaretPaymentResponse rawResponse = (IndomaretPaymentResponse) response;
+            paymentResponse = PaymentResponse
+                    .builder(
+                            rawResponse.getStatusCode(),
+                            rawResponse.getStatusMessage(),
+                            rawResponse.getTransactionId(),
+                            rawResponse.getOrderId(),
+                            rawResponse.getGrossAmount(),
+                            rawResponse.getPaymentType(),
+                            rawResponse.getTransactionTime(),
+                            rawResponse.getTransactionStatus()
+                    )
+                    .setPdfUrl(rawResponse.getPdfUrl())
+                    .setPaymentCode(rawResponse.getPaymentCode())
+                    .setIndomaretExpireTime(rawResponse.getIndomaretExpireTime())
+                    .setStore(rawResponse.getStore())
                     .build();
             return paymentResponse;
         }
