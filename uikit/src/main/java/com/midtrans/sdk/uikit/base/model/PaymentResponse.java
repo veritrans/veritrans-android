@@ -314,6 +314,7 @@ public class PaymentResponse extends BasePaymentResponse {
         private String maskedCard;
         private String bank;
         private String cardType;
+        private float pointRedeemAmount;
 
         public Builder(
                 String statusCode,
@@ -515,6 +516,11 @@ public class PaymentResponse extends BasePaymentResponse {
             return this;
         }
 
+        public Builder setPointRedeemAmount(float pointRedeemAmount) {
+            this.pointRedeemAmount = pointRedeemAmount;
+            return this;
+        }
+
         public PaymentResponse build() {
             INSTANCE = new PaymentResponse(
                     statusCode,
@@ -562,6 +568,7 @@ public class PaymentResponse extends BasePaymentResponse {
             INSTANCE.pointBalance = this.pointBalance;
             INSTANCE.billKey = this.billKey;
             INSTANCE.dataResponse = this.dataResponse;
+            INSTANCE.pointRedeemAmount = this.pointRedeemAmount;
             return INSTANCE;
         }
     }
