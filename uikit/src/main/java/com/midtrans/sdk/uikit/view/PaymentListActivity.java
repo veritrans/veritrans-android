@@ -19,7 +19,6 @@ import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.response.Checko
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.enablepayment.EnabledPayment;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.merchantdata.MerchantPreferences;
-import com.midtrans.sdk.corekit.utilities.Constants;
 import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.uikit.MidtransKit;
 import com.midtrans.sdk.uikit.MidtransKitFlow;
@@ -27,9 +26,11 @@ import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.base.callback.PaymentResult;
 import com.midtrans.sdk.uikit.base.callback.Result;
 import com.midtrans.sdk.uikit.base.composer.BaseActivity;
+import com.midtrans.sdk.uikit.base.composer.BasePaymentActivity;
 import com.midtrans.sdk.uikit.base.enums.PaymentStatus;
 import com.midtrans.sdk.uikit.base.model.MessageInfo;
 import com.midtrans.sdk.uikit.utilities.ActivityHelper;
+import com.midtrans.sdk.uikit.utilities.Constants;
 import com.midtrans.sdk.uikit.utilities.CurrencyHelper;
 import com.midtrans.sdk.uikit.utilities.MessageHelper;
 import com.midtrans.sdk.uikit.utilities.PaymentListHelper;
@@ -37,6 +38,7 @@ import com.midtrans.sdk.uikit.view.adapter.PaymentItemDetailsAdapter;
 import com.midtrans.sdk.uikit.view.adapter.PaymentMethodsAdapter;
 import com.midtrans.sdk.uikit.view.banktransfer.list.BankTransferListActivity;
 import com.midtrans.sdk.uikit.view.banktransfer.list.model.EnabledBankTransfer;
+import com.midtrans.sdk.uikit.view.gopay.instruction.GopayInstructionActivity;
 import com.midtrans.sdk.uikit.view.model.ItemViewDetails;
 import com.midtrans.sdk.uikit.view.model.PaymentMethodsModel;
 import com.midtrans.sdk.uikit.widget.BoldTextView;
@@ -52,10 +54,13 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import static com.midtrans.sdk.corekit.utilities.Constants.MESSAGE_ERROR_FAILURE_RESPONSE;
 import static com.midtrans.sdk.uikit.utilities.PaymentListHelper.mappingBankTransfer;
 import static com.midtrans.sdk.uikit.utilities.PaymentListHelper.mappingEnabledPayment;
 
 public class PaymentListActivity extends BaseActivity {
+
+    public static final String EXTRA_PAYMENT_INFO = "extra.payment.info";
 
     /**
      * This property used for direct payment
@@ -247,11 +252,11 @@ public class PaymentListActivity extends BaseActivity {
                     String errorMessage = MessageHelper.createMessageWhenCheckoutFailed(PaymentListActivity.this, response.getErrorMessages());
                     showErrorMessage(errorMessage, true);
                 } else {
-                    showErrorMessage(Constants.MESSAGE_ERROR_FAILURE_RESPONSE, true);
+                    showErrorMessage(MESSAGE_ERROR_FAILURE_RESPONSE, true);
                 }
             }
         } else {
-            showErrorMessage(Constants.MESSAGE_ERROR_FAILURE_RESPONSE, true);
+            showErrorMessage(MESSAGE_ERROR_FAILURE_RESPONSE, true);
         }
     }
 
@@ -395,13 +400,14 @@ public class PaymentListActivity extends BaseActivity {
         switch (method) {
             case PaymentType.CREDIT_CARD:
                 break;
-            case PaymentListHelper.BANK_TRANSFER:
-                Intent startBankPayment = new Intent(this, BankTransferListActivity.class);
-                startBankPayment.putExtra(BankTransferListActivity.EXTRA_BANK_LIST, new EnabledBankTransfer(bankTransferList));
-                startBankPayment.putExtra(BankTransferListActivity.EXTRA_PAYMENT_INFO, response);
-                startBankPayment.putExtra(BankTransferListActivity.USE_DEEP_LINK, isDeepLink);
-                startActivityForResult(startBankPayment, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            case PaymentListHelper.BANK_TRANSFER: {
+                Intent intent = new Intent(this, BankTransferListActivity.class);
+                intent.putExtra(BankTransferListActivity.EXTRA_BANK_LIST, new EnabledBankTransfer(bankTransferList));
+                intent.putExtra(EXTRA_PAYMENT_INFO, response);
+                intent.putExtra(BankTransferListActivity.USE_DEEP_LINK, isDeepLink);
+                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
                 break;
+            }
             case PaymentType.BCA_KLIKPAY:
                 break;
             case PaymentType.KLIK_BCA:
@@ -418,8 +424,13 @@ public class PaymentListActivity extends BaseActivity {
                 break;
             case PaymentType.MANDIRI_ECASH:
                 break;
-            case PaymentType.GOPAY:
+            case PaymentType.GOPAY: {
+                Intent intent = new Intent(this, GopayInstructionActivity.class);
+                intent.putExtra(EXTRA_PAYMENT_INFO, response);
+                intent.putExtra(BasePaymentActivity.EXTRA_PAYMENT_TYPE, PaymentType.GOPAY);
+                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
                 break;
+            }
             case PaymentType.DANAMON_ONLINE:
                 break;
             case PaymentType.AKULAKU:
@@ -523,16 +534,10 @@ public class PaymentListActivity extends BaseActivity {
         if (requestCode == Constants.RESULT_CODE_PAYMENT_TRANSFER) {
             Logger.debug("sending result back with code " + requestCode);
             if (resultCode == RESULT_OK) {
-                PaymentListHelper.setActivityResult(data, callback);
+                PaymentListHelper.setActivityResult(resultCode, data, callback);
                 onBackPressed();
             } else if (resultCode == RESULT_CANCELED) {
-                callback.onPaymentFinished(
-                        new Result(
-                                PaymentStatus.STATUS_CANCEL,
-                                null
-                        ),
-                        null
-                );
+                callback.onPaymentFinished(new Result(PaymentStatus.STATUS_CANCEL, null), null);
             }
         } else {
             Logger.debug("failed to send result back " + requestCode);
