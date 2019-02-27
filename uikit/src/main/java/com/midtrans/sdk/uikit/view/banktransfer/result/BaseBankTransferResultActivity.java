@@ -25,18 +25,16 @@ import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.merchantdata.Mer
 import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.base.composer.BaseActivity;
+import com.midtrans.sdk.uikit.utilities.Constants;
 import com.midtrans.sdk.uikit.utilities.PaymentListHelper;
+import com.midtrans.sdk.uikit.view.PaymentListActivity;
 import com.midtrans.sdk.uikit.view.banktransfer.instruction.instruction.adapter.InstructionPagerAdapter;
-import com.midtrans.sdk.uikit.view.banktransfer.list.BankTransferListActivity;
 import com.midtrans.sdk.uikit.widget.FancyButton;
 import com.midtrans.sdk.uikit.widget.MagicViewPager;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
-
-import static com.midtrans.sdk.corekit.utilities.Constants.INTENT_DATA_CALLBACK;
-import static com.midtrans.sdk.corekit.utilities.Constants.INTENT_DATA_TYPE;
 
 public abstract class BaseBankTransferResultActivity extends BaseActivity {
 
@@ -122,7 +120,7 @@ public abstract class BaseBankTransferResultActivity extends BaseActivity {
 
     protected void initProperties() {
         paymentType = getIntent().getStringExtra(EXTRA_BANK_TYPE);
-        paymentInfoResponse = (PaymentInfoResponse) getIntent().getSerializableExtra(BankTransferListActivity.EXTRA_PAYMENT_INFO);
+        paymentInfoResponse = (PaymentInfoResponse) getIntent().getSerializableExtra(PaymentListActivity.EXTRA_PAYMENT_INFO);
         BcaBankTransferReponse responseBca = (BcaBankTransferReponse) getIntent().getSerializableExtra(EXTRA_PAYMENT_RESULT_BCA);
         BniBankTransferResponse responseBni = (BniBankTransferResponse) getIntent().getSerializableExtra(EXTRA_PAYMENT_RESULT_BNI);
         MandiriBillResponse responseMandiri = (MandiriBillResponse) getIntent().getSerializableExtra(EXTRA_PAYMENT_RESULT_MANDIRI);
@@ -145,24 +143,24 @@ public abstract class BaseBankTransferResultActivity extends BaseActivity {
         Logger.debug("Payment you should finish is >>> " + paymentType);
         switch (paymentType) {
             case PaymentType.BCA_VA:
-                intent.putExtra(INTENT_DATA_CALLBACK, presenter.getBcaResponse());
-                intent.putExtra(INTENT_DATA_TYPE, PaymentType.BCA_VA);
+                intent.putExtra(Constants.INTENT_DATA_CALLBACK, presenter.getBcaResponse());
+                intent.putExtra(Constants.INTENT_DATA_TYPE, PaymentType.BCA_VA);
                 break;
             case PaymentType.BNI_VA:
-                intent.putExtra(INTENT_DATA_CALLBACK, presenter.getBniResponse());
-                intent.putExtra(INTENT_DATA_TYPE, PaymentType.BNI_VA);
+                intent.putExtra(Constants.INTENT_DATA_CALLBACK, presenter.getBniResponse());
+                intent.putExtra(Constants.INTENT_DATA_TYPE, PaymentType.BNI_VA);
                 break;
             case PaymentType.PERMATA_VA:
-                intent.putExtra(INTENT_DATA_CALLBACK, presenter.getPermataResponse());
-                intent.putExtra(INTENT_DATA_TYPE, PaymentType.PERMATA_VA);
+                intent.putExtra(Constants.INTENT_DATA_CALLBACK, presenter.getPermataResponse());
+                intent.putExtra(Constants.INTENT_DATA_TYPE, PaymentType.PERMATA_VA);
                 break;
             case PaymentType.OTHER_VA:
-                intent.putExtra(INTENT_DATA_CALLBACK, presenter.getOtherResponse());
-                intent.putExtra(INTENT_DATA_TYPE, PaymentType.OTHER_VA);
+                intent.putExtra(Constants.INTENT_DATA_CALLBACK, presenter.getOtherResponse());
+                intent.putExtra(Constants.INTENT_DATA_TYPE, PaymentType.OTHER_VA);
                 break;
             case PaymentType.ECHANNEL:
-                intent.putExtra(INTENT_DATA_CALLBACK, presenter.getMandiriResponse());
-                intent.putExtra(INTENT_DATA_TYPE, PaymentType.ECHANNEL);
+                intent.putExtra(Constants.INTENT_DATA_CALLBACK, presenter.getMandiriResponse());
+                intent.putExtra(Constants.INTENT_DATA_TYPE, PaymentType.ECHANNEL);
                 break;
         }
         setResult(RESULT_OK, intent);
