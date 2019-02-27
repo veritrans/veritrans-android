@@ -175,7 +175,6 @@ public class BaseActivity extends AppCompatActivity {
                 setTotalAmount(formattedAmount);
                 setOrderId(paymentInfo.getTransactionDetails().getOrderId());
             }
-            Logger.debug("ITEM DETAILS IS >>> "+paymentInfo.getItemDetails());
             if (paymentInfo.getItemDetails() != null) {
                 initTransactionDetail(paymentInfo.getItemDetails());
                 findViewById(R.id.background_dim).setOnClickListener(v -> displayOrHideItemDetails());
@@ -297,11 +296,19 @@ public class BaseActivity extends AppCompatActivity {
         }, 500);
     }
 
-    protected void showOnErrorPaymentStatusmessage(Throwable error) {
-        showOnErrorPaymentStatusmessage(error, null);
+    protected boolean isShowPaymentStatusView() {
+        if (MidtransKit.getInstance() == null) {
+            return false;
+        } else {
+            return MidtransKit.getInstance().getMidtransKitConfig().isShowPaymentStatus();
+        }
     }
 
-    protected void showOnErrorPaymentStatusmessage(Throwable error, String defaultmessage) {
+    protected void showOnErrorPaymentStatusMessage(Throwable error) {
+        showOnErrorPaymentStatusMessage(error, null);
+    }
+
+    protected void showOnErrorPaymentStatusMessage(Throwable error, String defaultmessage) {
         MessageInfo messageInfo = MessageHelper.createMessageOnError(error, this);
         MessageHelper.showToast(this, messageInfo.getDetailsMessage());
     }
