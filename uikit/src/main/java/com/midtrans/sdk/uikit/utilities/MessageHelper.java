@@ -20,17 +20,17 @@ public class MessageHelper {
     private static String TAG = MessageHelper.class.getSimpleName();
 
     private static final String PAID_ORDER_ID = "has been paid";
-    private static final String PROCESSED_ORDER_ID = "transaction has been processed";
+    public static final String PROCESSED_ORDER_ID = "transaction has been processed";
     private static final String GROSS_AMOUNT_NOT_EQUAL = "is not equal to the sum";
     private static final String GROSS_AMOUNT_REQUIRED = "amount is required";
     private static final String ORDER_ID_REQUIRED = "order_id is required";
-    private static final String TIME_OUT = "timeout";
-    private static final String TIMED_OUT = "timed out";
+    public static final String TIME_OUT = "timeout";
+    public static final String TIMED_OUT = "timed out";
     private static final String FLAVOR_DEVELOPMENT = "development";
-    private static final String TIMEOUT = "timeout";
-    private static final String STATUS_UNSUCCESSFUL = "payment has not been made";
-    private static final String PROMO_UNAVAILABLE = "promo is not available";
-    private static final String CURRENCY_NOT_INCLUDED = "Currency is not included";
+    public static final String TIMEOUT = "timeout";
+    public static final String STATUS_UNSUCCESSFUL = "payment has not been made";
+    public static final String PROMO_UNAVAILABLE = "promo is not available";
+    public static final String CURRENCY_NOT_INCLUDED = "Currency is not included";
 
     public static String createMessageWhenCheckoutFailed(Activity context, ArrayList<String> statusMessage) {
         String message = context.getString(R.string.error_message_status_code_400);
