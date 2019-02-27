@@ -57,9 +57,9 @@ public class GopayInstructionActivity extends BasePaymentActivity implements Gop
     private void initLayout() {
         ViewStub stub = findViewById(R.id.gopay_layout_stub);
         if (isTablet) {
-            stub.setLayoutResource(R.layout.layout_payment_gopay_tablet);
+            stub.setLayoutResource(R.layout.layout_payment_ewallet_gopay_tablet);
         } else {
-            stub.setLayoutResource(isGojekInstalled ? R.layout.layout_payment_gopay : R.layout.layout_payment_gopay_install);
+            stub.setLayoutResource(isGojekInstalled ? R.layout.layout_payment_gopay : R.layout.layout_payment_ewallet_gopay_install);
         }
         stub.inflate();
         buttonPrimaryLayout = findViewById(R.id.layout_primary_button);

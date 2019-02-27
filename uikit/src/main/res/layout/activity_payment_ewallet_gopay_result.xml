@@ -20,7 +20,7 @@
             android:fillViewport="true">
 
             <include
-                layout="@layout/layout_payment_gopay_result_tablet" />
+                layout="@layout/layout_payment_ewallet_gopay_result_tablet" />
         </ScrollView>
 
         <View
