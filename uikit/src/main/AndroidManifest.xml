@@ -68,6 +68,14 @@
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity android:name=".view.klikbca.result.KlikBcaResultActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/VeritransAppTheme"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity android:name=".view.klikbca.instruction.KlikBcaInstructionActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/VeritransAppTheme"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
 
     </application>
 
