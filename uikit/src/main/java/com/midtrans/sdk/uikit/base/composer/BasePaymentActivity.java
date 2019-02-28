@@ -10,6 +10,7 @@ import com.koushikdutta.ion.Ion;
 import com.midtrans.sdk.corekit.base.enums.PaymentType;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.GopayResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.IndomaretPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.KlikBcaResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.merchantdata.MerchantPreferences;
 import com.midtrans.sdk.uikit.R;
@@ -92,6 +93,10 @@ public abstract class BasePaymentActivity extends BaseActivity {
             IndomaretPaymentResponse indomaretResponse = (IndomaretPaymentResponse) response;
             data.putExtra(Constants.INTENT_DATA_CALLBACK, indomaretResponse);
             data.putExtra(Constants.INTENT_DATA_TYPE, PaymentType.INDOMARET);
+        } else if (response instanceof KlikBcaResponse) {
+            KlikBcaResponse klikBcaResponse = (KlikBcaResponse) response;
+            data.putExtra(Constants.INTENT_DATA_CALLBACK, klikBcaResponse);
+            data.putExtra(Constants.INTENT_DATA_TYPE, PaymentType.KLIK_BCA);
         }
         setResult(resultCode, data);
         super.onBackPressed();
