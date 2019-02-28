@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.koushikdutta.ion.Ion;
 import com.midtrans.sdk.corekit.base.enums.PaymentType;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CimbClicksResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.GopayResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.IndomaretPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.KlikBcaResponse;
@@ -20,6 +21,7 @@ import com.midtrans.sdk.uikit.utilities.PaymentListHelper;
 import com.midtrans.sdk.uikit.view.PaymentListActivity;
 import com.midtrans.sdk.uikit.view.banktransfer.result.BankTransferResultPresenter;
 import com.midtrans.sdk.uikit.view.status.PaymentStatusActivity;
+import com.midtrans.sdk.uikit.view.webview.WebViewPaymentActivity;
 import com.midtrans.sdk.uikit.widget.FancyButton;
 
 import androidx.annotation.LayoutRes;
@@ -45,6 +47,7 @@ public abstract class BasePaymentActivity extends BaseActivity {
         initMerchantPreferences();
         initItemDetails(paymentInfoResponse);
         initTheme();
+        initializeTheme();
     }
 
     protected abstract void initTheme();
@@ -97,9 +100,27 @@ public abstract class BasePaymentActivity extends BaseActivity {
             KlikBcaResponse klikBcaResponse = (KlikBcaResponse) response;
             data.putExtra(Constants.INTENT_DATA_CALLBACK, klikBcaResponse);
             data.putExtra(Constants.INTENT_DATA_TYPE, PaymentType.KLIK_BCA);
+        } else if (response instanceof CimbClicksResponse) {
+            CimbClicksResponse cimbClicksResponse = (CimbClicksResponse) response;
+            data.putExtra(Constants.INTENT_DATA_CALLBACK, cimbClicksResponse);
+            data.putExtra(Constants.INTENT_DATA_TYPE, PaymentType.CIMB_CLICKS);
         }
         setResult(resultCode, data);
         super.onBackPressed();
+    }
+
+    protected void showWebViewPaymentPage(@PaymentType String paymentType, String redirectUrl) {
+        Intent intent = new Intent(this, WebViewPaymentActivity.class);
+        intent.putExtra(WebViewPaymentActivity.EXTRA_PAYMENT_TYPE, paymentType);
+        intent.putExtra(WebViewPaymentActivity.EXTRA_PAYMENT_URL, redirectUrl);
+        intent.putExtra(PaymentListActivity.EXTRA_PAYMENT_INFO, paymentInfoResponse);
+        startActivityForResult(intent, Constants.INTENT_WEBVIEW_PAYMENT);
+    }
+
+    protected void finishWebViewPayment(WebViewPaymentActivity activity, int resultCode) {
+        Intent returnIntent = new Intent();
+        activity.setResult(resultCode, returnIntent);
+        activity.finish();
     }
 
     /**
