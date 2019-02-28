@@ -76,6 +76,14 @@
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity android:name=".view.cimbclicks.CimbClicksInstructionActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/VeritransAppTheme"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity android:name=".view.webview.WebViewPaymentActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/VeritransAppTheme"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
 
     </application>
 
