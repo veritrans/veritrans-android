@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         text_view_test.setOnClickListener {
-            val random = (Math.random() * 150 + 1).toInt()
+            val random = (Math.random() * 550 + 11).toInt()
             val checkoutTransaction = CheckoutTransaction
                 .builder(
                     InstallationHelper.generatedRandomID(this) + "31" + random,
