@@ -9,6 +9,7 @@ public class Constants {
      */
     public final static String INTENT_DATA_CALLBACK = "intent.data.callback";
     public final static String INTENT_DATA_TYPE = "intent.data.type";
+    public static final String INTENT_EXTRA_PAYMENT_STATUS = "intent.extra.status";
 
     // intent request code
     public static final int INTENT_CARD_DETAILS = 501;

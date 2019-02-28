@@ -13,6 +13,7 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriClickpay
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.TelkomselCashResponse;
 import com.midtrans.sdk.uikit.base.composer.BasePaymentPresenter;
 import com.midtrans.sdk.uikit.base.contract.BasePaymentContract;
+import com.midtrans.sdk.uikit.base.model.PaymentResponse;
 
 public class PaymentStatusPresenter extends BasePaymentPresenter<BasePaymentContract> {
 
@@ -57,6 +58,8 @@ public class PaymentStatusPresenter extends BasePaymentPresenter<BasePaymentCont
                 this.mandiriClickpayResponse = (MandiriClickpayResponse) response;
             } else if (response instanceof TelkomselCashResponse) {
                 this.telkomselCashResponse = (TelkomselCashResponse) response;
+            } else if (response instanceof PaymentResponse) {
+                this.paymentResponse = (PaymentResponse) response;
             }
         }
     }

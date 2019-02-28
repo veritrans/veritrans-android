@@ -59,6 +59,7 @@ public class BaseActivity extends AppCompatActivity {
     protected ImageView merchantLogoInToolbar;
 
     protected boolean isDetailShown = false;
+    protected boolean activityRunning = false;
 
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
@@ -296,12 +297,8 @@ public class BaseActivity extends AppCompatActivity {
         }, 500);
     }
 
-    protected boolean isShowPaymentStatusView() {
-        if (MidtransKit.getInstance() == null) {
-            return false;
-        } else {
-            return MidtransKit.getInstance().getMidtransKitConfig().isShowPaymentStatus();
-        }
+    protected boolean isActivityRunning() {
+        return activityRunning;
     }
 
     protected void showOnErrorPaymentStatusMessage(Throwable error) {
@@ -326,11 +323,45 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        activityRunning = true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        activityRunning = true;
+    }
+
+    @Override
+    protected void onPause() {
+        activityRunning = false;
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        activityRunning = false;
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        activityRunning = false;
+        super.onDestroy();
+    }
+
+    @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        MidtransKitConfig midtransKitConfig = MidtransKit.getInstance().getMidtransKitConfig();
-        if (midtransKitConfig != null && midtransKitConfig.isEnabledAnimation()) {
-            overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
+        if (isDetailShown) {
+            displayOrHideItemDetails();
+        } else {
+            super.onBackPressed();
+            MidtransKitConfig midtransKitConfig = MidtransKit.getInstance().getMidtransKitConfig();
+            if (midtransKitConfig != null && midtransKitConfig.isEnabledAnimation()) {
+                overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
+            }
         }
     }
 }

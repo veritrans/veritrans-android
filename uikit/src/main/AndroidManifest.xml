@@ -39,6 +39,11 @@
             android:theme="@style/VeritransAppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
+            android:name=".view.indomaret.instruction.IndomaretInstructionActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/VeritransAppTheme"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
             android:name=".view.banktransfer.result.BankPaymentResultActivity"
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"
@@ -58,6 +63,27 @@
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".view.indomaret.result.IndomaretResultActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/VeritransAppTheme"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity android:name=".view.klikbca.result.KlikBcaResultActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/VeritransAppTheme"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity android:name=".view.klikbca.instruction.KlikBcaInstructionActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/VeritransAppTheme"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity android:name=".view.cimbclicks.CimbClicksInstructionActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/VeritransAppTheme"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity android:name=".view.webview.WebViewPaymentActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/VeritransAppTheme"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
 
     </application>
 

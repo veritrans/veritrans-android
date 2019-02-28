@@ -38,7 +38,10 @@ import com.midtrans.sdk.uikit.view.adapter.PaymentItemDetailsAdapter;
 import com.midtrans.sdk.uikit.view.adapter.PaymentMethodsAdapter;
 import com.midtrans.sdk.uikit.view.banktransfer.list.BankTransferListActivity;
 import com.midtrans.sdk.uikit.view.banktransfer.list.model.EnabledBankTransfer;
+import com.midtrans.sdk.uikit.view.cimbclicks.CimbClicksInstructionActivity;
 import com.midtrans.sdk.uikit.view.gopay.instruction.GopayInstructionActivity;
+import com.midtrans.sdk.uikit.view.indomaret.instruction.IndomaretInstructionActivity;
+import com.midtrans.sdk.uikit.view.klikbca.instruction.KlikBcaInstructionActivity;
 import com.midtrans.sdk.uikit.view.model.ItemViewDetails;
 import com.midtrans.sdk.uikit.view.model.PaymentMethodsModel;
 import com.midtrans.sdk.uikit.widget.BoldTextView;
@@ -132,6 +135,7 @@ public class PaymentListActivity extends BaseActivity {
      * This happen when getting exception in network request or user press back when performing network request
      */
     private boolean isThrowableFromNetworkRequest = false;
+    private boolean isPaymentListAlreadyShow = false;
     private Throwable throwableFromNetworkRequest;
 
     @Override
@@ -296,6 +300,7 @@ public class PaymentListActivity extends BaseActivity {
             initItemDetailsList(data);
             initPaymentMethodList(data);
             initMerchantPreferences(data);
+            isPaymentListAlreadyShow = true;
         } else {
             showErrorMessage(null, false);
         }
@@ -410,16 +415,31 @@ public class PaymentListActivity extends BaseActivity {
             }
             case PaymentType.BCA_KLIKPAY:
                 break;
-            case PaymentType.KLIK_BCA:
+            case PaymentType.KLIK_BCA: {
+                Intent intent = new Intent(this, KlikBcaInstructionActivity.class);
+                intent.putExtra(EXTRA_PAYMENT_INFO, response);
+                intent.putExtra(BasePaymentActivity.EXTRA_PAYMENT_TYPE, PaymentType.KLIK_BCA);
+                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
                 break;
+            }
             case PaymentType.BRI_EPAY:
                 break;
-            case PaymentType.CIMB_CLICKS:
+            case PaymentType.CIMB_CLICKS: {
+                Intent intent = new Intent(this, CimbClicksInstructionActivity.class);
+                intent.putExtra(EXTRA_PAYMENT_INFO, response);
+                intent.putExtra(BasePaymentActivity.EXTRA_PAYMENT_TYPE, PaymentType.CIMB_CLICKS);
+                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
                 break;
+            }
             case PaymentType.MANDIRI_CLICKPAY:
                 break;
-            case PaymentType.INDOMARET:
+            case PaymentType.INDOMARET: {
+                Intent intent = new Intent(this, IndomaretInstructionActivity.class);
+                intent.putExtra(EXTRA_PAYMENT_INFO, response);
+                intent.putExtra(BasePaymentActivity.EXTRA_PAYMENT_TYPE, PaymentType.INDOMARET);
+                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
                 break;
+            }
             case PaymentType.TELKOMSEL_CASH:
                 break;
             case PaymentType.MANDIRI_ECASH:
@@ -463,7 +483,6 @@ public class PaymentListActivity extends BaseActivity {
                         .setNegativeButton(R.string.btn_cancel, (dialog, which) -> {
                             isThrowableFromNetworkRequest = true;
                             throwableFromNetworkRequest = new Throwable(finalMessage);
-                            setOnFailedCallback(throwableFromNetworkRequest);
                             dialog.dismiss();
                             onBackPressed();
                             alertDialog = null;
@@ -535,20 +554,19 @@ public class PaymentListActivity extends BaseActivity {
             Logger.debug("sending result back with code " + requestCode);
             if (resultCode == RESULT_OK) {
                 PaymentListHelper.setActivityResult(resultCode, data, callback);
-                onBackPressed();
-            } else if (resultCode == RESULT_CANCELED) {
-                callback.onPaymentFinished(new Result(PaymentStatus.STATUS_CANCEL, null), null);
+                super.onBackPressed();
             }
         } else {
             Logger.debug("failed to send result back " + requestCode);
         }
     }
 
-
     @Override
     public void onBackPressed() {
         if (isThrowableFromNetworkRequest) {
             setOnFailedCallback(throwableFromNetworkRequest);
+        } else if (isPaymentListAlreadyShow) {
+            callback.onPaymentFinished(new Result(PaymentStatus.STATUS_CANCEL, null), null);
         }
         super.onBackPressed();
     }

@@ -10,6 +10,7 @@ import com.midtrans.sdk.uikit.MidtransKit;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.base.model.MessageInfo;
 import com.midtrans.sdk.uikit.base.model.PaymentException;
+import com.midtrans.sdk.uikit.base.model.PaymentResponse;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeoutException;
@@ -60,14 +61,14 @@ public class MessageHelper {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
-    /*public static MessageInfo createPaymentFailedMessage(Context context, CheckoutWithTransactionResponse response) {
+    public static MessageInfo createPaymentFailedMessage(Context context, PaymentResponse response) {
         PaymentException exception = new PaymentException(
                 response.getStatusCode(),
                 response.getStatusMessage(),
                 new Throwable(response.getStatusMessage()));
 
         return createMessageOnError(exception, context);
-    }*/
+    }
 
     public static MessageInfo createMessageOnError(Throwable throwable, Context context) {
         String errorMessageDetails = context.getString(R.string.error_message_others);

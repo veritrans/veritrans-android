@@ -50,16 +50,15 @@ public class GopayInstructionActivity extends BasePaymentActivity implements Gop
         initProperties();
         initLayout();
         initActionButton();
-        initTheme();
         hideProgressLayout();
     }
 
     private void initLayout() {
         ViewStub stub = findViewById(R.id.gopay_layout_stub);
         if (isTablet) {
-            stub.setLayoutResource(R.layout.layout_payment_gopay_tablet);
+            stub.setLayoutResource(R.layout.layout_payment_ewallet_gopay_tablet);
         } else {
-            stub.setLayoutResource(isGojekInstalled ? R.layout.layout_payment_gopay : R.layout.layout_payment_gopay_install);
+            stub.setLayoutResource(isGojekInstalled ? R.layout.layout_payment_ewallet_gopay : R.layout.layout_payment_ewallet_gopay_install);
         }
         stub.inflate();
         buttonPrimaryLayout = findViewById(R.id.layout_primary_button);
@@ -202,7 +201,7 @@ public class GopayInstructionActivity extends BasePaymentActivity implements Gop
     }
 
     private void setCallbackOrSendToStatusPage() {
-        if (isShowPaymentStatusView()) {
+        if (presenter.isShowPaymentStatusPage()) {
             startResultActivity(Constants.INTENT_CODE_PAYMENT_RESULT, PaymentListHelper.convertTransactionStatus(gopayResponse));
         } else {
             finishPayment(RESULT_OK, gopayResponse);
@@ -224,9 +223,9 @@ public class GopayInstructionActivity extends BasePaymentActivity implements Gop
             } else {
                 if (isTablet) {
                     Intent intent = new Intent(this, GopayResultActivity.class);
-                    intent.putExtra(GopayResultActivity.EXTRA_PAYMENT_STATUS, gopayResponse);
+                    intent.putExtra(Constants.INTENT_EXTRA_PAYMENT_STATUS, gopayResponse);
                     intent.putExtra(PaymentListActivity.EXTRA_PAYMENT_INFO, paymentInfoResponse);
-                    startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT_STATUS);
+                    startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT_RESULT);
                 } else {
                     isAlreadyGotResponse = true;
                     openDeepLink(gopayResponse.getDeeplinkUrl());
@@ -263,9 +262,7 @@ public class GopayInstructionActivity extends BasePaymentActivity implements Gop
 
     @Override
     public void onBackPressed() {
-        if (isDetailShown) {
-            displayOrHideItemDetails();
-        } else if (isAlreadyGotResponse) {
+        if (isAlreadyGotResponse) {
             showConfirmationDialog(getString(R.string.confirm_gopay_deeplink));
         } else {
             super.onBackPressed();
