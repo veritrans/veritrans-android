@@ -40,6 +40,7 @@ import com.midtrans.sdk.uikit.view.banktransfer.list.BankTransferListActivity;
 import com.midtrans.sdk.uikit.view.banktransfer.list.model.EnabledBankTransfer;
 import com.midtrans.sdk.uikit.view.gopay.instruction.GopayInstructionActivity;
 import com.midtrans.sdk.uikit.view.indomaret.instruction.IndomaretInstructionActivity;
+import com.midtrans.sdk.uikit.view.klikbca.instruction.KlikBcaInstructionActivity;
 import com.midtrans.sdk.uikit.view.model.ItemViewDetails;
 import com.midtrans.sdk.uikit.view.model.PaymentMethodsModel;
 import com.midtrans.sdk.uikit.widget.BoldTextView;
@@ -411,8 +412,13 @@ public class PaymentListActivity extends BaseActivity {
             }
             case PaymentType.BCA_KLIKPAY:
                 break;
-            case PaymentType.KLIK_BCA:
+            case PaymentType.KLIK_BCA: {
+                Intent intent = new Intent(this, KlikBcaInstructionActivity.class);
+                intent.putExtra(EXTRA_PAYMENT_INFO, response);
+                intent.putExtra(BasePaymentActivity.EXTRA_PAYMENT_TYPE, PaymentType.KLIK_BCA);
+                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
                 break;
+            }
             case PaymentType.BRI_EPAY:
                 break;
             case PaymentType.CIMB_CLICKS:
