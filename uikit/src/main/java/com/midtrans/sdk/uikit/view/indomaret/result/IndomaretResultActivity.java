@@ -48,7 +48,6 @@ public class IndomaretResultActivity extends BasePaymentActivity {
     private AppCompatButton buttonInstruction;
     private FancyButton buttonCopyVa;
 
-    private PaymentStatusPresenter presenter;
     private PaymentResponse paymentResponse;
     private IndomaretPaymentResponse indomaretPaymentResponse;
 
@@ -67,7 +66,6 @@ public class IndomaretResultActivity extends BasePaymentActivity {
         super.initProperties();
         indomaretPaymentResponse = (IndomaretPaymentResponse) getIntent().getSerializableExtra(Constants.INTENT_EXTRA_PAYMENT_STATUS);
         paymentResponse = PaymentListHelper.convertTransactionStatus(indomaretPaymentResponse);
-        presenter = new PaymentStatusPresenter(paymentResponse);
     }
 
     private void initActionButton() {
