@@ -11,6 +11,7 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaBankTransfer
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BniBankTransferResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.GopayResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.IndomaretPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.KlikBcaResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriBillResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.OtherBankTransferResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.PermataBankTransferResponse;
@@ -29,7 +30,6 @@ import com.midtrans.sdk.uikit.base.model.BankTransfer;
 import com.midtrans.sdk.uikit.base.model.PaymentResponse;
 import com.midtrans.sdk.uikit.view.model.ItemViewDetails;
 import com.midtrans.sdk.uikit.view.model.PaymentMethodsModel;
-import com.midtrans.sdk.uikit.utilities.Constants;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -259,6 +259,34 @@ public class PaymentListHelper {
                     return;
                 }
                 break;
+            case PaymentType.KLIK_BCA:
+                try {
+                    KlikBcaResponse response = (KlikBcaResponse) data.getSerializableExtra(Constants.INTENT_DATA_CALLBACK);
+                    if (resultCode == Activity.RESULT_OK) {
+                        if (response != null) {
+                            switch (response.getStatusCode()) {
+                                case com.midtrans.sdk.corekit.utilities.Constants.STATUS_CODE_200:
+                                    setCallback(callback, PaymentStatus.STATUS_SUCCESS, PaymentType.KLIK_BCA, response);
+                                    break;
+                                case Constants.STATUS_CODE_201:
+                                    setCallback(callback, PaymentStatus.STATUS_PENDING, PaymentType.KLIK_BCA, response);
+                                    break;
+                                default:
+                                    setCallback(callback, PaymentStatus.STATUS_FAILED, PaymentType.KLIK_BCA, response);
+                                    break;
+                            }
+                        } else {
+                            setCallback(callback, PaymentStatus.STATUS_INVALID, PaymentType.KLIK_BCA, response);
+                        }
+                    } else {
+                        setCallback(callback, PaymentStatus.STATUS_CANCEL, PaymentType.KLIK_BCA, response);
+                    }
+                } catch (RuntimeException e) {
+                    Logger.error("onActivityResult:" + e.getMessage());
+                    setFailedCallback(callback, e.getMessage());
+                    return;
+                }
+                break;
             default:
                 setCallback(callback, PaymentStatus.STATUS_CANCEL, null, null);
                 break;
@@ -387,7 +415,7 @@ public class PaymentListHelper {
                     .setFraudStatus(rawResponse.getFraudStatus())
                     .build();
             return paymentResponse;
-        }else if (response instanceof IndomaretPaymentResponse) {
+        } else if (response instanceof IndomaretPaymentResponse) {
             IndomaretPaymentResponse rawResponse = (IndomaretPaymentResponse) response;
             paymentResponse = PaymentResponse
                     .builder(
@@ -404,6 +432,24 @@ public class PaymentListHelper {
                     .setPaymentCode(rawResponse.getPaymentCode())
                     .setIndomaretExpireTime(rawResponse.getIndomaretExpireTime())
                     .setStore(rawResponse.getStore())
+                    .build();
+            return paymentResponse;
+        } else if (response instanceof KlikBcaResponse) {
+            KlikBcaResponse rawResponse = (KlikBcaResponse) response;
+            paymentResponse = PaymentResponse
+                    .builder(
+                            rawResponse.getStatusCode(),
+                            rawResponse.getStatusMessage(),
+                            rawResponse.getTransactionId(),
+                            rawResponse.getOrderId(),
+                            rawResponse.getGrossAmount(),
+                            rawResponse.getPaymentType(),
+                            rawResponse.getTransactionTime(),
+                            rawResponse.getTransactionStatus()
+                    )
+                    .setRedirectUrl(rawResponse.getRedirectUrl())
+                    .setApprovalCode(rawResponse.getApprovalCode())
+                    .setKlikBcaExpireTime(rawResponse.getKlikBcaExpireTime())
                     .build();
             return paymentResponse;
         }
