@@ -59,6 +59,7 @@ public class BaseActivity extends AppCompatActivity {
     protected ImageView merchantLogoInToolbar;
 
     protected boolean isDetailShown = false;
+    protected boolean activityRunning = false;
 
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
@@ -296,6 +297,10 @@ public class BaseActivity extends AppCompatActivity {
         }, 500);
     }
 
+    protected boolean isActivityRunning() {
+        return activityRunning;
+    }
+
     protected void showOnErrorPaymentStatusMessage(Throwable error) {
         showOnErrorPaymentStatusMessage(error, null);
     }
@@ -315,6 +320,36 @@ public class BaseActivity extends AppCompatActivity {
     public void startActivityForResult(Intent intent, int requestCode) {
         super.startActivityForResult(intent, requestCode);
         pendingSlideIn();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        activityRunning = true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        activityRunning = true;
+    }
+
+    @Override
+    protected void onPause() {
+        activityRunning = false;
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        activityRunning = false;
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        activityRunning = false;
+        super.onDestroy();
     }
 
     @Override
