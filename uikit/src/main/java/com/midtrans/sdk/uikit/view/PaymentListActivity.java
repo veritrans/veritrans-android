@@ -39,6 +39,7 @@ import com.midtrans.sdk.uikit.view.adapter.PaymentMethodsAdapter;
 import com.midtrans.sdk.uikit.view.akulaku.AkulakuInstructionActivity;
 import com.midtrans.sdk.uikit.view.banktransfer.list.BankTransferListActivity;
 import com.midtrans.sdk.uikit.view.banktransfer.list.model.EnabledBankTransfer;
+import com.midtrans.sdk.uikit.view.briepay.BriEpayInstructionActivity;
 import com.midtrans.sdk.uikit.view.cimbclicks.CimbClicksInstructionActivity;
 import com.midtrans.sdk.uikit.view.danamononline.DanamonOnlineInstructionActivity;
 import com.midtrans.sdk.uikit.view.gopay.instruction.GopayInstructionActivity;
@@ -424,8 +425,13 @@ public class PaymentListActivity extends BaseActivity {
                 startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
                 break;
             }
-            case PaymentType.BRI_EPAY:
+            case PaymentType.BRI_EPAY: {
+                Intent intent = new Intent(this, BriEpayInstructionActivity.class);
+                intent.putExtra(EXTRA_PAYMENT_INFO, response);
+                intent.putExtra(BasePaymentActivity.EXTRA_PAYMENT_TYPE, PaymentType.BRI_EPAY);
+                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
                 break;
+            }
             case PaymentType.CIMB_CLICKS: {
                 Intent intent = new Intent(this, CimbClicksInstructionActivity.class);
                 intent.putExtra(EXTRA_PAYMENT_INFO, response);
@@ -453,14 +459,14 @@ public class PaymentListActivity extends BaseActivity {
                 startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
                 break;
             }
-            case PaymentType.DANAMON_ONLINE:{
+            case PaymentType.DANAMON_ONLINE: {
                 Intent intent = new Intent(this, DanamonOnlineInstructionActivity.class);
                 intent.putExtra(EXTRA_PAYMENT_INFO, response);
                 intent.putExtra(BasePaymentActivity.EXTRA_PAYMENT_TYPE, PaymentType.DANAMON_ONLINE);
                 startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
                 break;
             }
-            case PaymentType.AKULAKU:{
+            case PaymentType.AKULAKU: {
                 Intent intent = new Intent(this, AkulakuInstructionActivity.class);
                 intent.putExtra(EXTRA_PAYMENT_INFO, response);
                 intent.putExtra(BasePaymentActivity.EXTRA_PAYMENT_TYPE, PaymentType.AKULAKU);
