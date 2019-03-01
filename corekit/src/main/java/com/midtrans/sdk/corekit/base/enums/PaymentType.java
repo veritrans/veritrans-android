@@ -10,6 +10,7 @@ import static com.midtrans.sdk.corekit.base.enums.PaymentType.ALFAMART;
 import static com.midtrans.sdk.corekit.base.enums.PaymentType.BCA_KLIKPAY;
 import static com.midtrans.sdk.corekit.base.enums.PaymentType.BCA_VA;
 import static com.midtrans.sdk.corekit.base.enums.PaymentType.BNI_VA;
+import static com.midtrans.sdk.corekit.base.enums.PaymentType.BRI_EPAY;
 import static com.midtrans.sdk.corekit.base.enums.PaymentType.CIMB_CLICKS;
 import static com.midtrans.sdk.corekit.base.enums.PaymentType.CREDIT_CARD;
 import static com.midtrans.sdk.corekit.base.enums.PaymentType.DANAMON_ONLINE;
@@ -43,7 +44,8 @@ import static com.midtrans.sdk.corekit.base.enums.PaymentType.TELKOMSEL_CASH;
         KLIK_BCA,
         INDOMARET,
         ALFAMART,
-        AKULAKU
+        AKULAKU,
+        BRI_EPAY
 })
 @Retention(RetentionPolicy.SOURCE)
 public @interface PaymentType {
