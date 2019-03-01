@@ -37,6 +37,8 @@ import com.midtrans.sdk.uikit.utilities.PaymentListHelper;
 import com.midtrans.sdk.uikit.view.adapter.PaymentItemDetailsAdapter;
 import com.midtrans.sdk.uikit.view.adapter.PaymentMethodsAdapter;
 import com.midtrans.sdk.uikit.view.akulaku.AkulakuInstructionActivity;
+import com.midtrans.sdk.uikit.view.alfamart.instruction.AlfamartInstructionActivity;
+import com.midtrans.sdk.uikit.view.alfamart.result.AlfamartResultActivity;
 import com.midtrans.sdk.uikit.view.banktransfer.list.BankTransferListActivity;
 import com.midtrans.sdk.uikit.view.banktransfer.list.model.EnabledBankTransfer;
 import com.midtrans.sdk.uikit.view.briepay.BriEpayInstructionActivity;
@@ -479,8 +481,13 @@ public class PaymentListActivity extends BaseActivity {
                 startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
                 break;
             }
-            case PaymentType.ALFAMART:
+            case PaymentType.ALFAMART: {
+                Intent intent = new Intent(this, AlfamartInstructionActivity.class);
+                intent.putExtra(EXTRA_PAYMENT_INFO, response);
+                intent.putExtra(BasePaymentActivity.EXTRA_PAYMENT_TYPE, PaymentType.ALFAMART);
+                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
                 break;
+            }
         }
     }
 
