@@ -9,6 +9,7 @@ import android.view.View;
 import com.koushikdutta.ion.Ion;
 import com.midtrans.sdk.corekit.base.enums.PaymentType;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.AkulakuResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BriEpayPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CimbClicksResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.DanamonOnlineResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.GopayResponse;
@@ -114,6 +115,10 @@ public abstract class BasePaymentActivity extends BaseActivity {
             AkulakuResponse akulakuResponse = (AkulakuResponse) response;
             data.putExtra(Constants.INTENT_DATA_CALLBACK, akulakuResponse);
             data.putExtra(Constants.INTENT_DATA_TYPE, PaymentType.AKULAKU);
+        } else if (response instanceof BriEpayPaymentResponse) {
+            BriEpayPaymentResponse briEpayPaymentResponse = (BriEpayPaymentResponse) response;
+            data.putExtra(Constants.INTENT_DATA_CALLBACK, briEpayPaymentResponse);
+            data.putExtra(Constants.INTENT_DATA_TYPE, PaymentType.BRI_EPAY);
         }
         setResult(resultCode, data);
         super.onBackPressed();
