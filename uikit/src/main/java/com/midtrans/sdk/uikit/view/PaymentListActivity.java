@@ -45,6 +45,7 @@ import com.midtrans.sdk.uikit.view.danamononline.DanamonOnlineInstructionActivit
 import com.midtrans.sdk.uikit.view.gopay.instruction.GopayInstructionActivity;
 import com.midtrans.sdk.uikit.view.indomaret.instruction.IndomaretInstructionActivity;
 import com.midtrans.sdk.uikit.view.klikbca.instruction.KlikBcaInstructionActivity;
+import com.midtrans.sdk.uikit.view.mandiriecash.MandiriEcashInstructionActivity;
 import com.midtrans.sdk.uikit.view.model.ItemViewDetails;
 import com.midtrans.sdk.uikit.view.model.PaymentMethodsModel;
 import com.midtrans.sdk.uikit.widget.BoldTextView;
@@ -450,8 +451,13 @@ public class PaymentListActivity extends BaseActivity {
             }
             case PaymentType.TELKOMSEL_CASH:
                 break;
-            case PaymentType.MANDIRI_ECASH:
+            case PaymentType.MANDIRI_ECASH: {
+                Intent intent = new Intent(this, MandiriEcashInstructionActivity.class);
+                intent.putExtra(EXTRA_PAYMENT_INFO, response);
+                intent.putExtra(BasePaymentActivity.EXTRA_PAYMENT_TYPE, PaymentType.MANDIRI_ECASH);
+                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
                 break;
+            }
             case PaymentType.GOPAY: {
                 Intent intent = new Intent(this, GopayInstructionActivity.class);
                 intent.putExtra(EXTRA_PAYMENT_INFO, response);
