@@ -11,14 +11,12 @@ public class EWalletCharge extends BaseGroupPayment {
      * Start payment using bank transfer and va with Mandiri Ecash.
      *
      * @param snapToken                token after making checkoutWithTransaction.
-     * @param customerDetailPayRequest for putting bank transfer request.
      * @param callback                 for receiving callback from request.
      */
     public static void paymentUsingMandiriEcash(final String snapToken,
-                                                final CustomerDetailPayRequest customerDetailPayRequest,
                                                 final MidtransCallback<MandiriEcashResponse> callback) {
         if (isValidForNetworkCall(callback)) {
-            getSnapApiManager().paymentUsingMandiriEcash(snapToken, customerDetailPayRequest, callback);
+            getSnapApiManager().paymentUsingMandiriEcash(snapToken, callback);
         }
     }
 

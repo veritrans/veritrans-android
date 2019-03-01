@@ -113,7 +113,7 @@ public interface SnapApiService {
     @POST(PAYMENT_PAY)
     Call<MandiriEcashResponse> paymentMandiriEcash(
             @Path("snap_token") String snapToken,
-            @Body PaymentRequest paymentRequest
+            @Body BasePaymentRequest paymentRequest
     );
 
     /**
@@ -122,8 +122,10 @@ public interface SnapApiService {
      * @param paymentRequest Payment Request Details.
      */
     @POST(PAYMENT_PAY)
-    Call<CimbClicksResponse> paymentCimbClicks(@Path("snap_token") String snapToken,
-                                               @Body BasePaymentRequest paymentRequest);
+    Call<CimbClicksResponse> paymentCimbClicks(
+            @Path("snap_token") String snapToken,
+            @Body BasePaymentRequest paymentRequest
+    );
 
     /**
      * Charge payment using Akulaku.

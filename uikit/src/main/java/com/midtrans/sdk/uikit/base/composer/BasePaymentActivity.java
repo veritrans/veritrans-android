@@ -15,6 +15,7 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.DanamonOnlineRe
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.GopayResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.IndomaretPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.KlikBcaResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriEcashResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.merchantdata.MerchantPreferences;
 import com.midtrans.sdk.uikit.R;
@@ -119,6 +120,10 @@ public abstract class BasePaymentActivity extends BaseActivity {
             BriEpayPaymentResponse briEpayPaymentResponse = (BriEpayPaymentResponse) response;
             data.putExtra(Constants.INTENT_DATA_CALLBACK, briEpayPaymentResponse);
             data.putExtra(Constants.INTENT_DATA_TYPE, PaymentType.BRI_EPAY);
+        } else if (response instanceof MandiriEcashResponse) {
+            MandiriEcashResponse mandiriEcashResponse = (MandiriEcashResponse) response;
+            data.putExtra(Constants.INTENT_DATA_CALLBACK, mandiriEcashResponse);
+            data.putExtra(Constants.INTENT_DATA_TYPE, PaymentType.MANDIRI_ECASH);
         }
         setResult(resultCode, data);
         super.onBackPressed();
