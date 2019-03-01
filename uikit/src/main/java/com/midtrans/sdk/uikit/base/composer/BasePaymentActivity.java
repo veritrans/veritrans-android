@@ -9,6 +9,7 @@ import android.view.View;
 import com.koushikdutta.ion.Ion;
 import com.midtrans.sdk.corekit.base.enums.PaymentType;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CimbClicksResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.DanamonOnlineResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.GopayResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.IndomaretPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.KlikBcaResponse;
@@ -104,6 +105,10 @@ public abstract class BasePaymentActivity extends BaseActivity {
             CimbClicksResponse cimbClicksResponse = (CimbClicksResponse) response;
             data.putExtra(Constants.INTENT_DATA_CALLBACK, cimbClicksResponse);
             data.putExtra(Constants.INTENT_DATA_TYPE, PaymentType.CIMB_CLICKS);
+        }else if (response instanceof DanamonOnlineResponse) {
+            DanamonOnlineResponse danamonOnlineResponse = (DanamonOnlineResponse) response;
+            data.putExtra(Constants.INTENT_DATA_CALLBACK, danamonOnlineResponse);
+            data.putExtra(Constants.INTENT_DATA_TYPE, PaymentType.DANAMON_ONLINE);
         }
         setResult(resultCode, data);
         super.onBackPressed();

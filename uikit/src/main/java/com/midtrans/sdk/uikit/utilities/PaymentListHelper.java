@@ -10,6 +10,7 @@ import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optiona
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaBankTransferReponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BniBankTransferResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CimbClicksResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.DanamonOnlineResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.GopayResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.IndomaretPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.KlikBcaResponse;
@@ -316,6 +317,34 @@ public class PaymentListHelper {
                     return;
                 }
                 break;
+            case PaymentType.DANAMON_ONLINE:
+                try {
+                    DanamonOnlineResponse response = (DanamonOnlineResponse) data.getSerializableExtra(Constants.INTENT_DATA_CALLBACK);
+                    if (resultCode == Activity.RESULT_OK) {
+                        if (response != null) {
+                            switch (response.getStatusCode()) {
+                                case com.midtrans.sdk.corekit.utilities.Constants.STATUS_CODE_200:
+                                    setCallback(callback, PaymentStatus.STATUS_SUCCESS, PaymentType.DANAMON_ONLINE, response);
+                                    break;
+                                case Constants.STATUS_CODE_201:
+                                    setCallback(callback, PaymentStatus.STATUS_PENDING, PaymentType.DANAMON_ONLINE, response);
+                                    break;
+                                default:
+                                    setCallback(callback, PaymentStatus.STATUS_FAILED, PaymentType.DANAMON_ONLINE, response);
+                                    break;
+                            }
+                        } else {
+                            setCallback(callback, PaymentStatus.STATUS_INVALID, PaymentType.DANAMON_ONLINE, response);
+                        }
+                    } else {
+                        setCallback(callback, PaymentStatus.STATUS_CANCEL, PaymentType.DANAMON_ONLINE, response);
+                    }
+                } catch (RuntimeException e) {
+                    Logger.error("onActivityResult:" + e.getMessage());
+                    setFailedCallback(callback, e.getMessage());
+                    return;
+                }
+                break;
             default:
                 setCallback(callback, PaymentStatus.STATUS_CANCEL, null, null);
                 break;
@@ -479,6 +508,39 @@ public class PaymentListHelper {
                     .setRedirectUrl(rawResponse.getRedirectUrl())
                     .setApprovalCode(rawResponse.getApprovalCode())
                     .setKlikBcaExpireTime(rawResponse.getKlikBcaExpireTime())
+                    .build();
+            return paymentResponse;
+        }else if (response instanceof CimbClicksResponse) {
+            CimbClicksResponse rawResponse = (CimbClicksResponse) response;
+            paymentResponse = PaymentResponse
+                    .builder(
+                            rawResponse.getStatusCode(),
+                            rawResponse.getStatusMessage(),
+                            rawResponse.getTransactionId(),
+                            rawResponse.getOrderId(),
+                            rawResponse.getGrossAmount(),
+                            rawResponse.getPaymentType(),
+                            rawResponse.getTransactionTime(),
+                            rawResponse.getTransactionStatus()
+                    )
+                    .setRedirectUrl(rawResponse.getRedirectUrl())
+                    .build();
+            return paymentResponse;
+        }else if (response instanceof DanamonOnlineResponse) {
+            DanamonOnlineResponse rawResponse = (DanamonOnlineResponse) response;
+            paymentResponse = PaymentResponse
+                    .builder(
+                            rawResponse.getStatusCode(),
+                            rawResponse.getStatusMessage(),
+                            rawResponse.getTransactionId(),
+                            rawResponse.getOrderId(),
+                            rawResponse.getGrossAmount(),
+                            rawResponse.getPaymentType(),
+                            rawResponse.getTransactionTime(),
+                            rawResponse.getTransactionStatus()
+                    )
+                    .setRedirectUrl(rawResponse.getRedirectUrl())
+                    .setApprovalCode(rawResponse.getFraudStatus())
                     .build();
             return paymentResponse;
         }

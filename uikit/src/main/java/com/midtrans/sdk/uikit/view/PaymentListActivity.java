@@ -39,6 +39,7 @@ import com.midtrans.sdk.uikit.view.adapter.PaymentMethodsAdapter;
 import com.midtrans.sdk.uikit.view.banktransfer.list.BankTransferListActivity;
 import com.midtrans.sdk.uikit.view.banktransfer.list.model.EnabledBankTransfer;
 import com.midtrans.sdk.uikit.view.cimbclicks.CimbClicksInstructionActivity;
+import com.midtrans.sdk.uikit.view.danamononline.DanamonOnlineInstructionActivity;
 import com.midtrans.sdk.uikit.view.gopay.instruction.GopayInstructionActivity;
 import com.midtrans.sdk.uikit.view.indomaret.instruction.IndomaretInstructionActivity;
 import com.midtrans.sdk.uikit.view.klikbca.instruction.KlikBcaInstructionActivity;
@@ -451,8 +452,13 @@ public class PaymentListActivity extends BaseActivity {
                 startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
                 break;
             }
-            case PaymentType.DANAMON_ONLINE:
+            case PaymentType.DANAMON_ONLINE:{
+                Intent intent = new Intent(this, DanamonOnlineInstructionActivity.class);
+                intent.putExtra(EXTRA_PAYMENT_INFO, response);
+                intent.putExtra(BasePaymentActivity.EXTRA_PAYMENT_TYPE, PaymentType.DANAMON_ONLINE);
+                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
                 break;
+            }
             case PaymentType.AKULAKU:
                 break;
             case PaymentType.ALFAMART:

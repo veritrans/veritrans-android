@@ -68,22 +68,31 @@
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".view.klikbca.result.KlikBcaResultActivity"
+        <activity
+            android:name=".view.klikbca.result.KlikBcaResultActivity"
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".view.klikbca.instruction.KlikBcaInstructionActivity"
+        <activity
+            android:name=".view.klikbca.instruction.KlikBcaInstructionActivity"
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".view.cimbclicks.CimbClicksInstructionActivity"
+        <activity
+            android:name=".view.cimbclicks.CimbClicksInstructionActivity"
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".view.webview.WebViewPaymentActivity"
+        <activity
+            android:name=".view.webview.WebViewPaymentActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/VeritransAppTheme" />
+        <activity
+            android:name=".view.danamononline.DanamonOnlineInstructionActivity"
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"
-            android:configChanges="keyboardHidden|orientation|screenSize"/>
+            android:windowSoftInputMode="stateHidden|adjustPan" />
 
     </application>
 
