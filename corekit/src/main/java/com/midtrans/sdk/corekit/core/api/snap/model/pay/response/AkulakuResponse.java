@@ -9,4 +9,12 @@ public class AkulakuResponse extends BasePaymentResponse {
     public void setFraudStatus(String fraudStatus) {
         this.fraudStatus = fraudStatus;
     }
+
+    public String getRedirectUrl() {
+        return redirectUrl;
+    }
+
+    public void setRedirectUrl(String redirectUrl) {
+        this.redirectUrl = redirectUrl;
+    }
 }
