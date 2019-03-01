@@ -235,14 +235,12 @@ public class SnapApiManager extends BaseServiceManager {
      * This method is used for Payment Using Mandiri Echannel
      *
      * @param snapToken                snapToken after get payment info.
-     * @param customerDetailPayRequest Payment Details.zz
      * @param callback                 Transaction callback.
      */
     public void paymentUsingMandiriEcash(String snapToken,
-                                         CustomerDetailPayRequest customerDetailPayRequest,
                                          MidtransCallback<MandiriEcashResponse> callback) {
         if (isSnapTokenAvailable(callback, snapToken, apiService)) {
-            PaymentRequest paymentRequest = new PaymentRequest(PaymentType.MANDIRI_ECASH, customerDetailPayRequest);
+            BasePaymentRequest paymentRequest = new BasePaymentRequest(PaymentType.MANDIRI_ECASH);
             Call<MandiriEcashResponse> call = apiService.paymentMandiriEcash(snapToken, paymentRequest);
             handleCall(call, callback);
         }
