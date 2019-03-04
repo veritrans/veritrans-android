@@ -352,6 +352,13 @@ public class BaseActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    protected void backFinish() {
+        if (isDetailShown) {
+            displayOrHideItemDetails();
+        }
+        onBackPressed();
+    }
+
     @Override
     public void onBackPressed() {
         if (isDetailShown) {

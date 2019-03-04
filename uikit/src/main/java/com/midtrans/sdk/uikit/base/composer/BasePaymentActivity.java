@@ -10,6 +10,7 @@ import com.koushikdutta.ion.Ion;
 import com.midtrans.sdk.corekit.base.enums.PaymentType;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.AkulakuResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.AlfamartPaymentResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaKlikpayResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BriEpayPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CimbClicksResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.DanamonOnlineResponse;
@@ -19,6 +20,7 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.KlikBcaResponse
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriEcashResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.merchantdata.MerchantPreferences;
+import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.base.model.PaymentResponse;
 import com.midtrans.sdk.uikit.utilities.Constants;
@@ -129,6 +131,10 @@ public abstract class BasePaymentActivity extends BaseActivity {
             AlfamartPaymentResponse alfamartPaymentResponse = (AlfamartPaymentResponse) response;
             data.putExtra(Constants.INTENT_DATA_CALLBACK, alfamartPaymentResponse);
             data.putExtra(Constants.INTENT_DATA_TYPE, PaymentType.ALFAMART);
+        } else if (response instanceof BcaKlikpayResponse) {
+            BcaKlikpayResponse bcaKlikpayResponse = (BcaKlikpayResponse) response;
+            data.putExtra(Constants.INTENT_DATA_CALLBACK, bcaKlikpayResponse);
+            data.putExtra(Constants.INTENT_DATA_TYPE, PaymentType.BCA_KLIKPAY);
         }
         setResult(resultCode, data);
         super.onBackPressed();
