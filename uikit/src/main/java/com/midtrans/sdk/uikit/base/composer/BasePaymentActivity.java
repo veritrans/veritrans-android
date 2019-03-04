@@ -9,6 +9,7 @@ import android.view.View;
 import com.koushikdutta.ion.Ion;
 import com.midtrans.sdk.corekit.base.enums.PaymentType;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.AkulakuResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.AlfamartPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BriEpayPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CimbClicksResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.DanamonOnlineResponse;
@@ -124,6 +125,10 @@ public abstract class BasePaymentActivity extends BaseActivity {
             MandiriEcashResponse mandiriEcashResponse = (MandiriEcashResponse) response;
             data.putExtra(Constants.INTENT_DATA_CALLBACK, mandiriEcashResponse);
             data.putExtra(Constants.INTENT_DATA_TYPE, PaymentType.MANDIRI_ECASH);
+        } else if (response instanceof AlfamartPaymentResponse) {
+            AlfamartPaymentResponse alfamartPaymentResponse = (AlfamartPaymentResponse) response;
+            data.putExtra(Constants.INTENT_DATA_CALLBACK, alfamartPaymentResponse);
+            data.putExtra(Constants.INTENT_DATA_TYPE, PaymentType.ALFAMART);
         }
         setResult(resultCode, data);
         super.onBackPressed();

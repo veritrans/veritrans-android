@@ -108,7 +108,16 @@
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-
+        <activity
+            android:name=".view.alfamart.result.AlfamartResultActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/VeritransAppTheme"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".view.alfamart.instruction.AlfamartInstructionActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/VeritransAppTheme"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
     </application>
 
 </manifest>

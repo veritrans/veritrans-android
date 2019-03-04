@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import com.midtrans.sdk.corekit.base.enums.PaymentType;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.Item;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.AkulakuResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.AlfamartPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaBankTransferReponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BniBankTransferResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BriEpayPaymentResponse;
@@ -425,6 +426,34 @@ public class PaymentListHelper {
                         }
                     } else {
                         setCallback(callback, PaymentStatus.STATUS_CANCEL, PaymentType.MANDIRI_ECASH, response);
+                    }
+                } catch (RuntimeException e) {
+                    Logger.error("onActivityResult:" + e.getMessage());
+                    setFailedCallback(callback, e.getMessage());
+                    return;
+                }
+                break;
+            case PaymentType.ALFAMART:
+                try {
+                    AlfamartPaymentResponse response = (AlfamartPaymentResponse) data.getSerializableExtra(Constants.INTENT_DATA_CALLBACK);
+                    if (resultCode == Activity.RESULT_OK) {
+                        if (response != null) {
+                            switch (response.getStatusCode()) {
+                                case com.midtrans.sdk.corekit.utilities.Constants.STATUS_CODE_200:
+                                    setCallback(callback, PaymentStatus.STATUS_SUCCESS, PaymentType.ALFAMART, response);
+                                    break;
+                                case Constants.STATUS_CODE_201:
+                                    setCallback(callback, PaymentStatus.STATUS_PENDING, PaymentType.ALFAMART, response);
+                                    break;
+                                default:
+                                    setCallback(callback, PaymentStatus.STATUS_FAILED, PaymentType.ALFAMART, response);
+                                    break;
+                            }
+                        } else {
+                            setCallback(callback, PaymentStatus.STATUS_INVALID, PaymentType.ALFAMART, response);
+                        }
+                    } else {
+                        setCallback(callback, PaymentStatus.STATUS_CANCEL, PaymentType.ALFAMART, response);
                     }
                 } catch (RuntimeException e) {
                     Logger.error("onActivityResult:" + e.getMessage());
