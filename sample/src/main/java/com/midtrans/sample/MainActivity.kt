@@ -31,10 +31,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         text_view_test.setOnClickListener {
-            val random = (Math.random() * 550 + 11).toInt()
+            val random = (Math.random() * 5250 + 152).toInt()
             val checkoutTransaction = CheckoutTransaction
                 .builder(
-                    InstallationHelper.generatedRandomID(this) + "31" + random,
+                    "121" + InstallationHelper.generatedRandomID(this) + "31" + random,
                     20000.0
                 )
                 .setCurrency(Currency.IDR)

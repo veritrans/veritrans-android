@@ -10,6 +10,7 @@ import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optiona
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.AkulakuResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.AlfamartPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaBankTransferReponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaKlikpayResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BniBankTransferResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BriEpayPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CimbClicksResponse;
@@ -461,6 +462,34 @@ public class PaymentListHelper {
                     return;
                 }
                 break;
+            case PaymentType.BCA_KLIKPAY:
+                try {
+                    BcaKlikpayResponse response = (BcaKlikpayResponse) data.getSerializableExtra(Constants.INTENT_DATA_CALLBACK);
+                    if (resultCode == Activity.RESULT_OK) {
+                        if (response != null) {
+                            switch (response.getStatusCode()) {
+                                case com.midtrans.sdk.corekit.utilities.Constants.STATUS_CODE_200:
+                                    setCallback(callback, PaymentStatus.STATUS_SUCCESS, PaymentType.BCA_KLIKPAY, response);
+                                    break;
+                                case Constants.STATUS_CODE_201:
+                                    setCallback(callback, PaymentStatus.STATUS_PENDING, PaymentType.BCA_KLIKPAY, response);
+                                    break;
+                                default:
+                                    setCallback(callback, PaymentStatus.STATUS_FAILED, PaymentType.BCA_KLIKPAY, response);
+                                    break;
+                            }
+                        } else {
+                            setCallback(callback, PaymentStatus.STATUS_INVALID, PaymentType.BCA_KLIKPAY, response);
+                        }
+                    } else {
+                        setCallback(callback, PaymentStatus.STATUS_CANCEL, PaymentType.BCA_KLIKPAY, response);
+                    }
+                } catch (RuntimeException e) {
+                    Logger.error("onActivityResult:" + e.getMessage());
+                    setFailedCallback(callback, e.getMessage());
+                    return;
+                }
+                break;
             default:
                 setCallback(callback, PaymentStatus.STATUS_CANCEL, null, null);
                 break;
@@ -690,6 +719,23 @@ public class PaymentListHelper {
                             rawResponse.getTransactionStatus()
                     )
                     .setRedirectUrl(rawResponse.getRedirectUrl())
+                    .build();
+            return paymentResponse;
+        } else if (response instanceof BcaKlikpayResponse) {
+            BcaKlikpayResponse rawResponse = (BcaKlikpayResponse) response;
+            paymentResponse = PaymentResponse
+                    .builder(
+                            rawResponse.getStatusCode(),
+                            rawResponse.getStatusMessage(),
+                            rawResponse.getTransactionId(),
+                            rawResponse.getOrderId(),
+                            rawResponse.getGrossAmount(),
+                            rawResponse.getPaymentType(),
+                            rawResponse.getTransactionTime(),
+                            rawResponse.getTransactionStatus()
+                    )
+                    .setRedirectUrl(rawResponse.getRedirectUrl())
+                    .setFraudStatus(rawResponse.getFraudStatus())
                     .build();
             return paymentResponse;
         }
