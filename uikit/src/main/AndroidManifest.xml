@@ -104,6 +104,11 @@
             android:theme="@style/VeritransAppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
+            android:name=".view.bcaklikpay.BcaKlikpayInstructionActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/VeritransAppTheme"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
             android:name=".view.mandiriecash.MandiriEcashInstructionActivity"
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"
