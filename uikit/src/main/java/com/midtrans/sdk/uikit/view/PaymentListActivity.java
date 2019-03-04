@@ -38,9 +38,9 @@ import com.midtrans.sdk.uikit.view.adapter.PaymentItemDetailsAdapter;
 import com.midtrans.sdk.uikit.view.adapter.PaymentMethodsAdapter;
 import com.midtrans.sdk.uikit.view.akulaku.AkulakuInstructionActivity;
 import com.midtrans.sdk.uikit.view.alfamart.instruction.AlfamartInstructionActivity;
-import com.midtrans.sdk.uikit.view.alfamart.result.AlfamartResultActivity;
 import com.midtrans.sdk.uikit.view.banktransfer.list.BankTransferListActivity;
 import com.midtrans.sdk.uikit.view.banktransfer.list.model.EnabledBankTransfer;
+import com.midtrans.sdk.uikit.view.bcaklikpay.BcaKlikpayInstructionActivity;
 import com.midtrans.sdk.uikit.view.briepay.BriEpayInstructionActivity;
 import com.midtrans.sdk.uikit.view.cimbclicks.CimbClicksInstructionActivity;
 import com.midtrans.sdk.uikit.view.danamononline.DanamonOnlineInstructionActivity;
@@ -419,8 +419,13 @@ public class PaymentListActivity extends BaseActivity {
                 startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
                 break;
             }
-            case PaymentType.BCA_KLIKPAY:
+            case PaymentType.BCA_KLIKPAY: {
+                Intent intent = new Intent(this, CimbClicksInstructionActivity.class);
+                intent.putExtra(EXTRA_PAYMENT_INFO, response);
+                intent.putExtra(BasePaymentActivity.EXTRA_PAYMENT_TYPE, PaymentType.CIMB_CLICKS);
+                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
                 break;
+            }
             case PaymentType.KLIK_BCA: {
                 Intent intent = new Intent(this, KlikBcaInstructionActivity.class);
                 intent.putExtra(EXTRA_PAYMENT_INFO, response);
