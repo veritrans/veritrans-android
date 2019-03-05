@@ -19,6 +19,7 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.GopayResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.IndomaretPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.KlikBcaResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriBillResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriClickpayResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriEcashResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.OtherBankTransferResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.PermataBankTransferResponse;
@@ -519,6 +520,34 @@ public class PaymentListHelper {
                     return;
                 }
                 break;
+            case PaymentType.MANDIRI_CLICKPAY:
+                try {
+                    MandiriClickpayResponse response = (MandiriClickpayResponse) data.getSerializableExtra(Constants.INTENT_DATA_CALLBACK);
+                    if (resultCode == Activity.RESULT_OK) {
+                        if (response != null) {
+                            switch (response.getStatusCode()) {
+                                case com.midtrans.sdk.corekit.utilities.Constants.STATUS_CODE_200:
+                                    setCallback(callback, PaymentStatus.STATUS_SUCCESS, PaymentType.MANDIRI_CLICKPAY, response);
+                                    break;
+                                case Constants.STATUS_CODE_201:
+                                    setCallback(callback, PaymentStatus.STATUS_PENDING, PaymentType.MANDIRI_CLICKPAY, response);
+                                    break;
+                                default:
+                                    setCallback(callback, PaymentStatus.STATUS_FAILED, PaymentType.MANDIRI_CLICKPAY, response);
+                                    break;
+                            }
+                        } else {
+                            setCallback(callback, PaymentStatus.STATUS_INVALID, PaymentType.MANDIRI_CLICKPAY, response);
+                        }
+                    } else {
+                        setCallback(callback, PaymentStatus.STATUS_CANCEL, PaymentType.MANDIRI_CLICKPAY, response);
+                    }
+                } catch (RuntimeException e) {
+                    Logger.error("onActivityResult:" + e.getMessage());
+                    setFailedCallback(callback, e.getMessage());
+                    return;
+                }
+                break;
             default:
                 setCallback(callback, PaymentStatus.STATUS_CANCEL, null, null);
                 break;
@@ -797,6 +826,24 @@ public class PaymentListHelper {
                             rawResponse.getTransactionStatus()
                     )
                     .setSettlementTime(rawResponse.getSettlementTime())
+                    .build();
+            return paymentResponse;
+        } else if (response instanceof MandiriClickpayResponse) {
+            MandiriClickpayResponse rawResponse = (MandiriClickpayResponse) response;
+            paymentResponse = PaymentResponse
+                    .builder(
+                            rawResponse.getStatusCode(),
+                            rawResponse.getStatusMessage(),
+                            rawResponse.getTransactionId(),
+                            rawResponse.getOrderId(),
+                            rawResponse.getGrossAmount(),
+                            rawResponse.getPaymentType(),
+                            rawResponse.getTransactionTime(),
+                            rawResponse.getTransactionStatus()
+                    )
+                    .setSettlementTime(rawResponse.getSettlementTime())
+                    .setApprovalCode(rawResponse.getApprovalCode())
+                    .setMaskedCard(rawResponse.getMaskedCard())
                     .build();
             return paymentResponse;
         }
