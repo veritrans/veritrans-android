@@ -20,138 +20,138 @@
             android:theme="@style/VeritransAppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".view.status.PaymentStatusActivity"
+            android:name=".view.method.status.PaymentStatusActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".view.banktransfer.list.BankTransferListActivity"
+            android:name=".view.method.banktransfer.list.BankTransferListActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".view.banktransfer.instruction.BankTransferInstructionActivity"
+            android:name=".view.method.banktransfer.instruction.BankTransferInstructionActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".view.gopay.instruction.GopayInstructionActivity"
+            android:name=".view.method.gopay.instruction.GopayInstructionActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".view.indomaret.instruction.IndomaretInstructionActivity"
+            android:name=".view.method.indomaret.instruction.IndomaretInstructionActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".view.banktransfer.result.BankPaymentResultActivity"
+            android:name=".view.method.banktransfer.result.BankPaymentResultActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".view.banktransfer.result.OtherBankPaymentResultActivity"
+            android:name=".view.method.banktransfer.result.OtherBankPaymentResultActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".view.banktransfer.result.MandiriBillPaymentResultActivity"
+            android:name=".view.method.banktransfer.result.MandiriBillPaymentResultActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".view.gopay.result.GopayResultActivity"
+            android:name=".view.method.gopay.result.GopayResultActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".view.indomaret.result.IndomaretResultActivity"
+            android:name=".view.method.indomaret.result.IndomaretResultActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".view.klikbca.result.KlikBcaResultActivity"
+            android:name=".view.method.klikbca.result.KlikBcaResultActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".view.klikbca.instruction.KlikBcaInstructionActivity"
+            android:name=".view.method.klikbca.instruction.KlikBcaInstructionActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".view.cimbclicks.CimbClicksInstructionActivity"
+            android:name=".view.method.cimbclicks.CimbClicksInstructionActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".view.webview.WebViewPaymentActivity"
+            android:name=".view.method.webview.WebViewPaymentActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme" />
         <activity
-            android:name=".view.danamononline.DanamonOnlineInstructionActivity"
+            android:name=".view.method.danamononline.DanamonOnlineInstructionActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".view.akulaku.AkulakuInstructionActivity"
+            android:name=".view.method.akulaku.AkulakuInstructionActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".view.briepay.BriEpayInstructionActivity"
+            android:name=".view.method.briepay.BriEpayInstructionActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".view.bcaklikpay.BcaKlikpayInstructionActivity"
+            android:name=".view.method.bcaklikpay.BcaKlikpayInstructionActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".view.mandiriecash.MandiriEcashInstructionActivity"
+            android:name=".view.method.mandiriecash.MandiriEcashInstructionActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".view.alfamart.result.AlfamartResultActivity"
+            android:name=".view.method.alfamart.result.AlfamartResultActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".view.alfamart.instruction.AlfamartInstructionActivity"
+            android:name=".view.method.alfamart.instruction.AlfamartInstructionActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".view.telkomselcash.TelkomselCashInstructionActivity"
+            android:name=".view.method.telkomselcash.TelkomselCashInstructionActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".view.mandiriclickpay.MandiriClickpayInstructionActivity"
+            android:name=".view.method.mandiriclickpay.MandiriClickpayInstructionActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"
