@@ -1,26 +1,26 @@
-package com.midtrans.sdk.uikit.view.bcaklikpay;
+package com.midtrans.sdk.uikit.view.telkomselcash;
 
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaKlikPayResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.TelkomselCashResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
-import com.midtrans.sdk.corekit.core.payment.OnlineDebitCharge;
+import com.midtrans.sdk.corekit.core.payment.EWalletCharge;
 import com.midtrans.sdk.uikit.base.composer.BasePaymentPresenter;
 import com.midtrans.sdk.uikit.base.contract.BasePaymentContract;
 
-public class BcaKlikpayInstructionPresenter extends BasePaymentPresenter<BasePaymentContract> {
+public class TelkomselCashInstructionPresenter extends BasePaymentPresenter<BasePaymentContract> {
 
     private PaymentInfoResponse paymentInfoResponse;
 
-    BcaKlikpayInstructionPresenter(BasePaymentContract view, PaymentInfoResponse paymentInfoResponse) {
+    TelkomselCashInstructionPresenter(BasePaymentContract view, PaymentInfoResponse paymentInfoResponse) {
         super();
         this.view = view;
         this.paymentInfoResponse = paymentInfoResponse;
     }
 
-    void startBcaKlikpayPayment(String token) {
-        OnlineDebitCharge.paymentUsingBcaKlikpay(token, new MidtransCallback<BcaKlikPayResponse>() {
+    void startTelkomselCashPayment(String token, String customerNumber) {
+        EWalletCharge.paymentUsingTelkomselCash(token, customerNumber, new MidtransCallback<TelkomselCashResponse>() {
             @Override
-            public void onSuccess(BcaKlikPayResponse data) {
+            public void onSuccess(TelkomselCashResponse data) {
                 view.onPaymentSuccess(data);
             }
 

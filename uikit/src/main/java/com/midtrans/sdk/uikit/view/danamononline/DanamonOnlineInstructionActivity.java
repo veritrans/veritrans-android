@@ -9,15 +9,14 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.midtrans.sdk.corekit.base.enums.PaymentType;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CimbClicksResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.DanamonOnlineResponse;
 import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.base.composer.BasePaymentActivity;
 import com.midtrans.sdk.uikit.base.contract.BasePaymentContract;
 import com.midtrans.sdk.uikit.utilities.Constants;
+import com.midtrans.sdk.uikit.utilities.NetworkHelper;
 import com.midtrans.sdk.uikit.utilities.PaymentListHelper;
-import com.midtrans.sdk.uikit.view.cimbclicks.CimbClicksInstructionPresenter;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
@@ -106,10 +105,10 @@ public class DanamonOnlineInstructionActivity extends BasePaymentActivity implem
         hideProgressLayout();
         danamonOnlineResponse = (DanamonOnlineResponse) response;
         if (danamonOnlineResponse != null) {
-            if (danamonOnlineResponse.getStatusCode().equals(Constants.STATUS_CODE_400)) {
-                setCallbackOrSendToStatusPage();
-            } else {
+            if (NetworkHelper.isPaymentSuccess(danamonOnlineResponse)) {
                 showWebViewPaymentPage(PaymentType.DANAMON_ONLINE, danamonOnlineResponse.getRedirectUrl());
+            } else {
+                setCallbackOrSendToStatusPage();
             }
         } else {
             finishPayment(RESULT_OK, danamonOnlineResponse);

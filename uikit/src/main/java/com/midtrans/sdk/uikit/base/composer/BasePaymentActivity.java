@@ -10,7 +10,7 @@ import com.koushikdutta.ion.Ion;
 import com.midtrans.sdk.corekit.base.enums.PaymentType;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.AkulakuResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.AlfamartPaymentResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaKlikpayResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaKlikPayResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BriEpayPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CimbClicksResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.DanamonOnlineResponse;
@@ -18,9 +18,9 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.GopayResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.IndomaretPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.KlikBcaResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriEcashResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.TelkomselCashResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.merchantdata.MerchantPreferences;
-import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.base.model.PaymentResponse;
 import com.midtrans.sdk.uikit.utilities.Constants;
@@ -51,10 +51,10 @@ public abstract class BasePaymentActivity extends BaseActivity {
         super.setContentView(layoutResID);
         initProperties();
         initToolbarAndView();
-        initMerchantPreferences();
         initItemDetails(paymentInfoResponse);
         initTheme();
         initializeTheme();
+        initMerchantPreferences();
     }
 
     protected abstract void initTheme();
@@ -77,6 +77,7 @@ public abstract class BasePaymentActivity extends BaseActivity {
             Ion.with(merchantLogoInToolbar)
                     .load(preferences.getLogoUrl());
             merchantLogoInToolbar.setVisibility(View.VISIBLE);
+            merchantNameInToolbar.setVisibility(View.GONE);
             AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
             params.height = params.height + (int) getResources().getDimension(R.dimen.toolbar_expansion_size);
             toolbar.setLayoutParams(params);
@@ -131,10 +132,14 @@ public abstract class BasePaymentActivity extends BaseActivity {
             AlfamartPaymentResponse alfamartPaymentResponse = (AlfamartPaymentResponse) response;
             data.putExtra(Constants.INTENT_DATA_CALLBACK, alfamartPaymentResponse);
             data.putExtra(Constants.INTENT_DATA_TYPE, PaymentType.ALFAMART);
-        } else if (response instanceof BcaKlikpayResponse) {
-            BcaKlikpayResponse bcaKlikpayResponse = (BcaKlikpayResponse) response;
+        } else if (response instanceof BcaKlikPayResponse) {
+            BcaKlikPayResponse bcaKlikpayResponse = (BcaKlikPayResponse) response;
             data.putExtra(Constants.INTENT_DATA_CALLBACK, bcaKlikpayResponse);
             data.putExtra(Constants.INTENT_DATA_TYPE, PaymentType.BCA_KLIKPAY);
+        } else if (response instanceof TelkomselCashResponse) {
+            TelkomselCashResponse telkomselCashResponse = (TelkomselCashResponse) response;
+            data.putExtra(Constants.INTENT_DATA_CALLBACK, telkomselCashResponse);
+            data.putExtra(Constants.INTENT_DATA_TYPE, PaymentType.TELKOMSEL_CASH);
         }
         setResult(resultCode, data);
         super.onBackPressed();
@@ -160,6 +165,7 @@ public abstract class BasePaymentActivity extends BaseActivity {
     protected void initToolbarAndView() {
         toolbar = findViewById(R.id.toolbar_base);
         buttonCompletePayment = findViewById(R.id.button_primary);
+
     }
 
     protected void setTitle(String title) {

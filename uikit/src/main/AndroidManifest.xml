@@ -123,6 +123,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".view.telkomselcash.TelkomselCashInstructionActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/VeritransAppTheme"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
     </application>
 
 </manifest>

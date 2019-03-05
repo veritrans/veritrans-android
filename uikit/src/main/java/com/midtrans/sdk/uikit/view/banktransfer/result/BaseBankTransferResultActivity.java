@@ -1,6 +1,5 @@
 package com.midtrans.sdk.uikit.view.banktransfer.result;
 
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 
 import android.app.Activity;
@@ -13,7 +12,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.koushikdutta.ion.Ion;
 import com.midtrans.sdk.corekit.base.enums.PaymentType;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaBankTransferReponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BniBankTransferResponse;
@@ -96,17 +94,8 @@ public abstract class BaseBankTransferResultActivity extends BaseActivity {
     private void initMerchantPreferences() {
         String paymentType = getIntent().getStringExtra(EXTRA_BANK_TYPE);
         MerchantPreferences preferences = paymentInfoResponse.getMerchantData().getPreference();
-        if (!TextUtils.isEmpty(preferences.getDisplayName())) {
-            merchantNameInToolbar.setText(preferences.getDisplayName());
-            merchantNameInToolbar.setVisibility(View.VISIBLE);
-        }
         if (!TextUtils.isEmpty(preferences.getLogoUrl())) {
-            Ion.with(merchantLogoInToolbar)
-                    .load(preferences.getLogoUrl());
-            merchantLogoInToolbar.setVisibility(View.VISIBLE);
-            AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
-            params.height = params.height + (int) getResources().getDimension(R.dimen.toolbar_expansion_size);
-            toolbar.setLayoutParams(params);
+            merchantNameInToolbar.setVisibility(View.GONE);
         }
         if (!TextUtils.isEmpty(paymentType)) {
             paymentMethodTitleInToolbar.setText(PaymentListHelper.mappingPaymentTitle(this, paymentType));

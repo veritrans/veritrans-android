@@ -10,6 +10,7 @@ import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.base.composer.BasePaymentActivity;
 import com.midtrans.sdk.uikit.base.contract.BasePaymentContract;
 import com.midtrans.sdk.uikit.utilities.Constants;
+import com.midtrans.sdk.uikit.utilities.NetworkHelper;
 import com.midtrans.sdk.uikit.utilities.PaymentListHelper;
 
 import androidx.annotation.Nullable;
@@ -68,10 +69,10 @@ public class MandiriEcashInstructionActivity extends BasePaymentActivity impleme
         hideProgressLayout();
         mandiriEcashResponse = (MandiriEcashResponse) response;
         if (mandiriEcashResponse != null) {
-            if (mandiriEcashResponse.getStatusCode().equals(Constants.STATUS_CODE_400)) {
-                setCallbackOrSendToStatusPage();
-            } else {
+            if (NetworkHelper.isPaymentSuccess(mandiriEcashResponse)) {
                 showWebViewPaymentPage(PaymentType.MANDIRI_ECASH, mandiriEcashResponse.getRedirectUrl());
+            } else {
+                setCallbackOrSendToStatusPage();
             }
         } else {
             finishPayment(RESULT_OK, mandiriEcashResponse);

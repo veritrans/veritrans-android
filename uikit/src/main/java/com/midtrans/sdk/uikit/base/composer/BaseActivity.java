@@ -1,6 +1,9 @@
 package com.midtrans.sdk.uikit.base.composer;
 
+import com.google.android.material.textfield.TextInputLayout;
+
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
@@ -30,10 +33,12 @@ import com.midtrans.sdk.uikit.widget.DefaultTextView;
 import com.midtrans.sdk.uikit.widget.FancyButton;
 import com.midtrans.sdk.uikit.widget.SemiBoldTextView;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 import androidx.annotation.LayoutRes;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -233,6 +238,29 @@ public class BaseActivity extends AppCompatActivity {
     protected void setPrimaryBackgroundColor(View view) throws RuntimeException {
         if (primaryColor != 0 && view != null) {
             view.setBackgroundColor(primaryColor);
+        }
+    }
+
+    public void setBackgroundTintList(AppCompatEditText editText) throws RuntimeException {
+        if (secondaryColor != 0) {
+            editText.setSupportBackgroundTintList(new ColorStateList(new int[][]{{0}}, new int[]{secondaryColor}));
+        }
+    }
+
+    public void setTextInputlayoutFilter(TextInputLayout textInputLayout) throws RuntimeException {
+        if (secondaryColor != 0) {
+            try {
+                Field fDefaultTextColor = TextInputLayout.class.getDeclaredField("mDefaultTextColor");
+                fDefaultTextColor.setAccessible(true);
+                fDefaultTextColor.set(textInputLayout, new ColorStateList(new int[][]{{0}}, new int[]{secondaryColor}));
+
+                Field fFocusedTextColor = TextInputLayout.class.getDeclaredField("mFocusedTextColor");
+                fFocusedTextColor.setAccessible(true);
+                fFocusedTextColor.set(textInputLayout, new ColorStateList(new int[][]{{0}}, new int[]{secondaryColor}));
+
+            } catch (RuntimeException | NoSuchFieldException | IllegalAccessException e) {
+                Logger.error("tilfilter():" + e.getMessage());
+            }
         }
     }
 

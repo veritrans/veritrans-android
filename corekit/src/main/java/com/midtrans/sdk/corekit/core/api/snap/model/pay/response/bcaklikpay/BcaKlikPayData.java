@@ -3,7 +3,9 @@ package com.midtrans.sdk.corekit.core.api.snap.model.pay.response.bcaklikpay;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class BcaKlikPayData {
+import java.io.Serializable;
+
+public class BcaKlikPayData implements Serializable {
     @SerializedName("url")
     @Expose
     private String url;

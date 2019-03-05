@@ -14,6 +14,7 @@ import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.merchantdata.Mer
 import com.midtrans.sdk.uikit.MidtransKitFlow;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.base.composer.BaseActivity;
+import com.midtrans.sdk.uikit.base.composer.BasePaymentActivity;
 import com.midtrans.sdk.uikit.base.model.BankTransfer;
 import com.midtrans.sdk.uikit.utilities.Constants;
 import com.midtrans.sdk.uikit.view.PaymentListActivity;
@@ -28,14 +29,11 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class BankTransferListActivity extends BaseActivity {
+public class BankTransferListActivity extends BasePaymentActivity {
 
     public static final String EXTRA_BANK_LIST = "extra.bank.list";
 
     private RecyclerView containerBankTransfers;
-    private TextView merchantNameInToolbar;
-    private TextView paymentMethodTitleInToolbar;
-    private ImageView merchantLogoInToolbar;
     private Toolbar toolbar;
     private BankTransferListPresenter presenter;
 
@@ -48,9 +46,7 @@ public class BankTransferListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_bank_transfer_list);
         getIntentData();
-        initToolbarAndView();
         initializeTheme();
-        initMerchantPreferences();
         initPaymentMethodList();
         initItemDetails(paymentInfo);
     }
@@ -58,17 +54,17 @@ public class BankTransferListActivity extends BaseActivity {
     /**
      * This method used for binding view and setup other view stuff like toolbar and progress image
      */
-    private void initToolbarAndView() {
+    @Override
+    protected void initToolbarAndView() {
+        super.initToolbarAndView();
         toolbar = findViewById(R.id.toolbar_base);
-        merchantLogoInToolbar = findViewById(R.id.image_view_merchant_logo);
-        merchantNameInToolbar = findViewById(R.id.text_view_merchant_name);
-        paymentMethodTitleInToolbar = findViewById(R.id.text_view_page_title);
         containerBankTransfers = findViewById(R.id.recycler_View_bank_list);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
+        setTitle(getString(R.string.activity_select_bank));
     }
 
     /**
@@ -104,21 +100,9 @@ public class BankTransferListActivity extends BaseActivity {
         }
     }
 
-    /**
-     * This method use for setup view stuff based on response and merchant preferences
-     */
-    private void initMerchantPreferences() {
-        MerchantPreferences preferences = paymentInfo.getMerchantData().getPreference();
-        if (!TextUtils.isEmpty(preferences.getDisplayName())) {
-            merchantNameInToolbar.setText(preferences.getDisplayName());
-            merchantNameInToolbar.setVisibility(View.VISIBLE);
-        }
-        if (!TextUtils.isEmpty(preferences.getLogoUrl())) {
-            Ion.with(merchantLogoInToolbar)
-                    .load(preferences.getLogoUrl());
-            merchantLogoInToolbar.setVisibility(View.VISIBLE);
-        }
-        paymentMethodTitleInToolbar.setText(getString(R.string.activity_select_bank));
+    @Override
+    protected void initTheme() {
+
     }
 
     /**
