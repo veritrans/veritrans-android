@@ -2,18 +2,11 @@ package com.midtrans.sdk.uikit.view.banktransfer.list;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.koushikdutta.ion.Ion;
 import com.midtrans.sdk.corekit.base.enums.PaymentType;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.merchantdata.MerchantPreferences;
 import com.midtrans.sdk.uikit.MidtransKitFlow;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.base.composer.BaseActivity;
 import com.midtrans.sdk.uikit.base.composer.BasePaymentActivity;
 import com.midtrans.sdk.uikit.base.model.BankTransfer;
 import com.midtrans.sdk.uikit.utilities.Constants;

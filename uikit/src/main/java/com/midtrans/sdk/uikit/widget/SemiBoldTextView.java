@@ -4,8 +4,8 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 
-import com.midtrans.sdk.uikit.MidtransKitConfig;
 import com.midtrans.sdk.uikit.MidtransKit;
+import com.midtrans.sdk.uikit.MidtransKitConfig;
 
 import androidx.appcompat.widget.AppCompatTextView;
 

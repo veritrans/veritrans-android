@@ -15,11 +15,9 @@ import com.midtrans.sdk.uikit.utilities.Constants;
 
 public class BankTransferResultPresenter extends BasePaymentPresenter {
 
-    private static volatile BankTransferResultPresenter INSTANCE = null;
-
     private static final String LABEL_BANK_CODE_BNI = "009 (Bank BNI)";
     private static final String LABEL_BANK_CODE_PERMATA = "013 (Bank Permata)";
-
+    private static volatile BankTransferResultPresenter INSTANCE = null;
     private final String bankType;
 
     private BcaBankTransferReponse bcaResponse;

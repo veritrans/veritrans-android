@@ -9,8 +9,8 @@ import com.midtrans.sdk.uikit.base.model.PaymentResponse;
 public class BasePaymentPresenter<V extends BaseContract> extends BasePresenter<V> {
 
     private final String BACK_BUTTON_NAME = "Back";
-    private String currency;
     protected PaymentResponse paymentResponse;
+    private String currency;
 
     public BasePaymentPresenter() {
         super();

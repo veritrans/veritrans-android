@@ -9,7 +9,6 @@ import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.base.adapter.BaseAdapter;
 import com.midtrans.sdk.uikit.view.model.ItemViewDetails;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -24,10 +23,6 @@ public class PaymentItemDetailsAdapter extends BaseAdapter<ItemViewDetails> {
 
     private List<ItemViewDetails> itemDetails;
     private ItemDetailListener listener;
-
-    public interface ItemDetailListener {
-        void onItemShown();
-    }
 
     public PaymentItemDetailsAdapter(List<ItemViewDetails> itemDetails, String orderId, ItemDetailListener listener) {
         this.orderId = orderId;
@@ -128,6 +123,10 @@ public class PaymentItemDetailsAdapter extends BaseAdapter<ItemViewDetails> {
             return TYPE_ITEM;
         }
         return super.getItemViewType(position);
+    }
+
+    public interface ItemDetailListener {
+        void onItemShown();
     }
 
     class ItemDetailsViewHolder extends RecyclerView.ViewHolder {

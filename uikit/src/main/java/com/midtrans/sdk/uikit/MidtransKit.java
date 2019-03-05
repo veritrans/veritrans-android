@@ -21,8 +21,8 @@ import static com.midtrans.sdk.corekit.utilities.Constants.MESSAGE_INSTANCE_NOT_
 
 public class MidtransKit {
 
-    private static volatile MidtransKit SINGLETON_INSTANCE = null;
     private static final int API_TIMEOUT_DEFAULT = 30;
+    private static volatile MidtransKit SINGLETON_INSTANCE = null;
     /**
      * Mandatory property.
      */
@@ -77,6 +77,27 @@ public class MidtransKit {
                 clientId,
                 merchantUrl
         );
+    }
+
+    /**
+     * Returns instance of midtrans sdk.
+     *
+     * @return MidtransSdk instance.
+     */
+    public synchronized static MidtransKit getInstance() {
+        if (doCheckSdkInitialization(SINGLETON_INSTANCE)) {
+            return SINGLETON_INSTANCE;
+        }
+        return null;
+    }
+
+    private static <T> boolean doCheckSdkInitialization(T itemForCheck) {
+        if (itemForCheck == null) {
+            RuntimeException runtimeException = new RuntimeException(MESSAGE_INSTANCE_NOT_INITALIZE);
+            Logger.error(runtimeException.getMessage());
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -176,18 +197,6 @@ public class MidtransKit {
      */
     public MidtransKitConfig getMidtransKitConfig() {
         return midtransKitConfig;
-    }
-
-    /**
-     * Returns instance of midtrans sdk.
-     *
-     * @return MidtransSdk instance.
-     */
-    public synchronized static MidtransKit getInstance() {
-        if (doCheckSdkInitialization(SINGLETON_INSTANCE)) {
-            return SINGLETON_INSTANCE;
-        }
-        return null;
     }
 
     public void startPaymentUiWithTransaction(
@@ -331,14 +340,5 @@ public class MidtransKit {
             }
             return true;
         }
-    }
-
-    private static <T> boolean doCheckSdkInitialization(T itemForCheck) {
-        if (itemForCheck == null) {
-            RuntimeException runtimeException = new RuntimeException(MESSAGE_INSTANCE_NOT_INITALIZE);
-            Logger.error(runtimeException.getMessage());
-            return false;
-        }
-        return true;
     }
 }

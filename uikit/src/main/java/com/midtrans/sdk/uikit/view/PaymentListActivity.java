@@ -458,7 +458,7 @@ public class PaymentListActivity extends BaseActivity {
                 startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
                 break;
             }
-            case PaymentType.TELKOMSEL_CASH:{
+            case PaymentType.TELKOMSEL_CASH: {
                 Intent intent = new Intent(this, TelkomselCashInstructionActivity.class);
                 intent.putExtra(EXTRA_PAYMENT_INFO, response);
                 intent.putExtra(BasePaymentActivity.EXTRA_PAYMENT_TYPE, PaymentType.TELKOMSEL_CASH);
