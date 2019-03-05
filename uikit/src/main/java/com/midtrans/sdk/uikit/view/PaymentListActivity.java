@@ -50,6 +50,7 @@ import com.midtrans.sdk.uikit.view.klikbca.instruction.KlikBcaInstructionActivit
 import com.midtrans.sdk.uikit.view.mandiriecash.MandiriEcashInstructionActivity;
 import com.midtrans.sdk.uikit.view.model.ItemViewDetails;
 import com.midtrans.sdk.uikit.view.model.PaymentMethodsModel;
+import com.midtrans.sdk.uikit.view.telkomselcash.TelkomselCashInstructionActivity;
 import com.midtrans.sdk.uikit.widget.BoldTextView;
 import com.midtrans.sdk.uikit.widget.DefaultTextView;
 import com.midtrans.sdk.uikit.widget.FancyButton;
@@ -332,6 +333,7 @@ public class PaymentListActivity extends BaseActivity {
             Ion.with(merchantLogoInToolbar)
                     .load(preferences.getLogoUrl());
             merchantLogoInToolbar.setVisibility(View.VISIBLE);
+            merchantNameInToolbar.setVisibility(View.GONE);
         }
         containerItemDetails.setBackgroundColor(MidtransKit.getInstance().getMidtransKitConfig().getColorTheme().getPrimaryColor());
         int secureBadgeType = PaymentListHelper.getCreditCardIconType(response);
@@ -420,9 +422,9 @@ public class PaymentListActivity extends BaseActivity {
                 break;
             }
             case PaymentType.BCA_KLIKPAY: {
-                Intent intent = new Intent(this, CimbClicksInstructionActivity.class);
+                Intent intent = new Intent(this, BcaKlikpayInstructionActivity.class);
                 intent.putExtra(EXTRA_PAYMENT_INFO, response);
-                intent.putExtra(BasePaymentActivity.EXTRA_PAYMENT_TYPE, PaymentType.CIMB_CLICKS);
+                intent.putExtra(BasePaymentActivity.EXTRA_PAYMENT_TYPE, PaymentType.BCA_KLIKPAY);
                 startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
                 break;
             }
@@ -456,8 +458,13 @@ public class PaymentListActivity extends BaseActivity {
                 startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
                 break;
             }
-            case PaymentType.TELKOMSEL_CASH:
+            case PaymentType.TELKOMSEL_CASH:{
+                Intent intent = new Intent(this, TelkomselCashInstructionActivity.class);
+                intent.putExtra(EXTRA_PAYMENT_INFO, response);
+                intent.putExtra(BasePaymentActivity.EXTRA_PAYMENT_TYPE, PaymentType.TELKOMSEL_CASH);
+                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
                 break;
+            }
             case PaymentType.MANDIRI_ECASH: {
                 Intent intent = new Intent(this, MandiriEcashInstructionActivity.class);
                 intent.putExtra(EXTRA_PAYMENT_INFO, response);
