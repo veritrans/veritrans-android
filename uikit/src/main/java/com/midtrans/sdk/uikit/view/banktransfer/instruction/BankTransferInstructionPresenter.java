@@ -11,8 +11,8 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriBillResp
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.PermataBankTransferResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.core.payment.BankTransferCharge;
-import com.midtrans.sdk.corekit.utilities.Helper;
 import com.midtrans.sdk.uikit.base.composer.BasePaymentPresenter;
+import com.midtrans.sdk.uikit.utilities.Helper;
 
 import okhttp3.ResponseBody;
 
