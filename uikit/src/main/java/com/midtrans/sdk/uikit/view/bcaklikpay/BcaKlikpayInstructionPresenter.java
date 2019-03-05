@@ -1,7 +1,7 @@
 package com.midtrans.sdk.uikit.view.bcaklikpay;
 
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaKlikpayResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaKlikPayResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.core.payment.OnlineDebitCharge;
 import com.midtrans.sdk.uikit.base.composer.BasePaymentPresenter;
@@ -18,9 +18,9 @@ public class BcaKlikpayInstructionPresenter extends BasePaymentPresenter<BasePay
     }
 
     void startBcaKlikpayPayment(String token) {
-        OnlineDebitCharge.paymentUsingBcaKlikpay(token, new MidtransCallback<BcaKlikpayResponse>() {
+        OnlineDebitCharge.paymentUsingBcaKlikpay(token, new MidtransCallback<BcaKlikPayResponse>() {
             @Override
-            public void onSuccess(BcaKlikpayResponse data) {
+            public void onSuccess(BcaKlikPayResponse data) {
                 view.onPaymentSuccess(data);
             }
 

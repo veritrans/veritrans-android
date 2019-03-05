@@ -15,7 +15,7 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.telkomsel.Telkom
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.AkulakuResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.AlfamartPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaBankTransferReponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaKlikpayResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaKlikPayResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BniBankTransferResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BriEpayPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CimbClicksResponse;
@@ -193,10 +193,10 @@ public class SnapApiManager extends BaseServiceManager {
      * @param callback  Transaction callback.
      */
     public void paymentUsingBcaClickPay(String snapToken,
-                                        MidtransCallback<BcaKlikpayResponse> callback) {
+                                        MidtransCallback<BcaKlikPayResponse> callback) {
         if (isSnapTokenAvailable(callback, snapToken, apiService)) {
             BasePaymentRequest basePaymentRequest = new BasePaymentRequest(PaymentType.BCA_KLIKPAY);
-            Call<BcaKlikpayResponse> call = apiService.paymentBcaClickPay(snapToken, basePaymentRequest);
+            Call<BcaKlikPayResponse> call = apiService.paymentBcaClickPay(snapToken, basePaymentRequest);
             handleCall(call, callback);
         }
     }

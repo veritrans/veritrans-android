@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.midtrans.sdk.corekit.base.enums.PaymentType;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaKlikpayResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaKlikPayResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.base.composer.BasePaymentActivity;
 import com.midtrans.sdk.uikit.base.contract.BasePaymentContract;
@@ -17,7 +17,7 @@ import androidx.annotation.Nullable;
 public class BcaKlikpayInstructionActivity extends BasePaymentActivity implements BasePaymentContract {
 
     private BcaKlikpayInstructionPresenter presenter;
-    private BcaKlikpayResponse bcaKlikPayResponse;
+    private BcaKlikPayResponse bcaKlikPayResponse;
 
     private boolean isAlreadyGotResponse = false;
 
@@ -66,7 +66,7 @@ public class BcaKlikpayInstructionActivity extends BasePaymentActivity implement
     @Override
     public <T> void onPaymentSuccess(T response) {
         hideProgressLayout();
-        bcaKlikPayResponse = (BcaKlikpayResponse) response;
+        bcaKlikPayResponse = (BcaKlikPayResponse) response;
         if (bcaKlikPayResponse != null) {
             if (bcaKlikPayResponse.getStatusCode().equals(Constants.STATUS_CODE_400)) {
                 setCallbackOrSendToStatusPage();
