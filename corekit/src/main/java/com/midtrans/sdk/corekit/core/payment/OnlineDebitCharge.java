@@ -1,7 +1,7 @@
 package com.midtrans.sdk.corekit.core.payment;
 
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaKlikpayResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaKlikPayResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BriEpayPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CimbClicksResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.DanamonOnlineResponse;
@@ -27,7 +27,7 @@ public class OnlineDebitCharge extends BaseGroupPayment {
      * @param callback  for receiving callback from request.
      */
     public static void paymentUsingBcaKlikpay(final String snapToken,
-                                              final MidtransCallback<BcaKlikpayResponse> callback) {
+                                              final MidtransCallback<BcaKlikPayResponse> callback) {
         if (isValidForNetworkCall(callback)) {
             getSnapApiManager().paymentUsingBcaClickPay(snapToken, callback);
         }

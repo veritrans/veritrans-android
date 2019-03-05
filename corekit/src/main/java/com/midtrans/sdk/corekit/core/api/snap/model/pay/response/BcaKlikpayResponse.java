@@ -2,7 +2,7 @@ package com.midtrans.sdk.corekit.core.api.snap.model.pay.response;
 
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.bcaklikpay.BcaKlikPayData;
 
-public class BcaKlikpayResponse extends BasePaymentResponse {
+public class BcaKlikPayResponse extends BasePaymentResponse {
 
     public String getRedirectUrl() {
         return redirectUrl;

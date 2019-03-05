@@ -152,6 +152,7 @@ public class BankTransferInstructionActivity extends BaseActivity implements Ban
             Ion.with(merchantLogoInToolbar)
                     .load(preferences.getLogoUrl());
             merchantLogoInToolbar.setVisibility(View.VISIBLE);
+            merchantNameInToolbar.setVisibility(View.GONE);
         }
         if (!TextUtils.isEmpty(paymentType)) {
             paymentMethodTitleInToolbar.setText(PaymentListHelper.mappingPaymentTitle(this, paymentType));

@@ -1,7 +1,7 @@
 package com.midtrans.sdk.uikit.view.status;
 
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.AkulakuResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaKlikpayResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaKlikPayResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BriEpayPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CimbClicksResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CreditCardResponse;
@@ -20,7 +20,7 @@ public class PaymentStatusPresenter extends BasePaymentPresenter<BasePaymentCont
     protected GopayResponse gopayResponse;
     protected CreditCardResponse creditCardResponse;
     protected AkulakuResponse akulakuResponse;
-    protected BcaKlikpayResponse bcaKlikpayResponse;
+    protected BcaKlikPayResponse bcaKlikpayResponse;
     protected BriEpayPaymentResponse briEpayPaymentResponse;
     protected CimbClicksResponse cimbClicksResponse;
     protected DanamonOnlineResponse danamonOnlineResponse;
@@ -42,8 +42,8 @@ public class PaymentStatusPresenter extends BasePaymentPresenter<BasePaymentCont
                 this.creditCardResponse = (CreditCardResponse) response;
             } else if (response instanceof AkulakuResponse) {
                 this.akulakuResponse = (AkulakuResponse) response;
-            } else if (response instanceof BcaKlikpayResponse) {
-                this.bcaKlikpayResponse = (BcaKlikpayResponse) response;
+            } else if (response instanceof BcaKlikPayResponse) {
+                this.bcaKlikpayResponse = (BcaKlikPayResponse) response;
             } else if (response instanceof BriEpayPaymentResponse) {
                 this.briEpayPaymentResponse = (BriEpayPaymentResponse) response;
             } else if (response instanceof CimbClicksResponse) {

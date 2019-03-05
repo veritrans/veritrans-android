@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.RelativeLayout;
 
+import com.midtrans.sdk.corekit.base.enums.PaymentType;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.GopayResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.payment.PaymentStatusResponse;
 import com.midtrans.sdk.corekit.utilities.Logger;
@@ -18,6 +19,7 @@ import com.midtrans.sdk.uikit.utilities.ActivityHelper;
 import com.midtrans.sdk.uikit.utilities.Constants;
 import com.midtrans.sdk.uikit.utilities.MessageHelper;
 import com.midtrans.sdk.uikit.utilities.MidtransKitHelper;
+import com.midtrans.sdk.uikit.utilities.NetworkHelper;
 import com.midtrans.sdk.uikit.utilities.PaymentListHelper;
 import com.midtrans.sdk.uikit.view.PaymentListActivity;
 import com.midtrans.sdk.uikit.view.gopay.result.GopayResultActivity;
@@ -140,15 +142,11 @@ public class GopayInstructionActivity extends BasePaymentActivity implements Gop
      * @return validity of response
      */
     private boolean isResponseValid(GopayResponse response) {
-        if (response == null) {
+        if (TextUtils.isEmpty(response.getDeeplinkUrl()) && !isTablet) {
             return false;
-        } else {
-            if (TextUtils.isEmpty(response.getDeeplinkUrl()) && !isTablet) {
-                return false;
-            }
-            if (TextUtils.isEmpty(response.getQrCodeUrl()) && isTablet) {
-                return false;
-            }
+        }
+        if (TextUtils.isEmpty(response.getQrCodeUrl()) && isTablet) {
+            return false;
         }
         return true;
     }
@@ -208,31 +206,49 @@ public class GopayInstructionActivity extends BasePaymentActivity implements Gop
         }
     }
 
+    private void setCallbackOrSendFailedToStatusPage() {
+        if (presenter.isShowPaymentStatusPage()) {
+            startResultActivity(
+                    Constants.INTENT_CODE_PAYMENT_RESULT,
+                    PaymentListHelper.newErrorPaymentResponse(
+                            PaymentType.GOPAY,
+                            gopayResponse.getStatusCode()
+                    )
+            );
+        } else {
+            finishPayment(RESULT_OK, gopayResponse);
+        }
+    }
+
     @Override
     public <T> void onPaymentSuccess(T response) {
         hideProgressLayout();
         gopayResponse = (GopayResponse) response;
-        if (isResponseValid(gopayResponse)) {
-            if (gopayResponse.getStatusCode().equals(Constants.STATUS_CODE_400)) {
+        if (gopayResponse != null) {
+            if (NetworkHelper.isPaymentSuccess(gopayResponse)) {
+                if (isResponseValid(gopayResponse)) {
+                    if (isTablet) {
+                        Intent intent = new Intent(this, GopayResultActivity.class);
+                        intent.putExtra(Constants.INTENT_EXTRA_PAYMENT_STATUS, gopayResponse);
+                        intent.putExtra(PaymentListActivity.EXTRA_PAYMENT_INFO, paymentInfoResponse);
+                        startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT_RESULT);
+                    } else {
+                        isAlreadyGotResponse = true;
+                        openDeepLink(gopayResponse.getDeeplinkUrl());
+                    }
+                } else {
+                    setCallbackOrSendFailedToStatusPage();
+                }
+            } else {
                 if (attempt < Constants.MAX_ATTEMPT) {
                     attempt += 1;
                     MessageHelper.showToast(this, getString(R.string.error_gopay_transaction));
                 } else {
-                    setCallbackOrSendToStatusPage();
-                }
-            } else {
-                if (isTablet) {
-                    Intent intent = new Intent(this, GopayResultActivity.class);
-                    intent.putExtra(Constants.INTENT_EXTRA_PAYMENT_STATUS, gopayResponse);
-                    intent.putExtra(PaymentListActivity.EXTRA_PAYMENT_INFO, paymentInfoResponse);
-                    startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT_RESULT);
-                } else {
-                    isAlreadyGotResponse = true;
-                    openDeepLink(gopayResponse.getDeeplinkUrl());
+                    setCallbackOrSendFailedToStatusPage();
                 }
             }
         } else {
-            finishPayment(RESULT_OK, gopayResponse);
+            setCallbackOrSendFailedToStatusPage();
         }
     }
 

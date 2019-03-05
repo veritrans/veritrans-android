@@ -10,7 +10,7 @@ import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optiona
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.AkulakuResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.AlfamartPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaBankTransferReponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaKlikpayResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaKlikPayResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BniBankTransferResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BriEpayPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CimbClicksResponse;
@@ -22,6 +22,7 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriBillResp
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriEcashResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.OtherBankTransferResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.PermataBankTransferResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.TelkomselCashResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.enablepayment.EnabledPayment;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.promo.Promo;
@@ -464,7 +465,7 @@ public class PaymentListHelper {
                 break;
             case PaymentType.BCA_KLIKPAY:
                 try {
-                    BcaKlikpayResponse response = (BcaKlikpayResponse) data.getSerializableExtra(Constants.INTENT_DATA_CALLBACK);
+                    BcaKlikPayResponse response = (BcaKlikPayResponse) data.getSerializableExtra(Constants.INTENT_DATA_CALLBACK);
                     if (resultCode == Activity.RESULT_OK) {
                         if (response != null) {
                             switch (response.getStatusCode()) {
@@ -490,10 +491,54 @@ public class PaymentListHelper {
                     return;
                 }
                 break;
+            case PaymentType.TELKOMSEL_CASH:
+                try {
+                    TelkomselCashResponse response = (TelkomselCashResponse) data.getSerializableExtra(Constants.INTENT_DATA_CALLBACK);
+                    if (resultCode == Activity.RESULT_OK) {
+                        if (response != null) {
+                            switch (response.getStatusCode()) {
+                                case com.midtrans.sdk.corekit.utilities.Constants.STATUS_CODE_200:
+                                    setCallback(callback, PaymentStatus.STATUS_SUCCESS, PaymentType.TELKOMSEL_CASH, response);
+                                    break;
+                                case Constants.STATUS_CODE_201:
+                                    setCallback(callback, PaymentStatus.STATUS_PENDING, PaymentType.TELKOMSEL_CASH, response);
+                                    break;
+                                default:
+                                    setCallback(callback, PaymentStatus.STATUS_FAILED, PaymentType.TELKOMSEL_CASH, response);
+                                    break;
+                            }
+                        } else {
+                            setCallback(callback, PaymentStatus.STATUS_INVALID, PaymentType.TELKOMSEL_CASH, response);
+                        }
+                    } else {
+                        setCallback(callback, PaymentStatus.STATUS_CANCEL, PaymentType.TELKOMSEL_CASH, response);
+                    }
+                } catch (RuntimeException e) {
+                    Logger.error("onActivityResult:" + e.getMessage());
+                    setFailedCallback(callback, e.getMessage());
+                    return;
+                }
+                break;
             default:
                 setCallback(callback, PaymentStatus.STATUS_CANCEL, null, null);
                 break;
         }
+    }
+
+    public static PaymentResponse newErrorPaymentResponse(
+            @PaymentType String paymentType,
+            String statusCode) {
+        return PaymentResponse
+                .builder(
+                        statusCode,
+                        null,
+                        null,
+                        null,
+                        null,
+                        paymentType,
+                        null,
+                        null
+                ).build();
     }
 
     public static <T> PaymentResponse convertTransactionStatus(T response) {
@@ -721,8 +766,8 @@ public class PaymentListHelper {
                     .setRedirectUrl(rawResponse.getRedirectUrl())
                     .build();
             return paymentResponse;
-        } else if (response instanceof BcaKlikpayResponse) {
-            BcaKlikpayResponse rawResponse = (BcaKlikpayResponse) response;
+        } else if (response instanceof BcaKlikPayResponse) {
+            BcaKlikPayResponse rawResponse = (BcaKlikPayResponse) response;
             paymentResponse = PaymentResponse
                     .builder(
                             rawResponse.getStatusCode(),
@@ -736,6 +781,22 @@ public class PaymentListHelper {
                     )
                     .setRedirectUrl(rawResponse.getRedirectUrl())
                     .setFraudStatus(rawResponse.getFraudStatus())
+                    .build();
+            return paymentResponse;
+        } else if (response instanceof TelkomselCashResponse) {
+            TelkomselCashResponse rawResponse = (TelkomselCashResponse) response;
+            paymentResponse = PaymentResponse
+                    .builder(
+                            rawResponse.getStatusCode(),
+                            rawResponse.getStatusMessage(),
+                            rawResponse.getTransactionId(),
+                            rawResponse.getOrderId(),
+                            rawResponse.getGrossAmount(),
+                            rawResponse.getPaymentType(),
+                            rawResponse.getTransactionTime(),
+                            rawResponse.getTransactionStatus()
+                    )
+                    .setSettlementTime(rawResponse.getSettlementTime())
                     .build();
             return paymentResponse;
         }
