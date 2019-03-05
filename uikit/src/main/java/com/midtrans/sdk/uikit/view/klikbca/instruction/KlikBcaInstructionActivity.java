@@ -12,9 +12,9 @@ import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.base.composer.BasePaymentActivity;
 import com.midtrans.sdk.uikit.base.contract.BasePaymentContract;
 import com.midtrans.sdk.uikit.utilities.Constants;
+import com.midtrans.sdk.uikit.utilities.NetworkHelper;
 import com.midtrans.sdk.uikit.utilities.PaymentListHelper;
 import com.midtrans.sdk.uikit.view.PaymentListActivity;
-import com.midtrans.sdk.uikit.view.indomaret.result.IndomaretResultActivity;
 import com.midtrans.sdk.uikit.view.klikbca.result.KlikBcaResultActivity;
 
 import androidx.annotation.Nullable;
@@ -82,13 +82,13 @@ public class KlikBcaInstructionActivity extends BasePaymentActivity implements B
         hideProgressLayout();
         klikBcaResponse = (KlikBcaResponse) response;
         if (klikBcaResponse != null) {
-            if (klikBcaResponse.getStatusCode().equals(Constants.STATUS_CODE_400)){
-                setCallbackOrSendToStatusPage();
-            }else {
+            if (NetworkHelper.isPaymentSuccess(klikBcaResponse)) {
                 Intent intent = new Intent(this, KlikBcaResultActivity.class);
                 intent.putExtra(Constants.INTENT_EXTRA_PAYMENT_STATUS, klikBcaResponse);
                 intent.putExtra(PaymentListActivity.EXTRA_PAYMENT_INFO, paymentInfoResponse);
                 startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT_RESULT);
+            } else {
+                setCallbackOrSendToStatusPage();
             }
         } else {
             finishPayment(RESULT_OK, klikBcaResponse);

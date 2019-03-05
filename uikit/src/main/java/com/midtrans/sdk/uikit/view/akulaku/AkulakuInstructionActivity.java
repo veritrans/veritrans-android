@@ -11,6 +11,7 @@ import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.base.composer.BasePaymentActivity;
 import com.midtrans.sdk.uikit.base.contract.BasePaymentContract;
 import com.midtrans.sdk.uikit.utilities.Constants;
+import com.midtrans.sdk.uikit.utilities.NetworkHelper;
 import com.midtrans.sdk.uikit.utilities.PaymentListHelper;
 import com.midtrans.sdk.uikit.view.cimbclicks.CimbClicksInstructionPresenter;
 
@@ -70,10 +71,10 @@ public class AkulakuInstructionActivity extends BasePaymentActivity implements B
         hideProgressLayout();
         akulakuResponse = (AkulakuResponse) response;
         if (akulakuResponse != null) {
-            if (akulakuResponse.getStatusCode().equals(Constants.STATUS_CODE_400)) {
-                setCallbackOrSendToStatusPage();
-            } else {
+            if (NetworkHelper.isPaymentSuccess(akulakuResponse)) {
                 showWebViewPaymentPage(PaymentType.AKULAKU, akulakuResponse.getRedirectUrl());
+            } else {
+                setCallbackOrSendToStatusPage();
             }
         } else {
             finishPayment(RESULT_OK, akulakuResponse);
