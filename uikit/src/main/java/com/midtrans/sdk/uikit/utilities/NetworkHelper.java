@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.text.TextUtils;
 
+import com.midtrans.sdk.corekit.core.api.midtrans.model.tokendetails.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaBankTransferReponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaKlikPayResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BniBankTransferResponse;
@@ -14,6 +15,7 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.GopayResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.IndomaretPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.KlikBcaResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriBillResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriClickpayResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriEcashResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.OtherBankTransferResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.PermataBankTransferResponse;
@@ -79,6 +81,12 @@ public class NetworkHelper {
             return checkStatusCode(rawResponse.getStatusCode());
         } else if (response instanceof TelkomselCashResponse) {
             TelkomselCashResponse rawResponse = (TelkomselCashResponse) response;
+            return checkStatusCode(rawResponse.getStatusCode());
+        } else if (response instanceof TokenDetailsResponse) {
+            TokenDetailsResponse rawResponse = (TokenDetailsResponse) response;
+            return checkStatusCode(rawResponse.getStatusCode());
+        } else if (response instanceof MandiriClickpayResponse) {
+            MandiriClickpayResponse rawResponse = (MandiriClickpayResponse) response;
             return checkStatusCode(rawResponse.getStatusCode());
         }
         return false;
