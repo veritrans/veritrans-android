@@ -73,10 +73,6 @@ public class PaymentStatusActivity extends BaseActivity {
         initTheme();
     }
 
-    private void initPresenter(){
-        presenter = new PaymentStatusPresenter(getIntent().getSerializableExtra(Constants.INTENT_DATA_CALLBACK));
-    }
-
     private void initPaymentResponse() {
         paymentResponse = (PaymentResponse) getIntent().getSerializableExtra(Constants.INTENT_DATA_CALLBACK);
         if (paymentResponse != null) {
@@ -100,6 +96,10 @@ public class PaymentStatusActivity extends BaseActivity {
         } else {
             this.paymentStatus = Constants.STATUS_FAILED;
         }
+    }
+
+    private void initPresenter(){
+        presenter = new PaymentStatusPresenter(paymentResponse);
     }
 
     private void initViews() {
