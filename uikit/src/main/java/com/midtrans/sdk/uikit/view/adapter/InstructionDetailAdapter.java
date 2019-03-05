@@ -173,6 +173,14 @@ public class InstructionDetailAdapter extends BaseAdapter<Item> {
         return totalAmount;
     }
 
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
     private class ItemDetailsViewHolder extends RecyclerView.ViewHolder {
         View background;
         TextView item;
@@ -193,13 +201,5 @@ public class InstructionDetailAdapter extends BaseAdapter<Item> {
         ItemHeaderViewHolder(final View itemView) {
             super(itemView);
         }
-    }
-
-    public String getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
     }
 }

@@ -17,6 +17,7 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.DanamonOnlineRe
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.GopayResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.IndomaretPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.KlikBcaResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriClickpayResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriEcashResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.TelkomselCashResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
@@ -140,6 +141,10 @@ public abstract class BasePaymentActivity extends BaseActivity {
             TelkomselCashResponse telkomselCashResponse = (TelkomselCashResponse) response;
             data.putExtra(Constants.INTENT_DATA_CALLBACK, telkomselCashResponse);
             data.putExtra(Constants.INTENT_DATA_TYPE, PaymentType.TELKOMSEL_CASH);
+        } else if (response instanceof MandiriClickpayResponse) {
+            MandiriClickpayResponse mandiriClickpayResponse = (MandiriClickpayResponse) response;
+            data.putExtra(Constants.INTENT_DATA_CALLBACK, mandiriClickpayResponse);
+            data.putExtra(Constants.INTENT_DATA_TYPE, PaymentType.MANDIRI_CLICKPAY);
         }
         setResult(resultCode, data);
         super.onBackPressed();

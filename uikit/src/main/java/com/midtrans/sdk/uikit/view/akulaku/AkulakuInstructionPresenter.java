@@ -2,10 +2,8 @@ package com.midtrans.sdk.uikit.view.akulaku;
 
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.AkulakuResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CimbClicksResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.core.payment.CardlessCreditCharge;
-import com.midtrans.sdk.corekit.core.payment.OnlineDebitCharge;
 import com.midtrans.sdk.uikit.base.composer.BasePaymentPresenter;
 import com.midtrans.sdk.uikit.base.contract.BasePaymentContract;
 

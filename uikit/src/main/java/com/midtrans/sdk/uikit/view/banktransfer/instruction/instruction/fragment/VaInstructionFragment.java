@@ -36,11 +36,6 @@ public abstract class VaInstructionFragment extends Fragment implements View.OnC
     protected boolean isInstructionShown = false;
     private int colorPrimary = 0;
 
-    public interface OnInstructionShownListener {
-        void onInstructionShown(boolean isShown, int fragmentCode);
-    }
-
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -153,5 +148,9 @@ public abstract class VaInstructionFragment extends Fragment implements View.OnC
     public void onDestroyView() {
         listener = null;
         super.onDestroyView();
+    }
+
+    public interface OnInstructionShownListener {
+        void onInstructionShown(boolean isShown, int fragmentCode);
     }
 }

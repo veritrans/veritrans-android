@@ -25,10 +25,6 @@ public class BankTransferListAdapter extends BaseAdapter<BankTransfer> {
     private List<BankTransfer> paymentMethods;
     private BankTransferListener paymentMethodListener;
 
-    public interface BankTransferListener {
-        void onItemClick(int position);
-    }
-
     public BankTransferListAdapter(BankTransferListener listener) {
         this.paymentMethodListener = listener;
         this.paymentMethods = new ArrayList<>();
@@ -95,6 +91,10 @@ public class BankTransferListAdapter extends BaseAdapter<BankTransfer> {
     @Override
     public int getItemCount() {
         return paymentMethods.size();
+    }
+
+    public interface BankTransferListener {
+        void onItemClick(int position);
     }
 
     class PaymentViewHolder extends RecyclerView.ViewHolder {

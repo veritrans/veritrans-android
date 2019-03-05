@@ -11,6 +11,7 @@ public class ActivityHelper {
     public static String getImagePath(Activity activity) {
         return "android.resource://" + activity.getPackageName() + "/";
     }
+
     public static String getDeviceType(Activity activity) {
         String deviceType;
         DisplayMetrics metrics = new DisplayMetrics();

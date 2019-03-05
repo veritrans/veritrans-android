@@ -24,7 +24,6 @@ import com.midtrans.sdk.uikit.utilities.Constants;
 import com.midtrans.sdk.uikit.utilities.ContextHelper;
 import com.midtrans.sdk.uikit.utilities.MessageHelper;
 import com.midtrans.sdk.uikit.utilities.PaymentListHelper;
-import com.midtrans.sdk.uikit.view.status.PaymentStatusPresenter;
 import com.midtrans.sdk.uikit.widget.DefaultTextView;
 import com.midtrans.sdk.uikit.widget.FancyButton;
 

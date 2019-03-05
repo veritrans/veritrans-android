@@ -234,8 +234,8 @@ public class SnapApiManager extends BaseServiceManager {
     /**
      * This method is used for Payment Using Mandiri Echannel
      *
-     * @param snapToken                snapToken after get payment info.
-     * @param callback                 Transaction callback.
+     * @param snapToken snapToken after get payment info.
+     * @param callback  Transaction callback.
      */
     public void paymentUsingMandiriEcash(String snapToken,
                                          MidtransCallback<MandiriEcashResponse> callback) {
@@ -299,7 +299,7 @@ public class SnapApiManager extends BaseServiceManager {
      * @param callback  Transaction callback.
      */
     public void paymentUsingAlfamart(String snapToken,
-                                      MidtransCallback<AlfamartPaymentResponse> callback) {
+                                     MidtransCallback<AlfamartPaymentResponse> callback) {
         if (isSnapTokenAvailable(callback, snapToken, apiService)) {
             BasePaymentRequest basePaymentRequest = new BasePaymentRequest(PaymentType.ALFAMART);
             Call<AlfamartPaymentResponse> call = apiService.paymentAlfamart(snapToken, basePaymentRequest);
@@ -326,14 +326,19 @@ public class SnapApiManager extends BaseServiceManager {
     /**
      * This method is used for Payment Using Mandiri ClickPay
      *
-     * @param snapToken             snapToken after get payment info.
-     * @param mandiriClickpayParams parameter for Mandiri Clickpay
-     * @param callback              Transaction callback.
+     * @param snapToken      snapToken after get payment info.
+     * @param tokenId        generated tokenId
+     * @param challengeToken token from mandiri token
+     * @param input3         input3 from mandiri token
+     * @param callback       Transaction callback.
      */
     public void paymentUsingMandiriClickPay(String snapToken,
-                                            MandiriClickpayParams mandiriClickpayParams,
+                                            String tokenId,
+                                            String challengeToken,
+                                            String input3,
                                             MidtransCallback<MandiriClickpayResponse> callback) {
         if (isSnapTokenAvailable(callback, snapToken, apiService)) {
+            MandiriClickpayParams mandiriClickpayParams = new MandiriClickpayParams(tokenId, challengeToken, input3);
             MandiriClickpayPaymentRequest paymentRequest = new MandiriClickpayPaymentRequest(PaymentType.MANDIRI_CLICKPAY, mandiriClickpayParams);
             Call<MandiriClickpayResponse> call = apiService.paymentMandiriClickpay(snapToken, paymentRequest);
             handleCall(call, callback);
@@ -393,7 +398,7 @@ public class SnapApiManager extends BaseServiceManager {
      * @param snapToken snap token
      */
     public void getPaymentStatus(String snapToken,
-                              MidtransCallback<PaymentStatusResponse> callback) {
+                                 MidtransCallback<PaymentStatusResponse> callback) {
         if (isSnapTokenAvailable(callback, snapToken, apiService)) {
             Call<PaymentStatusResponse> basePaymentResponseCall = apiService.getPaymentStatus(snapToken);
             handleCall(basePaymentResponseCall, callback);

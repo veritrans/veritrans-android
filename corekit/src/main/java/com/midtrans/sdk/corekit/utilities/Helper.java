@@ -1,18 +1,5 @@
 package com.midtrans.sdk.corekit.utilities;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import android.app.Activity;
-import android.content.Context;
-import android.text.TextUtils;
-import android.util.DisplayMetrics;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 public class Helper {
 
     private static final String TAG = "Helper";
@@ -26,53 +13,6 @@ public class Helper {
     private static final long MINUTE = 60 * SECOND;
     private static final long HOUR = 60 * MINUTE;
     private static final long DAY = 24 * HOUR;
-
-    public static <T> T parseToModel(String jsonToParse, Class<T> classOfT) {
-        Gson gson = new GsonBuilder().create();
-        T model = gson.fromJson(jsonToParse, classOfT);
-        return model;
-    }
-
-    /**
-     * Utility method which will help to close the keyboard.
-     *
-     * @param activity activity instance
-     */
-    public static void hideKeyboard(Activity activity) {
-        try {
-            Logger.info("hide keyboard");
-            View view = activity.getCurrentFocus();
-            if (view != null) {
-                InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context
-                        .INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-            }
-        } catch (RuntimeException e) {
-            Logger.debug(TAG, "hideKeyboard():" + e.getMessage());
-        }
-    }
-
-    /**
-     * it will validate an given email-id.
-     *
-     * @param email email string
-     * @return true if given email-id is valid else returns false
-     */
-    public static boolean isEmailValid(String email) {
-
-        try {
-            if (!TextUtils.isEmpty(email)) {
-                Pattern pattern = Pattern.compile(Constants.EMAIL_PATTERN, Pattern.CASE_INSENSITIVE);
-                if (pattern != null) {
-                    Matcher matcher = pattern.matcher(email.trim());
-                    return matcher.matches();
-                }
-            }
-        } catch (RuntimeException e) {
-            Logger.error(TAG, e.getMessage());
-        }
-        return false;
-    }
 
     /**
      * Get formatted card number;
@@ -122,23 +62,5 @@ public class Helper {
         } catch (RuntimeException e) {
             return "";
         }
-    }
-
-    public static String getDeviceType(Activity activity) {
-        String deviceType;
-        DisplayMetrics metrics = new DisplayMetrics();
-        activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
-        float yInches = metrics.heightPixels / metrics.ydpi;
-        float xInches = metrics.widthPixels / metrics.xdpi;
-        double diagonalInches = Math.sqrt(xInches * xInches + yInches * yInches);
-
-        if (diagonalInches >= 6.5) {
-            deviceType = "TABLET";
-        } else {
-            deviceType = "PHONE";
-        }
-
-        return deviceType;
     }
 }
