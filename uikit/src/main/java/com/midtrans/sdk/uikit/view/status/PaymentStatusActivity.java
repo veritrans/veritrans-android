@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.midtrans.sdk.corekit.base.enums.PaymentType;
-import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.promo.Promo;
 import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.base.composer.BaseActivity;
@@ -98,7 +97,7 @@ public class PaymentStatusActivity extends BaseActivity {
         }
     }
 
-    private void initPresenter(){
+    private void initPresenter() {
         presenter = new PaymentStatusPresenter(paymentResponse);
     }
 

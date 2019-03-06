@@ -20,7 +20,6 @@ import com.midtrans.sdk.uikit.utilities.DateTimeHelper;
 import com.midtrans.sdk.uikit.widget.BoldTextView;
 import com.midtrans.sdk.uikit.widget.DefaultTextView;
 import com.midtrans.sdk.uikit.widget.FancyButton;
-import com.midtrans.sdk.uikit.widget.SemiBoldTextView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

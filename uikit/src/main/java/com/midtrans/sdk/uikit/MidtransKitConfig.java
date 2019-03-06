@@ -39,6 +39,10 @@ public class MidtransKitConfig {
         this.baseColorTheme = baseColorTheme;
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
     public String getDefaultText() {
         return defaultText;
     }
@@ -77,10 +81,6 @@ public class MidtransKitConfig {
 
     public BaseColorTheme getColorTheme() {
         return baseColorTheme;
-    }
-
-    public static Builder builder() {
-        return new Builder();
     }
 
     public static final class Builder {

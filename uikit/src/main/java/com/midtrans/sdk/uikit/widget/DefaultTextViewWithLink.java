@@ -1,17 +1,14 @@
 package com.midtrans.sdk.uikit.widget;
 
-import android.annotation.TargetApi;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.os.Build;
 import android.text.util.Linkify;
 import android.util.AttributeSet;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.midtrans.sdk.uikit.MidtransKitConfig;
 import com.midtrans.sdk.uikit.MidtransKit;
+import com.midtrans.sdk.uikit.MidtransKitConfig;
 import com.midtrans.sdk.uikit.R;
 
 import me.saket.bettermovementmethod.BetterLinkMovementMethod;

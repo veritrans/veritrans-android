@@ -22,13 +22,13 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.OtherBankTransf
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.PermataBankTransferResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.merchantdata.MerchantPreferences;
-import com.midtrans.sdk.corekit.utilities.Helper;
 import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.uikit.MidtransKit;
 import com.midtrans.sdk.uikit.MidtransKitConfig;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.base.composer.BaseActivity;
 import com.midtrans.sdk.uikit.utilities.Constants;
+import com.midtrans.sdk.uikit.utilities.Helper;
 import com.midtrans.sdk.uikit.utilities.PaymentListHelper;
 import com.midtrans.sdk.uikit.view.PaymentListActivity;
 import com.midtrans.sdk.uikit.view.banktransfer.instruction.adapter.ListBankAdapter;

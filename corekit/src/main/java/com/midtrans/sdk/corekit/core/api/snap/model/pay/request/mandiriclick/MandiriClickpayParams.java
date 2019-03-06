@@ -3,20 +3,19 @@ package com.midtrans.sdk.corekit.core.api.snap.model.pay.request.mandiriclick;
 import com.google.gson.annotations.SerializedName;
 
 public class MandiriClickpayParams {
-    @SerializedName("mandiri_card_no")
-    private String mandiriCardNumber;
+    private String token;
     private String input3;
-    @SerializedName("token_response")
-    private String tokenResponse;
+    @SerializedName("token_id")
+    private String tokenId;
 
-    public MandiriClickpayParams(String mandiriCardNumber, String input3, String tokenResponse) {
-        this.mandiriCardNumber = mandiriCardNumber;
+    public MandiriClickpayParams(String tokenId, String token, String input3) {
+        this.token = token;
         this.input3 = input3;
-        this.tokenResponse = tokenResponse;
+        this.tokenId = tokenId;
     }
 
     public String getMandiriCardNumber() {
-        return mandiriCardNumber;
+        return token;
     }
 
     public String getInput3() {
@@ -24,6 +23,6 @@ public class MandiriClickpayParams {
     }
 
     public String getTokenResponse() {
-        return tokenResponse;
+        return tokenId;
     }
 }

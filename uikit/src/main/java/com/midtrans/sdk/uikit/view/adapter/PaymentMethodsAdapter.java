@@ -25,10 +25,6 @@ public class PaymentMethodsAdapter extends BaseAdapter<PaymentMethodsModel> {
     private List<PaymentMethodsModel> paymentMethods;
     private PaymentMethodListener paymentMethodListener;
 
-    public interface PaymentMethodListener {
-        void onItemClick(int position);
-    }
-
     public PaymentMethodsAdapter(PaymentMethodListener listener) {
         this.paymentMethodListener = listener;
         this.paymentMethods = new ArrayList<>();
@@ -104,6 +100,10 @@ public class PaymentMethodsAdapter extends BaseAdapter<PaymentMethodsModel> {
     @Override
     public int getItemCount() {
         return paymentMethods.size();
+    }
+
+    public interface PaymentMethodListener {
+        void onItemClick(int position);
     }
 
     class PaymentViewHolder extends RecyclerView.ViewHolder {

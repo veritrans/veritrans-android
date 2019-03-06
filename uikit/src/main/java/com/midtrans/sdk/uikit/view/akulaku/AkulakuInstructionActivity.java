@@ -6,14 +6,12 @@ import android.os.Bundle;
 
 import com.midtrans.sdk.corekit.base.enums.PaymentType;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.AkulakuResponse;
-import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CimbClicksResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.base.composer.BasePaymentActivity;
 import com.midtrans.sdk.uikit.base.contract.BasePaymentContract;
 import com.midtrans.sdk.uikit.utilities.Constants;
 import com.midtrans.sdk.uikit.utilities.NetworkHelper;
 import com.midtrans.sdk.uikit.utilities.PaymentListHelper;
-import com.midtrans.sdk.uikit.view.cimbclicks.CimbClicksInstructionPresenter;
 
 import androidx.annotation.Nullable;
 

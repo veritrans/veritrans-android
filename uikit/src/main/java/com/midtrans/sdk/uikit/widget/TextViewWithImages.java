@@ -14,9 +14,8 @@ import java.util.regex.Pattern;
 import androidx.appcompat.widget.AppCompatTextView;
 
 public class TextViewWithImages extends AppCompatTextView {
-    private final String TAG = TextViewWithImages.class.getSimpleName();
-
     private static final Spannable.Factory spannableFactory = Spannable.Factory.getInstance();
+    private final String TAG = TextViewWithImages.class.getSimpleName();
 
     public TextViewWithImages(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);

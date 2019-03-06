@@ -50,11 +50,6 @@ public class BaseActivity extends AppCompatActivity {
 
     protected BoldTextView textTotalAmount;
     protected DefaultTextView textOrderId;
-
-    private int primaryColor = 0;
-    private int primaryDarkColor = 0;
-    private int secondaryColor = 0;
-
     protected LinearLayout containerProgress;
     protected DefaultTextView textProgressMessage;
     protected ImageView imageProgressLogo;
@@ -62,9 +57,11 @@ public class BaseActivity extends AppCompatActivity {
     protected TextView merchantNameInToolbar;
     protected SemiBoldTextView paymentMethodTitleInToolbar;
     protected ImageView merchantLogoInToolbar;
-
     protected boolean isDetailShown = false;
     protected boolean activityRunning = false;
+    private int primaryColor = 0;
+    private int primaryDarkColor = 0;
+    private int secondaryColor = 0;
 
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
