@@ -87,5 +87,6 @@ ext {
             smsVerifyCatcher    : 'com.github.stfalcon:smsverifycatcher:0.3.1',
             zXingAndroid        : 'com.journeyapps:zxing-android-embedded:3.6.0',
             ion                 : 'com.koushikdutta.ion:ion:2.2.1',
+            securePreferences   : 'com.scottyab:secure-preferences-lib:0.1.4',
     ]
 }
