@@ -191,8 +191,24 @@ public class CreditCard implements Serializable {
             return this;
         }
 
+        public Builder setNewCreditCardTokens(CreditCard creditCard, List<SavedToken> tokens) {
+            this.savedTokens = tokens;
+            this.saveCard = creditCard.saveCard;
+            this.tokenId = creditCard.tokenId;
+            this.secure = creditCard.secure;
+            this.channel = creditCard.channel;
+            this.acquiringBank = creditCard.acquiringBank;
+            this.whitelistBins = creditCard.whitelistBins;
+            this.blacklistBins = creditCard.blacklistBins;
+            this.installment = creditCard.installment;
+            this.type = creditCard.type;
+            this.authentication = creditCard.authentication;
+            return this;
+        }
+
         public CreditCard build() {
-            SINGLETON_INSTANCE = new CreditCard(saveCard,
+            SINGLETON_INSTANCE = new CreditCard(
+                    saveCard,
                     tokenId,
                     secure,
                     channel,
@@ -202,7 +218,8 @@ public class CreditCard implements Serializable {
                     blacklistBins,
                     installment,
                     type,
-                    authentication);
+                    authentication
+            );
             return SINGLETON_INSTANCE;
         }
     }
