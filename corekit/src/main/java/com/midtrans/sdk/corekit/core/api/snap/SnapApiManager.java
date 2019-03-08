@@ -35,6 +35,8 @@ import com.midtrans.sdk.corekit.core.api.snap.model.point.PointResponse;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SnapApiManager extends BaseServiceManager {
 
@@ -389,6 +391,31 @@ public class SnapApiManager extends BaseServiceManager {
         if (isSnapTokenAvailable(callback, snapToken, apiService)) {
             Call<PointResponse> basePaymentResponseCall = apiService.getBanksPoint(snapToken, cardToken);
             handleCall(basePaymentResponseCall, callback);
+        }
+    }
+
+    /**
+     * Get points of given card
+     *
+     * @param snapToken snap token
+     * @param callback  BNI points callback instance
+     */
+    public void deleteCard(String snapToken,
+                           String maskedCard,
+                           MidtransCallback<Void> callback) {
+        if (isSnapTokenAvailable(callback, snapToken, apiService)) {
+            Call<Void> call = apiService.deleteCard(snapToken, maskedCard);
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    callback.onSuccess(response.body());
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    callback.onFailed(new Throwable(t.getMessage(), t.getCause()));
+                }
+            });
         }
     }
 
