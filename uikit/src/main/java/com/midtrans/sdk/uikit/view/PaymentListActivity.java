@@ -43,6 +43,7 @@ import com.midtrans.sdk.uikit.view.method.banktransfer.list.model.EnabledBankTra
 import com.midtrans.sdk.uikit.view.method.bcaklikpay.BcaKlikpayInstructionActivity;
 import com.midtrans.sdk.uikit.view.method.briepay.BriEpayInstructionActivity;
 import com.midtrans.sdk.uikit.view.method.cimbclicks.CimbClicksInstructionActivity;
+import com.midtrans.sdk.uikit.view.method.creditcard.SavedCreditCardListActivity;
 import com.midtrans.sdk.uikit.view.method.danamononline.DanamonOnlineInstructionActivity;
 import com.midtrans.sdk.uikit.view.method.gopay.instruction.GopayInstructionActivity;
 import com.midtrans.sdk.uikit.view.method.indomaret.instruction.IndomaretInstructionActivity;
@@ -412,8 +413,13 @@ public class PaymentListActivity extends BaseActivity {
         String method = paymentMethodsModel.getPaymentType();
         Logger.debug("Payment Method clicked : " + method);
         switch (method) {
-            case PaymentType.CREDIT_CARD:
+            case PaymentType.CREDIT_CARD: {
+                Intent intent = new Intent(this, SavedCreditCardListActivity.class);
+                intent.putExtra(EXTRA_PAYMENT_INFO, response);
+                intent.putExtra(BasePaymentActivity.EXTRA_PAYMENT_TYPE, PaymentType.CREDIT_CARD);
+                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
                 break;
+            }
             case PaymentListHelper.BANK_TRANSFER: {
                 Intent intent = new Intent(this, BankTransferListActivity.class);
                 intent.putExtra(BankTransferListActivity.EXTRA_BANK_LIST, new EnabledBankTransfer(bankTransferList));
