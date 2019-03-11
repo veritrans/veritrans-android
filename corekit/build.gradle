@@ -18,6 +18,8 @@ android {
         versionCode 3
         versionName version
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        resValue "string", "PREFERENCE_PASSWORD", PREFERENCE_PASSWORD
     }
     buildTypes {
         release {
@@ -48,4 +50,5 @@ dependencies {
     implementation networkLibraries.interceptor
     implementation networkLibraries.retrofit
     implementation networkLibraries.gsonConverter
+    implementation libraries.securePreferences
 }

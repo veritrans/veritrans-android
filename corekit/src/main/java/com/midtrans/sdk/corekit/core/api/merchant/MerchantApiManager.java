@@ -10,6 +10,8 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.creditcard.SaveC
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MerchantApiManager extends BaseServiceManager {
 
@@ -62,4 +64,33 @@ public class MerchantApiManager extends BaseServiceManager {
             }
         }
     }
+
+
+    /**
+     * This method is used to save credit cards to merchant server
+     *
+     * @param userId   unique id for every user
+     * @param callback save card callback
+     */
+    public void getCards(String userId,
+                         MidtransCallback<List<SaveCardRequest>> callback) {
+        if (apiService == null) {
+            doOnApiServiceUnAvailable(callback);
+        } else {
+            Call<List<SaveCardRequest>> call = apiService.getCards(userId);
+            call.enqueue(new Callback<List<SaveCardRequest>>() {
+                @Override
+                public void onResponse(Call<List<SaveCardRequest>> call, Response<List<SaveCardRequest>> response) {
+                    List<SaveCardRequest> cardsResponses = response.body();
+                    callback.onSuccess(cardsResponses);
+                }
+
+                @Override
+                public void onFailure(Call<List<SaveCardRequest>> call, Throwable t) {
+                    callback.onFailed(new Throwable(t.getMessage(), t.getCause()));
+                }
+            });
+        }
+    }
+
 }

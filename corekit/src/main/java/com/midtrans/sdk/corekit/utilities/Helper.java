@@ -1,5 +1,10 @@
 package com.midtrans.sdk.corekit.utilities;
 
+import android.content.Context;
+
+import com.midtrans.sdk.corekit.R;
+import com.securepreferences.SecurePreferences;
+
 public class Helper {
 
     private static final String TAG = "Helper";
@@ -62,5 +67,24 @@ public class Helper {
         } catch (RuntimeException e) {
             return "";
         }
+    }
+
+    public static SecurePreferences newPreferences(Context context, String name) {
+
+        SecurePreferences preferences = new SecurePreferences(context, context.getString(R.string.PREFERENCE_PASSWORD), name);
+        int prefVersion;
+        try {
+            prefVersion = preferences.getInt(Constants.KEY_PREFERENCES_VERSION, 0);
+        } catch (ClassCastException e) {
+            prefVersion = 0;
+        }
+        if (prefVersion == 0 || prefVersion < Constants.PREFERENCES_VERSION) {
+            SecurePreferences.Editor editor = preferences.edit();
+            editor.clear();
+            editor.putInt(Constants.KEY_PREFERENCES_VERSION, Constants.PREFERENCES_VERSION);
+            editor.apply();
+        }
+
+        return preferences;
     }
 }

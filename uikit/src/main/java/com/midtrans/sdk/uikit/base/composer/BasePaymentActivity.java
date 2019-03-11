@@ -27,9 +27,9 @@ import com.midtrans.sdk.uikit.base.model.PaymentResponse;
 import com.midtrans.sdk.uikit.utilities.Constants;
 import com.midtrans.sdk.uikit.utilities.PaymentListHelper;
 import com.midtrans.sdk.uikit.view.PaymentListActivity;
-import com.midtrans.sdk.uikit.view.banktransfer.result.BankTransferResultPresenter;
-import com.midtrans.sdk.uikit.view.status.PaymentStatusActivity;
-import com.midtrans.sdk.uikit.view.webview.WebViewPaymentActivity;
+import com.midtrans.sdk.uikit.view.method.banktransfer.result.BankTransferResultPresenter;
+import com.midtrans.sdk.uikit.view.method.status.PaymentStatusActivity;
+import com.midtrans.sdk.uikit.view.method.webview.WebViewPaymentActivity;
 import com.midtrans.sdk.uikit.widget.FancyButton;
 
 import androidx.annotation.LayoutRes;

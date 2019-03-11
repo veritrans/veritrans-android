@@ -1,6 +1,7 @@
 package com.midtrans.sdk.corekit;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
@@ -13,6 +14,7 @@ import com.midtrans.sdk.corekit.core.api.snap.SnapApiManager;
 import com.midtrans.sdk.corekit.core.api.snap.model.payment.PaymentStatusResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.point.PointResponse;
+import com.midtrans.sdk.corekit.utilities.Helper;
 import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.corekit.utilities.NetworkHelper;
 
@@ -30,6 +32,7 @@ public class MidtransSdk {
      */
     private static volatile MidtransSdk SINGLETON_INSTANCE = null;
     private static final int API_TIMEOUT_DEFAULT = 30;
+    private static final String LOCAL_DATA_PREFERENCES = "local.data";
     private final String BASE_URL_SANDBOX = "https://api.sandbox.midtrans.com/v2/";
     private final String BASE_URL_PRODUCTION = "https://api.midtrans.com/v2/";
     private final String SNAP_BASE_URL_SANDBOX = "https://app.sandbox.midtrans.com/snap/";
@@ -53,6 +56,7 @@ public class MidtransSdk {
     private Environment midtransEnvironment;
     private int apiRequestTimeOut;
     private boolean isBuiltinStorageEnabled;
+    private SharedPreferences sharedPreferences;
     /**
      * Mandatory checkoutWithTransaction property.
      */
@@ -88,6 +92,7 @@ public class MidtransSdk {
         this.merchantApiManager = NetworkHelper.newMerchantServiceManager(merchantBaseUrl, apiRequestTimeOut);
         this.snapApiManager = NetworkHelper.newSnapServiceManager(snapBaseUrl, apiRequestTimeOut);
         this.midtransApiManager = NetworkHelper.newMidtransServiceManager(midtransBaseUrl, apiRequestTimeOut);
+        this.sharedPreferences = Helper.newPreferences(context, LOCAL_DATA_PREFERENCES);
     }
 
     /**
@@ -257,6 +262,7 @@ public class MidtransSdk {
             final MidtransCallback<CheckoutWithTransactionResponse> callback
     ) {
         if (isValidForNetworkCall(context, callback)) {
+            setCheckoutTransaction(checkoutTransaction);
             merchantApiManager.checkout(checkoutTransaction, callback);
         }
     }
@@ -304,6 +310,10 @@ public class MidtransSdk {
         if (isValidForNetworkCall(context, callback)) {
             snapApiManager.getPaymentStatus(token, callback);
         }
+    }
+
+    public SharedPreferences getSharedPreferences() {
+        return sharedPreferences;
     }
 
     /**

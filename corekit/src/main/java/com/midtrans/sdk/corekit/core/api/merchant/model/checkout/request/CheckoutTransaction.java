@@ -332,9 +332,30 @@ public class CheckoutTransaction implements Serializable {
             return this;
         }
 
+        public Builder setNewCreditCardObject(CreditCard creditCard, CheckoutTransaction checkoutTransaction) {
+            this.creditCard = creditCard;
+            this.currency = checkoutTransaction.getTransactionDetails().getCurrency();
+            this.gopayDeepLink = checkoutTransaction.getGopayDeepLink().getMerchantGopayDeeplink();
+            this.customerDetails = checkoutTransaction.getCustomerDetails();
+            this.checkoutItem = checkoutTransaction.getCheckoutItems();
+            this.enabledPayments = checkoutTransaction.getEnabledPayments();
+            this.expiry = checkoutTransaction.getCheckoutExpiry();
+            this.customField1 = checkoutTransaction.getCustomField1();
+            this.customField2 = checkoutTransaction.getCustomField2();
+            this.customField3 = checkoutTransaction.getCustomField3();
+            this.userId = checkoutTransaction.getUserId();
+            this.promo = checkoutTransaction.getPromo();
+            this.permataVa = checkoutTransaction.getPermataVa();
+            this.bcaVa = checkoutTransaction.getBcaVa();
+            this.bniVa = checkoutTransaction.getBniVa();
+            this.customObject = checkoutTransaction.getCustomObject();
+            return this;
+        }
+
         public CheckoutTransaction build() {
             if (isValidData(orderId, grossAmount)) {
-                SINGLETON_INSTANCE = new CheckoutTransaction(orderId,
+                SINGLETON_INSTANCE = new CheckoutTransaction(
+                        orderId,
                         grossAmount,
                         currency,
                         gopayDeepLink,
@@ -351,7 +372,8 @@ public class CheckoutTransaction implements Serializable {
                         permataVa,
                         bcaVa,
                         bniVa,
-                        customObject);
+                        customObject
+                );
                 return SINGLETON_INSTANCE;
             } else {
                 Logger.error(MESSAGE_FAILED_CHECKOUT_TRANSACTION_DATA);

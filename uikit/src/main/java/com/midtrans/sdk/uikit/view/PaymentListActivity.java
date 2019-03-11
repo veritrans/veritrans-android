@@ -36,22 +36,23 @@ import com.midtrans.sdk.uikit.utilities.MessageHelper;
 import com.midtrans.sdk.uikit.utilities.PaymentListHelper;
 import com.midtrans.sdk.uikit.view.adapter.PaymentItemDetailsAdapter;
 import com.midtrans.sdk.uikit.view.adapter.PaymentMethodsAdapter;
-import com.midtrans.sdk.uikit.view.akulaku.AkulakuInstructionActivity;
-import com.midtrans.sdk.uikit.view.alfamart.instruction.AlfamartInstructionActivity;
-import com.midtrans.sdk.uikit.view.banktransfer.list.BankTransferListActivity;
-import com.midtrans.sdk.uikit.view.banktransfer.list.model.EnabledBankTransfer;
-import com.midtrans.sdk.uikit.view.bcaklikpay.BcaKlikpayInstructionActivity;
-import com.midtrans.sdk.uikit.view.briepay.BriEpayInstructionActivity;
-import com.midtrans.sdk.uikit.view.cimbclicks.CimbClicksInstructionActivity;
-import com.midtrans.sdk.uikit.view.danamononline.DanamonOnlineInstructionActivity;
-import com.midtrans.sdk.uikit.view.gopay.instruction.GopayInstructionActivity;
-import com.midtrans.sdk.uikit.view.indomaret.instruction.IndomaretInstructionActivity;
-import com.midtrans.sdk.uikit.view.klikbca.instruction.KlikBcaInstructionActivity;
-import com.midtrans.sdk.uikit.view.mandiriclickpay.MandiriClickpayInstructionActivity;
-import com.midtrans.sdk.uikit.view.mandiriecash.MandiriEcashInstructionActivity;
+import com.midtrans.sdk.uikit.view.method.akulaku.AkulakuInstructionActivity;
+import com.midtrans.sdk.uikit.view.method.alfamart.instruction.AlfamartInstructionActivity;
+import com.midtrans.sdk.uikit.view.method.banktransfer.list.BankTransferListActivity;
+import com.midtrans.sdk.uikit.view.method.banktransfer.list.model.EnabledBankTransfer;
+import com.midtrans.sdk.uikit.view.method.bcaklikpay.BcaKlikpayInstructionActivity;
+import com.midtrans.sdk.uikit.view.method.briepay.BriEpayInstructionActivity;
+import com.midtrans.sdk.uikit.view.method.cimbclicks.CimbClicksInstructionActivity;
+import com.midtrans.sdk.uikit.view.method.creditcard.SavedCreditCardListActivity;
+import com.midtrans.sdk.uikit.view.method.danamononline.DanamonOnlineInstructionActivity;
+import com.midtrans.sdk.uikit.view.method.gopay.instruction.GopayInstructionActivity;
+import com.midtrans.sdk.uikit.view.method.indomaret.instruction.IndomaretInstructionActivity;
+import com.midtrans.sdk.uikit.view.method.klikbca.instruction.KlikBcaInstructionActivity;
+import com.midtrans.sdk.uikit.view.method.mandiriclickpay.MandiriClickpayInstructionActivity;
+import com.midtrans.sdk.uikit.view.method.mandiriecash.MandiriEcashInstructionActivity;
 import com.midtrans.sdk.uikit.view.model.ItemViewDetails;
 import com.midtrans.sdk.uikit.view.model.PaymentMethodsModel;
-import com.midtrans.sdk.uikit.view.telkomselcash.TelkomselCashInstructionActivity;
+import com.midtrans.sdk.uikit.view.method.telkomselcash.TelkomselCashInstructionActivity;
 import com.midtrans.sdk.uikit.widget.BoldTextView;
 import com.midtrans.sdk.uikit.widget.DefaultTextView;
 import com.midtrans.sdk.uikit.widget.FancyButton;
@@ -412,8 +413,13 @@ public class PaymentListActivity extends BaseActivity {
         String method = paymentMethodsModel.getPaymentType();
         Logger.debug("Payment Method clicked : " + method);
         switch (method) {
-            case PaymentType.CREDIT_CARD:
+            case PaymentType.CREDIT_CARD: {
+                Intent intent = new Intent(this, SavedCreditCardListActivity.class);
+                intent.putExtra(EXTRA_PAYMENT_INFO, response);
+                intent.putExtra(BasePaymentActivity.EXTRA_PAYMENT_TYPE, PaymentType.CREDIT_CARD);
+                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
                 break;
+            }
             case PaymentListHelper.BANK_TRANSFER: {
                 Intent intent = new Intent(this, BankTransferListActivity.class);
                 intent.putExtra(BankTransferListActivity.EXTRA_BANK_LIST, new EnabledBankTransfer(bankTransferList));

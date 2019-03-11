@@ -96,4 +96,28 @@ public class CreditCardCharge extends BaseGroupPayment {
             callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_INVALID_DATA_SUPPLIED));
         }
     }
+
+    /**
+     * It will run backround task to save card to merchant server
+     *
+     * @param userId   id user
+     * @param callback save card callback
+     */
+    public static void getCards(final String userId,
+                                final MidtransCallback<List<SaveCardRequest>> callback) {
+        if (isValidForNetworkCall(callback)) {
+            getMerchantApiManager().getCards(userId, callback);
+        }
+    }
+
+    /**
+     * It will run backround task to save card to merchant server
+     */
+    public static void deleteCard(final String token,
+                                  final String maskedCard,
+                                  final MidtransCallback<Void> callback) {
+        if (isValidForNetworkCall(callback)) {
+            getSnapApiManager().deleteCard(token, maskedCard, callback);
+        }
+    }
 }

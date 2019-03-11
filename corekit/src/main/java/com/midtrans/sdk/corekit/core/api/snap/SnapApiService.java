@@ -1,5 +1,6 @@
 package com.midtrans.sdk.corekit.core.api.snap;
 
+import com.midtrans.sdk.corekit.core.api.snap.model.bins.BankBinsResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.BasePaymentRequest;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.PaymentRequest;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.creditcard.CreditCardPaymentRequest;
@@ -27,9 +28,12 @@ import com.midtrans.sdk.corekit.core.api.snap.model.payment.PaymentStatusRespons
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.point.PointResponse;
 
+import java.util.List;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -39,6 +43,8 @@ public interface SnapApiService {
     String PAYMENT_INFO = "v1/transactions/{snap_token}";
     String PAYMENT_PAY = "v1/transactions/{snap_token}/pay";
     String BANK_POINT = "v1/transactions/{snap_token}/point_inquiry/{card_token}";
+    String BANK_BINS = "v1/bank_bins";
+    String DELETE_CARD = "v1/transactions/{snap_token}/saved_tokens/{masked_card}";
 
     /**
      * Get transaction options using Snap with snap token.
@@ -245,6 +251,12 @@ public interface SnapApiService {
     );
 
     /**
+     * Get bins of credit card
+     */
+    @GET(BANK_BINS)
+    Call<List<BankBinsResponse>> getBankBins();
+
+    /**
      * Get Banks Points from snap backend.
      *
      * @param snapToken snap token
@@ -256,6 +268,11 @@ public interface SnapApiService {
             @Path("card_token") String cardToken
     );
 
+    @DELETE(DELETE_CARD)
+    Call<Void> deleteCard(
+            @Path("snap_token") String snapToken,
+            @Path("masked_card") String maskedCard
+    );
 
     /**
      * Get Transaction Status.
@@ -263,6 +280,8 @@ public interface SnapApiService {
      * @param snapToken snap token
      */
     @GET("v1/transactions/{snap_token}/status")
-    Call<PaymentStatusResponse> getPaymentStatus(@Path("snap_token") String snapToken);
+    Call<PaymentStatusResponse> getPaymentStatus(
+            @Path("snap_token") String snapToken
+    );
 
 }
