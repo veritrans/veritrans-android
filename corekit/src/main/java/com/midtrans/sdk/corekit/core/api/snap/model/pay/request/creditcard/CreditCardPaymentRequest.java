@@ -3,7 +3,7 @@ package com.midtrans.sdk.corekit.core.api.snap.model.pay.request.creditcard;
 import com.google.gson.annotations.SerializedName;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.BasePaymentRequest;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.CustomerDetailPayRequest;
-import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.promo.PromoDetails;
+import com.midtrans.sdk.corekit.core.api.snap.model.promo.PromoDetails;
 
 public class CreditCardPaymentRequest extends BasePaymentRequest {
     @SerializedName("payment_params")
