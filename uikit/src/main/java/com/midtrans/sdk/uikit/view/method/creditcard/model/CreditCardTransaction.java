@@ -72,7 +72,7 @@ public class CreditCardTransaction {
         return bankBinsAvailable;
     }
 
-    public void setBankBins(ArrayList<BankBinsResponse> bankBins) {
+    public void setBankBins(List<BankBinsResponse> bankBins) {
         // do nothing
     }
 
