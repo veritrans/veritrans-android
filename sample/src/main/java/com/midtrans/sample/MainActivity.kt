@@ -15,13 +15,14 @@ import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.response.Checko
 import com.midtrans.sdk.corekit.core.api.midtrans.model.registration.CreditCardTokenizeResponse
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse
 import com.midtrans.sdk.corekit.core.payment.CreditCardCharge
-import com.midtrans.sdk.corekit.utilities.InstallationHelper
 import com.midtrans.sdk.corekit.utilities.Logger
 import com.midtrans.sdk.uikit.MidtransKit
 import com.midtrans.sdk.uikit.base.callback.PaymentResult
 import com.midtrans.sdk.uikit.base.callback.Result
 import com.midtrans.sdk.uikit.base.model.PaymentResponse
+import com.midtrans.sdk.uikit.utilities.Helper
 import kotlinx.android.synthetic.main.activity_main.*
+import java.text.SimpleDateFormat
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -31,12 +32,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         text_view_test.setOnClickListener {
-            val random = (Math.random() * 5250 + 152).toInt()
             val checkoutTransaction = CheckoutTransaction
                 .builder(
-                    "121" + InstallationHelper.generatedRandomID(this) + "31" + random,
+                    getRandomString(5),
                     20000.0
                 )
+                .setUserId("midtrans.android2@yopmail.com")
                 .setCurrency(Currency.IDR)
                 .setGopayCallbackDeepLink("demo://midtrans")
                 .setCreditCard(
@@ -50,14 +51,15 @@ class MainActivity : AppCompatActivity() {
                         .setBlackListBins(mutableListOf())
                         .setWhiteListBins(mutableListOf())
                         .setSavedTokens(mutableListOf())
-                        .setAuthentication(Authentication.AUTH_3DS)
+                        .setSaveCard(true)
+                        .setAuthentication(Authentication.AUTH_NONE)
                         .build())
                 .setCustomerDetails(
                     CustomerDetails
                         .builder()
                         .setFirstName("FirstName")
                         .setLastName("LastName")
-                        .setEmail("mail@mailbox.com")
+                        .setEmail("midtrans.android2@yopmail.com")
                         .setPhone("08123456789")
                         .setBillingAddress(
                             Address
@@ -115,6 +117,17 @@ class MainActivity : AppCompatActivity() {
                     Logger.debug("Failed return error >>> ${throwable.message}")
                 }
             })
+    }
+
+    fun getRandomString(length: Int): String {
+        val formatter = SimpleDateFormat("mmss")
+        val date = Date()
+        val allowedChars = "ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz"
+        val alpha = (1..length)
+            .map { allowedChars.random() }
+            .joinToString("")
+        val randomNumber = (Math.random() * 5250 + 152).toInt()
+        return "SAM-" + alpha + Helper.generateRandomNumber() + "" + randomNumber + "" + formatter.format(date)
     }
 
     private fun getTransactionOptions(snapToken: String) {
