@@ -269,6 +269,46 @@ public class PaymentResponse extends BasePaymentResponse {
         this.atmChannel = atmChannel;
     }
 
+    public String getSavedTokenId() {
+        return savedTokenId;
+    }
+
+    public void setSavedTokenId(String savedTokenId) {
+        this.savedTokenId = savedTokenId;
+    }
+
+    public Long getPointBalance() {
+        return pointBalance;
+    }
+
+    public void setPointBalance(Long pointBalance) {
+        this.pointBalance = pointBalance;
+    }
+
+    public String getPointBalanceAmount() {
+        return pointBalanceAmount;
+    }
+
+    public void setPointBalanceAmount(String pointBalanceAmount) {
+        this.pointBalanceAmount = pointBalanceAmount;
+    }
+
+    public float getPointRedeemAmount() {
+        return pointRedeemAmount;
+    }
+
+    public void setPointRedeemAmount(float pointRedeemAmount) {
+        this.pointRedeemAmount = pointRedeemAmount;
+    }
+
+    public String getInstallmentTerm() {
+        return installmentTerm;
+    }
+
+    public void setInstallmentTerm(String installmentTerm) {
+        this.installmentTerm = installmentTerm;
+    }
+
     public static final class Builder {
         private String statusCode;
         private String statusMessage;
@@ -315,6 +355,8 @@ public class PaymentResponse extends BasePaymentResponse {
         private String bank;
         private String cardType;
         private float pointRedeemAmount;
+        private String savedTokenId;
+        private String installmentTerm;
 
         public Builder(
                 String statusCode,
@@ -521,6 +563,16 @@ public class PaymentResponse extends BasePaymentResponse {
             return this;
         }
 
+        public Builder setSavedTokenId(String savedTokenId) {
+            this.savedTokenId = savedTokenId;
+            return this;
+        }
+
+        public Builder setInstallmentTerm(String installmentTerm) {
+            this.installmentTerm = installmentTerm;
+            return this;
+        }
+
         public PaymentResponse build() {
             INSTANCE = new PaymentResponse(
                     statusCode,
@@ -559,6 +611,8 @@ public class PaymentResponse extends BasePaymentResponse {
             INSTANCE.setMaskedCard(maskedCard);
             INSTANCE.setBank(bank);
             INSTANCE.setCardType(cardType);
+            INSTANCE.setSavedTokenId(savedTokenId);
+            INSTANCE.setInstallmentTerm(installmentTerm);
             INSTANCE.billPaymentExpiration = this.billPaymentExpiration;
             INSTANCE.type = this.type;
             INSTANCE.billerCode = this.billerCode;
