@@ -5,10 +5,13 @@ import com.midtrans.sdk.corekit.core.api.merchant.model.savecard.SaveCardRespons
 import com.midtrans.sdk.corekit.core.api.midtrans.model.cardtoken.CardTokenRequest;
 import com.midtrans.sdk.corekit.core.api.midtrans.model.registration.CreditCardTokenizeResponse;
 import com.midtrans.sdk.corekit.core.api.midtrans.model.tokendetails.TokenDetailsResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.bins.BankBinsResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.CustomerDetailPayRequest;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.creditcard.CreditCardPaymentParams;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.creditcard.SaveCardRequest;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CreditCardResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.point.PointResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.promo.PromoDetails;
 import com.midtrans.sdk.corekit.utilities.Constants;
 
 import java.util.List;
@@ -26,11 +29,13 @@ public class CreditCardCharge extends BaseGroupPayment {
     public static void paymentUsingCard(final String snapToken,
                                         final CreditCardPaymentParams creditCardPaymentParams,
                                         final CustomerDetailPayRequest customerDetailPayRequest,
+                                        final PromoDetails promoDetails,
                                         final MidtransCallback<CreditCardResponse> callback) {
         if (isValidForNetworkCall(callback)) {
             getSnapApiManager().paymentUsingCreditCard(snapToken,
                     creditCardPaymentParams,
                     customerDetailPayRequest,
+                    promoDetails,
                     callback);
         }
     }
@@ -107,6 +112,34 @@ public class CreditCardCharge extends BaseGroupPayment {
                                 final MidtransCallback<List<SaveCardRequest>> callback) {
         if (isValidForNetworkCall(callback)) {
             getMerchantApiManager().getCards(userId, callback);
+        }
+    }
+
+    /**
+     * It will run backround task to save card to merchant server
+     *
+     * @param callback save card callback
+     */
+    public static void getBankBins(final MidtransCallback<List<BankBinsResponse>> callback) {
+        if (isValidForNetworkCall(callback)) {
+            getSnapApiManager().getBankBins(callback);
+        }
+    }
+
+
+    /**
+     * it will get bank points (BNI or Mandiri) from snap backend
+     *
+     * @param cardToken credit card token
+     * @param callback  bni point callback instance
+     */
+    public static void getBanksPoint(
+            final String token,
+            final String cardToken,
+            final MidtransCallback<PointResponse> callback
+    ) {
+        if (isValidForNetworkCall(callback)) {
+            getSnapApiManager().getBanksPoint(token, cardToken, callback);
         }
     }
 
