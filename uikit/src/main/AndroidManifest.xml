@@ -156,7 +156,26 @@
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".view.method.creditcard.SavedCreditCardListActivity"
+        <activity
+            android:name=".view.method.creditcard.SavedCreditCardListActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/VeritransAppTheme"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".view.method.creditcard.details.CreditCardDetailsActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/VeritransAppTheme"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".view.method.creditcard.point.BankPointsActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/VeritransAppTheme"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".view.method.creditcard.tnc.TermsAndConditionsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/VeritransAppTheme"
