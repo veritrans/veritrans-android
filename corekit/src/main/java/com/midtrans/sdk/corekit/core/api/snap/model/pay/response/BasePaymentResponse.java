@@ -190,6 +190,10 @@ public class BasePaymentResponse implements Serializable {
     protected String bank;
     @SerializedName("card_type")
     protected String cardType;
+    @SerializedName("saved_token_id")
+    protected String savedTokenId;
+    @SerializedName("installment_term")
+    protected String installmentTerm;
 
     public void setValidationMessages(ArrayList<String> validationMessages) {
         this.validationMessages = validationMessages;
@@ -278,4 +282,5 @@ public class BasePaymentResponse implements Serializable {
     public void setFinishRedirectUrl(String finishRedirectUrl) {
         this.finishRedirectUrl = finishRedirectUrl;
     }
+
 }
