@@ -11,7 +11,8 @@ import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
 public class CurrencyHelper {
-    public static String formatAmount(Context context, double totalAmount, @Currency String currency) {
+
+    public static String formatAmount(Context context, double totalAmount, String currency) {
         String formattedAmount;
 
         if (TextUtils.isEmpty(currency)) {
@@ -24,6 +25,24 @@ public class CurrencyHelper {
 
                 default:
                     formattedAmount = context.getString(R.string.prefix_money, getFormattedAmount(totalAmount));
+                    break;
+            }
+        }
+
+        return formattedAmount;
+    }
+
+
+    public static String getFormattedNegativeAmount(Context context, double amount, String currency) {
+        String formattedAmount = context.getString(R.string.prefix_money_negative, getFormattedAmount(amount));
+        if (!TextUtils.isEmpty(currency)) {
+            switch (currency) {
+                case Currency.SGD:
+                    formattedAmount = context.getString(R.string.prefix_money_negative_sgd, getFormattedAmount(amount));
+                    break;
+
+                default:
+                    formattedAmount = context.getString(R.string.prefix_money_negative, getFormattedAmount(amount));
                     break;
             }
         }

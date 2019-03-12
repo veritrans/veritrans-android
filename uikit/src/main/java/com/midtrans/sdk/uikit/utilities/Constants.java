@@ -8,6 +8,7 @@ public class Constants {
      * Used for returning payment result and payment type
      */
     public final static String INTENT_DATA_CALLBACK = "intent.data.callback";
+    public final static String INTENT_DATA_INFO = "intent.data.info";
     public final static String INTENT_DATA_TYPE = "intent.data.type";
     public static final String INTENT_EXTRA_PAYMENT_STATUS = "intent.extra.status";
 
@@ -25,7 +26,7 @@ public class Constants {
     public static final int INTENT_VERIFICATION = 110;
     public static final int INTENT_WEBVIEW_PAYMENT = 111;
     public static final int INTENT_CODE_GOPAY = 345;
-    public static final int RESULT_CODE_PAYMENT_TRANSFER = 434;
+    public static final int RESULT_CODE_PAYMENT = 434;
 
     public static final String KEY_USER_DETAILS = "user_details";
 

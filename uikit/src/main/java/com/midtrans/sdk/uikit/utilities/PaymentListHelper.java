@@ -14,6 +14,7 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaKlikPayRespo
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BniBankTransferResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BriEpayPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CimbClicksResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CreditCardResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.DanamonOnlineResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.GopayResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.IndomaretPaymentResponse;
@@ -548,6 +549,34 @@ public class PaymentListHelper {
                     return;
                 }
                 break;
+            case PaymentType.CREDIT_CARD:
+                try {
+                    CreditCardResponse response = (CreditCardResponse) data.getSerializableExtra(Constants.INTENT_DATA_CALLBACK);
+                    if (resultCode == Activity.RESULT_OK) {
+                        if (response != null) {
+                            switch (response.getStatusCode()) {
+                                case com.midtrans.sdk.corekit.utilities.Constants.STATUS_CODE_200:
+                                    setCallback(callback, PaymentStatus.STATUS_SUCCESS, PaymentType.CREDIT_CARD, response);
+                                    break;
+                                case Constants.STATUS_CODE_201:
+                                    setCallback(callback, PaymentStatus.STATUS_PENDING, PaymentType.CREDIT_CARD, response);
+                                    break;
+                                default:
+                                    setCallback(callback, PaymentStatus.STATUS_FAILED, PaymentType.CREDIT_CARD, response);
+                                    break;
+                            }
+                        } else {
+                            setCallback(callback, PaymentStatus.STATUS_INVALID, PaymentType.CREDIT_CARD, response);
+                        }
+                    } else {
+                        setCallback(callback, PaymentStatus.STATUS_CANCEL, PaymentType.CREDIT_CARD, response);
+                    }
+                } catch (RuntimeException e) {
+                    Logger.error("onActivityResult:" + e.getMessage());
+                    setFailedCallback(callback, e.getMessage());
+                    return;
+                }
+                break;
             default:
                 setCallback(callback, PaymentStatus.STATUS_CANCEL, null, null);
                 break;
@@ -844,6 +873,31 @@ public class PaymentListHelper {
                     .setSettlementTime(rawResponse.getSettlementTime())
                     .setApprovalCode(rawResponse.getApprovalCode())
                     .setMaskedCard(rawResponse.getMaskedCard())
+                    .build();
+            return paymentResponse;
+        } else if (response instanceof CreditCardResponse) {
+            CreditCardResponse rawResponse = (CreditCardResponse) response;
+            paymentResponse = PaymentResponse
+                    .builder(
+                            rawResponse.getStatusCode(),
+                            rawResponse.getStatusMessage(),
+                            rawResponse.getTransactionId(),
+                            rawResponse.getOrderId(),
+                            rawResponse.getGrossAmount(),
+                            rawResponse.getPaymentType(),
+                            rawResponse.getTransactionTime(),
+                            rawResponse.getTransactionStatus()
+                    )
+                    .setBank(rawResponse.getBank())
+                    .setApprovalCode(rawResponse.getApprovalCode())
+                    .setMaskedCard(rawResponse.getMaskedCard())
+                    .setCardType(rawResponse.getCardType())
+                    .setFraudStatus(rawResponse.getFraudStatus())
+                    .setPointBalanceAmount(rawResponse.getPointBalanceAmount())
+                    .setPointBalance(rawResponse.getPointBalance())
+                    .setPointRedeemAmount(rawResponse.getPointRedeemAmount())
+                    .setRedirectUrl(rawResponse.getRedirectUrl())
+                    .setInstallmentTerm(rawResponse.getInstallmentTerm())
                     .build();
             return paymentResponse;
         }
