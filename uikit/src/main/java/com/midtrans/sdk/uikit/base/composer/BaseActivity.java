@@ -4,6 +4,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
@@ -38,6 +39,7 @@ import java.util.List;
 
 import androidx.annotation.LayoutRes;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -62,6 +64,7 @@ public class BaseActivity extends AppCompatActivity {
     private int primaryColor = 0;
     private int primaryDarkColor = 0;
     private int secondaryColor = 0;
+    protected InstructionDetailAdapter detailAdapter;
 
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
@@ -193,9 +196,9 @@ public class BaseActivity extends AppCompatActivity {
         if (recyclerView != null) {
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            InstructionDetailAdapter adapter = new InstructionDetailAdapter();
-            recyclerView.setAdapter(adapter);
-            adapter.setData(details);
+            detailAdapter = new InstructionDetailAdapter();
+            recyclerView.setAdapter(detailAdapter);
+            detailAdapter.setData(details);
         }
     }
 
@@ -280,6 +283,21 @@ public class BaseActivity extends AppCompatActivity {
             } else {
                 view.getBackground().setColorFilter(primaryDarkColor, PorterDuff.Mode.SRC_ATOP);
             }
+        }
+    }
+
+    public void setCheckboxStateColor(AppCompatCheckBox checkBox) throws RuntimeException {
+        if (secondaryColor != 0) {
+            int[][] states = new int[][]{
+                    new int[]{-android.R.attr.state_checked},
+                    new int[]{android.R.attr.state_checked},
+            };
+
+            int[] trackColors = new int[]{
+                    Color.GRAY,
+                    secondaryColor
+            };
+            checkBox.setSupportButtonTintList(new ColorStateList(states, trackColors));
         }
     }
 
