@@ -53,4 +53,20 @@ public class CreditCardResponse extends BasePaymentResponse {
     public float getPointRedeemAmount() {
         return pointRedeemAmount;
     }
+
+    public String getRedirectUrl() {
+        return redirectUrl;
+    }
+
+    public void setRedirectUrl(String redirectUrl) {
+        this.redirectUrl = redirectUrl;
+    }
+
+    public String getInstallmentTerm() {
+        return installmentTerm;
+    }
+
+    public void setInstallmentTerm(String installmentTerm) {
+        this.installmentTerm = installmentTerm;
+    }
 }
