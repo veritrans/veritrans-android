@@ -31,6 +31,7 @@ public class SavedCreditCardListActivity extends BasePaymentActivity implements 
     private SavedCreditCardAdapter adapter;
 
     private boolean isAlreadyGotResponse = false;
+    private boolean isShowCardDetailPage = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -100,9 +101,11 @@ public class SavedCreditCardListActivity extends BasePaymentActivity implements 
                 Logger.debug("Use own token storage");
                 fetchSavedCard();
             } else {
+                isShowCardDetailPage = true;
                 showCardDetailPage(null);
             }
         } else {
+            isShowCardDetailPage = true;
             showCardDetailPage(null);
         }
     }
@@ -151,6 +154,7 @@ public class SavedCreditCardListActivity extends BasePaymentActivity implements 
             setSavedCards(presenter.getSavedCards());
         } else {
             showCardDetailPage(null);
+            isShowCardDetailPage = false;
         }
     }
 
@@ -166,6 +170,13 @@ public class SavedCreditCardListActivity extends BasePaymentActivity implements 
         if (requestCode == Constants.INTENT_CARD_DETAILS && resultCode == Activity.RESULT_OK) {
             setResult(resultCode, data);
             super.onBackPressed();
+        } else if (resultCode == Constants.INTENT_RESULT_DELETE_CARD) {
+            String maskedCardNumber = data.getStringExtra(CreditCardDetailsActivity.EXTRA_DELETED_CARD_DETAILS);
+            updateSavedCardsInstance(maskedCardNumber);
+        } else {
+            if (!presenter.isSavedCardEnabled() || !presenter.isSavedCardsAvailable()) {
+                super.onBackPressed();
+            }
         }
     }
 
@@ -176,6 +187,7 @@ public class SavedCreditCardListActivity extends BasePaymentActivity implements 
             setSavedCards(savedCards);
         } else {
             showCardDetailPage(null);
+            isShowCardDetailPage = true;
         }
     }
 
@@ -183,6 +195,7 @@ public class SavedCreditCardListActivity extends BasePaymentActivity implements 
     public void onGetSavedCardTokenFailure() {
         hideProgressLayout();
         showCardDetailPage(null);
+        isShowCardDetailPage = true;
     }
 
     @Override
