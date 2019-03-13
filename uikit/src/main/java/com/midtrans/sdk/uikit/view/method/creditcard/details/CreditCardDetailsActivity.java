@@ -401,8 +401,8 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         checkboxPointEnabled.setOnTouchListener((v, event) -> {
             if (!checkboxPointEnabled.isChecked() && presenter.isBniPointAvailable(getCardNumberBin())) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-//                        Intent intent = new Intent(CreditCardDetailsActivity.this, TermsAndConditionsActivity.class);
-//                        startActivityForResult(intent, TermsAndConditionsActivity.INTENT_TNC);
+                    Intent intent = new Intent(CreditCardDetailsActivity.this, TermsAndConditionsActivity.class);
+                    startActivityForResult(intent, TermsAndConditionsActivity.INTENT_TNC);
                 }
                 return true;
             }
@@ -1358,13 +1358,12 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
             } else if (requestCode == Constants.INTENT_CODE_PAYMENT_RESULT) {
 
             }
-
         }
     }
 
     @Override
     public boolean isBankPointEnabled() {
-        return false;
+        return checkboxPointEnabled.isChecked();
     }
 
     @Override
@@ -1387,6 +1386,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
     @Override
     public void onGetBankPointFailure() {
+        hideProgressLayout();
         MessageHelper.showToast(this, getString(R.string.failed_to_get_bank_point));
     }
 
@@ -1397,7 +1397,8 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
     @Override
     public void onGetTransactionStatusSuccess(PaymentResponse transactionResponse) {
-
+        hideProgressLayout();
+        setCallbackOrSendToStatusPage();
     }
 
     @Override
@@ -1405,10 +1406,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         Intent intent = new Intent();
         intent.putExtra(EXTRA_DELETED_CARD_DETAILS, maskedCard);
         setResult(Constants.INTENT_RESULT_DELETE_CARD, intent);
-        if (isDetailShown) {
-            displayOrHideItemDetails();
-        }
-        onBackPressed();
+        super.onBackPressed();
     }
 
     @Override
