@@ -1,5 +1,15 @@
 package com.midtrans.sdk.corekit.utilities;
 
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+
+import android.text.TextUtils;
+
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.creditcard.CreditCardPaymentParams;
+
+import java.io.IOException;
+
 public class CustomTypeAdapter extends TypeAdapter<CreditCardPaymentParams> {
 
     @Override
