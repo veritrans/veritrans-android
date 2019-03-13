@@ -4,7 +4,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.midtrans.sdk.corekit.MidtransSdk
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback
-import com.midtrans.sdk.corekit.base.enums.*
+import com.midtrans.sdk.corekit.base.enums.AcquiringBankType
+import com.midtrans.sdk.corekit.base.enums.Authentication
 import com.midtrans.sdk.corekit.base.enums.Currency
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.CheckoutTransaction
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.Item
@@ -43,22 +44,19 @@ class MainActivity : AppCompatActivity() {
                 .setCreditCard(
                     CreditCard
                         .builder()
-                        .setSaveCard(true)
-                        .setType(CreditCardTransactionType.AUTHORIZE_CAPTURE)
                         .setAcquiringBank(AcquiringBankType.BCA)
-                        .setAcquiringChannel(AcquiringChannel.MIGS)
                         .setInstallment(false, HashMap<String, MutableList<Int>>())
                         .setBlackListBins(mutableListOf())
                         .setWhiteListBins(mutableListOf())
                         .setSavedTokens(mutableListOf())
                         .setSaveCard(true)
-                        .setAuthentication(Authentication.AUTH_NONE)
+                        .setAuthentication(Authentication.AUTH_3DS)
                         .build())
                 .setCustomerDetails(
                     CustomerDetails
                         .builder()
-                        .setFirstName("FirstName")
-                        .setLastName("LastName")
+                        .setFirstName("Budi")
+                        .setLastName("Utomo")
                         .setEmail("midtrans.android2@yopmail.com")
                         .setPhone("08123456789")
                         .setBillingAddress(

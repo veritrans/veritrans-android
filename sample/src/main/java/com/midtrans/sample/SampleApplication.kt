@@ -14,6 +14,7 @@ class SampleApplication : Application() {
     }
 
     private fun initMidtransKit() {
+        // 3DS 1Click key >>> VT-client-F91kdUrnE5w8zCja and set custom field = one_click
         MidtransKit
             .builder(
                 this,
