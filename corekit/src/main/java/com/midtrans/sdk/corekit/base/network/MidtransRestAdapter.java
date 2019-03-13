@@ -10,6 +10,8 @@ import android.os.Build;
 import com.midtrans.sdk.corekit.core.api.merchant.MerchantApiService;
 import com.midtrans.sdk.corekit.core.api.midtrans.MidtransApiService;
 import com.midtrans.sdk.corekit.core.api.snap.SnapApiService;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.creditcard.CreditCardPaymentParams;
+import com.midtrans.sdk.corekit.utilities.CustomTypeAdapter;
 import com.midtrans.sdk.corekit.utilities.Logger;
 
 import java.io.IOException;
@@ -106,7 +108,7 @@ public class MidtransRestAdapter {
         return new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
                 .registerTypeAdapter(Date.class, new DateTypeAdapter())
-//                .registerTypeAdapter(CreditCardPaymentParams.class, new CustomTypeAdapter())
+                .registerTypeAdapter(CreditCardPaymentParams.class, new CustomTypeAdapter())
                 .create();
     }
 
