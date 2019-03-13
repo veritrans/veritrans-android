@@ -89,9 +89,15 @@ public class Helper {
 
     public static CreditCardPaymentParams convertToCreditCardPaymentParam(CreditCardPaymentModel model) {
 
-        CreditCardPaymentParams paymentParams = new CreditCardPaymentParams(model.getCardToken(),
-                model.isSavecard(), model.getMaskedCardNumber(), model.getInstallment());
-        paymentParams.setPointRedeemed(model.getPointRedeemed());
+        CreditCardPaymentParams paymentParams = new CreditCardPaymentParams(
+                model.getCardToken(),
+                model.isSavecard(),
+                model.getMaskedCardNumber(),
+                model.getInstallment()
+        );
+        if (model.getPointRedeemed() != 0) {
+            paymentParams.setPointRedeemed(model.getPointRedeemed());
+        }
 
         if (model.getBank() != null && model.getBank().equalsIgnoreCase(BankType.MANDIRI)) {
             paymentParams.setBank(model.getBank());
@@ -117,7 +123,7 @@ public class Helper {
             CustomerDetails customerDetails = transaction.getCustomerDetails();
             if (customerDetails != null) {
                 CustomerDetailPayRequest customerDetailRequest = new CustomerDetailPayRequest();
-                customerDetailRequest.setFullName(customerDetails.getFirstName());
+                customerDetailRequest.setFullName(customerDetails.getFirstName() + customerDetails.getLastName());
                 customerDetailRequest.setPhone(customerDetailRequest.getPhone());
                 customerDetailRequest.setEmail(customerDetailRequest.getEmail());
 
