@@ -34,7 +34,7 @@ public class SavedCreditCardListPresenter extends BaseCreditCardPresenter<SavedC
 
     private void initSavedCards() {
         if (isBuiltInTokenStorage()) {
-            CreditCard creditCard = MidtransSdk.getInstance().getCheckoutTransaction().getCreditCard();
+            CreditCard creditCard = paymentInfoResponse.getCreditCard();
             if (creditCard != null) {
                 List<SavedToken> savedTokens = creditCard.getSavedTokens();
                 if (savedTokens != null && !savedTokens.isEmpty()) {
@@ -110,7 +110,7 @@ public class SavedCreditCardListPresenter extends BaseCreditCardPresenter<SavedC
 
 
     public void updateSavedCardsInstance(String maskedCardNumber) {
-        CreditCard creditCard = MidtransSdk.getInstance().getCheckoutTransaction().getCreditCard();
+        CreditCard creditCard = paymentInfoResponse.getCreditCard();
 
         List<SavedToken> savedTokens = creditCard.getSavedTokens();
 
