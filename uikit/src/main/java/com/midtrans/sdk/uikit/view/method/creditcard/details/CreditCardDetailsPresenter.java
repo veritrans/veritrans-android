@@ -151,7 +151,8 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
                 cvv,
                 month,
                 year,
-                getMidtransSdk().getMerchantClientId());
+                getMidtransSdk().getMerchantClientId()
+        );
 
         cardTokenRequest.setSaved(saveCard);
         cardTokenRequest.setSecure(isSecurePayment());
@@ -165,14 +166,14 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
         applyInstallmentProperties(cardTokenRequest);
         cardTokenRequest.setPoint(view.isBankPointEnabled());
 
-        CreditCard creditCard = getMidtransSdk().getCheckoutTransaction().getCreditCard();
+        CreditCard creditCard = paymentInfoResponse.getCreditCard();
 
         if (creditCard != null) {
             applyAcquiringBank(cardTokenRequest, creditCard);
             applyTokenizationType(cardTokenRequest, creditCard);
         }
 
-        TransactionDetails transactionDetails = getMidtransSdk().getCheckoutTransaction().getTransactionDetails();
+        TransactionDetails transactionDetails = paymentInfoResponse.getTransactionDetails();
         if (transactionDetails != null) {
             cardTokenRequest.setCurrency(transactionDetails.getCurrency());
         }
@@ -211,8 +212,7 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
         }
     }
 
-
-    private void saveCrediCard(PaymentResponse response) {
+    private void saveCrediCard(CreditCardResponse response) {
         if (!getMidtransKit().isBuiltinStorageEnabled()) {
             if (this.cardTokenRequest != null && this.cardTokenRequest.isSaved()) {
                 List<SavedToken> savedTokens = paymentInfoResponse.getCreditCard().getSavedTokens();
@@ -328,6 +328,7 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
                 new MidtransCallback<CreditCardResponse>() {
                     @Override
                     public void onSuccess(CreditCardResponse data) {
+                        saveCrediCard(data);
                         view.onPaymentSuccess(data);
                     }
 
@@ -338,7 +339,6 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
                 }
         );
     }
-
 
     private void getCardToken(CardTokenRequest cardTokenRequest) {
         this.cardTokenRequest = cardTokenRequest;
