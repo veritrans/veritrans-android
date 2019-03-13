@@ -33,19 +33,23 @@ public class EnumHelper {
 
     public static @AcquiringChannel
     String mappingToAcquiringChannel(@AcquiringChannel String acquiringChannel) {
-        if (acquiringChannel.equalsIgnoreCase(AcquiringChannel.MIGS) || acquiringChannel == null) {
-            return AcquiringChannel.MIGS;
-        } else {
+        if (acquiringChannel == null) {
             return null;
+        } else {
+            return AcquiringChannel.MIGS;
         }
     }
 
     public static @CreditCardTransactionType
     String mappingToCreditCardType(@CreditCardTransactionType String type) {
-        if (type.equalsIgnoreCase(CreditCardTransactionType.AUTHORIZE)) {
-            return CreditCardTransactionType.AUTHORIZE;
+        if (type == null) {
+            return null;
         } else {
-            return CreditCardTransactionType.AUTHORIZE_CAPTURE;
+            if (type.equalsIgnoreCase(CreditCardTransactionType.AUTHORIZE)) {
+                return CreditCardTransactionType.AUTHORIZE;
+            } else {
+                return CreditCardTransactionType.AUTHORIZE_CAPTURE;
+            }
         }
     }
 
