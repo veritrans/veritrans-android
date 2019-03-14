@@ -6,6 +6,8 @@ import android.content.Intent;
 import com.midtrans.sdk.corekit.base.enums.PaymentType;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.CheckoutTransaction;
 import com.midtrans.sdk.uikit.base.callback.PaymentResult;
+import com.midtrans.sdk.uikit.base.callback.Result;
+import com.midtrans.sdk.uikit.base.model.PaymentResponse;
 import com.midtrans.sdk.uikit.utilities.MidtransKitHelper;
 import com.midtrans.sdk.uikit.view.PaymentListActivity;
 
@@ -36,14 +38,24 @@ public class MidtransKitFlow {
     public static final String INTENT_EXTRA_AKULAKU = "intent.extra.akulaku";
     public static final String INTENT_EXTRA_ALFAMART = "intent.extra.alfamart";
 
+    private static PaymentResult resultCallback;
+
+    public static void notifySdkSuccessResult(final Result result, PaymentResponse response) {
+        resultCallback.onPaymentFinished(result, response);
+    }
+
+    public static void notifySdkErrorResult(Throwable throwable) {
+        resultCallback.onFailed(throwable);
+    }
+
     static void paymentWithTransactionFlow(
             Activity context,
             CheckoutTransaction checkoutTransaction,
             PaymentResult callback
     ) {
         if (MidtransKitHelper.isValidForStartMidtransKit(context, checkoutTransaction, callback)) {
+            resultCallback = callback;
             Intent intent = new Intent(context, PaymentListActivity.class);
-            intent.putExtra(INTENT_EXTRA_CALLBACK, callback);
             intent.putExtra(INTENT_EXTRA_TRANSACTION, checkoutTransaction);
             intent.putExtra(INTENT_EXTRA_ALL_PAYMENT, true);
             context.startActivity(intent);
@@ -57,8 +69,8 @@ public class MidtransKitFlow {
             PaymentResult callback
     ) {
         if (MidtransKitHelper.isValidForStartMidtransKit(context, token, callback)) {
+            resultCallback = callback;
             Intent intent = new Intent(context, PaymentListActivity.class);
-            intent.putExtra(INTENT_EXTRA_CALLBACK, callback);
             intent.putExtra(INTENT_EXTRA_TOKEN, token);
             intent.putExtra(INTENT_EXTRA_ALL_PAYMENT, true);
             context.startActivity(intent);
@@ -73,8 +85,8 @@ public class MidtransKitFlow {
             PaymentResult callback
     ) {
         if (MidtransKitHelper.isValidForStartMidtransKit(context, checkoutTransaction, callback)) {
+            resultCallback = callback;
             Intent intent = new Intent(context, PaymentListActivity.class);
-            intent.putExtra(INTENT_EXTRA_CALLBACK, callback);
             intent.putExtra(INTENT_EXTRA_TRANSACTION, checkoutTransaction);
             context.startActivity(intentDirectWithMapping(intent, paymentType));
             pendingSlideIn(context);
@@ -88,8 +100,8 @@ public class MidtransKitFlow {
             PaymentResult callback
     ) {
         if (MidtransKitHelper.isValidForStartMidtransKit(context, token, callback)) {
+            resultCallback = callback;
             Intent intent = new Intent(context, PaymentListActivity.class);
-            intent.putExtra(INTENT_EXTRA_CALLBACK, callback);
             intent.putExtra(INTENT_EXTRA_TOKEN, token);
             context.startActivity(intentDirectWithMapping(intent, paymentType));
             pendingSlideIn(context);
