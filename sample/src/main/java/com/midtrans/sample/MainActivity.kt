@@ -1,11 +1,13 @@
 package com.midtrans.sample
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.midtrans.sdk.corekit.MidtransSdk
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback
 import com.midtrans.sdk.corekit.base.enums.AcquiringBankType
 import com.midtrans.sdk.corekit.base.enums.Authentication
+import com.midtrans.sdk.corekit.base.enums.BankType
 import com.midtrans.sdk.corekit.base.enums.Currency
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.CheckoutTransaction
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.Item
@@ -33,6 +35,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         text_view_test.setOnClickListener {
+            val installment = HashMap<String, MutableList<Int>>()
+            installment[BankType.MANDIRI] = mutableListOf(3, 6, 12)
             val checkoutTransaction = CheckoutTransaction
                 .builder(
                     getRandomString(5),
@@ -40,12 +44,11 @@ class MainActivity : AppCompatActivity() {
                 )
                 .setUserId("midtrans.android2@yopmail.com")
                 .setCurrency(Currency.IDR)
-                .setGopayCallbackDeepLink("demo://midtrans")
                 .setCreditCard(
                     CreditCard
                         .builder()
-                        .setAcquiringBank(AcquiringBankType.BCA)
-                        .setInstallment(false, HashMap<String, MutableList<Int>>())
+                        .setAcquiringBank(AcquiringBankType.MANDIRI)
+                        .setInstallment(false, installment)
                         .setBlackListBins(mutableListOf())
                         .setWhiteListBins(mutableListOf())
                         .setSavedTokens(mutableListOf())
@@ -93,7 +96,13 @@ class MainActivity : AppCompatActivity() {
                     checkoutTransaction,
                     object : PaymentResult {
                         override fun onPaymentFinished(result: Result?, response: PaymentResponse?) {
-                            Logger.debug("RESULT IS >>> ${result?.paymentType} AND ${result?.paymentStatus} >>> ${response?.bcaVaNumber} || ${response?.bniVaNumber} || ${response?.permataVaNumber} || ${response?.billKey}")
+                            Logger.debug("RESULT IS >>> ${result?.paymentType} AND ${result?.paymentStatus}")
+                            val showToast = "${response?.orderId
+                                ?: "No Order ID"} is ${result?.paymentType
+                                ?: "Cancel Payment"} and status is ${result?.paymentStatus
+                                ?: "CANCEL"}"
+                            Logger.debug("RESULT >>> $showToast")
+                            Toast.makeText(this@MainActivity, showToast, Toast.LENGTH_LONG).show()
                         }
 
                         override fun onFailed(throwable: Throwable?) {
@@ -125,7 +134,7 @@ class MainActivity : AppCompatActivity() {
             .map { allowedChars.random() }
             .joinToString("")
         val randomNumber = (Math.random() * 5250 + 152).toInt()
-        return "SAM-" + alpha + Helper.generateRandomNumber() + "" + randomNumber + "" + formatter.format(date)
+        return "SAM-$alpha${Helper.generateRandomNumber()}$randomNumber${formatter.format(date)}"
     }
 
     private fun getTransactionOptions(snapToken: String) {
