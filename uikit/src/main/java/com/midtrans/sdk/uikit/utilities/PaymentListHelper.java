@@ -584,14 +584,17 @@ public class PaymentListHelper {
 
     public static PaymentResponse newErrorPaymentResponse(
             @PaymentType String paymentType,
-            String statusCode) {
+            String statusCode,
+            String orderId,
+            String grossAmount
+    ) {
         return PaymentResponse
                 .builder(
                         statusCode,
                         null,
                         null,
-                        null,
-                        null,
+                        orderId,
+                        grossAmount,
                         paymentType,
                         null,
                         null
