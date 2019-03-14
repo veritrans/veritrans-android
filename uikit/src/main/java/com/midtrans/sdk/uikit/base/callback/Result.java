@@ -3,7 +3,9 @@ package com.midtrans.sdk.uikit.base.callback;
 import com.midtrans.sdk.corekit.base.enums.PaymentType;
 import com.midtrans.sdk.uikit.base.enums.PaymentStatus;
 
-public class Result {
+import java.io.Serializable;
+
+public class Result implements Serializable {
     @PaymentStatus
     private String paymentStatus;
     @PaymentType
