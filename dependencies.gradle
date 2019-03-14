@@ -88,5 +88,6 @@ ext {
             zXingAndroid        : 'com.journeyapps:zxing-android-embedded:3.6.0',
             ion                 : 'com.koushikdutta.ion:ion:2.2.1',
             securePreferences   : 'com.scottyab:secure-preferences-lib:0.1.4',
+            crashlytics         : dependencies.create('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') { transitive = true },
     ]
 }
