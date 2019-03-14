@@ -541,26 +541,26 @@ public class PaymentChargeTest {
 
     @Test
     public void test_paymentUsingDirectDebitMandiriClickPay_positive() {
-        directDebitCharge.paymentUsingMandiriClickPay(SDKConfigTest.SNAP_TOKEN, mandiriClickpayParams, callbackMandiriClick);
+        directDebitCharge.paymentUsingMandiriClickPay(SDKConfigTest.SNAP_TOKEN, exampleTextNegative, exampleTextNegative, exampleTextNegative, callbackMandiriClick);
         Mockito.verify(callbackMandiriClick).onSuccess(Matchers.any(MandiriClickpayResponse.class));
     }
 
     @Test
     public void test_paymentUsingDirectDebitMandiriClickPay_negative_callback() {
-        directDebitCharge.paymentUsingMandiriClickPay(SDKConfigTest.SNAP_TOKEN, mandiriClickpayParams, callbackMandiriClick);
+        directDebitCharge.paymentUsingMandiriClickPay(SDKConfigTest.SNAP_TOKEN, exampleTextNegative, exampleTextNegative, exampleTextNegative, callbackMandiriClick);
         Mockito.verify(callbackMandiriClick).onFailed(Matchers.any(Throwable.class));
     }
 
     @Test
     public void test_paymentUsingDirectDebitMandiriClickPay_negative_snapTokenNull() {
-        directDebitCharge.paymentUsingMandiriClickPay(null, mandiriClickpayParams, callbackMandiriClick);
+        directDebitCharge.paymentUsingMandiriClickPay(null, exampleTextNegative, exampleTextNegative, exampleTextNegative, callbackMandiriClick);
         verifyStatic(Mockito.times(0));
         Logger.error(Matchers.anyString(), Matchers.anyString());
     }
 
     @Test
     public void test_paymentUsingDirectDebitMandiriClickPay_negative_callbackNull() {
-        directDebitCharge.paymentUsingMandiriClickPay(SDKConfigTest.SNAP_TOKEN, mandiriClickpayParams, null);
+        directDebitCharge.paymentUsingMandiriClickPay(SDKConfigTest.SNAP_TOKEN, exampleTextNegative, exampleTextNegative, exampleTextNegative, null);
         verifyStatic(Mockito.times(0));
         Logger.error(Matchers.anyString(), Matchers.anyString());
     }
@@ -568,19 +568,19 @@ public class PaymentChargeTest {
     @Test
     public void test_paymentUsingDirectDebitMandiriClickPay_negative_noNetwork() {
         when(NetworkHelper.isNetworkAvailable(midtransSdkMock.getContext())).thenReturn(false);
-        directDebitCharge.paymentUsingMandiriClickPay(SDKConfigTest.SNAP_TOKEN, mandiriClickpayParams, callbackMandiriClick);
+        directDebitCharge.paymentUsingMandiriClickPay(SDKConfigTest.SNAP_TOKEN, exampleTextNegative, exampleTextNegative, exampleTextNegative, callbackMandiriClick);
         Mockito.verify(callbackMandiriClick).onFailed(Matchers.any(Throwable.class));
     }
 
     @Test
     public void test_paymentUsingDirectDebitMandiriClickpay_negative_withoutParams() {
-        directDebitCharge.paymentUsingMandiriClickPay(SDKConfigTest.SNAP_TOKEN, null, callbackMandiriClick);
+        directDebitCharge.paymentUsingMandiriClickPay(SDKConfigTest.SNAP_TOKEN, null, null, null, callbackMandiriClick);
         Mockito.verify(callbackMandiriClick).onFailed(Matchers.any(Throwable.class));
     }
 
     @Test
     public void test_paymentUsingDirectDebitMandiriClickpay_negative_withoutSnapTken() {
-        directDebitCharge.paymentUsingMandiriClickPay(null, mandiriClickpayParams, null);
+        directDebitCharge.paymentUsingMandiriClickPay(null, exampleTextNegative, exampleTextNegative, exampleTextNegative, null);
         Mockito.verify(callbackMandiriClick).onFailed(Matchers.any(Throwable.class));
     }
 
@@ -631,26 +631,26 @@ public class PaymentChargeTest {
 
     @Test
     public void test_paymentUsingEwalletMandiriEcash_positive() {
-        eWalletCharge.paymentUsingMandiriEcash(SDKConfigTest.SNAP_TOKEN, customerDetailPayRequest, callbackMandiriEcash);
+        eWalletCharge.paymentUsingMandiriEcash(SDKConfigTest.SNAP_TOKEN, callbackMandiriEcash);
         Mockito.verify(callbackMandiriEcash).onSuccess(Matchers.any(MandiriEcashResponse.class));
     }
 
     @Test
     public void test_paymentUsingEwalletMandiriEcash_negative_callback() {
-        eWalletCharge.paymentUsingMandiriEcash(SDKConfigTest.SNAP_TOKEN, customerDetailPayRequest, callbackMandiriEcash);
+        eWalletCharge.paymentUsingMandiriEcash(SDKConfigTest.SNAP_TOKEN, callbackMandiriEcash);
         Mockito.verify(callbackMandiriEcash).onFailed(Matchers.any(Throwable.class));
     }
 
     @Test
     public void test_paymentUsingEwalletMandiriEcash_negative_snapTokenNull() {
-        eWalletCharge.paymentUsingMandiriEcash(null, customerDetailPayRequest, callbackMandiriEcash);
+        eWalletCharge.paymentUsingMandiriEcash(null,  callbackMandiriEcash);
         verifyStatic(Mockito.times(0));
         Logger.error(Matchers.anyString(), Matchers.anyString());
     }
 
     @Test
     public void test_paymentUsingEwalletMandiriEcash_negative_callbackNull() {
-        eWalletCharge.paymentUsingMandiriEcash(SDKConfigTest.SNAP_TOKEN, customerDetailPayRequest, null);
+        eWalletCharge.paymentUsingMandiriEcash(SDKConfigTest.SNAP_TOKEN, null);
         verifyStatic(Mockito.times(0));
         Logger.error(Matchers.anyString(), Matchers.anyString());
     }
@@ -658,19 +658,19 @@ public class PaymentChargeTest {
     @Test
     public void test_paymentUsingEwalletMandiriEcash_negative_noNetwork() {
         when(NetworkHelper.isNetworkAvailable(midtransSdkMock.getContext())).thenReturn(false);
-        eWalletCharge.paymentUsingMandiriEcash(SDKConfigTest.SNAP_TOKEN, customerDetailPayRequest, callbackMandiriEcash);
+        eWalletCharge.paymentUsingMandiriEcash(SDKConfigTest.SNAP_TOKEN,  callbackMandiriEcash);
         Mockito.verify(callbackMandiriEcash).onFailed(Matchers.any(Throwable.class));
     }
 
     @Test
     public void test_paymentUsingEwalletMandiriEcash_negative_withoutParams() {
-        eWalletCharge.paymentUsingMandiriEcash(SDKConfigTest.SNAP_TOKEN, null, callbackMandiriEcash);
+        eWalletCharge.paymentUsingMandiriEcash(SDKConfigTest.SNAP_TOKEN,  callbackMandiriEcash);
         Mockito.verify(callbackMandiriEcash).onFailed(Matchers.any(Throwable.class));
     }
 
     @Test
     public void test_paymentUsingEwalletMandiriEcash_negative_withoutSnapTken() {
-        eWalletCharge.paymentUsingMandiriEcash(null, customerDetailPayRequest, null);
+        eWalletCharge.paymentUsingMandiriEcash(null, null);
         Mockito.verify(callbackMandiriEcash).onFailed(Matchers.any(Throwable.class));
     }
 
@@ -959,7 +959,7 @@ public class PaymentChargeTest {
         Mockito.verify(callbackIndomaret).onFailed(Matchers.any(Throwable.class));
     }
 
-    @Test
+    /*@Test
     public void test_paymentUsingCreditCard_positive() {
         creditCardCharge.paymentUsingCard(SDKConfigTest.SNAP_TOKEN, creditCardPaymentParams, customerDetailPayRequest, callbackCreditCard);
         Mockito.verify(callbackCreditCard).onSuccess(Matchers.any(CreditCardResponse.class));
@@ -990,6 +990,6 @@ public class PaymentChargeTest {
         when(NetworkHelper.isNetworkAvailable(midtransSdkMock.getContext())).thenReturn(false);
         creditCardCharge.paymentUsingCard(SDKConfigTest.SNAP_TOKEN, creditCardPaymentParams, customerDetailPayRequest, callbackCreditCard);
         Mockito.verify(callbackCreditCard).onFailed(Matchers.any(Throwable.class));
-    }
+    }*/
 
 }
