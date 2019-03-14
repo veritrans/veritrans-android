@@ -874,6 +874,42 @@ public class PaymentListHelper {
                     .setMaskedCard(rawResponse.getMaskedCard())
                     .build();
             return paymentResponse;
+        } else if (response instanceof AkulakuResponse) {
+            AkulakuResponse rawResponse = (AkulakuResponse) response;
+            paymentResponse = PaymentResponse
+                    .builder(
+                            rawResponse.getStatusCode(),
+                            rawResponse.getStatusMessage(),
+                            rawResponse.getTransactionId(),
+                            rawResponse.getOrderId(),
+                            rawResponse.getGrossAmount(),
+                            rawResponse.getPaymentType(),
+                            rawResponse.getTransactionTime(),
+                            rawResponse.getTransactionStatus()
+                    )
+                    .setFraudStatus(rawResponse.getFraudStatus())
+                    .setRedirectUrl(rawResponse.getRedirectUrl())
+                    .build();
+            return paymentResponse;
+        } else if (response instanceof AlfamartPaymentResponse) {
+            AlfamartPaymentResponse rawResponse = (AlfamartPaymentResponse) response;
+            paymentResponse = PaymentResponse
+                    .builder(
+                            rawResponse.getStatusCode(),
+                            rawResponse.getStatusMessage(),
+                            rawResponse.getTransactionId(),
+                            rawResponse.getOrderId(),
+                            rawResponse.getGrossAmount(),
+                            rawResponse.getPaymentType(),
+                            rawResponse.getTransactionTime(),
+                            rawResponse.getTransactionStatus()
+                    )
+                    .setAlfamartExpireTime(rawResponse.getAlfamartExpireTime())
+                    .setPdfUrl(rawResponse.getPdfUrl())
+                    .setPaymentCode(rawResponse.getPaymentCode())
+                    .setStore(rawResponse.getStore())
+                    .build();
+            return paymentResponse;
         } else if (response instanceof CreditCardResponse) {
             CreditCardResponse rawResponse = (CreditCardResponse) response;
             paymentResponse = PaymentResponse
