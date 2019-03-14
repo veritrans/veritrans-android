@@ -23,7 +23,6 @@ import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.uikit.MidtransKit;
 import com.midtrans.sdk.uikit.MidtransKitFlow;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.base.callback.PaymentResult;
 import com.midtrans.sdk.uikit.base.callback.Result;
 import com.midtrans.sdk.uikit.base.composer.BaseActivity;
 import com.midtrans.sdk.uikit.base.composer.BasePaymentActivity;
@@ -50,9 +49,9 @@ import com.midtrans.sdk.uikit.view.method.indomaret.instruction.IndomaretInstruc
 import com.midtrans.sdk.uikit.view.method.klikbca.instruction.KlikBcaInstructionActivity;
 import com.midtrans.sdk.uikit.view.method.mandiriclickpay.MandiriClickpayInstructionActivity;
 import com.midtrans.sdk.uikit.view.method.mandiriecash.MandiriEcashInstructionActivity;
+import com.midtrans.sdk.uikit.view.method.telkomselcash.TelkomselCashInstructionActivity;
 import com.midtrans.sdk.uikit.view.model.ItemViewDetails;
 import com.midtrans.sdk.uikit.view.model.PaymentMethodsModel;
-import com.midtrans.sdk.uikit.view.method.telkomselcash.TelkomselCashInstructionActivity;
 import com.midtrans.sdk.uikit.widget.BoldTextView;
 import com.midtrans.sdk.uikit.widget.DefaultTextView;
 import com.midtrans.sdk.uikit.widget.FancyButton;
@@ -104,7 +103,6 @@ public class PaymentListActivity extends BaseActivity {
      */
     private String token = null;
     private CheckoutTransaction checkoutTransaction = null;
-    private PaymentResult callback = null;
 
     /**
      * This property used for layout related stuff
@@ -192,7 +190,6 @@ public class PaymentListActivity extends BaseActivity {
      */
     @SuppressWarnings("unchecked")
     private void getIntentDataFromMidtransKitFlow() {
-        callback = (PaymentResult) getIntent().getSerializableExtra(MidtransKitFlow.INTENT_EXTRA_CALLBACK);
         checkoutTransaction = (CheckoutTransaction) getIntent().getSerializableExtra(MidtransKitFlow.INTENT_EXTRA_TRANSACTION);
         token = getIntent().getStringExtra(MidtransKitFlow.INTENT_EXTRA_TOKEN);
 
@@ -586,7 +583,7 @@ public class PaymentListActivity extends BaseActivity {
     }
 
     private void setOnFailedCallback(Throwable throwable) {
-        callback.onFailed(throwable);
+        MidtransKitFlow.notifySdkErrorResult(throwable);
         if (isThrowableFromNetworkRequest) {
             isThrowableFromNetworkRequest = false;
             onBackPressed();
@@ -608,7 +605,7 @@ public class PaymentListActivity extends BaseActivity {
         if (requestCode == Constants.RESULT_CODE_PAYMENT) {
             Logger.debug("sending result back with code " + requestCode);
             if (resultCode == RESULT_OK) {
-                PaymentListHelper.setActivityResult(resultCode, data, callback);
+                PaymentListHelper.setActivityResult(resultCode, data);
                 super.onBackPressed();
             }
         } else {
@@ -621,7 +618,7 @@ public class PaymentListActivity extends BaseActivity {
         if (isThrowableFromNetworkRequest) {
             setOnFailedCallback(throwableFromNetworkRequest);
         } else if (isPaymentListAlreadyShow) {
-            callback.onPaymentFinished(new Result(PaymentStatus.STATUS_CANCEL, null), null);
+            MidtransKitFlow.notifySdkSuccessResult(new Result(PaymentStatus.STATUS_CANCEL, null), null);
         }
         super.onBackPressed();
     }
