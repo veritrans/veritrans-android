@@ -268,7 +268,9 @@ public class MandiriClickpayInstructionActivity extends BasePaymentActivity impl
                             Constants.INTENT_CODE_PAYMENT_RESULT,
                             PaymentListHelper.newErrorPaymentResponse(
                                     PaymentType.MANDIRI_CLICKPAY,
-                                    mandiriClickpayResponse.getStatusCode()
+                                    mandiriClickpayResponse.getStatusCode(),
+                                    paymentInfoResponse.getTransactionDetails().getOrderId(),
+                                    Double.toString(paymentInfoResponse.getTransactionDetails().getGrossAmount())
                             )
                     );
                 }
@@ -294,6 +296,9 @@ public class MandiriClickpayInstructionActivity extends BasePaymentActivity impl
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.INTENT_CODE_PAYMENT_RESULT) {
+            mandiriClickpayResponse.setPaymentType(PaymentType.MANDIRI_CLICKPAY);
+            mandiriClickpayResponse.setOrderId(paymentInfoResponse.getTransactionDetails().getOrderId());
+            mandiriClickpayResponse.setGrossAmount(Double.toString(paymentInfoResponse.getTransactionDetails().getGrossAmount()));
             finishPayment(RESULT_OK, mandiriClickpayResponse);
         }
     }

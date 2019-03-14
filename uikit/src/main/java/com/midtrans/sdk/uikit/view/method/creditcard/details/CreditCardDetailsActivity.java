@@ -945,7 +945,9 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                     Constants.INTENT_CODE_PAYMENT_RESULT,
                     PaymentListHelper.newErrorPaymentResponse(
                             PaymentType.CREDIT_CARD,
-                            creditCardResponse.getStatusCode()
+                            creditCardResponse.getStatusCode(),
+                            paymentInfoResponse.getTransactionDetails().getOrderId(),
+                            Double.toString(paymentInfoResponse.getTransactionDetails().getGrossAmount())
                     )
             );
         } else {
@@ -1346,6 +1348,8 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                 }
             } else if (requestCode == Constants.INTENT_CODE_PAYMENT_RESULT) {
                 creditCardResponse.setPaymentType(PaymentType.CREDIT_CARD);
+                creditCardResponse.setOrderId(paymentInfoResponse.getTransactionDetails().getOrderId());
+                creditCardResponse.setGrossAmount(Double.toString(paymentInfoResponse.getTransactionDetails().getGrossAmount()));
                 finishPayment(RESULT_OK, creditCardResponse);
             } else if (requestCode == TermsAndConditionsActivity.INTENT_TNC) {
                 setCheckboxPoint(true);
