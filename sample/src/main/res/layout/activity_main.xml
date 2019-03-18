@@ -1,25 +1,210 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/text_view_test"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:paddingBottom="@dimen/small_margin"
-        android:paddingLeft="@dimen/large_margin"
-        android:paddingRight="@dimen/large_margin"
-        android:paddingTop="@dimen/small_margin"
-        android:text="Start Payment"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/medium_margin">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/tiny_margin"
+                android:layout_marginTop="@dimen/small_to_medium_margin"
+                android:text="Option"
+                android:textColor="@color/black"
+                android:textSize="@dimen/large_font_size"
+                android:textStyle="bold" />
+
+            <CheckBox
+                android:id="@+id/check_box_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Show Payment Status Screen"
+                android:visibility="gone" />
+
+            <CheckBox
+                android:id="@+id/check_box_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Show Email in Credit Card Form" />
+
+            <CheckBox
+                android:id="@+id/check_box_saved_card"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Saved Card" />
+
+            <CheckBox
+                android:id="@+id/check_box_authorize_payment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Authorize Payment" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/tiny_margin"
+                android:layout_marginTop="@dimen/small_to_medium_margin"
+                android:text="CC Installment (Acq Bank = BNI)"
+                android:textColor="@color/black"
+                android:textSize="@dimen/large_font_size"
+                android:textStyle="bold" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/radio_installment_mandatory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Mandatory installment" />
+
+                <RadioButton
+                    android:id="@+id/radio_installment_optional"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="Optional Installment" />
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/tiny_margin"
+                android:layout_marginTop="@dimen/small_to_medium_margin"
+                android:text="UI Kit Theme"
+                android:textColor="@color/black"
+                android:textSize="@dimen/large_font_size"
+                android:textStyle="bold" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/radio_custom_theme_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Use user input custom theme" />
+
+                <RadioButton
+                    android:id="@+id/radio_custom_theme_local"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Use local custom theme from snap" />
+
+                <RadioButton
+                    android:id="@+id/radio_custom_theme_snap"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="Use custom theme from snap" />
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/tiny_margin"
+                android:layout_marginTop="@dimen/small_to_medium_margin"
+                android:text="Authentication"
+                android:textColor="@color/black"
+                android:textSize="@dimen/large_font_size"
+                android:textStyle="bold" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/radio_auth_none"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Authentication None" />
+
+                <RadioButton
+                    android:id="@+id/radio_auth_rba"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Authentication RBA" />
+
+                <RadioButton
+                    android:id="@+id/radio_auth_3ds"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="Authentication 3DS" />
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/tiny_margin"
+                android:layout_marginTop="@dimen/small_to_medium_margin"
+                android:text="BIN Filter"
+                android:textColor="@color/black"
+                android:textSize="@dimen/large_font_size"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/edit_text_bin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Input BIN, left it blank if not use blacklist/whitelist"
+                android:inputType="number" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/radio_blacklist"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Blacklist" />
+
+                <RadioButton
+                    android:id="@+id/radio_whitelist"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Whitelist" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/text_view_test"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@color/colorPrimary"
+            android:paddingBottom="@dimen/small_margin"
+            android:paddingLeft="@dimen/large_margin"
+            android:paddingRight="@dimen/large_margin"
+            android:paddingTop="@dimen/small_margin"
+            android:text="Start Payment"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </LinearLayout>
+
+</ScrollView>

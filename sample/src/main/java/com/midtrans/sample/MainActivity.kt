@@ -5,10 +5,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.midtrans.sdk.corekit.MidtransSdk
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback
-import com.midtrans.sdk.corekit.base.enums.AcquiringBankType
-import com.midtrans.sdk.corekit.base.enums.Authentication
-import com.midtrans.sdk.corekit.base.enums.BankType
-import com.midtrans.sdk.corekit.base.enums.Currency
+import com.midtrans.sdk.corekit.base.enums.*
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.CheckoutTransaction
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.Item
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.customer.Address
@@ -20,9 +17,12 @@ import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoRespo
 import com.midtrans.sdk.corekit.core.payment.CreditCardCharge
 import com.midtrans.sdk.corekit.utilities.Logger
 import com.midtrans.sdk.uikit.MidtransKit
+import com.midtrans.sdk.uikit.MidtransKitConfig
 import com.midtrans.sdk.uikit.base.callback.PaymentResult
 import com.midtrans.sdk.uikit.base.callback.Result
 import com.midtrans.sdk.uikit.base.model.PaymentResponse
+import com.midtrans.sdk.uikit.base.theme.ColorTheme
+import com.midtrans.sdk.uikit.base.theme.CustomColorTheme
 import com.midtrans.sdk.uikit.utilities.Helper
 import kotlinx.android.synthetic.main.activity_main.*
 import java.text.SimpleDateFormat
@@ -35,65 +35,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         text_view_test.setOnClickListener {
-            val installment = HashMap<String, MutableList<Int>>()
-            installment[BankType.MANDIRI] = mutableListOf(3, 6, 12)
-            val checkoutTransaction = CheckoutTransaction
-                .builder(
-                    getRandomString(5),
-                    20000.0
-                )
-                .setUserId("midtrans.android2@yopmail.com")
-                .setCurrency(Currency.IDR)
-                .setCreditCard(
-                    CreditCard
-                        .builder()
-                        .setAcquiringBank(AcquiringBankType.MANDIRI)
-                        .setInstallment(false, installment)
-                        .setBlackListBins(mutableListOf())
-                        .setWhiteListBins(mutableListOf())
-                        .setSavedTokens(mutableListOf())
-                        .setSaveCard(true)
-                        .setAuthentication(Authentication.AUTH_3DS)
-                        .build())
-                .setCustomerDetails(
-                    CustomerDetails
-                        .builder()
-                        .setFirstName("Budi")
-                        .setLastName("Utomo")
-                        .setEmail("midtrans.android2@yopmail.com")
-                        .setPhone("08123456789")
-                        .setBillingAddress(
-                            Address
-                                .builder()
-                                .setFirstName("FirstName")
-                                .setLastName("LastName")
-                                .setAddress("address")
-                                .setCity("City")
-                                .setPostalCode("12345")
-                                .setPhone("08123456789")
-                                .build()
-                        )
-                        .setShippingAddress(
-                            Address
-                                .builder()
-                                .setFirstName("FirstName")
-                                .setLastName("LastName")
-                                .setAddress("address")
-                                .setCity("City")
-                                .setPostalCode("12345")
-                                .setPhone("08123456789")
-                                .build()
-                        )
-                        .build()
-                )
-                .setCheckoutItems(mutableListOf(Item("1", 20000.0, 1, "sabun")))
-                .build()
-
+            initMidtransKit()
             MidtransKit
                 .getInstance()
                 .startPaymentUiWithTransaction(
                     this,
-                    checkoutTransaction,
+                    initCheckout(),
                     object : PaymentResult {
                         override fun onPaymentFinished(result: Result?, response: PaymentResponse?) {
                             Logger.debug("RESULT IS >>> ${result?.paymentType} AND ${result?.paymentStatus}")
@@ -111,6 +58,119 @@ class MainActivity : AppCompatActivity() {
                     }
                 )
         }
+    }
+
+    private fun initCheckout(): CheckoutTransaction {
+        val installment = HashMap<String, MutableList<Int>>()
+        installment[BankType.MANDIRI] = mutableListOf(3, 6, 12)
+        val bin = edit_text_bin.text.toString().trim()
+        return CheckoutTransaction
+            .builder(
+                getRandomString(5),
+                20000.0
+            )
+            .setUserId("pahlevi@yopmail.com")
+            .setCreditCard(
+                CreditCard
+                    .builder()
+                    .setAcquiringBank(AcquiringBankType.BNI)
+                    .setInstallment(radio_installment_mandatory.isChecked, installment)
+                    .setBlackListBins(
+                        if (radio_blacklist.isChecked && bin.isNotEmpty()) {
+                            mutableListOf(bin)
+                        } else {
+                            mutableListOf()
+                        }
+                    )
+                    .setWhiteListBins(
+                        if (radio_whitelist.isChecked && bin.isNotEmpty()) {
+                            mutableListOf(bin)
+                        } else {
+                            mutableListOf()
+                        }
+                    )
+                    .setSaveCard(check_box_saved_card.isChecked)
+                    .setAuthentication(
+                        when {
+                            radio_auth_3ds.isChecked -> Authentication.AUTH_3DS
+                            radio_auth_rba.isChecked -> Authentication.AUTH_RBA
+                            else -> Authentication.AUTH_NONE
+                        }
+                    )
+                    .setType(
+                        if (check_box_authorize_payment.isChecked) {
+                            CreditCardTransactionType.AUTHORIZE
+                        } else {
+                            CreditCardTransactionType.AUTHORIZE_CAPTURE
+                        }
+                    )
+                    .build())
+            .setCustomerDetails(
+                CustomerDetails
+                    .builder()
+                    .setFirstName("Budi")
+                    .setLastName("Utomo")
+                    .setEmail("midtrans.android2@yopmail.com")
+                    .setPhone("08123456789")
+                    .setBillingAddress(
+                        Address
+                            .builder()
+                            .setFirstName("FirstName")
+                            .setLastName("LastName")
+                            .setAddress("address")
+                            .setCity("City")
+                            .setPostalCode("12345")
+                            .setPhone("08123456789")
+                            .build()
+                    )
+                    .setShippingAddress(
+                        Address
+                            .builder()
+                            .setFirstName("FirstName")
+                            .setLastName("LastName")
+                            .setAddress("address")
+                            .setCity("City")
+                            .setPostalCode("12345")
+                            .setPhone("08123456789")
+                            .build()
+                    )
+                    .build()
+            )
+            .setCheckoutItems(mutableListOf(Item("1", 20000.0, 1, "sabun")))
+            .build()
+    }
+
+    private fun initMidtransKit() {
+        // 3DS 1Click key >>> VT-client-F91kdUrnE5w8zCja and set custom field = one_click
+
+        MidtransKit
+            .builder(
+                this,
+                BuildConfig.CLIENT_KEY,
+                BuildConfig.BASE_URL
+            )
+            .setEnvironment(if (BuildConfig.DEBUG) {
+                Environment.SANDBOX
+            } else {
+                Environment.PRODUCTION
+            })
+            .setApiRequestTimeOut(60)
+            .setLogEnabled(true)
+            .setBuiltinStorageEnabled(true)
+            .setMidtransKitConfig(
+                MidtransKitConfig
+                    .builder()
+                    .setShowEmailInCcForm(check_box_email.isChecked)
+                    .setColorTheme(
+                        when {
+                            radio_custom_theme_input.isChecked -> CustomColorTheme("#008577", "#00574B", "#D81B60")
+                            radio_custom_theme_local.isChecked -> ColorTheme(this, ColorTheme.CORAL)
+                            else -> null
+                        }
+                    )
+                    .build()
+            )
+            .build()
     }
 
     private fun checkout(checkoutTransaction: CheckoutTransaction) {

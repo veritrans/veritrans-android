@@ -12,7 +12,7 @@ class SampleApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        initMidtransKit()
+//        initMidtransKit()
         initFabric()
     }
 
@@ -31,7 +31,7 @@ class SampleApplication : Application() {
             })
             .setApiRequestTimeOut(60)
             .setLogEnabled(true)
-            .setBuiltinStorageEnabled(false)
+            .setBuiltinStorageEnabled(true)
             .setMidtransKitConfig(
                 MidtransKitConfig
                     .builder()
