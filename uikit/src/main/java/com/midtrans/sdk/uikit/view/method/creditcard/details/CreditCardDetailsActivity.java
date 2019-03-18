@@ -1380,6 +1380,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
     @Override
     public void onGetCardTokenFailure() {
+        hideProgressLayout();
         MessageHelper.showToast(this, getString(R.string.message_getcard_token_failed));
     }
 
@@ -1396,6 +1397,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
 
     @Override
     public void onGetTransactionStatusError(Throwable error) {
+        hideProgressLayout();
         initPaymentError(error);
     }
 
