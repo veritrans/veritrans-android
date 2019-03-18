@@ -20,7 +20,7 @@ public class CreditCardPaymentModel {
      * init credit card model for normal and twoclick payment
      *
      * @param cardToken credit card token form PAPI
-     * @param savecard save card for next transaction
+     * @param savecard  save card for next transaction
      */
     public CreditCardPaymentModel(String cardToken, boolean savecard) {
         this.cardToken = cardToken;
@@ -30,10 +30,10 @@ public class CreditCardPaymentModel {
     /**
      * init credit card model for oneclick payment
      *
-     * @param maskedCardNumber masked credit card number
+     * @param cardToken credit card token form PAPI
      */
-    public CreditCardPaymentModel(String maskedCardNumber) {
-        this.maskedCardNumber = maskedCardNumber;
+    public CreditCardPaymentModel(String cardToken) {
+        this.cardToken = cardToken;
     }
 
     public String getCardToken() {
