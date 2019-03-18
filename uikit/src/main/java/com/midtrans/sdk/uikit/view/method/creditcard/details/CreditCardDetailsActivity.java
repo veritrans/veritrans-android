@@ -1139,7 +1139,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         showProgressLayout(getString(R.string.processing_payment));
 
         if (isOneClickMode()) {
-            presenter.startOneClickPayment(savedCard.getMaskedCard());
+            presenter.startOneClickPayment(savedCard.getSavedTokenId());
         } else if (isTwoClicksMode()) {
             String cvv = fieldCardCvv.getText().toString().trim();
             presenter.startGettingCardToken(savedCard.getSavedTokenId(), cvv);
