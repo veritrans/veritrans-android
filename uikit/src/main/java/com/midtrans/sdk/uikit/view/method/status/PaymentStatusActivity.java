@@ -9,9 +9,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.midtrans.sdk.corekit.MidtransSdk;
 import com.midtrans.sdk.corekit.base.enums.PaymentType;
-import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.mandatory.TransactionDetails;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.promo.Promo;
 import com.midtrans.sdk.corekit.utilities.Logger;
@@ -157,6 +155,7 @@ public class PaymentStatusActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
+        finishPayment();
         super.onBackPressed();
     }
 
