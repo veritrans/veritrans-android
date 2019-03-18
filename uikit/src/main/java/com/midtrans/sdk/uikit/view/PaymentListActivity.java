@@ -21,6 +21,7 @@ import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.enablepayment.En
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.merchantdata.MerchantPreferences;
 import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.uikit.MidtransKit;
+import com.midtrans.sdk.uikit.MidtransKitConfig;
 import com.midtrans.sdk.uikit.MidtransKitFlow;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.base.callback.Result;
@@ -28,6 +29,7 @@ import com.midtrans.sdk.uikit.base.composer.BaseActivity;
 import com.midtrans.sdk.uikit.base.composer.BasePaymentActivity;
 import com.midtrans.sdk.uikit.base.enums.PaymentStatus;
 import com.midtrans.sdk.uikit.base.model.MessageInfo;
+import com.midtrans.sdk.uikit.base.theme.ColorTheme;
 import com.midtrans.sdk.uikit.utilities.ActivityHelper;
 import com.midtrans.sdk.uikit.utilities.Constants;
 import com.midtrans.sdk.uikit.utilities.CurrencyHelper;
@@ -334,6 +336,17 @@ public class PaymentListActivity extends BaseActivity {
             merchantLogoInToolbar.setVisibility(View.VISIBLE);
             merchantNameInToolbar.setVisibility(View.GONE);
         }
+        MidtransKitConfig midtransKitConfig = MidtransKit.getInstance().getMidtransKitConfig();
+        if (!TextUtils.isEmpty(response.getMerchantData().getPreference().getColorScheme())) {
+            if (midtransKitConfig.getColorTheme() == null) {
+                midtransKitConfig.setColorTheme(new ColorTheme(PaymentListActivity.this, response.getMerchantData().getPreference().getColorScheme()));
+            }
+        } else {
+            if (midtransKitConfig.getColorTheme() == null) {
+                midtransKitConfig.setColorTheme(new ColorTheme(PaymentListActivity.this, ColorTheme.NAVY_BLUE));
+            }
+        }
+        MidtransKit.getInstance().setMidtransKitConfig(midtransKitConfig);
         containerItemDetails.setBackgroundColor(MidtransKit.getInstance().getMidtransKitConfig().getColorTheme().getPrimaryColor());
         int secureBadgeType = PaymentListHelper.getCreditCardIconType(response);
         switch (secureBadgeType) {
