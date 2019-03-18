@@ -9,19 +9,20 @@ import com.midtrans.sdk.corekit.core.payment.CreditCardCharge;
 import com.midtrans.sdk.corekit.core.payment.DirectDebitCharge;
 import com.midtrans.sdk.uikit.MidtransKit;
 import com.midtrans.sdk.uikit.base.composer.BasePaymentPresenter;
+import com.midtrans.sdk.uikit.base.contract.BasePaymentContract;
 
-public class MandiriClickpayInstructionPresenter extends BasePaymentPresenter<MandiriClickpayInstructionContract> {
+public class MandiriClickpayInstructionPresenter extends BasePaymentPresenter<BasePaymentContract> {
 
     private PaymentInfoResponse paymentInfoResponse;
 
-    MandiriClickpayInstructionPresenter(MandiriClickpayInstructionContract view, PaymentInfoResponse paymentInfoResponse) {
+    MandiriClickpayInstructionPresenter(BasePaymentContract view, PaymentInfoResponse paymentInfoResponse) {
         super();
         this.view = view;
         this.paymentInfoResponse = paymentInfoResponse;
     }
 
-    void startMandiriClickpayPayment(String token, String tokenId, String challengeToken, String input3) {
-        DirectDebitCharge.paymentUsingMandiriClickPay(token, tokenId, challengeToken, input3, new MidtransCallback<MandiriClickpayResponse>() {
+    void startMandiriClickpayPayment(String token, String cardNumber, String challengeToken, String input3) {
+        DirectDebitCharge.paymentUsingMandiriClickPay(token, cardNumber, challengeToken, input3, new MidtransCallback<MandiriClickpayResponse>() {
             @Override
             public void onSuccess(MandiriClickpayResponse data) {
                 view.onPaymentSuccess(data);
@@ -30,27 +31,6 @@ public class MandiriClickpayInstructionPresenter extends BasePaymentPresenter<Ma
             @Override
             public void onFailed(Throwable throwable) {
                 view.onPaymentError(throwable);
-            }
-        });
-    }
-
-    void getMandiriClickpayToken(String cardNumber) {
-        final CardTokenRequest cardTokenRequest = new CardTokenRequest(
-                cardNumber,
-                null,
-                null,
-                null,
-                MidtransKit.getInstance().getMerchantClientId()
-        );
-        CreditCardCharge.getCardToken(cardTokenRequest, new MidtransCallback<TokenDetailsResponse>() {
-            @Override
-            public void onSuccess(TokenDetailsResponse data) {
-                view.onTokenizeSuccess(data);
-            }
-
-            @Override
-            public void onFailed(Throwable throwable) {
-                view.onTokenizeError(throwable);
             }
         });
     }
