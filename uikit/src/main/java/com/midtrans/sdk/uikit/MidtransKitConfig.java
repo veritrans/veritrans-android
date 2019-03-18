@@ -1,6 +1,8 @@
 package com.midtrans.sdk.uikit;
 
+import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.CheckoutTransaction;
 import com.midtrans.sdk.uikit.base.theme.BaseColorTheme;
+import com.midtrans.sdk.uikit.base.theme.CustomColorTheme;
 
 public class MidtransKitConfig {
 
@@ -83,6 +85,10 @@ public class MidtransKitConfig {
         return baseColorTheme;
     }
 
+    public void setColorTheme(BaseColorTheme colorTheme) {
+        this.baseColorTheme = colorTheme;
+    }
+
     public static final class Builder {
         private String defaultText;
         private String boldText;
@@ -93,7 +99,7 @@ public class MidtransKitConfig {
         private boolean enableAutoReadSms = false;
         private boolean skipCustomerDetailsPages = false;
         private boolean showEmailInCcForm = false;
-        private BaseColorTheme baseColorTheme;
+        private BaseColorTheme baseColorTheme = null;
 
         public Builder setDefaultText(String defaultText) {
             this.defaultText = defaultText;
