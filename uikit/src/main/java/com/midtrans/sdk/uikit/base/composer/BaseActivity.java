@@ -27,6 +27,7 @@ import com.midtrans.sdk.uikit.base.model.MessageInfo;
 import com.midtrans.sdk.uikit.base.theme.BaseColorTheme;
 import com.midtrans.sdk.uikit.utilities.ActivityHelper;
 import com.midtrans.sdk.uikit.utilities.CurrencyHelper;
+import com.midtrans.sdk.uikit.utilities.Helper;
 import com.midtrans.sdk.uikit.utilities.MessageHelper;
 import com.midtrans.sdk.uikit.view.adapter.InstructionDetailAdapter;
 import com.midtrans.sdk.uikit.widget.BoldTextView;
@@ -127,9 +128,6 @@ public class BaseActivity extends AppCompatActivity {
             if (midtransKitConfig.getColorTheme() != null) {
                 int primaryColor = midtransKitConfig.getColorTheme().getPrimaryColor();
                 int primaryDarkColor = midtransKitConfig.getColorTheme().getPrimaryDarkColor();
-                if (primaryColor != 0) {
-                    // Set primary button color
-                }
                 if (primaryDarkColor != 0) {
                     // Set amount text color
                     if (textTotalAmount != null) {
@@ -408,6 +406,7 @@ public class BaseActivity extends AppCompatActivity {
             displayOrHideItemDetails();
         } else {
             super.onBackPressed();
+            Helper.hideKeyboard(this);
             MidtransKitConfig midtransKitConfig = MidtransKit.getInstance().getMidtransKitConfig();
             if (midtransKitConfig != null && midtransKitConfig.isEnabledAnimation()) {
                 overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
