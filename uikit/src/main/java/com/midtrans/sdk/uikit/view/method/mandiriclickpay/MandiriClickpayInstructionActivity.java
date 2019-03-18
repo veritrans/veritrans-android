@@ -13,11 +13,11 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.midtrans.sdk.corekit.base.enums.PaymentType;
-import com.midtrans.sdk.corekit.core.api.midtrans.model.tokendetails.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.MandiriClickpayResponse;
 import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.base.composer.BasePaymentActivity;
+import com.midtrans.sdk.uikit.base.contract.BasePaymentContract;
 import com.midtrans.sdk.uikit.utilities.Constants;
 import com.midtrans.sdk.uikit.utilities.Helper;
 import com.midtrans.sdk.uikit.utilities.MessageHelper;
@@ -30,7 +30,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.core.content.ContextCompat;
 
-public class MandiriClickpayInstructionActivity extends BasePaymentActivity implements MandiriClickpayInstructionContract {
+public class MandiriClickpayInstructionActivity extends BasePaymentActivity implements BasePaymentContract {
 
     private static final String TAG = MandiriClickpayInstructionActivity.class.getSimpleName();
 
@@ -178,7 +178,7 @@ public class MandiriClickpayInstructionActivity extends BasePaymentActivity impl
             String cleanCardNumber = getCleanCardNumber(cardNumber);
             this.challengeToken = challengeToken;
             this.input3 = textInput3.getText().toString().trim();
-            presenter.getMandiriClickpayToken(cleanCardNumber);
+            presenter.startMandiriClickpayPayment(paymentInfoResponse.getToken(), cleanCardNumber, challengeToken, input3);
         }
     }
 
@@ -231,25 +231,6 @@ public class MandiriClickpayInstructionActivity extends BasePaymentActivity impl
     protected void initProperties() {
         super.initProperties();
         presenter = new MandiriClickpayInstructionPresenter(this, paymentInfoResponse);
-    }
-
-    @Override
-    public void onTokenizeSuccess(TokenDetailsResponse response) {
-        if (response != null) {
-            if (NetworkHelper.isPaymentSuccess(response)) {
-                presenter.startMandiriClickpayPayment(paymentInfoResponse.getToken(), response.getTokenId(), challengeToken, input3);
-            } else {
-                setCallbackOrSendToStatusPage();
-            }
-        } else {
-            finishPayment(RESULT_OK, mandiriClickpayResponse);
-        }
-    }
-
-    @Override
-    public void onTokenizeError(Throwable error) {
-        hideProgressLayout();
-        MessageHelper.showToast(this, getString(R.string.message_getcard_token_failed));
     }
 
     @Override
