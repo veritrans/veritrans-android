@@ -25,7 +25,7 @@ public class MandiriEcashInstructionActivity extends BasePaymentActivity impleme
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_payment_online_debit_cimb_clicks_instruction);
+        setContentView(R.layout.activity_payment_ewallet_mandiri_ecash_instruction);
         initToolbarAndView();
         initProperties();
         initActionButton();
