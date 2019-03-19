@@ -37,6 +37,7 @@ public class MidtransKitFlow {
     public static final String INTENT_EXTRA_DANAMON_ONLINE = "intent.extra.danamon_online";
     public static final String INTENT_EXTRA_AKULAKU = "intent.extra.akulaku";
     public static final String INTENT_EXTRA_ALFAMART = "intent.extra.alfamart";
+    public static final String INTENT_EXTRA_DEEPLINK = "intent.extra.deeplink";
 
     private static PaymentResult resultCallback;
 
