@@ -254,7 +254,7 @@
     <!-- akulaku transfer Instructions -->
     <string name="akulaku_instruction_step1">Click the "Pay Now" button, then you will be directed to the Akulaku Payment Center page.</string>
     <string name="akulaku_instruction_step2">Select the desired installment tenor, then Login to your Akulaku account by entering your mobile number and password.</string>
-    <string name="akulaku_instruction_step3">Enter the verification code (OTP) that has been sent to your mobile number, then click the "Next" button.</string>
+    <string name="akulaku_instruction_step3">Enter the verification code (OTP) that has been sent to your mobile number, then click the <b>"Next"</b> button.</string>
     <string name="akulaku_instruction_step4">A confirmation page will be shown to you, then you can finish your transaction.</string>
 
     <!-- Mandiri E Cash transfer Instruction-->
