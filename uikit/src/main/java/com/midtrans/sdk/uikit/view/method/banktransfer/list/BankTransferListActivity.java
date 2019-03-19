@@ -114,6 +114,7 @@ public class BankTransferListActivity extends BasePaymentActivity {
         Intent intent = new Intent(this, BankTransferInstructionActivity.class);
         intent.putExtra(BankTransferInstructionActivity.EXTRA_BANK_TYPE, bankType);
         intent.putExtra(BankTransferInstructionActivity.EXTRA_PAYMENT_INFO, paymentInfo);
+        intent.putExtra(MidtransKitFlow.INTENT_EXTRA_DEEPLINK, getIntent().getBooleanExtra(MidtransKitFlow.INTENT_EXTRA_DEEPLINK, false));
         startActivityForResult(intent, Constants.INTENT_CODE_PAYMENT);
     }
 
@@ -125,14 +126,7 @@ public class BankTransferListActivity extends BasePaymentActivity {
                 finishPayment(RESULT_OK, data);
             } else if (resultCode == RESULT_CANCELED) {
                 if (data == null) {
-                    if (presenter.getBankList() == null
-                            || presenter.getBankList().size() == 1
-                            || getIntent().getBooleanExtra(MidtransKitFlow.INTENT_EXTRA_BANK_TRANSFER_PERMATA, false)
-                            || getIntent().getBooleanExtra(MidtransKitFlow.INTENT_EXTRA_BANK_TRANSFER_MANDIRI, false)
-                            || getIntent().getBooleanExtra(MidtransKitFlow.INTENT_EXTRA_BANK_TRANSFER_BCA, false)
-                            || getIntent().getBooleanExtra(MidtransKitFlow.INTENT_EXTRA_BANK_TRANSFER_OTHER, false)) {
-                        onBackPressed();
-                    }
+                    onBackPressed();
                 } else {
                     finishPayment(RESULT_OK, data);
                 }
