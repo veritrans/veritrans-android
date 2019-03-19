@@ -36,9 +36,9 @@ class MainActivity : AppCompatActivity() {
 
         text_view_test.setOnClickListener {
             initMidtransKit()
-            MidtransKit
+            MidtransKit 
                 .getInstance()
-                .startPaymentUiWithTransaction(
+                .startPaymentUiFlow(
                     this,
                     initCheckout(),
                     object : PaymentResult {
