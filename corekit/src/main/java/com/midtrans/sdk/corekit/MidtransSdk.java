@@ -283,22 +283,6 @@ public class MidtransSdk {
     }
 
     /**
-     * it will get bank points (BNI or Mandiri) from snap backend
-     *
-     * @param cardToken credit card token
-     * @param callback  bni point callback instance
-     */
-    public void getBanksPoint(
-            final String token,
-            final String cardToken,
-            final MidtransCallback<PointResponse> callback
-    ) {
-        if (isValidForNetworkCall(context, callback)) {
-            snapApiManager.getBanksPoint(token, cardToken, callback);
-        }
-    }
-
-    /**
      * It will get payment status of transaction
      *
      * @param callback bni point callback instance

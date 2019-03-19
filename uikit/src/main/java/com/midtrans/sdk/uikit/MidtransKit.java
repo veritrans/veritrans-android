@@ -199,6 +199,10 @@ public class MidtransKit {
         return midtransKitConfig;
     }
 
+    public void setMidtransKitConfig(MidtransKitConfig midtransKitConfig) {
+        this.midtransKitConfig = midtransKitConfig;
+    }
+
     public void startPaymentUiWithTransaction(
             @NonNull Activity context,
             @NonNull CheckoutTransaction checkoutTransaction,

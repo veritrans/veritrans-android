@@ -26,13 +26,15 @@ public class CreditCardTransaction {
 
     public CreditCardTransaction() {
         bankBins = new ArrayList<>();
+        cardInstallment = new CreditCardInstallment();
         cardBankPoint = new CreditCardBankPoint();
+        creditCard = new CreditCard();
     }
 
     public void setProperties(CreditCard creditCard, ArrayList<BankBinsResponse> bankBins) {
         if (creditCard != null) {
             this.creditCard = creditCard;
-            cardInstallment = new CreditCardInstallment();
+            cardInstallment.setInstallment(creditCard.getInstallment());
         }
 
         if (bankBins != null && !bankBins.isEmpty()) {
@@ -72,7 +74,7 @@ public class CreditCardTransaction {
         return bankBinsAvailable;
     }
 
-    public void setBankBins(ArrayList<BankBinsResponse> bankBins) {
+    public void setBankBins(List<BankBinsResponse> bankBins) {
         // do nothing
     }
 
@@ -115,6 +117,7 @@ public class CreditCardTransaction {
     /**
      * get bank name bu card number
      *
+     * @param cardNumber
      * @return bank name
      */
     public String getBankByCardNumber(String cardNumber) {
@@ -236,6 +239,7 @@ public class CreditCardTransaction {
     /**
      * check whether card number consists of one of whitelist bins
      *
+     * @param cardNumber
      * @return boolean
      */
     private boolean isWhitelistBinContainCardNumber(String cardNumber) {
@@ -263,6 +267,7 @@ public class CreditCardTransaction {
     /**
      * check whether card number consists of one of blacklist bins
      *
+     * @param cardNumber
      * @return boolean
      */
     public boolean isBlacklistContainCardNumber(String cardNumber) {

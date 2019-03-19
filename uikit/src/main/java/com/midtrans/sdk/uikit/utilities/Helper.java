@@ -11,11 +11,19 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.midtrans.sdk.corekit.base.enums.BankType;
+import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.optional.customer.CustomerDetails;
 import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specific.creditcard.SavedToken;
 import com.midtrans.sdk.corekit.core.api.snap.model.bins.BankBinsResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.CustomerDetailPayRequest;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.creditcard.CreditCardPaymentParams;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.creditcard.SaveCardRequest;
+import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.promo.Promo;
+import com.midtrans.sdk.corekit.core.api.snap.model.promo.PromoDetails;
 import com.midtrans.sdk.corekit.utilities.Constants;
 import com.midtrans.sdk.corekit.utilities.Logger;
+import com.midtrans.sdk.uikit.base.model.CreditCardPaymentModel;
 
 import java.io.InputStream;
 import java.security.NoSuchAlgorithmException;
@@ -77,6 +85,53 @@ public class Helper {
         } catch (RuntimeException e) {
             Logger.debug("hideKeyboard():" + e.getMessage());
         }
+    }
+
+    public static CreditCardPaymentParams convertToCreditCardPaymentParam(CreditCardPaymentModel model) {
+
+        CreditCardPaymentParams paymentParams = new CreditCardPaymentParams(
+                model.getCardToken(),
+                model.isSavecard(),
+                model.getMaskedCardNumber(),
+                model.getInstallment()
+        );
+        if (model.getPointRedeemed() != 0) {
+            paymentParams.setPointRedeemed(model.getPointRedeemed());
+        }
+
+        if (model.getBank() != null && model.getBank().equalsIgnoreCase(BankType.MANDIRI)) {
+            paymentParams.setBank(model.getBank());
+        }
+
+        //for custom type adapter in gson, omit field point only
+        // if the transaction is not from bank point page
+        paymentParams.setFromBankPoint(model.isFromBankPoint());
+        return paymentParams;
+    }
+
+    public static PromoDetails getPromoDetails(CreditCardPaymentModel model) {
+        //set promo is selected
+        Promo promo = model.getPromoSelected();
+        if (promo != null) {
+            return new PromoDetails(promo.getId(), promo.getDiscountedGrossAmount());
+        }
+        return null;
+    }
+
+    public static CustomerDetailPayRequest initializePaymentDetails(PaymentInfoResponse transaction) {
+        if (transaction != null) {
+            CustomerDetails customerDetails = transaction.getCustomerDetails();
+            if (customerDetails != null) {
+                CustomerDetailPayRequest customerDetailRequest = new CustomerDetailPayRequest();
+                customerDetailRequest.setFullName(customerDetails.getFirstName() + customerDetails.getLastName());
+                customerDetailRequest.setPhone(customerDetailRequest.getPhone());
+                customerDetailRequest.setEmail(customerDetailRequest.getEmail());
+
+                return customerDetailRequest;
+            }
+        }
+
+        return null;
     }
 
     public static String getDeviceType(Activity activity) {

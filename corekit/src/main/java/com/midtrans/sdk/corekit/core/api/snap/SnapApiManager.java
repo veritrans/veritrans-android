@@ -3,6 +3,7 @@ package com.midtrans.sdk.corekit.core.api.snap;
 import com.midtrans.sdk.corekit.base.callback.MidtransCallback;
 import com.midtrans.sdk.corekit.base.enums.PaymentType;
 import com.midtrans.sdk.corekit.base.network.BaseServiceManager;
+import com.midtrans.sdk.corekit.core.api.snap.model.bins.BankBinsResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.BasePaymentRequest;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.CustomerDetailPayRequest;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.PaymentRequest;
@@ -32,13 +33,18 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.TelkomselCashRe
 import com.midtrans.sdk.corekit.core.api.snap.model.payment.PaymentStatusResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.point.PointResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.promo.PromoDetails;
+import com.midtrans.sdk.corekit.utilities.Constants;
+
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SnapApiManager extends BaseServiceManager {
+public class
+SnapApiManager extends BaseServiceManager {
 
     private static final String TAG = "SnapApiManager";
 
@@ -358,12 +364,14 @@ public class SnapApiManager extends BaseServiceManager {
     public void paymentUsingCreditCard(String snapToken,
                                        CreditCardPaymentParams creditCardPaymentParams,
                                        CustomerDetailPayRequest customerDetailPayRequest,
+                                       PromoDetails promoDetails,
                                        MidtransCallback<CreditCardResponse> callback) {
 
         if (isSnapTokenAvailable(callback, snapToken, apiService)) {
             CreditCardPaymentRequest creditCardPaymentRequest = new CreditCardPaymentRequest(PaymentType.CREDIT_CARD,
                     creditCardPaymentParams,
                     customerDetailPayRequest);
+            creditCardPaymentRequest.setPromoDetails(promoDetails);
             Call<CreditCardResponse> call = apiService.paymentUsingCreditCard(snapToken, creditCardPaymentRequest);
             handleCall(call, callback);
         }
@@ -417,6 +425,31 @@ public class SnapApiManager extends BaseServiceManager {
                 }
             });
         }
+    }
+
+    /**
+     * Get points of given card
+     *
+     * @param callback BNI points callback instance
+     */
+    public void getBankBins(MidtransCallback<List<BankBinsResponse>> callback) {
+        Call<List<BankBinsResponse>> call = apiService.getBankBins();
+        call.enqueue(new Callback<List<BankBinsResponse>>() {
+            @Override
+            public void onResponse(Call<List<BankBinsResponse>> call, Response<List<BankBinsResponse>> response) {
+                List<BankBinsResponse> bankBinsResponses = response.body();
+                if (bankBinsResponses != null && !bankBinsResponses.isEmpty()) {
+                    callback.onSuccess(bankBinsResponses);
+                } else {
+                    callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_EMPTY_RESPONSE));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<BankBinsResponse>> call, Throwable t) {
+                callback.onFailed(new Throwable(t.getMessage(), t.getCause()));
+            }
+        });
     }
 
     /**

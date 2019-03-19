@@ -69,6 +69,8 @@ public class KlikBcaInstructionActivity extends BasePaymentActivity implements B
     @Override
     protected void initTheme() {
         setPrimaryBackgroundColor(buttonCompletePayment);
+        setBackgroundTintList(fieldUserId);
+        setTextInputlayoutFilter(containerUserId);
     }
 
     @Override

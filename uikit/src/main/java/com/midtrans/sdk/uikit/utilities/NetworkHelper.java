@@ -5,11 +5,14 @@ import android.net.ConnectivityManager;
 import android.text.TextUtils;
 
 import com.midtrans.sdk.corekit.core.api.midtrans.model.tokendetails.TokenDetailsResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.AkulakuResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.AlfamartPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaBankTransferReponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaKlikPayResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BniBankTransferResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BriEpayPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CimbClicksResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CreditCardResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.DanamonOnlineResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.GopayResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.IndomaretPaymentResponse;
@@ -87,6 +90,15 @@ public class NetworkHelper {
             return checkStatusCode(rawResponse.getStatusCode());
         } else if (response instanceof MandiriClickpayResponse) {
             MandiriClickpayResponse rawResponse = (MandiriClickpayResponse) response;
+            return checkStatusCode(rawResponse.getStatusCode());
+        } else if (response instanceof CreditCardResponse) {
+            CreditCardResponse rawResponse = (CreditCardResponse) response;
+            return checkStatusCode(rawResponse.getStatusCode());
+        } else if (response instanceof AkulakuResponse) {
+            AkulakuResponse rawResponse = (AkulakuResponse) response;
+            return checkStatusCode(rawResponse.getStatusCode());
+        }else if (response instanceof AlfamartPaymentResponse) {
+            AlfamartPaymentResponse rawResponse = (AlfamartPaymentResponse) response;
             return checkStatusCode(rawResponse.getStatusCode());
         }
         return false;

@@ -21,14 +21,15 @@ import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.enablepayment.En
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.merchantdata.MerchantPreferences;
 import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.uikit.MidtransKit;
+import com.midtrans.sdk.uikit.MidtransKitConfig;
 import com.midtrans.sdk.uikit.MidtransKitFlow;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.base.callback.PaymentResult;
 import com.midtrans.sdk.uikit.base.callback.Result;
 import com.midtrans.sdk.uikit.base.composer.BaseActivity;
 import com.midtrans.sdk.uikit.base.composer.BasePaymentActivity;
 import com.midtrans.sdk.uikit.base.enums.PaymentStatus;
 import com.midtrans.sdk.uikit.base.model.MessageInfo;
+import com.midtrans.sdk.uikit.base.theme.ColorTheme;
 import com.midtrans.sdk.uikit.utilities.ActivityHelper;
 import com.midtrans.sdk.uikit.utilities.Constants;
 import com.midtrans.sdk.uikit.utilities.CurrencyHelper;
@@ -50,9 +51,9 @@ import com.midtrans.sdk.uikit.view.method.indomaret.instruction.IndomaretInstruc
 import com.midtrans.sdk.uikit.view.method.klikbca.instruction.KlikBcaInstructionActivity;
 import com.midtrans.sdk.uikit.view.method.mandiriclickpay.MandiriClickpayInstructionActivity;
 import com.midtrans.sdk.uikit.view.method.mandiriecash.MandiriEcashInstructionActivity;
+import com.midtrans.sdk.uikit.view.method.telkomselcash.TelkomselCashInstructionActivity;
 import com.midtrans.sdk.uikit.view.model.ItemViewDetails;
 import com.midtrans.sdk.uikit.view.model.PaymentMethodsModel;
-import com.midtrans.sdk.uikit.view.method.telkomselcash.TelkomselCashInstructionActivity;
 import com.midtrans.sdk.uikit.widget.BoldTextView;
 import com.midtrans.sdk.uikit.widget.DefaultTextView;
 import com.midtrans.sdk.uikit.widget.FancyButton;
@@ -104,7 +105,6 @@ public class PaymentListActivity extends BaseActivity {
      */
     private String token = null;
     private CheckoutTransaction checkoutTransaction = null;
-    private PaymentResult callback = null;
 
     /**
      * This property used for layout related stuff
@@ -192,7 +192,6 @@ public class PaymentListActivity extends BaseActivity {
      */
     @SuppressWarnings("unchecked")
     private void getIntentDataFromMidtransKitFlow() {
-        callback = (PaymentResult) getIntent().getSerializableExtra(MidtransKitFlow.INTENT_EXTRA_CALLBACK);
         checkoutTransaction = (CheckoutTransaction) getIntent().getSerializableExtra(MidtransKitFlow.INTENT_EXTRA_TRANSACTION);
         token = getIntent().getStringExtra(MidtransKitFlow.INTENT_EXTRA_TOKEN);
 
@@ -337,6 +336,17 @@ public class PaymentListActivity extends BaseActivity {
             merchantLogoInToolbar.setVisibility(View.VISIBLE);
             merchantNameInToolbar.setVisibility(View.GONE);
         }
+        MidtransKitConfig midtransKitConfig = MidtransKit.getInstance().getMidtransKitConfig();
+        if (!TextUtils.isEmpty(response.getMerchantData().getPreference().getColorScheme())) {
+            if (midtransKitConfig.getColorTheme() == null) {
+                midtransKitConfig.setColorTheme(new ColorTheme(PaymentListActivity.this, response.getMerchantData().getPreference().getColorScheme()));
+            }
+        } else {
+            if (midtransKitConfig.getColorTheme() == null) {
+                midtransKitConfig.setColorTheme(new ColorTheme(PaymentListActivity.this, ColorTheme.NAVY_BLUE));
+            }
+        }
+        MidtransKit.getInstance().setMidtransKitConfig(midtransKitConfig);
         containerItemDetails.setBackgroundColor(MidtransKit.getInstance().getMidtransKitConfig().getColorTheme().getPrimaryColor());
         int secureBadgeType = PaymentListHelper.getCreditCardIconType(response);
         switch (secureBadgeType) {
@@ -417,7 +427,7 @@ public class PaymentListActivity extends BaseActivity {
                 Intent intent = new Intent(this, SavedCreditCardListActivity.class);
                 intent.putExtra(EXTRA_PAYMENT_INFO, response);
                 intent.putExtra(BasePaymentActivity.EXTRA_PAYMENT_TYPE, PaymentType.CREDIT_CARD);
-                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT);
                 break;
             }
             case PaymentListHelper.BANK_TRANSFER: {
@@ -425,91 +435,91 @@ public class PaymentListActivity extends BaseActivity {
                 intent.putExtra(BankTransferListActivity.EXTRA_BANK_LIST, new EnabledBankTransfer(bankTransferList));
                 intent.putExtra(EXTRA_PAYMENT_INFO, response);
                 intent.putExtra(BankTransferListActivity.USE_DEEP_LINK, isDeepLink);
-                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT);
                 break;
             }
             case PaymentType.BCA_KLIKPAY: {
                 Intent intent = new Intent(this, BcaKlikpayInstructionActivity.class);
                 intent.putExtra(EXTRA_PAYMENT_INFO, response);
                 intent.putExtra(BasePaymentActivity.EXTRA_PAYMENT_TYPE, PaymentType.BCA_KLIKPAY);
-                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT);
                 break;
             }
             case PaymentType.KLIK_BCA: {
                 Intent intent = new Intent(this, KlikBcaInstructionActivity.class);
                 intent.putExtra(EXTRA_PAYMENT_INFO, response);
                 intent.putExtra(BasePaymentActivity.EXTRA_PAYMENT_TYPE, PaymentType.KLIK_BCA);
-                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT);
                 break;
             }
             case PaymentType.BRI_EPAY: {
                 Intent intent = new Intent(this, BriEpayInstructionActivity.class);
                 intent.putExtra(EXTRA_PAYMENT_INFO, response);
                 intent.putExtra(BasePaymentActivity.EXTRA_PAYMENT_TYPE, PaymentType.BRI_EPAY);
-                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT);
                 break;
             }
             case PaymentType.CIMB_CLICKS: {
                 Intent intent = new Intent(this, CimbClicksInstructionActivity.class);
                 intent.putExtra(EXTRA_PAYMENT_INFO, response);
                 intent.putExtra(BasePaymentActivity.EXTRA_PAYMENT_TYPE, PaymentType.CIMB_CLICKS);
-                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT);
                 break;
             }
             case PaymentType.MANDIRI_CLICKPAY: {
                 Intent intent = new Intent(this, MandiriClickpayInstructionActivity.class);
                 intent.putExtra(EXTRA_PAYMENT_INFO, response);
                 intent.putExtra(BasePaymentActivity.EXTRA_PAYMENT_TYPE, PaymentType.MANDIRI_CLICKPAY);
-                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT);
                 break;
             }
             case PaymentType.INDOMARET: {
                 Intent intent = new Intent(this, IndomaretInstructionActivity.class);
                 intent.putExtra(EXTRA_PAYMENT_INFO, response);
                 intent.putExtra(BasePaymentActivity.EXTRA_PAYMENT_TYPE, PaymentType.INDOMARET);
-                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT);
                 break;
             }
             case PaymentType.TELKOMSEL_CASH: {
                 Intent intent = new Intent(this, TelkomselCashInstructionActivity.class);
                 intent.putExtra(EXTRA_PAYMENT_INFO, response);
                 intent.putExtra(BasePaymentActivity.EXTRA_PAYMENT_TYPE, PaymentType.TELKOMSEL_CASH);
-                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT);
                 break;
             }
             case PaymentType.MANDIRI_ECASH: {
                 Intent intent = new Intent(this, MandiriEcashInstructionActivity.class);
                 intent.putExtra(EXTRA_PAYMENT_INFO, response);
                 intent.putExtra(BasePaymentActivity.EXTRA_PAYMENT_TYPE, PaymentType.MANDIRI_ECASH);
-                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT);
                 break;
             }
             case PaymentType.GOPAY: {
                 Intent intent = new Intent(this, GopayInstructionActivity.class);
                 intent.putExtra(EXTRA_PAYMENT_INFO, response);
                 intent.putExtra(BasePaymentActivity.EXTRA_PAYMENT_TYPE, PaymentType.GOPAY);
-                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT);
                 break;
             }
             case PaymentType.DANAMON_ONLINE: {
                 Intent intent = new Intent(this, DanamonOnlineInstructionActivity.class);
                 intent.putExtra(EXTRA_PAYMENT_INFO, response);
                 intent.putExtra(BasePaymentActivity.EXTRA_PAYMENT_TYPE, PaymentType.DANAMON_ONLINE);
-                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT);
                 break;
             }
             case PaymentType.AKULAKU: {
                 Intent intent = new Intent(this, AkulakuInstructionActivity.class);
                 intent.putExtra(EXTRA_PAYMENT_INFO, response);
                 intent.putExtra(BasePaymentActivity.EXTRA_PAYMENT_TYPE, PaymentType.AKULAKU);
-                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT);
                 break;
             }
             case PaymentType.ALFAMART: {
                 Intent intent = new Intent(this, AlfamartInstructionActivity.class);
                 intent.putExtra(EXTRA_PAYMENT_INFO, response);
                 intent.putExtra(BasePaymentActivity.EXTRA_PAYMENT_TYPE, PaymentType.ALFAMART);
-                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+                startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT);
                 break;
             }
         }
@@ -586,7 +596,7 @@ public class PaymentListActivity extends BaseActivity {
     }
 
     private void setOnFailedCallback(Throwable throwable) {
-        callback.onFailed(throwable);
+        MidtransKitFlow.notifySdkErrorResult(throwable);
         if (isThrowableFromNetworkRequest) {
             isThrowableFromNetworkRequest = false;
             onBackPressed();
@@ -605,10 +615,10 @@ public class PaymentListActivity extends BaseActivity {
             onBackPressed();
             return;
         }
-        if (requestCode == Constants.RESULT_CODE_PAYMENT_TRANSFER) {
+        if (requestCode == Constants.RESULT_CODE_PAYMENT) {
             Logger.debug("sending result back with code " + requestCode);
             if (resultCode == RESULT_OK) {
-                PaymentListHelper.setActivityResult(resultCode, data, callback);
+                PaymentListHelper.setActivityResult(resultCode, data);
                 super.onBackPressed();
             }
         } else {
@@ -621,7 +631,7 @@ public class PaymentListActivity extends BaseActivity {
         if (isThrowableFromNetworkRequest) {
             setOnFailedCallback(throwableFromNetworkRequest);
         } else if (isPaymentListAlreadyShow) {
-            callback.onPaymentFinished(new Result(PaymentStatus.STATUS_CANCEL, null), null);
+            MidtransKitFlow.notifySdkSuccessResult(new Result(PaymentStatus.STATUS_CANCEL, null), null);
         }
         super.onBackPressed();
     }

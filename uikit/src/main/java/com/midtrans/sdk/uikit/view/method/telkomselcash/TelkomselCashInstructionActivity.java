@@ -102,11 +102,14 @@ public class TelkomselCashInstructionActivity extends BasePaymentActivity implem
                     attempt += 1;
                     MessageHelper.showToast(this, getString(R.string.error_message_invalid_input_telkomsel));
                 } else {
+
                     startResultActivity(
                             Constants.INTENT_CODE_PAYMENT_RESULT,
                             PaymentListHelper.newErrorPaymentResponse(
                                     PaymentType.TELKOMSEL_CASH,
-                                    telkomselCashResponse.getStatusCode()
+                                    telkomselCashResponse.getStatusCode(),
+                                    paymentInfoResponse.getTransactionDetails().getOrderId(),
+                                    Double.toString(paymentInfoResponse.getTransactionDetails().getGrossAmount())
                             )
                     );
                 }

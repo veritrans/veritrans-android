@@ -31,7 +31,7 @@ public class BaseCreditCardPresenter<V extends BaseContract> extends BasePayment
     }
 
     protected void initCreditCardTransaction(Context context) {
-        CreditCard creditCard = getMidtransSdk().getCheckoutTransaction().getCreditCard();
+        CreditCard creditCard = paymentInfoResponse.getCreditCard();
         if (creditCard != null) {
             List<BankBinsResponse> bankBins = Helper.getBankBins(context);
             this.creditCardTransaction.setProperties(creditCard, new ArrayList<>(bankBins));

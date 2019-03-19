@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.midtrans.sdk.corekit.base.enums.PaymentType;
+import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.promo.Promo;
 import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.base.composer.BaseActivity;
@@ -57,15 +59,14 @@ public class PaymentStatusActivity extends BaseActivity {
     private FrameLayout layoutMain;
 
     private PaymentResponse paymentResponse;
+    private PaymentInfoResponse paymentInfoResponse;
     private String paymentStatus;
-    private PaymentStatusPresenter presenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_status);
         initPaymentResponse();
-        initPresenter();
         initViews();
         initData();
         initActionButton();
@@ -73,6 +74,7 @@ public class PaymentStatusActivity extends BaseActivity {
     }
 
     private void initPaymentResponse() {
+        paymentInfoResponse = (PaymentInfoResponse) getIntent().getSerializableExtra(Constants.INTENT_DATA_INFO);
         paymentResponse = (PaymentResponse) getIntent().getSerializableExtra(Constants.INTENT_DATA_CALLBACK);
         if (paymentResponse != null) {
             if (paymentResponse.getStatusCode().equals(Constants.STATUS_CODE_200) ||
@@ -95,10 +97,6 @@ public class PaymentStatusActivity extends BaseActivity {
         } else {
             this.paymentStatus = Constants.STATUS_FAILED;
         }
-    }
-
-    private void initPresenter() {
-        presenter = new PaymentStatusPresenter(paymentResponse);
     }
 
     private void initViews() {
@@ -157,6 +155,7 @@ public class PaymentStatusActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
+        finishPayment();
         super.onBackPressed();
     }
 
@@ -213,10 +212,6 @@ public class PaymentStatusActivity extends BaseActivity {
     private void initData() {
         setHeaderValues();
         setContentValues();
-    }
-
-    private void initProperties() {
-        this.presenter = new PaymentStatusPresenter();
     }
 
     private void setHeaderValues() {
@@ -324,13 +319,13 @@ public class PaymentStatusActivity extends BaseActivity {
             // Set credit card properties
             if (paymentResponse.getPaymentType().equalsIgnoreCase(PaymentType.CREDIT_CARD)) {
 
-                /*//installment term
-                if (TextUtils.isEmpty(transactionResponse.getInstallmentTerm())) {
+                //installment term
+                if (TextUtils.isEmpty(paymentResponse.getInstallmentTerm())) {
                     layoutInstallmentTerm.setVisibility(View.GONE);
                 } else {
                     layoutInstallmentTerm.setVisibility(View.VISIBLE);
-                    textDueInstallment.setText(transactionResponse.getInstallmentTerm());
-                }*/
+                    textDueInstallment.setText(paymentResponse.getInstallmentTerm());
+                }
             }
         }
 
@@ -352,12 +347,12 @@ public class PaymentStatusActivity extends BaseActivity {
     }
 
     private void setCreditCardPaymentStatus() {
-        /*int pointRedeemed = (int) transactionResponse.getPointRedeemAmount();
+        int pointRedeemed = (int) paymentResponse.getPointRedeemAmount();
         if (pointRedeemed != 0.f) {
             String formattedBalance = CurrencyHelper.formatAmount(this, pointRedeemed, paymentResponse.getCurrency());
             textPointAmount.setText(formattedBalance);
             layoutPointAmount.setVisibility(View.VISIBLE);
-        }*/
+        }
 
         String transactionStatus = paymentResponse.getTransactionStatus();
         if (!TextUtils.isEmpty(transactionStatus) && transactionStatus.equals(Constants.STATUS_PENDING)) {
@@ -367,17 +362,19 @@ public class PaymentStatusActivity extends BaseActivity {
             }
         }
 
-        /*PaymentDetails paymentDetails = getMidtransSdk().getPaymentDetails();
-        if (paymentDetails != null) {
-            Promo promo = paymentDetails.getPromoSelected();
+        if (paymentInfoResponse != null) {
+            Promo promo = paymentInfoResponse.getPromoSelected();
             if (promo != null && promo.getId() != 0) {
                 layoutPromoAmount.setVisibility(View.VISIBLE);
-                textPromoAmount.setText(CurrencyHelper.formatAmount(
-                        this,
-                        promo.getCalculatedDiscountAmount(),
-                        transactionResponse.getCurrency()));
+                textPromoAmount.setText(CurrencyHelper
+                        .formatAmount(
+                                this,
+                                promo.getCalculatedDiscountAmount(),
+                                paymentResponse.getCurrency()
+                        )
+                );
             }
-        }*/
+        }
     }
 
 }

@@ -57,10 +57,8 @@ public class MidtransApiManager extends BaseServiceManager {
         if (apiService == null) {
             doOnApiServiceUnAvailable(callback);
         } else {
-
             Call<TokenDetailsResponse> call;
             if (cardTokenRequest.isTwoClick()) {
-
                 if (cardTokenRequest.isInstallment()) {
                     call = apiService.getTokenInstalmentOfferTwoClick(
                             cardTokenRequest.getCardCVV(),
@@ -90,10 +88,8 @@ public class MidtransApiManager extends BaseServiceManager {
                             cardTokenRequest.getCurrency(),
                             cardTokenRequest.isPoint());
                 }
-
             } else {
                 if (cardTokenRequest.isInstallment()) {
-
                     call = apiService.get3DSTokenInstalmentOffers(cardTokenRequest.getCardNumber(),
                             cardTokenRequest.getCardCVV(),
                             cardTokenRequest.getCardExpiryMonth(), cardTokenRequest
@@ -109,11 +105,9 @@ public class MidtransApiManager extends BaseServiceManager {
                             cardTokenRequest.getType(),
                             cardTokenRequest.getCurrency(),
                             cardTokenRequest.isPoint());
-
                 } else {
                     //normal request
                     if (!cardTokenRequest.isSecure()) {
-
                         call = apiService.getToken(
                                 cardTokenRequest.getCardNumber(),
                                 cardTokenRequest.getCardCVV(),

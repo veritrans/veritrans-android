@@ -14,6 +14,7 @@ import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BcaKlikPayRespo
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BniBankTransferResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.BriEpayPaymentResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CimbClicksResponse;
+import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.CreditCardResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.DanamonOnlineResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.GopayResponse;
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.response.IndomaretPaymentResponse;
@@ -29,8 +30,8 @@ import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.enablepayment.En
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.promo.Promo;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.promo.PromoDetails;
 import com.midtrans.sdk.corekit.utilities.Logger;
+import com.midtrans.sdk.uikit.MidtransKitFlow;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.base.callback.PaymentResult;
 import com.midtrans.sdk.uikit.base.callback.Result;
 import com.midtrans.sdk.uikit.base.enums.CreditCardIssuer;
 import com.midtrans.sdk.uikit.base.enums.CreditCardType;
@@ -54,22 +55,21 @@ public class PaymentListHelper {
     public final static String BANK_TRANSFER = "bank_transfer";
 
     private static <T> void setCallback(
-            PaymentResult callback,
             @PaymentStatus String paymentStatus,
             @PaymentType String paymentType,
             T response
     ) {
-        callback.onPaymentFinished(
+        MidtransKitFlow.notifySdkSuccessResult(
                 new Result(paymentStatus, paymentType),
                 PaymentListHelper.convertTransactionStatus(response)
         );
     }
 
-    private static void setFailedCallback(PaymentResult callback, String message) {
-        callback.onFailed(new Throwable(message));
+    private static void setFailedCallback(String message) {
+        MidtransKitFlow.notifySdkErrorResult(new Throwable(message));
     }
 
-    public static void setActivityResult(int resultCode, Intent data, PaymentResult callback) {
+    public static void setActivityResult(int resultCode, Intent data) {
         String paymentType = data.getStringExtra(Constants.INTENT_DATA_TYPE);
         switch (paymentType) {
             case PaymentType.BCA_VA:
@@ -79,24 +79,24 @@ public class PaymentListHelper {
                         if (response != null) {
                             switch (response.getStatusCode()) {
                                 case com.midtrans.sdk.corekit.utilities.Constants.STATUS_CODE_200:
-                                    setCallback(callback, PaymentStatus.STATUS_SUCCESS, PaymentType.BCA_VA, response);
+                                    setCallback(PaymentStatus.STATUS_SUCCESS, PaymentType.BCA_VA, response);
                                     break;
                                 case Constants.STATUS_CODE_201:
-                                    setCallback(callback, PaymentStatus.STATUS_PENDING, PaymentType.BCA_VA, response);
+                                    setCallback(PaymentStatus.STATUS_PENDING, PaymentType.BCA_VA, response);
                                     break;
                                 default:
-                                    setCallback(callback, PaymentStatus.STATUS_FAILED, PaymentType.BCA_VA, response);
+                                    setCallback(PaymentStatus.STATUS_FAILED, PaymentType.BCA_VA, response);
                                     break;
                             }
                         } else {
-                            setCallback(callback, PaymentStatus.STATUS_INVALID, PaymentType.BCA_VA, response);
+                            setCallback(PaymentStatus.STATUS_INVALID, PaymentType.BCA_VA, response);
                         }
                     } else {
-                        setCallback(callback, PaymentStatus.STATUS_CANCEL, PaymentType.BCA_VA, response);
+                        setCallback(PaymentStatus.STATUS_CANCEL, PaymentType.BCA_VA, response);
                     }
                 } catch (RuntimeException e) {
                     Logger.error("onActivityResult:" + e.getMessage());
-                    setFailedCallback(callback, e.getMessage());
+                    setFailedCallback(e.getMessage());
                     return;
                 }
                 break;
@@ -107,24 +107,24 @@ public class PaymentListHelper {
                         if (response != null) {
                             switch (response.getStatusCode()) {
                                 case com.midtrans.sdk.corekit.utilities.Constants.STATUS_CODE_200:
-                                    setCallback(callback, PaymentStatus.STATUS_SUCCESS, PaymentType.BNI_VA, response);
+                                    setCallback(PaymentStatus.STATUS_SUCCESS, PaymentType.BNI_VA, response);
                                     break;
                                 case Constants.STATUS_CODE_201:
-                                    setCallback(callback, PaymentStatus.STATUS_PENDING, PaymentType.BNI_VA, response);
+                                    setCallback(PaymentStatus.STATUS_PENDING, PaymentType.BNI_VA, response);
                                     break;
                                 default:
-                                    setCallback(callback, PaymentStatus.STATUS_FAILED, PaymentType.BNI_VA, response);
+                                    setCallback(PaymentStatus.STATUS_FAILED, PaymentType.BNI_VA, response);
                                     break;
                             }
                         } else {
-                            setCallback(callback, PaymentStatus.STATUS_INVALID, PaymentType.BNI_VA, response);
+                            setCallback(PaymentStatus.STATUS_INVALID, PaymentType.BNI_VA, response);
                         }
                     } else {
-                        setCallback(callback, PaymentStatus.STATUS_CANCEL, PaymentType.BNI_VA, response);
+                        setCallback(PaymentStatus.STATUS_CANCEL, PaymentType.BNI_VA, response);
                     }
                 } catch (RuntimeException e) {
                     Logger.error("onActivityResult:" + e.getMessage());
-                    setFailedCallback(callback, e.getMessage());
+                    setFailedCallback(e.getMessage());
                     return;
                 }
                 break;
@@ -135,24 +135,24 @@ public class PaymentListHelper {
                         if (response != null) {
                             switch (response.getStatusCode()) {
                                 case com.midtrans.sdk.corekit.utilities.Constants.STATUS_CODE_200:
-                                    setCallback(callback, PaymentStatus.STATUS_SUCCESS, PaymentType.PERMATA_VA, response);
+                                    setCallback(PaymentStatus.STATUS_SUCCESS, PaymentType.PERMATA_VA, response);
                                     break;
                                 case Constants.STATUS_CODE_201:
-                                    setCallback(callback, PaymentStatus.STATUS_PENDING, PaymentType.PERMATA_VA, response);
+                                    setCallback(PaymentStatus.STATUS_PENDING, PaymentType.PERMATA_VA, response);
                                     break;
                                 default:
-                                    setCallback(callback, PaymentStatus.STATUS_FAILED, PaymentType.PERMATA_VA, response);
+                                    setCallback(PaymentStatus.STATUS_FAILED, PaymentType.PERMATA_VA, response);
                                     break;
                             }
                         } else {
-                            setCallback(callback, PaymentStatus.STATUS_INVALID, PaymentType.PERMATA_VA, response);
+                            setCallback(PaymentStatus.STATUS_INVALID, PaymentType.PERMATA_VA, response);
                         }
                     } else {
-                        setCallback(callback, PaymentStatus.STATUS_CANCEL, PaymentType.PERMATA_VA, response);
+                        setCallback(PaymentStatus.STATUS_CANCEL, PaymentType.PERMATA_VA, response);
                     }
                 } catch (RuntimeException e) {
                     Logger.error("onActivityResult:" + e.getMessage());
-                    setFailedCallback(callback, e.getMessage());
+                    setFailedCallback(e.getMessage());
                     return;
                 }
                 break;
@@ -163,24 +163,24 @@ public class PaymentListHelper {
                         if (response != null) {
                             switch (response.getStatusCode()) {
                                 case com.midtrans.sdk.corekit.utilities.Constants.STATUS_CODE_200:
-                                    setCallback(callback, PaymentStatus.STATUS_SUCCESS, PaymentType.ECHANNEL, response);
+                                    setCallback(PaymentStatus.STATUS_SUCCESS, PaymentType.ECHANNEL, response);
                                     break;
                                 case Constants.STATUS_CODE_201:
-                                    setCallback(callback, PaymentStatus.STATUS_PENDING, PaymentType.ECHANNEL, response);
+                                    setCallback(PaymentStatus.STATUS_PENDING, PaymentType.ECHANNEL, response);
                                     break;
                                 default:
-                                    setCallback(callback, PaymentStatus.STATUS_FAILED, PaymentType.ECHANNEL, response);
+                                    setCallback(PaymentStatus.STATUS_FAILED, PaymentType.ECHANNEL, response);
                                     break;
                             }
                         } else {
-                            setCallback(callback, PaymentStatus.STATUS_INVALID, PaymentType.ECHANNEL, response);
+                            setCallback(PaymentStatus.STATUS_INVALID, PaymentType.ECHANNEL, response);
                         }
                     } else {
-                        setCallback(callback, PaymentStatus.STATUS_CANCEL, PaymentType.ECHANNEL, response);
+                        setCallback(PaymentStatus.STATUS_CANCEL, PaymentType.ECHANNEL, response);
                     }
                 } catch (RuntimeException e) {
                     Logger.error("onActivityResult:" + e.getMessage());
-                    setFailedCallback(callback, e.getMessage());
+                    setFailedCallback(e.getMessage());
                     return;
                 }
                 break;
@@ -191,24 +191,24 @@ public class PaymentListHelper {
                         if (response != null) {
                             switch (response.getStatusCode()) {
                                 case com.midtrans.sdk.corekit.utilities.Constants.STATUS_CODE_200:
-                                    setCallback(callback, PaymentStatus.STATUS_SUCCESS, PaymentType.OTHER_VA, response);
+                                    setCallback(PaymentStatus.STATUS_SUCCESS, PaymentType.OTHER_VA, response);
                                     break;
                                 case Constants.STATUS_CODE_201:
-                                    setCallback(callback, PaymentStatus.STATUS_PENDING, PaymentType.OTHER_VA, response);
+                                    setCallback(PaymentStatus.STATUS_PENDING, PaymentType.OTHER_VA, response);
                                     break;
                                 default:
-                                    setCallback(callback, PaymentStatus.STATUS_FAILED, PaymentType.OTHER_VA, response);
+                                    setCallback(PaymentStatus.STATUS_FAILED, PaymentType.OTHER_VA, response);
                                     break;
                             }
                         } else {
-                            setCallback(callback, PaymentStatus.STATUS_INVALID, PaymentType.OTHER_VA, response);
+                            setCallback(PaymentStatus.STATUS_INVALID, PaymentType.OTHER_VA, response);
                         }
                     } else {
-                        setCallback(callback, PaymentStatus.STATUS_CANCEL, PaymentType.OTHER_VA, response);
+                        setCallback(PaymentStatus.STATUS_CANCEL, PaymentType.OTHER_VA, response);
                     }
                 } catch (RuntimeException e) {
                     Logger.error("onActivityResult:" + e.getMessage());
-                    setFailedCallback(callback, e.getMessage());
+                    setFailedCallback(e.getMessage());
                     return;
                 }
                 break;
@@ -219,24 +219,24 @@ public class PaymentListHelper {
                         if (response != null) {
                             switch (response.getStatusCode()) {
                                 case com.midtrans.sdk.corekit.utilities.Constants.STATUS_CODE_200:
-                                    setCallback(callback, PaymentStatus.STATUS_SUCCESS, PaymentType.GOPAY, response);
+                                    setCallback(PaymentStatus.STATUS_SUCCESS, PaymentType.GOPAY, response);
                                     break;
                                 case Constants.STATUS_CODE_201:
-                                    setCallback(callback, PaymentStatus.STATUS_PENDING, PaymentType.GOPAY, response);
+                                    setCallback(PaymentStatus.STATUS_PENDING, PaymentType.GOPAY, response);
                                     break;
                                 default:
-                                    setCallback(callback, PaymentStatus.STATUS_FAILED, PaymentType.GOPAY, response);
+                                    setCallback(PaymentStatus.STATUS_FAILED, PaymentType.GOPAY, response);
                                     break;
                             }
                         } else {
-                            setCallback(callback, PaymentStatus.STATUS_INVALID, PaymentType.GOPAY, response);
+                            setCallback(PaymentStatus.STATUS_INVALID, PaymentType.GOPAY, response);
                         }
                     } else {
-                        setCallback(callback, PaymentStatus.STATUS_CANCEL, PaymentType.GOPAY, response);
+                        setCallback(PaymentStatus.STATUS_CANCEL, PaymentType.GOPAY, response);
                     }
                 } catch (RuntimeException e) {
                     Logger.error("onActivityResult:" + e.getMessage());
-                    setFailedCallback(callback, e.getMessage());
+                    setFailedCallback(e.getMessage());
                     return;
                 }
                 break;
@@ -247,24 +247,24 @@ public class PaymentListHelper {
                         if (response != null) {
                             switch (response.getStatusCode()) {
                                 case com.midtrans.sdk.corekit.utilities.Constants.STATUS_CODE_200:
-                                    setCallback(callback, PaymentStatus.STATUS_SUCCESS, PaymentType.INDOMARET, response);
+                                    setCallback(PaymentStatus.STATUS_SUCCESS, PaymentType.INDOMARET, response);
                                     break;
                                 case Constants.STATUS_CODE_201:
-                                    setCallback(callback, PaymentStatus.STATUS_PENDING, PaymentType.INDOMARET, response);
+                                    setCallback(PaymentStatus.STATUS_PENDING, PaymentType.INDOMARET, response);
                                     break;
                                 default:
-                                    setCallback(callback, PaymentStatus.STATUS_FAILED, PaymentType.INDOMARET, response);
+                                    setCallback(PaymentStatus.STATUS_FAILED, PaymentType.INDOMARET, response);
                                     break;
                             }
                         } else {
-                            setCallback(callback, PaymentStatus.STATUS_INVALID, PaymentType.INDOMARET, response);
+                            setCallback(PaymentStatus.STATUS_INVALID, PaymentType.INDOMARET, response);
                         }
                     } else {
-                        setCallback(callback, PaymentStatus.STATUS_CANCEL, PaymentType.INDOMARET, response);
+                        setCallback(PaymentStatus.STATUS_CANCEL, PaymentType.INDOMARET, response);
                     }
                 } catch (RuntimeException e) {
                     Logger.error("onActivityResult:" + e.getMessage());
-                    setFailedCallback(callback, e.getMessage());
+                    setFailedCallback(e.getMessage());
                     return;
                 }
                 break;
@@ -275,24 +275,24 @@ public class PaymentListHelper {
                         if (response != null) {
                             switch (response.getStatusCode()) {
                                 case com.midtrans.sdk.corekit.utilities.Constants.STATUS_CODE_200:
-                                    setCallback(callback, PaymentStatus.STATUS_SUCCESS, PaymentType.KLIK_BCA, response);
+                                    setCallback(PaymentStatus.STATUS_SUCCESS, PaymentType.KLIK_BCA, response);
                                     break;
                                 case Constants.STATUS_CODE_201:
-                                    setCallback(callback, PaymentStatus.STATUS_PENDING, PaymentType.KLIK_BCA, response);
+                                    setCallback(PaymentStatus.STATUS_PENDING, PaymentType.KLIK_BCA, response);
                                     break;
                                 default:
-                                    setCallback(callback, PaymentStatus.STATUS_FAILED, PaymentType.KLIK_BCA, response);
+                                    setCallback(PaymentStatus.STATUS_FAILED, PaymentType.KLIK_BCA, response);
                                     break;
                             }
                         } else {
-                            setCallback(callback, PaymentStatus.STATUS_INVALID, PaymentType.KLIK_BCA, response);
+                            setCallback(PaymentStatus.STATUS_INVALID, PaymentType.KLIK_BCA, response);
                         }
                     } else {
-                        setCallback(callback, PaymentStatus.STATUS_CANCEL, PaymentType.KLIK_BCA, response);
+                        setCallback(PaymentStatus.STATUS_CANCEL, PaymentType.KLIK_BCA, response);
                     }
                 } catch (RuntimeException e) {
                     Logger.error("onActivityResult:" + e.getMessage());
-                    setFailedCallback(callback, e.getMessage());
+                    setFailedCallback(e.getMessage());
                     return;
                 }
                 break;
@@ -303,24 +303,24 @@ public class PaymentListHelper {
                         if (response != null) {
                             switch (response.getStatusCode()) {
                                 case com.midtrans.sdk.corekit.utilities.Constants.STATUS_CODE_200:
-                                    setCallback(callback, PaymentStatus.STATUS_SUCCESS, PaymentType.CIMB_CLICKS, response);
+                                    setCallback(PaymentStatus.STATUS_SUCCESS, PaymentType.CIMB_CLICKS, response);
                                     break;
                                 case Constants.STATUS_CODE_201:
-                                    setCallback(callback, PaymentStatus.STATUS_PENDING, PaymentType.CIMB_CLICKS, response);
+                                    setCallback(PaymentStatus.STATUS_PENDING, PaymentType.CIMB_CLICKS, response);
                                     break;
                                 default:
-                                    setCallback(callback, PaymentStatus.STATUS_FAILED, PaymentType.CIMB_CLICKS, response);
+                                    setCallback(PaymentStatus.STATUS_FAILED, PaymentType.CIMB_CLICKS, response);
                                     break;
                             }
                         } else {
-                            setCallback(callback, PaymentStatus.STATUS_INVALID, PaymentType.CIMB_CLICKS, response);
+                            setCallback(PaymentStatus.STATUS_INVALID, PaymentType.CIMB_CLICKS, response);
                         }
                     } else {
-                        setCallback(callback, PaymentStatus.STATUS_CANCEL, PaymentType.CIMB_CLICKS, response);
+                        setCallback(PaymentStatus.STATUS_CANCEL, PaymentType.CIMB_CLICKS, response);
                     }
                 } catch (RuntimeException e) {
                     Logger.error("onActivityResult:" + e.getMessage());
-                    setFailedCallback(callback, e.getMessage());
+                    setFailedCallback(e.getMessage());
                     return;
                 }
                 break;
@@ -331,24 +331,24 @@ public class PaymentListHelper {
                         if (response != null) {
                             switch (response.getStatusCode()) {
                                 case com.midtrans.sdk.corekit.utilities.Constants.STATUS_CODE_200:
-                                    setCallback(callback, PaymentStatus.STATUS_SUCCESS, PaymentType.DANAMON_ONLINE, response);
+                                    setCallback(PaymentStatus.STATUS_SUCCESS, PaymentType.DANAMON_ONLINE, response);
                                     break;
                                 case Constants.STATUS_CODE_201:
-                                    setCallback(callback, PaymentStatus.STATUS_PENDING, PaymentType.DANAMON_ONLINE, response);
+                                    setCallback(PaymentStatus.STATUS_PENDING, PaymentType.DANAMON_ONLINE, response);
                                     break;
                                 default:
-                                    setCallback(callback, PaymentStatus.STATUS_FAILED, PaymentType.DANAMON_ONLINE, response);
+                                    setCallback(PaymentStatus.STATUS_FAILED, PaymentType.DANAMON_ONLINE, response);
                                     break;
                             }
                         } else {
-                            setCallback(callback, PaymentStatus.STATUS_INVALID, PaymentType.DANAMON_ONLINE, response);
+                            setCallback(PaymentStatus.STATUS_INVALID, PaymentType.DANAMON_ONLINE, response);
                         }
                     } else {
-                        setCallback(callback, PaymentStatus.STATUS_CANCEL, PaymentType.DANAMON_ONLINE, response);
+                        setCallback(PaymentStatus.STATUS_CANCEL, PaymentType.DANAMON_ONLINE, response);
                     }
                 } catch (RuntimeException e) {
                     Logger.error("onActivityResult:" + e.getMessage());
-                    setFailedCallback(callback, e.getMessage());
+                    setFailedCallback(e.getMessage());
                     return;
                 }
                 break;
@@ -359,24 +359,24 @@ public class PaymentListHelper {
                         if (response != null) {
                             switch (response.getStatusCode()) {
                                 case com.midtrans.sdk.corekit.utilities.Constants.STATUS_CODE_200:
-                                    setCallback(callback, PaymentStatus.STATUS_SUCCESS, PaymentType.AKULAKU, response);
+                                    setCallback(PaymentStatus.STATUS_SUCCESS, PaymentType.AKULAKU, response);
                                     break;
                                 case Constants.STATUS_CODE_201:
-                                    setCallback(callback, PaymentStatus.STATUS_PENDING, PaymentType.AKULAKU, response);
+                                    setCallback(PaymentStatus.STATUS_PENDING, PaymentType.AKULAKU, response);
                                     break;
                                 default:
-                                    setCallback(callback, PaymentStatus.STATUS_FAILED, PaymentType.AKULAKU, response);
+                                    setCallback(PaymentStatus.STATUS_FAILED, PaymentType.AKULAKU, response);
                                     break;
                             }
                         } else {
-                            setCallback(callback, PaymentStatus.STATUS_INVALID, PaymentType.AKULAKU, response);
+                            setCallback(PaymentStatus.STATUS_INVALID, PaymentType.AKULAKU, response);
                         }
                     } else {
-                        setCallback(callback, PaymentStatus.STATUS_CANCEL, PaymentType.AKULAKU, response);
+                        setCallback(PaymentStatus.STATUS_CANCEL, PaymentType.AKULAKU, response);
                     }
                 } catch (RuntimeException e) {
                     Logger.error("onActivityResult:" + e.getMessage());
-                    setFailedCallback(callback, e.getMessage());
+                    setFailedCallback(e.getMessage());
                     return;
                 }
                 break;
@@ -387,24 +387,24 @@ public class PaymentListHelper {
                         if (response != null) {
                             switch (response.getStatusCode()) {
                                 case com.midtrans.sdk.corekit.utilities.Constants.STATUS_CODE_200:
-                                    setCallback(callback, PaymentStatus.STATUS_SUCCESS, PaymentType.BRI_EPAY, response);
+                                    setCallback(PaymentStatus.STATUS_SUCCESS, PaymentType.BRI_EPAY, response);
                                     break;
                                 case Constants.STATUS_CODE_201:
-                                    setCallback(callback, PaymentStatus.STATUS_PENDING, PaymentType.BRI_EPAY, response);
+                                    setCallback(PaymentStatus.STATUS_PENDING, PaymentType.BRI_EPAY, response);
                                     break;
                                 default:
-                                    setCallback(callback, PaymentStatus.STATUS_FAILED, PaymentType.BRI_EPAY, response);
+                                    setCallback(PaymentStatus.STATUS_FAILED, PaymentType.BRI_EPAY, response);
                                     break;
                             }
                         } else {
-                            setCallback(callback, PaymentStatus.STATUS_INVALID, PaymentType.BRI_EPAY, response);
+                            setCallback(PaymentStatus.STATUS_INVALID, PaymentType.BRI_EPAY, response);
                         }
                     } else {
-                        setCallback(callback, PaymentStatus.STATUS_CANCEL, PaymentType.BRI_EPAY, response);
+                        setCallback(PaymentStatus.STATUS_CANCEL, PaymentType.BRI_EPAY, response);
                     }
                 } catch (RuntimeException e) {
                     Logger.error("onActivityResult:" + e.getMessage());
-                    setFailedCallback(callback, e.getMessage());
+                    setFailedCallback(e.getMessage());
                     return;
                 }
                 break;
@@ -415,24 +415,24 @@ public class PaymentListHelper {
                         if (response != null) {
                             switch (response.getStatusCode()) {
                                 case com.midtrans.sdk.corekit.utilities.Constants.STATUS_CODE_200:
-                                    setCallback(callback, PaymentStatus.STATUS_SUCCESS, PaymentType.MANDIRI_ECASH, response);
+                                    setCallback(PaymentStatus.STATUS_SUCCESS, PaymentType.MANDIRI_ECASH, response);
                                     break;
                                 case Constants.STATUS_CODE_201:
-                                    setCallback(callback, PaymentStatus.STATUS_PENDING, PaymentType.MANDIRI_ECASH, response);
+                                    setCallback(PaymentStatus.STATUS_PENDING, PaymentType.MANDIRI_ECASH, response);
                                     break;
                                 default:
-                                    setCallback(callback, PaymentStatus.STATUS_FAILED, PaymentType.MANDIRI_ECASH, response);
+                                    setCallback(PaymentStatus.STATUS_FAILED, PaymentType.MANDIRI_ECASH, response);
                                     break;
                             }
                         } else {
-                            setCallback(callback, PaymentStatus.STATUS_INVALID, PaymentType.MANDIRI_ECASH, response);
+                            setCallback(PaymentStatus.STATUS_INVALID, PaymentType.MANDIRI_ECASH, response);
                         }
                     } else {
-                        setCallback(callback, PaymentStatus.STATUS_CANCEL, PaymentType.MANDIRI_ECASH, response);
+                        setCallback(PaymentStatus.STATUS_CANCEL, PaymentType.MANDIRI_ECASH, response);
                     }
                 } catch (RuntimeException e) {
                     Logger.error("onActivityResult:" + e.getMessage());
-                    setFailedCallback(callback, e.getMessage());
+                    setFailedCallback(e.getMessage());
                     return;
                 }
                 break;
@@ -443,24 +443,24 @@ public class PaymentListHelper {
                         if (response != null) {
                             switch (response.getStatusCode()) {
                                 case com.midtrans.sdk.corekit.utilities.Constants.STATUS_CODE_200:
-                                    setCallback(callback, PaymentStatus.STATUS_SUCCESS, PaymentType.ALFAMART, response);
+                                    setCallback(PaymentStatus.STATUS_SUCCESS, PaymentType.ALFAMART, response);
                                     break;
                                 case Constants.STATUS_CODE_201:
-                                    setCallback(callback, PaymentStatus.STATUS_PENDING, PaymentType.ALFAMART, response);
+                                    setCallback(PaymentStatus.STATUS_PENDING, PaymentType.ALFAMART, response);
                                     break;
                                 default:
-                                    setCallback(callback, PaymentStatus.STATUS_FAILED, PaymentType.ALFAMART, response);
+                                    setCallback(PaymentStatus.STATUS_FAILED, PaymentType.ALFAMART, response);
                                     break;
                             }
                         } else {
-                            setCallback(callback, PaymentStatus.STATUS_INVALID, PaymentType.ALFAMART, response);
+                            setCallback(PaymentStatus.STATUS_INVALID, PaymentType.ALFAMART, response);
                         }
                     } else {
-                        setCallback(callback, PaymentStatus.STATUS_CANCEL, PaymentType.ALFAMART, response);
+                        setCallback(PaymentStatus.STATUS_CANCEL, PaymentType.ALFAMART, response);
                     }
                 } catch (RuntimeException e) {
                     Logger.error("onActivityResult:" + e.getMessage());
-                    setFailedCallback(callback, e.getMessage());
+                    setFailedCallback(e.getMessage());
                     return;
                 }
                 break;
@@ -471,24 +471,24 @@ public class PaymentListHelper {
                         if (response != null) {
                             switch (response.getStatusCode()) {
                                 case com.midtrans.sdk.corekit.utilities.Constants.STATUS_CODE_200:
-                                    setCallback(callback, PaymentStatus.STATUS_SUCCESS, PaymentType.BCA_KLIKPAY, response);
+                                    setCallback(PaymentStatus.STATUS_SUCCESS, PaymentType.BCA_KLIKPAY, response);
                                     break;
                                 case Constants.STATUS_CODE_201:
-                                    setCallback(callback, PaymentStatus.STATUS_PENDING, PaymentType.BCA_KLIKPAY, response);
+                                    setCallback(PaymentStatus.STATUS_PENDING, PaymentType.BCA_KLIKPAY, response);
                                     break;
                                 default:
-                                    setCallback(callback, PaymentStatus.STATUS_FAILED, PaymentType.BCA_KLIKPAY, response);
+                                    setCallback(PaymentStatus.STATUS_FAILED, PaymentType.BCA_KLIKPAY, response);
                                     break;
                             }
                         } else {
-                            setCallback(callback, PaymentStatus.STATUS_INVALID, PaymentType.BCA_KLIKPAY, response);
+                            setCallback(PaymentStatus.STATUS_INVALID, PaymentType.BCA_KLIKPAY, response);
                         }
                     } else {
-                        setCallback(callback, PaymentStatus.STATUS_CANCEL, PaymentType.BCA_KLIKPAY, response);
+                        setCallback(PaymentStatus.STATUS_CANCEL, PaymentType.BCA_KLIKPAY, response);
                     }
                 } catch (RuntimeException e) {
                     Logger.error("onActivityResult:" + e.getMessage());
-                    setFailedCallback(callback, e.getMessage());
+                    setFailedCallback(e.getMessage());
                     return;
                 }
                 break;
@@ -499,24 +499,24 @@ public class PaymentListHelper {
                         if (response != null) {
                             switch (response.getStatusCode()) {
                                 case com.midtrans.sdk.corekit.utilities.Constants.STATUS_CODE_200:
-                                    setCallback(callback, PaymentStatus.STATUS_SUCCESS, PaymentType.TELKOMSEL_CASH, response);
+                                    setCallback(PaymentStatus.STATUS_SUCCESS, PaymentType.TELKOMSEL_CASH, response);
                                     break;
                                 case Constants.STATUS_CODE_201:
-                                    setCallback(callback, PaymentStatus.STATUS_PENDING, PaymentType.TELKOMSEL_CASH, response);
+                                    setCallback(PaymentStatus.STATUS_PENDING, PaymentType.TELKOMSEL_CASH, response);
                                     break;
                                 default:
-                                    setCallback(callback, PaymentStatus.STATUS_FAILED, PaymentType.TELKOMSEL_CASH, response);
+                                    setCallback(PaymentStatus.STATUS_FAILED, PaymentType.TELKOMSEL_CASH, response);
                                     break;
                             }
                         } else {
-                            setCallback(callback, PaymentStatus.STATUS_INVALID, PaymentType.TELKOMSEL_CASH, response);
+                            setCallback(PaymentStatus.STATUS_INVALID, PaymentType.TELKOMSEL_CASH, response);
                         }
                     } else {
-                        setCallback(callback, PaymentStatus.STATUS_CANCEL, PaymentType.TELKOMSEL_CASH, response);
+                        setCallback(PaymentStatus.STATUS_CANCEL, PaymentType.TELKOMSEL_CASH, response);
                     }
                 } catch (RuntimeException e) {
                     Logger.error("onActivityResult:" + e.getMessage());
-                    setFailedCallback(callback, e.getMessage());
+                    setFailedCallback(e.getMessage());
                     return;
                 }
                 break;
@@ -527,43 +527,74 @@ public class PaymentListHelper {
                         if (response != null) {
                             switch (response.getStatusCode()) {
                                 case com.midtrans.sdk.corekit.utilities.Constants.STATUS_CODE_200:
-                                    setCallback(callback, PaymentStatus.STATUS_SUCCESS, PaymentType.MANDIRI_CLICKPAY, response);
+                                    setCallback(PaymentStatus.STATUS_SUCCESS, PaymentType.MANDIRI_CLICKPAY, response);
                                     break;
                                 case Constants.STATUS_CODE_201:
-                                    setCallback(callback, PaymentStatus.STATUS_PENDING, PaymentType.MANDIRI_CLICKPAY, response);
+                                    setCallback(PaymentStatus.STATUS_PENDING, PaymentType.MANDIRI_CLICKPAY, response);
                                     break;
                                 default:
-                                    setCallback(callback, PaymentStatus.STATUS_FAILED, PaymentType.MANDIRI_CLICKPAY, response);
+                                    setCallback(PaymentStatus.STATUS_FAILED, PaymentType.MANDIRI_CLICKPAY, response);
                                     break;
                             }
                         } else {
-                            setCallback(callback, PaymentStatus.STATUS_INVALID, PaymentType.MANDIRI_CLICKPAY, response);
+                            setCallback(PaymentStatus.STATUS_INVALID, PaymentType.MANDIRI_CLICKPAY, response);
                         }
                     } else {
-                        setCallback(callback, PaymentStatus.STATUS_CANCEL, PaymentType.MANDIRI_CLICKPAY, response);
+                        setCallback(PaymentStatus.STATUS_CANCEL, PaymentType.MANDIRI_CLICKPAY, response);
                     }
                 } catch (RuntimeException e) {
                     Logger.error("onActivityResult:" + e.getMessage());
-                    setFailedCallback(callback, e.getMessage());
+                    setFailedCallback(e.getMessage());
+                    return;
+                }
+                break;
+            case PaymentType.CREDIT_CARD:
+                try {
+                    CreditCardResponse response = (CreditCardResponse) data.getSerializableExtra(Constants.INTENT_DATA_CALLBACK);
+                    if (resultCode == Activity.RESULT_OK) {
+                        if (response != null) {
+                            switch (response.getStatusCode()) {
+                                case com.midtrans.sdk.corekit.utilities.Constants.STATUS_CODE_200:
+                                    setCallback(PaymentStatus.STATUS_SUCCESS, PaymentType.CREDIT_CARD, response);
+                                    break;
+                                case Constants.STATUS_CODE_201:
+                                    setCallback(PaymentStatus.STATUS_PENDING, PaymentType.CREDIT_CARD, response);
+                                    break;
+                                default:
+                                    setCallback(PaymentStatus.STATUS_FAILED, PaymentType.CREDIT_CARD, response);
+                                    break;
+                            }
+                        } else {
+                            setCallback(PaymentStatus.STATUS_INVALID, PaymentType.CREDIT_CARD, response);
+                        }
+                    } else {
+                        setCallback(PaymentStatus.STATUS_CANCEL, PaymentType.CREDIT_CARD, response);
+                    }
+                } catch (RuntimeException e) {
+                    Logger.error("onActivityResult:" + e.getMessage());
+                    setFailedCallback(e.getMessage());
                     return;
                 }
                 break;
             default:
-                setCallback(callback, PaymentStatus.STATUS_CANCEL, null, null);
+                setCallback(PaymentStatus.STATUS_CANCEL, null, null);
                 break;
         }
     }
 
     public static PaymentResponse newErrorPaymentResponse(
             @PaymentType String paymentType,
-            String statusCode) {
+            String statusCode,
+            String orderId,
+            String grossAmount
+    ) {
         return PaymentResponse
                 .builder(
                         statusCode,
                         null,
                         null,
-                        null,
-                        null,
+                        orderId,
+                        grossAmount,
                         paymentType,
                         null,
                         null
@@ -844,6 +875,67 @@ public class PaymentListHelper {
                     .setSettlementTime(rawResponse.getSettlementTime())
                     .setApprovalCode(rawResponse.getApprovalCode())
                     .setMaskedCard(rawResponse.getMaskedCard())
+                    .build();
+            return paymentResponse;
+        } else if (response instanceof AkulakuResponse) {
+            AkulakuResponse rawResponse = (AkulakuResponse) response;
+            paymentResponse = PaymentResponse
+                    .builder(
+                            rawResponse.getStatusCode(),
+                            rawResponse.getStatusMessage(),
+                            rawResponse.getTransactionId(),
+                            rawResponse.getOrderId(),
+                            rawResponse.getGrossAmount(),
+                            rawResponse.getPaymentType(),
+                            rawResponse.getTransactionTime(),
+                            rawResponse.getTransactionStatus()
+                    )
+                    .setFraudStatus(rawResponse.getFraudStatus())
+                    .setRedirectUrl(rawResponse.getRedirectUrl())
+                    .build();
+            return paymentResponse;
+        } else if (response instanceof AlfamartPaymentResponse) {
+            AlfamartPaymentResponse rawResponse = (AlfamartPaymentResponse) response;
+            paymentResponse = PaymentResponse
+                    .builder(
+                            rawResponse.getStatusCode(),
+                            rawResponse.getStatusMessage(),
+                            rawResponse.getTransactionId(),
+                            rawResponse.getOrderId(),
+                            rawResponse.getGrossAmount(),
+                            rawResponse.getPaymentType(),
+                            rawResponse.getTransactionTime(),
+                            rawResponse.getTransactionStatus()
+                    )
+                    .setAlfamartExpireTime(rawResponse.getAlfamartExpireTime())
+                    .setPdfUrl(rawResponse.getPdfUrl())
+                    .setPaymentCode(rawResponse.getPaymentCode())
+                    .setStore(rawResponse.getStore())
+                    .build();
+            return paymentResponse;
+        } else if (response instanceof CreditCardResponse) {
+            CreditCardResponse rawResponse = (CreditCardResponse) response;
+            paymentResponse = PaymentResponse
+                    .builder(
+                            rawResponse.getStatusCode(),
+                            rawResponse.getStatusMessage(),
+                            rawResponse.getTransactionId(),
+                            rawResponse.getOrderId(),
+                            rawResponse.getGrossAmount(),
+                            rawResponse.getPaymentType(),
+                            rawResponse.getTransactionTime(),
+                            rawResponse.getTransactionStatus()
+                    )
+                    .setBank(rawResponse.getBank())
+                    .setApprovalCode(rawResponse.getApprovalCode())
+                    .setMaskedCard(rawResponse.getMaskedCard())
+                    .setCardType(rawResponse.getCardType())
+                    .setFraudStatus(rawResponse.getFraudStatus())
+                    .setPointBalanceAmount(rawResponse.getPointBalanceAmount())
+                    .setPointBalance(rawResponse.getPointBalance())
+                    .setPointRedeemAmount(rawResponse.getPointRedeemAmount())
+                    .setRedirectUrl(rawResponse.getRedirectUrl())
+                    .setInstallmentTerm(rawResponse.getInstallmentTerm())
                     .build();
             return paymentResponse;
         }

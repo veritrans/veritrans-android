@@ -10,6 +10,7 @@ import com.midtrans.sdk.corekit.core.api.merchant.model.checkout.request.specifi
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.callback.Callbacks;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.enablepayment.EnabledPayment;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.merchantdata.MerchantData;
+import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.promo.Promo;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.promo.PromoDetails;
 import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.promo.PromoResponse;
 
@@ -47,6 +48,8 @@ public class PaymentInfoResponse implements Serializable {
 
     @SerializedName("gopay")
     private GopayDeepLink gopay;
+
+    private Promo promoSelected;
 
     public PaymentInfoResponse() {
     }
@@ -137,5 +140,20 @@ public class PaymentInfoResponse implements Serializable {
 
     public void setGopay(GopayDeepLink gopay) {
         this.gopay = gopay;
+    }
+
+    public void changePaymentDetails(List<Item> newItemDetails, double newTotalAmount) {
+        if (transactionDetails != null) {
+            transactionDetails.setGrossAmount(newTotalAmount);
+            this.itemDetails = newItemDetails;
+        }
+    }
+
+    public Promo getPromoSelected() {
+        return promoSelected;
+    }
+
+    public void setPromoSelected(Promo promoSelected) {
+        this.promoSelected = promoSelected;
     }
 }

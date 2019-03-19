@@ -46,6 +46,9 @@ public class CreditCard implements Serializable {
     @AcquiringBankType
     private String acquiringBank;
 
+    public CreditCard() {
+    }
+
     private CreditCard(boolean saveCard,
                        String tokenId,
                        boolean secure,

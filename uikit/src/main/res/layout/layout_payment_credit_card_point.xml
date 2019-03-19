@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/sixteen_dp"
+    android:layout_marginRight="@dimen/sixteen_dp"
+    android:layout_marginTop="@dimen/twelve_dp"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/bank_point_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        tools:src="@drawable/mandiri_badge" />
+
+    <com.midtrans.sdk.uikit.widget.DefaultTextView
+        android:id="@+id/text_total_point"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/sixteen_dp"
+        android:layout_marginTop="@dimen/sixteen_dp"
+        android:gravity="center_horizontal"
+        android:textColor="@color/black"
+        tools:text="Current Fiestapoin: 30.893" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/container_redeemed_point"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/redeemed_point_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/how_much_point"
+            android:inputType="number" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <RelativeLayout
+        android:id="@+id/container_fiestapoin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <com.midtrans.sdk.uikit.widget.DefaultTextView
+            android:id="@+id/title_fiestapoint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/eight_dp"
+            android:layout_marginTop="@dimen/eight_dp"
+            android:text="@string/redeem_100_point"
+            android:textColor="@color/black" />
+
+        <com.midtrans.sdk.uikit.widget.FancyButton
+            android:id="@+id/container_total_point"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title_fiestapoint"
+            android:layout_gravity="center_horizontal"
+            android:alpha="0.1"
+            android:clickable="false"
+            android:gravity="center"
+            android:visibility="visible"
+            app:fb_defaultColor="?attr/colorPrimary"
+            app:fb_focusColor="@color/colorAccentLight"
+            app:fb_radius="5dp"
+            app:fb_text="" />
+
+        <com.midtrans.sdk.uikit.widget.DefaultTextView
+            android:id="@+id/text_fiestapoin_discount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/container_total_point"
+            android:layout_alignLeft="@id/container_total_point"
+            android:layout_alignRight="@id/container_total_point"
+            android:layout_alignTop="@id/container_total_point"
+            android:layout_below="@id/title_fiestapoint"
+            android:gravity="center"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <com.midtrans.sdk.uikit.widget.DefaultTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/eight_dp"
+        android:layout_marginTop="@dimen/sixteen_dp"
+        android:text="@string/amount_after_discount"
+        android:textColor="@color/black" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.midtrans.sdk.uikit.widget.FancyButton
+            android:id="@+id/container_amount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:alpha="0.1"
+            android:clickable="false"
+            android:gravity="center"
+            android:visibility="visible"
+            app:fb_defaultColor="?attr/colorPrimary"
+            app:fb_focusColor="@color/colorAccentLight"
+            app:fb_radius="5dp"
+            app:fb_text="" />
+
+        <com.midtrans.sdk.uikit.widget.DefaultTextView
+            android:id="@+id/text_amount_to_pay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/text_amount_here"
+            android:textSize="20sp" />
+    </RelativeLayout>
+</LinearLayout>

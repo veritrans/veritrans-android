@@ -1,19 +1,23 @@
 package com.midtrans.sample
 
 import android.app.Application
+import com.crashlytics.android.Crashlytics
 import com.midtrans.sdk.corekit.base.enums.Environment
 import com.midtrans.sdk.uikit.MidtransKit
 import com.midtrans.sdk.uikit.MidtransKitConfig
 import com.midtrans.sdk.uikit.base.theme.CustomColorTheme
+import io.fabric.sdk.android.Fabric
 
 class SampleApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        initMidtransKit()
+//        initMidtransKit()
+        initFabric()
     }
 
     private fun initMidtransKit() {
+        // 3DS 1Click key >>> VT-client-F91kdUrnE5w8zCja and set custom field = one_click
         MidtransKit
             .builder(
                 this,
@@ -27,7 +31,7 @@ class SampleApplication : Application() {
             })
             .setApiRequestTimeOut(60)
             .setLogEnabled(true)
-            .setBuiltinStorageEnabled(false)
+            .setBuiltinStorageEnabled(true)
             .setMidtransKitConfig(
                 MidtransKitConfig
                     .builder()
@@ -35,5 +39,9 @@ class SampleApplication : Application() {
                     .build()
             )
             .build()
+    }
+
+    private fun initFabric() {
+        Fabric.with(this, Crashlytics())
     }
 }

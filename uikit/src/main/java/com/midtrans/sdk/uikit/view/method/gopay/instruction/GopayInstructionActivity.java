@@ -212,7 +212,9 @@ public class GopayInstructionActivity extends BasePaymentActivity implements Gop
                     Constants.INTENT_CODE_PAYMENT_RESULT,
                     PaymentListHelper.newErrorPaymentResponse(
                             PaymentType.GOPAY,
-                            gopayResponse.getStatusCode()
+                            gopayResponse.getStatusCode(),
+                            paymentInfoResponse.getTransactionDetails().getOrderId(),
+                            Double.toString(paymentInfoResponse.getTransactionDetails().getGrossAmount())
                     )
             );
         } else {

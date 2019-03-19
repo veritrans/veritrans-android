@@ -33,44 +33,52 @@ public class EnumHelper {
 
     public static @AcquiringChannel
     String mappingToAcquiringChannel(@AcquiringChannel String acquiringChannel) {
-        if (acquiringChannel.equalsIgnoreCase(AcquiringChannel.MIGS) || acquiringChannel == null) {
-            return AcquiringChannel.MIGS;
-        } else {
+        if (acquiringChannel == null) {
             return null;
+        } else {
+            return AcquiringChannel.MIGS;
         }
     }
 
     public static @CreditCardTransactionType
     String mappingToCreditCardType(@CreditCardTransactionType String type) {
-        if (type.equalsIgnoreCase(CreditCardTransactionType.AUTHORIZE)) {
-            return CreditCardTransactionType.AUTHORIZE;
+        if (type == null) {
+            return null;
         } else {
-            return CreditCardTransactionType.AUTHORIZE_CAPTURE;
+            if (type.equalsIgnoreCase(CreditCardTransactionType.AUTHORIZE)) {
+                return CreditCardTransactionType.AUTHORIZE;
+            } else {
+                return CreditCardTransactionType.AUTHORIZE_CAPTURE;
+            }
         }
     }
 
     public static String mappingToBankType(@AcquiringBankType String bank) {
-        switch (bank) {
-            case AcquiringBankType.CIMB:
-                return AcquiringBankType.CIMB;
-            case AcquiringBankType.BCA:
-                return AcquiringBankType.BCA;
-            case AcquiringBankType.MANDIRI:
-                return AcquiringBankType.MANDIRI;
-            case AcquiringBankType.BNI:
-                return AcquiringBankType.BNI;
-            case AcquiringBankType.BRI:
-                return AcquiringBankType.BRI;
-            case AcquiringBankType.DANAMON:
-                return AcquiringBankType.DANAMON;
-            case AcquiringBankType.MAYBANK:
-                return AcquiringBankType.MAYBANK;
-            case AcquiringBankType.MEGA:
-                return AcquiringBankType.MEGA;
-            case AcquiringBankType.NONE:
-                return AcquiringBankType.NONE;
-            default:
-                return null;
+        if (bank == null) {
+            return null;
+        } else {
+            switch (bank) {
+                case AcquiringBankType.CIMB:
+                    return AcquiringBankType.CIMB;
+                case AcquiringBankType.BCA:
+                    return AcquiringBankType.BCA;
+                case AcquiringBankType.MANDIRI:
+                    return AcquiringBankType.MANDIRI;
+                case AcquiringBankType.BNI:
+                    return AcquiringBankType.BNI;
+                case AcquiringBankType.BRI:
+                    return AcquiringBankType.BRI;
+                case AcquiringBankType.DANAMON:
+                    return AcquiringBankType.DANAMON;
+                case AcquiringBankType.MAYBANK:
+                    return AcquiringBankType.MAYBANK;
+                case AcquiringBankType.MEGA:
+                    return AcquiringBankType.MEGA;
+                case AcquiringBankType.NONE:
+                    return AcquiringBankType.NONE;
+                default:
+                    return null;
+            }
         }
     }
 }

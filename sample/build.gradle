@@ -1,9 +1,10 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'io.fabric'
 
 group = 'com.midtrans'
-version = '2.0.0'
+version = '2.0.3'
 
 android {
     compileSdkVersion rootProject.sdkVersion
@@ -13,13 +14,13 @@ android {
         abortOnError false
     }
     defaultConfig {
-        applicationId "com.midtrans.sample"
+        applicationId "com.midtrans.sdk.sample"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.sdkVersion
         versionCode 3
         versionName version
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
+        manifestPlaceholders = [crashlytics: HERA_FABRIC_KEY,]
     }
     signingConfigs {
         release {
@@ -45,13 +46,13 @@ android {
         development {
             applicationIdSuffix ".development"
             versionNameSuffix "-development"
-            resValue "string", "app_name", "Midtrans Sample Kotlin Dev"
+            resValue "string", "app_name", "Midtrans SDK Revamp Dev"
             buildConfigField "String", "BASE_URL", MERCHANT_BASE_URL_SANDBOX
             buildConfigField "String", "CLIENT_KEY", MERCHANT_CLIENT_KEY_SANDBOX
         }
 
         production {
-            resValue "string", "app_name", "Midtrans Sample Kotlin"
+            resValue "string", "app_name", "Midtrans SDK Revamp"
             buildConfigField "String", "BASE_URL", MERCHANT_BASE_URL_PRODUCTION
             buildConfigField "String", "CLIENT_KEY", MERCHANT_CLIENT_KEY_PRODUCTION
         }
@@ -70,5 +71,6 @@ dependencies {
     implementation androidxLibraries.appCompat
     implementation androidxLibraries.constraintLayout
     implementation kotlinLibraries.kotlinStd
+    implementation libraries.crashlytics
     implementation project(':uikit')
 }

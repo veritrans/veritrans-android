@@ -5,10 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.midtrans.sdk.corekit.core.api.snap.model.pay.request.creditcard.SaveCardRequest;
+import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.base.composer.BasePaymentActivity;
 import com.midtrans.sdk.uikit.utilities.Constants;
-import com.midtrans.sdk.uikit.utilities.MessageHelper;
+import com.midtrans.sdk.uikit.view.PaymentListActivity;
 import com.midtrans.sdk.uikit.view.method.creditcard.adapter.SavedCreditCardAdapter;
 import com.midtrans.sdk.uikit.view.method.creditcard.details.CreditCardDetailsActivity;
 import com.midtrans.sdk.uikit.widget.FancyButton;
@@ -30,6 +31,7 @@ public class SavedCreditCardListActivity extends BasePaymentActivity implements 
     private SavedCreditCardAdapter adapter;
 
     private boolean isAlreadyGotResponse = false;
+    private boolean isShowCardDetailPage = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -93,17 +95,17 @@ public class SavedCreditCardListActivity extends BasePaymentActivity implements 
     private void initSavedCards() {
         if (presenter.isSavedCardEnabled()) {
             if (presenter.isSavedCardsAvailable()) {
-                MessageHelper.showToast(this,"MAKE SERVER SNAP");
+                Logger.debug("Use builtin token storage");
                 setSavedCards(presenter.getSavedCards());
             } else if (!presenter.isBuiltInTokenStorage()) {
-                MessageHelper.showToast(this,"MAKE SERVER SENDIRI");
+                Logger.debug("Use own token storage");
                 fetchSavedCard();
             } else {
-                MessageHelper.showToast(this,"GAK ADA DATA CC");
+                isShowCardDetailPage = true;
                 showCardDetailPage(null);
             }
         } else {
-            MessageHelper.showToast(this,"HARUS ONEKLIK ATO TWOKLIK");
+            isShowCardDetailPage = true;
             showCardDetailPage(null);
         }
     }
@@ -133,12 +135,13 @@ public class SavedCreditCardListActivity extends BasePaymentActivity implements 
     }
 
     private void showCardDetailPage(SaveCardRequest savedCard) {
-        /*Intent intent = new Intent(this, CreditCardDetailsActivity.class);
+        Intent intent = new Intent(this, CreditCardDetailsActivity.class);
         intent.putExtra(CreditCardDetailsActivity.EXTRA_SAVED_CARD, savedCard);
         //pass deep link flag to credit card detail page
         boolean isFirstPage = getIntent().getBooleanExtra(USE_DEEP_LINK, true);
         intent.putExtra(CreditCardDetailsActivity.USE_DEEP_LINK, isFirstPage);
-        startActivityForResult(intent, Constants.INTENT_CARD_DETAILS);*/
+        intent.putExtra(PaymentListActivity.EXTRA_PAYMENT_INFO, paymentInfoResponse);
+        startActivityForResult(intent, Constants.INTENT_CARD_DETAILS);
     }
 
     public String getBankByBin(String cardBin) {
@@ -151,6 +154,7 @@ public class SavedCreditCardListActivity extends BasePaymentActivity implements 
             setSavedCards(presenter.getSavedCards());
         } else {
             showCardDetailPage(null);
+            isShowCardDetailPage = false;
         }
     }
 
@@ -163,8 +167,16 @@ public class SavedCreditCardListActivity extends BasePaymentActivity implements 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Constants.INTENT_WEBVIEW_PAYMENT && resultCode == Activity.RESULT_OK) {
-            finishPayment(RESULT_OK, null);
+        if (requestCode == Constants.INTENT_CARD_DETAILS && resultCode == Activity.RESULT_OK) {
+            setResult(resultCode, data);
+            super.onBackPressed();
+        } else if (resultCode == Constants.INTENT_RESULT_DELETE_CARD) {
+            String maskedCardNumber = data.getStringExtra(CreditCardDetailsActivity.EXTRA_DELETED_CARD_DETAILS);
+            updateSavedCardsInstance(maskedCardNumber);
+        } else {
+            if (!presenter.isSavedCardEnabled() || !presenter.isSavedCardsAvailable()) {
+                super.onBackPressed();
+            }
         }
     }
 
@@ -175,6 +187,7 @@ public class SavedCreditCardListActivity extends BasePaymentActivity implements 
             setSavedCards(savedCards);
         } else {
             showCardDetailPage(null);
+            isShowCardDetailPage = true;
         }
     }
 
@@ -182,6 +195,7 @@ public class SavedCreditCardListActivity extends BasePaymentActivity implements 
     public void onGetSavedCardTokenFailure() {
         hideProgressLayout();
         showCardDetailPage(null);
+        isShowCardDetailPage = true;
     }
 
     @Override
