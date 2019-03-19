@@ -105,6 +105,7 @@ public class PaymentListActivity extends BaseActivity {
      */
     private String token = null;
     private CheckoutTransaction checkoutTransaction = null;
+    private String directScreen = null;
 
     /**
      * This property used for layout related stuff
@@ -194,7 +195,7 @@ public class PaymentListActivity extends BaseActivity {
     private void getIntentDataFromMidtransKitFlow() {
         checkoutTransaction = (CheckoutTransaction) getIntent().getSerializableExtra(MidtransKitFlow.INTENT_EXTRA_TRANSACTION);
         token = getIntent().getStringExtra(MidtransKitFlow.INTENT_EXTRA_TOKEN);
-
+        directScreen = getIntent().getStringExtra(MidtransKitFlow.INTENT_EXTRA_DIRECT);
         isCreditCardOnly = getIntent().getBooleanExtra(MidtransKitFlow.INTENT_EXTRA_CREDIT_CARD_ONLY, false);
         isBankTransferOnly = getIntent().getBooleanExtra(MidtransKitFlow.INTENT_EXTRA_BANK_TRANSFER_ONLY, false);
         isGopay = getIntent().getBooleanExtra(MidtransKitFlow.INTENT_EXTRA_GOPAY, false);
@@ -414,13 +415,26 @@ public class PaymentListActivity extends BaseActivity {
             isDeepLink = true;
             startPaymentMethodScreen(data.get(0), response);
         } else {
-            hideProgress();
-            paymentMethodsAdapter.setData(data);
+            if (directScreen != null && !directScreen.isEmpty()) {
+                startPaymentMethodScreen(new PaymentMethodsModel(directScreen), response);
+            } else {
+                paymentMethodsAdapter.setData(data);
+                hideProgress();
+            }
         }
     }
 
     private void startPaymentMethodScreen(PaymentMethodsModel paymentMethodsModel, PaymentInfoResponse response) {
         String method = paymentMethodsModel.getPaymentType();
+        if (directScreen != null) {
+            if (directScreen.equals(PaymentType.BCA_VA) ||
+                    directScreen.equals(PaymentType.BNI_VA) ||
+                    directScreen.equals(PaymentType.PERMATA_VA) ||
+                    directScreen.equals(PaymentType.ECHANNEL) ||
+                    directScreen.equals(PaymentType.OTHER_VA)) {
+                method = PaymentListHelper.BANK_TRANSFER;
+            }
+        }
         Logger.debug("Payment Method clicked : " + method);
         switch (method) {
             case PaymentType.CREDIT_CARD: {
@@ -435,6 +449,28 @@ public class PaymentListActivity extends BaseActivity {
                 intent.putExtra(BankTransferListActivity.EXTRA_BANK_LIST, new EnabledBankTransfer(bankTransferList));
                 intent.putExtra(EXTRA_PAYMENT_INFO, response);
                 intent.putExtra(BankTransferListActivity.USE_DEEP_LINK, isDeepLink);
+                switch (directScreen) {
+                    case PaymentType.PERMATA_VA:
+                        intent.putExtra(MidtransKitFlow.INTENT_EXTRA_BANK_TRANSFER_PERMATA, true);
+                        intent.putExtra(MidtransKitFlow.INTENT_EXTRA_DEEPLINK, true);
+                        break;
+                    case PaymentType.BNI_VA:
+                        intent.putExtra(MidtransKitFlow.INTENT_EXTRA_BANK_TRANSFER_BNI, true);
+                        intent.putExtra(MidtransKitFlow.INTENT_EXTRA_DEEPLINK, true);
+                        break;
+                    case PaymentType.ECHANNEL:
+                        intent.putExtra(MidtransKitFlow.INTENT_EXTRA_BANK_TRANSFER_MANDIRI, true);
+                        intent.putExtra(MidtransKitFlow.INTENT_EXTRA_DEEPLINK, true);
+                        break;
+                    case PaymentType.BCA_VA:
+                        intent.putExtra(MidtransKitFlow.INTENT_EXTRA_BANK_TRANSFER_BCA, true);
+                        intent.putExtra(MidtransKitFlow.INTENT_EXTRA_DEEPLINK, true);
+                        break;
+                    case PaymentType.OTHER_VA:
+                        intent.putExtra(MidtransKitFlow.INTENT_EXTRA_BANK_TRANSFER_OTHER, true);
+                        intent.putExtra(MidtransKitFlow.INTENT_EXTRA_DEEPLINK, true);
+                        break;
+                }
                 startActivityForResult(intent, Constants.RESULT_CODE_PAYMENT);
                 break;
             }
@@ -620,6 +656,10 @@ public class PaymentListActivity extends BaseActivity {
             if (resultCode == RESULT_OK) {
                 PaymentListHelper.setActivityResult(resultCode, data);
                 super.onBackPressed();
+            } else {
+                if (directScreen != null) {
+                    onBackPressed();
+                }
             }
         } else {
             Logger.debug("failed to send result back " + requestCode);

@@ -25,6 +25,7 @@ import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.merchantdata.Mer
 import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.uikit.MidtransKit;
 import com.midtrans.sdk.uikit.MidtransKitConfig;
+import com.midtrans.sdk.uikit.MidtransKitFlow;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.base.composer.BaseActivity;
 import com.midtrans.sdk.uikit.utilities.Constants;
@@ -83,6 +84,7 @@ public class BankTransferInstructionActivity extends BaseActivity implements Ban
     private DefaultTextView bankDescription;
     private DefaultTextView cardDescription;
     private boolean[] flags;
+    private boolean isDeepLink = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -133,6 +135,7 @@ public class BankTransferInstructionActivity extends BaseActivity implements Ban
     private void getIntentData() {
         paymentType = getIntent().getStringExtra(EXTRA_BANK_TYPE);
         paymentInfoResponse = (PaymentInfoResponse) getIntent().getSerializableExtra(EXTRA_PAYMENT_INFO);
+        isDeepLink = getIntent().getBooleanExtra(MidtransKitFlow.INTENT_EXTRA_DEEPLINK, false);
     }
 
     private void initProperties() {

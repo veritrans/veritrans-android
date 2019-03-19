@@ -20,6 +20,10 @@ public class PaymentMethodsModel {
         this.status = status;
     }
 
+    public PaymentMethodsModel(String paymentType) {
+        this.paymentType = paymentType;
+    }
+
     public String getName() {
         return name;
     }
