@@ -146,14 +146,24 @@ class MainActivity : AppCompatActivity() {
         MidtransKit
             .builder(
                 this,
-                BuildConfig.CLIENT_KEY,
-                BuildConfig.BASE_URL
+                if (radio_two_click.isChecked) {
+                    "VT-client-E4f1bsi1LpL1p5cF"
+                } else {
+                    BuildConfig.CLIENT_KEY
+                },
+                if (radio_two_click.isChecked) {
+                    "https://rakawm-snap.herokuapp.com/"
+                } else {
+                    BuildConfig.BASE_URL
+                }
             )
-            .setEnvironment(if (BuildConfig.DEBUG) {
-                Environment.SANDBOX
-            } else {
-                Environment.PRODUCTION
-            })
+            .setEnvironment(
+                if (BuildConfig.FLAVOR == "development") {
+                    Environment.SANDBOX
+                } else {
+                    Environment.PRODUCTION
+                }
+            )
             .setApiRequestTimeOut(60)
             .setLogEnabled(true)
             .setBuiltinStorageEnabled(true)
