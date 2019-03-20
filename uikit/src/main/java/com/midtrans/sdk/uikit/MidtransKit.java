@@ -37,6 +37,7 @@ public class MidtransKit {
     private boolean isBuiltinStorageEnabled;
     private boolean isLogEnabled;
     private MidtransKitConfig midtransKitConfig;
+    private PaymentResult callback;
 
     MidtransKit(
             Context context,
@@ -199,16 +200,34 @@ public class MidtransKit {
         return midtransKitConfig;
     }
 
-    public void setMidtransKitConfig(MidtransKitConfig midtransKitConfig) {
+    /**
+     * Start public API from MidtransKit, it use for UI Stuff and Starting payment
+     *
+     * Payment API can contain callback or without callback,
+     * If user use without callback method, user must set the callback separately
+     * This public API same with Midtrans SDK v1.x.x
+     */
+    public void setMidtransKitConfig(@NonNull MidtransKitConfig midtransKitConfig) {
         this.midtransKitConfig = midtransKitConfig;
+    }
+
+    public void setTransactionFinishedCallback(@NonNull PaymentResult callback) {
+        this.callback = callback;
     }
 
     public void startPaymentUiFlow(
             @NonNull Activity context,
-            @NonNull CheckoutTransaction checkoutTransaction,
-            @NonNull PaymentResult callback
+            @NonNull String token
     ) {
-        MidtransKitFlow.paymentWithTransactionFlow(context, checkoutTransaction, callback);
+        startPaymentUiFlow(context, token, callback);
+    }
+
+    public void startPaymentUiFlow(
+            @NonNull Activity context,
+            @NonNull String token,
+            @NonNull @PaymentType String paymentType
+    ) {
+        startPaymentUiFlow(context, token, paymentType, callback);
     }
 
     public void startPaymentUiFlow(
@@ -221,20 +240,43 @@ public class MidtransKit {
 
     public void startPaymentUiFlow(
             @NonNull Activity context,
-            @NonNull CheckoutTransaction checkoutTransaction,
-            @NonNull @PaymentType String paymentType,
-            @NonNull PaymentResult callback
-    ) {
-        MidtransKitFlow.directPaymentWithTransactionFlow(context, checkoutTransaction, paymentType, callback);
-    }
-
-    public void startPaymentUiFlow(
-            @NonNull Activity context,
             @NonNull String token,
             @NonNull @PaymentType String paymentType,
             @NonNull PaymentResult callback
     ) {
         MidtransKitFlow.directPaymentWithTokenFlow(context, token, paymentType, callback);
+    }
+
+    public void startPaymentUiFlow(
+            @NonNull Activity context,
+            @NonNull CheckoutTransaction checkoutTransaction
+    ) {
+        startPaymentUiFlow(context, checkoutTransaction, callback);
+    }
+
+    public void startPaymentUiFlow(
+            @NonNull Activity context,
+            @NonNull CheckoutTransaction checkoutTransaction,
+            @NonNull @PaymentType String paymentType
+    ) {
+        startPaymentUiFlow(context, checkoutTransaction, paymentType, callback);
+    }
+
+    public void startPaymentUiFlow(
+            @NonNull Activity context,
+            @NonNull CheckoutTransaction checkoutTransaction,
+            @NonNull PaymentResult callback
+    ) {
+        MidtransKitFlow.paymentWithTransactionFlow(context, checkoutTransaction, callback);
+    }
+
+    public void startPaymentUiFlow(
+            @NonNull Activity context,
+            @NonNull CheckoutTransaction checkoutTransaction,
+            @NonNull @PaymentType String paymentType,
+            @NonNull PaymentResult callback
+    ) {
+        MidtransKitFlow.directPaymentWithTransactionFlow(context, checkoutTransaction, paymentType, callback);
     }
 
     private void initMidtransSdk() {
