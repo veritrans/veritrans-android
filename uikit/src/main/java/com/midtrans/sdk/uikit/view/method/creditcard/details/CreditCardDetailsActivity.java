@@ -41,6 +41,7 @@ import com.midtrans.sdk.uikit.utilities.Constants;
 import com.midtrans.sdk.uikit.utilities.MessageHelper;
 import com.midtrans.sdk.uikit.utilities.NetworkHelper;
 import com.midtrans.sdk.uikit.utilities.PaymentListHelper;
+import com.midtrans.sdk.uikit.view.PaymentListActivity;
 import com.midtrans.sdk.uikit.view.method.creditcard.details.adapter.PromosAdapter;
 import com.midtrans.sdk.uikit.view.method.creditcard.point.BankPointsActivity;
 import com.midtrans.sdk.uikit.view.method.creditcard.tnc.TermsAndConditionsActivity;
@@ -1179,8 +1180,9 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
     private void startBankPointPage(PointResponse response) {
         Intent intent = new Intent(this, BankPointsActivity.class);
         float point = Float.parseFloat(response.getBalanceAmount());
-        intent.putExtra(BankPointsActivity.EXTRA_POINT, point);
         String cardBin = getCardNumberBin();
+        intent.putExtra(BankPointsActivity.EXTRA_POINT, point);
+        intent.putExtra(PaymentListActivity.EXTRA_PAYMENT_INFO, paymentInfoResponse);
         intent.putExtra(BankPointsActivity.EXTRA_BANK, presenter.getBankByCardBin(cardBin));
         startActivityForResult(intent, Constants.INTENT_BANK_POINT);
     }
@@ -1355,7 +1357,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                 setCheckboxPoint(true);
             }
         } else if (resultCode == RESULT_CANCELED) {
-            if (requestCode == Constants.INTENT_CODE_3DS_PAYMENT) {
+            if (requestCode == Constants.INTENT_CODE_3DS_PAYMENT || requestCode == Constants.INTENT_BANK_POINT) {
                 hideProgressLayout();
             } else if (requestCode == Constants.INTENT_CODE_RBA_AUTHENTICATION) {
                 getPaymentStatus();

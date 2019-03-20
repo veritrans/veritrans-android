@@ -13,11 +13,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.midtrans.sdk.corekit.base.enums.BankType;
+import com.midtrans.sdk.corekit.core.api.snap.model.paymentinfo.PaymentInfoResponse;
 import com.midtrans.sdk.corekit.utilities.Logger;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.base.composer.BasePaymentActivity;
 import com.midtrans.sdk.uikit.utilities.CurrencyHelper;
 import com.midtrans.sdk.uikit.utilities.Helper;
+import com.midtrans.sdk.uikit.view.PaymentListActivity;
 import com.midtrans.sdk.uikit.widget.DefaultTextView;
 import com.midtrans.sdk.uikit.widget.FancyButton;
 import com.midtrans.sdk.uikit.widget.SemiBoldTextView;
@@ -62,6 +64,7 @@ public class BankPointsActivity extends BasePaymentActivity {
     private void initPresenter() {
         String pointBank = getIntent().getStringExtra(EXTRA_BANK);
         float pointBalance = getIntent().getFloatExtra(EXTRA_POINT, 0f);
+        paymentInfoResponse = (PaymentInfoResponse) getIntent().getSerializableExtra(PaymentListActivity.EXTRA_PAYMENT_INFO);
         presenter = new BankPointsPresenter(pointBalance, pointBank);
     }
 
