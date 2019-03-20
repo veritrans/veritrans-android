@@ -15,11 +15,11 @@ public class DirectDebitCharge extends BaseGroupPayment {
      * @param snapToken token after making checkoutWithTransaction.
      * @param callback  for receiving callback from request.
      */
-    public static void paymentUsingKlikBca(final String snapToken,
+    public static void paymentUsingKlikBca(final String token,
                                            final String klikBcaUserId,
                                            final MidtransCallback<KlikBcaResponse> callback) {
         if (isValidForNetworkCall(callback)) {
-            getSnapApiManager().paymentUsingKlikBca(snapToken, klikBcaUserId, callback);
+            getSnapApiManager().paymentUsingKlikBca(token, klikBcaUserId, callback);
         }
     }
 
@@ -27,24 +27,24 @@ public class DirectDebitCharge extends BaseGroupPayment {
     /**
      * Start payment using bank transfer and va with Mandiri Ecash.
      *
-     * @param snapToken        token after making checkoutWithTransaction.
-     * @param creditCardNumber generated tokenId
-     * @param challengeToken   token from mandiri token
+     * @param token        token after making checkoutWithTransaction.
+     * @param cardNumber generated tokenId
+     * @param clickpayToken   token from mandiri token
      * @param input3           input3 from mandiri token
      * @param callback         for receiving callback from request.
      */
-    public static void paymentUsingMandiriClickPay(final String snapToken,
-                                                   final String creditCardNumber,
-                                                   final String challengeToken,
+    public static void paymentUsingMandiriClickPay(final String token,
+                                                   final String cardNumber,
+                                                   final String clickpayToken,
                                                    final String input3,
                                                    final MidtransCallback<MandiriClickpayResponse> callback) {
         if (isValidForNetworkCall(callback)) {
-            CardTokenRequest request = new CardTokenRequest(creditCardNumber,null,null,null,getClientKey());
+            CardTokenRequest request = new CardTokenRequest(cardNumber,null,null,null,getClientKey());
             CreditCardCharge.getCardToken(request, new MidtransCallback<TokenDetailsResponse>() {
                 @Override
                 public void onSuccess(TokenDetailsResponse data) {
                     if (data.getTokenId() != null) {
-                        getSnapApiManager().paymentUsingMandiriClickPay(snapToken, data.getTokenId(), challengeToken, input3, callback);
+                        getSnapApiManager().paymentUsingMandiriClickPay(token, data.getTokenId(), clickpayToken, input3, callback);
                     } else {
                         callback.onFailed(new Throwable(Constants.MESSAGE_ERROR_FAILURE_RESPONSE));
                     }
