@@ -52,6 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Authorize Payment" />
+
             <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -69,6 +70,12 @@
                     android:layout_height="wrap_content"
                     android:checked="true"
                     android:text="Two Click" />
+
+                <RadioButton
+                    android:id="@+id/radio_two_point"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Poin, etc" />
             </RadioGroup>
 
             <TextView
@@ -185,7 +192,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Input BIN, left it blank if not use blacklist/whitelist"
-                android:singleLine="true"/>
+                android:singleLine="true" />
 
             <RadioGroup
                 android:layout_width="match_parent"
@@ -211,12 +218,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/medium_margin"
             android:background="@color/colorPrimary"
             android:paddingBottom="@dimen/small_margin"
             android:paddingLeft="@dimen/large_margin"
             android:paddingRight="@dimen/large_margin"
             android:paddingTop="@dimen/small_margin"
-            android:layout_marginBottom="@dimen/medium_margin"
             android:text="Start Payment"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
