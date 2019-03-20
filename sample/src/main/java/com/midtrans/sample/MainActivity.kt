@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
 
         text_view_test.setOnClickListener {
             initMidtransKit()
-            MidtransKit 
+            MidtransKit
                 .getInstance()
                 .startPaymentUiFlow(
                     this,
@@ -146,15 +146,15 @@ class MainActivity : AppCompatActivity() {
         MidtransKit
             .builder(
                 this,
-                if (radio_two_click.isChecked) {
-                    "VT-client-E4f1bsi1LpL1p5cF"
-                } else {
-                    BuildConfig.CLIENT_KEY
+                when {
+                    radio_two_click.isChecked -> "VT-client-E4f1bsi1LpL1p5cF"
+                    radio_two_point.isChecked -> "SB-Mid-client-lkFxk1uWpt7NQouB"
+                    else -> BuildConfig.CLIENT_KEY
                 },
-                if (radio_two_click.isChecked) {
-                    "https://rakawm-snap.herokuapp.com/"
-                } else {
-                    BuildConfig.BASE_URL
+                when {
+                    radio_two_click.isChecked -> "https://rakawm-snap.herokuapp.com/"
+                    radio_two_point.isChecked -> "https://dev-mobile-oneclick.herokuapp.com"
+                    else -> BuildConfig.BASE_URL
                 }
             )
             .setEnvironment(
