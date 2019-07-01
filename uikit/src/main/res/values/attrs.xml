@@ -78,4 +78,5 @@
             <enum name="height" value="1" />
         </attr>
     </declare-styleable>
+    <bool name="isTablet">false</bool>
 </resources> 

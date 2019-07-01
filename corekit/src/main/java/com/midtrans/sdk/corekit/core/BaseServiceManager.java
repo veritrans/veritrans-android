@@ -4,8 +4,6 @@ import com.midtrans.sdk.corekit.callback.HttpRequestCallback;
 import com.midtrans.sdk.corekit.callback.SaveCardCallback;
 import com.midtrans.sdk.corekit.models.SaveCardResponse;
 
-import retrofit.converter.ConversionException;
-
 /**
  * Created by ziahaqi on 3/27/18.
  */
@@ -24,7 +22,7 @@ public abstract class BaseServiceManager {
         try {
             Logger.e(TAG, "Error > cause:" + error.getCause() + "| message:" + error.getMessage());
 
-            if (callback instanceof SaveCardCallback && error.getCause() instanceof ConversionException) {
+            if (callback instanceof SaveCardCallback) {
 
                 SaveCardResponse saveCardResponse = new SaveCardResponse();
                 saveCardResponse.setCode(200);
