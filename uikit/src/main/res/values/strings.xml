@@ -859,5 +859,6 @@
     <string name="alfamart">Alfamart</string>
     <string name="complete_payment_alfamart">Complete payment via Alfamart</string>
     <string name="alfamart_instruction_step0">Pay from any <b>Alfamart</b>, <b>Alfamidi</b>, or <b>Dan+Dan</b> outlet</string>
+    <string name="gopay_payment_cant_open_deeplink">Can\'t access GOJEK app for this payment!</string>
 
 </resources>

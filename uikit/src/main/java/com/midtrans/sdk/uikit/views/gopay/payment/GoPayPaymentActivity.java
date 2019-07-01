@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -50,7 +49,7 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         showProgressLayout();
-        isTablet = SdkUIFlowUtil.getDeviceType(this).equals(SdkUIFlowUtil.TYPE_TABLET);
+        isTablet = SdkUIFlowUtil.getDeviceType(this).equals(SdkUIFlowUtil.TYPE_TABLET) && SdkUIFlowUtil.isDeviceTablet(this);
         isGojekInstalled = Utils.isAppInstalled(this, GOJEK_PACKAGE_NAME);
         setContentView(R.layout.activity_gopay_payment);
         initProperties();
@@ -65,8 +64,7 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
         if (isTablet) {
             stub.setLayoutResource(R.layout.layout_gopay_payment_tablet);
         } else {
-            stub.setLayoutResource(
-                    isGojekInstalled ? R.layout.layout_gopay_payment : R.layout.layout_install_gopay);
+            stub.setLayoutResource(isGojekInstalled ? R.layout.layout_gopay_payment : R.layout.layout_install_gopay);
         }
         stub.inflate();
     }
@@ -227,10 +225,13 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
 
 
     private void openDeeplink(String deeplinkUrl) {
-        Toast.makeText(this, getString(R.string.redirecting_to_gopay), Toast.LENGTH_SHORT)
-                .show();
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(deeplinkUrl));
-        startActivityForResult(intent, UiKitConstants.INTENT_CODE_GOPAY);
+        if (deeplinkUrl.isEmpty()) {
+            Toast.makeText(this, R.string.gopay_payment_cant_open_deeplink, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, getString(R.string.redirecting_to_gopay), Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(deeplinkUrl));
+            startActivityForResult(intent, UiKitConstants.INTENT_CODE_GOPAY);
+        }
     }
 
     private void showConfirmationDialog(String message) {

@@ -503,6 +503,10 @@ public class SdkUIFlowUtil {
         return deviceType;
     }
 
+    public static boolean isDeviceTablet(Activity activity) {
+        return activity.getResources().getBoolean(R.bool.isTablet);
+    }
+
     public static PromoResponse getPromoFromCardBins(List<PromoResponse> promoResponses, String cardBins) {
         List<PromoData> promoDatas = mapPromoResponseIntoData(promoResponses);
         Collections.sort(promoDatas, new PromoComparator());
