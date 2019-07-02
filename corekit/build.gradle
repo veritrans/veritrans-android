@@ -5,7 +5,7 @@ apply from: '../jacoco.gradle'
 apply plugin: 'com.vanniktech.android.junit.jacoco'
 
 group = 'com.midtrans'
-version = '1.22.0'
+version = '1.22.1'
 
 buildscript {
     repositories {
@@ -124,9 +124,9 @@ dependencies {
     compile 'com.google.android.gms:play-services-auth:15.0.1'
 
     // Analytics Manager
-    developmentCompile 'com.midtrans:analytics:1.4.5-SANDBOX'
-    stagingCompile 'com.midtrans:analytics:1.4.5-SANDBOX'
-    productionCompile 'com.midtrans:analytics:1.4.5'
+    developmentCompile 'com.midtrans:analytics:1.6.3-SANDBOX'
+    stagingCompile 'com.midtrans:analytics:1.6.3-SANDBOX'
+    productionCompile 'com.midtrans:analytics:1.6.3'
     /*
      * test dependencies
      */
