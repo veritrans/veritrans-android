@@ -158,6 +158,7 @@ public class WebViewPaymentActivity extends BasePaymentActivity {
                 return true;
             }
         });
+        webviewContainer.resumeTimers();
         webviewContainer.loadUrl(webUrl);
     }
 
