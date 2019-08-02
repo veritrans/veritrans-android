@@ -225,7 +225,7 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
 
 
     private void openDeeplink(String deeplinkUrl) {
-        if (deeplinkUrl.isEmpty()) {
+        if (deeplinkUrl == null) {
             Toast.makeText(this, R.string.gopay_payment_cant_open_deeplink, Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, getString(R.string.redirecting_to_gopay), Toast.LENGTH_SHORT).show();

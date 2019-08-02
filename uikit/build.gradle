@@ -5,7 +5,7 @@ apply from: '../jacoco-uikit.gradle'
 apply plugin: 'com.vanniktech.android.junit.jacoco'
 
 group = 'com.midtrans'
-version = '1.22.2'
+version = '1.23.0'
 
 ext {
     espressoVersion = "2.2.2"
@@ -66,15 +66,18 @@ android {
     productFlavors {
         development {
             DEFAULT_PUBLISH = "developmentRelease"
+            manifestPlaceholders = [isByPassNonSsl:false]
         }
 
 
-        staging {
-            DEFAULT_PUBLISH = "stagingRelease"
+        uat {
+            DEFAULT_PUBLISH = "uatRelease"
+            manifestPlaceholders = [isByPassNonSsl:true]
         }
 
         production {
             DEFAULT_PUBLISH = "productionRelease"
+            manifestPlaceholders = [isByPassNonSsl:false]
         }
     }
 
@@ -115,7 +118,7 @@ dependencies {
     compile 'com.koushikdutta.ion:ion:2.2.1'
     compile project(':issuetracker')
     developmentCompile project(path: ':corekit', configuration: 'developmentRelease')
-    stagingCompile project(path: ':corekit', configuration: 'stagingRelease')
+    uatCompile project(path: ':corekit', configuration: 'uatRelease')
     productionCompile project(path: ':corekit', configuration: 'productionRelease')
 
     /*
@@ -188,12 +191,12 @@ publishing {
             }
         }
 
-        BintrayStagingPublication(MavenPublication) {
+        BintrayUatPublication(MavenPublication) {
             artifact(sourceJar)
-            artifact("$buildDir/outputs/aar/uikit-staging-release.aar")
+            artifact("$buildDir/outputs/aar/uikit-uat-release.aar")
             groupId group
             artifactId 'uikit'
-            version version + "-STAGING"
+            version version + "-UAT"
 
             //The publication doesn't know about our dependencies, so we have to manually add them to the pom
             pom.withXml {
@@ -207,11 +210,11 @@ publishing {
                     dependencyNode.appendNode('version', it.version)
                 }
 
-                configurations.stagingCompile.allDependencies.each {
+                configurations.uatCompile.allDependencies.each {
                     def dependencyNode = dependenciesNode.appendNode('dependency')
                     dependencyNode.appendNode('groupId', it.group)
                     dependencyNode.appendNode('artifactId', it.name)
-                    dependencyNode.appendNode('version', it.version + '-STAGING')
+                    dependencyNode.appendNode('version', it.version + '-UAT')
                 }
             }
         }

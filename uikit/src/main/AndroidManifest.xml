@@ -5,6 +5,7 @@
     <uses-sdk tools:overrideLibrary="com.rds.swipelayout,me.saket.bettermovementmethod,com.stfalcon.smsverifycatcher" />
     <application
         android:allowBackup="false"
+        android:usesCleartextTraffic="${isByPassNonSsl}"
         tools:replace="android:allowBackup">
         <activity
             android:name="com.midtrans.sdk.uikit.activities.UserDetailsActivity"
