@@ -59,7 +59,7 @@ dependencies {
     compile "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
 
     developmentCompile project(path: ':uikit', configuration: 'developmentRelease')
-    stagingCompile project(path: ':uikit', configuration: 'stagingRelease')
+    stagingCompile project(path: ':uikit', configuration: 'uatRelease')
     productionCompile project(path: ':uikit', configuration: 'productionRelease')
 
     developmentCompile(project(path: ':scancard', configuration: 'developmentRelease')) {
@@ -67,7 +67,7 @@ dependencies {
         exclude module: 'corekit'
     }
 
-    stagingCompile(project(path: ':scancard', configuration: 'stagingRelease')) {
+    uatCompile(project(path: ':scancard', configuration: 'uatRelease')) {
         exclude module: 'uikit'
         exclude module: 'corekit'
     }
@@ -81,7 +81,7 @@ dependencies {
         exclude module: 'corekit'
     }
 
-    stagingCompile(project(path: ':widgets', configuration: 'stagingRelease')) {
+    uatCompile(project(path: ':widgets', configuration: 'uatRelease')) {
         exclude module: 'corekit'
     }
 

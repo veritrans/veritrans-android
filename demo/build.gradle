@@ -74,6 +74,15 @@ android {
             buildConfigField "String", "BASE_URL", MERCHANT_BASE_URL_PRODUCTION
             buildConfigField "String", "CLIENT_KEY", MERCHANT_CLIENT_KEY_PRODUCTION
         }
+
+        uat {
+            applicationId "com.midtrans.sdk.demo.uat"
+            resValue "string", "app_name", "Midtrans uat dev"
+            buildConfigField "String", "BASE_URL", MERCHANT_BASE_URL_STAGING
+            buildConfigField "String", "CLIENT_KEY", MERCHANT_CLIENT_KEY_STAGING
+        }
+
+
     }
 }
 
@@ -85,8 +94,13 @@ dependencies {
     compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
     testCompile 'junit:junit:4.12'
     developmentCompile project(path: ':uikit', configuration: 'developmentRelease')
+    uatCompile project(path: ':uikit', configuration: 'uatRelease')
     productionCompile project(path: ':uikit', configuration: 'productionRelease')
     developmentCompile(project(path: ':scancard', configuration: 'developmentRelease')) {
+        exclude module: 'uikit'
+        exclude module: 'corekit'
+    }
+    uatCompile(project(path: ':scancard', configuration: 'uatRelease')) {
         exclude module: 'uikit'
         exclude module: 'corekit'
     }
