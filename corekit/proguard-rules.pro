@@ -17,7 +17,6 @@
 #}
 
 -dontpreverify
--dontoptimize
 #-repackageclasses ''
 -allowaccessmodification
 -optimizations !code/simplification/arithmetic
