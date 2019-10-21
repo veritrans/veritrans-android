@@ -129,7 +129,7 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
             }
         }
 
-        return false;
+        return getMidtransSDK().getCreditCard().isSecure();
     }
 
     public int getCcBadge() {
