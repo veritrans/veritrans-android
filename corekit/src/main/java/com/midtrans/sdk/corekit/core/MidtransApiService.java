@@ -19,12 +19,11 @@ public interface MidtransApiService {
      *
      * @return callback of transaction response
      */
-    @GET("token")
+    @GET("token?x_source=android")
     Call<TokenDetailsResponse> getTokenTwoClick(
             @Query("card_cvv") String cardCVV,
             @Query("token_id") String tokenId,
             @Query("two_click") Boolean twoClick,
-            @Query("secure") Boolean secure,
             @Query("gross_amount") Double grossAmount,
             @Query("bank") String bank,
             @Query("client_key") String clientKey,
@@ -34,7 +33,7 @@ public interface MidtransApiService {
             @Query("point") Boolean point
     );
 
-    @GET("token")
+    @GET("token?x_source=android")
     Call<TokenDetailsResponse> get3DSToken(
             @Query("card_number") String cardNumber,
             @Query("card_cvv") String cardCVV,
@@ -42,7 +41,6 @@ public interface MidtransApiService {
             @Query("card_exp_year") String cardExpiryYear,
             @Query("client_key") String clientKey,
             @Query("bank") String bank,
-            @Query("secure") Boolean secure,
             @Query("two_click") Boolean twoClick,
             @Query("gross_amount") Double grossAmount,
             @Query("channel") String channel,
@@ -51,7 +49,7 @@ public interface MidtransApiService {
             @Query("point") Boolean point
     );
 
-    @GET("token")
+    @GET("token?x_source=android")
     Call<TokenDetailsResponse> getToken(
             @Query("card_number") String cardNumber,
             @Query("card_cvv") String cardCVV,
@@ -71,7 +69,6 @@ public interface MidtransApiService {
      * @param cardCVV        card cvv number
      * @param tokenId        token identifier
      * @param twoClick       is two click or not
-     * @param secure         is secure or not
      * @param grossAmount    gross amount
      * @param bank           bank name
      * @param clientKey      client key
@@ -80,12 +77,11 @@ public interface MidtransApiService {
      * @return callback of transaction response
      */
 
-    @GET("token")
+    @GET("token?x_source=android")
     Call<TokenDetailsResponse> getTokenInstalmentOfferTwoClick(
             @Query("card_cvv") String cardCVV,
             @Query("token_id") String tokenId,
             @Query("two_click") Boolean twoClick,
-            @Query("secure") Boolean secure,
             @Query("gross_amount") Double grossAmount,
             @Query("bank") String bank,
             @Query("client_key") String clientKey,
@@ -106,13 +102,12 @@ public interface MidtransApiService {
      * @param cardExpiryYear  card expiry's year
      * @param clientKey       client key
      * @param bank            bank name
-     * @param secure          is secure
      * @param twoClick        is two click
      * @param grossAmount     gross amount
      * @return callback of transaction response
      */
 
-    @GET("token")
+    @GET("token?x_source=android")
     Call<TokenDetailsResponse> get3DSTokenInstalmentOffers(
             @Query("card_number") String cardNumber,
             @Query("card_cvv") String cardCVV,
@@ -120,7 +115,6 @@ public interface MidtransApiService {
             @Query("card_exp_year") String cardExpiryYear,
             @Query("client_key") String clientKey,
             @Query("bank") String bank,
-            @Query("secure") Boolean secure,
             @Query("two_click") Boolean twoClick,
             @Query("gross_amount") Double grossAmount,
             @Query("installment") Boolean instalment,
