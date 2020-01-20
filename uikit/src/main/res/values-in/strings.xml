@@ -481,6 +481,7 @@
     <string name="message_payment_expired">Halaman pembayaran kadaluarsa</string>
     <string name="formatted_installment_month">Cicilan %1$s bulan</string>
     <string name="no_installment">Tanpa cicilan</string>
+    <string name="choose_installment">Pilih masa cicilan</string>
     <string name="hint_giftcard_number">Nomor Gift Card Anda</string>
     <string name="info_gci_payment">PENTING! Setelah konfirmasi pembayaran, anda tidak bisa merubah metode pembayarannya</string>
     <string name="error_password_empty">Masukkan PIN yang benar</string>
