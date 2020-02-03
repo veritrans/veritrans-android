@@ -33,8 +33,6 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
 
     private static final String TAG = GoPayPaymentActivity.class.getSimpleName();
     private final String GOJEK_PACKAGE_NAME = "com.gojek.app";
-    private final String GOJEK_DEEPLINK_PREFIX_OLD = "gojek://";
-    private final String GOJEK_DEEPLINK_PREFIX_NEW = "https://gojek.link/";
 
     private FancyButton buttonPrimary;
     private FancyButton buttonDownload;
@@ -232,7 +230,7 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
         } else {
             Toast.makeText(this, getString(R.string.redirecting_to_gopay), Toast.LENGTH_SHORT).show();
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M){
-                deeplinkUrl = deeplinkUrl.replace(GOJEK_DEEPLINK_PREFIX_OLD, GOJEK_DEEPLINK_PREFIX_NEW);
+                deeplinkUrl = deeplinkUrl.replace(UiKitConstants.GOJEK_DEEPLINK_PREFIX_OLD, UiKitConstants.GOJEK_DEEPLINK_PREFIX_NEW);
             }
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(deeplinkUrl));
             startActivityForResult(intent, UiKitConstants.INTENT_CODE_GOPAY);

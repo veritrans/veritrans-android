@@ -8,6 +8,8 @@ import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.Query;
 
+import static com.midtrans.sdk.corekit.core.Constants.QUERY_STRING;
+
 /**
  * Created by ziahaqi on 3/26/18.
  */
@@ -19,7 +21,7 @@ public interface MidtransApiService {
      *
      * @return callback of transaction response
      */
-    @GET("token?x_source=android")
+    @GET(QUERY_STRING)
     Call<TokenDetailsResponse> getTokenTwoClick(
             @Query("card_cvv") String cardCVV,
             @Query("token_id") String tokenId,
@@ -33,7 +35,7 @@ public interface MidtransApiService {
             @Query("point") Boolean point
     );
 
-    @GET("token?x_source=android")
+    @GET(QUERY_STRING)
     Call<TokenDetailsResponse> get3DSToken(
             @Query("card_number") String cardNumber,
             @Query("card_cvv") String cardCVV,
@@ -49,7 +51,7 @@ public interface MidtransApiService {
             @Query("point") Boolean point
     );
 
-    @GET("token?x_source=android")
+    @GET(QUERY_STRING)
     Call<TokenDetailsResponse> getToken(
             @Query("card_number") String cardNumber,
             @Query("card_cvv") String cardCVV,
@@ -77,7 +79,7 @@ public interface MidtransApiService {
      * @return callback of transaction response
      */
 
-    @GET("token?x_source=android")
+    @GET(QUERY_STRING)
     Call<TokenDetailsResponse> getTokenInstalmentOfferTwoClick(
             @Query("card_cvv") String cardCVV,
             @Query("token_id") String tokenId,
@@ -107,7 +109,7 @@ public interface MidtransApiService {
      * @return callback of transaction response
      */
 
-    @GET("token?x_source=android")
+    @GET(QUERY_STRING)
     Call<TokenDetailsResponse> get3DSTokenInstalmentOffers(
             @Query("card_number") String cardNumber,
             @Query("card_cvv") String cardCVV,
