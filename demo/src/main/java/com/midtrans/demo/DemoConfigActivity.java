@@ -999,7 +999,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 if (checked) {
                     cardClickTitle.setText(R.string.credit_card_type_two_clicks);
-                    secureEnabledSelection.setChecked(true);
+                    saveCardEnabledSelection.setChecked(true);
                 }
             }
         });
@@ -1010,6 +1010,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 if (checked) {
                     cardClickTitle.setText(R.string.credit_card_type_one_click);
                     secureEnabledSelection.setChecked(true);
+                    saveCardEnabledSelection.setChecked(true);
                     resetInstallmentSelection();
                     resetBniPointSelection();
                     resetMandiriPointSelection();
@@ -2360,7 +2361,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 MidtransSDK.getInstance().setTransactionRequest(transactionRequest);
 
                 // change just for demo app purpose
-                changeClientKeyIfOneClick();
+//                changeClientKeyIfOneClick();
                 startActivity(new Intent(DemoConfigActivity.this, DemoProductListActivity.class));
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
