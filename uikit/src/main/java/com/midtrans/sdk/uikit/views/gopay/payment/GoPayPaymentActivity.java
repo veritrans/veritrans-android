@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
+import com.midtrans.sdk.uikit.BuildConfig;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
@@ -50,7 +51,9 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
         super.onCreate(savedInstanceState);
         showProgressLayout();
         isTablet = SdkUIFlowUtil.getDeviceType(this).equals(SdkUIFlowUtil.TYPE_TABLET) && SdkUIFlowUtil.isDeviceTablet(this);
-        isGojekInstalled = Utils.isAppInstalled(this, GOJEK_PACKAGE_NAME);
+        if (BuildConfig.FLAVOR.equals(UiKitConstants.ENVIRONMENT_PRODUCTION)){
+            isGojekInstalled = Utils.isAppInstalled(this, GOJEK_PACKAGE_NAME);
+        }
         setContentView(R.layout.activity_gopay_payment);
         initProperties();
         initLayout();
@@ -64,7 +67,12 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
         if (isTablet) {
             stub.setLayoutResource(R.layout.layout_gopay_payment_tablet);
         } else {
-            stub.setLayoutResource(isGojekInstalled ? R.layout.layout_gopay_payment : R.layout.layout_install_gopay);
+            if (BuildConfig.FLAVOR.equals(UiKitConstants.ENVIRONMENT_PRODUCTION)) {
+                stub.setLayoutResource(isGojekInstalled ? R.layout.layout_gopay_payment : R.layout.layout_install_gopay);
+            } else {
+                stub.setLayoutResource(R.layout.layout_gopay_payment);
+            }
+
         }
         stub.inflate();
     }
@@ -74,41 +82,61 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
     }
 
     private void initActionButton() {
-        if (isGojekInstalled || isTablet) {
-            buttonPrimary.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //to prevent "payment has been paid"
-                    if (isAlreadyGotResponse) {
-                        openDeeplink(presenter.getTransactionResponse().getDeeplinkUrl());
-                    } else {
-                        startGoPayPayment();
+
+        if (BuildConfig.FLAVOR.equals(UiKitConstants.ENVIRONMENT_PRODUCTION)) {
+            if (isGojekInstalled || isTablet) {
+                buttonPrimary.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //to prevent "payment has been paid"
+                        if (isAlreadyGotResponse) {
+                            openDeeplink(presenter.getTransactionResponse().getDeeplinkUrl());
+                        } else {
+                            startGoPayPayment();
+                        }
                     }
-                }
-            });
-            buttonPrimary.setTextBold();
-            buttonPrimary.setText(getString(R.string.gopay_confirm_button));
+                });
+                buttonPrimary.setTextBold();
+                buttonPrimary.setText(getString(R.string.gopay_confirm_button));
 
-            buttonPrimary.setIconResource(R.drawable.ic_gopay_white);
-            buttonPrimary.setIconPosition(FancyButton.POSITION_RIGHT);
+                buttonPrimary.setIconResource(R.drawable.ic_gopay_white);
+                buttonPrimary.setIconPosition(FancyButton.POSITION_RIGHT);
+            } else {
+                //hide confirm button and adjust item details to bottom of screen
+                buttonPrimaryLayout.setVisibility(View.GONE);
+                findViewById(R.id.primary_button_separator).setVisibility(View.GONE);
+                View itemDetail = findViewById(R.id.container_item_details);
+                RelativeLayout.LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                itemDetail.setLayoutParams(layoutParams);
+
+                buttonDownload = (FancyButton) findViewById(R.id.button_download_gojek);
+                setTextColor(buttonDownload);
+                setIconColorFilter(buttonDownload);
+                buttonDownload.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Utils.openAppInPlayStore(GoPayPaymentActivity.this, GOJEK_PACKAGE_NAME);
+                    }
+                });
+            }
         } else {
-            //hide confirm button and adjust item details to bottom of screen
-            buttonPrimaryLayout.setVisibility(View.GONE);
-            findViewById(R.id.primary_button_separator).setVisibility(View.GONE);
-            View itemDetail = findViewById(R.id.container_item_details);
-            RelativeLayout.LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-            itemDetail.setLayoutParams(layoutParams);
+                buttonPrimary.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //to prevent "payment has been paid"
+                        if (isAlreadyGotResponse) {
+                            openDeeplink(presenter.getTransactionResponse().getDeeplinkUrl());
+                        } else {
+                            startGoPayPayment();
+                        }
+                    }
+                });
+                buttonPrimary.setTextBold();
+                buttonPrimary.setText(getString(R.string.gopay_confirm_button));
 
-            buttonDownload = (FancyButton) findViewById(R.id.button_download_gojek);
-            setTextColor(buttonDownload);
-            setIconColorFilter(buttonDownload);
-            buttonDownload.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Utils.openAppInPlayStore(GoPayPaymentActivity.this, GOJEK_PACKAGE_NAME);
-                }
-            });
+                buttonPrimary.setIconResource(R.drawable.ic_gopay_white);
+                buttonPrimary.setIconPosition(FancyButton.POSITION_RIGHT);
         }
     }
 
@@ -135,9 +163,11 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
     @Override
     protected void onResume() {
         super.onResume();
-        isGojekInstalled = Utils.isAppInstalled(this, GOJEK_PACKAGE_NAME);
-        if (isGojekInstalledWhenPaused != null && isGojekInstalledWhenPaused != isGojekInstalled) {
-            recreate();
+        if (BuildConfig.FLAVOR.equals(UiKitConstants.ENVIRONMENT_PRODUCTION)){
+            isGojekInstalled = Utils.isAppInstalled(this, GOJEK_PACKAGE_NAME);
+            if (isGojekInstalledWhenPaused != null && isGojekInstalledWhenPaused != isGojekInstalled) {
+                recreate();
+            }
         }
 
         if (goPayIntentCode == UiKitConstants.INTENT_CODE_GOPAY && presenter != null) {
@@ -147,7 +177,9 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
 
     @Override
     protected void onPause() {
-        isGojekInstalledWhenPaused = isGojekInstalled;
+        if(BuildConfig.FLAVOR.equals(UiKitConstants.ENVIRONMENT_PRODUCTION)){
+            isGojekInstalledWhenPaused = isGojekInstalled;
+        }
         super.onPause();
     }
 
