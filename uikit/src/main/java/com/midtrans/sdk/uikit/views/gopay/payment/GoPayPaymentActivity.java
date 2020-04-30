@@ -261,9 +261,6 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
             Toast.makeText(this, R.string.gopay_payment_cant_open_deeplink, Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, getString(R.string.redirecting_to_gopay), Toast.LENGTH_SHORT).show();
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M){
-                deeplinkUrl = deeplinkUrl.replace(UiKitConstants.GOJEK_DEEPLINK_PREFIX_OLD, UiKitConstants.GOJEK_DEEPLINK_PREFIX_NEW);
-            }
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(deeplinkUrl));
             startActivityForResult(intent, UiKitConstants.INTENT_CODE_GOPAY);
         }
