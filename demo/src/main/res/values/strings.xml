@@ -122,11 +122,11 @@
     <string name="order_review_total_amount">Total Amount</string>
     <string name="order_review_delivery_address">YOUR DELIVERY ADDRESS</string>
     <string name="order_review_customer_details">CUSTOMER DETAILS</string>
-    <string name="order_review_customer_details_name">Budi Utomo</string>
+    <string name="order_review_customer_details_name">Fauzi</string>
     <string name="order_review_customer_details_hint_name">Full Name</string>
-    <string name="order_review_customer_details_email">budi@utomo.com</string>
+    <string name="order_review_customer_details_email">hobinyabelajar@gmail.com</string>
     <string name="order_review_customer_details_hint_email">Email</string>
-    <string name="order_review_customer_details_phone">081808466410</string>
+    <string name="order_review_customer_details_phone">082221009999</string>
     <string name="order_review_customer_details_hint_phone">Phone Number</string>
     <string name="order_review_delivery_address_sample">Midplaza 2, 4th Floor Jl. Jend. Sudirman Kav.10-11</string>
     <string name="order_review_delivery_address_city_sample">Jakarta</string>
@@ -175,12 +175,12 @@
     <string name="price_pillow_1">Rp 10,000</string>
 
     <!-- Demo Account-->
-    <string name="account_name">Budi Utomo</string>
+    <string name="account_name">Fauzi</string>
     <string name="account_mycards">My Cards</string>
     <string name="account_details">Account Details</string>
-    <string name="account_email">budi@utomo.com</string>
+    <string name="account_email">hobinyabelajar@gmail.com</string>
     <string name="user_address">Midplaza 2, 4th Jl. Jendral Sudirman Kav. 10-11, Jakarta - 10220 \n Indonesia</string>
-    <string name="account_phone">081808466410</string>
+    <string name="account_phone">082221009999</string>
     <string name="my_account">My Account</string>
     <string name="add_new_card_demo">Add New Card</string>
 
