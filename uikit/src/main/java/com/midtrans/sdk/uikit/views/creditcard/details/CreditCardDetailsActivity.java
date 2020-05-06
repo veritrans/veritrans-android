@@ -1297,7 +1297,11 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
         String installmentTerm;
         int term = presenter.getCurrentInstallmentTerm();
         if (term < 1) {
-            installmentTerm = getString(R.string.no_installment);
+            if (presenter.isInstallmentOptionRequired()) {
+                installmentTerm = getString(R.string.choose_installment);
+            } else {
+                installmentTerm = getString(R.string.no_installment);
+            }
         } else {
             installmentTerm = getString(R.string.formatted_installment_month, String.valueOf(term));
         }

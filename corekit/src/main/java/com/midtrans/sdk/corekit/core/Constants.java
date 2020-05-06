@@ -68,6 +68,8 @@ public class Constants {
     public static final String WEBURL = "weburl";
     public static final String TYPE = "type";
 
+    public static final String QUERY_STRING = "token?x_source=android";
+
     /**
      * result code used for payment transfer activities
      */

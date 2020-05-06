@@ -632,6 +632,7 @@
     <string name="installment_term">instalment term</string>
     <string name="formatted_installment_month">%1$s Months installment</string>
     <string name="no_installment">No installment</string>
+    <string name="choose_installment">Choose installment terms</string>
     <string name="hint_giftcard_number">Your Gift Card Number</string>
     <string name="hint_giftcard_password">PIN</string>
     <string name="info_gci_payment"><b>IMPORTANT!</b> After confirming your payment, you won’t be able to change payment method</string>
