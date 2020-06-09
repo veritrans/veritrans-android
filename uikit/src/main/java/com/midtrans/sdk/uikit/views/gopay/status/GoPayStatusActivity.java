@@ -178,7 +178,7 @@ public class GoPayStatusActivity extends BasePaymentActivity {
     }
 
     /**
-     * A method for loading QR code based on url that is part of GO-PAY payment response
+     * A method for loading QR code based on url that is part of GoPay payment response
      * We use Glide listener in order to detect whether image downloading is good or not
      * If it is good, then display the QR code; else display reload button so this method is
      * called once again.
@@ -264,7 +264,7 @@ public class GoPayStatusActivity extends BasePaymentActivity {
     }
 
     /**
-     * Get default expiry time for GO-PAY transaction
+     * Get default expiry time for GoPay transaction
      *
      * @param transactionTime when transaction started
      * @return formatted time that already added with 15 minutes
@@ -299,7 +299,7 @@ public class GoPayStatusActivity extends BasePaymentActivity {
      * are in different format.
      *
      * @param start transaction start time, example : 2018-02-09 18:14:52
-     * @param end   GO-PAY expiry time, example : 09 February 18:29 WIB
+     * @param end   GoPay expiry time, example : 09 February 18:29 WIB
      * @return
      */
     private long getDuration(String start, String end) {

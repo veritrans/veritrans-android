@@ -615,7 +615,7 @@ public class MidtransSDK {
     }
 
     /**
-     * This will start actual execution of GO-PAY UI Flow.
+     * This will start actual execution of GoPay UI Flow.
      *
      * @param context   activity context.
      * @param snapToken checkout token

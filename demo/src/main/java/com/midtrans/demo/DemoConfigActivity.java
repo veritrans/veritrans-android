@@ -295,7 +295,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             Intent intentToResult = new Intent(DemoConfigActivity.this, GopayStatusActivity.class);
             intentToResult.putExtra(INTENT_ORDERID, orderId);
             intentToResult.putExtra(INTENT_AMOUNT, "10000");
-            intentToResult.putExtra(INTENT_TYPE, "GO-PAY");
+            intentToResult.putExtra(INTENT_TYPE, "GoPay");
             intentToResult.putExtra(INTENT_STATUS, result);
             startActivity(intentToResult);
         }
@@ -3248,7 +3248,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             );
         }
 
-//        transactionRequestNew.setGopay(new Gopay("demo://midtrans"));
+        transactionRequestNew.setGopay(new Gopay("demo://midtrans"));
 
         return transactionRequestNew;
     }
