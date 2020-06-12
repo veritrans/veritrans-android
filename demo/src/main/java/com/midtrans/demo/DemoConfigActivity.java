@@ -295,7 +295,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             Intent intentToResult = new Intent(DemoConfigActivity.this, GopayStatusActivity.class);
             intentToResult.putExtra(INTENT_ORDERID, orderId);
             intentToResult.putExtra(INTENT_AMOUNT, "10000");
-            intentToResult.putExtra(INTENT_TYPE, "GO-PAY");
+            intentToResult.putExtra(INTENT_TYPE, "GoPay");
             intentToResult.putExtra(INTENT_STATUS, result);
             startActivity(intentToResult);
         }
@@ -999,7 +999,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 if (checked) {
                     cardClickTitle.setText(R.string.credit_card_type_two_clicks);
-                    secureEnabledSelection.setChecked(true);
+                    saveCardEnabledSelection.setChecked(true);
+                    secureDisabledSelection.setChecked(true);
                 }
             }
         });
@@ -1010,6 +1011,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 if (checked) {
                     cardClickTitle.setText(R.string.credit_card_type_one_click);
                     secureEnabledSelection.setChecked(true);
+                    saveCardEnabledSelection.setChecked(true);
                     resetInstallmentSelection();
                     resetBniPointSelection();
                     resetMandiriPointSelection();
@@ -2360,7 +2362,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 MidtransSDK.getInstance().setTransactionRequest(transactionRequest);
 
                 // change just for demo app purpose
-                changeClientKeyIfOneClick();
+//                changeClientKeyIfOneClick();
                 startActivity(new Intent(DemoConfigActivity.this, DemoProductListActivity.class));
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
@@ -3246,7 +3248,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             );
         }
 
-//        transactionRequestNew.setGopay(new Gopay("demo://midtrans"));
+        transactionRequestNew.setGopay(new Gopay("demo://midtrans"));
 
         return transactionRequestNew;
     }

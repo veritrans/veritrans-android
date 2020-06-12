@@ -457,7 +457,7 @@
     <string name="payment_method_klik_bca">KlikBCA</string>
     <string name="payment_method_kioson">Kioson</string>
     <string name="payment_method_gci"> Gift Card Indonesia </string>
-    <string name="payment_method_gopay">GO-PAY</string>
+    <string name="payment_method_gopay">GoPay</string>
     <string name="payment_method_danamon_online">Danamon Online Banking</string>
     <string name="payment_method_akulaku">Akulaku</string>
 
@@ -587,35 +587,35 @@
     <string name="kioson_instruction_step8">Submit payment and print the receipt.</string>
     <string name="kioson_instruction_step9">Your transaction is successful! You should be receiving an email confirming your payment. Please keep your payment receipt just in case you need help via support.</string>
 
-    <!--Go-Pay Instruction-->
-    <string name="gopay_instruction_step1">Tap <b>Pay Now with GO-PAY</b>.</string>
-    <string name="gopay_instruction_step2"><b>GO-JEK</b> app will open.</string>
+    <!--GoPay Instruction-->
+    <string name="gopay_instruction_step1">Tap <b>Pay Now with GoPay</b>.</string>
+    <string name="gopay_instruction_step2"><b>Gojek</b> app will open.</string>
     <string name="gopay_instruction_step3">Check your payment details then tap <b>Pay</b> and your transaction is <b>Done</b>.</string>
 
-    <!--Go-Pay Instruction in Tablet-->
-    <string name="gopay_instruction_tablet_step1">Tap <b>Pay Now with GO-PAY</b>.</string>
+    <!--GoPay Instruction in Tablet-->
+    <string name="gopay_instruction_tablet_step1">Tap <b>Pay Now with GoPay</b>.</string>
     <string name="gopay_instruction_tablet_step2"><b>QR code</b> will appear on the next page to be scanned.</string>
-    <string name="gopay_instruction_tablet_step3">Open <b>GO-JEK app</b> on your phone.</string>
+    <string name="gopay_instruction_tablet_step3">Open <b>Gojek app</b> on your phone.</string>
     <string name="gopay_instruction_tablet_step4">Tap <b>SCAN QR</b>.</string>
     <string name="gopay_instruction_tablet_step5">Point your camera to the <b>QR Code</b>.</string>
-    <string name="gopay_instruction_tablet_step6">Check your payment details in <b>GO-JEK</b> app and then tap <b>Pay</b>.</string>
+    <string name="gopay_instruction_tablet_step6">Check your payment details in <b>Gojek</b> app and then tap <b>Pay</b>.</string>
     <string name="gopay_instruction_tablet_step7">Done.</string>
-    <string name="gopay_instruction_tablet_hint">Note: Scan QR button won\'t appear if your GO-PAY balance is less than Rp 10,000.</string>
+    <string name="gopay_instruction_tablet_hint">Note: Scan QR button won\'t appear if your GoPay balance is less than Rp 10,000.</string>
 
-    <!--Go-Pay related-->
-    <string name="gopay_status_title">Pay with GO-PAY</string>
+    <!--GoPay related-->
+    <string name="gopay_status_title">Pay with GoPay</string>
     <string name="gopay_confirm_button">Pay Now with</string>
-    <string name="notification_gojek_app">GO-JEK app is required for this payment method.</string>
-    <string name="notification_gojek_app_tablet">Make sure you have <b>GO-JEK app</b> installed on your phone and have GO-PAY balance more than Rp 10,000.</string>
-    <string name="install_gojek_message">Install GO-JEK App from Play Store</string>
+    <string name="notification_gojek_app">Gojek app is required for this payment method.</string>
+    <string name="notification_gojek_app_tablet">Make sure you have <b>Gojek app</b> installed on your phone and have GoPay balance more than Rp 10,000.</string>
+    <string name="install_gojek_message">Install Gojek App from Play Store</string>
     <string name="whoops" translatable="false">Whoops!</string>
-    <string name="no_gojek_message">Unfortunately, we couldn\'t find GO-JEK app installed on your phone.</string>
-    <string name="redirecting_to_gopay">Redirecting to GO-JEK app…</string>
+    <string name="no_gojek_message">Unfortunately, we couldn\'t find Gojek app installed on your phone.</string>
+    <string name="redirecting_to_gopay">Redirecting to Gojek app…</string>
     <string name="error_qr_code">Failed to load QR code. Please try again.</string>
     <string name="reload_qr_code">Reload QR Code</string>
     <string name="error_gopay_transaction">Transaction cannot be proccessed. Please try again or try another payment method.</string>
-    <string name="confirm_gopay_qr_scan_tablet">Make sure the QR code successfully scanned and payment has been completed within the GO-JEK app.</string>
-    <string name="confirm_gopay_deeplink">Make sure payment has been completed within the GO-JEK app.</string>
+    <string name="confirm_gopay_qr_scan_tablet">Make sure the QR code successfully scanned and payment has been completed within the Gojek app.</string>
+    <string name="confirm_gopay_deeplink">Make sure payment has been completed within the Gojek app.</string>
     <string name="gopay_instruction">How to Pay?</string>
     <string name="gopay_expiration_message">Please complete your payment in:</string>
     <string name="gopay_expiration_expired">Time\'s up.</string>
@@ -632,6 +632,7 @@
     <string name="installment_term">instalment term</string>
     <string name="formatted_installment_month">%1$s Months installment</string>
     <string name="no_installment">No installment</string>
+    <string name="choose_installment">Choose installment terms</string>
     <string name="hint_giftcard_number">Your Gift Card Number</string>
     <string name="hint_giftcard_password">PIN</string>
     <string name="info_gci_payment"><b>IMPORTANT!</b> After confirming your payment, you won’t be able to change payment method</string>
@@ -697,7 +698,7 @@
     <string name="payment_method_description_indosat_dompetku">Pay with Indosat Dompetku</string>
     <string name="payment_method_description_kioson">Pay from Kioson Outlet</string>
     <string name="payment_method_description_gci">Pay with Gift Cards</string>
-    <string name="payment_method_description_gopay">Pay with your GO-PAY wallet</string>
+    <string name="payment_method_description_gopay">Pay with your GoPay wallet</string>
     <string name="payment_method_description_danamon_online">Pay with your Danamon Online Banking Account</string>
     <string name="payment_method_description_akulaku">Pay with your Akulaku account</string>
 
@@ -801,7 +802,7 @@
     <string name="processing_card_registration">Processing card registration</string>
     <string name="status_message_not_enabled">Payment method is not enabled</string>
     <string name="details_message_not_enabled">Sorry, payment method is not enabled</string>
-    <string name="gopay">GO-PAY</string>
+    <string name="gopay">GoPay</string>
     <string name="danamon_online_instruction_step1">Enter Danamon Online Banking User ID and Password and select the source of fund</string>
     <string name="danamon_online_instruction_step2">Check detail transaction and enter Token Code and klik <b>Next</b>.</string>
     <string name="danamon_online_instruction_step3">Payment confirmation will be displayed and payment is completed. Keep the merchant reference and payment reference no. and klik <b>Next</b> to return to merchant website.</string>
@@ -859,6 +860,6 @@
     <string name="alfamart">Alfamart</string>
     <string name="complete_payment_alfamart">Complete payment via Alfamart</string>
     <string name="alfamart_instruction_step0">Pay from any <b>Alfamart</b>, <b>Alfamidi</b>, or <b>Dan+Dan</b> outlet</string>
-    <string name="gopay_payment_cant_open_deeplink">Can\'t access GOJEK app for this payment!</string>
+    <string name="gopay_payment_cant_open_deeplink">Can\'t access Gojek app for this payment!</string>
 
 </resources>

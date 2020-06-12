@@ -250,37 +250,37 @@
     <string name="kioson_instruction_step8">Konfirmasi pembayaran  Anda dan cetak bukti pembayarannya.</string>
     <string name="kioson_instruction_step9">Transaksi Anda berhasil! Anda akan menerima email konfirmasi pembayaran. Harap simpan struk pembayaran Kioson Anda, apabila Anda memerlukan bantuan via support.</string>
 
-    <!--Go-Pay Instruction-->
-    <string name="gopay_instruction_step1">Klik <b>Bayar dengan GO-PAY</b>.</string>
-    <string name="gopay_instruction_step2">Aplikasi <b>GO-JEK</b> akan terbuka.</string>
+    <!--GoPay Instruction-->
+    <string name="gopay_instruction_step1">Klik <b>Bayar dengan GoPay</b>.</string>
+    <string name="gopay_instruction_step2">Aplikasi <b>GoJek</b> akan terbuka.</string>
     <string name="gopay_instruction_step3">Periksa rincian pembayaran Anda lalu klik <b>Pay</b> dan transaksi anda <b>Selesai</b>.</string>
 
-    <!--Go-Pay related-->
-    <string name="gopay_status_title">Bayar dengan GO-PAY</string>
+    <!--GoPay related-->
+    <string name="gopay_status_title">Bayar dengan GoPay</string>
     <string name="gopay_confirm_button">Bayar dengan</string>
-    <string name="notification_gojek_app">Aplikasi GO-JEK diperlukan untuk metode pembayaran ini.</string>
-    <string name="notification_gojek_app_tablet">Pastikan Anda telah melakukan instalasi <b>aplikasi GO-JEK</b> di HP Anda dan memiliki saldo lebih dari <b>Rp 10.000</b>.</string>
-    <string name="install_gojek_message">Install aplikasi GO-JEK dari Play Store</string>
-    <string name="no_gojek_message">Mohon maaf, kami tidak dapat mendeteksi aplikasi GO-JEK di perangkat Anda.</string>
-    <string name="redirecting_to_gopay">Mengarahkan ke aplikasi GO-JEK…</string>
+    <string name="notification_gojek_app">Aplikasi Gojek diperlukan untuk metode pembayaran ini.</string>
+    <string name="notification_gojek_app_tablet">Pastikan Anda telah melakukan instalasi <b>aplikasi Gojek</b> di HP Anda dan memiliki saldo lebih dari <b>Rp 10.000</b>.</string>
+    <string name="install_gojek_message">Install aplikasi Gojek dari Play Store</string>
+    <string name="no_gojek_message">Mohon maaf, kami tidak dapat mendeteksi aplikasi Gojek di perangkat Anda.</string>
+    <string name="redirecting_to_gopay">Mengarahkan ke aplikasi Gojek…</string>
     <string name="error_qr_code">Gagal memuat kode QR. Mohon coba lagi.</string>
     <string name="reload_qr_code">Muat Ulang Kode QR</string>
     <string name="error_gopay_transaction">Transaksi Anda tidak dapat diproses. Silakan ulangi lagi, atau coba dengan metode pembayaran lain.</string>
-    <string name="confirm_gopay_qr_scan_tablet">Pastikan kode QR berhasil di-scan dan pembayaran telah diselesaikan di dalam aplikasi GO-JEK.</string>
-    <string name="confirm_gopay_deeplink">Pastikan pembayaran telah diselesaikan di dalam aplikasi GO-JEK.</string>
+    <string name="confirm_gopay_qr_scan_tablet">Pastikan kode QR berhasil di-scan dan pembayaran telah diselesaikan di dalam aplikasi Gojek.</string>
+    <string name="confirm_gopay_deeplink">Pastikan pembayaran telah diselesaikan di dalam aplikasi Gojek.</string>
     <string name="gopay_instruction">Cara Pembayaran</string>
     <string name="gopay_expiration_message">Harap selesaikan pembayaran dalam:</string>
     <string name="gopay_expiration_expired">Waktu habis.</string>
 
-    <!--Go-Pay Instruction in Tablet-->
-    <string name="gopay_instruction_tablet_step1">Tekan <b>Bayar dengan GO-PAY</b>.</string>
+    <!--GoPay Instruction in Tablet-->
+    <string name="gopay_instruction_tablet_step1">Tekan <b>Bayar dengan GoPay</b>.</string>
     <string name="gopay_instruction_tablet_step2"><b>Kode QR</b> akan muncul pada halaman selanjutnya.</string>
-    <string name="gopay_instruction_tablet_step3">Buka aplikasi <b>GO-JEK</b> di HP Anda.</string>
+    <string name="gopay_instruction_tablet_step3">Buka aplikasi <b>Gojek</b> di HP Anda.</string>
     <string name="gopay_instruction_tablet_step4">Tekan <b>SCAN QR</b>.</string>
     <string name="gopay_instruction_tablet_step5">Arahkan kamera ke <b>Kode QR</b>.</string>
-    <string name="gopay_instruction_tablet_step6">Periksa kembali detail pembayaran Anda di aplikasi <b>GO-JEK</b> lalu tekan <b>Bayar</b>.</string>
+    <string name="gopay_instruction_tablet_step6">Periksa kembali detail pembayaran Anda di aplikasi <b>Gojek</b> lalu tekan <b>Bayar</b>.</string>
     <string name="gopay_instruction_tablet_step7">Selesai.</string>
-    <string name="gopay_instruction_tablet_hint">Catatan: Scan tombol QR tidak akan muncul jika saldo GO-PAY kurang dari Rp 10.000.</string>
+    <string name="gopay_instruction_tablet_hint">Catatan: Scan tombol QR tidak akan muncul jika saldo GoPay kurang dari Rp 10.000.</string>
 
     <!--credit card -->
     <string name="add_card_message">Anda bisa membayar dengan kartu baru disini</string>
@@ -481,6 +481,7 @@
     <string name="message_payment_expired">Halaman pembayaran kadaluarsa</string>
     <string name="formatted_installment_month">Cicilan %1$s bulan</string>
     <string name="no_installment">Tanpa cicilan</string>
+    <string name="choose_installment">Pilih masa cicilan</string>
     <string name="hint_giftcard_number">Nomor Gift Card Anda</string>
     <string name="info_gci_payment">PENTING! Setelah konfirmasi pembayaran, anda tidak bisa merubah metode pembayarannya</string>
     <string name="error_password_empty">Masukkan PIN yang benar</string>
@@ -531,7 +532,7 @@
     <string name="payment_method_description_indosat_dompetku">Bayar dengan Indosat Dompetku</string>
     <string name="payment_method_description_kioson">Bayar dari gerai Kioson</string>
     <string name="payment_method_description_gci">Bayar dengan Gift Card</string>
-    <string name="payment_method_description_gopay">Bayar dengan saldo GO-PAY Anda</string>
+    <string name="payment_method_description_gopay">Bayar dengan saldo GoPay Anda</string>
     <string name="payment_method_description_danamon_online">Bayar dengan akun Danamon Online Banking anda</string>
     <string name="payment_method_description_akulaku">Bayar meggunakan akun Akulaku Anda</string>
 

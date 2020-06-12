@@ -1,5 +1,6 @@
-<manifest package="com.midtrans.demo"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.midtrans.demo">
 
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
@@ -12,13 +13,35 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity android:name=".DemoConfigActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter><!-- Accept chrome links -->
+            </intent-filter> <!-- Accept chrome links -->
+        </activity>
+        <activity android:name=".DemoProductPageActivity" />
+        <activity
+            android:name=".DemoOrderReviewActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".UserAddressActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan">
+        </activity>
+        <activity android:name=".DemoProductListActivity" />
+        <activity android:name=".DemoSavedCardsActivity" />
+        <activity android:name=".DemoAccountActivity" />
+        <activity android:name=".DemoCardRegisterActivity" />
+        <activity android:name=".GopayStatusActivity" />
+
+        <!--
+            <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="@string/api_key"
+            />
+        -->
+        <activity android:name=".EntryActivity"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -30,25 +53,6 @@
                     android:scheme="demo" />
             </intent-filter>
         </activity>
-        <activity android:name=".DemoProductPageActivity" />
-        <activity
-            android:name=".DemoOrderReviewActivity"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity
-            android:name=".UserAddressActivity"
-            android:windowSoftInputMode="stateHidden|adjustPan">
-
-        </activity>
-        <activity android:name=".DemoProductListActivity" />
-        <activity android:name=".DemoSavedCardsActivity" />
-        <activity android:name=".DemoAccountActivity" />
-        <activity android:name=".DemoCardRegisterActivity" />
-        <activity android:name=".GopayStatusActivity" />
-
-        <!--<meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="@string/api_key"
-            />-->
     </application>
 
 </manifest>
