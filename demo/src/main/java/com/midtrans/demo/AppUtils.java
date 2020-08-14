@@ -37,6 +37,7 @@ public class AppUtils {
     private static final String PAYMENT_NAME_PERMATA_VA = "Permata VA";
     private static final String PAYMENT_NAME_BCA_VA = "BCA VA";
     private static final String PAYMENT_NAME_BNI_VA = "BNI VA";
+    private static final String PAYMENT_NAME_BRI_VA = "BRI VA";
     private static final String PAYMENT_NAME_OTHER_VA = "Other VA";
     private static final String PAYMENT_NAME_MANDIRI_ECHANNEL = "Mandiri VA";
     private static final String TYPE_PHONE = "PHONE";
@@ -100,6 +101,10 @@ public class AppUtils {
 
                 case PaymentType.BNI_VA:
                     model = new PaymentMethodsModel(PAYMENT_NAME_BNI_VA, null, 0, "", 5, status);
+                    break;
+
+                case PaymentType.BRI_VA:
+                    model = new PaymentMethodsModel(PAYMENT_NAME_BRI_VA, null, 0, "", 5, status);
                     break;
 
                 case PaymentType.ALL_VA:
