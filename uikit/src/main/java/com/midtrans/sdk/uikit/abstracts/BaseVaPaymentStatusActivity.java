@@ -88,6 +88,9 @@ public abstract class BaseVaPaymentStatusActivity extends BasePaymentActivity {
             case PaymentType.BNI_VA:
                 pageNumber = 3;
                 break;
+            case PaymentType.BRI_VA:
+                pageNumber = 3;
+                break;
             case PaymentType.E_CHANNEL:
                 pageNumber = 2;
                 break;
