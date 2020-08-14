@@ -155,6 +155,10 @@ public class PaymentMethods {
                     bankTransfer = new BankTransfer(type, context.getString(R.string.bni_bank_transfer), R.drawable.ic_bni, 4, context.getString(R.string.payment_bank_description_bni), status);
                     break;
 
+                case PaymentType.BRI_VA:
+                    bankTransfer = new BankTransfer(type, context.getString(R.string.bri_bank_transfer), R.drawable.ic_bri, 4, context.getString(R.string.payment_bank_description_bri), status);
+                    break;
+
                 case PaymentType.PERMATA_VA:
                     bankTransfer = new BankTransfer(type, context.getString(R.string.permata_bank_transfer), R.drawable.ic_permata, 3, context.getString(R.string.payment_bank_description_permata), status);
                     break;

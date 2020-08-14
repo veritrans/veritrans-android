@@ -861,5 +861,10 @@
     <string name="complete_payment_alfamart">Complete payment via Alfamart</string>
     <string name="alfamart_instruction_step0">Pay from any <b>Alfamart</b>, <b>Alfamidi</b>, or <b>Dan+Dan</b> outlet</string>
     <string name="gopay_payment_cant_open_deeplink">Can\'t access Gojek app for this payment!</string>
+    <string name="bri_bank_transfer">BRI</string>
+    <string name="payment_bank_description_bri">Pay from BRI ATMs or internet banking</string>
+    <string name="tab_atm_bri">ATM BRI</string>
+    <string name="tab_bri_mobile">Mobile Banking</string>
+    <string name="tab_bri_internet">Internet Banking</string>
 
 </resources>
