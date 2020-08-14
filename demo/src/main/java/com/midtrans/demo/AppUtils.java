@@ -61,6 +61,7 @@ public class AppUtils {
         paymentNameList.add(new EnabledPayment(PaymentType.PERMATA_VA, CATEGORY_VA));
         paymentNameList.add(new EnabledPayment(PaymentType.BCA_VA, CATEGORY_VA));
         paymentNameList.add(new EnabledPayment(PaymentType.BNI_VA, CATEGORY_VA));
+        paymentNameList.add(new EnabledPayment(PaymentType.BRI_VA, CATEGORY_VA));
         paymentNameList.add(new EnabledPayment(PaymentType.ALL_VA, CATEGORY_VA));
         paymentNameList.add(new EnabledPayment(PaymentType.E_CHANNEL, CATEGORY_VA));
 
