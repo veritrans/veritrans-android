@@ -36,6 +36,7 @@ public class UserDetailsActivity extends BaseActivity {
     public static final String BANK_TRANSFER_BCA = "bt_bca";
     public static final String BANK_TRANSFER_PERMATA = "bt_permata";
     public static final String BANK_TRANSFER_BNI = "bt_bni";
+    public static final String BANK_TRANSFER_BRI = "bt_bri";
     public static final String BANK_TRANSFER_OTHER = "bt_other";
     public static final String GO_PAY = "gopay";
     public static final String BCA_KLIKPAY = "bcaklikpay";
