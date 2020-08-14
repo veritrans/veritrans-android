@@ -328,6 +328,12 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
                 } else {
                     showOtpNotification(false);
                 }
+            } else if (paymentType.equals(PaymentType.BRI_VA)) {
+                if (position == 1) {
+                    showOtpNotification(true);
+                } else {
+                    showOtpNotification(false);
+                }
             } else {
                 showOtpNotification(false);
                 showTokenNotification(false);
