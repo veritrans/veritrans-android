@@ -138,6 +138,16 @@ public class InstructionPagerAdapter extends FragmentStatePagerAdapter {
                     }
                     break;
 
+                case PaymentType.BRI_VA:
+                    if (position == 0) {
+                        pageTitle = context.getString(R.string.tab_atm_bri);
+                    } else if (position == 1) {
+                        pageTitle = context.getString(R.string.tab_bri_mobile);
+                    } else {
+                        pageTitle = context.getString(R.string.tab_bri_internet);
+                    }
+                    break;
+
                 default:
                     if (position == 0) {
                         pageTitle = context.getString(R.string.tab_prima);
