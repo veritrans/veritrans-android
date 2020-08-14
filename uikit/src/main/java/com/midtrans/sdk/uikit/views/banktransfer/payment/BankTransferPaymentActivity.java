@@ -202,6 +202,10 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
                 title = getString(R.string.bank_bni_transfer);
                 pageNumber = 3;
                 break;
+            case PaymentType.BRI_VA:
+                title = getString(R.string.bank_bri_transfer);
+                pageNumber = 3;
+                break;
             default:
                 title = getString(R.string.bank_transfer);
                 pageNumber = 0;
