@@ -43,6 +43,9 @@ public class BankTransferStatusPresenter extends BasePaymentPresenter {
                 case PaymentType.BNI_VA:
                     vaNumber = transactionResponse.getBniVaNumber();
                     break;
+                case PaymentType.BRI_VA:
+                    vaNumber = transactionResponse.getBriVaNumber();
+                    break;
                 case PaymentType.E_CHANNEL:
                     vaNumber = transactionResponse.getPaymentCode();
                     break;
@@ -69,6 +72,9 @@ public class BankTransferStatusPresenter extends BasePaymentPresenter {
                     break;
                 case PaymentType.BNI_VA:
                     expiration = transactionResponse.getBniExpiration();
+                    break;
+                case PaymentType.BRI_VA:
+                    expiration = transactionResponse.getBriExpiration();
                     break;
             }
         }

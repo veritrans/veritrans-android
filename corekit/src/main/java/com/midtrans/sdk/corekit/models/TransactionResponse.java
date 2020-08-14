@@ -69,6 +69,10 @@ public class TransactionResponse implements Serializable {
     private String bniVaNumber;
     @SerializedName("bni_expiration")
     private String bniExpiration;
+    @SerializedName("bri_va_number")
+    private String briVaNumber;
+    @SerializedName("bri_expiration")
+    private String briExpiration;
     @SerializedName("billpayment_expiration")
     private String mandiriBillExpiration;
     @SerializedName("xl_tunai_order_id")
@@ -486,6 +490,22 @@ public class TransactionResponse implements Serializable {
 
     public void setBniExpiration(String bniExpiration) {
         this.bniExpiration = bniExpiration;
+    }
+
+    public String getBriVaNumber() {
+        return briVaNumber;
+    }
+
+    public void setBriVaNumber(String briVaNumber) {
+        this.briVaNumber = briVaNumber;
+    }
+
+    public String getBriExpiration() {
+        return briExpiration;
+    }
+
+    public void setBriExpiration(String briExpiration) {
+        this.briExpiration = briExpiration;
     }
 
     public String getBcaVaNumber() {
