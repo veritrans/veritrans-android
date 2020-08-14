@@ -866,5 +866,6 @@
     <string name="tab_atm_bri">ATM BRI</string>
     <string name="tab_bri_mobile">Mobile Banking</string>
     <string name="tab_bri_internet">Internet Banking</string>
+    <string name="bank_bri_transfer">Bank BRI</string>
 
 </resources>
