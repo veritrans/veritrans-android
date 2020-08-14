@@ -96,6 +96,11 @@ public class VaPaymentStatusActivity extends BaseVaPaymentStatusActivity {
                 pageName = "Bank Transfer BNI Charge";
                 presenter.trackPageView(pageName, false);
                 break;
+            case PaymentType.BRI_VA:
+                buttonName = "Done Bank Transfer BRI";
+                pageName = "Bank Transfer BRI Charge";
+                presenter.trackPageView(pageName, false);
+                break;
             case PaymentType.ALL_VA:
                 buttonName = "Done Bank Transfer All Bank";
                 pageName = "Bank Transfer Other Charge";
