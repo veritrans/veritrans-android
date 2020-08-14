@@ -333,6 +333,8 @@ public class AppUtils {
                 enabledPayments.add(new EnabledPayment(PaymentType.E_CHANNEL, CATEGORY_VA));
             } else if (name.equals(PaymentType.BNI_VA)) {
                 enabledPayments.add(new EnabledPayment(PaymentType.BNI_VA, CATEGORY_VA));
+            } else if (name.equals(PaymentType.BRI_VA)) {
+                enabledPayments.add(new EnabledPayment(PaymentType.BRI_VA, CATEGORY_VA));
             } else if (name.equals(PaymentType.DANAMON_ONLINE)) {
                 enabledPayments.add(new EnabledPayment(PaymentType.DANAMON_ONLINE, CATEGORY_DIRECT_DEBIT));
             } else if (name.equals(PaymentType.GOPAY)) {
