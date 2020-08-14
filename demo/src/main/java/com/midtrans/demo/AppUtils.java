@@ -163,6 +163,7 @@ public class AppUtils {
 
             case PaymentType.PERMATA_VA:
             case PaymentType.BNI_VA:
+            case PaymentType.BRI_VA:
             case PaymentType.BCA_VA:
             case PaymentType.ALL_VA:
             case PaymentType.E_CHANNEL:
