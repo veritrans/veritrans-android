@@ -132,6 +132,10 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
                 pageName = "Bank Transfer BNI Overview";
                 presenter.trackPageView(pageName, false);
                 break;
+            case PaymentType.BRI_VA:
+                pageName = "Bank Transfer BRI Overview";
+                presenter.trackPageView(pageName, false);
+                break;
             case PaymentType.E_CHANNEL:
                 buttonName = "Confirm Payment Mandiri Bill";
                 pageName = "Bank Transfer Mandiri Overview";
