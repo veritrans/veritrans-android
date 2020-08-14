@@ -17,6 +17,7 @@ public class PaymentType {
     public static final String PERMATA_VA = "permata_va";
     public static final String BCA_VA = "bca_va";
     public static final String BNI_VA = "bni_va";
+    public static final String BRI_VA = "bri_va";
     public static final String ALL_VA = "other_va";
     public static final String E_CHANNEL = "echannel";
     public static final String KLIK_BCA = "bca_klikbca";
