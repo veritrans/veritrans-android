@@ -617,7 +617,7 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
 
     public String getUserEmail() {
         String userEmail = "";
-         CustomerDetails customerDetails = getMidtransSDK().getTransactionRequest().getCustomerDetails();
+        CustomerDetails customerDetails = getMidtransSDK().getTransactionRequest().getCustomerDetails();
         if (customerDetails != null) {
             userEmail = customerDetails.getEmail();
         }
