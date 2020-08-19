@@ -205,56 +205,6 @@
                     android:textSize="@dimen/secondary_text_size" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/eight_dp"
-                android:orientation="horizontal"
-                android:paddingBottom="@dimen/five_dp"
-                android:paddingLeft="@dimen/eight_dp"
-                android:paddingRight="@dimen/eight_dp"
-                android:paddingTop="@dimen/five_dp">
-
-                <TextView
-                    android:layout_width="@dimen/twenty_four_dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/number_instruction8" />
-
-                <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:lineSpacingExtra="2dp"
-                    android:text="@string/bri_internet_instruction_8"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/secondary_text_size" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/eight_dp"
-                android:background="@color/light_gray"
-                android:orientation="horizontal"
-                android:paddingBottom="@dimen/five_dp"
-                android:paddingLeft="@dimen/eight_dp"
-                android:paddingRight="@dimen/eight_dp"
-                android:paddingTop="@dimen/five_dp">
-
-                <TextView
-                    android:layout_width="@dimen/twenty_four_dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/number_instruction9" />
-
-                <com.midtrans.sdk.uikit.widgets.DefaultTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:lineSpacingExtra="2dp"
-                    android:text="@string/bri_internet_instruction_9"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/secondary_text_size" />
-            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>

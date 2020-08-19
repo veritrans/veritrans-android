@@ -762,33 +762,31 @@
     <string name="tab_bni_mobile">Mobile Banking</string>
     <string name="tab_bni_internet">Internet Banking</string>
 
-    <!-- bni ATM payment instruction -->
-    <string name="bri_atm_instruction_1">On the main menu, choose <b>Others</b></string>
-    <string name="bri_atm_instruction_2">Choose <b>Transfer</b></string>
-    <string name="bri_atm_instruction_3">Choose <b>Savings Account</b></string>
-    <string name="bri_atm_instruction_4">Choose <b>To BRI Account</b></string>
-    <string name="bri_atm_instruction_5">Enter the Payment Account Number and press <b>Yes</b></string>
-    <string name="bri_atm_instruction_6">Enter the full amount to be paid and press <b>Correct</b></string>
-    <string name="bri_atm_instruction_7">Your <b>payment details</b> will appear on the confirmation page. If the information is correct press <b>Yes</b></string>
+    <!-- bri ATM payment instruction -->
+    <string name="bri_atm_instruction_1">On the main menu, choose <b>Others Transaction.</b></string>
+    <string name="bri_atm_instruction_2">Choose <b>Payment</b></string>
+    <string name="bri_atm_instruction_3">Choose <b>Other</b></string>
+    <string name="bri_atm_instruction_4">Choose <b>BRIVA</b></string>
+    <string name="bri_atm_instruction_5">Enter your BRIVA Number (max 15 code digits) and press <b>Correct</b></string>
+    <string name="bri_atm_instruction_6">Amount to be paid, BRIVA number and merchant name will appear on the payment confirmation page. If the information is correct, press <b>Yes</b></string>
+    <string name="bri_atm_instruction_7">Payment is finished. Save your payment receipt.</string>
 
-    <!-- bni mobile payment instruction -->
-    <string name="bri_mobile_instruction_1">Open the BRI Mobile Banking app and login.</string>
-    <string name="bri_mobile_instruction_2">Click <b>Transfer</b>.</string>
-    <string name="bri_mobile_instruction_3">Click <b>To BRI Account</b>.</string>
-    <string name="bri_mobile_instruction_4">Click <b>Input New Account</b>.</string>
-    <string name="bri_mobile_instruction_5">Enter account numbers, an then click <b>Continue</b>.</string>
-    <string name="bri_mobile_instruction_6">Input the <b>Transaction Password</b> and then click <b>Continue</b> and you are done.</string>
+    <!-- bri mobile payment instruction -->
+    <string name="bri_mobile_instruction_1">Log in to your <b>BRI Mobile</b> app, choose <b>Mobile Banking BRI</b>.</string>
+    <string name="bri_mobile_instruction_2">Choose <b>Payment</b>, then choose <b>BRIVA</b>.</string>
+    <string name="bri_mobile_instruction_3">Input <b>BRIVA Number</b></string>
+    <string name="bri_mobile_instruction_4">Amount to be paid, payment code  and merchant name will appear on the payment confirmation page. If the information is correct, choose <b>Continue</b>.</string>
+    <string name="bri_mobile_instruction_5">Input your <b>Mobile Banking BRI PIN</b>, choose <b>Ok</b>.</string>
+    <string name="bri_mobile_instruction_6">Payment is finished. Save the notification as your payment receipt.</string>
 
-    <!-- bni internet  payment instruction -->
-    <string name="bri_internet_instruction_1">Go to <a href="https://ibank.bri.co.id"><b>https://ibank.bri.co.id</b></a> and then click <b>Login</b>.</string>
-    <string name="bri_internet_instruction_2">Continue login with your <b>User ID</b> and <b>Password</b>.</string>
-    <string name="bri_internet_instruction_3">Click <b>Transfer</b> and then <b>Add Favorite Account</b> and choose <b>Antar Rekening BRI</b>.</string>
-    <string name="bri_internet_instruction_4">Enter account name, account number, and email and then click <b>Continue</b>.</string>
-    <string name="bri_internet_instruction_5">Input the <b>Authentification Code</b> from your token and then click <b>Continue</b>.</string>
-    <string name="bri_internet_instruction_6">Back to main menu and select <b>Transfer</b> and then <b>Transfer Antar Rekening BRI</b>.</string>
-    <string name="bri_internet_instruction_7">Pick the account that you just created in the previous step as <b>Rekening Tujuan</b> and fill in the rest before clicking <b>Continue</b>.</string>
-    <string name="bri_internet_instruction_8">Check whether the details are correct, if they are, please input the <b>Authentification Code</b> and click <b>Continue</b> and you are done.</string>
-    <string name="bri_internet_instruction_9">Your transaction is done.</string>
+    <!-- bri internet  payment instruction -->
+    <string name="bri_internet_instruction_1">Log in to your <b>Internet Banking BRI</b>.</string>
+    <string name="bri_internet_instruction_2"><![CDATA[Choose <b>Payment & Purchase</b>.]]></string>
+    <string name="bri_internet_instruction_3">Choose sub menu <b>BRIVA</b>.</string>
+    <string name="bri_internet_instruction_4">Input <b>BRIVA number</b>.</string>
+    <string name="bri_internet_instruction_5">Amount to be paid, payment code, and merchant name will appear on the payment confirmation page. If the information is correct, choose <b>Send</b>.</string>
+    <string name="bri_internet_instruction_6">Input <b>password</b> and <b>mToken</b>, choose <b>Send</b>.</string>
+    <string name="bri_internet_instruction_7">Payment is finished, choose <b>Print</b> to have payment receipt.</string>
 
     <string name="error_snap_transaction_details">Failed to retrieve transaction details</string>
     <string name="error_paid_orderid">Order id has been paid</string>
