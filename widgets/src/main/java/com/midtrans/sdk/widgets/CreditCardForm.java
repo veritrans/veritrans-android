@@ -732,12 +732,8 @@ public class CreditCardForm extends NestedScrollView implements CardPagerAdapter
             @Override
             public void onSuccess(TokenDetailsResponse response) {
 
-                if (!TextUtils.isEmpty(response.getRedirectUrl())) {
-                    start3DS(response.getTokenId(), response.getRedirectUrl());
-                } else {
-                    CreditCardPaymentModel cardPaymentModel = new CreditCardPaymentModel(response.getTokenId(), checkboxStoreCard.isChecked());
-                    payUsingCreditCard(getMidtransSDK().readAuthenticationToken(), cardPaymentModel);
-                }
+                CreditCardPaymentModel cardPaymentModel = new CreditCardPaymentModel(response.getTokenId(), checkboxStoreCard.isChecked());
+                payUsingCreditCard(getMidtransSDK().readAuthenticationToken(), cardPaymentModel);
             }
 
             @Override
