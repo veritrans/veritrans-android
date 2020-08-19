@@ -32,11 +32,13 @@ import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.BankType;
+import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.promo.Promo;
 import com.midtrans.sdk.corekit.models.snap.BanksPointResponse;
+import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.TransactionDetails;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.BuildConfig;
@@ -640,7 +642,13 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                 SdkUIFlowUtil.hideKeyboard(CreditCardDetailsActivity.this);
                 if (checkCardValidity() && checkUserDataValidity()) {
                     if (isEmailShown) {
-                        presenter.saveUserDetail(fieldEmail.getEditableText().toString(), fieldPhone.getEditableText().toString());
+                        CustomerDetails user = getMidtransSdk().getTransactionRequest().getCustomerDetails();
+                        user.setEmail(fieldEmail.getEditableText().toString());
+                        user.setPhone(fieldPhone.getEditableText().toString());
+                        CustomerDetails customerDetails = new CustomerDetails(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhone());
+                        Transaction transaction = getMidtransSdk().getTransaction();
+                        transaction.setCustomerDetails(customerDetails);
+                        getMidtransSdk().setTransaction(transaction);
                     }
                     if (checkPaymentValidity()) {
                         setPromoSelected();

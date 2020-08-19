@@ -19,6 +19,7 @@ import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
 import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.CardTokenRequest;
+import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.PaymentDetails;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.SaveCardResponse;
@@ -616,20 +617,20 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
 
     public String getUserEmail() {
         String userEmail = "";
-        UserDetail userDetail = LocalDataHandler.readObject(UiKitConstants.KEY_USER_DETAILS, UserDetail.class);
-        if (userDetail != null) {
-            userEmail = userDetail.getEmail();
+        CustomerDetails customerDetails = getMidtransSDK().getTransactionRequest().getCustomerDetails();
+        if (customerDetails != null) {
+            userEmail = customerDetails.getEmail();
         }
         return userEmail;
     }
 
     public String getUserPhone() {
-        String userEmail = "";
-        UserDetail userDetail = LocalDataHandler.readObject(UiKitConstants.KEY_USER_DETAILS, UserDetail.class);
-        if (userDetail != null) {
-            userEmail = userDetail.getPhoneNumber();
+        String userPhone = "";
+        CustomerDetails customerDetails = getMidtransSDK().getTransactionRequest().getCustomerDetails();
+        if (customerDetails != null) {
+            userPhone = customerDetails.getPhone();
         }
-        return userEmail;
+        return userPhone;
     }
 
     public void saveUserDetail(@NonNull String email, @NonNull String phone) {
