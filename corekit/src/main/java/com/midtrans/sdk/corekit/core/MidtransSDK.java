@@ -1012,6 +1012,30 @@ public class MidtransSDK {
     }
 
     /**
+     * It will run backround task to charge payment using Bank Transfer BRI
+     *
+     * @param authenticationToken authentication token
+     * @param callback            transaction callback
+     */
+    public void paymentUsingBankTransferBri(@NonNull String authenticationToken, @NonNull String email,
+                                            @NonNull TransactionCallback callback) {
+        if (callback == null) {
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
+            return;
+        }
+
+        if (isTransactionRequestAvailable()) {
+            if (Utils.isNetworkAvailable(context)) {
+                snapServiceManager.paymentUsingVa(authenticationToken, SdkUtil.getBankTransferPaymentRequest(email, PaymentType.BRI_VA), callback);
+            } else {
+                callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
+            }
+        } else {
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
+        }
+    }
+
+    /**
      * It will run backround task to charge payment using Bank Transfer Permata
      *
      * @param authenticationToken authentication token

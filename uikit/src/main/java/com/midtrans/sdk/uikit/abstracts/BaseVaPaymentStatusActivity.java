@@ -88,6 +88,9 @@ public abstract class BaseVaPaymentStatusActivity extends BasePaymentActivity {
             case PaymentType.BNI_VA:
                 pageNumber = 3;
                 break;
+            case PaymentType.BRI_VA:
+                pageNumber = 3;
+                break;
             case PaymentType.E_CHANNEL:
                 pageNumber = 2;
                 break;
@@ -170,6 +173,9 @@ public abstract class BaseVaPaymentStatusActivity extends BasePaymentActivity {
                 break;
             case PaymentType.BNI_VA:
                 setPageTitle(getString(R.string.bank_bni_transfer));
+                break;
+            case PaymentType.BRI_VA:
+                setPageTitle(getString(R.string.bank_bri_transfer));
                 break;
             case PaymentType.E_CHANNEL:
                 setPageTitle(getString(R.string.mandiri_bill_transfer));

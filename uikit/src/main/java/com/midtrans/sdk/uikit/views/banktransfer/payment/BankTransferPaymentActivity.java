@@ -132,6 +132,10 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
                 pageName = "Bank Transfer BNI Overview";
                 presenter.trackPageView(pageName, false);
                 break;
+            case PaymentType.BRI_VA:
+                pageName = "Bank Transfer BRI Overview";
+                presenter.trackPageView(pageName, false);
+                break;
             case PaymentType.E_CHANNEL:
                 buttonName = "Confirm Payment Mandiri Bill";
                 pageName = "Bank Transfer Mandiri Overview";
@@ -200,6 +204,10 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
                 break;
             case PaymentType.BNI_VA:
                 title = getString(R.string.bank_bni_transfer);
+                pageNumber = 3;
+                break;
+            case PaymentType.BRI_VA:
+                title = getString(R.string.bank_bri_transfer);
                 pageNumber = 3;
                 break;
             default:
@@ -323,6 +331,12 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
                     showTokenNotification(false);
                 }
             } else if (paymentType.equals(PaymentType.BNI_VA)) {
+                if (position == 1) {
+                    showOtpNotification(true);
+                } else {
+                    showOtpNotification(false);
+                }
+            } else if (paymentType.equals(PaymentType.BRI_VA)) {
                 if (position == 1) {
                     showOtpNotification(true);
                 } else {

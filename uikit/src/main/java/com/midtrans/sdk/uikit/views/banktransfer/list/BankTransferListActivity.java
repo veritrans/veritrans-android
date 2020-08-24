@@ -66,6 +66,8 @@ public class BankTransferListActivity extends BasePaymentActivity implements Ban
                     startBankTransferPayment(PaymentType.BCA_VA);
                 } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_BNI, false)) {
                     startBankTransferPayment(PaymentType.BNI_VA);
+                } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_BRI, false)) {
+                    startBankTransferPayment(PaymentType.BRI_VA);
                 } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_OTHER, false)) {
                     startBankTransferPayment(PaymentType.ALL_VA);
                 }

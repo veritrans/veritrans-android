@@ -13,6 +13,7 @@ import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.views.banktransfer.instruction.InstructionBcaVaFragment;
 import com.midtrans.sdk.uikit.views.banktransfer.instruction.InstructionBniVaFragment;
+import com.midtrans.sdk.uikit.views.banktransfer.instruction.InstructionBriVaFragment;
 import com.midtrans.sdk.uikit.views.banktransfer.instruction.InstructionMandiriVaFragment;
 import com.midtrans.sdk.uikit.views.banktransfer.instruction.InstructionOtherBankFragment;
 import com.midtrans.sdk.uikit.views.banktransfer.instruction.InstructionPermataVaFragment;
@@ -57,6 +58,9 @@ public class InstructionPagerAdapter extends FragmentStatePagerAdapter {
                     break;
                 case PaymentType.BNI_VA:
                     fragment = InstructionBniVaFragment.newInstance(position, title);
+                    break;
+                case PaymentType.BRI_VA:
+                    fragment = InstructionBriVaFragment.newInstance(position, title);
                     break;
                 default:
                     title = changeTitleIfTypeAltoOrPrima(title);
@@ -135,6 +139,16 @@ public class InstructionPagerAdapter extends FragmentStatePagerAdapter {
                         pageTitle = context.getString(R.string.tab_bni_mobile);
                     } else {
                         pageTitle = context.getString(R.string.tab_bni_internet);
+                    }
+                    break;
+
+                case PaymentType.BRI_VA:
+                    if (position == 0) {
+                        pageTitle = context.getString(R.string.tab_atm_bri);
+                    } else if (position == 1) {
+                        pageTitle = context.getString(R.string.tab_bri_mobile);
+                    } else {
+                        pageTitle = context.getString(R.string.tab_bri_internet);
                     }
                     break;
 
