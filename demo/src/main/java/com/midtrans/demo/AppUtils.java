@@ -105,11 +105,11 @@ public class AppUtils {
                     break;
 
                 case PaymentType.BRI_VA:
-                    model = new PaymentMethodsModel(PAYMENT_NAME_BRI_VA, null, 0, "", 5, status);
+                    model = new PaymentMethodsModel(PAYMENT_NAME_BRI_VA, null, 0, "", 6, status);
                     break;
 
                 case PaymentType.ALL_VA:
-                    model = new PaymentMethodsModel(PAYMENT_NAME_OTHER_VA, null, 0, "", 6, status);
+                    model = new PaymentMethodsModel(PAYMENT_NAME_OTHER_VA, null, 0, "", 7, status);
                     break;
 
                 case PaymentType.E_CHANNEL:
