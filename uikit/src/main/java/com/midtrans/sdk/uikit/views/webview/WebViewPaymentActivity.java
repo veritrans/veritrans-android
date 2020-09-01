@@ -13,6 +13,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.View;
 import android.webkit.*;
 import android.widget.ImageView;
 import com.midtrans.sdk.corekit.core.Logger;
@@ -97,6 +98,7 @@ public class WebViewPaymentActivity extends BasePaymentActivity {
 
         if (paymentType != null && paymentType.equalsIgnoreCase(PaymentType.CREDIT_CARD)) {
             presenter.trackPageView("CC 3DS", false);
+            toolbar.setVisibility(View.GONE);
         }
     }
 

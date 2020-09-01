@@ -37,6 +37,7 @@ public class AppUtils {
     private static final String PAYMENT_NAME_PERMATA_VA = "Permata VA";
     private static final String PAYMENT_NAME_BCA_VA = "BCA VA";
     private static final String PAYMENT_NAME_BNI_VA = "BNI VA";
+    private static final String PAYMENT_NAME_BRI_VA = "BRI VA";
     private static final String PAYMENT_NAME_OTHER_VA = "Other VA";
     private static final String PAYMENT_NAME_MANDIRI_ECHANNEL = "Mandiri VA";
     private static final String TYPE_PHONE = "PHONE";
@@ -60,6 +61,7 @@ public class AppUtils {
         paymentNameList.add(new EnabledPayment(PaymentType.PERMATA_VA, CATEGORY_VA));
         paymentNameList.add(new EnabledPayment(PaymentType.BCA_VA, CATEGORY_VA));
         paymentNameList.add(new EnabledPayment(PaymentType.BNI_VA, CATEGORY_VA));
+        paymentNameList.add(new EnabledPayment(PaymentType.BRI_VA, CATEGORY_VA));
         paymentNameList.add(new EnabledPayment(PaymentType.ALL_VA, CATEGORY_VA));
         paymentNameList.add(new EnabledPayment(PaymentType.E_CHANNEL, CATEGORY_VA));
 
@@ -102,8 +104,12 @@ public class AppUtils {
                     model = new PaymentMethodsModel(PAYMENT_NAME_BNI_VA, null, 0, "", 5, status);
                     break;
 
+                case PaymentType.BRI_VA:
+                    model = new PaymentMethodsModel(PAYMENT_NAME_BRI_VA, null, 0, "", 6, status);
+                    break;
+
                 case PaymentType.ALL_VA:
-                    model = new PaymentMethodsModel(PAYMENT_NAME_OTHER_VA, null, 0, "", 6, status);
+                    model = new PaymentMethodsModel(PAYMENT_NAME_OTHER_VA, null, 0, "", 7, status);
                     break;
 
                 case PaymentType.E_CHANNEL:
@@ -163,6 +169,7 @@ public class AppUtils {
 
             case PaymentType.PERMATA_VA:
             case PaymentType.BNI_VA:
+            case PaymentType.BRI_VA:
             case PaymentType.BCA_VA:
             case PaymentType.ALL_VA:
             case PaymentType.E_CHANNEL:
@@ -333,6 +340,8 @@ public class AppUtils {
                 enabledPayments.add(new EnabledPayment(PaymentType.E_CHANNEL, CATEGORY_VA));
             } else if (name.equals(PaymentType.BNI_VA)) {
                 enabledPayments.add(new EnabledPayment(PaymentType.BNI_VA, CATEGORY_VA));
+            } else if (name.equals(PaymentType.BRI_VA)) {
+                enabledPayments.add(new EnabledPayment(PaymentType.BRI_VA, CATEGORY_VA));
             } else if (name.equals(PaymentType.DANAMON_ONLINE)) {
                 enabledPayments.add(new EnabledPayment(PaymentType.DANAMON_ONLINE, CATEGORY_DIRECT_DEBIT));
             } else if (name.equals(PaymentType.GOPAY)) {

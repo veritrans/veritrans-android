@@ -226,8 +226,8 @@ public class SdkUtil {
             if (customerDetails != null) {
                 CustomerDetailRequest customerDetailRequest = new CustomerDetailRequest();
                 customerDetailRequest.setFullName(customerDetails.getFirstName());
-                customerDetailRequest.setPhone(customerDetailRequest.getPhone());
-                customerDetailRequest.setEmail(customerDetailRequest.getEmail());
+                customerDetailRequest.setPhone(customerDetails.getPhone());
+                customerDetailRequest.setEmail(customerDetails.getEmail());
 
                 return customerDetailRequest;
             }

@@ -57,6 +57,10 @@ public class BankTransferPaymentPresenter extends BasePaymentPresenter<BankTrans
                     startBniBankTransferpayment(snapToken, email);
                     break;
 
+                case PaymentType.BRI_VA:
+                    startBriBankTransferPayment(snapToken, email);
+                    break;
+
                 case PaymentType.ALL_VA:
                     startOtherBanksTransferpayment(snapToken, email);
                     break;
@@ -93,6 +97,27 @@ public class BankTransferPaymentPresenter extends BasePaymentPresenter<BankTrans
 
     private void startBniBankTransferpayment(String snapToken, String email) {
         MidtransSDK.getInstance().paymentUsingBankTransferBni(snapToken, email, new TransactionCallback() {
+            @Override
+            public void onSuccess(TransactionResponse response) {
+                transactionResponse = response;
+                view.onPaymentSuccess(response);
+            }
+
+            @Override
+            public void onFailure(TransactionResponse response, String reason) {
+                transactionResponse = response;
+                view.onPaymentFailure(response);
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                view.onPaymentError(error);
+            }
+        });
+    }
+
+    private void startBriBankTransferPayment(String snapToken, String email) {
+        MidtransSDK.getInstance().paymentUsingBankTransferBri(snapToken, email, new TransactionCallback() {
             @Override
             public void onSuccess(TransactionResponse response) {
                 transactionResponse = response;
