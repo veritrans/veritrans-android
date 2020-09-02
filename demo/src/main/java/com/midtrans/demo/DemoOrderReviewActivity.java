@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -55,11 +56,12 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
     private FancyButton payBtn;
     private Toolbar toolbar;
     private ImageView editCustBtn, saveCustBtn, cancelCustBtn, editDelivBtn;
-    private TextInputEditText editName, editEmail, editPhone;
+    private TextInputEditText editName, editEmail, editPhone, editsnap;
     private DemoTextView deliveryAddress, cityAddress, postalCodeAddress;
     private boolean isInEditMode;
     private ArrayList<CountryCodeModel> countryCodeList = null;
     private DemoTextView totalAmountText;
+    private Button snapPayBtn;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,6 +94,8 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
         deliveryAddress = (DemoTextView) findViewById(R.id.delivery_address);
         cityAddress = (DemoTextView) findViewById(R.id.city_address);
         postalCodeAddress = (DemoTextView) findViewById(R.id.zip_address);
+        snapPayBtn = (Button) findViewById(R.id.snaptoken_pay_button);
+        editsnap = (TextInputEditText)findViewById(R.id.edit_snaptoken);
     }
 
     private void bindData() {
@@ -193,6 +197,7 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
         payBtn.setText(getString(R.string.btn_pay_20000));
         payBtn.setTextBold();
         payBtn.setOnClickListener(this);
+        snapPayBtn.setOnClickListener(this);
     }
 
     private void initEditButton() {
@@ -295,6 +300,11 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
                     overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 }
                 break;
+            case R.id.snaptoken_pay_button:
+                String snaptokenValue = editsnap.getEditableText().toString();
+                if (snaptokenValue != null) {
+                    MidtransSDK.getInstance().startPaymentUiFlow(DemoOrderReviewActivity.this, snaptokenValue);
+                }
         }
     }
 
