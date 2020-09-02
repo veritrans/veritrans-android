@@ -15,6 +15,7 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
@@ -642,13 +643,23 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                 SdkUIFlowUtil.hideKeyboard(CreditCardDetailsActivity.this);
                 if (checkCardValidity() && checkUserDataValidity()) {
                     if (isEmailShown) {
-                        CustomerDetails user = getMidtransSdk().getTransactionRequest().getCustomerDetails();
-                        user.setEmail(fieldEmail.getEditableText().toString());
-                        user.setPhone(fieldPhone.getEditableText().toString());
-                        CustomerDetails customerDetails = new CustomerDetails(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhone());
                         Transaction transaction = getMidtransSdk().getTransaction();
-                        transaction.setCustomerDetails(customerDetails);
-                        getMidtransSdk().setTransaction(transaction);
+                        CustomerDetails user = transaction.getCustomerDetails();
+                        String emailTextFieldValue = fieldEmail.getEditableText().toString();
+                        String phoneTextFieldValue = fieldPhone.getEditableText().toString();
+                        if (user != null) {
+                            user.setEmail(emailTextFieldValue);
+                            user.setPhone(phoneTextFieldValue);
+                            CustomerDetails customerDetails = new CustomerDetails(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhone());
+                            transaction.setCustomerDetails(customerDetails);
+                            getMidtransSdk().setTransaction(transaction);
+                        } else {
+                            if (!emailTextFieldValue.isEmpty() || !phoneTextFieldValue.isEmpty()){
+                                CustomerDetails customerDetails = new CustomerDetails(null, null, emailTextFieldValue.toString(), phoneTextFieldValue.toString());
+                                transaction.setCustomerDetails(customerDetails);
+                                getMidtransSdk().setTransaction(transaction);
+                            }
+                        }
                     }
                     if (checkPaymentValidity()) {
                         setPromoSelected();
