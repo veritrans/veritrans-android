@@ -647,11 +647,13 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements Cr
                         String emailTextFieldValue = fieldEmail.getEditableText().toString();
                         String phoneTextFieldValue = fieldPhone.getEditableText().toString();
                         if (user != null) {
-                            user.setEmail(emailTextFieldValue);
-                            user.setPhone(phoneTextFieldValue);
-                            CustomerDetails customerDetails = new CustomerDetails(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhone());
-                            transaction.setCustomerDetails(customerDetails);
-                            getMidtransSdk().setTransaction(transaction);
+                            if (!emailTextFieldValue.isEmpty() || !phoneTextFieldValue.isEmpty()){
+                                user.setEmail(emailTextFieldValue);
+                                user.setPhone(phoneTextFieldValue);
+                                CustomerDetails customerDetails = new CustomerDetails(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhone());
+                                transaction.setCustomerDetails(customerDetails);
+                                getMidtransSdk().setTransaction(transaction);
+                            }
                         } else {
                             if (!emailTextFieldValue.isEmpty() || !phoneTextFieldValue.isEmpty()){
                                 CustomerDetails customerDetails = new CustomerDetails(null, null, emailTextFieldValue.toString(), phoneTextFieldValue.toString());
