@@ -113,7 +113,7 @@ tasks.withType(Test) {
 dependencies {
     compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
     compile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
-    compile 'com.github.scottyab:secure-preferences:v0.1.6'
+    compile 'com.github.scottyab:secure-preferences:v0.1.7'
 
     compile 'com.squareup.okhttp3:okhttp:3.10.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.10.0'
