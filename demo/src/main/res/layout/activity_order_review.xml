@@ -255,7 +255,7 @@
                         android:textSize="16sp" />
                 </android.support.design.widget.TextInputLayout>
                 <Button
-                    android:id="@+id/snaptoken_pay_button"
+                    android:id="@+id/button_snap_pay"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="pay with snaptoken"
