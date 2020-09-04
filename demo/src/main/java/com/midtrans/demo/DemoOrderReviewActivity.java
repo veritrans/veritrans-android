@@ -300,7 +300,7 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
                     overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 }
                 break;
-            case R.id.snaptoken_pay_button:
+            case R.id.button_snap_pay:
                 String snaptokenValue = editSnap.getEditableText().toString();
                 if (snaptokenValue != null) {
                     MidtransSDK.getInstance().startPaymentUiFlow(DemoOrderReviewActivity.this, snaptokenValue);
