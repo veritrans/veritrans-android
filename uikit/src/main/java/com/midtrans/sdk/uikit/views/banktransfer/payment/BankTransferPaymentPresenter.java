@@ -6,6 +6,7 @@ import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.PaymentType;
+import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentPresenter;
@@ -30,9 +31,9 @@ public class BankTransferPaymentPresenter extends BasePaymentPresenter<BankTrans
 
     public String getUserEmail() {
         String userEmail = "";
-        UserDetail userDetail = LocalDataHandler.readObject(UiKitConstants.KEY_USER_DETAILS, UserDetail.class);
-        if (userDetail != null) {
-            userEmail = userDetail.getEmail();
+        CustomerDetails customerDetails = getMidtransSDK().getTransaction().getCustomerDetails();
+        if (customerDetails != null) {
+            userEmail = customerDetails.getEmail();
         }
         return userEmail;
     }
