@@ -20,7 +20,6 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.koushikdutta.ion.Ion;
 import com.midtrans.sdk.corekit.core.Currency;
 import com.midtrans.sdk.corekit.core.Logger;
@@ -43,7 +42,6 @@ import com.midtrans.sdk.uikit.views.webview.WebViewPaymentActivity;
 import com.midtrans.sdk.uikit.widgets.BoldTextView;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
-
 import java.util.List;
 
 /**
@@ -89,6 +87,7 @@ public abstract class BasePaymentActivity extends BaseActivity {
 
     private void initTotalAmount() {
         final Transaction transaction = getMidtransSdk().getTransaction();
+        List<ItemDetails> itemDetails = null;
         if (transaction.getTransactionDetails() != null) {
             String currency = transaction.getTransactionDetails().getCurrency();
             textTotalAmount = findViewById(R.id.text_amount);
@@ -103,7 +102,7 @@ public abstract class BasePaymentActivity extends BaseActivity {
                     changeTotalAmountColor(defaultTotalAmount, totalAmount);
 
                     // init item details
-                    List<ItemDetails> itemDetails = paymentDetails.getItemDetailsList();
+                    itemDetails = paymentDetails.getItemDetailsList();
                     initTransactionDetail(itemDetails, currency);
                 }
 
@@ -112,29 +111,31 @@ public abstract class BasePaymentActivity extends BaseActivity {
                     textOrderId.setText(transaction.getTransactionDetails().getOrderId());
                 }
             }
-
         }
 
-        //init dim
-        findViewById(R.id.background_dim).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                displayOrHideItemDetails();
-            }
-        });
+        if (itemDetails != null) {
+            //init dim
+            findViewById(R.id.background_dim).setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    displayOrHideItemDetails();
+                }
+            });
 
-        final LinearLayout amountContainer = (LinearLayout) findViewById(R.id.container_item_details);
-        amountContainer.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                displayOrHideItemDetails();
-            }
-        });
+            final LinearLayout amountContainer = (LinearLayout) findViewById(
+                R.id.container_item_details);
+            amountContainer.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    displayOrHideItemDetails();
+                }
+            });
+        }
     }
 
     private void initTransactionDetail(List<ItemDetails> details, String currency) {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv_transaction_detail);
-        if (recyclerView != null) {
+        if (recyclerView != null && details != null) {
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
             transactionDetailAdapter = new TransactionDetailsAdapter(details, currency);
@@ -148,11 +149,13 @@ public abstract class BasePaymentActivity extends BaseActivity {
         if (recyclerView != null && dimView != null) {
             if (isDetailShown) {
                 recyclerView.setVisibility(View.GONE);
-                ((TextView) findViewById(R.id.text_amount)).setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_amount_detail, 0);
+                ((TextView) findViewById(R.id.text_amount))
+                    .setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_amount_detail, 0);
                 dimView.setVisibility(View.GONE);
             } else {
                 recyclerView.setVisibility(View.VISIBLE);
-                ((TextView) findViewById(R.id.text_amount)).setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                ((TextView) findViewById(R.id.text_amount))
+                    .setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                 dimView.setVisibility(View.VISIBLE);
             }
             isDetailShown = !isDetailShown;
@@ -188,14 +191,16 @@ public abstract class BasePaymentActivity extends BaseActivity {
             final double newTotalAmount = transactionDetailAdapter.getItemTotalAmount();
             String currency = Currency.IDR;
 
-            TransactionDetails transactionDetails = getMidtransSdk().getTransaction().getTransactionDetails();
+            TransactionDetails transactionDetails = getMidtransSdk().getTransaction()
+                .getTransactionDetails();
             if (transactionDetails != null) {
                 changeTotalAmountColor(transactionDetails.getAmount(), newTotalAmount);
                 currency = transactionDetails.getCurrency();
                 PaymentDetails paymentDetails = getMidtransSdk().getPaymentDetails();
 
                 if (paymentDetails != null) {
-                    paymentDetails.changePaymentDetails(transactionDetailAdapter.getItemDetails(), newTotalAmount);
+                    paymentDetails.changePaymentDetails(transactionDetailAdapter.getItemDetails(),
+                        newTotalAmount);
                 }
             }
 
@@ -204,16 +209,18 @@ public abstract class BasePaymentActivity extends BaseActivity {
     }
 
     private void changeTotalAmountColor(double totalAmount, double newTotalAmount) {
-        int primaryColor = getPrimaryColor() != 0 ? getPrimaryColor() : ContextCompat.getColor(BasePaymentActivity.this, R.color.dark_gray);
+        int primaryColor = getPrimaryColor() != 0 ? getPrimaryColor()
+            : ContextCompat.getColor(BasePaymentActivity.this, R.color.dark_gray);
         int amountColor = newTotalAmount == totalAmount
-                ? primaryColor : ContextCompat.getColor(BasePaymentActivity.this, R.color.promoAmount);
+            ? primaryColor : ContextCompat.getColor(BasePaymentActivity.this, R.color.promoAmount);
 
         textTotalAmount.setTextColor(amountColor);
     }
 
     protected void initMerchantLogo() {
         ImageView merchantLogo = (ImageView) findViewById(R.id.merchant_logo);
-        DefaultTextView merchantNameText = (DefaultTextView) findViewById(R.id.text_page_merchant_name);
+        DefaultTextView merchantNameText = (DefaultTextView) findViewById(
+            R.id.text_page_merchant_name);
 
         MerchantData merchantData = getMidtransSdk().getMerchantData();
 
@@ -265,8 +272,10 @@ public abstract class BasePaymentActivity extends BaseActivity {
 
     protected void adjustToolbarSize(Toolbar toolbar) {
         if (hasMerchantLogo) {
-            AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
-            params.height = params.height + (int) getResources().getDimension(R.dimen.toolbar_expansion_size);
+            AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) toolbar
+                .getLayoutParams();
+            params.height =
+                params.height + (int) getResources().getDimension(R.dimen.toolbar_expansion_size);
             toolbar.setLayoutParams(params);
         }
     }
@@ -341,15 +350,18 @@ public abstract class BasePaymentActivity extends BaseActivity {
         String formattedAmount;
 
         if (TextUtils.isEmpty(currency)) {
-            formattedAmount = getString(R.string.prefix_money, Utils.getFormattedAmount(totalAmount));
+            formattedAmount = getString(R.string.prefix_money,
+                Utils.getFormattedAmount(totalAmount));
         } else {
             switch (currency) {
                 case Currency.SGD:
-                    formattedAmount = getString(R.string.prefix_money_sgd, Utils.getFormattedAmount(totalAmount));
+                    formattedAmount = getString(R.string.prefix_money_sgd,
+                        Utils.getFormattedAmount(totalAmount));
                     break;
 
                 default:
-                    formattedAmount = getString(R.string.prefix_money, Utils.getFormattedAmount(totalAmount));
+                    formattedAmount = getString(R.string.prefix_money,
+                        Utils.getFormattedAmount(totalAmount));
                     break;
             }
         }
