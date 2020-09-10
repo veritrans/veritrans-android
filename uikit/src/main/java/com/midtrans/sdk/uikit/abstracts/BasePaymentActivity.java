@@ -168,7 +168,7 @@ public abstract class BasePaymentActivity extends BaseActivity {
                 @Override
                 public void run() {
                     transactionDetailAdapter.addItemDetails(newItem);
-                    changeTotalAmount();
+                    changeTotalAmount(transactionDetailAdapter.getItemTotalAmount());
                 }
             }, 200);
         }
@@ -180,15 +180,14 @@ public abstract class BasePaymentActivity extends BaseActivity {
                 @Override
                 public void run() {
                     transactionDetailAdapter.removeItemDetails(itemId);
-                    changeTotalAmount();
+                    changeTotalAmount(transactionDetailAdapter.getItemTotalAmount());
                 }
             }, 200);
         }
     }
 
-    protected void changeTotalAmount() {
+    protected void changeTotalAmount(double newTotalAmount) {
         if (textTotalAmount != null) {
-            final double newTotalAmount = transactionDetailAdapter.getItemTotalAmount();
             String currency = Currency.IDR;
 
             TransactionDetails transactionDetails = getMidtransSdk().getTransaction()
@@ -199,8 +198,9 @@ public abstract class BasePaymentActivity extends BaseActivity {
                 PaymentDetails paymentDetails = getMidtransSdk().getPaymentDetails();
 
                 if (paymentDetails != null) {
-                    paymentDetails.changePaymentDetails(transactionDetailAdapter.getItemDetails(),
-                        newTotalAmount);
+                    if (paymentDetails.getItemDetailsList() != null) {
+                        paymentDetails.changePaymentDetails(transactionDetailAdapter.getItemDetails(), newTotalAmount);
+                    }
                 }
             }
 
