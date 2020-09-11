@@ -1,7 +1,6 @@
 package com.midtrans.sdk.corekit.models.snap;
 
 import com.google.gson.annotations.SerializedName;
-
 import java.util.List;
 
 /**
@@ -38,6 +37,8 @@ public class TransactionStatusResponse {
     private String fraudStatus;
     @SerializedName("status_message")
     private String statusMessage;
+    @SerializedName("installment_term")
+    private String installmentTerm;
     @SerializedName("error_messages")
     private List<String> errorMessages;
 
@@ -104,6 +105,8 @@ public class TransactionStatusResponse {
     public String getTransactionId() {
         return transactionId;
     }
+
+    public String getInstallmentTerm() { return installmentTerm; }
 
     public void setStatusCode(String statusCode) {
         this.statusCode = statusCode;
