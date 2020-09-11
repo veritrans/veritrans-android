@@ -12,8 +12,8 @@ public class RegisterCardResponse extends TransactionResponse implements Seriali
     @SerializedName("user_id")
     private String userId;
 
-    public RegisterCardResponse(String statusCode, String statusMessage, String transactionId, String orderId, String grossAmount, String paymentType, String transactionTime, String transactionStatus) {
-        super(statusCode, statusMessage, transactionId, orderId, grossAmount, paymentType, transactionTime, transactionStatus);
+    public RegisterCardResponse(String statusCode, String statusMessage, String transactionId, String orderId, String grossAmount, String paymentType, String transactionTime, String transactionStatus, String installmentTerm) {
+        super(statusCode, statusMessage, transactionId, orderId, grossAmount, paymentType, transactionTime, transactionStatus, installmentTerm);
     }
 
     public String getUserId() {
