@@ -58,10 +58,16 @@ public class BasePaymentPresenter<V extends BaseView> extends BasePresenter<V> {
 
     protected TransactionResponse convertTransactionStatus(TransactionStatusResponse response) {
         TransactionResponse transactionResponse = new TransactionResponse(
-                response.getStatusCode(), response.getStatusMessage(), response.getTransactionId(),
-                response.getOrderId(), response.getGrossAmount(), response.getPaymentType(),
-                response.getTransactionTime(), response.getTransactionStatus());
-
+            response.getStatusCode(),
+            response.getStatusMessage(),
+            response.getTransactionId(),
+            response.getOrderId(),
+            response.getGrossAmount(),
+            response.getPaymentType(),
+            response.getTransactionTime(),
+            response.getTransactionStatus(),
+            response.getInstallmentTerm()
+        );
         return transactionResponse;
     }
 

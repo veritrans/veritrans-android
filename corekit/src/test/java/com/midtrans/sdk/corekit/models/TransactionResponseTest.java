@@ -31,6 +31,7 @@ public class TransactionResponseTest {
     private String paymentType = "paymentype";
     private String transTime = "transtime";
     private String transStatus = "transstatus";
+    private String installmentTerm = "6";
     @Mock
     private List<VaNumber> accountNumberMock;
     private String paymentCodeIndomaretMock = "codeindomaret";
@@ -64,12 +65,11 @@ public class TransactionResponseTest {
             }
         });
         transactionResponse = new TransactionResponse(statusCode, statusMessage,
-                transId, orderId, grossAmount, paymentType, transTime, transStatus);
+                transId, orderId, grossAmount, paymentType, transTime, transStatus, installmentTerm);
     }
 
     @Test
     public void constructorTest() {
-
         Assert.assertEquals(statusCode, transactionResponse.getStatusCode());
         Assert.assertEquals(statusMessage, transactionResponse.getStatusMessage());
         Assert.assertEquals(transId, transactionResponse.getTransactionId());
@@ -78,6 +78,7 @@ public class TransactionResponseTest {
         Assert.assertEquals(paymentType, transactionResponse.getPaymentType());
         Assert.assertEquals(transTime, transactionResponse.getTransactionTime());
         Assert.assertEquals(transStatus, transactionResponse.getTransactionStatus());
+        Assert.assertEquals(installmentTerm, transactionResponse.getInstallmentTerm());
     }
 
 

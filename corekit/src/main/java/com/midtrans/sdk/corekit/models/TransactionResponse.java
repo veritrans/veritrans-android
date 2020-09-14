@@ -145,9 +145,17 @@ public class TransactionResponse implements Serializable {
     private String deeplinkUrl;
     private String currency;
 
-    public TransactionResponse(String statusCode, String statusMessage, String transactionId,
-                               String orderId, String grossAmount, String paymentType,
-                               String transactionTime, String transactionStatus) {
+    public TransactionResponse(
+        String statusCode,
+        String statusMessage,
+        String transactionId,
+        String orderId,
+        String grossAmount,
+        String paymentType,
+        String transactionTime,
+        String transactionStatus,
+        String installmentTerm
+    ) {
         this.statusCode = statusCode;
         this.statusMessage = statusMessage;
         this.transactionId = transactionId;
@@ -156,6 +164,7 @@ public class TransactionResponse implements Serializable {
         this.paymentType = paymentType;
         this.transactionTime = transactionTime;
         this.transactionStatus = transactionStatus;
+        this.installmentTerm = installmentTerm;
     }
 
     /**
