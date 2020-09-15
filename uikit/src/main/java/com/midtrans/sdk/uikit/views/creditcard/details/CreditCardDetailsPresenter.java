@@ -498,7 +498,6 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
         getMidtransSDK().getTransactionStatus(snapToken, new GetTransactionStatusCallback() {
             @Override
             public void onSuccess(TransactionStatusResponse response) {
-
                 TransactionResponse transactionResponse = convertTransactionStatus(response);
                 CreditCardDetailsPresenter.this.transactionResponse = transactionResponse;
 
@@ -507,7 +506,6 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
 
             @Override
             public void onFailure(TransactionStatusResponse response, String reason) {
-
                 TransactionResponse transactionResponse = convertTransactionStatus(response);
                 CreditCardDetailsPresenter.this.transactionResponse = transactionResponse;
                 view.onGetTransactionStatusFailure(transactionResponse);
@@ -617,7 +615,7 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
 
     public String getUserEmail() {
         String userEmail = "";
-        CustomerDetails customerDetails = getMidtransSDK().getTransactionRequest().getCustomerDetails();
+        CustomerDetails customerDetails = getMidtransSDK().getTransaction().getCustomerDetails();
         if (customerDetails != null) {
             userEmail = customerDetails.getEmail();
         }
@@ -626,7 +624,7 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
 
     public String getUserPhone() {
         String userPhone = "";
-        CustomerDetails customerDetails = getMidtransSDK().getTransactionRequest().getCustomerDetails();
+        CustomerDetails customerDetails = getMidtransSDK().getTransaction().getCustomerDetails();
         if (customerDetails != null) {
             userPhone = customerDetails.getPhone();
         }
