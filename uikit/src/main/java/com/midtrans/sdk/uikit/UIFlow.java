@@ -121,9 +121,8 @@ public class UIFlow implements ISdkFlow {
     public void runShopeePay(Context context, String snapToken) {
         MidtransSDK sdk = MidtransSDK.getInstance();
         if (sdk != null) {
-            //TODO call user details activity shopee pay
             Intent intent = new Intent(context, UserDetailsActivity.class);
-            //intent.putExtra(UserDetailsActivity.GO_PAY, true);
+            intent.putExtra(UserDetailsActivity.SHOPEE_PAY, true);
             intent.putExtra(UiKitConstants.EXTRA_SNAP_TOKEN, snapToken);
             context.startActivity(intent);
         }

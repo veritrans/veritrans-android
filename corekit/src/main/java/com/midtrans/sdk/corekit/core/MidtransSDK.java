@@ -638,8 +638,7 @@ public class MidtransSDK {
      */
     private void startShopeePayUIFlow(@NonNull Context context, String snapToken) {
         if (isTransactionRequestAvailable() && uiflow != null) {
-            //uiflow.runGoPay(context, snapToken);
-            //TODO run shopeePay
+            uiflow.runShopeePay(context, snapToken);
         } else {
             Logger.e(TAG, ADD_TRANSACTION_DETAILS);
         }
