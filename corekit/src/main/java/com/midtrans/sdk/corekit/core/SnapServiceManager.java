@@ -22,6 +22,7 @@ import com.midtrans.sdk.corekit.models.snap.payment.GoPayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.IndosatDompetkuPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.NewMandiriClickPayPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.ShopeePayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.TelkomselEcashPaymentRequest;
 
 import org.json.JSONArray;
@@ -337,6 +338,31 @@ public class SnapServiceManager extends BaseServiceManager {
         }
 
         Call<TransactionResponse> call = service.paymentUsingGoPay(snapToken, paymentRequest);
+        call.enqueue(new Callback<TransactionResponse>() {
+            @Override
+            public void onResponse(Call<TransactionResponse> call, Response<TransactionResponse> response) {
+                doOnPaymentResponseSuccess(response, callback);
+            }
+
+            @Override
+            public void onFailure(Call<TransactionResponse> call, Throwable t) {
+                doOnResponseFailure(t, callback);
+            }
+        });
+    }
+
+    /**
+     * This method is used for payment using ShopeePay
+     *
+     * @param paymentRequest
+     * @param callback
+     */
+    public void paymentUsingShopeePay(String snapToken, ShopeePayPaymentRequest paymentRequest, final TransactionCallback callback) {
+        if (service == null) {
+            doOnApiServiceUnAvailable(callback);
+            return;
+        }
+        Call<TransactionResponse> call = service.paymentUsingShopeePay(snapToken, paymentRequest);
         call.enqueue(new Callback<TransactionResponse>() {
             @Override
             public void onResponse(Call<TransactionResponse> call, Response<TransactionResponse> response) {

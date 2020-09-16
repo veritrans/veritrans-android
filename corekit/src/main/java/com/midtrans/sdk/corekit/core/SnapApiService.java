@@ -14,6 +14,7 @@ import com.midtrans.sdk.corekit.models.snap.payment.GoPayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.IndosatDompetkuPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.NewMandiriClickPayPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.ShopeePayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.TelkomselEcashPaymentRequest;
 
 import java.util.List;
@@ -120,6 +121,15 @@ public interface SnapApiService {
      */
     @POST("v1/transactions/{snap_token}/pay")
     Call<TransactionResponse> paymentUsingGoPay(@Path("snap_token") String snapToken, @Body GoPayPaymentRequest paymentRequest);
+
+    /**
+     * Charge payment using ShopeePay
+     *
+     * @param snapToken
+     * @param paymentRequest
+     */
+    @POST("v1/transactions/{snap_token}/pay")
+    Call<TransactionResponse> paymentUsingShopeePay(@Path("snap_token") String snapToken, @Body ShopeePayPaymentRequest paymentRequest);
 
     /**
      * Charge payment using Danamon Online
