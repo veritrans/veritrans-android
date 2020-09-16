@@ -7,10 +7,30 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.BuildConfig;
-import com.midtrans.sdk.corekit.callback.*;
+import com.midtrans.sdk.corekit.callback.BankBinsCallback;
+import com.midtrans.sdk.corekit.callback.BanksPointCallback;
+import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
+import com.midtrans.sdk.corekit.callback.CardTokenCallback;
+import com.midtrans.sdk.corekit.callback.CheckoutCallback;
+import com.midtrans.sdk.corekit.callback.DeleteCardCallback;
+import com.midtrans.sdk.corekit.callback.GetCardCallback;
+import com.midtrans.sdk.corekit.callback.GetTransactionStatusCallback;
+import com.midtrans.sdk.corekit.callback.SaveCardCallback;
+import com.midtrans.sdk.corekit.callback.TransactionCallback;
+import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
+import com.midtrans.sdk.corekit.callback.TransactionOptionsCallback;
 import com.midtrans.sdk.corekit.core.themes.BaseColorTheme;
-import com.midtrans.sdk.corekit.models.*;
-import com.midtrans.sdk.corekit.models.snap.*;
+import com.midtrans.sdk.corekit.models.CardTokenRequest;
+import com.midtrans.sdk.corekit.models.PaymentDetails;
+import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
+import com.midtrans.sdk.corekit.models.SaveCardRequest;
+import com.midtrans.sdk.corekit.models.TokenRequestModel;
+import com.midtrans.sdk.corekit.models.snap.CreditCard;
+import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
+import com.midtrans.sdk.corekit.models.snap.MerchantData;
+import com.midtrans.sdk.corekit.models.snap.PromoResponse;
+import com.midtrans.sdk.corekit.models.snap.Transaction;
+import com.midtrans.sdk.corekit.models.snap.TransactionResult;
 import com.midtrans.sdk.corekit.models.snap.params.IndosatDompetkuPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.params.NewMandiriClickPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.params.TelkomselCashPaymentParams;
@@ -19,7 +39,6 @@ import com.midtrans.sdk.corekit.models.snap.payment.IndosatDompetkuPaymentReques
 import com.midtrans.sdk.corekit.models.snap.payment.NewMandiriClickPayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.TelkomselEcashPaymentRequest;
 import com.midtrans.sdk.corekit.utilities.Utils;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -1486,8 +1505,7 @@ public class MidtransSDK {
         }
 
         if (isNetworkAvailable()) {
-            //snapServiceManager.paymentUsingGoPay(snapToken, SdkUtil.getGoPayPaymentRequest(), callback);
-            // TODO start payment using shopeepay
+            snapServiceManager.paymentUsingShopeePay(snapToken, SdkUtil.getShopeePayPaymentRequest(), callback);
         } else {
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
