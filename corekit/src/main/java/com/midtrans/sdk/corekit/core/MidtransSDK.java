@@ -408,6 +408,8 @@ public class MidtransSDK {
             startOtherBankTransferUIFlow(context, snapToken);
         } else if (paymentMethod.equals(PaymentMethod.GO_PAY)) {
             startGoPayUIFlow(context, snapToken);
+        } else if (paymentMethod.equals(PaymentMethod.SHOPEEPAY)) {
+            startShopeePayUIFlow(context, snapToken);
         } else if (paymentMethod.equals(PaymentMethod.BCA_KLIKPAY)) {
             startBCAKlikPayUIFlow(context, snapToken);
         } else if (paymentMethod.equals(PaymentMethod.KLIKBCA)) {
@@ -436,7 +438,7 @@ public class MidtransSDK {
             startDanamonOnlineUIFlow(context, snapToken);
         } else if (paymentMethod.equals(PaymentMethod.AKULAKU)) {
             startAkulakuUIFlow(context, snapToken);
-        }else if (paymentMethod.equals(PaymentMethod.ALFAMART)) {
+        } else if (paymentMethod.equals(PaymentMethod.ALFAMART)) {
             startAlfamartUIFlow(context, snapToken);
         } else {
             if (TextUtils.isEmpty(snapToken)) {
@@ -623,6 +625,21 @@ public class MidtransSDK {
     private void startGoPayUIFlow(@NonNull Context context, String snapToken) {
         if (isTransactionRequestAvailable() && uiflow != null) {
             uiflow.runGoPay(context, snapToken);
+        } else {
+            Logger.e(TAG, ADD_TRANSACTION_DETAILS);
+        }
+    }
+
+    /**
+     * This will start actual execution of ShopeePay UI Flow.
+     *
+     * @param context   activity context.
+     * @param snapToken checkout token
+     */
+    private void startShopeePayUIFlow(@NonNull Context context, String snapToken) {
+        if (isTransactionRequestAvailable() && uiflow != null) {
+            //uiflow.runGoPay(context, snapToken);
+            //TODO run shopeePay
         } else {
             Logger.e(TAG, ADD_TRANSACTION_DETAILS);
         }
@@ -1453,6 +1470,25 @@ public class MidtransSDK {
 
         if (isNetworkAvailable()) {
             snapServiceManager.paymentUsingGoPay(snapToken, SdkUtil.getGoPayPaymentRequest(), callback);
+        } else {
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
+        }
+    }
+
+    /**
+     * It will run backround task to charge payment using ShopeePay
+     *
+     * @param snapToken
+     */
+    public void paymentUsingShopeePay(String snapToken, TransactionCallback callback) {
+        if (callback == null) {
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
+            return;
+        }
+
+        if (isNetworkAvailable()) {
+            //snapServiceManager.paymentUsingGoPay(snapToken, SdkUtil.getGoPayPaymentRequest(), callback);
+            // TODO start payment using shopeepay
         } else {
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
