@@ -291,6 +291,9 @@ public class SdkUtil {
         return new GoPayPaymentRequest(PaymentType.GOPAY);
     }
 
+    public static ShopeePayPaymentRequest getShopeePayPaymentRequest() {
+        return new ShopeePayPaymentRequest(PaymentType.SHOPEEPAY);
+    }
 
     public static DanamonOnlinePaymentRequest getDanamonOnlinePaymentRequest() {
         return new DanamonOnlinePaymentRequest(PaymentType.DANAMON_ONLINE);
