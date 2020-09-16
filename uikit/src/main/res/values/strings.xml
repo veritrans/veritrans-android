@@ -458,6 +458,7 @@
     <string name="payment_method_kioson">Kioson</string>
     <string name="payment_method_gci"> Gift Card Indonesia </string>
     <string name="payment_method_gopay">GoPay</string>
+    <string name="payment_method_shopeepay">ShopeePay</string>
     <string name="payment_method_danamon_online">Danamon Online Banking</string>
     <string name="payment_method_akulaku">Akulaku</string>
 
