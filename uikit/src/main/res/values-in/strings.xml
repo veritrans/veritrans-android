@@ -675,4 +675,6 @@
     <string name="complete_payment_alfamart">Selesaikan pembayaran melalui Alfamart</string>
     <string name="alfamart_instruction_step0">Bayar di gerai <b>Alfamart</b>, <b>Alfamidi</b>, atau <b>Dan+Dan</b>.</string>
     <string name="gopay_payment_cant_open_deeplink">Tidak dapat mengakses aplikasi GOJEK untuk pembayaran ini!</string>
+    <string name="gopay">GoPay</string>
+    <string name="shopeepay">ShopeePay</string>
 </resources>
