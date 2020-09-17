@@ -11,7 +11,7 @@ import com.midtrans.sdk.uikit.widgets.Utils;
 class ShopeePayPaymentPresenter extends BasePaymentPresenter<ShopeePayPaymentView> {
 
     private Boolean isTablet, isShopeeInstalled;
-    static final String SHOPEE_PACKAGE_NAME = "com.shopee.id";
+    private static final String SHOPEE_PACKAGE_NAME = "com.shopee.id";
 
     ShopeePayPaymentPresenter(ShopeePayPaymentView view) {
         super();
@@ -23,7 +23,7 @@ class ShopeePayPaymentPresenter extends BasePaymentPresenter<ShopeePayPaymentVie
     }
 
     void setShopeeInstalled(Context context) {
-        if (BuildConfig.FLAVOR.equals(UiKitConstants.ENVIRONMENT_PRODUCTION)){
+        if (isProductionBuild()){
             isShopeeInstalled = Utils.isAppInstalled(context, SHOPEE_PACKAGE_NAME);
         }
         isShopeeInstalled = false;
@@ -39,6 +39,10 @@ class ShopeePayPaymentPresenter extends BasePaymentPresenter<ShopeePayPaymentVie
 
     Boolean isShopeeInstalled() {
         return isShopeeInstalled;
+    }
+
+    Boolean isProductionBuild() {
+        return BuildConfig.FLAVOR.equals(UiKitConstants.ENVIRONMENT_PRODUCTION);
     }
 
     void startShopeePayPayment() {
