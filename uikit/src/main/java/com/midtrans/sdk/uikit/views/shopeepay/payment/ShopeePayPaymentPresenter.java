@@ -33,11 +33,11 @@ class ShopeePayPaymentPresenter extends BasePaymentPresenter<ShopeePayPaymentVie
         Utils.openAppInPlayStore(context, SHOPEE_PACKAGE_NAME);
     }
 
-    Boolean getTabletDevice() {
+    Boolean isTablet() {
         return isTablet;
     }
 
-    Boolean getShopeeInstalled() {
+    Boolean isShopeeInstalled() {
         return isShopeeInstalled;
     }
 

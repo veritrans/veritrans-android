@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -15,7 +16,9 @@ import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.BuildConfig;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
+import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
+import com.midtrans.sdk.uikit.views.gopay.status.GoPayStatusActivity;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 public class ShopeePayPaymentActivity extends BasePaymentActivity implements ShopeePayPaymentView {
@@ -25,7 +28,7 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
     private FancyButton buttonDownload;
     private View buttonPrimaryLayout;
     private Boolean isAlreadyGotResponse, isShopeeInstalledWhenPaused;
-    private int shopeePayIntentCode;
+    private int shopeePayIntentCode, attempt;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,7 +47,7 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
         super.onResume();
         if (BuildConfig.FLAVOR.equals(UiKitConstants.ENVIRONMENT_PRODUCTION)){
             presenter.setShopeeInstalled(this);
-            if (isShopeeInstalledWhenPaused != null && isShopeeInstalledWhenPaused != presenter.getShopeeInstalled()) {
+            if (isShopeeInstalledWhenPaused != null && isShopeeInstalledWhenPaused != presenter.isShopeeInstalled()) {
                 recreate();
             }
         }
@@ -57,7 +60,7 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
     @Override
     protected void onPause() {
         if(BuildConfig.FLAVOR.equals(UiKitConstants.ENVIRONMENT_PRODUCTION)){
-            isShopeeInstalledWhenPaused = presenter.getShopeeInstalled();
+            isShopeeInstalledWhenPaused = presenter.isShopeeInstalled();
         }
         super.onPause();
     }
@@ -80,12 +83,12 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
 
     private void initLayout() {
         ViewStub stub = findViewById(R.id.shopee_layout_stub);
-        if (presenter.getTabletDevice()) {
+        if (presenter.isTablet()) {
             stub.setLayoutResource(R.layout.layout_shopeepay_payment_tablet);
         } else {
             if (BuildConfig.FLAVOR.equals(UiKitConstants.ENVIRONMENT_PRODUCTION)) {
                 stub.setLayoutResource(
-                    presenter.getShopeeInstalled() ? R.layout.layout_shopeepay_payment
+                    presenter.isShopeeInstalled() ? R.layout.layout_shopeepay_payment
                         : R.layout.layout_install_shopeepay);
             } else {
                 stub.setLayoutResource(R.layout.layout_shopeepay_payment);
@@ -99,7 +102,7 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
 
     private void initActionButton() {
         if (BuildConfig.FLAVOR.equals(UiKitConstants.ENVIRONMENT_PRODUCTION)) {
-            if (presenter.getShopeeInstalled() || presenter.getTabletDevice()) {
+            if (presenter.isShopeeInstalled() || presenter.isTablet()) {
                 buttonPrimary.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -199,16 +202,60 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
 
     @Override
     public void onPaymentSuccess(TransactionResponse response) {
-
+        hideProgressLayout();
+        if (isActivityRunning()) {
+            if (isResponseValid(response)) {
+                if (presenter.isTablet()) {
+                    Intent intent = new Intent(this, GoPayStatusActivity.class);
+                    intent.putExtra(GoPayStatusActivity.EXTRA_PAYMENT_STATUS, response);
+                    startActivityForResult(intent, UiKitConstants.INTENT_CODE_PAYMENT_STATUS);
+                } else {
+                    isAlreadyGotResponse = true;
+                    openDeeplink(response.getDeeplinkUrl());
+                }
+            } else {
+                onPaymentFailure(response);
+            }
+        } else {
+            finishPayment(RESULT_OK, presenter.getTransactionResponse());
+        }
     }
 
     @Override
     public void onPaymentFailure(TransactionResponse response) {
-
+        hideProgressLayout();
+        if (attempt < UiKitConstants.MAX_ATTEMPT) {
+            attempt += 1;
+            SdkUIFlowUtil.showToast(ShopeePayPaymentActivity.this, getString(R.string.error_gopay_transaction));
+        } else {
+            if (response != null) {
+                showPaymentStatusPage(response, presenter.isShowPaymentStatusPage());
+            }
+        }
     }
 
     @Override
     public void onPaymentError(Throwable error) {
 
+    }
+
+    /**
+     * Check whether the transaction response from server is valid or not
+     * Valid if both deeplink URL and qr code URL aren't empty, or at least one of them is not,
+     * depending on which one that will be used
+     *
+     * @param response transaction response
+     * @return validity of response
+     */
+    private boolean isResponseValid(TransactionResponse response) {
+        if (response == null) {
+            return false;
+        } else {
+            if ((TextUtils.isEmpty(response.getDeeplinkUrl()) && !presenter.isTablet())
+                || TextUtils.isEmpty(response.getQrCodeUrl()) && presenter.isTablet()) {
+                return false;
+            }
+        }
+        return true;
     }
 }
