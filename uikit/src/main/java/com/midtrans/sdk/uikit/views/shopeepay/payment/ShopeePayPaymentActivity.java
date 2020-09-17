@@ -29,4 +29,19 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
     public void onGetTransactionStatusSuccess(TransactionResponse transactionResponse) {
 
     }
+
+    @Override
+    public void onPaymentSuccess(TransactionResponse response) {
+
+    }
+
+    @Override
+    public void onPaymentFailure(TransactionResponse response) {
+
+    }
+
+    @Override
+    public void onPaymentError(Throwable error) {
+
+    }
 }
