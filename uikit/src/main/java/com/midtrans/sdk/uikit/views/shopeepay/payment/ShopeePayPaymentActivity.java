@@ -1,5 +1,7 @@
 package com.midtrans.sdk.uikit.views.shopeepay.payment;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -8,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
+import android.widget.Toast;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.BuildConfig;
 import com.midtrans.sdk.uikit.R;
@@ -21,6 +24,7 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
     private FancyButton buttonPrimary;
     private FancyButton buttonDownload;
     private View buttonPrimaryLayout;
+    private Boolean isAlreadyGotResponse;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,6 +35,7 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
         initLayout();
         initData();
         initActionButton();
+        hideProgressLayout();
     }
 
     private void initPresenter() {
@@ -45,7 +50,9 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
             stub.setLayoutResource(R.layout.layout_shopeepay_payment_tablet);
         } else {
             if (BuildConfig.FLAVOR.equals(UiKitConstants.ENVIRONMENT_PRODUCTION)) {
-                stub.setLayoutResource(presenter.getShopeeInstalled() ? R.layout.layout_shopeepay_payment : R.layout.layout_install_shopeepay);
+                stub.setLayoutResource(
+                    presenter.getShopeeInstalled() ? R.layout.layout_shopeepay_payment
+                        : R.layout.layout_install_shopeepay);
             } else {
                 stub.setLayoutResource(R.layout.layout_shopeepay_payment);
             }
@@ -62,13 +69,12 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
                 buttonPrimary.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //todo
                         //to prevent "payment has been paid"
-//                        if (isAlreadyGotResponse) {
-//                            openDeeplink(presenter.getTransactionResponse().getDeeplinkUrl());
-//                        } else {
-//                            startGoPayPayment();
-//                        }
+                        if (isAlreadyGotResponse) {
+                            openDeeplink(presenter.getTransactionResponse().getDeeplinkUrl());
+                        } else {
+                            startShopeePayPayment();
+                        }
                     }
                 });
                 buttonPrimary.setTextBold();
@@ -81,7 +87,8 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
                 buttonPrimaryLayout.setVisibility(View.GONE);
                 findViewById(R.id.primary_button_separator).setVisibility(View.GONE);
                 View itemDetail = findViewById(R.id.container_item_details);
-                RelativeLayout.LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                RelativeLayout.LayoutParams layoutParams = new LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
                 itemDetail.setLayoutParams(layoutParams);
 
@@ -99,13 +106,12 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
             buttonPrimary.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //TODO
                     //to prevent "payment has been paid"
-//                    if (isAlreadyGotResponse) {
-//                        openDeeplink(presenter.getTransactionResponse().getDeeplinkUrl());
-//                    } else {
-//                        startGoPayPayment();
-//                    }
+                    if (isAlreadyGotResponse) {
+                        openDeeplink(presenter.getTransactionResponse().getDeeplinkUrl());
+                    } else {
+                        startShopeePayPayment();
+                    }
                 }
             });
             buttonPrimary.setTextBold();
@@ -114,6 +120,21 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
             buttonPrimary.setIconResource(R.drawable.ic_gopay_white);
             buttonPrimary.setIconPosition(FancyButton.POSITION_RIGHT);
         }
+    }
+
+    private void openDeeplink(String deeplinkUrl) {
+        if (deeplinkUrl == null) {
+            Toast.makeText(this, R.string.gopay_payment_cant_open_deeplink, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, getString(R.string.redirecting_to_gopay), Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(deeplinkUrl));
+            startActivityForResult(intent, UiKitConstants.INTENT_CODE_GOPAY);
+        }
+    }
+
+    private void startShopeePayPayment() {
+        showProgressLayout();
+        presenter.startShopeePayPayment();
     }
 
     @Override

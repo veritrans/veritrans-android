@@ -40,4 +40,8 @@ class ShopeePayPaymentPresenter extends BasePaymentPresenter<ShopeePayPaymentVie
     Boolean getShopeeInstalled() {
         return isShopeeInstalled;
     }
+
+    void startShopeePayPayment() {
+        //TODO
+    }
 }
