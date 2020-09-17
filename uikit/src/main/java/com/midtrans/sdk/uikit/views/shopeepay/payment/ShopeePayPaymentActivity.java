@@ -24,7 +24,8 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
     private FancyButton buttonPrimary;
     private FancyButton buttonDownload;
     private View buttonPrimaryLayout;
-    private Boolean isAlreadyGotResponse;
+    private Boolean isAlreadyGotResponse, isShopeeInstalledWhenPaused;
+    private int shopeePayIntentCode;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,6 +37,39 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
         initData();
         initActionButton();
         hideProgressLayout();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (BuildConfig.FLAVOR.equals(UiKitConstants.ENVIRONMENT_PRODUCTION)){
+            presenter.setShopeeInstalled(this);
+            if (isShopeeInstalledWhenPaused != null && isShopeeInstalledWhenPaused != presenter.getShopeeInstalled()) {
+                recreate();
+            }
+        }
+
+        if (shopeePayIntentCode == UiKitConstants.INTENT_CODE_GOPAY && presenter != null) {
+            presenter.getPaymentStatus();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        if(BuildConfig.FLAVOR.equals(UiKitConstants.ENVIRONMENT_PRODUCTION)){
+            isShopeeInstalledWhenPaused = presenter.getShopeeInstalled();
+        }
+        super.onPause();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT_STATUS) {
+            finishPayment(RESULT_OK, presenter.getTransactionResponse());
+        } else if (requestCode == UiKitConstants.INTENT_CODE_SHOPEEPAY) {
+            this.shopeePayIntentCode = requestCode;
+        }
     }
 
     private void initPresenter() {
@@ -150,17 +184,17 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
 
     @Override
     public void onGetTransactionStatusError(Throwable error) {
-
+        //do nothing
     }
 
     @Override
     public void onGetTransactionStatusFailure(TransactionResponse transactionResponse) {
-
+        //do nothing
     }
 
     @Override
     public void onGetTransactionStatusSuccess(TransactionResponse transactionResponse) {
-
+        showPaymentStatusPage(transactionResponse,presenter.isShowPaymentStatusPage() );
     }
 
     @Override

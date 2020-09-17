@@ -44,4 +44,8 @@ class ShopeePayPaymentPresenter extends BasePaymentPresenter<ShopeePayPaymentVie
     void startShopeePayPayment() {
         //TODO
     }
+
+    void getPaymentStatus() {
+        //TODO
+    }
 }
