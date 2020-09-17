@@ -7,7 +7,7 @@ import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
 
 public class ShopeePayPaymentActivity extends BasePaymentActivity implements ShopeePayPaymentView {
 
-    private Boolean isTablet;
+    private Boolean isTablet, isShopeeInstalled;
     private ShopeePayPaymentPresenter presenter;
 
     @Override
@@ -15,7 +15,7 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
         super.onCreate(savedInstanceState);
         showProgressLayout();
         isTablet = presenter.checkTabletDevice(this);
-
+        isShopeeInstalled = presenter.checkShopeeInstalled(this);
     }
 
     @Override
