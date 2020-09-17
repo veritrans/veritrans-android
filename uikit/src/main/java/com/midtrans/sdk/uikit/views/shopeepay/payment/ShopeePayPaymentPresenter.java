@@ -10,16 +10,30 @@ import com.midtrans.sdk.uikit.widgets.Utils;
 
 class ShopeePayPaymentPresenter extends BasePaymentPresenter<ShopeePayPaymentView> {
 
+    private Boolean isTablet, isShopeeInstalled;
     static final String SHOPEE_PACKAGE_NAME = "com.shopee.id";
 
-    Boolean checkTabletDevice(Activity activity) {
-        return SdkUIFlowUtil.getDeviceType(activity).equals(SdkUIFlowUtil.TYPE_TABLET) && SdkUIFlowUtil.isDeviceTablet(activity);
+    ShopeePayPaymentPresenter(ShopeePayPaymentView view) {
+        super();
+        this.view = view;
     }
 
-    Boolean checkShopeeInstalled(Context context) {
+    void setTabletDevice(Activity activity) {
+        isTablet = SdkUIFlowUtil.getDeviceType(activity).equals(SdkUIFlowUtil.TYPE_TABLET) && SdkUIFlowUtil.isDeviceTablet(activity);
+    }
+
+    void setShopeeInstalled(Context context) {
         if (BuildConfig.FLAVOR.equals(UiKitConstants.ENVIRONMENT_PRODUCTION)){
-            return Utils.isAppInstalled(context, SHOPEE_PACKAGE_NAME);
+            isShopeeInstalled = Utils.isAppInstalled(context, SHOPEE_PACKAGE_NAME);
         }
-        return false;
+        isShopeeInstalled = false;
+    }
+
+    Boolean getTabletDevice() {
+        return isTablet;
+    }
+
+    Boolean getShopeeInstalled() {
+        return isShopeeInstalled;
     }
 }
