@@ -2,8 +2,11 @@ package com.midtrans.sdk.uikit.views.shopeepay.payment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.TextUtils;
+import com.midtrans.sdk.corekit.callback.GetTransactionStatusCallback;
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
+import com.midtrans.sdk.corekit.models.snap.TransactionStatusResponse;
 import com.midtrans.sdk.uikit.BuildConfig;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentPresenter;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
@@ -70,6 +73,33 @@ class ShopeePayPaymentPresenter extends BasePaymentPresenter<ShopeePayPaymentVie
     }
 
     void getPaymentStatus() {
-        //TODO
+        String snapToken = getMidtransSDK().readAuthenticationToken();
+        getMidtransSDK().getTransactionStatus(snapToken, new GetTransactionStatusCallback() {
+            @Override
+            public void onSuccess(TransactionStatusResponse response) {
+                if (response != null && !isPaymentPending(response)) {
+                    transactionResponse = convertTransactionStatus(response);
+                    view.onGetTransactionStatusSuccess(transactionResponse);
+                }
+            }
+
+            @Override
+            public void onFailure(TransactionStatusResponse response, String reason) {
+                //do nothing
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                view.onGetTransactionStatusError(error);
+            }
+        });
+    }
+
+    private boolean isPaymentPending(TransactionStatusResponse response) {
+        String statusCode = response.getStatusCode();
+        String transactionStatus = response.getTransactionStatus();
+
+        return (!TextUtils.isEmpty(statusCode) && statusCode.equals(UiKitConstants.STATUS_CODE_201)
+            || !TextUtils.isEmpty(transactionStatus) && transactionStatus.equalsIgnoreCase(UiKitConstants.STATUS_PENDING));
     }
 }
