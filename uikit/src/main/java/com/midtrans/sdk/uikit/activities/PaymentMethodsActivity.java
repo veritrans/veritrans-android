@@ -62,6 +62,7 @@ import com.midtrans.sdk.uikit.views.indosat_dompetku.IndosatDompetkuPaymentActiv
 import com.midtrans.sdk.uikit.views.kioson.payment.KiosonPaymentActivity;
 import com.midtrans.sdk.uikit.views.mandiri_clickpay.MandiriClickPayActivity;
 import com.midtrans.sdk.uikit.views.mandiri_ecash.MandiriEcashPaymentActivity;
+import com.midtrans.sdk.uikit.views.shopeepay.payment.ShopeePayPaymentActivity;
 import com.midtrans.sdk.uikit.views.telkomsel_cash.TelkomselCashPaymentActivity;
 import com.midtrans.sdk.uikit.views.xl_tunai.payment.XlTunaiPaymentActivity;
 import com.midtrans.sdk.uikit.widgets.BoldTextView;
@@ -96,6 +97,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     private boolean isKioson = false;
     private boolean isGci = false;
     private boolean isGopay = false;
+    private boolean isShopeepay = false;
     private boolean isDanamonOnline = false;
     private boolean isAkulaku = false;
     private boolean isAlfamart = false;
@@ -132,6 +134,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         isCreditCardOnly = getIntent().getBooleanExtra(UserDetailsActivity.CREDIT_CARD_ONLY, false);
         isBankTransferOnly = getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_ONLY, false);
         isGopay = getIntent().getBooleanExtra(UserDetailsActivity.GO_PAY, false);
+        isShopeepay = getIntent().getBooleanExtra(UserDetailsActivity.SHOPEE_PAY, false);
         isBCAKlikpay = getIntent().getBooleanExtra(UserDetailsActivity.BCA_KLIKPAY, false);
         isKlikBCA = getIntent().getBooleanExtra(UserDetailsActivity.KLIK_BCA, false);
         isMandiriClickPay = getIntent().getBooleanExtra(UserDetailsActivity.MANDIRI_CLICKPAY, false);
@@ -732,6 +735,17 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             } else {
                 showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
             }
+        } else if (isShopeepay) {
+            if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_shopeepay))) {
+                Intent shopeepayActivity = new Intent(this, ShopeePayPaymentActivity.class);
+                startActivityForResult(shopeepayActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+                if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
+                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                    overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                }
+            } else {
+                showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
+            }
         } else if (isDanamonOnline) {
             if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_danamon_online))) {
                 Intent danamonOnlineIntent = new Intent(this, DanamonOnlineActivity.class);
@@ -1049,7 +1063,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     if (this.data.size() == 1 || isCreditCardOnly || isBankTransferOnly || isBCAKlikpay || isKlikBCA
                             || isMandiriClickPay || isMandiriECash || isCIMBClicks || isBRIEpay
                             || isTelkomselCash || isIndosatDompetku || isXlTunai
-                            || isIndomaret || isKioson || isGci || isDanamonOnline || isGopay) {
+                            || isIndomaret || isKioson || isGci || isDanamonOnline || isGopay || isShopeepay) {
 
                         midtransSDK.notifyTransactionFinished(new TransactionResult(true));
                         finish();
@@ -1081,7 +1095,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                         if (this.data.size() == 1 || isCreditCardOnly || isBankTransferOnly || isBCAKlikpay || isKlikBCA
                                 || isMandiriClickPay || isMandiriECash || isCIMBClicks || isBRIEpay
                                 || isTelkomselCash || isIndosatDompetku || isXlTunai
-                                || isIndomaret || isKioson || isGci || isGopay || isDanamonOnline) {
+                                || isIndomaret || isKioson || isGci || isGopay || isDanamonOnline || isShopeepay) {
 
                             midtransSDK.notifyTransactionFinished(new TransactionResult(true));
                             finish();
