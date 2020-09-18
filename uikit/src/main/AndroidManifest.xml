@@ -148,6 +148,11 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name=".views.shopeepay.status.ShopeePayStatusActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".views.danamon_online.DanamonOnlineActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
