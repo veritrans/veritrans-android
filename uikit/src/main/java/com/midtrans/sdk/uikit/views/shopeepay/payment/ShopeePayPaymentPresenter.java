@@ -2,6 +2,8 @@ package com.midtrans.sdk.uikit.views.shopeepay.payment;
 
 import android.app.Activity;
 import android.content.Context;
+import com.midtrans.sdk.corekit.callback.TransactionCallback;
+import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.BuildConfig;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentPresenter;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
@@ -46,7 +48,25 @@ class ShopeePayPaymentPresenter extends BasePaymentPresenter<ShopeePayPaymentVie
     }
 
     void startShopeePayPayment() {
-        //TODO
+        String snapToken = getMidtransSDK().readAuthenticationToken();
+        getMidtransSDK().paymentUsingShopeePay(snapToken, new TransactionCallback() {
+            @Override
+            public void onSuccess(TransactionResponse response) {
+                transactionResponse = response;
+                view.onPaymentSuccess(response);
+            }
+
+            @Override
+            public void onFailure(TransactionResponse response, String reason) {
+                transactionResponse = response;
+                view.onPaymentFailure(response);
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                view.onPaymentError(error);
+            }
+        });
     }
 
     void getPaymentStatus() {
