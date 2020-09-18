@@ -533,6 +533,7 @@
     <string name="payment_method_description_kioson">Bayar dari gerai Kioson</string>
     <string name="payment_method_description_gci">Bayar dengan Gift Card</string>
     <string name="payment_method_description_gopay">Bayar dengan saldo GoPay Anda</string>
+    <string name="payment_method_description_shopeepay">Bayar dengan ShopeePay</string>
     <string name="payment_method_description_danamon_online">Bayar dengan akun Danamon Online Banking anda</string>
     <string name="payment_method_description_akulaku">Bayar meggunakan akun Akulaku Anda</string>
 

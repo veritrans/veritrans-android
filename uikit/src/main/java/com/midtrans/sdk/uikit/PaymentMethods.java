@@ -46,12 +46,14 @@ public class PaymentMethods {
             return getMethodGCI(context, 14, paymentType, status);
         } else if (paymentType.equals(context.getString(R.string.payment_gopay))) {
             return getMethodGopay(context, 15, paymentType, status);
+        } else if (paymentType.equals(context.getString(R.string.payment_shopeepay))) {
+            return getMethodShopeepay(context, 16, paymentType, status);
         } else if (paymentType.equals(context.getString(R.string.payment_danamon_online))) {
-            return getDanamonOnline(context, 16, paymentType, status);
+            return getDanamonOnline(context, 17, paymentType, status);
         } else if (paymentType.equals(context.getString(R.string.payment_akulaku))) {
-            return getMethodAkulaku(context, 17, paymentType, status);
+            return getMethodAkulaku(context, 18, paymentType, status);
         } else if (paymentType.equals(context.getString(R.string.payment_alfamart))) {
-            return getMethodAlfamart(context, 18, paymentType, status);
+            return getMethodAlfamart(context, 19, paymentType, status);
         } else {
             return null;
         }
@@ -125,6 +127,10 @@ public class PaymentMethods {
 
     private static PaymentMethodsModel getMethodGopay(Context context, int priority, String paymentType, String status) {
         return new PaymentMethodsModel(context.getString(R.string.payment_method_gopay), context.getString(R.string.payment_method_description_gopay), R.drawable.ic_gopay, paymentType, priority, status);
+    }
+
+    private static PaymentMethodsModel getMethodShopeepay(Context context, int priority, String paymentType, String status) { //TODO get the shopee pay icon
+        return new PaymentMethodsModel(context.getString(R.string.payment_method_shopeepay), context.getString(R.string.payment_method_description_shopeepay), R.drawable.ic_veritrans, paymentType, priority, status);
     }
 
     private static PaymentMethodsModel getDanamonOnline(Context context, int priority, String paymentType, String status) {

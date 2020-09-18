@@ -889,11 +889,9 @@ public class MidtransSDK {
             if (Utils.isNetworkAvailable(context)) {
                 snapServiceManager.getTransactionOptions(authenticationToken, callback);
             } else {
-
                 callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
-
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
