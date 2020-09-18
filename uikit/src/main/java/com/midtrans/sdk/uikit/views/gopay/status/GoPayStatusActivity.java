@@ -1,5 +1,7 @@
 package com.midtrans.sdk.uikit.views.gopay.status;
 
+import static com.midtrans.sdk.corekit.utilities.Utils.getMonth;
+
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -13,7 +15,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.midtrans.sdk.corekit.core.Logger;
@@ -26,14 +27,11 @@ import com.midtrans.sdk.uikit.widgets.BoldTextView;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-
-import static com.midtrans.sdk.corekit.utilities.Utils.getMonth;
 
 /**
  * Created by Fajar on 16/11/17.

@@ -20,7 +20,7 @@ import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
-import com.midtrans.sdk.uikit.views.gopay.status.GoPayStatusActivity;
+import com.midtrans.sdk.uikit.views.shopeepay.status.ShopeePayStatusActivity;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 public class ShopeePayPaymentActivity extends BasePaymentActivity implements ShopeePayPaymentView {
@@ -119,8 +119,8 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
         if (isActivityRunning()) {
             if (isResponseValid(response)) {
                 if (isTablet()) {
-                    Intent intent = new Intent(this, GoPayStatusActivity.class);
-                    intent.putExtra(GoPayStatusActivity.EXTRA_PAYMENT_STATUS, response);
+                    Intent intent = new Intent(this, ShopeePayStatusActivity.class);
+                    intent.putExtra(ShopeePayStatusActivity.EXTRA_PAYMENT_STATUS, response);
                     startActivityForResult(intent, UiKitConstants.INTENT_CODE_PAYMENT_STATUS);
                 } else {
                     isAlreadyGotResponse = true;

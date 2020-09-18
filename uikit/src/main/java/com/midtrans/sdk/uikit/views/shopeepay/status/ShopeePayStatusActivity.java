@@ -23,7 +23,6 @@ import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
 import com.midtrans.sdk.uikit.utilities.TimeUtils;
-import com.midtrans.sdk.uikit.views.gopay.status.GoPayStatusActivity;
 import com.midtrans.sdk.uikit.widgets.BoldTextView;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
@@ -37,7 +36,7 @@ import java.util.Locale;
 public class ShopeePayStatusActivity extends BasePaymentActivity {
 
     public static final String EXTRA_PAYMENT_STATUS = "extra.status";
-    private static final String TAG = GoPayStatusActivity.class.getSimpleName();
+    private static final String TAG = ShopeePayStatusActivity.class.getSimpleName();
     private final int DEFAULT_EXPIRATION_IN_MINUTE = 15;
     private FancyButton buttonPrimary;
     private BoldTextView expirationText;
