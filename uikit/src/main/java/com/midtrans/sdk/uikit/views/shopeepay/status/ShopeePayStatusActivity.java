@@ -1,18 +1,30 @@
 package com.midtrans.sdk.uikit.views.shopeepay.status;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 public class ShopeePayStatusActivity extends AppCompatActivity {
+
+    public static final String INTENT_ORDERID = "intent.order_id";
+    public static final String INTENT_AMOUNT = "intent.amount";
+    public static final String INTENT_TYPE = "intent.type";
+    public static final String INTENT_STATUS = "intent.status";
 
     private FancyButton buttonFinish;
     private ImageView imageStatusLogo;
@@ -34,6 +46,7 @@ public class ShopeePayStatusActivity extends AppCompatActivity {
         bindViews();
         initTheme();
         initActionButton();
+        bindData();
     }
 
     @Override
@@ -75,5 +88,82 @@ public class ShopeePayStatusActivity extends AppCompatActivity {
 
     private void finishPayment() {
         finish();
+    }
+
+    private void bindData() {
+        setLayoutVisibilityWhenFailed();
+    }
+
+    private void setLayoutVisibilityWhenFailed() {
+        String orderId = getIntent().getStringExtra(INTENT_ORDERID);
+        if (TextUtils.isEmpty(orderId)) {
+            layoutOrderId.setVisibility(View.GONE);
+        } else {
+            textOrderId.setText(orderId);
+        }
+
+        String amount = getIntent().getStringExtra(INTENT_AMOUNT);
+        if (TextUtils.isEmpty(amount)) {
+            layoutTotalAmount.setVisibility(View.GONE);
+        } else {
+            textTotalAmount.setText(getFormattedAmount(amount));
+        }
+
+        String paymentType = getIntent().getStringExtra(INTENT_TYPE);
+        if (TextUtils.isEmpty(paymentType)) {
+            layoutPaymentType.setVisibility(View.GONE);
+        }
+
+        String paymentStatus = getIntent().getStringExtra(INTENT_STATUS);
+        setHeaderValues(paymentStatus);
+    }
+
+    private String getFormattedAmount(String transactionResponse) {
+        double amount = 0;
+        try {
+            amount = Double.parseDouble(transactionResponse);
+        } catch (RuntimeException e) {
+            Logger.e(e.getMessage());
+        }
+
+        return "Rp " + getFormattedAmount(amount);
+    }
+
+    public static String getFormattedAmount(double amount) {
+        try {
+            DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.US);
+            otherSymbols.setDecimalSeparator('.');
+            otherSymbols.setGroupingSeparator(',');
+            return new DecimalFormat("#,###.##", otherSymbols).format(amount);
+        } catch (NullPointerException | IllegalArgumentException e) {
+            return "" + amount;
+        }
+    }
+
+    private void setHeaderValues(String paymentStatus) {
+        int colorPaymentStatus;
+        if (!TextUtils.isEmpty(paymentStatus)) {
+            if ("success".equals(paymentStatus)) {
+                textStatusTitle.setText(getString(R.string.payment_successful));
+                imageStatusLogo.setImageResource(R.drawable.ic_status_success);
+                textStatusMessage.setText(getString(R.string.thank_you));
+                colorPaymentStatus = ContextCompat.getColor(this, R.color.payment_status_success);
+            } else {
+                textStatusTitle.setText(getString(R.string.payment_unsuccessful));
+                textStatusMessage.setText(getString(R.string.sorry));
+                imageStatusLogo.setImageResource(R.drawable.ic_status_failed);
+                textStatusErrorMessage.setVisibility(View.VISIBLE);
+                colorPaymentStatus = ContextCompat.getColor(this, R.color.payment_status_failed);
+            }
+            setBackgroundDrawable(colorPaymentStatus);
+        }
+    }
+
+    private void setBackgroundDrawable(int drawable) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            layoutMain.setBackgroundColor(drawable);
+        } else {
+            layoutMain.setBackgroundColor(drawable);
+        }
     }
 }
