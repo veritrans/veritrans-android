@@ -139,7 +139,7 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
         hideProgressLayout();
         if (attempt < UiKitConstants.MAX_ATTEMPT) {
             attempt += 1;
-            SdkUIFlowUtil.showToast(ShopeePayPaymentActivity.this, getString(R.string.error_gopay_transaction));
+            SdkUIFlowUtil.showToast(ShopeePayPaymentActivity.this, getString(R.string.error_shopeepay_transaction));
         } else {
             if (response != null) {
                 showPaymentStatusPage(response, presenter.isShowPaymentStatusPage());
@@ -191,7 +191,7 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
                     }
                 });
                 buttonPrimary.setTextBold();
-                buttonPrimary.setText(getString(R.string.gopay_confirm_button));
+                buttonPrimary.setText(getString(R.string.shopeepay_confirm_button));
 
                 buttonPrimary.setIconResource(R.drawable.ic_gopay_white);
                 buttonPrimary.setIconPosition(FancyButton.POSITION_RIGHT);
@@ -228,7 +228,7 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
                 }
             });
             buttonPrimary.setTextBold();
-            buttonPrimary.setText(getString(R.string.gopay_confirm_button));
+            buttonPrimary.setText(getString(R.string.shopeepay_confirm_button));
 
             buttonPrimary.setIconResource(R.drawable.ic_gopay_white);
             buttonPrimary.setIconPosition(FancyButton.POSITION_RIGHT);
@@ -239,7 +239,7 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
         if (deeplinkUrl == null) {
             Toast.makeText(this, R.string.gopay_payment_cant_open_deeplink, Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this, getString(R.string.redirecting_to_gopay), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.redirecting_to_shopee), Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(deeplinkUrl));
             startActivityForResult(intent, UiKitConstants.INTENT_CODE_GOPAY);
         }

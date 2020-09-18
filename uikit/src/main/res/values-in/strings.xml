@@ -297,6 +297,21 @@
     <string name="shopeepay_instruction_tablet_step7">Selesai.</string>
     <string name="shopeepay_instruction_tablet_hint">Catatan: Scan tombol QR tidak akan muncul jika saldo Shopee kurang dari Rp 10.000.</string>
 
+    <!--ShopeePay related-->
+    <string name="shopeepay_status_title">Bayar dengan GoPay</string>
+    <string name="shopeepay_confirm_button">Bayar dengan</string>
+    <string name="notification_shopee_app">Aplikasi Shopee diperlukan untuk metode pembayaran ini.</string>
+    <string name="notification_shopee_app_tablet">Pastikan Anda telah melakukan instalasi <b>aplikasi Shopee</b> di HP Anda dan memiliki saldo lebih dari <b>Rp 10.000</b>.</string>
+    <string name="install_shopee_message">Install aplikasi Shopee dari Play Store</string>
+    <string name="redirecting_to_shopee">Mengarahkan ke aplikasi Shopee…</string>
+    <string name="no_shopee_message">Mohon maaf, kami tidak dapat mendeteksi aplikasi Gojek di perangkat Anda.</string>
+    <string name="error_shopeepay_transaction">Transaksi Anda tidak dapat diproses. Silakan ulangi lagi, atau coba dengan metode pembayaran lain.</string>
+    <string name="confirm_shopeepay_qr_scan_tablet">Pastikan kode QR berhasil di-scan dan pembayaran telah diselesaikan di dalam aplikasi Shopee.</string>
+    <string name="confirm_shopeepay_deeplink">Pastikan pembayaran telah diselesaikan di dalam aplikasi Shopee.</string>
+    <string name="shopeepay_instruction">Cara Pembayaran</string>
+    <string name="shopeepay_expiration_message">Harap selesaikan pembayaran dalam:</string>
+    <string name="shopeepay_expiration_expired">Waktu habis.</string>
+
     <!--credit card -->
     <string name="add_card_message">Anda bisa membayar dengan kartu baru disini</string>
     <string name="saved_card">Pilih kartu</string>

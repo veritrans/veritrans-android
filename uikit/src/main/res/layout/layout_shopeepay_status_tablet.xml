@@ -51,7 +51,7 @@
             android:id="@+id/shopeepay_expiration_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/gopay_expiration_message"/>
+            android:text="@string/shopeepay_expiration_message"/>
 
         <com.midtrans.sdk.uikit.widgets.BoldTextView
             android:id="@+id/shopeepay_expiration_text"
@@ -65,7 +65,7 @@
         android:layout_height="wrap_content"
         android:drawableRight="@drawable/ic_chevron_up"
         android:padding="@dimen/sixteen_dp"
-        android:text= "@string/gopay_instruction"
+        android:text= "@string/shopeepay_instruction"
         android:textColor="@color/dark_gray"
         android:textSize="@dimen/primary_text_size" />
 
