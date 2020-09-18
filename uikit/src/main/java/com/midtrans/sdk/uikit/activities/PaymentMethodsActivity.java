@@ -917,6 +917,13 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
+        } else if (name.equalsIgnoreCase(getString(R.string.payment_method_shopeepay))) {
+            Intent shopeepayIntent = new Intent(this, ShopeePayPaymentActivity.class);
+            startActivityForResult(shopeepayIntent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
+                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+            }
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_danamon_online))) {
             Intent danamonOnlineIntent = new Intent(this, DanamonOnlineActivity.class);
             danamonOnlineIntent.putExtra(DanamonOnlineActivity.USE_DEEP_LINK, isDeepLink);
