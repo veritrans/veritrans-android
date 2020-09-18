@@ -129,8 +129,8 @@ public class PaymentMethods {
         return new PaymentMethodsModel(context.getString(R.string.payment_method_gopay), context.getString(R.string.payment_method_description_gopay), R.drawable.ic_gopay, paymentType, priority, status);
     }
 
-    private static PaymentMethodsModel getMethodShopeepay(Context context, int priority, String paymentType, String status) { //TODO get the shopee pay icon
-        return new PaymentMethodsModel(context.getString(R.string.payment_method_shopeepay), context.getString(R.string.payment_method_description_shopeepay), R.drawable.ic_veritrans, paymentType, priority, status);
+    private static PaymentMethodsModel getMethodShopeepay(Context context, int priority, String paymentType, String status) {
+        return new PaymentMethodsModel(context.getString(R.string.payment_method_shopeepay), context.getString(R.string.payment_method_description_shopeepay), R.drawable.ic_shopeepay, paymentType, priority, status);
     }
 
     private static PaymentMethodsModel getDanamonOnline(Context context, int priority, String paymentType, String status) {
