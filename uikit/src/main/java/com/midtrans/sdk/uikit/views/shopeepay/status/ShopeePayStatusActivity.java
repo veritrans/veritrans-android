@@ -3,6 +3,7 @@ package com.midtrans.sdk.uikit.views.shopeepay.status;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,6 +32,8 @@ public class ShopeePayStatusActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopeepay_status);
         bindViews();
+        initTheme();
+        initActionButton();
     }
 
     @Override
@@ -53,5 +56,24 @@ public class ShopeePayStatusActivity extends AppCompatActivity {
         layoutMain = findViewById(com.midtrans.sdk.uikit.R.id.layout_main);
 
         buttonFinish = findViewById(R.id.button_primary);
+    }
+
+    public void initTheme() {
+        buttonFinish.setText(getString(R.string.done));
+        buttonFinish.setTextBold();
+        findViewById(R.id.button_chevron).setVisibility(View.GONE);
+    }
+
+    private void initActionButton() {
+        buttonFinish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finishPayment();
+            }
+        });
+    }
+
+    private void finishPayment() {
+        finish();
     }
 }
