@@ -622,6 +622,21 @@
     <string name="gopay_expiration_message">Please complete your payment in:</string>
     <string name="gopay_expiration_expired">Time\'s up.</string>
 
+    <!--ShopeePay Instruction-->
+    <string name="shopeepay_instruction_step1">Tap <b>Pay Now with ShopeePay</b>.</string>
+    <string name="shopeepay_instruction_step2"><b>Shopee</b> app will open.</string>
+    <string name="shopeepay_instruction_step3">Check your payment details then tap <b>Pay</b> and your transaction is <b>Done</b>.</string>
+
+    <!--ShopeePay Instruction in Tablet-->
+    <string name="shopeepay_instruction_tablet_step1">Tap <b>Pay Now with ShopeePay</b>.</string>
+    <string name="shopeepay_instruction_tablet_step2"><b>QR code</b> will appear on the next page to be scanned.</string>
+    <string name="shopeepay_instruction_tablet_step3">Open <b>Shopee app</b> on your phone.</string>
+    <string name="shopeepay_instruction_tablet_step4">Tap <b>SCAN QR</b>.</string>
+    <string name="shopeepay_instruction_tablet_step5">Point your camera to the <b>QR Code</b>.</string>
+    <string name="shopeepay_instruction_tablet_step6">Check your payment details in <b>Shopee</b> app and then tap <b>Pay</b>.</string>
+    <string name="shopeepay_instruction_tablet_step7">Done.</string>
+    <string name="shopeepay_instruction_tablet_hint">Note: Scan QR button won\'t appear if your Shopee balance is less than Rp 10,000.</string>
+
     <string name="error_message_invalid_input_telkomsel">Transaction failed. Your transaction got declined by T-Cash.</string>
     <string name="kioson">Kioson</string>
     <string name="message_payment_cannot_proccessed">Transaction cannot be proccessed. Make sure your payment informations is correct</string>

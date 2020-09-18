@@ -282,6 +282,21 @@
     <string name="gopay_instruction_tablet_step7">Selesai.</string>
     <string name="gopay_instruction_tablet_hint">Catatan: Scan tombol QR tidak akan muncul jika saldo GoPay kurang dari Rp 10.000.</string>
 
+    <!--ShopeePay Instruction-->
+    <string name="shopeepay_instruction_step1">Klik <b>Bayar dengan ShopeePay</b>.</string>
+    <string name="shopeepay_instruction_step2">Aplikasi <b>Shopee</b> akan terbuka.</string>
+    <string name="shopeepay_instruction_step3">Periksa rincian pembayaran Anda lalu klik <b>Pay</b> dan transaksi anda <b>Selesai</b>.</string>
+
+    <!--ShopeePay Instruction in Tablet-->
+    <string name="shopeepay_instruction_tablet_step1">Klik <b>Bayar dengan ShopeePay</b>.</string>
+    <string name="shopeepay_instruction_tablet_step2"><b>Kode QR</b> akan muncul pada halaman selanjutnya.</string>
+    <string name="shopeepay_instruction_tablet_step3">Buka aplikasi <b>Shopee</b> di HP Anda.</string>
+    <string name="shopeepay_instruction_tablet_step4">Tekan <b>SCAN QR</b>.</string>
+    <string name="shopeepay_instruction_tablet_step5">Arahkan kamera ke <b>Kode QR</b>.</string>
+    <string name="shopeepay_instruction_tablet_step6">Periksa kembali detail pembayaran Anda di aplikasi <b>Shopee</b> lalu tekan <b>Bayar</b>.</string>
+    <string name="shopeepay_instruction_tablet_step7">Selesai.</string>
+    <string name="shopeepay_instruction_tablet_hint">Catatan: Scan tombol QR tidak akan muncul jika saldo Shopee kurang dari Rp 10.000.</string>
+
     <!--credit card -->
     <string name="add_card_message">Anda bisa membayar dengan kartu baru disini</string>
     <string name="saved_card">Pilih kartu</string>
