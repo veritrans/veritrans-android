@@ -31,7 +31,7 @@
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/gopay_instruction_step1"
+            android:text="@string/shopeepay_instruction_step1"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size" />
     </LinearLayout>
@@ -76,7 +76,7 @@
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/gopay_instruction_step3"
+            android:text="@string/shopeepay_instruction_step3"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size" />
     </LinearLayout>

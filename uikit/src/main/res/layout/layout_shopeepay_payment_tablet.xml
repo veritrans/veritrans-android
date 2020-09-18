@@ -39,7 +39,7 @@
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/gopay_instruction_tablet_step1"
+            android:text="@string/shopeepay_instruction_tablet_step1"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size" />
     </LinearLayout>
@@ -61,7 +61,7 @@
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/gopay_instruction_tablet_step2"
+            android:text="@string/shopeepay_instruction_tablet_step2"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size" />
     </LinearLayout>
@@ -84,7 +84,7 @@
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/gopay_instruction_tablet_step3"
+            android:text="@string/shopeepay_instruction_tablet_step3"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size" />
     </LinearLayout>
@@ -106,7 +106,7 @@
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/gopay_instruction_tablet_step4"
+            android:text="@string/shopeepay_instruction_tablet_step4"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size" />
     </LinearLayout>
@@ -126,7 +126,7 @@
         android:layout_marginBottom="@dimen/eight_dp"
         android:layout_marginLeft="@dimen/thirtytwo_dp"
         android:layout_marginRight="@dimen/sixteen_dp"
-        android:text="@string/gopay_instruction_tablet_hint"
+        android:text="@string/shopeepay_instruction_tablet_hint"
         android:textColor="@color/gray.primary"/>
 
     <RelativeLayout
@@ -149,7 +149,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/instruction_no_5"
-            android:text="@string/gopay_instruction_tablet_step5"
+            android:text="@string/shopeepay_instruction_tablet_step5"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size" />
 
@@ -182,7 +182,7 @@
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/gopay_instruction_tablet_step6"
+            android:text="@string/shopeepay_instruction_tablet_step6"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size" />
     </LinearLayout>
@@ -205,7 +205,7 @@
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/gopay_instruction_tablet_step7"
+            android:text="@string/shopeepay_instruction_tablet_step7"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size" />
     </LinearLayout>
