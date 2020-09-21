@@ -54,7 +54,7 @@
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/gopay_instruction_step2"
+            android:text="@string/shopeepay_instruction_step2"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size" />
     </LinearLayout>

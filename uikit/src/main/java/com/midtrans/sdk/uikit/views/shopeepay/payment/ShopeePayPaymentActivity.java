@@ -170,6 +170,7 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
                 stub.setLayoutResource(R.layout.layout_shopeepay_payment);
             }
         }
+        stub.inflate();
     }
 
     private void initData() {
@@ -193,7 +194,7 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
                 buttonPrimary.setTextBold();
                 buttonPrimary.setText(getString(R.string.shopeepay_confirm_button));
 
-                buttonPrimary.setIconResource(R.drawable.ic_gopay_white);
+                buttonPrimary.setIconResource(R.drawable.ic_gopay_white);//TODO check icon
                 buttonPrimary.setIconPosition(FancyButton.POSITION_RIGHT);
             } else {
                 //hide confirm button and adjust item details to bottom of screen
