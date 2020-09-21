@@ -28,7 +28,7 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
     private ShopeePayPaymentPresenter presenter;
     private FancyButton buttonPrimary;
     private View buttonPrimaryLayout;
-    private Boolean isAlreadyGotResponse, isShopeeInstalledWhenPaused;
+    private Boolean isAlreadyGotResponse = false, isShopeeInstalledWhenPaused;
     private int shopeePayIntentCode, attempt;
 
     @Override
@@ -194,7 +194,7 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
                 buttonPrimary.setTextBold();
                 buttonPrimary.setText(getString(R.string.shopeepay_confirm_button));
 
-                buttonPrimary.setIconResource(R.drawable.ic_gopay_white);//TODO check icon
+                buttonPrimary.setIconResource(R.drawable.ic_shopeepay);//TODO get white icon
                 buttonPrimary.setIconPosition(FancyButton.POSITION_RIGHT);
             } else {
                 //hide confirm button and adjust item details to bottom of screen
@@ -231,7 +231,7 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
             buttonPrimary.setTextBold();
             buttonPrimary.setText(getString(R.string.shopeepay_confirm_button));
 
-            buttonPrimary.setIconResource(R.drawable.ic_gopay_white);
+            buttonPrimary.setIconResource(R.drawable.ic_shopeepay);
             buttonPrimary.setIconPosition(FancyButton.POSITION_RIGHT);
         }
     }
