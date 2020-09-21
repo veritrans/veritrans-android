@@ -34,7 +34,7 @@ public class PaymentType {
     public static final String KIOSON = "kioson";
     public static final String GCI = "gci";
     public static final String GOPAY = "gopay";
-    public static final String SHOPEEPAY = "ShopeePay";
+    public static final String SHOPEEPAY = "shopeepay";
     public static final String DANAMON_ONLINE = "danamon_online";
     public static final String INDOMARET_CSTORE = "cstore";
     public static final String AKULAKU = "akulaku";

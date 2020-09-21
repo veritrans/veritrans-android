@@ -482,7 +482,7 @@
     <string name="payment_kioson">kioson</string>
     <string name="payment_gci">gci</string>
     <string name="payment_gopay">gopay</string>
-    <string name="payment_shopeepay">ShopeePay</string>
+    <string name="payment_shopeepay">shopeepay</string>
     <string name="payment_danamon_online">danamon_online</string>
     <string name="payment_akulaku">akulaku</string>
 
