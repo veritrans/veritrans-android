@@ -1,6 +1,6 @@
 package com.midtrans.sdk.uikit.models;
 
-public class QrCode {
+public class Qris {
     private String type;
     private String name;
     private int image;
@@ -8,7 +8,7 @@ public class QrCode {
     private String description;
     private String status;
 
-    public QrCode(String bankType, String name, int image, Integer priority, String description, String status) {
+    public Qris(String bankType, String name, int image, Integer priority, String description, String status) {
         this.type = bankType;
         this.name = name;
         this.image = image;

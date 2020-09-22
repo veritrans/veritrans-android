@@ -6,6 +6,7 @@ import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 import com.midtrans.sdk.uikit.models.BankTransfer;
 import com.midtrans.sdk.uikit.models.CreditCardType;
+import com.midtrans.sdk.uikit.models.Qris;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 
 /**
@@ -177,5 +178,39 @@ public class PaymentMethods {
         }
 
         return bankTransfer;
+    }
+
+    public static Qris createQrisModel(Context context, String type, String status) {
+        Qris qrisModel = null;
+//        if (!TextUtils.isEmpty(type)) {
+//            switch (type) {
+//                case PaymentType.BCA_VA:
+//                    bankTransfer = new BankTransfer(type, context.getString(R.string.bca_bank_transfer), R.drawable.ic_bca, 1, context.getString(R.string.payment_bank_description_bca), status);
+//                    break;
+//
+//                case PaymentType.E_CHANNEL:
+//                    bankTransfer = new BankTransfer(type, context.getString(R.string.mandiri_bill), R.drawable.ic_mandiri_bill_payment2, 2, context.getString(R.string.payment_bank_description_mandiri), status);
+//                    break;
+//
+//                case PaymentType.BNI_VA:
+//                    bankTransfer = new BankTransfer(type, context.getString(R.string.bni_bank_transfer), R.drawable.ic_bni, 4, context.getString(R.string.payment_bank_description_bni), status);
+//                    break;
+//
+//                case PaymentType.BRI_VA:
+//                    bankTransfer = new BankTransfer(type, context.getString(R.string.bri_bank_transfer), R.drawable.ic_bri, 5, context.getString(R.string.payment_bank_description_bri), status);
+//                    break;
+//
+//                case PaymentType.PERMATA_VA:
+//                    bankTransfer = new BankTransfer(type, context.getString(R.string.permata_bank_transfer), R.drawable.ic_permata, 3, context.getString(R.string.payment_bank_description_permata), status);
+//                    break;
+//
+//                case PaymentType.ALL_VA:
+//                    bankTransfer = new BankTransfer(type, context.getString(R.string.all_bank_transfer), R.drawable.ic_atm, 6, context.getString(R.string.payment_bank_description_other), status);
+//                    break;
+//            }
+//
+//        }
+
+        return qrisModel;
     }
 }
