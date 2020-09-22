@@ -6,10 +6,15 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
+import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
+import com.midtrans.sdk.uikit.activities.UserDetailsActivity;
 import com.midtrans.sdk.uikit.models.EnabledPayments;
 import com.midtrans.sdk.uikit.models.Qris;
+import com.midtrans.sdk.uikit.utilities.UiKitConstants;
+import com.midtrans.sdk.uikit.views.gopay.payment.GoPayPaymentActivity;
+import com.midtrans.sdk.uikit.views.shopeepay.payment.ShopeePayPaymentActivity;
 import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
 import java.util.List;
 
@@ -43,7 +48,7 @@ public class QrisListActivity extends BasePaymentActivity implements QrisListAda
     @Override
     public void onItemClick(int position) {
         Qris item = adapter.getItem(position);
-        startQrisPayment(item.getType());
+        startQrisPaymentDirectly(item.getType());
     }
 
     @Override
@@ -52,6 +57,28 @@ public class QrisListActivity extends BasePaymentActivity implements QrisListAda
             presenter.trackBackButtonClick(PAGE_NAME);
         }
         super.onBackPressed();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT) {
+            if (resultCode == RESULT_OK && data != null) {
+                finishPayment(RESULT_OK, data);
+            } else if (resultCode == RESULT_CANCELED) {
+                if (data == null) {
+                    if (presenter.getQrisList() == null
+                        || presenter.getQrisList().size() == 1
+                        || getIntent().getBooleanExtra(UserDetailsActivity.GO_PAY, false)
+                        || getIntent().getBooleanExtra(UserDetailsActivity.SHOPEE_PAY, false)) {
+                        finish();
+                    }
+                } else {
+                    finishPayment(RESULT_OK, data);
+                }
+            }
+        }
     }
 
     private void initProperties() {
@@ -82,24 +109,41 @@ public class QrisListActivity extends BasePaymentActivity implements QrisListAda
         List<Qris> bankTransfers = presenter.getQrisList();
         if (bankTransfers != null && !bankTransfers.isEmpty()) {
             if (bankTransfers.size() == 1) {
-                startQrisPayment(presenter.getQrisList().get(0).getType());
+                startQrisPaymentDirectly(presenter.getQrisList().get(0).getType());
             } else {
-                //TODO check if gopay/shopee jordy
-//                if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_PERMATA, false)) {
-//                    startBankTransferPayment(PaymentType.PERMATA_VA);
-//                } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_MANDIRI, false)) {
-//                    startBankTransferPayment(PaymentType.E_CHANNEL);
+                startQrisPayment();
             }
         } else {
             finish();
         }
     }
 
-    private void startQrisPayment(String qrisType) {
-        //TODO start Gopay/Shopee jordy
-//        Intent intent = new Intent(this, BankTransferPaymentActivity.class);
-//        intent.putExtra(BankTransferPaymentActivity.EXTRA_BANK_TYPE, bankType);
-//        startActivityForResult(intent, UiKitConstants.INTENT_CODE_PAYMENT);
+    private void startQrisPaymentDirectly(String qrisType) {
+        if (qrisType != null) {
+            if (qrisType.equals(PaymentType.GOPAY)) {
+                startGopayActivity();
+            } else if (qrisType.equals(PaymentType.SHOPEEPAY)){
+                startShopeePayActivity();
+            }
+        }
+    }
+
+    private void startQrisPayment() {
+        if (getIntent().getBooleanExtra(UserDetailsActivity.GO_PAY, false)) {
+            startGopayActivity();
+        } else if (getIntent().getBooleanExtra(UserDetailsActivity.SHOPEE_PAY, false)) {
+            startShopeePayActivity();
+        }
+    }
+
+    private void startGopayActivity() {
+        Intent intent = new Intent(this, GoPayPaymentActivity.class);
+        startActivityForResult(intent, UiKitConstants.INTENT_CODE_PAYMENT);
+    }
+
+    private void startShopeePayActivity() {
+        Intent intent = new Intent(this, ShopeePayPaymentActivity.class);
+        startActivityForResult(intent, UiKitConstants.INTENT_CODE_PAYMENT);
     }
 
     private void finishPayment(int resultCode, Intent data) {
