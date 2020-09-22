@@ -1,5 +1,6 @@
 package com.midtrans.sdk.uikit.views.qris.list;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ import java.util.List;
 
 public class QrisListActivity extends BasePaymentActivity implements QrisListAdapter.QrisListAdapterListener {
     public static final String EXTRA_QRIS_LIST = "qris.list";
+    private static final String PAGE_NAME = "Select Qris Payment";
 
     private QrisListPresenter presenter;
     private QrisListAdapter adapter;
@@ -30,17 +32,26 @@ public class QrisListActivity extends BasePaymentActivity implements QrisListAda
 
     @Override
     public void bindViews() {
-
+        //do nothing
     }
 
     @Override
     public void initTheme() {
-
+        //do nothing
     }
 
     @Override
     public void onItemClick(int position) {
+        Qris item = adapter.getItem(position);
+        startQrisPayment(item.getType());
+    }
 
+    @Override
+    public void onBackPressed() {
+        if (presenter != null) {
+            presenter.trackBackButtonClick(PAGE_NAME);
+        }
+        super.onBackPressed();
     }
 
     private void initProperties() {
@@ -66,7 +77,7 @@ public class QrisListActivity extends BasePaymentActivity implements QrisListAda
         }
 
         boolean isFirstPage = getIntent().getBooleanExtra(USE_DEEP_LINK, true);
-        //presenter.trackPageView(PAGE_NAME, isFirstPage);
+        presenter.trackPageView(PAGE_NAME, isFirstPage);
 
         List<Qris> bankTransfers = presenter.getQrisList();
         if (bankTransfers != null && !bankTransfers.isEmpty()) {
@@ -89,5 +100,10 @@ public class QrisListActivity extends BasePaymentActivity implements QrisListAda
 //        Intent intent = new Intent(this, BankTransferPaymentActivity.class);
 //        intent.putExtra(BankTransferPaymentActivity.EXTRA_BANK_TYPE, bankType);
 //        startActivityForResult(intent, UiKitConstants.INTENT_CODE_PAYMENT);
+    }
+
+    private void finishPayment(int resultCode, Intent data) {
+        setResult(resultCode, data);
+        finish();
     }
 }

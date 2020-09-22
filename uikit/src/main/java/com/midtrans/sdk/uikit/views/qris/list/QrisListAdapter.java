@@ -8,7 +8,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.models.BankTransfer;
 import com.midtrans.sdk.uikit.models.Qris;
 import com.midtrans.sdk.uikit.views.banktransfer.list.BankTransferListAdapter.BankTransferAdapterListener;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
@@ -30,6 +29,10 @@ public class QrisListAdapter extends RecyclerView.Adapter<QrisListAdapter.QrisLi
             this.mData.addAll(qrisList);
         }
         this.notifyDataSetChanged();
+    }
+
+    public Qris getItem(int position) {
+        return mData.get(position);
     }
 
     @NonNull
