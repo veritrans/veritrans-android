@@ -457,6 +457,7 @@
     <string name="payment_method_klik_bca">KlikBCA</string>
     <string name="payment_method_kioson">Kioson</string>
     <string name="payment_method_gci"> Gift Card Indonesia </string>
+    <string name="payment_method_qris">QRIS QR Code</string>
     <string name="payment_method_gopay">GoPay</string>
     <string name="payment_method_shopeepay">ShopeePay</string>
     <string name="payment_method_danamon_online">Danamon Online Banking</string>
@@ -481,6 +482,7 @@
     <string name="payment_klik_bca">bca_klikbca</string>
     <string name="payment_kioson">kioson</string>
     <string name="payment_gci">gci</string>
+    <string name="payment_qris">qris</string>
     <string name="payment_gopay">gopay</string>
     <string name="payment_shopeepay">shopeepay</string>
     <string name="payment_danamon_online">danamon_online</string>

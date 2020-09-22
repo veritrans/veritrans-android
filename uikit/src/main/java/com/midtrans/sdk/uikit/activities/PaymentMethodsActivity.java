@@ -24,16 +24,28 @@ import com.midtrans.raygun.RaygunClient;
 import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.callback.CheckoutCallback;
 import com.midtrans.sdk.corekit.callback.TransactionOptionsCallback;
-import com.midtrans.sdk.corekit.core.*;
+import com.midtrans.sdk.corekit.core.Constants;
+import com.midtrans.sdk.corekit.core.Logger;
+import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.core.PaymentType;
+import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.core.themes.ColorTheme;
 import com.midtrans.sdk.corekit.core.themes.CustomColorTheme;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
-import com.midtrans.sdk.corekit.models.*;
+import com.midtrans.sdk.corekit.models.MerchantPreferences;
+import com.midtrans.sdk.corekit.models.PaymentDetails;
+import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
+import com.midtrans.sdk.corekit.models.TransactionResponse;
+import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.promo.Promo;
 import com.midtrans.sdk.corekit.models.promo.PromoDetails;
-import com.midtrans.sdk.corekit.models.snap.*;
+import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
 import com.midtrans.sdk.corekit.models.snap.ItemDetails;
+import com.midtrans.sdk.corekit.models.snap.MerchantData;
+import com.midtrans.sdk.corekit.models.snap.Token;
+import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.TransactionDetails;
+import com.midtrans.sdk.corekit.models.snap.TransactionResult;
 import com.midtrans.sdk.uikit.BuildConfig;
 import com.midtrans.sdk.uikit.PaymentMethods;
 import com.midtrans.sdk.uikit.R;
@@ -62,13 +74,13 @@ import com.midtrans.sdk.uikit.views.indosat_dompetku.IndosatDompetkuPaymentActiv
 import com.midtrans.sdk.uikit.views.kioson.payment.KiosonPaymentActivity;
 import com.midtrans.sdk.uikit.views.mandiri_clickpay.MandiriClickPayActivity;
 import com.midtrans.sdk.uikit.views.mandiri_ecash.MandiriEcashPaymentActivity;
+import com.midtrans.sdk.uikit.views.qris.list.QrisListActivity;
 import com.midtrans.sdk.uikit.views.shopeepay.payment.ShopeePayPaymentActivity;
 import com.midtrans.sdk.uikit.views.telkomsel_cash.TelkomselCashPaymentActivity;
 import com.midtrans.sdk.uikit.views.xl_tunai.payment.XlTunaiPaymentActivity;
 import com.midtrans.sdk.uikit.widgets.BoldTextView;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -115,6 +127,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     private LinearLayout maintenanceContainer;
     private ImageView logo = null;
     private ArrayList<EnabledPayment> bankTransfers = new ArrayList<>();
+    private ArrayList<EnabledPayment> qrisPayment = new ArrayList<>();
     private PaymentMethodsAdapter paymentMethodsAdapter;
     private AlertDialog alertDialog;
     private ImageView progressImage;
@@ -810,7 +823,16 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             startBankPayment.putExtra(BankTransferListActivity.USE_DEEP_LINK, isDeepLink);
             startActivityForResult(startBankPayment, Constants.RESULT_CODE_PAYMENT_TRANSFER);
             if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
-                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+            }
+        } else if (name.equalsIgnoreCase(getString(R.string.payment_method_qris))) {
+            Intent startQrisPayment = new Intent(this, QrisListActivity.class);
+            startQrisPayment.putExtra(QrisListActivity.EXTRA_QRIS_LIST, getQrisPayment());
+            startQrisPayment.putExtra(QrisListActivity.USE_DEEP_LINK, isDeepLink);
+            startActivityForResult(startQrisPayment, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
+                && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_mandiri_clickpay))) {
@@ -961,19 +983,25 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         boolean isBankTransferAdded = false;
         data.clear();
         bankTransfers.clear();
+        qrisPayment.clear();
 
         for (EnabledPayment enabledPayment : enabledPayments) {
-            if ((enabledPayment.getCategory() != null && enabledPayment.getCategory().equals(getString(R.string.enabled_payment_category_banktransfer)))
-                    || enabledPayment.getType().equalsIgnoreCase(getString(R.string.payment_mandiri_bill_payment))) {
+            if ((enabledPayment.getCategory() != null
+                && enabledPayment.getCategory().equals(getString(R.string.enabled_payment_category_banktransfer)))
+                || enabledPayment.getType().equalsIgnoreCase(getString(R.string.payment_mandiri_bill_payment))) {
                 bankTransfers.add(enabledPayment);
                 if (!isBankTransferAdded) {
-                    PaymentMethodsModel model = PaymentMethods
-                            .getMethods(this, getString(R.string.payment_bank_transfer),
-                                    EnabledPayment.STATUS_UP);
+                    PaymentMethodsModel model = PaymentMethods.getMethods(this, getString(R.string.payment_bank_transfer), EnabledPayment.STATUS_UP);
                     if (model != null) {
                         data.add(model);
                         isBankTransferAdded = true;
                     }
+                }
+            } else if (checkQrisPaymentEnabled(enabledPayment.getType())) {
+                qrisPayment.add(enabledPayment);
+                PaymentMethodsModel model = PaymentMethods.getMethods(this, enabledPayment.getType(), enabledPayment.getStatus());
+                if (model != null) {
+                    data.add(model);
                 }
             } else {
                 PaymentMethodsModel model = PaymentMethods.getMethods(this, enabledPayment.getType(), enabledPayment.getStatus());
@@ -982,8 +1010,14 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 }
             }
         }
-
         markPaymentMethodHavePromo(data);
+    }
+
+    private Boolean checkQrisPaymentEnabled(String type) {
+        Boolean isGopay = type.equalsIgnoreCase(getString(R.string.payment_gopay));
+        Boolean isShopeepay = type.equalsIgnoreCase(getString(R.string.payment_shopeepay));
+
+        return isGopay || isShopeepay;
     }
 
     private void markPaymentMethodHavePromo(List<PaymentMethodsModel> data) {
@@ -1213,6 +1247,9 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         return new EnabledPayments(this.bankTransfers);
     }
 
+    public EnabledPayments getQrisPayment() {
+        return new EnabledPayments(this.qrisPayment);
+    }
 
     @Override
     public void onItemClick(int position) {
