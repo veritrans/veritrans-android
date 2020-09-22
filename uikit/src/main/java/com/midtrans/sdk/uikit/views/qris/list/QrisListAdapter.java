@@ -8,15 +8,28 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.models.BankTransfer;
+import com.midtrans.sdk.uikit.models.Qris;
 import com.midtrans.sdk.uikit.views.banktransfer.list.BankTransferListAdapter.BankTransferAdapterListener;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
+import java.util.ArrayList;
+import java.util.List;
 
 public class QrisListAdapter extends RecyclerView.Adapter<QrisListAdapter.QrisListViewHolder> {
 
     private QrisListAdapterListener listener;
+    private List<Qris> mData = new ArrayList<>();
 
-    public QrisListAdapter(QrisListAdapterListener listener) {
+    QrisListAdapter(QrisListAdapterListener listener) {
         this.listener = listener;
+    }
+
+    public void setData(List<Qris> qrisList) {
+        this.mData.clear();
+        if (qrisList != null) {
+            this.mData.addAll(qrisList);
+        }
+        this.notifyDataSetChanged();
     }
 
     @NonNull

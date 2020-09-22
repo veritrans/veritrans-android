@@ -39,7 +39,7 @@ public class QrisListActivity extends BasePaymentActivity implements QrisListAda
     }
 
     @Override
-    public void onItemClick(int positiion) {
+    public void onItemClick(int position) {
 
     }
 
@@ -47,7 +47,7 @@ public class QrisListActivity extends BasePaymentActivity implements QrisListAda
         EnabledPayments qrisList = (EnabledPayments) getIntent().getSerializableExtra(EXTRA_QRIS_LIST);
         presenter = new QrisListPresenter(this, qrisList);
         adapter = new QrisListAdapter(this);
-//        adapter.setData(presenter.getBankList()); TODO
+        adapter.setData(presenter.getQrisList());
 
         qrisRecyclerView = findViewById(R.id.rv_qris_list);
         if (qrisRecyclerView != null) {
@@ -73,7 +73,7 @@ public class QrisListActivity extends BasePaymentActivity implements QrisListAda
             if (bankTransfers.size() == 1) {
                 startQrisPayment(presenter.getQrisList().get(0).getType());
             } else {
-                //TODO check if gopay/shopee
+                //TODO check if gopay/shopee jordy
 //                if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_PERMATA, false)) {
 //                    startBankTransferPayment(PaymentType.PERMATA_VA);
 //                } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_MANDIRI, false)) {
@@ -85,7 +85,7 @@ public class QrisListActivity extends BasePaymentActivity implements QrisListAda
     }
 
     private void startQrisPayment(String qrisType) {
-        //TODO start Gopay/Shopee
+        //TODO start Gopay/Shopee jordy
 //        Intent intent = new Intent(this, BankTransferPaymentActivity.class);
 //        intent.putExtra(BankTransferPaymentActivity.EXTRA_BANK_TYPE, bankType);
 //        startActivityForResult(intent, UiKitConstants.INTENT_CODE_PAYMENT);
