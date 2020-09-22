@@ -49,12 +49,14 @@ public class PaymentMethods {
             return getMethodGopay(context, 15, paymentType, status);
         } else if (paymentType.equals(context.getString(R.string.payment_shopeepay))) {
             return getMethodShopeepay(context, 16, paymentType, status);
+        } else if (paymentType.equals(context.getString(R.string.payment_qris))) {
+            return getMethodQris(context, 17, paymentType, status);
         } else if (paymentType.equals(context.getString(R.string.payment_danamon_online))) {
-            return getDanamonOnline(context, 17, paymentType, status);
+            return getDanamonOnline(context, 18, paymentType, status);
         } else if (paymentType.equals(context.getString(R.string.payment_akulaku))) {
-            return getMethodAkulaku(context, 18, paymentType, status);
+            return getMethodAkulaku(context, 19, paymentType, status);
         } else if (paymentType.equals(context.getString(R.string.payment_alfamart))) {
-            return getMethodAlfamart(context, 19, paymentType, status);
+            return getMethodAlfamart(context, 20, paymentType, status);
         } else {
             return null;
         }
@@ -126,6 +128,11 @@ public class PaymentMethods {
         return new PaymentMethodsModel(context.getString(R.string.payment_method_gci), context.getString(R.string.payment_method_description_gci), R.drawable.ic_gci, paymentType, priority, status);
     }
 
+    private static PaymentMethodsModel getMethodQris(Context context, int priority, String paymentType, String status) {
+        //TODO jordy add copy
+        return new PaymentMethodsModel(context.getString(R.string.payment_method_gopay), context.getString(R.string.payment_method_description_gopay), R.drawable.ic_gopay, paymentType, priority, status);
+    }
+
     private static PaymentMethodsModel getMethodGopay(Context context, int priority, String paymentType, String status) {
         return new PaymentMethodsModel(context.getString(R.string.payment_method_gopay), context.getString(R.string.payment_method_description_gopay), R.drawable.ic_gopay, paymentType, priority, status);
     }
@@ -182,34 +189,17 @@ public class PaymentMethods {
 
     public static Qris createQrisModel(Context context, String type, String status) {
         Qris qrisModel = null;
-//        if (!TextUtils.isEmpty(type)) {
-//            switch (type) {
-//                case PaymentType.BCA_VA:
-//                    bankTransfer = new BankTransfer(type, context.getString(R.string.bca_bank_transfer), R.drawable.ic_bca, 1, context.getString(R.string.payment_bank_description_bca), status);
-//                    break;
-//
-//                case PaymentType.E_CHANNEL:
-//                    bankTransfer = new BankTransfer(type, context.getString(R.string.mandiri_bill), R.drawable.ic_mandiri_bill_payment2, 2, context.getString(R.string.payment_bank_description_mandiri), status);
-//                    break;
-//
-//                case PaymentType.BNI_VA:
-//                    bankTransfer = new BankTransfer(type, context.getString(R.string.bni_bank_transfer), R.drawable.ic_bni, 4, context.getString(R.string.payment_bank_description_bni), status);
-//                    break;
-//
-//                case PaymentType.BRI_VA:
-//                    bankTransfer = new BankTransfer(type, context.getString(R.string.bri_bank_transfer), R.drawable.ic_bri, 5, context.getString(R.string.payment_bank_description_bri), status);
-//                    break;
-//
-//                case PaymentType.PERMATA_VA:
-//                    bankTransfer = new BankTransfer(type, context.getString(R.string.permata_bank_transfer), R.drawable.ic_permata, 3, context.getString(R.string.payment_bank_description_permata), status);
-//                    break;
-//
-//                case PaymentType.ALL_VA:
-//                    bankTransfer = new BankTransfer(type, context.getString(R.string.all_bank_transfer), R.drawable.ic_atm, 6, context.getString(R.string.payment_bank_description_other), status);
-//                    break;
-//            }
-//
-//        }
+        if (!TextUtils.isEmpty(type)) {
+            switch (type) {
+                case PaymentType.GOPAY:
+                    qrisModel = new Qris(type, context.getString(R.string.gopay), R.drawable.ic_gopay, 1, context.getString(R.string.payment_method_description_gopay), status);
+                    break;
+
+                case PaymentType.SHOPEEPAY:
+                    qrisModel = new Qris(type, context.getString(R.string.shopeepay), R.drawable.ic_shopeepay, 2, context.getString(R.string.payment_method_description_shopeepay), status);
+                    break;
+            }
+        }
 
         return qrisModel;
     }
