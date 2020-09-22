@@ -9,6 +9,9 @@ import com.midtrans.sdk.uikit.models.EnabledPayments;
 public class QrisListActivity extends BasePaymentActivity implements QrisListAdapter.QrisListAdapterListener {
     public static final String EXTRA_QRIS_LIST = "qris.list";
 
+    private QrisListPresenter presenter;
+    private QrisListAdapter adapter;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +36,7 @@ public class QrisListActivity extends BasePaymentActivity implements QrisListAda
 
     private void initProperties() {
         EnabledPayments qrisList = (EnabledPayments) getIntent().getSerializableExtra(EXTRA_QRIS_LIST);
-
+        presenter = new QrisListPresenter(this, qrisList);
+        adapter = new QrisListAdapter(this);
     }
 }
