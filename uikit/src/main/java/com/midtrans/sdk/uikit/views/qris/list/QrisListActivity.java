@@ -1,9 +1,20 @@
 package com.midtrans.sdk.uikit.views.qris.list;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
+import com.midtrans.sdk.uikit.models.EnabledPayments;
 
 public class QrisListActivity extends BasePaymentActivity implements QrisListAdapter.QrisListAdapterListener {
-    public static final String QRIS_LIST = "qris.list";
+    public static final String EXTRA_QRIS_LIST = "qris.list";
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_qris_list);
+        initProperties();
+    }
 
     @Override
     public void bindViews() {
@@ -17,6 +28,11 @@ public class QrisListActivity extends BasePaymentActivity implements QrisListAda
 
     @Override
     public void onItemClick(int positiion) {
+
+    }
+
+    private void initProperties() {
+        EnabledPayments qrisList = (EnabledPayments) getIntent().getSerializableExtra(EXTRA_QRIS_LIST);
 
     }
 }
