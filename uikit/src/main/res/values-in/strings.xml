@@ -6,6 +6,7 @@
     <string name="activity_bank_transfer_permata">Transfer Bank Permata</string>
     <string name="activity_bank_transfer_all_bank">Transfer ke Bank Lain</string>
     <string name="activity_save_credit_card">Kartu Kredit Terdaftar</string>
+    <string name="activity_select_qris">Pilih E-Wallet</string>
 
     <!--user detail-->
     <string name="hint_full_name">Nama Lengkap</string>

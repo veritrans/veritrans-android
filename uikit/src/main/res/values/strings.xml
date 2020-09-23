@@ -59,6 +59,7 @@
     <string name="activity_bank_transfer_mandiri">Mandiri Bank Transfer</string>
     <string name="activity_bank_transfer_permata">Permata Bank Transfer</string>
     <string name="activity_save_credit_card">Registered Credit Card</string>
+    <string name="activity_select_qris">Select E-Wallet</string>
     <!-- User Address -->
     <string name="title_user_details">User Information</string>
     <string name="hint_address">Address</string>

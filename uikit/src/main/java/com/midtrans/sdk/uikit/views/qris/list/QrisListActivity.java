@@ -100,15 +100,15 @@ public class QrisListActivity extends BasePaymentActivity implements QrisListAda
     private void bindData() {
         textTitle = findViewById(R.id.text_page_title);
         if (textTitle != null) {
-            textTitle.setText(getString(R.string.activity_select_bank));
+            textTitle.setText(getString(R.string.activity_select_qris));
         }
 
         boolean isFirstPage = getIntent().getBooleanExtra(USE_DEEP_LINK, true);
         presenter.trackPageView(PAGE_NAME, isFirstPage);
 
-        List<Qris> bankTransfers = presenter.getQrisList();
-        if (bankTransfers != null && !bankTransfers.isEmpty()) {
-            if (bankTransfers.size() == 1) {
+        List<Qris> qrisList = presenter.getQrisList();
+        if (qrisList != null && !qrisList.isEmpty()) {
+            if (qrisList.size() == 1) {
                 startQrisPaymentDirectly(presenter.getQrisList().get(0).getType());
             } else {
                 startQrisPayment();
