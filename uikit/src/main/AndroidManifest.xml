@@ -143,11 +143,6 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".views.qris.list.QrisListActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait" />
-
-        <activity
             android:name=".views.gopay.status.GoPayStatusActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />

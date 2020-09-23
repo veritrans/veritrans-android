@@ -59,7 +59,7 @@
     <string name="activity_bank_transfer_mandiri">Mandiri Bank Transfer</string>
     <string name="activity_bank_transfer_permata">Permata Bank Transfer</string>
     <string name="activity_save_credit_card">Registered Credit Card</string>
-    <string name="activity_select_qris">Select E-Wallet</string>
+
     <!-- User Address -->
     <string name="title_user_details">User Information</string>
     <string name="hint_address">Address</string>
@@ -458,7 +458,6 @@
     <string name="payment_method_klik_bca">KlikBCA</string>
     <string name="payment_method_kioson">Kioson</string>
     <string name="payment_method_gci"> Gift Card Indonesia </string>
-    <string name="payment_method_qris">QRIS QR Code</string>
     <string name="payment_method_gopay">GoPay</string>
     <string name="payment_method_shopeepay">ShopeePay</string>
     <string name="payment_method_danamon_online">Danamon Online Banking</string>
@@ -483,7 +482,6 @@
     <string name="payment_klik_bca">bca_klikbca</string>
     <string name="payment_kioson">kioson</string>
     <string name="payment_gci">gci</string>
-    <string name="payment_qris">qris</string>
     <string name="payment_gopay">gopay</string>
     <string name="payment_shopeepay">shopeepay</string>
     <string name="payment_danamon_online">danamon_online</string>
@@ -735,7 +733,6 @@
     <string name="payment_method_description_gci">Pay with Gift Cards</string>
     <string name="payment_method_description_gopay">Pay with your GoPay wallet</string>
     <string name="payment_method_description_shopeepay">Pay with ShopeePay</string>
-    <string name="payment_method_description_qris">Pay via QR code with your preferred e-wallet</string>
     <string name="payment_method_description_danamon_online">Pay with your Danamon Online Banking Account</string>
     <string name="payment_method_description_akulaku">Pay with your Akulaku account</string>
 

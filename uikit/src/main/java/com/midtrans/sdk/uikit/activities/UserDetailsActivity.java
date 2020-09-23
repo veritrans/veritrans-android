@@ -38,7 +38,6 @@ public class UserDetailsActivity extends BaseActivity {
     public static final String BANK_TRANSFER_BNI = "bt_bni";
     public static final String BANK_TRANSFER_BRI = "bt_bri";
     public static final String BANK_TRANSFER_OTHER = "bt_other";
-    public static final String QRIS = "qrisr";
     public static final String GO_PAY = "gopay";
     public static final String SHOPEE_PAY = "shopeepay";
     public static final String BCA_KLIKPAY = "bcaklikpay";
@@ -182,8 +181,6 @@ public class UserDetailsActivity extends BaseActivity {
             paymentOptionIntent.putExtra(GO_PAY, true);
         } else if (getIntent().getBooleanExtra(SHOPEE_PAY, false)) {
             paymentOptionIntent.putExtra(SHOPEE_PAY, true);
-        } else if (getIntent().getBooleanExtra(QRIS, false)) {
-            paymentOptionIntent.putExtra(QRIS, true);
         } else if (getIntent().getBooleanExtra(BCA_KLIKPAY, false)) {
             paymentOptionIntent.putExtra(BCA_KLIKPAY, true);
         } else if (getIntent().getBooleanExtra(KLIK_BCA, false)) {

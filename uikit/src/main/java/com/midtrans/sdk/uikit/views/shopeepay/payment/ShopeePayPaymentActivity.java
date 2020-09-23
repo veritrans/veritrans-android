@@ -289,15 +289,15 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
         }
     }
 
-    private Boolean isProductionBuild() {
+    private boolean isProductionBuild() {
         return presenter.isProductionBuild();
     }
 
-    private Boolean isTablet() {
+    private boolean isTablet() {
         return presenter.isTablet();
     }
 
-    private Boolean isShopeeInstalled() {
+    private boolean isShopeeInstalled() {
         return presenter.isShopeeInstalled();
     }
 }
