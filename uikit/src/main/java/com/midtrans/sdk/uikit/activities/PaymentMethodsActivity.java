@@ -1022,7 +1022,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 }
             } else if (checkQrisPaymentEnabled(enabledPayment.getType())) {
                 qrisPayment.add(enabledPayment);
-                PaymentMethodsModel model = PaymentMethods.getMethods(this, enabledPayment.getType(), enabledPayment.getStatus());
+                PaymentMethodsModel model = PaymentMethods.getMethods(this, getString(R.string.payment_qris), EnabledPayment.STATUS_UP);
                 if (model != null) {
                     data.add(model);
                 }
