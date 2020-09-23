@@ -129,8 +129,7 @@ public class PaymentMethods {
     }
 
     private static PaymentMethodsModel getMethodQris(Context context, int priority, String paymentType, String status) {
-        //TODO jordy add copy
-        return new PaymentMethodsModel(context.getString(R.string.payment_method_qris), context.getString(R.string.payment_method_description_gopay), R.drawable.ic_gopay, paymentType, priority, status);
+        return new PaymentMethodsModel(context.getString(R.string.payment_method_qris), context.getString(R.string.payment_method_description_gopay), R.drawable.ic_qris, paymentType, priority, status);
     }
 
     private static PaymentMethodsModel getMethodGopay(Context context, int priority, String paymentType, String status) {

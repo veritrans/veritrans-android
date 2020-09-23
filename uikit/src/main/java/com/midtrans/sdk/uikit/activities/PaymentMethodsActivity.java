@@ -1004,6 +1004,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
      */
     private void initialiseAdapterData(List<EnabledPayment> enabledPayments) {
         boolean isBankTransferAdded = false;
+        boolean isQrisAdded = false;
         data.clear();
         bankTransfers.clear();
         qrisPayment.clear();
@@ -1022,9 +1023,12 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 }
             } else if (checkQrisPaymentEnabled(enabledPayment.getType())) {
                 qrisPayment.add(enabledPayment);
-                PaymentMethodsModel model = PaymentMethods.getMethods(this, getString(R.string.payment_qris), EnabledPayment.STATUS_UP);
-                if (model != null) {
-                    data.add(model);
+                if (!isQrisAdded) {
+                    PaymentMethodsModel model = PaymentMethods.getMethods(this, getString(R.string.payment_qris), EnabledPayment.STATUS_UP);
+                    if (model != null) {
+                        data.add(model);
+                        isQrisAdded = true;
+                    }
                 }
             } else {
                 PaymentMethodsModel model = PaymentMethods.getMethods(this, enabledPayment.getType(), enabledPayment.getStatus());
