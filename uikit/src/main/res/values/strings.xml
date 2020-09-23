@@ -641,16 +641,16 @@
     <string name="shopeepay_instruction_tablet_hint">Note: Scan QR button won\'t appear if your Shopee balance is less than Rp 10,000.</string>
 
     <!--ShopeePay related-->
-    <string name="shopeepay_status_title">Pay with GoPay</string>
+    <string name="shopeepay_status_title">Pay with ShopeePay</string>
     <string name="shopeepay_confirm_button">Pay Now with</string>
-    <string name="notification_shopee_app">Gojek app is required for this payment method.</string>
-    <string name="notification_shopee_app_tablet">Make sure you have <b>Gojek app</b> installed on your phone and have GoPay balance more than Rp 10,000.</string>
-    <string name="install_shopee_message">Install Gojek App from Play Store</string>
-    <string name="redirecting_to_shopee">Redirecting to Gojek app…</string>
-    <string name="no_shopee_message">Unfortunately, we couldn\'t find Gojek app installed on your phone.</string>
+    <string name="notification_shopee_app">Shopee app is required for this payment method.</string>
+    <string name="notification_shopee_app_tablet">Make sure you have <b>Shopee app</b> installed on your phone and have ShopeePay balance more than Rp 10,000.</string>
+    <string name="install_shopee_message">Install Shopee App from Play Store</string>
+    <string name="redirecting_to_shopee">Redirecting to Shopee app…</string>
+    <string name="no_shopee_message">Unfortunately, we couldn\'t find Shopee app installed on your phone.</string>
     <string name="error_shopeepay_transaction">Transaction cannot be proccessed. Please try again or try another payment method.</string>
-    <string name="confirm_shopeepay_qr_scan_tablet">Make sure the QR code successfully scanned and payment has been completed within the Gojek app.</string>
-    <string name="confirm_shopeepay_deeplink">Make sure payment has been completed within the Gojek app.</string>
+    <string name="confirm_shopeepay_qr_scan_tablet">Make sure the QR code successfully scanned and payment has been completed within the Shopee app.</string>
+    <string name="confirm_shopeepay_deeplink">Make sure payment has been completed within the Shopee app.</string>
     <string name="shopeepay_instruction">How to Pay?</string>
     <string name="shopeepay_expiration_message">Please complete your payment in:</string>
     <string name="shopeepay_expiration_expired">Time\'s up.</string>
@@ -925,6 +925,7 @@
     <string name="complete_payment_alfamart">Complete payment via Alfamart</string>
     <string name="alfamart_instruction_step0">Pay from any <b>Alfamart</b>, <b>Alfamidi</b>, or <b>Dan+Dan</b> outlet</string>
     <string name="gopay_payment_cant_open_deeplink">Can\'t access Gojek app for this payment!</string>
+    <string name="shopeepay_payment_cant_open_deeplink">Can\'t access Shopee app for this payment!</string>
     <string name="bri_bank_transfer">BRI</string>
     <string name="payment_bank_description_bri">Pay from BRI ATMs or internet banking</string>
     <string name="tab_atm_bri">ATM BRI</string>

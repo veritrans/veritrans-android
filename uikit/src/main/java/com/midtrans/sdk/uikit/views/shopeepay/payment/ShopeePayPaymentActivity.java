@@ -53,7 +53,7 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
             }
         }
 
-        if (shopeePayIntentCode == UiKitConstants.INTENT_CODE_GOPAY && presenter != null) {
+        if (shopeePayIntentCode == UiKitConstants.INTENT_CODE_SHOPEEPAY && presenter != null) {
             presenter.getPaymentStatus();
         }
     }
@@ -81,7 +81,7 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
         if (isDetailShown) {
             displayOrHideItemDetails();
         } else if (isAlreadyGotResponse) {
-            showConfirmationDialog(getString(R.string.confirm_gopay_deeplink));
+            showConfirmationDialog(getString(R.string.confirm_shopeepay_deeplink));
         } else {
             super.onBackPressed();
         }
@@ -238,11 +238,11 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
 
     private void openDeeplink(String deeplinkUrl) {
         if (deeplinkUrl == null) {
-            Toast.makeText(this, R.string.gopay_payment_cant_open_deeplink, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.shopeepay_payment_cant_open_deeplink, Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, getString(R.string.redirecting_to_shopee), Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(deeplinkUrl));
-            startActivityForResult(intent, UiKitConstants.INTENT_CODE_GOPAY);
+            startActivityForResult(intent, UiKitConstants.INTENT_CODE_SHOPEEPAY);
         }
     }
 
