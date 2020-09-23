@@ -593,10 +593,13 @@
     <!--GoPay Instruction-->
     <string name="gopay_instruction_step1">Tap <b>Pay Now with GoPay</b>.</string>
     <string name="gopay_instruction_step2"><b>Gojek</b> app will open.</string>
-    <string name="gopay_instruction_step3">Check your payment details then tap <b>Pay</b> and your transaction is <b>Done</b>.</string>
+    <string name="gopay_instruction_step3">Check your payment details then tap <b>Next</b>.</string>
+    <string name="gopay_instruction_step4">Check your GoPay balance, then tap <b>Pay</b>.</string>
+    <string name="gopay_instruction_step5">Enter your <b>PIN</b>.</string>
+    <string name="gopay_instruction_step6">Your transaction is complete.</string>
 
     <!--GoPay Instruction in Tablet-->
-    <string name="gopay_instruction_tablet_step1">Tap <b>Pay Now with GoPay</b>.</string>
+    <string name="gopay_instruction_tablet_step1">Open your <b>Gojek</b> or <b>other e-wallet apps</b>.</string>
     <string name="gopay_instruction_tablet_step2"><b>QR code</b> will appear on the next page to be scanned.</string>
     <string name="gopay_instruction_tablet_step3">Open <b>Gojek app</b> on your phone.</string>
     <string name="gopay_instruction_tablet_step4">Tap <b>SCAN QR</b>.</string>
@@ -626,7 +629,10 @@
     <!--ShopeePay Instruction-->
     <string name="shopeepay_instruction_step1">Tap <b>Pay Now with ShopeePay</b>.</string>
     <string name="shopeepay_instruction_step2"><b>Shopee</b> app will open.</string>
-    <string name="shopeepay_instruction_step3">Check your payment details then tap <b>Pay</b> and your transaction is <b>Done</b>.</string>
+    <string name="shopeepay_instruction_step3">Check your payment details then tap <b>Next</b>.</string>
+    <string name="shopeepay_instruction_step4">Check your ShopeePay balance then tap <b>Pay</b>.</string>
+    <string name="shopeepay_instruction_step5">Enter your <b>PIN</b>.</string>
+    <string name="shopeepay_instruction_step6">Your transaction is complete.</string>
 
     <!--ShopeePay Instruction in Tablet-->
     <string name="shopeepay_instruction_tablet_step1">Tap <b>Pay Now with ShopeePay</b>.</string>
