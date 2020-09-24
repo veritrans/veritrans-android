@@ -194,7 +194,7 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
                 buttonPrimary.setTextBold();
                 buttonPrimary.setText(getString(R.string.shopeepay_confirm_button));
 
-                buttonPrimary.setIconResource(R.drawable.ic_shopeepay);//TODO get white icon
+                buttonPrimary.setIconResource(R.drawable.ic_shopeepay_white);
                 buttonPrimary.setIconPosition(FancyButton.POSITION_RIGHT);
             } else {
                 //hide confirm button and adjust item details to bottom of screen
@@ -231,7 +231,7 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
             buttonPrimary.setTextBold();
             buttonPrimary.setText(getString(R.string.shopeepay_confirm_button));
 
-            buttonPrimary.setIconResource(R.drawable.ic_shopeepay);
+            buttonPrimary.setIconResource(R.drawable.ic_shopeepay_white);
             buttonPrimary.setIconPosition(FancyButton.POSITION_RIGHT);
         }
     }
