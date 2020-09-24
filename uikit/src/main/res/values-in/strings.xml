@@ -282,10 +282,6 @@
     <string name="gopay_instruction_tablet_step4">Masukkan <b>PIN</b> Anda.</string>
     <string name="gopay_instruction_tablet_step5">Transaksi Anda telah selesai.</string>
 
-    <string name="gopay_instruction_tablet_step6">Periksa kembali detail pembayaran Anda di aplikasi <b>Gojek</b> lalu tekan <b>Bayar</b>.</string>
-    <string name="gopay_instruction_tablet_step7">Selesai.</string>
-    <string name="gopay_instruction_tablet_hint">Catatan: Scan tombol QR tidak akan muncul jika saldo GoPay kurang dari Rp 10.000.</string>
-
     <!--ShopeePay Instruction-->
     <string name="shopeepay_instruction_step1">Tekan <b>Bayar dengan ShopeePay</b>.</string>
     <string name="shopeepay_instruction_step2">Aplikasi <b>Shopee</b> akan terbuka.</string>
@@ -300,10 +296,6 @@
     <string name="shopeepay_instruction_tablet_step3">Cek detail transaksi Anda, lalu tekan <b>Bayar</b></string>
     <string name="shopeepay_instruction_tablet_step4">Masukkan <b>PIN</b> Anda.</string>
     <string name="shopeepay_instruction_tablet_step5">Transaksi Anda telah selesai.</string>
-
-    <string name="shopeepay_instruction_tablet_step6">Periksa kembali detail pembayaran Anda di aplikasi <b>Shopee</b> lalu tekan <b>Bayar</b>.</string>
-    <string name="shopeepay_instruction_tablet_step7">Selesai.</string>
-    <string name="shopeepay_instruction_tablet_hint">Catatan: Scan tombol QR tidak akan muncul jika saldo Shopee kurang dari Rp 10.000.</string>
 
     <!--ShopeePay related-->
     <string name="shopeepay_status_title">Bayar dengan GoPay</string>

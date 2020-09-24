@@ -605,10 +605,6 @@
     <string name="gopay_instruction_tablet_step4">Enter your <b>PIN</b>.</string>
     <string name="gopay_instruction_tablet_step5">Your transaction is complete.</string>
 
-    <string name="gopay_instruction_tablet_step6">Check your payment details in <b>Gojek</b> app and then tap <b>Pay</b>.</string>
-    <string name="gopay_instruction_tablet_step7">Done.</string>
-    <string name="gopay_instruction_tablet_hint">Note: Scan QR button won\'t appear if your GoPay balance is less than Rp 10,000.</string>
-
     <!--GoPay related-->
     <string name="gopay_status_title">Pay with GoPay</string>
     <string name="gopay_confirm_button">Pay Now with</string>
@@ -641,11 +637,6 @@
     <string name="shopeepay_instruction_tablet_step3">Check your payment details in the app, then tap <b>Pay</b>.</string>
     <string name="shopeepay_instruction_tablet_step4">Enter your <b>PIN</b>.</string>
     <string name="shopeepay_instruction_tablet_step5">Your transaction is complete.</string>
-
-
-    <string name="shopeepay_instruction_tablet_step6">Check your payment details in <b>Shopee</b> app and then tap <b>Pay</b>.</string>
-    <string name="shopeepay_instruction_tablet_step7">Done.</string>
-    <string name="shopeepay_instruction_tablet_hint">Note: Scan QR button won\'t appear if your Shopee balance is less than Rp 10,000.</string>
 
     <!--ShopeePay related-->
     <string name="shopeepay_status_title">Pay with ShopeePay</string>
