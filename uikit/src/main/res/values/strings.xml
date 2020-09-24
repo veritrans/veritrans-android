@@ -600,10 +600,11 @@
 
     <!--GoPay Instruction in Tablet-->
     <string name="gopay_instruction_tablet_step1">Open your <b>Gojek</b> or <b>other e-wallet apps</b>.</string>
-    <string name="gopay_instruction_tablet_step2"><b>QR code</b> will appear on the next page to be scanned.</string>
-    <string name="gopay_instruction_tablet_step3">Open <b>Gojek app</b> on your phone.</string>
-    <string name="gopay_instruction_tablet_step4">Tap <b>SCAN QR</b>.</string>
-    <string name="gopay_instruction_tablet_step5">Point your camera to the <b>QR Code</b>.</string>
+    <string name="gopay_instruction_tablet_step2"><b>Scan</b> the QR Code shown on your screen.</string>
+    <string name="gopay_instruction_tablet_step3">Check your payment details in the app, then tap <b>Pay</b>.</string>
+    <string name="gopay_instruction_tablet_step4">Enter your <b>PIN</b>.</string>
+    <string name="gopay_instruction_tablet_step5">Your transaction is complete.</string>
+
     <string name="gopay_instruction_tablet_step6">Check your payment details in <b>Gojek</b> app and then tap <b>Pay</b>.</string>
     <string name="gopay_instruction_tablet_step7">Done.</string>
     <string name="gopay_instruction_tablet_hint">Note: Scan QR button won\'t appear if your GoPay balance is less than Rp 10,000.</string>
@@ -635,11 +636,13 @@
     <string name="shopeepay_instruction_step6">Your transaction is complete.</string>
 
     <!--ShopeePay Instruction in Tablet-->
-    <string name="shopeepay_instruction_tablet_step1">Tap <b>Pay Now with ShopeePay</b>.</string>
-    <string name="shopeepay_instruction_tablet_step2"><b>QR code</b> will appear on the next page to be scanned.</string>
-    <string name="shopeepay_instruction_tablet_step3">Open <b>Shopee app</b> on your phone.</string>
-    <string name="shopeepay_instruction_tablet_step4">Tap <b>SCAN QR</b>.</string>
-    <string name="shopeepay_instruction_tablet_step5">Point your camera to the <b>QR Code</b>.</string>
+    <string name="shopeepay_instruction_tablet_step1">Open your <b>Shopee</b> or <b>other e-wallet apps</b>.</string>
+    <string name="shopeepay_instruction_tablet_step2"><b>Scan</b> the QR Code shown on your screen.</string>
+    <string name="shopeepay_instruction_tablet_step3">Check your payment details in the app, then tap <b>Pay</b>.</string>
+    <string name="shopeepay_instruction_tablet_step4">Enter your <b>PIN</b>.</string>
+    <string name="shopeepay_instruction_tablet_step5">Your transaction is complete.</string>
+
+
     <string name="shopeepay_instruction_tablet_step6">Check your payment details in <b>Shopee</b> app and then tap <b>Pay</b>.</string>
     <string name="shopeepay_instruction_tablet_step7">Done.</string>
     <string name="shopeepay_instruction_tablet_hint">Note: Scan QR button won\'t appear if your Shopee balance is less than Rp 10,000.</string>
