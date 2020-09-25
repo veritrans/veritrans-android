@@ -732,7 +732,7 @@
     <string name="payment_method_description_kioson">Pay from Kioson Outlet</string>
     <string name="payment_method_description_gci">Pay with Gift Cards</string>
     <string name="payment_method_description_gopay">Pay with your GoPay wallet</string>
-    <string name="payment_method_description_shopeepay">Pay with ShopeePay</string>
+    <string name="payment_method_description_shopeepay">Pay with ShopeePay wallet</string>
     <string name="payment_method_description_danamon_online">Pay with your Danamon Online Banking Account</string>
     <string name="payment_method_description_akulaku">Pay with your Akulaku account</string>
 

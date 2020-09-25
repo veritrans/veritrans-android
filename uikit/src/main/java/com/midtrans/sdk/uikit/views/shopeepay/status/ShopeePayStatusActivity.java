@@ -293,7 +293,7 @@ public class ShopeePayStatusActivity extends BasePaymentActivity {
      * are in different format.
      *
      * @param start transaction start time, example : 2018-02-09 18:14:52
-     * @param end   GoPay expiry time, example : 09 February 18:29 WIB
+     * @param end   expiry time, example : 09 February 18:29 WIB
      * @return
      */
     private long getDuration(String start, String end) {
