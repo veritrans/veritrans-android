@@ -89,7 +89,7 @@ public class AppUtils {
     }
 
     public static PaymentMethodsModel getVaPaymentMethods(Context context, String type, String status) {
-        PaymentMethodsModel model = PaymentMethods.getMethods(context, type, status);
+        PaymentMethodsModel model = PaymentMethods.getMethods(context, type, status, false);
 
         if (model == null && !TextUtils.isEmpty(type)) {
             switch (type) {

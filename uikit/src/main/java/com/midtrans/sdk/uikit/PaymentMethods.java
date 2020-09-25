@@ -15,7 +15,7 @@ import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
  */
 public class PaymentMethods {
 
-    public static PaymentMethodsModel getMethods(Context context, String paymentType, String status) {
+    public static PaymentMethodsModel getMethods(Context context, String paymentType, String status, Boolean isTablet) {
         if (paymentType.equals(context.getString(R.string.payment_credit_debit))) {
             return getMethodCreditCards(context, 1, paymentType, status);
         } else if (paymentType.equals(context.getString(R.string.payment_bank_transfer))) {
@@ -45,9 +45,9 @@ public class PaymentMethods {
         } else if (paymentType.equals(context.getString(R.string.payment_gci))) {
             return getMethodGCI(context, 14, paymentType, status);
         } else if (paymentType.equals(context.getString(R.string.payment_gopay))) {
-            return getMethodGopay(context, 15, paymentType, status);
+            return getMethodGopay(context, 15, paymentType, status, isTablet);
         } else if (paymentType.equals(context.getString(R.string.payment_shopeepay))) {
-            return getMethodShopeepay(context, 16, paymentType, status);
+            return getMethodShopeepay(context, 16, paymentType, status, isTablet);
         } else if (paymentType.equals(context.getString(R.string.payment_danamon_online))) {
             return getDanamonOnline(context, 17, paymentType, status);
         } else if (paymentType.equals(context.getString(R.string.payment_akulaku))) {
@@ -125,12 +125,20 @@ public class PaymentMethods {
         return new PaymentMethodsModel(context.getString(R.string.payment_method_gci), context.getString(R.string.payment_method_description_gci), R.drawable.ic_gci, paymentType, priority, status);
     }
 
-    private static PaymentMethodsModel getMethodGopay(Context context, int priority, String paymentType, String status) {
-        return new PaymentMethodsModel(context.getString(R.string.payment_method_gopay), context.getString(R.string.payment_method_description_gopay), R.drawable.ic_gopay, paymentType, priority, status);
+    private static PaymentMethodsModel getMethodGopay(Context context, int priority, String paymentType, String status, Boolean isTablet) {
+        if (isTablet) {
+            return new PaymentMethodsModel(context.getString(R.string.payment_method_gopay_qris), context.getString(R.string.payment_method_description_gopay_qris), R.drawable.ic_gopay_qris, paymentType, priority, status);
+        } else {
+            return new PaymentMethodsModel(context.getString(R.string.payment_method_gopay), context.getString(R.string.payment_method_description_gopay), R.drawable.ic_gopay, paymentType, priority, status);
+        }
     }
 
-    private static PaymentMethodsModel getMethodShopeepay(Context context, int priority, String paymentType, String status) {
-        return new PaymentMethodsModel(context.getString(R.string.payment_method_shopeepay), context.getString(R.string.payment_method_description_shopeepay), R.drawable.ic_shopeepay, paymentType, priority, status);
+    private static PaymentMethodsModel getMethodShopeepay(Context context, int priority, String paymentType, String status, Boolean isTablet) {
+        if (isTablet) {
+            return new PaymentMethodsModel(context.getString(R.string.payment_method_shopeepay_qris), context.getString(R.string.payment_method_description_shopeepay_qris), R.drawable.ic_shopeepay_qris, paymentType, priority, status);
+        } else {
+            return new PaymentMethodsModel(context.getString(R.string.payment_method_shopeepay), context.getString(R.string.payment_method_description_shopeepay), R.drawable.ic_shopeepay, paymentType, priority, status);
+        }
     }
 
     private static PaymentMethodsModel getDanamonOnline(Context context, int priority, String paymentType, String status) {

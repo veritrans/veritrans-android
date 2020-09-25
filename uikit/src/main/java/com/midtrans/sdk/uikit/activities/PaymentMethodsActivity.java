@@ -930,14 +930,16 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
-        } else if (name.equalsIgnoreCase(getString(R.string.payment_method_gopay))) {
+        } else if (name.equalsIgnoreCase(getString(R.string.payment_method_gopay))
+            || name.equalsIgnoreCase(getString(R.string.payment_method_gopay_qris))) {
             Intent gopayIntent = new Intent(this, GoPayPaymentActivity.class);
             startActivityForResult(gopayIntent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
             if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                     && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
-        } else if (name.equalsIgnoreCase(getString(R.string.payment_method_shopeepay))) {
+        } else if (name.equalsIgnoreCase(getString(R.string.payment_method_shopeepay))
+            || name.equalsIgnoreCase(getString(R.string.payment_method_shopeepay_qris))) {
             Intent shopeepayIntent = new Intent(this, ShopeePayPaymentActivity.class);
             startActivityForResult(shopeepayIntent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
             if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
@@ -988,14 +990,14 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 || enabledPayment.getType().equalsIgnoreCase(getString(R.string.payment_mandiri_bill_payment))) {
                 bankTransfers.add(enabledPayment);
                 if (!isBankTransferAdded) {
-                    PaymentMethodsModel model = PaymentMethods.getMethods(this, getString(R.string.payment_bank_transfer), EnabledPayment.STATUS_UP);
+                    PaymentMethodsModel model = PaymentMethods.getMethods(this, getString(R.string.payment_bank_transfer), EnabledPayment.STATUS_UP, isTablet());
                     if (model != null) {
                         data.add(model);
                         isBankTransferAdded = true;
                     }
                 }
             } else {
-                PaymentMethodsModel model = PaymentMethods.getMethods(this, enabledPayment.getType(), enabledPayment.getStatus());
+                PaymentMethodsModel model = PaymentMethods.getMethods(this, enabledPayment.getType(), enabledPayment.getStatus(), isTablet());
                 if (model != null) {
                     data.add(model);
                 }
@@ -1032,6 +1034,10 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         }
 
         return null;
+    }
+
+    private Boolean isTablet() {
+        return SdkUIFlowUtil.getDeviceType(this).equals(SdkUIFlowUtil.TYPE_TABLET) && SdkUIFlowUtil.isDeviceTablet(this);
     }
 
     /**

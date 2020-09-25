@@ -56,6 +56,11 @@ public class GoPayStatusActivity extends BasePaymentActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gopay_status);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         bindData();
     }
 

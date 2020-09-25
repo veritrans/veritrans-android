@@ -459,7 +459,9 @@
     <string name="payment_method_kioson">Kioson</string>
     <string name="payment_method_gci"> Gift Card Indonesia </string>
     <string name="payment_method_gopay">GoPay</string>
+    <string name="payment_method_gopay_qris">GoPay/other e-Wallets</string>
     <string name="payment_method_shopeepay">ShopeePay</string>
+    <string name="payment_method_shopeepay_qris">ShopeePay/other e-Wallets</string>
     <string name="payment_method_danamon_online">Danamon Online Banking</string>
     <string name="payment_method_akulaku">Akulaku</string>
 
@@ -732,7 +734,9 @@
     <string name="payment_method_description_kioson">Pay from Kioson Outlet</string>
     <string name="payment_method_description_gci">Pay with Gift Cards</string>
     <string name="payment_method_description_gopay">Pay with your GoPay wallet</string>
+    <string name="payment_method_description_gopay_qris">Scan QR code using GoPay or other e-wallets</string>
     <string name="payment_method_description_shopeepay">Pay with ShopeePay wallet</string>
+    <string name="payment_method_description_shopeepay_qris">Scan QR code using ShopeePay or other e-wallets</string>
     <string name="payment_method_description_danamon_online">Pay with your Danamon Online Banking Account</string>
     <string name="payment_method_description_akulaku">Pay with your Akulaku account</string>
 
