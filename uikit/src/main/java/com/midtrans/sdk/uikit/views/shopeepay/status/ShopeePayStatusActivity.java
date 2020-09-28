@@ -68,9 +68,9 @@ public class ShopeePayStatusActivity extends BasePaymentActivity {
         if (response != null) {
             showProgressLayout();
 
-            final LinearLayout instructionLayout = findViewById(R.id.gopay_instruction_layout);
-            merchantName = findViewById(R.id.gopay_merchant_name);
-            final DefaultTextView instructionToggle = findViewById(R.id.gopay_instruction_toggle);
+            final LinearLayout instructionLayout = findViewById(R.id.shopeepay_instruction_layout);
+            merchantName = findViewById(R.id.shopeepay_merchant_name);
+            final DefaultTextView instructionToggle = findViewById(R.id.shopeepay_instruction_toggle);
             instructionToggle.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -87,8 +87,8 @@ public class ShopeePayStatusActivity extends BasePaymentActivity {
 
             //process qr code
             final String qrCodeUrl = response.getQrCodeUrl();
-            qrCodeContainer = findViewById(R.id.gopay_qr_code);
-            qrCodeRefresh = findViewById(R.id.gopay_reload_qr_button);
+            qrCodeContainer = findViewById(R.id.shopeepay_qr_code);
+            qrCodeRefresh = findViewById(R.id.shopeepay_reload_qr_button);
             setTextColor(qrCodeRefresh);
             setIconColorFilter(qrCodeRefresh);
             qrCodeRefresh.setOnClickListener(new OnClickListener() {
@@ -101,8 +101,8 @@ public class ShopeePayStatusActivity extends BasePaymentActivity {
             loadQrCode(qrCodeUrl, qrCodeContainer);
 
             //process expiration
-            expirationText = findViewById(R.id.gopay_expiration_text);
-            expirationDesc = findViewById(R.id.gopay_expiration_desc);
+            expirationText = findViewById(R.id.shopeepay_expiration_text);
+            expirationDesc = findViewById(R.id.shopeepay_expiration_desc);
 
             String startTime = response.getTransactionTime();
             if (isExpirationTimeNotAvailable(response) && TextUtils.isEmpty(startTime)) {
@@ -193,14 +193,14 @@ public class ShopeePayStatusActivity extends BasePaymentActivity {
             @Override
             public void onCompleted(Exception e, ImageView result) {
                 if (e == null) {
-                    FrameLayout frameLayout = findViewById(R.id.gopay_qr_code_frame);
+                    FrameLayout frameLayout = findViewById(R.id.shopeepay_qr_code_frame);
                     frameLayout.setBackgroundColor(0);
                     qrCodeRefresh.setVisibility(View.GONE);
                     setMerchantName(true);
                     hideProgressLayout();
 
                 } else {
-                    FrameLayout frameLayout = findViewById(R.id.gopay_qr_code_frame);
+                    FrameLayout frameLayout = findViewById(R.id.shopeepay_qr_code_frame);
                     frameLayout.setBackgroundColor(getResources().getColor(R.color.light_gray));
                     qrCodeRefresh.setVisibility(View.VISIBLE);
                     Logger.e(TAG, e.getMessage());
