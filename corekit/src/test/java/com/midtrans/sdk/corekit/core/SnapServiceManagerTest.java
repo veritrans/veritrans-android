@@ -1357,8 +1357,8 @@ public class SnapServiceManagerTest {
      */
 
     private void initGetBankPoints() {
-        Mockito.when(snapApiServiceMock.getBanksPoint(snapToken, SDKConfigTest.CARD_TOKEN)).thenReturn(callBankPointResponseMock);
-        callbackImplement.getBankPoints(snapToken, SDKConfigTest.CARD_TOKEN);
+        Mockito.when(snapApiServiceMock.getBanksPoint(snapToken, SDKConfigTest.CARD_TOKEN, 10000D)).thenReturn(callBankPointResponseMock);
+        callbackImplement.getBankPoints(snapToken, SDKConfigTest.CARD_TOKEN, 10000D);
         Mockito.verify(callBankPointResponseMock).enqueue(bankPointsResponseCaptor.capture());
     }
 
@@ -1391,7 +1391,7 @@ public class SnapServiceManagerTest {
     @Test
     public void getBankPointsFailure_whenServiceNull() {
         snapTransactionManager.setService(null);
-        callbackImplement.getBankPoints(snapToken, SDKConfigTest.CARD_TOKEN);
+        callbackImplement.getBankPoints(snapToken, SDKConfigTest.CARD_TOKEN, 10000D);
         Mockito.verify(callbackCollaboratorMock).onError();
     }
 

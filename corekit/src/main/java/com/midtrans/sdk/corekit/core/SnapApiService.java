@@ -24,6 +24,7 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 
 /**
@@ -147,7 +148,7 @@ public interface SnapApiService {
      * @param cardToken credit card token
      */
     @GET("v1/transactions/{snap_token}/point_inquiry/{card_token}")
-    Call<BanksPointResponse> getBanksPoint(@Path("snap_token") String snapToken, @Path("card_token") String cardToken);
+    Call<BanksPointResponse> getBanksPoint(@Path("snap_token") String snapToken, @Path("card_token") String cardToken, @Query("gross_amount") Double grossAmount);
 
 
     /**
