@@ -28,6 +28,7 @@ import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.PaymentType;
+import com.midtrans.sdk.corekit.core.QrisAcquirer;
 import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.core.themes.ColorTheme;
 import com.midtrans.sdk.corekit.core.themes.CustomColorTheme;
@@ -766,6 +767,8 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             } else {
                 showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
             }
+//        } else if (isQris) { //TODO add isQris
+
         } else if (isDanamonOnline) {
             if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_danamon_online))) {
                 Intent danamonOnlineIntent = new Intent(this, DanamonOnlineActivity.class);
@@ -996,14 +999,34 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                         isBankTransferAdded = true;
                     }
                 }
-            } else {
-                PaymentMethodsModel model = PaymentMethods.getMethods(this, enabledPayment.getType(), enabledPayment.getStatus(), isTablet());
+            } else if (checkShopeepayQrisInTablet(enabledPayment)) {
+                PaymentMethodsModel model = PaymentMethods.getMethods(this, enabledPayment.getAcquirer(), enabledPayment.getStatus(), isTablet());
                 if (model != null) {
                     data.add(model);
+                }
+            } else {
+                if (!checkShopeepayDeeplinkInTablet(enabledPayment)) {
+                    PaymentMethodsModel model = PaymentMethods.getMethods(this, enabledPayment.getType(), enabledPayment.getStatus(), isTablet());
+                    if (model != null) {
+                        data.add(model);
+                    }
                 }
             }
         }
         markPaymentMethodHavePromo(data);
+    }
+
+    private Boolean checkShopeepayQrisInTablet(EnabledPayment enabledPayment) {
+        //Shopeepay Qris only enabled in Tablet device
+        return enabledPayment.getType().equals(PaymentType.QRIS)
+            && enabledPayment.getAcquirer().equals(QrisAcquirer.SHOPEEPAY)
+            && isTablet();
+    }
+
+    private Boolean checkShopeepayDeeplinkInTablet(EnabledPayment enabledPayment) {
+        //Use to disable shopeepay deeplink in tablet
+        return enabledPayment.getType().equals(PaymentType.SHOPEEPAY)
+            && isTablet();
     }
 
     private void markPaymentMethodHavePromo(List<PaymentMethodsModel> data) {
