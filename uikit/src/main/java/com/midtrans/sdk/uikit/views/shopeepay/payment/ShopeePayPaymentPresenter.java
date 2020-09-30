@@ -52,7 +52,36 @@ class ShopeePayPaymentPresenter extends BasePaymentPresenter<ShopeePayPaymentVie
 
     void startShopeePayPayment() {
         String snapToken = getMidtransSDK().readAuthenticationToken();
+        if (isTablet) {
+            startShopeePayQrisPayment(snapToken);
+        } else {
+            startShopeePayDeeplinkPayment(snapToken);
+        }
+    }
+
+    private void startShopeePayDeeplinkPayment(String snapToken) {
         getMidtransSDK().paymentUsingShopeePay(snapToken, new TransactionCallback() {
+            @Override
+            public void onSuccess(TransactionResponse response) {
+                transactionResponse = response;
+                view.onPaymentSuccess(response);
+            }
+
+            @Override
+            public void onFailure(TransactionResponse response, String reason) {
+                transactionResponse = response;
+                view.onPaymentFailure(response);
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                view.onPaymentError(error);
+            }
+        });
+    }
+
+    private void startShopeePayQrisPayment(String snapToken) {
+        getMidtransSDK().paymentUsingShopeePayQris(snapToken, new TransactionCallback() {
             @Override
             public void onSuccess(TransactionResponse response) {
                 transactionResponse = response;
