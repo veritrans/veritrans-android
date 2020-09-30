@@ -397,7 +397,8 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
 
     public void getBankPoint(final String bankType) {
         if (creditCardToken != null) {
-            getMidtransSDK().getBanksPoint(creditCardToken.getTokenId(), new BanksPointCallback() {
+            Double grossAmount = getMidtransSDK().getPaymentDetails().getTotalAmount();
+            getMidtransSDK().getBanksPoint(creditCardToken.getTokenId(), grossAmount, new BanksPointCallback() {
                 @Override
                 public void onSuccess(BanksPointResponse response) {
                     creditCardTransaction.setBankPoint(response, bankType);
