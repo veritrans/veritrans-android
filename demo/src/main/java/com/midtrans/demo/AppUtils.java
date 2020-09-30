@@ -73,7 +73,7 @@ public class AppUtils {
         paymentNameList.add(new EnabledPayment(PaymentType.DANAMON_ONLINE, CATEGORY_DIRECT_DEBIT));
 
         paymentNameList.add(new EnabledPayment(PaymentType.GOPAY, CATEGORY_EMONEY));
-        paymentNameList.add(new EnabledPayment(PaymentType.SHOPEEPAY, CATEGORY_EMONEY)); //TODO check shopeepay naming from backend
+        paymentNameList.add(new EnabledPayment(PaymentType.SHOPEEPAY, CATEGORY_EMONEY));
         paymentNameList.add(new EnabledPayment(PaymentType.MANDIRI_ECASH, CATEGORY_EMONEY));
         paymentNameList.add(new EnabledPayment(PaymentType.TELKOMSEL_CASH, CATEGORY_EMONEY));
 //        paymentNameList.add(new EnabledPayment(PaymentType.XL_TUNAI, null)); being deprecated

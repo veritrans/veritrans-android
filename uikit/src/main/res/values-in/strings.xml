@@ -422,7 +422,7 @@
     <string name="payment_method_indomaret">Indomaret</string>
     <string name="payment_method_kioson">Kioson</string>
     <string name="payment_method_gopay">GoPay</string>
-    <string name="payment_method_gopay_qris">GoPay/oe-Wallet Lainnya</string>
+    <string name="payment_method_gopay_qris">GoPay/e-Wallet Lainnya</string>
     <string name="payment_method_shopeepay">ShopeePay</string>
     <string name="payment_method_shopeepay_qris">ShopeePay/e-Wallet Lainnya</string>
 
