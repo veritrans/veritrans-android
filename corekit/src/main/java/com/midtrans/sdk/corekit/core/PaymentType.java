@@ -9,7 +9,7 @@ public class PaymentType {
     /**
      * Payment types for charging to Snap API
      * <p>
-     * VA(Virtual Account) equeals to bank transfer
+     * VA(Virtual Account) equals to bank transfer
      * E_CHANNEL equals to Mandiri Bill
      */
 
@@ -35,6 +35,7 @@ public class PaymentType {
     public static final String GCI = "gci";
     public static final String GOPAY = "gopay";
     public static final String SHOPEEPAY = "shopeepay";
+    public static final String QRIS = "qris";
     public static final String DANAMON_ONLINE = "danamon_online";
     public static final String INDOMARET_CSTORE = "cstore";
     public static final String AKULAKU = "akulaku";
