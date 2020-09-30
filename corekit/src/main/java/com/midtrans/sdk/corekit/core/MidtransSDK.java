@@ -1510,6 +1510,24 @@ public class MidtransSDK {
     }
 
     /**
+     * It will run backround task to charge payment using ShopeePayQris
+     *
+     * @param snapToken
+     */
+    public void paymentUsingShopeePayQris(String snapToken, TransactionCallback callback) {
+        if (callback == null) {
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
+            return;
+        }
+
+        if (isNetworkAvailable()) {
+            snapServiceManager.paymentUsingShopeePayQris(snapToken, SdkUtil.getShopeePayQrisPaymentRequest(), callback);
+        } else {
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
+        }
+    }
+
+    /**
      * It will run backround task to charge payment using Danamon Online
      *
      * @param snapToken

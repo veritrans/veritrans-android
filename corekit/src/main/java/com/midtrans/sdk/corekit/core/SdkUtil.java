@@ -18,6 +18,9 @@ import com.midtrans.sdk.corekit.utilities.Installation;
 import com.securepreferences.SecurePreferences;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by ziahaqi on 18/06/2016.
@@ -293,6 +296,11 @@ public class SdkUtil {
 
     public static ShopeePayPaymentRequest getShopeePayPaymentRequest() {
         return new ShopeePayPaymentRequest(PaymentType.SHOPEEPAY);
+    }
+
+    public static ShopeePayQrisPaymentRequest getShopeePayQrisPaymentRequest() {
+        List<String> acquirer = Collections.singletonList(QrisAcquirer.SHOPEEPAY);
+        return new ShopeePayQrisPaymentRequest(PaymentType.QRIS, acquirer);
     }
 
     public static DanamonOnlinePaymentRequest getDanamonOnlinePaymentRequest() {
