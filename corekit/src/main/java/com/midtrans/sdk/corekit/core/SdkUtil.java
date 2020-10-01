@@ -300,7 +300,7 @@ public class SdkUtil {
 
     public static ShopeePayQrisPaymentRequest getShopeePayQrisPaymentRequest() {
         List<String> acquirer = Collections.singletonList(QrisAcquirer.SHOPEEPAY);
-        return new ShopeePayQrisPaymentRequest(PaymentType.QRIS, acquirer);
+        return new ShopeePayQrisPaymentRequest(PaymentType.QRIS, new QrisPaymentParameter(acquirer));
     }
 
     public static DanamonOnlinePaymentRequest getDanamonOnlinePaymentRequest() {
