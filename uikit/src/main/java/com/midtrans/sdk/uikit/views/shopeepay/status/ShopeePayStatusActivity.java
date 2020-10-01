@@ -86,7 +86,7 @@ public class ShopeePayStatusActivity extends BasePaymentActivity {
             });
 
             //process qr code
-            final String qrCodeUrl = response.getQrCodeUrl();
+            final String qrCodeUrl = response.getQrisUrl();
             qrCodeContainer = findViewById(R.id.shopeepay_qr_code);
             qrCodeRefresh = findViewById(R.id.shopeepay_reload_qr_button);
             setTextColor(qrCodeRefresh);

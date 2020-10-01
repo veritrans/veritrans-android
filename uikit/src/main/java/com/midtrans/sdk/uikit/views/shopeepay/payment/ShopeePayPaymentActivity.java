@@ -256,7 +256,7 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
             return false;
         } else {
             return (!TextUtils.isEmpty(response.getDeeplinkUrl()) || isTablet())
-                && (!TextUtils.isEmpty(response.getQrCodeUrl()) || !isTablet());
+                && (!TextUtils.isEmpty(response.getQrisUrl()) || !isTablet());
         }
     }
 

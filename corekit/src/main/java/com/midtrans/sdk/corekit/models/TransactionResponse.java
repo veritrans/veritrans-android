@@ -143,6 +143,9 @@ public class TransactionResponse implements Serializable {
     private String qrCodeUrl;
     @SerializedName("deeplink_url")
     private String deeplinkUrl;
+    //currently for shopeepay
+    @SerializedName("qris_url")
+    private String qrisUrl;
     private String currency;
 
     public TransactionResponse(
@@ -540,6 +543,10 @@ public class TransactionResponse implements Serializable {
     public void setDeeplinkUrl(String deeplinkUrl) {
         this.deeplinkUrl = deeplinkUrl;
     }
+
+    public void setQrisUrl(String qrisUrl) { this.qrisUrl = qrisUrl; }
+
+    public String getQrisUrl() { return qrisUrl; }
 
     public String getGopayExpiration() {
         return gopayExpiration;
