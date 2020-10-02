@@ -150,9 +150,9 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements
         initScanCardButton();
         initDeleteButton();
         initCheckBox();
-        initPromoList();
         initLayoutState();
         bindData();
+        initPromoList();
     }
 
     private void initScanCardButton() {
@@ -542,14 +542,12 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements
 
     private void initCreditCardPromos(final boolean firstTime) {
         final String cardNumber = getCleanedCardNumber();
-        if (cardNumber.length() < 7) {
-            recyclerViewPromo.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    promosAdapter.setData(presenter.getCreditCardPromos(cardNumber, firstTime));
-                }
-            }, 100);
-        }
+        recyclerViewPromo.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                promosAdapter.setData(presenter.getCreditCardPromos(cardNumber, firstTime));
+            }
+        }, 100);
     }
 
 
