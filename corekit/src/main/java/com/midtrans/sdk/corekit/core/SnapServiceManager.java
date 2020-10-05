@@ -353,17 +353,17 @@ public class SnapServiceManager extends BaseServiceManager {
     }
 
     /**
-     * This method is used for payment using ShopeePay
+     * This method is used for payment using ShopeePayDeeplink
      *
      * @param paymentRequest
      * @param callback
      */
-    public void paymentUsingShopeePay(String snapToken, ShopeePayPaymentRequest paymentRequest, final TransactionCallback callback) {
+    public void paymentUsingShopeePayDeeplink(String snapToken, ShopeePayPaymentRequest paymentRequest, final TransactionCallback callback) {
         if (service == null) {
             doOnApiServiceUnAvailable(callback);
             return;
         }
-        Call<TransactionResponse> call = service.paymentUsingShopeePay(snapToken, paymentRequest);
+        Call<TransactionResponse> call = service.paymentUsingShopeePayDeeplink(snapToken, paymentRequest);
         call.enqueue(new Callback<TransactionResponse>() {
             @Override
             public void onResponse(Call<TransactionResponse> call, Response<TransactionResponse> response) {

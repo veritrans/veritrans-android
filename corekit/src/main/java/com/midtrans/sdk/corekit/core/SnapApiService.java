@@ -124,13 +124,13 @@ public interface SnapApiService {
     Call<TransactionResponse> paymentUsingGoPay(@Path("snap_token") String snapToken, @Body GoPayPaymentRequest paymentRequest);
 
     /**
-     * Charge payment using ShopeePay
+     * Charge payment using ShopeePayDeeplink
      *
      * @param snapToken
      * @param paymentRequest
      */
     @POST("v1/transactions/{snap_token}/pay")
-    Call<TransactionResponse> paymentUsingShopeePay(@Path("snap_token") String snapToken, @Body ShopeePayPaymentRequest paymentRequest);
+    Call<TransactionResponse> paymentUsingShopeePayDeeplink(@Path("snap_token") String snapToken, @Body ShopeePayPaymentRequest paymentRequest);
 
     /**
      * Charge payment using ShopeePayQris

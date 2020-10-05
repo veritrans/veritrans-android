@@ -60,7 +60,7 @@ class ShopeePayPaymentPresenter extends BasePaymentPresenter<ShopeePayPaymentVie
     }
 
     private void startShopeePayDeeplinkPayment(String snapToken) {
-        getMidtransSDK().paymentUsingShopeePay(snapToken, new TransactionCallback() {
+        getMidtransSDK().paymentUsingShopeePayDeeplink(snapToken, new TransactionCallback() {
             @Override
             public void onSuccess(TransactionResponse response) {
                 transactionResponse = response;

@@ -1496,14 +1496,14 @@ public class MidtransSDK {
      *
      * @param snapToken
      */
-    public void paymentUsingShopeePay(String snapToken, TransactionCallback callback) {
+    public void paymentUsingShopeePayDeeplink(String snapToken, TransactionCallback callback) {
         if (callback == null) {
             Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
 
         if (isNetworkAvailable()) {
-            snapServiceManager.paymentUsingShopeePay(snapToken, SdkUtil.getShopeePayPaymentRequest(), callback);
+            snapServiceManager.paymentUsingShopeePayDeeplink(snapToken, SdkUtil.getShopeePayPaymentRequest(), callback);
         } else {
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
