@@ -767,8 +767,6 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             } else {
                 showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
             }
-//        } else if (isQris) { //TODO add isQris
-
         } else if (isDanamonOnline) {
             if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_danamon_online))) {
                 Intent danamonOnlineIntent = new Intent(this, DanamonOnlineActivity.class);
