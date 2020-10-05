@@ -1635,14 +1635,14 @@ public class MidtransSDK {
      * @param cardToken credit card token
      * @param callback  bni point callback instance
      */
-    public void getBanksPoint(String cardToken, @NonNull BanksPointCallback callback) {
+    public void getBanksPoint(String cardToken, Double grossAmount, @NonNull BanksPointCallback callback) {
         if (callback == null) {
             Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
             return;
         }
 
         if (Utils.isNetworkAvailable(context)) {
-            snapServiceManager.getBanksPoint(readAuthenticationToken(), cardToken, callback);
+            snapServiceManager.getBanksPoint(readAuthenticationToken(), cardToken, grossAmount, callback);
         } else {
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }

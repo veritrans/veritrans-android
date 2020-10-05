@@ -484,13 +484,13 @@ public class SnapServiceManager extends BaseServiceManager {
      * @param cardToken credit card token
      * @param callback  BNI points callback instance
      */
-    public void getBanksPoint(String snapToken, String cardToken, final BanksPointCallback callback) {
+    public void getBanksPoint(String snapToken, String cardToken, Double grossAmount, final BanksPointCallback callback) {
         if (service == null) {
             doOnApiServiceUnAvailable(callback);
             return;
         }
 
-        Call<BanksPointResponse> call = service.getBanksPoint(snapToken, cardToken);
+        Call<BanksPointResponse> call = service.getBanksPoint(snapToken, cardToken, grossAmount);
         call.enqueue(new Callback<BanksPointResponse>() {
             @Override
             public void onResponse(Call<BanksPointResponse> call, Response<BanksPointResponse> response) {
