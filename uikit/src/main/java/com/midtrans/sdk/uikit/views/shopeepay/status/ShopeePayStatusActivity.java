@@ -36,6 +36,10 @@ import java.util.Locale;
 public class ShopeePayStatusActivity extends BasePaymentActivity {
 
     public static final String EXTRA_PAYMENT_STATUS = "extra.status";
+    public static final String DATE_TIME_FORMAT_1 = "yyyy-MM-dd HH:mm";
+    public static final String DATE_TIME_FORMAT_2= "dd MMMM HH:mm";
+    public static final String DATE_TIME_FORMAT_FULL = "yyyy-MM-dd HH:mm:ss";
+    public static final String SUFFIX_TIME_WIB = " WIB";
     private static final String TAG = ShopeePayStatusActivity.class.getSimpleName();
     private final int DEFAULT_EXPIRATION_IN_MINUTE = 15;
     private FancyButton buttonPrimary;
@@ -151,8 +155,8 @@ public class ShopeePayStatusActivity extends BasePaymentActivity {
 
     private long getDurationByExpirationRaw(String startTime, String expirationTime) {
         long startMillis = 0, endMillis = 0;
-        SimpleDateFormat startDf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US);
-        SimpleDateFormat expiryDf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US);
+        SimpleDateFormat startDf = new SimpleDateFormat(DATE_TIME_FORMAT_1, Locale.US);
+        SimpleDateFormat expiryDf = new SimpleDateFormat(DATE_TIME_FORMAT_1, Locale.US);
 
         try {
             Date dateStart = startDf.parse(startTime);
@@ -268,13 +272,13 @@ public class ShopeePayStatusActivity extends BasePaymentActivity {
         if (transactionTime != null && transactionTime.split(" ").length > 1) {
             try {
                 @SuppressLint("SimpleDateFormat")
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_TIME_FORMAT_1);
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(simpleDateFormat.parse(transactionTime));
                 calendar.add(Calendar.MINUTE, DEFAULT_EXPIRATION_IN_MINUTE);
                 String date = simpleDateFormat.format(calendar.getTime());
 
-                String time = date.split(" ")[1] + " WIB";
+                String time = date.split(" ")[1] + SUFFIX_TIME_WIB;
 
                 String[] splitedDate = date.split(" ")[0].split("-");
                 String month = getMonth(Integer.parseInt(splitedDate[1]));
@@ -299,8 +303,8 @@ public class ShopeePayStatusActivity extends BasePaymentActivity {
     private long getDuration(String start, String end) {
         long startMillis = 0, endMillis = 0;
         //use US locale so parser understands months in English (like February)
-        SimpleDateFormat startDf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
-        SimpleDateFormat expiryDf = new SimpleDateFormat("dd MMMM HH:mm", Locale.US);
+        SimpleDateFormat startDf = new SimpleDateFormat(DATE_TIME_FORMAT_FULL, Locale.US);
+        SimpleDateFormat expiryDf = new SimpleDateFormat(DATE_TIME_FORMAT_2, Locale.US);
         Date date;
         try {
             date = startDf.parse(start);
@@ -311,7 +315,7 @@ public class ShopeePayStatusActivity extends BasePaymentActivity {
             cal.setTime(date);
             int year = cal.get(Calendar.YEAR);
 
-            date = expiryDf.parse(end.replace(" WIB", ""));
+            date = expiryDf.parse(end.replace(SUFFIX_TIME_WIB, ""));
             cal.setTime(date);
             cal.add(Calendar.YEAR, year - cal.get(Calendar.YEAR));
             date = cal.getTime();
