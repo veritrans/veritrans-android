@@ -20,7 +20,7 @@
             android:fillViewport="true">
 
             <include
-                layout="@layout/layout_shopeepay_status_tablet" />
+                layout="@layout/uikit_layout_shopeepay_status_tablet" />
         </ScrollView>
 
         <View

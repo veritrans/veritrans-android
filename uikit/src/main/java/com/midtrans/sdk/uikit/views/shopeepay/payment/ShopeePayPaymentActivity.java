@@ -35,7 +35,7 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         showProgressLayout();
-        setContentView(R.layout.activity_shopeepay_payment);
+        setContentView(R.layout.uikit_activity_shopeepay_payment);
         initPresenter();
         initLayout();
         initData();
@@ -81,7 +81,7 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
         if (isDetailShown) {
             displayOrHideItemDetails();
         } else if (isAlreadyGotResponse) {
-            showConfirmationDialog(getString(R.string.confirm_shopeepay_deeplink));
+            showConfirmationDialog(getString(R.string.uikit_confirm_shopeepay_deeplink));
         } else {
             super.onBackPressed();
         }
@@ -139,7 +139,7 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
         hideProgressLayout();
         if (attempt < UiKitConstants.MAX_ATTEMPT) {
             attempt += 1;
-            SdkUIFlowUtil.showToast(ShopeePayPaymentActivity.this, getString(R.string.error_shopeepay_transaction));
+            SdkUIFlowUtil.showToast(ShopeePayPaymentActivity.this, getString(R.string.uikit_error_shopeepay_transaction));
         } else {
             if (response != null) {
                 showPaymentStatusPage(response, presenter.isShowPaymentStatusPage());
@@ -162,19 +162,20 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
     private void initLayout() {
         ViewStub stub = findViewById(R.id.shopee_layout_stub);
         if (isTablet()) {
-            stub.setLayoutResource(R.layout.layout_shopeepay_payment_tablet);
+            stub.setLayoutResource(R.layout.uikit_layout_shopeepay_payment_tablet);
         } else {
             if (isProductionBuild()) {
-                stub.setLayoutResource(isShopeeInstalled() ? R.layout.layout_shopeepay_payment : R.layout.layout_install_shopeepay);
+                stub.setLayoutResource(isShopeeInstalled() ? R.layout.uikit_layout_shopeepay_payment
+                    : R.layout.layout_install_shopeepay);
             } else {
-                stub.setLayoutResource(R.layout.layout_shopeepay_payment);
+                stub.setLayoutResource(R.layout.uikit_layout_shopeepay_payment);
             }
         }
         stub.inflate();
     }
 
     private void initData() {
-        setPageTitle(getString(R.string.shopeepay));
+        setPageTitle(getString(R.string.uikit_shopeepay));
     }
 
     private void initActionButton() {
@@ -192,9 +193,9 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
                     }
                 });
                 buttonPrimary.setTextBold();
-                buttonPrimary.setText(getString(R.string.shopeepay_confirm_button));
+                buttonPrimary.setText(getString(R.string.uikit_shopeepay_confirm_button));
 
-                buttonPrimary.setIconResource(R.drawable.ic_shopeepay_white);
+                buttonPrimary.setIconResource(R.drawable.uikit_ic_shopeepay_white);
                 buttonPrimary.setIconPosition(FancyButton.POSITION_RIGHT);
             } else {
                 //hide confirm button and adjust item details to bottom of screen
@@ -229,9 +230,9 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
                 }
             });
             buttonPrimary.setTextBold();
-            buttonPrimary.setText(getString(R.string.shopeepay_confirm_button));
+            buttonPrimary.setText(getString(R.string.uikit_shopeepay_confirm_button));
 
-            buttonPrimary.setIconResource(R.drawable.ic_shopeepay_white);
+            buttonPrimary.setIconResource(R.drawable.uikit_ic_shopeepay_white);
             buttonPrimary.setIconPosition(FancyButton.POSITION_RIGHT);
         }
     }
@@ -240,7 +241,7 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
         if (deeplinkUrl == null) {
             Toast.makeText(this, R.string.shopeepay_payment_cant_open_deeplink, Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this, getString(R.string.redirecting_to_shopee), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.uikit_redirecting_to_shopee), Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(deeplinkUrl));
             startActivityForResult(intent, UiKitConstants.INTENT_CODE_SHOPEEPAY);
         }

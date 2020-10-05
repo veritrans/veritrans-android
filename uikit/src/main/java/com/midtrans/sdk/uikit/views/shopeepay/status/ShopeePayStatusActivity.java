@@ -54,7 +54,7 @@ public class ShopeePayStatusActivity extends BasePaymentActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_shopeepay_status);
+        setContentView(R.layout.uikit_activity_shopeepay_status);
         bindData();
     }
 
@@ -63,7 +63,7 @@ public class ShopeePayStatusActivity extends BasePaymentActivity {
         if (isDetailShown) {
             displayOrHideItemDetails();
         } else {
-            showConfirmationDialog(getString(R.string.confirm_shopeepay_qr_scan_tablet));
+            showConfirmationDialog(getString(R.string.uikit_confirm_shopeepay_qr_scan_tablet));
         }
     }
 
@@ -119,7 +119,7 @@ public class ShopeePayStatusActivity extends BasePaymentActivity {
                     setTimer(duration);
                 } else {
                     expirationText.setVisibility(View.GONE);
-                    expirationDesc.setText(getString(R.string.shopeepay_expiration_expired));
+                    expirationDesc.setText(getString(R.string.uikit_shopeepay_expiration_expired));
                 }
             }
 
@@ -127,12 +127,12 @@ public class ShopeePayStatusActivity extends BasePaymentActivity {
             buttonPrimary.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    showConfirmationDialog(getString(R.string.confirm_shopeepay_qr_scan_tablet));
+                    showConfirmationDialog(getString(R.string.uikit_confirm_shopeepay_qr_scan_tablet));
                 }
             });
             buttonPrimary.setTextBold();
         }
-        textTitle.setText(getString(R.string.shopeepay_status_title));
+        textTitle.setText(getString(R.string.uikit_shopeepay_status_title));
     }
 
     private boolean isExpirationTimeNotAvailable(TransactionResponse response) {
@@ -339,7 +339,7 @@ public class ShopeePayStatusActivity extends BasePaymentActivity {
 
                 public void onFinish() {
                     expirationText.setVisibility(View.GONE);
-                    expirationDesc.setText(getString(R.string.shopeepay_expiration_expired));
+                    expirationDesc.setText(getString(R.string.uikit_shopeepay_expiration_expired));
                 }
             }.start();
         }

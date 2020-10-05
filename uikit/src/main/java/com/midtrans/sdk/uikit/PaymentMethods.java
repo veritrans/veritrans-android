@@ -127,7 +127,7 @@ public class PaymentMethods {
 
     private static PaymentMethodsModel getMethodGopay(Context context, int priority, String paymentType, String status, Boolean isTablet) {
         if (isTablet) {
-            return new PaymentMethodsModel(context.getString(R.string.payment_method_gopay_qris), context.getString(R.string.payment_method_description_gopay_qris), R.drawable.ic_gopay_qris, paymentType, priority, status);
+            return new PaymentMethodsModel(context.getString(R.string.payment_method_gopay_qris), context.getString(R.string.payment_method_description_gopay_qris), R.drawable.uikit_ic_gopay_qris, paymentType, priority, status);
         } else {
             return new PaymentMethodsModel(context.getString(R.string.payment_method_gopay), context.getString(R.string.payment_method_description_gopay), R.drawable.ic_gopay, paymentType, priority, status);
         }
@@ -135,9 +135,9 @@ public class PaymentMethods {
 
     private static PaymentMethodsModel getMethodShopeepay(Context context, int priority, String paymentType, String status, Boolean isTablet) {
         if (isTablet) {
-            return new PaymentMethodsModel(context.getString(R.string.payment_method_shopeepay_qris), context.getString(R.string.payment_method_description_shopeepay_qris), R.drawable.ic_shopeepay_qris, paymentType, priority, status);
+            return new PaymentMethodsModel(context.getString(R.string.payment_method_shopeepay_qris), context.getString(R.string.payment_method_description_shopeepay_qris), R.drawable.uikit_ic_shopeepay_qris, paymentType, priority, status);
         } else {
-            return new PaymentMethodsModel(context.getString(R.string.payment_method_shopeepay), context.getString(R.string.payment_method_description_shopeepay), R.drawable.ic_shopeepay, paymentType, priority, status);
+            return new PaymentMethodsModel(context.getString(R.string.payment_method_shopeepay_deeplink), context.getString(R.string.payment_method_description_shopeepay_deeplink), R.drawable.uikit_ic_shopeepay, paymentType, priority, status);
         }
     }
 

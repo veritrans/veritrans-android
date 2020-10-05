@@ -939,7 +939,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
-        } else if (name.equalsIgnoreCase(getString(R.string.payment_method_shopeepay))
+        } else if (name.equalsIgnoreCase(getString(R.string.payment_method_shopeepay_deeplink))
             || name.equalsIgnoreCase(getString(R.string.payment_method_shopeepay_qris))) {
             Intent shopeepayIntent = new Intent(this, ShopeePayPaymentActivity.class);
             startActivityForResult(shopeepayIntent, Constants.RESULT_CODE_PAYMENT_TRANSFER);

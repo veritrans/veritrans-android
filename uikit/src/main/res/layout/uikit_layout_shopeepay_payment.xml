@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
     <com.midtrans.sdk.uikit.widgets.DefaultTextView
@@ -10,19 +10,18 @@
         android:layout_marginTop="@dimen/sixteen_dp"
         android:paddingLeft="@dimen/sixteen_dp"
         android:paddingRight="@dimen/sixteen_dp"
-        android:text="@string/shopeepay_instruction"
+        android:text="@string/uikit_shopeepay_instruction"
         android:textColor="@color/dark_gray"
         android:textSize="@dimen/primary_text_size" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/sixteen_dp"
-        android:background="@color/light_gray"
-        android:paddingBottom="@dimen/eight_dp"
+        android:lineSpacingExtra="2dp"
+        android:paddingBottom="@dimen/four_dp"
         android:paddingLeft="@dimen/sixteen_dp"
         android:paddingRight="@dimen/sixteen_dp"
-        android:paddingTop="@dimen/eight_dp">
+        android:paddingTop="@dimen/four_dp">
 
         <TextView
             android:layout_width="@dimen/twenty_four_dp"
@@ -32,7 +31,7 @@
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/shopeepay_instruction_tablet_step1"
+            android:text="@string/uikit_shopeepay_instruction_step1"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size" />
     </LinearLayout>
@@ -40,11 +39,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/light_gray"
         android:lineSpacingExtra="2dp"
-        android:paddingBottom="@dimen/eight_dp"
+        android:paddingBottom="@dimen/four_dp"
         android:paddingLeft="@dimen/sixteen_dp"
         android:paddingRight="@dimen/sixteen_dp"
-        android:paddingTop="@dimen/eight_dp">
+        android:paddingTop="@dimen/four_dp">
 
         <TextView
             android:layout_width="@dimen/twenty_four_dp"
@@ -54,7 +54,7 @@
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/shopeepay_instruction_tablet_step2"
+            android:text="@string/uikit_shopeepay_instruction_step2"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size" />
     </LinearLayout>
@@ -62,12 +62,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/light_gray"
         android:lineSpacingExtra="2dp"
-        android:paddingBottom="@dimen/eight_dp"
+        android:paddingBottom="@dimen/four_dp"
         android:paddingLeft="@dimen/sixteen_dp"
         android:paddingRight="@dimen/sixteen_dp"
-        android:paddingTop="@dimen/eight_dp">
+        android:paddingTop="@dimen/four_dp">
 
         <TextView
             android:layout_width="@dimen/twenty_four_dp"
@@ -77,29 +76,7 @@
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/shopeepay_instruction_tablet_step3"
-            android:textColor="@color/black"
-            android:textSize="@dimen/secondary_text_size" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:lineSpacingExtra="2dp"
-        android:paddingBottom="@dimen/eight_dp"
-        android:paddingLeft="@dimen/sixteen_dp"
-        android:paddingRight="@dimen/sixteen_dp"
-        android:paddingTop="@dimen/eight_dp">
-
-        <TextView
-            android:layout_width="@dimen/twenty_four_dp"
-            android:layout_height="wrap_content"
-            android:text="@string/number_instruction4" />
-
-        <com.midtrans.sdk.uikit.widgets.DefaultTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/shopeepay_instruction_tablet_step4"
+            android:text="@string/uikit_shopeepay_instruction_step3"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size" />
     </LinearLayout>
@@ -109,13 +86,34 @@
         android:layout_height="wrap_content"
         android:background="@color/light_gray"
         android:lineSpacingExtra="2dp"
-        android:paddingBottom="@dimen/eight_dp"
+        android:paddingBottom="@dimen/four_dp"
         android:paddingLeft="@dimen/sixteen_dp"
         android:paddingRight="@dimen/sixteen_dp"
-        android:paddingTop="@dimen/eight_dp">
+        android:paddingTop="@dimen/four_dp">
 
         <TextView
-            android:id="@+id/instruction_no_5"
+            android:layout_width="@dimen/twenty_four_dp"
+            android:layout_height="wrap_content"
+            android:text="@string/number_instruction4" />
+
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/uikit_shopeepay_instruction_step4"
+            android:textColor="@color/black"
+            android:textSize="@dimen/secondary_text_size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="2dp"
+        android:paddingBottom="@dimen/four_dp"
+        android:paddingLeft="@dimen/sixteen_dp"
+        android:paddingRight="@dimen/sixteen_dp"
+        android:paddingTop="@dimen/four_dp">
+
+        <TextView
             android:layout_width="@dimen/twenty_four_dp"
             android:layout_height="wrap_content"
             android:text="@string/number_instruction5" />
@@ -123,7 +121,30 @@
         <com.midtrans.sdk.uikit.widgets.DefaultTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/shopeepay_instruction_tablet_step5"
+            android:text="@string/uikit_shopeepay_instruction_step5"
+            android:textColor="@color/black"
+            android:textSize="@dimen/secondary_text_size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/light_gray"
+        android:lineSpacingExtra="2dp"
+        android:paddingBottom="@dimen/four_dp"
+        android:paddingLeft="@dimen/sixteen_dp"
+        android:paddingRight="@dimen/sixteen_dp"
+        android:paddingTop="@dimen/four_dp">
+
+        <TextView
+            android:layout_width="@dimen/twenty_four_dp"
+            android:layout_height="wrap_content"
+            android:text="@string/number_instruction6" />
+
+        <com.midtrans.sdk.uikit.widgets.DefaultTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/uikit_shopeepay_instruction_step6"
             android:textColor="@color/black"
             android:textSize="@dimen/secondary_text_size" />
     </LinearLayout>
