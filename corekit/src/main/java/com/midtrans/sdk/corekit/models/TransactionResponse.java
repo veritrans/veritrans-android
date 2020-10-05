@@ -143,7 +143,7 @@ public class TransactionResponse implements Serializable {
     private String qrCodeUrl;
     @SerializedName("deeplink_url")
     private String deeplinkUrl;
-    //currently for shopeepay
+    //currently for shopeepay, could be used for other QRIS payment except gopay (gopay still using qr_code_url)
     @SerializedName("qris_url")
     private String qrisUrl;
     private String currency;
