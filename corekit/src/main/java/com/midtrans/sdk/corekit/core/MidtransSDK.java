@@ -7,10 +7,30 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.BuildConfig;
-import com.midtrans.sdk.corekit.callback.*;
+import com.midtrans.sdk.corekit.callback.BankBinsCallback;
+import com.midtrans.sdk.corekit.callback.BanksPointCallback;
+import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
+import com.midtrans.sdk.corekit.callback.CardTokenCallback;
+import com.midtrans.sdk.corekit.callback.CheckoutCallback;
+import com.midtrans.sdk.corekit.callback.DeleteCardCallback;
+import com.midtrans.sdk.corekit.callback.GetCardCallback;
+import com.midtrans.sdk.corekit.callback.GetTransactionStatusCallback;
+import com.midtrans.sdk.corekit.callback.SaveCardCallback;
+import com.midtrans.sdk.corekit.callback.TransactionCallback;
+import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
+import com.midtrans.sdk.corekit.callback.TransactionOptionsCallback;
 import com.midtrans.sdk.corekit.core.themes.BaseColorTheme;
-import com.midtrans.sdk.corekit.models.*;
-import com.midtrans.sdk.corekit.models.snap.*;
+import com.midtrans.sdk.corekit.models.CardTokenRequest;
+import com.midtrans.sdk.corekit.models.PaymentDetails;
+import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
+import com.midtrans.sdk.corekit.models.SaveCardRequest;
+import com.midtrans.sdk.corekit.models.TokenRequestModel;
+import com.midtrans.sdk.corekit.models.snap.CreditCard;
+import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
+import com.midtrans.sdk.corekit.models.snap.MerchantData;
+import com.midtrans.sdk.corekit.models.snap.PromoResponse;
+import com.midtrans.sdk.corekit.models.snap.Transaction;
+import com.midtrans.sdk.corekit.models.snap.TransactionResult;
 import com.midtrans.sdk.corekit.models.snap.params.IndosatDompetkuPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.params.NewMandiriClickPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.params.TelkomselCashPaymentParams;
@@ -19,7 +39,6 @@ import com.midtrans.sdk.corekit.models.snap.payment.IndosatDompetkuPaymentReques
 import com.midtrans.sdk.corekit.models.snap.payment.NewMandiriClickPayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.TelkomselEcashPaymentRequest;
 import com.midtrans.sdk.corekit.utilities.Utils;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -408,6 +427,8 @@ public class MidtransSDK {
             startOtherBankTransferUIFlow(context, snapToken);
         } else if (paymentMethod.equals(PaymentMethod.GO_PAY)) {
             startGoPayUIFlow(context, snapToken);
+        } else if (paymentMethod.equals(PaymentMethod.SHOPEEPAY)) {
+            startShopeePayUIFlow(context, snapToken);
         } else if (paymentMethod.equals(PaymentMethod.BCA_KLIKPAY)) {
             startBCAKlikPayUIFlow(context, snapToken);
         } else if (paymentMethod.equals(PaymentMethod.KLIKBCA)) {
@@ -436,7 +457,7 @@ public class MidtransSDK {
             startDanamonOnlineUIFlow(context, snapToken);
         } else if (paymentMethod.equals(PaymentMethod.AKULAKU)) {
             startAkulakuUIFlow(context, snapToken);
-        }else if (paymentMethod.equals(PaymentMethod.ALFAMART)) {
+        } else if (paymentMethod.equals(PaymentMethod.ALFAMART)) {
             startAlfamartUIFlow(context, snapToken);
         } else {
             if (TextUtils.isEmpty(snapToken)) {
@@ -623,6 +644,20 @@ public class MidtransSDK {
     private void startGoPayUIFlow(@NonNull Context context, String snapToken) {
         if (isTransactionRequestAvailable() && uiflow != null) {
             uiflow.runGoPay(context, snapToken);
+        } else {
+            Logger.e(TAG, ADD_TRANSACTION_DETAILS);
+        }
+    }
+
+    /**
+     * This will start actual execution of ShopeePay UI Flow.
+     *
+     * @param context   activity context.
+     * @param snapToken checkout token
+     */
+    private void startShopeePayUIFlow(@NonNull Context context, String snapToken) {
+        if (isTransactionRequestAvailable() && uiflow != null) {
+            uiflow.runShopeePay(context, snapToken);
         } else {
             Logger.e(TAG, ADD_TRANSACTION_DETAILS);
         }
@@ -854,11 +889,9 @@ public class MidtransSDK {
             if (Utils.isNetworkAvailable(context)) {
                 snapServiceManager.getTransactionOptions(authenticationToken, callback);
             } else {
-
                 callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
         } else {
-
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
     }
@@ -1453,6 +1486,42 @@ public class MidtransSDK {
 
         if (isNetworkAvailable()) {
             snapServiceManager.paymentUsingGoPay(snapToken, SdkUtil.getGoPayPaymentRequest(), callback);
+        } else {
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
+        }
+    }
+
+    /**
+     * It will run backround task to charge payment using ShopeePay
+     *
+     * @param snapToken
+     */
+    public void paymentUsingShopeePayDeeplink(String snapToken, TransactionCallback callback) {
+        if (callback == null) {
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
+            return;
+        }
+
+        if (isNetworkAvailable()) {
+            snapServiceManager.paymentUsingShopeePayDeeplink(snapToken, SdkUtil.getShopeePayPaymentRequest(), callback);
+        } else {
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
+        }
+    }
+
+    /**
+     * It will run backround task to charge payment using ShopeePayQris
+     *
+     * @param snapToken
+     */
+    public void paymentUsingShopeePayQris(String snapToken, TransactionCallback callback) {
+        if (callback == null) {
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
+            return;
+        }
+
+        if (isNetworkAvailable()) {
+            snapServiceManager.paymentUsingShopeePayQris(snapToken, SdkUtil.getShopeePayQrisPaymentRequest(), callback);
         } else {
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }

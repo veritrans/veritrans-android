@@ -379,7 +379,7 @@ public class UserAddressFragment extends Fragment {
             userDetail.setUserAddresses(userAddresses);
             LocalDataHandler.saveObject(getString(R.string.user_details), userDetail);
 
-            ((UserDetailsActivity) getActivity()).showPaymentpage();
+            ((UserDetailsActivity) getActivity()).showPaymentPage();
         } catch (RuntimeException e) {
             Logger.e(TAG, "validateAndSaveAddress:" + e.getMessage());
         }

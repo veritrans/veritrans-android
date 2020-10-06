@@ -24,16 +24,29 @@ import com.midtrans.raygun.RaygunClient;
 import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.callback.CheckoutCallback;
 import com.midtrans.sdk.corekit.callback.TransactionOptionsCallback;
-import com.midtrans.sdk.corekit.core.*;
+import com.midtrans.sdk.corekit.core.Constants;
+import com.midtrans.sdk.corekit.core.Logger;
+import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.core.PaymentType;
+import com.midtrans.sdk.corekit.core.QrisAcquirer;
+import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.core.themes.ColorTheme;
 import com.midtrans.sdk.corekit.core.themes.CustomColorTheme;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
-import com.midtrans.sdk.corekit.models.*;
+import com.midtrans.sdk.corekit.models.MerchantPreferences;
+import com.midtrans.sdk.corekit.models.PaymentDetails;
+import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
+import com.midtrans.sdk.corekit.models.TransactionResponse;
+import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.promo.Promo;
 import com.midtrans.sdk.corekit.models.promo.PromoDetails;
-import com.midtrans.sdk.corekit.models.snap.*;
+import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
 import com.midtrans.sdk.corekit.models.snap.ItemDetails;
+import com.midtrans.sdk.corekit.models.snap.MerchantData;
+import com.midtrans.sdk.corekit.models.snap.Token;
+import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.TransactionDetails;
+import com.midtrans.sdk.corekit.models.snap.TransactionResult;
 import com.midtrans.sdk.uikit.BuildConfig;
 import com.midtrans.sdk.uikit.PaymentMethods;
 import com.midtrans.sdk.uikit.R;
@@ -62,12 +75,12 @@ import com.midtrans.sdk.uikit.views.indosat_dompetku.IndosatDompetkuPaymentActiv
 import com.midtrans.sdk.uikit.views.kioson.payment.KiosonPaymentActivity;
 import com.midtrans.sdk.uikit.views.mandiri_clickpay.MandiriClickPayActivity;
 import com.midtrans.sdk.uikit.views.mandiri_ecash.MandiriEcashPaymentActivity;
+import com.midtrans.sdk.uikit.views.shopeepay.payment.ShopeePayPaymentActivity;
 import com.midtrans.sdk.uikit.views.telkomsel_cash.TelkomselCashPaymentActivity;
 import com.midtrans.sdk.uikit.views.xl_tunai.payment.XlTunaiPaymentActivity;
 import com.midtrans.sdk.uikit.widgets.BoldTextView;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -96,6 +109,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     private boolean isKioson = false;
     private boolean isGci = false;
     private boolean isGopay = false;
+    private boolean isShopeepay = false;
     private boolean isDanamonOnline = false;
     private boolean isAkulaku = false;
     private boolean isAlfamart = false;
@@ -132,6 +146,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         isCreditCardOnly = getIntent().getBooleanExtra(UserDetailsActivity.CREDIT_CARD_ONLY, false);
         isBankTransferOnly = getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_ONLY, false);
         isGopay = getIntent().getBooleanExtra(UserDetailsActivity.GO_PAY, false);
+        isShopeepay = getIntent().getBooleanExtra(UserDetailsActivity.SHOPEE_PAY, false);
         isBCAKlikpay = getIntent().getBooleanExtra(UserDetailsActivity.BCA_KLIKPAY, false);
         isKlikBCA = getIntent().getBooleanExtra(UserDetailsActivity.KLIK_BCA, false);
         isMandiriClickPay = getIntent().getBooleanExtra(UserDetailsActivity.MANDIRI_CLICKPAY, false);
@@ -517,7 +532,6 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     }
 
     private void initCustomTrackingProperties() {
-
         if (BuildConfig.FLAVOR.equals(UiKitConstants.ENVIRONMENT_PRODUCTION)) {
             RaygunClient.setOnBeforeSend(new UiKitOnBeforeSend(this));
         }
@@ -539,43 +553,51 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             }
         } else if (isBankTransferOnly) {
             if (SdkUIFlowUtil.isBankTransferMethodEnabled(getApplicationContext(), enabledPayments)) {
-                Intent startBankPayment = new Intent(PaymentMethodsActivity.this, BankTransferListActivity.class);
+                Intent startBankPayment = new Intent(PaymentMethodsActivity.this,
+                    BankTransferListActivity.class);
                 if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_PERMATA, false)) {
-                    if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, PaymentType.PERMATA_VA)) {
+                    if (SdkUIFlowUtil
+                        .isPaymentMethodEnabled(enabledPayments, PaymentType.PERMATA_VA)) {
                         startBankPayment.putExtra(UserDetailsActivity.BANK_TRANSFER_PERMATA, true);
                     } else {
                         showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
                         return;
                     }
-                } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_MANDIRI, false)) {
-                    if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_mandiri_bill_payment))) {
+                } else if (getIntent()
+                    .getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_MANDIRI, false)) {
+                    if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments,
+                        getString(R.string.payment_mandiri_bill_payment))) {
                         startBankPayment.putExtra(UserDetailsActivity.BANK_TRANSFER_MANDIRI, true);
                     } else {
                         showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
                         return;
                     }
-                } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_BCA, false)) {
+                } else if (getIntent()
+                    .getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_BCA, false)) {
                     if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, PaymentType.BCA_VA)) {
                         startBankPayment.putExtra(UserDetailsActivity.BANK_TRANSFER_BCA, true);
                     } else {
                         showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
                         return;
                     }
-                } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_BNI, false)) {
+                } else if (getIntent()
+                    .getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_BNI, false)) {
                     if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, PaymentType.BNI_VA)) {
                         startBankPayment.putExtra(UserDetailsActivity.BANK_TRANSFER_BNI, true);
                     } else {
                         showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
                         return;
                     }
-                } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_BRI, false)) {
+                } else if (getIntent()
+                    .getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_BRI, false)) {
                     if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, PaymentType.BRI_VA)) {
                         startBankPayment.putExtra(UserDetailsActivity.BANK_TRANSFER_BRI, true);
                     } else {
                         showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
                         return;
                     }
-                } else if (getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_OTHER, false)) {
+                } else if (getIntent()
+                    .getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_OTHER, false)) {
                     if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, PaymentType.ALL_VA)) {
                         startBankPayment.putExtra(UserDetailsActivity.BANK_TRANSFER_OTHER, true);
                     } else {
@@ -583,10 +605,11 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                         return;
                     }
                 }
-                startBankPayment.putExtra(BankTransferListActivity.EXTRA_BANK_LIST, getBankTransfers());
+                startBankPayment
+                    .putExtra(BankTransferListActivity.EXTRA_BANK_LIST, getBankTransfers());
                 startActivityForResult(startBankPayment, Constants.RESULT_CODE_PAYMENT_TRANSFER);
                 if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
-                        && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                     overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 }
             } else {
@@ -711,11 +734,12 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
             }
         } else if (isGci) {
-            if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_gci))) {
+            if (SdkUIFlowUtil
+                .isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_gci))) {
                 Intent gciActivity = new Intent(this, GciPaymentActivity.class);
                 startActivityForResult(gciActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
                 if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
-                        && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                     overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 }
             } else {
@@ -727,6 +751,17 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 startActivityForResult(gopayActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
                 if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                         && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                    overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                }
+            } else {
+                showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
+            }
+        } else if (isShopeepay) {
+            if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, getString(R.string.payment_shopeepay))) {
+                Intent shopeepayActivity = new Intent(this, ShopeePayPaymentActivity.class);
+                startActivityForResult(shopeepayActivity, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+                if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
+                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                     overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 }
             } else {
@@ -796,7 +831,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             startBankPayment.putExtra(BankTransferListActivity.USE_DEEP_LINK, isDeepLink);
             startActivityForResult(startBankPayment, Constants.RESULT_CODE_PAYMENT_TRANSFER);
             if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
-                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_mandiri_clickpay))) {
@@ -896,9 +931,18 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
-        } else if (name.equalsIgnoreCase(getString(R.string.payment_method_gopay))) {
+        } else if (name.equalsIgnoreCase(getString(R.string.payment_method_gopay))
+            || name.equalsIgnoreCase(getString(R.string.payment_method_gopay_qris))) {
             Intent gopayIntent = new Intent(this, GoPayPaymentActivity.class);
             startActivityForResult(gopayIntent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+            if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
+                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+            }
+        } else if (name.equalsIgnoreCase(getString(R.string.payment_method_shopeepay_deeplink))
+            || name.equalsIgnoreCase(getString(R.string.payment_method_shopeepay_qris))) {
+            Intent shopeepayIntent = new Intent(this, ShopeePayPaymentActivity.class);
+            startActivityForResult(shopeepayIntent, Constants.RESULT_CODE_PAYMENT_TRANSFER);
             if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                     && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
@@ -942,27 +986,45 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         bankTransfers.clear();
 
         for (EnabledPayment enabledPayment : enabledPayments) {
-            if ((enabledPayment.getCategory() != null && enabledPayment.getCategory().equals(getString(R.string.enabled_payment_category_banktransfer)))
-                    || enabledPayment.getType().equalsIgnoreCase(getString(R.string.payment_mandiri_bill_payment))) {
+            if ((enabledPayment.getCategory() != null
+                && enabledPayment.getCategory().equals(getString(R.string.enabled_payment_category_banktransfer)))
+                || enabledPayment.getType().equalsIgnoreCase(getString(R.string.payment_mandiri_bill_payment))) {
                 bankTransfers.add(enabledPayment);
                 if (!isBankTransferAdded) {
-                    PaymentMethodsModel model = PaymentMethods
-                            .getMethods(this, getString(R.string.payment_bank_transfer),
-                                    EnabledPayment.STATUS_UP);
+                    PaymentMethodsModel model = PaymentMethods.getMethods(this, getString(R.string.payment_bank_transfer), EnabledPayment.STATUS_UP, isTablet());
                     if (model != null) {
                         data.add(model);
                         isBankTransferAdded = true;
                     }
                 }
-            } else {
-                PaymentMethodsModel model = PaymentMethods.getMethods(this, enabledPayment.getType(), enabledPayment.getStatus());
+            } else if (checkShopeepayQrisInTablet(enabledPayment)) {
+                PaymentMethodsModel model = PaymentMethods.getMethods(this, enabledPayment.getAcquirer(), enabledPayment.getStatus(), isTablet());
                 if (model != null) {
                     data.add(model);
                 }
+            } else {
+                if (!checkShopeepayDeeplinkInTablet(enabledPayment)) {
+                    PaymentMethodsModel model = PaymentMethods.getMethods(this, enabledPayment.getType(), enabledPayment.getStatus(), isTablet());
+                    if (model != null) {
+                        data.add(model);
+                    }
+                }
             }
         }
-
         markPaymentMethodHavePromo(data);
+    }
+
+    private Boolean checkShopeepayQrisInTablet(EnabledPayment enabledPayment) {
+        //Shopeepay Qris only enabled in Tablet device
+        return enabledPayment.getType().equals(PaymentType.QRIS)
+            && enabledPayment.getAcquirer().equals(QrisAcquirer.SHOPEEPAY)
+            && isTablet();
+    }
+
+    private Boolean checkShopeepayDeeplinkInTablet(EnabledPayment enabledPayment) {
+        //Use to disable shopeepay deeplink in tablet
+        return enabledPayment.getType().equals(PaymentType.SHOPEEPAY)
+            && isTablet();
     }
 
     private void markPaymentMethodHavePromo(List<PaymentMethodsModel> data) {
@@ -993,6 +1055,10 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         }
 
         return null;
+    }
+
+    private Boolean isTablet() {
+        return SdkUIFlowUtil.getDeviceType(this).equals(SdkUIFlowUtil.TYPE_TABLET) && SdkUIFlowUtil.isDeviceTablet(this);
     }
 
     /**
@@ -1049,7 +1115,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                     if (this.data.size() == 1 || isCreditCardOnly || isBankTransferOnly || isBCAKlikpay || isKlikBCA
                             || isMandiriClickPay || isMandiriECash || isCIMBClicks || isBRIEpay
                             || isTelkomselCash || isIndosatDompetku || isXlTunai
-                            || isIndomaret || isKioson || isGci || isDanamonOnline || isGopay) {
+                            || isIndomaret || isKioson || isGci || isDanamonOnline || isGopay || isShopeepay) {
 
                         midtransSDK.notifyTransactionFinished(new TransactionResult(true));
                         finish();
@@ -1081,7 +1147,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                         if (this.data.size() == 1 || isCreditCardOnly || isBankTransferOnly || isBCAKlikpay || isKlikBCA
                                 || isMandiriClickPay || isMandiriECash || isCIMBClicks || isBRIEpay
                                 || isTelkomselCash || isIndosatDompetku || isXlTunai
-                                || isIndomaret || isKioson || isGci || isGopay || isDanamonOnline) {
+                                || isIndomaret || isKioson || isGci || isGopay || isDanamonOnline || isShopeepay) {
 
                             midtransSDK.notifyTransactionFinished(new TransactionResult(true));
                             finish();
@@ -1191,7 +1257,6 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     public EnabledPayments getBankTransfers() {
         return new EnabledPayments(this.bankTransfers);
     }
-
 
     @Override
     public void onItemClick(int position) {
