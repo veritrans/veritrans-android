@@ -148,6 +148,8 @@ public class TransactionResponse implements Serializable {
     private String qrisUrl;
     private String currency;
 
+    public TransactionResponse() { }
+
     public TransactionResponse(
         String statusCode,
         String statusMessage,
