@@ -157,6 +157,9 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
                     case BankType.MAYBANK:
                         holder.bankLogo.setImageResource(R.drawable.maybank);
                         break;
+                    case BankType.MEGA:
+                        holder.bankLogo.setImageResource(R.drawable.ic_mega);
+                        break;
                     case BankType.BNI_DEBIT_ONLINE:
                         holder.bankLogo.setImageResource(R.drawable.bni);
                         break;
