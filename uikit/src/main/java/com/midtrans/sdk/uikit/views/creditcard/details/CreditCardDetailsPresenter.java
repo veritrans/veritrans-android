@@ -551,6 +551,9 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
                         for (String cardBin : promo.getBins()) {
                             if (cardNumber.startsWith(cardBin)) {
                                 cardPromos.add(promo);
+                            } else if(promo.isSelected()) {
+                                promo.setSelected(false);
+                                view.updateDetailsOnPromoChanged(promo);
                             }
                         }
                     } else {
