@@ -989,6 +989,9 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements
                 case BankType.MAYBANK:
                     imageBankLogo.setImageResource(R.drawable.maybank);
                     break;
+                case BankType.MEGA:
+                    imageBankLogo.setImageResource(R.drawable.ic_mega);
+                    break;
                 case BankType.BNI_DEBIT_ONLINE:
                     imageBankLogo.setImageResource(R.drawable.bni);
                     textTitle.setText(R.string.bni_debit_online_card);
