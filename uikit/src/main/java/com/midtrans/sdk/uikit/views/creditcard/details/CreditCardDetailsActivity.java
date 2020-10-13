@@ -228,11 +228,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements
             new PromosAdapter.OnPromoCheckedChangeListener() {
                 @Override
                 public void onPromoCheckedChanged(Promo promo) {
-                    if (transactionDetailAdapter != null) {
-                        updateItemDetails(promo);
-                    } else {
-                        changeTotalAmount(promo);
-                    }
+                    updateDetailsOnPromoChanged(promo);
                 }
 
                 @Override
@@ -256,6 +252,15 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements
         } else {
             double newTotalAmount = getMidtransSdk().getPaymentDetails().getTotalAmount();
             changeTotalAmount(newTotalAmount);
+        }
+    }
+
+    @Override
+    public void updateDetailsOnPromoChanged(Promo promo) {
+        if (transactionDetailAdapter != null) {
+            updateItemDetails(promo);
+        } else {
+            changeTotalAmount(promo);
         }
     }
 
