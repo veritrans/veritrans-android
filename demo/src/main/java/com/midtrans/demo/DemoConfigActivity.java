@@ -971,7 +971,6 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 case Constants.CARD_ONE_CLICK:
                     cardClickTitle.setText(R.string.credit_card_type_one_click);
                     oneClickSelection.setChecked(true);
-                    resetInstallmentSelection();
                     resetBniPointSelection();
                     resetMandiriPointSelection();
                     break;
@@ -1012,7 +1011,6 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     cardClickTitle.setText(R.string.credit_card_type_one_click);
                     secureEnabledSelection.setChecked(true);
                     saveCardEnabledSelection.setChecked(true);
-                    resetInstallmentSelection();
                     resetBniPointSelection();
                     resetMandiriPointSelection();
                 }
@@ -1850,7 +1848,6 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     updateSelectedInstallment();
                     showEditInstallmentBniOption();
                     resetAcquiringBank();
-                    resetOneClickSelection();
                     break;
                 case Constants.INSTALLMENT_MANDIRI:
                     String mandiriTitle = getString(R.string.using_mandiri_installment);
@@ -1861,7 +1858,6 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     updateSelectedInstallment();
                     showEditInstallmentMandiriOption();
                     resetAcquiringBank();
-                    resetOneClickSelection();
                     break;
                 case Constants.INSTALLMENT_BCA:
                     String bcaTitle = getString(R.string.using_bca_installment);
@@ -1872,7 +1868,6 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     updateSelectedInstallment();
                     showEditInstallmentBcaOption();
                     setBcaAcquiringBank();
-                    resetOneClickSelection();
                     break;
                 case Constants.INSTALLMENT_BRI:
                     String briTitle = getString(R.string.using_bri_installment);
@@ -1883,7 +1878,6 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     updateSelectedInstallment();
                     showEditInstallmentBriOption();
                     setBriAcquiringBank();
-                    resetOneClickSelection();
                     break;
 
                 case Constants.INSTALLMENT_CIMB:
@@ -1895,7 +1889,6 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     updateSelectedInstallment();
                     showEditInstallmentCimbOption();
                     setCimbAcquiringBank();
-                    resetOneClickSelection();
                     break;
 
                 case Constants.INSTALLMENT_MAYBANK:
@@ -1907,7 +1900,6 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     updateSelectedInstallment();
                     showEditInstallmentMaybankOption();
                     setMaybankAcquiringBank();
-                    resetOneClickSelection();
                     break;
 
                 default:
@@ -1950,7 +1942,6 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     showInstallmentDialog(false);
                     showEditInstallmentBniOption();
                     resetAcquiringBank();
-                    resetOneClickSelection();
                 }
             }
         });
@@ -1968,7 +1959,6 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     showInstallmentDialog(false);
                     showEditInstallmentMandiriOption();
                     resetAcquiringBank();
-                    resetOneClickSelection();
                 }
             }
         });
@@ -1986,7 +1976,6 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     showInstallmentDialog(false);
                     showEditInstallmentBcaOption();
                     setBcaAcquiringBank();
-                    resetOneClickSelection();
                 }
             }
         });
@@ -2004,7 +1993,6 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     showInstallmentDialog(false);
                     showEditInstallmentBriOption();
                     setBriAcquiringBank();
-                    resetOneClickSelection();
                 }
             }
         });
@@ -2022,7 +2010,6 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     showInstallmentDialog(false);
                     showEditInstallmentCimbOption();
                     setCimbAcquiringBank();
-                    resetOneClickSelection();
                 }
             }
         });
@@ -2040,7 +2027,6 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     showInstallmentDialog(false);
                     showEditInstallmentMaybankOption();
                     setMaybankAcquiringBank();
-                    resetOneClickSelection();
                 }
             }
         });
