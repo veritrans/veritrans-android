@@ -341,6 +341,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements
                 fieldCardCvv.setFilters(filterArray);
                 fieldCardCvv.setText(SdkUIFlowUtil.getMaskedCardCvv());
                 fieldCardCvv.setEnabled(false);
+                checkInstallment();
             } else {
                 checkInstallment();
                 checkBankPoint();
