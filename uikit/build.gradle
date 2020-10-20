@@ -1,33 +1,7 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.jfrog.bintray'
-apply plugin: 'maven-publish'
-apply from: '../jacoco-uikit.gradle'
-apply plugin: 'com.vanniktech.android.junit.jacoco'
+apply from: "$rootDir/build-system/uikit/jacoco.gradle"
+apply from: "$rootDir/build-system/uikit/publishing.gradle"
 
-group = 'com.midtrans'
-version = '1.24.1'
-
-ext {
-    espressoVersion = "2.2.2"
-    supporTestVersion = "0.5"
-    junitVersion = "4.12"
-}
-
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6'
-        classpath 'com.vanniktech:gradle-android-junit-jacoco-plugin:0.4.0'
-
-    }
-}
-repositories {
-    jcenter()
-    maven { url "http://dl.bintray.com/pt-midtrans/maven" }
-}
 android {
     def DEFAULT_PUBLISH
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -41,8 +15,10 @@ android {
         minSdkVersion rootProject.ext.uiMinSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 2
-        versionName version
+        versionName versionSdk
         vectorDrawables.useSupportLibrary = true
+
+        buildConfigField "String", "VERSION_NAME", "\"${versionSdk}\""
 
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
 
@@ -53,31 +29,35 @@ android {
         release {
             minifyEnabled true
 
-            consumerProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            // TODO: Revisit this later, getting `ERROR: Default file proguard-android.txt should not be used as a consumer configuration file.`
+            // consumerProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
         }
         debug {
-            testCoverageEnabled = true;
+            testCoverageEnabled = true
         }
-
     }
 
+    flavorDimensions "env"
     productFlavors {
         development {
+            dimension "env"
             DEFAULT_PUBLISH = "developmentRelease"
             manifestPlaceholders = [isByPassNonSsl:false]
+            matchingFallbacks = ["development"]
         }
-
-
         uat {
+            dimension "env"
             DEFAULT_PUBLISH = "uatRelease"
             manifestPlaceholders = [isByPassNonSsl:true]
+            matchingFallbacks = ["uat"]
         }
-
         production {
+            dimension "env"
             DEFAULT_PUBLISH = "productionRelease"
             manifestPlaceholders = [isByPassNonSsl:false]
+            matchingFallbacks = ["production"]
         }
     }
 
@@ -94,176 +74,49 @@ android {
     publishNonDefault true
 }
 
-task sourceJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    classifier "source"
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '3.3' //version required
-}
-
 dependencies {
+    implementation supportLibraries.appCompat
+    implementation supportLibraries.supportV4
+    implementation supportLibraries.recyclerview
+    implementation supportLibraries.cardView
+    implementation supportLibraries.design
+    implementation libraries.swipeLayout
+    implementation libraries.betterLinkMovement
+    implementation libraries.smsVerify
+    implementation libraries.zxing
+    implementation libraries.ion
 
-    compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
-    compile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
-    compile "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
-    compile "com.android.support:design:$rootProject.supportLibraryVersion"
-    compile "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
+    implementation project(':issuetracker')
+    api project(':corekit')
 
-    compile 'ru.rambler.android:swipe-layout:1.0.14'
-    compile 'me.saket:better-link-movement-method:1.2'
-    compile 'com.github.stfalcon:smsverifycatcher:0.3.1'
-    compile 'com.journeyapps:zxing-android-embedded:3.5.0'
-    compile 'com.koushikdutta.ion:ion:2.2.1'
-    compile project(':issuetracker')
-    developmentCompile project(path: ':corekit', configuration: 'developmentRelease')
-    uatCompile project(path: ':corekit', configuration: 'uatRelease')
-    productionCompile project(path: ':corekit', configuration: 'productionRelease')
-
-    /*
-     * test dependencies
-     */
-
-    // Android JUnit Runner
-    androidTestCompile 'com.android.support.test:runner:0.5'
-
-    testCompile 'junit:junit:4.12'
-
-    testCompile 'org.mockito:mockito-core:1.10.19'
-
-    testCompile('org.powermock:powermock-api-mockito:1.6.2') {
-        exclude module: 'hamcrest-core'
-        exclude module: 'objenesis'
-    }
-    testCompile('org.powermock:powermock-module-junit4:1.6.2') {
+    androidTestImplementation testLibraries.runner
+    androidTestImplementation(testLibraries.powermock) {
         exclude module: 'hamcrest-core'
         exclude module: 'objenesis'
     }
 
-    testCompile('org.powermock:powermock-api-mockito:1.6.2') {
+    testImplementation testLibraries.junit
+    testImplementation testLibraries.mockito
+    testImplementation testLibraries.junit
+    testImplementation testLibraries.mockito
+    testImplementation(testLibraries.powermockMockito) {
         exclude module: 'hamcrest-core'
         exclude module: 'objenesis'
     }
-    testCompile('org.powermock:powermock-module-junit4-rule:1.6.2') {
+    testImplementation(testLibraries.powermockJunit) {
         exclude module: 'hamcrest-core'
         exclude module: 'objenesis'
     }
-
-    testCompile('org.powermock:powermock-classloading-xstream:1.6.2') {
+    testImplementation(testLibraries.powermockJunitRule) {
         exclude module: 'hamcrest-core'
         exclude module: 'objenesis'
     }
-
-    androidTestCompile('org.powermock:powermock-mockito-release-full:1.6.2') {
+    testImplementation(testLibraries.powermockMockito) {
         exclude module: 'hamcrest-core'
         exclude module: 'objenesis'
     }
-}
-
-publishing {
-    publications {
-        BintrayPublication(MavenPublication) {
-            artifact(sourceJar)
-            artifact("$buildDir/outputs/aar/uikit-development-release.aar")
-            groupId group
-            artifactId 'uikit'
-            version version + "-SANDBOX"
-
-            //The publication doesn't know about our dependencies, so we have to manually add them to the pom
-            pom.withXml {
-                def dependenciesNode = asNode().appendNode('dependencies')
-
-                //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
-                configurations.compile.allDependencies.each {
-                    def dependencyNode = dependenciesNode.appendNode('dependency')
-                    dependencyNode.appendNode('groupId', it.group)
-                    dependencyNode.appendNode('artifactId', it.name)
-                    dependencyNode.appendNode('version', it.version)
-                }
-
-                configurations.developmentCompile.allDependencies.each {
-                    def dependencyNode = dependenciesNode.appendNode('dependency')
-                    dependencyNode.appendNode('groupId', it.group)
-                    dependencyNode.appendNode('artifactId', it.name)
-                    dependencyNode.appendNode('version', it.version + '-SANDBOX')
-                }
-            }
-        }
-
-        BintrayUatPublication(MavenPublication) {
-            artifact(sourceJar)
-            artifact("$buildDir/outputs/aar/uikit-uat-release.aar")
-            groupId group
-            artifactId 'uikit'
-            version version + "-UAT"
-
-            //The publication doesn't know about our dependencies, so we have to manually add them to the pom
-            pom.withXml {
-                def dependenciesNode = asNode().appendNode('dependencies')
-
-                //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
-                configurations.compile.allDependencies.each {
-                    def dependencyNode = dependenciesNode.appendNode('dependency')
-                    dependencyNode.appendNode('groupId', it.group)
-                    dependencyNode.appendNode('artifactId', it.name)
-                    dependencyNode.appendNode('version', it.version)
-                }
-
-                configurations.uatCompile.allDependencies.each {
-                    def dependencyNode = dependenciesNode.appendNode('dependency')
-                    dependencyNode.appendNode('groupId', it.group)
-                    dependencyNode.appendNode('artifactId', it.name)
-                    dependencyNode.appendNode('version', it.version + '-UAT')
-                }
-            }
-        }
-
-        BintrayProductionPublication(MavenPublication) {
-            artifact(sourceJar)
-            artifact("$buildDir/outputs/aar/uikit-production-release.aar")
-            groupId group
-            artifactId 'uikit'
-            version version
-
-            //The publication doesn't know about our dependencies, so we have to manually add them to the pom
-            pom.withXml {
-                def dependenciesNode = asNode().appendNode('dependencies')
-
-                //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
-                configurations.compile.allDependencies.each {
-                    def dependencyNode = dependenciesNode.appendNode('dependency')
-                    dependencyNode.appendNode('groupId', it.group)
-                    dependencyNode.appendNode('artifactId', it.name)
-                    dependencyNode.appendNode('version', it.version)
-                }
-
-                configurations.productionCompile.allDependencies.each {
-                    def dependencyNode = dependenciesNode.appendNode('dependency')
-                    dependencyNode.appendNode('groupId', it.group)
-                    dependencyNode.appendNode('artifactId', it.name)
-                    dependencyNode.appendNode('version', it.version)
-                }
-            }
-        }
+    testImplementation(testLibraries.powermockXstream) {
+        exclude module: 'hamcrest-core'
+        exclude module: 'objenesis'
     }
-}
-
-bintray {
-    user = System.getenv('BINTRAY_USER')
-    key = System.getenv('BINTRAY_KEY')
-    configurations = ['archives']
-    pkg {
-        repo = 'maven'
-        name = project.name
-        userOrg = 'pt-midtrans'
-        licenses = ['Apache-2.0']
-        vcsUrl = 'https://github.com/veritrans/veritrans-android.git'
-        desc = 'Android SDK for integrating with midtrans.com'
-        websiteUrl = "https://midtrans.com"
-        publish = true
-        publicDownloadNumbers = true
-    }
-    publications = ['BintrayProductionPublication', 'BintrayPublication']
-
 }

@@ -28,31 +28,31 @@ project.afterEvaluate {
                 group = "Reporting"
                 description = "Generate Jacoco coverage reports on the ${sourceName.capitalize()} build."
 
-                classDirectories = fileTree(
+                getClassDirectories().setFrom(fileTree(
                         dir: "${project.buildDir}/intermediates/classes/${sourcePath}",
                         excludes: ['**/R.class',
                                    '**/R$*.class',
                                    '**/*$ViewInjector*.*',
                                    '**/*$ViewBinder*.*',
                                    '**/BuildConfig.*',
-                                   '**/com/midtrans/sdk/uikit/activities/*',
-                                   '**/com/midtrans/sdk/uikit/adapters/*',
-                                   '**/com/midtrans/sdk/uikit/callbacks/*',
-                                   '**/com/midtrans/sdk/uikit/fragments/*',
-                                   '**/com/midtrans/sdk/uikit/scancard/*',
-                                   '**/com/midtrans/sdk/uikit/utilities/*',
-                                   '**/com/midtrans/sdk/uikit/widgets/*',
+                                   '**/com/midtrans/sdk/corekit/models/*',
+                                   '**/com/midtrans/sdk/corekit/core/themes/*',
+                                   '**/com/midtrans/sdk/corekit/callback/*',
+                                   '**/com/midtrans/sdk/corekit/core/PaymentMethod.class',
+                                   '**/com/midtrans/sdk/corekit/core/UIKitCustomSetting.class',
+                                   '**/com/midtrans/sdk/corekit/core/MidtransRestAdapter.class',
+                                   '**/com/midtrans/sdk/corekit/core/Logger.class',
                                    '**/Manifest*.*']
-                )
+                ))
 
                 def coverageSourceDirs = [
-                        "src/main/java/com/midtrans/sdk/uikit/models",
-                        "src/$productFlavorName/java/com/midtrans/sdk/uikit/models",
-                        "src/$buildTypeName/java/com/midtrans/sdk/uikit/models"
+                        "src/main/java",
+                        "src/$productFlavorName/java",
+                        "src/$buildTypeName/java"
                 ]
-                additionalSourceDirs = files(coverageSourceDirs)
-                sourceDirectories = files(coverageSourceDirs)
-                executionData = files("${project.buildDir}/jacoco/${testTaskName}.exec")
+                getAdditionalClassDirs().setFrom(files(coverageSourceDirs))
+                getSourceDirectories().setFrom(files(coverageSourceDirs))
+                getExecutionData().setFrom(files("${project.buildDir}/jacoco/${testTaskName}.exec"))
 
                 reports {
                     xml.enabled = true
