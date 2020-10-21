@@ -27,7 +27,6 @@ android {
     }
     buildTypes {
         release {
-            debuggable true
             minifyEnabled true
 
             // TODO: Revisit this later, getting `ERROR: Default file proguard-android.txt should not be used as a consumer configuration file.`
@@ -36,7 +35,6 @@ android {
 
         }
         debug {
-            debuggable true
             testCoverageEnabled = true
         }
     }
