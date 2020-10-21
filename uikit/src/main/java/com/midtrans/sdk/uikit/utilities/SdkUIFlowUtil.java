@@ -69,6 +69,8 @@ public class SdkUIFlowUtil {
     public static final String TYPE_PHONE = "PHONE";
     public static final String TYPE_TABLET = "TABLET";
 
+    public static final String PRIORITY_CARD_TWO_CLICK = "two_clicks";
+
     private static final String TAG = SdkUIFlowUtil.class.getSimpleName();
     private static MidtransProgressDialogFragment progressDialogFragment;
     private static int maskedExpDate;
@@ -649,9 +651,14 @@ public class SdkUIFlowUtil {
 
     public static List<SaveCardRequest> convertSavedTokens(List<SavedToken> savedTokens) {
         List<SaveCardRequest> cards = new ArrayList<>();
+        String priorityCardFeature = MidtransSDK.getInstance().getMerchantData().getPriorityCardFeature();
         if (savedTokens != null && !savedTokens.isEmpty()) {
             for (SavedToken saved : savedTokens) {
-                cards.add(new SaveCardRequest(saved.getToken(), saved.getMaskedCard(), saved.getTokenType()));
+                String tokenType = saved.getTokenType();
+                if (priorityCardFeature != null && !priorityCardFeature.isEmpty() && priorityCardFeature.equals(PRIORITY_CARD_TWO_CLICK)) {
+                    tokenType = priorityCardFeature;
+                }
+                cards.add(new SaveCardRequest(saved.getToken(), saved.getMaskedCard(), tokenType));
             }
         }
         return cards;
@@ -659,10 +666,15 @@ public class SdkUIFlowUtil {
 
     public static List<SavedToken> convertSavedCards(List<SaveCardRequest> savedCards) {
         List<SavedToken> cards = new ArrayList<>();
+        String priorityCardFeature = MidtransSDK.getInstance().getMerchantData().getPriorityCardFeature();
         if (savedCards != null && !savedCards.isEmpty()) {
             for (SaveCardRequest saved : savedCards) {
                 SavedToken savedToken = new SavedToken();
-                savedToken.setTokenType(saved.getType());
+                String tokenType = saved.getType();
+                if (priorityCardFeature != null && !priorityCardFeature.isEmpty() && priorityCardFeature.equals(PRIORITY_CARD_TWO_CLICK)) {
+                    tokenType = priorityCardFeature;
+                }
+                savedToken.setTokenType(tokenType);
                 savedToken.setMaskedCard(saved.getMaskedCard());
                 savedToken.setToken(saved.getSavedTokenId());
                 cards.add(savedToken);
