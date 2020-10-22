@@ -35,6 +35,7 @@ import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
+import com.midtrans.sdk.corekit.models.snap.MerchantData;
 import com.midtrans.sdk.corekit.models.snap.PromoResponse;
 import com.midtrans.sdk.corekit.models.snap.SavedToken;
 import com.midtrans.sdk.corekit.utilities.Utils;
@@ -651,11 +652,15 @@ public class SdkUIFlowUtil {
 
     public static List<SaveCardRequest> convertSavedTokens(List<SavedToken> savedTokens) {
         List<SaveCardRequest> cards = new ArrayList<>();
-        String priorityCardFeature = MidtransSDK.getInstance().getMerchantData().getPriorityCardFeature();
+        MerchantData merchantData = MidtransSDK.getInstance().getMerchantData();
+        String priorityCardFeature = merchantData.getPriorityCardFeature();
         if (savedTokens != null && !savedTokens.isEmpty()) {
             for (SavedToken saved : savedTokens) {
                 String tokenType = saved.getTokenType();
-                if (priorityCardFeature != null && !priorityCardFeature.isEmpty() && priorityCardFeature.equals(PRIORITY_CARD_TWO_CLICK)) {
+                if ((priorityCardFeature != null
+                        && !priorityCardFeature.isEmpty()
+                        && priorityCardFeature.equals(PRIORITY_CARD_TWO_CLICK)
+                ) || !merchantData.getRecurringMidIsActive()) {
                     tokenType = priorityCardFeature;
                 }
                 cards.add(new SaveCardRequest(saved.getToken(), saved.getMaskedCard(), tokenType));
@@ -666,12 +671,16 @@ public class SdkUIFlowUtil {
 
     public static List<SavedToken> convertSavedCards(List<SaveCardRequest> savedCards) {
         List<SavedToken> cards = new ArrayList<>();
-        String priorityCardFeature = MidtransSDK.getInstance().getMerchantData().getPriorityCardFeature();
+        MerchantData merchantData = MidtransSDK.getInstance().getMerchantData();
+        String priorityCardFeature = merchantData.getPriorityCardFeature();
         if (savedCards != null && !savedCards.isEmpty()) {
             for (SaveCardRequest saved : savedCards) {
                 SavedToken savedToken = new SavedToken();
                 String tokenType = saved.getType();
-                if (priorityCardFeature != null && !priorityCardFeature.isEmpty() && priorityCardFeature.equals(PRIORITY_CARD_TWO_CLICK)) {
+                if ((priorityCardFeature != null
+                        && !priorityCardFeature.isEmpty()
+                        && priorityCardFeature.equals(PRIORITY_CARD_TWO_CLICK)
+                ) || !merchantData.getRecurringMidIsActive()) {
                     tokenType = priorityCardFeature;
                 }
                 savedToken.setTokenType(tokenType);
