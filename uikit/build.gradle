@@ -118,4 +118,5 @@ dependencies {
         exclude module: 'objenesis'
     }
 }
+
 apply from: "$rootDir/build-system/uikit/publishing.gradle"

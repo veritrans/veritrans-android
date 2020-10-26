@@ -58,4 +58,5 @@ dependencies {
     implementation libraries.cardAndroid
     api project(':uikit')
 }
+
 apply from: "$rootDir/build-system/scancard/publishing.gradle"
