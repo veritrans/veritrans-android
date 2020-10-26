@@ -39,6 +39,7 @@ public class UserDetailsActivity extends BaseActivity {
     public static final String BANK_TRANSFER_BRI = "bt_bri";
     public static final String BANK_TRANSFER_OTHER = "bt_other";
     public static final String GO_PAY = "gopay";
+    public static final String SHOPEE_PAY = "shopeepay";
     public static final String BCA_KLIKPAY = "bcaklikpay";
     public static final String KLIK_BCA = "klikbca";
     public static final String MANDIRI_CLICKPAY = "mandiriclickpay";
@@ -114,7 +115,7 @@ public class UserDetailsActivity extends BaseActivity {
 
                     SdkUIFlowUtil.saveUserDetails();
 
-                    showPaymentpage();
+                    showPaymentPage();
                     return;
                 }
 
@@ -128,7 +129,7 @@ public class UserDetailsActivity extends BaseActivity {
 
                         ArrayList<UserAddress> userAddresses = userDetail.getUserAddresses();
                         if (userAddresses != null && !userAddresses.isEmpty()) {
-                            showPaymentpage();
+                            showPaymentPage();
                         } else {
                             setView();
                             UserAddressFragment userAddressFragment = UserAddressFragment.newInstance();
@@ -159,7 +160,7 @@ public class UserDetailsActivity extends BaseActivity {
         }
     }
 
-    public void showPaymentpage() {
+    public void showPaymentPage() {
         Intent paymentOptionIntent = new Intent(this, PaymentMethodsActivity.class);
         if (getIntent().getBooleanExtra(CREDIT_CARD_ONLY, false)) {
             paymentOptionIntent.putExtra(CREDIT_CARD_ONLY, true);
@@ -178,6 +179,8 @@ public class UserDetailsActivity extends BaseActivity {
             }
         } else if (getIntent().getBooleanExtra(GO_PAY, false)) {
             paymentOptionIntent.putExtra(GO_PAY, true);
+        } else if (getIntent().getBooleanExtra(SHOPEE_PAY, false)) {
+            paymentOptionIntent.putExtra(SHOPEE_PAY, true);
         } else if (getIntent().getBooleanExtra(BCA_KLIKPAY, false)) {
             paymentOptionIntent.putExtra(BCA_KLIKPAY, true);
         } else if (getIntent().getBooleanExtra(KLIK_BCA, false)) {

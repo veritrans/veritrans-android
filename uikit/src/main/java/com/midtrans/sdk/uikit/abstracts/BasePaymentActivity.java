@@ -219,8 +219,7 @@ public abstract class BasePaymentActivity extends BaseActivity {
 
     protected void initMerchantLogo() {
         ImageView merchantLogo = (ImageView) findViewById(R.id.merchant_logo);
-        DefaultTextView merchantNameText = (DefaultTextView) findViewById(
-            R.id.text_page_merchant_name);
+        DefaultTextView merchantNameText = (DefaultTextView) findViewById(R.id.text_page_merchant_name);
 
         MerchantData merchantData = getMidtransSdk().getMerchantData();
 

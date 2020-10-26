@@ -188,7 +188,6 @@ public class WebViewPaymentActivity extends BasePaymentActivity {
         if (presenter != null && paymentType != null && paymentType.equalsIgnoreCase(PaymentType.CREDIT_CARD)) {
             presenter.trackBackButtonClick("CC 3DS");
         }
-        showCancelConfirmationDialog(this);
     }
 
     private static class MidtransWebViewClient extends WebViewClient {

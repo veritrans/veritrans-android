@@ -57,17 +57,23 @@ public class BasePaymentPresenter<V extends BaseView> extends BasePresenter<V> {
     }
 
     protected TransactionResponse convertTransactionStatus(TransactionStatusResponse response) {
-        TransactionResponse transactionResponse = new TransactionResponse(
-            response.getStatusCode(),
-            response.getStatusMessage(),
-            response.getTransactionId(),
-            response.getOrderId(),
-            response.getGrossAmount(),
-            response.getPaymentType(),
-            response.getTransactionTime(),
-            response.getTransactionStatus(),
-            response.getInstallmentTerm()
-        );
+        TransactionResponse transactionResponse = new TransactionResponse();
+        transactionResponse.setApprovalCode(response.getApprovalCode());
+        transactionResponse.setBank(response.getBank());
+        transactionResponse.setFraudStatus(response.getFraudStatus());
+        transactionResponse.setGrossAmount(response.getGrossAmount());
+        transactionResponse.setInstallmentTerm(response.getInstallmentTerm());
+        transactionResponse.setMaskedCard(response.getMaskedCard());
+        transactionResponse.setOrderId(response.getOrderId());
+        transactionResponse.setPaymentType(response.getPaymentType());
+        transactionResponse.setSavedTokenId(response.getSavedTokenId());
+        transactionResponse.setSavedTokenIdExpiredAt(response.getSavedTokenIdExpiredAt());
+        transactionResponse.setStatusCode(response.getStatusCode());
+        transactionResponse.setStatusMessage(response.getStatusMessage());
+        transactionResponse.setTransactionId(response.getTransactionId());
+        transactionResponse.setTransactionStatus(response.getTransactionStatus());
+        transactionResponse.setTransactionTime(response.getTransactionTime());
+
         return transactionResponse;
     }
 

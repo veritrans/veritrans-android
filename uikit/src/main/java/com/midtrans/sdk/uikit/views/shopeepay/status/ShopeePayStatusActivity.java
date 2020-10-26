@@ -1,4 +1,4 @@
-package com.midtrans.sdk.uikit.views.gopay.status;
+package com.midtrans.sdk.uikit.views.shopeepay.status;
 
 import static com.midtrans.sdk.corekit.utilities.Utils.getMonth;
 
@@ -33,14 +33,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-/**
- * Created by Fajar on 16/11/17.
- */
-
-public class GoPayStatusActivity extends BasePaymentActivity {
+public class ShopeePayStatusActivity extends BasePaymentActivity {
 
     public static final String EXTRA_PAYMENT_STATUS = "extra.status";
-    private static final String TAG = GoPayStatusActivity.class.getSimpleName();
+    public static final String DATE_TIME_FORMAT_1 = "yyyy-MM-dd HH:mm";
+    public static final String DATE_TIME_FORMAT_2= "dd MMMM HH:mm";
+    public static final String DATE_TIME_FORMAT_FULL = "yyyy-MM-dd HH:mm:ss";
+    public static final String SUFFIX_TIME_WIB = " WIB";
+    private static final String TAG = ShopeePayStatusActivity.class.getSimpleName();
     private final int DEFAULT_EXPIRATION_IN_MINUTE = 15;
     private FancyButton buttonPrimary;
     private BoldTextView expirationText;
@@ -49,24 +49,32 @@ public class GoPayStatusActivity extends BasePaymentActivity {
     private ImageView qrCodeContainer;
     private FancyButton qrCodeRefresh;
     private DefaultTextView expirationDesc;
-
     private boolean isInstructionShown = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gopay_status);
+        setContentView(R.layout.uikit_activity_shopeepay_status);
         bindData();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isDetailShown) {
+            displayOrHideItemDetails();
+        } else {
+            showConfirmationDialog(getString(R.string.uikit_confirm_shopeepay_qr_scan_tablet));
+        }
     }
 
     private void bindData() {
         final TransactionResponse response = (TransactionResponse) getIntent().getSerializableExtra(EXTRA_PAYMENT_STATUS);
         if (response != null) {
             showProgressLayout();
-            final LinearLayout instructionLayout = findViewById(R.id.gopay_instruction_layout);
-            merchantName = findViewById(R.id.gopay_merchant_name);
-            final DefaultTextView instructionToggle = findViewById(R.id.gopay_instruction_toggle);
 
+            final LinearLayout instructionLayout = findViewById(R.id.shopeepay_instruction_layout);
+            merchantName = findViewById(R.id.shopeepay_merchant_name);
+            final DefaultTextView instructionToggle = findViewById(R.id.shopeepay_instruction_toggle);
             instructionToggle.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -82,9 +90,9 @@ public class GoPayStatusActivity extends BasePaymentActivity {
             });
 
             //process qr code
-            final String qrCodeUrl = response.getQrCodeUrl();
-            qrCodeContainer = findViewById(R.id.gopay_qr_code);
-            qrCodeRefresh = findViewById(R.id.gopay_reload_qr_button);
+            final String qrCodeUrl = response.getQrisUrl();
+            qrCodeContainer = findViewById(R.id.shopeepay_qr_code);
+            qrCodeRefresh = findViewById(R.id.shopeepay_reload_qr_button);
             setTextColor(qrCodeRefresh);
             setIconColorFilter(qrCodeRefresh);
             qrCodeRefresh.setOnClickListener(new OnClickListener() {
@@ -97,8 +105,8 @@ public class GoPayStatusActivity extends BasePaymentActivity {
             loadQrCode(qrCodeUrl, qrCodeContainer);
 
             //process expiration
-            expirationText = findViewById(R.id.gopay_expiration_text);
-            expirationDesc = findViewById(R.id.gopay_expiration_desc);
+            expirationText = findViewById(R.id.shopeepay_expiration_text);
+            expirationDesc = findViewById(R.id.shopeepay_expiration_desc);
 
             String startTime = response.getTransactionTime();
             if (isExpirationTimeNotAvailable(response) && TextUtils.isEmpty(startTime)) {
@@ -111,7 +119,7 @@ public class GoPayStatusActivity extends BasePaymentActivity {
                     setTimer(duration);
                 } else {
                     expirationText.setVisibility(View.GONE);
-                    expirationDesc.setText(getString(R.string.gopay_expiration_expired));
+                    expirationDesc.setText(getString(R.string.uikit_shopeepay_expiration_expired));
                 }
             }
 
@@ -119,12 +127,12 @@ public class GoPayStatusActivity extends BasePaymentActivity {
             buttonPrimary.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    showConfirmationDialog(getString(R.string.confirm_gopay_qr_scan_tablet));
+                    showConfirmationDialog(getString(R.string.uikit_confirm_shopeepay_qr_scan_tablet));
                 }
             });
             buttonPrimary.setTextBold();
         }
-        textTitle.setText(getString(R.string.gopay_status_title));
+        textTitle.setText(getString(R.string.uikit_shopeepay_status_title));
     }
 
     private boolean isExpirationTimeNotAvailable(TransactionResponse response) {
@@ -147,8 +155,8 @@ public class GoPayStatusActivity extends BasePaymentActivity {
 
     private long getDurationByExpirationRaw(String startTime, String expirationTime) {
         long startMillis = 0, endMillis = 0;
-        SimpleDateFormat startDf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US);
-        SimpleDateFormat expiryDf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US);
+        SimpleDateFormat startDf = new SimpleDateFormat(DATE_TIME_FORMAT_1, Locale.US);
+        SimpleDateFormat expiryDf = new SimpleDateFormat(DATE_TIME_FORMAT_1, Locale.US);
 
         try {
             Date dateStart = startDf.parse(startTime);
@@ -189,58 +197,50 @@ public class GoPayStatusActivity extends BasePaymentActivity {
             @Override
             public void onCompleted(Exception e, ImageView result) {
                 if (e == null) {
-                    FrameLayout frameLayout = findViewById(R.id.gopay_qr_code_frame);
+                    FrameLayout frameLayout = findViewById(R.id.shopeepay_qr_code_frame);
                     frameLayout.setBackgroundColor(0);
                     qrCodeRefresh.setVisibility(View.GONE);
                     setMerchantName(true);
                     hideProgressLayout();
 
                 } else {
-                    FrameLayout frameLayout = findViewById(R.id.gopay_qr_code_frame);
+                    FrameLayout frameLayout = findViewById(R.id.shopeepay_qr_code_frame);
                     frameLayout.setBackgroundColor(getResources().getColor(R.color.light_gray));
                     qrCodeRefresh.setVisibility(View.VISIBLE);
                     Logger.e(TAG, e.getMessage());
                     setMerchantName(false);
                     hideProgressLayout();
-                    Toast.makeText(GoPayStatusActivity.this, getString(R.string.error_qr_code), Toast.LENGTH_SHORT)
-                            .show();
+                    Toast
+                        .makeText(ShopeePayStatusActivity.this, getString(R.string.error_qr_code), Toast.LENGTH_SHORT)
+                        .show();
                 }
             }
         });
     }
 
-    @Override
-    public void onBackPressed() {
-        if (isDetailShown) {
-            displayOrHideItemDetails();
-        } else {
-            showConfirmationDialog(getString(R.string.confirm_gopay_qr_scan_tablet));
-        }
-    }
-
     private void showConfirmationDialog(String message) {
         try {
-            AlertDialog dialog = new AlertDialog.Builder(GoPayStatusActivity.this, R.style.AlertDialogCustom)
-                    .setPositiveButton(R.string.text_yes, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            if (!GoPayStatusActivity.this.isFinishing()) {
-                                dialog.dismiss();
-                                finish();
-                            }
+            AlertDialog dialog = new AlertDialog.Builder(ShopeePayStatusActivity.this, R.style.AlertDialogCustom)
+                .setPositiveButton(R.string.text_yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (!ShopeePayStatusActivity.this.isFinishing()) {
+                            dialog.dismiss();
+                            finish();
                         }
-                    })
-                    .setNegativeButton(R.string.text_no, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            if (!GoPayStatusActivity.this.isFinishing()) {
-                                dialog.dismiss();
-                            }
+                    }
+                })
+                .setNegativeButton(R.string.text_no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (!ShopeePayStatusActivity.this.isFinishing()) {
+                            dialog.dismiss();
                         }
-                    })
-                    .setTitle(R.string.cancel_transaction)
-                    .setMessage(message)
-                    .create();
+                    }
+                })
+                .setTitle(R.string.cancel_transaction)
+                .setMessage(message)
+                .create();
             dialog.show();
         } catch (Exception e) {
             Logger.e(TAG, "showDialog:" + e.getMessage());
@@ -272,15 +272,15 @@ public class GoPayStatusActivity extends BasePaymentActivity {
         if (transactionTime != null && transactionTime.split(" ").length > 1) {
             try {
                 @SuppressLint("SimpleDateFormat")
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_TIME_FORMAT_1);
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(simpleDateFormat.parse(transactionTime));
                 calendar.add(Calendar.MINUTE, DEFAULT_EXPIRATION_IN_MINUTE);
                 String date = simpleDateFormat.format(calendar.getTime());
 
-                String time = date.split(" ")[1] + " WIB";
+                String time = date.split(" ")[1] + SUFFIX_TIME_WIB;
 
-                String splitedDate[] = date.split(" ")[0].split("-");
+                String[] splitedDate = date.split(" ")[0].split("-");
                 String month = getMonth(Integer.parseInt(splitedDate[1]));
 
                 return splitedDate[2] + " " + month + " " + splitedDate[0] + ", " + time;
@@ -297,14 +297,14 @@ public class GoPayStatusActivity extends BasePaymentActivity {
      * are in different format.
      *
      * @param start transaction start time, example : 2018-02-09 18:14:52
-     * @param end   GoPay expiry time, example : 09 February 18:29 WIB
+     * @param end   expiry time, example : 09 February 18:29 WIB
      * @return
      */
     private long getDuration(String start, String end) {
         long startMillis = 0, endMillis = 0;
         //use US locale so parser understands months in English (like February)
-        SimpleDateFormat startDf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
-        SimpleDateFormat expiryDf = new SimpleDateFormat("dd MMMM HH:mm", Locale.US);
+        SimpleDateFormat startDf = new SimpleDateFormat(DATE_TIME_FORMAT_FULL, Locale.US);
+        SimpleDateFormat expiryDf = new SimpleDateFormat(DATE_TIME_FORMAT_2, Locale.US);
         Date date;
         try {
             date = startDf.parse(start);
@@ -315,7 +315,7 @@ public class GoPayStatusActivity extends BasePaymentActivity {
             cal.setTime(date);
             int year = cal.get(Calendar.YEAR);
 
-            date = expiryDf.parse(end.replace(" WIB", ""));
+            date = expiryDf.parse(end.replace(SUFFIX_TIME_WIB, ""));
             cal.setTime(date);
             cal.add(Calendar.YEAR, year - cal.get(Calendar.YEAR));
             date = cal.getTime();
@@ -331,13 +331,15 @@ public class GoPayStatusActivity extends BasePaymentActivity {
         if (expirationText != null && expirationDesc != null) {
             new CountDownTimer(totalDurationInMillis, 1000) {
 
+                @SuppressLint("SetTextI18n")
                 public void onTick(long millisUntilFinished) {
-                    expirationText.setText(" " + TimeUtils.fromMillisToMinutes(GoPayStatusActivity.this, millisUntilFinished) + ".");
+                    expirationText.setText(" " + TimeUtils
+                        .fromMillisToMinutes(ShopeePayStatusActivity.this, millisUntilFinished) + ".");
                 }
 
                 public void onFinish() {
                     expirationText.setVisibility(View.GONE);
-                    expirationDesc.setText(getString(R.string.gopay_expiration_expired));
+                    expirationDesc.setText(getString(R.string.uikit_shopeepay_expiration_expired));
                 }
             }.start();
         }

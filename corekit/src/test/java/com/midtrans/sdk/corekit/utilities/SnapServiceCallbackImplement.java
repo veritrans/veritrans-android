@@ -165,8 +165,8 @@ public class SnapServiceCallbackImplement implements TransactionCallback, Checko
         this.serviceManager.getBankBins(this);
     }
 
-    public void getBankPoints(String snapToken, String cardToken) {
-        this.serviceManager.getBanksPoint(snapToken, cardToken, this);
+    public void getBankPoints(String snapToken, String cardToken, Double grossAmount) {
+        this.serviceManager.getBanksPoint(snapToken, cardToken, grossAmount,this);
     }
 
     public void getTransactionStatus(String snapToken) {

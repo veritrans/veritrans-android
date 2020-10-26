@@ -251,9 +251,12 @@
     <string name="kioson_instruction_step9">Transaksi Anda berhasil! Anda akan menerima email konfirmasi pembayaran. Harap simpan struk pembayaran Kioson Anda, apabila Anda memerlukan bantuan via support.</string>
 
     <!--GoPay Instruction-->
-    <string name="gopay_instruction_step1">Klik <b>Bayar dengan GoPay</b>.</string>
+    <string name="gopay_instruction_step1">Tekan <b>Bayar dengan GoPay</b>.</string>
     <string name="gopay_instruction_step2">Aplikasi <b>GoJek</b> akan terbuka.</string>
-    <string name="gopay_instruction_step3">Periksa rincian pembayaran Anda lalu klik <b>Pay</b> dan transaksi anda <b>Selesai</b>.</string>
+    <string name="gopay_instruction_step3">Cek detail transaksi Anda, kemudian tekan <b>Lanjutkan</b>.</string>
+    <string name="gopay_instruction_step4">Cek saldo GoPay Anda, kemudian tekan <b>Bayar</b>.</string>
+    <string name="gopay_instruction_step5">Masukkan <b>PIN</b> Anda.</string>
+    <string name="gopay_instruction_step6">Transaksi Anda telah selesai.</string>
 
     <!--GoPay related-->
     <string name="gopay_status_title">Bayar dengan GoPay</string>
@@ -273,14 +276,41 @@
     <string name="gopay_expiration_expired">Waktu habis.</string>
 
     <!--GoPay Instruction in Tablet-->
-    <string name="gopay_instruction_tablet_step1">Tekan <b>Bayar dengan GoPay</b>.</string>
-    <string name="gopay_instruction_tablet_step2"><b>Kode QR</b> akan muncul pada halaman selanjutnya.</string>
-    <string name="gopay_instruction_tablet_step3">Buka aplikasi <b>Gojek</b> di HP Anda.</string>
-    <string name="gopay_instruction_tablet_step4">Tekan <b>SCAN QR</b>.</string>
-    <string name="gopay_instruction_tablet_step5">Arahkan kamera ke <b>Kode QR</b>.</string>
-    <string name="gopay_instruction_tablet_step6">Periksa kembali detail pembayaran Anda di aplikasi <b>Gojek</b> lalu tekan <b>Bayar</b>.</string>
-    <string name="gopay_instruction_tablet_step7">Selesai.</string>
-    <string name="gopay_instruction_tablet_hint">Catatan: Scan tombol QR tidak akan muncul jika saldo GoPay kurang dari Rp 10.000.</string>
+    <string name="gopay_instruction_tablet_step1">Buka <b>aplikasi Gojek</b> atau <b>e-wallet lain</b> Anda.</string>
+    <string name="gopay_instruction_tablet_step2"><b>Scan</b> kode QR yang ada di monitor Anda.</string>
+    <string name="gopay_instruction_tablet_step3">Cek detail transaksi Anda, lalu tekan <b>Bayar</b></string>
+    <string name="gopay_instruction_tablet_step4">Masukkan <b>PIN</b> Anda.</string>
+    <string name="gopay_instruction_tablet_step5">Transaksi Anda telah selesai.</string>
+
+    <!--ShopeePay Instruction-->
+    <string name="uikit_shopeepay_instruction_step1">Tekan <b>Bayar dengan ShopeePay</b>.</string>
+    <string name="uikit_shopeepay_instruction_step2">Aplikasi <b>Shopee</b> akan terbuka.</string>
+    <string name="uikit_shopeepay_instruction_step3">Cek detail transaksi Anda, kemudian tekan <b>Lanjutkan</b>.</string>
+    <string name="uikit_shopeepay_instruction_step4">Cek saldo ShopeePay Anda, kemudian tekan <b>Bayar</b>.</string>
+    <string name="uikit_shopeepay_instruction_step5">Masukkan <b>PIN</b> Anda.</string>
+    <string name="uikit_shopeepay_instruction_step6">Transaksi Anda telah selesai.</string>
+
+    <!--ShopeePay Instruction in Tablet-->
+    <string name="uikit_shopeepay_instruction_tablet_step1">Buka <b>aplikasi Shopee</b> atau <b>e-wallet lain</b> Anda.</string>
+    <string name="uikit_shopeepay_instruction_tablet_step2"><b>Scan</b> kode QR yang ada di monitor Anda.</string>
+    <string name="uikit_shopeepay_instruction_tablet_step3">Cek detail transaksi Anda, lalu tekan <b>Bayar</b></string>
+    <string name="uikit_shopeepay_instruction_tablet_step4">Masukkan <b>PIN</b> Anda.</string>
+    <string name="uikit_shopeepay_instruction_tablet_step5">Transaksi Anda telah selesai.</string>
+
+    <!--ShopeePay related-->
+    <string name="uikit_shopeepay_status_title">Bayar dengan GoPay</string>
+    <string name="uikit_shopeepay_confirm_button">Bayar dengan</string>
+    <string name="uikit_notification_shopee_app">Aplikasi Shopee diperlukan untuk metode pembayaran ini.</string>
+    <string name="uikit_notification_shopee_app_tablet">Pastikan Anda telah melakukan instalasi <b>aplikasi Shopee</b> di HP Anda dan memiliki saldo lebih dari <b>Rp 10.000</b>.</string>
+    <string name="uikit_install_shopee_message">Install aplikasi Shopee dari Play Store</string>
+    <string name="uikit_redirecting_to_shopee">Mengarahkan ke aplikasi Shopee…</string>
+    <string name="uikit_no_shopee_message">Mohon maaf, kami tidak dapat mendeteksi aplikasi Gojek di perangkat Anda.</string>
+    <string name="uikit_error_shopeepay_transaction">Transaksi Anda tidak dapat diproses. Silakan ulangi lagi, atau coba dengan metode pembayaran lain.</string>
+    <string name="uikit_confirm_shopeepay_qr_scan_tablet">Pastikan kode QR berhasil di-scan dan pembayaran telah diselesaikan di dalam aplikasi Shopee.</string>
+    <string name="uikit_confirm_shopeepay_deeplink">Pastikan pembayaran telah diselesaikan di dalam aplikasi Shopee.</string>
+    <string name="uikit_shopeepay_instruction">Cara Pembayaran</string>
+    <string name="uikit_shopeepay_expiration_message">Harap selesaikan pembayaran dalam:</string>
+    <string name="uikit_shopeepay_expiration_expired">Waktu habis.</string>
 
     <!--credit card -->
     <string name="add_card_message">Anda bisa membayar dengan kartu baru disini</string>
@@ -391,6 +421,10 @@
     <string name="payment_method_mandiri_ecash">LINE Pay e-cash / Mandiri e-cash</string>
     <string name="payment_method_indomaret">Indomaret</string>
     <string name="payment_method_kioson">Kioson</string>
+    <string name="payment_method_gopay">GoPay</string>
+    <string name="payment_method_gopay_qris">GoPay/e-Wallet Lainnya</string>
+    <string name="payment_method_shopeepay_deeplink">ShopeePay</string>
+    <string name="payment_method_shopeepay_qris">ShopeePay/e-Wallet Lainnya</string>
 
     <string name="btn_close">Tutup</string>
     <string name="payment_canceled">Otorisasi 3D telah dibatalkan.</string>
@@ -533,6 +567,9 @@
     <string name="payment_method_description_kioson">Bayar dari gerai Kioson</string>
     <string name="payment_method_description_gci">Bayar dengan Gift Card</string>
     <string name="payment_method_description_gopay">Bayar dengan saldo GoPay Anda</string>
+    <string name="payment_method_description_gopay_qris">Scan kode QR dengan GoPay atau e-wallet lainnya</string>
+    <string name="payment_method_description_shopeepay_deeplink">Bayar dengan ShopeePay</string>
+    <string name="payment_method_description_shopeepay_qris">Scan kode QR dengan ShopeePay atau e-wallet lainnya</string>
     <string name="payment_method_description_danamon_online">Bayar dengan akun Danamon Online Banking anda</string>
     <string name="payment_method_description_akulaku">Bayar meggunakan akun Akulaku Anda</string>
 
@@ -675,4 +712,6 @@
     <string name="complete_payment_alfamart">Selesaikan pembayaran melalui Alfamart</string>
     <string name="alfamart_instruction_step0">Bayar di gerai <b>Alfamart</b>, <b>Alfamidi</b>, atau <b>Dan+Dan</b>.</string>
     <string name="gopay_payment_cant_open_deeplink">Tidak dapat mengakses aplikasi GOJEK untuk pembayaran ini!</string>
+    <string name="gopay">GoPay</string>
+    <string name="uikit_shopeepay">ShopeePay</string>
 </resources>
