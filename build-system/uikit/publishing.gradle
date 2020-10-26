@@ -2,6 +2,9 @@ apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven-publish'
 apply from: "$rootDir/build-system/publish-variable.gradle"
 
+version = versionSdk
+group = groupIdSdk
+
 buildscript {
     repositories {
         jcenter()
@@ -32,23 +35,23 @@ publishing {
         BintrayPublication(MavenPublication) {
             artifact(sourceJar)
             artifact("$buildDir/outputs/aar/uikit-development-release.aar")
-            groupId groupIdSdk
+            groupId group
             artifactId 'uikit'
-            version versionSdk + "-SANDBOX"
+            version this.version + "-SANDBOX"
 
             //The publication doesn't know about our dependencies, so we have to manually add them to the pom
             pom.withXml {
                 def dependenciesNode = asNode().appendNode('dependencies')
 
-                //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
-                configurations.compile.allDependencies.each {
+                //Iterate over the implementation dependencies (we don't want the test ones), adding a <dependency> node for each
+                configurations.implementation.allDependencies.each {
                     def dependencyNode = dependenciesNode.appendNode('dependency')
                     dependencyNode.appendNode('groupId', it.group)
                     dependencyNode.appendNode('artifactId', it.name)
                     dependencyNode.appendNode('version', it.version)
                 }
 
-                configurations.developmentCompile.allDependencies.each {
+                configurations.developmentImplementation.allDependencies.each {
                     def dependencyNode = dependenciesNode.appendNode('dependency')
                     dependencyNode.appendNode('groupId', it.group)
                     dependencyNode.appendNode('artifactId', it.name)
@@ -60,23 +63,23 @@ publishing {
         BintrayUatPublication(MavenPublication) {
             artifact(sourceJar)
             artifact("$buildDir/outputs/aar/uikit-uat-release.aar")
-            groupId groupIdSdk
+            groupId group
             artifactId 'uikit'
-            version versionSdk + "-UAT"
+            version this.version + "-UAT"
 
             //The publication doesn't know about our dependencies, so we have to manually add them to the pom
             pom.withXml {
                 def dependenciesNode = asNode().appendNode('dependencies')
 
-                //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
-                configurations.compile.allDependencies.each {
+                //Iterate over the implementation dependencies (we don't want the test ones), adding a <dependency> node for each
+                configurations.implementation.allDependencies.each {
                     def dependencyNode = dependenciesNode.appendNode('dependency')
                     dependencyNode.appendNode('groupId', it.group)
                     dependencyNode.appendNode('artifactId', it.name)
                     dependencyNode.appendNode('version', it.version)
                 }
 
-                configurations.uatCompile.allDependencies.each {
+                configurations.uatImplementation.allDependencies.each {
                     def dependencyNode = dependenciesNode.appendNode('dependency')
                     dependencyNode.appendNode('groupId', it.group)
                     dependencyNode.appendNode('artifactId', it.name)
@@ -88,23 +91,23 @@ publishing {
         BintrayProductionPublication(MavenPublication) {
             artifact(sourceJar)
             artifact("$buildDir/outputs/aar/uikit-production-release.aar")
-            groupId groupIdSdk
+            groupId group
             artifactId 'uikit'
-            version versionSdk
+            version this.version
 
             //The publication doesn't know about our dependencies, so we have to manually add them to the pom
             pom.withXml {
                 def dependenciesNode = asNode().appendNode('dependencies')
 
-                //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
-                configurations.compile.allDependencies.each {
+                //Iterate over the implementation dependencies (we don't want the test ones), adding a <dependency> node for each
+                configurations.implementation.allDependencies.each {
                     def dependencyNode = dependenciesNode.appendNode('dependency')
                     dependencyNode.appendNode('groupId', it.group)
                     dependencyNode.appendNode('artifactId', it.name)
                     dependencyNode.appendNode('version', it.version)
                 }
 
-                configurations.productionCompile.allDependencies.each {
+                configurations.productionImplementation.allDependencies.each {
                     def dependencyNode = dependenciesNode.appendNode('dependency')
                     dependencyNode.appendNode('groupId', it.group)
                     dependencyNode.appendNode('artifactId', it.name)
