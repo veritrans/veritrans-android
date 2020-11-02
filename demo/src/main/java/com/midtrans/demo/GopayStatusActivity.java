@@ -47,7 +47,7 @@ public class GopayStatusActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gopay_status);
+        setContentView(R.layout.activity_demo_gopay_status);
         bindViews();
         initTheme();
         initActionButton();

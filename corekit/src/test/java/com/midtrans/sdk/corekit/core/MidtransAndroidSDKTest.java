@@ -1920,15 +1920,15 @@ public class MidtransAndroidSDKTest {
     public void getBankPoint() {
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
         when(midtransSDKSSpy.readAuthenticationToken()).thenReturn(snapToken);
-        midtransSDKSSpy.getBanksPoint(cardToken, bankpointCallbackMock);
-        Mockito.verify(snapServiceManager).getBanksPoint(snapToken, cardToken, bankpointCallbackMock);
+        midtransSDKSSpy.getBanksPoint(cardToken, 10000D, bankpointCallbackMock);
+        Mockito.verify(snapServiceManager).getBanksPoint(snapToken, cardToken, 10000D, bankpointCallbackMock);
     }
 
     @Test
     public void getBankPoint_whenCallbackNull() {
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(true);
         when(midtransSDKSSpy.readAuthenticationToken()).thenReturn(snapToken);
-        midtransSDKSSpy.getBanksPoint(cardToken, null);
+        midtransSDKSSpy.getBanksPoint(cardToken, 10000D,null);
         verifyStatic(Mockito.times(1));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }
@@ -1937,7 +1937,7 @@ public class MidtransAndroidSDKTest {
     public void getBankPoint_whenNetworkUnAvailable() {
         when(midtransSDKSSpy.isNetworkAvailable()).thenReturn(false);
         when(midtransSDKSSpy.readAuthenticationToken()).thenReturn(snapToken);
-        midtransSDKSSpy.getBanksPoint(cardToken, bankpointCallbackMock);
+        midtransSDKSSpy.getBanksPoint(cardToken, 10000D, bankpointCallbackMock);
         Mockito.verify(bankpointCallbackMock).onError(Matchers.any(Throwable.class));
     }
 

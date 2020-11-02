@@ -2,6 +2,7 @@ package com.midtrans.sdk.uikit.views.creditcard.details;
 
 import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
+import com.midtrans.sdk.corekit.models.promo.Promo;
 import com.midtrans.sdk.corekit.models.snap.BanksPointResponse;
 import com.midtrans.sdk.uikit.abstracts.BaseCreditCardPaymentView;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentView;
@@ -27,4 +28,6 @@ public interface CreditCardDetailsView extends BasePaymentView, BaseCreditCardPa
     void onGetTransactionStatusFailure(TransactionResponse transactionResponse);
 
     void onGetTransactionStatusSuccess(TransactionResponse transactionResponse);
+
+    void updateDetailsOnPromoChanged(Promo promo);
 }

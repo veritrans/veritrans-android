@@ -1,6 +1,6 @@
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
@@ -18,12 +18,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/container_item_details"
-            android:layout_alignParentTop="true"
-            android:fillViewport="true">
+            android:fillViewport="true"
+            android:layout_alignParentTop="true">
 
-            <include layout="@layout/layout_gopay_status_tablet" />
+            <ViewStub
+                android:id="@+id/shopee_layout_stub"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
         </ScrollView>
-
 
         <View
             android:id="@+id/background_dim"
@@ -68,5 +71,24 @@
             layout="@layout/layout_primary_button" />
     </RelativeLayout>
 
-    <include layout="@layout/layout_loading_and_badge" />
+    <LinearLayout
+        android:id="@+id/progress_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.93"
+        android:background="@color/white"
+        android:gravity="center_vertical|center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="gone">
+
+        <include layout="@layout/layout_midtrans_progress" />
+    </LinearLayout>
+
+    <include
+        layout="@layout/layout_sandbox_badge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start" />
+
 </android.support.design.widget.CoordinatorLayout>

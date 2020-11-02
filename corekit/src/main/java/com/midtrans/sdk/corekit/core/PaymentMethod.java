@@ -27,5 +27,6 @@ public enum PaymentMethod {
     XL_TUNAI,
     DANAMON_ONLINE,
     AKULAKU,
-    ALFAMART
+    ALFAMART,
+    SHOPEEPAY
 }

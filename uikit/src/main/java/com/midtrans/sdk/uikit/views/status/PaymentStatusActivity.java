@@ -351,6 +351,9 @@ public class PaymentStatusActivity extends BaseActivity {
                 case PaymentType.GOPAY:
                     textPaymentType.setText(getString(R.string.payment_method_gopay));
                     break;
+                case PaymentType.SHOPEEPAY:
+                    textPaymentType.setText(getString(R.string.payment_method_shopeepay_deeplink));
+                    break;
             }
 
             // Set order id

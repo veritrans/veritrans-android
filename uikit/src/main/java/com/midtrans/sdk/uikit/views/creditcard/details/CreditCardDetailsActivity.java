@@ -150,9 +150,9 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements
         initScanCardButton();
         initDeleteButton();
         initCheckBox();
-        initPromoList();
         initLayoutState();
         bindData();
+        initPromoList();
     }
 
     private void initScanCardButton() {
@@ -228,11 +228,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements
             new PromosAdapter.OnPromoCheckedChangeListener() {
                 @Override
                 public void onPromoCheckedChanged(Promo promo) {
-                    if (transactionDetailAdapter != null) {
-                        updateItemDetails(promo);
-                    } else {
-                        changeTotalAmount(promo);
-                    }
+                    updateDetailsOnPromoChanged(promo);
                 }
 
                 @Override
@@ -256,6 +252,15 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements
         } else {
             double newTotalAmount = getMidtransSdk().getPaymentDetails().getTotalAmount();
             changeTotalAmount(newTotalAmount);
+        }
+    }
+
+    @Override
+    public void updateDetailsOnPromoChanged(Promo promo) {
+        if (transactionDetailAdapter != null) {
+            updateItemDetails(promo);
+        } else {
+            changeTotalAmount(promo);
         }
     }
 
@@ -336,6 +341,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements
                 fieldCardCvv.setFilters(filterArray);
                 fieldCardCvv.setText(SdkUIFlowUtil.getMaskedCardCvv());
                 fieldCardCvv.setEnabled(false);
+                checkInstallment();
             } else {
                 checkInstallment();
                 checkBankPoint();
@@ -542,14 +548,12 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements
 
     private void initCreditCardPromos(final boolean firstTime) {
         final String cardNumber = getCleanedCardNumber();
-        if (cardNumber.length() < 7) {
-            recyclerViewPromo.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    promosAdapter.setData(presenter.getCreditCardPromos(cardNumber, firstTime));
-                }
-            }, 100);
-        }
+        recyclerViewPromo.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                promosAdapter.setData(presenter.getCreditCardPromos(cardNumber, firstTime));
+            }
+        }, 100);
     }
 
 
@@ -985,6 +989,9 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements
                     break;
                 case BankType.MAYBANK:
                     imageBankLogo.setImageResource(R.drawable.maybank);
+                    break;
+                case BankType.MEGA:
+                    imageBankLogo.setImageResource(R.drawable.ic_mega);
                     break;
                 case BankType.BNI_DEBIT_ONLINE:
                     imageBankLogo.setImageResource(R.drawable.bni);

@@ -112,6 +112,7 @@
 -keep class com.midtrans.sdk.corekit.core.Constants {*;}
 -keep class com.midtrans.sdk.corekit.core.SdkUtil {*;}
 -keep class com.midtrans.sdk.corekit.core.PaymentType {*;}
+-keep class com.midtrans.sdk.corekit.core.QrisAcquirer {*;}
 -keep class com.midtrans.sdk.corekit.core.SdkCoreFlowBuilder {*;}
 -keep class com.midtrans.sdk.corekit.core.BaseSdkBuilder {*;}
 -keep class com.midtrans.sdk.corekit.core.ISdkFlow {*;}

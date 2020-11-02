@@ -1,5 +1,4 @@
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,7 +10,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <ScrollView
@@ -21,9 +19,9 @@
             android:layout_alignParentTop="true"
             android:fillViewport="true">
 
-            <include layout="@layout/layout_gopay_status_tablet" />
+            <include
+                layout="@layout/uikit_layout_shopeepay_status_tablet" />
         </ScrollView>
-
 
         <View
             android:id="@+id/background_dim"

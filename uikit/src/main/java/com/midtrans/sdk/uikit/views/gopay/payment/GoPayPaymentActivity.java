@@ -72,7 +72,6 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
             } else {
                 stub.setLayoutResource(R.layout.layout_gopay_payment);
             }
-
         }
         stub.inflate();
     }

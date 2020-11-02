@@ -13,6 +13,7 @@ public class EnabledPayment implements Serializable{
     private String type;
     private String category;
     private String status;
+    private String acquirer;
 
     public EnabledPayment(String type, String category) {
         this.type = type;
@@ -42,4 +43,8 @@ public class EnabledPayment implements Serializable{
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public String getAcquirer() { return acquirer; }
+
+    public void setAcquirer(String acquirer) { this.acquirer = acquirer; }
 }

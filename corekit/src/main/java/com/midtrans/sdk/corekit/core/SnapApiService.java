@@ -14,6 +14,8 @@ import com.midtrans.sdk.corekit.models.snap.payment.GoPayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.IndosatDompetkuPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.NewMandiriClickPayPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.ShopeePayPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.ShopeePayQrisPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.TelkomselEcashPaymentRequest;
 
 import java.util.List;
@@ -24,6 +26,7 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 
 /**
@@ -122,6 +125,24 @@ public interface SnapApiService {
     Call<TransactionResponse> paymentUsingGoPay(@Path("snap_token") String snapToken, @Body GoPayPaymentRequest paymentRequest);
 
     /**
+     * Charge payment using ShopeePayDeeplink
+     *
+     * @param snapToken
+     * @param paymentRequest
+     */
+    @POST("v1/transactions/{snap_token}/pay")
+    Call<TransactionResponse> paymentUsingShopeePayDeeplink(@Path("snap_token") String snapToken, @Body ShopeePayPaymentRequest paymentRequest);
+
+    /**
+     * Charge payment using ShopeePayQris
+     *
+     * @param snapToken
+     * @param paymentRequest
+     */
+    @POST("v1/transactions/{snap_token}/pay")
+    Call<TransactionResponse> paymentUsingShopeePayQris(@Path("snap_token") String snapToken, @Body ShopeePayQrisPaymentRequest paymentRequest);
+
+    /**
      * Charge payment using Danamon Online
      *
      * @param snapToken      SnapToken
@@ -147,7 +168,7 @@ public interface SnapApiService {
      * @param cardToken credit card token
      */
     @GET("v1/transactions/{snap_token}/point_inquiry/{card_token}")
-    Call<BanksPointResponse> getBanksPoint(@Path("snap_token") String snapToken, @Path("card_token") String cardToken);
+    Call<BanksPointResponse> getBanksPoint(@Path("snap_token") String snapToken, @Path("card_token") String cardToken, @Query("gross_amount") Double grossAmount);
 
 
     /**

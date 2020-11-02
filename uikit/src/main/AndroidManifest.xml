@@ -138,7 +138,17 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name=".views.shopeepay.payment.ShopeePayPaymentActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".views.gopay.status.GoPayStatusActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".views.shopeepay.status.ShopeePayStatusActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
 
