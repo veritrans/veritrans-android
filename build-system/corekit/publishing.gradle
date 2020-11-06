@@ -2,52 +2,29 @@ apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven-publish'
 apply from: "$rootDir/build-system/publish-variable.gradle"
 
-buildscript {
-    repositories {
-        mavenCentral()
-        maven { url 'https://maven.google.com' }
-        jcenter()
-        google()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.3'
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6'
-    }
-}
-
-repositories {
-    maven { url "https://dl.bintray.com/pt-midtrans/maven" }
-    maven { url 'https://maven.google.com' }
-    jcenter()
-}
+version = versionSdk
+group = groupIdSdk
 
 task sourceJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
     classifier "source"
 }
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.14.1'
-}
-
-tasks.withType(Test) {
-    jvmArgs '-Dorg.gradle.jvmargs="-Xmx2048m -XX:MaxPermSize=1024m -Xms512m -XX:+HeapDumpOnOutOfMemoryError"'
-}
 
 publishing {
     publications {
-        BintrayPublication(MavenPublication) {
-            artifact(sourceJar)
-            artifact("$buildDir/outputs/aar/corekit-development-release.aar")
-            groupId groupIdSdk
+        BintraySandbox(MavenPublication) {
+            groupId group
             artifactId 'corekit'
-            version versionSdk + "-SANDBOX"
+            version this.version + "-SANDBOX"
+            artifact(sourceJar)
+            artifact("$buildDir/outputs/aar/${artifactId}-development-release.aar")
 
             //The publication doesn't know about our dependencies, so we have to manually add them to the pom
             pom.withXml {
                 def dependenciesNode = asNode().appendNode('dependencies')
 
-                //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
-                configurations.compile.allDependencies.each {
+                //Iterate over the implementation dependencies (we don't want the test ones), adding a <dependency> node for each
+                configurations.implementation.allDependencies.each {
                     def dependencyNode = dependenciesNode.appendNode('dependency')
                     dependencyNode.appendNode('groupId', it.group)
                     dependencyNode.appendNode('artifactId', it.name)
@@ -58,7 +35,7 @@ publishing {
                     }
                 }
 
-                configurations.developmentCompile.allDependencies.each {
+                configurations.developmentImplementation.allDependencies.each {
                     def dependencyNode = dependenciesNode.appendNode('dependency')
                     dependencyNode.appendNode('groupId', it.group)
                     dependencyNode.appendNode('artifactId', it.name)
@@ -67,30 +44,30 @@ publishing {
             }
         }
 
-        BintrayUatPublication(MavenPublication) {
-            artifact(sourceJar)
-            artifact("$buildDir/outputs/aar/corekit-uat-release.aar")
-            groupId groupIdSdk
+        BintrayUat(MavenPublication) {
+            groupId group
             artifactId 'corekit'
-            version versionSdk + "-UAT"
+            version this.version + "-UAT"
+            artifact(sourceJar)
+            artifact("$buildDir/outputs/aar/${artifactId}-uat-release.aar")
 
             //The publication doesn't know about our dependencies, so we have to manually add them to the pom
             pom.withXml {
                 def dependenciesNode = asNode().appendNode('dependencies')
 
-                //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
-                configurations.compile.allDependencies.each {
+                //Iterate over the implementation dependencies (we don't want the test ones), adding a <dependency> node for each
+                configurations.implementation.allDependencies.each {
                     def dependencyNode = dependenciesNode.appendNode('dependency')
                     dependencyNode.appendNode('groupId', it.group)
                     dependencyNode.appendNode('artifactId', it.name)
                     if (it.group == 'com.midtrans') {
-                        dependencyNode.appendNode('version', it.version + '-UAT')
+                        dependencyNode.appendNode('version', it.version + '-SANDBOX')
                     } else {
                         dependencyNode.appendNode('version', it.version)
                     }
                 }
 
-                configurations.uatCompile.allDependencies.each {
+                configurations.uatImplementation.allDependencies.each {
                     def dependencyNode = dependenciesNode.appendNode('dependency')
                     dependencyNode.appendNode('groupId', it.group)
                     dependencyNode.appendNode('artifactId', it.name)
@@ -99,26 +76,26 @@ publishing {
             }
         }
 
-        BintrayProductionPublication(MavenPublication) {
-            artifact(sourceJar)
-            artifact("$buildDir/outputs/aar/corekit-production-release.aar")
-            groupId groupIdSdk
+        BintrayProduction(MavenPublication) {
+            groupId group
             artifactId 'corekit'
-            version versionSdk
+            version this.version
+            artifact(sourceJar)
+            artifact("$buildDir/outputs/aar/${artifactId}-production-release.aar")
 
             //The publication doesn't know about our dependencies, so we have to manually add them to the pom
             pom.withXml {
                 def dependenciesNode = asNode().appendNode('dependencies')
 
-                //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
-                configurations.compile.allDependencies.each {
+                //Iterate over the implementation dependencies (we don't want the test ones), adding a <dependency> node for each
+                configurations.implementation.allDependencies.each {
                     def dependencyNode = dependenciesNode.appendNode('dependency')
                     dependencyNode.appendNode('groupId', it.group)
                     dependencyNode.appendNode('artifactId', it.name)
                     dependencyNode.appendNode('version', it.version)
                 }
 
-                configurations.productionCompile.allDependencies.each {
+                configurations.productionImplementation.allDependencies.each {
                     def dependencyNode = dependenciesNode.appendNode('dependency')
                     dependencyNode.appendNode('groupId', it.group)
                     dependencyNode.appendNode('artifactId', it.name)
@@ -134,16 +111,15 @@ bintray {
     key = System.getenv('BINTRAY_KEY')
     configurations = ['archives']
     pkg {
-        repo = 'maven'
+        repo = bintrayRepo
         name = project.name
-        userOrg = 'pt-midtrans'
-        licenses = ['Apache-2.0']
-        vcsUrl = 'https://github.com/veritrans/veritrans-android.git'
-        desc = 'Android SDK for integrating with midtrans.com'
-        websiteUrl = "https://midtrans.com"
+        userOrg = bintrayOrg
+        licenses = allLicenses
+        vcsUrl = gitUrl
+        desc = libraryDescription
+        websiteUrl = siteUrl
         publish = true
         publicDownloadNumbers = true
     }
-    publications = ['BintrayProductionPublication', 'BintrayPublication', 'BintrayUatPublication']
-
+    publications = ['BintrayProduction', 'BintraySandbox', 'BintrayUat']
 }

@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 apply from: "$rootDir/build-system/uikit/jacoco.gradle"
-apply from: "$rootDir/build-system/uikit/publishing.gradle"
+apply from: "$rootDir/build-system/publish-variable.gradle"
 
 android {
     def DEFAULT_PUBLISH
@@ -17,8 +17,6 @@ android {
         versionCode 2
         versionName versionSdk
         vectorDrawables.useSupportLibrary = true
-
-        buildConfigField "String", "VERSION_NAME", "\"${versionSdk}\""
 
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
 
@@ -120,3 +118,5 @@ dependencies {
         exclude module: 'objenesis'
     }
 }
+
+apply from: "$rootDir/build-system/uikit/publishing.gradle"

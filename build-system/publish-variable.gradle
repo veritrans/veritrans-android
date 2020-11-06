@@ -1,5 +1,12 @@
 // Midtrans SDK
 ext {
-    groupIdSdk = "com.midtrans"
-    versionSdk = "1.24.1"
+    groupIdSdk = 'com.midtrans'
+    versionSdk = '1.24.1'
+
+    bintrayRepo = 'maven'
+    bintrayOrg = 'pt-midtrans'
+    siteUrl = 'https://midtrans.com'
+    gitUrl = 'https://github.com/veritrans/veritrans-android.git'
+    libraryDescription = 'Android SDK for integrating with midtrans.com'
+    allLicenses = ['Apache-2.0']
 }

@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 apply from: "$rootDir/build-system/corekit/jacoco.gradle"
-apply from: "$rootDir/build-system/corekit/publishing.gradle"
+apply from: "$rootDir/build-system/publish-variable.gradle"
 
 android {
     def DEFAULT_PUBLISH
@@ -21,7 +21,6 @@ android {
         buildConfigField "String", "MARKET_URL", "\"market://details?id=\""
         buildConfigField "String", "PLAY_STORE_URL", "\"https://play.google.com/store/apps/details?id=\""
         buildConfigField "String", "BBM_PREFIX_URL", "\"bbmmoney://api/payment/imp?data=\""
-        buildConfigField "String", "VERSION_NAME", "\"${versionSdk}\""
         resValue "string", "PREFERENCE_PASSWORD", PREFERENCE_PASSWORD
     }
 
@@ -125,3 +124,5 @@ dependencies {
         exclude module: 'objenesis'
     }
 }
+
+apply from: "$rootDir/build-system/corekit/publishing.gradle"
