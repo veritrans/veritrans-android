@@ -1,6 +1,7 @@
 package com.midtrans.sdk.corekit.core;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
@@ -52,7 +53,6 @@ import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.NewMandiriClickPayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.TelkomselEcashPaymentRequest;
 import com.midtrans.sdk.corekit.utilities.Utils;
-import com.securepreferences.SecurePreferences;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -94,7 +94,7 @@ public class MidtransAndroidSDKTest {
     @Mock
     boolean isconnected;
     @Mock
-    SecurePreferences preference;
+    SharedPreferences preference;
     @Mock
     IndosatDompetkuRequest indosatDompetkuRequestMock;
     @Mock
@@ -244,7 +244,6 @@ public class MidtransAndroidSDKTest {
         when(TextUtils.isEmpty("")).thenReturn(true);
 
         Mockito.when(contextMock.getSharedPreferences("local.data", Context.MODE_PRIVATE)).thenReturn(preference);
-        Mockito.when(SdkUtil.newPreferences(contextMock, "local.data")).thenReturn(preference);
 
         Mockito.when(SdkUtil.newSnapServiceManager(sampleTimeOut)).thenReturn(snapServiceManager);
 

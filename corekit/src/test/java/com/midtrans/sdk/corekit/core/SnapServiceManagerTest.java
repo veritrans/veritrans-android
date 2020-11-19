@@ -1,6 +1,7 @@
 package com.midtrans.sdk.corekit.core;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Looper;
 import android.text.TextUtils;
@@ -39,7 +40,6 @@ import com.midtrans.sdk.corekit.models.snap.payment.NewMandiriClickPayPaymentReq
 import com.midtrans.sdk.corekit.models.snap.payment.TelkomselEcashPaymentRequest;
 import com.midtrans.sdk.corekit.utilities.CallbackCollaborator;
 import com.midtrans.sdk.corekit.utilities.SnapServiceCallbackImplement;
-import com.securepreferences.SecurePreferences;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -98,7 +98,7 @@ public class SnapServiceManagerTest {
     private SSLHandshakeException errorInvalidSSLException;
 
     @Mock
-    private SecurePreferences preferencesMock;
+    private SharedPreferences preferencesMock;
 
     private SnapServiceManager snapTransactionManager;
     @Mock
@@ -165,7 +165,7 @@ public class SnapServiceManagerTest {
         Mockito.when(contextMock.getApplicationContext()).thenReturn(contextMock);
         Mockito.when(MidtransRestAdapter.newSnapApiService(timout)).thenReturn(snapApiServiceMock);
 
-        Mockito.when(SdkUtil.newPreferences(contextMock, "local.data")).thenReturn(preferencesMock);
+        Mockito.when(contextMock.getSharedPreferences("local.data", Context.MODE_PRIVATE)).thenReturn(preferencesMock);
         Mockito.when(SdkUtil.newSnapServiceManager(timout)).thenReturn(snapTransactionManager);
 
         snapTransactionManager = new SnapServiceManager(MidtransRestAdapter.newSnapApiService(timout));

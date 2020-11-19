@@ -1,6 +1,7 @@
 package com.midtrans.sdk.corekit.core;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Looper;
 import android.text.TextUtils;
@@ -14,7 +15,6 @@ import com.midtrans.sdk.corekit.models.CardTokenRequest;
 import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
 import com.midtrans.sdk.corekit.utilities.CallbackCollaborator;
 import com.midtrans.sdk.corekit.utilities.MidtransServiceCallbackImplement;
-import com.securepreferences.SecurePreferences;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -57,7 +57,7 @@ public class MidtransServiceManagerTest {
 
 
     @Mock
-    private SecurePreferences preferencesMock;
+    private SharedPreferences preferencesMock;
 
     private MidtransServiceManager midtransServiceManager;
 
@@ -103,7 +103,7 @@ public class MidtransServiceManagerTest {
         Mockito.when(contextMock.getApplicationContext()).thenReturn(contextMock);
         Mockito.when(MidtransRestAdapter.newMidtransApiService(timout)).thenReturn(midtransServiceMock);
 
-        Mockito.when(SdkUtil.newPreferences(contextMock, "local.data")).thenReturn(preferencesMock);
+        Mockito.when(contextMock.getSharedPreferences("local.data", Context.MODE_PRIVATE)).thenReturn(preferencesMock);
         Mockito.when(SdkUtil.newMidtransServiceManager(timout)).thenReturn(midtransServiceManager);
 
         midtransServiceManager = new MidtransServiceManager(MidtransRestAdapter.newMidtransApiService(timout));
