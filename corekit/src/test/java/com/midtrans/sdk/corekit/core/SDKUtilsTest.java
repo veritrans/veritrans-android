@@ -32,7 +32,6 @@ import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.models.snap.payment.CustomerDetailRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.GCIPaymentRequest;
 import com.midtrans.sdk.corekit.utilities.Utils;
-import com.securepreferences.SecurePreferences;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -121,8 +120,6 @@ public class SDKUtilsTest {
     private String userDetail = "user_details";
     @Mock
     private UserDetail userDetailMock;
-    @Mock
-    private SecurePreferences mpreferenceMock;
     private String fullname = "fullname";
     private String email = "email@domain.com";
     private String phone = "phone";
@@ -191,7 +188,6 @@ public class SDKUtilsTest {
 
     @Test
     public void getUserDetailTest() {
-        MidtransSDK.setmPreferences(mpreferenceMock);
         mockStatic(LocalDataHandler.class);
         when(LocalDataHandler.readObject(userDetail, UserDetail.class)).thenReturn(userDetailMock);
         when(userDetailMock.getUserFullName()).thenReturn(fullname);

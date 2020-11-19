@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
-import com.midtrans.sdk.corekit.R;
 import com.midtrans.sdk.corekit.models.*;
 import com.midtrans.sdk.corekit.models.promo.Promo;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
@@ -15,10 +14,8 @@ import com.midtrans.sdk.corekit.models.snap.params.KlikBcaPaymentParams;
 import com.midtrans.sdk.corekit.models.snap.params.PromoDetails;
 import com.midtrans.sdk.corekit.models.snap.payment.*;
 import com.midtrans.sdk.corekit.utilities.Installation;
-import com.securepreferences.SecurePreferences;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -305,26 +302,6 @@ public class SdkUtil {
 
     public static DanamonOnlinePaymentRequest getDanamonOnlinePaymentRequest() {
         return new DanamonOnlinePaymentRequest(PaymentType.DANAMON_ONLINE);
-    }
-
-
-    public static SecurePreferences newPreferences(Context context, String name) {
-
-        SecurePreferences preferences = new SecurePreferences(context, context.getString(R.string.PREFERENCE_PASSWORD), name);
-        int prefVersion;
-        try {
-            prefVersion = preferences.getInt(Constants.KEY_PREFERENCES_VERSION, 0);
-        } catch (ClassCastException e) {
-            prefVersion = 0;
-        }
-        if (prefVersion == 0 || prefVersion < Constants.PREFERENCES_VERSION) {
-            SecurePreferences.Editor editor = preferences.edit();
-            editor.clear();
-            editor.putInt(Constants.KEY_PREFERENCES_VERSION, Constants.PREFERENCES_VERSION);
-            editor.apply();
-        }
-
-        return preferences;
     }
 
     public static SnapServiceManager newSnapServiceManager(int requestTimeOut) {
