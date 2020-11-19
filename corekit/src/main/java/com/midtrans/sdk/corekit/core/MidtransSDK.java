@@ -114,7 +114,7 @@ public class MidtransSDK {
 
         String deviceType = null;
         if (context != null) {
-            mPreferences = SdkUtil.newPreferences(context, LOCAL_DATA_PREFERENCES);
+            mPreferences = context.getSharedPreferences(LOCAL_DATA_PREFERENCES, Context.MODE_PRIVATE);
 
             if (context instanceof Activity) {
                 deviceType = Utils.getDeviceType((Activity) context);
