@@ -20,7 +20,6 @@ import android.widget.RelativeLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.midtrans.sdk.corekit.core.Constants;
-import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.UserAddress;
@@ -377,7 +376,8 @@ public class UserAddressFragment extends Fragment {
             }
 
             userDetail.setUserAddresses(userAddresses);
-            LocalDataHandler.saveObject(getString(R.string.user_details), userDetail);
+            //TODO: since we remove LocalDataHandler this method will can't save the changes data
+//            LocalDataHandler.saveObject(getString(R.string.user_details), userDetail);
 
             ((UserDetailsActivity) getActivity()).showPaymentPage();
         } catch (RuntimeException e) {

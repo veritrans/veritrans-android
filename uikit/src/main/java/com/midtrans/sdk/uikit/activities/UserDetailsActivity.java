@@ -112,9 +112,6 @@ public class UserDetailsActivity extends BaseActivity {
             if (midtransSDK != null) {
                 UIKitCustomSetting setting = midtransSDK.getUIKitCustomSetting();
                 if (setting != null && setting.isSkipCustomerDetailsPages()) {
-
-                    SdkUIFlowUtil.saveUserDetails();
-
                     showPaymentPage();
                     return;
                 }

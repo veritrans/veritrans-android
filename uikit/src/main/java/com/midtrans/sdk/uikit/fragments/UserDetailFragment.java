@@ -158,7 +158,8 @@ public class UserDetailFragment extends Fragment {
         userDetail.setPhoneNumber(phoneNo);
         userDetail.setUserId(UUID.randomUUID().toString());
         Logger.i("writting in file");
-        LocalDataHandler.saveObject(getString(R.string.user_details), userDetail);
+        //TODO: since we remove LocalDataHandler this method will can't save the changes data
+//        LocalDataHandler.saveObject(getString(R.string.user_details), userDetail);
         UserAddressFragment userAddressFragment = UserAddressFragment.newInstance();
         ((UserDetailsActivity) getActivity()).replaceFragment(userAddressFragment);
     }

@@ -222,7 +222,8 @@ public class UserAddressActivity extends AppCompatActivity {
             }
 
             userDetail.setUserAddresses(userAddresses);
-            LocalDataHandler.saveObject(getString(com.midtrans.sdk.uikit.R.string.user_details), userDetail);
+            //TODO: since we remove LocalDataHandler this method will can't save the changes data
+//            LocalDataHandler.saveObject(getString(com.midtrans.sdk.uikit.R.string.user_details), userDetail);
 
             setResult(RESULT_OK);
             finish();
