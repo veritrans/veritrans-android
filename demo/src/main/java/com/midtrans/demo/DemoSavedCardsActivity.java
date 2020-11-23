@@ -48,7 +48,7 @@ public class DemoSavedCardsActivity extends AppCompatActivity implements CardReg
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_demo_saved_cards);
-        fetchSavedCards();
+//        fetchSavedCards();
         bindViews();
         initToolbar();
         initThemes();
@@ -125,19 +125,19 @@ public class DemoSavedCardsActivity extends AppCompatActivity implements CardReg
         }
     }
 
-    private void fetchSavedCards() {
-
-        try {
-            SavedCards savedCards = LocalDataHandler.readObject(SAVED_CARDS_TYPE, SavedCards.class);
-            List<SavedCard> loadedSaveCards = savedCards.savedCards;
-            if (loadedSaveCards != null && !loadedSaveCards.isEmpty()) {
-                this.savedCards.clear();
-                this.savedCards.addAll(loadedSaveCards);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    private void fetchSavedCards() {
+//
+//        try {
+//            SavedCards savedCards = LocalDataHandler.readObject(SAVED_CARDS_TYPE, SavedCards.class);
+//            List<SavedCard> loadedSaveCards = savedCards.savedCards;
+//            if (loadedSaveCards != null && !loadedSaveCards.isEmpty()) {
+//                this.savedCards.clear();
+//                this.savedCards.addAll(loadedSaveCards);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 
     private void bindViews() {

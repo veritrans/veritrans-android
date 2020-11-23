@@ -56,41 +56,41 @@ public class SavedCreditCardPresenter extends BaseCreditCardPresenter<SavedCredi
     }
 
 
-    public void fetchSavedCards() {
-        UserDetail userDetail = LocalDataHandler.readObject(UiKitConstants.KEY_USER_DETAILS, UserDetail.class);
-        MidtransSDK.getInstance().getCards(userDetail.getUserId(), new GetCardCallback() {
-            @Override
-            public void onSuccess(ArrayList<SaveCardRequest> response) {
-                if (response != null && !response.isEmpty()) {
-                    List<SaveCardRequest> filteredSavedCards = SdkUIFlowUtil.filterMultipleSavedCard(response);
-                    // Update credit cards
-                    creditCards.clear();
-                    creditCards.addAll(filteredSavedCards);
-                    setSavedCardsToSdk(creditCards);
-                }
-                view.onGetSavedCardsSuccess(creditCards);
-            }
+//    public void fetchSavedCards() {
+//        UserDetail userDetail = LocalDataHandler.readObject(UiKitConstants.KEY_USER_DETAILS, UserDetail.class);
+//        MidtransSDK.getInstance().getCards(userDetail.getUserId(), new GetCardCallback() {
+//            @Override
+//            public void onSuccess(ArrayList<SaveCardRequest> response) {
+//                if (response != null && !response.isEmpty()) {
+//                    List<SaveCardRequest> filteredSavedCards = SdkUIFlowUtil.filterMultipleSavedCard(response);
+//                    // Update credit cards
+//                    creditCards.clear();
+//                    creditCards.addAll(filteredSavedCards);
+//                    setSavedCardsToSdk(creditCards);
+//                }
+//                view.onGetSavedCardsSuccess(creditCards);
+//            }
+//
+//            @Override
+//            public void onFailure(String reason) {
+//                view.onGetSavedCardTokenFailure();
+//                Logger.d(TAG, "getCards:" + reason);
+//            }
+//
+//            @Override
+//            public void onError(Throwable error) {
+//                view.onGetSavedCardTokenFailure();
+//                Logger.e(TAG, "getCards:" + error.getMessage());
+//            }
+//        });
+//    }
 
-            @Override
-            public void onFailure(String reason) {
-                view.onGetSavedCardTokenFailure();
-                Logger.d(TAG, "getCards:" + reason);
-            }
-
-            @Override
-            public void onError(Throwable error) {
-                view.onGetSavedCardTokenFailure();
-                Logger.e(TAG, "getCards:" + error.getMessage());
-            }
-        });
-    }
-
-    private void setSavedCardsToSdk(List<SaveCardRequest> creditCards) {
-        MidtransSDK midtransSDK = MidtransSDK.getInstance();
-        CreditCard creditCard = midtransSDK.getCreditCard();
-        List<SavedToken> savedTokens = SdkUIFlowUtil.convertSavedCards(creditCards);
-        creditCard.setSavedTokens(savedTokens);
-    }
+//    private void setSavedCardsToSdk(List<SaveCardRequest> creditCards) {
+//        MidtransSDK midtransSDK = MidtransSDK.getInstance();
+//        CreditCard creditCard = midtransSDK.getCreditCard();
+//        List<SavedToken> savedTokens = SdkUIFlowUtil.convertSavedCards(creditCards);
+//        creditCard.setSavedTokens(savedTokens);
+//    }
 
     public boolean isSavedCardsAvailable() {
         return creditCards != null && !creditCards.isEmpty();
@@ -132,7 +132,7 @@ public class SavedCreditCardPresenter extends BaseCreditCardPresenter<SavedCredi
     }
 
 
-    public void deleteSavedCard(SaveCardRequest request) {
-        deleteSavedCard(request, view);
-    }
+//    public void deleteSavedCard(SaveCardRequest request) {
+//        deleteSavedCard(request, view);
+//    }
 }
