@@ -32,23 +32,23 @@ public class ReadBankDetailTask extends AsyncTask<Void, Void, ArrayList<BankDeta
     @SuppressWarnings("unchecked")
     @Override
     protected ArrayList<BankDetail> doInBackground(Void... params) {
-        try {
-            this.userDetail = LocalDataHandler.readObject(context.getString(R.string.user_details), UserDetail.class);
-            Logger.i("userDetail:" + userDetail.getUserFullName());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            this.userDetail = LocalDataHandler.readObject(context.getString(R.string.user_details), UserDetail.class);
+//            Logger.i("userDetail:" + userDetail.getUserFullName());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         ArrayList<BankDetail> bankDetails = new ArrayList<>();
-        try {
-            Class<ArrayList<BankDetail>> bankDetailClazz = (Class) ArrayList.class;
-            ArrayList<BankDetail> loadedBankDetails = LocalDataHandler.readObject(context.getString(R.string.bank_details), bankDetailClazz);
-            if (loadedBankDetails != null && !loadedBankDetails.isEmpty()) {
-                bankDetails.addAll(loadedBankDetails);
-                Logger.i("bankDetails:" + bankDetails.size());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Class<ArrayList<BankDetail>> bankDetailClazz = (Class) ArrayList.class;
+//            ArrayList<BankDetail> loadedBankDetails = LocalDataHandler.readObject(context.getString(R.string.bank_details), bankDetailClazz);
+//            if (loadedBankDetails != null && !loadedBankDetails.isEmpty()) {
+//                bankDetails.addAll(loadedBankDetails);
+//                Logger.i("bankDetails:" + bankDetails.size());
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         if (bankDetails.isEmpty()) {
             String json = null;
             try {
