@@ -200,7 +200,8 @@ public class DemoSavedCardsActivity extends AppCompatActivity implements CardReg
         savedCards.add(savedCard);
         cardsAdapter.setData(savedCards);
 
-        LocalDataHandler.saveObject(SAVED_CARDS_TYPE, new SavedCards(savedCards));
+        //TODO: Since we remove LocalDataHandler DemoSaveCard will not running anymore
+//        LocalDataHandler.saveObject(SAVED_CARDS_TYPE, new SavedCards(savedCards));
     }
 
     @Override
