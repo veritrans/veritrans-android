@@ -26,7 +26,7 @@ public class LocalDataHandler {
      * @param value string to store.
      */
     public static void saveString(String key, String value) {
-        SharedPreferences preferences = MidtransSDK.getmPreferences();
+        SharedPreferences preferences = null; //MidtransSDK.getmPreferences();
         if (preferences != null) {
             preferences.edit().putString(key, value).apply();
         }
@@ -39,7 +39,7 @@ public class LocalDataHandler {
      * @return string value.
      */
     public static String readString(String key) {
-        SharedPreferences preferences = MidtransSDK.getmPreferences();
+        SharedPreferences preferences =  null; //MidtransSDK.getmPreferences();
         return preferences == null ? null : preferences.getString(key, "");
     }
 
@@ -51,7 +51,7 @@ public class LocalDataHandler {
      * @param object object to store.
      */
     public static void saveObject(String key, Object object) {
-        SharedPreferences preferences = MidtransSDK.getmPreferences();
+        SharedPreferences preferences =  null; //MidtransSDK.getmPreferences();
         if (preferences != null) {
             preferences.edit().putString(key, convertObjectIntoJson(object)).apply();
         }
@@ -64,7 +64,7 @@ public class LocalDataHandler {
      * @return json string converted object.
      */
     public static <T> T readObject(String key, Class<T> classType) {
-        SharedPreferences preferences = MidtransSDK.getmPreferences();
+        SharedPreferences preferences =  null; //MidtransSDK.getmPreferences();
         return preferences == null ? null : convertBackToObject(preferences.getString(key, ""), classType);
     }
 
