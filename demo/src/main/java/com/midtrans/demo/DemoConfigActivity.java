@@ -22,6 +22,7 @@ import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
 import com.midtrans.sdk.corekit.core.*;
 import com.midtrans.sdk.corekit.core.themes.CustomColorTheme;
 import com.midtrans.sdk.corekit.models.*;
+import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.ItemDetails;
 import com.midtrans.sdk.corekit.models.snap.*;
 import com.midtrans.sdk.corekit.utilities.Utils;
@@ -1294,25 +1295,10 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     }
 
     private void initPaymentChannelsSelections() {
-        SelectPaymentMethodListViewModel listViewModel = LocalDataHandler.readObject(PAYMENT_CHANNELS_TYPE, SelectPaymentMethodListViewModel.class);
-        if (listViewModel != null
-                && listViewModel.getEnabledPayments() != null
-                && !listViewModel.getEnabledPayments().isEmpty()) {
-            enabledPayments = AppUtils.mapPaymentMethods(this, listViewModel.getEnabledPayments());
-            paymentChannelsTitle.setText(R.string.payment_channels_selected);
-            if (isContainEChannel(enabledPayments)) {
-                paymentChannelsSelectedSelection.setText(getString(R.string.payment_channels_selection_show_selected_format, enabledPayments.size() - 1));
-            } else {
-                paymentChannelsSelectedSelection.setText(getString(R.string.payment_channels_selection_show_selected_format, enabledPayments.size()));
-            }
-            paymentChannelsSelectedSelection.setChecked(true);
-            initEditPaymentButton(AppUtils.getPaymentList(DemoConfigActivity.this, mapEnabledPayments()));
-        } else {
-            paymentChannelsTitle.setText(R.string.payment_channels_show_all);
-            paymentChannelsAllSelection.setText(R.string.payment_channels_selection_show_all);
-            paymentChannelsAllSelection.setChecked(true);
-            disableEditPaymentChannels();
-        }
+        paymentChannelsTitle.setText(R.string.payment_channels_show_all);
+        paymentChannelsAllSelection.setText(R.string.payment_channels_selection_show_all);
+        paymentChannelsAllSelection.setChecked(true);
+        disableEditPaymentChannels();
 
         paymentChannelsAllSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -3105,44 +3091,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             transactionRequestNew.setExpiry(expiryModel);
         }
 
-        UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
-        if (userDetail == null) {
-            userDetail = new UserDetail();
-            userDetail.setUserFullName(getString(R.string.order_review_customer_details_name));
-            userDetail.setEmail(getString(R.string.order_review_customer_details_email));
-            userDetail.setPhoneNumber(getString(R.string.order_review_customer_details_phone));
-            if (oneClickSelection.isChecked()) {
-                userDetail.setUserId(getString(R.string.sample_user_id));
-            } else if (twoClicksSelection.isChecked()) {
-                userDetail.setUserId(getString(R.string.sample_user_id2));
-            }
-            ArrayList<UserAddress> userAddresses = new ArrayList<>();
-            UserAddress userAddress = new UserAddress();
-            userAddress.setAddress(getString(R.string.order_review_delivery_address_sample));
-            userAddress.setCity(getString(R.string.order_review_delivery_address_city_sample));
-            userAddress.setAddressType(com.midtrans.sdk.corekit.core.Constants.ADDRESS_TYPE_BOTH);
-            userAddress.setZipcode("10220");
-            userAddress.setCountry("IDN");
-            userAddresses.add(userAddress);
-            userDetail.setUserAddresses(userAddresses);
-        } else {
+        transactionRequestNew.setCustomerDetails(initCustomerDetails());
 
-            if (oneClickSelection.isChecked()) {
-                userDetail.setUserId(getString(R.string.sample_user_id));
-            } else if (twoClicksSelection.isChecked()) {
-                userDetail.setUserId(getString(R.string.sample_user_id2));
-            }
-        }
-
-        // if rba activated
-        if (secureRbaWith3dsSelection.isChecked()) {
-            userDetail.setEmail("secure_email_rba@example.com");
-            creditCard.setAuthentication(Authentication.AUTH_RBA);
-        } else if (secureRbaNon3dsSelection.isChecked()) {
-            userDetail.setEmail("not_secure_email_rba@example.com");
-            creditCard.setAuthentication(Authentication.AUTH_RBA);
-        }
-        LocalDataHandler.saveObject(getString(R.string.user_details), userDetail);
         if (customPermataVaEnabledSelection.isChecked()) {
             String vaNumber = "";
             try {
@@ -3228,6 +3178,21 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         transactionRequestNew.setGopay(new Gopay("demo://midtrans"));
 
         return transactionRequestNew;
+    }
+
+    private CustomerDetails initCustomerDetails() {
+        CustomerDetails mCustomerDetails = new CustomerDetails();
+        mCustomerDetails.setPhone(getString(R.string.order_review_customer_details_phone));
+        mCustomerDetails.setFirstName(getString(R.string.order_review_customer_details_name));
+        mCustomerDetails.setEmail(getString(R.string.order_review_customer_details_email));
+
+        ShippingAddress shippingAddress = new ShippingAddress();
+        shippingAddress.setAddress(getString(R.string.order_review_delivery_address_sample));
+        shippingAddress.setCity(getString(R.string.order_review_delivery_address_city_sample));
+        shippingAddress.setPostalCode("10220");
+        mCustomerDetails.setShippingAddress(shippingAddress);
+
+        return mCustomerDetails;
     }
 
     private FreeText createSampleBcaFreeText() {
