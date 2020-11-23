@@ -635,16 +635,6 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
         return userPhone;
     }
 
-    public void saveUserDetail(@NonNull String email, @NonNull String phone) {
-        UserDetail userDetail = LocalDataHandler.readObject(UiKitConstants.KEY_USER_DETAILS, UserDetail.class);
-        if (userDetail == null) {
-            userDetail = new UserDetail();
-        }
-        userDetail.setEmail(email);
-        userDetail.setPhoneNumber(phone);
-        LocalDataHandler.saveObject(UiKitConstants.KEY_USER_DETAILS, userDetail);
-    }
-
     public boolean isInstallmentOptionRequired() {
         return (creditCardTransaction != null && creditCardTransaction.isInstallmentOptionRequired());
     }
