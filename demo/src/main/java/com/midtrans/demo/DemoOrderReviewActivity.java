@@ -25,15 +25,16 @@ import com.google.gson.reflect.TypeToken;
 import com.midtrans.demo.widgets.DemoTextView;
 import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
 import com.midtrans.sdk.corekit.core.Constants;
-import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.core.TransactionRequest;
+import com.midtrans.sdk.corekit.models.CustomerDetails;
+import com.midtrans.sdk.corekit.models.ShippingAddress;
 import com.midtrans.sdk.corekit.models.UserAddress;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.models.CountryCodeModel;
-import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 import java.io.InputStream;
@@ -99,7 +100,7 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
     }
 
     private void bindData() {
-        userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
+        userDetail = getUserDetail();
         if (userDetail != null) {
             editName.setText(userDetail.getUserFullName());
             editEmail.setText(userDetail.getEmail());
@@ -108,7 +109,7 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
     }
 
     private void bindAddress() {
-        UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
+        UserDetail userDetail = getUserDetail();
         if (userDetail != null) {
             ArrayList<UserAddress> addresses = userDetail.getUserAddresses();
             if (addresses != null && !addresses.isEmpty()) {
@@ -257,7 +258,7 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
                 openField(true);
                 break;
             case R.id.button_save_customer_detail:
-                userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
+                userDetail = getUserDetail();
                 if (userDetail != null) {
                     if (!isEmailValid(editEmail.getText().toString())) {
                         Toast.makeText(this, "Unable to save change(s). Please make sure the email is valid.", Toast.LENGTH_SHORT).show();
@@ -266,8 +267,7 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
                             userDetail.setUserFullName(editName.getText().toString().trim());
                             userDetail.setEmail(editEmail.getText().toString().trim());
                             userDetail.setPhoneNumber(editPhone.getText().toString().trim());
-                            LocalDataHandler
-                                    .saveObject(getString(R.string.user_details), userDetail);
+                            MidtransSDK.getInstance().setTransactionRequest(updateTransactionRequest(userDetail));
 
                             openField(false);
                             editCustBtn.setVisibility(View.VISIBLE);
@@ -400,5 +400,42 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
         totalAmountText.setText(formattedAmount);
         payBtn.setText(getString(R.string.pay_label) + " " + formattedAmount);
 
+    }
+
+    private UserDetail getUserDetail() {
+        CustomerDetails customerDetails = MidtransSDK.getInstance().getTransactionRequest().getCustomerDetails();
+        UserDetail userDetail = new UserDetail();
+        userDetail.setUserFullName(customerDetails.getFirstName());
+        userDetail.setPhoneNumber(customerDetails.getPhone());
+        userDetail.setEmail(customerDetails.getEmail());
+
+        ArrayList<UserAddress> userAddresses = new ArrayList<>();
+        UserAddress userAddress = new UserAddress();
+        userAddress.setAddress(customerDetails.getShippingAddress().getAddress());
+        userAddress.setCity(customerDetails.getShippingAddress().getCity());
+        userAddress.setAddressType(com.midtrans.sdk.corekit.core.Constants.ADDRESS_TYPE_BOTH);
+        userAddress.setZipcode(customerDetails.getShippingAddress().getPostalCode());
+        userAddress.setCountry("IDN");
+        userAddresses.add(userAddress);
+        userDetail.setUserAddresses(userAddresses);
+
+        return userDetail;
+    }
+
+    private TransactionRequest updateTransactionRequest(UserDetail userDetail) {
+        TransactionRequest transactionRequest = MidtransSDK.getInstance().getTransactionRequest();
+        CustomerDetails customerDetails = transactionRequest.getCustomerDetails();
+
+        customerDetails.setPhone(userDetail.getPhoneNumber());
+        customerDetails.setFirstName(userDetail.getUserFullName());
+        customerDetails.setEmail(userDetail.getEmail());
+
+        ShippingAddress shippingAddress = new ShippingAddress();
+        shippingAddress.setAddress(userDetail.getUserAddresses().get(0).getAddress());
+        shippingAddress.setCity(userDetail.getUserAddresses().get(0).getCity());
+        shippingAddress.setPostalCode(userDetail.getUserAddresses().get(0).getZipcode());
+        customerDetails.setShippingAddress(shippingAddress);
+
+        return transactionRequest;
     }
 }
