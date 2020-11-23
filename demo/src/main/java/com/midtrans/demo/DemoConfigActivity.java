@@ -2341,7 +2341,6 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 saveBniPointSelection();
                 saveMandiriPointSelection();
                 saveAutoReadSmsSelection();
-                saveEnabledPayments();
                 saveCurrencySelection();
 
                 TransactionRequest transactionRequest = initializePurchaseRequest();
@@ -2458,14 +2457,6 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             DemoPreferenceHelper.setBooleanPreference(this, SAVE_CARD_TYPE, true);
         } else {
             DemoPreferenceHelper.setBooleanPreference(this, SAVE_CARD_TYPE, false);
-        }
-    }
-
-    private void saveEnabledPayments() {
-        if (paymentChannelsAllSelection.isChecked()) {
-            LocalDataHandler.saveString(PAYMENT_CHANNELS_TYPE, "{}");
-        } else {
-            LocalDataHandler.saveObject(PAYMENT_CHANNELS_TYPE, new SelectPaymentMethodListViewModel(AppUtils.getPaymentList(this, mapEnabledPayments())));
         }
     }
 
