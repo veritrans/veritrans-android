@@ -31,10 +31,10 @@ public class SdkUtil {
      * @param transactionRequest transaction request
      * @return transactionRequest with  {@link CustomerDetails}.
      */
-    protected static TransactionRequest initializeUserInfo(TransactionRequest transactionRequest) {
-        transactionRequest = getUserDetails(transactionRequest);
-        return transactionRequest;
-    }
+//    protected static TransactionRequest initializeUserInfo(TransactionRequest transactionRequest) {
+//        transactionRequest = getUserDetails(transactionRequest);
+//        return transactionRequest;
+//    }
 
     /**
      * it extracts customer information from TransactionRequest.
@@ -42,38 +42,38 @@ public class SdkUtil {
      * @param request instance of TransactionRequest
      * @return transaction request with {@link UserDetail}
      */
-    static TransactionRequest getUserDetails(TransactionRequest request) {
-
-        UserDetail userDetail = null;
-        CustomerDetails mCustomerDetails = null;
-
-        try {
-            userDetail = LocalDataHandler.readObject(Constants.USER_DETAILS, UserDetail.class);
-
-            if (userDetail != null && !TextUtils.isEmpty(userDetail.getUserFullName())) {
-                ArrayList<UserAddress> userAddresses = userDetail.getUserAddresses();
-                if (userAddresses != null && !userAddresses.isEmpty()) {
-                    Logger.i("Found " + userAddresses.size() + " user addresses.");
-                    mCustomerDetails = new CustomerDetails();
-                    mCustomerDetails.setPhone(userDetail.getPhoneNumber());
-                    mCustomerDetails.setFirstName(userDetail.getUserFullName());
-                    mCustomerDetails.setLastName(null);
-                    mCustomerDetails.setEmail(userDetail.getEmail());
-                    //added email in performTransaction()
-                    request.setCustomerDetails(mCustomerDetails);
-
-                    request = extractUserAddress(userDetail, userAddresses, request);
-                }
-
-            } else {
-                Logger.e("User details not available.");
-            }
-        } catch (Exception ex) {
-            Logger.e("Error while fetching user details : " + ex.getMessage());
-        }
-
-        return request;
-    }
+//    static TransactionRequest getUserDetails(TransactionRequest request) {
+//
+//        UserDetail userDetail = null;
+//        CustomerDetails mCustomerDetails = null;
+//
+//        try {
+//            userDetail = LocalDataHandler.readObject(Constants.USER_DETAILS, UserDetail.class);
+//
+//            if (userDetail != null && !TextUtils.isEmpty(userDetail.getUserFullName())) {
+//                ArrayList<UserAddress> userAddresses = userDetail.getUserAddresses();
+//                if (userAddresses != null && !userAddresses.isEmpty()) {
+//                    Logger.i("Found " + userAddresses.size() + " user addresses.");
+//                    mCustomerDetails = new CustomerDetails();
+//                    mCustomerDetails.setPhone(userDetail.getPhoneNumber());
+//                    mCustomerDetails.setFirstName(userDetail.getUserFullName());
+//                    mCustomerDetails.setLastName(null);
+//                    mCustomerDetails.setEmail(userDetail.getEmail());
+//                    //added email in performTransaction()
+//                    request.setCustomerDetails(mCustomerDetails);
+//
+//                    request = extractUserAddress(userDetail, userAddresses, request);
+//                }
+//
+//            } else {
+//                Logger.e("User details not available.");
+//            }
+//        } catch (Exception ex) {
+//            Logger.e("Error while fetching user details : " + ex.getMessage());
+//        }
+//
+//        return request;
+//    }
 
     static TransactionRequest extractUserAddress(UserDetail userDetail,
                                                  ArrayList<UserAddress> userAddresses,
@@ -164,10 +164,10 @@ public class SdkUtil {
 
     public static TokenRequestModel getSnapTokenRequestModel(TransactionRequest transactionRequest) {
 
-        if (transactionRequest.isUiEnabled()) {
-            //get user details only if using default ui.
-            transactionRequest = initializeUserInfo(transactionRequest);
-        }
+//        if (transactionRequest.isUiEnabled()) {
+//            //get user details only if using default ui.
+//            transactionRequest = initializeUserInfo(transactionRequest);
+//        }
 
         SnapTransactionDetails details = new SnapTransactionDetails(transactionRequest.getOrderId(), transactionRequest.getAmount());
 

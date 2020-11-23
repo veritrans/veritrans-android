@@ -51,7 +51,7 @@ public class UserAddressActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_address);
         bindView();
         retrieveCountryCode();
-        bindData();
+//        bindData();
         bindThemes();
     }
 
@@ -65,68 +65,68 @@ public class UserAddressActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
     }
 
-    private void bindData() {
-        countryAdapter = new ListCountryAdapter(this, com.midtrans.sdk.uikit.R.layout.layout_row_country_code, countryCodeList);
-
-        UserAddress shippingAddress = null;
-        UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
-        if (userDetail != null && userDetail.getUserAddresses() != null && userDetail.getUserAddresses().size() > 0) {
-            for (UserAddress address : userDetail.getUserAddresses()) {
-                if (address.getAddressType() == Constants.ADDRESS_TYPE_SHIPPING || address.getAddressType() == Constants.ADDRESS_TYPE_BOTH) {
-                    shippingAddress = address;
-                }
-            }
-        }
-
-        if (shippingAddress == null) {
-            setResult(RESULT_CANCELED);
-            finish();
-        }
-
-        etAddress.setText(shippingAddress.getAddress());
-        etCity.setText(shippingAddress.getCity());
-        etZipCode.setText(shippingAddress.getZipcode());
-
-        etCountry.setText(getCountryName(shippingAddress.getCountry()));
-        etCountry.setAdapter(countryAdapter);
-        etCountry.setThreshold(1);
-
-        etZipCode.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (s.toString().length() == 5) {
-                    etZipCodeContainer.setErrorEnabled(false);
-                    saveBtn.setClickable(true);
-                } else {
-                    etZipCodeContainer.setError(getString(R.string.hint_error_zip_code));
-                    saveBtn.setClickable(false);
-                }
-            }
-        });
-
-        saveBtn.setText(getString(R.string.delivery_address_save));
-        saveBtn.setTextBold();
-        saveBtn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isValid()) {
-                    saveData();
-                } else {
-                    Toast.makeText(UserAddressActivity.this, "Unable to save change(s). Please make sure there's no empty field or discard change(s).", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
+//    private void bindData() {
+//        countryAdapter = new ListCountryAdapter(this, com.midtrans.sdk.uikit.R.layout.layout_row_country_code, countryCodeList);
+//
+//        UserAddress shippingAddress = null;
+//        UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
+//        if (userDetail != null && userDetail.getUserAddresses() != null && userDetail.getUserAddresses().size() > 0) {
+//            for (UserAddress address : userDetail.getUserAddresses()) {
+//                if (address.getAddressType() == Constants.ADDRESS_TYPE_SHIPPING || address.getAddressType() == Constants.ADDRESS_TYPE_BOTH) {
+//                    shippingAddress = address;
+//                }
+//            }
+//        }
+//
+//        if (shippingAddress == null) {
+//            setResult(RESULT_CANCELED);
+//            finish();
+//        }
+//
+//        etAddress.setText(shippingAddress.getAddress());
+//        etCity.setText(shippingAddress.getCity());
+//        etZipCode.setText(shippingAddress.getZipcode());
+//
+//        etCountry.setText(getCountryName(shippingAddress.getCountry()));
+//        etCountry.setAdapter(countryAdapter);
+//        etCountry.setThreshold(1);
+//
+//        etZipCode.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                if (s.toString().length() == 5) {
+//                    etZipCodeContainer.setErrorEnabled(false);
+//                    saveBtn.setClickable(true);
+//                } else {
+//                    etZipCodeContainer.setError(getString(R.string.hint_error_zip_code));
+//                    saveBtn.setClickable(false);
+//                }
+//            }
+//        });
+//
+//        saveBtn.setText(getString(R.string.delivery_address_save));
+//        saveBtn.setTextBold();
+//        saveBtn.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (isValid()) {
+//                    saveData();
+//                } else {
+//                    Toast.makeText(UserAddressActivity.this, "Unable to save change(s). Please make sure there's no empty field or discard change(s).", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
+//    }
 
     private void bindThemes() {
         String themes = DemoPreferenceHelper.getStringPreference(this, DemoConfigActivity.COLOR_THEME);
@@ -193,45 +193,45 @@ public class UserAddressActivity extends AppCompatActivity {
         }
     }
 
-    private void saveData() {
-
-        try {
-            UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
-
-            if (userDetail != null) {
-                Logger.i("UserAddressActivity", "userDetails:" + userDetail.getUserFullName());
-            }
-
-            ArrayList<UserAddress> userAddresses = userDetail.getUserAddresses();
-            String address = etAddress.getText().toString().trim();
-            String city = etCity.getText().toString().trim();
-            String zipcode = etZipCode.getText().toString().trim();
-            String country = etCountry.getText().toString().trim();
-
-            if (userAddresses != null && userAddresses.get(0).getAddressType() == Constants.ADDRESS_TYPE_BOTH) {
-                UserAddress userAddress = userAddresses.get(0);
-                userAddress.setAddress(address);
-                userAddress.setCity(city);
-                userAddress.setZipcode(zipcode);
-                if (isCountryCodeExist(country)) {
-                    userAddress.setCountry(countryCodeSelected);
-                } else {
-                    Toast.makeText(this, "The country you choose is invalid. Please try again.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-            }
-
-            userDetail.setUserAddresses(userAddresses);
-            //TODO: since we remove LocalDataHandler this method will can't save the changes data
-//            LocalDataHandler.saveObject(getString(com.midtrans.sdk.uikit.R.string.user_details), userDetail);
-
-            setResult(RESULT_OK);
-            finish();
-        } catch (RuntimeException e) {
-            Logger.e("UserAddressActivity", "validateAndSaveAddress:" + e.getMessage());
-        }
-
-    }
+//    private void saveData() {
+//
+//        try {
+//            UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
+//
+//            if (userDetail != null) {
+//                Logger.i("UserAddressActivity", "userDetails:" + userDetail.getUserFullName());
+//            }
+//
+//            ArrayList<UserAddress> userAddresses = userDetail.getUserAddresses();
+//            String address = etAddress.getText().toString().trim();
+//            String city = etCity.getText().toString().trim();
+//            String zipcode = etZipCode.getText().toString().trim();
+//            String country = etCountry.getText().toString().trim();
+//
+//            if (userAddresses != null && userAddresses.get(0).getAddressType() == Constants.ADDRESS_TYPE_BOTH) {
+//                UserAddress userAddress = userAddresses.get(0);
+//                userAddress.setAddress(address);
+//                userAddress.setCity(city);
+//                userAddress.setZipcode(zipcode);
+//                if (isCountryCodeExist(country)) {
+//                    userAddress.setCountry(countryCodeSelected);
+//                } else {
+//                    Toast.makeText(this, "The country you choose is invalid. Please try again.", Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
+//            }
+//
+//            userDetail.setUserAddresses(userAddresses);
+//            //TODO: since we remove LocalDataHandler this method will can't save the changes data
+////            LocalDataHandler.saveObject(getString(com.midtrans.sdk.uikit.R.string.user_details), userDetail);
+//
+//            setResult(RESULT_OK);
+//            finish();
+//        } catch (RuntimeException e) {
+//            Logger.e("UserAddressActivity", "validateAndSaveAddress:" + e.getMessage());
+//        }
+//
+//    }
 
     private boolean isValid() {
         return !TextUtils.isEmpty(etAddress.getText().toString().trim()) && !TextUtils.isEmpty(etCity.getText().toString().trim())

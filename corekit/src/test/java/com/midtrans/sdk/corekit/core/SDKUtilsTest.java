@@ -178,23 +178,23 @@ public class SDKUtilsTest {
     }
 
 
-    @Test
-    public void initializeUserInfo() throws ClassNotFoundException {
-        MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "getUserDetails", TransactionRequest.class)).toReturn(transactionRequestMock);
+//    @Test
+//    public void initializeUserInfo() throws ClassNotFoundException {
+//        MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "getUserDetails", TransactionRequest.class)).toReturn(transactionRequestMock);
+//
+//        Assert.assertEquals(transactionRequestMock, SdkUtil.initializeUserInfo(transactionRequestMock));
+//    }
 
-        Assert.assertEquals(transactionRequestMock, SdkUtil.initializeUserInfo(transactionRequestMock));
-    }
 
-
-    @Test
-    public void getUserDetailTest() {
-        mockStatic(LocalDataHandler.class);
-        when(LocalDataHandler.readObject(userDetail, UserDetail.class)).thenReturn(userDetailMock);
-        when(userDetailMock.getUserFullName()).thenReturn(fullname);
-        SdkUtil.getUserDetails(transactionRequestMock);
-
-        verifyStatic(Mockito.times(1));
-    }
+//    @Test
+//    public void getUserDetailTest() {
+//        mockStatic(LocalDataHandler.class);
+//        when(LocalDataHandler.readObject(userDetail, UserDetail.class)).thenReturn(userDetailMock);
+//        when(userDetailMock.getUserFullName()).thenReturn(fullname);
+//        SdkUtil.getUserDetails(transactionRequestMock);
+//
+//        verifyStatic(Mockito.times(1));
+//    }
 
 
     @Test
