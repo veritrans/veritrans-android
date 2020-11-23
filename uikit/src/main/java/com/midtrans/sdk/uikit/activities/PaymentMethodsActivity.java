@@ -37,6 +37,7 @@ import com.midtrans.sdk.corekit.models.MerchantPreferences;
 import com.midtrans.sdk.corekit.models.PaymentDetails;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
+import com.midtrans.sdk.corekit.models.UserAddress;
 import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.promo.Promo;
 import com.midtrans.sdk.corekit.models.promo.PromoDetails;
@@ -173,13 +174,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         if (midtransSDK != null) {
             transactionRequest = midtransSDK.getTransactionRequest();
             if (transactionRequest != null) {
-
-                if (userDetail != null) {
-                    transactionRequest.setCustomerDetails(createCustomerDetails(userDetail));
-                } else {
-                    SdkUIFlowUtil.saveUserDetails();
-                }
-
+                transactionRequest.setCustomerDetails(createCustomerDetails(userDetail));
             }
             setUpPaymentMethods();
             setupRecyclerView();
@@ -201,7 +196,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         UserDetail userDetail = null;
 
         try {
-            userDetail = SdkUIFlowUtil.getSavedUserDetails();
+            userDetail = getUserDetail();
 
             if (userDetail == null) {
                 userDetail = new UserDetail();
@@ -211,10 +206,29 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 userDetail.setUserId(UUID.randomUUID().toString());
             }
 
-            SdkUIFlowUtil.saveUserDetails(userDetail);
         } catch (RuntimeException ex) {
             ex.printStackTrace();
         }
+
+        return userDetail;
+    }
+
+    private UserDetail getUserDetail() {
+        CustomerDetails customerDetails = midtransSDK.getTransactionRequest().getCustomerDetails();
+        UserDetail userDetail = new UserDetail();
+        userDetail.setUserFullName(customerDetails.getFirstName());
+        userDetail.setPhoneNumber(customerDetails.getPhone());
+        userDetail.setEmail(customerDetails.getEmail());
+
+        ArrayList<UserAddress> userAddresses = new ArrayList<>();
+        UserAddress userAddress = new UserAddress();
+        userAddress.setAddress(customerDetails.getShippingAddress().getAddress());
+        userAddress.setCity(customerDetails.getShippingAddress().getCity());
+        userAddress.setAddressType(com.midtrans.sdk.corekit.core.Constants.ADDRESS_TYPE_BOTH);
+        userAddress.setZipcode(customerDetails.getShippingAddress().getPostalCode());
+        userAddress.setCountry("IDN");
+        userAddresses.add(userAddress);
+        userDetail.setUserAddresses(userAddresses);
 
         return userDetail;
     }
