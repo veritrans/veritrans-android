@@ -3182,6 +3182,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
 
     private CustomerDetails initCustomerDetails() {
         CustomerDetails mCustomerDetails = new CustomerDetails();
+        mCustomerDetails.setCustomerIdentifier(getString(R.string.order_review_customer_details_email));
         mCustomerDetails.setPhone(getString(R.string.order_review_customer_details_phone));
         mCustomerDetails.setFirstName(getString(R.string.order_review_customer_details_name));
         mCustomerDetails.setEmail(getString(R.string.order_review_customer_details_email));
@@ -3191,6 +3192,12 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         shippingAddress.setCity(getString(R.string.order_review_delivery_address_city_sample));
         shippingAddress.setPostalCode("10220");
         mCustomerDetails.setShippingAddress(shippingAddress);
+
+        BillingAddress billingAddress = new BillingAddress();
+        billingAddress.setAddress(getString(R.string.order_review_delivery_address_sample));
+        billingAddress.setCity(getString(R.string.order_review_delivery_address_city_sample));
+        billingAddress.setPostalCode("10220");
+        mCustomerDetails.setBillingAddress(billingAddress);
 
         return mCustomerDetails;
     }
