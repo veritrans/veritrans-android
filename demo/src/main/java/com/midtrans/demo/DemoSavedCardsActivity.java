@@ -16,10 +16,8 @@ import android.widget.Toast;
 
 import com.midtrans.demo.SavedCardsAdapter.SavedCardAdapterEventListener;
 import com.midtrans.demo.models.SavedCard;
-import com.midtrans.demo.models.SavedCards;
 import com.midtrans.demo.widgets.DemoButton;
 import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
-import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.CardRegistrationResponse;
