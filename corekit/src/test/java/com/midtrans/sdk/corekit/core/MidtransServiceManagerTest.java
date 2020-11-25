@@ -1,7 +1,6 @@
 package com.midtrans.sdk.corekit.core;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Looper;
 import android.text.TextUtils;
@@ -55,10 +54,6 @@ public class MidtransServiceManagerTest {
     @Mock
     private Resources resourcesMock;
 
-
-    @Mock
-    private SharedPreferences preferencesMock;
-
     private MidtransServiceManager midtransServiceManager;
 
     @Mock
@@ -103,7 +98,6 @@ public class MidtransServiceManagerTest {
         Mockito.when(contextMock.getApplicationContext()).thenReturn(contextMock);
         Mockito.when(MidtransRestAdapter.newMidtransApiService(timout)).thenReturn(midtransServiceMock);
 
-        Mockito.when(contextMock.getSharedPreferences("local.data", Context.MODE_PRIVATE)).thenReturn(preferencesMock);
         Mockito.when(SdkUtil.newMidtransServiceManager(timout)).thenReturn(midtransServiceManager);
 
         midtransServiceManager = new MidtransServiceManager(MidtransRestAdapter.newMidtransApiService(timout));

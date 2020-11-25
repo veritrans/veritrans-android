@@ -1,7 +1,6 @@
 package com.midtrans.sdk.corekit.core;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Looper;
 import android.text.TextUtils;
@@ -97,9 +96,6 @@ public class SnapServiceManagerTest {
     @Mock
     private SSLHandshakeException errorInvalidSSLException;
 
-    @Mock
-    private SharedPreferences preferencesMock;
-
     private SnapServiceManager snapTransactionManager;
     @Mock
     private MidtransServiceManager midtransServiceManagerMock;
@@ -165,7 +161,6 @@ public class SnapServiceManagerTest {
         Mockito.when(contextMock.getApplicationContext()).thenReturn(contextMock);
         Mockito.when(MidtransRestAdapter.newSnapApiService(timout)).thenReturn(snapApiServiceMock);
 
-        Mockito.when(contextMock.getSharedPreferences("local.data", Context.MODE_PRIVATE)).thenReturn(preferencesMock);
         Mockito.when(SdkUtil.newSnapServiceManager(timout)).thenReturn(snapTransactionManager);
 
         snapTransactionManager = new SnapServiceManager(MidtransRestAdapter.newSnapApiService(timout));

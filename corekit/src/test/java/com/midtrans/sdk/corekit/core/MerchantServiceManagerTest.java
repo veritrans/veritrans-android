@@ -1,7 +1,6 @@
 package com.midtrans.sdk.corekit.core;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Looper;
 import android.text.TextUtils;
@@ -78,9 +77,6 @@ public class MerchantServiceManagerTest {
     @Mock
     private TokenRequestModel snapTokenRequestModelMock;
 
-    @Mock
-    private SharedPreferences preferencesMock;
-
     private MerchantServiceManager manager;
 
     @Mock
@@ -133,7 +129,6 @@ public class MerchantServiceManagerTest {
         Mockito.when(contextMock.getApplicationContext()).thenReturn(contextMock);
         Mockito.when(MidtransRestAdapter.newMerchantApiService(SDKConfigTest.MERCHANT_BASE_URL, timout)).thenReturn(merchantApiServiceMock);
 
-        Mockito.when(contextMock.getSharedPreferences("local.data", Context.MODE_PRIVATE)).thenReturn(preferencesMock);
         Mockito.when(SdkUtil.newMerchantServiceManager(SDKConfigTest.MERCHANT_BASE_URL, timout)).thenReturn(manager);
 
         manager = new MerchantServiceManager(MidtransRestAdapter.newMerchantApiService(SDKConfigTest.MERCHANT_BASE_URL, timout));

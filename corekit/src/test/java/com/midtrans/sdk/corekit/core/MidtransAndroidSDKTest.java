@@ -1,7 +1,6 @@
 package com.midtrans.sdk.corekit.core;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
@@ -12,7 +11,6 @@ import android.util.Log;
 
 import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.BuildConfig;
-import com.midtrans.sdk.corekit.R;
 import com.midtrans.sdk.corekit.SDKConfigTest;
 import com.midtrans.sdk.corekit.callback.BankBinsCallback;
 import com.midtrans.sdk.corekit.callback.BanksPointCallback;
@@ -34,7 +32,6 @@ import com.midtrans.sdk.corekit.models.PaymentDetails;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.TokenRequestModel;
-import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
 import com.midtrans.sdk.corekit.models.snap.MerchantData;
@@ -78,7 +75,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
  */
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({LocalDataHandler.class, SdkUtil.class, Looper.class, Utils.class, Log.class, TextUtils.class,
+@PrepareForTest({SdkUtil.class, Looper.class, Utils.class, Log.class, TextUtils.class,
         Logger.class, MixpanelAnalyticsManager.class, MidtransRestAdapter.class})
 @PowerMockIgnore("javax.net.ssl.*")
 public class MidtransAndroidSDKTest {
@@ -93,8 +90,6 @@ public class MidtransAndroidSDKTest {
     NetworkInfo networkInfo;
     @Mock
     boolean isconnected;
-    @Mock
-    SharedPreferences preference;
     @Mock
     IndosatDompetkuRequest indosatDompetkuRequestMock;
     @Mock
@@ -143,8 +138,6 @@ public class MidtransAndroidSDKTest {
     private Drawable drawableDefaultMock;
     @Mock
     private ArrayList<PaymentMethodsModel> paymentMethodMock;
-    @Mock
-    private UserDetail userDetailMock;
     @Mock
     private MixpanelAnalyticsManager mixpanelMock;
     @Mock
@@ -242,8 +235,6 @@ public class MidtransAndroidSDKTest {
         when(TextUtils.isEmpty(Matchers.anyString())).thenReturn(false);
         when(TextUtils.isEmpty(null)).thenReturn(true);
         when(TextUtils.isEmpty("")).thenReturn(true);
-
-        Mockito.when(contextMock.getSharedPreferences("local.data", Context.MODE_PRIVATE)).thenReturn(preference);
 
         Mockito.when(SdkUtil.newSnapServiceManager(sampleTimeOut)).thenReturn(snapServiceManager);
 
