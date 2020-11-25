@@ -27,11 +27,8 @@ import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
-import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.ShippingAddress;
-import com.midtrans.sdk.corekit.models.UserAddress;
-import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.models.CountryCodeModel;
@@ -51,7 +48,7 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
 
     private static final long DELAY = 300;
     private final int EDIT_SHIPPING_ADDRESS = 1;
-    private UserDetail userDetail;
+    private CustomerDetails userDetail;
     private RelativeLayout amountContainer;
     private TextView amountText;
     private FancyButton payBtn;
@@ -102,30 +99,24 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
     private void bindData() {
         userDetail = getUserDetail();
         if (userDetail != null) {
-            editName.setText(userDetail.getUserFullName());
+            editName.setText(userDetail.getFirstName());
             editEmail.setText(userDetail.getEmail());
-            editPhone.setText(userDetail.getPhoneNumber());
+            editPhone.setText(userDetail.getPhone());
         }
     }
 
     private void bindAddress() {
-        UserDetail userDetail = getUserDetail();
         if (userDetail != null) {
-            ArrayList<UserAddress> addresses = userDetail.getUserAddresses();
-            if (addresses != null && !addresses.isEmpty()) {
-                for (UserAddress address : addresses) {
-                    if (address.getAddressType() == Constants.ADDRESS_TYPE_BOTH
-                            || address.getAddressType() == Constants.ADDRESS_TYPE_SHIPPING) {
-                        String countryName = getCountryFullName(address.getCountry());
-                        if (countryName.length() == 0) {
-                            deliveryAddress.setText(address.getAddress());
-                        } else {
-                            deliveryAddress.setText(address.getAddress() + ", " + countryName);
-                        }
-                        cityAddress.setText(getString(R.string.order_review_city, address.getCity()));
-                        postalCodeAddress.setText(getString(R.string.order_review_postal_code, address.getZipcode()));
-                    }
+            ShippingAddress address = userDetail.getShippingAddress();
+            if (address != null) {
+                String countryName = getCountryFullName(address.getCountryCode());
+                if (countryName.length() == 0) {
+                    deliveryAddress.setText(address.getAddress());
+                } else {
+                    deliveryAddress.setText(String.format("%s, %s", address.getAddress(), countryName));
                 }
+                cityAddress.setText(address.getCity());
+                postalCodeAddress.setText(address.getPostalCode());
             }
         }
     }
@@ -264,10 +255,10 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
                         Toast.makeText(this, "Unable to save change(s). Please make sure the email is valid.", Toast.LENGTH_SHORT).show();
                     } else {
                         if (isValid()) {
-                            userDetail.setUserFullName(editName.getText().toString().trim());
+                            userDetail.setFirstName(editName.getText().toString().trim());
                             userDetail.setEmail(editEmail.getText().toString().trim());
-                            userDetail.setPhoneNumber(editPhone.getText().toString().trim());
-                            MidtransSDK.getInstance().setTransactionRequest(updateTransactionRequest(userDetail));
+                            userDetail.setPhone(editPhone.getText().toString().trim());
+                            //TODO need to update customer detail on transaction request
 
                             openField(false);
                             editCustBtn.setVisibility(View.VISIBLE);
@@ -402,40 +393,7 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
 
     }
 
-    private UserDetail getUserDetail() {
-        CustomerDetails customerDetails = MidtransSDK.getInstance().getTransactionRequest().getCustomerDetails();
-        UserDetail userDetail = new UserDetail();
-        userDetail.setUserFullName(customerDetails.getFirstName());
-        userDetail.setPhoneNumber(customerDetails.getPhone());
-        userDetail.setEmail(customerDetails.getEmail());
-
-        ArrayList<UserAddress> userAddresses = new ArrayList<>();
-        UserAddress userAddress = new UserAddress();
-        userAddress.setAddress(customerDetails.getShippingAddress().getAddress());
-        userAddress.setCity(customerDetails.getShippingAddress().getCity());
-        userAddress.setAddressType(com.midtrans.sdk.corekit.core.Constants.ADDRESS_TYPE_BOTH);
-        userAddress.setZipcode(customerDetails.getShippingAddress().getPostalCode());
-        userAddress.setCountry("IDN");
-        userAddresses.add(userAddress);
-        userDetail.setUserAddresses(userAddresses);
-
-        return userDetail;
-    }
-
-    private TransactionRequest updateTransactionRequest(UserDetail userDetail) {
-        TransactionRequest transactionRequest = MidtransSDK.getInstance().getTransactionRequest();
-        CustomerDetails customerDetails = transactionRequest.getCustomerDetails();
-
-        customerDetails.setPhone(userDetail.getPhoneNumber());
-        customerDetails.setFirstName(userDetail.getUserFullName());
-        customerDetails.setEmail(userDetail.getEmail());
-
-        ShippingAddress shippingAddress = new ShippingAddress();
-        shippingAddress.setAddress(userDetail.getUserAddresses().get(0).getAddress());
-        shippingAddress.setCity(userDetail.getUserAddresses().get(0).getCity());
-        shippingAddress.setPostalCode(userDetail.getUserAddresses().get(0).getZipcode());
-        customerDetails.setShippingAddress(shippingAddress);
-
-        return transactionRequest;
+    private CustomerDetails getUserDetail() {
+        return MidtransSDK.getInstance().getTransactionRequest().getCustomerDetails();
     }
 }

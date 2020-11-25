@@ -32,8 +32,6 @@ import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.BankTransferModel;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
-import com.midtrans.sdk.corekit.models.UserAddress;
-import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
 import com.midtrans.sdk.corekit.models.snap.MerchantData;
@@ -737,23 +735,7 @@ public class SdkUIFlowUtil {
         return formattedAmount;
     }
 
-    public static UserDetail getSavedUserDetails() {
-        CustomerDetails customerDetails = MidtransSDK.getInstance().getTransactionRequest().getCustomerDetails();
-        UserDetail userDetail = new UserDetail();
-        userDetail.setUserFullName(customerDetails.getFirstName());
-        userDetail.setPhoneNumber(customerDetails.getPhone());
-        userDetail.setEmail(customerDetails.getEmail());
-
-        ArrayList<UserAddress> userAddresses = new ArrayList<>();
-        UserAddress userAddress = new UserAddress();
-        userAddress.setAddress(customerDetails.getShippingAddress().getAddress());
-        userAddress.setCity(customerDetails.getShippingAddress().getCity());
-        userAddress.setAddressType(com.midtrans.sdk.corekit.core.Constants.ADDRESS_TYPE_BOTH);
-        userAddress.setZipcode(customerDetails.getShippingAddress().getPostalCode());
-        userAddress.setCountry("IDN");
-        userAddresses.add(userAddress);
-        userDetail.setUserAddresses(userAddresses);
-
-        return userDetail;
+    public static CustomerDetails getSavedUserDetails() {
+        return MidtransSDK.getInstance().getTransactionRequest().getCustomerDetails();
     }
 }

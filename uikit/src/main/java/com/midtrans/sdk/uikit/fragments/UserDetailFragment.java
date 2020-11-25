@@ -10,10 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
-import com.midtrans.sdk.corekit.models.UserDetail;
+import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.activities.UserDetailsActivity;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
@@ -114,54 +113,56 @@ public class UserDetailFragment extends Fragment {
                 }
             }
         }
-//        nextBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                try {
-//                    validateSaveData();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//
-//                }
-//            }
-//        });
+        nextBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    validateSaveData();
+                } catch (IOException e) {
+                    e.printStackTrace();
+
+                }
+            }
+        });
         super.onViewCreated(view, savedInstanceState);
     }
 
-//    private void validateSaveData() throws IOException {
-//        SdkUIFlowUtil.hideKeyboard(getActivity());
-//        String fullName = fullnameEt.getText().toString().trim();
-//        String email = emailEt.getText().toString().trim();
-//        String phoneNo = phoneEt.getText().toString().trim();
-//
-//        if (!TextUtils.isEmpty(email) && !SdkUIFlowUtil.isEmailValid(email)) {
-//            SdkUIFlowUtil.showToast(getActivity(), getString(R.string.validation_email_invalid));
-//            emailEt.requestFocus();
-//            return;
-//        } else if (!TextUtils.isEmpty(phoneNo) && !SdkUIFlowUtil.isPhoneNumberValid(phoneNo)) {
-//            SdkUIFlowUtil.showToast(getActivity(), getString(R.string.validation_phone_no_invalid));
-//            phoneEt.requestFocus();
-//            return;
-//        }
-//
-//        UserDetail userDetail = null;
-//        try {
-//            userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        if (userDetail == null) {
-//            userDetail = new UserDetail();
-//        }
-//        userDetail.setUserFullName(fullName);
-//        userDetail.setEmail(email);
-//        userDetail.setPhoneNumber(phoneNo);
-//        userDetail.setUserId(UUID.randomUUID().toString());
-//        Logger.i("writting in file");
-//        //TODO: since we remove LocalDataHandler this method will can't save the changes data
-////        LocalDataHandler.saveObject(getString(R.string.user_details), userDetail);
-//        UserAddressFragment userAddressFragment = UserAddressFragment.newInstance();
-//        ((UserDetailsActivity) getActivity()).replaceFragment(userAddressFragment);
-//    }
+    private void validateSaveData() throws IOException {
+        SdkUIFlowUtil.hideKeyboard(getActivity());
+        String fullName = fullnameEt.getText().toString().trim();
+        String email = emailEt.getText().toString().trim();
+        String phoneNo = phoneEt.getText().toString().trim();
+
+        if (!TextUtils.isEmpty(email) && !SdkUIFlowUtil.isEmailValid(email)) {
+            SdkUIFlowUtil.showToast(getActivity(), getString(R.string.validation_email_invalid));
+            emailEt.requestFocus();
+            return;
+        } else if (!TextUtils.isEmpty(phoneNo) && !SdkUIFlowUtil.isPhoneNumberValid(phoneNo)) {
+            SdkUIFlowUtil.showToast(getActivity(), getString(R.string.validation_phone_no_invalid));
+            phoneEt.requestFocus();
+            return;
+        }
+
+        CustomerDetails userDetail = null;
+        try {
+            userDetail = SdkUIFlowUtil.getSavedUserDetails();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (userDetail == null) {
+            userDetail = new CustomerDetails();
+        }
+        userDetail.setFirstName(fullName);
+        userDetail.setEmail(email);
+        userDetail.setPhone(phoneNo);
+        if (userDetail.getCustomerIdentifier() == null) {
+            userDetail.setCustomerIdentifier(UUID.randomUUID().toString());
+        }
+        Logger.i("writting in file");
+        //TODO: need to update customer detail in transaction request
+
+        UserAddressFragment userAddressFragment = UserAddressFragment.newInstance();
+        ((UserDetailsActivity) getActivity()).replaceFragment(userAddressFragment);
+    }
 
 }

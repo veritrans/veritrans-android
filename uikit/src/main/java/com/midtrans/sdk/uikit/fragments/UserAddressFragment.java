@@ -22,8 +22,10 @@ import com.google.gson.reflect.TypeToken;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.models.BillingAddress;
+import com.midtrans.sdk.corekit.models.CustomerDetails;
+import com.midtrans.sdk.corekit.models.ShippingAddress;
 import com.midtrans.sdk.corekit.models.UserAddress;
-import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.activities.UserDetailsActivity;
 import com.midtrans.sdk.uikit.adapters.ListCountryAdapter;
@@ -311,10 +313,10 @@ public class UserAddressFragment extends Fragment {
         SdkUIFlowUtil.hideKeyboard(getActivity());
 
         try {
-            UserDetail userDetail = SdkUIFlowUtil.getSavedUserDetails();
+            CustomerDetails userDetail = SdkUIFlowUtil.getSavedUserDetails();
 
             if (userDetail != null) {
-                Logger.i(TAG, "userDetails:" + userDetail.getUserFullName());
+                Logger.i(TAG, "userDetails:" + userDetail.getFirstName());
             }
 
             ArrayList<UserAddress> userAddresses = new ArrayList<>();
@@ -350,34 +352,22 @@ public class UserAddressFragment extends Fragment {
                     return;
                 }
 
-                UserAddress shippingUserAddress = new UserAddress();
+                ShippingAddress shippingUserAddress = new ShippingAddress();
                 shippingUserAddress.setAddress(shippingAddress);
                 shippingUserAddress.setCity(shippingCity);
-                shippingUserAddress.setCountry(shippingCountryCodeSelected);
-                shippingUserAddress.setZipcode(shippingZipcode);
-                shippingUserAddress.setAddressType(Constants.ADDRESS_TYPE_SHIPPING);
-                userAddresses.add(shippingUserAddress);
+                shippingUserAddress.setCountryCode(shippingCountryCodeSelected);
+                shippingUserAddress.setPostalCode(shippingZipcode);
+                userDetail.setShippingAddress(shippingUserAddress);
             }
 
-            UserAddress billingUserAddress = new UserAddress();
+            BillingAddress billingUserAddress = new BillingAddress();
             billingUserAddress.setAddress(billingAddress);
             billingUserAddress.setCity(billingCity);
-            billingUserAddress.setCountry(billingCountryCodeSelected);
-            billingUserAddress.setZipcode(zipcode);
-            if (cbShippingAddress.isChecked()) {
-                billingUserAddress.setAddressType(Constants.ADDRESS_TYPE_BOTH);
-            } else {
-                billingUserAddress.setAddressType(Constants.ADDRESS_TYPE_BILLING);
-            }
-            userAddresses.add(billingUserAddress);
+            billingUserAddress.setCountryCode(billingCountryCodeSelected);
+            billingUserAddress.setPostalCode(zipcode);
+            userDetail.setBillingAddress(billingUserAddress);
 
-            if (userDetail == null) {
-                userDetail = new UserDetail();
-            }
-
-            userDetail.setUserAddresses(userAddresses);
-            //TODO: since we remove LocalDataHandler this method will can't save the changes data
-//            LocalDataHandler.saveObject(getString(R.string.user_details), userDetail);
+            //TODO: need to update customer detail in transaction request
 
             ((UserDetailsActivity) getActivity()).showPaymentPage();
         } catch (RuntimeException e) {

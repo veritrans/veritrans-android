@@ -25,7 +25,6 @@ import com.midtrans.sdk.corekit.models.MandiriBillPayTransferModel;
 import com.midtrans.sdk.corekit.models.MandiriClickPayModel;
 import com.midtrans.sdk.corekit.models.ShippingAddress;
 import com.midtrans.sdk.corekit.models.UserAddress;
-import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.BankTransferRequestModel;
 import com.midtrans.sdk.corekit.models.snap.CreditCardPaymentModel;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
@@ -48,16 +47,11 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.ArrayList;
 
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
-import static org.powermock.api.mockito.PowerMockito.verifyStatic;
-import static org.powermock.api.mockito.PowerMockito.when;
-
-
 /**
  * Created by ziahaqi on 7/13/16.
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Settings.class, Settings.Secure.class, LocalDataHandler.class, Utils.class,
+@PrepareForTest({Settings.class, Settings.Secure.class, Utils.class,
         Log.class, TextUtils.class, Logger.class, MixpanelAnalyticsManager.class})
 @PowerMockIgnore("javax.net.ssl.*")
 public class SDKUtilsTest {
@@ -118,8 +112,6 @@ public class SDKUtilsTest {
     @Mock
     private Resources resourceMock;
     private String userDetail = "user_details";
-    @Mock
-    private UserDetail userDetailMock;
     private String fullname = "fullname";
     private String email = "email@domain.com";
     private String phone = "phone";
@@ -159,7 +151,6 @@ public class SDKUtilsTest {
         PowerMockito.mockStatic(Log.class);
         PowerMockito.mockStatic(Logger.class);
         PowerMockito.mockStatic(Utils.class);
-        PowerMockito.mockStatic(LocalDataHandler.class);
         PowerMockito.mockStatic(Settings.class);
         PowerMockito.mockStatic(Settings.Secure.class);
         PowerMockito.mockStatic(MixpanelAnalyticsManager.class);
@@ -175,100 +166,6 @@ public class SDKUtilsTest {
         Mockito.when(customerDetailRequest.getEmail()).thenReturn(email);
         Mockito.when(customerDetailRequest.getFullName()).thenReturn(fullname);
         Mockito.when(customerDetailRequest.getPhone()).thenReturn(phone);
-    }
-
-
-//    @Test
-//    public void initializeUserInfo() throws ClassNotFoundException {
-//        MemberModifier.stub(MemberMatcher.method(SdkUtil.class, "getUserDetails", TransactionRequest.class)).toReturn(transactionRequestMock);
-//
-//        Assert.assertEquals(transactionRequestMock, SdkUtil.initializeUserInfo(transactionRequestMock));
-//    }
-
-
-//    @Test
-//    public void getUserDetailTest() {
-//        mockStatic(LocalDataHandler.class);
-//        when(LocalDataHandler.readObject(userDetail, UserDetail.class)).thenReturn(userDetailMock);
-//        when(userDetailMock.getUserFullName()).thenReturn(fullname);
-//        SdkUtil.getUserDetails(transactionRequestMock);
-//
-//        verifyStatic(Mockito.times(1));
-//    }
-
-
-    @Test
-    public void extractUserAddress_whenBoth() {
-        when(userAddressMock1.getAddressType()).thenReturn(Constants.ADDRESS_TYPE_BOTH);
-        when(userAddressMock1.getAddress()).thenReturn("address1");
-        when(userAddressMock1.getCity()).thenReturn("city1");
-        when(userAddressMock1.getCountry()).thenReturn("indonesia1");
-        when(userDetailMock.getUserFullName()).thenReturn("fullname");
-        when(userDetailMock.getPhoneNumber()).thenReturn("phoneNumber");
-
-        userAddressListMock = new ArrayList<>();
-        TransactionRequest transactionRequest = new TransactionRequest(orderId, amount);
-        CustomerDetails customerDetails = new CustomerDetails(FIRST_NAME, LAST_NAME, EMAIL, PHONE);
-        transactionRequest.setCustomerDetails(customerDetails);
-
-        userAddressListMock.add(userAddressMock1);
-
-        TransactionRequest request = SdkUtil.extractUserAddress(userDetailMock, userAddressListMock, transactionRequest);
-        Assert.assertEquals(1, request.getBillingAddressArrayList().size());
-        Assert.assertEquals(1, request.getShippingAddressArrayList().size());
-
-        Assert.assertNotNull(request.getCustomerDetails());
-        Assert.assertEquals(request.getCustomerDetails().getShippingAddress(), request.getShippingAddressArrayList().get(0));
-        Assert.assertEquals(request.getCustomerDetails().getBillingAddress(), request.getBillingAddressArrayList().get(0));
-
-    }
-
-    @Test
-    public void extractUserAddress_whenTypeAddressShippingOnly() {
-        when(userAddressMock1.getAddressType()).thenReturn(Constants.ADDRESS_TYPE_SHIPPING);
-        when(userAddressMock1.getAddress()).thenReturn("address1");
-        when(userAddressMock1.getCity()).thenReturn("city1");
-        when(userAddressMock1.getCountry()).thenReturn("indonesia1");
-        when(userDetailMock.getUserFullName()).thenReturn("fullname");
-        when(userDetailMock.getPhoneNumber()).thenReturn("phoneNumber");
-        userAddressListMock = new ArrayList<>();
-        TransactionRequest transactionRequest = new TransactionRequest(orderId, amount);
-        CustomerDetails customerDetails = new CustomerDetails(FIRST_NAME, LAST_NAME, EMAIL, PHONE);
-        transactionRequest.setCustomerDetails(customerDetails);
-        userAddressListMock.add(userAddressMock1);
-
-        TransactionRequest request = SdkUtil.extractUserAddress(userDetailMock, userAddressListMock, transactionRequest);
-
-
-        Assert.assertEquals(0, request.getBillingAddressArrayList().size());
-        Assert.assertEquals(1, request.getShippingAddressArrayList().size());
-
-        Assert.assertNotNull(request.getCustomerDetails());
-        Assert.assertEquals(request.getCustomerDetails().getShippingAddress(), request.getShippingAddressArrayList().get(0));
-
-    }
-
-    @Test
-    public void extractUserAddress_whenAddressBillingOnly() {
-        when(userAddressMock1.getAddressType()).thenReturn(Constants.ADDRESS_TYPE_BILLING);
-        when(userAddressMock1.getAddress()).thenReturn("address1");
-        when(userAddressMock1.getCity()).thenReturn("city1");
-        when(userAddressMock1.getCountry()).thenReturn("indonesia1");
-        when(userDetailMock.getUserFullName()).thenReturn("fullname");
-        when(userDetailMock.getPhoneNumber()).thenReturn("phoneNumber");
-        userAddressListMock = new ArrayList<>();
-        TransactionRequest transactionRequest = new TransactionRequest(orderId, amount);
-        CustomerDetails customerDetails = new CustomerDetails(FIRST_NAME, LAST_NAME, EMAIL, PHONE);
-        transactionRequest.setCustomerDetails(customerDetails);
-
-        userAddressListMock.add(userAddressMock1);
-
-        TransactionRequest request = SdkUtil.extractUserAddress(userDetailMock, userAddressListMock, transactionRequest);
-        Assert.assertEquals(1, request.getBillingAddressArrayList().size());
-        Assert.assertEquals(0, request.getShippingAddressArrayList().size());
-
-        Assert.assertNotNull(request.getCustomerDetails());
-        Assert.assertEquals(request.getCustomerDetails().getBillingAddress(), request.getBillingAddressArrayList().get(0));
     }
 
     @Test
