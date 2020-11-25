@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
@@ -44,7 +45,7 @@ public class SavedCreditCardActivity extends BasePaymentActivity implements Save
         initCardsContainer();
         initTheme();
         initActionButton();
-//        initSavedCards();
+        initSavedCards();
     }
 
     private void setTitle(String title) {
@@ -87,33 +88,33 @@ public class SavedCreditCardActivity extends BasePaymentActivity implements Save
             @Override
             public void onItemDelete(int position) {
                 SaveCardRequest request = adapter.getItem(position);
-//                showDeleteCardConfirmationDialog(request);
+                showDeleteCardConfirmationDialog(request);
             }
         });
     }
 
-//    private void showDeleteCardConfirmationDialog(final SaveCardRequest request) {
-//        if (isActivityRunning()) {
-//            AlertDialog alertDialog = new AlertDialog.Builder(this)
-//                    .setMessage(R.string.card_delete_message)
-//                    .setPositiveButton(R.string.text_yes, new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialogInterface, int j) {
-//                            dialogInterface.dismiss();
-//                            showProgressLayout();
-//                            presenter.deleteSavedCard(request);
-//                        }
-//                    })
-//                    .setNegativeButton(R.string.text_no, new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialogInterface, int i) {
-//                            dialogInterface.dismiss();
-//                        }
-//                    })
-//                    .create();
-//            alertDialog.show();
-//        }
-//    }
+    private void showDeleteCardConfirmationDialog(final SaveCardRequest request) {
+        if (isActivityRunning()) {
+            AlertDialog alertDialog = new AlertDialog.Builder(this)
+                    .setMessage(R.string.card_delete_message)
+                    .setPositiveButton(R.string.text_yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int j) {
+                            dialogInterface.dismiss();
+                            showProgressLayout();
+                            presenter.deleteSavedCard(request);
+                        }
+                    })
+                    .setNegativeButton(R.string.text_no, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    })
+                    .create();
+            alertDialog.show();
+        }
+    }
 
 
     @Override
@@ -123,19 +124,19 @@ public class SavedCreditCardActivity extends BasePaymentActivity implements Save
         listCard = (RecyclerView) findViewById(R.id.container_saved_card);
     }
 
-//    private void initSavedCards() {
-//        if (presenter.isSavedCardEnabled()) {
-//            if (presenter.isSavedCardsAvailable()) {
-//                setSavedCards(presenter.getSavedCards());
-//            } else if (!presenter.isBuiltInTokenStorage()) {
-//                fetchSavedCard();
-//            } else {
-//                showCardDetailPage(null);
-//            }
-//        } else {
-//            showCardDetailPage(null);
-//        }
-//    }
+    private void initSavedCards() {
+        if (presenter.isSavedCardEnabled()) {
+            if (presenter.isSavedCardsAvailable()) {
+                setSavedCards(presenter.getSavedCards());
+            } else if (!presenter.isBuiltInTokenStorage()) {
+                fetchSavedCard();
+            } else {
+                showCardDetailPage(null);
+            }
+        } else {
+            showCardDetailPage(null);
+        }
+    }
 
     private void setSavedCards(List<SaveCardRequest> savedCards) {
         adapter.setData(new ArrayList<>(savedCards));
@@ -150,10 +151,10 @@ public class SavedCreditCardActivity extends BasePaymentActivity implements Save
         startActivityForResult(intent, UiKitConstants.INTENT_CARD_DETAILS);
     }
 
-//    public void fetchSavedCard() {
-//        showProgressLayout();
-//        presenter.fetchSavedCards();
-//    }
+    public void fetchSavedCard() {
+        showProgressLayout();
+        presenter.fetchSavedCards();
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
