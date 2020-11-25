@@ -5,18 +5,16 @@ import android.text.TextUtils;
 
 import com.midtrans.sdk.corekit.callback.DeleteCardCallback;
 import com.midtrans.sdk.corekit.callback.SaveCardCallback;
-import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.TransactionRequest;
+import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.SaveCardResponse;
-import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.SavedToken;
 import com.midtrans.sdk.uikit.models.CreditCardTransaction;
 import com.midtrans.sdk.uikit.models.CreditCardType;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
-import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,71 +55,71 @@ public class BaseCreditCardPresenter<V extends BaseView> extends BasePaymentPres
         return saveCard;
     }
 
-//    protected void deleteSavedCard(SaveCardRequest savedCard, BaseCreditCardPaymentView view) {
-//        if (getMidtransSDK().isEnableBuiltInTokenStorage()) {
-//            deleteCardFromTokenStorage(savedCard, view);
-//        } else {
-//            List<SavedToken> savedTokens = getMidtransSDK().getCreditCard().getSavedTokens();
-//            List<SaveCardRequest> savedCards = SdkUIFlowUtil.convertSavedTokens(savedTokens);
-//
-//            ArrayList<SaveCardRequest> cardList = new ArrayList<>();
-//            if (savedCards != null && !savedCards.isEmpty()) {
-//                cardList.addAll(savedCards);
-//                for (int i = 0; i < cardList.size(); i++) {
-//                    SaveCardRequest saveCard = cardList.get(i);
-//                    if (saveCard != null) {
-//                        if (!TextUtils.isEmpty(saveCard.getMaskedCard()) && saveCard.getMaskedCard().equalsIgnoreCase(savedCard.getMaskedCard())) {
-//                            cardList.remove(cardList.get(i));
-//                        }
-//                    }
-//                }
-//            }
-//
-//            deleteCardFromMerchantServer(cardList, savedCard.getMaskedCard(), view);
-//        }
-//    }
+    protected void deleteSavedCard(SaveCardRequest savedCard, BaseCreditCardPaymentView view) {
+        if (getMidtransSDK().isEnableBuiltInTokenStorage()) {
+            deleteCardFromTokenStorage(savedCard, view);
+        } else {
+            List<SavedToken> savedTokens = getMidtransSDK().getCreditCard().getSavedTokens();
+            List<SaveCardRequest> savedCards = SdkUIFlowUtil.convertSavedTokens(savedTokens);
 
-//    private void deleteCardFromMerchantServer(ArrayList<SaveCardRequest> cardList, final String maskedCard, final BaseCreditCardPaymentView view) {
-//        UserDetail userDetail = LocalDataHandler.readObject(UiKitConstants.KEY_USER_DETAILS, UserDetail.class);
-//        if (userDetail != null) {
-//            getMidtransSDK().saveCards(userDetail.getUserId(), cardList, new SaveCardCallback() {
-//                @Override
-//                public void onSuccess(SaveCardResponse response) {
-//                    view.onDeleteCardSuccess(maskedCard);
-//                }
-//
-//                @Override
-//                public void onFailure(String reason) {
-//                    view.onDeleteCardFailure();
-//                }
-//
-//                @Override
-//                public void onError(Throwable error) {
-//                    view.onDeleteCardFailure();
-//                }
-//            });
-//        } else {
-//            view.onDeleteCardFailure();
-//        }
-//    }
+            ArrayList<SaveCardRequest> cardList = new ArrayList<>();
+            if (savedCards != null && !savedCards.isEmpty()) {
+                cardList.addAll(savedCards);
+                for (int i = 0; i < cardList.size(); i++) {
+                    SaveCardRequest saveCard = cardList.get(i);
+                    if (saveCard != null) {
+                        if (!TextUtils.isEmpty(saveCard.getMaskedCard()) && saveCard.getMaskedCard().equalsIgnoreCase(savedCard.getMaskedCard())) {
+                            cardList.remove(cardList.get(i));
+                        }
+                    }
+                }
+            }
 
-//    protected void deleteCardFromTokenStorage(final SaveCardRequest savedCard, final BaseCreditCardPaymentView view) {
-//
-//        getMidtransSDK().deleteCard(getMidtransSDK().readAuthenticationToken(), savedCard.getMaskedCard(), new DeleteCardCallback() {
-//            @Override
-//            public void onSuccess(Void object) {
-//                view.onDeleteCardSuccess(savedCard.getMaskedCard());
-//            }
-//
-//            @Override
-//            public void onFailure(Void object) {
-//                view.onDeleteCardFailure();
-//            }
-//
-//            @Override
-//            public void onError(Throwable throwable) {
-//                view.onDeleteCardFailure();
-//            }
-//        });
-//    }
+            deleteCardFromMerchantServer(cardList, savedCard.getMaskedCard(), view);
+        }
+    }
+
+    private void deleteCardFromMerchantServer(ArrayList<SaveCardRequest> cardList, final String maskedCard, final BaseCreditCardPaymentView view) {
+        CustomerDetails userDetail = getMidtransSDK().getTransactionRequest().getCustomerDetails();
+        if (userDetail != null) {
+            getMidtransSDK().saveCards(userDetail.getCustomerIdentifier(), cardList, new SaveCardCallback() {
+                @Override
+                public void onSuccess(SaveCardResponse response) {
+                    view.onDeleteCardSuccess(maskedCard);
+                }
+
+                @Override
+                public void onFailure(String reason) {
+                    view.onDeleteCardFailure();
+                }
+
+                @Override
+                public void onError(Throwable error) {
+                    view.onDeleteCardFailure();
+                }
+            });
+        } else {
+            view.onDeleteCardFailure();
+        }
+    }
+
+    protected void deleteCardFromTokenStorage(final SaveCardRequest savedCard, final BaseCreditCardPaymentView view) {
+
+        getMidtransSDK().deleteCard(getMidtransSDK().readAuthenticationToken(), savedCard.getMaskedCard(), new DeleteCardCallback() {
+            @Override
+            public void onSuccess(Void object) {
+                view.onDeleteCardSuccess(savedCard.getMaskedCard());
+            }
+
+            @Override
+            public void onFailure(Void object) {
+                view.onDeleteCardFailure();
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                view.onDeleteCardFailure();
+            }
+        });
+    }
 }

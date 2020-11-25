@@ -148,7 +148,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements
         initHelpButtons();
         initInstallmentButton();
         initScanCardButton();
-//        initDeleteButton();
+        initDeleteButton();
         initCheckBox();
         initLayoutState();
         bindData();
@@ -274,35 +274,35 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements
         }
     }
 
-//    private void initDeleteButton() {
-//        buttonDeleteCard.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                showCardDeletionConfirmation();
-//            }
-//        });
-//    }
+    private void initDeleteButton() {
+        buttonDeleteCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCardDeletionConfirmation();
+            }
+        });
+    }
 
-//    private void showCardDeletionConfirmation() {
-//        AlertDialog alertDialog = new AlertDialog.Builder(this)
-//            .setMessage(R.string.card_delete_message)
-//            .setPositiveButton(R.string.text_yes, new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialogInterface, int i) {
-//                    dialogInterface.dismiss();
-//                    showProgressLayout(getString(R.string.processing_delete));
-//                    presenter.deleteSavedCard(savedCard);
-//                }
-//            })
-//            .setNegativeButton(R.string.text_no, new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialogInterface, int i) {
-//                    dialogInterface.dismiss();
-//                }
-//            })
-//            .create();
-//        alertDialog.show();
-//    }
+    private void showCardDeletionConfirmation() {
+        AlertDialog alertDialog = new AlertDialog.Builder(this)
+            .setMessage(R.string.card_delete_message)
+            .setPositiveButton(R.string.text_yes, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                    showProgressLayout(getString(R.string.processing_delete));
+                    presenter.deleteSavedCard(savedCard);
+                }
+            })
+            .setNegativeButton(R.string.text_no, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            })
+            .create();
+        alertDialog.show();
+    }
 
     private void bindData() {
         textTitle.setText(R.string.card_details);
