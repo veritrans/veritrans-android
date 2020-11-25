@@ -333,17 +333,17 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
                 new SaveCardCallback() {
                     @Override
                     public void onSuccess(SaveCardResponse response) {
-                        Logger.d("SAVE_CARD", "savecards:success");
+                        Logger.d(TAG, "savecards:success");
                     }
 
                     @Override
                     public void onFailure(String reason) {
-                        Logger.d("SAVE_CARD", "savecards:failed");
+                        Logger.d(TAG, "savecards:failed");
                     }
 
                     @Override
                     public void onError(Throwable error) {
-                        Logger.d("SAVE_CARD", "savecards:error");
+                        Logger.d(TAG, "savecards:error");
                     }
                 });
     }
