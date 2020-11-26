@@ -367,8 +367,6 @@ public class UserAddressFragment extends Fragment {
             billingUserAddress.setPostalCode(zipcode);
             userDetail.setBillingAddress(billingUserAddress);
 
-            //TODO: need to update customer detail in transaction request
-
             ((UserDetailsActivity) getActivity()).showPaymentPage();
         } catch (RuntimeException e) {
             Logger.e(TAG, "validateAndSaveAddress:" + e.getMessage());

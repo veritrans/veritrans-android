@@ -159,7 +159,6 @@ public class UserDetailFragment extends Fragment {
             userDetail.setCustomerIdentifier(UUID.randomUUID().toString());
         }
         Logger.i("writting in file");
-        //TODO: need to update customer detail in transaction request
 
         UserAddressFragment userAddressFragment = UserAddressFragment.newInstance();
         ((UserDetailsActivity) getActivity()).replaceFragment(userAddressFragment);

@@ -27,6 +27,7 @@ import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.models.BillingAddress;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.ShippingAddress;
 import com.midtrans.sdk.corekit.models.snap.TransactionResult;
@@ -255,10 +256,10 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
                         Toast.makeText(this, "Unable to save change(s). Please make sure the email is valid.", Toast.LENGTH_SHORT).show();
                     } else {
                         if (isValid()) {
+                            userDetail.setCustomerIdentifier(editEmail.getText().toString().trim());
                             userDetail.setFirstName(editName.getText().toString().trim());
                             userDetail.setEmail(editEmail.getText().toString().trim());
                             userDetail.setPhone(editPhone.getText().toString().trim());
-                            //TODO need to update customer detail on transaction request
 
                             openField(false);
                             editCustBtn.setVisibility(View.VISIBLE);
@@ -287,8 +288,11 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
                 if (isInEditMode) {
                     Toast.makeText(this, "Please save or cancel your information changes first!", Toast.LENGTH_SHORT).show();
                 } else {
+                    MidtransSDK.getInstance().getTransactionRequest().setCustomerDetails(updateCustomerDetails(userDetail));
                     MidtransSDK.getInstance().startPaymentUiFlow(DemoOrderReviewActivity.this);
                     overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+
+                    System.out.println(new Gson().toJson(getUserDetail()));
                 }
                 break;
             case R.id.button_snap_pay:
@@ -395,5 +399,21 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
 
     private CustomerDetails getUserDetail() {
         return MidtransSDK.getInstance().getTransactionRequest().getCustomerDetails();
+    }
+
+    private CustomerDetails updateCustomerDetails(CustomerDetails customerDetails) {
+        ShippingAddress shippingAddress = new ShippingAddress();
+        shippingAddress.setAddress(deliveryAddress.getText().toString().trim());
+        shippingAddress.setCity(cityAddress.getText().toString().trim());
+        shippingAddress.setPostalCode(postalCodeAddress.getText().toString().trim());
+        customerDetails.setShippingAddress(shippingAddress);
+
+        BillingAddress billingAddress = new BillingAddress();
+        billingAddress.setAddress(deliveryAddress.getText().toString().trim());
+        billingAddress.setCity(cityAddress.getText().toString().trim());
+        billingAddress.setPostalCode(postalCodeAddress.getText().toString().trim());
+        customerDetails.setBillingAddress(billingAddress);
+
+        return customerDetails;
     }
 }

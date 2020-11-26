@@ -219,8 +219,6 @@ public class UserAddressActivity extends AppCompatActivity {
                 userDetail.setShippingAddress(userAddress);
             }
 
-            //TODO: need to update address to customer details on transaction request
-
             setResult(RESULT_OK);
             finish();
         } catch (RuntimeException e) {
