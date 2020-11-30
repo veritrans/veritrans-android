@@ -19,6 +19,7 @@ Besides [initialization step](https://github.com/veritrans/veritrans-android/wik
 To initialize the UI kit SDK, use these codes.
 
 ```Java
+//setLanguage to either "en" for english or "id" for bahasa
 SdkUIFlowBuilder.init(this, CLIENT_KEY, BASE_URL, new TransactionFinishedCallback() {
 	@Override
    public void onTransactionFinished(TransactionResult result) {
@@ -30,6 +31,7 @@ SdkUIFlowBuilder.init(this, CLIENT_KEY, BASE_URL, new TransactionFinishedCallbac
 		.setDefaultText("open_sans_regular.ttf")
 		.setSemiBoldText("open_sans_semibold.ttf")
 		.setBoldText("open_sans_bold.ttf")
+		.setLanguage("en")
 		.buildSDK();
 ```
 
@@ -66,6 +68,10 @@ Then to ensure this replace library theme, please add these lines into your `And
         android:theme="AppTheme"
         tools:replace="android:theme">
 ```
+
+## Language customization
+In order to force the SDK to change to Bahasa, we can use `.setLanguage("id")` when we init the `SdkUIFlowBuilder`
+"en" for english or "id" for Bahasa
 
 ## Starting UI Flow
 
