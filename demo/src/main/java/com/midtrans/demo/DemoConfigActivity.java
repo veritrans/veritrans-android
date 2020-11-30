@@ -7,9 +7,11 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatRadioButton;
@@ -2894,6 +2896,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         autoReadSmsEnabledSelection.setSupportButtonTintList(colorStateList);
     }
 
+    //setLanguage to either "en" for english or "id" for bahasa
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     private void initMidtransSDK() {
         SdkUIFlowBuilder.init()
                 .setContext(this)
@@ -2904,6 +2908,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 .setDefaultText("fonts/SourceSansPro-Regular.ttf")
                 .setBoldText("fonts/SourceSansPro-Bold.ttf")
                 .setSemiBoldText("fonts/SourceSansPro-Semibold.ttf")
+                .setLanguage("en")
                 .buildSDK();
     }
 
