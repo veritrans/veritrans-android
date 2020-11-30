@@ -29,7 +29,6 @@
             android:windowSoftInputMode="stateHidden|adjustPan">
         </activity>
         <activity android:name=".DemoProductListActivity" />
-        <activity android:name=".DemoSavedCardsActivity" />
         <activity android:name=".DemoAccountActivity" />
         <activity android:name=".DemoCardRegisterActivity" />
         <activity android:name=".GopayStatusActivity" />

@@ -9,6 +9,9 @@ import com.google.gson.annotations.SerializedName;
  */
 public class CustomerDetails {
 
+    @SerializedName("customer_identifier")
+    private  String customerIdentifier;
+
     @SerializedName("first_name")
     private String firstName;
 
@@ -22,11 +25,7 @@ public class CustomerDetails {
     @SerializedName("billing_address")
     private BillingAddress billingAddress;
 
-
-    public CustomerDetails() {
-
-    }
-
+    public CustomerDetails() { }
 
     public CustomerDetails(String firstName, String lastName, String email, String phone) {
         this.firstName = firstName;
@@ -35,6 +34,13 @@ public class CustomerDetails {
         this.phone = phone;
     }
 
+    public String getCustomerIdentifier() {
+        return customerIdentifier;
+    }
+
+    public void setCustomerIdentifier(String customerIdentifier) {
+        this.customerIdentifier = customerIdentifier;
+    }
 
     public String getFirstName() {
         return firstName;

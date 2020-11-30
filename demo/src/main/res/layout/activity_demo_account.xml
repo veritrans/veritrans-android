@@ -74,41 +74,6 @@
             android:background="@color/white"
             android:orientation="vertical">
 
-            <RelativeLayout
-                android:id="@+id/layout_saved_cards"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:clickable="true"
-                android:foreground="?android:attr/selectableItemBackground">
-
-                <ImageView
-                    android:id="@+id/image_cards"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/ic_card" />
-
-                <com.midtrans.demo.widgets.DemoTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_toEndOf="@id/image_cards"
-                    android:layout_toRightOf="@id/image_cards"
-                    android:text="@string/account_mycards"
-                    android:textSize="18sp" />
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/ic_arrow_right" />
-            </RelativeLayout>
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"

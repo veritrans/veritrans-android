@@ -17,15 +17,16 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.midtrans.sdk.corekit.core.Constants;
-import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.Logger;
-import com.midtrans.sdk.corekit.models.UserAddress;
-import com.midtrans.sdk.corekit.models.UserDetail;
+import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.models.CustomerDetails;
+import com.midtrans.sdk.corekit.models.ShippingAddress;
 import com.midtrans.sdk.uikit.models.CountryCodeModel;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
+
 import java.io.InputStream;
 import java.util.ArrayList;
 
@@ -68,14 +69,10 @@ public class UserAddressActivity extends AppCompatActivity {
     private void bindData() {
         countryAdapter = new ListCountryAdapter(this, com.midtrans.sdk.uikit.R.layout.layout_row_country_code, countryCodeList);
 
-        UserAddress shippingAddress = null;
-        UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
-        if (userDetail != null && userDetail.getUserAddresses() != null && userDetail.getUserAddresses().size() > 0) {
-            for (UserAddress address : userDetail.getUserAddresses()) {
-                if (address.getAddressType() == Constants.ADDRESS_TYPE_SHIPPING || address.getAddressType() == Constants.ADDRESS_TYPE_BOTH) {
-                    shippingAddress = address;
-                }
-            }
+        ShippingAddress shippingAddress = null;
+        CustomerDetails userDetail = MidtransSDK.getInstance().getTransactionRequest().getCustomerDetails();
+        if (userDetail != null && userDetail.getShippingAddress() != null) {
+            shippingAddress = userDetail.getShippingAddress();
         }
 
         if (shippingAddress == null) {
@@ -85,9 +82,9 @@ public class UserAddressActivity extends AppCompatActivity {
 
         etAddress.setText(shippingAddress.getAddress());
         etCity.setText(shippingAddress.getCity());
-        etZipCode.setText(shippingAddress.getZipcode());
+        etZipCode.setText(shippingAddress.getPostalCode());
 
-        etCountry.setText(getCountryName(shippingAddress.getCountry()));
+        etCountry.setText(getCountryName(shippingAddress.getCountryCode()));
         etCountry.setAdapter(countryAdapter);
         etCountry.setThreshold(1);
 
@@ -196,33 +193,31 @@ public class UserAddressActivity extends AppCompatActivity {
     private void saveData() {
 
         try {
-            UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
+            CustomerDetails userDetail = MidtransSDK.getInstance().getTransactionRequest().getCustomerDetails();
 
             if (userDetail != null) {
-                Logger.i("UserAddressActivity", "userDetails:" + userDetail.getUserFullName());
+                Logger.i("UserAddressActivity", "userDetails:" + userDetail.getFirstName());
             }
 
-            ArrayList<UserAddress> userAddresses = userDetail.getUserAddresses();
+            ShippingAddress userAddresses = userDetail.getShippingAddress();
             String address = etAddress.getText().toString().trim();
             String city = etCity.getText().toString().trim();
             String zipcode = etZipCode.getText().toString().trim();
             String country = etCountry.getText().toString().trim();
 
-            if (userAddresses != null && userAddresses.get(0).getAddressType() == Constants.ADDRESS_TYPE_BOTH) {
-                UserAddress userAddress = userAddresses.get(0);
+            if (userAddresses != null) {
+                ShippingAddress userAddress = new ShippingAddress();
                 userAddress.setAddress(address);
                 userAddress.setCity(city);
-                userAddress.setZipcode(zipcode);
+                userAddress.setPostalCode(zipcode);
                 if (isCountryCodeExist(country)) {
-                    userAddress.setCountry(countryCodeSelected);
+                    userAddress.setCountryCode(countryCodeSelected);
                 } else {
                     Toast.makeText(this, "The country you choose is invalid. Please try again.", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                userDetail.setShippingAddress(userAddress);
             }
-
-            userDetail.setUserAddresses(userAddresses);
-            LocalDataHandler.saveObject(getString(com.midtrans.sdk.uikit.R.string.user_details), userDetail);
 
             setResult(RESULT_OK);
             finish();

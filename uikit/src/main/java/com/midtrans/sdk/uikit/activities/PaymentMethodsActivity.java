@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.koushikdutta.ion.Ion;
 import com.midtrans.raygun.RaygunClient;
 import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
@@ -29,7 +30,6 @@ import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.core.QrisAcquirer;
-import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.core.themes.ColorTheme;
 import com.midtrans.sdk.corekit.core.themes.CustomColorTheme;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
@@ -37,7 +37,6 @@ import com.midtrans.sdk.corekit.models.MerchantPreferences;
 import com.midtrans.sdk.corekit.models.PaymentDetails;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
-import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.promo.Promo;
 import com.midtrans.sdk.corekit.models.promo.PromoDetails;
 import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
@@ -81,6 +80,7 @@ import com.midtrans.sdk.uikit.views.xl_tunai.payment.XlTunaiPaymentActivity;
 import com.midtrans.sdk.uikit.widgets.BoldTextView;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -167,20 +167,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
         midtransSDK = MidtransSDK.getInstance();
         initializeTheme();
-        UserDetail userDetail = getUserDetails();
-
-        TransactionRequest transactionRequest = null;
         if (midtransSDK != null) {
-            transactionRequest = midtransSDK.getTransactionRequest();
-            if (transactionRequest != null) {
-
-                if (userDetail != null) {
-                    transactionRequest.setCustomerDetails(createCustomerDetails(userDetail));
-                } else {
-                    SdkUIFlowUtil.saveUserDetails();
-                }
-
-            }
             setUpPaymentMethods();
             setupRecyclerView();
 
@@ -189,36 +176,6 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             finish();
         }
     }
-
-    private CustomerDetails createCustomerDetails(UserDetail userDetail) {
-        CustomerDetails customerDetails = new CustomerDetails(userDetail.getUserFullName(), null,
-                userDetail.getEmail(), userDetail.getPhoneNumber());
-        Logger.d(String.format("Customer name: %s, Customer email: %s, Customer phone: %s", userDetail.getUserFullName(), userDetail.getEmail(), userDetail.getPhoneNumber()));
-        return customerDetails;
-    }
-
-    private UserDetail getUserDetails() {
-        UserDetail userDetail = null;
-
-        try {
-            userDetail = SdkUIFlowUtil.getSavedUserDetails();
-
-            if (userDetail == null) {
-                userDetail = new UserDetail();
-            }
-
-            if (TextUtils.isEmpty(userDetail.getUserId())) {
-                userDetail.setUserId(UUID.randomUUID().toString());
-            }
-
-            SdkUIFlowUtil.saveUserDetails(userDetail);
-        } catch (RuntimeException ex) {
-            ex.printStackTrace();
-        }
-
-        return userDetail;
-    }
-
 
     /**
      * bind views , initializes adapter and set it to recycler view.
@@ -338,7 +295,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     private void getPaymentPages() {
         progressContainer.setVisibility(View.VISIBLE);
         enableButtonBack(false);
-        UserDetail userDetail = getUserDetails();
+        CustomerDetails userDetail = midtransSDK.getTransactionRequest().getCustomerDetails();
 
         if (!isAlreadyUtilized()) {
 
@@ -350,13 +307,13 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             }
 
 
-            if (userDetail == null || TextUtils.isEmpty(userDetail.getUserId())) {
+            if (userDetail == null || TextUtils.isEmpty(userDetail.getCustomerIdentifier())) {
                 midtransSDK.notifyTransactionFinished(new TransactionResult(null, null, TransactionResult.STATUS_INVALID));
                 finish();
                 return;
             }
 
-            midtransSDK.checkout(userDetail.getUserId(), new CheckoutCallback() {
+            midtransSDK.checkout(userDetail.getCustomerIdentifier(), new CheckoutCallback() {
                 @Override
                 public void onSuccess(Token token) {
                     Logger.i(TAG, "checkout token:" + token.getTokenId());

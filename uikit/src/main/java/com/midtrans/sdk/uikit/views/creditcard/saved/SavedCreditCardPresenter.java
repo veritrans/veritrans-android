@@ -3,20 +3,19 @@ package com.midtrans.sdk.uikit.views.creditcard.saved;
 import android.content.Context;
 
 import com.midtrans.sdk.corekit.callback.GetCardCallback;
-import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
-import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.SavedToken;
 import com.midtrans.sdk.uikit.abstracts.BaseCreditCardPresenter;
 import com.midtrans.sdk.uikit.models.CreditCardTransaction;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
-import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by ziahaqi on 7/23/17.
@@ -57,8 +56,9 @@ public class SavedCreditCardPresenter extends BaseCreditCardPresenter<SavedCredi
 
 
     public void fetchSavedCards() {
-        UserDetail userDetail = LocalDataHandler.readObject(UiKitConstants.KEY_USER_DETAILS, UserDetail.class);
-        MidtransSDK.getInstance().getCards(userDetail.getUserId(), new GetCardCallback() {
+        CustomerDetails customerDetails = getMidtransSDK().getTransactionRequest().getCustomerDetails();
+        String customerId = (customerDetails.getEmail() != null) ? customerDetails.getEmail() : UUID.randomUUID().toString();
+        getMidtransSDK().getCards(customerId, new GetCardCallback() {
             @Override
             public void onSuccess(ArrayList<SaveCardRequest> response) {
                 if (response != null && !response.isEmpty()) {

@@ -10,10 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
-import com.midtrans.sdk.corekit.models.UserDetail;
+import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.activities.UserDetailsActivity;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
@@ -144,21 +143,23 @@ public class UserDetailFragment extends Fragment {
             return;
         }
 
-        UserDetail userDetail = null;
+        CustomerDetails userDetail = null;
         try {
-            userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
+            userDetail = SdkUIFlowUtil.getSavedUserDetails();
         } catch (Exception e) {
             e.printStackTrace();
         }
         if (userDetail == null) {
-            userDetail = new UserDetail();
+            userDetail = new CustomerDetails();
         }
-        userDetail.setUserFullName(fullName);
+        userDetail.setFirstName(fullName);
         userDetail.setEmail(email);
-        userDetail.setPhoneNumber(phoneNo);
-        userDetail.setUserId(UUID.randomUUID().toString());
+        userDetail.setPhone(phoneNo);
+        if (userDetail.getCustomerIdentifier() == null) {
+            userDetail.setCustomerIdentifier(UUID.randomUUID().toString());
+        }
         Logger.i("writting in file");
-        LocalDataHandler.saveObject(getString(R.string.user_details), userDetail);
+
         UserAddressFragment userAddressFragment = UserAddressFragment.newInstance();
         ((UserDetailsActivity) getActivity()).replaceFragment(userAddressFragment);
     }

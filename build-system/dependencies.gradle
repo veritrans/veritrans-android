@@ -16,7 +16,6 @@ ext {
     junitVersion = '4.1.2'
     espressoVersion = '2.2.2'
     ionVersion = '2.2.1'
-    securePreferencesVersion = 'v0.1.7'
     gsonVersion = '2.7'
     swipeLayoutVersion = '1.0.14'
     betterLinkVersion = '1.2'
@@ -47,7 +46,6 @@ ext {
             okHttpInterceptor   : "com.squareup.okhttp3:logging-interceptor:${okHttpVersion}",
             retrofit            : "com.squareup.retrofit2:retrofit:${retrofitVersion}",
             retrofitConverter   : "com.squareup.retrofit2:converter-gson:${retrofitVersion}",
-            securePreferences   : "com.github.scottyab:secure-preferences:${securePreferencesVersion}",
             gson                : "com.google.code.gson:gson:${gsonVersion}",
             swipeLayout         : "ru.rambler.android:swipe-layout:${swipeLayoutVersion}",
             betterLinkMovement  : "me.saket:better-link-movement-method:${betterLinkVersion}",

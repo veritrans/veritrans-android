@@ -3,15 +3,12 @@ package com.midtrans.sdk.uikit.views.banktransfer.payment;
 import android.text.TextUtils;
 
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
-import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
-import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentPresenter;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
-import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 
 /**
  * Created by ziahaqi on 8/14/17.

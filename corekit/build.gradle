@@ -89,7 +89,6 @@ dependencies {
     implementation libraries.okHttpInterceptor
     implementation libraries.retrofit
     implementation libraries.retrofitConverter
-    implementation libraries.securePreferences
 
     developmentApi midtransInternalLibraries.analyticsSandbox
     uatApi midtransInternalLibraries.analyticsSandbox

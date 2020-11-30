@@ -13,12 +13,13 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
+
 import com.midtrans.raygun.RaygunClient;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
-import com.midtrans.sdk.corekit.models.UserAddress;
-import com.midtrans.sdk.corekit.models.UserDetail;
+import com.midtrans.sdk.corekit.models.CustomerDetails;
+import com.midtrans.sdk.corekit.models.ShippingAddress;
 import com.midtrans.sdk.uikit.BuildConfig;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.UiKitOnBeforeSend;
@@ -26,8 +27,6 @@ import com.midtrans.sdk.uikit.fragments.UserAddressFragment;
 import com.midtrans.sdk.uikit.fragments.UserDetailFragment;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
-
-import java.util.ArrayList;
 
 public class UserDetailsActivity extends BaseActivity {
     public static final String CREDIT_CARD_ONLY = "cconly";
@@ -112,23 +111,20 @@ public class UserDetailsActivity extends BaseActivity {
             if (midtransSDK != null) {
                 UIKitCustomSetting setting = midtransSDK.getUIKitCustomSetting();
                 if (setting != null && setting.isSkipCustomerDetailsPages()) {
-
-                    SdkUIFlowUtil.saveUserDetails();
-
                     showPaymentPage();
                     return;
                 }
 
-                UserDetail userDetail = SdkUIFlowUtil.getSavedUserDetails();
+                CustomerDetails userDetail = SdkUIFlowUtil.getSavedUserDetails();
 
 
                 if (userDetail != null) {
-                    if (!TextUtils.isEmpty(userDetail.getUserFullName())) {
+                    if (!TextUtils.isEmpty(userDetail.getFirstName())) {
                         //TODO check user have address filled
                         //if no take user to select address
 
-                        ArrayList<UserAddress> userAddresses = userDetail.getUserAddresses();
-                        if (userAddresses != null && !userAddresses.isEmpty()) {
+                        ShippingAddress userAddresses = userDetail.getShippingAddress();
+                        if (userAddresses != null) {
                             showPaymentPage();
                         } else {
                             setView();

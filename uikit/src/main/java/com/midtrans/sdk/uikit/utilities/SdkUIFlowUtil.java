@@ -26,13 +26,12 @@ import com.google.gson.reflect.TypeToken;
 import com.midtrans.sdk.corekit.BuildConfig;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Currency;
-import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.BankTransferModel;
+import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
-import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
 import com.midtrans.sdk.corekit.models.snap.MerchantData;
@@ -56,7 +55,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -699,27 +697,6 @@ public class SdkUIFlowUtil {
         activity.startActivity(webIntent);
     }
 
-    public static UserDetail getSavedUserDetails() throws RuntimeException {
-        return LocalDataHandler.readObject(UiKitConstants.KEY_USER_DETAILS, UserDetail.class);
-    }
-
-    public static void saveUserDetails() throws RuntimeException {
-        UserDetail userDetail = LocalDataHandler.readObject(UiKitConstants.KEY_USER_DETAILS, UserDetail.class);
-        saveUserDetails(userDetail);
-    }
-
-    public static void saveUserDetails(UserDetail userDetail) throws RuntimeException {
-        if (userDetail == null) {
-            userDetail = new UserDetail();
-        }
-
-        if (TextUtils.isEmpty(userDetail.getUserId())) {
-            userDetail.setUserId(UUID.randomUUID().toString());
-        }
-
-        LocalDataHandler.saveObject(UiKitConstants.KEY_USER_DETAILS, userDetail);
-    }
-
     public static String getImagePath(Activity activity) {
         return "android.resource://" + activity.getPackageName() + "/";
     }
@@ -756,5 +733,9 @@ public class SdkUIFlowUtil {
         }
 
         return formattedAmount;
+    }
+
+    public static CustomerDetails getSavedUserDetails() {
+        return MidtransSDK.getInstance().getTransactionRequest().getCustomerDetails();
     }
 }
