@@ -14,6 +14,7 @@ import com.midtrans.sdk.corekit.models.ShippingAddress;
 import com.midtrans.sdk.corekit.models.snap.BankTransferRequestModel;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.Gopay;
+import com.midtrans.sdk.corekit.models.snap.Shopeepay;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,6 +85,7 @@ public class TransactionRequest {
      * contains user app deeplink for merchant app
      */
     private Gopay gopay;
+    private Shopeepay shopeepay;
     /**
      * helps to identify whether to use ui or not.
      */
@@ -415,5 +417,13 @@ public class TransactionRequest {
 
     public void setGopay(Gopay gopay) {
         this.gopay = gopay;
+    }
+
+    public Shopeepay getShopeepay() {
+        return shopeepay;
+    }
+
+    public void setShopeepay(Shopeepay shopeepay) {
+        this.shopeepay = shopeepay;
     }
 }
