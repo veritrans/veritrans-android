@@ -101,6 +101,10 @@ public class SdkUtil {
             requestModel.setGopay(transactionRequest.getGopay());
         }
 
+        if (transactionRequest.getShopeepay() != null) {
+            requestModel.setShopeepay(transactionRequest.getShopeepay());
+        }
+
         return requestModel;
     }
 
