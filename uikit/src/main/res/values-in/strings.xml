@@ -141,7 +141,7 @@
     <string name="mandiri_instruction_step5">Masukkan <b>Kode Pembayaran</b> Anda lalu tekan <b>Benar</b>.</string>
     <string name="mandiri_instruction_step6"><b>Detail pembayaran Anda</b> akan muncul pada halaman konfirmasi. Jika informasi telah sesuai tekan <b>Ya</b>.</string>
 
-    <string name="mandiri_internet_instruction_step1">Login ke Internet Banking Mandiri (<a href="http://ib.bankmandiri.co.id/">http://ib.bankmandiri.co.id/</a>).</string>
+    <string name="mandiri_internet_instruction_step1">Login ke Internet Banking Mandiri (<a href="https://ibank.bankmandiri.co.id/">https://ibank.bankmandiri.co.id/</a>).</string>
     <string name="mandiri_internet_instruction_step2">Pada menu utama, pilih <b>Bayar</b>, kemudian pilih <b>Multi Payment</b>.</string>
     <string name="mandiri_internet_instruction_step3">Pilih akun Anda di <b>Dari Rekening</b>, kemudian di Penyedia Jasa pilih <b>Midtrans</b>.</string>
     <string name="mandiri_internet_instruction_step4">Masukkan <b>Kode Pembayaran</b> Anda dan klik <b>Lanjutkan</b>.</string>
