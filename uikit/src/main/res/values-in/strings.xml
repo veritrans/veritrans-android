@@ -577,6 +577,7 @@
     <string name="payment_bank_description_mandiri">Bayar dari ATM Mandiri atau internet banking</string>
     <string name="payment_bank_description_permata">Bayar dari ATM Permata atau internet banking</string>
     <string name="payment_bank_description_bni">Bayar dari ATM BNI atau internet banking</string>
+    <string name="payment_bank_description_bri">Bayar dari ATM BRI atau internet banking</string>
     <string name="payment_bank_description_other">Bayar dari ATM bank lainnya</string>
 
     <string name="instruction_klikbca1">Mohon pastikan UserID aktif dan terdaftar di BCA.</string>
