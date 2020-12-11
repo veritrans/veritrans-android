@@ -54,6 +54,7 @@
             android:paddingLeft="@dimen/sixteen_dp"
             android:paddingRight="@dimen/sixteen_dp"
             android:paddingTop="@dimen/sixteen_dp"
+            android:hint="@string/hint_email_optional"
             android:focusable="true"
             android:focusableInTouchMode="true">
 
@@ -61,7 +62,6 @@
                 android:id="@+id/edit_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/hint_email_optional"
                 android:inputType="textEmailAddress"
                 android:maxLength="100"
                 android:maxLines="1" />
