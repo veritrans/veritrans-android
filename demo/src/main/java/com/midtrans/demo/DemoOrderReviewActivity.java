@@ -288,11 +288,11 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
                 if (isInEditMode) {
                     Toast.makeText(this, "Please save or cancel your information changes first!", Toast.LENGTH_SHORT).show();
                 } else {
-                    MidtransSDK.getInstance().getTransactionRequest().setCustomerDetails(updateCustomerDetails(userDetail));
+                    if (userDetail != null) {
+                        MidtransSDK.getInstance().getTransactionRequest().setCustomerDetails(updateCustomerDetails(userDetail));
+                    }
                     MidtransSDK.getInstance().startPaymentUiFlow(DemoOrderReviewActivity.this);
                     overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
-
-                    System.out.println(new Gson().toJson(getUserDetail()));
                 }
                 break;
             case R.id.button_snap_pay:
