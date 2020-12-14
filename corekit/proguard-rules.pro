@@ -107,7 +107,6 @@
 -keep class com.midtrans.sdk.corekit.analytics.MixpanelProperties{*;}
 -keep class com.midtrans.sdk.corekit.core.MidtransSDK {*;}
 -keep class com.midtrans.sdk.corekit.core.TransactionRequest {*;}
--keep class com.midtrans.sdk.corekit.core.LocalDataHandler {*;}
 -keep class com.midtrans.sdk.corekit.core.Logger {*;}
 -keep class com.midtrans.sdk.corekit.core.Constants {*;}
 -keep class com.midtrans.sdk.corekit.core.SdkUtil {*;}

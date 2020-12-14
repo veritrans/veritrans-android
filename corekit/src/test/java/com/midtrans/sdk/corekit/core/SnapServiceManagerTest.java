@@ -39,7 +39,6 @@ import com.midtrans.sdk.corekit.models.snap.payment.NewMandiriClickPayPaymentReq
 import com.midtrans.sdk.corekit.models.snap.payment.TelkomselEcashPaymentRequest;
 import com.midtrans.sdk.corekit.utilities.CallbackCollaborator;
 import com.midtrans.sdk.corekit.utilities.SnapServiceCallbackImplement;
-import com.securepreferences.SecurePreferences;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -96,9 +95,6 @@ public class SnapServiceManagerTest {
     private CertPathValidatorException errorInvalidCertPatMock;
     @Mock
     private SSLHandshakeException errorInvalidSSLException;
-
-    @Mock
-    private SecurePreferences preferencesMock;
 
     private SnapServiceManager snapTransactionManager;
     @Mock
@@ -165,7 +161,6 @@ public class SnapServiceManagerTest {
         Mockito.when(contextMock.getApplicationContext()).thenReturn(contextMock);
         Mockito.when(MidtransRestAdapter.newSnapApiService(timout)).thenReturn(snapApiServiceMock);
 
-        Mockito.when(SdkUtil.newPreferences(contextMock, "local.data")).thenReturn(preferencesMock);
         Mockito.when(SdkUtil.newSnapServiceManager(timout)).thenReturn(snapTransactionManager);
 
         snapTransactionManager = new SnapServiceManager(MidtransRestAdapter.newSnapApiService(timout));

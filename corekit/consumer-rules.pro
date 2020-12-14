@@ -15,6 +15,7 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
 -dontpreverify
 #-repackageclasses ''
 -allowaccessmodification
@@ -26,7 +27,6 @@
 
 -keepclassmembers class ** {
     public void onEvent*(***);
-    public void on*(***);
 }
 
 -keepclassmembers class ** {
@@ -45,7 +45,6 @@
 
 -keepnames class * implements android.os.Parcelable {
     public static final ** CREATOR;
-    public static final android.os.Parcelable$Creator *;
 }
 -keep interface org.parceler.Parcel
 -keep @org.parceler.Parcel class * { *; }
@@ -54,10 +53,6 @@
 # Keep the BuildConfig
 -keep class com.midtrans.sdk.corekit.BuildConfig { *; }
 -keep class com.midtrans.sdk.uikit.BuildConfig { *; }
-
-# Keep the support library
--keep class android.support.v4.** { *; }
--keep interface android.support.v4.** { *; }
 
 # http://stackoverflow.com/questions/29679177/cardview-shadow-not-appearing-in-lollipop-after-obfuscate-with-proguard/29698051
 -keep class android.support.v7.widget.RoundRectDrawable { *; }
@@ -104,11 +99,8 @@
 # Also you must note that if you are using GSON for conversion from JSON to POJO representation, you must ignore those POJO classes from being obfuscated.
 # Here include the POJO's that have you have created for mapping JSON response to POJO for example.
 #-keep class com.midtrans.sdk.activities.**{ *;}
--keep class com.midtrans.sdk.uikit.abstracts.**{*;}
--keep class com.midtrans.sdk.uikit.views.**{*;}
 -keep class com.midtrans.sdk.uikit.fragments.**{*;}
 -keep class com.midtrans.sdk.corekit.models.** { *; }
--keep class com.midtrans.sdk.uikit.models.** { *; }
 -keep class com.midtrans.sdk.uikit.scancard.** { *; }
 -keep class com.midtrans.sdk.corekit.eventbus.**{*;}
 -keep class com.midtrans.sdk.corekit.analytics.MixpanelEvent{*;}
@@ -116,27 +108,27 @@
 -keep class com.midtrans.sdk.corekit.core.MidtransSDK {*;}
 -keep class com.midtrans.sdk.corekit.core.TransactionRequest {*;}
 -keep class com.midtrans.sdk.corekit.core.Logger {*;}
--keep class com.midtrans.sdk.corekit.core.UIKitCustomSetting {*;}
 -keep class com.midtrans.sdk.corekit.core.Constants {*;}
 -keep class com.midtrans.sdk.corekit.core.SdkUtil {*;}
 -keep class com.midtrans.sdk.corekit.core.PaymentType {*;}
 -keep class com.midtrans.sdk.corekit.core.SdkCoreFlowBuilder {*;}
 -keep class com.midtrans.sdk.corekit.core.BaseSdkBuilder {*;}
 -keep class com.midtrans.sdk.corekit.core.ISdkFlow {*;}
--keep class com.midtrans.sdk.corekit.core.Currency {*;}
 -keep class com.midtrans.sdk.corekit.core.IScanner {*;}
--keep class com.midtrans.sdk.corekit.utilities.** {*;}
+-keep class com.midtrans.sdk.corekit.core.Currency {*;}
+-keep class com.midtrans.sdk.corekit.core.UIKitCustomSetting {*;}
 -keep class com.midtrans.sdk.corekit.core.themes.BaseColorTheme {*;}
 -keep class com.midtrans.sdk.corekit.core.themes.ColorTheme {*;}
 -keep class com.midtrans.sdk.corekit.core.themes.CustomColorTheme {*;}
--keep class com.midtrans.sdk.uikit.utilities.SdkUiFlowUtil {*;}
--keep class com.midtrans.sdk.uikit.SdkUIFlowBuilder {*;}
+-keep class com.midtrans.sdk.corekit.utilities.** {*;}
+-keep class com.midtrans.sdk.uikit.utilities.SdkuikitUtil {*;}
+-keep class com.midtrans.sdk.uikit.SdkuikitBuilder {*;}
 -keep class com.midtrans.sdk.uikit.uikit {*;}
--keep class com.midtrans.sdk.uikit.PaymentMethods {*;}
 -keep class com.midtrans.sdk.uikit.scancard.ExternalScanner{*;}
 -keep class com.midtrans.sdk.corekit.core.PaymentMethods{*;}
--keep class com.midtrans.sdk.corekit.core.PaymentException{*;}
 -keep class com.midtrans.sdk.corekit.callback.** { *; }
+-keep class com.midtrans.sdk.corekit.core.PaymentMethod{*;}
+-keep class com.midtrans.sdk.corekit.core.PaymentException{*;}
 
 
 # RxJava 0.21
@@ -167,7 +159,6 @@
 
 # Android
 -keep public class * extends android.app.Activity
--keep public class * extends android.support.v7.app.AppCompatActivity
 -keep public class * extends android.app.Application
 -keep public class * extends android.app.Service
 -keep public class * extends android.content.BroadcastReceiver
@@ -212,10 +203,7 @@ public static final *** NULL; }
 
 -keepattributes InnerClasses
 
--keep class **.R
--keep class **.R$* {
-   <fields>;
-}
+-dontwarn okhttp3.**
 
 -keepnames class * implements java.io.Serializable
 -keepclassmembers class * implements java.io.Serializable {
@@ -230,41 +218,8 @@ public static final *** NULL; }
 -keepclasseswithmembernames class * {
     native <methods>;
 }
--keepclassmembers public class * extends android.view.View {
-   void set*(***);
-   *** get*();
-}
-
--keepclassmembers class * extends android.app.Activity {
-   public void *(android.view.View);
-}
--keepclassmembers class * extends android.support.v7.app.AppCompatActivity{
-    public void *(android.view.View);
-}
-
--keepclassmembers public class * extends android.support.v4.app.Fragment{
-     public *** on*(...);
-     public *** *Dialog();
-     public void *(android.view.View);
-}
-
--keepclassmembers class fqcn.of.javascript.interface.for.webview {
-   public *;
-}
-
--keepclassmembers class * {
-    @android.webkit.JavascriptInterface <methods>;
-}
-
--keep class com.viewpagerindicator.** {*;}
-
--keep class com.midtrans.raygun.** { *; }
--keepattributes Exceptions, Signature, InnerClasses, SourceFile, LineNumberTable
--renamesourcefileattribute SourceFile
 
 -keep class com.tozny.crypto.android.AesCbcWithIntegrity$PrngFixes$* { *; }
-
--dontwarn com.koushikdutta.ion.conscrypt.**
 
 # Platform calls Class.forName on types which do not exist on Android to determine platform.
 -dontnote retrofit2.Platform
@@ -274,4 +229,5 @@ public static final *** NULL; }
 -keepattributes Signature
 # Retain declared checked exceptions for use by a Proxy instance.
 -keepattributes Exceptions
+
 -dontwarn javax.annotation.**

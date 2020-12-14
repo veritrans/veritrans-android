@@ -8,12 +8,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.ViewStub;
-import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
 import android.widget.Toast;
+
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
@@ -27,8 +24,7 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
 
     private ShopeePayPaymentPresenter presenter;
     private FancyButton buttonPrimary;
-    private View buttonPrimaryLayout;
-    private Boolean isAlreadyGotResponse = false, isShopeeInstalledWhenPaused;
+    private Boolean isAlreadyGotResponse = false;
     private int shopeePayIntentCode, attempt;
 
     @Override
@@ -46,24 +42,10 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
     @Override
     protected void onResume() {
         super.onResume();
-        if (isProductionBuild()){
-            presenter.setShopeeInstalled(this);
-            if (isShopeeInstalledWhenPaused != null && isShopeeInstalledWhenPaused != isShopeeInstalled()) {
-                recreate();
-            }
-        }
 
         if (shopeePayIntentCode == UiKitConstants.INTENT_CODE_SHOPEEPAY && presenter != null) {
             presenter.getPaymentStatus();
         }
-    }
-
-    @Override
-    protected void onPause() {
-        if(isProductionBuild()){
-            isShopeeInstalledWhenPaused = isShopeeInstalled();
-        }
-        super.onPause();
     }
 
     @Override
@@ -90,7 +72,6 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
     @Override
     public void bindViews() {
         buttonPrimary = findViewById(R.id.button_primary);
-        buttonPrimaryLayout = findViewById(R.id.layout_primary_button);
     }
 
     @Override
@@ -156,7 +137,6 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
     private void initPresenter() {
         presenter = new ShopeePayPaymentPresenter(this);
         presenter.setTabletDevice(this);
-        presenter.setShopeeInstalled(this);
     }
 
     private void initLayout() {
@@ -164,12 +144,7 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
         if (isTablet()) {
             stub.setLayoutResource(R.layout.uikit_layout_shopeepay_payment_tablet);
         } else {
-            if (isProductionBuild()) {
-                stub.setLayoutResource(isShopeeInstalled() ? R.layout.uikit_layout_shopeepay_payment
-                    : R.layout.layout_install_shopeepay);
-            } else {
-                stub.setLayoutResource(R.layout.uikit_layout_shopeepay_payment);
-            }
+            stub.setLayoutResource(R.layout.uikit_layout_shopeepay_payment);
         }
         stub.inflate();
     }
@@ -180,43 +155,22 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
 
     private void initActionButton() {
         if (isProductionBuild()) {
-            if (isShopeeInstalled() || isTablet()) {
-                buttonPrimary.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //to prevent "payment has been paid"
-                        if (isAlreadyGotResponse) {
-                            openDeeplink(presenter.getTransactionResponse().getDeeplinkUrl());
-                        } else {
-                            startShopeePayPayment();
-                        }
+            buttonPrimary.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //to prevent "payment has been paid"
+                    if (isAlreadyGotResponse) {
+                        openDeeplink(presenter.getTransactionResponse().getDeeplinkUrl());
+                    } else {
+                        startShopeePayPayment();
                     }
-                });
-                buttonPrimary.setTextBold();
-                buttonPrimary.setText(getString(R.string.uikit_shopeepay_confirm_button));
+                }
+            });
+            buttonPrimary.setTextBold();
+            buttonPrimary.setText(getString(R.string.uikit_shopeepay_confirm_button));
 
-                buttonPrimary.setIconResource(R.drawable.uikit_ic_shopeepay_white);
-                buttonPrimary.setIconPosition(FancyButton.POSITION_RIGHT);
-            } else {
-                //hide confirm button and adjust item details to bottom of screen
-                buttonPrimaryLayout.setVisibility(View.GONE);
-                findViewById(R.id.primary_button_separator).setVisibility(View.GONE);
-                View itemDetail = findViewById(R.id.container_item_details);
-                RelativeLayout.LayoutParams layoutParams = new LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-                itemDetail.setLayoutParams(layoutParams);
-
-                FancyButton buttonDownload = findViewById(R.id.button_download_shopee);
-                setTextColor(buttonDownload);
-                setIconColorFilter(buttonDownload);
-                buttonDownload.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        presenter.openShopeeInPlayStore(ShopeePayPaymentActivity.this);
-                    }
-                });
-            }
+            buttonPrimary.setIconResource(R.drawable.uikit_ic_shopeepay_white);
+            buttonPrimary.setIconPosition(FancyButton.POSITION_RIGHT);
         } else {
             buttonPrimary.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -298,7 +252,4 @@ public class ShopeePayPaymentActivity extends BasePaymentActivity implements Sho
         return presenter.isTablet();
     }
 
-    private boolean isShopeeInstalled() {
-        return presenter.isShopeeInstalled();
-    }
 }

@@ -26,15 +26,15 @@ import com.google.gson.reflect.TypeToken;
 import com.midtrans.sdk.corekit.BuildConfig;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Currency;
-import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.BankTransferModel;
+import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
-import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 import com.midtrans.sdk.corekit.models.snap.EnabledPayment;
+import com.midtrans.sdk.corekit.models.snap.MerchantData;
 import com.midtrans.sdk.corekit.models.snap.PromoResponse;
 import com.midtrans.sdk.corekit.models.snap.SavedToken;
 import com.midtrans.sdk.corekit.utilities.Utils;
@@ -55,7 +55,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -68,6 +67,8 @@ public class SdkUIFlowUtil {
 
     public static final String TYPE_PHONE = "PHONE";
     public static final String TYPE_TABLET = "TABLET";
+
+    public static final String PRIORITY_CARD_TWO_CLICK = "two_clicks";
 
     private static final String TAG = SdkUIFlowUtil.class.getSimpleName();
     private static MidtransProgressDialogFragment progressDialogFragment;
@@ -649,9 +650,18 @@ public class SdkUIFlowUtil {
 
     public static List<SaveCardRequest> convertSavedTokens(List<SavedToken> savedTokens) {
         List<SaveCardRequest> cards = new ArrayList<>();
+        MerchantData merchantData = MidtransSDK.getInstance().getMerchantData();
+        String priorityCardFeature = merchantData.getPriorityCardFeature();
         if (savedTokens != null && !savedTokens.isEmpty()) {
             for (SavedToken saved : savedTokens) {
-                cards.add(new SaveCardRequest(saved.getToken(), saved.getMaskedCard(), saved.getTokenType()));
+                String tokenType = saved.getTokenType();
+                if ((priorityCardFeature != null
+                        && !priorityCardFeature.isEmpty()
+                        && priorityCardFeature.equals(PRIORITY_CARD_TWO_CLICK)
+                ) || !merchantData.getRecurringMidIsActive()) {
+                    tokenType = priorityCardFeature;
+                }
+                cards.add(new SaveCardRequest(saved.getToken(), saved.getMaskedCard(), tokenType));
             }
         }
         return cards;
@@ -659,10 +669,19 @@ public class SdkUIFlowUtil {
 
     public static List<SavedToken> convertSavedCards(List<SaveCardRequest> savedCards) {
         List<SavedToken> cards = new ArrayList<>();
+        MerchantData merchantData = MidtransSDK.getInstance().getMerchantData();
+        String priorityCardFeature = merchantData.getPriorityCardFeature();
         if (savedCards != null && !savedCards.isEmpty()) {
             for (SaveCardRequest saved : savedCards) {
                 SavedToken savedToken = new SavedToken();
-                savedToken.setTokenType(saved.getType());
+                String tokenType = saved.getType();
+                if ((priorityCardFeature != null
+                        && !priorityCardFeature.isEmpty()
+                        && priorityCardFeature.equals(PRIORITY_CARD_TWO_CLICK)
+                ) || !merchantData.getRecurringMidIsActive()) {
+                    tokenType = priorityCardFeature;
+                }
+                savedToken.setTokenType(tokenType);
                 savedToken.setMaskedCard(saved.getMaskedCard());
                 savedToken.setToken(saved.getSavedTokenId());
                 cards.add(savedToken);
@@ -676,27 +695,6 @@ public class SdkUIFlowUtil {
         Intent webIntent = new Intent(Intent.ACTION_VIEW);
         webIntent.setData(Uri.parse(instructionUrl));
         activity.startActivity(webIntent);
-    }
-
-    public static UserDetail getSavedUserDetails() throws RuntimeException {
-        return LocalDataHandler.readObject(UiKitConstants.KEY_USER_DETAILS, UserDetail.class);
-    }
-
-    public static void saveUserDetails() throws RuntimeException {
-        UserDetail userDetail = LocalDataHandler.readObject(UiKitConstants.KEY_USER_DETAILS, UserDetail.class);
-        saveUserDetails(userDetail);
-    }
-
-    public static void saveUserDetails(UserDetail userDetail) throws RuntimeException {
-        if (userDetail == null) {
-            userDetail = new UserDetail();
-        }
-
-        if (TextUtils.isEmpty(userDetail.getUserId())) {
-            userDetail.setUserId(UUID.randomUUID().toString());
-        }
-
-        LocalDataHandler.saveObject(UiKitConstants.KEY_USER_DETAILS, userDetail);
     }
 
     public static String getImagePath(Activity activity) {
@@ -735,5 +733,9 @@ public class SdkUIFlowUtil {
         }
 
         return formattedAmount;
+    }
+
+    public static CustomerDetails getSavedUserDetails() {
+        return MidtransSDK.getInstance().getTransactionRequest().getCustomerDetails();
     }
 }

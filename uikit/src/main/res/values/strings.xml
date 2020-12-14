@@ -206,7 +206,7 @@
     <string name="mandiri_instruction_step5">Enter your Payment code and press <b>Correct</b>.</string>
     <string name="mandiri_instruction_step6">Your payment details will appear on the payment confirmation page. If the information is correct press <b>Yes</b>.</string>
 
-    <string name="mandiri_internet_instruction_step1">Login to Mandiri Internet Banking (<a href="http://ib.bankmandiri.co.id/">http://ib.bankmandiri.co.id/</a>).</string>
+    <string name="mandiri_internet_instruction_step1">Login to Mandiri Internet Banking (<a href="https://ibank.bankmandiri.co.id/">https://ibank.bankmandiri.co.id/</a>).</string>
     <string name="mandiri_internet_instruction_step2">From the main menu choose <b>Payment</b>, then choose <b>Multi Payment</b>.</string>
     <string name="mandiri_internet_instruction_step3">Select your account in <b>From Account</b>, then <b>Billing Name</b> select <b>Midtrans</b>.</string>
     <string name="mandiri_internet_instruction_step4">Enter the <b>Payment Code</b> and you will receive your payment details.</string>

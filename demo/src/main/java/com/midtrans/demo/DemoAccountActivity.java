@@ -18,7 +18,6 @@ import android.widget.RelativeLayout;
  */
 
 public class DemoAccountActivity extends AppCompatActivity {
-    private RelativeLayout layoutSavedCards;
     private Toolbar toolbar;
 
     @Override
@@ -27,7 +26,6 @@ public class DemoAccountActivity extends AppCompatActivity {
         setContentView(R.layout.activity_demo_account);
         bindViews();
         initToolbar();
-        initLayout();
         initThemes();
     }
 
@@ -73,23 +71,7 @@ public class DemoAccountActivity extends AppCompatActivity {
         });
     }
 
-    private void initLayout() {
-        layoutSavedCards.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startSavedCardActivity();
-            }
-        });
-    }
-
-    private void startSavedCardActivity() {
-        Intent intent = new Intent(this, DemoSavedCardsActivity.class);
-        startActivity(intent);
-        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
-    }
-
     private void bindViews() {
-        layoutSavedCards = (RelativeLayout) findViewById(R.id.layout_saved_cards);
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
     }
 

@@ -1,17 +1,15 @@
 apply plugin: 'com.android.library'
-
-group = 'com.midtrans'
-version = '1.12.0'
+apply from: "$rootDir/build-system/publish-variable.gradle"
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion "28.0.3"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 28
+        minSdkVersion rootProject.ext.uiMinSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.0"
+        versionName versionSdk
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -25,5 +23,5 @@ android {
 }
 
 dependencies {
-    compile 'com.google.code.gson:gson:2.7'
+    implementation libraries.gson
 }

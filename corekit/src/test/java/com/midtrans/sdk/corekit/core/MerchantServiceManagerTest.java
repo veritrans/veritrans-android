@@ -16,7 +16,6 @@ import com.midtrans.sdk.corekit.models.snap.Token;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.utilities.CallbackCollaborator;
 import com.midtrans.sdk.corekit.utilities.MerchantServiceCallbackImplement;
-import com.securepreferences.SecurePreferences;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -78,9 +77,6 @@ public class MerchantServiceManagerTest {
     @Mock
     private TokenRequestModel snapTokenRequestModelMock;
 
-    @Mock
-    private SecurePreferences preferencesMock;
-
     private MerchantServiceManager manager;
 
     @Mock
@@ -133,7 +129,6 @@ public class MerchantServiceManagerTest {
         Mockito.when(contextMock.getApplicationContext()).thenReturn(contextMock);
         Mockito.when(MidtransRestAdapter.newMerchantApiService(SDKConfigTest.MERCHANT_BASE_URL, timout)).thenReturn(merchantApiServiceMock);
 
-        Mockito.when(SdkUtil.newPreferences(contextMock, "local.data")).thenReturn(preferencesMock);
         Mockito.when(SdkUtil.newMerchantServiceManager(SDKConfigTest.MERCHANT_BASE_URL, timout)).thenReturn(manager);
 
         manager = new MerchantServiceManager(MidtransRestAdapter.newMerchantApiService(SDKConfigTest.MERCHANT_BASE_URL, timout));

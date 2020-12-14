@@ -22,6 +22,10 @@ public class MerchantData {
     private String merchantId;
     @SerializedName("acquiring_banks")
     private List<String> acquiringBanks;
+    @SerializedName("priority_card_feature")
+    private String priorityCardFeature;
+    @SerializedName("recurring_mid_is_active")
+    private Boolean recurringMidIsActive;
 
     public MerchantPreferences getPreference() {
         return preference;
@@ -69,5 +73,21 @@ public class MerchantData {
 
     public void setAcquiringBanks(List<String> acquiringBanks) {
         this.acquiringBanks = acquiringBanks;
+    }
+
+    public String getPriorityCardFeature() {
+        return priorityCardFeature;
+    }
+
+    public void setPriorityCardFeature(String priorityCardFeature) {
+        this.priorityCardFeature = priorityCardFeature;
+    }
+
+    public Boolean getRecurringMidIsActive() {
+        return recurringMidIsActive;
+    }
+
+    public void setRecurringMidIsActive(Boolean recurringMidIsActive) {
+        this.recurringMidIsActive = recurringMidIsActive;
     }
 }

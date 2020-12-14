@@ -5,18 +5,16 @@ import android.text.TextUtils;
 
 import com.midtrans.sdk.corekit.callback.DeleteCardCallback;
 import com.midtrans.sdk.corekit.callback.SaveCardCallback;
-import com.midtrans.sdk.corekit.core.LocalDataHandler;
 import com.midtrans.sdk.corekit.core.TransactionRequest;
+import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.SaveCardResponse;
-import com.midtrans.sdk.corekit.models.UserDetail;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.SavedToken;
 import com.midtrans.sdk.uikit.models.CreditCardTransaction;
 import com.midtrans.sdk.uikit.models.CreditCardType;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
-import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,9 +80,9 @@ public class BaseCreditCardPresenter<V extends BaseView> extends BasePaymentPres
     }
 
     private void deleteCardFromMerchantServer(ArrayList<SaveCardRequest> cardList, final String maskedCard, final BaseCreditCardPaymentView view) {
-        UserDetail userDetail = LocalDataHandler.readObject(UiKitConstants.KEY_USER_DETAILS, UserDetail.class);
+        CustomerDetails userDetail = getMidtransSDK().getTransactionRequest().getCustomerDetails();
         if (userDetail != null) {
-            getMidtransSDK().saveCards(userDetail.getUserId(), cardList, new SaveCardCallback() {
+            getMidtransSDK().saveCards(userDetail.getCustomerIdentifier(), cardList, new SaveCardCallback() {
                 @Override
                 public void onSuccess(SaveCardResponse response) {
                     view.onDeleteCardSuccess(maskedCard);

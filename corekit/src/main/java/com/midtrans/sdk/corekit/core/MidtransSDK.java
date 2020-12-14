@@ -2,9 +2,9 @@ package com.midtrans.sdk.corekit.core;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+
 import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.BuildConfig;
 import com.midtrans.sdk.corekit.callback.BankBinsCallback;
@@ -39,6 +39,7 @@ import com.midtrans.sdk.corekit.models.snap.payment.IndosatDompetkuPaymentReques
 import com.midtrans.sdk.corekit.models.snap.payment.NewMandiriClickPayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.TelkomselEcashPaymentRequest;
 import com.midtrans.sdk.corekit.utilities.Utils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,9 +49,7 @@ import java.util.List;
 public class MidtransSDK {
     private static final String TAG = "MidtransSDK";
     private static final String ADD_TRANSACTION_DETAILS = "Add transaction request details.";
-    private static final String LOCAL_DATA_PREFERENCES = "local.data";
 
-    private static SharedPreferences mPreferences = null;
     private static volatile MidtransSDK midtransSDK;
     private static BaseSdkBuilder sdkBuilder;
     private static boolean sdkNotAvailable = false;
@@ -114,8 +113,6 @@ public class MidtransSDK {
 
         String deviceType = null;
         if (context != null) {
-            mPreferences = SdkUtil.newPreferences(context, LOCAL_DATA_PREFERENCES);
-
             if (context instanceof Activity) {
                 deviceType = Utils.getDeviceType((Activity) context);
             }
@@ -168,22 +165,6 @@ public class MidtransSDK {
         }
 
         return midtransSDK;
-    }
-
-    /**
-     * Get Veritrans SDK share preferences instance
-     *
-     * @return share preferences instance
-     */
-    public static SharedPreferences getmPreferences() {
-        return mPreferences;
-    }
-
-    /**
-     * set share preference instance to SDK
-     */
-    static void setmPreferences(SharedPreferences preferences) {
-        mPreferences = preferences;
     }
 
     public boolean isSdkNotAvailable() {

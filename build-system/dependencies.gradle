@@ -1,0 +1,73 @@
+ext {
+    coreMinSdkVersion = 9
+    uiMinSdkVersion = 15
+    targetSdkVersion = 28
+    compileSdkVersion = 28
+    buildToolsVersion = '28.0.3'
+
+    // Libraries version
+    supportLibraryVersion = '28.0.0'
+    playAuthVersion = '15.0.1'
+    okHttpVersion = '3.10.0'
+    retrofitVersion = '2.4.0'
+    midtransAnalyticsVersion = '1.6.3'
+    testRunnerVersion = '0.5'
+    powermockVersion = '1.6.2'
+    junitVersion = '4.1.2'
+    espressoVersion = '2.2.2'
+    ionVersion = '2.2.1'
+    gsonVersion = '2.7'
+    swipeLayoutVersion = '1.0.14'
+    betterLinkVersion = '1.2'
+    smsVerifyVersion = '0.3.1'
+    zxingVersion = '3.5.0'
+    cardAndroidVersion = '5.5.1'
+
+    // TODO: Migrate to AndroidX
+    supportLibraries = [
+            appCompat   : "com.android.support:appcompat-v7:${supportLibraryVersion}",
+            supportV4   : "com.android.support:support-v4:${supportLibraryVersion}",
+            recyclerview: "com.android.support:recyclerview-v7:${supportLibraryVersion}",
+            cardView    : "com.android.support:cardview-v7:${supportLibraryVersion}",
+            design      : "com.android.support:design:${supportLibraryVersion}",
+    ]
+
+    playServicesLibraries = [
+            auth        : "com.google.android.gms:play-services-auth:${playAuthVersion}",
+    ]
+
+    midtransInternalLibraries = [
+            analytics           : "com.midtrans:analytics:${midtransAnalyticsVersion}",
+            analyticsSandbox    : "com.midtrans:analytics:${midtransAnalyticsVersion}-SANDBOX",
+    ]
+
+    libraries = [
+            okHttp              : "com.squareup.okhttp3:okhttp:${okHttpVersion}",
+            okHttpInterceptor   : "com.squareup.okhttp3:logging-interceptor:${okHttpVersion}",
+            retrofit            : "com.squareup.retrofit2:retrofit:${retrofitVersion}",
+            retrofitConverter   : "com.squareup.retrofit2:converter-gson:${retrofitVersion}",
+            gson                : "com.google.code.gson:gson:${gsonVersion}",
+            swipeLayout         : "ru.rambler.android:swipe-layout:${swipeLayoutVersion}",
+            betterLinkMovement  : "me.saket:better-link-movement-method:${betterLinkVersion}",
+            smsVerify           : "com.github.stfalcon:smsverifycatcher:${smsVerifyVersion}",
+            zxing               : "com.journeyapps:zxing-android-embedded:${zxingVersion}",
+            ion                 : "com.koushikdutta.ion:ion:${ionVersion}",
+            cardAndroid         : "io.card:android-sdk:${cardAndroidVersion}",
+            // TODO: Change this to Firebase Crashlytics, will be deprecated in Nov 2020 and not recording error anymore
+            crashlytics         : 'com.crashlytics.sdk.android:crashlytics:2.6.7@aar',
+    ]
+
+    mockitoVersion = '1.10.19'
+
+    testLibraries = [
+            runner              : "com.android.support.test:runner:${testRunnerVersion}",
+            powermock           : "org.powermock:powermock-mockito-release-full:${powermockVersion}",
+            junit               : "junit:junit:${junitVersion}",
+            mockito             : "org.mockito:mockito-core:${mockitoVersion}",
+            powermockJunit      : "org.powermock:powermock-module-junit4:${powermockVersion}",
+            powermockJunitRule  : "org.powermock:powermock-module-junit4-rule:${powermockVersion}",
+            powermockMockito    : "org.powermock:powermock-api-mockito:${powermockVersion}",
+            powermockXstream    : "org.powermock:powermock-classloading-xstream:${powermockVersion}",
+            espresso            : "com.android.support.test.espresso:espresso-core:${espressoVersion}",
+    ]
+}

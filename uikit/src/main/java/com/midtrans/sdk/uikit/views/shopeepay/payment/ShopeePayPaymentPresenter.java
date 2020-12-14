@@ -1,8 +1,8 @@
 package com.midtrans.sdk.uikit.views.shopeepay.payment;
 
 import android.app.Activity;
-import android.content.Context;
 import android.text.TextUtils;
+
 import com.midtrans.sdk.corekit.callback.GetTransactionStatusCallback;
 import com.midtrans.sdk.corekit.callback.TransactionCallback;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
@@ -11,12 +11,10 @@ import com.midtrans.sdk.uikit.BuildConfig;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentPresenter;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
-import com.midtrans.sdk.uikit.widgets.Utils;
 
 class ShopeePayPaymentPresenter extends BasePaymentPresenter<ShopeePayPaymentView> {
 
-    private Boolean isTablet, isShopeeInstalled;
-    private static final String SHOPEE_PACKAGE_NAME = "com.shopee.id";
+    private Boolean isTablet;
 
     ShopeePayPaymentPresenter(ShopeePayPaymentView view) {
         super();
@@ -27,23 +25,8 @@ class ShopeePayPaymentPresenter extends BasePaymentPresenter<ShopeePayPaymentVie
         isTablet = SdkUIFlowUtil.getDeviceType(activity).equals(SdkUIFlowUtil.TYPE_TABLET) && SdkUIFlowUtil.isDeviceTablet(activity);
     }
 
-    void setShopeeInstalled(Context context) {
-        if (isProductionBuild()){
-            isShopeeInstalled = Utils.isAppInstalled(context, SHOPEE_PACKAGE_NAME);
-        }
-        isShopeeInstalled = false;
-    }
-
-    void openShopeeInPlayStore(Context context) {
-        Utils.openAppInPlayStore(context, SHOPEE_PACKAGE_NAME);
-    }
-
     Boolean isTablet() {
         return isTablet;
-    }
-
-    Boolean isShopeeInstalled() {
-        return isShopeeInstalled;
     }
 
     Boolean isProductionBuild() {

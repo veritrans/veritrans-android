@@ -1,6 +1,10 @@
 package com.midtrans.sdk.uikit;
 
 import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 
 import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
 import com.midtrans.sdk.corekit.core.BaseSdkBuilder;
@@ -10,6 +14,7 @@ import com.midtrans.sdk.corekit.core.themes.CustomColorTheme;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Created by ziahaqi on 15/06/2016.
@@ -123,6 +128,24 @@ public class SdkUIFlowBuilder extends BaseSdkBuilder<SdkUIFlowBuilder> {
 
     public SdkUIFlowBuilder setColorTheme(CustomColorTheme customColorTheme) {
         this.colorTheme = customColorTheme;
+        return this;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    public SdkUIFlowBuilder setLanguage(String languageCode) {
+        Resources resources = context.getResources();
+        Locale currentLocale = resources.getConfiguration().locale;
+        Locale englishLocale = new Locale("en");
+        Locale locale;
+        if(!languageCode.equals("en") && !languageCode.equals("id")) {
+            locale = englishLocale;
+        } else {
+            locale = new Locale(languageCode);
+        }
+        Locale.setDefault(currentLocale);
+        Configuration config = resources.getConfiguration();
+        config.setLocale(locale);
+        resources.updateConfiguration(config, resources.getDisplayMetrics());
         return this;
     }
 }

@@ -7,9 +7,11 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatRadioButton;
@@ -22,6 +24,7 @@ import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
 import com.midtrans.sdk.corekit.core.*;
 import com.midtrans.sdk.corekit.core.themes.CustomColorTheme;
 import com.midtrans.sdk.corekit.models.*;
+import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.ItemDetails;
 import com.midtrans.sdk.corekit.models.snap.*;
 import com.midtrans.sdk.corekit.utilities.Utils;
@@ -1294,25 +1297,10 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     }
 
     private void initPaymentChannelsSelections() {
-        SelectPaymentMethodListViewModel listViewModel = LocalDataHandler.readObject(PAYMENT_CHANNELS_TYPE, SelectPaymentMethodListViewModel.class);
-        if (listViewModel != null
-                && listViewModel.getEnabledPayments() != null
-                && !listViewModel.getEnabledPayments().isEmpty()) {
-            enabledPayments = AppUtils.mapPaymentMethods(this, listViewModel.getEnabledPayments());
-            paymentChannelsTitle.setText(R.string.payment_channels_selected);
-            if (isContainEChannel(enabledPayments)) {
-                paymentChannelsSelectedSelection.setText(getString(R.string.payment_channels_selection_show_selected_format, enabledPayments.size() - 1));
-            } else {
-                paymentChannelsSelectedSelection.setText(getString(R.string.payment_channels_selection_show_selected_format, enabledPayments.size()));
-            }
-            paymentChannelsSelectedSelection.setChecked(true);
-            initEditPaymentButton(AppUtils.getPaymentList(DemoConfigActivity.this, mapEnabledPayments()));
-        } else {
-            paymentChannelsTitle.setText(R.string.payment_channels_show_all);
-            paymentChannelsAllSelection.setText(R.string.payment_channels_selection_show_all);
-            paymentChannelsAllSelection.setChecked(true);
-            disableEditPaymentChannels();
-        }
+        paymentChannelsTitle.setText(R.string.payment_channels_show_all);
+        paymentChannelsAllSelection.setText(R.string.payment_channels_selection_show_all);
+        paymentChannelsAllSelection.setChecked(true);
+        disableEditPaymentChannels();
 
         paymentChannelsAllSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -2341,7 +2329,6 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 saveBniPointSelection();
                 saveMandiriPointSelection();
                 saveAutoReadSmsSelection();
-                saveEnabledPayments();
                 saveCurrencySelection();
 
                 TransactionRequest transactionRequest = initializePurchaseRequest();
@@ -2458,14 +2445,6 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             DemoPreferenceHelper.setBooleanPreference(this, SAVE_CARD_TYPE, true);
         } else {
             DemoPreferenceHelper.setBooleanPreference(this, SAVE_CARD_TYPE, false);
-        }
-    }
-
-    private void saveEnabledPayments() {
-        if (paymentChannelsAllSelection.isChecked()) {
-            LocalDataHandler.saveString(PAYMENT_CHANNELS_TYPE, "{}");
-        } else {
-            LocalDataHandler.saveObject(PAYMENT_CHANNELS_TYPE, new SelectPaymentMethodListViewModel(AppUtils.getPaymentList(this, mapEnabledPayments())));
         }
     }
 
@@ -2917,6 +2896,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         autoReadSmsEnabledSelection.setSupportButtonTintList(colorStateList);
     }
 
+    //setLanguage to either "en" for english or "id" for bahasa
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     private void initMidtransSDK() {
         SdkUIFlowBuilder.init()
                 .setContext(this)
@@ -2927,6 +2908,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 .setDefaultText("fonts/SourceSansPro-Regular.ttf")
                 .setBoldText("fonts/SourceSansPro-Bold.ttf")
                 .setSemiBoldText("fonts/SourceSansPro-Semibold.ttf")
+                .setLanguage("en")
                 .buildSDK();
     }
 
@@ -3114,44 +3096,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             transactionRequestNew.setExpiry(expiryModel);
         }
 
-        UserDetail userDetail = LocalDataHandler.readObject(getString(R.string.user_details), UserDetail.class);
-        if (userDetail == null) {
-            userDetail = new UserDetail();
-            userDetail.setUserFullName(getString(R.string.order_review_customer_details_name));
-            userDetail.setEmail(getString(R.string.order_review_customer_details_email));
-            userDetail.setPhoneNumber(getString(R.string.order_review_customer_details_phone));
-            if (oneClickSelection.isChecked()) {
-                userDetail.setUserId(getString(R.string.sample_user_id));
-            } else if (twoClicksSelection.isChecked()) {
-                userDetail.setUserId(getString(R.string.sample_user_id2));
-            }
-            ArrayList<UserAddress> userAddresses = new ArrayList<>();
-            UserAddress userAddress = new UserAddress();
-            userAddress.setAddress(getString(R.string.order_review_delivery_address_sample));
-            userAddress.setCity(getString(R.string.order_review_delivery_address_city_sample));
-            userAddress.setAddressType(com.midtrans.sdk.corekit.core.Constants.ADDRESS_TYPE_BOTH);
-            userAddress.setZipcode("10220");
-            userAddress.setCountry("IDN");
-            userAddresses.add(userAddress);
-            userDetail.setUserAddresses(userAddresses);
-        } else {
+        transactionRequestNew.setCustomerDetails(initCustomerDetails());
 
-            if (oneClickSelection.isChecked()) {
-                userDetail.setUserId(getString(R.string.sample_user_id));
-            } else if (twoClicksSelection.isChecked()) {
-                userDetail.setUserId(getString(R.string.sample_user_id2));
-            }
-        }
-
-        // if rba activated
-        if (secureRbaWith3dsSelection.isChecked()) {
-            userDetail.setEmail("secure_email_rba@example.com");
-            creditCard.setAuthentication(Authentication.AUTH_RBA);
-        } else if (secureRbaNon3dsSelection.isChecked()) {
-            userDetail.setEmail("not_secure_email_rba@example.com");
-            creditCard.setAuthentication(Authentication.AUTH_RBA);
-        }
-        LocalDataHandler.saveObject(getString(R.string.user_details), userDetail);
         if (customPermataVaEnabledSelection.isChecked()) {
             String vaNumber = "";
             try {
@@ -3235,8 +3181,31 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         }
 
         transactionRequestNew.setGopay(new Gopay("demo://midtrans"));
+        transactionRequestNew.setShopeepay(new Shopeepay("demo://midtrans"));
 
         return transactionRequestNew;
+    }
+
+    private CustomerDetails initCustomerDetails() {
+        CustomerDetails mCustomerDetails = new CustomerDetails();
+        mCustomerDetails.setCustomerIdentifier(getString(R.string.order_review_customer_details_email));
+        mCustomerDetails.setPhone(getString(R.string.order_review_customer_details_phone));
+        mCustomerDetails.setFirstName(getString(R.string.order_review_customer_details_name));
+        mCustomerDetails.setEmail(getString(R.string.order_review_customer_details_email));
+
+        ShippingAddress shippingAddress = new ShippingAddress();
+        shippingAddress.setAddress(getString(R.string.order_review_delivery_address_sample));
+        shippingAddress.setCity(getString(R.string.order_review_delivery_address_city_sample));
+        shippingAddress.setPostalCode("10220");
+        mCustomerDetails.setShippingAddress(shippingAddress);
+
+        BillingAddress billingAddress = new BillingAddress();
+        billingAddress.setAddress(getString(R.string.order_review_delivery_address_sample));
+        billingAddress.setCity(getString(R.string.order_review_delivery_address_city_sample));
+        billingAddress.setPostalCode("10220");
+        mCustomerDetails.setBillingAddress(billingAddress);
+
+        return mCustomerDetails;
     }
 
     private FreeText createSampleBcaFreeText() {
