@@ -715,4 +715,30 @@
     <string name="gopay_payment_cant_open_deeplink">Tidak dapat mengakses aplikasi GOJEK untuk pembayaran ini!</string>
     <string name="gopay">GoPay</string>
     <string name="uikit_shopeepay">ShopeePay</string>
+
+    <!-- bri ATM payment instruction -->
+    <string name="bri_atm_instruction_1">Pada menu utama, pilih <b>Transaksi Lainnya</b>.</string>
+    <string name="bri_atm_instruction_2">Pilih <b>Pembayaran</b></string>
+    <string name="bri_atm_instruction_3">Pilih <b>Lainnya</b></string>
+    <string name="bri_atm_instruction_4">Pilih <b>BRIVA</b></string>
+    <string name="bri_atm_instruction_5">Masukan <b>Nomor BRIVA</b> (maks. 18 digit) dan pilih <b>Benar</b></string>
+    <string name="bri_atm_instruction_6">Jumlah pembayaran, nomor BRIVA dan nama merchant akan muncul pada halaman konfirmasi pembayaran. Jika informasi yang dicantumkan benar, pilih <b>Ya</b></string>
+    <string name="bri_atm_instruction_7">Pembayaran telah selesai. Simpan bukti pembayaran Anda. </string>
+
+    <!-- bri mobile payment instruction -->
+    <string name="bri_mobile_instruction_1">Masuk ke dalam aplikasi <b>BRI Mobile</b>, pilih <b>Mobile Banking BRI</b>.</string>
+    <string name="bri_mobile_instruction_2">Pilih <b>Payment</b>, lalu pilih <b>BRIVA</b>.</string>
+    <string name="bri_mobile_instruction_3">Masukkan nomor  <b>BRIVA</b></string>
+    <string name="bri_mobile_instruction_4">Jumlah pembayaran, nomor pembayaran, dan nama merchant akan muncul pada halaman konfirmasi pembayaran. Jika informasi yang dicantumkan benar, pilih <b>Continue</b>.</string>
+    <string name="bri_mobile_instruction_5">Masukkan <b>Mobile Banking BRI PIN</b>, pilih <b>Ok</b>.</string>
+    <string name="bri_mobile_instruction_6">Pembayaran telah selesai. Simpan notifikasi sebagai bukti pembayaran.</string>
+
+    <!-- bri internet  payment instruction -->
+    <string name="bri_internet_instruction_1">Login pada <b>Internet Banking BRI</b>.</string>
+    <string name="bri_internet_instruction_2"><![CDATA[Pilih menu <b>Pembayaran & Pembelian</b>.]]></string>
+    <string name="bri_internet_instruction_3">Pilih sub menu <b>BRIVA</b>.</string>
+    <string name="bri_internet_instruction_4">Masukan <b>BRIVA number</b>.</string>
+    <string name="bri_internet_instruction_5">Jumlah pembayaran, kode bayar, dan nama merchant akan muncul pada halaman konfirmasi pembayaran. Jika informasi yang dicantumkan benar, pilih <b>Kirim</b>.</string>
+    <string name="bri_internet_instruction_6">Masukkan <b>password</b> dan <b>mToken</b>, pilih <b>Kirim</b>.</string>
+    <string name="bri_internet_instruction_7">Pembayaran telah selesai. Untuk mencetak bukti transaksi, pilih <b>Cetak</b>.</string>
 </resources>
