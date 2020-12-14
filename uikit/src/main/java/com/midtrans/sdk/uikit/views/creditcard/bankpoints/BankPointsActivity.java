@@ -239,7 +239,8 @@ public class BankPointsActivity extends BasePaymentActivity {
         if (withPoint) {
             strPoint = fieldRedeemedPoint.getText().toString().trim();
         }
-        float redeemedPoint = Float.valueOf(strPoint);
+
+        float redeemedPoint = Float.valueOf((strPoint.isEmpty()) ? "0" : strPoint);
         finishBankPoint(redeemedPoint);
     }
 
