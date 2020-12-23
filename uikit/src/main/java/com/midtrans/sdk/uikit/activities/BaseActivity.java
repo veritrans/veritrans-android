@@ -1,5 +1,6 @@
 package com.midtrans.sdk.uikit.activities;
 
+import android.content.Context;
 import android.support.annotation.LayoutRes;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
@@ -26,6 +27,7 @@ import com.midtrans.sdk.corekit.models.snap.MerchantData;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.BuildConfig;
+import com.midtrans.sdk.uikit.ContextWrapper;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.adapters.TransactionDetailsAdapter;
 import com.midtrans.sdk.uikit.widgets.BoldTextView;
@@ -286,5 +288,12 @@ public class BaseActivity extends AppCompatActivity {
         if (textTotalAmount != null) {
             textTotalAmount.setText(formattedAmount);
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        ContextWrapper contextWrapper =
+                ContextWrapper.changeLang(newBase, MidtransSDK.getInstance().getLanguageCode());
+        super.attachBaseContext(contextWrapper);
     }
 }

@@ -131,21 +131,8 @@ public class SdkUIFlowBuilder extends BaseSdkBuilder<SdkUIFlowBuilder> {
         return this;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     public SdkUIFlowBuilder setLanguage(String languageCode) {
-        Resources resources = context.getResources();
-        Locale currentLocale = resources.getConfiguration().locale;
-        Locale englishLocale = new Locale("en");
-        Locale locale;
-        if(!languageCode.equals("en") && !languageCode.equals("id")) {
-            locale = englishLocale;
-        } else {
-            locale = new Locale(languageCode);
-        }
-        Locale.setDefault(currentLocale);
-        Configuration config = resources.getConfiguration();
-        config.setLocale(locale);
-        resources.updateConfiguration(config, resources.getDisplayMetrics());
+        this.languageCode = languageCode;
         return this;
     }
 }
