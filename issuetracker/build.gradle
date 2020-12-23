@@ -1,6 +1,9 @@
 apply plugin: 'com.android.library'
 apply from: "$rootDir/build-system/publish-variable.gradle"
 
+group = 'com.midtrans'
+version = '1.12.0'
+
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
