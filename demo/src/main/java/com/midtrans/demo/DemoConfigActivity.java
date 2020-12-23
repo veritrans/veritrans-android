@@ -2908,7 +2908,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 .setDefaultText("fonts/SourceSansPro-Regular.ttf")
                 .setBoldText("fonts/SourceSansPro-Bold.ttf")
                 .setSemiBoldText("fonts/SourceSansPro-Semibold.ttf")
-                .setLanguage("en")
+                .setLanguage("id")
                 .buildSDK();
     }
 

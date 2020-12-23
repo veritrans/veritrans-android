@@ -34,6 +34,7 @@ public abstract class BaseSdkBuilder<T> {
     protected UIKitCustomSetting UIKitCustomSetting;
     protected String flow;
     protected BaseColorTheme colorTheme;
+    protected String languageCode = "en";
 
     /**
      * controls the log of sdk. Log can help you to debug application. set false to disable log of

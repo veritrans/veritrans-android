@@ -83,6 +83,7 @@ public class MidtransSDK {
     private CardRegistrationCallback cardRegistrationCallback;
     private PaymentDetails paymentDetails;
     private String authenticationToken;
+    private String languageCode;
 
     private MidtransSDK() {
 
@@ -124,6 +125,7 @@ public class MidtransSDK {
 
         this.midtransServiceManager = SdkUtil.newMidtransServiceManager(requestTimeOut);
         this.merchantServiceManager = SdkUtil.newMerchantServiceManager(merchantServerUrl, requestTimeOut);
+        this.languageCode = sdkBuilder.languageCode;
     }
 
     /**
@@ -1898,5 +1900,9 @@ public class MidtransSDK {
 
     private boolean isTransactionRequestAvailable() {
         return transactionRequest != null || !TextUtils.isEmpty(authenticationToken);
+    }
+
+    public String getLanguageCode() {
+        return languageCode;
     }
 }
