@@ -1,6 +1,7 @@
 package com.midtrans.sdk.uikit.activities;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.support.annotation.LayoutRes;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
@@ -35,12 +36,17 @@ import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * @author rakawm
  */
 public class BaseActivity extends AppCompatActivity {
     public static final String ENVIRONMENT_DEVELOPMENT = "development";
+    public static final String COUNTRY_INDONESIA = "ID";
+    public static final String COUNTRY_UNITED_STATE = "US";
+    public static final String LANGUAGE_CODE_ID = "id";
+
     private static final String TAG = BaseActivity.class.getSimpleName();
     protected String currentFragmentName;
     protected Fragment currentFragment = null;
@@ -292,8 +298,9 @@ public class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        ContextWrapper contextWrapper =
-                ContextWrapper.changeLang(newBase, MidtransSDK.getInstance().getLanguageCode());
+        String langCode = MidtransSDK.getInstance().getLanguageCode();
+        String country = (langCode.equals(LANGUAGE_CODE_ID)) ? COUNTRY_INDONESIA : COUNTRY_UNITED_STATE;
+        ContextWrapper contextWrapper = ContextWrapper.changeLang(newBase, langCode, country);
         super.attachBaseContext(contextWrapper);
     }
 }

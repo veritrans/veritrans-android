@@ -16,7 +16,7 @@ public class ContextWrapper extends android.content.ContextWrapper {
         super(base);
     }
 
-    public static ContextWrapper changeLang(Context context, String lang_code) {
+    public static ContextWrapper changeLang(Context context, String lang_code, String country) {
         Locale sysLocale;
 
         Resources rs = context.getResources();
@@ -28,7 +28,7 @@ public class ContextWrapper extends android.content.ContextWrapper {
             sysLocale = config.locale;
         }
         if (!lang_code.equals("") && !sysLocale.getLanguage().equals(lang_code)) {
-            Locale locale = new Locale(lang_code);
+            Locale locale = new Locale(lang_code, country);
             Locale.setDefault(locale);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 config.setLocale(locale);

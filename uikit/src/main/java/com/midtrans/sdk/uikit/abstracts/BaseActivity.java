@@ -1,5 +1,6 @@
 package com.midtrans.sdk.uikit.abstracts;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -25,6 +26,7 @@ import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
 import com.midtrans.sdk.corekit.core.themes.BaseColorTheme;
 import com.midtrans.sdk.uikit.BuildConfig;
+import com.midtrans.sdk.uikit.ContextWrapper;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
@@ -32,6 +34,7 @@ import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 import java.lang.reflect.Field;
+import java.util.Locale;
 
 /**
  * Created by ziahaqi on 7/20/17.
@@ -40,7 +43,9 @@ import java.lang.reflect.Field;
 public abstract class BaseActivity extends AppCompatActivity implements BaseView {
 
     private static final String TAG = BaseActivity.class.getSimpleName();
-
+    public static final String COUNTRY_INDONESIA = "ID";
+    public static final String COUNTRY_UNITED_STATE = "US";
+    public static final String LANGUAGE_CODE_ID = "id";
 
     private int primaryColor = 0;
     private int primaryDarkColor = 0;
@@ -342,5 +347,13 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
         }
 
         return midtransSdk;
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        String langCode = MidtransSDK.getInstance().getLanguageCode();
+        String country = (langCode.equals(LANGUAGE_CODE_ID)) ? COUNTRY_INDONESIA : COUNTRY_UNITED_STATE;
+        ContextWrapper contextWrapper = ContextWrapper.changeLang(newBase, langCode, country);
+        super.attachBaseContext(contextWrapper);
     }
 }
