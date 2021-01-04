@@ -1,6 +1,7 @@
 package com.midtrans.sdk.uikit.activities;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.res.Configuration;
 import android.support.annotation.LayoutRes;
 import android.support.design.widget.AppBarLayout;
@@ -28,7 +29,7 @@ import com.midtrans.sdk.corekit.models.snap.MerchantData;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.BuildConfig;
-import com.midtrans.sdk.uikit.ContextWrapper;
+import com.midtrans.sdk.uikit.MyContextWrapper;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.adapters.TransactionDetailsAdapter;
 import com.midtrans.sdk.uikit.widgets.BoldTextView;
@@ -300,7 +301,17 @@ public class BaseActivity extends AppCompatActivity {
     protected void attachBaseContext(Context newBase) {
         String langCode = MidtransSDK.getInstance().getLanguageCode();
         String country = (langCode.equals(LANGUAGE_CODE_ID)) ? COUNTRY_INDONESIA : COUNTRY_UNITED_STATE;
-        ContextWrapper contextWrapper = ContextWrapper.changeLang(newBase, langCode, country);
+        Locale locale = new Locale(langCode, country);
+        ContextWrapper contextWrapper = MyContextWrapper.wrap(newBase, locale);
         super.attachBaseContext(contextWrapper);
+    }
+
+    @Override
+    public void applyOverrideConfiguration(Configuration overrideConfiguration) {
+        int uiMode = overrideConfiguration.uiMode;
+        overrideConfiguration.setTo(getBaseContext().getResources().getConfiguration());
+        overrideConfiguration.uiMode = uiMode;
+
+        super.applyOverrideConfiguration(overrideConfiguration);
     }
 }

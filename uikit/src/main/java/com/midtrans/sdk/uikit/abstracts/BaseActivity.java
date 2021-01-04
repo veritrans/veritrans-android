@@ -3,6 +3,7 @@ package com.midtrans.sdk.uikit.abstracts;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -26,7 +27,7 @@ import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
 import com.midtrans.sdk.corekit.core.themes.BaseColorTheme;
 import com.midtrans.sdk.uikit.BuildConfig;
-import com.midtrans.sdk.uikit.ContextWrapper;
+import com.midtrans.sdk.uikit.MyContextWrapper;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
@@ -353,7 +354,16 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     protected void attachBaseContext(Context newBase) {
         String langCode = MidtransSDK.getInstance().getLanguageCode();
         String country = (langCode.equals(LANGUAGE_CODE_ID)) ? COUNTRY_INDONESIA : COUNTRY_UNITED_STATE;
-        ContextWrapper contextWrapper = ContextWrapper.changeLang(newBase, langCode, country);
-        super.attachBaseContext(contextWrapper);
+        Locale locale = new Locale(langCode, country);
+        super.attachBaseContext(MyContextWrapper.wrap(newBase, locale));
+    }
+
+    @Override
+    public void applyOverrideConfiguration(Configuration overrideConfiguration) {
+        int uiMode = overrideConfiguration.uiMode;
+        overrideConfiguration.setTo(getBaseContext().getResources().getConfiguration());
+        overrideConfiguration.uiMode = uiMode;
+
+        super.applyOverrideConfiguration(overrideConfiguration);
     }
 }
