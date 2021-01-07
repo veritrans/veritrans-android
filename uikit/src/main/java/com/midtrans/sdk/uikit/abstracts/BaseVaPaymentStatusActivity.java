@@ -1,10 +1,11 @@
 package com.midtrans.sdk.uikit.abstracts;
 
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
-import androidx.core.view.ViewPager.OnPageChangeListener;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.Nullable;
+import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.tabs.TabLayout;
 import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
@@ -109,7 +110,7 @@ public abstract class BaseVaPaymentStatusActivity extends BasePaymentActivity {
         }
 
         pagerInstruction.clearOnPageChangeListeners();
-        final OnPageChangeListener onPageChangeListener = new OnPageChangeListener() {
+        final ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 

@@ -1,6 +1,6 @@
 package com.midtrans.sdk.uikit.models;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * Created by ziahaqi on 8/7/17.

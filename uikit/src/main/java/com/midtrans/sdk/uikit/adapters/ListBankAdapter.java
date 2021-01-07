@@ -2,8 +2,7 @@ package com.midtrans.sdk.uikit.adapters;
 
 import android.content.Context;
 import androidx.core.content.ContextCompat;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.ViewHolder;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,13 +25,13 @@ public class ListBankAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.bank_item_viewholder, null);
         return new BankItemViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         BankItemViewHolder itemViewHolder = (BankItemViewHolder) holder;
         int bankIndex = position + 1;
         itemViewHolder.textView.setText(bankIndex + ".   " + banks[position]);

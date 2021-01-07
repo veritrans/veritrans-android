@@ -1,10 +1,11 @@
 package com.midtrans.demo;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.TextInputLayout;
-import androidx.core.app.DialogFragment;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.textfield.TextInputLayout;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputFilter.LengthFilter;

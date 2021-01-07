@@ -3,9 +3,9 @@ package com.midtrans.sdk.uikit.views.creditcard.tnc;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 
 import com.midtrans.sdk.corekit.core.Logger;

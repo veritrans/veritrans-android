@@ -4,7 +4,7 @@ package com.midtrans.sdk.uikit.widgets;
  * Created by chetan on 27/10/15.
  */
 
-import androidx.core.view.ViewPager;
+import androidx.viewpager.widget.ViewPager;
 
 /**
  * A PageIndicator is responsible to show an visual indicator on the total views number and the

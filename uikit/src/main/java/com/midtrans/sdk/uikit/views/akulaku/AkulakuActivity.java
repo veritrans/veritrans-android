@@ -2,8 +2,8 @@ package com.midtrans.sdk.uikit.views.akulaku;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.AppCompatButton;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import android.view.View;
 
 import com.midtrans.sdk.corekit.core.PaymentType;

@@ -2,16 +2,17 @@ package com.midtrans.sdk.uikit.views.banktransfer.payment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
-import android.support.design.widget.TextInputLayout;
-import androidx.core.app.Fragment;
-import androidx.core.view.ViewPager;
-import androidx.core.view.ViewPager.OnPageChangeListener;
-import android.support.v7.app.AppCompatDialog;
-import android.support.v7.widget.AppCompatEditText;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.Nullable;
+
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.textfield.TextInputLayout;
+
+import androidx.appcompat.app.AppCompatDialog;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.widget.AppCompatEditText;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -219,7 +220,7 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
         setPageTitle(title);
         final InstructionPagerAdapter adapter = new InstructionPagerAdapter(this, bankType, getSupportFragmentManager(), pageNumber);
         pagerInstruction.setAdapter(adapter);
-        final OnPageChangeListener onPageChangeListener = new OnPageChangeListener() {
+        final ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset,
                                        int positionOffsetPixels) {
