@@ -9,10 +9,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.net.ConnectivityManager;
-import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+
+import androidx.annotation.NonNull;
 
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.models.snap.Authentication;
