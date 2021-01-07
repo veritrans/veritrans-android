@@ -1,6 +1,6 @@
 package com.midtrans.sdk.widgets.utils;
 
-import android.support.v4.view.ViewPager;
+import androidx.core.view.ViewPager;
 
 /**
  * Created by ziahaqi on 9/13/16.

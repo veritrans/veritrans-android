@@ -18,7 +18,7 @@ android {
         versionName versionSdk
         vectorDrawables.useSupportLibrary = true
 
-        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
         //raygun api key
         resValue "string", "ISSUE_TRACKER_API_KEY", ISSUE_TRACKER_API_KEY

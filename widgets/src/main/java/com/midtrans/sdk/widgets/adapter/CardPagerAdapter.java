@@ -2,7 +2,7 @@ package com.midtrans.sdk.widgets.adapter;
 
 import android.content.Context;
 import android.os.Handler;
-import android.support.v4.view.ViewPager;
+import androidx.core.view.ViewPager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;

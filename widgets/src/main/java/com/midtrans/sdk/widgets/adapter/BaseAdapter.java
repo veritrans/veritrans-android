@@ -1,6 +1,6 @@
 package com.midtrans.sdk.widgets.adapter;
 
-import android.support.v4.view.PagerAdapter;
+import androidx.core.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 

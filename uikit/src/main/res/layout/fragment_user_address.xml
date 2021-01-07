@@ -8,7 +8,7 @@
     android:orientation="vertical"
     tools:context="com.midtrans.sdk.uikit.fragments.UserAddressFragment">
 
-    <android.support.v4.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorAccentLight"
@@ -220,7 +220,7 @@
             </android.support.v7.widget.CardView>
         </RelativeLayout>
 
-    </android.support.v4.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <com.midtrans.sdk.uikit.widgets.FancyButton
         android:id="@+id/btn_next"

@@ -3,7 +3,7 @@ package com.midtrans.sdk.uikit.views.xl_tunai;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
