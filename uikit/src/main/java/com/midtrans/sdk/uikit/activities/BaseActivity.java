@@ -8,7 +8,6 @@ import com.akexorcist.localizationactivity.ui.LocalizationActivity;
 import com.google.android.material.appbar.AppBarLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,7 +29,6 @@ import com.midtrans.sdk.corekit.models.snap.MerchantData;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.BuildConfig;
-import com.midtrans.sdk.uikit.ContextWrapper;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.adapters.TransactionDetailsAdapter;
 import com.midtrans.sdk.uikit.widgets.BoldTextView;
@@ -38,7 +36,6 @@ import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 import java.util.List;
-import java.util.Locale;
 
 /**
  * @author rakawm
@@ -55,11 +52,9 @@ public class BaseActivity extends LocalizationActivity {
     protected int RESULT_CODE = RESULT_CANCELED;
     protected boolean isDetailShown = false;
 
-    protected Locale locale;
-
-    public BaseActivity() {
-        this.locale = getLocal();
-    }
+    public static final String COUNTRY_INDONESIA = "ID";
+    public static final String COUNTRY_UNITED_STATE = "US";
+    public static final String LANGUAGE_CODE_ID = "id";
 
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
@@ -68,7 +63,7 @@ public class BaseActivity extends LocalizationActivity {
             initView();
             initMerchantLogo();
             initItemDetails();
-            setLanguage(locale);
+            setLanguage(getLanguageCode(), getLanguageCountry());
         } catch (Exception e) {
             Logger.e(TAG, "appbar:" + e.getMessage());
         }
@@ -304,11 +299,15 @@ public class BaseActivity extends LocalizationActivity {
     @Override
     protected void attachBaseContext(Context newBase) {
         LocalizationApplicationDelegate localizationDelegate = new LocalizationApplicationDelegate();
-        localizationDelegate.setDefaultLanguage(newBase, locale);
+        localizationDelegate.setDefaultLanguage(newBase, getLanguageCode(), getLanguageCountry());
         super.attachBaseContext(localizationDelegate.attachBaseContext(newBase));
     }
 
-    private Locale getLocal() {
-        return new Locale("id", "Indonesia");
+    private String getLanguageCode() {
+        return MidtransSDK.getInstance().getLanguageCode();
+    }
+
+    private String getLanguageCountry() {
+        return (getLanguageCode().equals(LANGUAGE_CODE_ID)) ? COUNTRY_INDONESIA : COUNTRY_UNITED_STATE;
     }
 }

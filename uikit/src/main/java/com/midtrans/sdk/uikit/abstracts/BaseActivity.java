@@ -44,7 +44,9 @@ import java.util.Locale;
 public abstract class BaseActivity extends LocalizationActivity implements BaseView {
 
     private static final String TAG = BaseActivity.class.getSimpleName();
-
+    public static final String COUNTRY_INDONESIA = "ID";
+    public static final String COUNTRY_UNITED_STATE = "US";
+    public static final String LANGUAGE_CODE_ID = "id";
 
     private int primaryColor = 0;
     private int primaryDarkColor = 0;
@@ -59,18 +61,12 @@ public abstract class BaseActivity extends LocalizationActivity implements BaseV
     protected boolean backgroundProcess;
     private volatile MidtransSDK midtransSdk;
 
-    protected Locale locale;
-
-    public BaseActivity() {
-        this.locale = getLocal();
-    }
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         checkSdkInstance();
         initThemeProperties();
-        setLanguage(locale);
+        setLanguage(getLanguageCode(), getLanguageCountry());
     }
 
     private void checkSdkInstance() {
@@ -358,11 +354,15 @@ public abstract class BaseActivity extends LocalizationActivity implements BaseV
     @Override
     protected void attachBaseContext(Context newBase) {
         LocalizationApplicationDelegate localizationDelegate = new LocalizationApplicationDelegate();
-        localizationDelegate.setDefaultLanguage(newBase, locale);
+        localizationDelegate.setDefaultLanguage(newBase, getLanguageCode(), getLanguageCountry());
         super.attachBaseContext(localizationDelegate.attachBaseContext(newBase));
     }
 
-    private Locale getLocal() {
-        return new Locale("id", "Indonesia");
+    private String getLanguageCode() {
+        return MidtransSDK.getInstance().getLanguageCode();
+    }
+
+    private String getLanguageCountry() {
+        return (getLanguageCode().equals(LANGUAGE_CODE_ID)) ? COUNTRY_INDONESIA : COUNTRY_UNITED_STATE;
     }
 }
