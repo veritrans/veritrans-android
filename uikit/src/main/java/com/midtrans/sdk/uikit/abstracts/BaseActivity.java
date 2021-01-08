@@ -1,5 +1,6 @@
 package com.midtrans.sdk.uikit.abstracts;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -18,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.akexorcist.localizationactivity.core.LocalizationApplicationDelegate;
+import com.akexorcist.localizationactivity.ui.LocalizationActivity;
 import com.google.android.material.textfield.TextInputLayout;
 import com.koushikdutta.ion.Ion;
 import com.midtrans.sdk.corekit.core.Logger;
@@ -32,12 +35,13 @@ import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 import java.lang.reflect.Field;
+import java.util.Locale;
 
 /**
  * Created by ziahaqi on 7/20/17.
  */
 
-public abstract class BaseActivity extends AppCompatActivity implements BaseView {
+public abstract class BaseActivity extends LocalizationActivity implements BaseView {
 
     private static final String TAG = BaseActivity.class.getSimpleName();
 
@@ -55,11 +59,18 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     protected boolean backgroundProcess;
     private volatile MidtransSDK midtransSdk;
 
+    protected Locale locale;
+
+    public BaseActivity() {
+        this.locale = getLocal();
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         checkSdkInstance();
         initThemeProperties();
+        setLanguage(locale);
     }
 
     private void checkSdkInstance() {
@@ -342,5 +353,16 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
         }
 
         return midtransSdk;
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        LocalizationApplicationDelegate localizationDelegate = new LocalizationApplicationDelegate();
+        localizationDelegate.setDefaultLanguage(newBase, locale);
+        super.attachBaseContext(localizationDelegate.attachBaseContext(newBase));
+    }
+
+    private Locale getLocal() {
+        return new Locale("id", "Indonesia");
     }
 }

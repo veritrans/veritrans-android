@@ -22,10 +22,11 @@ ext {
     smsVerifyVersion = '0.3.1'
     zxingVersion = '3.5.0'
     cardAndroidVersion = '5.5.1'
+    localizationVersion = '1.2.6'
 
     // TODO: Migrate to AndroidX
     supportLibraries = [
-            appCompat   : 'androidx.appcompat:appcompat:1.0.0',
+            appCompat   : 'androidx.appcompat:appcompat:1.2.0',
             supportV4   : 'androidx.legacy:legacy-support-v4:1.0.0',
             recyclerview: 'androidx.recyclerview:recyclerview:1.0.0',
             cardView    : 'androidx.cardview:cardview:1.0.0',
@@ -69,5 +70,9 @@ ext {
             powermockMockito    : "org.powermock:powermock-api-mockito:${powermockVersion}",
             powermockXstream    : "org.powermock:powermock-classloading-xstream:${powermockVersion}",
             espresso            : "com.android.support.test.espresso:espresso-core:${espressoVersion}",
+    ]
+
+    localizationLibraries = [
+            localization: "com.akexorcist:localization:${localizationVersion}"
     ]
 }

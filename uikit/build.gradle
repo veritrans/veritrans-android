@@ -83,6 +83,7 @@ dependencies {
     implementation libraries.smsVerify
     implementation libraries.zxing
     implementation libraries.ion
+    implementation localizationLibraries.localization
 
     implementation project(':issuetracker')
     api project(':corekit')

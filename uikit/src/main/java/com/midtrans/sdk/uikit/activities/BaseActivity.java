@@ -2,6 +2,9 @@ package com.midtrans.sdk.uikit.activities;
 
 import android.content.Context;
 import androidx.annotation.LayoutRes;
+
+import com.akexorcist.localizationactivity.core.LocalizationApplicationDelegate;
+import com.akexorcist.localizationactivity.ui.LocalizationActivity;
 import com.google.android.material.appbar.AppBarLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -35,11 +38,12 @@ import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * @author rakawm
  */
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends LocalizationActivity {
     public static final String ENVIRONMENT_DEVELOPMENT = "development";
     private static final String TAG = BaseActivity.class.getSimpleName();
     protected String currentFragmentName;
@@ -51,6 +55,12 @@ public class BaseActivity extends AppCompatActivity {
     protected int RESULT_CODE = RESULT_CANCELED;
     protected boolean isDetailShown = false;
 
+    protected Locale locale;
+
+    public BaseActivity() {
+        this.locale = getLocal();
+    }
+
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
@@ -58,6 +68,7 @@ public class BaseActivity extends AppCompatActivity {
             initView();
             initMerchantLogo();
             initItemDetails();
+            setLanguage(locale);
         } catch (Exception e) {
             Logger.e(TAG, "appbar:" + e.getMessage());
         }
@@ -292,8 +303,12 @@ public class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        ContextWrapper contextWrapper =
-                ContextWrapper.changeLang(newBase, MidtransSDK.getInstance().getLanguageCode());
-        super.attachBaseContext(contextWrapper);
+        LocalizationApplicationDelegate localizationDelegate = new LocalizationApplicationDelegate();
+        localizationDelegate.setDefaultLanguage(newBase, locale);
+        super.attachBaseContext(localizationDelegate.attachBaseContext(newBase));
+    }
+
+    private Locale getLocal() {
+        return new Locale("id", "Indonesia");
     }
 }
