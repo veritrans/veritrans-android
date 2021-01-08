@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.design.widget.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:id="@id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <android.support.v7.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             style="@style/ThemeOverlay.AppCompat.ActionBar"
             android:layout_width="match_parent"
@@ -35,8 +35,8 @@
                     android:gravity="center_horizontal"
                     android:text="@string/order_review" />
             </RelativeLayout>
-        </android.support.v7.widget.Toolbar>
-    </android.support.design.widget.AppBarLayout>
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <RelativeLayout
         android:id="@+id/amount_container"
@@ -199,10 +199,10 @@
                 android:layout_marginRight="@dimen/sixteen_dp"
                 android:orientation="vertical">
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edit_customer_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -213,11 +213,11 @@
                         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
                         android:maxLength="64"
                         android:textSize="16sp" />
-                </android.support.design.widget.TextInputLayout>
-                <android.support.design.widget.TextInputLayout
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edit_customer_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -227,11 +227,11 @@
                         android:maxLength="128"
                         android:inputType="textEmailAddress"
                         android:textSize="16sp" />
-                </android.support.design.widget.TextInputLayout>
-                <android.support.design.widget.TextInputLayout
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edit_customer_phone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -242,18 +242,18 @@
                         android:digits="0123456789+"
                         android:maxLength="15"
                         android:textSize="16sp" />
-                </android.support.design.widget.TextInputLayout>
-                <android.support.design.widget.TextInputLayout
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edit_snaptoken"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:enabled="true"
                         android:hint="snaptoken"
                         android:textSize="16sp" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
                 <Button
                     android:id="@+id/button_snap_pay"
                     android:layout_width="match_parent"

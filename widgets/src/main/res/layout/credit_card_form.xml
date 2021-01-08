@@ -26,7 +26,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/card_number_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
@@ -42,7 +42,7 @@
                             android:maxLength="19"
                             android:nextFocusDown="@+id/card_expiry"
                             android:singleLine="true" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <ImageView
                         android:id="@+id/payment_card_logo"
@@ -67,7 +67,7 @@
                         android:visibility="invisible"
                         android:layout_height="match_parent" />
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_toLeftOf="@+id/view_card_cvv_divider"
                         android:id="@+id/card_expiry_container"
                         android:layout_width="match_parent"
@@ -84,9 +84,9 @@
                             android:maxLength="19"
                             android:nextFocusDown="@+id/card_cvv_number"
                             android:singleLine="true" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/card_cvv_number_container"
                         android:layout_width="match_parent"
                         android:layout_toRightOf="@id/view_card_cvv_divider"
@@ -103,7 +103,7 @@
                             android:maxLength="19"
                             android:nextFocusDown="@+id/image_what_is_cvv"
                             android:singleLine="true" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
                     <ImageView
                         android:layout_marginTop="@dimen/four_dp"
                         android:layout_marginLeft="10dp"

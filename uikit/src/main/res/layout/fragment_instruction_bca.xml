@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/instruction_toggle"
             style="@style/ButtonSecondaryExpandable"
             android:layout_width="match_parent"

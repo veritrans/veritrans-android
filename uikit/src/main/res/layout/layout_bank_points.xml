@@ -26,18 +26,18 @@
         android:textColor="@color/black"
         tools:text="Current Fiestapoin: 30.893"/>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/container_redeemed_point"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.v7.widget.AppCompatEditText
+        <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/redeemed_point_field"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/how_much_point"
             android:inputType="number" />
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <RelativeLayout
         android:id="@+id/container_fiestapoin"
