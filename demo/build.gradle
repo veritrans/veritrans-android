@@ -96,6 +96,7 @@ dependencies {
     implementation supportLibraries.cardView
     implementation supportLibraries.design
     implementation libraries.swipeLayout
+    implementation localizationLibraries.localization
     implementation(libraries.crashlytics) {
         transitive = true
     }
