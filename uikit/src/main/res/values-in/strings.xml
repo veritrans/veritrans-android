@@ -646,7 +646,7 @@
     <string name="complete_payment_via_xl_tunai">Selesaikan Pembayaran melalui XL Tunai</string>
     <string name="payment_failed">Pembayaran gagal! Silakan coba lagi.</string>
 
-    <string name="try_again">Coba lagi</string>
+    <string name="try_again">Coba Lagi</string>
     <string name="timeout_message">Proses ini terlalu lama. Silakan periksa koneksi anda.</string>
     <string name="maintenance_back">Oke, Kembali</string>
     <string name="maintenance_message">Something went wrong. Please try later</string>
@@ -741,4 +741,6 @@
     <string name="bri_internet_instruction_5">Jumlah pembayaran, kode bayar, dan nama merchant akan muncul pada halaman konfirmasi pembayaran. Jika informasi yang dicantumkan benar, pilih <b>Kirim</b>.</string>
     <string name="bri_internet_instruction_6">Masukkan <b>password</b> dan <b>mToken</b>, pilih <b>Kirim</b>.</string>
     <string name="bri_internet_instruction_7">Pembayaran telah selesai. Untuk mencetak bukti transaksi, pilih <b>Cetak</b>.</string>
+
+    <string name="retrofit_network_message">Gagal menyambung ke host</string>
 </resources>
