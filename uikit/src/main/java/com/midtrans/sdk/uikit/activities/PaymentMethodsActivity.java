@@ -295,7 +295,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     private void getPaymentPages() {
         progressContainer.setVisibility(View.VISIBLE);
         enableButtonBack(false);
-        CustomerDetails userDetail = midtransSDK.getTransactionRequest().getCustomerDetails();
+        String userId;
 
         if (!isAlreadyUtilized()) {
 
@@ -306,14 +306,14 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 return;
             }
 
-
-            if (userDetail == null || TextUtils.isEmpty(userDetail.getCustomerIdentifier())) {
-                midtransSDK.notifyTransactionFinished(new TransactionResult(null, null, TransactionResult.STATUS_INVALID));
-                finish();
-                return;
+            CustomerDetails userDetail = midtransSDK.getTransactionRequest().getCustomerDetails();
+            if (userDetail == null) {
+                userId = UUID.randomUUID().toString();
+            } else {
+                userId = (userDetail.getCustomerIdentifier().isEmpty()) ? UUID.randomUUID().toString() : userDetail.getCustomerIdentifier();
             }
 
-            midtransSDK.checkout(userDetail.getCustomerIdentifier(), new CheckoutCallback() {
+            midtransSDK.checkout(userId, new CheckoutCallback() {
                 @Override
                 public void onSuccess(Token token) {
                     Logger.i(TAG, "checkout token:" + token.getTokenId());
