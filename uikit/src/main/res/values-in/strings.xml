@@ -80,7 +80,7 @@
     <string name="validation_message_card_number">Masukkan nomor kartu</string>
     <string name="validation_message_invalid_card_no">Masukkan nomor kartu yang benar</string>
     <string name="validation_message_invalid_token_no">Challenge token harus terdiri dari 6 karakter.</string>
-    <string name="validation_message_cvv">Masukan CVV.</string>
+    <string name="validation_message_cvv">Masukkan CVV.</string>
     <string name="validation_message_invalid_cvv">Masukkan CVV yang benar</string>
     <string name="validation_message_empty_expiry_date">Masukkan tanggal kadaluarsa</string>
     <string name="message_cvv">CVV adalah 3 (atau 6) digit angka kode keamanan yang tercetak di belakang kartu Anda.</string>
@@ -137,7 +137,7 @@
     <string name="mandiri_instruction_step1">Pada menu utama, Pilih <b>Bayar/Beli</b>.</string>
     <string name="mandiri_instruction_step2">Pilih <b>Lainnya</b>.</string>
     <string name="mandiri_instruction_step3">Pilih <b>Multi Payment</b>.</string>
-    <string name="mandiri_instruction_step4">Masukan 70012 (kode perusahaan Midtrans) lalu tekan <b>Benar</b>.</string>
+    <string name="mandiri_instruction_step4">Masukkan 70012 (kode perusahaan Midtrans) lalu tekan <b>Benar</b>.</string>
     <string name="mandiri_instruction_step5">Masukkan <b>Kode Pembayaran</b> Anda lalu tekan <b>Benar</b>.</string>
     <string name="mandiri_instruction_step6"><b>Detail pembayaran Anda</b> akan muncul pada halaman konfirmasi. Jika informasi telah sesuai tekan <b>Ya</b>.</string>
 
@@ -315,7 +315,7 @@
     <!--credit card -->
     <string name="add_card_message">Anda bisa membayar dengan kartu baru disini</string>
     <string name="saved_card">Pilih kartu</string>
-    <string name="card_details">Detil Kartu</string>
+    <string name="card_details">Detail Kartu</string>
     <string name="retry">Ulangi</string>
     <string name="coming_soon">Segera Muncul!!</string>
     <string name="successful">Berhasil</string>
@@ -335,9 +335,9 @@
     <string name="enter_cvv">Masukkan CVV</string>
 
     <string name="appli">APPLI</string>
-    <string name="input_1">Masukan 1</string>
-    <string name="input_2">Masukan 2</string>
-    <string name="input_3">Masukan 3</string>
+    <string name="input_1">Masukkan 1</string>
+    <string name="input_2">Masukkan 2</string>
+    <string name="input_3">Masukkan 3</string>
     <string name="mandiri_click_pay">Mandiri Clickpay</string>
     <string name="hint_mandiri_debit_card_no">Nomor Kartu Mandiri Debit</string>
     <string name="hint_challenge_token">Challenge Token</string>
@@ -387,9 +387,9 @@
     <string name="mandiri_click_pay_instruction_step1">1.\tAktifkan token Mandiri Anda dengan menekan [img src=ic_mandiri_instrcn/].</string>
     <string name="mandiri_click_pay_instruction_step2">2.\tMasukkan password token Mandiri Anda.</string>
     <string name="mandiri_click_pay_instruction_step3">3.\tTekan <b>3</b> ketika <b>APPLI</b> ditampilkan.</string>
-    <string name="mandiri_click_pay_instruction_step4">4.\tMasukkan <b>masukan 1</b> dan tekan [img src=ic_mandiri_instrcn/] selama 3 detik.</string>
-    <string name="mandiri_click_pay_instruction_step5">5.\tMasukkan <b>masukan 2</b> dan tekan [img src=ic_mandiri_instrcn/] selama 3 detik.</string>
-    <string name="mandiri_click_pay_instruction_step6">6.\tMasukkan <b>masukan 3</b> dan tekan [img src=ic_mandiri_instrcn/] selama 3 detik.</string>
+    <string name="mandiri_click_pay_instruction_step4">4.\tMasukkan <b>Masukkan 1</b> dan tekan [img src=ic_mandiri_instrcn/] selama 3 detik.</string>
+    <string name="mandiri_click_pay_instruction_step5">5.\tMasukkan <b>Masukkan 2</b> dan tekan [img src=ic_mandiri_instrcn/] selama 3 detik.</string>
+    <string name="mandiri_click_pay_instruction_step6">6.\tMasukkan <b>Masukkan 3</b> dan tekan [img src=ic_mandiri_instrcn/] selama 3 detik.</string>
     <string name="mandiri_click_pay_instruction_step7">7.\tMasukkan response code pada token Mandiri Anda pada kolom <b>challenge token</b>.</string>
 
     <string name="for_three_seconds">selama 3 detik</string>
@@ -508,7 +508,7 @@
     <string name="no_network_msg">Koneksi tidak tersedia! Coba lagi lain waktu.</string>
     <string name="kioson">Kioson</string>
     <string name="message_payment_cannot_proccessed">Transaksi anda tidak dapat diproses. Pastikan informasi pembayaran anda benar</string>
-    <string name="message_payment_failed">Pembayaran gagal. Mohon cek kembali detil kartu anda atau gunakan kartu lain.</string>
+    <string name="message_payment_failed">Pembayaran gagal. Mohon cek kembali detail kartu anda atau gunakan kartu lain.</string>
     <string name="message_payment_denied">Transaksi anda ditolak! Silakan ulangi lagi, atau coba dengan metode pembayaran lain.</string>
     <string name="message_getcard_token_failed">Kartu gagal diproses. Periksa kembali input anda atau gunakan kartu lain.</string>
     <string name="message_payment_method_empty">Tidak ada metode pembayaran yang diaktifkan!</string>
@@ -571,7 +571,7 @@
     <string name="payment_method_description_shopeepay_deeplink">Bayar dengan ShopeePay</string>
     <string name="payment_method_description_shopeepay_qris">Scan kode QR dengan ShopeePay atau e-wallet lainnya</string>
     <string name="payment_method_description_danamon_online">Bayar dengan akun Danamon Online Banking anda</string>
-    <string name="payment_method_description_akulaku">Bayar meggunakan akun Akulaku Anda</string>
+    <string name="payment_method_description_akulaku">Bayar menggunakan akun Akulaku Anda</string>
 
     <string name="payment_bank_description_bca">Bayar dari ATM BCA atau internet banking</string>
     <string name="payment_bank_description_mandiri">Bayar dari ATM Mandiri atau internet banking</string>
@@ -632,21 +632,21 @@
     <string name="bni_atm_instruction_4">Pilih <b>Ke Rekening BNI</b>.</string>
     <string name="bni_atm_instruction_5">Masukkan <b>No. Virtual Account</b> yang dituju, lalu pilih <b>Tekan Jika Benar</b>.</string>
     <string name="bni_atm_instruction_6">Masukkan <b>jumlah tagihan yang akan Anda bayar</b> secara lengkap, lalu pilih <b>Tekan Jika Benar</b>.</string>
-    <string name="bni_atm_instruction_7"><b>Detil pembayaran anda</b> akan muncul pada halaman konfirmasi. Jika informasi telah sesuai pilih <b>Tekan Jika Ya</b>.</string>
+    <string name="bni_atm_instruction_7"><b>Detail pembayaran anda</b> akan muncul pada halaman konfirmasi. Jika informasi telah sesuai pilih <b>Tekan Jika Ya</b>.</string>
     <string name="tab_atm_bni">ATM BNI</string>
     <string name="tab_bni_mobile">Mobile Banking</string>
     <string name="tab_bni_internet">Internet Banking</string>
 
-    <string name="error_snap_transaction_details">Gagal mengambil detil transaksi</string>
+    <string name="error_snap_transaction_details">Gagal mengambil detail transaksi</string>
     <string name="error_paid_orderid">Order id sudah dibayar</string>
-    <string name="error_gross_amount_not_equal">Total pembayaran tidak sama dengan detil item</string>
+    <string name="error_gross_amount_not_equal">Total pembayaran tidak sama dengan detail item</string>
     <string name="error_gross_amount_required">Total pembayaran diperlukan</string>
     <string name="error_order_id_required">Order id diperlukan</string>
     <string name="checkout_error_empty_response">Tidak ada  data dari server</string>
     <string name="complete_payment_via_xl_tunai">Selesaikan Pembayaran melalui XL Tunai</string>
     <string name="payment_failed">Pembayaran gagal! Silakan coba lagi.</string>
 
-    <string name="try_again">Try Again</string>
+    <string name="try_again">Coba Lagi</string>
     <string name="timeout_message">Proses ini terlalu lama. Silakan periksa koneksi anda.</string>
     <string name="maintenance_back">Oke, Kembali</string>
     <string name="maintenance_message">Something went wrong. Please try later</string>
@@ -721,7 +721,7 @@
     <string name="bri_atm_instruction_2">Pilih <b>Pembayaran</b></string>
     <string name="bri_atm_instruction_3">Pilih <b>Lainnya</b></string>
     <string name="bri_atm_instruction_4">Pilih <b>BRIVA</b></string>
-    <string name="bri_atm_instruction_5">Masukan <b>Nomor BRIVA</b> (maks. 18 digit) dan pilih <b>Benar</b></string>
+    <string name="bri_atm_instruction_5">Masukkan <b>Nomor BRIVA</b> (maks. 18 digit) dan pilih <b>Benar</b></string>
     <string name="bri_atm_instruction_6">Jumlah pembayaran, nomor BRIVA dan nama merchant akan muncul pada halaman konfirmasi pembayaran. Jika informasi yang dicantumkan benar, pilih <b>Ya</b></string>
     <string name="bri_atm_instruction_7">Pembayaran telah selesai. Simpan bukti pembayaran Anda. </string>
 
@@ -737,8 +737,10 @@
     <string name="bri_internet_instruction_1">Login pada <b>Internet Banking BRI</b>.</string>
     <string name="bri_internet_instruction_2"><![CDATA[Pilih menu <b>Pembayaran & Pembelian</b>.]]></string>
     <string name="bri_internet_instruction_3">Pilih sub menu <b>BRIVA</b>.</string>
-    <string name="bri_internet_instruction_4">Masukan <b>BRIVA number</b>.</string>
+    <string name="bri_internet_instruction_4">Masukkan <b>nomor BRIVA</b>.</string>
     <string name="bri_internet_instruction_5">Jumlah pembayaran, kode bayar, dan nama merchant akan muncul pada halaman konfirmasi pembayaran. Jika informasi yang dicantumkan benar, pilih <b>Kirim</b>.</string>
     <string name="bri_internet_instruction_6">Masukkan <b>password</b> dan <b>mToken</b>, pilih <b>Kirim</b>.</string>
     <string name="bri_internet_instruction_7">Pembayaran telah selesai. Untuk mencetak bukti transaksi, pilih <b>Cetak</b>.</string>
+
+    <string name="retrofit_network_message">Gagal menyambung ke host</string>
 </resources>

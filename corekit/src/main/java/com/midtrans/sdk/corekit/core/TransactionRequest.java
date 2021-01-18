@@ -1,9 +1,9 @@
 package com.midtrans.sdk.corekit.core;
 
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.google.gson.annotations.SerializedName;
+import androidx.annotation.NonNull;
+
 import com.midtrans.sdk.corekit.models.BcaBankTransferRequestModel;
 import com.midtrans.sdk.corekit.models.BillInfoModel;
 import com.midtrans.sdk.corekit.models.BillingAddress;

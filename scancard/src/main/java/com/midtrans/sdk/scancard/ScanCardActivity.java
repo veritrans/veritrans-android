@@ -2,7 +2,7 @@ package com.midtrans.sdk.scancard;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.uikit.scancard.ExternalScanner;

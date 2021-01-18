@@ -1,17 +1,17 @@
 package com.midtrans.sdk.uikit.abstracts;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatCheckBox;
-import android.support.v7.widget.AppCompatEditText;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatCheckBox;
+import androidx.appcompat.widget.AppCompatEditText;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageButton;
@@ -19,6 +19,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.akexorcist.localizationactivity.core.LocalizationApplicationDelegate;
+import com.akexorcist.localizationactivity.ui.LocalizationActivity;
+import com.google.android.material.textfield.TextInputLayout;
 import com.koushikdutta.ion.Ion;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
@@ -32,15 +35,18 @@ import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
 
 import java.lang.reflect.Field;
+import java.util.Locale;
 
 /**
  * Created by ziahaqi on 7/20/17.
  */
 
-public abstract class BaseActivity extends AppCompatActivity implements BaseView {
+public abstract class BaseActivity extends LocalizationActivity implements BaseView {
 
     private static final String TAG = BaseActivity.class.getSimpleName();
-
+    public static final String COUNTRY_INDONESIA = "ID";
+    public static final String COUNTRY_UNITED_STATE = "US";
+    public static final String LANGUAGE_CODE_ID = "id";
 
     private int primaryColor = 0;
     private int primaryDarkColor = 0;
@@ -60,6 +66,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
         super.onCreate(savedInstanceState);
         checkSdkInstance();
         initThemeProperties();
+        setLanguage(getLanguageCode(), getLanguageCountry());
     }
 
     private void checkSdkInstance() {
@@ -342,5 +349,20 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
         }
 
         return midtransSdk;
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        LocalizationApplicationDelegate localizationDelegate = new LocalizationApplicationDelegate();
+        localizationDelegate.setDefaultLanguage(newBase, getLanguageCode(), getLanguageCountry());
+        super.attachBaseContext(localizationDelegate.attachBaseContext(newBase));
+    }
+
+    private String getLanguageCode() {
+        return MidtransSDK.getInstance().getLanguageCode();
+    }
+
+    private String getLanguageCountry() {
+        return (getLanguageCode().equals(LANGUAGE_CODE_ID)) ? COUNTRY_INDONESIA : COUNTRY_UNITED_STATE;
     }
 }

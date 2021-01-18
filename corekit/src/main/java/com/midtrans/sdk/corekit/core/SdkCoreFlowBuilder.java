@@ -1,7 +1,8 @@
 package com.midtrans.sdk.corekit.core;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 /**
  * Created by shivam on 10/20/15.

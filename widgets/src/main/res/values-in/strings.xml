@@ -12,9 +12,9 @@
     <string name="error_client_key_missing">Veritrans Client key dibutuhkan untuk membayar menggunakan Veritrans.</string>
     <string name="error_merchant_url_missing">Merchant URL dibutuhkan untuk membayar menggunakan Veritrans.</string>
     <string name="error_transaction_request_missing">Transaction Request dibutuhkan untuk membayar menggunakan Veritrans.</string>
-    <string name="error_failed_get_token">Gagal mengambil token kartu. Mohon cek kembali detil kartu anda.</string>
-    <string name="error_failed_charge">Gagal menyelesaikan transaksi. Mohon cek kembali detil kartu anda.</string>
-    <string name="error_saving_card">Gagal menyimpan token kartu. Mohon cek kembali detil kartu anda.</string>
+    <string name="error_failed_get_token">Gagal mengambil token kartu. Mohon cek kembali detail kartu anda.</string>
+    <string name="error_failed_charge">Gagal menyelesaikan transaksi. Mohon cek kembali detail kartu anda.</string>
+    <string name="error_saving_card">Gagal menyimpan token kartu. Mohon cek kembali detail kartu anda.</string>
 
     <string name="payment_credit_card_validation_message_cvv">Masukkan CVV</string>
     <string name="payment_credit_card_validation_message_invalid_cvv">Masukkan CVV yang tepat</string>

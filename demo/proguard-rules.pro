@@ -36,17 +36,17 @@
 -keep class com.midtrans.sdk.coreflow.BuildConfig { *; }
 
 # Keep the support library
--keep class android.support.v4.** { *; }
--keep interface android.support.v4.** { *; }
+-keep class androidx.legacy.** { *; }
+-keep interface androidx.legacy.** { *; }
 
 # http://stackoverflow.com/questions/29679177/cardview-shadow-not-appearing-in-lollipop-after-obfuscate-with-proguard/29698051
--keep class android.support.v7.widget.RoundRectDrawable { *; }
+-keep class androidx.cardview.widget.RoundRectDrawable { *; }
 
 # keep public class android.support.v7.widget.** { *; }
--keep public class android.support.v7.internal.widget.** { *; }
--keep public class android.support.v7.internal.view.menu.** { *; }
+-keep public class androidx.preference.internal.** { *; }
+#-keep public class android.support.v7.internal.view.menu.** { *; }
 
--keep public class * extends android.support.v4.view.ActionProvider {
+-keep public class * extends androidx.core.view.ActionProvider {
     public <init>(android.content.Context);
 }
 
@@ -59,10 +59,10 @@
    *** get*();
 }
 
--dontwarn android.support.design.**
--keep class android.support.design.** { *; }
--keep interface android.support.design.** { *; }
--keep public class android.support.design.R$* { *; }
+-dontwarn com.google.android.material.**
+-keep class com.google.android.material.** { *; }
+-keep interface com.google.android.material.** { *; }
+-keep public class com.google.android.material.R$* { *; }
 
 # Retrofit 1.X
 
@@ -192,10 +192,10 @@ public static final *** NULL; }
 -keepclassmembers class * extends android.app.Activity {
    public void *(android.view.View);
 }
--keepclassmembers class * extends android.support.v7.app.AppCompatActivity{
+-keepclassmembers class * extends androidx.appcompat.app.AppCompatActivity{
     public void *(android.view.View);
 }
--keepclassmembers public class * extends android.support.v4.app.Fragment{
+-keepclassmembers public class * extends androidx.legacy.app.Fragment{
      public *** on*(...);
      public *** *Dialog();
      public void *(android.view.View);

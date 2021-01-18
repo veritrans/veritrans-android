@@ -73,7 +73,7 @@
             app:fb_text="@string/copy" />
     </LinearLayout>
 
-    <android.support.v7.widget.AppCompatButton
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/instruction_toggle"
         style="@style/ButtonSecondaryExpandable"
         android:layout_width="match_parent"
