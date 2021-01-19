@@ -735,7 +735,7 @@
 
     <!-- bri internet  payment instruction -->
     <string name="bri_internet_instruction_1">Login pada <b>Internet Banking BRI</b>.</string>
-    <string name="bri_internet_instruction_2"><![CDATA[Pilih menu <b>Pembayaran & Pembelian</b>.]]></string>
+    <string name="bri_internet_instruction_2">Pilih menu <b>Pembayaran &amp; Pembelian</b>.</string>
     <string name="bri_internet_instruction_3">Pilih sub menu <b>BRIVA</b>.</string>
     <string name="bri_internet_instruction_4">Masukkan <b>nomor BRIVA</b>.</string>
     <string name="bri_internet_instruction_5">Jumlah pembayaran, kode bayar, dan nama merchant akan muncul pada halaman konfirmasi pembayaran. Jika informasi yang dicantumkan benar, pilih <b>Kirim</b>.</string>
