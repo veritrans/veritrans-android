@@ -205,37 +205,41 @@ public class AppUtils {
                 newModel.setCategory(CATEGORY_EMONEY);
                 newModel.setPriority(13);
                 break;
-            case PaymentType.MANDIRI_ECASH:
+            case PaymentType.SHOPEEPAY:
                 newModel.setCategory(CATEGORY_EMONEY);
                 newModel.setPriority(14);
                 break;
-            case PaymentType.TELKOMSEL_CASH:
+            case PaymentType.MANDIRI_ECASH:
                 newModel.setCategory(CATEGORY_EMONEY);
                 newModel.setPriority(15);
                 break;
+            case PaymentType.TELKOMSEL_CASH:
+                newModel.setCategory(CATEGORY_EMONEY);
+                newModel.setPriority(16);
+                break;
             case PaymentType.XL_TUNAI:
                 newModel.setCategory(CATEGORY_DIRECT_DEBIT);
-                newModel.setPriority(16);
+                newModel.setPriority(17);
                 break;
             case PaymentType.INDOMARET:
                 newModel.setCategory(CATEGORY_CONVENIENT_STORE);
-                newModel.setPriority(17);
+                newModel.setPriority(18);
                 break;
             case PaymentType.KIOSON:
                 newModel.setCategory(CATEGORY_CONVENIENT_STORE);
-                newModel.setPriority(17);
+                newModel.setPriority(18);
                 break;
             case PaymentType.GCI:
                 newModel.setCategory(CATEGORY_VOUCHER_CARD);
-                newModel.setPriority(17);
+                newModel.setPriority(18);
                 break;
             case PaymentType.AKULAKU:
                 newModel.setCategory(CATEGORY_VOUCHER_CARD);
-                newModel.setPriority(18);
+                newModel.setPriority(19);
                 break;
             case PaymentType.ALFAMART:
                 newModel.setCategory(CATEGORY_CONVENIENT_STORE);
-                newModel.setPriority(19);
+                newModel.setPriority(20);
                 break;
         }
         return newModel;
