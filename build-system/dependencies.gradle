@@ -25,7 +25,6 @@ ext {
     cardAndroidVersion = '5.5.1'
     localizationVersion = '1.2.6'
 
-    // TODO: Migrate to AndroidX
     supportLibraries = [
             appCompat   : "androidx.appcompat:appcompat:$appCompatVersion",
             supportV4   : "androidx.legacy:legacy-support-v4:$supportLibAndroidX",
