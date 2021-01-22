@@ -2,8 +2,9 @@ package com.midtrans.demo.widgets;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.support.v7.widget.AppCompatRadioButton;
 import android.util.AttributeSet;
+
+import androidx.appcompat.widget.AppCompatRadioButton;
 
 import com.midtrans.demo.FontCache;
 

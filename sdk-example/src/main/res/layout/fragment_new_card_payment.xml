@@ -10,7 +10,7 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin">
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/card_number_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -20,9 +20,9 @@
                 android:layout_height="wrap_content"
                 android:hint="Card Number"
                 android:inputType="number"/>
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/exp_date_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -32,9 +32,9 @@
                 android:layout_height="wrap_content"
                 android:hint="Card Expiration Date (mm/yy)"
                 android:inputType="date" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/cvv_number_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:hint="CVV"
                 android:inputType="numberPassword" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
         <CheckBox
             android:visibility="gone"
             android:id="@+id/check_paycard_savecard"

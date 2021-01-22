@@ -6,9 +6,10 @@ package com.midtrans.sdk.uikit.widgets;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.annotation.IntDef;
-import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
+
+import androidx.annotation.IntDef;
+import androidx.appcompat.widget.AppCompatImageView;
 
 import com.midtrans.sdk.uikit.R;
 

@@ -1,10 +1,6 @@
 package com.midtrans.sdk.uikit;
 
 import android.content.Context;
-import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 
 import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
 import com.midtrans.sdk.corekit.core.BaseSdkBuilder;
@@ -14,7 +10,6 @@ import com.midtrans.sdk.corekit.core.themes.CustomColorTheme;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 /**
  * Created by ziahaqi on 15/06/2016.

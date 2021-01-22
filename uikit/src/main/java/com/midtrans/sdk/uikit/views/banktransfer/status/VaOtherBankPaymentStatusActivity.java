@@ -1,8 +1,8 @@
 package com.midtrans.sdk.uikit.views.banktransfer.status;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
 

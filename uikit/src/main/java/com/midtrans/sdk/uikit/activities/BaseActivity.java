@@ -1,15 +1,17 @@
 package com.midtrans.sdk.uikit.activities;
 
 import android.content.Context;
-import android.support.annotation.LayoutRes;
-import android.support.design.widget.AppBarLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.LayoutRes;
+
+import com.akexorcist.localizationactivity.core.LocalizationApplicationDelegate;
+import com.akexorcist.localizationactivity.ui.LocalizationActivity;
+import com.google.android.material.appbar.AppBarLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,7 +29,6 @@ import com.midtrans.sdk.corekit.models.snap.MerchantData;
 import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.BuildConfig;
-import com.midtrans.sdk.uikit.ContextWrapper;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.adapters.TransactionDetailsAdapter;
 import com.midtrans.sdk.uikit.widgets.BoldTextView;
@@ -39,7 +40,7 @@ import java.util.List;
 /**
  * @author rakawm
  */
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends LocalizationActivity {
     public static final String ENVIRONMENT_DEVELOPMENT = "development";
     private static final String TAG = BaseActivity.class.getSimpleName();
     protected String currentFragmentName;
@@ -51,6 +52,10 @@ public class BaseActivity extends AppCompatActivity {
     protected int RESULT_CODE = RESULT_CANCELED;
     protected boolean isDetailShown = false;
 
+    public static final String COUNTRY_INDONESIA = "ID";
+    public static final String COUNTRY_UNITED_STATE = "US";
+    public static final String LANGUAGE_CODE_ID = "id";
+
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
@@ -58,6 +63,7 @@ public class BaseActivity extends AppCompatActivity {
             initView();
             initMerchantLogo();
             initItemDetails();
+            setLanguage(getLanguageCode(), getLanguageCountry());
         } catch (Exception e) {
             Logger.e(TAG, "appbar:" + e.getMessage());
         }
@@ -292,8 +298,16 @@ public class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        ContextWrapper contextWrapper =
-                ContextWrapper.changeLang(newBase, MidtransSDK.getInstance().getLanguageCode());
-        super.attachBaseContext(contextWrapper);
+        LocalizationApplicationDelegate localizationDelegate = new LocalizationApplicationDelegate();
+        localizationDelegate.setDefaultLanguage(newBase, getLanguageCode(), getLanguageCountry());
+        super.attachBaseContext(localizationDelegate.attachBaseContext(newBase));
+    }
+
+    private String getLanguageCode() {
+        return MidtransSDK.getInstance().getLanguageCode();
+    }
+
+    private String getLanguageCountry() {
+        return (getLanguageCode().equals(LANGUAGE_CODE_ID)) ? COUNTRY_INDONESIA : COUNTRY_UNITED_STATE;
     }
 }

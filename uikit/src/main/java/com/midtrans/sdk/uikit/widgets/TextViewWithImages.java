@@ -1,10 +1,11 @@
 package com.midtrans.sdk.uikit.widgets;
 
 import android.content.Context;
-import android.support.v7.widget.AppCompatTextView;
 import android.text.Spannable;
 import android.text.style.ImageSpan;
 import android.util.AttributeSet;
+
+import androidx.appcompat.widget.AppCompatTextView;
 
 import com.midtrans.sdk.corekit.core.Logger;
 

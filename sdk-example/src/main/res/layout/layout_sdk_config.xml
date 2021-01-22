@@ -27,7 +27,7 @@
             android:layout_height="3dp"/>
 
     </LinearLayout>
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_below="@+id/layout_sdkconfig_title"
         android:id="@+id/til_sdkconfig_snap_url"
         android:layout_width="match_parent"
@@ -42,9 +42,9 @@
             android:maxLength="100"
             android:singleLine="true"
             android:textColorHint="@color/colorAccent" />
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_below="@+id/til_sdkconfig_snap_url"
         android:id="@+id/til_sdkconfig_merchant_url"
         android:layout_width="match_parent"
@@ -59,9 +59,9 @@
             android:maxLength="100"
             android:singleLine="true"
             android:textColorHint="@color/colorAccent" />
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_below="@id/til_sdkconfig_merchant_url"
         android:id="@+id/til_sdkconfig_clientkey"
         android:layout_width="match_parent"
@@ -75,9 +75,9 @@
             android:maxLength="100"
             android:singleLine="true"
             android:textColorHint="@color/colorAccent" />
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_marginBottom="10dp"
         android:layout_below="@id/til_sdkconfig_clientkey"
         android:id="@+id/til_sdkconfig_timeout"
@@ -93,7 +93,7 @@
             android:maxLength="100"
             android:singleLine="true"
             android:textColorHint="@color/colorAccent" />
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
     <Button
         style="?borderlessButtonStyle"
         android:layout_alignParentRight="true"

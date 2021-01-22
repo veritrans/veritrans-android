@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".MandiriClickPaymentActivity">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
@@ -25,7 +25,7 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin">
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/card_number_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -36,9 +36,9 @@
                 android:layout_height="wrap_content"
                 android:hint="Mandiri Debit Card Number"
                 android:inputType="number" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/challenge_token_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Challenge Token"
                 android:inputType="date" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/btn_payment"

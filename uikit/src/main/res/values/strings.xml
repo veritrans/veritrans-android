@@ -819,7 +819,7 @@
 
     <!-- bri internet  payment instruction -->
     <string name="bri_internet_instruction_1">Log in to your <b>Internet Banking BRI</b>.</string>
-    <string name="bri_internet_instruction_2"><![CDATA[Choose <b>Payment & Purchase</b>.]]></string>
+    <string name="bri_internet_instruction_2">Choose <b>Payment &amp; Purchase</b></string>
     <string name="bri_internet_instruction_3">Choose sub menu <b>BRIVA</b>.</string>
     <string name="bri_internet_instruction_4">Input <b>BRIVA number</b>.</string>
     <string name="bri_internet_instruction_5">Amount to be paid, payment code, and merchant name will appear on the payment confirmation page. If the information is correct, choose <b>Send</b>.</string>
