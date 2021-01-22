@@ -3180,8 +3180,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             );
         }
 
-        transactionRequestNew.setGopay(new Gopay("demo://midtrans"));
-        transactionRequestNew.setShopeepay(new Shopeepay("demo://midtrans"));
+//        transactionRequestNew.setGopay(new Gopay("demo://midtrans"));
+//        transactionRequestNew.setShopeepay(new Shopeepay("demo://midtrans"));
 
         return transactionRequestNew;
     }
