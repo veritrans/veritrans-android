@@ -6,13 +6,6 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import com.google.android.material.appbar.AppBarLayout;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
@@ -21,6 +14,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.appbar.AppBarLayout;
 import com.koushikdutta.ion.Ion;
 import com.midtrans.raygun.RaygunClient;
 import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
@@ -296,7 +296,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     private void getPaymentPages() {
         progressContainer.setVisibility(View.VISIBLE);
         enableButtonBack(false);
-        String userId;
+        String customerIdentifier = UUID.randomUUID().toString();
 
         if (!isAlreadyUtilized()) {
 
@@ -307,14 +307,14 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 return;
             }
 
-            CustomerDetails userDetail = midtransSDK.getTransactionRequest().getCustomerDetails();
-            if (userDetail == null) {
-                userId = UUID.randomUUID().toString();
-            } else {
-                userId = (userDetail.getCustomerIdentifier().isEmpty()) ? UUID.randomUUID().toString() : userDetail.getCustomerIdentifier();
+            if (midtransSDK.getTransactionRequest().getCustomerDetails() != null) {
+                CustomerDetails customerDetails = midtransSDK.getTransactionRequest().getCustomerDetails();
+                if (customerDetails.getCustomerIdentifier() != null) {
+                    customerIdentifier = customerDetails.getCustomerIdentifier();
+                }
             }
 
-            midtransSDK.checkout(userId, new CheckoutCallback() {
+            midtransSDK.checkout(customerIdentifier, new CheckoutCallback() {
                 @Override
                 public void onSuccess(Token token) {
                     Logger.i(TAG, "checkout token:" + token.getTokenId());

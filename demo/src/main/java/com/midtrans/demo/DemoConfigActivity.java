@@ -2896,8 +2896,6 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         autoReadSmsEnabledSelection.setSupportButtonTintList(colorStateList);
     }
 
-    //setLanguage to either "en" for english or "id" for bahasa
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     private void initMidtransSDK() {
         SdkUIFlowBuilder.init()
                 .setContext(this)
@@ -2908,7 +2906,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 .setDefaultText("fonts/SourceSansPro-Regular.ttf")
                 .setBoldText("fonts/SourceSansPro-Bold.ttf")
                 .setSemiBoldText("fonts/SourceSansPro-Semibold.ttf")
-                .setLanguage("id")
+                .setLanguage("id") //setLanguage to either "en" for english or "id" for bahasa
                 .buildSDK();
     }
 
@@ -3180,8 +3178,14 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             );
         }
 
-//        transactionRequestNew.setGopay(new Gopay("demo://midtrans"));
-//        transactionRequestNew.setShopeepay(new Shopeepay("demo://midtrans"));
+        for (SelectPaymentMethodViewModel enablePayment: enabledPayments) {
+            if (enablePayment.getMethodName().equals("GoPay")) {
+                transactionRequestNew.setGopay(new Gopay("demo://midtrans"));
+            }
+            if (enablePayment.getMethodName().equals("ShopeePay")) {
+                transactionRequestNew.setShopeepay(new Shopeepay("demo://midtrans"));
+            }
+        }
 
         return transactionRequestNew;
     }
