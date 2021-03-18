@@ -309,7 +309,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
             if (midtransSDK.getTransactionRequest().getCustomerDetails() != null) {
                 CustomerDetails customerDetails = midtransSDK.getTransactionRequest().getCustomerDetails();
-                if (customerDetails != null && customerDetails.getCustomerIdentifier() != null) {
+                if (customerDetails.getCustomerIdentifier() != null) {
                     customerIdentifier = customerDetails.getCustomerIdentifier();
                 }
             }
