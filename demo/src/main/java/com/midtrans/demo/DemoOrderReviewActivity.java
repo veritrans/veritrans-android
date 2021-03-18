@@ -398,10 +398,7 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
     }
 
     private CustomerDetails getUserDetail() {
-        if (MidtransSDK.getInstance().getTransactionRequest().getCustomerDetails() != null) {
-            return MidtransSDK.getInstance().getTransactionRequest().getCustomerDetails();
-        }
-        return null;
+        return MidtransSDK.getInstance().getTransactionRequest().getCustomerDetails();
     }
 
     private CustomerDetails updateCustomerDetails(CustomerDetails customerDetails) {
