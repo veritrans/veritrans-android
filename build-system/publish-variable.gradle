@@ -1,7 +1,7 @@
 // Midtrans SDK
 ext {
     groupIdSdk = 'com.midtrans'
-    versionSdk = '1.27.0'
+    versionSdk = '1.27.1-RC01'
 
     bintrayRepo = 'maven'
     bintrayOrg = 'pt-midtrans'
