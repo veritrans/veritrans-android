@@ -47,6 +47,7 @@ public abstract class BaseActivity extends LocalizationActivity implements BaseV
     public static final String COUNTRY_INDONESIA = "ID";
     public static final String COUNTRY_UNITED_STATE = "US";
     public static final String LANGUAGE_CODE_ID = "id";
+    public static final String LANGUAGE_CODE_EN = "en";
 
     private int primaryColor = 0;
     private int primaryDarkColor = 0;
@@ -359,7 +360,13 @@ public abstract class BaseActivity extends LocalizationActivity implements BaseV
     }
 
     private String getLanguageCode() {
-        return MidtransSDK.getInstance().getLanguageCode();
+        String languageCode = LANGUAGE_CODE_EN;
+        try {
+            languageCode = getMidtransSdk().getLanguageCode();
+        } catch (Exception e) {
+            Logger.e(e.getMessage());
+        }
+        return languageCode;
     }
 
     private String getLanguageCountry() {

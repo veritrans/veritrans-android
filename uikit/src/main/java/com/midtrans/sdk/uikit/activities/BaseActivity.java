@@ -30,7 +30,9 @@ import com.midtrans.sdk.corekit.models.snap.Transaction;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.BuildConfig;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.abstracts.BaseView;
 import com.midtrans.sdk.uikit.adapters.TransactionDetailsAdapter;
+import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.widgets.BoldTextView;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
@@ -40,7 +42,7 @@ import java.util.List;
 /**
  * @author rakawm
  */
-public class BaseActivity extends LocalizationActivity {
+public class BaseActivity extends LocalizationActivity implements BaseView {
     public static final String ENVIRONMENT_DEVELOPMENT = "development";
     private static final String TAG = BaseActivity.class.getSimpleName();
     protected String currentFragmentName;
@@ -55,6 +57,7 @@ public class BaseActivity extends LocalizationActivity {
     public static final String COUNTRY_INDONESIA = "ID";
     public static final String COUNTRY_UNITED_STATE = "US";
     public static final String LANGUAGE_CODE_ID = "id";
+    public static final String LANGUAGE_CODE_EN = "en";
 
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
@@ -205,6 +208,11 @@ public class BaseActivity extends LocalizationActivity {
         }
     }
 
+    @Override
+    public void onNullInstanceSdk() {
+        setResult(UiKitConstants.RESULT_SDK_NOT_AVAILABLE);
+        finish();
+    }
 
     public void updateColorTheme(MidtransSDK mMidtransSDK) {
         try {
@@ -303,8 +311,23 @@ public class BaseActivity extends LocalizationActivity {
         super.attachBaseContext(localizationDelegate.attachBaseContext(newBase));
     }
 
+    private MidtransSDK getMidtransSdk() {
+        MidtransSDK midtransSDK = MidtransSDK.getInstance();
+        if (midtransSDK == null || midtransSDK.isSdkNotAvailable()) {
+            onNullInstanceSdk();
+        }
+
+        return midtransSDK;
+    }
+
     private String getLanguageCode() {
-        return MidtransSDK.getInstance().getLanguageCode();
+        String languageCode = LANGUAGE_CODE_EN;
+        try {
+            languageCode = getMidtransSdk().getLanguageCode();
+        } catch (Exception e) {
+            Logger.e(e.getMessage());
+        }
+        return languageCode;
     }
 
     private String getLanguageCountry() {
