@@ -57,7 +57,6 @@ public class BaseActivity extends LocalizationActivity implements BaseView {
     public static final String COUNTRY_INDONESIA = "ID";
     public static final String COUNTRY_UNITED_STATE = "US";
     public static final String LANGUAGE_CODE_ID = "id";
-    public static final String LANGUAGE_CODE_EN = "en";
 
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
@@ -78,11 +77,7 @@ public class BaseActivity extends LocalizationActivity implements BaseView {
 
     public void initializeTheme() {
         initBadgeTestView();
-
-        MidtransSDK mMidtransSDK = MidtransSDK.getInstance();
-        if (mMidtransSDK != null) {
-            updateColorTheme(mMidtransSDK);
-        }
+        updateColorTheme(getMidtransSdk());
     }
 
     private void initBadgeTestView() {
@@ -321,13 +316,7 @@ public class BaseActivity extends LocalizationActivity implements BaseView {
     }
 
     private String getLanguageCode() {
-        String languageCode = LANGUAGE_CODE_EN;
-        try {
-            languageCode = getMidtransSdk().getLanguageCode();
-        } catch (Exception e) {
-            Logger.e(e.getMessage());
-        }
-        return languageCode;
+        return getMidtransSdk().getLanguageCode();
     }
 
     private String getLanguageCountry() {
