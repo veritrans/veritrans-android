@@ -332,6 +332,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
                 @Override
                 public void onError(Throwable error) {
+                    enableButtonBack(true);
                     Logger.e(TAG, "checkout>error:" + error.getMessage());
                     showFallbackErrorPage(error);
                 }
