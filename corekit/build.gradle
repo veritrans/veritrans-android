@@ -32,7 +32,6 @@ android {
     buildTypes {
         release {
             minifyEnabled true
-            shrinkResources true
             // TODO: Revisit this later, getting `ERROR: Default file proguard-android.txt should not be used as a consumer configuration file.`
              consumerProguardFiles 'consumer-rules.pro'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
