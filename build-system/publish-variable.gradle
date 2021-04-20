@@ -1,12 +1,17 @@
-// Midtrans SDK
 ext {
     groupIdSdk = 'com.midtrans'
     versionSdk = '1.27.1-RC03'
 
-    bintrayRepo = 'maven'
-    bintrayOrg = 'pt-midtrans'
-    siteUrl = 'https://midtrans.com'
-    gitUrl = 'https://github.com/veritrans/veritrans-android.git'
+    mavenRepo = 'mavencentral'
+    mavenUrl = 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
+    gitUrl = 'https://github.com/veritrans/veritrans-android'
+    libraryNameCoreKit = 'Midtrans-CoreKit'
+    libraryNameUiKit = 'Midtrans-UiKit'
+    libraryNameScanCard = 'Midtrans-ScanCard'
     libraryDescription = 'Android SDK for integrating with midtrans.com'
-    allLicenses = ['Apache-2.0']
+    licenseName = 'Midtrans License'
+    licenseUrl = 'https://github.com/veritrans/veritrans-android/blob/master/LICENSE'
+    scmConnection = 'scm:git:github.com:veritrans/veritrans-android.git'
+    scmDeveloperConnection = 'scm:git:ssh://github.com/veritrans/veritrans-android.git'
+    scmUrl = 'https://github.com/veritrans/veritrans-android/tree/master'
 }

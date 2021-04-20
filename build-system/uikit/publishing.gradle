@@ -21,13 +21,13 @@ publishing {
             artifact("$buildDir/outputs/aar/${artifactId}-development-release.aar")
 
             pom {
-                name = "Midtrans-UIKIT"
-                description = 'Android SDK for integrating with midtrans.com'
-                url = 'https://github.com/veritrans/veritrans-android'
+                name = libraryNameUiKit
+                description = libraryDescription
+                url = gitUrl
                 licenses {
                     license {
-                        name = 'Midtrans License'
-                        url = 'https://github.com/veritrans/veritrans-android/blob/master/LICENSE'
+                        name = licenseName
+                        url = licenseUrl
                     }
                 }
                 developers {
@@ -38,9 +38,9 @@ publishing {
                     }
                 }
                 scm {
-                    connection = 'scm:git:github.com:veritrans/veritrans-android.git'
-                    developerConnection = 'scm:git:ssh://github.com/veritrans/veritrans-android.git'
-                    url = 'https://github.com/veritrans/veritrans-android/tree/master'
+                    connection = scmConnection
+                    developerConnection = scmDeveloperConnection
+                    url = scmUrl
                 }
                 withXml {
                     def dependenciesNode = asNode().appendNode('dependencies')
@@ -74,13 +74,13 @@ publishing {
             artifact("$buildDir/outputs/aar/${artifactId}-uat-release.aar")
 
             pom {
-                name = "Midtrans-UIKIT"
-                description = 'Android SDK for integrating with midtrans.com'
-                url = 'https://github.com/veritrans/veritrans-android'
+                name = libraryNameUiKit
+                description = libraryDescription
+                url = gitUrl
                 licenses {
                     license {
-                        name = 'Midtrans License'
-                        url = 'https://github.com/veritrans/veritrans-android/blob/master/LICENSE'
+                        name = licenseName
+                        url = licenseUrl
                     }
                 }
                 developers {
@@ -91,9 +91,9 @@ publishing {
                     }
                 }
                 scm {
-                    connection = 'scm:git:github.com:veritrans/veritrans-android.git'
-                    developerConnection = 'scm:git:ssh://github.com/veritrans/veritrans-android.git'
-                    url = 'https://github.com/veritrans/veritrans-android/tree/master'
+                    connection = scmConnection
+                    developerConnection = scmDeveloperConnection
+                    url = scmUrl
                 }
                 withXml {
                     def dependenciesNode = asNode().appendNode('dependencies')
@@ -127,13 +127,13 @@ publishing {
             artifact("$buildDir/outputs/aar/${artifactId}-production-release.aar")
 
             pom {
-                name = "Midtrans-UIKIT"
-                description = 'Android SDK for integrating with midtrans.com'
-                url = 'https://github.com/veritrans/veritrans-android'
+                name = libraryNameUiKit
+                description = libraryDescription
+                url = gitUrl
                 licenses {
                     license {
-                        name = 'Midtrans License'
-                        url = 'https://github.com/veritrans/veritrans-android/blob/master/LICENSE'
+                        name = licenseName
+                        url = licenseUrl
                     }
                 }
                 developers {
@@ -144,9 +144,9 @@ publishing {
                     }
                 }
                 scm {
-                    connection = 'scm:git:github.com:veritrans/veritrans-android.git'
-                    developerConnection = 'scm:git:ssh://github.com/veritrans/veritrans-android.git'
-                    url = 'https://github.com/veritrans/veritrans-android/tree/master'
+                    connection = scmConnection
+                    developerConnection = scmDeveloperConnection
+                    url = scmUrl
                 }
                 withXml {
                     def dependenciesNode = asNode().appendNode('dependencies')
@@ -171,7 +171,8 @@ publishing {
 
     repositories {
         maven {
-            url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            name = mavenRepo
+            url = mavenUrl
             credentials {
                 username ossrhUsername
                 password ossrhPassword
