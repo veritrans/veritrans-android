@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply from: "$rootDir/build-system/uikit/jacoco.gradle"
 apply from: "$rootDir/build-system/publish-variable.gradle"
+apply from: "$rootDir/build-system/uikit/publishing.gradle"
 
 android {
     def DEFAULT_PUBLISH
@@ -20,7 +21,7 @@ android {
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
-        //raygun api key
+        buildConfigField "String", "VERSION_NAME", "\"" + versionName + "\""
         resValue "string", "ISSUE_TRACKER_API_KEY", ISSUE_TRACKER_API_KEY
     }
     buildTypes {
@@ -119,5 +120,3 @@ dependencies {
         exclude module: 'objenesis'
     }
 }
-
-apply from: "$rootDir/build-system/uikit/publishing.gradle"
