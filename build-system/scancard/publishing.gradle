@@ -1,5 +1,6 @@
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven-publish'
+apply plugin: 'signing'
 apply from: "$rootDir/build-system/publish-variable.gradle"
 
 version = versionSdk
@@ -12,114 +13,174 @@ task sourceJar(type: Jar) {
 
 publishing {
     publications {
-        BintraySandbox(MavenPublication) {
+        sandbox(MavenPublication) {
+            artifact(sourceJar)
             groupId group
             artifactId 'scancard'
             version this.version + "-SANDBOX"
-            artifact(sourceJar)
             artifact("$buildDir/outputs/aar/${artifactId}-development-release.aar")
 
-            //The publication doesn't know about our dependencies, so we have to manually add them to the pom
-            pom.withXml {
-                def dependenciesNode = asNode().appendNode('dependencies')
-
-                //Iterate over the implementation dependencies (we don't want the test ones), adding a <dependency> node for each
-                configurations.implementation.allDependencies.each {
-                    def dependencyNode = dependenciesNode.appendNode('dependency')
-                    dependencyNode.appendNode('groupId', it.group)
-                    dependencyNode.appendNode('artifactId', it.name)
-                    if (it.group == 'com.midtrans') {
-                        dependencyNode.appendNode('version', it.version + '-SANDBOX')
-                    } else {
-                        dependencyNode.appendNode('version', it.version)
+            pom {
+                name = libraryNameScanCard
+                description = libraryDescription
+                url = gitUrl
+                licenses {
+                    license {
+                        name = licenseName
+                        url = licenseUrl
                     }
                 }
+                developers {
+                    developer {
+                        id = developerId
+                        name = developerName
+                        email = developerEmail
+                    }
+                }
+                scm {
+                    connection = scmConnection
+                    developerConnection = scmDeveloperConnection
+                    url = scmUrl
+                }
+                withXml {
+                    def dependenciesNode = asNode().appendNode('dependencies')
 
-                configurations.developmentImplementation.allDependencies.each {
-                    def dependencyNode = dependenciesNode.appendNode('dependency')
-                    dependencyNode.appendNode('groupId', it.group)
-                    dependencyNode.appendNode('artifactId', it.name)
-                    dependencyNode.appendNode('version', it.version)
+                    configurations.implementation.allDependencies.each {
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', it.group)
+                        dependencyNode.appendNode('artifactId', it.name)
+                        if (it.group == 'com.midtrans') {
+                            dependencyNode.appendNode('version', it.version + '-SANDBOX')
+                        } else {
+                            dependencyNode.appendNode('version', it.version)
+                        }
+                    }
+
+                    configurations.developmentImplementation.allDependencies.each {
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', it.group)
+                        dependencyNode.appendNode('artifactId', it.name)
+                        dependencyNode.appendNode('version', it.version)
+                    }
                 }
             }
         }
 
-        BintrayUat(MavenPublication) {
+        uat(MavenPublication) {
+            artifact(sourceJar)
             groupId group
             artifactId 'scancard'
             version this.version + "-UAT"
-            artifact(sourceJar)
             artifact("$buildDir/outputs/aar/${artifactId}-uat-release.aar")
 
-            //The publication doesn't know about our dependencies, so we have to manually add them to the pom
-            pom.withXml {
-                def dependenciesNode = asNode().appendNode('dependencies')
-
-                //Iterate over the implementation dependencies (we don't want the test ones), adding a <dependency> node for each
-                configurations.implementation.allDependencies.each {
-                    def dependencyNode = dependenciesNode.appendNode('dependency')
-                    dependencyNode.appendNode('groupId', it.group)
-                    dependencyNode.appendNode('artifactId', it.name)
-                    if (it.group == 'com.midtrans') {
-                        dependencyNode.appendNode('version', it.version + '-SANDBOX')
-                    } else {
-                        dependencyNode.appendNode('version', it.version)
+            pom {
+                name = libraryNameScanCard
+                description = libraryDescription
+                url = gitUrl
+                licenses {
+                    license {
+                        name = licenseName
+                        url = licenseUrl
                     }
                 }
+                developers {
+                    developer {
+                        id = developerId
+                        name = developerName
+                        email = developerEmail
+                    }
+                }
+                scm {
+                    connection = scmConnection
+                    developerConnection = scmDeveloperConnection
+                    url = scmUrl
+                }
+                withXml {
+                    def dependenciesNode = asNode().appendNode('dependencies')
 
-                configurations.uatImplementation.allDependencies.each {
-                    def dependencyNode = dependenciesNode.appendNode('dependency')
-                    dependencyNode.appendNode('groupId', it.group)
-                    dependencyNode.appendNode('artifactId', it.name)
-                    dependencyNode.appendNode('version', it.version)
+                    configurations.implementation.allDependencies.each {
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', it.group)
+                        dependencyNode.appendNode('artifactId', it.name)
+                        if (it.group == 'com.midtrans') {
+                            dependencyNode.appendNode('version', it.version + '-UAT')
+                        } else {
+                            dependencyNode.appendNode('version', it.version)
+                        }
+                    }
+
+                    configurations.uatImplementation.allDependencies.each {
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', it.group)
+                        dependencyNode.appendNode('artifactId', it.name)
+                        dependencyNode.appendNode('version', it.version)
+                    }
                 }
             }
         }
 
-        BintrayProduction(MavenPublication) {
+        production(MavenPublication) {
+            artifact(sourceJar)
             groupId group
             artifactId 'scancard'
             version this.version
-            artifact(sourceJar)
             artifact("$buildDir/outputs/aar/${artifactId}-production-release.aar")
 
-            //The publication doesn't know about our dependencies, so we have to manually add them to the pom
-            pom.withXml {
-                def dependenciesNode = asNode().appendNode('dependencies')
-
-                //Iterate over the implementation dependencies (we don't want the test ones), adding a <dependency> node for each
-                configurations.implementation.allDependencies.each {
-                    def dependencyNode = dependenciesNode.appendNode('dependency')
-                    dependencyNode.appendNode('groupId', it.group)
-                    dependencyNode.appendNode('artifactId', it.name)
-                    dependencyNode.appendNode('version', it.version)
+            pom {
+                name = libraryNameScanCard
+                description = libraryDescription
+                url = gitUrl
+                licenses {
+                    license {
+                        name = licenseName
+                        url = licenseUrl
+                    }
                 }
-
-                configurations.productionImplementation.allDependencies.each {
-                    def dependencyNode = dependenciesNode.appendNode('dependency')
-                    dependencyNode.appendNode('groupId', it.group)
-                    dependencyNode.appendNode('artifactId', it.name)
-                    dependencyNode.appendNode('version', it.version)
+                developers {
+                    developer {
+                        id = developerId
+                        name = developerName
+                        email = developerEmail
+                    }
                 }
+                scm {
+                    connection = scmConnection
+                    developerConnection = scmDeveloperConnection
+                    url = scmUrl
+                }
+                withXml {
+                    def dependenciesNode = asNode().appendNode('dependencies')
+
+                    configurations.implementation.allDependencies.each {
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', it.group)
+                        dependencyNode.appendNode('artifactId', it.name)
+                        dependencyNode.appendNode('version', it.version)
+                    }
+
+                    configurations.productionImplementation.allDependencies.each {
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', it.group)
+                        dependencyNode.appendNode('artifactId', it.name)
+                        dependencyNode.appendNode('version', it.version)
+                    }
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name = mavenRepo
+            url = mavenUrl
+            credentials {
+                username ossrhUsername
+                password ossrhPassword
             }
         }
     }
 }
 
-bintray {
-    user = System.getenv('BINTRAY_USER')
-    key = System.getenv('BINTRAY_KEY')
-    configurations = ['archives']
-    pkg {
-        repo = bintrayRepo
-        name = project.name
-        userOrg = bintrayOrg
-        licenses = allLicenses
-        vcsUrl = gitUrl
-        desc = 'External scanner plugin for Midtrans Android SDK'
-        websiteUrl = siteUrl
-        publish = true
-        publicDownloadNumbers = true
-    }
-    publications = ['BintrayProduction', 'BintraySandbox', 'BintrayUat']
+signing {
+    sign publishing.publications
 }

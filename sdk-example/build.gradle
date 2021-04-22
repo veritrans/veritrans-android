@@ -1,10 +1,12 @@
 apply plugin: 'com.android.application'
 buildscript {
     repositories {
+        mavenCentral()
         jcenter()
     }
 }
 repositories {
+    mavenCentral()
     jcenter()
     maven { url "http://dl.bintray.com/pt-midtrans/maven" }
 }
