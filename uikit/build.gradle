@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply from: "$rootDir/build-system/uikit/jacoco.gradle"
 apply from: "$rootDir/build-system/publish-variable.gradle"
+apply from: "$rootDir/build-system/uikit/publishing.gradle"
 
 android {
     def DEFAULT_PUBLISH
@@ -20,13 +21,12 @@ android {
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
-        //raygun api key
+        buildConfigField "String", "VERSION_NAME", "\"" + versionName + "\""
         resValue "string", "ISSUE_TRACKER_API_KEY", ISSUE_TRACKER_API_KEY
     }
     buildTypes {
         release {
             minifyEnabled true
-
             // TODO: Revisit this later, getting `ERROR: Default file proguard-android.txt should not be used as a consumer configuration file.`
             // consumerProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -119,5 +119,3 @@ dependencies {
         exclude module: 'objenesis'
     }
 }
-
-apply from: "$rootDir/build-system/uikit/publishing.gradle"

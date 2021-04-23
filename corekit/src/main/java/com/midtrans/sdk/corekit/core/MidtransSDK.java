@@ -54,6 +54,7 @@ public class MidtransSDK {
     private static volatile MidtransSDK midtransSDK;
     private static BaseSdkBuilder sdkBuilder;
     private static boolean sdkNotAvailable = false;
+    private static final String LANGUAGE_CODE_EN = "en";
 
     ISdkFlow uiflow;
     private UIKitCustomSetting UIKitCustomSetting;
@@ -1904,6 +1905,10 @@ public class MidtransSDK {
     }
 
     public String getLanguageCode() {
-        return languageCode;
+        String language = LANGUAGE_CODE_EN;
+        if (languageCode != null) {
+            language = languageCode;
+        }
+        return language;
     }
 }

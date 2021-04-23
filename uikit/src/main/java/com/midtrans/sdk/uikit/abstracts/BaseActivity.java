@@ -359,7 +359,7 @@ public abstract class BaseActivity extends LocalizationActivity implements BaseV
     }
 
     private String getLanguageCode() {
-        return MidtransSDK.getInstance().getLanguageCode();
+        return getMidtransSdk().getLanguageCode();
     }
 
     private String getLanguageCountry() {

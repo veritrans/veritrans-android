@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply from: "$rootDir/build-system/publish-variable.gradle"
+apply from: "$rootDir/build-system/scancard/publishing.gradle"
 
 android {
     def DEFAULT_PUBLISH
@@ -19,8 +20,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
-            shrinkResources false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -58,5 +58,3 @@ dependencies {
     implementation libraries.cardAndroid
     api project(':uikit')
 }
-
-apply from: "$rootDir/build-system/scancard/publishing.gradle"

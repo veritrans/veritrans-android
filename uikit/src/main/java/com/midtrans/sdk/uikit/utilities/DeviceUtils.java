@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 
@@ -28,7 +29,7 @@ public class DeviceUtils {
         if (info.getType() == ConnectivityManager.TYPE_WIFI) {
             return "WIFI";
         } else {
-            switch (tm.getNetworkType()) {
+            switch (getNetworkType(tm)) {
                 case TelephonyManager.NETWORK_TYPE_GPRS:
                 case TelephonyManager.NETWORK_TYPE_EDGE:
                 case TelephonyManager.NETWORK_TYPE_CDMA:
@@ -107,5 +108,15 @@ public class DeviceUtils {
             Logger.d(TAG, "appinfo:" + e.getMessage());
         }
         return appInfo;
+    }
+
+    private static int getNetworkType(TelephonyManager telephonyManager) {
+        int networkType;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            networkType = telephonyManager.getDataNetworkType();
+        } else {
+            networkType = telephonyManager.getNetworkType();
+        }
+        return networkType;
     }
 }
