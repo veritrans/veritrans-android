@@ -206,4 +206,8 @@
             android:process=":raygunpostservice" />
     </application>
 
+    <queries>
+        <package android:name="com.gojek.app"/>
+    </queries>
+
 </manifest>
