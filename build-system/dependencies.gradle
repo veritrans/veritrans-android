@@ -16,7 +16,7 @@ ext {
     powermockVersion = '1.6.2'
     junitVersion = '4.1.2'
     espressoVersion = '2.2.2'
-    ionVersion = '2.2.1'
+    ionVersion = '3.1.0'
     gsonVersion = '2.7'
     swipeLayoutVersion = '1.0.14'
     betterLinkVersion = '1.2'
