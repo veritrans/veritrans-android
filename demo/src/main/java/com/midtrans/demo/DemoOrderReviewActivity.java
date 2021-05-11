@@ -27,6 +27,7 @@ import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
 import com.midtrans.sdk.corekit.core.Constants;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.models.BillingAddress;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.ShippingAddress;
@@ -398,7 +399,11 @@ public class DemoOrderReviewActivity extends AppCompatActivity implements Transa
     }
 
     private CustomerDetails getUserDetail() {
-        return MidtransSDK.getInstance().getTransactionRequest().getCustomerDetails();
+        TransactionRequest transactionRequest = MidtransSDK.getInstance().getTransactionRequest();
+        if (transactionRequest != null && transactionRequest.getCustomerDetails() != null) {
+            return transactionRequest.getCustomerDetails();
+        }
+        return null;
     }
 
     private CustomerDetails updateCustomerDetails(CustomerDetails customerDetails) {
