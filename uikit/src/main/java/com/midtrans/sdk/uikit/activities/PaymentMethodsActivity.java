@@ -31,6 +31,7 @@ import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.core.QrisAcquirer;
+import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.core.themes.ColorTheme;
 import com.midtrans.sdk.corekit.core.themes.CustomColorTheme;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
@@ -307,8 +308,9 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 return;
             }
 
-            if (midtransSDK.getTransactionRequest().getCustomerDetails() != null) {
-                CustomerDetails customerDetails = midtransSDK.getTransactionRequest().getCustomerDetails();
+            TransactionRequest transactionRequest = midtransSDK.getTransactionRequest();
+            if (transactionRequest != null && transactionRequest.getCustomerDetails() != null) {
+                CustomerDetails customerDetails = transactionRequest.getCustomerDetails();
                 if (customerDetails.getCustomerIdentifier() != null) {
                     customerIdentifier = customerDetails.getCustomerIdentifier();
                 }
