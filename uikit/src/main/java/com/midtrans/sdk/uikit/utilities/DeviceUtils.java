@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 
 import com.midtrans.sdk.corekit.core.Logger;
 
@@ -111,9 +112,16 @@ public class DeviceUtils {
     }
 
     private static int getNetworkType(TelephonyManager telephonyManager) {
-        int networkType;
+        int networkType = TelephonyManager.NETWORK_TYPE_UNKNOWN;;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             networkType = telephonyManager.getDataNetworkType();
+            try {
+                networkType = telephonyManager.getDataNetworkType();
+            } catch (SecurityException se) {
+                // Developer did not add READ_PHONE_STATE permission to their app
+                // or user did not accept the permission.
+                Log.e(TAG, se.toString());
+            }
         } else {
             networkType = telephonyManager.getNetworkType();
         }
