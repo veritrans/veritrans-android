@@ -74,6 +74,7 @@ public class Constants {
      * result code used for payment transfer activities
      */
     public static final int RESULT_CODE_PAYMENT_TRANSFER = 5102;
+    public static final int RESULT_CODE_UOB = 5103;
     //payment types to send in rerquest
     public static final String PAYMENT_EPAY_BRI = "bri_epay";
     public static final String PAYMENT_CIMB_CLICKS = "cimb_clicks";

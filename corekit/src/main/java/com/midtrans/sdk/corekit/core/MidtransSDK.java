@@ -1611,6 +1611,24 @@ public class MidtransSDK {
         }
     }
 
+    /**
+     * It will run backround task to charge payment using Uob Ezpay
+     *
+     * @param snapToken
+     */
+    public void paymentUsingUobEzpay(String snapToken, TransactionCallback callback) {
+        if (callback == null) {
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
+            return;
+        }
+
+        if (isNetworkAvailable()) {
+            snapServiceManager.paymentUsingUobEzpay(snapToken, SdkUtil.getUobEzpayPaymentRequest(), callback);
+        } else {
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
+        }
+    }
+
 
     /**
      * It will run backround task to save card to merchant server

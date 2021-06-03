@@ -78,6 +78,7 @@ import com.midtrans.sdk.uikit.views.mandiri_clickpay.MandiriClickPayActivity;
 import com.midtrans.sdk.uikit.views.mandiri_ecash.MandiriEcashPaymentActivity;
 import com.midtrans.sdk.uikit.views.shopeepay.payment.ShopeePayPaymentActivity;
 import com.midtrans.sdk.uikit.views.telkomsel_cash.TelkomselCashPaymentActivity;
+import com.midtrans.sdk.uikit.views.uob.UobListActivity;
 import com.midtrans.sdk.uikit.views.xl_tunai.payment.XlTunaiPaymentActivity;
 import com.midtrans.sdk.uikit.widgets.BoldTextView;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
@@ -115,6 +116,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     private boolean isDanamonOnline = false;
     private boolean isAkulaku = false;
     private boolean isAlfamart = false;
+    private boolean isUob = false;
     private boolean backButtonEnabled;
     private boolean isDeepLink;
 
@@ -129,6 +131,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
     private LinearLayout maintenanceContainer;
     private ImageView logo = null;
     private ArrayList<EnabledPayment> bankTransfers = new ArrayList<>();
+    private ArrayList<EnabledPayment> uobList = new ArrayList<>();
     private PaymentMethodsAdapter paymentMethodsAdapter;
     private AlertDialog alertDialog;
     private ImageView progressImage;
@@ -164,6 +167,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
         isDanamonOnline = getIntent().getBooleanExtra(UserDetailsActivity.DANAMON_ONLINE, false);
         isAkulaku = getIntent().getBooleanExtra(UserDetailsActivity.AKULAKU, false);
         isAlfamart = getIntent().getBooleanExtra(UserDetailsActivity.ALFAMART, false);
+        isUob = getIntent().getBooleanExtra(UserDetailsActivity.UOB_EZPAY, false);
 
         Logger.d("CLICK ALFAMART "+isAlfamart);
 
@@ -761,6 +765,38 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             } else {
                 showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
             }
+        } else if (isUob) {
+            if (SdkUIFlowUtil.isUobMethodEnabled(getApplicationContext(), enabledPayments)) {
+                Intent startUobPayment = new Intent(PaymentMethodsActivity.this,
+                        UobListActivity.class);
+                if (getIntent().getBooleanExtra(UserDetailsActivity.UOB_WEB, false)) {
+                    if (SdkUIFlowUtil
+                            .isPaymentMethodEnabled(enabledPayments, PaymentType.UOB_WEB)) {
+                        startUobPayment.putExtra(UserDetailsActivity.UOB_WEB, true);
+                    } else {
+                        showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
+                        return;
+                    }
+                } else if (getIntent()
+                        .getBooleanExtra(UserDetailsActivity.UOB_APP, false)) {
+                    if (SdkUIFlowUtil.isPaymentMethodEnabled(enabledPayments, PaymentType.UOB_APP)) {
+                        startUobPayment.putExtra(UserDetailsActivity.UOB_APP, true);
+                    } else {
+                        showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
+                        return;
+                    }
+                }
+                startUobPayment
+                        .putExtra(UobListActivity.EXTRA_UOB_LIST, getUobList());
+                startActivityForResult(startUobPayment, Constants.RESULT_CODE_PAYMENT_TRANSFER);
+                if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
+                        && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                    overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                }
+            } else {
+                showErrorAlertDialog(getString(R.string.payment_not_enabled_message));
+            }
+
         } else {
             if (data.isEmpty()) {
                 showErrorAlertDialog(getString(R.string.message_payment_method_empty));
@@ -793,6 +829,15 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             startActivityForResult(startBankPayment, Constants.RESULT_CODE_PAYMENT_TRANSFER);
             if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                 && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+            }
+        } else if (name.equalsIgnoreCase(getString(R.string.payment_method_uob))) {
+            Intent startUobPayment = new Intent(this, UobListActivity.class);
+            startUobPayment.putExtra(UobListActivity.EXTRA_UOB_LIST, getUobList());
+            startUobPayment.putExtra(UobListActivity.USE_DEEP_LINK, isDeepLink);
+            startActivityForResult(startUobPayment, Constants.RESULT_CODE_UOB);
+            if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
+                    && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
         } else if (name.equalsIgnoreCase(getString(R.string.payment_method_mandiri_clickpay))) {
@@ -943,13 +988,15 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
      */
     private void initialiseAdapterData(List<EnabledPayment> enabledPayments) {
         boolean isBankTransferAdded = false;
+        boolean isUobAdded = false;
         data.clear();
         bankTransfers.clear();
+        uobList.clear();
 
         for (EnabledPayment enabledPayment : enabledPayments) {
             if ((enabledPayment.getCategory() != null
-                && enabledPayment.getCategory().equals(getString(R.string.enabled_payment_category_banktransfer)))
-                || enabledPayment.getType().equalsIgnoreCase(getString(R.string.payment_mandiri_bill_payment))) {
+                    && enabledPayment.getCategory().equals(getString(R.string.enabled_payment_category_banktransfer)))
+                    || enabledPayment.getType().equalsIgnoreCase(getString(R.string.payment_mandiri_bill_payment))) {
                 bankTransfers.add(enabledPayment);
                 if (!isBankTransferAdded) {
                     PaymentMethodsModel model = PaymentMethods.getMethods(this, getString(R.string.payment_bank_transfer), EnabledPayment.STATUS_UP, isTablet());
@@ -962,6 +1009,21 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
                 PaymentMethodsModel model = PaymentMethods.getMethods(this, enabledPayment.getAcquirer(), enabledPayment.getStatus(), isTablet());
                 if (model != null) {
                     data.add(model);
+                }
+            } else if ((enabledPayment.getType() != null
+                    && enabledPayment.getType().equals(getString(R.string.enabled_uob_payment)))) {
+                EnabledPayment uobWeb = new EnabledPayment(PaymentType.UOB_WEB, getString(R.string.payment_method_uob));
+                EnabledPayment uobApp = new EnabledPayment(PaymentType.UOB_APP, getString(R.string.payment_method_uob));
+                uobWeb.setStatus(EnabledPayment.STATUS_UP);
+                uobApp.setStatus(EnabledPayment.STATUS_UP);
+                uobList.add(uobWeb);
+                uobList.add(uobApp);
+                if (!isUobAdded) {
+                    PaymentMethodsModel model = PaymentMethods.getMethods(this, getString(R.string.payment_uob), EnabledPayment.STATUS_UP, isTablet());
+                    if (model != null) {
+                        data.add(model);
+                        isUobAdded = true;
+                    }
                 }
             } else {
                 if (!checkShopeepayDeeplinkInTablet(enabledPayment)) {
@@ -1217,6 +1279,10 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
 
     public EnabledPayments getBankTransfers() {
         return new EnabledPayments(this.bankTransfers);
+    }
+
+    public EnabledPayments getUobList() {
+        return new EnabledPayments(this.uobList);
     }
 
     @Override

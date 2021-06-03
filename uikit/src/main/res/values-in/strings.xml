@@ -743,4 +743,22 @@
     <string name="bri_internet_instruction_7">Pembayaran telah selesai. Untuk mencetak bukti transaksi, pilih <b>Cetak</b>.</string>
 
     <string name="retrofit_network_message">Gagal menyambung ke host</string>
+
+    <string name="page_title_uobweb">Via UOB Web</string>
+    <string name="page_title_uobapp">Via TMMRW App</string>
+
+    <!--Uob app payment guide-->
+    <string name="uikit_uob_app_instruction_1">Klik "BAYAR SEKARANG", Anda akan diarahkan ke aplikasi TMRW.</string>
+    <string name="uikit_uob_app_instruction_2">Masuk menggunakan userID &amp; password Anda.</string>
+    <string name="uikit_uob_app_instruction_3">Pilih akun untuk melanjutkan pembayaran, lalu klik "Lanjutkan".</string>
+    <string name="uikit_uob_app_instruction_4">Periksa detail pembayaran, lalu swipe kanan untuk mengkonfirmasi detail.</string>
+    <string name="uikit_uob_app_instruction_5">Masukkan Secure PIN untuk menyelesaikan pembayaran.</string>
+
+    <!--Uob web payment guide-->
+    <string name="uikit_uob_web_instruction_1">Klik ""BAYAR SEKARANG"", Anda akan diarahkan ke situs UOB Personal Internet Banking.</string>
+    <string name="uikit_uob_web_instruction_2">Login using your userID &amp; password.</string>
+    <string name="uikit_uob_web_instruction_3">Masukkan OTP yang dikirim via SMS ketika diminta.</string>
+    <string name="uikit_uob_web_instruction_4">Pilih akun untuk melakukan pembayaran, lalu pilih "Lanjutkan".</string>
+    <string name="uikit_uob_web_instruction_5">Periksa detail pembayaran, lalu masukkan OTP yang dikirim via SMS.</string>
+    <string name="uikit_uob_web_instruction_6">Konfirmasi pembayaran.</string>
 </resources>

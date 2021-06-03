@@ -142,6 +142,9 @@
     <string name="zero_month">0 month</string>
     <string name="formatted_month">%1$s months</string>
 
+    <!--UOB Payment-->
+    <string name="web_uob">UOB EZ Pay via UOB Web</string>
+    <string name="app_uob">UOB EZ Pay via TMRW App</string>
 
     <!-- Permata VA Bank Transfer-->
     <string name="virtual_account">Virtual Account</string>
@@ -464,6 +467,7 @@
     <string name="payment_method_shopeepay_qris">ShopeePay/other e-Wallets</string>
     <string name="payment_method_danamon_online">Danamon Online Banking</string>
     <string name="payment_method_akulaku">Akulaku</string>
+    <string name="payment_method_uob">UOB EZ Pay</string>
 
     <!--Payment List-->
     <string name="payment_epay_bri">bri_epay</string>
@@ -488,6 +492,8 @@
     <string name="payment_shopeepay">shopeepay</string>
     <string name="payment_danamon_online">danamon_online</string>
     <string name="payment_akulaku">akulaku</string>
+    <string name="payment_uob">uob</string>
+    <string name="category_uob">UOB EZ Pay</string>
 
 
     <!--Error Response-->
@@ -655,6 +661,26 @@
     <string name="uikit_shopeepay_expiration_message">Please complete your payment in:</string>
     <string name="uikit_shopeepay_expiration_expired">Time\'s up.</string>
 
+    <!--Uob app payment guide-->
+    <string name="uikit_uob_app_instruction_1">Click "PAY NOW", you will be redirected to TMRW app.</string>
+    <string name="uikit_uob_app_instruction_2">Login using your userID &amp; password.</string>
+    <string name="uikit_uob_app_instruction_3">Select the account that you would like to pay from and choose "Next".</string>
+    <string name="uikit_uob_app_instruction_4">Review your transaction details, swipe right to confirm.</string>
+    <string name="uikit_uob_app_instruction_5">Enter your Secure PIN for verification to complete the payment.</string>
+
+    <!--Uob web payment guide-->
+    <string name="uikit_uob_web_instruction_1">Click "PAY NOW", you will be redirected to UOB Personal Internet Banking site.</string>
+    <string name="uikit_uob_web_instruction_2">Login using your userID &amp; password.</string>
+    <string name="uikit_uob_web_instruction_3">Enter OTP you\'ll receive via SMS when prompted.</string>
+    <string name="uikit_uob_web_instruction_4">Select the account that you would like to pay from and choose "Continue".</string>
+    <string name="uikit_uob_web_instruction_5">Review your transaction details, enter the OTP you\'ll receive via SMS.</string>
+    <string name="uikit_uob_web_instruction_6">Choose "Confirm" to complete the payment.</string>
+
+    <!--UobEzpay related-->
+    <string name="uikit_redirecting_to_uob">Redirecting to Uob app…</string>
+    <string name="uikit_confirm_uob_deeplink">Make sure payment has been completed within the Shopee app.</string>
+    <string name="uikit_error_uob_transaction">Transaction cannot be processed. Please try again or try another payment method.</string>
+
     <string name="error_message_invalid_input_telkomsel">Transaction failed. Your transaction got declined by T-Cash.</string>
     <string name="kioson">Kioson</string>
     <string name="message_payment_cannot_proccessed">Transaction cannot be proccessed. Make sure your payment informations is correct</string>
@@ -739,12 +765,16 @@
     <string name="payment_method_description_shopeepay_qris">Scan QR code using ShopeePay or other e-wallets</string>
     <string name="payment_method_description_danamon_online">Pay with your Danamon Online Banking Account</string>
     <string name="payment_method_description_akulaku">Pay with your Akulaku account</string>
+    <string name="payment_method_description_uob">Pay with your UOB/TMRW account</string>
 
     <string name="payment_bank_description_bca">Pay from BCA ATMs or internet banking</string>
     <string name="payment_bank_description_mandiri">Pay from Mandiri ATMs or internet banking</string>
     <string name="payment_bank_description_permata">Pay from Permata ATMs or internet banking</string>
     <string name="payment_bank_description_bni">Pay from BNI ATMs or internet banking</string>
     <string name="payment_bank_description_other">Pay from other Bank ATMs</string>
+
+    <string name="payment_uob_description_web">Pay with UOB Personal Internet Banking</string>
+    <string name="payment_uob_description_app">Pay with TMRW app</string>
 
     <string name="instruction_klikbca1">Please make sure that the UserID is active and registered at BCA.</string>
     <string name="instruction_klikbca2">Please continue the payment through KlikBCA by opening <a href="http://klikbca.com/">http://klikbca.com/</a> on a separate window or tab, using the same User ID that you entered below.</string>
@@ -883,6 +913,8 @@
     <string name="payment_instruction">Payment Instruction %1$s</string>
     <string name="instruction_atm_with">ATM with %1$s logo</string>
     <string name="bank_code">Bank Code</string>
+    <string name="page_title_uobweb">Via UOB Web</string>
+    <string name="page_title_uobapp">Via TMMRW App</string>
 
     <string name="minutes">minutes</string>
     <string name="minute">minute</string>
@@ -911,6 +943,7 @@
 
     <!-- enabled payment -->
     <string name="enabled_payment_category_banktransfer">bank_transfer</string>
+    <string name="enabled_uob_payment">uob_ezpay</string>
     <string name="enabled_payment_category_cstore">cstore</string>
     <string name="saved_card_one_click">one_click</string>
     <string name="saved_card_two_click">two_clicks</string>
@@ -933,5 +966,7 @@
     <string name="tab_bri_mobile">Mobile Banking</string>
     <string name="tab_bri_internet">Internet Banking</string>
     <string name="bank_bri_transfer">Bank BRI</string>
+    <string name="payment_uob_method">UOB</string>
+    <string name="UOB_payment_cant_open_deeplink">Can\'t access Uob app for this payment!</string>
 
 </resources>
