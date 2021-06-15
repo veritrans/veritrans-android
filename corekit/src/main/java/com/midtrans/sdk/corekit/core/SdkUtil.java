@@ -106,6 +106,10 @@ public class SdkUtil {
             requestModel.setShopeepay(transactionRequest.getShopeepay());
         }
 
+        if (transactionRequest.getUobEzpay() != null) {
+            requestModel.setUobEzpay(transactionRequest.getUobEzpay());
+        }
+
         return requestModel;
     }
 

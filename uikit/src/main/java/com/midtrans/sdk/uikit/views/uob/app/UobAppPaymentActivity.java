@@ -133,7 +133,7 @@ public class UobAppPaymentActivity extends BasePaymentActivity implements UobApp
     }
 
     private void initLayout() {
-        ViewStub stub = findViewById(R.id.shopee_layout_stub);
+        ViewStub stub = findViewById(R.id.uob_layout_stub);
         stub.setLayoutResource(R.layout.uikit_layout_uob_app_payment);
         stub.inflate();
     }

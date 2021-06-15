@@ -63,7 +63,7 @@ public class UobWebPaymentActivity extends BasePaymentActivity implements UobWeb
         if (isDetailShown) {
             displayOrHideItemDetails();
         } else if (isAlreadyGotResponse) {
-            showConfirmationDialog(getString(R.string.uikit_confirm_uob_deeplink));
+            finishPayment(RESULT_CANCELED, presenter.getTransactionResponse());
         } else {
             super.onBackPressed();
         }
@@ -100,7 +100,7 @@ public class UobWebPaymentActivity extends BasePaymentActivity implements UobWeb
         if (isActivityRunning()) {
             if (isResponseValid(response)) {
                 isAlreadyGotResponse = true;
-                openDeeplink(response.getDeeplinkUrl());
+                openDeeplink(response.getUobWebUrl());
             } else {
                 onPaymentFailure(response);
             }
@@ -133,7 +133,7 @@ public class UobWebPaymentActivity extends BasePaymentActivity implements UobWeb
     }
 
     private void initLayout() {
-        ViewStub stub = findViewById(R.id.shopee_layout_stub);
+        ViewStub stub = findViewById(R.id.uob_layout_stub);
         stub.setLayoutResource(R.layout.uikit_layout_uob_web_payment);
         stub.inflate();
     }
@@ -149,7 +149,7 @@ public class UobWebPaymentActivity extends BasePaymentActivity implements UobWeb
                 public void onClick(View v) {
                     //to prevent "payment has been paid"
                     if (isAlreadyGotResponse) {
-                        openDeeplink(presenter.getTransactionResponse().getDeeplinkUrl());
+                        openDeeplink(presenter.getTransactionResponse().getUobWebUrl());
                     } else {
                         startUobEzpayPayment();
                     }
@@ -162,7 +162,7 @@ public class UobWebPaymentActivity extends BasePaymentActivity implements UobWeb
                 public void onClick(View v) {
                     //to prevent "payment has been paid"
                     if (isAlreadyGotResponse) {
-                        openDeeplink(presenter.getTransactionResponse().getDeeplinkUrl());
+                        openDeeplink(presenter.getTransactionResponse().getUobWebUrl());
                     } else {
                         startUobEzpayPayment();
                     }
@@ -176,6 +176,7 @@ public class UobWebPaymentActivity extends BasePaymentActivity implements UobWeb
         if (deeplinkUrl == null) {
             Toast.makeText(this, R.string.UOB_payment_cant_open_deeplink, Toast.LENGTH_SHORT).show();
         } else {
+            buttonPrimary.setEnabled(false);
             Toast.makeText(this, getString(R.string.uikit_redirecting_to_uob), Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(deeplinkUrl));
             startActivityForResult(intent, UiKitConstants.INTENT_CODE_UOBEZPAY);
@@ -191,36 +192,7 @@ public class UobWebPaymentActivity extends BasePaymentActivity implements UobWeb
         if (response == null) {
             return false;
         } else {
-            return (!TextUtils.isEmpty(response.getDeeplinkUrl()));
-        }
-    }
-
-    private void showConfirmationDialog(String message) {
-        try {
-            AlertDialog dialog = new AlertDialog.Builder(UobWebPaymentActivity.this, R.style.AlertDialogCustom)
-                    .setPositiveButton(R.string.text_yes, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            if (!UobWebPaymentActivity.this.isFinishing()) {
-                                dialog.dismiss();
-                                finishPayment(RESULT_CANCELED, presenter.getTransactionResponse());
-                            }
-                        }
-                    })
-                    .setNegativeButton(R.string.text_no, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            if (!UobWebPaymentActivity.this.isFinishing()) {
-                                dialog.dismiss();
-                            }
-                        }
-                    })
-                    .setTitle(R.string.cancel_transaction)
-                    .setMessage(message)
-                    .create();
-            dialog.show();
-        } catch (Exception e) {
-            Logger.e(UobWebPaymentActivity.class.getSimpleName(), "showDialog:" + e.getMessage());
+            return (!TextUtils.isEmpty(response.getUobWebUrl()));
         }
     }
 

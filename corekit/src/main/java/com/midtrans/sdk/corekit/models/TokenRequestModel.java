@@ -8,6 +8,7 @@ import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.Gopay;
 import com.midtrans.sdk.corekit.models.snap.Shopeepay;
 import com.midtrans.sdk.corekit.models.snap.SnapPromo;
+import com.midtrans.sdk.corekit.models.snap.UobEzpay;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +60,9 @@ public class TokenRequestModel {
 
     @SerializedName("shopeepay")
     private Shopeepay shopeepay;
+
+    @SerializedName("uob_ezpay")
+    private UobEzpay uobEzpay;
 
     public TokenRequestModel(SnapTransactionDetails transactionDetails, ArrayList<ItemDetails> itemDetails,
                              CustomerDetails customerDetails) {
@@ -207,5 +211,13 @@ public class TokenRequestModel {
 
     public void setShopeepay(Shopeepay shopeepay) {
         this.shopeepay = shopeepay;
+    }
+
+    public UobEzpay getUobEzpay() {
+        return uobEzpay;
+    }
+
+    public void setUobEzpay(UobEzpay uobEzpay) {
+        this.uobEzpay = uobEzpay;
     }
 }

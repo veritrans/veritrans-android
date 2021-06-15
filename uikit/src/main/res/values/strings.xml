@@ -59,6 +59,7 @@
     <string name="activity_bank_transfer_mandiri">Mandiri Bank Transfer</string>
     <string name="activity_bank_transfer_permata">Permata Bank Transfer</string>
     <string name="activity_save_credit_card">Registered Credit Card</string>
+    <string name="activity_uob_list">EZ Pay</string>
 
     <!-- User Address -->
     <string name="title_user_details">User Information</string>
@@ -678,7 +679,7 @@
 
     <!--UobEzpay related-->
     <string name="uikit_redirecting_to_uob">Redirecting to Uob app…</string>
-    <string name="uikit_confirm_uob_deeplink">Make sure payment has been completed within the Shopee app.</string>
+    <string name="uikit_confirm_uob_deeplink">Make sure payment has been completed within the Uob app.</string>
     <string name="uikit_error_uob_transaction">Transaction cannot be processed. Please try again or try another payment method.</string>
 
     <string name="error_message_invalid_input_telkomsel">Transaction failed. Your transaction got declined by T-Cash.</string>

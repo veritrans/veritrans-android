@@ -22,7 +22,7 @@
             android:layout_alignParentTop="true">
 
             <ViewStub
-                android:id="@+id/shopee_layout_stub"
+                android:id="@+id/uob_layout_stub"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 

@@ -756,9 +756,12 @@
 
     <!--Uob web payment guide-->
     <string name="uikit_uob_web_instruction_1">Klik ""BAYAR SEKARANG"", Anda akan diarahkan ke situs UOB Personal Internet Banking.</string>
-    <string name="uikit_uob_web_instruction_2">Login using your userID &amp; password.</string>
+    <string name="uikit_uob_web_instruction_2">Masuk menggunakan userID &amp; password Anda.</string>
     <string name="uikit_uob_web_instruction_3">Masukkan OTP yang dikirim via SMS ketika diminta.</string>
     <string name="uikit_uob_web_instruction_4">Pilih akun untuk melakukan pembayaran, lalu pilih "Lanjutkan".</string>
     <string name="uikit_uob_web_instruction_5">Periksa detail pembayaran, lalu masukkan OTP yang dikirim via SMS.</string>
     <string name="uikit_uob_web_instruction_6">Konfirmasi pembayaran.</string>
+    <string name="payment_method_description_uob">Bayar melalui akun UOB/TMRW Anda</string>
+    <string name="payment_uob_description_web">Bayar melalui UOB Personal Internet Banking</string>
+    <string name="payment_uob_description_app">Bayar melalui aplikasi TMRW</string>
 </resources>

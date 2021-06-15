@@ -15,7 +15,6 @@ import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
 import com.midtrans.sdk.uikit.activities.UserDetailsActivity;
 import com.midtrans.sdk.uikit.models.EnabledPayments;
 import com.midtrans.sdk.uikit.models.UobPayment;
-import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.views.uob.app.UobAppPaymentActivity;
 import com.midtrans.sdk.uikit.views.uob.web.UobWebPaymentActivity;
 import com.midtrans.sdk.uikit.widgets.SemiBoldTextView;
@@ -45,7 +44,7 @@ public class UobListActivity extends BasePaymentActivity implements UobListAdapt
     private void bindData() {
         textTitle = findViewById(R.id.text_page_title);
         if (textTitle != null) {
-            textTitle.setText(getString(R.string.activity_select_bank));
+            textTitle.setText(getString(R.string.activity_uob_list));
         }
 
         //track page view after page properly loaded
@@ -101,23 +100,12 @@ public class UobListActivity extends BasePaymentActivity implements UobListAdapt
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == UiKitConstants.INTENT_CODE_PAYMENT) {
+        if (requestCode == Constants.RESULT_CODE_PAYMENT_TRANSFER) {
 
             if (resultCode == RESULT_OK && data != null) {
-
                 finishPayment(RESULT_OK, data);
             } else if (resultCode == RESULT_CANCELED) {
-
-                if (data == null) {
-                    if (presenter.getUobPaymentList() == null
-                            || presenter.getUobPaymentList().size() == 1
-                            || getIntent().getBooleanExtra(UserDetailsActivity.UOB_WEB, false)
-                            || getIntent().getBooleanExtra(UserDetailsActivity.UOB_APP, false)) {
-                        finish();
-                    }
-                } else {
-                    finishPayment(RESULT_OK, data);
-                }
+                finishPayment(RESULT_CANCELED, data);
             }
         }
     }

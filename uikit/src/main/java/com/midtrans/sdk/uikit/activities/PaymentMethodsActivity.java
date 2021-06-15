@@ -835,7 +835,7 @@ public class PaymentMethodsActivity extends BaseActivity implements PaymentMetho
             Intent startUobPayment = new Intent(this, UobListActivity.class);
             startUobPayment.putExtra(UobListActivity.EXTRA_UOB_LIST, getUobList());
             startUobPayment.putExtra(UobListActivity.USE_DEEP_LINK, isDeepLink);
-            startActivityForResult(startUobPayment, Constants.RESULT_CODE_UOB);
+            startActivityForResult(startUobPayment, Constants.RESULT_CODE_PAYMENT_TRANSFER);
             if (MidtransSDK.getInstance().getUIKitCustomSetting() != null
                     && MidtransSDK.getInstance().getUIKitCustomSetting().isEnabledAnimation()) {
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
