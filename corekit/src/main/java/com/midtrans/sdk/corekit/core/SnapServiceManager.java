@@ -25,6 +25,7 @@ import com.midtrans.sdk.corekit.models.snap.payment.NewMandiriClickPayPaymentReq
 import com.midtrans.sdk.corekit.models.snap.payment.ShopeePayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.ShopeePayQrisPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.TelkomselEcashPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.UobEzpayPaymentRequest;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -416,6 +417,31 @@ public class SnapServiceManager extends BaseServiceManager {
         }
 
         Call<TransactionResponse> call = service.paymentUsingDanamonOnline(snapToken, paymentRequest);
+        call.enqueue(new Callback<TransactionResponse>() {
+            @Override
+            public void onResponse(Call<TransactionResponse> call, Response<TransactionResponse> response) {
+                doOnPaymentResponseSuccess(response, callback);
+            }
+
+            @Override
+            public void onFailure(Call<TransactionResponse> call, Throwable t) {
+                doOnResponseFailure(t, callback);
+            }
+        });
+    }
+
+    /**
+     * This method is used for payment using Uob Ezpay
+     *
+     * @param paymentRequest
+     * @param callback
+     */
+    public void paymentUsingUobEzpay(String snapToken, UobEzpayPaymentRequest paymentRequest, final TransactionCallback callback) {
+        if (service == null) {
+            doOnApiServiceUnAvailable(callback);
+            return;
+        }
+        Call<TransactionResponse> call = service.paymentUsingUobEzpay(snapToken, paymentRequest);
         call.enqueue(new Callback<TransactionResponse>() {
             @Override
             public void onResponse(Call<TransactionResponse> call, Response<TransactionResponse> response) {

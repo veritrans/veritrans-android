@@ -40,5 +40,7 @@ public class PaymentType {
     public static final String INDOMARET_CSTORE = "cstore";
     public static final String AKULAKU = "akulaku";
     public static final String ALFAMART = "alfamart";
-
+    public static final String UOB_WEB = "uobweb";
+    public static final String UOB_APP = "uobapp";
+    public static final String UOB_EZPAY = "uob_ezpay";
 }

@@ -25,6 +25,7 @@ import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.QrisPaymentParameter;
 import com.midtrans.sdk.corekit.models.snap.payment.ShopeePayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.ShopeePayQrisPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.UobEzpayPaymentRequest;
 import com.midtrans.sdk.corekit.utilities.Installation;
 
 import java.util.Collections;
@@ -103,6 +104,10 @@ public class SdkUtil {
 
         if (transactionRequest.getShopeepay() != null) {
             requestModel.setShopeepay(transactionRequest.getShopeepay());
+        }
+
+        if (transactionRequest.getUobEzpay() != null) {
+            requestModel.setUobEzpay(transactionRequest.getUobEzpay());
         }
 
         return requestModel;
@@ -190,6 +195,10 @@ public class SdkUtil {
 
     public static DanamonOnlinePaymentRequest getDanamonOnlinePaymentRequest() {
         return new DanamonOnlinePaymentRequest(PaymentType.DANAMON_ONLINE);
+    }
+
+    public static UobEzpayPaymentRequest getUobEzpayPaymentRequest() {
+        return new UobEzpayPaymentRequest(PaymentType.UOB_EZPAY);
     }
 
     public static SnapServiceManager newSnapServiceManager(int requestTimeOut) {

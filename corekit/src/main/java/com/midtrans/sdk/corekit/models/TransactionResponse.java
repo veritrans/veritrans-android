@@ -97,6 +97,28 @@ public class TransactionResponse implements Serializable {
     @SerializedName("redirect_url")
     private String redirectUrl;
 
+    @SerializedName("uob_ezpay_web_url")
+    private String uobWebUrl;
+
+    public String getUobWebUrl() {
+        return uobWebUrl;
+    }
+
+    public void setUobWebUrl(String uobWebUrl) {
+        this.uobWebUrl = uobWebUrl;
+    }
+
+    public String getUobDeeplinkUrl() {
+        return uobDeeplinkUrl;
+    }
+
+    public void setUobDeeplinkUrl(String uobDeeplinkUrl) {
+        this.uobDeeplinkUrl = uobDeeplinkUrl;
+    }
+
+    @SerializedName("uob_ezpay_deeplink_url")
+    private String uobDeeplinkUrl;
+
     @SerializedName("pdf_url")
     private String pdfUrl;
 

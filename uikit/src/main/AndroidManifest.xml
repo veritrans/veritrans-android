@@ -199,6 +199,9 @@
             android:name=".views.akulaku.AkulakuActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
+        <activity android:name=".views.uob.UobListActivity" />
+        <activity android:name=".views.uob.app.UobAppPaymentActivity" />
+        <activity android:name=".views.uob.web.UobWebPaymentActivity" />
 
         <service
             android:name="com.midtrans.raygun.RaygunPostService"

@@ -17,6 +17,7 @@ import com.midtrans.sdk.corekit.models.snap.payment.NewMandiriClickPayPaymentReq
 import com.midtrans.sdk.corekit.models.snap.payment.ShopeePayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.ShopeePayQrisPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.TelkomselEcashPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.UobEzpayPaymentRequest;
 
 import java.util.List;
 
@@ -150,6 +151,15 @@ public interface SnapApiService {
      */
     @POST("v1/transactions/{snap_token}/pay")
     Call<TransactionResponse> paymentUsingDanamonOnline(@Path("snap_token") String snapToken, @Body DanamonOnlinePaymentRequest paymentRequest);
+
+    /**
+     * Charge payment using UOB EzPay
+     *
+     * @param snapToken
+     * @param paymentRequest
+     */
+    @POST("v1/transactions/{snap_token}/pay")
+    Call<TransactionResponse> paymentUsingUobEzpay(@Path("snap_token") String snapToken, @Body UobEzpayPaymentRequest paymentRequest);
 
     /**
      * Get bins of credit card

@@ -29,6 +29,7 @@ public class AppUtils {
 
     public static final String CATEGORY_CREDIT_CARD = "Credit/Debit Card";
     public static final String CATEGORY_VA = "ATM/Bank Transfer";
+    public static final String CATEGORY_UOB = "UOB EZ Pay";
     public static final String CATEGORY_DIRECT_DEBIT = "Direct Debit";
     public static final String CATEGORY_EMONEY = "e-Money";
     public static final String CATEGORY_CONVENIENT_STORE = "Convenient Store";
@@ -64,6 +65,8 @@ public class AppUtils {
         paymentNameList.add(new EnabledPayment(PaymentType.BRI_VA, CATEGORY_VA));
         paymentNameList.add(new EnabledPayment(PaymentType.ALL_VA, CATEGORY_VA));
         paymentNameList.add(new EnabledPayment(PaymentType.E_CHANNEL, CATEGORY_VA));
+
+        paymentNameList.add(new EnabledPayment(PaymentType.UOB_EZPAY, CATEGORY_UOB));
 
         paymentNameList.add(new EnabledPayment(PaymentType.KLIK_BCA, CATEGORY_DIRECT_DEBIT));
         paymentNameList.add(new EnabledPayment(PaymentType.BCA_KLIKPAY, CATEGORY_DIRECT_DEBIT));
@@ -116,6 +119,10 @@ public class AppUtils {
                 case PaymentType.E_CHANNEL:
                     model = new PaymentMethodsModel(PAYMENT_NAME_MANDIRI_ECHANNEL, null, 0, "", 3, status);
                     break;
+
+                case PaymentType.UOB_EZPAY:
+                    model = new PaymentMethodsModel(CATEGORY_UOB, null, 0, "", 8, status);
+                    break;
             }
         }
         return model;
@@ -130,6 +137,7 @@ public class AppUtils {
         headers.add(new SelectPaymentMethodViewModel(CATEGORY_EMONEY, "", false, ""));
         headers.add(new SelectPaymentMethodViewModel(CATEGORY_CONVENIENT_STORE, "", false, ""));
         headers.add(new SelectPaymentMethodViewModel(CATEGORY_VOUCHER_CARD, "", false, ""));
+        headers.add(new SelectPaymentMethodViewModel(CATEGORY_UOB, "", false, ""));
         return headers;
     }
 
@@ -241,6 +249,10 @@ public class AppUtils {
                 newModel.setCategory(CATEGORY_CONVENIENT_STORE);
                 newModel.setPriority(20);
                 break;
+            case PaymentType.UOB_EZPAY:
+                newModel.setCategory(CATEGORY_UOB);
+                newModel.setPriority(21);
+                break;
         }
         return newModel;
     }
@@ -268,6 +280,11 @@ public class AppUtils {
                 case CATEGORY_VA:
                     viewModels.add(header);
                     viewModels.addAll(findViewModelByCategory(paymentMethods, CATEGORY_VA));
+                    break;
+
+                case CATEGORY_UOB:
+                    viewModels.add(header);
+                    viewModels.addAll(findViewModelByCategory(paymentMethods, CATEGORY_UOB));
                     break;
 
                 case CATEGORY_DIRECT_DEBIT:
@@ -357,6 +374,8 @@ public class AppUtils {
                 enabledPayments.add(new EnabledPayment(PaymentType.AKULAKU, CATEGORY_VOUCHER_CARD));
             } else if (name.equals(PaymentType.ALFAMART)) {
                 enabledPayments.add(new EnabledPayment(PaymentType.ALFAMART, CATEGORY_CONVENIENT_STORE));
+            } else if (name.equals(PaymentType.UOB_EZPAY)) {
+                enabledPayments.add(new EnabledPayment(PaymentType.UOB_EZPAY, CATEGORY_UOB));
             }
         }
         return enabledPayments;
