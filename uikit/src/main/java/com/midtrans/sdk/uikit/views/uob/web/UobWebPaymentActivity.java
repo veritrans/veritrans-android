@@ -1,6 +1,5 @@
 package com.midtrans.sdk.uikit.views.uob.web;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,9 +9,7 @@ import android.view.ViewStub;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 
-import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
@@ -37,15 +34,6 @@ public class UobWebPaymentActivity extends BasePaymentActivity implements UobWeb
         initData();
         initActionButton();
         hideProgressLayout();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        if (uobEzpayIntentCode == UiKitConstants.INTENT_CODE_UOBEZPAY && presenter != null) {
-            presenter.getPaymentStatus();
-        }
     }
 
     @Override
@@ -177,7 +165,7 @@ public class UobWebPaymentActivity extends BasePaymentActivity implements UobWeb
             Toast.makeText(this, R.string.UOB_payment_cant_open_deeplink, Toast.LENGTH_SHORT).show();
         } else {
             buttonPrimary.setEnabled(false);
-            Toast.makeText(this, getString(R.string.uikit_redirecting_to_uob), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.uikit_redirecting_to_uob_web), Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(deeplinkUrl));
             startActivityForResult(intent, UiKitConstants.INTENT_CODE_UOBEZPAY);
         }

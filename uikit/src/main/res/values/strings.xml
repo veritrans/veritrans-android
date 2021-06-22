@@ -679,6 +679,7 @@
 
     <!--UobEzpay related-->
     <string name="uikit_redirecting_to_uob">Redirecting to Uob app…</string>
+    <string name="uikit_redirecting_to_uob_web">Redirecting to Uob web…</string>
     <string name="uikit_confirm_uob_deeplink">Make sure payment has been completed within the Uob app.</string>
     <string name="uikit_error_uob_transaction">Transaction cannot be processed. Please try again or try another payment method.</string>
 
