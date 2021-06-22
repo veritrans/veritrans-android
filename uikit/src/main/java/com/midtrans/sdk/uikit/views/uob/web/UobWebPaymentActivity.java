@@ -169,6 +169,7 @@ public class UobWebPaymentActivity extends BasePaymentActivity implements UobWeb
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(deeplinkUrl));
             startActivityForResult(intent, UiKitConstants.INTENT_CODE_UOBEZPAY);
         }
+        finishPayment(RESULT_CANCELED, presenter.getTransactionResponse());
     }
 
     private void startUobEzpayPayment() {
