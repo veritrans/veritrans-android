@@ -1,5 +1,5 @@
 ext {
-    coreMinSdkVersion = 9
+    coreMinSdkVersion = 15
     uiMinSdkVersion = 15
     targetSdkVersion = 30
     compileSdkVersion = 30
@@ -23,7 +23,7 @@ ext {
     smsVerifyVersion = '0.3.1'
     zxingVersion = '3.5.0'
     cardAndroidVersion = '5.5.1'
-    localizationVersion = '1.2.6'
+    localizationVersion = '1.2.10'
 
     supportLibraries = [
             appCompat   : "androidx.appcompat:appcompat:$appCompatVersion",

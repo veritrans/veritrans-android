@@ -745,7 +745,7 @@
     <string name="retrofit_network_message">Gagal menyambung ke host</string>
 
     <string name="page_title_uobweb">Via UOB Web</string>
-    <string name="page_title_uobapp">Via TMMRW App</string>
+    <string name="page_title_uobapp">Via TMRW App</string>
 
     <!--Uob app payment guide-->
     <string name="uikit_uob_app_instruction_1">Klik "BAYAR SEKARANG", Anda akan diarahkan ke aplikasi TMRW.</string>
