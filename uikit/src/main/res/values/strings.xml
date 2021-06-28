@@ -59,7 +59,7 @@
     <string name="activity_bank_transfer_mandiri">Mandiri Bank Transfer</string>
     <string name="activity_bank_transfer_permata">Permata Bank Transfer</string>
     <string name="activity_save_credit_card">Registered Credit Card</string>
-    <string name="activity_uob_list">EZ Pay</string>
+    <string name="activity_uob_list">UOB EZ Pay</string>
 
     <!-- User Address -->
     <string name="title_user_details">User Information</string>
@@ -916,7 +916,7 @@
     <string name="instruction_atm_with">ATM with %1$s logo</string>
     <string name="bank_code">Bank Code</string>
     <string name="page_title_uobweb">Via UOB Web</string>
-    <string name="page_title_uobapp">Via TMMRW App</string>
+    <string name="page_title_uobapp">Via TMRW App</string>
 
     <string name="minutes">minutes</string>
     <string name="minute">minute</string>
