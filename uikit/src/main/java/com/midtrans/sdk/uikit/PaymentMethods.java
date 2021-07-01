@@ -6,6 +6,7 @@ import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.PaymentMethodsModel;
 import com.midtrans.sdk.uikit.models.BankTransfer;
 import com.midtrans.sdk.uikit.models.CreditCardType;
+import com.midtrans.sdk.uikit.models.UobPayment;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 
 /**
@@ -54,6 +55,8 @@ public class PaymentMethods {
             return getMethodAkulaku(context, 18, paymentType, status);
         } else if (paymentType.equals(context.getString(R.string.payment_alfamart))) {
             return getMethodAlfamart(context, 19, paymentType, status);
+        } else if (paymentType.equals(context.getString(R.string.payment_uob))) {
+            return getMethodUob(context, 4, paymentType, status);
         } else {
             return null;
         }
@@ -75,6 +78,10 @@ public class PaymentMethods {
 
     private static PaymentMethodsModel getMethodBankTransfer(Context context, int priority, String paymentType, String status) {
         return new PaymentMethodsModel(context.getString(R.string.payment_method_bank_transfer), context.getString(R.string.payment_method_description_bank_transfer), R.drawable.ic_atm, paymentType, priority, status);
+    }
+
+    private static PaymentMethodsModel getMethodUob(Context context, int priority, String paymentType, String status) {
+        return new PaymentMethodsModel(context.getString(R.string.payment_method_uob), context.getString(R.string.payment_method_description_uob), R.drawable.ic_uob, paymentType, priority, status);
     }
 
     private static PaymentMethodsModel getMethodBCAKlikpay(Context context, int priority, String paymentType, String status) {
@@ -183,5 +190,21 @@ public class PaymentMethods {
             }
         }
         return bankTransfer;
+    }
+
+    public static UobPayment createUobPaymentModel(Context context, String type, String status) {
+        UobPayment uobPayment = null;
+        if (!TextUtils.isEmpty(type)) {
+            switch (type) {
+                case PaymentType.UOB_WEB:
+                    uobPayment = new UobPayment(type, context.getString(R.string.web_uob), R.drawable.ic_uob, 1, context.getString(R.string.payment_uob_description_web), status);
+                    break;
+
+                case PaymentType.UOB_APP:
+                    uobPayment = new UobPayment(type, context.getString(R.string.app_uob), R.drawable.ic_uob, 2, context.getString(R.string.payment_uob_description_app), status);
+                    break;
+            }
+        }
+        return uobPayment;
     }
 }

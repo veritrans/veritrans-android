@@ -43,6 +43,7 @@ import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.models.BankTransfer;
 import com.midtrans.sdk.uikit.models.CreditCardType;
 import com.midtrans.sdk.uikit.models.PromoData;
+import com.midtrans.sdk.uikit.models.UobPayment;
 import com.midtrans.sdk.uikit.widgets.MidtransProgressDialogFragment;
 
 import java.io.InputStream;
@@ -448,6 +449,20 @@ public class SdkUIFlowUtil {
     }
 
     /**
+     * Sorting uob payment method by priority (Ascending)
+     */
+    public static void sortUobMethodsByPriority(List<UobPayment> paymentMethodsModels) {
+        if (paymentMethodsModels != null) {
+            Collections.sort(paymentMethodsModels, new Comparator<UobPayment>() {
+                @Override
+                public int compare(UobPayment lhs, UobPayment rhs) {
+                    return lhs.getPriority().compareTo(rhs.getPriority());
+                }
+            });
+        }
+    }
+
+    /**
      * Check if payment method is enabled.
      *
      * @param enabledPayments list of enabled payment method.
@@ -479,6 +494,25 @@ public class SdkUIFlowUtil {
                         || enabledPayment.getType().equalsIgnoreCase(PaymentType.PERMATA_VA)
                         || enabledPayment.getType().equalsIgnoreCase(PaymentType.E_CHANNEL)
                         || enabledPayment.getType().equalsIgnoreCase(PaymentType.ALL_VA)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Check if UOB payment method is enabled.
+     *
+     * @param context         application or activity context.
+     * @param enabledPayments list of enabled payment method.
+     * @return true if UOB payment is enabled.
+     */
+    public static boolean isUobMethodEnabled(Context context, List<EnabledPayment> enabledPayments) {
+        if (enabledPayments != null) {
+            for (EnabledPayment enabledPayment : enabledPayments) {
+                if (enabledPayment.getType().equalsIgnoreCase(PaymentType.UOB_WEB)
+                        || enabledPayment.getType().equalsIgnoreCase(PaymentType.UOB_APP)) {
                     return true;
                 }
             }

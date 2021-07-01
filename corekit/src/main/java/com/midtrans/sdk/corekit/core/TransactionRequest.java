@@ -15,6 +15,7 @@ import com.midtrans.sdk.corekit.models.snap.BankTransferRequestModel;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.Gopay;
 import com.midtrans.sdk.corekit.models.snap.Shopeepay;
+import com.midtrans.sdk.corekit.models.snap.UobEzpay;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,6 +87,7 @@ public class TransactionRequest {
      */
     private Gopay gopay;
     private Shopeepay shopeepay;
+    private UobEzpay uobEzpay;
     /**
      * helps to identify whether to use ui or not.
      */
@@ -425,5 +427,13 @@ public class TransactionRequest {
 
     public void setShopeepay(Shopeepay shopeepay) {
         this.shopeepay = shopeepay;
+    }
+
+    public UobEzpay getUobEzpay() {
+        return uobEzpay;
+    }
+
+    public void setUobEzpay(UobEzpay uobEzpay) {
+        this.uobEzpay = uobEzpay;
     }
 }
