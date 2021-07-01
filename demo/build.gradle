@@ -32,6 +32,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 4
         versionName "1.21.0"
+        multiDexEnabled true
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
@@ -110,4 +111,5 @@ dependencies {
         exclude module: 'uikit'
         exclude module: 'corekit'
     }
+    implementation 'com.android.support:multidex:1.0.3'
 }
