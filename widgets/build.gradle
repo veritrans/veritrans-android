@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven-publish'
 
 group = 'com.midtrans'
@@ -7,8 +6,6 @@ version = '1.10.0'
 
 repositories {
     mavenCentral()
-    jcenter()
-    maven { url "http://dl.bintray.com/pt-midtrans/maven" }
 }
 
 android {
