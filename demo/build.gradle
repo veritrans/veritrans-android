@@ -15,6 +15,9 @@ apply plugin: 'com.android.application'
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
+    flatDir {
+        dirs '../libs','libs'
+    }
 }
 
 android {
@@ -101,7 +104,6 @@ dependencies {
     implementation supportLibraries.recyclerview
     implementation supportLibraries.cardView
     implementation supportLibraries.design
-    implementation libraries.swipeLayout
     implementation localizationLibraries.localization
     implementation(libraries.crashlytics) {
         transitive = true
@@ -112,4 +114,5 @@ dependencies {
         exclude module: 'corekit'
     }
     implementation 'com.android.support:multidex:1.0.3'
+    implementation(name:'swipe-layout-1.1.0', ext:'aar')
 }
