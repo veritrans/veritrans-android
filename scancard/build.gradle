@@ -44,6 +44,12 @@ android {
         }
     }
 
+    repositories {
+        flatDir {
+            dirs '../libs','libs'
+        }
+    }
+
     defaultPublishConfig = DEFAULT_PUBLISH
     publishNonDefault true
 }
