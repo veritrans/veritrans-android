@@ -135,6 +135,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private AppCompatRadioButton installmentBriSelection;
     private AppCompatRadioButton installmentCimbSelection;
     private AppCompatRadioButton installmentMaybankSelection;
+    private AppCompatRadioButton installmentOfflineSelection;
     private AppCompatRadioButton noInstallmentSelection;
     /**
      * Radio Button selection for BNI Point
@@ -252,6 +253,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
     private ImageButton editInstallmentBri;
     private ImageButton editInstallmentCimb;
     private ImageButton editInstallmentMaybank;
+    private ImageButton editInstallmentOffline;
 
     private boolean installmentRequired;
 
@@ -359,6 +361,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         installmentBriSelection = findViewById(R.id.installment_type_bri);
         installmentCimbSelection = findViewById(R.id.installment_type_cimb);
         installmentMaybankSelection = findViewById(R.id.installment_type_maybank);
+        installmentOfflineSelection = findViewById(R.id.installment_type_offline);
         noInstallmentSelection = findViewById(R.id.no_installment);
 
         normalSelection = findViewById(R.id.type_credit_card_normal);
@@ -438,6 +441,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         editInstallmentBri = findViewById(R.id.button_bri_installment_edit);
         editInstallmentCimb = findViewById(R.id.button_cimb_installment_edit);
         editInstallmentMaybank = findViewById(R.id.button_maybank_installment_edit);
+        editInstallmentOffline = findViewById(R.id.button_offline_installment_edit);
     }
 
     private void initTitleClicks() {
@@ -1890,6 +1894,16 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     setMaybankAcquiringBank();
                     break;
 
+                case Constants.INSTALLMENT_OFFLINE:
+                    String offlineTitle = getString(R.string.using_offline_installment);
+                    installmentTitle.setText(offlineTitle);
+                    installmentOfflineSelection.setChecked(true);
+                    resetBniPointSelection();
+                    resetMandiriPointSelection();
+                    updateSelectedInstallment();
+                    showEditInstallmentOfflineOption();
+                    break;
+
                 default:
                     installmentTitle.setText(R.string.no_installment);
                     noInstallmentSelection.setChecked(true);
@@ -2014,7 +2028,23 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                     resetMandiriPointSelection();
                     showInstallmentDialog(false);
                     showEditInstallmentMaybankOption();
-                    setMaybankAcquiringBank();
+                }
+            }
+        });
+
+        installmentOfflineSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    String title = getString(R.string.using_offline_installment);
+                    installmentTitle.setText(title);
+                    installmentOfflineSelection.setChecked(true);
+                    hideEditInstallmentOption();
+                    resetBniPointSelection();
+                    resetMandiriPointSelection();
+                    showInstallmentDialog(false);
+                    showEditInstallmentCimbOption();
+                    setCimbAcquiringBank();
                 }
             }
         });
@@ -2087,6 +2117,13 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
                 showInstallmentDialog(installmentRequired);
             }
         });
+
+        editInstallmentOffline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showInstallmentDialog(installmentRequired);
+            }
+        });
     }
 
     private void hideEditInstallmentOption() {
@@ -2096,6 +2133,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         editInstallmentBri.setVisibility(View.INVISIBLE);
         editInstallmentCimb.setVisibility(View.INVISIBLE);
         editInstallmentMaybank.setVisibility(View.INVISIBLE);
+        editInstallmentOffline.setVisibility(View.INVISIBLE);
     }
 
     private void showEditInstallmentMandiriOption() {
@@ -2122,11 +2160,15 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         editInstallmentMaybank.setVisibility(View.VISIBLE);
     }
 
+    private void showEditInstallmentOfflineOption() {
+        editInstallmentOffline.setVisibility(View.VISIBLE);
+    }
+
     private void showInstallmentDialog(boolean isRequired) {
         InstallmentDialogFragment installmentDialogFragment = InstallmentDialogFragment.newInstance(isRequired, getSelectedColorPrimaryDark(), new CustomInstallmentDialogListener() {
             @Override
-            public void onOkClicked(boolean reqired) {
-                installmentRequired = reqired;
+            public void onOkClicked(boolean required) {
+                installmentRequired = required;
                 updateSelectedInstallment();
             }
 
@@ -2161,6 +2203,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         installmentBriSelection.setText(getString(R.string.installment_bri));
         installmentCimbSelection.setText(getString(R.string.installment_cimb));
         installmentMaybankSelection.setText(getString(R.string.installment_maybank));
+        installmentOfflineSelection.setText(getString(R.string.installment_offline));
     }
 
     private void resetBniPointSelection() {
@@ -2554,6 +2597,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             DemoPreferenceHelper.setStringPreference(this, INSTALLMENT_TYPE, Constants.INSTALLMENT_CIMB);
         } else if (installmentMaybankSelection.isChecked()) {
             DemoPreferenceHelper.setStringPreference(this, INSTALLMENT_TYPE, Constants.INSTALLMENT_MAYBANK);
+        } else if (installmentOfflineSelection.isChecked()) {
+            DemoPreferenceHelper.setStringPreference(this, INSTALLMENT_TYPE, Constants.INSTALLMENT_OFFLINE);
         } else {
             DemoPreferenceHelper.setStringPreference(this, INSTALLMENT_TYPE, Constants.NO_INSTALLMENT);
         }
@@ -2880,6 +2925,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         installmentBcaSelection.setSupportButtonTintList(colorStateList);
         installmentBriSelection.setSupportButtonTintList(colorStateList);
         installmentCimbSelection.setSupportButtonTintList(colorStateList);
+        installmentOfflineSelection.setSupportButtonTintList(colorStateList);
         installmentMaybankSelection.setSupportButtonTintList(colorStateList);
         noInstallmentSelection.setSupportButtonTintList(colorStateList);
 
@@ -3333,6 +3379,8 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             setInstallmentBankTerm(bankTerms, Constants.INSTALLMENT_BANK_CIMB);
         } else if (installmentMaybankSelection.isChecked()) {
             setInstallmentBankTerm(bankTerms, Constants.INSTALLMENT_BANK_MAYBANK);
+        } else if (installmentOfflineSelection.isChecked()) {
+            setInstallmentBankTerm(bankTerms, Constants.INSTALLMENT_BANK_OFFLINE);
         } else {
             installment = null;
         }

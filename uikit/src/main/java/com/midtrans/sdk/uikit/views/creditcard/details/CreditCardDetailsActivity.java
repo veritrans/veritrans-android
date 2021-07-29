@@ -1339,10 +1339,14 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements
     private void checkInstallment() {
         String cardNumber = getCleanedCardNumber();
         if (presenter.isInstallmentAvailable()
-            && presenter.isCardBinValidForBankChecking(cardNumber)) {
+                && presenter.isCardBinValidForBankChecking(cardNumber)) {
             String cardBin = getCardNumberBin();
-            ArrayList<Integer> installmentTerms = presenter.getInstallmentTermsByCardBin(cardBin);
-
+            ArrayList<Integer> installmentTerms;
+            if (presenter.isOfflineInstallmentAvailable()) {
+                installmentTerms = presenter.getOfflineInstallmentTerms();
+            } else {
+                installmentTerms = presenter.getInstallmentTermsByCardBin(cardBin);
+            }
             if (installmentTerms != null && installmentTerms.size() > 1) {
                 setInstallmentTerms(installmentTerms);
                 setCurrentInstallmentTerm();

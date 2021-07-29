@@ -29,6 +29,7 @@ public class Constants {
     public static final String INSTALLMENT_BRI = "installment.bri";
     public static final String INSTALLMENT_CIMB = "installment.cimb";
     public static final String INSTALLMENT_MAYBANK = "installment.maybank";
+    public static final String INSTALLMENT_OFFLINE = "installment.offline";
 
     public static final String INSTALLMENT_BANK_BNI = "bni";
     public static final String INSTALLMENT_BANK_MANDIRI = "mandiri";
@@ -36,6 +37,7 @@ public class Constants {
     public static final String INSTALLMENT_BANK_BRI = "bri";
     public static final String INSTALLMENT_BANK_CIMB = "cimb";
     public static final String INSTALLMENT_BANK_MAYBANK = "maybank";
+    public static final String INSTALLMENT_BANK_OFFLINE = "offline";
 
     public static final double TOTAL_AMOUNT = 10000;
     public static final double TOTAL_AMOUNT_SGD = 5000.5;
