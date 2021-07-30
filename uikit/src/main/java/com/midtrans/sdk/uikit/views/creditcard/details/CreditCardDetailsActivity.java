@@ -1343,7 +1343,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements
             String cardBin = getCardNumberBin();
             ArrayList<Integer> installmentTerms;
             if (presenter.isOfflineInstallmentAvailable()) {
-                installmentTerms = presenter.getOfflineInstallmentTerms();
+                installmentTerms = presenter.getOfflineInstallmentTerms(cardBin);
             } else {
                 installmentTerms = presenter.getInstallmentTermsByCardBin(cardBin);
             }

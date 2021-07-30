@@ -30,7 +30,7 @@ public class CreditCardInstallment {
     }
 
     public boolean isOfflineInstallmentAvailable() {
-        return !getTerms(BANK_OFFLINE).isEmpty();
+        return getTerms(BANK_OFFLINE) != null && !getTerms(BANK_OFFLINE).isEmpty();
     }
 
     public boolean isInstallmentAvailable() {
@@ -53,6 +53,7 @@ public class CreditCardInstallment {
         }
 
         return null;
+
     }
 
     public int getTermByPosition(int currentPosition) {

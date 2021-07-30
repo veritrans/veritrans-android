@@ -435,8 +435,8 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
         return creditCardTransaction.getInstallmentTerms(cardBin);
     }
 
-    public ArrayList<Integer> getOfflineInstallmentTerms() {
-        return creditCardTransaction.getOfflineInstallmentTerms();
+    public ArrayList<Integer> getOfflineInstallmentTerms(String cardBin) {
+        return creditCardTransaction.getOfflineInstallmentTerms(cardBin);
     }
 
     public void initInstallmentTerms(ArrayList<Integer> installmentTerms) {
