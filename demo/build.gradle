@@ -114,5 +114,5 @@ dependencies {
         exclude module: 'corekit'
     }
     implementation 'com.android.support:multidex:1.0.3'
-    implementation(name:'swipe-layout-1.1.0', ext:'aar')
+    implementation project(":swipe-layout-1.1.0")
 }
