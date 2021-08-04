@@ -108,7 +108,7 @@ public class CreditCardTransaction {
 
     public ArrayList<Integer> getOfflineInstallmentTerms(String cardBin) {
         String bank = getBankByBin(cardBin);
-        if (bank.contains("debit")) return null;
+        if (bank != null && bank.contains("debit")) return null;
 
         ArrayList<Integer> installmentTerms = cardInstallment.getTerms(BANK_OFFLINE);
         if (installmentTerms != null) {
