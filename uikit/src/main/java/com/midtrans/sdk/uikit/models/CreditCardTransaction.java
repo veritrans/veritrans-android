@@ -17,7 +17,7 @@ import java.util.List;
 
 public class CreditCardTransaction {
 
-    private static final String BANK_OFFLINE = "offline";
+    public static final String BANK_OFFLINE = "offline";
 
     private CreditCardInstallment cardInstallment;
     private CreditCardBankPoint cardBankPoint;
@@ -74,6 +74,10 @@ public class CreditCardTransaction {
         return cardInstallment.isInstallmentAvailable();
     }
 
+    public boolean isOfflineInstallmentAvailable() {
+        return cardInstallment.isOfflineInstallmentAvailable();
+    }
+
     public boolean isBankBinsAvailable() {
         return bankBinsAvailable;
     }
@@ -95,6 +99,18 @@ public class CreditCardTransaction {
         }
 
         ArrayList<Integer> installmentTerms = cardInstallment.getTerms(bank);
+        if (installmentTerms != null) {
+            return installmentTerms;
+        }
+
+        return null;
+    }
+
+    public ArrayList<Integer> getOfflineInstallmentTerms(String cardBin) {
+        String bank = getBankByBin(cardBin);
+        if (bank.contains("debit")) return null;
+
+        ArrayList<Integer> installmentTerms = cardInstallment.getTerms(BANK_OFFLINE);
         if (installmentTerms != null) {
             return installmentTerms;
         }

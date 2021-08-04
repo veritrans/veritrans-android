@@ -423,12 +423,20 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
         return creditCardTransaction.isInstallmentAvailable();
     }
 
+    public boolean isOfflineInstallmentAvailable() {
+        return creditCardTransaction.isOfflineInstallmentAvailable();
+    }
+
     public boolean isCardBinValidForBankChecking(String cardNumber) {
         return !TextUtils.isEmpty(cardNumber) && cardNumber.length() > 5;
     }
 
     public ArrayList<Integer> getInstallmentTermsByCardBin(String cardBin) {
         return creditCardTransaction.getInstallmentTerms(cardBin);
+    }
+
+    public ArrayList<Integer> getOfflineInstallmentTerms(String cardBin) {
+        return creditCardTransaction.getOfflineInstallmentTerms(cardBin);
     }
 
     public void initInstallmentTerms(ArrayList<Integer> installmentTerms) {
