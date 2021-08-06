@@ -159,6 +159,7 @@
     <string name="using_bri_installment">BRI Installment</string>
     <string name="using_cimb_installment">CIMB Installment</string>
     <string name="using_maybank_installment">Maybank Installment</string>
+    <string name="using_offline_installment">Offline Installment</string>
 
     <!-- BNI Point -->
     <string name="bni_point_only_disabled">BNI Point Only Disabled</string>
@@ -193,6 +194,7 @@
     <string name="installment_bri">BRI</string>
     <string name="installment_cimb">CIMB</string>
     <string name="installment_maybank">Maybank</string>
+    <string name="installment_offline">Offline</string>
     <string name="save_card">Save Card</string>
     <string name="reset_setting">Reset</string>
     <string name="reset_setting_notification">All Settings are Reset</string>

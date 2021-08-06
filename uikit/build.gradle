@@ -68,12 +68,6 @@ android {
         }
     }
 
-    repositories {
-        flatDir {
-            dirs '../libs','libs'
-        }
-    }
-
     defaultPublishConfig = DEFAULT_PUBLISH
     publishNonDefault true
 }
@@ -84,6 +78,7 @@ dependencies {
     implementation supportLibraries.recyclerview
     implementation supportLibraries.cardView
     implementation supportLibraries.design
+    implementation libraries.swipeLayout
     implementation libraries.betterLinkMovement
     implementation libraries.smsVerify
     implementation libraries.zxing
@@ -123,5 +118,4 @@ dependencies {
         exclude module: 'hamcrest-core'
         exclude module: 'objenesis'
     }
-    implementation(name:'swipe-layout-1.1.0', ext:'aar')
 }

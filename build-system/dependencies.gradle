@@ -11,13 +11,14 @@ ext {
     playAuthVersion = '15.0.1'
     okHttpVersion = '3.10.0'
     retrofitVersion = '2.4.0'
-    midtransAnalyticsVersion = '1.7.0'
+    midtransAnalyticsVersion = '1.7.1'
     testRunnerVersion = '0.5'
     powermockVersion = '1.6.2'
     junitVersion = '4.1.2'
     espressoVersion = '2.2.2'
     ionVersion = '3.1.0'
     gsonVersion = '2.7'
+    swipeLayoutVersion = '1.0.17'
     betterLinkVersion = '2.2.0'
     smsVerifyVersion = '0.3.3'
     zxingVersion = '3.5.0'
@@ -47,6 +48,7 @@ ext {
             retrofit            : "com.squareup.retrofit2:retrofit:${retrofitVersion}",
             retrofitConverter   : "com.squareup.retrofit2:converter-gson:${retrofitVersion}",
             gson                : "com.google.code.gson:gson:${gsonVersion}",
+            swipeLayout         : "com.github.rambler-digital-solutions:swipe-layout-android:${swipeLayoutVersion}",
             betterLinkMovement  : "me.saket:better-link-movement-method:${betterLinkVersion}",
             smsVerify           : "com.github.stfalcon-studio:SmsVerifyCatcher:${smsVerifyVersion}",
             zxing               : "com.journeyapps:zxing-android-embedded:${zxingVersion}",

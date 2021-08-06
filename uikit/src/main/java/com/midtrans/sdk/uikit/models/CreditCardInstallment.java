@@ -6,6 +6,8 @@ import com.midtrans.sdk.corekit.models.snap.Installment;
 
 import java.util.ArrayList;
 
+import static com.midtrans.sdk.uikit.models.CreditCardTransaction.BANK_OFFLINE;
+
 /**
  * Created by ziahaqi on 1/19/17.
  */
@@ -25,6 +27,10 @@ public class CreditCardInstallment {
     private void init() {
         installmentAvailable = installment != null && installment.getTerms() != null && !installment.getTerms().isEmpty();
 
+    }
+
+    public boolean isOfflineInstallmentAvailable() {
+        return getTerms(BANK_OFFLINE) != null && !getTerms(BANK_OFFLINE).isEmpty();
     }
 
     public boolean isInstallmentAvailable() {
@@ -47,6 +53,7 @@ public class CreditCardInstallment {
         }
 
         return null;
+
     }
 
     public int getTermByPosition(int currentPosition) {
