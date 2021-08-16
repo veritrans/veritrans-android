@@ -454,7 +454,7 @@ public class BankTransferPaymentActivity extends BasePaymentActivity implements 
                 break;
         }
         MidtransSDK midtransSDK = MidtransSDK.getInstance();
-        if (midtransSDK != null) {
+        if (midtransSDK != null && midtransSDK.getColorTheme() != null) {
             bankToggle.setTextColor(midtransSDK.getColorTheme().getPrimaryDarkColor());
             bankToggle.setIconColorFilter(midtransSDK.getColorTheme().getPrimaryDarkColor());
         }
