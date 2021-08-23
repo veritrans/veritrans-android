@@ -42,6 +42,9 @@ public class TokenRequestModel {
     @SerializedName("bni_va")
     private BankTransferRequestModel bniVa;
 
+    @SerializedName("bri_va")
+    private BankTransferRequestModel briVa;
+
     @SerializedName("enabled_payments")
     private List<String> enabledPayments;
 
@@ -185,8 +188,11 @@ public class TokenRequestModel {
         this.bcaVa = bcaVa;
     }
 
-    public void setBcaVa(BankTransferRequestModel bniVa) {
+    public void setBniVa(BankTransferRequestModel bniVa) {
         this.bniVa = bniVa;
+    }
+    public void setBriVa(BankTransferRequestModel briVa) {
+        this.briVa = briVa;
     }
 
     public List<String> getEnabledPayments() {
