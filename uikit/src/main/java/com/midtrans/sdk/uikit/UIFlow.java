@@ -83,6 +83,18 @@ public class UIFlow implements ISdkFlow {
     }
 
     @Override
+    public void runBriBankTransfer(Context context, String snapToken) {
+        MidtransSDK sdk = MidtransSDK.getInstance();
+        if (sdk != null) {
+            Intent intent = new Intent(context, UserDetailsActivity.class);
+            intent.putExtra(UserDetailsActivity.BANK_TRANSFER_ONLY, true);
+            intent.putExtra(UserDetailsActivity.BANK_TRANSFER_BRI, true);
+            intent.putExtra(UiKitConstants.EXTRA_SNAP_TOKEN, snapToken);
+            context.startActivity(intent);
+        }
+    }
+
+    @Override
     public void runBCABankTransfer(Context context, String snapToken) {
         MidtransSDK sdk = MidtransSDK.getInstance();
         if (sdk != null) {
