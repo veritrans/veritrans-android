@@ -90,7 +90,11 @@ public class SdkUtil {
         }
 
         if (transactionRequest.getBniVa() != null) {
-            requestModel.setBcaVa(transactionRequest.getBniVa());
+            requestModel.setBniVa(transactionRequest.getBniVa());
+        }
+
+        if (transactionRequest.getBriVa() != null) {
+            requestModel.setBriVa(transactionRequest.getBriVa());
         }
 
         if (transactionRequest.getEnabledPayments() != null

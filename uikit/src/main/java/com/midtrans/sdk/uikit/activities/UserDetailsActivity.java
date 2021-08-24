@@ -175,6 +175,8 @@ public class UserDetailsActivity extends BaseActivity {
                 paymentOptionIntent.putExtra(BANK_TRANSFER_OTHER, true);
             } else if (getIntent().getBooleanExtra(BANK_TRANSFER_BNI, false)) {
                 paymentOptionIntent.putExtra(BANK_TRANSFER_BNI, true);
+            } else if (getIntent().getBooleanExtra(BANK_TRANSFER_BRI, false)) {
+                paymentOptionIntent.putExtra(BANK_TRANSFER_BRI, true);
             }
         } else if (getIntent().getBooleanExtra(GO_PAY, false)) {
             paymentOptionIntent.putExtra(GO_PAY, true);
