@@ -215,6 +215,8 @@ public class WebViewPaymentActivity extends BasePaymentActivity {
                 if (url.contains(UiKitConstants.CALLBACK_PATTERN_3DS) || url.contains(UiKitConstants.CALLBACK_PATTERN_RBA)) {
                     finishWebViewPayment(activity, RESULT_OK);
                 }
+
+                finishPayment(url);
             }
         }
 
@@ -224,30 +226,34 @@ public class WebViewPaymentActivity extends BasePaymentActivity {
             super.onPageStarted(view, url, favicon);
 
             if (activity != null && activity.isActivityRunning()) {
-                if (!TextUtils.isEmpty(paymentType) && paymentType.equals(PaymentType.BCA_KLIKPAY)) {
-                    if (url.contains(UiKitConstants.CALLBACK_BCA_KLIKPAY)) {
-                        finishWebViewPayment(activity, RESULT_OK);
-                    }
-                } else if (!TextUtils.isEmpty(paymentType) && paymentType.equals(PaymentType.MANDIRI_ECASH)) {
-                    if (url.contains(UiKitConstants.CALLBACK_MANDIRI_ECAH)) {
-                        finishWebViewPayment(activity, RESULT_OK);
-                    }
-                } else if (!TextUtils.isEmpty(paymentType) && paymentType.equals(PaymentType.BRI_EPAY)) {
-                    if (url.contains(UiKitConstants.CALLBACK_BRI_EPAY)) {
-                        finishWebViewPayment(activity, RESULT_OK);
-                    }
-                } else if (!TextUtils.isEmpty(paymentType) && paymentType.equals(PaymentType.CIMB_CLICKS)) {
-                    if (url.contains(UiKitConstants.CALLBACK_CIMB_CLICKS)) {
-                        finishWebViewPayment(activity, RESULT_OK);
-                    }
-                } else if (!TextUtils.isEmpty(paymentType) && paymentType.equals(PaymentType.DANAMON_ONLINE)) {
-                    if (url.contains(UiKitConstants.CALLBACK_DANAMON_ONLINE)) {
-                        finishWebViewPayment(activity, RESULT_OK);
-                    }
-                } else if (!TextUtils.isEmpty(paymentType) && paymentType.equals(PaymentType.AKULAKU)) {
-                    if (url.contains(UiKitConstants.CALLBACK_AKULAKU)) {
-                        finishWebViewPayment(activity, RESULT_OK);
-                    }
+                finishPayment(url);
+            }
+        }
+
+        private void finishPayment(String url) {
+            if (!TextUtils.isEmpty(paymentType) && paymentType.equals(PaymentType.BCA_KLIKPAY)) {
+                if (url.contains(UiKitConstants.CALLBACK_BCA_KLIKPAY)) {
+                    finishWebViewPayment(activity, RESULT_OK);
+                }
+            } else if (!TextUtils.isEmpty(paymentType) && paymentType.equals(PaymentType.MANDIRI_ECASH)) {
+                if (url.contains(UiKitConstants.CALLBACK_MANDIRI_ECAH)) {
+                    finishWebViewPayment(activity, RESULT_OK);
+                }
+            } else if (!TextUtils.isEmpty(paymentType) && paymentType.equals(PaymentType.BRI_EPAY)) {
+                if (url.contains(UiKitConstants.CALLBACK_BRI_EPAY)) {
+                    finishWebViewPayment(activity, RESULT_OK);
+                }
+            } else if (!TextUtils.isEmpty(paymentType) && paymentType.equals(PaymentType.CIMB_CLICKS)) {
+                if (url.contains(UiKitConstants.CALLBACK_CIMB_CLICKS)) {
+                    finishWebViewPayment(activity, RESULT_OK);
+                }
+            } else if (!TextUtils.isEmpty(paymentType) && paymentType.equals(PaymentType.DANAMON_ONLINE)) {
+                if (url.contains(UiKitConstants.CALLBACK_DANAMON_ONLINE)) {
+                    finishWebViewPayment(activity, RESULT_OK);
+                }
+            } else if (!TextUtils.isEmpty(paymentType) && paymentType.equals(PaymentType.AKULAKU)) {
+                if (url.contains(UiKitConstants.CALLBACK_AKULAKU)) {
+                    finishWebViewPayment(activity, RESULT_OK);
                 }
             }
         }
