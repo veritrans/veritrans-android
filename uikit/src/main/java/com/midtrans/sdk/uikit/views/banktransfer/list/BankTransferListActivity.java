@@ -128,6 +128,7 @@ public class BankTransferListActivity extends BasePaymentActivity implements Ban
                             || getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_MANDIRI, false)
                             || getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_BCA, false)
                             || getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_BNI, false)
+                            || getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_BRI, false)
                             || getIntent().getBooleanExtra(UserDetailsActivity.BANK_TRANSFER_OTHER, false)) {
                         finish();
                     }
