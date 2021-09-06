@@ -902,6 +902,16 @@ public class MidtransAndroidSDKTest {
     }
 
     /**
+     * test direct payment BRI bank transfer
+     */
+
+    @Test
+    public void startPaymentUiFLow_whenUsingBriBankTranfer() throws Exception {
+        midtransSDKSSpy.startPaymentUiFlow(contextMock, PaymentMethod.BANK_TRANSFER_BRI);
+        PowerMockito.verifyPrivate(midtransSDKSSpy, Mockito.times(1)).invoke("startBriBankTransferUIFlow", contextMock, null);
+    }
+
+    /**
      * test direct payment Other bank transfer
      */
 
@@ -1132,6 +1142,28 @@ public class MidtransAndroidSDKTest {
     public void startBCABankTransferUIFlow_whenTransactionRequestNull() throws Exception {
         midtransSDKSSpy.setTransactionRequest(null);
         Whitebox.invokeMethod(midtransSDKSSpy, "startBCABankTransferUIFlow", contextMock, snapToken);
+        verifyStatic(Mockito.times(2));
+        Logger.e(Matchers.anyString(), Matchers.anyString());
+    }
+
+    /**
+     * test startBRIBankTransferUIFlow method
+     */
+
+    @Test
+    public void startBRIBankTransferUIFlow_whenPaymentMethodAlreadySelected() throws Exception {
+        midtransSDKSSpy.setTransactionRequest(transactionRequestMock);
+        when(midtransSDKSSpy.getTransactionRequest().getPaymentMethod()).thenReturn(Constants.PAYMENT_METHOD_NOT_SELECTED);
+        midtransSDKSSpy.uiflow = uiflowMock;
+        Whitebox.invokeMethod(midtransSDKSSpy, "startBRIBankTransferUIFlow", contextMock, snapToken);
+        Mockito.verify(midtransSDKSSpy.uiflow).runBriBankTransfer(contextMock, snapToken);
+    }
+
+
+    @Test
+    public void startBRIBankTransferUIFlow_whenTransactionRequestNull() throws Exception {
+        midtransSDKSSpy.setTransactionRequest(null);
+        Whitebox.invokeMethod(midtransSDKSSpy, "startBRIBankTransferUIFlow", contextMock, snapToken);
         verifyStatic(Mockito.times(2));
         Logger.e(Matchers.anyString(), Matchers.anyString());
     }

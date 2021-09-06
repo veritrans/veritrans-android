@@ -408,6 +408,8 @@ public class MidtransSDK {
             startMandiriBankTransferUIFlow(context, snapToken);
         } else if (paymentMethod.equals(PaymentMethod.BANK_TRANSFER_BNI)) {
             startBniBankTransferUIFlow(context, snapToken);
+        } else if (paymentMethod.equals(PaymentMethod.BANK_TRANSFER_BRI)) {
+            startBriBankTransferUIFlow(context, snapToken);
         } else if (paymentMethod.equals(PaymentMethod.BANK_TRANSFER_OTHER)) {
             startOtherBankTransferUIFlow(context, snapToken);
         } else if (paymentMethod.equals(PaymentMethod.GO_PAY)) {
@@ -585,6 +587,23 @@ public class MidtransSDK {
         if (isTransactionRequestAvailable()) {
             if (uiflow != null) {
                 uiflow.runBniBankTransfer(context, snapToken);
+            }
+
+        } else {
+            Logger.e(TAG, ADD_TRANSACTION_DETAILS);
+        }
+    }
+
+    /**
+     * This will start actual execution of Bank Transfer UI flow using BRI.
+     *
+     * @param context   activity context.
+     * @param snapToken checkout token
+     */
+    private void startBriBankTransferUIFlow(@NonNull Context context, String snapToken) {
+        if (isTransactionRequestAvailable()) {
+            if (uiflow != null) {
+                uiflow.runBriBankTransfer(context, snapToken);
             }
 
         } else {
@@ -1044,7 +1063,8 @@ public class MidtransSDK {
 
         if (isTransactionRequestAvailable()) {
             if (Utils.isNetworkAvailable(context)) {
-                snapServiceManager.paymentUsingVa(authenticationToken, SdkUtil.getBankTransferPaymentRequest(email, PaymentType.BRI_VA), callback);
+                snapServiceManager.paymentUsingVa
+                        (authenticationToken, SdkUtil.getBankTransferPaymentRequest(email, PaymentType.BRI_VA), callback);
             } else {
                 callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
             }
