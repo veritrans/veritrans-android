@@ -212,7 +212,7 @@ public class WebViewPaymentActivity extends BasePaymentActivity {
             super.onPageFinished(view, url);
             Logger.d(TAG, "onPageFinished()>url:" + url);
             if (activity != null && activity.isActivityRunning()) {
-                if (url.contains(UiKitConstants.CALLBACK_PATTERN_3DS) || url.contains(UiKitConstants.CALLBACK_PATTERN_RBA)) {
+                if (url.contains(UiKitConstants.CALLBACK_PATTERN_3DS)) {
                     finishWebViewPayment(activity, RESULT_OK);
                 }
 
