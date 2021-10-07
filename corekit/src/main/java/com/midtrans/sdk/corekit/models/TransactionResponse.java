@@ -33,6 +33,8 @@ public class TransactionResponse implements Serializable {
     private String savedTokenId;
     @SerializedName("masked_card")
     private String maskedCard;
+    @SerializedName("three_ds_version")
+    private String threeDsVersion;
 
     @SerializedName("order_id")
     private String orderId;
@@ -241,6 +243,14 @@ public class TransactionResponse implements Serializable {
 
     public void setMaskedCard(String maskedCard) {
         this.maskedCard = maskedCard;
+    }
+
+    public String getThreeDsVersion() {
+        return threeDsVersion;
+    }
+
+    public void setThreeDsVersion(String threeDsVersion) {
+        this.threeDsVersion = threeDsVersion;
     }
 
     public String getOrderId() {

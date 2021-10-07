@@ -701,7 +701,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements
                         setPromoSelected();
                         presenter.trackButtonClick(
                             attempt == 0 ? BUTTON_CONFIRM_NAME : BUTTON_RETRY_NAME, PAGE_NAME);
-                        TokenizeCreditCard();
+                        tokenizeCreditCard();
                     }
                 }
             }
@@ -813,7 +813,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements
         }
     }
 
-    private void TokenizeCreditCard() {
+    private void tokenizeCreditCard() {
         showProgressLayout(getString(R.string.processing_payment));
 
         if (isOneClickMode()) {
@@ -1510,7 +1510,12 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements
     }
 
     private void start3DSecurePage(String redirectUrl, int requestCode) {
+        start3DSecurePage(redirectUrl, requestCode, "");
+    }
+
+    private void start3DSecurePage(String redirectUrl, int requestCode, String threeDsVersion) {
         Intent intent = new Intent(this, WebViewPaymentActivity.class);
+        intent.putExtra(WebViewPaymentActivity.EXTRA_3DS_VERSION, threeDsVersion);
         intent.putExtra(WebViewPaymentActivity.EXTRA_PAYMENT_URL, redirectUrl);
         intent.putExtra(WebViewPaymentActivity.EXTRA_PAYMENT_TYPE, PaymentType.CREDIT_CARD);
         startActivityForResult(intent, requestCode);
@@ -1628,7 +1633,8 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements
         if (isActivityRunning()) {
             if (presenter.isRbaAuthentication(response)) {
                 start3DSecurePage(response.getRedirectUrl(),
-                    UiKitConstants.INTENT_CODE_RBA_AUTHENTICATION);
+                    UiKitConstants.INTENT_CODE_RBA_AUTHENTICATION,
+                    response.getThreeDsVersion());
             } else {
                 hideProgressLayout();
                 initPaymentStatus(response);
