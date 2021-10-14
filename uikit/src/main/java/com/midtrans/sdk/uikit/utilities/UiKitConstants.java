@@ -58,8 +58,8 @@ public class UiKitConstants {
 
 
     // webview url callback pattern
-    public static final String CALLBACK_PATTERN_RBA = "/token/rba/callback/";
-    public static final String CALLBACK_PATTERN_3DS = "/token/callback/";
+    public static final String CALLBACK_PATTERN_3DS = "/callback/";
+    public static final String FINISH_PATTERN_3DS_2 = "/result-completion/";
     public static final String CALLBACK_DANAMON_ONLINE = "/callback?signature=";
     public static final String CALLBACK_CIMB_CLICKS = "cimb-clicks/response";
     public static final String CALLBACK_BRI_EPAY = "briPayment?tid=";

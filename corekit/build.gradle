@@ -56,7 +56,7 @@ android {
             dimension "env"
             DEFAULT_PUBLISH = "uatRelease"
             buildConfigField "String", "BASE_URL", "\"https://api.stg.midtrans.com/v2/\""
-            buildConfigField "String", "SNAP_BASE_URL", "\"https://app.stg.midtrans.com/snap/\""
+            buildConfigField "String", "SNAP_BASE_URL", "\"https://midtrans-checkout.stg.veritrans.co.id/snap/\""
             buildConfigField "String", "PROMO_ENGINE_URL", "\"https://promo.vt-stage.info/\""
             matchingFallbacks = ["uat"]
         }

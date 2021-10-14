@@ -86,7 +86,6 @@ public abstract class BaseActivity extends LocalizationActivity implements BaseV
         } catch (RuntimeException e) {
             Logger.e(TAG, "initTheme():" + e.getMessage());
         }
-
     }
 
     private void initProgressContainer() {

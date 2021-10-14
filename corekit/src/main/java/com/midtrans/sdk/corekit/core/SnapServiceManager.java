@@ -463,8 +463,8 @@ public class SnapServiceManager extends BaseServiceManager {
             String statusCode = transactionResponse.getStatusCode();
 
             if (!TextUtils.isEmpty(statusCode)
-                    && (statusCode.equals(Constants.STATUS_CODE_200)
-                    || statusCode.equals(Constants.STATUS_CODE_201))) {
+                && (statusCode.equals(Constants.STATUS_CODE_200)
+                || statusCode.equals(Constants.STATUS_CODE_201))) {
                 callback.onSuccess(transactionResponse);
 
             } else {
@@ -613,8 +613,17 @@ public class SnapServiceManager extends BaseServiceManager {
                 TransactionStatusResponse transactionStatusResponse = response.body();
 
                 if (transactionStatusResponse != null) {
-                    if (transactionStatusResponse.getStatusCode() != null && transactionStatusResponse.getStatusCode().equals(Constants.STATUS_CODE_200)) {
-                        callback.onSuccess(transactionStatusResponse);
+                    if (transactionStatusResponse.getStatusCode() != null) {
+                        if (Constants.STATUS_CODE_200.equals(transactionStatusResponse.getStatusCode())) {
+                            callback.onSuccess(transactionStatusResponse);
+                        } else if (
+                            Constants.PAYMENT_CREDIT_DEBIT.equals(transactionStatusResponse.getPaymentType())
+                            && Constants.STATUS_CODE_201.equals(transactionStatusResponse.getStatusCode())
+                        ) {
+                            callback.onSuccess(transactionStatusResponse);
+                        } else {
+                            callback.onFailure(transactionStatusResponse, response.message());
+                        }
                     } else {
                         callback.onFailure(transactionStatusResponse, response.message());
                     }
