@@ -33,6 +33,7 @@ public class WebViewPaymentActivity extends BasePaymentActivity {
 
     public static final String EXTRA_PAYMENT_TYPE = "extra.paymentType";
     public static final String EXTRA_PAYMENT_URL = "extra.url";
+    public static final String EXTRA_3DS_VERSION = "extra.3dsVersion";
     private static final String TAG = WebViewPaymentActivity.class.getSimpleName();
     private WebView webviewContainer;
     private Toolbar toolbar;
@@ -43,6 +44,7 @@ public class WebViewPaymentActivity extends BasePaymentActivity {
 
     private String webUrl;
     private String paymentType;
+    private String threeDsVersion;
 
     private PaymentStatusPresenter presenter;
 
@@ -135,6 +137,7 @@ public class WebViewPaymentActivity extends BasePaymentActivity {
         if (intent != null) {
             webUrl = intent.getStringExtra(EXTRA_PAYMENT_URL);
             paymentType = intent.getStringExtra(EXTRA_PAYMENT_TYPE);
+            threeDsVersion = intent.getStringExtra(EXTRA_3DS_VERSION);
         }
         presenter = new PaymentStatusPresenter();
     }
@@ -152,7 +155,7 @@ public class WebViewPaymentActivity extends BasePaymentActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             webviewContainer.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
-        webviewContainer.setWebViewClient(new MidtransWebViewClient(this, paymentType));
+        webviewContainer.setWebViewClient(new MidtransWebViewClient(this, paymentType, threeDsVersion));
         webviewContainer.setWebChromeClient(new WebChromeClient() {
             @Override
             public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
@@ -193,10 +196,12 @@ public class WebViewPaymentActivity extends BasePaymentActivity {
     private static class MidtransWebViewClient extends WebViewClient {
 
         private final String paymentType;
+        private final String threeDsVersion;
         private WebViewPaymentActivity activity;
 
-        private MidtransWebViewClient(WebViewPaymentActivity activity, String type) {
+        private MidtransWebViewClient(WebViewPaymentActivity activity, String type, String threeDsVersion) {
             this.paymentType = type;
+            this.threeDsVersion = threeDsVersion;
             this.activity = activity;
         }
 
@@ -212,8 +217,16 @@ public class WebViewPaymentActivity extends BasePaymentActivity {
             super.onPageFinished(view, url);
             Logger.d(TAG, "onPageFinished()>url:" + url);
             if (activity != null && activity.isActivityRunning()) {
-                if (url.contains(UiKitConstants.CALLBACK_PATTERN_3DS) || url.contains(UiKitConstants.CALLBACK_PATTERN_RBA)) {
-                    finishWebViewPayment(activity, RESULT_OK);
+                boolean isOldVersion = threeDsVersion == null || threeDsVersion.isEmpty() || "1".equals(threeDsVersion);
+
+                if (isOldVersion) {
+                    if (url.contains(UiKitConstants.CALLBACK_PATTERN_3DS)) {
+                        finishWebViewPayment(activity, RESULT_OK);
+                    }
+                } else {
+                    if (url.contains(UiKitConstants.FINISH_PATTERN_3DS_2)) {
+                        finishWebViewPayment(activity, RESULT_OK);
+                    }
                 }
 
                 finishPayment(url);
