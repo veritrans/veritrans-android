@@ -101,7 +101,7 @@
         <item>Mandiri Clickpay</item>
 
         <item>CIMB Clicks</item>
-        <item>e-Pay BRI</item>
+        <item>BRImo</item>
         <item>BBM Money</item>
 
         <item>Indosat Dompetku</item>
@@ -345,7 +345,7 @@
     <string name="mandiri_clickpay">Mandiri Clickpay</string>
     <string name="cimb_clicks">CIMB Clicks</string>
     <string name="akulaku">Akulaku</string>
-    <string name="epay_bri">e-Pay BRI</string>
+    <string name="epay_bri">BRImo</string>
     <string name="bbm_money">BBM Money</string>
     <string name="indosat_dompetku">Indosat Dompetku</string>
     <string name="telkomsel_cash">Telkomsel Cash</string>
@@ -445,7 +445,7 @@
     <string name="deny">deny</string>
     <string name="challenge">challenge</string>
 
-    <string name="payment_method_bri_epay">e-Pay BRI</string>
+    <string name="payment_method_bri_epay">BRImo</string>
     <string name="payment_method_offers">Offers</string>
     <string name="payment_method_credit_card">Credit/Debit Card</string>
     <string name="payment_method_bank_transfer">ATM/Bank Transfer</string>
@@ -753,7 +753,7 @@
     <string name="payment_method_description_bca_klikpay">Pay with BCA KlikPay</string>
     <string name="payment_method_description_mandiri_clickpay">Pay through your Mandiri Clickpay account</string>
     <string name="payment_method_description_cimb_clicks">Pay using CIMB Clicks account</string>
-    <string name="payment_method_description_epay_bri">Pay using e-Pay BRI account</string>
+    <string name="payment_method_description_epay_bri">Pay using BRImo account</string>
     <string name="payment_method_description_mandiri_ecash">Pay with your LINE Pay e-cash / mandiri e-cash account</string>
     <string name="payment_method_description_telkomsel_cash">Pay through your Telkomsel Cash account</string>
     <string name="payment_method_description_xl_tunai">Pay with XL Tunai</string>
