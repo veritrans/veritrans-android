@@ -233,10 +233,10 @@
     <string name="permata_instruction_step6"><b>Detail pembayaran anda</b> akan muncul pada halaman konfirmasi. Jika informasi telah sesuai tekan <b>Benar</b>.</string>
     <string name="permata_instruction_step7">Pilih rekening pembayaran Anda dan tekan <b>Benar</b>.</string>
 
-    <string name="bri_instruction_step1">Pastikan bahwa Anda memiliki User ID untuk BRI e-Pay dan telah terdaftar untuk mTOKEN sebelum melanjutkan pembayaran.</string>
-    <string name="bri_instruction_step2">Untuk mendapatkan User ID untuk BRI e-Pay, harap mendaftar pada ATM BRI terdekat</string>
+    <string name="bri_instruction_step1">Pastikan bahwa Anda memiliki User ID untuk BRImo dan telah terdaftar untuk mTOKEN sebelum melanjutkan pembayaran.</string>
+    <string name="bri_instruction_step2">Untuk mendapatkan User ID untuk BRImo, harap mendaftar pada ATM BRI terdekat</string>
     <string name="bri_instruction_step3">Harap kunjungi kantor cabang BRI terdekat untuk mendaftar mTOKEN.</string>
-    <string name="bri_instruction_step4">Pembayaran melalui BRI e-Pay akan diproses secara online dan saldo rekening BRI akan dikurangi secara otomatis berdasarkan total harga.</string>
+    <string name="bri_instruction_step4">Pembayaran melalui BRImo akan diproses secara online dan saldo rekening BRI akan dikurangi secara otomatis berdasarkan total harga.</string>
     <string name="bri_instruction_step5">Transaksi akan dibatalkan apabila pembayaran tidak dilakukan dalam 2 jam.</string>
 
     <!-- Kioson Instruction-->
