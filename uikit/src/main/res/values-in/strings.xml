@@ -55,7 +55,7 @@
         <item>Mandiri Clickpay</item>
 
         <item>CIMB Clicks</item>
-        <item>e-Pay BRI</item>
+        <item>BRImo</item>
         <item>BBM Money</item>
 
         <item>Indosat Dompetku</item>
@@ -233,10 +233,10 @@
     <string name="permata_instruction_step6"><b>Detail pembayaran anda</b> akan muncul pada halaman konfirmasi. Jika informasi telah sesuai tekan <b>Benar</b>.</string>
     <string name="permata_instruction_step7">Pilih rekening pembayaran Anda dan tekan <b>Benar</b>.</string>
 
-    <string name="bri_instruction_step1">Pastikan bahwa Anda memiliki User ID untuk BRI e-Pay dan telah terdaftar untuk mTOKEN sebelum melanjutkan pembayaran.</string>
-    <string name="bri_instruction_step2">Untuk mendapatkan User ID untuk BRI e-Pay, harap mendaftar pada ATM BRI terdekat</string>
+    <string name="bri_instruction_step1">Pastikan bahwa Anda memiliki User ID untuk BRImo dan telah terdaftar untuk mTOKEN sebelum melanjutkan pembayaran.</string>
+    <string name="bri_instruction_step2">Untuk mendapatkan User ID untuk BRImo, harap mendaftar pada ATM BRI terdekat</string>
     <string name="bri_instruction_step3">Harap kunjungi kantor cabang BRI terdekat untuk mendaftar mTOKEN.</string>
-    <string name="bri_instruction_step4">Pembayaran melalui BRI e-Pay akan diproses secara online dan saldo rekening BRI akan dikurangi secara otomatis berdasarkan total harga.</string>
+    <string name="bri_instruction_step4">Pembayaran melalui BRImo akan diproses secara online dan saldo rekening BRI akan dikurangi secara otomatis berdasarkan total harga.</string>
     <string name="bri_instruction_step5">Transaksi akan dibatalkan apabila pembayaran tidak dilakukan dalam 2 jam.</string>
 
     <!-- Kioson Instruction-->
@@ -355,7 +355,7 @@
     <string name="mandiri_clickpay">Mandiri Clickpay</string>
     <string name="cimb_clicks">CIMB Clicks</string>
     <string name="akulaku">Akulaku</string>
-    <string name="epay_bri">e-Pay BRI</string>
+    <string name="epay_bri">BRImo</string>
     <string name="bbm_money">BBM Money</string>
     <string name="indosat_dompetku">Indosat Dompetku</string>
     <string name="bca_klik">BCA KlikPay</string>
@@ -408,7 +408,7 @@
     <string name="klikbca_instruction_1">Mohon pastikan UserID aktif dan terdaftar di BCA.</string>
     <string name="klikbca_instruction_2">Silakan lanjutkan pembayaran melalui KlikBCA dengan membuka <a href="http://klikbca.com/">http://klikbca.com/</a> pada browser anda, menggunakan <b>User ID</b> yang sama dengan yang anda masukkan di atas.</string>
 
-    <string name="payment_method_bri_epay">e-Pay BRI</string>
+    <string name="payment_method_bri_epay">BRImo</string>
     <string name="payment_method_offers">Penawaran</string>
     <string name="payment_method_credit_card">Kartu Kredit/Debit</string>
     <string name="payment_method_bank_transfer">ATM/Transfer Bank</string>
@@ -558,7 +558,7 @@
     <string name="payment_method_description_bca_klikpay">Bayar dengan BCA KlikPay</string>
     <string name="payment_method_description_mandiri_clickpay">Bayar melalui akun Mandiri Clickpay anda</string>
     <string name="payment_method_description_cimb_clicks">Bayar menggunakan akun CIMB Clicks</string>
-    <string name="payment_method_description_epay_bri">Bayar menggunakan akun e-Pay BRI</string>
+    <string name="payment_method_description_epay_bri">Bayar menggunakan akun BRImo</string>
     <string name="payment_method_description_mandiri_ecash">Bayar dengan akun LINE Pay e-cash / mandiri e-cash anda</string>
     <string name="payment_method_description_telkomsel_cash">Bayar melalui akun Telkomsel Cash anda</string>
     <string name="payment_method_description_xl_tunai">Bayar dengan XL Tunai</string>

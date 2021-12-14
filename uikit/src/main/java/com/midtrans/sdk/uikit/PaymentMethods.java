@@ -93,7 +93,7 @@ public class PaymentMethods {
     }
 
     private static PaymentMethodsModel getMethodEpayBRI(Context context, int priority, String paymentType, String status) {
-        return new PaymentMethodsModel(context.getString(R.string.payment_method_bri_epay), context.getString(R.string.payment_method_description_epay_bri), R.drawable.ic_epay, paymentType, priority, status);
+        return new PaymentMethodsModel(context.getString(R.string.payment_method_bri_epay), context.getString(R.string.payment_method_description_epay_bri), R.drawable.ic_brimo, paymentType, priority, status);
     }
 
     private static PaymentMethodsModel getMethodCIMBClicks(Context context, int priority, String paymentType, String status) {
