@@ -492,6 +492,8 @@ public class SdkUIFlowUtil {
             for (EnabledPayment enabledPayment : enabledPayments) {
                 if (enabledPayment.getType().equalsIgnoreCase(PaymentType.BCA_VA)
                         || enabledPayment.getType().equalsIgnoreCase(PaymentType.PERMATA_VA)
+                        || enabledPayment.getType().equalsIgnoreCase(PaymentType.BNI_VA)
+                        || enabledPayment.getType().equalsIgnoreCase(PaymentType.BRI_VA)
                         || enabledPayment.getType().equalsIgnoreCase(PaymentType.E_CHANNEL)
                         || enabledPayment.getType().equalsIgnoreCase(PaymentType.ALL_VA)) {
                     return true;
