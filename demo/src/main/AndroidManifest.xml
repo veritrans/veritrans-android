@@ -13,7 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DemoConfigActivity">
+        <activity
+            android:name=".DemoConfigActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,8 +28,7 @@
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".UserAddressActivity"
-            android:windowSoftInputMode="stateHidden|adjustPan">
-        </activity>
+            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
         <activity android:name=".DemoProductListActivity" />
         <activity android:name=".DemoAccountActivity" />
         <activity android:name=".DemoCardRegisterActivity" />
@@ -39,7 +40,9 @@
             android:value="@string/api_key"
             />
         -->
-        <activity android:name=".EntryActivity"
+        <activity
+            android:name=".EntryActivity"
+            android:exported="true"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
