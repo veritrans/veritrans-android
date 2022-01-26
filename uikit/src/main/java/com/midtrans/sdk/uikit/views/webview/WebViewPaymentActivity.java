@@ -276,7 +276,7 @@ public class WebViewPaymentActivity extends BasePaymentActivity {
 
     @Override
     public void applyOverrideConfiguration(Configuration overrideConfiguration) {
-        if (Build.VERSION.SDK_INT == 21) {
+        if (Build.VERSION.SDK_INT >= 21 && 22 >= Build.VERSION.SDK_INT) {
             return;
         }
         super.applyOverrideConfiguration(overrideConfiguration);
