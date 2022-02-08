@@ -3,6 +3,7 @@ package com.midtrans.sdk.uikit.views.webview;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -271,5 +272,13 @@ public class WebViewPaymentActivity extends BasePaymentActivity {
             }
         }
 
+    }
+
+    @Override
+    public void applyOverrideConfiguration(Configuration overrideConfiguration) {
+        if (Build.VERSION.SDK_INT >= 21 && 22 >= Build.VERSION.SDK_INT) {
+            return;
+        }
+        super.applyOverrideConfiguration(overrideConfiguration);
     }
 }
