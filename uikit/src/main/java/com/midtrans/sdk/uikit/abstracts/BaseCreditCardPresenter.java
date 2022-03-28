@@ -12,6 +12,7 @@ import com.midtrans.sdk.corekit.models.SaveCardResponse;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
 import com.midtrans.sdk.corekit.models.snap.SavedToken;
+import com.midtrans.sdk.uikit.callbacks.Call1;
 import com.midtrans.sdk.uikit.models.CreditCardTransaction;
 import com.midtrans.sdk.uikit.models.CreditCardType;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
@@ -31,12 +32,12 @@ public class BaseCreditCardPresenter<V extends BaseView> extends BasePaymentPres
         CreditCard creditCard = getMidtransSDK().getCreditCard();
         if (creditCard != null) {
             List<BankBinsResponse> bankBins = SdkUIFlowUtil.getBankBins(context);
-            this.creditCardTransaction.setProperties(creditCard, new ArrayList<>(bankBins));
+            this.creditCardTransaction.setProperties(creditCard/*, new ArrayList<>(bankBins)*/);
         }
     }
 
-    public String getBankByCardBin(String cardBin) {
-        return creditCardTransaction.getBankByBin(cardBin);
+    public void getBankByCardBin(String cardBin, Call1<String> callback) {
+        creditCardTransaction.getBankCodeByBin(cardBin, callback);
     }
 
     public boolean isSavedCardEnabled() {

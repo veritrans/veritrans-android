@@ -12,7 +12,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ImageView;
 import com.midtrans.sdk.corekit.core.Logger;
-import com.midtrans.sdk.corekit.models.BankType;
+import com.midtrans.sdk.corekit.models.BankCode;
 import com.midtrans.sdk.corekit.models.CardRegistrationResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
@@ -177,25 +177,25 @@ public class CardRegistrationActivity extends BasePaymentActivity implements Car
         if (bank != null) {
 
             switch (bank) {
-                case BankType.BCA:
+                case BankCode.BCA:
                     imageBankLogo.setImageResource(R.drawable.bca);
                     break;
-                case BankType.BNI:
+                case BankCode.BNI:
                     imageBankLogo.setImageResource(R.drawable.bni);
                     break;
-                case BankType.BRI:
+                case BankCode.BRI:
                     imageBankLogo.setImageResource(R.drawable.bri);
                     break;
-                case BankType.CIMB:
+                case BankCode.CIMB:
                     imageBankLogo.setImageResource(R.drawable.cimb);
                     break;
-                case BankType.MANDIRI:
+                case BankCode.MANDIRI:
                     imageBankLogo.setImageResource(R.drawable.mandiri);
                     break;
-                case BankType.MAYBANK:
+                case BankCode.MAYBANK:
                     imageBankLogo.setImageResource(R.drawable.maybank);
                     break;
-                case BankType.BNI_DEBIT_ONLINE:
+                case BankCode.BNI_DEBIT_ONLINE:
                     imageBankLogo.setImageResource(R.drawable.bni);
                     break;
                 default:

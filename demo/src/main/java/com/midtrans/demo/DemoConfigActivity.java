@@ -3033,31 +3033,31 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         // set bank and channel on creditcard
         if (bankMandiriSelection.isChecked()) {
             // Set bank to Mandiri
-            creditCard.setBank(BankType.MANDIRI);
+            creditCard.setBank(BankCode.MANDIRI);
         } else if (bankBniSelection.isChecked()) {
             // Set bank to BNI
-            creditCard.setBank(BankType.BNI);
+            creditCard.setBank(BankCode.BNI);
         } else if (bankBcaSelection.isChecked()) {
             //Set bank to BCA
-            creditCard.setBank(BankType.BCA);
+            creditCard.setBank(BankCode.BCA);
             // credit card payment using bank BCA need migs channel
             creditCard.setChannel(CreditCard.MIGS);
         } else if (bankMaybankSelection.isChecked()) {
             //Set bank to Maybank
-            creditCard.setBank(BankType.MAYBANK);
+            creditCard.setBank(BankCode.MAYBANK);
             // credit card payment using bank Maybank need migs channel
             creditCard.setChannel(CreditCard.MIGS);
         } else if (bankBriSelection.isChecked()) {
             // Set bank to BRI
-            creditCard.setBank(BankType.BRI);
+            creditCard.setBank(BankCode.BRI);
             // credit card payment using bank BRI need migs channel
             creditCard.setChannel(CreditCard.MIGS);
         } else if (bankCimbSelection.isChecked()) {
             // Set bank to CIMB
-            creditCard.setBank(BankType.CIMB);
+            creditCard.setBank(BankCode.CIMB);
         } else if (bankMegaSelection.isChecked()) {
             // Set bank to CIMB
-            creditCard.setBank(BankType.MEGA);
+            creditCard.setBank(BankCode.MEGA);
         }
 
         if (preAuthEnabledSelection.isChecked()) {
@@ -3234,9 +3234,9 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             if (enablePayment.getMethodName().equals("ShopeePay")) {
                 transactionRequestNew.setShopeepay(new Shopeepay("demo://midtrans"));
             }
-            if (enablePayment.getMethodName().equals("UOB EZ Pay")) {
-                transactionRequestNew.setUobEzpay(new UobEzpay("demo://midtrans"));
-            }
+//            if (enablePayment.getMethodName().equals("UOB EZ Pay")) {
+//                transactionRequestNew.setUobEzpay(new UobEzpay("demo://midtrans"));
+//            }
         }
 
         return transactionRequestNew;

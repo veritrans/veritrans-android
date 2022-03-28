@@ -2,6 +2,7 @@ package com.midtrans.sdk.corekit.core;
 
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.TokenRequestModel;
+import com.midtrans.sdk.corekit.models.snap.BankSingleBinResponse;
 import com.midtrans.sdk.corekit.models.snap.Token;
 
 import java.util.List;
@@ -46,4 +47,5 @@ public interface MerchantApiService {
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @GET("users/{user_id}/tokens")
     Call<List<SaveCardRequest>> getCards(@Path("user_id") String userId);
+
 }

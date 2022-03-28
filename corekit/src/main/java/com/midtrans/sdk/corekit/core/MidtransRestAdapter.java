@@ -1,6 +1,7 @@
 package com.midtrans.sdk.corekit.core;
 
 import android.os.Build;
+import android.util.Base64;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -92,7 +93,7 @@ public class MidtransRestAdapter {
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor
                 .setLevel(Logger.enabled ?
-                        HttpLoggingInterceptor.Level.BODY :
+                        HttpLoggingInterceptor.Level.BASIC :
                         HttpLoggingInterceptor.Level.NONE);
         return httpLoggingInterceptor;
     }
@@ -114,6 +115,7 @@ public class MidtransRestAdapter {
                 Request headerInterceptedRequest = request.newBuilder()
                         .addHeader("Content-Type", "application/json")
                         .addHeader("Accept", "application/json")
+                        .addHeader("Authorization", "Basic "+  new String(Base64.encode(MidtransSDK.getInstance().getClientKey().getBytes("UTF-8"), Base64.NO_WRAP)))
                         .build();
 
                 return chain.proceed(headerInterceptedRequest);

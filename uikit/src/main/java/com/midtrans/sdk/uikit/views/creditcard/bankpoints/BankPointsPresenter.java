@@ -2,7 +2,7 @@ package com.midtrans.sdk.uikit.views.creditcard.bankpoints;
 
 import android.text.TextUtils;
 
-import com.midtrans.sdk.corekit.models.BankType;
+import com.midtrans.sdk.corekit.models.BankCode;
 import com.midtrans.sdk.corekit.models.PaymentDetails;
 import com.midtrans.sdk.corekit.models.snap.ItemDetails;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentPresenter;
@@ -78,11 +78,11 @@ public class BankPointsPresenter extends BasePaymentPresenter {
             int quantity = 1;
 
             switch (pointBank) {
-                case BankType.BNI:
+                case BankCode.BNI:
                     newItemDetails = new ItemDetails(UiKitConstants.BNI_POINT_ID, itemDetailsName, newPrice, quantity);
                     break;
 
-                case BankType.MANDIRI:
+                case BankCode.MANDIRI:
                     newItemDetails = new ItemDetails(UiKitConstants.MANDIRI_POIN_ID, itemDetailsName, newPrice, quantity);
                     break;
             }
