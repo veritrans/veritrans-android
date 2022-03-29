@@ -15,7 +15,7 @@ import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.core.TransactionRequest;
 import com.midtrans.sdk.corekit.core.UIKitCustomSetting;
-import com.midtrans.sdk.corekit.models.BankCode;
+import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.CardTokenRequest;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.PaymentDetails;
@@ -136,9 +136,9 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
     }
 
 
-//    public boolean isMandiriDebitCard(String cardBin) {
-//        return creditCardTransaction.isMandiriCardDebit(cardBin);
-//    }
+    public void isMandiriDebitCard(String cardBin, Call1<Boolean> callback) {
+        creditCardTransaction.isMandiriCardDebit(cardBin, callback);
+    }
 
     public boolean isInstallmentValid() {
         return creditCardTransaction.isInstallmentValid();
@@ -282,7 +282,7 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
 
         //set bank point and bank name (if Mandiri Point is selected)
         paymentModel.setPointRedeemed(creditCardTransaction.getBankPointRedeemed());
-        if (creditCardTransaction.getBankName() != null && creditCardTransaction.getBankName().equalsIgnoreCase(BankCode.MANDIRI)) {
+        if (creditCardTransaction.getBankName() != null && creditCardTransaction.getBankName().equalsIgnoreCase(BankType.MANDIRI)) {
             paymentModel.setBank(creditCardTransaction.getBankName());
         }
 
@@ -471,7 +471,7 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
                 callback.onSuccess(!TextUtils.isEmpty(bank)
                         && bankPoints != null
                         && bankPoints.contains(bank)
-                        && bank.equals(BankCode.BNI));
+                        && bank.equals(BankType.BNI));
             }
         });
 
@@ -487,7 +487,7 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
                         && bankPoints != null
                         && bankPoints.contains(bank)
                         && isSecurePayment()
-                        && bank.equals(BankCode.MANDIRI));
+                        && bank.equals(BankType.MANDIRI));
             }
         });
 

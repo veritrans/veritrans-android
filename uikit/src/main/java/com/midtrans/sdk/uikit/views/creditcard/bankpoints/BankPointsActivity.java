@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.midtrans.sdk.corekit.core.Logger;
-import com.midtrans.sdk.corekit.models.BankCode;
+import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
@@ -154,7 +154,7 @@ public class BankPointsActivity extends BasePaymentActivity {
         String itemDetailsName = "";
 
         switch (bank) {
-            case BankCode.BNI:
+            case BankType.BNI:
                 itemDetailsName = getString(R.string.redeem_bni_title);
                 setHeaderTitle(itemDetailsName);
                 imageBankPointLogo.setImageResource(R.drawable.bni_badge);
@@ -165,7 +165,7 @@ public class BankPointsActivity extends BasePaymentActivity {
                 buttonRedeemPoint.setText(getString(R.string.pay_with_bni_point));
                 buttonRedeemPoint.setTextBold();
                 break;
-            case BankCode.MANDIRI:
+            case BankType.MANDIRI:
                 itemDetailsName = getString(R.string.redeem_mandiri_title);
                 setHeaderTitle(itemDetailsName);
                 imageBankPointLogo.setImageResource(R.drawable.mandiri_badge);

@@ -3033,31 +3033,31 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         // set bank and channel on creditcard
         if (bankMandiriSelection.isChecked()) {
             // Set bank to Mandiri
-            creditCard.setBank(BankCode.MANDIRI);
+            creditCard.setBank(BankType.MANDIRI);
         } else if (bankBniSelection.isChecked()) {
             // Set bank to BNI
-            creditCard.setBank(BankCode.BNI);
+            creditCard.setBank(BankType.BNI);
         } else if (bankBcaSelection.isChecked()) {
             //Set bank to BCA
-            creditCard.setBank(BankCode.BCA);
+            creditCard.setBank(BankType.BCA);
             // credit card payment using bank BCA need migs channel
             creditCard.setChannel(CreditCard.MIGS);
         } else if (bankMaybankSelection.isChecked()) {
             //Set bank to Maybank
-            creditCard.setBank(BankCode.MAYBANK);
+            creditCard.setBank(BankType.MAYBANK);
             // credit card payment using bank Maybank need migs channel
             creditCard.setChannel(CreditCard.MIGS);
         } else if (bankBriSelection.isChecked()) {
             // Set bank to BRI
-            creditCard.setBank(BankCode.BRI);
+            creditCard.setBank(BankType.BRI);
             // credit card payment using bank BRI need migs channel
             creditCard.setChannel(CreditCard.MIGS);
         } else if (bankCimbSelection.isChecked()) {
             // Set bank to CIMB
-            creditCard.setBank(BankCode.CIMB);
+            creditCard.setBank(BankType.CIMB);
         } else if (bankMegaSelection.isChecked()) {
             // Set bank to CIMB
-            creditCard.setBank(BankCode.MEGA);
+            creditCard.setBank(BankType.MEGA);
         }
 
         if (preAuthEnabledSelection.isChecked()) {

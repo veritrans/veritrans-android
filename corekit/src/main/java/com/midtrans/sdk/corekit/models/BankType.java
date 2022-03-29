@@ -4,7 +4,7 @@ package com.midtrans.sdk.corekit.models;
  * @author rakawm
  */
 
-public class BankCode {
+public class BankType {
     public static final String CIMB = "CIMB";
     public static final String BCA = "BCA";
     public static final String MANDIRI = "MANDIRI";

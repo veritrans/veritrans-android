@@ -12,7 +12,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ImageView;
 import com.midtrans.sdk.corekit.core.Logger;
-import com.midtrans.sdk.corekit.models.BankCode;
+import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.CardRegistrationResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.BuildConfig;
@@ -182,25 +182,25 @@ public class CardRegistrationActivity extends BasePaymentActivity implements Car
                 if (bank != null) {
 
                     switch (bank) {
-                        case BankCode.BCA:
+                        case BankType.BCA:
                             imageBankLogo.setImageResource(R.drawable.bca);
                             break;
-                        case BankCode.BNI:
+                        case BankType.BNI:
                             imageBankLogo.setImageResource(R.drawable.bni);
                             break;
-                        case BankCode.BRI:
+                        case BankType.BRI:
                             imageBankLogo.setImageResource(R.drawable.bri);
                             break;
-                        case BankCode.CIMB:
+                        case BankType.CIMB:
                             imageBankLogo.setImageResource(R.drawable.cimb);
                             break;
-                        case BankCode.MANDIRI:
+                        case BankType.MANDIRI:
                             imageBankLogo.setImageResource(R.drawable.mandiri);
                             break;
-                        case BankCode.MAYBANK:
+                        case BankType.MAYBANK:
                             imageBankLogo.setImageResource(R.drawable.maybank);
                             break;
-                        case BankCode.BNI_DEBIT_ONLINE:
+                        case BankType.BNI_DEBIT_ONLINE:
                             imageBankLogo.setImageResource(R.drawable.bni);
                             break;
                         default:

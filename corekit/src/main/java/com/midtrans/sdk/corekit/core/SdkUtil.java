@@ -4,7 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
-import com.midtrans.sdk.corekit.models.BankCode;
+import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.SnapTransactionDetails;
 import com.midtrans.sdk.corekit.models.TokenRequestModel;
@@ -141,7 +141,7 @@ public class SdkUtil {
                 model.isSavecard(), model.getMaskedCardNumber(), model.getInstallment());
         paymentParams.setPointRedeemed(model.getPointRedeemed());
 
-        if (model.getBank() != null && model.getBank().equalsIgnoreCase(BankCode.MANDIRI)) {
+        if (model.getBank() != null && model.getBank().equalsIgnoreCase(BankType.MANDIRI)) {
             paymentParams.setBank(model.getBank());
         }
 

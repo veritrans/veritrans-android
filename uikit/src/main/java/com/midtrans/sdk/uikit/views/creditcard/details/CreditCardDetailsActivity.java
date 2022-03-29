@@ -35,7 +35,7 @@ import android.widget.Toast;
 import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.PaymentType;
-import com.midtrans.sdk.corekit.models.BankCode;
+import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.CustomerDetails;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
@@ -799,10 +799,10 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements
             public void onClick(View v) {
                 int titleId = 0, detailId = 0;
 
-                if (bankName.equalsIgnoreCase(BankCode.BNI)) {
+                if (bankName.equalsIgnoreCase(BankType.BNI)) {
                     titleId = R.string.redeem_bni_title;
                     detailId = R.string.redeem_bni_details;
-                } else if (bankName.equalsIgnoreCase(BankCode.MANDIRI)) {
+                } else if (bankName.equalsIgnoreCase(BankType.MANDIRI)) {
                     titleId = R.string.redeem_mandiri_title;
                     detailId = R.string.redeem_mandiri_details;
                 }
@@ -923,13 +923,13 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements
                 @Override
                 public void onSuccess(Boolean available) {
                     if (available) {
-                        showBankPointLayout(BankCode.BNI, true);
+                        showBankPointLayout(BankType.BNI, true);
                     } else {
                         presenter.isMandiriPointAvailable(cardBin, new Call1<Boolean>() {
                             @Override
                             public void onSuccess(Boolean available) {
                                 if (available) {
-                                    showBankPointLayout(BankCode.MANDIRI, true);
+                                    showBankPointLayout(BankType.MANDIRI, true);
                                 } else {
                                     showBankPointLayout("", false);
 
@@ -1010,32 +1010,32 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements
                 if (bank != null) {
 
                     switch (bank) {
-                        case BankCode.BCA:
+                        case BankType.BCA:
                             imageBankLogo.setImageResource(R.drawable.bca);
                             break;
-                        case BankCode.BNI:
+                        case BankType.BNI:
                             imageBankLogo.setImageResource(R.drawable.bni);
                             break;
-                        case BankCode.BRI:
+                        case BankType.BRI:
                             imageBankLogo.setImageResource(R.drawable.bri);
                             break;
-                        case BankCode.CIMB:
+                        case BankType.CIMB:
                             imageBankLogo.setImageResource(R.drawable.cimb);
                             break;
-                        case BankCode.MANDIRI:
+                        case BankType.MANDIRI:
                             imageBankLogo.setImageResource(R.drawable.mandiri);
                             break;
-                        case BankCode.MANDIRI_DEBIT:
+                        case BankType.MANDIRI_DEBIT:
                             imageBankLogo.setImageResource(R.drawable.mandiri);
                             textTitle.setText(R.string.mandiri_debit_card);
                             break;
-                        case BankCode.MAYBANK:
+                        case BankType.MAYBANK:
                             imageBankLogo.setImageResource(R.drawable.maybank);
                             break;
-                        case BankCode.MEGA:
+                        case BankType.MEGA:
                             imageBankLogo.setImageResource(R.drawable.ic_mega);
                             break;
-                        case BankCode.BNI_DEBIT_ONLINE:
+                        case BankType.BNI_DEBIT_ONLINE:
                             imageBankLogo.setImageResource(R.drawable.bni);
                             textTitle.setText(R.string.bni_debit_online_card);
                             break;
@@ -1357,10 +1357,10 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements
         if (show) {
             initBankPointHelp(bankName);
             switch (bankName) {
-                case BankCode.BNI:
+                case BankType.BNI:
                     checkboxPointEnabled.setText(getString(R.string.redeem_bni_reward));
                     break;
-                case BankCode.MANDIRI:
+                case BankType.MANDIRI:
                     checkboxPointEnabled.setText(getString(R.string.redeem_mandiri_point));
                     break;
             }

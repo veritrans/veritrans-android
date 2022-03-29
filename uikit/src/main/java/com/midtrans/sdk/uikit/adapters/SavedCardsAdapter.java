@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.midtrans.sdk.corekit.models.BankCode;
+import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.utilities.Utils;
 import com.midtrans.sdk.uikit.BuildConfig;
@@ -146,28 +146,28 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
                 public void onSuccess(String bank) {
                     if (bank != null && !TextUtils.isEmpty(bank)) {
                         switch (bank) {
-                            case BankCode.BCA:
+                            case BankType.BCA:
                                 holder1.bankLogo.setImageResource(R.drawable.bca);
                                 break;
-                            case BankCode.BNI:
+                            case BankType.BNI:
                                 holder1.bankLogo.setImageResource(R.drawable.bni);
                                 break;
-                            case BankCode.BRI:
+                            case BankType.BRI:
                                 holder1.bankLogo.setImageResource(R.drawable.bri);
                                 break;
-                            case BankCode.CIMB:
+                            case BankType.CIMB:
                                 holder1.bankLogo.setImageResource(R.drawable.cimb);
                                 break;
-                            case BankCode.MANDIRI:
+                            case BankType.MANDIRI:
                                 holder1.bankLogo.setImageResource(R.drawable.mandiri);
                                 break;
-                            case BankCode.MAYBANK:
+                            case BankType.MAYBANK:
                                 holder1.bankLogo.setImageResource(R.drawable.maybank);
                                 break;
-                            case BankCode.MEGA:
+                            case BankType.MEGA:
                                 holder1.bankLogo.setImageResource(R.drawable.ic_mega);
                                 break;
-                            case BankCode.BNI_DEBIT_ONLINE:
+                            case BankType.BNI_DEBIT_ONLINE:
                                 holder1.bankLogo.setImageResource(R.drawable.bni);
                                 break;
                             default:

@@ -2,7 +2,7 @@ package com.midtrans.sdk.uikit.models;
 
 import android.text.TextUtils;
 
-import com.midtrans.sdk.corekit.models.BankCode;
+import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.promo.Promo;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
 import com.midtrans.sdk.corekit.models.snap.BankSingleBinResponse;
@@ -47,11 +47,6 @@ public class CreditCardTransaction {
             this.creditCard = creditCard;
             cardInstallment.setInstallment(creditCard.getInstallment());
         }
-
-//        if (bankBins != null && !bankBins.isEmpty()) {
-//            this.bankBins.clear();
-//            this.bankBins = bankBins;
-//        }
         init();
     }
 
@@ -173,19 +168,10 @@ public class CreditCardTransaction {
         bankBinRepository.getBankBin(cardBin, new Call1<BankSingleBinResponse.BankBin>() {
             @Override
             public void onSuccess(BankSingleBinResponse.BankBin result) {
-                callback.onSuccess((result.bankCode == BankCode.MANDIRI) && (result.binType == "credit"));
+                callback.onSuccess((result.bankCode == BankType.MANDIRI) && (result.binType == "credit"));
             }
         });
     }
-
-//    private BankBinsResponse getMandiriDebitResponse() {
-//        for (BankBinsResponse bankBinsResponse : bankBins) {
-//            if (bankBinsResponse.getBank().equals(BankType.MANDIRI_DEBIT)) {
-//                return bankBinsResponse;
-//            }
-//        }
-//        return null;
-//    }
 
     private String findBankByCardBin(BankBinsResponse savedBankBin, String cardBin) {
         for (String savedBin : savedBankBin.getBins()) {
@@ -195,16 +181,6 @@ public class CreditCardTransaction {
         }
         return null;
     }
-
-
-//    private String findBankByCardNumber(BankBinsResponse savedBankBin, String cardNumber) {
-//        for (String savedBin : savedBankBin.getBins()) {
-//            if (!TextUtils.isEmpty(savedBin) && cardNumber.startsWith(savedBin)) {
-//                return savedBankBin.getBank();
-//            }
-//        }
-//        return null;
-//    }
 
     /**
      * @param currentPosition index position
