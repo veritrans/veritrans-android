@@ -31,8 +31,7 @@ public class BaseCreditCardPresenter<V extends BaseView> extends BasePaymentPres
     protected void initCreditCardTransaction(Context context) {
         CreditCard creditCard = getMidtransSDK().getCreditCard();
         if (creditCard != null) {
-            List<BankBinsResponse> bankBins = SdkUIFlowUtil.getBankBins(context);
-            this.creditCardTransaction.setProperties(creditCard/*, new ArrayList<>(bankBins)*/);
+            this.creditCardTransaction.setProperties(creditCard);
         }
     }
 

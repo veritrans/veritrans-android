@@ -8,7 +8,10 @@ import com.midtrans.sdk.corekit.core.IScanner;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.corekit.models.CardRegistrationResponse;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
+import com.midtrans.sdk.corekit.models.snap.BankSingleBinResponse;
 import com.midtrans.sdk.uikit.abstracts.BasePresenter;
+import com.midtrans.sdk.uikit.callbacks.Call1;
+import com.midtrans.sdk.uikit.repository.BankBinRepository;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 
 import java.util.List;
@@ -18,12 +21,13 @@ import java.util.List;
  */
 
 public class CardRegistrationPresenter extends BasePresenter<CardRegistrationView> {
-    private final List<BankBinsResponse> bankBins;
+
+    private final BankBinRepository bankBinRepository;
 
     public CardRegistrationPresenter(Context context, CardRegistrationView view) {
         super();
-        this.bankBins = SdkUIFlowUtil.getBankBins(context);
         this.view = view;
+        bankBinRepository = BankBinRepository.getInstance();
     }
 
     public void startScan(Activity activity, int intentScanCard) {
@@ -62,18 +66,13 @@ public class CardRegistrationPresenter extends BasePresenter<CardRegistrationVie
 
     }
 
-    public String getBankByCardBin(String cardBin) {
-        if (bankBins != null) {
-            for (BankBinsResponse savedBankBin : bankBins) {
-                if (savedBankBin.getBins() != null && !savedBankBin.getBins().isEmpty()) {
-                    String bankBin = findBankByCardBin(savedBankBin, cardBin);
-                    if (bankBin != null) {
-                        return bankBin;
-                    }
-                }
+    public void getBankByCardBin(String cardBin, final Call1<String> callback) {
+        bankBinRepository.getBankBin(cardBin, new Call1<BankSingleBinResponse.BankBin>() {
+            @Override
+            public void onSuccess(BankSingleBinResponse.BankBin bankBin) {
+                callback.onSuccess(bankBin.bankCode);
             }
-        }
-        return null;
+        });
     }
 
     private String findBankByCardBin(BankBinsResponse savedBankBin, String cardBin) {
