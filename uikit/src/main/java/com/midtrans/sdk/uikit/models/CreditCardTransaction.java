@@ -120,10 +120,10 @@ public class CreditCardTransaction {
     }
 
     public void getOfflineInstallmentTerms(String cardBin, final Call1<ArrayList<Integer>> callback) {
-        getBankCodeByBin(cardBin, new Call1<String>() {
+        bankBinRepository.getBankBin(cardBin, new Call1<BankSingleBinResponse.BankBin>() {
             @Override
-            public void onSuccess(String bank) {
-                if (bank != null && bank.contains("debit")) callback.onSuccess(null);
+            public void onSuccess(BankSingleBinResponse.BankBin bank) {
+                if (bank != null && bank.binType.equals("debit")) callback.onSuccess(null);
 
                 ArrayList<Integer> installmentTerms = cardInstallment.getTerms(BANK_OFFLINE);
                 if (installmentTerms != null) {
@@ -285,9 +285,7 @@ public class CreditCardTransaction {
             for (String bin : creditCard.getWhitelistBins()) {
                 if (!TextUtils.isEmpty(bin)) {
                     if (TextUtils.isDigitsOnly(bin)) {
-                        if (cardNumber.startsWith(bin)) {
-                            callback.onSuccess(true);
-                        }
+                        callback.onSuccess(cardNumber.startsWith(bin));
                     } else {
                         final String bin1 = bin;
                         getBankCodeByCardNumber(cardNumber, new Call1<String>() {
@@ -304,7 +302,7 @@ public class CreditCardTransaction {
             callback.onSuccess(false);
         }
 
-        callback.onSuccess(false);
+        callback.onSuccess(true);
     }
 
     /**

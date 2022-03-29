@@ -93,7 +93,7 @@ public class MidtransRestAdapter {
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor
                 .setLevel(Logger.enabled ?
-                        HttpLoggingInterceptor.Level.BASIC :
+                        HttpLoggingInterceptor.Level.BODY :
                         HttpLoggingInterceptor.Level.NONE);
         return httpLoggingInterceptor;
     }

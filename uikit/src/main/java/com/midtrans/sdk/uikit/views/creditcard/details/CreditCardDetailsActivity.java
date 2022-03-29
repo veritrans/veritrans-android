@@ -135,6 +135,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements
     private float redeemedPoint = 0f;
     private int attempt = 0;
     private boolean isEmailShown = false;
+    private Integer binDigit;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -410,6 +411,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements
     private void initProperties() {
         this.savedCard = (SaveCardRequest) getIntent().getSerializableExtra(EXTRA_SAVED_CARD);
         this.presenter = new CreditCardDetailsPresenter(this, this);
+        this.binDigit = Integer.valueOf(BuildConfig.BIN_RANGE);
     }
 
     @Override
@@ -995,7 +997,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements
     private void setBankType() {
         // Don't set card type when card number is empty
         String cardNumberText = getCardNumberValue();
-        if (TextUtils.isEmpty(cardNumberText) || cardNumberText.length() < 7) {
+        if (TextUtils.isEmpty(cardNumberText) || cardNumberText.length() < (binDigit + 1)) {
             imageBankLogo.setImageDrawable(null);
             textTitle.setText(R.string.card_details);
             return;
@@ -1283,8 +1285,8 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements
     public String getCardNumberBin() {
         try {
             String cardNumber = getCardNumberValue();
-            if (!TextUtils.isEmpty(cardNumber) && cardNumber.length() > 6) {
-                String cardBin = cardNumber.replace(" ", "").substring(0, 6);
+            if (!TextUtils.isEmpty(cardNumber) && cardNumber.length() > binDigit) {
+                String cardBin = cardNumber.replace(" ", "").substring(0, binDigit);
                 return cardBin;
             }
 
