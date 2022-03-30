@@ -42,6 +42,7 @@ import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 /**
@@ -465,13 +466,14 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
     public void isBniPointAvailable(String cardBin, final Call1<Boolean> callback) {
         creditCardTransaction.getBankCodeByBin(cardBin, new Call1<String>() {
             @Override
-            public void onSuccess(String bank) {
+            public void onSuccess(String result) {
+                String bank = result.toLowerCase(Locale.getDefault());
                 List<String> bankPoints = getMidtransSDK().getBanksPointEnabled();
 
                 callback.onSuccess(!TextUtils.isEmpty(bank)
                         && bankPoints != null
                         && bankPoints.contains(bank)
-                        && bank.equals(BankType.BNI));
+                        && bank.equalsIgnoreCase(BankType.BNI));
             }
         });
 
@@ -480,14 +482,15 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
     public void isMandiriPointAvailable(String cardBin, final Call1<Boolean> callback) {
         creditCardTransaction.getBankCodeByBin(cardBin, new Call1<String>() {
             @Override
-            public void onSuccess(String bank) {
+            public void onSuccess(String result) {
+                String bank = result.toLowerCase(Locale.getDefault());
                 List<String> bankPoints = getMidtransSDK().getBanksPointEnabled();
 
                 callback.onSuccess(!TextUtils.isEmpty(bank)
                         && bankPoints != null
                         && bankPoints.contains(bank)
                         && isSecurePayment()
-                        && bank.equals(BankType.MANDIRI));
+                        && bank.equalsIgnoreCase(BankType.MANDIRI));
             }
         });
 
