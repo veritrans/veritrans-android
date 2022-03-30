@@ -3234,9 +3234,9 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
             if (enablePayment.getMethodName().equals("ShopeePay")) {
                 transactionRequestNew.setShopeepay(new Shopeepay("demo://midtrans"));
             }
-//            if (enablePayment.getMethodName().equals("UOB EZ Pay")) {
-//                transactionRequestNew.setUobEzpay(new UobEzpay("demo://midtrans"));
-//            }
+            if (enablePayment.getMethodName().equals("UOB EZ Pay")) {
+                transactionRequestNew.setUobEzpay(new UobEzpay("demo://midtrans"));
+            }
         }
 
         return transactionRequestNew;
