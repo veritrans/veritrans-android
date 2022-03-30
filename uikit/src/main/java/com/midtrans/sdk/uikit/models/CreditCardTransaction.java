@@ -260,24 +260,14 @@ public class CreditCardTransaction {
         if (!TextUtils.isEmpty(cardNumber) && isWhiteListBinsAvailable()) {
             for (String bin : creditCard.getWhitelistBins()) {
                 if (!TextUtils.isEmpty(bin)) {
-                    if (TextUtils.isDigitsOnly(bin)) {
-                        callback.onSuccess(cardNumber.startsWith(bin));
-                    } else {
-                        final String bin1 = bin;
-                        getBankCodeByCardNumber(cardNumber, new Call1<String>() {
-                            @Override
-                            public void onSuccess(String bank) {
-                                callback.onSuccess(bin1.equalsIgnoreCase(bank));
-
-                            }
-                        });
-
+                    if (cardNumber.startsWith(bin)) {
+                        callback.onSuccess(true);
+                        return;
                     }
                 }
             }
             callback.onSuccess(false);
         }
-
         callback.onSuccess(true);
     }
 
@@ -291,21 +281,9 @@ public class CreditCardTransaction {
         if (!TextUtils.isEmpty(cardNumber) && isBlackListBinsAvailable()) {
             for (String bin : creditCard.getBlacklistBins()) {
                 if (!TextUtils.isEmpty(bin)) {
-                    if (TextUtils.isDigitsOnly(bin)) {
-                        if (cardNumber.startsWith(bin)) {
-                            callback.onSuccess(true);
-                        }
-                    } else {
-                        final String bin1 = bin;
-                        getBankCodeByCardNumber(cardNumber, new Call1<String>() {
-                            @Override
-                            public void onSuccess(String bank) {
-                                if (bin1.equalsIgnoreCase(bank)) {
-                                    callback.onSuccess(true);
-                                }
-                            }
-                        });
-
+                    if (cardNumber.startsWith(bin)) {
+                        callback.onSuccess(true);
+                        return;
                     }
                 }
             }
