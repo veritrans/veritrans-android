@@ -27,7 +27,6 @@ public class CreditCardTransaction {
     private CreditCardBankPoint cardBankPoint;
     private CreditCard creditCard;
     private boolean whiteListBinsAvailable;
-    //    private ArrayList<BankBinsResponse> bankBins;
     private boolean bankBinsAvailable;
     private boolean blackListBinsAvailable;
     private Promo selectedPromo;
@@ -35,7 +34,6 @@ public class CreditCardTransaction {
     private final Integer binDigit = Integer.parseInt(BuildConfig.BIN_RANGE);
 
     public CreditCardTransaction() {
-//        bankBins = new ArrayList<>();
         cardInstallment = new CreditCardInstallment();
         cardBankPoint = new CreditCardBankPoint();
         creditCard = new CreditCard();
@@ -56,7 +54,6 @@ public class CreditCardTransaction {
 
         this.whiteListBinsAvailable = whitleListBins != null && !whitleListBins.isEmpty();
         this.blackListBinsAvailable = blackListBins != null && !blackListBins.isEmpty();
-//        this.bankBinsAvailable = bankBins != null && !bankBins.isEmpty();
     }
 
 
