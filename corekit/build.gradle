@@ -46,7 +46,7 @@ android {
         development {
             dimension "env"
             DEFAULT_PUBLISH = "developmentRelease"
-            buildConfigField "String", "BASE_URL", "\"https://api.sandbox.midtrans.com/v2/\""
+            buildConfigField "String", "BASE_URL", "\"https://api.sandbox.midtrans.com/\""
             buildConfigField "String", "SNAP_BASE_URL", "\"https://app.sandbox.midtrans.com/snap/\""
             buildConfigField "String", "PROMO_ENGINE_URL", "\"https://promo.vt-stage.info/\""
             matchingFallbacks = ["development"]
@@ -55,7 +55,7 @@ android {
         uat {
             dimension "env"
             DEFAULT_PUBLISH = "uatRelease"
-            buildConfigField "String", "BASE_URL", "\"https://api.stg.midtrans.com/v2/\""
+            buildConfigField "String", "BASE_URL", "\"https://api.stg.midtrans.com/\""
             buildConfigField "String", "SNAP_BASE_URL", "\"https://midtrans-checkout.stg.veritrans.co.id/snap/\""
             buildConfigField "String", "PROMO_ENGINE_URL", "\"https://promo.vt-stage.info/\""
             matchingFallbacks = ["uat"]
@@ -64,7 +64,7 @@ android {
         production {
             dimension "env"
             DEFAULT_PUBLISH = "productionRelease"
-            buildConfigField "String", "BASE_URL", "\"https://api.midtrans.com/v2/\""
+            buildConfigField "String", "BASE_URL", "\"https://api.midtrans.com/\""
             buildConfigField "String", "SNAP_BASE_URL", "\"https://app.midtrans.com/snap/\""
             buildConfigField "String", "PROMO_ENGINE_URL", "\"https://promo.vt-stage.info/\""
             matchingFallbacks = ["production"]

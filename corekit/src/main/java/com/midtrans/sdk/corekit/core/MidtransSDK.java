@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 
 import com.midtrans.sdk.analytics.MixpanelAnalyticsManager;
 import com.midtrans.sdk.corekit.BuildConfig;
+import com.midtrans.sdk.corekit.callback.BankBinCallback;
 import com.midtrans.sdk.corekit.callback.BankBinsCallback;
 import com.midtrans.sdk.corekit.callback.BanksPointCallback;
 import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
@@ -1715,6 +1716,23 @@ public class MidtransSDK {
 
         if (Utils.isNetworkAvailable(context)) {
             snapServiceManager.getBankBins(callback);
+        } else {
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
+        }
+    }
+
+    /**
+     * @param binNumber bin number, partially 6 or 8 digit MSB
+     * @param callback of bank bin;
+     */
+    public void getBankBin(String binNumber, @NonNull BankBinCallback callback) {
+        if (callback == null) {
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
+            return;
+        }
+
+        if (Utils.isNetworkAvailable(context)) {
+            midtransServiceManager.getBankBin(binNumber, callback);
         } else {
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
