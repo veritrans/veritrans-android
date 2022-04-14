@@ -136,7 +136,7 @@ public class CreditCardTransaction {
         bankBinRepository.getBankBin(cardBin, new Call1<BankSingleBinResponse.BankBin>() {
             @Override
             public void onSuccess(BankSingleBinResponse.BankBin result) {
-                callback.onSuccess(result.bankCode);
+                callback.onSuccess(String.format("%s",result.bankCode));
             }
 
             @Override
