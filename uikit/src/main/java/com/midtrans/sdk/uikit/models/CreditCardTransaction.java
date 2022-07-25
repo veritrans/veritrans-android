@@ -82,10 +82,6 @@ public class CreditCardTransaction {
         return bankBinsAvailable;
     }
 
-    public void setBankBins(ArrayList<BankBinsResponse> bankBins) {
-        // do nothing
-    }
-
     public boolean isInWhiteList(String cardBin) {
         return isWhiteListBinsAvailable() && creditCard.getWhitelistBins().contains(cardBin);
     }

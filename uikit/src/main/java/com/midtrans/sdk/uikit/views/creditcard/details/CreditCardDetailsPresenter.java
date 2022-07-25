@@ -65,7 +65,6 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
         this.context = context;
         initCreditCardTransaction(context);
         initPromoDetails();
-        fetchBankBins();
     }
 
     private void initPromoDetails() {
@@ -88,30 +87,6 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
                     this.promos.add(newPromo);
                 }
             }
-        }
-    }
-
-    private void fetchBankBins() {
-        try {
-            getMidtransSDK().getBankBins(new BankBinsCallback() {
-                @Override
-                public void onSuccess(ArrayList<BankBinsResponse> response) {
-                    creditCardTransaction.setBankBins(response);
-                }
-
-                @Override
-                public void onFailure(String reason) {
-                    // do nothing
-                }
-
-                @Override
-                public void onError(Throwable error) {
-                    // do nothing
-                }
-            });
-
-        } catch (RuntimeException e) {
-            Logger.d(TAG, "fetchBankBins" + e.getMessage());
         }
     }
 
