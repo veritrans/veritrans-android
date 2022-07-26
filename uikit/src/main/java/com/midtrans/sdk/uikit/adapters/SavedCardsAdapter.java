@@ -39,6 +39,7 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
     private SavedCardPromoListener promoListener;
     private DeleteCardListener deleteCardListener;
     private final Integer binRange = Integer.parseInt(BuildConfig.BIN_RANGE);
+    private final String MASK_CARD_DELIMITER = "-";
 
     public SavedCardsAdapter() {
         promoDatas = new ArrayList<>();
@@ -179,7 +180,7 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
                     }
                 }
             };
-            creditCardFlowActivity.getBankByBin(card.getMaskedCard().substring(0, binRange), bankBinCallback);
+            creditCardFlowActivity.getBankByBin(card.getMaskedCard().split(MASK_CARD_DELIMITER)[0], bankBinCallback);
         }
     }
 

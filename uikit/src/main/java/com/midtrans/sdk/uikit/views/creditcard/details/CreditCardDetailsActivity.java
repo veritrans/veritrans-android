@@ -1283,6 +1283,9 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements
     }
 
     public String getCardNumberBin() {
+        if(savedCard != null){
+            return savedCard.getMaskedCard().split("-")[0];
+        }else {
         try {
             String cardNumber = getCardNumberValue();
             if (!TextUtils.isEmpty(cardNumber) && cardNumber.length() > binDigit) {
@@ -1292,6 +1295,7 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements
 
         } catch (RuntimeException e) {
             Logger.e(TAG, "getCardNumberBin:" + e.getMessage());
+        }
         }
         return null;
     }
