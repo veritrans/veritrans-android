@@ -248,7 +248,7 @@ public class CreditCardTransaction {
 
 
     private boolean isCardBinValid(String cardNumber) {
-        String cardBin = cardNumber.replace(" ", "").substring(0, 6);
+        String cardBin = cardNumber.replace(" ", "").substring(0, binDigit);
         return isInWhiteList(cardBin);
     }
 
