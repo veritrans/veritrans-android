@@ -23,6 +23,7 @@ android {
 
         buildConfigField "String", "VERSION_NAME", "\"" + versionName + "\""
         resValue "string", "ISSUE_TRACKER_API_KEY", ISSUE_TRACKER_API_KEY
+        buildConfigField "String", "BIN_RANGE", "\"6\""
     }
     buildTypes {
         release {

@@ -1,6 +1,8 @@
 package com.midtrans.demo;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -11,8 +13,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.AppCompatRadioButton;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -289,6 +291,7 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         initNextButton();
         initResetSettings();
         checkGopayCallback();
+        isStoragePermissionGranted();
     }
 
     private void checkGopayCallback() {
@@ -3447,6 +3450,22 @@ public class DemoConfigActivity extends AppCompatActivity implements Transaction
         }
 
         return mappedPayments;
+    }
+
+    public  boolean isStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            } else {
+
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                return false;
+            }
+        }
+        else {
+            return true;
+        }
     }
 
 }

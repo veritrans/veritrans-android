@@ -1,6 +1,5 @@
 package com.midtrans.demo;
 
-import android.content.Context;
 import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -48,10 +47,6 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
         this.mData.clear();
         this.mData.addAll(cards);
         this.notifyDataSetChanged();
-    }
-
-    public void setBankBin(Context context) {
-        bankBins = AppUtils.getBankBins(context);
     }
 
     public void removeCard(String maskedCard) {

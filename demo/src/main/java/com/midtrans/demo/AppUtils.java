@@ -398,25 +398,4 @@ public class AppUtils {
 
         return deviceType;
     }
-
-    public static ArrayList<BankBinsResponse> getBankBins(Context context) {
-        ArrayList<BankBinsResponse> list = null;
-        String data;
-        try {
-            InputStream is = context.getAssets().open("bank_bins.json");
-            byte[] buffer = new byte[is.available()];
-            is.read(buffer);
-            is.close();
-            data = new String(buffer, "UTF-8");
-
-            Gson gson = new Gson();
-            list = gson.fromJson(data, new TypeToken<ArrayList<BankBinsResponse>>() {
-            }.getType());
-
-        } catch (Exception e) {
-            Logger.e(TAG, e.getMessage());
-        }
-
-        return list;
-    }
 }

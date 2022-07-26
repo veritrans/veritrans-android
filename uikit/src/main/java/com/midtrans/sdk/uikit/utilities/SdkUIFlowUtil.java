@@ -360,28 +360,6 @@ public class SdkUIFlowUtil {
         return color;
     }
 
-
-    public static ArrayList<BankBinsResponse> getBankBins(Context context) {
-        ArrayList<BankBinsResponse> list = null;
-        String data;
-        try {
-            InputStream is = context.getAssets().open("bank_bins.json");
-            byte[] buffer = new byte[is.available()];
-            is.read(buffer);
-            is.close();
-            data = new String(buffer, "UTF-8");
-
-            Gson gson = new Gson();
-            list = gson.fromJson(data, new TypeToken<ArrayList<BankBinsResponse>>() {
-            }.getType());
-
-        } catch (Exception e) {
-            Logger.e(TAG, e.getMessage());
-        }
-
-        return list;
-    }
-
     public static String getMaskedCardNumber(String maskedCard) {
         StringBuilder builder = new StringBuilder();
         String bulletMask = "●●●●●●";
@@ -492,6 +470,8 @@ public class SdkUIFlowUtil {
             for (EnabledPayment enabledPayment : enabledPayments) {
                 if (enabledPayment.getType().equalsIgnoreCase(PaymentType.BCA_VA)
                         || enabledPayment.getType().equalsIgnoreCase(PaymentType.PERMATA_VA)
+                        || enabledPayment.getType().equalsIgnoreCase(PaymentType.BNI_VA)
+                        || enabledPayment.getType().equalsIgnoreCase(PaymentType.BRI_VA)
                         || enabledPayment.getType().equalsIgnoreCase(PaymentType.E_CHANNEL)
                         || enabledPayment.getType().equalsIgnoreCase(PaymentType.ALL_VA)) {
                     return true;

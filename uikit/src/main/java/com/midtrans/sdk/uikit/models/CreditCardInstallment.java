@@ -41,8 +41,8 @@ public class CreditCardInstallment {
         if (isInstallmentAvailable()) {
 
             for (String key : installment.getTerms().keySet()) {
-                if (key.equals(bank)) {
-                    this.bankSelected = bank;
+                if (key.equalsIgnoreCase(bank)) {
+                    this.bankSelected = key;
                     this.installmentTerms.clear();
                     this.installmentTerms.add(0, 0);
                     this.installmentTerms.addAll(installment.getTerms().get(key));

@@ -15,8 +15,10 @@ import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.CardRegistrationResponse;
 import com.midtrans.sdk.corekit.utilities.Utils;
+import com.midtrans.sdk.uikit.BuildConfig;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
+import com.midtrans.sdk.uikit.callbacks.Call1;
 import com.midtrans.sdk.uikit.scancard.ExternalScanner;
 import com.midtrans.sdk.uikit.scancard.ScannerModel;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
@@ -53,6 +55,7 @@ public class CardRegistrationActivity extends BasePaymentActivity implements Car
 
     private CardRegistrationPresenter presenter;
     private String lastExpDate = "";
+    private static Integer binDigit;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,6 +74,7 @@ public class CardRegistrationActivity extends BasePaymentActivity implements Car
     }
 
     private void initProperties() {
+        binDigit = Integer.valueOf(BuildConfig.BIN_RANGE);
         presenter = new CardRegistrationPresenter(this, this);
     }
 
@@ -165,46 +169,49 @@ public class CardRegistrationActivity extends BasePaymentActivity implements Car
     private void setBankType() {
         // Don't set card type when card number is empty
         String cardNumberText = fieldCardNumber.getText().toString();
-        if (TextUtils.isEmpty(cardNumberText) || cardNumberText.length() < 7) {
+        if (TextUtils.isEmpty(cardNumberText) || cardNumberText.length() < (binDigit+1)) {
             imageBankLogo.setImageDrawable(null);
             return;
         }
 
         String cleanCardNumber = cardNumberText.replace(" ", "");
-        String cardBin = cleanCardNumber.substring(0, 6);
-        String bank = presenter.getBankByCardBin(cardBin);
+        String cardBin = cleanCardNumber.substring(0, binDigit);
+        presenter.getBankByCardBin(cardBin, new Call1<String>() {
+            @Override
+            public void onSuccess(String bank) {
+                if (bank != null) {
 
-        if (bank != null) {
-
-            switch (bank) {
-                case BankType.BCA:
-                    imageBankLogo.setImageResource(R.drawable.bca);
-                    break;
-                case BankType.BNI:
-                    imageBankLogo.setImageResource(R.drawable.bni);
-                    break;
-                case BankType.BRI:
-                    imageBankLogo.setImageResource(R.drawable.bri);
-                    break;
-                case BankType.CIMB:
-                    imageBankLogo.setImageResource(R.drawable.cimb);
-                    break;
-                case BankType.MANDIRI:
-                    imageBankLogo.setImageResource(R.drawable.mandiri);
-                    break;
-                case BankType.MAYBANK:
-                    imageBankLogo.setImageResource(R.drawable.maybank);
-                    break;
-                case BankType.BNI_DEBIT_ONLINE:
-                    imageBankLogo.setImageResource(R.drawable.bni);
-                    break;
-                default:
+                    switch (bank) {
+                        case BankType.BCA:
+                            imageBankLogo.setImageResource(R.drawable.bca);
+                            break;
+                        case BankType.BNI:
+                            imageBankLogo.setImageResource(R.drawable.bni);
+                            break;
+                        case BankType.BRI:
+                            imageBankLogo.setImageResource(R.drawable.bri);
+                            break;
+                        case BankType.CIMB:
+                            imageBankLogo.setImageResource(R.drawable.cimb);
+                            break;
+                        case BankType.MANDIRI:
+                            imageBankLogo.setImageResource(R.drawable.mandiri);
+                            break;
+                        case BankType.MAYBANK:
+                            imageBankLogo.setImageResource(R.drawable.maybank);
+                            break;
+                        case BankType.BNI_DEBIT_ONLINE:
+                            imageBankLogo.setImageResource(R.drawable.bni);
+                            break;
+                        default:
+                            imageBankLogo.setImageDrawable(null);
+                            break;
+                    }
+                } else {
                     imageBankLogo.setImageDrawable(null);
-                    break;
+                }
             }
-        } else {
-            imageBankLogo.setImageDrawable(null);
-        }
+        });
     }
 
     private void setCardType() {

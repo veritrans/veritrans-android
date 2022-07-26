@@ -1,8 +1,8 @@
 ext {
     coreMinSdkVersion = 15
     uiMinSdkVersion = 15
-    targetSdkVersion = 30
-    compileSdkVersion = 30
+    targetSdkVersion = 32
+    compileSdkVersion = 32
     buildToolsVersion = '30.0.1'
 
     // Libraries version

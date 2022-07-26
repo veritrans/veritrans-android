@@ -5,8 +5,12 @@ import android.text.TextUtils;
 import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.promo.Promo;
 import com.midtrans.sdk.corekit.models.snap.BankBinsResponse;
+import com.midtrans.sdk.corekit.models.snap.BankSingleBinResponse;
 import com.midtrans.sdk.corekit.models.snap.BanksPointResponse;
 import com.midtrans.sdk.corekit.models.snap.CreditCard;
+import com.midtrans.sdk.uikit.BuildConfig;
+import com.midtrans.sdk.uikit.callbacks.Call1;
+import com.midtrans.sdk.uikit.repository.BankBinRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,27 +27,23 @@ public class CreditCardTransaction {
     private CreditCardBankPoint cardBankPoint;
     private CreditCard creditCard;
     private boolean whiteListBinsAvailable;
-    private ArrayList<BankBinsResponse> bankBins;
     private boolean bankBinsAvailable;
     private boolean blackListBinsAvailable;
     private Promo selectedPromo;
+    private final BankBinRepository bankBinRepository;
+    private final Integer binDigit = Integer.parseInt(BuildConfig.BIN_RANGE);
 
     public CreditCardTransaction() {
-        bankBins = new ArrayList<>();
         cardInstallment = new CreditCardInstallment();
         cardBankPoint = new CreditCardBankPoint();
         creditCard = new CreditCard();
+        bankBinRepository = BankBinRepository.getInstance();
     }
 
-    public void setProperties(CreditCard creditCard, ArrayList<BankBinsResponse> bankBins) {
+    public void setProperties(CreditCard creditCard/*, ArrayList<BankBinsResponse> bankBins*/) {
         if (creditCard != null) {
             this.creditCard = creditCard;
             cardInstallment.setInstallment(creditCard.getInstallment());
-        }
-
-        if (bankBins != null && !bankBins.isEmpty()) {
-            this.bankBins.clear();
-            this.bankBins = bankBins;
         }
         init();
     }
@@ -54,7 +54,6 @@ public class CreditCardTransaction {
 
         this.whiteListBinsAvailable = whitleListBins != null && !whitleListBins.isEmpty();
         this.blackListBinsAvailable = blackListBins != null && !blackListBins.isEmpty();
-        this.bankBinsAvailable = bankBins != null && !bankBins.isEmpty();
     }
 
 
@@ -87,47 +86,60 @@ public class CreditCardTransaction {
     }
 
 
-    public ArrayList<Integer> getInstallmentTerms(String cardBin) {
+    public void getInstallmentTerms(String cardBin, final Call1<ArrayList<Integer>> callback) {
 
-        String bank = getBankByBin(cardBin);
-        if (TextUtils.isEmpty(bank)) {
-            bank = BANK_OFFLINE;
-        }
+        getBankCodeByBin(cardBin, new Call1<String>() {
+            @Override
+            public void onSuccess(String bank) {
+                if (TextUtils.isEmpty(bank)) {
+                    bank = BANK_OFFLINE;
+                }
 
-        ArrayList<Integer> installmentTerms = cardInstallment.getTerms(bank);
-        if (installmentTerms != null) {
-            return installmentTerms;
-        }
+                ArrayList<Integer> installmentTerms = cardInstallment.getTerms(bank);
+                if (installmentTerms != null) {
+                    callback.onSuccess(installmentTerms);
+                } else {
+                    callback.onSuccess(null);
+                }
 
-        return null;
+            }
+        });
+
     }
 
-    public ArrayList<Integer> getOfflineInstallmentTerms(String cardBin) {
-        String bank = getBankByBin(cardBin);
-        if (bank != null && bank.contains("debit")) return null;
+    public void getOfflineInstallmentTerms(String cardBin, final Call1<ArrayList<Integer>> callback) {
+        bankBinRepository.getBankBin(cardBin, new Call1<BankSingleBinResponse.BankBin>() {
+            @Override
+            public void onSuccess(BankSingleBinResponse.BankBin bank) {
+                if (bank != null && bank.binType.equals("debit")) callback.onSuccess(null);
 
-        ArrayList<Integer> installmentTerms = cardInstallment.getTerms(BANK_OFFLINE);
-        if (installmentTerms != null) {
-            return installmentTerms;
-        }
+                ArrayList<Integer> installmentTerms = cardInstallment.getTerms(BANK_OFFLINE);
+                if (installmentTerms != null) {
+                    callback.onSuccess(installmentTerms);
+                } else {
+                    callback.onSuccess(null);
+                }
+            }
+        });
 
-        return null;
     }
 
     /**
      * @param cardBin get bank by card bin
      * @return string Bank
      */
-    public String getBankByBin(String cardBin) {
-        for (BankBinsResponse savedBankBin : bankBins) {
-            if (savedBankBin.getBins() != null && !savedBankBin.getBins().isEmpty()) {
-                String bankBin = findBankByCardBin(savedBankBin, cardBin);
-                if (bankBin != null) {
-                    return bankBin;
-                }
+    public void getBankCodeByBin(String cardBin, final Call1<String> callback) {
+        bankBinRepository.getBankBin(cardBin, new Call1<BankSingleBinResponse.BankBin>() {
+            @Override
+            public void onSuccess(BankSingleBinResponse.BankBin result) {
+                callback.onSuccess(String.format("%s",result.bankCode));
             }
-        }
-        return null;
+
+            @Override
+            public void onError(Throwable t) {
+                callback.onError(t);
+            }
+        });
     }
 
     /**
@@ -136,48 +148,27 @@ public class CreditCardTransaction {
      * @param cardNumber
      * @return bank name
      */
-    public String getBankByCardNumber(String cardNumber) {
-        for (BankBinsResponse savedBankBin : bankBins) {
-            if (savedBankBin.getBins() != null && !savedBankBin.getBins().isEmpty()) {
-                String bankName = findBankByCardNumber(savedBankBin, cardNumber);
-                if (bankName != null) {
-                    return bankName;
-                }
+    public void getBankCodeByCardNumber(String cardNumber, final Call1<String> callback) {
+        bankBinRepository.getBankBin(cardNumber.substring(0, binDigit), new Call1<BankSingleBinResponse.BankBin>() {
+            @Override
+            public void onSuccess(BankSingleBinResponse.BankBin result) {
+                callback.onSuccess(result.bankCode);
             }
-        }
-        return null;
+        });
     }
 
-    public boolean isMandiriCardDebit(String cardBin) {
-        if (getMandiriDebitResponse() != null) {
-            String bankBin = findBankByCardBin(getMandiriDebitResponse(), cardBin);
-            return bankBin != null;
-        }
-        return false;
-    }
-
-    private BankBinsResponse getMandiriDebitResponse() {
-        for (BankBinsResponse bankBinsResponse : bankBins) {
-            if (bankBinsResponse.getBank().equals(BankType.MANDIRI_DEBIT)) {
-                return bankBinsResponse;
+    public void isMandiriCardDebit(String cardBin, final Call1<Boolean> callback) {
+        bankBinRepository.getBankBin(cardBin, new Call1<BankSingleBinResponse.BankBin>() {
+            @Override
+            public void onSuccess(BankSingleBinResponse.BankBin result) {
+                callback.onSuccess((result.bankCode == BankType.MANDIRI) && (result.binType == "credit"));
             }
-        }
-        return null;
+        });
     }
 
     private String findBankByCardBin(BankBinsResponse savedBankBin, String cardBin) {
         for (String savedBin : savedBankBin.getBins()) {
             if (savedBin.contains(cardBin)) {
-                return savedBankBin.getBank();
-            }
-        }
-        return null;
-    }
-
-
-    private String findBankByCardNumber(BankBinsResponse savedBankBin, String cardNumber) {
-        for (String savedBin : savedBankBin.getBins()) {
-            if (!TextUtils.isEmpty(savedBin) && cardNumber.startsWith(savedBin)) {
                 return savedBankBin.getBank();
             }
         }
@@ -258,26 +249,19 @@ public class CreditCardTransaction {
      * @param cardNumber
      * @return boolean
      */
-    private boolean isWhitelistBinContainCardNumber(String cardNumber) {
+    private void isWhitelistBinContainCardNumber(String cardNumber, final Call1<Boolean> callback) {
         if (!TextUtils.isEmpty(cardNumber) && isWhiteListBinsAvailable()) {
             for (String bin : creditCard.getWhitelistBins()) {
                 if (!TextUtils.isEmpty(bin)) {
-                    if (TextUtils.isDigitsOnly(bin)) {
-                        if (cardNumber.startsWith(bin)) {
-                            return true;
-                        }
-                    } else {
-                        String bank = getBankByCardNumber(cardNumber);
-                        if (bin.equalsIgnoreCase(bank)) {
-                            return true;
-                        }
+                    if (cardNumber.startsWith(bin)) {
+                        callback.onSuccess(true);
+                        return;
                     }
                 }
             }
-            return false;
+            callback.onSuccess(false);
         }
-
-        return true;
+        callback.onSuccess(true);
     }
 
     /**
@@ -286,33 +270,42 @@ public class CreditCardTransaction {
      * @param cardNumber
      * @return boolean
      */
-    public boolean isBlacklistContainCardNumber(String cardNumber) {
+    public void isBlacklistContainCardNumber(String cardNumber, final Call1<Boolean> callback) {
         if (!TextUtils.isEmpty(cardNumber) && isBlackListBinsAvailable()) {
             for (String bin : creditCard.getBlacklistBins()) {
                 if (!TextUtils.isEmpty(bin)) {
-                    if (TextUtils.isDigitsOnly(bin)) {
-                        if (cardNumber.startsWith(bin)) {
-                            return true;
-                        }
-                    } else {
-                        String bank = getBankByCardNumber(cardNumber);
-                        if (bin.equalsIgnoreCase(bank)) {
-                            return true;
-                        }
+                    if (cardNumber.startsWith(bin)) {
+                        callback.onSuccess(true);
+                        return;
                     }
                 }
             }
+        } else {
+            callback.onSuccess(false);
         }
-
-        return false;
     }
 
-    public boolean isCardBinBlocked(String cardNumber) {
-        if (!isWhitelistBinContainCardNumber(cardNumber) || isBlacklistContainCardNumber(cardNumber)) {
-            return true;
-        }
+    public void isCardBinBlocked(final String cardNumber, final Call1<Boolean> callback) {
 
-        return false;
+        isWhitelistBinContainCardNumber(cardNumber, new Call1<Boolean>() {
+            @Override
+            public void onSuccess(Boolean isWhiteListed) {
+                if (!isWhiteListed) {
+                    callback.onSuccess(true);
+                } else {
+                    isBlacklistContainCardNumber(cardNumber, new Call1<Boolean>() {
+                        @Override
+                        public void onSuccess(Boolean isBlacklisted) {
+                            if (isBlacklisted) {
+                                callback.onSuccess(true);
+                            } else {
+                                callback.onSuccess(false);
+                            }
+                        }
+                    });
+                }
+            }
+        });
     }
 
     public void setSelectedPromo(Promo seletedPromo) {

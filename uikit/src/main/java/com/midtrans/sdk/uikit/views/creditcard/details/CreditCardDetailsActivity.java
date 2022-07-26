@@ -1286,16 +1286,16 @@ public class CreditCardDetailsActivity extends BasePaymentActivity implements
         if(savedCard != null){
             return savedCard.getMaskedCard().split("-")[0];
         }else {
-            try {
-                String cardNumber = getCardNumberValue();
-                if (!TextUtils.isEmpty(cardNumber) && cardNumber.length() > binDigit) {
-                    String cardBin = cardNumber.replace(" ", "").substring(0, binDigit);
-                    return cardBin;
-                }
-
-            } catch (RuntimeException e) {
-                Logger.e(TAG, "getCardNumberBin:" + e.getMessage());
+        try {
+            String cardNumber = getCardNumberValue();
+            if (!TextUtils.isEmpty(cardNumber) && cardNumber.length() > binDigit) {
+                String cardBin = cardNumber.replace(" ", "").substring(0, binDigit);
+                return cardBin;
             }
+
+        } catch (RuntimeException e) {
+            Logger.e(TAG, "getCardNumberBin:" + e.getMessage());
+        }
         }
         return null;
     }

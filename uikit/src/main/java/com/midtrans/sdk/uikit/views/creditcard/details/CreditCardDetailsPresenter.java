@@ -35,12 +35,14 @@ import com.midtrans.sdk.corekit.models.snap.TransactionDetails;
 import com.midtrans.sdk.corekit.models.snap.TransactionStatusResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BaseCreditCardPresenter;
+import com.midtrans.sdk.uikit.callbacks.Call1;
 import com.midtrans.sdk.uikit.models.CreditCardTransaction;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 /**
@@ -110,8 +112,8 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
     }
 
 
-    public boolean isMandiriDebitCard(String cardBin) {
-        return creditCardTransaction.isMandiriCardDebit(cardBin);
+    public void isMandiriDebitCard(String cardBin, Call1<Boolean> callback) {
+        creditCardTransaction.isMandiriCardDebit(cardBin, callback);
     }
 
     public boolean isInstallmentValid() {
@@ -406,12 +408,12 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
         return !TextUtils.isEmpty(cardNumber) && cardNumber.length() > 5;
     }
 
-    public ArrayList<Integer> getInstallmentTermsByCardBin(String cardBin) {
-        return creditCardTransaction.getInstallmentTerms(cardBin);
+    public void getInstallmentTermsByCardBin(String cardBin, Call1<ArrayList<Integer>> callback) {
+        creditCardTransaction.getInstallmentTerms(cardBin, callback);
     }
 
-    public ArrayList<Integer> getOfflineInstallmentTerms(String cardBin) {
-        return creditCardTransaction.getOfflineInstallmentTerms(cardBin);
+    public void getOfflineInstallmentTerms(String cardBin, Call1<ArrayList<Integer>> callback) {
+        creditCardTransaction.getOfflineInstallmentTerms(cardBin, callback);
     }
 
     public void initInstallmentTerms(ArrayList<Integer> installmentTerms) {
@@ -436,25 +438,37 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
         return installmentTotalPositions;
     }
 
-    public boolean isBniPointAvailable(String cardBin) {
-        String bank = creditCardTransaction.getBankByBin(cardBin);
-        List<String> bankPoints = getMidtransSDK().getBanksPointEnabled();
+    public void isBniPointAvailable(String cardBin, final Call1<Boolean> callback) {
+        creditCardTransaction.getBankCodeByBin(cardBin, new Call1<String>() {
+            @Override
+            public void onSuccess(String result) {
+                String bank = result.toLowerCase(Locale.getDefault());
+                List<String> bankPoints = getMidtransSDK().getBanksPointEnabled();
 
-        return !TextUtils.isEmpty(bank)
-                && bankPoints != null
-                && bankPoints.contains(bank)
-                && bank.equals(BankType.BNI);
+                callback.onSuccess(!TextUtils.isEmpty(bank)
+                        && bankPoints != null
+                        && bankPoints.contains(bank)
+                        && bank.equalsIgnoreCase(BankType.BNI));
+            }
+        });
+
     }
 
-    public boolean isMandiriPointAvailable(String cardBin) {
-        String bank = creditCardTransaction.getBankByBin(cardBin);
-        List<String> bankPoints = getMidtransSDK().getBanksPointEnabled();
+    public void isMandiriPointAvailable(String cardBin, final Call1<Boolean> callback) {
+        creditCardTransaction.getBankCodeByBin(cardBin, new Call1<String>() {
+            @Override
+            public void onSuccess(String result) {
+                String bank = result.toLowerCase(Locale.getDefault());
+                List<String> bankPoints = getMidtransSDK().getBanksPointEnabled();
 
-        return !TextUtils.isEmpty(bank)
-                && bankPoints != null
-                && bankPoints.contains(bank)
-                && isSecurePayment()
-                && bank.equals(BankType.MANDIRI);
+                callback.onSuccess(!TextUtils.isEmpty(bank)
+                        && bankPoints != null
+                        && bankPoints.contains(bank)
+                        && isSecurePayment()
+                        && bank.equalsIgnoreCase(BankType.MANDIRI));
+            }
+        });
+
     }
 
     public void startBankPointsPayment(float redeemedPoint, boolean isSaveCard) {
@@ -511,8 +525,8 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
         return getMidtransSDK().getExternalScanner() != null;
     }
 
-    public boolean isCardBinBlocked(String cardNumber) {
-        return creditCardTransaction.isCardBinBlocked(cardNumber);
+    public void isCardBinBlocked(String cardNumber, Call1<Boolean> callback) {
+        creditCardTransaction.isCardBinBlocked(cardNumber, callback);
     }
 
     public List<Promo> getCreditCardPromos(String cardNumber, boolean firstTime) {
@@ -534,7 +548,7 @@ public class CreditCardDetailsPresenter extends BaseCreditCardPresenter<CreditCa
                         for (String cardBin : promo.getBins()) {
                             if (cardNumber.startsWith(cardBin)) {
                                 cardPromos.add(promo);
-                            } else if(promo.isSelected()) {
+                            } else if (promo.isSelected()) {
                                 promo.setSelected(false);
                                 view.updateDetailsOnPromoChanged(promo);
                             }
