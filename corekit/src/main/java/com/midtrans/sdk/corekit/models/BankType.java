@@ -5,15 +5,15 @@ package com.midtrans.sdk.corekit.models;
  */
 
 public class BankType {
-    public static final String CIMB = "cimb";
-    public static final String BCA = "bca";
-    public static final String MANDIRI = "mandiri";
-    public static final String BNI = "bni";
-    public static final String MAYBANK = "maybank";
-    public static final String BRI = "bri";
-    public static final String DANAMON = "danamon";
-    public static final String MANDIRI_DEBIT = "mandiri_debit";
-    public static final String BNI_DEBIT_ONLINE = "bni_debit_online";
-    public static final String PERMATA = "permata";
-    public static final String MEGA = "mega";
+    public static final String CIMB = "CIMB";
+    public static final String BCA = "BCA";
+    public static final String MANDIRI = "MANDIRI";
+    public static final String BNI = "BNI";
+    public static final String MAYBANK = "MAYBANK";
+    public static final String BRI = "BRI";
+    public static final String DANAMON = "DANAMON";
+    public static final String MANDIRI_DEBIT = "MANDIRI_DEBIT";
+    public static final String BNI_DEBIT_ONLINE = "BNI_DEBIT_ONLINE";
+    public static final String PERMATA = "PERMATA";
+    public static final String MEGA = "MEGA";
 }

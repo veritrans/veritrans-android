@@ -13,7 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.midtrans.sdk.corekit.models.BankType;
 import com.midtrans.sdk.corekit.models.SaveCardRequest;
 import com.midtrans.sdk.corekit.utilities.Utils;
+import com.midtrans.sdk.uikit.BuildConfig;
 import com.midtrans.sdk.uikit.R;
+import com.midtrans.sdk.uikit.callbacks.Call1;
 import com.midtrans.sdk.uikit.models.PromoData;
 import com.midtrans.sdk.uikit.utilities.SdkUIFlowUtil;
 import com.midtrans.sdk.uikit.views.creditcard.saved.SavedCreditCardActivity;
@@ -36,6 +38,8 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
     private SavedCardAdapterEventListener listener;
     private SavedCardPromoListener promoListener;
     private DeleteCardListener deleteCardListener;
+    private final Integer binRange = Integer.parseInt(BuildConfig.BIN_RANGE);
+    private final String MASK_CARD_DELIMITER = "-";
 
     public SavedCardsAdapter() {
         promoDatas = new ArrayList<>();
@@ -137,40 +141,46 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Sa
 
         SavedCreditCardActivity creditCardFlowActivity = (SavedCreditCardActivity) holder.itemView.getContext();
         if (creditCardFlowActivity != null) {
-            String bank = creditCardFlowActivity.getBankByBin(card.getMaskedCard().substring(0, 6));
-            if (bank != null && !TextUtils.isEmpty(bank)) {
-                switch (bank) {
-                    case BankType.BCA:
-                        holder.bankLogo.setImageResource(R.drawable.bca);
-                        break;
-                    case BankType.BNI:
-                        holder.bankLogo.setImageResource(R.drawable.bni);
-                        break;
-                    case BankType.BRI:
-                        holder.bankLogo.setImageResource(R.drawable.bri);
-                        break;
-                    case BankType.CIMB:
-                        holder.bankLogo.setImageResource(R.drawable.cimb);
-                        break;
-                    case BankType.MANDIRI:
-                        holder.bankLogo.setImageResource(R.drawable.mandiri);
-                        break;
-                    case BankType.MAYBANK:
-                        holder.bankLogo.setImageResource(R.drawable.maybank);
-                        break;
-                    case BankType.MEGA:
-                        holder.bankLogo.setImageResource(R.drawable.ic_mega);
-                        break;
-                    case BankType.BNI_DEBIT_ONLINE:
-                        holder.bankLogo.setImageResource(R.drawable.bni);
-                        break;
-                    default:
-                        holder.bankLogo.setImageDrawable(null);
-                        break;
+            final SavedCardsAdapter.SavedCardsViewHolder holder1 = holder;
+            Call1<String> bankBinCallback = new Call1<String>() {
+                @Override
+                public void onSuccess(String bank) {
+                    if (bank != null && !TextUtils.isEmpty(bank)) {
+                        switch (bank) {
+                            case BankType.BCA:
+                                holder1.bankLogo.setImageResource(R.drawable.bca);
+                                break;
+                            case BankType.BNI:
+                                holder1.bankLogo.setImageResource(R.drawable.bni);
+                                break;
+                            case BankType.BRI:
+                                holder1.bankLogo.setImageResource(R.drawable.bri);
+                                break;
+                            case BankType.CIMB:
+                                holder1.bankLogo.setImageResource(R.drawable.cimb);
+                                break;
+                            case BankType.MANDIRI:
+                                holder1.bankLogo.setImageResource(R.drawable.mandiri);
+                                break;
+                            case BankType.MAYBANK:
+                                holder1.bankLogo.setImageResource(R.drawable.maybank);
+                                break;
+                            case BankType.MEGA:
+                                holder1.bankLogo.setImageResource(R.drawable.ic_mega);
+                                break;
+                            case BankType.BNI_DEBIT_ONLINE:
+                                holder1.bankLogo.setImageResource(R.drawable.bni);
+                                break;
+                            default:
+                                holder1.bankLogo.setImageDrawable(null);
+                                break;
+                        }
+                    } else {
+                        holder1.bankLogo.setImageDrawable(null);
+                    }
                 }
-            } else {
-                holder.bankLogo.setImageDrawable(null);
-            }
+            };
+            creditCardFlowActivity.getBankByBin(card.getMaskedCard().split(MASK_CARD_DELIMITER)[0], bankBinCallback);
         }
     }
 

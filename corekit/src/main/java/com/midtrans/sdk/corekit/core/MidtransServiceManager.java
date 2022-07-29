@@ -2,11 +2,13 @@ package com.midtrans.sdk.corekit.core;
 
 import android.text.TextUtils;
 
+import com.midtrans.sdk.corekit.callback.BankBinCallback;
 import com.midtrans.sdk.corekit.callback.CardRegistrationCallback;
 import com.midtrans.sdk.corekit.callback.CardTokenCallback;
 import com.midtrans.sdk.corekit.models.CardRegistrationResponse;
 import com.midtrans.sdk.corekit.models.CardTokenRequest;
 import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
+import com.midtrans.sdk.corekit.models.snap.BankSingleBinResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -197,6 +199,48 @@ public class MidtransServiceManager extends BaseServiceManager {
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_EMPTY_RESPONSE));
             Logger.e(TAG, Constants.MESSAGE_ERROR_EMPTY_RESPONSE);
         }
+    }
+
+    /**
+     * TODO: javadoc
+     * @param callback
+     */
+    public void getBankBin(String binNumber, final BankBinCallback callback) {
+        if (service == null) {
+            doOnApiServiceUnAvailable(callback);
+            return;
+        }
+
+        Call<BankSingleBinResponse> call = service.getBankBin(binNumber);
+        call.enqueue(new Callback<BankSingleBinResponse>() {
+            @Override
+            public void onResponse(Call<BankSingleBinResponse> call, Response<BankSingleBinResponse> response) {
+                releaseResources();
+                BankSingleBinResponse bankSingleBinResponse = response.body();
+                try {
+                    if (bankSingleBinResponse != null) {
+                        if (response.code() == 200 || response.code() == 201) {
+                            callback.onSuccess(bankSingleBinResponse.data);
+                        } else {
+                            callback.onError(new RuntimeException(response.message()));
+                        }
+                    } else {
+                        callback.onError(new Throwable(Constants.MESSAGE_ERROR_EMPTY_RESPONSE));
+                    }
+                }catch (Throwable e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BankSingleBinResponse> call, Throwable t) {
+                try {
+                    doOnResponseFailure(t, callback);
+                } catch (Throwable e){
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     public void setService(MidtransApiService service) {

@@ -2,10 +2,12 @@ package com.midtrans.sdk.corekit.core;
 
 import com.midtrans.sdk.corekit.models.CardRegistrationResponse;
 import com.midtrans.sdk.corekit.models.TokenDetailsResponse;
+import com.midtrans.sdk.corekit.models.snap.BankSingleBinResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 import static com.midtrans.sdk.corekit.core.Constants.QUERY_STRING;
@@ -140,7 +142,7 @@ public interface MidtransApiService {
      * @return callback of token
      */
     @Headers({"Content-Type: application/json", "x-auth: da53847171259b511488cf366e701050"})
-    @GET("card/register")
+    @GET("v2/card/register")
     Call<CardRegistrationResponse> registerCard(
             @Query("card_number") String cardNumber,
             @Query("card_cvv") String cardCVV,
@@ -149,4 +151,6 @@ public interface MidtransApiService {
             @Query("client_key") String clientKey
     );
 
+    @GET("v1/bins/{bin_number}")
+    Call<BankSingleBinResponse> getBankBin(@Path("bin_number") String binNumber);
 }

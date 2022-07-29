@@ -15,6 +15,7 @@ import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.R;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentActivity;
 import com.midtrans.sdk.uikit.adapters.SavedCardsAdapter;
+import com.midtrans.sdk.uikit.callbacks.Call1;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 import com.midtrans.sdk.uikit.views.creditcard.details.CreditCardDetailsActivity;
 import com.midtrans.sdk.uikit.widgets.FancyButton;
@@ -186,8 +187,8 @@ public class SavedCreditCardActivity extends BasePaymentActivity implements Save
         }
     }
 
-    public String getBankByBin(String cardBin) {
-        return presenter.getBankByCardBin(cardBin);
+    public void getBankByBin(String cardBin, Call1<String> callback) {
+        presenter.getBankByCardBin(cardBin, callback);
     }
 
     private void finishPayment(int resultCode, Intent data) {
