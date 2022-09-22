@@ -467,7 +467,7 @@
     <string name="payment_method_shopeepay_deeplink">ShopeePay</string>
     <string name="payment_method_shopeepay_qris">ShopeePay/other e-Wallets</string>
     <string name="payment_method_danamon_online">Danamon Online Banking</string>
-    <string name="payment_method_akulaku">Akulaku</string>
+    <string name="payment_method_akulaku">Akulaku Paylater</string>
     <string name="payment_method_uob">UOB EZ Pay</string>
 
     <!--Payment List-->
