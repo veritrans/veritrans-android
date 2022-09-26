@@ -257,7 +257,7 @@
     <string name="cimb_instruction_step3">Please make sure that there is no pop-up blocker on your browser.</string>
 
     <!-- akulaku transfer Instructions -->
-    <string name="akulaku_instruction_step1">Click the "Pay Now" button, then you will be directed to the Akulaku Payment Center page.</string>
+    <string name="akulaku_instruction_step1">Click the "Pay Now" button, then you will be directed to the Akulaku PayLater Payment Center page.</string>
     <string name="akulaku_instruction_step2">Select the desired installment tenor, then Login to your Akulaku account by entering your mobile number and password.</string>
     <string name="akulaku_instruction_step3">Enter the verification code (OTP) that has been sent to your mobile number, then click the "Next" button.</string>
     <string name="akulaku_instruction_step4">A confirmation page will be shown to you, then you can finish your transaction.</string>
@@ -344,7 +344,7 @@
     <string name="credit_card">Credit/Debit Card</string>
     <string name="mandiri_clickpay">Mandiri Clickpay</string>
     <string name="cimb_clicks">CIMB Clicks</string>
-    <string name="akulaku">Akulaku</string>
+    <string name="akulaku">Akulaku PayLater</string>
     <string name="epay_bri">BRImo</string>
     <string name="bbm_money">BBM Money</string>
     <string name="indosat_dompetku">Indosat Dompetku</string>
@@ -467,7 +467,7 @@
     <string name="payment_method_shopeepay_deeplink">ShopeePay</string>
     <string name="payment_method_shopeepay_qris">ShopeePay/other e-Wallets</string>
     <string name="payment_method_danamon_online">Danamon Online Banking</string>
-    <string name="payment_method_akulaku">Akulaku</string>
+    <string name="payment_method_akulaku">Akulaku PayLater</string>
     <string name="payment_method_uob">UOB EZ Pay</string>
 
     <!--Payment List-->

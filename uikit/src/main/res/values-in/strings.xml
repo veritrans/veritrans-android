@@ -187,7 +187,7 @@
     <string name="cimb_instruction_step3">Pastikan bahwa tidak ada pop-up blocker pada browser Anda.</string>
 
     <!-- akulaku transfer Instructions -->
-    <string name="akulaku_instruction_step1">Tekan tombol "Bayar Sekarang", lalu Anda akan diarahkan ke halaman Pusat Pembayaran Akulaku.</string>
+    <string name="akulaku_instruction_step1">Tekan tombol "Bayar Sekarang", lalu Anda akan diarahkan ke halaman Pusat Pembayaran Akulaku PayLater.</string>
     <string name="akulaku_instruction_step2">Pilih tenor cicilan yang diinginkan, lalu Login ke akun Akulaku Anda dengan memasukkan nomor ponsel dan password.</string>
     <string name="akulaku_instruction_step3">Masukkan kode verifikasi (OTP) yang telah dikirimkan ke ponsel Anda, lalu klik tombol "Selanjutnya".</string>
     <string name="akulaku_instruction_step4">Akan tampil halaman konfirmasi, lalu Anda dapat menyelesaikan transaksi.</string>
@@ -354,7 +354,7 @@
     <string name="credit_card">Kartu Kredit/Debit</string>
     <string name="mandiri_clickpay">Mandiri Clickpay</string>
     <string name="cimb_clicks">CIMB Clicks</string>
-    <string name="akulaku">Akulaku</string>
+    <string name="akulaku">Akulaku PayLater</string>
     <string name="epay_bri">BRImo</string>
     <string name="bbm_money">BBM Money</string>
     <string name="indosat_dompetku">Indosat Dompetku</string>
