@@ -258,7 +258,7 @@
 
     <!-- akulaku transfer Instructions -->
     <string name="akulaku_instruction_step1">Click the "Pay Now" button, then you will be directed to the Akulaku PayLater Payment Center page.</string>
-    <string name="akulaku_instruction_step2">Select the desired installment tenor, then Login to your Akulaku account by entering your mobile number and password.</string>
+    <string name="akulaku_instruction_step2">Select the desired installment tenor, then Login to your Akulaku PayLater account by entering your mobile number and password.</string>
     <string name="akulaku_instruction_step3">Enter the verification code (OTP) that has been sent to your mobile number, then click the "Next" button.</string>
     <string name="akulaku_instruction_step4">A confirmation page will be shown to you, then you can finish your transaction.</string>
 
@@ -766,7 +766,7 @@
     <string name="payment_method_description_shopeepay_deeplink">Pay with ShopeePay wallet</string>
     <string name="payment_method_description_shopeepay_qris">Scan QR code using ShopeePay or other e-wallets</string>
     <string name="payment_method_description_danamon_online">Pay with your Danamon Online Banking Account</string>
-    <string name="payment_method_description_akulaku">Pay with your Akulaku account</string>
+    <string name="payment_method_description_akulaku">Pay with your Akulaku PayLater account</string>
     <string name="payment_method_description_uob">Pay with your UOB/TMRW account</string>
 
     <string name="payment_bank_description_bca">Pay from BCA ATMs or internet banking</string>
