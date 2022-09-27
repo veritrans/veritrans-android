@@ -188,7 +188,7 @@
 
     <!-- akulaku transfer Instructions -->
     <string name="akulaku_instruction_step1">Tekan tombol "Bayar Sekarang", lalu Anda akan diarahkan ke halaman Pusat Pembayaran Akulaku PayLater.</string>
-    <string name="akulaku_instruction_step2">Pilih tenor cicilan yang diinginkan, lalu Login ke akun Akulaku Anda dengan memasukkan nomor ponsel dan password.</string>
+    <string name="akulaku_instruction_step2">Pilih tenor cicilan yang diinginkan, lalu Login ke akun Akulaku PayLater Anda dengan memasukkan nomor ponsel dan password.</string>
     <string name="akulaku_instruction_step3">Masukkan kode verifikasi (OTP) yang telah dikirimkan ke ponsel Anda, lalu klik tombol "Selanjutnya".</string>
     <string name="akulaku_instruction_step4">Akan tampil halaman konfirmasi, lalu Anda dapat menyelesaikan transaksi.</string>
 
@@ -571,7 +571,7 @@
     <string name="payment_method_description_shopeepay_deeplink">Bayar dengan ShopeePay</string>
     <string name="payment_method_description_shopeepay_qris">Scan kode QR dengan ShopeePay atau e-wallet lainnya</string>
     <string name="payment_method_description_danamon_online">Bayar dengan akun Danamon Online Banking anda</string>
-    <string name="payment_method_description_akulaku">Bayar menggunakan akun Akulaku Anda</string>
+    <string name="payment_method_description_akulaku">Bayar menggunakan akun Akulaku PayLater Anda</string>
 
     <string name="payment_bank_description_bca">Bayar dari ATM BCA atau internet banking</string>
     <string name="payment_bank_description_mandiri">Bayar dari ATM Mandiri atau internet banking</string>
