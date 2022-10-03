@@ -15,7 +15,11 @@ import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 public class BankTransferStatusPresenter extends BasePaymentPresenter {
 
     private static final String LABEL_BANK_CODE_BNI = "009 (Bank BNI)";
+    private static final String LABEL_BANK_CODE_BRI = "002 (Bank BRI)";
     private static final String LABEL_BANK_CODE_PERMATA = "013 (Bank Permata)";
+
+    private static final String BNI = "bni";
+    private static final String BRI = "bri";
 
     private final String bankType;
 
@@ -111,11 +115,14 @@ public class BankTransferStatusPresenter extends BasePaymentPresenter {
     }
 
     public String getBankCode() {
-        String bankCode = LABEL_BANK_CODE_BNI;
+        String bankCode;
+        String bank = transactionResponse.getAccountNumbers().get(0).getBank();
 
-        MerchantPreferences preferences = getMidtransSDK().getMerchantData().getPreference();
-        if (preferences != null && !TextUtils.isEmpty(preferences.getOtherVaProcessor())
-                && preferences.getOtherVaProcessor().equals(UiKitConstants.OTHER_VA_PROCESSOR_PERMATA)) {
+        if (bank.equals(BRI)) {
+            bankCode = LABEL_BANK_CODE_BRI;
+        } else if (bank.equals(BNI)) {
+            bankCode = LABEL_BANK_CODE_BNI;
+        } else {
             bankCode = LABEL_BANK_CODE_PERMATA;
         }
 
