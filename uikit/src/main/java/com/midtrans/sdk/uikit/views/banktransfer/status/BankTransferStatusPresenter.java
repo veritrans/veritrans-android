@@ -41,8 +41,15 @@ public class BankTransferStatusPresenter extends BasePaymentPresenter {
                     vaNumber = transactionResponse.getPermataVANumber();
                     break;
                 case PaymentType.ALL_VA:
-                    //VA number is based on other VA processor
-                    vaNumber = TextUtils.isEmpty(transactionResponse.getBniVaNumber()) ? transactionResponse.getPermataVANumber() : transactionResponse.getBniVaNumber();
+                    String bank = transactionResponse.getAccountNumbers().get(0).getBank();
+
+                    if (bank.equals(BRI)) {
+                        vaNumber = transactionResponse.getBriVaNumber();
+                    } else if (bank.equals(BNI)) {
+                        vaNumber = transactionResponse.getBniVaNumber();
+                    } else {
+                        vaNumber = transactionResponse.getPermataVANumber();
+                    }
                     break;
                 case PaymentType.BNI_VA:
                     vaNumber = transactionResponse.getBniVaNumber();
