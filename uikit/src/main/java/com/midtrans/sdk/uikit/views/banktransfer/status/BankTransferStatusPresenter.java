@@ -4,8 +4,11 @@ import android.text.TextUtils;
 
 import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
+import com.midtrans.sdk.corekit.models.VaNumber;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentPresenter;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
+
+import java.util.Map;
 
 /**
  * Created by ziahaqi on 8/15/17.
@@ -19,6 +22,7 @@ public class BankTransferStatusPresenter extends BasePaymentPresenter {
 
     private static final String BNI = "bni";
     private static final String BRI = "bri";
+    private static final String PERMATA = "permata";
 
     private final String bankType;
 
@@ -77,15 +81,7 @@ public class BankTransferStatusPresenter extends BasePaymentPresenter {
                     expiration = transactionResponse.getPermataExpiration();
                     break;
                 case PaymentType.ALL_VA:
-                    String bank = transactionResponse.getAccountNumbers().get(0).getBank();
-
-                    if (bank.equals(BRI)) {
-                        expiration = transactionResponse.getBriExpiration();
-                    } else if (bank.equals(BNI)) {
-                        expiration = transactionResponse.getBniExpiration();
-                    } else {
-                        expiration = transactionResponse.getPermataExpiration();
-                    }
+                    expiration = getOtherBankVAExpiration();
                     break;
                 case PaymentType.BNI_VA:
                     expiration = transactionResponse.getBniExpiration();
@@ -140,5 +136,29 @@ public class BankTransferStatusPresenter extends BasePaymentPresenter {
         }
 
         return bankCode;
+    }
+
+    private String getOtherBankVAExpiration() {
+
+        String expiration = "";
+        String otherVaProcessor = getOtherVaProcessor();
+
+        switch (otherVaProcessor) {
+            case BRI:
+                expiration = transactionResponse.getBriExpiration();
+                break;
+            case BNI:
+                expiration = transactionResponse.getBniExpiration();
+                break;
+            case PERMATA:
+                expiration = transactionResponse.getPermataExpiration();
+                break;
+        }
+
+        return expiration;
+    }
+
+    private String getOtherVaProcessor() {
+        return transactionResponse.getAccountNumbers().get(0).getBank();
     }
 }
