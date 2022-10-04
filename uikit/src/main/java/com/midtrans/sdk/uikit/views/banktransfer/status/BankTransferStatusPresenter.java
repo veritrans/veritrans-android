@@ -19,7 +19,6 @@ public class BankTransferStatusPresenter extends BasePaymentPresenter {
 
     private static final String BNI = "bni";
     private static final String BRI = "bri";
-    private static final String PERMATA = "permata";
 
     private final String bankType;
 
@@ -114,7 +113,7 @@ public class BankTransferStatusPresenter extends BasePaymentPresenter {
 
     public String getBankCode() {
 
-        String bankCode = "";
+        String bankCode;
         String bank = getOtherVaProcessor();
 
         switch (bank) {
@@ -124,7 +123,7 @@ public class BankTransferStatusPresenter extends BasePaymentPresenter {
             case BNI:
                 bankCode = LABEL_BANK_CODE_BNI;
                 break;
-            case PERMATA:
+            default:
                 bankCode = LABEL_BANK_CODE_PERMATA;
                 break;
         }
@@ -134,7 +133,7 @@ public class BankTransferStatusPresenter extends BasePaymentPresenter {
 
     private String getOtherBankVAExpiration() {
 
-        String expiration = "";
+        String expiration;
         String otherVaProcessor = getOtherVaProcessor();
 
         switch (otherVaProcessor) {
@@ -144,7 +143,7 @@ public class BankTransferStatusPresenter extends BasePaymentPresenter {
             case BNI:
                 expiration = transactionResponse.getBniExpiration();
                 break;
-            case PERMATA:
+            default:
                 expiration = transactionResponse.getPermataExpiration();
                 break;
         }
@@ -154,7 +153,7 @@ public class BankTransferStatusPresenter extends BasePaymentPresenter {
 
     private String getOtherBankVANumber() {
 
-        String vaNumber = "";
+        String vaNumber;
         String otherVaProcessor = getOtherVaProcessor();
 
         switch (otherVaProcessor) {
@@ -164,7 +163,7 @@ public class BankTransferStatusPresenter extends BasePaymentPresenter {
             case BNI:
                 vaNumber = transactionResponse.getBniVaNumber();
                 break;
-            case PERMATA:
+            default:
                 vaNumber = transactionResponse.getPermataVANumber();
                 break;
         }
