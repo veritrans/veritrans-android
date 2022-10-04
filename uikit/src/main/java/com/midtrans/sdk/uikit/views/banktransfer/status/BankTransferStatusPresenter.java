@@ -44,15 +44,7 @@ public class BankTransferStatusPresenter extends BasePaymentPresenter {
                     vaNumber = transactionResponse.getPermataVANumber();
                     break;
                 case PaymentType.ALL_VA:
-                    String bank = transactionResponse.getAccountNumbers().get(0).getBank();
-
-                    if (bank.equals(BRI)) {
-                        vaNumber = transactionResponse.getBriVaNumber();
-                    } else if (bank.equals(BNI)) {
-                        vaNumber = transactionResponse.getBniVaNumber();
-                    } else {
-                        vaNumber = transactionResponse.getPermataVANumber();
-                    }
+                    vaNumber = getOtherBankVANumber();
                     break;
                 case PaymentType.BNI_VA:
                     vaNumber = transactionResponse.getBniVaNumber();
@@ -124,15 +116,20 @@ public class BankTransferStatusPresenter extends BasePaymentPresenter {
     }
 
     public String getBankCode() {
-        String bankCode;
-        String bank = transactionResponse.getAccountNumbers().get(0).getBank();
 
-        if (bank.equals(BRI)) {
-            bankCode = LABEL_BANK_CODE_BRI;
-        } else if (bank.equals(BNI)) {
-            bankCode = LABEL_BANK_CODE_BNI;
-        } else {
-            bankCode = LABEL_BANK_CODE_PERMATA;
+        String bankCode = "";
+        String bank = getOtherVaProcessor();
+
+        switch (bank) {
+            case BRI:
+                bankCode = LABEL_BANK_CODE_BRI;
+                break;
+            case BNI:
+                bankCode = LABEL_BANK_CODE_BNI;
+                break;
+            case PERMATA:
+                bankCode = LABEL_BANK_CODE_PERMATA;
+                break;
         }
 
         return bankCode;
@@ -156,6 +153,26 @@ public class BankTransferStatusPresenter extends BasePaymentPresenter {
         }
 
         return expiration;
+    }
+
+    private String getOtherBankVANumber() {
+
+        String vaNumber = "";
+        String otherVaProcessor = getOtherVaProcessor();
+
+        switch (otherVaProcessor) {
+            case BRI:
+                vaNumber = transactionResponse.getBriVaNumber();
+                break;
+            case BNI:
+                vaNumber = transactionResponse.getBniVaNumber();
+                break;
+            case PERMATA:
+                vaNumber = transactionResponse.getPermataVANumber();
+                break;
+        }
+
+        return vaNumber;
     }
 
     private String getOtherVaProcessor() {
