@@ -30,6 +30,7 @@ public abstract class VaInstructionFragment extends Fragment implements View.OnC
     public static final String INSTRUCTION_TITLE = "instruction.title";
 
     private final String OTHER_VA_PROCESSOR_BNI = "bni_va";
+    private final String OTHER_VA_PROCESSOR_BRI = "bri_va";
 
     protected OnInstructionShownListener listener;
     protected int layoutId = 0;
@@ -37,6 +38,8 @@ public abstract class VaInstructionFragment extends Fragment implements View.OnC
     protected LinearLayout instructionLayout;
     protected boolean isInstructionShown = false;
     private int colorPrimary = 0;
+    private ImageView bankCode;
+    private DefaultTextView bankCodeInstruction;
 
     public interface OnInstructionShownListener {
         void onInstructionShown(boolean isShown, int fragmentCode);
@@ -60,18 +63,15 @@ public abstract class VaInstructionFragment extends Fragment implements View.OnC
             layoutId = R.layout.fragment_instruction_alto_bni;
             isUsingPermata = !isUsingPermata;
         }
-        View view = inflater.inflate(layoutId, container, false);
 
-        if (!isUsingPermata) {
-            ImageView bankCode = (ImageView) view.findViewById(R.id.instruction_bank_code_image);
-            DefaultTextView bankCodeInstruction = (DefaultTextView) view.findViewById(R.id.instruction_bank_code_text);
-            if (layoutId == R.layout.fragment_instruction_atm_bersama) {
-                bankCode.setImageResource(R.drawable.instruction_atm_bersama_4_bni);
-                bankCodeInstruction.setText(R.string.instruction_atm_bersama4_bni);
-            } else if (layoutId == R.layout.fragment_instruction_prima) {
-                bankCode.setImageResource(R.drawable.instruction_prima_4_bni);
-                bankCodeInstruction.setText(R.string.instruction_prima4_bni);
-            }
+        View view = inflater.inflate(layoutId, container, false);
+        bankCode = view.findViewById(R.id.instruction_bank_code_image);
+        bankCodeInstruction = view.findViewById(R.id.instruction_bank_code_text);
+
+        if (layoutId == R.layout.fragment_instruction_atm_bersama) {
+            updateResourcesAtmBersama();
+        } else if (layoutId == R.layout.fragment_instruction_prima) {
+            updateResourcesPrima();
         }
 
         instructionLayout = (LinearLayout) view.findViewById(R.id.instruction_layout);
@@ -88,6 +88,42 @@ public abstract class VaInstructionFragment extends Fragment implements View.OnC
         filterInstructionToggle();
 
         return view;
+    }
+
+    private void updateResourcesAtmBersama() {
+        switch (getOtherVaProcessor()) {
+            case OTHER_VA_PROCESSOR_BRI:
+                bankCode.setImageResource(R.drawable.instruction_atm_bersama_4_bri);
+                bankCodeInstruction.setText(R.string.instruction_atm_bersama4_bri);
+                break;
+            case OTHER_VA_PROCESSOR_BNI:
+                bankCode.setImageResource(R.drawable.instruction_atm_bersama_4_bni);
+                bankCodeInstruction.setText(R.string.instruction_atm_bersama4_bni);
+                break;
+            default:
+                bankCode.setImageResource(R.drawable.instruction_atm_bersama_4_permata);
+                bankCodeInstruction.setText(R.string.instruction_atm_bersama4_permata);
+        }
+    }
+
+    private void updateResourcesPrima() {
+        switch (getOtherVaProcessor()) {
+            case OTHER_VA_PROCESSOR_BRI:
+                bankCode.setImageResource(R.drawable.instruction_prima_4_bri);
+                bankCodeInstruction.setText(R.string.instruction_prima4_bri);
+                break;
+            case OTHER_VA_PROCESSOR_BNI:
+                bankCode.setImageResource(R.drawable.instruction_prima_4_bni);
+                bankCodeInstruction.setText(R.string.instruction_prima4_bni);
+                break;
+            default:
+                bankCode.setImageResource(R.drawable.instruction_prima_4_permata);
+                bankCodeInstruction.setText(R.string.instruction_prima4_permata);
+        }
+    }
+
+    private String getOtherVaProcessor() {
+        return MidtransSDK.getInstance().getMerchantData().getPreference().getOtherVaProcessor();
     }
 
     private void filterInstructionToggle() {
