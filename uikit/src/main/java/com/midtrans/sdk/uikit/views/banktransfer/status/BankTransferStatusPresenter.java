@@ -78,8 +78,15 @@ public class BankTransferStatusPresenter extends BasePaymentPresenter {
                     expiration = transactionResponse.getPermataExpiration();
                     break;
                 case PaymentType.ALL_VA:
-                    //expiration is based on other VA processor
-                    expiration = TextUtils.isEmpty(transactionResponse.getBniExpiration()) ? transactionResponse.getPermataExpiration() : transactionResponse.getBniExpiration();
+                    String bank = transactionResponse.getAccountNumbers().get(0).getBank();
+
+                    if (bank.equals(BRI)) {
+                        expiration = transactionResponse.getBriExpiration();
+                    } else if (bank.equals(BNI)) {
+                        expiration = transactionResponse.getBniExpiration();
+                    } else {
+                        expiration = transactionResponse.getPermataExpiration();
+                    }
                     break;
                 case PaymentType.BNI_VA:
                     expiration = transactionResponse.getBniExpiration();
