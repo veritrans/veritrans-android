@@ -4,20 +4,20 @@ import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.fragment.app.Fragment;
-import androidx.core.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+
 import com.midtrans.sdk.corekit.core.Logger;
 import com.midtrans.sdk.corekit.core.MidtransSDK;
 import com.midtrans.sdk.uikit.R;
-import com.midtrans.sdk.uikit.views.banktransfer.instruction.InstructionPermataVaFragment;
 import com.midtrans.sdk.uikit.widgets.DefaultTextView;
 
 /**
@@ -48,20 +48,11 @@ public abstract class VaInstructionFragment extends Fragment implements View.OnC
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //dynamic instruction for supporting other VA switching
-        boolean isUsingPermata = true;
-        try {
-            String otherVaProcessor = MidtransSDK.getInstance().getMerchantData().getPreference().getOtherVaProcessor();
-            isUsingPermata = !otherVaProcessor.equalsIgnoreCase(OTHER_VA_PROCESSOR_BNI);
-        } catch (RuntimeException exception) {
-            Logger.e(exception.getMessage());
-        }
-
         layoutId = initLayoutId();
+
         //specific for Alto, since the diff is significant, we use another layout for VA switching
-        if (layoutId == R.layout.fragment_instruction_alto && !isUsingPermata && !(this instanceof InstructionPermataVaFragment)) {
-            layoutId = R.layout.fragment_instruction_alto_bni;
-            isUsingPermata = !isUsingPermata;
+        if (layoutId == R.layout.fragment_instruction_alto) {
+            updateLayoutAlto();
         }
 
         View view = inflater.inflate(layoutId, container, false);
@@ -88,6 +79,19 @@ public abstract class VaInstructionFragment extends Fragment implements View.OnC
         filterInstructionToggle();
 
         return view;
+    }
+
+    private void updateLayoutAlto() {
+        switch (getOtherVaProcessor()) {
+            case OTHER_VA_PROCESSOR_BRI:
+                layoutId = R.layout.fragment_instruction_alto_bri;
+                break;
+            case OTHER_VA_PROCESSOR_BNI:
+                layoutId = R.layout.fragment_instruction_alto_bni;
+                break;
+            default:
+                layoutId = R.layout.fragment_instruction_alto;
+        }
     }
 
     private void updateResourcesAtmBersama() {
