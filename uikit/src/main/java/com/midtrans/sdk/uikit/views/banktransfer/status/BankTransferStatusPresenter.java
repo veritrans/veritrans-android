@@ -4,11 +4,8 @@ import android.text.TextUtils;
 
 import com.midtrans.sdk.corekit.core.PaymentType;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
-import com.midtrans.sdk.corekit.models.VaNumber;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentPresenter;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
-
-import java.util.Map;
 
 /**
  * Created by ziahaqi on 8/15/17.
