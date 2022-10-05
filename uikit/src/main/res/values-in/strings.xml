@@ -461,8 +461,9 @@
     <string name="instruction_atm_bersama1">Pada menu utama, pilih <b>Transaksi Lainnya</b>.</string>
     <string name="instruction_atm_bersama2">Pilih <b>Transfer</b>.</string>
     <string name="instruction_atm_bersama3">Pilih <b>Antar Bank Online</b>.</string>
-    <string name="instruction_atm_bersama4_permata">Masukkan <b>013</b> dan <b>16 digit No. Rekening</b>, lalu tekan <b>Benar</b>.</string>
+    <string name="instruction_atm_bersama4_permata">Masukkan <b>013</b> (kode Bank Permata) dan <b>16 digit No. Rekening</b>, lalu tekan <b>Benar</b>.</string>
     <string name="instruction_atm_bersama4_bni">Masukkan <b>009</b> (kode Bank BNI) dan <b>16 digit No. Rekening</b>, lalu tekan <b>Benar</b>.</string>
+    <string name="instruction_atm_bersama4_bri">Masukkan <b>002</b> (kode Bank BRI) dan <b>16 digit No. Rekening</b>, lalu tekan <b>Benar</b>.</string>
     <string name="instruction_atm_bersama5">Masukkan jumlah tagihan yang akan Anda bayar secara lengkap, lalu tekan <b>Benar</b>. Pembayaran dengan jumlah tidak sesuai akan otomatis ditolak.</string>
     <string name="instruction_atm_bersama6">Kosongkan No. referensi, lalu tekan <b>Benar</b>.</string>
     <string name="instruction_atm_bersama7">Pada halaman konfirmasi transfer akan muncul jumlah yang dibayarkan, nomor rekening &amp; nama merchant. Jika informasi telah sesuai tekan <b>Benar</b>.</string>
@@ -475,8 +476,9 @@
     <string name="instruction_prima1">Pada menu utama, pilih <b>Transaksi Lainnya</b>.</string>
     <string name="instruction_prima2">Pilih <b>Transfer</b>.</string>
     <string name="instruction_prima3">Pilih <b>Ke Rek Bank Lain</b>.</string>
-    <string name="instruction_prima4_permata">Masukkan <b>013</b> lalu tekan <b>Benar</b>.</string>
+    <string name="instruction_prima4_permata">Masukkan <b>013</b> (kode Bank Permata) lalu tekan <b>Benar</b>.</string>
     <string name="instruction_prima4_bni">Masukkan <b>009</b> (kode Bank BNI) lalu tekan <b>Benar</b>.</string>
+    <string name="instruction_prima4_bri">Masukkan <b>002</b> (kode Bank BRI) lalu tekan <b>Benar</b>.</string>
     <string name="instruction_prima5">Masukkan jumlah tagihan yang akan Anda bayar secara lengkap, lalu tekan <b>Benar</b>. Pembayaran dengan jumlah tidak sesuai akan otomatis ditolak.</string>
     <string name="instruction_prima6">Masukkan <b>16 digit No. Rekening Pembayaran</b> lalu tekan <b>Benar</b>.</string>
     <string name="instruction_prima7">Pada halaman konfirmasi transfer akan muncul jumlah yang dibayarkan, nomor rekening &amp; nama merchant. Jika informasi telah sesuai tekan <b>Benar</b>.</string>
@@ -493,6 +495,7 @@
     <string name="instruction_alto3_bni">Pilih <b>Ke Rek Bank Lain</b>.</string>
     <string name="instruction_alto4">Pilih <b>Pembayaran Virtual Account</b>.</string>
     <string name="instruction_alto4_bni">Masukkan <b>009</b> (kode Bank BNI) lalu tekan <b>Benar</b>.</string>
+    <string name="instruction_alto4_bri">Masukkan <b>002</b> (kode Bank BRI) lalu tekan <b>Benar</b>.</string>
     <string name="instruction_alto5">Masukkan <b>16 digit No. Rekening Pembayaran</b> yang dituju, lalu tekan <b>Benar</b>.</string>
     <string name="instruction_alto5_bni">Masukkan jumlah tagihan yang akan Anda bayar secara lengkap, lalu tekan <b>Benar</b>. Pembayaran dengan jumlah tidak sesuai akan otomatis ditolak.</string>
     <string name="instruction_alto6"><b>Detail pembayaran Anda</b> akan muncul pada halaman konfirmasi. Jika informasi sesuai tekan <b>Benar</b>.</string>
