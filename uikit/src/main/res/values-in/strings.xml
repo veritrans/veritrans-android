@@ -187,8 +187,8 @@
     <string name="cimb_instruction_step3">Pastikan bahwa tidak ada pop-up blocker pada browser Anda.</string>
 
     <!-- akulaku transfer Instructions -->
-    <string name="akulaku_instruction_step1">Tekan tombol "Bayar Sekarang", lalu Anda akan diarahkan ke halaman Pusat Pembayaran Akulaku.</string>
-    <string name="akulaku_instruction_step2">Pilih tenor cicilan yang diinginkan, lalu Login ke akun Akulaku Anda dengan memasukkan nomor ponsel dan password.</string>
+    <string name="akulaku_instruction_step1">Tekan tombol "Bayar Sekarang", lalu Anda akan diarahkan ke halaman Pusat Pembayaran Akulaku PayLater.</string>
+    <string name="akulaku_instruction_step2">Pilih tenor cicilan yang diinginkan, lalu Login ke akun Akulaku PayLater Anda dengan memasukkan nomor ponsel dan password.</string>
     <string name="akulaku_instruction_step3">Masukkan kode verifikasi (OTP) yang telah dikirimkan ke ponsel Anda, lalu klik tombol "Selanjutnya".</string>
     <string name="akulaku_instruction_step4">Akan tampil halaman konfirmasi, lalu Anda dapat menyelesaikan transaksi.</string>
 
@@ -354,7 +354,7 @@
     <string name="credit_card">Kartu Kredit/Debit</string>
     <string name="mandiri_clickpay">Mandiri Clickpay</string>
     <string name="cimb_clicks">CIMB Clicks</string>
-    <string name="akulaku">Akulaku</string>
+    <string name="akulaku">Akulaku PayLater</string>
     <string name="epay_bri">BRImo</string>
     <string name="bbm_money">BBM Money</string>
     <string name="indosat_dompetku">Indosat Dompetku</string>
@@ -461,8 +461,9 @@
     <string name="instruction_atm_bersama1">Pada menu utama, pilih <b>Transaksi Lainnya</b>.</string>
     <string name="instruction_atm_bersama2">Pilih <b>Transfer</b>.</string>
     <string name="instruction_atm_bersama3">Pilih <b>Antar Bank Online</b>.</string>
-    <string name="instruction_atm_bersama4_permata">Masukkan <b>013</b> dan <b>16 digit No. Rekening</b>, lalu tekan <b>Benar</b>.</string>
+    <string name="instruction_atm_bersama4_permata">Masukkan <b>013</b> (kode Bank Permata) dan <b>16 digit No. Rekening</b>, lalu tekan <b>Benar</b>.</string>
     <string name="instruction_atm_bersama4_bni">Masukkan <b>009</b> (kode Bank BNI) dan <b>16 digit No. Rekening</b>, lalu tekan <b>Benar</b>.</string>
+    <string name="instruction_atm_bersama4_bri">Masukkan <b>002</b> (kode Bank BRI) dan <b>16 digit No. Rekening</b>, lalu tekan <b>Benar</b>.</string>
     <string name="instruction_atm_bersama5">Masukkan jumlah tagihan yang akan Anda bayar secara lengkap, lalu tekan <b>Benar</b>. Pembayaran dengan jumlah tidak sesuai akan otomatis ditolak.</string>
     <string name="instruction_atm_bersama6">Kosongkan No. referensi, lalu tekan <b>Benar</b>.</string>
     <string name="instruction_atm_bersama7">Pada halaman konfirmasi transfer akan muncul jumlah yang dibayarkan, nomor rekening &amp; nama merchant. Jika informasi telah sesuai tekan <b>Benar</b>.</string>
@@ -475,8 +476,9 @@
     <string name="instruction_prima1">Pada menu utama, pilih <b>Transaksi Lainnya</b>.</string>
     <string name="instruction_prima2">Pilih <b>Transfer</b>.</string>
     <string name="instruction_prima3">Pilih <b>Ke Rek Bank Lain</b>.</string>
-    <string name="instruction_prima4_permata">Masukkan <b>013</b> lalu tekan <b>Benar</b>.</string>
+    <string name="instruction_prima4_permata">Masukkan <b>013</b> (kode Bank Permata) lalu tekan <b>Benar</b>.</string>
     <string name="instruction_prima4_bni">Masukkan <b>009</b> (kode Bank BNI) lalu tekan <b>Benar</b>.</string>
+    <string name="instruction_prima4_bri">Masukkan <b>002</b> (kode Bank BRI) lalu tekan <b>Benar</b>.</string>
     <string name="instruction_prima5">Masukkan jumlah tagihan yang akan Anda bayar secara lengkap, lalu tekan <b>Benar</b>. Pembayaran dengan jumlah tidak sesuai akan otomatis ditolak.</string>
     <string name="instruction_prima6">Masukkan <b>16 digit No. Rekening Pembayaran</b> lalu tekan <b>Benar</b>.</string>
     <string name="instruction_prima7">Pada halaman konfirmasi transfer akan muncul jumlah yang dibayarkan, nomor rekening &amp; nama merchant. Jika informasi telah sesuai tekan <b>Benar</b>.</string>
@@ -493,6 +495,7 @@
     <string name="instruction_alto3_bni">Pilih <b>Ke Rek Bank Lain</b>.</string>
     <string name="instruction_alto4">Pilih <b>Pembayaran Virtual Account</b>.</string>
     <string name="instruction_alto4_bni">Masukkan <b>009</b> (kode Bank BNI) lalu tekan <b>Benar</b>.</string>
+    <string name="instruction_alto4_bri">Masukkan <b>002</b> (kode Bank BRI) lalu tekan <b>Benar</b>.</string>
     <string name="instruction_alto5">Masukkan <b>16 digit No. Rekening Pembayaran</b> yang dituju, lalu tekan <b>Benar</b>.</string>
     <string name="instruction_alto5_bni">Masukkan jumlah tagihan yang akan Anda bayar secara lengkap, lalu tekan <b>Benar</b>. Pembayaran dengan jumlah tidak sesuai akan otomatis ditolak.</string>
     <string name="instruction_alto6"><b>Detail pembayaran Anda</b> akan muncul pada halaman konfirmasi. Jika informasi sesuai tekan <b>Benar</b>.</string>
@@ -571,7 +574,7 @@
     <string name="payment_method_description_shopeepay_deeplink">Bayar dengan ShopeePay</string>
     <string name="payment_method_description_shopeepay_qris">Scan kode QR dengan ShopeePay atau e-wallet lainnya</string>
     <string name="payment_method_description_danamon_online">Bayar dengan akun Danamon Online Banking anda</string>
-    <string name="payment_method_description_akulaku">Bayar menggunakan akun Akulaku Anda</string>
+    <string name="payment_method_description_akulaku">Bayar menggunakan akun Akulaku PayLater Anda</string>
 
     <string name="payment_bank_description_bca">Bayar dari ATM BCA atau internet banking</string>
     <string name="payment_bank_description_mandiri">Bayar dari ATM Mandiri atau internet banking</string>

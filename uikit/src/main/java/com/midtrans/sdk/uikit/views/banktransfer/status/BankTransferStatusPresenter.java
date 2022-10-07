@@ -3,7 +3,6 @@ package com.midtrans.sdk.uikit.views.banktransfer.status;
 import android.text.TextUtils;
 
 import com.midtrans.sdk.corekit.core.PaymentType;
-import com.midtrans.sdk.corekit.models.MerchantPreferences;
 import com.midtrans.sdk.corekit.models.TransactionResponse;
 import com.midtrans.sdk.uikit.abstracts.BasePaymentPresenter;
 import com.midtrans.sdk.uikit.utilities.UiKitConstants;
@@ -15,7 +14,11 @@ import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 public class BankTransferStatusPresenter extends BasePaymentPresenter {
 
     private static final String LABEL_BANK_CODE_BNI = "009 (Bank BNI)";
+    private static final String LABEL_BANK_CODE_BRI = "002 (Bank BRI)";
     private static final String LABEL_BANK_CODE_PERMATA = "013 (Bank Permata)";
+
+    private static final String BNI = "bni";
+    private static final String BRI = "bri";
 
     private final String bankType;
 
@@ -37,8 +40,7 @@ public class BankTransferStatusPresenter extends BasePaymentPresenter {
                     vaNumber = transactionResponse.getPermataVANumber();
                     break;
                 case PaymentType.ALL_VA:
-                    //VA number is based on other VA processor
-                    vaNumber = TextUtils.isEmpty(transactionResponse.getBniVaNumber()) ? transactionResponse.getPermataVANumber() : transactionResponse.getBniVaNumber();
+                    vaNumber = getOtherBankVANumber();
                     break;
                 case PaymentType.BNI_VA:
                     vaNumber = transactionResponse.getBniVaNumber();
@@ -67,8 +69,7 @@ public class BankTransferStatusPresenter extends BasePaymentPresenter {
                     expiration = transactionResponse.getPermataExpiration();
                     break;
                 case PaymentType.ALL_VA:
-                    //expiration is based on other VA processor
-                    expiration = TextUtils.isEmpty(transactionResponse.getBniExpiration()) ? transactionResponse.getPermataExpiration() : transactionResponse.getBniExpiration();
+                    expiration = getOtherBankVAExpiration();
                     break;
                 case PaymentType.BNI_VA:
                     expiration = transactionResponse.getBniExpiration();
@@ -111,14 +112,66 @@ public class BankTransferStatusPresenter extends BasePaymentPresenter {
     }
 
     public String getBankCode() {
-        String bankCode = LABEL_BANK_CODE_BNI;
 
-        MerchantPreferences preferences = getMidtransSDK().getMerchantData().getPreference();
-        if (preferences != null && !TextUtils.isEmpty(preferences.getOtherVaProcessor())
-                && preferences.getOtherVaProcessor().equals(UiKitConstants.OTHER_VA_PROCESSOR_PERMATA)) {
-            bankCode = LABEL_BANK_CODE_PERMATA;
+        String bankCode;
+        String bank = getOtherVaProcessor();
+
+        switch (bank) {
+            case BRI:
+                bankCode = LABEL_BANK_CODE_BRI;
+                break;
+            case BNI:
+                bankCode = LABEL_BANK_CODE_BNI;
+                break;
+            default:
+                bankCode = LABEL_BANK_CODE_PERMATA;
+                break;
         }
 
         return bankCode;
+    }
+
+    private String getOtherBankVAExpiration() {
+
+        String expiration;
+        String otherVaProcessor = getOtherVaProcessor();
+
+        switch (otherVaProcessor) {
+            case BRI:
+                expiration = transactionResponse.getBriExpiration();
+                break;
+            case BNI:
+                expiration = transactionResponse.getBniExpiration();
+                break;
+            default:
+                expiration = transactionResponse.getPermataExpiration();
+                break;
+        }
+
+        return expiration;
+    }
+
+    private String getOtherBankVANumber() {
+
+        String vaNumber;
+        String otherVaProcessor = getOtherVaProcessor();
+
+        switch (otherVaProcessor) {
+            case BRI:
+                vaNumber = transactionResponse.getBriVaNumber();
+                break;
+            case BNI:
+                vaNumber = transactionResponse.getBniVaNumber();
+                break;
+            default:
+                vaNumber = transactionResponse.getPermataVANumber();
+                break;
+        }
+
+        return vaNumber;
+    }
+
+    private String getOtherVaProcessor() {
+        return transactionResponse.getAccountNumbers().get(0).getBank();
     }
 }

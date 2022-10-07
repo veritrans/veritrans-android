@@ -257,8 +257,8 @@
     <string name="cimb_instruction_step3">Please make sure that there is no pop-up blocker on your browser.</string>
 
     <!-- akulaku transfer Instructions -->
-    <string name="akulaku_instruction_step1">Click the "Pay Now" button, then you will be directed to the Akulaku Payment Center page.</string>
-    <string name="akulaku_instruction_step2">Select the desired installment tenor, then Login to your Akulaku account by entering your mobile number and password.</string>
+    <string name="akulaku_instruction_step1">Click the "Pay Now" button, then you will be directed to the Akulaku PayLater Payment Center page.</string>
+    <string name="akulaku_instruction_step2">Select the desired installment tenor, then Login to your Akulaku PayLater account by entering your mobile number and password.</string>
     <string name="akulaku_instruction_step3">Enter the verification code (OTP) that has been sent to your mobile number, then click the "Next" button.</string>
     <string name="akulaku_instruction_step4">A confirmation page will be shown to you, then you can finish your transaction.</string>
 
@@ -344,7 +344,7 @@
     <string name="credit_card">Credit/Debit Card</string>
     <string name="mandiri_clickpay">Mandiri Clickpay</string>
     <string name="cimb_clicks">CIMB Clicks</string>
-    <string name="akulaku">Akulaku</string>
+    <string name="akulaku">Akulaku PayLater</string>
     <string name="epay_bri">BRImo</string>
     <string name="bbm_money">BBM Money</string>
     <string name="indosat_dompetku">Indosat Dompetku</string>
@@ -467,7 +467,7 @@
     <string name="payment_method_shopeepay_deeplink">ShopeePay</string>
     <string name="payment_method_shopeepay_qris">ShopeePay/other e-Wallets</string>
     <string name="payment_method_danamon_online">Danamon Online Banking</string>
-    <string name="payment_method_akulaku">Akulaku</string>
+    <string name="payment_method_akulaku">Akulaku PayLater</string>
     <string name="payment_method_uob">UOB EZ Pay</string>
 
     <!--Payment List-->
@@ -537,8 +537,9 @@
     <string name="instruction_atm_bersama1">On the main menu, choose <b>Others</b>.</string>
     <string name="instruction_atm_bersama2">Choose <b>Transfer</b>.</string>
     <string name="instruction_atm_bersama3">Choose <b>Online Transfer</b>.</string>
-    <string name="instruction_atm_bersama4_permata">Enter <b>013</b> and <b>16 digit Account No.</b> and press <b>Correct</b>.</string>
-    <string name="instruction_atm_bersama4_bni">Enter <b>009</b> (Bank BNI code) and <b>16 digit Account No.</b> and press <b>Correct</b></string>
+    <string name="instruction_atm_bersama4_permata">Enter <b>013</b> (Bank Permata code) and <b>16 digit Account No.</b> and press <b>Correct</b>.</string>
+    <string name="instruction_atm_bersama4_bni">Enter <b>009</b> (Bank BNI code) and <b>16 digit Account No.</b> and press <b>Correct</b>.</string>
+    <string name="instruction_atm_bersama4_bri">Enter <b>002</b> (Bank BRI code) and <b>16 digit Account No.</b> and press <b>Correct</b>.</string>
     <string name="instruction_atm_bersama5">Enter the <b>full amount to be paid</b> and press <b>Correct</b>. If the amount entered is not the same as the invoiced amount, the transaction will be declined.</string>
     <string name="instruction_atm_bersama6">Empty the transfer reference number and press <b>Correct</b>.</string>
     <string name="instruction_atm_bersama7">Amount to be paid, account number, and merchant name will appear on the payment confirmation page. If the information is right, press <b>Correct</b>.</string>
@@ -551,8 +552,9 @@
     <string name="instruction_prima1">On the main menu, choose <b>Other Transaction</b>.</string>
     <string name="instruction_prima2">Choose <b>Transfer</b>.</string>
     <string name="instruction_prima3">Choose <b>Other Bank Account</b>.</string>
-    <string name="instruction_prima4_permata">Enter <b>013</b> and choose <b>Correct</b>.</string>
+    <string name="instruction_prima4_permata">Enter <b>013</b> (Bank Permata code) and choose <b>Correct</b>.</string>
     <string name="instruction_prima4_bni">Enter <b>009</b> (Bank BNI code) and choose <b>Correct</b>.</string>
+    <string name="instruction_prima4_bri">Enter <b>002</b> (Bank BRI code) and choose <b>Correct</b>.</string>
     <string name="instruction_prima5">Enter the full amount to be paid and press <b>Correct</b>. If the amount entered is not the same as the invoiced amount, the transaction will be declined.</string>
     <string name="instruction_prima6">Enter <b>16 digits payment Account No.</b> and press <b>Correct</b>.</string>
     <string name="instruction_prima7">Amount to be paid, account number, and merchant name will appear on the payment confirmation page. If the information is right, press <b>Correct</b>.</string>
@@ -569,6 +571,7 @@
     <string name="instruction_alto3_bni">Choose <b>Other Bank Account</b>.</string>
     <string name="instruction_alto4">Choose <b>Virtual Account</b>.</string>
     <string name="instruction_alto4_bni">Enter <b>009</b> (Bank BNI code) and choose <b>Correct</b>.</string>
+    <string name="instruction_alto4_bri">Enter <b>002</b> (Bank BRI code) and choose <b>Correct</b>.</string>
     <string name="instruction_alto5">Enter <b>16 digits payment Account No.</b> and press <b>Correct</b>.</string>
     <string name="instruction_alto5_bni">Enter the full amount to be paid and press <b>Correct</b>. If the amount entered is not the same as the invoiced amount, the transaction will be declined.</string>
     <string name="instruction_alto6">Your payment details will appear on the confirmation page. If the information is right press <b>Correct</b>.</string>
@@ -766,7 +769,7 @@
     <string name="payment_method_description_shopeepay_deeplink">Pay with ShopeePay wallet</string>
     <string name="payment_method_description_shopeepay_qris">Scan QR code using ShopeePay or other e-wallets</string>
     <string name="payment_method_description_danamon_online">Pay with your Danamon Online Banking Account</string>
-    <string name="payment_method_description_akulaku">Pay with your Akulaku account</string>
+    <string name="payment_method_description_akulaku">Pay with your Akulaku PayLater account</string>
     <string name="payment_method_description_uob">Pay with your UOB/TMRW account</string>
 
     <string name="payment_bank_description_bca">Pay from BCA ATMs or internet banking</string>
