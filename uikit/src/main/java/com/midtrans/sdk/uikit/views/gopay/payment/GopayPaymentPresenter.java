@@ -49,6 +49,27 @@ public class GopayPaymentPresenter extends BasePaymentPresenter<GoPayPaymentView
         });
     }
 
+    private void startGoPayQrisPayment(String snapToken) {
+        getMidtransSDK().paymentUsingGoPayQris(snapToken, new TransactionCallback() {
+            @Override
+            public void onSuccess(TransactionResponse response) {
+                transactionResponse = response;
+                view.onPaymentSuccess(response);
+            }
+
+            @Override
+            public void onFailure(TransactionResponse response, String reason) {
+                transactionResponse = response;
+                view.onPaymentFailure(response);
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                view.onPaymentError(error);
+            }
+        });
+    }
+
     public void getPaymentStatus() {
         String snapToken = getMidtransSDK().readAuthenticationToken();
         getMidtransSDK().getTransactionStatus(snapToken, new GetTransactionStatusCallback() {
