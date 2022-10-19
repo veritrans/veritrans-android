@@ -29,10 +29,6 @@ public class GopayPaymentPresenter extends BasePaymentPresenter<GoPayPaymentView
         isTablet = SdkUIFlowUtil.getDeviceType(activity).equals(SdkUIFlowUtil.TYPE_TABLET) && SdkUIFlowUtil.isDeviceTablet(activity);
     }
 
-    Boolean isTablet() {
-        return isTablet;
-    }
-
     public void startGoPayPayment() {
         String snapToken = getMidtransSDK().readAuthenticationToken();
         if (isTablet) {
