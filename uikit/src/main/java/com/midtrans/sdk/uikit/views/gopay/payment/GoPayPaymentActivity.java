@@ -219,7 +219,7 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
             if (TextUtils.isEmpty(response.getDeeplinkUrl()) && !isTablet) {
                 return false;
             }
-            if (TextUtils.isEmpty(response.getQrCodeUrl()) && isTablet) {
+            if (TextUtils.isEmpty(response.getQrisUrl()) && isTablet) {
                 return false;
             }
         }
