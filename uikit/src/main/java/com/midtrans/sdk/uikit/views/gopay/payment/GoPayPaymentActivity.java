@@ -157,6 +157,7 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
 
     private void initProperties() {
         presenter = new GopayPaymentPresenter(this);
+        presenter.setTabletDevice(this);
     }
 
     @Override
@@ -320,5 +321,4 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
     public void onGetTransactionStatusSuccess(TransactionResponse response) {
         showPaymentStatusPage(response, presenter.isShowPaymentStatusPage());
     }
-
 }
