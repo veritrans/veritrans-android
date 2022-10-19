@@ -18,14 +18,28 @@ import com.midtrans.sdk.uikit.utilities.UiKitConstants;
 
 public class GopayPaymentPresenter extends BasePaymentPresenter<GoPayPaymentView> {
 
+    private Boolean isTablet;
+
     public GopayPaymentPresenter(GoPayPaymentView view) {
         super();
         this.view = view;
     }
 
+    void setTabletDevice(Activity activity) {
+        isTablet = SdkUIFlowUtil.getDeviceType(activity).equals(SdkUIFlowUtil.TYPE_TABLET) && SdkUIFlowUtil.isDeviceTablet(activity);
+    }
+
+    Boolean isTablet() {
+        return isTablet;
+    }
+
     public void startGoPayPayment() {
         String snapToken = getMidtransSDK().readAuthenticationToken();
-        startGoPayDeeplinkPayment(snapToken);
+        if (isTablet) {
+            startGoPayQrisPayment(snapToken);
+        } else {
+            startGoPayDeeplinkPayment(snapToken);
+        }
     }
 
     private void startGoPayDeeplinkPayment(String snapToken) {
