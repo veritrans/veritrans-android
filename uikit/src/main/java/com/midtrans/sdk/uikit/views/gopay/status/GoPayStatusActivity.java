@@ -82,7 +82,7 @@ public class GoPayStatusActivity extends BasePaymentActivity {
             });
 
             //process qr code
-            final String qrCodeUrl = response.getQrCodeUrl();
+            final String qrCodeUrl = response.getQrisUrl();
             qrCodeContainer = findViewById(R.id.gopay_qr_code);
             qrCodeRefresh = findViewById(R.id.gopay_reload_qr_button);
             setTextColor(qrCodeRefresh);

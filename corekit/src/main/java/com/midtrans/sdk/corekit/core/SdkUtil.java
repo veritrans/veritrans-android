@@ -24,7 +24,7 @@ import com.midtrans.sdk.corekit.models.snap.payment.GoPayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.QrisPaymentParameter;
 import com.midtrans.sdk.corekit.models.snap.payment.ShopeePayPaymentRequest;
-import com.midtrans.sdk.corekit.models.snap.payment.ShopeePayQrisPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.QrisPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.UobEzpayPaymentRequest;
 import com.midtrans.sdk.corekit.utilities.Installation;
 
@@ -188,13 +188,18 @@ public class SdkUtil {
         return new GoPayPaymentRequest(PaymentType.GOPAY);
     }
 
+    public static QrisPaymentRequest getGoPayQrisPaymentRequest() {
+        List<String> acquirer = Collections.singletonList(QrisAcquirer.GOPAY);
+        return new QrisPaymentRequest(PaymentType.QRIS, new QrisPaymentParameter(acquirer));
+    }
+
     public static ShopeePayPaymentRequest getShopeePayPaymentRequest() {
         return new ShopeePayPaymentRequest(PaymentType.SHOPEEPAY);
     }
 
-    public static ShopeePayQrisPaymentRequest getShopeePayQrisPaymentRequest() {
+    public static QrisPaymentRequest getShopeePayQrisPaymentRequest() {
         List<String> acquirer = Collections.singletonList(QrisAcquirer.SHOPEEPAY);
-        return new ShopeePayQrisPaymentRequest(PaymentType.QRIS, new QrisPaymentParameter(acquirer));
+        return new QrisPaymentRequest(PaymentType.QRIS, new QrisPaymentParameter(acquirer));
     }
 
     public static DanamonOnlinePaymentRequest getDanamonOnlinePaymentRequest() {

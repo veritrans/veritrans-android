@@ -157,6 +157,7 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
 
     private void initProperties() {
         presenter = new GopayPaymentPresenter(this);
+        presenter.setTabletDevice(this);
     }
 
     @Override
@@ -218,7 +219,7 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
             if (TextUtils.isEmpty(response.getDeeplinkUrl()) && !isTablet) {
                 return false;
             }
-            if (TextUtils.isEmpty(response.getQrCodeUrl()) && isTablet) {
+            if (TextUtils.isEmpty(response.getQrisUrl()) && isTablet) {
                 return false;
             }
         }
@@ -320,5 +321,4 @@ public class GoPayPaymentActivity extends BasePaymentActivity implements GoPayPa
     public void onGetTransactionStatusSuccess(TransactionResponse response) {
         showPaymentStatusPage(response, presenter.isShowPaymentStatusPage());
     }
-
 }

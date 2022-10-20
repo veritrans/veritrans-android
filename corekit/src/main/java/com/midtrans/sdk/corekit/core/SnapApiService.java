@@ -15,7 +15,7 @@ import com.midtrans.sdk.corekit.models.snap.payment.IndosatDompetkuPaymentReques
 import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.NewMandiriClickPayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.ShopeePayPaymentRequest;
-import com.midtrans.sdk.corekit.models.snap.payment.ShopeePayQrisPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.QrisPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.TelkomselEcashPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.UobEzpayPaymentRequest;
 
@@ -141,7 +141,7 @@ public interface SnapApiService {
      * @param paymentRequest
      */
     @POST("v1/transactions/{snap_token}/pay")
-    Call<TransactionResponse> paymentUsingShopeePayQris(@Path("snap_token") String snapToken, @Body ShopeePayQrisPaymentRequest paymentRequest);
+    Call<TransactionResponse> paymentUsingQris(@Path("snap_token") String snapToken, @Body QrisPaymentRequest paymentRequest);
 
     /**
      * Charge payment using Danamon Online
