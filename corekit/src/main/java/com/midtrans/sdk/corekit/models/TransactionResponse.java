@@ -170,6 +170,11 @@ public class TransactionResponse implements Serializable {
     //currently for shopeepay, could be used for other QRIS payment except gopay (gopay still using qr_code_url)
     @SerializedName("qris_url")
     private String qrisUrl;
+    @SerializedName("qris_expiration_raw")
+    private String qrisExpirationRaw;
+    @SerializedName("qris_expiration")
+    private String qrisExpiration;
+
     private String currency;
 
     public TransactionResponse() { }
@@ -581,6 +586,22 @@ public class TransactionResponse implements Serializable {
     public void setQrisUrl(String qrisUrl) { this.qrisUrl = qrisUrl; }
 
     public String getQrisUrl() { return qrisUrl; }
+
+    public String getQrisExpiration() {
+        return qrisExpiration;
+    }
+
+    public void setQrisExpiration(String qrisExpiration) {
+        this.qrisExpiration = qrisExpiration;
+    }
+
+    public String getQrisExpirationRaw() {
+        return qrisExpirationRaw;
+    }
+
+    public void setQrisExpirationRaw(String qrisExpirationRaw) {
+        this.qrisExpirationRaw = qrisExpirationRaw;
+    }
 
     public String getGopayExpiration() {
         return gopayExpiration;
