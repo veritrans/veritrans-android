@@ -298,7 +298,7 @@
     <string name="uikit_shopeepay_instruction_tablet_step5">Transaksi Anda telah selesai.</string>
 
     <!--ShopeePay related-->
-    <string name="uikit_shopeepay_status_title">Bayar dengan GoPay</string>
+    <string name="uikit_shopeepay_status_title">Bayar dengan ShopeePay</string>
     <string name="uikit_shopeepay_confirm_button">Bayar dengan</string>
     <string name="uikit_notification_shopee_app">Aplikasi Shopee diperlukan untuk metode pembayaran ini.</string>
     <string name="uikit_notification_shopee_app_tablet">Pastikan Anda telah melakukan instalasi <b>aplikasi Shopee</b> di HP Anda dan memiliki saldo lebih dari <b>Rp 10.000</b>.</string>
