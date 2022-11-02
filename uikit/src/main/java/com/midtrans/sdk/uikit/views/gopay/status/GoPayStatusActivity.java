@@ -82,7 +82,7 @@ public class GoPayStatusActivity extends BasePaymentActivity {
             });
 
             //process qr code
-            final String qrCodeUrl = response.getQrCodeUrl();
+            final String qrCodeUrl = response.getQrisUrl();
             qrCodeContainer = findViewById(R.id.gopay_qr_code);
             qrCodeRefresh = findViewById(R.id.gopay_reload_qr_button);
             setTextColor(qrCodeRefresh);
@@ -128,18 +128,18 @@ public class GoPayStatusActivity extends BasePaymentActivity {
     }
 
     private boolean isExpirationTimeNotAvailable(TransactionResponse response) {
-        return TextUtils.isEmpty(response.getGopayExpiration()) && TextUtils.isEmpty(response.getGopayExpirationRaw());
+        return TextUtils.isEmpty(response.getQrisExpiration()) && TextUtils.isEmpty(response.getQrisExpirationRaw());
     }
 
     private long getPaymentDuration(TransactionResponse response) {
         String startTime = response.getTransactionTime();
         long expiryTimeOnMillis;
 
-        if (TextUtils.isEmpty(response.getGopayExpirationRaw())) {
-            String expirationTime = TextUtils.isEmpty(response.getGopayExpiration()) ? getExpiryTime(response.getTransactionTime()) : response.getGopayExpiration();
+        if (TextUtils.isEmpty(response.getQrisExpirationRaw())) {
+            String expirationTime = TextUtils.isEmpty(response.getQrisExpiration()) ? getExpiryTime(response.getTransactionTime()) : response.getQrisExpiration();
             expiryTimeOnMillis = getDuration(startTime, expirationTime);
         } else {
-            expiryTimeOnMillis = getDurationByExpirationRaw(startTime, response.getGopayExpirationRaw());
+            expiryTimeOnMillis = getDurationByExpirationRaw(startTime, response.getQrisExpirationRaw());
         }
 
         return expiryTimeOnMillis;

@@ -23,7 +23,7 @@ import com.midtrans.sdk.corekit.models.snap.payment.IndosatDompetkuPaymentReques
 import com.midtrans.sdk.corekit.models.snap.payment.KlikBCAPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.NewMandiriClickPayPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.ShopeePayPaymentRequest;
-import com.midtrans.sdk.corekit.models.snap.payment.ShopeePayQrisPaymentRequest;
+import com.midtrans.sdk.corekit.models.snap.payment.QrisPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.TelkomselEcashPaymentRequest;
 import com.midtrans.sdk.corekit.models.snap.payment.UobEzpayPaymentRequest;
 
@@ -384,12 +384,12 @@ public class SnapServiceManager extends BaseServiceManager {
      * @param paymentRequest
      * @param callback
      */
-    public void paymentUsingShopeePayQris(String snapToken, ShopeePayQrisPaymentRequest paymentRequest, final TransactionCallback callback) {
+    public void paymentUsingQris(String snapToken, QrisPaymentRequest paymentRequest, final TransactionCallback callback) {
         if (service == null) {
             doOnApiServiceUnAvailable(callback);
             return;
         }
-        Call<TransactionResponse> call = service.paymentUsingShopeePayQris(snapToken, paymentRequest);
+        Call<TransactionResponse> call = service.paymentUsingQris(snapToken, paymentRequest);
         call.enqueue(new Callback<TransactionResponse>() {
             @Override
             public void onResponse(Call<TransactionResponse> call, Response<TransactionResponse> response) {

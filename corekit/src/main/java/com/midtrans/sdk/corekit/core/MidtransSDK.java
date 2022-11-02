@@ -1497,6 +1497,19 @@ public class MidtransSDK {
         }
     }
 
+    public void paymentUsingGoPayQris(String snapToken, TransactionCallback callback) {
+        if (callback == null) {
+            Logger.e(TAG, Constants.MESSAGE_ERROR_CALLBACK_UNIMPLEMENTED);
+            return;
+        }
+
+        if (isNetworkAvailable()) {
+            snapServiceManager.paymentUsingQris(snapToken, SdkUtil.getGoPayQrisPaymentRequest(), callback);
+        } else {
+            callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
+        }
+    }
+
     /**
      * It will run backround task to charge payment using ShopeePay
      *
@@ -1527,7 +1540,7 @@ public class MidtransSDK {
         }
 
         if (isNetworkAvailable()) {
-            snapServiceManager.paymentUsingShopeePayQris(snapToken, SdkUtil.getShopeePayQrisPaymentRequest(), callback);
+            snapServiceManager.paymentUsingQris(snapToken, SdkUtil.getShopeePayQrisPaymentRequest(), callback);
         } else {
             callback.onError(new Throwable(Constants.MESSAGE_ERROR_FAILED_TO_CONNECT_TO_SERVER));
         }
