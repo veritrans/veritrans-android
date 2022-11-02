@@ -1,6 +1,6 @@
 ext {
     groupIdSdk = 'com.midtrans'
-    versionSdk = '1.33.0'
+    versionSdk = '1.34.0'
 
     mavenRepo = 'mavencentral'
     mavenUrl = 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
