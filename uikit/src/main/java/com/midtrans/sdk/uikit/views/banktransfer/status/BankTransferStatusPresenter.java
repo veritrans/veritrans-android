@@ -172,6 +172,10 @@ public class BankTransferStatusPresenter extends BasePaymentPresenter {
     }
 
     private String getOtherVaProcessor() {
-        return transactionResponse.getAccountNumbers().get(0).getBank();
+        String otherVaProcessor = "";
+        if (transactionResponse.getAccountNumbers() != null){
+            otherVaProcessor =  transactionResponse.getAccountNumbers().get(0).getBank();
+        }
+        return otherVaProcessor;
     }
 }
