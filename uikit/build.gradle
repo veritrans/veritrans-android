@@ -1,7 +1,6 @@
 apply plugin: 'com.android.library'
 apply from: "$rootDir/build-system/uikit/jacoco.gradle"
 apply from: "$rootDir/build-system/publish-variable.gradle"
-apply from: "$rootDir/build-system/uikit/publishing.gradle"
 
 android {
     def DEFAULT_PUBLISH
@@ -36,6 +35,10 @@ android {
         debug {
             testCoverageEnabled = true
         }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
     }
 
     flavorDimensions "env"

@@ -1,6 +1,5 @@
 apply plugin: 'com.android.library'
 apply from: "$rootDir/build-system/publish-variable.gradle"
-apply from: "$rootDir/build-system/scancard/publishing.gradle"
 
 android {
     def DEFAULT_PUBLISH
@@ -48,6 +47,10 @@ android {
         flatDir {
             dirs '../libs','libs'
         }
+    }
+
+    configurations.implementation {
+        exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk7'
     }
 
     defaultPublishConfig = DEFAULT_PUBLISH

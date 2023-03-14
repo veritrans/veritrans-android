@@ -11,7 +11,7 @@ ext {
     playAuthVersion = '15.0.1'
     okHttpVersion = '3.10.0'
     retrofitVersion = '2.4.0'
-    midtransAnalyticsVersion = '1.7.1'
+    midtransAnalyticsVersion = '1.8.1'
     testRunnerVersion = '0.5'
     powermockVersion = '1.6.2'
     junitVersion = '4.1.2'
