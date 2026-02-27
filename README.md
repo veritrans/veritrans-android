@@ -1,3 +1,13 @@
+> [!WARNING]
+> SDK Version 1.x.x is Deprecated.
+> This 1.x.x version of the Midtrans SDK is no longer supported. Please update to the current 2.x.x version available at: https://github.com/veritrans/SNAP-Android
+
+> [!NOTE]
+> For UIKit only, upgrading from the previous SDK version won't introduce any breaking changes to your existing implementation.
+
+> [!TIP]
+> For UIKit only, to upgrade, simply update your dependency version from 1.x.x to 2.x.x in your build.gradle file: ```implementation 'com.midtrans:uikit:2.4.0'```
+
 ## Veritrans Android SDK
 
 
